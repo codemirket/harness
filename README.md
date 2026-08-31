@@ -1,20 +1,22 @@
 # Shared AI Configuration
 
-This directory contains portable configuration shared across AI agents through iCloud.
+This directory contains portable configuration shared across AI agents. macOS can use iCloud Drive for storage; the Windows setup has no iCloud dependency and works from any local copy of this directory.
 
 ## Contents
 
 - `AGENTS.md`: Universal working principles and capability rules.
-- `SETUP.md`: New-device installation and verification procedure.
 - `config/codex/preferences.toml`: Portable Codex preference reference.
 - `skills/`: Canonical source for reusable skills.
-- `setup/link-configurations.sh`: Safe linker for a new Mac.
+- `setup/MacOS/`: macOS guide plus separate Codex and Claude setup scripts.
+- `setup/Windows11/`: Windows 11 guide plus separate Codex and Claude PowerShell scripts.
 
 ## Active Links
 
-- Codex: `~/.codex/AGENTS.md` → `~/Documents/.ai/AGENTS.md`
-- Claude: `~/.claude/CLAUDE.md` → `~/Documents/.ai/AGENTS.md`
-- Windmill skills: linked individually into `~/.codex/skills/` and `~/.claude/skills/`
+- Codex: local `AGENTS.md` → shared `AGENTS.md`.
+- Claude: local `CLAUDE.md` → shared `AGENTS.md`.
+- Windmill skills: linked individually into the local Codex and Claude skill directories.
+
+The exact local paths and commands are in the [macOS](setup/MacOS/SETUP.MD) and [Windows 11](setup/Windows11/SETUP.MD) guides.
 
 ## Rules
 
@@ -25,9 +27,12 @@ This directory contains portable configuration shared across AI agents through i
 - Add only focused skills for recurring workflows.
 - Link shared skills individually; do not replace an agent's complete skills directory.
 
-## New Mac Setup
+## New Device Setup
 
-Follow `SETUP.md`.
+Follow the guide for the device's operating system:
+
+- [macOS](setup/MacOS/SETUP.MD)
+- [Windows 11](setup/Windows11/SETUP.MD)
 
 ## Adding a Shared Skill
 

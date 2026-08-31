@@ -1,11 +1,12 @@
-# Shared AI Setup
+# macOS Setup
 
 Use this procedure to apply the shared agent configuration on a new Mac.
 
 ## 1. Prerequisites
 
-- Sign in to the same iCloud account.
-- Enable iCloud Drive and Documents synchronization.
+- Sign in to the same Apple Account.
+- Enable iCloud Drive and Desktop & Documents synchronization.
+- In Finder, mark the `.ai` folder as **Keep Downloaded**.
 - Install Codex or the ChatGPT desktop app.
 - Install Claude Desktop or Claude Code.
 - Install the Windmill CLI if Windmill skills will be used.
@@ -18,7 +19,8 @@ Wait until this directory is fully downloaded:
 
 ```sh
 test -f "$HOME/Documents/.ai/AGENTS.md"
-test -f "$HOME/Documents/.ai/setup/link-configurations.sh"
+test -f "$HOME/Documents/.ai/setup/MacOS/codex.sh"
+test -f "$HOME/Documents/.ai/setup/MacOS/claude.sh"
 find "$HOME/Documents/.ai/skills/windmill" -name SKILL.md | wc -l
 ```
 
@@ -27,12 +29,13 @@ The expected Windmill skill count is `28`.
 If iCloud exposes the directory elsewhere, provide its path explicitly:
 
 ```sh
-AI_SHARED_DIR="/absolute/path/to/.ai" sh "/absolute/path/to/.ai/setup/link-configurations.sh"
+AI_SHARED_DIR="/absolute/path/to/.ai" sh "/absolute/path/to/.ai/setup/MacOS/codex.sh"
+AI_SHARED_DIR="/absolute/path/to/.ai" sh "/absolute/path/to/.ai/setup/MacOS/claude.sh"
 ```
 
 ## 3. Check Existing Configuration
 
-The linker refuses to replace regular files or directories.
+The setup scripts refuse to replace regular files or directories.
 
 Review these locations before running it:
 
@@ -46,26 +49,30 @@ If a destination already contains local configuration:
 1. Compare it with the shared source.
 2. Merge rules or skill changes that must be retained.
 3. Move the conflicting item outside the agent configuration directory.
-4. Run the linker again.
+4. Run the applicable setup script again.
 
 Do not force replacement without reviewing the conflict.
 
 ## 4. Create the Links
 
-Run:
+Run the scripts for the agents installed on this Mac:
 
 ```sh
-sh "$HOME/Documents/.ai/setup/link-configurations.sh"
+sh "$HOME/Documents/.ai/setup/MacOS/codex.sh"
+sh "$HOME/Documents/.ai/setup/MacOS/claude.sh"
 ```
 
-The script creates:
+`codex.sh` creates:
 
 - `~/.codex/AGENTS.md` pointing to the shared `AGENTS.md`.
-- `~/.claude/CLAUDE.md` pointing to the shared `AGENTS.md`.
 - Individual Windmill skill links in `~/.codex/skills/`.
+
+`claude.sh` creates:
+
+- `~/.claude/CLAUDE.md` pointing to the shared `AGENTS.md`.
 - Individual Windmill skill links in `~/.claude/skills/`.
 
-It also removes known obsolete links created by earlier versions of this setup.
+Each script also removes obsolete links created by earlier versions of its own setup.
 
 ## 5. Configure Device-Local Capabilities
 
@@ -139,7 +146,7 @@ Confirm in each agent that:
 ## 8. Maintenance
 
 - Edit the canonical files only under `~/Documents/.ai`.
-- Run the linker after adding, removing, or renaming shared skills.
+- Run the installed agents' setup scripts after adding, removing, or renaming shared skills.
 - Restart agent sessions after instruction or skill changes.
 - Keep secrets and machine-specific configuration outside this directory.
 - Do not sync agent caches, session histories, plugin caches, databases, or application-support data.
@@ -147,13 +154,13 @@ Confirm in each agent that:
 
 ## Troubleshooting
 
-### The linker reports a non-symlink conflict
+### A setup script reports a non-symlink conflict
 
-Review and move the conflicting local item outside the agent directory. Run the linker again.
+Review and move the conflicting local item outside the agent directory. Run the applicable setup script again.
 
 ### A link is broken
 
-Confirm iCloud has downloaded `.ai`, then rerun the linker. Use `AI_SHARED_DIR` if the directory is stored at a nonstandard path.
+Confirm iCloud has downloaded `.ai`, then rerun the applicable setup script. Use `AI_SHARED_DIR` if the directory is stored at a nonstandard path.
 
 ### Skills do not appear
 
@@ -168,9 +175,3 @@ codex doctor --summary
 ```
 
 Correct the reported local configuration issue. Do not replace the file with the portable preference reference.
-
-## References
-
-- [OpenAI Docs: AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
-- [OpenAI Docs: skills](https://learn.chatgpt.com/docs/build-skills)
-- [OpenAI Docs: configuration](https://learn.chatgpt.com/docs/config-file/config-basic)
