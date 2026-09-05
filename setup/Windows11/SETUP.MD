@@ -78,27 +78,6 @@ names across groups. Each script removes stale skill links pointing into this
 shared repository. Rerun setup after removing the previously bundled skills to
 clean up their links.
 
-## Containers MCP
-
-The per-agent setup scripts also install containers MCP and register it globally
-for that agent. Claude setup registers Claude Code at user scope and merges a
-registration into Claude Desktop's configuration when its directory exists.
-Other MCP entries are preserved. Restart sessions after setup.
-
-The server starts on demand through stdio. The catalog initially offers PostgreSQL,
-Redis, and MinIO; containers are created only when requested through MCP tools.
-All bind data is stored under `~/.dev.volumes/<service-alias>`, with private catalog
-state and credentials under `~/.dev.mcp`. Do not synchronize these directories.
-
-To install only containers MCP for both agents:
-
-```powershell
-& (Join-Path $sharedDir 'setup\Windows11\containers.ps1') -SharedDir $sharedDir
-```
-
-See [containers MCP](../../mcp/containers/README.md) for requirements, tools,
-project separation, custom catalog entries, runtime locations, and diagnostics.
-
 ## 5. Configure Device-Local Capabilities
 
 Configure the following separately on every device:

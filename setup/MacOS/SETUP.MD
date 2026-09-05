@@ -9,7 +9,6 @@ Use this procedure to apply the shared agent configuration on a new Mac.
 - In Finder, mark the `.ai` folder as **Keep Downloaded**.
 - Install Codex and its CLI.
 - Install Node.js 24 or newer with npm.
-- Install Docker Desktop and select Linux containers.
 - Install Claude Code CLI. Claude Desktop chat is also registered when its local configuration directory exists.
 - Install any third-party skills separately through their installer or plugin.
 
@@ -78,27 +77,6 @@ Skills are discovered at `skills/<group>/<skill-name>/SKILL.md`. Use unique skil
 names across groups. Each script also removes stale skill links pointing into
 this shared repository and obsolete configuration links from earlier setup versions.
 Rerun setup after removing the previously bundled skills to clean up their links.
-
-## Containers MCP
-
-The per-agent setup scripts also install containers MCP and register it globally
-for that agent. Claude setup registers Claude Code at user scope and merges a
-registration into Claude Desktop's configuration when its directory exists.
-Other MCP entries are preserved. Restart sessions after setup.
-
-The server starts on demand through stdio. The catalog initially offers PostgreSQL,
-Redis, and MinIO; containers are created only when requested through MCP tools.
-All bind data is stored under `~/.dev.volumes/<service-alias>`, with private catalog
-state and credentials under `~/.dev.mcp`. Do not synchronize these directories.
-
-To install only containers MCP for both agents:
-
-```sh
-sh "$HOME/Documents/.ai/setup/MacOS/containers.sh"
-```
-
-See [containers MCP](../../mcp/containers/README.md) for requirements, tools,
-project separation, custom catalog entries, runtime locations, and diagnostics.
 
 ## 5. Configure Device-Local Capabilities
 
