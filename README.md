@@ -7,6 +7,7 @@ This directory contains portable configuration shared across AI agents. macOS ca
 - `AGENTS.md`: Universal working principles and capability rules.
 - `config/codex/preferences.toml`: Portable Codex preference reference.
 - `skills/`: Canonical source for custom skills you create and own.
+- `mcp/containers/`: Local MCP server for reusable Docker services and per-project allocations.
 - `setup/MacOS/`: macOS guide plus separate Codex and Claude setup scripts.
 - `setup/Windows11/`: Windows 11 guide plus separate Codex and Claude PowerShell scripts.
 
@@ -15,6 +16,7 @@ This directory contains portable configuration shared across AI agents. macOS ca
 - Codex: local `AGENTS.md` → shared `AGENTS.md`.
 - Claude: local `CLAUDE.md` → shared `AGENTS.md`.
 - Custom skills: linked individually into the local Codex and Claude skill directories when present.
+- Containers MCP: installed locally and registered globally for Codex, Claude Code, and Claude Desktop when installed.
 
 The exact local paths and commands are in the [macOS](setup/MacOS/SETUP.MD) and [Windows 11](setup/Windows11/SETUP.MD) guides.
 
@@ -43,7 +45,19 @@ Follow the guide for the device's operating system:
 
 An empty custom skill collection is supported. See [skills/README.md](skills/README.md).
 
-## Setup Tests
+## Containers MCP
 
-Run the macOS setup tests with `python3 -B -m unittest discover -s setup/tests -v`.
-They use temporary directories and do not change your installed agent configuration.
+Use [containers MCP](mcp/containers/README.md) to share PostgreSQL, Redis, MinIO,
+and custom Docker services across projects. Data lives under
+`~/.dev.volumes/<service-alias>`; catalog state and credentials stay in `~/.dev.mcp`.
+
+The per-agent setup scripts install it automatically. To install just the MCP for
+both agents, run `setup/MacOS/containers.sh` or
+`setup/Windows11/containers.ps1`. Node.js 24+, npm, Docker Desktop, and the
+selected agent CLIs are required.
+
+## Verification
+
+From `mcp/containers`, run `npm ci` and `npm test` for unit and real MCP protocol
+tests. Run `npm run test:docker` with Docker Desktop running for isolated live
+service tests. See the MCP README for test cleanup and persistence details.

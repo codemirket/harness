@@ -111,3 +111,5 @@ if (Test-Path -LiteralPath $skillsDirectory -PathType Container) {
 }
 
 Write-Output 'Codex shared configuration links are active.'
+
+& (Join-Path $SharedDir 'setup\Windows11\containers.ps1') -SharedDir $SharedDir -Agent codex

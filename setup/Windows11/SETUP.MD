@@ -6,8 +6,10 @@ Use this procedure to apply the shared agent configuration on a new Windows 11 d
 
 - Create or obtain a complete local copy of the shared `.ai` directory.
 - If Git is the chosen persistence method, install Git for Windows and clone or update the repository before setup.
-- Install Codex or the ChatGPT desktop app.
-- Install Claude Desktop or Claude Code.
+- Install Codex and its CLI.
+- Install Node.js 24 or newer with npm.
+- Install Docker Desktop and select Linux containers.
+- Install Claude Code CLI. Claude Desktop chat is also registered when its local configuration directory exists.
 - Install PowerShell 5.1 or later (included with Windows 11).
 - Install any third-party skills separately through their installer or plugin.
 
@@ -75,6 +77,27 @@ Skills are discovered at `skills/<group>/<skill-name>/SKILL.md`. Use unique skil
 names across groups. Each script removes stale skill links pointing into this
 shared repository. Rerun setup after removing the previously bundled skills to
 clean up their links.
+
+## Containers MCP
+
+The per-agent setup scripts also install containers MCP and register it globally
+for that agent. Claude setup registers Claude Code at user scope and merges a
+registration into Claude Desktop's configuration when its directory exists.
+Other MCP entries are preserved. Restart sessions after setup.
+
+The server starts on demand through stdio. The catalog initially offers PostgreSQL,
+Redis, and MinIO; containers are created only when requested through MCP tools.
+All bind data is stored under `~/.dev.volumes/<service-alias>`, with private catalog
+state and credentials under `~/.dev.mcp`. Do not synchronize these directories.
+
+To install only containers MCP for both agents:
+
+```powershell
+& (Join-Path $sharedDir 'setup\Windows11\containers.ps1') -SharedDir $sharedDir
+```
+
+See [containers MCP](../../mcp/containers/README.md) for requirements, tools,
+project separation, custom catalog entries, runtime locations, and diagnostics.
 
 ## 5. Configure Device-Local Capabilities
 

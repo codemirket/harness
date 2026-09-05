@@ -44,3 +44,5 @@ for skill_path in "$shared_dir"/skills/*/*; do
 done
 
 printf 'Claude shared configuration links are active.\n'
+
+AI_SHARED_DIR="$shared_dir" sh "$shared_dir/setup/MacOS/containers.sh" claude
