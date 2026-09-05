@@ -9,7 +9,7 @@ Use this procedure to apply the shared agent configuration on a new Windows 11 d
 - Install Codex or the ChatGPT desktop app.
 - Install Claude Desktop or Claude Code.
 - Install PowerShell 5.1 or later (included with Windows 11).
-- Install the Windmill CLI if Windmill skills will be used.
+- Install any third-party skills separately through their installer or plugin.
 
 Do not copy authentication files, sessions, caches, databases, or application-support directories from another device.
 
@@ -24,10 +24,10 @@ $sharedDir = 'C:\path\to\.ai'
 Test-Path -LiteralPath (Join-Path $sharedDir 'AGENTS.md') -PathType Leaf
 Test-Path -LiteralPath (Join-Path $sharedDir 'setup\Windows11\codex.ps1') -PathType Leaf
 Test-Path -LiteralPath (Join-Path $sharedDir 'setup\Windows11\claude.ps1') -PathType Leaf
-(Get-ChildItem -LiteralPath (Join-Path $sharedDir 'skills\windmill') -Directory | Measure-Object).Count
+Test-Path -LiteralPath (Join-Path $sharedDir 'skills') -PathType Container
 ```
 
-The first three commands should return `True`. The expected Windmill skill count is `28`.
+All four commands should return `True`. The custom skill collection may be empty.
 
 ## 3. Check Existing Configuration
 
@@ -62,14 +62,19 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 `codex.ps1` creates:
 
 - `%USERPROFILE%\.codex\AGENTS.md` pointing to the shared `AGENTS.md`.
-- Individual Windmill skill links in `%USERPROFILE%\.codex\skills\`.
+- Individual custom skill links in `%USERPROFILE%\.codex\skills\`, when present.
 
 `claude.ps1` creates:
 
 - `%USERPROFILE%\.claude\CLAUDE.md` pointing to the shared `AGENTS.md`.
-- Individual Windmill skill links in `%USERPROFILE%\.claude\skills\`.
+- Individual custom skill links in `%USERPROFILE%\.claude\skills\`, when present.
 
 Each script replaces only existing symbolic links. If Windows prevents symbolic-link creation, enable Developer Mode or run PowerShell as Administrator, then run the command again.
+
+Skills are discovered at `skills/<group>/<skill-name>/SKILL.md`. Use unique skill
+names across groups. Each script removes stale skill links pointing into this
+shared repository. Rerun setup after removing the previously bundled skills to
+clean up their links.
 
 ## 5. Configure Device-Local Capabilities
 
@@ -79,7 +84,7 @@ Configure the following separately on every device:
 - Plugins and MCP servers.
 - Chrome extension and browser permissions.
 - Excel, PDF, document, presentation, and computer-control connections.
-- Windmill CLI authentication and workspace selection.
+- Third-party skill dependencies and authentication, when needed.
 - Project trust and repository-specific configuration.
 - Application paths, notification commands, and local runtime paths.
 
@@ -102,14 +107,15 @@ Verify global instruction links:
 
 Both should resolve to `$sharedDir\AGENTS.md`.
 
-Verify shared skills:
+Verify each custom skill you added (replace `my-custom-skill`):
 
 ```powershell
-(Get-ChildItem "$HOME\.codex\skills" -Directory | Where-Object Name -Like 'windmill-*' | Measure-Object).Count
-(Get-ChildItem "$HOME\.claude\skills" -Directory | Where-Object Name -Like 'windmill-*' | Measure-Object).Count
+(Get-Item "$HOME\.codex\skills\my-custom-skill" -Force).Target
+(Get-Item "$HOME\.claude\skills\my-custom-skill" -Force).Target
 ```
 
-Both expected counts are `28`.
+Each link should point to its custom skill directory under `$sharedDir\skills`.
+Skip this check when no custom skills have been created.
 
 Verify that the links resolve:
 
@@ -119,13 +125,12 @@ Get-ChildItem "$HOME\.codex\skills", "$HOME\.claude\skills" -Force |
     ForEach-Object { "{0}: {1}" -f $_.FullName, (Test-Path -LiteralPath $_.Target) }
 ```
 
-Each managed link should report `True`.
+Each shared custom skill link should report `True`. Review external links separately.
 
 Verify local capabilities when installed:
 
 ```powershell
 codex doctor --summary
-wmill --version
 ```
 
 ## 7. Reload the Agents
@@ -135,8 +140,8 @@ Close existing Codex and Claude sessions after linking or changing skills. Start
 Confirm in each agent that:
 
 - Global working principles are active.
-- Windmill skills appear with `windmill-` prefixes.
-- Ordinary Python, Bash, SQL, browser, or scheduling tasks do not trigger Windmill skills unless the task involves Windmill.
+- Custom skills appear when present and activate only for their intended tasks.
+- Third-party skills are managed separately from this shared directory.
 
 ## 8. Maintenance
 

@@ -28,25 +28,17 @@ mkdir -p "$claude_dir/skills"
 for legacy_link in "$claude_dir/skills"/*; do
     [ -L "$legacy_link" ] || continue
     link_target=$(readlink "$legacy_link")
-    link_name=$(basename "$legacy_link")
-
     case "$link_target" in
-        "$shared_dir"/skills/windmill/*)
-            case "$link_name" in
-                windmill-*) ;;
-                *) unlink "$legacy_link" ;;
-            esac
-            ;;
-        ../../.agents/skills/*)
-            [ -e "$legacy_link" ] || unlink "$legacy_link"
+        "$shared_dir"/skills/*)
+            [ -f "$legacy_link/SKILL.md" ] || unlink "$legacy_link"
             ;;
     esac
 done
 
 link_path "$shared_dir/AGENTS.md" "$claude_dir/CLAUDE.md"
 
-for skill_path in "$shared_dir"/skills/windmill/*; do
-    [ -d "$skill_path" ] || continue
+for skill_path in "$shared_dir"/skills/*/*; do
+    [ -f "$skill_path/SKILL.md" ] || continue
     skill_name=$(basename "$skill_path")
     link_path "$skill_path" "$claude_dir/skills/$skill_name"
 done

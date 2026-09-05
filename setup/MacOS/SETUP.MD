@@ -9,7 +9,7 @@ Use this procedure to apply the shared agent configuration on a new Mac.
 - In Finder, mark the `.ai` folder as **Keep Downloaded**.
 - Install Codex or the ChatGPT desktop app.
 - Install Claude Desktop or Claude Code.
-- Install the Windmill CLI if Windmill skills will be used.
+- Install any third-party skills separately through their installer or plugin.
 
 Do not copy authentication files, sessions, caches, databases, or application-support directories from another device.
 
@@ -21,10 +21,10 @@ Wait until this directory is fully downloaded:
 test -f "$HOME/Documents/.ai/AGENTS.md"
 test -f "$HOME/Documents/.ai/setup/MacOS/codex.sh"
 test -f "$HOME/Documents/.ai/setup/MacOS/claude.sh"
-find "$HOME/Documents/.ai/skills/windmill" -name SKILL.md | wc -l
+test -d "$HOME/Documents/.ai/skills"
 ```
 
-The expected Windmill skill count is `28`.
+The custom skill collection may be empty.
 
 If iCloud exposes the directory elsewhere, provide its path explicitly:
 
@@ -65,14 +65,17 @@ sh "$HOME/Documents/.ai/setup/MacOS/claude.sh"
 `codex.sh` creates:
 
 - `~/.codex/AGENTS.md` pointing to the shared `AGENTS.md`.
-- Individual Windmill skill links in `~/.codex/skills/`.
+- Individual custom skill links in `~/.codex/skills/`, when present.
 
 `claude.sh` creates:
 
 - `~/.claude/CLAUDE.md` pointing to the shared `AGENTS.md`.
-- Individual Windmill skill links in `~/.claude/skills/`.
+- Individual custom skill links in `~/.claude/skills/`, when present.
 
-Each script also removes obsolete links created by earlier versions of its own setup.
+Skills are discovered at `skills/<group>/<skill-name>/SKILL.md`. Use unique skill
+names across groups. Each script also removes stale skill links pointing into
+this shared repository and obsolete configuration links from earlier setup versions.
+Rerun setup after removing the previously bundled skills to clean up their links.
 
 ## 5. Configure Device-Local Capabilities
 
@@ -82,7 +85,7 @@ Configure the following separately on every device:
 - Plugins and MCP servers.
 - Chrome extension and browser permissions.
 - Excel, PDF, document, presentation, and computer-control connections.
-- Windmill CLI authentication and workspace selection.
+- Third-party skill dependencies and authentication, when needed.
 - Project trust and repository-specific configuration.
 - Application paths, notification commands, and local runtime paths.
 
@@ -109,28 +112,28 @@ Both should resolve to:
 ~/Documents/.ai/AGENTS.md
 ```
 
-Verify shared skills:
+Verify each custom skill you added (replace `my-custom-skill`):
 
 ```sh
-find -L "$HOME/.codex/skills" -maxdepth 2 -name SKILL.md | grep '/windmill-' | wc -l
-find -L "$HOME/.claude/skills" -maxdepth 2 -name SKILL.md | grep '/windmill-' | wc -l
+readlink "$HOME/.codex/skills/my-custom-skill"
+readlink "$HOME/.claude/skills/my-custom-skill"
 ```
 
-Both expected counts are `28`.
+Each link should point to its custom skill directory under the shared `skills/`
+directory. Skip this check when no custom skills have been created.
 
-Verify that no managed links are broken:
+Check for broken skill links:
 
 ```sh
 find -L "$HOME/.codex/skills" "$HOME/.claude/skills" -type l
 ```
 
-Expected output: none.
+Shared custom skill links should not appear. Review any external links separately.
 
 Verify local capabilities when installed:
 
 ```sh
 codex doctor --summary
-wmill --version
 ```
 
 ## 7. Reload the Agents
@@ -140,8 +143,8 @@ Close existing Codex and Claude sessions after linking or changing skills. Start
 Confirm in each agent that:
 
 - Global working principles are active.
-- Windmill skills appear with `windmill-` prefixes.
-- Ordinary Python, Bash, SQL, browser, or scheduling tasks do not trigger Windmill skills unless the task involves Windmill.
+- Custom skills appear when present and activate only for their intended tasks.
+- Third-party skills are managed separately from this shared directory.
 
 ## 8. Maintenance
 

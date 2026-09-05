@@ -6,7 +6,7 @@ This directory contains portable configuration shared across AI agents. macOS ca
 
 - `AGENTS.md`: Universal working principles and capability rules.
 - `config/codex/preferences.toml`: Portable Codex preference reference.
-- `skills/`: Canonical source for reusable skills.
+- `skills/`: Canonical source for custom skills you create and own.
 - `setup/MacOS/`: macOS guide plus separate Codex and Claude setup scripts.
 - `setup/Windows11/`: Windows 11 guide plus separate Codex and Claude PowerShell scripts.
 
@@ -14,7 +14,7 @@ This directory contains portable configuration shared across AI agents. macOS ca
 
 - Codex: local `AGENTS.md` → shared `AGENTS.md`.
 - Claude: local `CLAUDE.md` → shared `AGENTS.md`.
-- Windmill skills: linked individually into the local Codex and Claude skill directories.
+- Custom skills: linked individually into the local Codex and Claude skill directories when present.
 
 The exact local paths and commands are in the [macOS](setup/MacOS/SETUP.MD) and [Windows 11](setup/Windows11/SETUP.MD) guides.
 
@@ -23,7 +23,7 @@ The exact local paths and commands are in the [macOS](setup/MacOS/SETUP.MD) and 
 - Keep this directory portable and human-readable.
 - Do not store secrets, tokens, credentials, logs, caches, or session state.
 - Keep machine-specific settings in each agent's local configuration.
-- Do not copy application-managed or plugin-managed skills here unless this directory is their intended canonical source.
+- Install third-party and plugin-managed skills separately; do not vendor re-installable skills here.
 - Add only focused skills for recurring workflows.
 - Link shared skills individually; do not replace an agent's complete skills directory.
 
@@ -36,7 +36,14 @@ Follow the guide for the device's operating system:
 
 ## Adding a Shared Skill
 
-1. Create `skills/<group>/<skill-name>/SKILL.md`.
+1. Create `skills/<group>/<skill-name>/SKILL.md`, with a skill name unique across groups.
 2. Add only required scripts, references, templates, or assets.
-3. Link the skill directory into each compatible agent's skills directory.
+3. Run each installed agent's setup script to link the custom skill.
 4. Restart the agent and verify the skill is discovered.
+
+An empty custom skill collection is supported. See [skills/README.md](skills/README.md).
+
+## Setup Tests
+
+Run the macOS setup tests with `python3 -B -m unittest discover -s setup/tests -v`.
+They use temporary directories and do not change your installed agent configuration.

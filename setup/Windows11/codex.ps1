@@ -85,13 +85,29 @@ foreach ($deprecatedLink in @(
 
 Set-SharedLink -SourcePath (Join-Path $SharedDir 'AGENTS.md') -DestinationPath (Join-Path $codexHome 'AGENTS.md')
 
-$windmillSkillsDirectory = Join-Path $SharedDir 'skills\windmill'
-if (-not (Test-Path -LiteralPath $windmillSkillsDirectory -PathType Container)) {
-    throw "Missing shared skills directory: $windmillSkillsDirectory"
+$skillsDirectory = Join-Path $SharedDir 'skills'
+$localSkillsDirectory = Join-Path $codexHome 'skills'
+New-Item -ItemType Directory -Path $localSkillsDirectory -Force | Out-Null
+$sharedSkillsPrefix = $skillsDirectory + [System.IO.Path]::DirectorySeparatorChar
+
+Get-ChildItem -LiteralPath $localSkillsDirectory -Force | ForEach-Object {
+    if (Test-SymbolicLink -Item $_) {
+        $targetPath = [string]$_.Target
+        if ($targetPath.StartsWith($sharedSkillsPrefix, [System.StringComparison]::OrdinalIgnoreCase) -and
+            -not (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') -PathType Leaf)) {
+            Remove-Item -LiteralPath $_.FullName -Force
+        }
+    }
 }
 
-Get-ChildItem -LiteralPath $windmillSkillsDirectory -Directory | ForEach-Object {
-    Set-SharedLink -SourcePath $_.FullName -DestinationPath (Join-Path (Join-Path $codexHome 'skills') $_.Name)
+if (Test-Path -LiteralPath $skillsDirectory -PathType Container) {
+    Get-ChildItem -LiteralPath $skillsDirectory -Directory | ForEach-Object {
+        Get-ChildItem -LiteralPath $_.FullName -Directory | ForEach-Object {
+            if (Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md') -PathType Leaf) {
+                Set-SharedLink -SourcePath $_.FullName -DestinationPath (Join-Path $localSkillsDirectory $_.Name)
+            }
+        }
+    }
 }
 
 Write-Output 'Codex shared configuration links are active.'
