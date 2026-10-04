@@ -1,44 +1,14 @@
-# Shared AI Configuration
+# Shared AI guidance
 
-This directory contains portable configuration shared across AI agents. macOS can use iCloud Drive for storage; the Windows setup has no iCloud dependency and works from any local copy of this directory.
+This repository holds personal working principles shared by Codex and Claude Code across devices. The current setup links [components/AGENTS.md](components/AGENTS.md) into each agent's global instruction location. It does not install skills or plugins.
 
-## Contents
+| Agent | Global link |
+| --- | --- |
+| Codex | `~/.codex/AGENTS.md` → this repository's `components/AGENTS.md` |
+| Claude Code | `~/.claude/CLAUDE.md` → this repository's `components/AGENTS.md` |
 
-- `AGENTS.md`: Universal working principles and capability rules.
-- `config/codex/preferences.toml`: Portable Codex preference reference.
-- `skills/`: Canonical source for custom skills you create and own.
-- `setup/MacOS/`: macOS guide plus separate Codex and Claude setup scripts.
-- `setup/Windows11/`: Windows 11 guide plus separate Codex and Claude PowerShell scripts.
+Use [setup/README.md](setup/README.md) to link either agent on macOS or Windows.
 
-## Active Links
+Keep architecture, conventions, workflows, and project skills in each project's own `AGENTS.md` and `.agents/skills/` for Codex, or `CLAUDE.md` and `.claude/skills/` for Claude Code. Personal reusable skills and plugins may belong in a future marketplace here, but that marketplace has not been built yet.
 
-- Codex: local `AGENTS.md` → shared `AGENTS.md`.
-- Claude: local `CLAUDE.md` → shared `AGENTS.md`.
-- Custom skills: linked individually into the local Codex and Claude skill directories when present.
-
-The exact local paths and commands are in the [macOS](setup/MacOS/SETUP.MD) and [Windows 11](setup/Windows11/SETUP.MD) guides.
-
-## Rules
-
-- Keep this directory portable and human-readable.
-- Do not store secrets, tokens, credentials, logs, caches, or session state.
-- Keep machine-specific settings in each agent's local configuration.
-- Install third-party and plugin-managed skills separately; do not vendor re-installable skills here.
-- Add only focused skills for recurring workflows.
-- Link shared skills individually; do not replace an agent's complete skills directory.
-
-## New Device Setup
-
-Follow the guide for the device's operating system:
-
-- [macOS](setup/MacOS/SETUP.MD)
-- [Windows 11](setup/Windows11/SETUP.MD)
-
-## Adding a Shared Skill
-
-1. Create `skills/<group>/<skill-name>/SKILL.md`, with a skill name unique across groups.
-2. Add only required scripts, references, templates, or assets.
-3. Run each installed agent's setup script to link the custom skill.
-4. Restart the agent and verify the skill is discovered.
-
-An empty custom skill collection is supported. See [skills/README.md](skills/README.md).
+Keep credentials, machine paths, caches, and session data on each device. Install third-party skills and plugins through their own managers.
