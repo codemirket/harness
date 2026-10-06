@@ -9,6 +9,13 @@ Use the sections relevant to the decision at hand. Follow the project's
 architecture, tests, and vocabulary. Scale the work to the consequences of
 being wrong; this skill adds no required approval stages or agent roles.
 
+For substantial work, use `skill-catalog`'s task routing to select the relevant
+stack or boundary specialist and read it before implementation. Reuse the
+project's selected workflow. UI composition uses `interface-design`; browser
+data flow uses `frontend-engineering`; repository/API documentation may use
+`documentation-and-adrs`. Apply only the affected workflow, not every installed
+engineering suite.
+
 ## Understand the behavior
 
 Identify the entry point, the caller's expectation, and the observable result.

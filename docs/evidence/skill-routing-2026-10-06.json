@@ -1,0 +1,57 @@
+{
+  "installed_copies": 32,
+  "doctor_exit_code": 0,
+  "doctor_actions": [
+    "unchanged"
+  ],
+  "adapted_payload_checks": [
+    {
+      "target": ".agents",
+      "name": "mobile-native",
+      "installed_sha256": "3f465b0285d73a47b0e4cfd2acb08a7d56b7aefe7c7477e4935334668ba96a28"
+    },
+    {
+      "target": ".agents",
+      "name": "break-ui",
+      "installed_sha256": "64b8a9bd5ea9afe9c06f55af44bbe8d8c8af1bcfe89d6daf28de93909586f600"
+    },
+    {
+      "target": ".agents",
+      "name": "prototype",
+      "installed_sha256": "e1e7d1048659701c9f984b1e0a94f52f69537147250f4d7fad20e7de896634e4"
+    },
+    {
+      "target": ".claude",
+      "name": "mobile-native",
+      "installed_sha256": "3f465b0285d73a47b0e4cfd2acb08a7d56b7aefe7c7477e4935334668ba96a28"
+    },
+    {
+      "target": ".claude",
+      "name": "break-ui",
+      "installed_sha256": "64b8a9bd5ea9afe9c06f55af44bbe8d8c8af1bcfe89d6daf28de93909586f600"
+    },
+    {
+      "target": ".claude",
+      "name": "prototype",
+      "installed_sha256": "e1e7d1048659701c9f984b1e0a94f52f69537147250f4d7fad20e7de896634e4"
+    }
+  ],
+  "repeat_sync_preserved_bytes_and_timestamps": true,
+  "review_date": "2026-10-06",
+  "boundary": "Isolated pinned payload installation and route inspection; no UI execution or visual-quality measurement.",
+  "baseline_trixpo_copies": {
+    "codex": 41,
+    "claude": 42
+  },
+  "trixpo_changed": false,
+  "upstream_pins_unchanged": true,
+  "new_dependencies_installed": false,
+  "automated_tests": {
+    "passed": 378,
+    "seconds": 27.192,
+    "discovery_tests": 13
+  },
+  "selection_probe_boundary": "Eight task-selection scenarios plus one fresh Trixpo exercise with two adjacent controls; no implementation, rendered UI review, repeated trials or A/B measurement.",
+  "optional_skill_validator": "Unavailable: PyYAML is absent; no dependency installed.",
+  "trixpo_project_copies_pending_sync": 8
+}

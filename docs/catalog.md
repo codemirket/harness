@@ -6,7 +6,7 @@
 
 Default globals are declared in [harness.json](../registry/harness.json). Some are also project-selectable; these counts overlap. `scope: global` identifies the original setup-only foundations, while the manifest is authoritative for the expanded global set.
 
-Use `python3 ai.py catalog show <id>` for complete coverage, dependencies, companions, adaptations and caveats. `search <query>` includes the broader inventory; indexed metadata alone is not installation approval.
+Use `python3 ai.py catalog show <id>` for complete coverage, dependencies, companions, adaptations and caveats. `search <query>` combines curated task tags and authored skills with the broader inventory; indexed metadata alone is not installation approval.
 
 ## Default globals
 
@@ -587,7 +587,7 @@ Use one authoritative process where approaches overlap and resolve declared conf
 
 | ID | Purpose | Source | Requirements / caveats |
 | --- | --- | --- | --- |
-| `emil-mobile-native` | Make a web app feel native on a phone — the small CSS and meta-tag fixes that separate "a website in a browser" from something that feels installed. Covers sticky hover states, tap highlight flashes, the 100vh bug, inputs that zoom the page, laggy taps, pull-to-refresh hijacking scroll, content under the notch, long-press selecting button text, carousels that scroll the wrong way, mismatched status bars, and the rule that you test on real hardware. Use when a web app is being built for or reviewed on mobile, when something "works in Chrome but feels wrong on my phone", when building a PWA, a bottom sheet, a carousel, a full-screen layout, or any touch interaction. For motion itself use animate; for React Native use animate-expo. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/mobile-native) | Existing browser/UI harness; Browser/platform claims need current-device verification when relevant. |
+| `emil-mobile-native` | Fix mobile web viewport, touch, scroll and safe-area behavior. Use for phone/PWA platform defects; interface animation uses motion-design, and native apps need their platform workflow. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/mobile-native) | Existing browser/UI harness; Browser/platform claims need current-device verification when relevant. |
 
 ## Motion
 
@@ -673,7 +673,7 @@ Use one authoritative process where approaches overlap and resolve declared conf
 
 | ID | Purpose | Source | Requirements / caveats |
 | --- | --- | --- | --- |
-| `emil-prototype` | Build multiple genuinely different versions of a UI piece you describe, rendered behind a visual picker so you can flip through them live and promote the one that feels right. Only runs when explicitly invoked; it does not trigger on its own. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/prototype) | Existing browser/UI harness; Prototype deliberately creates comparison harness and waits for choice; do not use for a tiny predetermined fix. |
+| `emil-prototype` | Explore materially different UI variants in a rendered picker when explicitly invoked. Preserve the project brand and let the user choose the direction. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/prototype) | Existing browser/UI harness; Prototype deliberately creates comparison harness and waits for choice; do not use for a tiny predetermined fix. |
 | `matt-prototype` | Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like. | [matt](https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d/skills/engineering/prototype) | Project tools; no executable runs during registration.; Scratch prototypes only; use fake or scratch data for mutations. Promotion needs production checks. Archiving to a branch requires commit authorization. |
 | `open-design-faq-page` | A Frequently Asked Questions (FAQ) page with collapsible accordion sections, search functionality, and category filtering. Use when the brief asks for "FAQ", "help center", "questions", or "support page". | [open-design](https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/faq-page) | File creation; modern browser for HTML artifacts; Research checklist has a brand-conflicting color blacklist; project tokens take precedence.; Design contract has three files and strict headings; use for explicit durable handoff, not every design task. |
 | `open-design-login-flow` | Mobile login and authentication flow screens | [open-design](https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/login-flow) | File creation; modern browser for HTML artifacts; Research checklist has a brand-conflicting color blacklist; project tokens take precedence.; Design contract has three files and strict headings; use for explicit durable handoff, not every design task. |
@@ -788,7 +788,7 @@ Use one authoritative process where approaches overlap and resolve declared conf
 
 | ID | Purpose | Source | Requirements / caveats |
 | --- | --- | --- | --- |
-| `emil-break-ui` | Try to break a piece of UI by feeding it worst-case data — long names, unbreakable emails, one-letter names, missing fields, huge counts, zero items, long labels, non-Latin text, emoji, extreme numbers — then render it behind a "Demo data / Worst case" toggle and report everything that broke, with the fix for each. Use when the user asks to stress-test, break, or find edge cases in a component or screen, or to "try the worst case". For visual design critique use emil-design-eng; for motion use review-animations. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/break-ui) | Existing browser/UI harness; Browser/platform claims need current-device verification when relevant. |
+| `emil-break-ui` | Stress-test UI with realistic extreme content, missing data and boundary states. Use for overflow and content regressions; visual critique uses interface-design and animation review uses motion-design. | [emil](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/break-ui) | Existing browser/UI harness; Browser/platform claims need current-device verification when relevant. |
 
 ## Writing brand
 

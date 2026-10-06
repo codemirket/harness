@@ -650,20 +650,53 @@ def install_many(data, entries, project, agent, source_trees=None):
 
 
 def matches(entry, query):
-    fields = [entry.get(key, '') for key in ('id', 'name', 'description', 'category', 'source')]
-    text = ' '.join(fields + entry.get('tags', [])).casefold()
-    return all(term in text for term in query.casefold().split())
+    fields = [entry.get(key, '') for key in ('id', 'name', 'description', 'source_description', 'category', 'source')]
+    text = re.sub(r'[-_]', ' ', ' '.join(fields + entry.get('tags', [])).casefold())
+    terms = re.sub(r'[-_]', ' ', query.casefold()).split()
+    return all(term in text for term in terms)
+
+
+def search_entries(data, indexed, query, source=None):
+    """Search reviewed catalog metadata alongside the pinned discovery inventory."""
+    by_id = {entry['id']: entry for entry in data['skills']}
+    represented = set()
+    rows = []
+    for original in indexed:
+        row = dict(original)
+        identifiers = row.get('catalog_ids', [])
+        represented.update(identifiers)
+        curated = [by_id[value] for value in identifiers if value in by_id]
+        if curated:
+            row['source_description'] = row.get('description', '')
+            row['description'] = ' '.join(dict.fromkeys(e.get('description', '') for e in curated))
+            row['tags'] = list(dict.fromkeys(row.get('tags', []) + [
+                value for entry in curated for value in
+                [entry['id'], entry['name'], entry.get('category', '')] + entry.get('tags', [])]))
+        rows.append(row)
+    for entry in data['skills']:
+        if entry['id'] in represented or entry.get('delivery') not in ('local', 'global-link'):
+            continue
+        rows.append(dict(entry, source=entry.get('source') or 'personal',
+                         catalog_ids=[entry['id']],
+                         installable_ids=[entry['id']] if entry['scope'] == 'project' else [],
+                         review_status='authored'))
+    results = [row for row in rows if matches(row, query)
+               and (not source or row['source'] == source)]
+    return sorted(results, key=lambda row: search_rank(row, query))
 
 
 def search_rank(entry, query):
-    """Prefer the named capability, then reviewed choices over discovery-only leads."""
-    normalized = query.casefold().replace('-', ' ').strip()
-    name = entry.get('name', '').casefold().replace('-', ' ')
+    """Prefer exact capability names/tags and reviewed choices over unreviewed leads."""
+    normalized = ' '.join(re.sub(r'[-_]', ' ', query.casefold()).split())
+    name = re.sub(r'[-_]', ' ', entry.get('name', '').casefold())
     named_match = all(term in name for term in normalized.split())
-    status = {'installable-static-review': 0, 'manual-integration': 1,
+    tagged_match = any(normalized == re.sub(r'[-_]', ' ', tag.casefold())
+                       for tag in entry.get('tags', []))
+    status = {'authored': 0, 'installable-static-review': 0, 'manual': 1, 'manual-integration': 1,
               'indexed-only': 2, 'advertisement-only': 3}
-    return (name != normalized, not named_match,
-            status.get(entry.get('review_status'), 2), name, entry.get('source', ''))
+    return (not (name == normalized or tagged_match),
+            status.get(entry.get('review_status'), 2), name != normalized,
+            not named_match, name, entry.get('source', ''))
 
 
 def main():
@@ -708,9 +741,7 @@ def main():
         return
     if args.command == 'search':
         indexed = json.loads(INDEX.read_text(encoding='utf-8'))['skills']
-        results = [entry for entry in indexed if matches(entry, args.query)
-                   and (not args.source or entry['source'] == args.source)]
-        results.sort(key=lambda entry: search_rank(entry, args.query))
+        results = search_entries(data, indexed, args.query, args.source)
         if args.limit < 1:
             raise ValueError('Search limit must be positive')
         results = results[:args.limit]

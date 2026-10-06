@@ -10,6 +10,12 @@ Use the installed format-specific skill or native application for the actual edi
 A file operation and a change to a live shared document need different tooling;
 choose from capabilities actually available in this session.
 
+For repository documentation, API guides or ADRs, use `skill-catalog`'s task
+routing to find the technical documentation workflow and preserve the project's
+owning documents. For DOCX, PDF, spreadsheet and slide artifacts, select the
+available format-specific skill; portable office guidance is a fallback when
+native capabilities are absent. These routes serve different deliverables.
+
 ## Preserve meaning while editing
 
 - Separate author-supplied facts from proposed language. Keep names, dates, units,

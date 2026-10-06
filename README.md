@@ -36,6 +36,8 @@ Changed preferences wait while Codex is open; global guidance can still refresh.
 
 The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup and evidence-based work while remaining under 100 lines. [CLAUDE.md](instructions/CLAUDE.md) defines the supporting Claude Code role. Global availability does not load every skill into every task.
 
+[Task routing](skills/skill-catalog/references/task-routing.md) maps UI design, engineering, technical documentation, artifacts, motion and search outcomes to reviewed capabilities and their actual invocation names. [Routing audit](docs/reviews/skill-routing.md) records the Trixpo reference check and the limits of installation and selection evidence. UI refinement requires inspected, comparable renders and iteration against the requested visual goal.
+
 ## Share app preferences
 
 [registry/codex-settings.json](registry/codex-settings.json) contains reviewed portable values captured from this Mac: model/reasoning/response preferences, desktop themes and interaction preferences, and public plugin enablement flags. It excludes credentials, permission policies, project paths, remote devices, history, private plugins and account connections.

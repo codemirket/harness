@@ -24,6 +24,85 @@ class DiscoveryTests(unittest.TestCase):
         self.assertTrue(catalog.matches(row, 'postgresql migration'))
         self.assertFalse(catalog.matches(row, 'postgresql animation'))
 
+    def test_capability_separators_are_interchangeable(self):
+        row = dict(name='review', description='Existing interfaces', tags=['ui-design'])
+        for query in ('ui-design', 'UI design', 'ui_design'):
+            with self.subTest(query=query):
+                self.assertTrue(catalog.matches(row, query))
+        self.assertFalse(catalog.matches(row, 'ui animation'))
+
+
+class ShippedTaskDiscoveryTests(unittest.TestCase):
+    def matches(self, query):
+        return {row['id'] for row in catalog.load_catalog()['skills']
+                if row['scope'] == 'project' and catalog.matches(row, query)}
+
+    def test_ui_design_discovers_existing_redesign_and_reference_workflows(self):
+        for query in ('ui-design', 'UI design', 'ui_design'):
+            with self.subTest(query=query):
+                self.assertTrue({'taste-redesign-skill',
+                                 'open-design-reference-design-contract'} <= self.matches(query))
+
+    def test_animation_discovers_the_portable_motion_workflow(self):
+        self.assertIn('motion-design', self.matches('animation'))
+
+    def test_docx_discovers_portable_authoring_when_native_tools_are_absent(self):
+        self.assertIn('office-authoring', self.matches('docx'))
+
+
+class CombinedSearchTests(unittest.TestCase):
+    def setUp(self):
+        self.curated = dict(id='reviewed-redesign', name='redesign', source='vendor',
+                            scope='project', delivery='upstream', category='design',
+                            description='Improve an existing interface.', tags=['ui-design'])
+        self.local = dict(id='office', name='office', scope='project', delivery='local',
+                          description='Editable document authoring.', tags=['docx'])
+        self.indexed = dict(name='redesign', source='vendor', path='skills/redesign',
+                            description='Original upstream description.',
+                            catalog_ids=['reviewed-redesign'], installable_ids=['reviewed-redesign'],
+                            review_status='installable-static-review')
+        self.data = dict(skills=[self.curated, self.local])
+
+    def test_broad_search_uses_reviewed_task_tags_without_mutating_source_inventory(self):
+        rows = catalog.search_entries(self.data, [self.indexed], 'UI-design')
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['catalog_ids'], ['reviewed-redesign'])
+        self.assertEqual(rows[0]['description'], 'Improve an existing interface.')
+        self.assertEqual(rows[0]['source_description'], 'Original upstream description.')
+        self.assertNotIn('tags', self.indexed)
+        self.assertEqual(self.indexed['description'], 'Original upstream description.')
+
+    def test_authored_skills_are_discoverable_and_source_filter_still_applies(self):
+        rows = catalog.search_entries(self.data, [self.indexed], 'docx')
+        self.assertEqual([(r['source'], r['catalog_ids']) for r in rows],
+                         [('personal', ['office'])])
+        self.assertEqual(catalog.search_entries(self.data, [self.indexed], 'docx', 'vendor'), [])
+
+    def test_global_authored_result_does_not_claim_project_installability(self):
+        self.local['scope'] = 'global'
+        rows = catalog.search_entries(self.data, [self.indexed], 'docx')
+        self.assertEqual(rows[0]['installable_ids'], [])
+
+    def test_unreviewed_inventory_remains_a_discovery_candidate(self):
+        row = dict(name='new-tool', source='vendor', description='Unreviewed document tool',
+                   catalog_ids=[], review_status='indexed-only')
+        rows = catalog.search_entries(self.data, [row], 'document')
+        candidate = next(r for r in rows if r['name'] == 'new-tool')
+        self.assertEqual(candidate['review_status'], 'indexed-only')
+        self.assertEqual(candidate['catalog_ids'], [])
+
+    def test_reviewed_exact_capability_tag_precedes_unreviewed_exact_name(self):
+        row = dict(name='docx', source='unknown', description='Document workflow',
+                   catalog_ids=[], review_status='indexed-only')
+        rows = catalog.search_entries(self.data, [row], 'docx')
+        self.assertEqual([r['name'] for r in rows], ['office', 'docx'])
+
+    def test_reviewed_ui_tag_precedes_description_and_name_substring_matches(self):
+        row = dict(name='other-ui-design-tool', source='unknown', description='Design tool',
+                   catalog_ids=[], review_status='indexed-only')
+        rows = catalog.search_entries(self.data, [self.indexed, row], 'UI_design')
+        self.assertEqual([r['name'] for r in rows], ['redesign', 'other-ui-design-tool'])
+
 
 if __name__ == '__main__':
     unittest.main()

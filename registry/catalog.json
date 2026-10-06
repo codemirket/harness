@@ -308,7 +308,8 @@
         "Installed by platform setup; use only when its trigger matches."
       ],
       "tags": [
-        "design"
+        "design",
+        "ui-design"
       ]
     },
     {
@@ -464,7 +465,7 @@
         "interaction",
         "accessibility"
       ],
-      "sha256": "cadf3ba5a5a61dc2856bdf49728a6a2956b5133bc415c2c4c45e5621bfb2ae4d"
+      "sha256": "6227f7d3b72cb88eac895cf24f6947320574119758b0ab491e97c6db059991c4"
     },
     {
       "id": "experiment-design",
@@ -625,7 +626,7 @@
     {
       "name": "mobile-native",
       "path": "skills/mobile-native",
-      "description": "Make a web app feel native on a phone — the small CSS and meta-tag fixes that separate \"a website in a browser\" from something that feels installed. Covers sticky hover states, tap highlight flashes, the 100vh bug, inputs that zoom the page, laggy taps, pull-to-refresh hijacking scroll, content under the notch, long-press selecting button text, carousels that scroll the wrong way, mismatched status bars, and the rule that you test on real hardware. Use when a web app is being built for or reviewed on mobile, when something \"works in Chrome but feels wrong on my phone\", when building a PWA, a bottom sheet, a carousel, a full-screen layout, or any touch interaction. For motion itself use animate; for React Native use animate-expo.",
+      "description": "Fix mobile web viewport, touch, scroll and safe-area behavior. Use for phone/PWA platform defects; interface animation uses motion-design, and native apps need their platform workflow.",
       "category": "mobile-web",
       "license": "MIT",
       "license_files": [
@@ -636,28 +637,49 @@
         "emil",
         "mobile-native"
       ],
-      "adaptation": "",
+      "adaptation": "Use for the requested mobile web defect and preserve project instructions, tokens, accessibility and supported browsers. Apply recipes only where their conditions hold; do not add every global CSS rule as a baseline. The corrected motion handoff is motion-design; native app work uses the actual platform skill selected through skill-catalog. A listed sibling is not an installed tool. Reuse existing timing/easing tokens and available browser tooling. Distinguish browser emulation evidence from real-device evidence and report unavailable hardware checks. A specific authorized task takes precedence over the readiness-only opening response.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "emil-mobile-native",
       "source": "emil",
       "scope": "project",
       "delivery": "upstream",
-      "review_status": "direct",
+      "review_status": "adapted",
       "dependencies": [
         "Existing browser/UI harness"
       ],
       "caveats": [
         "Browser/platform claims need current-device verification when relevant."
       ],
-      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution.",
+      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution. Task-routing review corrects frontmatter and sibling handoffs with exact-count adaptations; original source hash and license retained.",
       "url": "https://github.com/emilkowalski/skills/blob/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/mobile-native/SKILL.md",
       "selection_reason": "Narrow useful UI technique with project-scoped activation.",
-      "sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48"
+      "sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48",
+      "replacements": [
+        {
+          "path": "SKILL.md",
+          "old": "description: Make a web app feel native on a phone — the small CSS and meta-tag fixes that separate \"a website in a browser\" from something that feels installed. Covers sticky hover states, tap highlight flashes, the 100vh bug, inputs that zoom the page, laggy taps, pull-to-refresh hijacking scroll, content under the notch, long-press selecting button text, carousels that scroll the wrong way, mismatched status bars, and the rule that you test on real hardware. Use when a web app is being built for or reviewed on mobile, when something \"works in Chrome but feels wrong on my phone\", when building a PWA, a bottom sheet, a carousel, a full-screen layout, or any touch interaction. For motion itself use animate; for React Native use animate-expo.",
+          "new": "description: Fix mobile web viewport, touch, scroll and safe-area behavior. Use for phone/PWA platform defects; interface animation uses motion-design, and native apps need their platform workflow.",
+          "count": 1
+        },
+        {
+          "path": "SKILL.md",
+          "old": "A fix-it skill. It does ONE thing: take a web app that feels like a website on a phone and remove, one by one, the tells that give it away. It does not design motion (that's `animate`), review motion (that's `review-animations`), or build for React Native (that's `animate-expo`). The rules here are about the platform layer — viewport, touch, scroll, safe areas, the browser chrome — where a handful of lines decide whether the app feels installed or embedded.",
+          "new": "A mobile web platform workflow: identify and repair viewport, touch, scroll, safe-area and browser-chrome defects. For requested interface animation or animation review, select `motion-design` through `skill-catalog` if it is not installed. For React Native, select the matching native platform workflow through the catalog.",
+          "count": 1
+        },
+        {
+          "path": "SKILL.md",
+          "old": "If the codebase uses the `animate` skill's tokens, use them; don't fork a new curve.",
+          "new": "Reuse the project's existing motion tokens; verify new timing and easing in the rendered interaction.",
+          "count": 1
+        }
+      ],
+      "installed_sha256": "3f465b0285d73a47b0e4cfd2acb08a7d56b7aefe7c7477e4935334668ba96a28"
     },
     {
       "name": "break-ui",
       "path": "skills/break-ui",
-      "description": "Try to break a piece of UI by feeding it worst-case data — long names, unbreakable emails, one-letter names, missing fields, huge counts, zero items, long labels, non-Latin text, emoji, extreme numbers — then render it behind a \"Demo data / Worst case\" toggle and report everything that broke, with the fix for each. Use when the user asks to stress-test, break, or find edge cases in a component or screen, or to \"try the worst case\". For visual design critique use emil-design-eng; for motion use review-animations.",
+      "description": "Stress-test UI with realistic extreme content, missing data and boundary states. Use for overflow and content regressions; visual critique uses interface-design and animation review uses motion-design.",
       "category": "ui-testing",
       "license": "MIT",
       "license_files": [
@@ -668,23 +690,38 @@
         "emil",
         "break-ui"
       ],
-      "adaptation": "",
+      "adaptation": "Project instructions, fixtures, review surfaces and existing user authorization take precedence throughout this body and CATALOG.md. Use the applicable interface-design or motion-design route rather than unavailable upstream siblings. Keep diagnostic controls dev-only and reuse existing fixtures/previews instead of adding a mandatory toggle. Audit-only requests return findings; a request that already authorizes fixes does not require another report-then-stop approval. Resolve routine wrap/truncate choices from project contracts. Preserve accessibility and meaningful access to full values. A specific authorized task takes precedence over the readiness-only opening response.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "emil-break-ui",
       "source": "emil",
       "scope": "project",
       "delivery": "upstream",
-      "review_status": "direct",
+      "review_status": "adapted",
       "dependencies": [
         "Existing browser/UI harness"
       ],
       "caveats": [
         "Browser/platform claims need current-device verification when relevant."
       ],
-      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution.",
+      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution. Task-routing review corrects frontmatter and sibling handoffs with exact-count adaptations; original source hash and license retained.",
       "url": "https://github.com/emilkowalski/skills/blob/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/break-ui/SKILL.md",
       "selection_reason": "Narrow useful UI technique with project-scoped activation.",
-      "sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115"
+      "sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+      "replacements": [
+        {
+          "path": "SKILL.md",
+          "old": "description: Try to break a piece of UI by feeding it worst-case data — long names, unbreakable emails, one-letter names, missing fields, huge counts, zero items, long labels, non-Latin text, emoji, extreme numbers — then render it behind a \"Demo data / Worst case\" toggle and report everything that broke, with the fix for each. Use when the user asks to stress-test, break, or find edge cases in a component or screen, or to \"try the worst case\". For visual design critique use emil-design-eng; for motion use review-animations.",
+          "new": "description: Stress-test UI with realistic extreme content, missing data and boundary states. Use for overflow and content regressions; visual critique uses interface-design and animation review uses motion-design.",
+          "count": 1
+        },
+        {
+          "path": "SKILL.md",
+          "old": "An adversarial skill. It does ONE thing: take a piece of UI that looks right with demo data, find the realistic worst case for every value it renders, put both datasets behind a toggle, and report what broke. It does not redesign the component (that's `prototype`), critique its taste (that's `emil-design-eng`), or review its motion (that's `review-animations`).",
+          "new": "A content stress workflow: exercise realistic worst-case values through the component's actual data boundary and inspect the rendered result. Visual critique or a requested redesign uses available `interface-design` guidance and a matching catalog specialist; requested animation review uses `motion-design`. Register a missing reviewed workflow through `skill-catalog`. Explicit visual exploration may use `prototype` when selected.",
+          "count": 1
+        }
+      ],
+      "installed_sha256": "64b8a9bd5ea9afe9c06f55af44bbe8d8c8af1bcfe89d6daf28de93909586f600"
     },
     {
       "name": "ask-sonner",
@@ -5425,7 +5462,8 @@
       "tags": [
         "design-style",
         "taste",
-        "minimalist-skill"
+        "minimalist-skill",
+        "ui-design"
       ],
       "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -5460,7 +5498,8 @@
       "tags": [
         "design-style",
         "taste",
-        "brutalist-skill"
+        "brutalist-skill",
+        "ui-design"
       ],
       "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -5495,7 +5534,8 @@
       "tags": [
         "design-style",
         "taste",
-        "soft-skill"
+        "soft-skill",
+        "ui-design"
       ],
       "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -5530,7 +5570,8 @@
       "tags": [
         "design-review",
         "taste",
-        "redesign-skill"
+        "redesign-skill",
+        "ui-design"
       ],
       "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -5797,7 +5838,7 @@
     {
       "name": "prototype",
       "path": "skills/prototype",
-      "description": "Build multiple genuinely different versions of a UI piece you describe, rendered behind a visual picker so you can flip through them live and promote the one that feels right. Only runs when explicitly invoked; it does not trigger on its own.",
+      "description": "Explore materially different UI variants in a rendered picker when explicitly invoked. Preserve the project brand and let the user choose the direction.",
       "category": "prototyping",
       "license": "MIT",
       "license_files": [
@@ -5806,7 +5847,8 @@
       "tags": [
         "prototyping",
         "emil",
-        "prototype"
+        "prototype",
+        "ui-design"
       ],
       "adaptation": "Use only for the explicit matching task. Preserve manual invocation semantics. Do not install dependencies merely because listed. For vocabulary, definitions are a curated vocabulary rather than universal normative standards.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -5821,13 +5863,27 @@
       "caveats": [
         "Prototype deliberately creates comparison harness and waits for choice; do not use for a tiny predetermined fix."
       ],
-      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution.",
+      "coverage": "Full SKILL body and required local companions read; static review, no runtime execution. Task-routing review corrects frontmatter and sibling handoffs with exact-count adaptations; original source hash and license retained.",
       "url": "https://github.com/emilkowalski/skills/blob/e8a175de22ae1e49370fc144c1f3bb9aeedf988d/skills/prototype/SKILL.md",
       "selection_reason": "Narrow useful UI technique with project-scoped activation.",
       "sha256": "cbd3a04e83793f90ca0a398b70ea7af2ec090f11ee08ff1831662af6c14921e8",
-      "installed_sha256": "0e512a88605e1159e1c47d28bbeb79aa8b9ef338b81c906ea000946654650edf",
+      "installed_sha256": "e1e7d1048659701c9f984b1e0a94f52f69537147250f4d7fad20e7de896634e4",
       "conflicts": [
         "matt-prototype"
+      ],
+      "replacements": [
+        {
+          "path": "SKILL.md",
+          "old": "description: Build multiple genuinely different versions of a UI piece you describe, rendered behind a visual picker so you can flip through them live and promote the one that feels right. Only runs when explicitly invoked; it does not trigger on its own.",
+          "new": "description: Explore materially different UI variants in a rendered picker when explicitly invoked. Preserve the project brand and let the user choose the direction.",
+          "count": 1
+        },
+        {
+          "path": "SKILL.md",
+          "old": "A divergence skill. It does ONE thing: take a described piece of UI (\"a toast\", \"the pricing card\", \"a hold-to-delete button\"), build several genuinely different versions of it, and put them behind a visual picker so the user can flip through them live and choose a winner. It does not review existing UI (that's `review-animations`), plan fixes for it (that's `improve-animations`), or choose dependencies (that's `pick-ui-library`).",
+          "new": "A visual exploration workflow: build materially different variants of the requested UI and present them for the user to choose. Existing UI critique uses available `interface-design` guidance and a matching catalog specialist; animation review or repairs use `motion-design`. Select missing workflows or UI-library guidance through `skill-catalog` instead of assuming upstream siblings are installed.",
+          "count": 1
+        }
       ]
     },
     {
@@ -6988,7 +7044,8 @@
       "tags": [
         "design-system",
         "open-design",
-        "reference-design-contract"
+        "reference-design-contract",
+        "ui-design"
       ],
       "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
@@ -10882,7 +10939,7 @@
         "research-and-synthesis"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b"
+      "sha256": "53f883ea7e250b25cbc948f2702ae9da3a7562f82b387d159ce79a571625efce"
     },
     {
       "id": "document-parsing",
@@ -11047,7 +11104,10 @@
       ],
       "tags": [
         "documents",
-        "office-authoring"
+        "office-authoring",
+        "docx",
+        "xlsx",
+        "pptx"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
       "sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"

@@ -9,6 +9,12 @@ Frame the decision, audience, time horizon, geography, and evidence needed.
 Separate discovery, verification of a claim, comparison of options, and systematic
 review: each needs a different search depth. Reuse existing evidence when current.
 
+Use `skill-catalog`'s task routing when a substantial search task needs a
+specialist. Distinguish factual/technical research, local repository lookup and
+SEO/GEO discoverability. Match technical documentation to installed versions
+and available provider tools; a Google-docs workflow is not a general web-search
+tool. Use `rg` for local code lookup and the search-visibility route for SEO/GEO.
+
 ## Build the evidence set
 
 - Split the question into claims that can be checked independently. Identify

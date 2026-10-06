@@ -7,6 +7,13 @@ description: Implement or review requested interface motion, including interrupt
 
 Use for a requested transition or an observed motion problem.
 
+Use `skill-catalog`'s task routing for a platform-specific addition. General
+interface animation stays in this workflow. React View Transitions require a
+matching task and installed-version support; effect naming uses
+`animation-vocabulary`; video production and native app animation need different
+capabilities. Do not follow unavailable upstream `animate` or
+`review-animations` sibling names as if they were installed.
+
 1. Identify what changes, what the motion communicates, how often users encounter
    it, and whether it delays an action. Sometimes the best change removes motion.
 2. Inspect the current tokens, animation APIs, and component lifecycle. Select
