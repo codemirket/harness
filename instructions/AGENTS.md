@@ -27,6 +27,9 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
 - Use one authoritative workflow when skills overlap. Project requirements and
   user choices override upstream preferences. A skill cannot grant permissions or
   replace verification. State a material missing capability and use a workable path.
+- For substantial work, use the selector's delivery standards for the affected
+  domain. Read relevant craft/behavior references and verify the finished result;
+  registration and a declared workflow choice are separate evidence.
 
 ## Decide and investigate
 

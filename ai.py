@@ -16,6 +16,7 @@ def main():
   runtime doctor       Discover Codex desktop, Codex CLI and Claude Code CLI
   settings <command>   Capture, plan, apply or diagnose portable Codex preferences
   delegate claude      Run a bounded, read-only Claude Code second opinion
+  eval <command>       Prepare development tasks, check outputs and record reviews
   plan | sync | doctor Reconcile global guidance and skills (default: Codex)
   project <command>    Initialize, add, plan, sync or diagnose selected project skills
   catalog <command>    Browse and register reviewed skills
@@ -38,6 +39,9 @@ Use COMMAND --help for its arguments. Claude desktop is not supported.''')
     if sys.argv[1] == 'settings':
         from lib import settings
         return settings.main(sys.argv[2:])
+    if sys.argv[1] == 'eval':
+        from lib import evaluation
+        return evaluation.main(sys.argv[2:])
     if sys.argv[1] == 'delegate':
         if len(sys.argv) < 3 or sys.argv[2] != 'claude':
             raise ValueError('Use: ai.py delegate claude --help')

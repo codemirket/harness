@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "frontend-property-editor-hierarchy",
+      "domain": "frontend",
+      "title": "Improve a property editor's visual hierarchy",
+      "prompt": "cases/frontend-property-editor-hierarchy/task.md",
+      "required_evidence": [
+        "Working static interface in the scratch workspace",
+        "Light and dark browser screenshots at desktop and narrow widths",
+        "Brief note on what the rendered comparison revealed and what was refined"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [],
+      "review_artifacts": [
+        "evidence/light-desktop.png",
+        "evidence/dark-desktop.png",
+        "evidence/light-narrow.png",
+        "evidence/dark-narrow.png"
+      ]
+    },
+    {
+      "id": "engineering-ledger-total",
+      "domain": "engineering",
+      "title": "Correct refund totals without changing unrelated ledger behavior",
+      "prompt": "cases/engineering-ledger-total/task.md",
+      "required_evidence": [
+        "Correct observable totals for charges, refunds, and mixed entries",
+        "Focused local verification of the repaired behavior"
+      ],
+      "review_required": false,
+      "split": "development",
+      "immutable_inputs": [],
+      "review_artifacts": []
+    },
+    {
+      "id": "documentation-filter-cli",
+      "domain": "documentation",
+      "title": "Document a small filtering CLI with runnable examples",
+      "prompt": "cases/documentation-filter-cli/task.md",
+      "required_evidence": [
+        "README with source-linked behavior description and runnable commands",
+        "Executed examples against the supplied CSV"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "records.csv"
+      ],
+      "review_artifacts": [
+        "README.md"
+      ]
+    },
+    {
+      "id": "integration-paginated-client",
+      "domain": "integration",
+      "title": "Implement a local paginated HTTP client with safe mutation handling",
+      "prompt": "cases/integration-paginated-client/task.md",
+      "required_evidence": [
+        "Paginated read through the loopback fixture protocol",
+        "Authorization header on every request",
+        "No automatic replay after an uncertain mutation response"
+      ],
+      "review_required": false,
+      "split": "development",
+      "immutable_inputs": [
+        "protocol.md"
+      ],
+      "review_artifacts": []
+    },
+    {
+      "id": "research-cache-decision",
+      "domain": "research",
+      "title": "Synthesize conflicting supplied cache notes for a pinned version",
+      "prompt": "cases/research-cache-decision/task.md",
+      "required_evidence": [
+        "Brief grounded in dated, versioned fixture sources",
+        "Explicit treatment of conflicting source claims and residual uncertainty"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "sources/deployment.json",
+        "sources/field-note.md",
+        "sources/legacy-3.9.md",
+        "sources/release-4.2.md"
+      ],
+      "review_artifacts": [
+        "research.md"
+      ]
+    }
+  ]
+}

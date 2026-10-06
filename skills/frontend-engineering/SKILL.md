@@ -57,6 +57,11 @@ undo a newer successful edit. Invalidate affected caches after confirmed changes
 clear user-scoped client state when identity changes. Choose retry/idempotency rules
 with the API instead of blindly retrying writes.
 
+For out-of-order searches, duplicate submissions, or optimistic-update races,
+read [async state ownership](references/async-state.md). Apply its examples through
+the existing loader/query/form API and actual framework lifecycle, rather than
+installing a parallel state mechanism.
+
 ## Forms, sessions, and browser security
 
 Use semantic forms, labels, appropriate input types/autocomplete, and native controls
@@ -86,3 +91,9 @@ navigation/history, focus, layout, and browser APIs. Include slow/out-of-order r
 session changes, and repeat submission when affected. Mocks cannot prove server-side
 authorization or cache isolation. Check keyboard access and responsive behavior for
 changed interactions; report browser/platform gaps and actual performance evidence.
+
+Verify the changed flow through its real entry point and consumer-visible states.
+A passing component test does not establish server authorization, mutation
+deduplication, or a deployed cache policy. Complete applicable integration and
+project gates before claiming the requested behavior is fixed; state material
+runtime gaps when access prevents the needed check.

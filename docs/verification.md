@@ -1,5 +1,19 @@
 # Verification evidence
 
+The 2026-10-07 [delivery quality update](quality-harness.md) passes **395 tests in
+30.058 seconds**, including 17 evaluation regressions and portable foundation
+evaluation after removal of its original fixture checkout. Five development
+cases cover frontend, engineering, documentation, integration and research.
+Nine completed outputs passed checks after replay against final case definitions;
+three candidate artifacts received independent agent review. Both nonvisual
+conditions passed, so this is not evidence of a quality gain. Visual review caught
+format and clipping defects missed by structural checks. A fresh both-target
+scratch project installed 32 copies, passed doctor and preserved bytes, modes and
+timestamps on repeat sync. Ten changed reference copies match their source.
+Nine changed skill entrypoints parse with Ruby YAML; generic quick_validate.py
+remains unavailable without PyYAML. [Evidence and limitations](evidence/quality-harness-2026-10-07.json).
+The historical host/runtime observations below were not repeated for this update.
+
 Verified on macOS, 2026-10-06, for the version 2 Codex desktop harness. Python 3.9.6 is the system interpreter used for the suite. These checks establish file behavior, runtime accessibility and bounded CLI operation; they do not certify every upstream workflow or target device.
 
 The latest [task-routing audit](reviews/skill-routing.md) passes **378 tests in 27.192 seconds**, generated-table checks, local links, shell syntax and Git whitespace checks. Ten new discovery regressions cover task aliases, authored skills, reviewed metadata, ranking and source/installability boundaries. A fresh both-target scratch project installed 32 copies, passed doctor, retained all adapted licenses/hashes, and preserved bytes/timestamps on repeat sync. A fresh Trixpo task-pickup exercise followed the new route guide and project owners; this establishes selection for the tested prompts, not improved rendered UI quality. Trixpo remains unchanged with eight existing skill copies awaiting deliberate sync. The optional generic skill validator still cannot start without PyYAML. [Isolated evidence](evidence/skill-routing-2026-10-06.json).

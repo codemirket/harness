@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "baseline_commit": "604c54e21a6054484e84305ff69244a288ca7ae9",
+  "scope": "Harness repository only; no product, production, account or dependency changes.",
+  "evaluation": {
+    "runs": [
+      {
+        "case": "documentation-filter-cli",
+        "domain": "documentation",
+        "condition": "baseline-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "75fab3dea9c32cf969891df31d8da1089a794bc8b9c8a913f1fc282fac090d28",
+        "harness_sha256": "5adc8f0fdd47f3b303cdb65416352b3b32abb75ae329ebecaa37a20b1bff92b6",
+        "automated": "passed",
+        "review": "pending",
+        "accepted": false,
+        "workspace_sha256": "247fdcfcc8574d23c300afda195e3db7b959588ac5c1e16656ed9bba268bf375",
+        "checks": [
+          {
+            "id": "fixture-citations",
+            "status": "passed",
+            "detail": "README links the supplied implementation and data"
+          },
+          {
+            "id": "example-count",
+            "status": "passed",
+            "detail": "At least two safe local Python commands appear in bash fences"
+          },
+          {
+            "id": "runnable-examples",
+            "status": "passed",
+            "detail": "At least two examples execute successfully; at least one returns fixture records"
+          },
+          {
+            "id": "guide-present",
+            "status": "passed",
+            "detail": "README exists; prose accuracy requires review"
+          }
+        ]
+      },
+      {
+        "case": "engineering-ledger-total",
+        "domain": "engineering",
+        "condition": "baseline-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "d8ff0a1b2c1821b1d912f20bf6687d0fac136bdfb37ef0bbdaecb6e9c718df59",
+        "harness_sha256": "5adc8f0fdd47f3b303cdb65416352b3b32abb75ae329ebecaa37a20b1bff92b6",
+        "automated": "passed",
+        "review": "not_required",
+        "accepted": true,
+        "workspace_sha256": "77cd217d4119d331590f61a48724a6abcc49b8f44d6c26b01b0ec993f57a8e4e",
+        "checks": [
+          {
+            "id": "totals-0",
+            "status": "passed",
+            "detail": "Case 0: observed {'charged_cents': 0, 'refunded_cents': 0, 'net_cents': 0}"
+          },
+          {
+            "id": "totals-1",
+            "status": "passed",
+            "detail": "Case 1: observed {'charged_cents': 149, 'refunded_cents': 0, 'net_cents': 149}"
+          },
+          {
+            "id": "totals-2",
+            "status": "passed",
+            "detail": "Case 2: observed {'charged_cents': 0, 'refunded_cents': 65, 'net_cents': -65}"
+          },
+          {
+            "id": "totals-3",
+            "status": "passed",
+            "detail": "Case 3: observed {'charged_cents': 1003, 'refunded_cents': 217, 'net_cents': 786}"
+          },
+          {
+            "id": "invalid-input",
+            "status": "passed",
+            "detail": "Invalid kind, negative, fractional, and boolean cents raise ValueError"
+          }
+        ]
+      },
+      {
+        "case": "integration-paginated-client",
+        "domain": "integration",
+        "condition": "baseline-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "0531171d32ac6b2dcc098280455593dd8b415c781716e37fd5d146a271260fdd",
+        "harness_sha256": "5adc8f0fdd47f3b303cdb65416352b3b32abb75ae329ebecaa37a20b1bff92b6",
+        "automated": "passed",
+        "review": "not_required",
+        "accepted": true,
+        "workspace_sha256": "9f10551f73449d5e1aa207cded7cfe2204d6a9cb091e254d03b43a125f148f15",
+        "checks": [
+          {
+            "id": "pagination",
+            "status": "passed",
+            "detail": "Read all pages in order with encoded cursor"
+          },
+          {
+            "id": "confirmed-write",
+            "status": "passed",
+            "detail": "Confirmed write returns server record once"
+          },
+          {
+            "id": "uncertain-write",
+            "status": "passed",
+            "detail": "Uncertain response raises MutationUncertain with exactly one POST"
+          },
+          {
+            "id": "refused-write",
+            "status": "passed",
+            "detail": "Explicit HTTP refusal raises a different exception without replay"
+          },
+          {
+            "id": "failed-later-page",
+            "status": "passed",
+            "detail": "A later-page refusal raises rather than returning partial retrieval"
+          },
+          {
+            "id": "authorization",
+            "status": "passed",
+            "detail": "Every observed request carried the required bearer token"
+          }
+        ]
+      },
+      {
+        "case": "research-cache-decision",
+        "domain": "research",
+        "condition": "baseline-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "e468fdd365336d47887a10face532c4d51e6f0413eb68049a2b6bdff16f0d61f",
+        "harness_sha256": "5adc8f0fdd47f3b303cdb65416352b3b32abb75ae329ebecaa37a20b1bff92b6",
+        "automated": "passed",
+        "review": "pending",
+        "accepted": false,
+        "workspace_sha256": "880289360b365c1c330698ec71a9e028513ee3db9677e3113e7c819333c11652",
+        "checks": [
+          {
+            "id": "source-citations",
+            "status": "passed",
+            "detail": "Linked fixture sources: deployment.json, release-4.2.md, legacy-3.9.md, field-note.md"
+          },
+          {
+            "id": "version-and-dates",
+            "status": "passed",
+            "detail": "Brief states pinned version and at least two source dates"
+          },
+          {
+            "id": "brief-present",
+            "status": "passed",
+            "detail": "Brief exists; interpretation and grounding require qualitative review"
+          }
+        ]
+      },
+      {
+        "case": "documentation-filter-cli",
+        "domain": "documentation",
+        "condition": "candidate-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "75fab3dea9c32cf969891df31d8da1089a794bc8b9c8a913f1fc282fac090d28",
+        "harness_sha256": "eaad98f073916468bb787ccaba758df06681e88483f7147cb4b0ca2df337f087",
+        "automated": "passed",
+        "review": "accepted",
+        "accepted": true,
+        "workspace_sha256": "12ae03e3402936c925f9848cd36cedc43448f79f2b3df0708809afee959c4bae",
+        "checks": [
+          {
+            "id": "fixture-citations",
+            "status": "passed",
+            "detail": "README links the supplied implementation and data"
+          },
+          {
+            "id": "example-count",
+            "status": "passed",
+            "detail": "At least two safe local Python commands appear in bash fences"
+          },
+          {
+            "id": "runnable-examples",
+            "status": "passed",
+            "detail": "At least two examples execute successfully; at least one returns fixture records"
+          },
+          {
+            "id": "guide-present",
+            "status": "passed",
+            "detail": "README exists; prose accuracy requires review"
+          }
+        ],
+        "review_details": {
+          "reviewer": "independent native agent trixpo_forward_probe",
+          "kind": "agent",
+          "decision": "accepted",
+          "evidence": {
+            "README.md": "e4ec71c0d1feee08772f628773ce91bb0471e199cb3afeb1a095a08ea34a36f6"
+          },
+          "rationale": "Independent agent compared source and CSV, executed both documented examples, no-match and invalid limit; output and exit status matched. Accepted against case rubric."
+        }
+      },
+      {
+        "case": "engineering-ledger-total",
+        "domain": "engineering",
+        "condition": "candidate-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "d8ff0a1b2c1821b1d912f20bf6687d0fac136bdfb37ef0bbdaecb6e9c718df59",
+        "harness_sha256": "eaad98f073916468bb787ccaba758df06681e88483f7147cb4b0ca2df337f087",
+        "automated": "passed",
+        "review": "not_required",
+        "accepted": true,
+        "workspace_sha256": "b8975f81c14f4e07f2686bca032b69dbe902453a87a029da2d8ce6bf18725d7a",
+        "checks": [
+          {
+            "id": "totals-0",
+            "status": "passed",
+            "detail": "Case 0: observed {'charged_cents': 0, 'refunded_cents': 0, 'net_cents': 0}"
+          },
+          {
+            "id": "totals-1",
+            "status": "passed",
+            "detail": "Case 1: observed {'charged_cents': 149, 'refunded_cents': 0, 'net_cents': 149}"
+          },
+          {
+            "id": "totals-2",
+            "status": "passed",
+            "detail": "Case 2: observed {'charged_cents': 0, 'refunded_cents': 65, 'net_cents': -65}"
+          },
+          {
+            "id": "totals-3",
+            "status": "passed",
+            "detail": "Case 3: observed {'charged_cents': 1003, 'refunded_cents': 217, 'net_cents': 786}"
+          },
+          {
+            "id": "invalid-input",
+            "status": "passed",
+            "detail": "Invalid kind, negative, fractional, and boolean cents raise ValueError"
+          }
+        ]
+      },
+      {
+        "case": "frontend-property-editor-hierarchy",
+        "domain": "frontend",
+        "condition": "candidate-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "feabcadacbe0af5c9a08ce5532947cf183ccab7a80b7df19d250a2d485879f78",
+        "harness_sha256": "eaad98f073916468bb787ccaba758df06681e88483f7147cb4b0ca2df337f087",
+        "automated": "passed",
+        "review": "accepted",
+        "accepted": true,
+        "workspace_sha256": "e91ab97bee4dde50285be7f8c94e71f3ca98ecbd24aca0d46af0ceacb3e8e123",
+        "checks": [
+          {
+            "id": "semantic-controls",
+            "status": "passed",
+            "detail": "Editable controls are labeled and page exposes Draft and a Save action"
+          },
+          {
+            "id": "local-assets",
+            "status": "passed",
+            "detail": "Page loads local styles and behavior"
+          },
+          {
+            "id": "render-captures",
+            "status": "passed",
+            "detail": "Desktop and narrow PNG captures supplied; content, theme and design require review"
+          },
+          {
+            "id": "review-note",
+            "status": "passed",
+            "detail": "A render-review note is present; its claims require review"
+          }
+        ],
+        "review_details": {
+          "reviewer": "independent native agent trixpo_forward_probe",
+          "kind": "agent",
+          "decision": "accepted",
+          "evidence": {
+            "evidence/light-desktop.png": "78623424081fb8b59b0b7a214e7513445492084883ecaab473cd869e8d163ea5",
+            "evidence/dark-desktop.png": "a38d601b94b5e9dab2e88e846c7ec434b70a05a26ab6c78c9bab2e80e46bd82d",
+            "evidence/light-narrow.png": "908eef4a32cdb0f9637973c33d4ae441cc90883788ae2acc1545cb3a446a6548",
+            "evidence/dark-narrow.png": "288e7d1ce006db2e94d29ad87270d14ccb3525698860c411a4dd0d61aa14c773",
+            "evidence/review.md": "9248c6052f79dbc3e9ec2654a3c223704d7186dfccee5ed53909ac6be7f693b7"
+          },
+          "rationale": "Independent agent inspected all four actual revised captures against baseline, accepted the clearer hierarchy and complete responsive views after format/clip fixes. Primary observed locale/edit/Save/theme/keyboard behavior; reviewer did not independently replay interactions. Synthetic exercise, not human approval."
+        }
+      },
+      {
+        "case": "integration-paginated-client",
+        "domain": "integration",
+        "condition": "candidate-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "0531171d32ac6b2dcc098280455593dd8b415c781716e37fd5d146a271260fdd",
+        "harness_sha256": "eaad98f073916468bb787ccaba758df06681e88483f7147cb4b0ca2df337f087",
+        "automated": "passed",
+        "review": "not_required",
+        "accepted": true,
+        "workspace_sha256": "177e6f247a0a41b78375454647057f8d68e7f3d030065b16b38427e4617a2b08",
+        "checks": [
+          {
+            "id": "pagination",
+            "status": "passed",
+            "detail": "Read all pages in order with encoded cursor"
+          },
+          {
+            "id": "confirmed-write",
+            "status": "passed",
+            "detail": "Confirmed write returns server record once"
+          },
+          {
+            "id": "uncertain-write",
+            "status": "passed",
+            "detail": "Uncertain response raises MutationUncertain with exactly one POST"
+          },
+          {
+            "id": "refused-write",
+            "status": "passed",
+            "detail": "Explicit HTTP refusal raises a different exception without replay"
+          },
+          {
+            "id": "failed-later-page",
+            "status": "passed",
+            "detail": "A later-page refusal raises rather than returning partial retrieval"
+          },
+          {
+            "id": "authorization",
+            "status": "passed",
+            "detail": "Every observed request carried the required bearer token"
+          }
+        ]
+      },
+      {
+        "case": "research-cache-decision",
+        "domain": "research",
+        "condition": "candidate-output-replay",
+        "model": "native-agent-inherited-version-unavailable",
+        "settings": "inherited settings; bounded development exercise; output replay after verifier refinements",
+        "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+        "case_sha256": "e468fdd365336d47887a10face532c4d51e6f0413eb68049a2b6bdff16f0d61f",
+        "harness_sha256": "eaad98f073916468bb787ccaba758df06681e88483f7147cb4b0ca2df337f087",
+        "automated": "passed",
+        "review": "accepted",
+        "accepted": true,
+        "workspace_sha256": "5e4b663bad0cdf878e8cfe54be4da509b64eefbf9bf032b564832c796da11a03",
+        "checks": [
+          {
+            "id": "source-citations",
+            "status": "passed",
+            "detail": "Linked fixture sources: deployment.json, release-4.2.md, legacy-3.9.md, field-note.md"
+          },
+          {
+            "id": "version-and-dates",
+            "status": "passed",
+            "detail": "Brief states pinned version and at least two source dates"
+          },
+          {
+            "id": "brief-present",
+            "status": "passed",
+            "detail": "Brief exists; interpretation and grounding require qualitative review"
+          }
+        ],
+        "review_details": {
+          "reviewer": "independent native agent trixpo_forward_probe",
+          "kind": "agent",
+          "decision": "accepted",
+          "evidence": {
+            "research.md": "0d823794bc9e25b69637db8a48e5fe2f9e18efc4028b2c78c86e297d44a3e6d0"
+          },
+          "rationale": "Independent agent inspected all supplied sources and conclusion; accepted deployed-version scoping, preserved counterevidence and clearly unexecuted discriminating check. No live cache experiment claimed."
+        }
+      }
+    ],
+    "automated_counts": {
+      "passed": 9
+    },
+    "review_counts": {
+      "pending": 2,
+      "not_required": 4,
+      "accepted": 3
+    },
+    "limits": [
+      "Development cases, not a held-out benchmark.",
+      "Model/settings and reviewer identity are recorded labels, not runtime attestation.",
+      "Recorded review does not establish human approval or production readiness.",
+      "Compare matching cases, model/settings, inputs, tools and budgets; repeat trials.",
+      "Nine completed outputs replayed after development-case integrity/verifier refinements; not nine new trials.",
+      "Four nonvisual trials per condition, one candidate frontend refinement against the seed; no independent baseline UI trial.",
+      "Both nonvisual conditions passed; no quality gain measured.",
+      "Exact model/version unavailable; skill reads self-reported; no normalized cost or latency measurement.",
+      "Candidate artifact reviews by independent agent; baseline documentation and research reviews pending.",
+      "Frontend behaviors exercised by primary, not independently replayed by reviewer; no motion or real provider trial."
+    ],
+    "observed_frontend_repairs": [
+      "Dark hover contrast token corrected after computed/render review.",
+      "JPEG bytes under PNG filenames replaced with actual browser PNG captures.",
+      "Two clipped PNG captures rejected by visual reviewer despite dimension checks; recaptured at explicit CSS viewport clip."
+    ]
+  },
+  "registration": {
+    "targets": [
+      "codex",
+      "claude-code"
+    ],
+    "copies": 32,
+    "doctor": "passed",
+    "repeat_sync": "unchanged bytes modes timestamps",
+    "updated_reference_copies": 10,
+    "authored_project_hashes": {
+      "motion-design": "6dea56a73e02ef3374f7f4a3c14fa75433214bcb9c78687877532324af6dbc76",
+      "research-and-synthesis": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a",
+      "mcp-integration": "08b7a4bc69fcf653fb05e9e2c276a95b9e4988e21496e86cd09200086e557a5b",
+      "ai-system-evaluation": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4",
+      "frontend-engineering": "6a78679ff2b58055c75d6658022930f47fec410d4d96a16d19c352e4a9ef4d9c"
+    }
+  },
+  "verification": {
+    "automated_tests": 395,
+    "test_seconds": 30.058,
+    "skill_frontmatter": "Nine changed entrypoints parsed by Ruby YAML; generic quick_validate unavailable without PyYAML.",
+    "portable_engine": "Isolated foundation export runs eval list, prepare and broken-seed check from unrelated cwd after original fixture checkout removed.",
+    "markdown_files": 85,
+    "local_links": 158,
+    "renderer": "passed",
+    "shell_syntax": "passed",
+    "git_whitespace": "passed",
+    "global_codex_doctor": "15 live links unchanged, source accessible"
+  }
+}

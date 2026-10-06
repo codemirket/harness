@@ -38,6 +38,24 @@ The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup an
 
 [Task routing](skills/skill-catalog/references/task-routing.md) maps UI design, engineering, technical documentation, artifacts, motion and search outcomes to reviewed capabilities and their actual invocation names. [Routing audit](docs/reviews/skill-routing.md) records the Trixpo reference check and the limits of installation and selection evidence. UI refinement requires inspected, comparable renders and iteration against the requested visual goal.
 
+## Deliver and evaluate quality
+
+[Delivery standards](skills/skill-catalog/references/delivery-standards.md) connect task selection to the evidence needed for frontend, motion, engineering, documentation, integrations and research. Selected skills now carry concrete composition examples, asynchronous state patterns, boundary decisions, integration failure handling, source-checked documentation and claim verification. Project conventions and actual tools determine the implementation.
+
+Five synthetic development exercises check delivered outputs separately from registration and qualitative review:
+
+```sh
+python3 ai.py eval list
+mkdir -p build/evaluation-runs
+python3 ai.py eval prepare --case engineering-ledger-total --output build/evaluation-runs/ledger \
+  --model 'exact model/version or unavailable' --condition candidate
+# Assign the prepared task; edit only its workspace, then:
+python3 ai.py eval check --run build/evaluation-runs/ledger
+python3 ai.py eval report --run build/evaluation-runs/ledger
+```
+
+The CLI runs local candidate code with normal host permissions and bounded duration/output. It launches no model. Frontend, documentation and research cases also require recorded artifact review through `eval review`. Passing these development cases does not establish production readiness or a quality gain. See [the harness design, pilot evidence and next evaluation steps](docs/quality-harness.md).
+
 ## Share app preferences
 
 [registry/codex-settings.json](registry/codex-settings.json) contains reviewed portable values captured from this Mac: model/reasoning/response preferences, desktop themes and interaction preferences, and public plugin enablement flags. It excludes credentials, permission policies, project paths, remote devices, history, private plugins and account connections.
@@ -119,6 +137,7 @@ registry/catalog.json       Curated entries, profiles, hashes and source pins
 registry/source-index.json  Broader discovery inventory and review status
 skills/                     Authored skill sources
 lib/                        Installation, scheduling, settings, delegation and catalog code
+evaluations/                Development tasks, seed workspaces, verifiers and review rubrics
 setup/                      Stable macOS and Windows wrappers
 docs/                       Catalog, reviews, integration and verification evidence
 tests/                      Isolated behavior and regression checks

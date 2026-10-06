@@ -261,7 +261,9 @@
         "Installed by platform setup; use only when its trigger matches."
       ],
       "tags": [
-        "catalog"
+        "catalog",
+        "task-routing",
+        "delivery-standards"
       ]
     },
     {
@@ -283,7 +285,10 @@
         "Installed by platform setup; use only when its trigger matches."
       ],
       "tags": [
-        "coding"
+        "coding",
+        "engineering",
+        "service-integration",
+        "api-integration"
       ]
     },
     {
@@ -309,7 +314,9 @@
       ],
       "tags": [
         "design",
-        "ui-design"
+        "ui-design",
+        "frontend",
+        "composition"
       ]
     },
     {
@@ -339,7 +346,7 @@
       "name": "document-workflow",
       "scope": "global",
       "category": "documents",
-      "description": "Preserve meaning, numbers, formulas, revisions, and layout using native format tools.",
+      "description": "Preserve technical claims, runnable examples, editorial intent and document layout using repository or native format workflows.",
       "delivery": "global-link",
       "path": "skills/document-workflow",
       "informed_by": [
@@ -352,7 +359,9 @@
         "Installed by platform setup; use only when its trigger matches."
       ],
       "tags": [
-        "documents"
+        "documents",
+        "documentation",
+        "technical-documentation"
       ]
     },
     {
@@ -463,9 +472,10 @@
       "tags": [
         "animation",
         "interaction",
-        "accessibility"
+        "accessibility",
+        "interaction-recipes"
       ],
-      "sha256": "6227f7d3b72cb88eac895cf24f6947320574119758b0ab491e97c6db059991c4"
+      "sha256": "6dea56a73e02ef3374f7f4a3c14fa75433214bcb9c78687877532324af6dbc76"
     },
     {
       "id": "experiment-design",
@@ -10936,10 +10946,12 @@
       ],
       "tags": [
         "research",
-        "research-and-synthesis"
+        "research-and-synthesis",
+        "claim-verification",
+        "source-verification"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "53f883ea7e250b25cbc948f2702ae9da3a7562f82b387d159ce79a571625efce"
+      "sha256": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a"
     },
     {
       "id": "document-parsing",
@@ -11155,10 +11167,12 @@
       ],
       "tags": [
         "integrations",
-        "mcp-integration"
+        "mcp-integration",
+        "mcp",
+        "protocol"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "d2a9208b6d7137e0479b3e992da281cabcb20301f42ac9f2c1de321755b71f93"
+      "sha256": "08b7a4bc69fcf653fb05e9e2c276a95b9e4988e21496e86cd09200086e557a5b"
     },
     {
       "id": "ai-system-evaluation",
@@ -11179,10 +11193,12 @@
       ],
       "tags": [
         "ai-engineering",
-        "ai-system-evaluation"
+        "ai-system-evaluation",
+        "harness-evaluation",
+        "development-evaluation"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "30bae814114575f1709705531042a999c0b2e84794f91f9e28f66259d6ba1d01"
+      "sha256": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4"
     },
     {
       "id": "frontend-engineering",
@@ -11203,10 +11219,12 @@
       ],
       "tags": [
         "frontend",
-        "frontend-engineering"
+        "frontend-engineering",
+        "async-state",
+        "forms"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "b279d7d86c50470398e6b9f8083f2391761e0433c9e404fcf352eb42778440e9"
+      "sha256": "6a78679ff2b58055c75d6658022930f47fec410d4d96a16d19c352e4a9ef4d9c"
     },
     {
       "id": "database-systems",

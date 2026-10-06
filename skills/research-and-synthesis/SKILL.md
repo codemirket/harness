@@ -15,6 +15,11 @@ SEO/GEO discoverability. Match technical documentation to installed versions
 and available provider tools; a Google-docs workflow is not a general web-search
 tool. Use `rg` for local code lookup and the search-visibility route for SEO/GEO.
 
+When a recommendation depends on a changing claim, a version boundary, or
+conflicting sources, read [claim verification](references/claim-verification.md).
+Use its worked comparison to connect evidence to the user's setting; do not
+create a formal ledger for a simple fact that one suitable source resolves.
+
 ## Build the evidence set
 
 - Split the question into claims that can be checked independently. Identify

@@ -9,6 +9,12 @@ Read the current official MCP specification and the installed SDK's documentatio
 Identify host/client versions, supported capabilities, transport, and the actual
 API or data source. Protocol examples are versioned; do not mix SDK generations.
 
+For a server/tool change, read
+[protocol completion](references/protocol-completion.md) to distinguish protocol,
+authorization, service, and client evidence. For the underlying service/API
+behavior, use available `engineering-judgment` service-integration guidance and
+the project's connector/contract workflow. MCP remains the protocol specialist.
+
 ## Design the service boundary
 
 Choose tools for actions, resources for addressable content, and prompts for

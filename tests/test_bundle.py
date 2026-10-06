@@ -24,7 +24,7 @@ class BundleTests(unittest.TestCase):
         self.base = Path(self.temp.name).resolve()
         self.root = self.base / 'harness'
         self.root.mkdir()
-        for name in ('registry', 'instructions', 'skills', 'docs', 'setup', 'lib'):
+        for name in ('registry', 'instructions', 'skills', 'docs', 'setup', 'lib', 'evaluations'):
             (self.root / name).mkdir()
         self.source = self.base / 'upstream'
         (self.source / 'skills/test/references').mkdir(parents=True)
@@ -153,12 +153,13 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(list(self.base.glob('.ai-export-*')))
 
     def foundation(self):
-        for filename in ('ai.py', 'lib/catalog.py', 'lib/harness.py', 'lib/bundle.py',
+        for filename in ('ai.py', 'lib/catalog.py', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py',
                          'skills/skill-catalog/scripts/catalog.py', 'skills/skill-catalog/scripts/harness.py',
                          'skills/skill-catalog/SKILL.md', 'scripts/render_registry.py'):
             target = self.root / filename
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / filename, target)
+        shutil.copytree(ROOT / 'evaluations', self.root / 'evaluations', dirs_exist_ok=True)
         global_ = {'id': 'skill-catalog', 'name': 'skill-catalog', 'scope': 'global',
                    'delivery': 'global-link', 'path': 'skills/skill-catalog'}
         self.data['skills'].append(global_)
@@ -194,6 +195,22 @@ class BundleTests(unittest.TestCase):
                                  'list', '--json'], cwd=unrelated, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual({e['id'] for e in json.loads(result.stdout)}, {'test', 'skill-catalog'})
+        engine = plugin / 'skills/skill-catalog/scripts/harness.py'
+        result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'list'],
+                                cwd=unrelated, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual({e['domain'] for e in json.loads(result.stdout)['cases']},
+                         {'frontend', 'engineering', 'documentation', 'integration', 'research'})
+        run = self.base / 'portable-run'
+        result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'prepare',
+                                 '--case', 'engineering-ledger-total', '--output', str(run),
+                                 '--model', 'test', '--condition', 'portable'],
+                                cwd=unrelated, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'check', '--run', str(run)],
+                                cwd=unrelated, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual(json.loads(result.stdout)['status'], 'failed')
 
     def test_snapshot_symlink_fails_without_export(self):
         self.foundation()

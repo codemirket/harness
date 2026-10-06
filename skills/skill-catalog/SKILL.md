@@ -20,6 +20,9 @@ task workflows from registration profiles and catalog IDs from invocation names.
 Use the project's own route when it already resolves the task. A QA profile is
 not a visual redesign workflow, and a document file workflow is not an API-docs
 workflow. Read the selected body and integration note before applying it.
+For substantial work, read the affected domain in
+[delivery standards](references/delivery-standards.md) to choose completion
+evidence. Apply only relevant criteria alongside the project's own gates.
 
 1. At project entry or a material change of needs, inspect project instructions,
    `.ai/project.json`, stack, platforms, lifecycle needs, available tools and already

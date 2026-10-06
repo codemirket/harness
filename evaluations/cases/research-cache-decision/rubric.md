@@ -1,0 +1,3 @@
+# Human review
+
+Read the submitted brief against all supplied sources: [deployment](workspace/sources/deployment.json), [4.2 release](workspace/sources/release-4.2.md), [3.9 note](workspace/sources/legacy-3.9.md), and [field note](workspace/sources/field-note.md). Pass when the version scope and dates are explicit, current-version documentation is given appropriate weight, and the field observation is neither ignored nor treated as proof of a global-cache rule. The recommendation must be safe under uncertainty and propose a discriminating local check. Citations must directly support adjacent claims. The verifier checks only document structure and source links, not interpretive correctness.

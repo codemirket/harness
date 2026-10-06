@@ -16,6 +16,13 @@ data flow uses `frontend-engineering`; repository/API documentation may use
 `documentation-and-adrs`. Apply only the affected workflow, not every installed
 engineering suite.
 
+Read [boundary decisions](references/boundary-decisions.md) when changing a public
+contract, state ownership, or a failure path with effects outside the caller.
+For service/API integration work, read
+[service integration](references/service-integration.md); use the project's
+connector and contract workflow for implementation. These examples supplement
+the actual provider contract; they do not replace it.
+
 ## Understand the behavior
 
 Identify the entry point, the caller's expectation, and the observable result.
@@ -73,3 +80,10 @@ failure cases and affected consumers; distinguish a defect from a style
 preference. For a finding, give a concrete trigger, location, and consequence.
 Resolve conflicting feedback against evidence and established requirements.
 Report what the checks establish and what remains uncertain.
+
+Before reporting completion, compare the requested outcome with the affected
+consumer path: implementation, configuration, caller behavior, and required
+delivery steps. Finish authorized work that still prevents that outcome. Passing
+a unit test alone does not establish registration, deployment, or a remote effect;
+report those claims only with their own evidence. Stop when the outcome and
+required gates are satisfied, or name the concrete remaining dependency.

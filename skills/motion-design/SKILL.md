@@ -14,6 +14,13 @@ matching task and installed-version support; effect naming uses
 capabilities. Do not follow unavailable upstream `animate` or
 `review-animations` sibling names as if they were installed.
 
+For implementation or critique, read the matching sections of
+[interaction recipes](references/interaction-recipes.md): controls and feedback,
+menus/dialogs, disclosure and tab changes, list/data updates, or gestures. The
+worked examples show how to choose motion from actual state transitions. Reuse
+the project's tokens and components; the suggested values are tuning starting
+points, not required defaults.
+
 1. Identify what changes, what the motion communicates, how often users encounter
    it, and whether it delays an action. Sometimes the best change removes motion.
 2. Inspect the current tokens, animation APIs, and component lifecycle. Select

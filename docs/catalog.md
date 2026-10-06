@@ -16,7 +16,7 @@ Use `python3 ai.py catalog show <id>` for complete coverage, dependencies, compa
 | [engineering-judgment](../skills/engineering-judgment/SKILL.md) | Reason about behavior, interfaces, diagnosis, and verification with task-sized effort. |
 | [interface-design](../skills/interface-design/SKILL.md) | Apply hierarchy, real content, interaction states, accessibility, and rendered checks. |
 | [marketing-writing](../skills/marketing-writing/SKILL.md) | Write credible audience-focused copy with context reuse and traceable proof. |
-| [document-workflow](../skills/document-workflow/SKILL.md) | Preserve meaning, numbers, formulas, revisions, and layout using native format tools. |
+| [document-workflow](../skills/document-workflow/SKILL.md) | Preserve technical claims, runnable examples, editorial intent and document layout using repository or native format workflows. |
 | [research-and-synthesis](../skills/research-and-synthesis/SKILL.md) | Investigate a consequential question through web, literature, repository, or supplied-document research and produce a traceable synthesis with uncertainty. |
 | [document-parsing](../skills/document-parsing/SKILL.md) | Extract structured, traceable information from PDFs, scans, office files, HTML, and document collections; validate OCR, tables, and schema fidelity. |
 | [office-authoring](../skills/office-authoring/SKILL.md) | Create or revise Word documents, spreadsheets, and slide decks with structured content, editable source, calculation checks, and rendered verification. Use an available native format skill when it provides a stronger implementation workflow. |

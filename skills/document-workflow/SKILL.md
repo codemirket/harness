@@ -1,20 +1,26 @@
 ---
 name: document-workflow
-description: Plan substantial document revisions and verify that content, numbers, and editorial intent survive editing or format conversion. Use with the available Word, PDF, spreadsheet, or presentation tool; skip for simple text corrections.
+description: Plan substantial revisions to technical documentation or document artifacts and verify that facts, contracts, and editorial intent survive the change. Use with the relevant repository or format workflow; skip simple text corrections.
 ---
 
 # Document workflow
 
 Identify the authoritative input, intended reader, requested edit, and final format.
-Use the installed format-specific skill or native application for the actual edit.
-A file operation and a change to a live shared document need different tooling;
-choose from capabilities actually available in this session.
+For document artifacts, use the installed format-specific skill or native application
+for the actual edit. A file operation and a change to a live shared document need
+different tooling; choose from capabilities actually available in this session.
 
 For repository documentation, API guides or ADRs, use `skill-catalog`'s task
 routing to find the technical documentation workflow and preserve the project's
 owning documents. For DOCX, PDF, spreadsheet and slide artifacts, select the
 available format-specific skill; portable office guidance is a fallback when
 native capabilities are absent. These routes serve different deliverables.
+
+For substantial repository/API documentation, read
+[technical documentation](references/technical-documentation.md) to trace claims
+to the running interface and verify runnable examples. Keep the existing README,
+API reference, ADRs, and their owners authoritative; do not introduce a competing
+documentation set merely to follow an example.
 
 ## Preserve meaning while editing
 

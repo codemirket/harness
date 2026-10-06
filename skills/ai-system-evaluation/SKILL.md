@@ -5,6 +5,12 @@ description: Build and evaluate LLM, RAG, tool-using agent, and multimodal featu
 
 # AI system evaluation
 
+For changes to this personal harness, use
+[the development exercise workflow](references/harness-development.md). It provides
+prepared workspaces, bounded local checks and separate output review; it does not
+launch a model or establish production quality. Use project-owned datasets and
+tools when evaluating a product's AI feature.
+
 Define the user task, allowed actions, data boundaries, success criteria, failure
 cost, latency and cost budget. Identify the model/version, prompts, retrieval,
 tools, state, deterministic application logic and human handoffs. Use current
