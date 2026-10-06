@@ -1,0 +1,4073 @@
+{
+  "reviewed_on": "2026-10-06",
+  "kind": "Isolated static payload installation and structure checks; upstream code not executed",
+  "inputs": {
+    "registry/catalog.json": "18a93f5bd24c06b620c66e58fd5a85af3c62e4fa8703c3719e40f9779cbcad01",
+    "lib/catalog.py": "7e78cc9e18cae9e185e57fed69758118e98fca1a64f9b1a6cbc932beaa72aac6"
+  },
+  "project_count": 195,
+  "clone_pins": {
+    "addy": "1401c8b8030e023baeebb31781a6653fe8e93026",
+    "adhd": "839872f9d1cd634fed642b4589ce7226199cc15f",
+    "awesome": "bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5",
+    "caveman": "99aafe151a1be72be783e662858e8a0955add59f",
+    "ecc": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+    "emil": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+    "google": "d6eee396ed6a51871cc3f0979c5ff1be26d35d10",
+    "gstack": "c285d88b90d39116ccfa2b901f80ea0fce0b26eb",
+    "marketing": "dda3841f0b294e01e93b1541486beefbfab0915e",
+    "matt": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+    "open-design": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+    "openai": "49f948faa9258a0c61caceaf225e179651397431",
+    "superpowers": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+    "taste": "ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
+    "ui-ux-pro-max": "477bcb28c9812b385cb51a4605ddf30d7b2266e2",
+    "vercel-agent-skills": "063bee94c3f4df8453406c830b0a7df0f2860278"
+  },
+  "payloads": [
+    {
+      "id": "debugging",
+      "files": 2,
+      "bytes": 12784,
+      "installed_sha256": "ba1fd66bfdfee6f64a55a666296966429b4efaeb92006edbd79da3c295713fea",
+      "status": "passed"
+    },
+    {
+      "id": "test-design",
+      "files": 2,
+      "bytes": 12854,
+      "installed_sha256": "4c20399ede68444382408440c4bf978d1f779678da744d9520a047db5dd75f2e",
+      "status": "passed"
+    },
+    {
+      "id": "architecture-review",
+      "files": 2,
+      "bytes": 12743,
+      "installed_sha256": "04646382f0bceb3f0e71a8d1a465c64ba8eac3853add15de4d5024fa74357a8b",
+      "status": "passed"
+    },
+    {
+      "id": "motion-design",
+      "files": 2,
+      "bytes": 12021,
+      "installed_sha256": "cadf3ba5a5a61dc2856bdf49728a6a2956b5133bc415c2c4c45e5621bfb2ae4d",
+      "status": "passed"
+    },
+    {
+      "id": "experiment-design",
+      "files": 2,
+      "bytes": 12959,
+      "installed_sha256": "77480113828dc721e30c391e471bb7b0568b8fec239fb520d679d3c12db8f837",
+      "status": "passed"
+    },
+    {
+      "id": "search-audit",
+      "files": 2,
+      "bytes": 12900,
+      "installed_sha256": "0a983a0f7ee9e510834b10cd85a0c329e9f2768970644d986c50cbd1fbcf67be",
+      "status": "passed"
+    },
+    {
+      "id": "conversion-review",
+      "files": 2,
+      "bytes": 12629,
+      "installed_sha256": "d1f640e9c3361f3db9b78f11e280090e187e46fcbb994103d983ad7b0d024343",
+      "status": "passed"
+    },
+    {
+      "id": "customer-research",
+      "files": 2,
+      "bytes": 12721,
+      "installed_sha256": "41f3d2abc7c6450a8107391dcabca3a804d541b5d990a2568587e9cc7e173092",
+      "status": "passed"
+    },
+    {
+      "id": "matt-domain-modeling",
+      "files": 5,
+      "bytes": 10159,
+      "installed_sha256": "2c3aac14e652b351b3fca627aa2433b731979aaafa0fdca66881884d74c0f1c3",
+      "status": "passed"
+    },
+    {
+      "id": "emil-mobile-native",
+      "files": 2,
+      "bytes": 17908,
+      "installed_sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48",
+      "status": "passed"
+    },
+    {
+      "id": "emil-break-ui",
+      "files": 3,
+      "bytes": 23718,
+      "installed_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+      "status": "passed"
+    },
+    {
+      "id": "emil-ask-sonner",
+      "files": 3,
+      "bytes": 12848,
+      "installed_sha256": "a85643ba534bcc2378732be0fd7449b3ebae526c566f589e0bcdaf3f63b47f53",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-contract-first",
+      "files": 2,
+      "bytes": 11294,
+      "installed_sha256": "1c18ba91741547a11a494d53b3c7b08583abf9515d2fda57b56e6581b5089b08",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-api-connector",
+      "files": 2,
+      "bytes": 4189,
+      "installed_sha256": "a3120069fddb45de06894bce39c6265d114a9f5fd9b08e2e64ac9d2ee2e3ebed",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-api-design",
+      "files": 2,
+      "bytes": 14764,
+      "installed_sha256": "e0e0f0a705c9aed6d840e8f3e38b25d9637ad6c4a0f0326096933b91252949a4",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-benchmark-optimization",
+      "files": 2,
+      "bytes": 4191,
+      "installed_sha256": "8d8fbf1bac02de6fb890f7b16c158e7a9d9b25b0977fd428a89aab35253e2de1",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-market-research",
+      "files": 2,
+      "bytes": 4695,
+      "installed_sha256": "f959048f968d72b9a408e39745a61d93fcb4e312cbd60b17b74442b0acb6dd14",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-product-context",
+      "files": 3,
+      "bytes": 18185,
+      "installed_sha256": "06262eebc179c3fb3bd20bcb39670bcc90766ad847f1501149e911db4177363d",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-competitors",
+      "files": 5,
+      "bytes": 36210,
+      "installed_sha256": "56806ac6a8d1fcf2e1bb90af976e3dded938293dbf0e4784949086795a229e11",
+      "status": "passed"
+    },
+    {
+      "id": "matt-code-review",
+      "files": 3,
+      "bytes": 8476,
+      "installed_sha256": "c02a2f57b3fd9b5cec917e40054af6f9ec37e513c55a9917b639e245ec48fc8a",
+      "status": "passed"
+    },
+    {
+      "id": "matt-codebase-design",
+      "files": 5,
+      "bytes": 13618,
+      "installed_sha256": "9a2252c694eb54c0c7aaa140e5c594405601c45825534d444429e3a644de9bc7",
+      "status": "passed"
+    },
+    {
+      "id": "matt-diagnosing-bugs",
+      "files": 4,
+      "bytes": 11762,
+      "installed_sha256": "ce9915e084100fa2b70118b6ac9f0c75673faa35d033b015800b10b9ab1906da",
+      "status": "passed"
+    },
+    {
+      "id": "matt-grill-with-docs",
+      "files": 3,
+      "bytes": 2082,
+      "installed_sha256": "d749948e89dcde0800f6ccab7422a8909a8d8cfed29c857079655b39dcb43eff",
+      "status": "passed"
+    },
+    {
+      "id": "matt-implement",
+      "files": 3,
+      "bytes": 2301,
+      "installed_sha256": "91340978bd1de23087ef39b5b3d94927de576b1d926ba14c145b5791ddd18077",
+      "status": "passed"
+    },
+    {
+      "id": "matt-implement-spec",
+      "files": 3,
+      "bytes": 4776,
+      "installed_sha256": "02b7f0e25de225d12ead960f5d045e70ea719a090c616c66580efb7aab1810ca",
+      "status": "passed"
+    },
+    {
+      "id": "matt-improve-codebase-architecture",
+      "files": 4,
+      "bytes": 14651,
+      "installed_sha256": "10a82908dc1d7fcbdd0d5868ed7b45483689d9718f0bf9485ac34ffff3d635d9",
+      "status": "passed"
+    },
+    {
+      "id": "matt-prototype",
+      "files": 5,
+      "bytes": 17769,
+      "installed_sha256": "0e3b9f2dbc353ce109a2bd4813e002461d7a6b480b47a2f8c5c0bca8d56b77e2",
+      "status": "passed"
+    },
+    {
+      "id": "matt-research",
+      "files": 3,
+      "bytes": 2641,
+      "installed_sha256": "e526e42ed6552c559af1128979ecbdd7a75fa225c3dbcdc9135e8ff9b29536c8",
+      "status": "passed"
+    },
+    {
+      "id": "matt-retro",
+      "files": 3,
+      "bytes": 6289,
+      "installed_sha256": "2b63c8d8ffef6b6719f00d6f4ea3a3b43898adbb64957634056ce4ce689bb6ba",
+      "status": "passed"
+    },
+    {
+      "id": "matt-setup-matt-pocock-skills",
+      "files": 8,
+      "bytes": 21273,
+      "installed_sha256": "2d11c0655e61a205bd7cc2fbb99952602c0edee92f99f1cc2026997120e86901",
+      "status": "passed"
+    },
+    {
+      "id": "matt-tdd",
+      "files": 5,
+      "bytes": 9138,
+      "installed_sha256": "24d055d3f72b2bb686dff245e4b8f1a8c28849af94cdbffe068ace23e22e2f06",
+      "status": "passed"
+    },
+    {
+      "id": "matt-to-spec",
+      "files": 3,
+      "bytes": 4959,
+      "installed_sha256": "cd67a82ed24b0d51c9f4cc8455bce81dfc76b4cbcb2e869244a3e94725bb6907",
+      "status": "passed"
+    },
+    {
+      "id": "matt-to-tickets",
+      "files": 3,
+      "bytes": 7583,
+      "installed_sha256": "634521802513e46acf60539b752a02f864c0c0f333be44fdd095029aea8eb849",
+      "status": "passed"
+    },
+    {
+      "id": "matt-triage",
+      "files": 5,
+      "bytes": 21102,
+      "installed_sha256": "f59820fd4c1e713a15e81d4efd3cf90ef2bb976daa62fe97505dcdd91d2383dc",
+      "status": "passed"
+    },
+    {
+      "id": "matt-wayfinder",
+      "files": 3,
+      "bytes": 13873,
+      "installed_sha256": "5147ea6321fecccc5d1f16f912c3c114f96ffc7700ad0c63267f77d679db68e0",
+      "status": "passed"
+    },
+    {
+      "id": "matt-wizard",
+      "files": 4,
+      "bytes": 14705,
+      "installed_sha256": "366a3a2ee47e352dfabc5ae820d9653ca38dec80e4f8e23383a6ec6554f50e95",
+      "status": "passed"
+    },
+    {
+      "id": "matt-setup-ts-deep-modules",
+      "files": 4,
+      "bytes": 13274,
+      "installed_sha256": "b40739f9bed48c08db7c858001c6ee79404219dd971a1d7e8a37f804af901a18",
+      "status": "passed"
+    },
+    {
+      "id": "matt-git-guardrails-claude-code",
+      "files": 4,
+      "bytes": 4791,
+      "installed_sha256": "90bea210f012d8695793e7b2e6fe4b439a4dcd9b8626e2dff03e97fc5f23cdfe",
+      "status": "passed"
+    },
+    {
+      "id": "matt-migrate-to-shoehorn",
+      "files": 3,
+      "bytes": 4696,
+      "installed_sha256": "dc25e227b5e51f523994b2a8110c4274994408b5a972aaf4d808c07a9ae9b278",
+      "status": "passed"
+    },
+    {
+      "id": "matt-scaffold-exercises",
+      "files": 3,
+      "bytes": 5463,
+      "installed_sha256": "582cc1fc63bc8855457c54c74ca491b219bd59a9e636d2c9df73b7bd53083594",
+      "status": "passed"
+    },
+    {
+      "id": "matt-setup-pre-commit",
+      "files": 3,
+      "bytes": 4188,
+      "installed_sha256": "81ac0bb0a06b2cbda59fc72a819f5f11b142646c1e2d247e387675541dbf2be5",
+      "status": "passed"
+    },
+    {
+      "id": "matt-grill-me",
+      "files": 3,
+      "bytes": 2002,
+      "installed_sha256": "d1e6e7fc112bb4c93caae9db32a284328d37e69d8b5d10014d97f39a47d28971",
+      "status": "passed"
+    },
+    {
+      "id": "matt-grilling",
+      "files": 3,
+      "bytes": 3810,
+      "installed_sha256": "6889881c51e06b37c7dedc5fb0246cab405a3c88f205938caf3c8dc1be87cfa5",
+      "status": "passed"
+    },
+    {
+      "id": "matt-handoff",
+      "files": 3,
+      "bytes": 2785,
+      "installed_sha256": "bfee88b3a082b3ec86314b110e9716b2af3e90f3d401614e9906e03fc17b4a74",
+      "status": "passed"
+    },
+    {
+      "id": "matt-teach",
+      "files": 7,
+      "bytes": 19794,
+      "installed_sha256": "c25717fda37e898ce19af07d9c2c8fd982b07b53a1bb742381aaedb84ee8053d",
+      "status": "passed"
+    },
+    {
+      "id": "matt-to-questionnaire",
+      "files": 3,
+      "bytes": 4794,
+      "installed_sha256": "08916a868f4f95a9741443593c52677dd4ee393d9cad9de887a8b2aad107166e",
+      "status": "passed"
+    },
+    {
+      "id": "matt-wait-what",
+      "files": 3,
+      "bytes": 2241,
+      "installed_sha256": "0ac59484c0666665681404a54746ecbd27668034c84d138b62f51bba08c6f823",
+      "status": "passed"
+    },
+    {
+      "id": "matt-writing-for-agents",
+      "files": 4,
+      "bytes": 15457,
+      "installed_sha256": "c7d098562fe7278bc0fd95f04dd4f25ee1b10ed0214016e9ab9098e1932b590a",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-dispatching-parallel-agents",
+      "files": 2,
+      "bytes": 8296,
+      "installed_sha256": "6e5c110eed6b882edac9a16ec2da9ff62834d5cbf0ba699b588afc4eb0011aba",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-executing-plans",
+      "files": 4,
+      "bytes": 25433,
+      "installed_sha256": "652c87a63414a6b58c69a57117b68eafb515b658f6e284ba610c7a429bbde2f3",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-finishing-a-development-branch",
+      "files": 2,
+      "bytes": 10166,
+      "installed_sha256": "9252feb5aa11f6cf9fbc416bdfdc1b911e9caf542dea353f1b5130658937f321",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-receiving-code-review",
+      "files": 2,
+      "bytes": 8421,
+      "installed_sha256": "3d9710454223e0b24164fc2cb58017036be878ae5d65fce081487bae7329fda2",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-requesting-code-review",
+      "files": 3,
+      "bytes": 11644,
+      "installed_sha256": "9c93eb840f2f13c542d0d9f2d9e2daf707608961b8cd90b99f525e8c9945f6a2",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-subagent-driven-development",
+      "files": 8,
+      "bytes": 61538,
+      "installed_sha256": "db93f88e119211c590f6dc93f6c2d0e7e178224933ac16d7efd035227d3df5f2",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-systematic-debugging",
+      "files": 12,
+      "bytes": 43319,
+      "installed_sha256": "3c5a875785cc47c0707fd702eb068e5291913bf3c14e0400c10d8e0d212b70df",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-test-driven-development",
+      "files": 3,
+      "bytes": 20064,
+      "installed_sha256": "349f7d15bc7917113d5c67d2a1a0dcfe7ac397ab05601bc20f7d160aa4a943f6",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-using-git-worktrees",
+      "files": 2,
+      "bytes": 9031,
+      "installed_sha256": "54b873ff8a8993c53a7f7c09f8c491ae675f4e8b7d0ea56dc7398d5597ee3891",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-verification-before-completion",
+      "files": 2,
+      "bytes": 5864,
+      "installed_sha256": "325a344e8ef6ade80663ff0e4a1c807d5558180a307c14474690fc73db8f8fc4",
+      "status": "passed"
+    },
+    {
+      "id": "superpowers-writing-plans",
+      "files": 2,
+      "bytes": 12719,
+      "installed_sha256": "16dc7a35ddfba28fc1f7af3ecaf075a7bdbd4f080859cca595b56b845e968171",
+      "status": "passed"
+    },
+    {
+      "id": "gstack-openclaw-ceo-review",
+      "files": 2,
+      "bytes": 12615,
+      "installed_sha256": "e3a709db7d20f6ce8980f638931d1fd3d7cf0dffad5e27f8942af0c68f385011",
+      "status": "passed"
+    },
+    {
+      "id": "gstack-openclaw-investigate",
+      "files": 2,
+      "bytes": 7469,
+      "installed_sha256": "40dac179972c3773b60120088d93d7f43186868f619a4e7dabab92b580653e35",
+      "status": "passed"
+    },
+    {
+      "id": "gstack-openclaw-office-hours",
+      "files": 2,
+      "bytes": 19131,
+      "installed_sha256": "a3229d83f4a7c1c3633efb6d58a290d7864cbe7017a92e42d5bebfcf9f4319a5",
+      "status": "passed"
+    },
+    {
+      "id": "gstack-openclaw-retro",
+      "files": 2,
+      "bytes": 11925,
+      "installed_sha256": "7e0a40f3d15f3bfe0ca416616a3f55a1a16873656681f6cca7d4e5c360c06506",
+      "status": "passed"
+    },
+    {
+      "id": "taste-minimalist-skill",
+      "files": 2,
+      "bytes": 9332,
+      "installed_sha256": "b7e86924e8e25187eae625d9841407d80e2f75d4710ce6d56548e68cb5560d5c",
+      "status": "passed"
+    },
+    {
+      "id": "taste-brutalist-skill",
+      "files": 2,
+      "bytes": 9887,
+      "installed_sha256": "2c30ac5e628105d35771eed69bc4fcb3b37179daddc77f142421e58c691f6681",
+      "status": "passed"
+    },
+    {
+      "id": "taste-soft-skill",
+      "files": 2,
+      "bytes": 11992,
+      "installed_sha256": "c4db87c79066789216fa7f18d55b293f9233af4bc7d60778d9d2c3e8b827f8ae",
+      "status": "passed"
+    },
+    {
+      "id": "taste-redesign-skill",
+      "files": 2,
+      "bytes": 16491,
+      "installed_sha256": "109c92f38a2a2ae7f8cf0d2a9c146ee2948ab9d308255ad1c011f4985bfbb2f7",
+      "status": "passed"
+    },
+    {
+      "id": "emil-prototype",
+      "files": 3,
+      "bytes": 16709,
+      "installed_sha256": "0e512a88605e1159e1c47d28bbeb79aa8b9ef338b81c906ea000946654650edf",
+      "status": "passed"
+    },
+    {
+      "id": "emil-pick-ui-library",
+      "files": 2,
+      "bytes": 6121,
+      "installed_sha256": "584d17af928ac06c3ed7a85de45c6f6169126582d1305141d4c58c94b96c34fc",
+      "status": "passed"
+    },
+    {
+      "id": "emil-animation-vocabulary",
+      "files": 2,
+      "bytes": 14756,
+      "installed_sha256": "7c589f9d1b911c9c82274addc78bad483df5cc96c19aef63223cdc23c94021c6",
+      "status": "passed"
+    },
+    {
+      "id": "ui-ux-pro-max-banner-design",
+      "files": 3,
+      "bytes": 13462,
+      "installed_sha256": "a248d9267a384e34cc6c313a41335855f0e2fa667d0569621d1332d00ae5873e",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-article-magazine",
+      "files": 4,
+      "bytes": 23519,
+      "installed_sha256": "0672d4d968fbce3b6d1f3090b088abab1cc15ebf8cd34fceb6173535c8fbd58d",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-card-twitter",
+      "files": 4,
+      "bytes": 17368,
+      "installed_sha256": "bafae2ae4de15ee9b289014543759c95cdece42da53c24592749753383da30f3",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-card-xiaohongshu",
+      "files": 4,
+      "bytes": 20734,
+      "installed_sha256": "115ff4f3ebdbb121706746a87db2fee73bb1e42098e77b261e5e1ea96efc3ccf",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-data-report",
+      "files": 4,
+      "bytes": 25511,
+      "installed_sha256": "4007ee13f9e6ce06fd859ffc0bd1a890d7dc7286fcde8452ab3eee0aeab5c124",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-deck-guizang-editorial",
+      "files": 4,
+      "bytes": 21773,
+      "installed_sha256": "73fc9bf58d3cf1ffc6283bccaf89277e714bd45914377c924878b25bb400f565",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-deck-open-slide-canvas",
+      "files": 4,
+      "bytes": 18237,
+      "installed_sha256": "5c7b540d95a221e69a2a4bc4efe56b9e722486fcac1b938e3517a1a0e29eb361",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-deck-swiss-international",
+      "files": 4,
+      "bytes": 24144,
+      "installed_sha256": "c9cf84388cebf131fd40492b127c1161a3bba78eeb350095791d914ad86916cc",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-doc-kami-parchment",
+      "files": 4,
+      "bytes": 21973,
+      "installed_sha256": "aa25a6428fe3804289376b4aa89c1778ff327ab0ae710e24dfcda3af14b5e345",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-mockup-device-3d",
+      "files": 4,
+      "bytes": 25626,
+      "installed_sha256": "82cf26c1decf8f0a127d318b97d392f6d78bd33dd4d5eed7baf31d497710e321",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-poster-hero",
+      "files": 4,
+      "bytes": 19853,
+      "installed_sha256": "304adb81eec9e0008e9c91c44a4c780f005782f62491c2fe6fdb87de67d16d06",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-ppt-keynote",
+      "files": 4,
+      "bytes": 22082,
+      "installed_sha256": "4cd54b5e2abb15d199ff1d41d9beb5d86798c95d31e0ddc6efad69ab05d800b6",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-resume-modern",
+      "files": 4,
+      "bytes": 23235,
+      "installed_sha256": "9b7fc3ba858096ef4e2c02ea454b13608ea2e5aeb776735a489bebaae9d1ee4f",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-frame-data-chart-nyt",
+      "files": 4,
+      "bytes": 21264,
+      "installed_sha256": "7cf6c5c98cb7802262197f0bc738af654f73856a64a44249b75d42e456f1b862",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-frame-flowchart-sticky",
+      "files": 4,
+      "bytes": 21995,
+      "installed_sha256": "dd029ce228b42f9ce3c1a804bcb95d7e234bfb1709470f7f11b3ca1f03dde4fe",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-social-reddit-card",
+      "files": 4,
+      "bytes": 19633,
+      "installed_sha256": "9416e590107fafe8833aeeb004f63f1e59ab6cebbe683aafb0aa5136cf0dfb07",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-social-spotify-card",
+      "files": 4,
+      "bytes": 20425,
+      "installed_sha256": "fee6973e5cef47f8332e53cce9854d74d92c31004ad6deeffbe81e5d4349ade6",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-social-x-post-card",
+      "files": 4,
+      "bytes": 20206,
+      "installed_sha256": "788c33178e0f4feb4adcd2c1a99924ee0d085e8a1eb691b8dbe7bf84717cbd1b",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-reference-design-contract",
+      "files": 4,
+      "bytes": 24064,
+      "installed_sha256": "42b1591d1bc4de7a3de70de5f6d05ce19f3d10ced67e505b208443b461adfecb",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-research-decision-room",
+      "files": 5,
+      "bytes": 51098,
+      "installed_sha256": "2f16cf41cc695dc49b60eacd6e81597f54d016fe7748423a1ab0adbd27b4191b",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-login-flow",
+      "files": 4,
+      "bytes": 23857,
+      "installed_sha256": "0bc748f1bf43aa05acbf15acedb2714cc139b856bcbc5e3c4d048be11a26d089",
+      "status": "passed"
+    },
+    {
+      "id": "open-design-faq-page",
+      "files": 3,
+      "bytes": 32797,
+      "installed_sha256": "2fc8eeb1bb3bebb5489d32cc098b568ac0b1088dbefab8f4efe2bb73d688f2b6",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-android-clean-architecture",
+      "files": 2,
+      "bytes": 10493,
+      "installed_sha256": "a1c9903727cdcfc99f389b44bb1e0bbcf1d1de28933e3c387cd71f764ffafb81",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-architecture-decision-records",
+      "files": 2,
+      "bytes": 8845,
+      "installed_sha256": "8c9b52719cf659572b9b489c791757e4209b9d5c466ca4bbf21514abfefb274c",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-article-writing",
+      "files": 2,
+      "bytes": 4503,
+      "installed_sha256": "a2e6c51507d0af91c858af7dfb8b282930ee293cd57d78da1f0b2c27f55348dd",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-brand-voice",
+      "files": 3,
+      "bytes": 6394,
+      "installed_sha256": "fde76d7c6738f975e064b8fb3eaad4036a0bd26109a0fb36d8a673c426ad6859",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-compose-multiplatform-patterns",
+      "files": 2,
+      "bytes": 9843,
+      "installed_sha256": "7e8ae55a496ad936d7d2e054e672b298b3e252482011f1b1057adb17795f7cb8",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-content-engine",
+      "files": 2,
+      "bytes": 5878,
+      "installed_sha256": "8cbe768b06a59036d58e326c30fd827b06bbcf5a5f12709e4ce041faa03033ce",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-cpp-testing",
+      "files": 2,
+      "bytes": 10855,
+      "installed_sha256": "b3bf35703fed67f4d71defd257d95a803194d433657a9a9e0b45739265082980",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-django-patterns",
+      "files": 2,
+      "bytes": 22793,
+      "installed_sha256": "d969e92012de9b2c586d8f6eb062199ebe9e3765f0f2c210b1a8565ec8fd2a27",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-dotnet-patterns",
+      "files": 2,
+      "bytes": 10849,
+      "installed_sha256": "9ac6772e5aa8ed4d3576f5a34e121394790a25e35e51f02085a44d548a69d8ea",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-fastapi-patterns",
+      "files": 2,
+      "bytes": 17365,
+      "installed_sha256": "9902ade271b939272ce41bf22216c94100118bb38bb88a090bd55c11c50af86e",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-flutter-dart-code-review",
+      "files": 2,
+      "bytes": 25170,
+      "installed_sha256": "6ddf102aa508bb7ee63a6206664ca96fdd26d63dc4644198e61e8337f44a5c5c",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-golang-testing",
+      "files": 2,
+      "bytes": 18466,
+      "installed_sha256": "8525ee4682b9f008f3f98d5c42edf35fa6fe0bc58541209755c79e46abfca0d8",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-hexagonal-architecture",
+      "files": 2,
+      "bytes": 13104,
+      "installed_sha256": "cc9e955153ca83ba4b751ae190a51fc5ad6db297b96775b1fc6622e4f4eb550d",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-investor-materials",
+      "files": 2,
+      "bytes": 4255,
+      "installed_sha256": "020c5dacc7e59519bed259b587e2c53c0b2dacf2e6a61e4af0b95209c4af13fb",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-investor-outreach",
+      "files": 2,
+      "bytes": 4152,
+      "installed_sha256": "f9272558434e5f38189d6022777214896fa7d399cc66f1ae8b14bf6cb26964ea",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-jpa-patterns",
+      "files": 2,
+      "bytes": 6260,
+      "installed_sha256": "cd33c1e61785d77cc3e9816138074ffa0cf51cf3d873661dbdb51612a6dab4fb",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-kotlin-coroutines-flows",
+      "files": 2,
+      "bytes": 9527,
+      "installed_sha256": "4ba1a6f8cc7ae30375fd5d40abc2e315cff3a4938f66c5fe44081412f56afc3a",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-kubernetes-patterns",
+      "files": 2,
+      "bytes": 21861,
+      "installed_sha256": "663d445fee3dc718136b4cb25f5c0fc673e7d534729551a3bd89cf811959d35d",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-laravel-patterns",
+      "files": 2,
+      "bytes": 12247,
+      "installed_sha256": "22ac83dcf506a32235a06c84a1f3d8a0aa1d084fd8b60fcadfd31ebad0391f25",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-latency-critical-systems",
+      "files": 2,
+      "bytes": 3997,
+      "installed_sha256": "521a21c36ed3f744b1d4c7d3072a2bacda756bfef272e4d0379f00a3e0b85fc7",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-marketing-campaign",
+      "files": 2,
+      "bytes": 6918,
+      "installed_sha256": "64dfbe12f07ade59c01ea394452a58dea47170e4fa13fd438b63703d0948e9c8",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-mysql-patterns",
+      "files": 2,
+      "bytes": 13776,
+      "installed_sha256": "c270ab27d42a20cb48403842341bdedb3b01a3990c47ccb9e078ff2ea9c30fdf",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-nestjs-patterns",
+      "files": 2,
+      "bytes": 8125,
+      "installed_sha256": "81652e0d62998aa214754fc00299dfd05992993ec16b448d44e6e8136fb968c1",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-production-audit",
+      "files": 2,
+      "bytes": 9265,
+      "installed_sha256": "ce82fd9183c245f8c84f190b53fed061f68339781875076d2bd5840185e596b9",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-rails-patterns",
+      "files": 2,
+      "bytes": 18212,
+      "installed_sha256": "28a9667df863e30ca506a095c799495f255c54aa218b6cd25341af746532201a",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-react-native-patterns",
+      "files": 2,
+      "bytes": 13383,
+      "installed_sha256": "1395a95ae26fbb92f0e0b5bdc0fd56b1b003dca2d4030094dba21d542f6d5376",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-react-testing",
+      "files": 2,
+      "bytes": 14947,
+      "installed_sha256": "a5e52eee28ce35c8978e6fa1c55d287a6caf6df88810442254b4a0ff3ba6a10f",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-rust-testing",
+      "files": 2,
+      "bytes": 13437,
+      "installed_sha256": "cefaf7651ff561496a99d4a6b6499e49a32b58f0cbb5fc3133d070c178f8baa7",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-springboot-patterns",
+      "files": 2,
+      "bytes": 11650,
+      "installed_sha256": "ae5bfeb20700112c9d8f1d87389ddc4531b1962fe537eb2751a1fbf676a641b1",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-swift-protocol-di-testing",
+      "files": 2,
+      "bytes": 7747,
+      "installed_sha256": "1d490ba1f7988686b712447be2a34cd00cafc2db6e9aee731ae3d2831e629c08",
+      "status": "passed"
+    },
+    {
+      "id": "ecc-swiftui-patterns",
+      "files": 2,
+      "bytes": 8668,
+      "installed_sha256": "78b4f5d40245f2e5da458cd9c8fa1f879daa99564efc28d48223a7f441fe5d4a",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-co-marketing",
+      "files": 4,
+      "bytes": 30134,
+      "installed_sha256": "01ff4bce7579f325111aaea6e7e259299e347e18d6959b1ff4a6a74dc766ede4",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-community-marketing",
+      "files": 4,
+      "bytes": 25119,
+      "installed_sha256": "ba4602a11ab83d6a1f13447a04a474d75bbf677155bfcc725ea73a3d7a6ea8d2",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-cro",
+      "files": 5,
+      "bytes": 33506,
+      "installed_sha256": "380be56d0c228915d0a66a7bc52f7114ed5d3667bcd053e5cbde683847c7bd59",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-emails",
+      "files": 6,
+      "bytes": 40315,
+      "installed_sha256": "eaf291fdb4906fa4c68dbd07dca06527f2e55eff6a1e8c161b8f7d2b673c5465",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-launch",
+      "files": 3,
+      "bytes": 24999,
+      "installed_sha256": "a52718bc4767a1737c34030b2896ad57056ced2eed59e176a12ab70875b6d68b",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-onboarding",
+      "files": 6,
+      "bytes": 34277,
+      "installed_sha256": "14450fd4841058154ba2a7d7e6107665794d47a90e8c921654221a713b4763d5",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-pricing",
+      "files": 7,
+      "bytes": 49373,
+      "installed_sha256": "25a03c8cded107df0bb5a559ec839f15bf700d304c79fd87852f4095a5e36c4b",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-referrals",
+      "files": 6,
+      "bytes": 33271,
+      "installed_sha256": "bedd6cbbdc81412d16aeef4eadd8241a2b253959b2d9fffff646cbb9aae67e61",
+      "status": "passed"
+    },
+    {
+      "id": "marketing-revops",
+      "files": 7,
+      "bytes": 56231,
+      "installed_sha256": "4a6c16d95cdebfef1787a7722e2beef925f6570266117dd57af4c546452f6fdc",
+      "status": "passed"
+    },
+    {
+      "id": "awesome-grpc-golang",
+      "files": 5,
+      "bytes": 49622,
+      "installed_sha256": "0f238e1d177e92a7edb906f22a774c621900e901d9a77ebe585a23cb4527d171",
+      "status": "passed"
+    },
+    {
+      "id": "awesome-observability-engineer",
+      "files": 4,
+      "bytes": 44412,
+      "installed_sha256": "5fadfb540f51920cab41b9d44685358b076a1b580dceb099fea128b235b3fdbf",
+      "status": "passed"
+    },
+    {
+      "id": "awesome-security-auditor",
+      "files": 4,
+      "bytes": 41370,
+      "installed_sha256": "6700af1d7060fd193347b01a929ba679fee8a5461be19a31d1a2b1c269772315",
+      "status": "passed"
+    },
+    {
+      "id": "awesome-terraform-specialist",
+      "files": 4,
+      "bytes": 39302,
+      "installed_sha256": "8cbdfd5260bd7b23e406684edb87c28307fc9dd5565cfd16d564d39ed343f72b",
+      "status": "passed"
+    },
+    {
+      "id": "awesome-threat-modeling-expert",
+      "files": 4,
+      "bytes": 32296,
+      "installed_sha256": "9f5c527cea26ebb921d8903494e664a9064a05718b808e43397a83579bcb3e55",
+      "status": "passed"
+    },
+    {
+      "id": "adhd-i-have-adhd",
+      "files": 4,
+      "bytes": 11346,
+      "installed_sha256": "1b6675d58f85a7dda069dddad6e49bc1fa55c55092f28bf70169a1b98ea237fa",
+      "status": "passed"
+    },
+    {
+      "id": "openai-aspnet-core",
+      "files": 18,
+      "bytes": 65141,
+      "installed_sha256": "827ab5f65489e521115f0520034bf8ce7d60f341d27d155d16ee8ecf1acb1a6e",
+      "status": "passed"
+    },
+    {
+      "id": "openai-winui-app",
+      "files": 22,
+      "bytes": 98906,
+      "installed_sha256": "b73e7db4260e733712a9ccd70e1643ae6e7684369ad73527d1daef75c1963838",
+      "status": "passed"
+    },
+    {
+      "id": "openai-security-threat-model",
+      "files": 6,
+      "bytes": 42430,
+      "installed_sha256": "5b17be35bf5a26815437e0dfae9019c79db67091272c253ccef954f0a34ad55d",
+      "status": "passed"
+    },
+    {
+      "id": "openai-security-best-practices",
+      "files": 14,
+      "bytes": 423310,
+      "installed_sha256": "304163c49a7196dba9028bc7765e7a8c4719c558740ec8ed30b9e13971c0767b",
+      "status": "passed"
+    },
+    {
+      "id": "openai-pdf",
+      "files": 5,
+      "bytes": 26240,
+      "installed_sha256": "db0b8d8ba225be62ab83fe9bdf0e54a54be7a2389d2f94ad35a5f1f5164476a9",
+      "status": "passed"
+    },
+    {
+      "id": "openai-cli-creator",
+      "files": 5,
+      "bytes": 38262,
+      "installed_sha256": "2491c4432260055c9f900ae8e05a9034835f05c10250f729de1adaf4e21da2b5",
+      "status": "passed"
+    },
+    {
+      "id": "openai-jupyter-notebook",
+      "files": 13,
+      "bytes": 42378,
+      "installed_sha256": "b7cd67d239771793d72e08936435aabfcf58c3cc24b280e4eb027d82c3ce9849",
+      "status": "passed"
+    },
+    {
+      "id": "openai-speech",
+      "files": 17,
+      "bytes": 60350,
+      "installed_sha256": "5023b05a354d4abc86f42fec40befc01a4b8b7bebcb431dc4ed0fca633b5d013",
+      "status": "passed"
+    },
+    {
+      "id": "openai-transcribe",
+      "files": 8,
+      "bytes": 36767,
+      "installed_sha256": "01c48f7dbc924155da4db41cee70f53da8bc1d76010e9fecf270a360be84a3ac",
+      "status": "passed"
+    },
+    {
+      "id": "openai-playwright",
+      "files": 10,
+      "bytes": 35207,
+      "installed_sha256": "30002bc5c98fa1667aefcd58305667312fe8e8b801688b7448dfc560f540c336",
+      "status": "passed"
+    },
+    {
+      "id": "openai-netlify-deploy",
+      "files": 9,
+      "bytes": 45212,
+      "installed_sha256": "feaea99ab6792044bc1359a24a430f37eaa1b25fc18c97b039e326a4c0371d5d",
+      "status": "passed"
+    },
+    {
+      "id": "google-cloud-run-basics",
+      "files": 9,
+      "bytes": 56085,
+      "installed_sha256": "4aa2512bb6fc990f0409ffd310b276a63cab5106ba28785ae9a2c52d953ddc86",
+      "status": "passed"
+    },
+    {
+      "id": "google-cloud-sql-basics",
+      "files": 9,
+      "bytes": 54604,
+      "installed_sha256": "973a2c45412fb5654bea2efaecd33878f45f4661ea2ab07dd2189e285bb96175",
+      "status": "passed"
+    },
+    {
+      "id": "google-bigquery-basics",
+      "files": 10,
+      "bytes": 36699,
+      "installed_sha256": "bb9f183330b25302b6b5f6dcd62e983a9d1be2f55f1721214cb4ae2105070df3",
+      "status": "passed"
+    },
+    {
+      "id": "google-bigquery-optimization",
+      "files": 7,
+      "bytes": 66651,
+      "installed_sha256": "e0070f63c1ec62940e388446d0aecc6e700f80d86151a4956174b1231a746921",
+      "status": "passed"
+    },
+    {
+      "id": "google-gke-basics",
+      "files": 7,
+      "bytes": 45780,
+      "installed_sha256": "1bed002f0795f573971ce486ae4a254890eeb026f631782fa7da102b7b1c9828",
+      "status": "passed"
+    },
+    {
+      "id": "google-gke-reliability",
+      "files": 2,
+      "bytes": 19577,
+      "installed_sha256": "6a3c86c3ec005c38def88b755227735877f706cad216358fa73b3a2148a9f1c2",
+      "status": "passed"
+    },
+    {
+      "id": "google-gke-workload-troubleshooting",
+      "files": 2,
+      "bytes": 30716,
+      "installed_sha256": "241e8c99c5da41526dd5cbb8e51de5f938ae35666eba22be1ebb389017db279a",
+      "status": "passed"
+    },
+    {
+      "id": "google-managed-airflow-dag-authoring",
+      "files": 2,
+      "bytes": 18229,
+      "installed_sha256": "60d7bf18c4e2c282076d59131bd0adc2811a1d75b13aa4ad25553c7d5d5d88dc",
+      "status": "passed"
+    },
+    {
+      "id": "google-retrieving-developer-knowledge",
+      "files": 5,
+      "bytes": 29546,
+      "installed_sha256": "b132df149ce729ccb2edd2dcf4d94b0a994a8bcd81f0a0d5feaec72de6f298a2",
+      "status": "passed"
+    },
+    {
+      "id": "google-cloud-logging-query-generation",
+      "files": 24,
+      "bytes": 114361,
+      "installed_sha256": "3c9f90c399fdc578a3d7edb84ad18201a93ef64d6b99f11ff49ee50f8515b46f",
+      "status": "passed"
+    },
+    {
+      "id": "google-developing-genkit-js",
+      "files": 21,
+      "bytes": 123419,
+      "installed_sha256": "100390a419ff65de5e2952a6d892326979462c425c4988c6afb87d4163f4e638",
+      "status": "passed"
+    },
+    {
+      "id": "google-developing-genkit-python",
+      "files": 18,
+      "bytes": 78780,
+      "installed_sha256": "2cba49b523f792f040b1049ebdcd257abbb69c4eabb495ec2ac51ec6e70b5ee4",
+      "status": "passed"
+    },
+    {
+      "id": "caveman-voice",
+      "files": 4,
+      "bytes": 21136,
+      "installed_sha256": "c3b9b43aa7cd4278dec3f21a643338432aaff2f7690437dd940ce1241b10d679",
+      "status": "passed"
+    },
+    {
+      "id": "research-and-synthesis",
+      "files": 2,
+      "bytes": 13670,
+      "installed_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b",
+      "status": "passed"
+    },
+    {
+      "id": "document-parsing",
+      "files": 2,
+      "bytes": 13935,
+      "installed_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+      "status": "passed"
+    },
+    {
+      "id": "agent-coordination",
+      "files": 2,
+      "bytes": 13677,
+      "installed_sha256": "eb2c517f65ed93b749201f0d8e889e37056f57a2eaae1fc48dce830dbfe2da85",
+      "status": "passed"
+    },
+    {
+      "id": "context-management",
+      "files": 2,
+      "bytes": 13111,
+      "installed_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+      "status": "passed"
+    },
+    {
+      "id": "desktop-integration",
+      "files": 2,
+      "bytes": 13675,
+      "installed_sha256": "a27587b85e5131d73dcc839cbce66a8d6b43b73b74c32f7caf15fce23ef12bb8",
+      "status": "passed"
+    },
+    {
+      "id": "release-operations",
+      "files": 2,
+      "bytes": 13184,
+      "installed_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f",
+      "status": "passed"
+    },
+    {
+      "id": "data-migrations",
+      "files": 2,
+      "bytes": 13189,
+      "installed_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe",
+      "status": "passed"
+    },
+    {
+      "id": "office-authoring",
+      "files": 2,
+      "bytes": 14201,
+      "installed_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+      "status": "passed"
+    },
+    {
+      "id": "ci-maintenance",
+      "files": 2,
+      "bytes": 13087,
+      "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+      "status": "passed"
+    },
+    {
+      "id": "mcp-integration",
+      "files": 2,
+      "bytes": 13456,
+      "installed_sha256": "d2a9208b6d7137e0479b3e992da281cabcb20301f42ac9f2c1de321755b71f93",
+      "status": "passed"
+    },
+    {
+      "id": "ai-system-evaluation",
+      "files": 2,
+      "bytes": 13992,
+      "installed_sha256": "30bae814114575f1709705531042a999c0b2e84794f91f9e28f66259d6ba1d01",
+      "status": "passed"
+    },
+    {
+      "id": "frontend-engineering",
+      "files": 2,
+      "bytes": 16317,
+      "installed_sha256": "b279d7d86c50470398e6b9f8083f2391761e0433c9e404fcf352eb42778440e9",
+      "status": "passed"
+    },
+    {
+      "id": "database-systems",
+      "files": 6,
+      "bytes": 30930,
+      "installed_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa",
+      "status": "passed"
+    },
+    {
+      "id": "security-judgment",
+      "files": 2,
+      "bytes": 13541,
+      "installed_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec",
+      "status": "passed"
+    },
+    {
+      "id": "work-planning",
+      "files": 2,
+      "bytes": 14301,
+      "installed_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332",
+      "status": "passed"
+    },
+    {
+      "id": "search-visibility",
+      "files": 2,
+      "bytes": 15523,
+      "installed_sha256": "65fefd6ba90203dad4f37e3666316b9687ffbbe3aba5a5ba74c4d7d7ceb62622",
+      "status": "passed"
+    },
+    {
+      "id": "vercel-composition-patterns",
+      "files": 15,
+      "bytes": 58854,
+      "installed_sha256": "8f49044ccd0d670be8044229f8c8c5bddec9f538ba2116694f2f15d4d4ca64e0",
+      "status": "passed"
+    },
+    {
+      "id": "vercel-react-best-practices",
+      "files": 77,
+      "bytes": 239358,
+      "installed_sha256": "3e2a7192b849b85867ac9bd3cbb1cb920b51b10fe12c6d6259d21e3cb98b42e0",
+      "status": "passed"
+    },
+    {
+      "id": "vercel-react-native-skills",
+      "files": 43,
+      "bytes": 167826,
+      "installed_sha256": "e56a7829e72bbaa148ebff9b712201bce57a01882b016e68fa4455e3dc94da0e",
+      "status": "passed"
+    },
+    {
+      "id": "vercel-react-view-transitions",
+      "files": 10,
+      "bytes": 130459,
+      "installed_sha256": "7a06bdad5a67601e81cef23f7907a6389737cbbae6d1c39fff2ed029bb4a4478",
+      "status": "passed"
+    },
+    {
+      "id": "addy-api-and-interface-design",
+      "files": 2,
+      "bytes": 16936,
+      "installed_sha256": "b6aef6f1ebd21fab7fabd05201dc05bd4e77b00affa3cfb79a311ef7105eacb6",
+      "status": "passed"
+    },
+    {
+      "id": "addy-code-review-and-quality",
+      "files": 4,
+      "bytes": 51240,
+      "installed_sha256": "0f9e82177260b682dd31861fa1caeed8a10400c4bc41481b33b62e065b784b45",
+      "status": "passed"
+    },
+    {
+      "id": "addy-context-engineering",
+      "files": 2,
+      "bytes": 17558,
+      "installed_sha256": "598de14f88110a53b9f0a72f8528d0b439013abab52a4f16b5791fa212008c1b",
+      "status": "passed"
+    },
+    {
+      "id": "addy-debugging-and-error-recovery",
+      "files": 2,
+      "bytes": 13076,
+      "installed_sha256": "96beff66dfd0942a2d00df63979f8d8b6c3c8ed478d01bf0c46d6b8546f61fab",
+      "status": "passed"
+    },
+    {
+      "id": "addy-documentation-and-adrs",
+      "files": 2,
+      "bytes": 11899,
+      "installed_sha256": "72db080113a8685985c260cb14203be706a25f25b3151132e2672b50148ae8b6",
+      "status": "passed"
+    },
+    {
+      "id": "addy-idea-refine",
+      "files": 6,
+      "bytes": 41877,
+      "installed_sha256": "e457bda94e51b93aabce56dd7b927c625c1330c6b7bb182bf9914e5e0b498949",
+      "status": "passed"
+    },
+    {
+      "id": "addy-incremental-implementation",
+      "files": 3,
+      "bytes": 15539,
+      "installed_sha256": "2e0d0771e4d13ce316b3c7df6787d8c5587e745d1bc41944873b90a99aa90689",
+      "status": "passed"
+    },
+    {
+      "id": "addy-observability-and-instrumentation",
+      "files": 3,
+      "bytes": 21172,
+      "installed_sha256": "85b21f5c392dbc878efcee2c230009bf8fd422d7cab6ffc87528b06ab705a499",
+      "status": "passed"
+    },
+    {
+      "id": "addy-performance-optimization",
+      "files": 4,
+      "bytes": 41821,
+      "installed_sha256": "4d028f16bd8575ec00428707d3cf79f10799778d3d9e5b59a3fff41938335b1c",
+      "status": "passed"
+    },
+    {
+      "id": "addy-planning-and-task-breakdown",
+      "files": 3,
+      "bytes": 16422,
+      "installed_sha256": "5ff9b55f30c4b69f4bd1633860a15446cf0836fad704ba7ba5f0c6442ab83485",
+      "status": "passed"
+    },
+    {
+      "id": "addy-security-and-hardening",
+      "files": 4,
+      "bytes": 47363,
+      "installed_sha256": "995d94bd1074b4e01af3526415c8135dc786b732e8ca5337a487bcc8d770addb",
+      "status": "passed"
+    },
+    {
+      "id": "addy-source-driven-development",
+      "files": 2,
+      "bytes": 12139,
+      "installed_sha256": "866faad8e0efe9d7cc366787450ace4c5f6788fdd43de2adab0a36da69ca6371",
+      "status": "passed"
+    },
+    {
+      "id": "addy-test-driven-development",
+      "files": 3,
+      "bytes": 26129,
+      "installed_sha256": "2ebd45f6635a1f9c9d628ae6dcb94215ce76e8ec56b8cee05f15bbdbcad38cde",
+      "status": "passed"
+    }
+  ],
+  "installation": [
+    {
+      "id": "debugging",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "debugging"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "test-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "test-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "architecture-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "architecture-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "motion-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "motion-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "experiment-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "experiment-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "search-audit",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "search-audit"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "conversion-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "conversion-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "customer-research",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "customer-research"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-domain-modeling",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-domain-modeling"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-mobile-native",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-mobile-native"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-break-ui",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-break-ui"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-ask-sonner",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-ask-sonner"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-contract-first",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-contract-first"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-api-connector",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-api-connector"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-api-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-api-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-benchmark-optimization",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-benchmark-optimization"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-market-research",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-market-research"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-product-context",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-product-context"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-competitors",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-competitors"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-code-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills",
+        "matt-code-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-codebase-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-diagnosing-bugs",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-diagnosing-bugs"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-grill-with-docs",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-grilling",
+        "matt-domain-modeling",
+        "matt-grill-with-docs"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-implement",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design",
+        "matt-tdd",
+        "matt-setup-matt-pocock-skills",
+        "matt-code-review",
+        "matt-implement"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-implement-spec",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design",
+        "matt-tdd",
+        "matt-setup-matt-pocock-skills",
+        "matt-code-review",
+        "matt-to-spec",
+        "matt-to-tickets",
+        "matt-implement-spec"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-improve-codebase-architecture",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design",
+        "matt-grilling",
+        "matt-domain-modeling",
+        "matt-improve-codebase-architecture"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-prototype",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-prototype"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-research",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-research"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-retro",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-writing-for-agents",
+        "matt-retro"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-setup-matt-pocock-skills",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-tdd",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design",
+        "matt-tdd"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-to-spec",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills",
+        "matt-to-spec"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-to-tickets",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills",
+        "matt-to-tickets"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-triage",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills",
+        "matt-grilling",
+        "matt-domain-modeling",
+        "matt-triage"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-wayfinder",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-matt-pocock-skills",
+        "matt-grilling",
+        "matt-domain-modeling",
+        "matt-research",
+        "matt-prototype",
+        "matt-wayfinder"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-wizard",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-wizard"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-setup-ts-deep-modules",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-codebase-design",
+        "matt-setup-ts-deep-modules"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-git-guardrails-claude-code",
+      "agents": [
+        "claude"
+      ],
+      "unsupported_agents_rejected": [
+        "codex"
+      ],
+      "closure": [
+        "matt-git-guardrails-claude-code"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-migrate-to-shoehorn",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-migrate-to-shoehorn"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-scaffold-exercises",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-scaffold-exercises"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-setup-pre-commit",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-setup-pre-commit"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-grill-me",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-grilling",
+        "matt-grill-me"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-grilling",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-grilling"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-handoff",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-handoff"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-teach",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-teach"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-to-questionnaire",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-to-questionnaire"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-wait-what",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-wait-what"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "matt-writing-for-agents",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "matt-writing-for-agents"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-dispatching-parallel-agents",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-dispatching-parallel-agents"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-executing-plans",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-using-git-worktrees",
+        "superpowers-requesting-code-review",
+        "superpowers-finishing-a-development-branch",
+        "superpowers-subagent-driven-development",
+        "superpowers-test-driven-development",
+        "superpowers-verification-before-completion",
+        "superpowers-systematic-debugging",
+        "superpowers-executing-plans"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-finishing-a-development-branch",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-finishing-a-development-branch"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-receiving-code-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-receiving-code-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-requesting-code-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-requesting-code-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-subagent-driven-development",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-using-git-worktrees",
+        "superpowers-requesting-code-review",
+        "superpowers-finishing-a-development-branch",
+        "superpowers-subagent-driven-development"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-systematic-debugging",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-test-driven-development",
+        "superpowers-verification-before-completion",
+        "superpowers-systematic-debugging"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-test-driven-development",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-test-driven-development"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-using-git-worktrees",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-using-git-worktrees"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-verification-before-completion",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-verification-before-completion"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "superpowers-writing-plans",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "superpowers-writing-plans"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "gstack-openclaw-ceo-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "gstack-openclaw-ceo-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "gstack-openclaw-investigate",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "gstack-openclaw-investigate"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "gstack-openclaw-office-hours",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "gstack-openclaw-office-hours"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "gstack-openclaw-retro",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "gstack-openclaw-retro"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "taste-minimalist-skill",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "taste-minimalist-skill"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "taste-brutalist-skill",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "taste-brutalist-skill"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "taste-soft-skill",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "taste-soft-skill"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "taste-redesign-skill",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "taste-redesign-skill"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-prototype",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-prototype"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-pick-ui-library",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-pick-ui-library"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "emil-animation-vocabulary",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "emil-animation-vocabulary"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ui-ux-pro-max-banner-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ui-ux-pro-max-banner-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-article-magazine",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-article-magazine"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-card-twitter",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-card-twitter"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-card-xiaohongshu",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-card-xiaohongshu"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-data-report",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-data-report"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-deck-guizang-editorial",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-deck-guizang-editorial"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-deck-open-slide-canvas",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-deck-open-slide-canvas"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-deck-swiss-international",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-deck-swiss-international"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-doc-kami-parchment",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-doc-kami-parchment"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-mockup-device-3d",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-mockup-device-3d"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-poster-hero",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-poster-hero"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-ppt-keynote",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-ppt-keynote"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-resume-modern",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-resume-modern"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-frame-data-chart-nyt",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-frame-data-chart-nyt"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-frame-flowchart-sticky",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-frame-flowchart-sticky"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-social-reddit-card",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-social-reddit-card"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-social-spotify-card",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-social-spotify-card"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-social-x-post-card",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-social-x-post-card"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-reference-design-contract",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-reference-design-contract"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-research-decision-room",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-research-decision-room"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-login-flow",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-login-flow"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "open-design-faq-page",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "open-design-faq-page"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-android-clean-architecture",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-android-clean-architecture"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-architecture-decision-records",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-architecture-decision-records"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-article-writing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-article-writing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-brand-voice",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-brand-voice"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-compose-multiplatform-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-compose-multiplatform-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-content-engine",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-content-engine"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-cpp-testing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-cpp-testing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-django-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-django-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-dotnet-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-dotnet-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-fastapi-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-fastapi-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-flutter-dart-code-review",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-flutter-dart-code-review"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-golang-testing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-golang-testing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-hexagonal-architecture",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-hexagonal-architecture"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-investor-materials",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-investor-materials"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-investor-outreach",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-investor-outreach"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-jpa-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-jpa-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-kotlin-coroutines-flows",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-kotlin-coroutines-flows"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-kubernetes-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-kubernetes-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-laravel-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-laravel-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-latency-critical-systems",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-latency-critical-systems"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-marketing-campaign",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-marketing-campaign"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-mysql-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-mysql-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-nestjs-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-nestjs-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-production-audit",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-production-audit"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-rails-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-rails-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-react-native-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-react-native-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-react-testing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-react-testing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-rust-testing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-rust-testing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-springboot-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-springboot-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-swift-protocol-di-testing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-swift-protocol-di-testing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ecc-swiftui-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ecc-swiftui-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-co-marketing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-co-marketing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-community-marketing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-community-marketing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-cro",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-cro"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-emails",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-emails"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-launch",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-launch"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-onboarding",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-onboarding"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-pricing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-pricing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-referrals",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-referrals"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "marketing-revops",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "marketing-revops"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "awesome-grpc-golang",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "awesome-grpc-golang"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "awesome-observability-engineer",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "awesome-observability-engineer"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "awesome-security-auditor",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "awesome-security-auditor"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "awesome-terraform-specialist",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "awesome-terraform-specialist"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "awesome-threat-modeling-expert",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "awesome-threat-modeling-expert"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "adhd-i-have-adhd",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "adhd-i-have-adhd"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-aspnet-core",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-aspnet-core"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-winui-app",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-winui-app"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-security-threat-model",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-security-threat-model"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-security-best-practices",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-security-best-practices"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-pdf",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-pdf"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-cli-creator",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-cli-creator"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-jupyter-notebook",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-jupyter-notebook"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-speech",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-speech"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-transcribe",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-transcribe"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-playwright",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-playwright"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "openai-netlify-deploy",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "openai-netlify-deploy"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-cloud-run-basics",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-cloud-run-basics"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-cloud-sql-basics",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-cloud-sql-basics"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-bigquery-basics",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-bigquery-basics"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-bigquery-optimization",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-bigquery-optimization"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-gke-basics",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-gke-basics"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-gke-reliability",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-gke-reliability"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-gke-workload-troubleshooting",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-gke-workload-troubleshooting"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-managed-airflow-dag-authoring",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-managed-airflow-dag-authoring"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-retrieving-developer-knowledge",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-retrieving-developer-knowledge"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-cloud-logging-query-generation",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-cloud-logging-query-generation"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-developing-genkit-js",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-developing-genkit-js"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "google-developing-genkit-python",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "google-developing-genkit-python"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "caveman-voice",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "caveman-voice"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "research-and-synthesis",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "research-and-synthesis"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "document-parsing",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "document-parsing"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "agent-coordination",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "agent-coordination"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "context-management",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "context-management"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "desktop-integration",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "desktop-integration"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "release-operations",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "release-operations"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "data-migrations",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "data-migrations"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "office-authoring",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "office-authoring"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ci-maintenance",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ci-maintenance"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "mcp-integration",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "mcp-integration"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "ai-system-evaluation",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "ai-system-evaluation"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "frontend-engineering",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "frontend-engineering"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "database-systems",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "database-systems"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "security-judgment",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "security-judgment"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "work-planning",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "work-planning"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "search-visibility",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "search-visibility"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "vercel-composition-patterns",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "vercel-composition-patterns"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "vercel-react-best-practices",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "vercel-react-best-practices"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "vercel-react-native-skills",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "vercel-react-native-skills"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "vercel-react-view-transitions",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "vercel-react-view-transitions"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-api-and-interface-design",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-api-and-interface-design"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-code-review-and-quality",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-code-review-and-quality"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-context-engineering",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-context-engineering"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-debugging-and-error-recovery",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-debugging-and-error-recovery"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-documentation-and-adrs",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-documentation-and-adrs"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-idea-refine",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-idea-refine"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-incremental-implementation",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-incremental-implementation"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-observability-and-instrumentation",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-observability-and-instrumentation"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-performance-optimization",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-performance-optimization"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-planning-and-task-breakdown",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-planning-and-task-breakdown"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-security-and-hardening",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-security-and-hardening"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-source-driven-development",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-source-driven-development"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    },
+    {
+      "id": "addy-test-driven-development",
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "unsupported_agents_rejected": [],
+      "closure": [
+        "addy-test-driven-development"
+      ],
+      "hash_receipt_modes_idempotence": "passed"
+    }
+  ],
+  "network": [
+    {
+      "id": "vercel-composition-patterns",
+      "status": "passed",
+      "installed_sha256": "8f49044ccd0d670be8044229f8c8c5bddec9f538ba2116694f2f15d4d4ca64e0"
+    },
+    {
+      "id": "vercel-react-best-practices",
+      "status": "passed",
+      "installed_sha256": "3e2a7192b849b85867ac9bd3cbb1cb920b51b10fe12c6d6259d21e3cb98b42e0"
+    },
+    {
+      "id": "vercel-react-native-skills",
+      "status": "passed",
+      "installed_sha256": "e56a7829e72bbaa148ebff9b712201bce57a01882b016e68fa4455e3dc94da0e"
+    },
+    {
+      "id": "vercel-react-view-transitions",
+      "status": "passed",
+      "installed_sha256": "7a06bdad5a67601e81cef23f7907a6389737cbbae6d1c39fff2ed029bb4a4478"
+    },
+    {
+      "id": "addy-api-and-interface-design",
+      "status": "passed",
+      "installed_sha256": "b6aef6f1ebd21fab7fabd05201dc05bd4e77b00affa3cfb79a311ef7105eacb6"
+    },
+    {
+      "id": "addy-code-review-and-quality",
+      "status": "passed",
+      "installed_sha256": "0f9e82177260b682dd31861fa1caeed8a10400c4bc41481b33b62e065b784b45"
+    },
+    {
+      "id": "addy-context-engineering",
+      "status": "passed",
+      "installed_sha256": "598de14f88110a53b9f0a72f8528d0b439013abab52a4f16b5791fa212008c1b"
+    },
+    {
+      "id": "addy-debugging-and-error-recovery",
+      "status": "passed",
+      "installed_sha256": "96beff66dfd0942a2d00df63979f8d8b6c3c8ed478d01bf0c46d6b8546f61fab"
+    },
+    {
+      "id": "addy-documentation-and-adrs",
+      "status": "passed",
+      "installed_sha256": "72db080113a8685985c260cb14203be706a25f25b3151132e2672b50148ae8b6"
+    },
+    {
+      "id": "addy-idea-refine",
+      "status": "passed",
+      "installed_sha256": "e457bda94e51b93aabce56dd7b927c625c1330c6b7bb182bf9914e5e0b498949"
+    },
+    {
+      "id": "addy-incremental-implementation",
+      "status": "passed",
+      "installed_sha256": "2e0d0771e4d13ce316b3c7df6787d8c5587e745d1bc41944873b90a99aa90689"
+    },
+    {
+      "id": "addy-observability-and-instrumentation",
+      "status": "passed",
+      "installed_sha256": "85b21f5c392dbc878efcee2c230009bf8fd422d7cab6ffc87528b06ab705a499"
+    },
+    {
+      "id": "addy-performance-optimization",
+      "status": "passed",
+      "installed_sha256": "4d028f16bd8575ec00428707d3cf79f10799778d3d9e5b59a3fff41938335b1c"
+    },
+    {
+      "id": "addy-planning-and-task-breakdown",
+      "status": "passed",
+      "installed_sha256": "5ff9b55f30c4b69f4bd1633860a15446cf0836fad704ba7ba5f0c6442ab83485"
+    },
+    {
+      "id": "addy-security-and-hardening",
+      "status": "passed",
+      "installed_sha256": "995d94bd1074b4e01af3526415c8135dc786b732e8ca5337a487bcc8d770addb"
+    },
+    {
+      "id": "addy-source-driven-development",
+      "status": "passed",
+      "installed_sha256": "866faad8e0efe9d7cc366787450ace4c5f6788fdd43de2adab0a36da69ca6371"
+    },
+    {
+      "id": "addy-test-driven-development",
+      "status": "passed",
+      "installed_sha256": "2ebd45f6635a1f9c9d628ae6dcb94215ce76e8ec56b8cee05f15bbdbcad38cde"
+    }
+  ],
+  "authored": [
+    {
+      "name": "agent-coordination",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "8200180f64cb793840993718aaf4477f8ae0897fcb2cede590859515405dd2ad"
+    },
+    {
+      "name": "ai-system-evaluation",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "0c18a77446b67071954736aa44af44aea5564baac10a3b8ccda8ed208f8f2db2"
+    },
+    {
+      "name": "architecture-review",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "9259065378b6df6042a96ac025e7c5f9d81ebbe8d3fd9251aaba9b61f2393edb"
+    },
+    {
+      "name": "ci-maintenance",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "c9b370f82a8f328134cc4f6f9b1dca53bfe0058640f11121ac3085a9cb97013e"
+    },
+    {
+      "name": "context-management",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "d4c1685540701904c0541f69884d9ee332715a8b686eba8becf7662013a475ab"
+    },
+    {
+      "name": "conversion-review",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "9ba68e7024f79886e3a198451d32b1d935f876ace8b5b1e11d106ae291cf6fc1"
+    },
+    {
+      "name": "customer-research",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "303b768e57e564d40688f322d25023efea62e1f695bccabce312a29c73b2fbd4"
+    },
+    {
+      "name": "data-migrations",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "d96459759efc34c66d4218ac08ae48d6e453e233bdd388a090cc2369235b9073"
+    },
+    {
+      "name": "database-systems",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "7e8bb6b7afba3119d3943ac03d8674be24a73d565d6b6e7c0b8299d7dd8fb208"
+    },
+    {
+      "name": "debugging",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "56df338ff967bfb567399c18656b1c3916889b43240e2a1d969383bef7b6f287"
+    },
+    {
+      "name": "desktop-integration",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "e004646e0cbbb9b635ea292e4fa7eee3798dd8dc1e11c2d72c2463cc9c5b06e3"
+    },
+    {
+      "name": "document-parsing",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "b715b67145c2299cae436019ef662769f4f89df56aa44c8bc6ce42c99f775450"
+    },
+    {
+      "name": "document-workflow",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "8763b143c4f8899a98d42c910111e0720094e1f895102d09cf38738811683695"
+    },
+    {
+      "name": "engineering-judgment",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "98be58aeaae77c68fa5fa4d6afe7c464dad5589f5c2822bdf7ccd47a29efe1ed"
+    },
+    {
+      "name": "experiment-design",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "4fcd22f6b8f2b81408ac7d3b603a7b5abb4c130952674330635eccaeb3f3fc0d"
+    },
+    {
+      "name": "frontend-engineering",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "fe77574328c3abcd40def5fd84f0851a7bad1a4b8be591f892568f1e7a452706"
+    },
+    {
+      "name": "interface-design",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "2d4ea538c62c9d666058719fac62e84dc70e1539c9b0fce01bc9898ac2c7a5cf"
+    },
+    {
+      "name": "marketing-writing",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b"
+    },
+    {
+      "name": "mcp-integration",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "b1cbc417986d94852390b5576cdc766ee9af50bd857735055798c5039ad856f2"
+    },
+    {
+      "name": "motion-design",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "fc16e1a359a86ce24b359ba5d5d3f4413772894a6fe18cac18e5976583632e28"
+    },
+    {
+      "name": "office-authoring",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "de2bc5cb208c35e9c6e3dbc22210d609825a2666289802519e28dd0d0646531c"
+    },
+    {
+      "name": "release-operations",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "df1a6d5cc9139a38823be50d356a9cb144b6608dfa9481852ff264a7a4ee90aa"
+    },
+    {
+      "name": "research-and-synthesis",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "de8b08a98e270226bdfba28e8a8cceee756295fbfd10d635d56089e1570bec7e"
+    },
+    {
+      "name": "search-audit",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "cb9da00a13de6e02fe660b64ece4e6148f8bad031abe8fa585a5433e70d5fc55"
+    },
+    {
+      "name": "search-visibility",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "e8d2b0d1b0af20204ac7d2b4f2e963a33a5417d9c0cc07a19f49fc4520b839d1"
+    },
+    {
+      "name": "security-judgment",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "53d3fd6e568370183a0ef98813b1d11a4b333efaf55ff8871ec83b21c34c60a4"
+    },
+    {
+      "name": "skill-catalog",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "2f475ba13624b21a12a6520192de1fcb0f3a2a451440384238f329e4e2f03289"
+    },
+    {
+      "name": "test-design",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "3f332138bd19ccf712aec1769f0ad0a41f5c74e2176b0f7bd59f43aceae2708c"
+    },
+    {
+      "name": "work-planning",
+      "status": "passed",
+      "output": "Skill is valid!",
+      "payload_hash": "f8df167d08971326d0274edc547835056577e158ef049e0cc1c7d09af3469eee"
+    }
+  ],
+  "failures": [],
+  "network_cache_sources": [
+    {
+      "repository": "vercel-labs/agent-skills",
+      "commit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "archive_bytes": 841046
+    },
+    {
+      "repository": "addyosmani/agent-skills",
+      "commit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+      "archive_bytes": 350010
+    }
+  ],
+  "validator": {
+    "path": "/Users/nazmi/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+    "sha256": "ee6dba90f44d37171c5a6edb8095979c54919ff6822c1a907afca2e78c48738c",
+    "python": "/tmp/shared-ai-catalog-review.P6IB91/validation-venv/bin/python"
+  },
+  "inputs_unchanged": {
+    "registry/catalog.json": true,
+    "lib/catalog.py": true
+  },
+  "summary": {
+    "project_payloads_passed": 195,
+    "project_root_selections_supported_agents_passed": 195,
+    "project_root_selections_both_agents_passed": 194,
+    "new_network_payloads_passed": 17,
+    "authored_skills_passed": 29,
+    "authored_skills_total": 29,
+    "failures": 0
+  }
+}

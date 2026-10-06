@@ -1,64 +1,27 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('codex', 'claude')]
+    [ValidateSet('codex', 'claude', 'both')]
     [string]$Agent,
-    [string]$SharedDir
+    [string]$SharedDir,
+    [ValidateSet('auto', 'copy', 'link')]
+    [string]$Mode = 'auto'
 )
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-
-if ([string]::IsNullOrWhiteSpace($SharedDir)) {
-    $SharedDir = Join-Path $PSScriptRoot '..'
+if ([string]::IsNullOrWhiteSpace($SharedDir)) { $SharedDir = Join-Path $PSScriptRoot '..' }
+$entry = Join-Path $SharedDir 'ai.py'
+if (-not (Test-Path -LiteralPath $entry -PathType Leaf)) { throw "Missing personal harness: $entry" }
+# auto uses managed copies on Windows; Developer Mode is unnecessary for copies.
+if (Get-Command py -ErrorAction SilentlyContinue) {
+    & py -3 -c 'import sys; raise SystemExit(sys.version_info < (3, 9))'
+    if ($LASTEXITCODE -ne 0) { throw 'Python 3.9 or later is required.' }
+    & py -3 $entry sync --target $Agent --mode $Mode
 }
-$sharedItem = Get-Item -LiteralPath $SharedDir -Force -ErrorAction SilentlyContinue
-if ($null -eq $sharedItem -or -not $sharedItem.PSIsContainer) {
-    throw "Missing shared directory: $SharedDir"
+elseif (Get-Command python -ErrorAction SilentlyContinue) {
+    & python -c 'import sys; raise SystemExit(sys.version_info < (3, 9))'
+    if ($LASTEXITCODE -ne 0) { throw 'Python 3.9 or later is required.' }
+    & python $entry sync --target $Agent --mode $Mode
 }
-$sourcePath = Join-Path $sharedItem.FullName 'components\AGENTS.md'
-if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
-    throw "Missing shared source: $sourcePath"
-}
-
-if ($Agent -eq 'codex') {
-    $agentDir = Join-Path $env:USERPROFILE '.codex'
-    $instructionFile = 'AGENTS.md'
-}
-else {
-    $agentDir = Join-Path $env:USERPROFILE '.claude'
-    $instructionFile = 'CLAUDE.md'
-}
-$destinationPath = Join-Path $agentDir $instructionFile
-$existingItem = Get-Item -LiteralPath $destinationPath -Force -ErrorAction SilentlyContinue
-if ($null -ne $existingItem) {
-    if ($existingItem.LinkType -ne 'SymbolicLink') {
-        throw "Refusing to replace non-symbolic-link: $destinationPath"
-    }
-    if ([string]::Equals([string]$existingItem.Target, $sourcePath, [System.StringComparison]::OrdinalIgnoreCase)) {
-        Write-Output "$destinationPath is already linked."
-        return
-    }
-}
-
-New-Item -ItemType Directory -Path $agentDir -Force | Out-Null
-$temporaryPath = Join-Path $agentDir ('.{0}.new-{1}' -f $instructionFile, [guid]::NewGuid().ToString('N'))
-try {
-    New-Item -ItemType SymbolicLink -Path $temporaryPath -Target $sourcePath | Out-Null
-}
-catch {
-    throw "Unable to create a symbolic link. Enable Windows Developer Mode or run PowerShell as Administrator, then retry. Original error: $($_.Exception.Message)"
-}
-
-try {
-    if ($null -ne $existingItem) {
-        Remove-Item -LiteralPath $destinationPath -Force
-    }
-    Move-Item -LiteralPath $temporaryPath -Destination $destinationPath
-}
-finally {
-    if (Test-Path -LiteralPath $temporaryPath) {
-        Remove-Item -LiteralPath $temporaryPath -Force
-    }
-}
-Write-Output "Linked $destinationPath -> $sourcePath"
+else { throw 'Python 3.9 or later is required.' }
+exit $LASTEXITCODE

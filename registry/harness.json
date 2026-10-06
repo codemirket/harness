@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "name": "personal-ai",
+  "version": "1.0.0",
+  "global_skills": [
+    "skill-catalog",
+    "engineering-judgment",
+    "interface-design",
+    "marketing-writing",
+    "document-workflow",
+    "research-and-synthesis",
+    "document-parsing",
+    "office-authoring",
+    "agent-coordination",
+    "context-management",
+    "ci-maintenance",
+    "ai-system-evaluation",
+    "security-judgment",
+    "work-planning"
+  ],
+  "targets": {
+    "codex": {
+      "instructions": "instructions/AGENTS.md",
+      "instruction_destination": ".codex/AGENTS.md",
+      "skills_destination": ".agents/skills"
+    },
+    "claude": {
+      "instructions": "instructions/CLAUDE.md",
+      "instruction_destination": ".claude/CLAUDE.md",
+      "skills_destination": ".claude/skills"
+    }
+  },
+  "bundles": {
+    "personal-foundation": {
+      "description": "Personal global reasoning, research, document and collaboration skills.",
+      "global_skills": true,
+      "profiles": []
+    },
+    "web-engineering": {
+      "description": "React/Next and Node/NestJS web engineering, quality, browser tests and API integrations.",
+      "profiles": [
+        "full-stack",
+        "backend-node",
+        "testing-web",
+        "integrations",
+        "react-next",
+        "react-composition",
+        "web-quality"
+      ]
+    },
+    "design-studio": {
+      "description": "Interface exploration, redesign, motion and HTML publishing.",
+      "profiles": [
+        "design-prototyping",
+        "design-redesign",
+        "html-publications"
+      ]
+    },
+    "research-documents": {
+      "description": "Evidence-based research, extraction and editable document creation.",
+      "profiles": [
+        "research",
+        "documents"
+      ]
+    },
+    "marketing-growth": {
+      "description": "Positioning, campaigns, content, experimentation and growth operations.",
+      "profiles": [
+        "marketing-strategy",
+        "marketing-growth",
+        "marketing-content",
+        "search-visibility"
+      ]
+    },
+    "engineering-operations": {
+      "description": "Architecture, data integrity, security, observability and release operations.",
+      "profiles": [
+        "architecture",
+        "databases",
+        "security",
+        "operations",
+        "collaboration"
+      ]
+    }
+  },
+  "runtime_policy": "Skill registration and plugin export do not run upstream executables, install dependencies, alter host permissions, or connect accounts. Manual runtime entries require their recorded integration work; no unresolved runtime is part of the default installation."
+}
