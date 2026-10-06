@@ -17,6 +17,16 @@ For the four React candidates every individual rule/reference source was read (1
 
 All four are plain Markdown/JSON payloads: no pnpm build or package runtime is required to consume them. Their local README build instructions concern upstream authoring. Exact adaptations are stored per entry in [catalog.json](../../registry/catalog.json). They complement engineering-judgment/interface-design; they overlap existing React/performance/animation candidates, so select the most relevant one per task rather than activating every overlapping suite.
 
+## Compiled navigation repair — 2026-10-06
+
+The maje-websites migration identified 30 incorrectly based Markdown links in the compiled `AGENTS.md` companions: three in `vercel-react-best-practices` and 27 in `vercel-react-view-transitions`. The generated documents retained relative destinations from their original `rules/` or `references/` files, including two `../SKILL.md` links that need the skill root. Every referenced resource was already included; this was a navigation defect, not missing payload content.
+
+The complete pinned archive above was fetched and both existing source and adapted hashes verified before repair. Nine exact-count catalog replacements change only the two `AGENTS.md` files, preserving URL fragments. Source rule/reference files, integration notes, source pins, source hashes and root README license declarations remain unchanged. The new installed hashes are `a88bc1bcccdf68cbb8088512cbd9e4e048e99b5b36b85fc546bc8a318106235f` (best practices) and `8ad1e96c32290f4061991d32316a07e1bae99f7bf61d71c6f3929e70fcd700e9` (view transitions).
+
+[Occurrence-level evidence](../evidence/vercel-navigation-2026-10-06.json) records every original/adapted destination, original line, included resource and old/new hash. Real pinned payloads installed into temporary projects for both Codex and Claude Code: four fresh adapted copies passed doctor; four intact prior copies updated; all 60 reviewed link instances resolved with four unchanged license instances. Source and adaptation tampering were rejected independently, a modified copy blocked writes and remained untouched, and repeat synchronization was unchanged. Six [offline regression tests](../../tests/test_payload_navigation.py) exercise the exact reviewed destinations, fragments, installation behavior and hash/count failures without network access. They use compact destination fixtures; the full-payload checks are separately recorded in the evidence.
+
+This repair does not classify illustrative project paths, optional sibling references or unavailable runtime tools as missing payload defects. No existing project or global installation was synchronized, and no upstream React workflow was executed.
+
 ## agent-browser installation contract
 
 The [hidden stub](https://github.com/vercel-labs/agent-browser/blob/6d3e22c673a44271d0c213c2fef722e0aeba627d/skills/agent-browser/SKILL.md) loads runtime guides through `agent-browser skills get core` and other names. Copying it or adding the Claude marketplace entry does not install a browser or CLI. Its description explicitly prefers agent-browser over built-in tools, which conflicts with personal task-based selection. Host-specific Bash allowed-tools metadata is neither a Codex permission grant nor a reason to bypass approval policy.

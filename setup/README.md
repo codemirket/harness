@@ -98,13 +98,74 @@ Synchronization does not prune removed selections or uninstall any app. No permi
 
 ## Project capabilities and plugins
 
-Project initialization defaults to Codex:
+Project initialization defaults to Codex and includes `project-foundation` from
+`registry/harness.json` automatically. Its 12 reviewed authored skills cover
+planning, context, collaboration, research, security, architecture, debugging,
+tests, CI, releases, document parsing and document creation. They are portable
+fundamentals; agents read only the workflows relevant to the current task.
+
+Inspect the project's actual stack, scope and roadmap before adding specialists.
+Choose capabilities needed now or for credible later stages, such as deployment
+for an API intended for production. Do not select every profile or every catalog
+entry. Explain the fit of additions; a hypothetical future use alone is not a
+reason to install an unrelated platform or toolchain.
 
 ```sh
-python3 ai.py project init --project /absolute/project --profile full-stack --profile backend-node
+python3 ai.py project init --project /absolute/project
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
 Use `--target both` if direct Claude Code sessions also need those skills. Review the project's manifest and lock with its other configuration. Sync downloads only reviewed pinned payloads and never executes upstream helpers. Alternatively, [export Codex plugins](../docs/plugins.md), avoiding duplicate installation of the same skill set.
+
+Pass repeatable `--profile` and `--skill` to init for justified specialties. For
+example, a Node API with a database can add `--profile backend-node --skill
+database-systems`. The foundation remains included and duplicate IDs resolve once.
+Use `--skip <id>` for deliberate project exceptions, never for required companions.
+
+When a new capability becomes useful, register it durably in the existing project
+catalog rather than keeping an untracked one-off copy. For a database addition:
+
+```sh
+python3 ai.py project add --project /absolute/project --skill database-systems --dry-run
+python3 ai.py project add --project /absolute/project --skill database-systems
+python3 ai.py project sync --project /absolute/project
+python3 ai.py project doctor --project /absolute/project
+```
+
+Add includes configured default profiles, deduplicates selections, and preserves
+existing profiles, skills, targets, skips and unrelated manifest fields. A repeat
+with no change preserves the file. Its dry run reports the candidate and planned
+installations without writes or downloads. Validation rejects incompatible targets,
+conflicts, collisions, required-companion omissions and modified destinations
+before changing the declaration. Explicitly adding an ID already in `skip` fails
+instead of silently changing the exception. Manual, excluded and unreviewed IDs
+remain unavailable.
+
+Add changes only `.ai/project.json`: sync must still verify payloads, reconcile
+copies and update the lock, and doctor must pass before installation is complete.
+If sync fails, the requested declaration remains for correction and retry; do not
+claim it is installed. New capability registration is part of authorized project
+work, but dependency installation, hooks and accounts require their own scope.
+
+Existing manifests retain their selections under plan/sync/doctor; the new default
+is applied by init or an explicit add, never retroactively by reconciliation. An
+existing project can adopt it with `project add --profile project-foundation`.
+Prior broad selections are preserved for deliberate review, not automatically
+pruned. Edit the manifest deliberately to remove selections or change targets.
+
+For a new project with a shared profile and a Claude-only addition:
+
+```sh
+python3 ai.py project init --project /absolute/project --target both --profile full-stack --target-skill claude:matt-git-guardrails-claude-code
+python3 ai.py project plan --project /absolute/project
+python3 ai.py project sync --project /absolute/project
+python3 ai.py project doctor --project /absolute/project
+```
+
+Repeat `--target-skill TARGET:ID` for provider-specific additions. On an existing both-target project, use `project add --project /absolute/project --target-skill claude:matt-git-guardrails-claude-code`, then sync and doctor. Add upgrades a v1 manifest to v2 only when scoped additions require it; it cannot activate an undeclared target. Shared-only v1 additions stay v1. Schema v2 uses a `target_skills` map. Shared `profiles` and `skills` still apply to every target. Each target gets its own required-companion closure, provider validation, conflict/name checks and locked selection. There is no automatic provider filtering. The Claude-only guardrails payload is registered without configuring or executing its hook.
+
+V2 plan, sync and doctor rows report `excluded_targets` with `unsupported` or `not_requested` reasons for active targets outside each skill's resolved selection. Unsupported explicit requests fail before installation. On POSIX, checks also reject execute bits added to ordinary payload files or receipts, and missing bits on declared helpers; ordinary read/write mode differences are allowed. Managed updates validate the previous executable contract and detect execute-bit drift during preparation/staging. Windows skips POSIX mode checks while retaining required-file checks.
+
+Schema v1 manifests and locks remain supported unchanged. Schema v2 requires an updated harness and records a `targets` list on each lock entry. Removing an entry does not delete its installed copy. See [the manifest contract and sidecar migration steps](../docs/project-targets.md) before updating a project-specific checker.

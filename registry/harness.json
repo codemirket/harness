@@ -18,6 +18,11 @@
     "security-judgment",
     "work-planning"
   ],
+  "project_defaults": {
+    "profiles": [
+      "project-foundation"
+    ]
+  },
   "targets": {
     "codex": {
       "instructions": "instructions/AGENTS.md",

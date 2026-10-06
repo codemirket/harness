@@ -40,7 +40,10 @@ def render():
     for identifier in config['global_skills']:
         e = by_id[identifier]
         catalog.append('| [' + identifier + '](../' + e['path'] + '/SKILL.md) | ' + cell(e['description']) + ' |')
-    catalog += ['', '## Composable project profiles', '', 'Select as many relevant profiles as the lifecycle requires. Use one authoritative process where approaches overlap and resolve declared conflicts. Profiles install guidance, not missing runtimes.', '', '| Profile | Purpose | Selected IDs |', '| --- | --- | --- |']
+    defaults = ', '.join('`' + name + '`' for name in config.get('project_defaults', {}).get('profiles', []))
+    catalog += ['', '## Composable project profiles', '',
+                'New project init and explicit project add include the configured foundation profiles: ' + (defaults or 'none') + '. Add specialists for current needs and credible later stages grounded in the project stack, scope or roadmap. Do not install every profile or the entire catalog. Existing manifests retain their selections under plan/sync/doctor. Persist new needs with project add, then sync and doctor; load only relevant instructions for each task.', '',
+                'Use one authoritative process where approaches overlap and resolve declared conflicts. Profiles install guidance, not missing runtimes.', '', '| Profile | Purpose | Selected IDs |', '| --- | --- | --- |']
     for name, profile in sorted(data['profiles'].items()):
         catalog.append('| `' + name + '` | ' + cell(profile['description']) + ' | ' + cell(profile['skills']) + ' |')
     project = [e for e in entries if e['scope'] == 'project']

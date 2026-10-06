@@ -2,7 +2,7 @@
 
 This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 195 project selections and 60 composable profiles. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 195 project selections and 61 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
 ## Install and check
 
@@ -63,22 +63,37 @@ The runner uses the official installed Claude CLI and its existing authenticatio
 
 ## Declare project capabilities
 
-Inspect the stack and compose a setup in the target project's `.ai/project.json`:
+Inspect the project's instructions, stack and roadmap. Initialize its `.ai/project.json` with the default `project-foundation` profile, then add reviewed specialists where the project has a concrete current or foreseeable need. Do not install the whole catalog or every profile.
+
+The foundation contains **work-planning, context-management, agent-coordination, research-and-synthesis, security-judgment, architecture-review, debugging, test-design, ci-maintenance, release-operations, document-parsing and office-authoring**. It complements the global skills. Skills remain registered for reuse; agents load only the guidance relevant to each task.
 
 ```sh
 python3 ai.py catalog profiles
 python3 ai.py catalog list --scope project --query database
 python3 ai.py catalog search redis
 python3 ai.py catalog show database-systems
-python3 ai.py project init --project /absolute/project --profile full-stack --profile backend-node --profile collaboration
+python3 ai.py project init --project /absolute/project
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
-Codex is the default target. Repeat `--profile`, add `--skill <id>`, or omit optional selections with `--skip <id>`. Required companions resolve automatically. Use `--target both` only when Claude Code also needs project registrations; `claude-code` is a CLI-only target, and the legacy `claude` spelling remains compatible.
+Codex is the default target. At initialization, add justified profiles with `--profile`, individual entries with `--skill <id>`, or project exceptions with `--skip <id>`. Required companions resolve automatically and cannot be skipped. Use `--target both` only when Claude Code also needs project registrations; `claude-code` is a CLI-only target, and the legacy `claude` spelling remains compatible.
 
-Project copies go to `.agents/skills` for Codex and optionally `.claude/skills` for Claude Code. Synchronization checks pinned source and adapted hashes, retains companions and licenses, and records `.ai/project.lock.json`. It preserves modified and unselected copies. For a one-off Codex registration, use `python3 ai.py catalog install <id> --project /absolute/project`.
+When an existing project needs a new skill, persist it in the project catalog and install it through the same workflow. For example, when a database becomes part of the project:
+
+```sh
+python3 ai.py project add --project /absolute/project --skill database-systems --dry-run
+python3 ai.py project add --project /absolute/project --skill database-systems
+python3 ai.py project sync --project /absolute/project
+python3 ai.py project doctor --project /absolute/project
+```
+
+`project add` preserves existing choices and metadata, adds the configured foundation and requested selections, and validates the candidate before updating the manifest. It does not install payloads or update the lock; follow it with sync and doctor. Existing manifests and installations gain no new selections merely by running plan/sync. For details, see [project selection and incremental registration](setup/README.md#project-capabilities-and-plugins).
+
+For provider-specific additions, use `--target-skill claude:matt-git-guardrails-claude-code` with `project init --target both`, or `project add` when Claude is already a declared target. Scoped additions upgrade the manifest to schema v2 with `target_skills`. Shared selections still apply to every declared target; unsupported combinations fail explicitly. See [provider-specific selections and sidecar migration](docs/project-targets.md).
+
+Project copies go to `.agents/skills` for Codex and optionally `.claude/skills` for Claude Code. Synchronization checks pinned source and adapted hashes, retains companions and licenses, and records `.ai/project.lock.json`. It preserves modified and unselected copies. One-off catalog installation remains available for deliberate standalone use; ongoing project skills belong in the manifest and lock.
 
 ## Export Codex plugins
 
@@ -96,7 +111,7 @@ Repeat `--bundle` to combine selections. The destination must be absent. Export 
 ```text
 ai.py                       Command-line entry point
 instructions/               Codex global and Claude Code delegate guidance
-registry/harness.json       Client, delegation, globals, bundles and maintenance policy
+registry/harness.json       Client, delegation, global/project defaults and maintenance policy
 registry/codex-settings.json Portable Codex app and model preferences
 registry/catalog.json       Curated entries, profiles, hashes and source pins
 registry/source-index.json  Broader discovery inventory and review status

@@ -13,6 +13,26 @@ SPEC.loader.exec_module(catalog)
 
 
 class CatalogDataTests(unittest.TestCase):
+    def test_project_defaults_provide_a_rich_portable_foundation(self):
+        import json
+        config = json.loads((ROOT / 'registry/harness.json').read_text())
+        data = catalog.load_catalog()
+        self.assertEqual(config['project_defaults']['profiles'], ['project-foundation'])
+        selected = catalog.resolve_selection(data, profiles=config['project_defaults']['profiles'])
+        expected = {
+            'work-planning', 'context-management', 'agent-coordination',
+            'research-and-synthesis', 'security-judgment', 'architecture-review',
+            'debugging', 'test-design', 'ci-maintenance', 'release-operations',
+            'document-parsing', 'office-authoring',
+        }
+        self.assertEqual({entry['id'] for entry in selected}, expected)
+        for entry in selected:
+            with self.subTest(entry=entry['id']):
+                self.assertEqual(entry['scope'], 'project')
+                self.assertEqual(entry['delivery'], 'local')
+                self.assertEqual(set(entry.get('agents', ['codex', 'claude'])),
+                                 {'codex', 'claude'})
+
     def test_project_entries_have_unique_names_and_reproducible_provenance(self):
         data = catalog.load_catalog()
         names = {}

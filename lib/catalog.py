@@ -373,6 +373,56 @@ def existing_payload(target):
     return files
 
 
+def executable_contract(value):
+    """Validate executable metadata without changing the byte-hash format."""
+    if (not isinstance(value, list)
+            or any(not isinstance(relative, str) for relative in value)
+            or len(value) != len(set(value))):
+        raise ValueError('Invalid executable file list')
+    for relative in value:
+        safe_path(relative)
+        if relative == RECEIPT:
+            raise ValueError('The installed receipt cannot be an executable payload')
+    return value
+
+
+def installed_executables(receipt):
+    # A legacy receipt cannot authorize existing execute bits: a new catalog
+    # declaration is not evidence of the old contract. Non-executable legacy
+    # copies can still update, including gaining newly declared helper files.
+    return executable_contract(receipt.get('executable_files', []))
+
+
+def executable_modes(target):
+    """Snapshot POSIX execute bits only; Windows mode emulation is not evidence."""
+    modes = {}
+    if os.name == 'nt':
+        return modes
+    for root, directories, names in os.walk(target, followlinks=False):
+        for name in directories + names:
+            if is_link(Path(root) / name):
+                raise ValueError('Installed skill contains a symlink; refusing to replace')
+        for name in names:
+            path = Path(root) / name
+            info = path.stat()
+            if not stat.S_ISREG(info.st_mode):
+                raise ValueError('Non-regular installed payload: ' + str(path))
+            modes[path.relative_to(target).as_posix()] = info.st_mode & 0o111
+    return modes
+
+
+def check_executable_modes(target, executable_files):
+    declared = set(executable_contract(executable_files))
+    modes = executable_modes(target)
+    for relative in declared:
+        path = target.joinpath(*safe_path(relative).parts)
+        if not path.is_file() or (os.name != 'nt' and modes.get(relative) != 0o111):
+            raise ValueError('Installed executable mode changed: ' + str(path))
+    for relative, bits in modes.items():
+        if bits and relative not in declared:
+            raise ValueError('Undeclared executable mode in installed payload: ' + str(target / relative))
+
+
 def check_destination(entry, project, agent):
     if entry['scope'] != 'project' or entry.get('delivery') not in ('upstream', 'local'):
         raise ValueError('This entry is not approved for automatic project installation')
@@ -396,14 +446,15 @@ def check_destination(entry, project, agent):
         raise ValueError('Existing destination is a symlink; inspect it manually')
     if target.exists():
         receipt = target / RECEIPT
-        if (receipt.is_file() and not is_link(receipt)
-                and json.loads(receipt.read_text(encoding='utf-8')).get('id') == entry['id']
+        prior = json.loads(receipt.read_text(encoding='utf-8')) if receipt.is_file() and not is_link(receipt) else {}
+        if (isinstance(prior, dict) and prior.get('id') == entry['id']
                 and payload_hash(existing_payload(target)) == entry.get('installed_sha256', entry['sha256'])):
-            if os.name != 'nt':
-                for relative in entry.get('executable_files', []):
-                    executable = target.joinpath(*safe_path(relative).parts)
-                    if not executable.is_file() or executable.stat().st_mode & 0o111 != 0o111:
-                        raise ValueError('Installed executable mode changed: ' + str(executable))
+            prior_executables = installed_executables(prior)
+            check_executable_modes(target, prior_executables)
+            current_executables = executable_contract(entry.get('executable_files', []))
+            if set(prior_executables) != set(current_executables):
+                raise ValueError('Installed executable contract differs from catalog: ' + str(target))
+            check_executable_modes(target, current_executables)
             return target, True
         raise ValueError('Destination exists; preserve/review it before changing: ' + str(target))
     if target_root.exists():
@@ -488,8 +539,7 @@ def prepare_payload(data, entry, source_tree=None, archive_cache=None):
         raise ValueError('Adaptation changes the installed skill name')
     if payload_hash(files) != entry.get('installed_sha256', entry['sha256']):
         raise ValueError('Adapted payload differs from reviewed installed hash')
-    for relative in entry.get('executable_files', []):
-        safe_path(relative)
+    for relative in executable_contract(entry.get('executable_files', [])):
         if relative not in files:
             raise ValueError('Missing executable file: ' + relative)
     return files, source

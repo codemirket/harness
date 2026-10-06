@@ -17,7 +17,7 @@ def main():
   settings <command>   Capture, plan, apply or diagnose portable Codex preferences
   delegate claude      Run a bounded, read-only Claude Code second opinion
   plan | sync | doctor Reconcile global guidance and skills (default: Codex)
-  project <command>    Declare, plan, sync or diagnose project skills
+  project <command>    Initialize, add, plan, sync or diagnose selected project skills
   catalog <command>    Browse and register reviewed skills
   export               Build Codex plugin bundles
 

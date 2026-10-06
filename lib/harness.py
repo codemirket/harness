@@ -78,6 +78,14 @@ def fingerprint(path):
     return None
 
 
+def project_fingerprint(path):
+    """Include execute bits for project publication, preserving global receipts."""
+    value = fingerprint(path)
+    if value and value['kind'] == 'directory' and os.name != 'nt':
+        value['executable_modes'] = catalog.executable_modes(path)
+    return value
+
+
 def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name('.' + path.name + '-' + uuid.uuid4().hex)
@@ -166,9 +174,9 @@ def public_jobs(jobs):
              for k in ('target', 'id', 'source', 'destination', 'mode', 'action')} for j in jobs]
 
 
-def replace_item(dest, create, expected):
+def replace_item(dest, create, expected, snapshot=fingerprint):
     """Stage first, preserve user content, and restore this item if rename fails."""
-    if fingerprint(dest) != expected:
+    if snapshot(dest) != expected:
         raise ValueError('Destination changed since preflight: ' + str(dest))
     dest.parent.mkdir(parents=True, exist_ok=True)
     stage = dest.with_name('.' + dest.name + '.new-' + uuid.uuid4().hex)
@@ -177,7 +185,7 @@ def replace_item(dest, create, expected):
     committed = False
     try:
         create(stage)
-        if fingerprint(dest) != expected:
+        if snapshot(dest) != expected:
             raise ValueError('Destination changed during staging: ' + str(dest))
         if expected is not None:
             os.replace(dest, backup)
@@ -224,34 +232,80 @@ def sync_global(target='codex', home=None, mode='auto'):
     return public_jobs(jobs)
 
 
-def project_config(project):
+def project_selection(config, data):
+    """Validate declarations and resolve each target's complete selection."""
+    if not isinstance(config, dict) or type(config.get('schema_version')) is not int:
+        raise ValueError('Unsupported project manifest schema')
+    if config['schema_version'] not in (1, 2):
+        raise ValueError('Unsupported project manifest schema')
+    if config['schema_version'] == 1 and 'target_skills' in config:
+        raise ValueError('Project target_skills requires schema_version 2')
+    config = dict(config)
+    for field in ('profiles', 'skills', 'skip', 'targets'):
+        if (not isinstance(config.get(field, []), list)
+                or any(not isinstance(x, str) for x in config.get(field, []))):
+            raise ValueError('Project ' + field + ' must be a string list')
+    selected_targets = config.get('targets')
+    if not selected_targets or len(selected_targets) != len(set(selected_targets)):
+        raise ValueError('Select distinct project targets')
+    selected_targets = ['claude' if target == 'claude-code' else target for target in selected_targets]
+    if len(selected_targets) != len(set(selected_targets)):
+        raise ValueError('Select distinct project targets')
+    config['targets'] = selected_targets
+    for target in selected_targets:
+        if target not in ('codex', 'claude') or target not in manifest()['targets']:
+            raise ValueError('Unsupported project target: ' + target)
+    declared = config.get('target_skills', {})
+    if not isinstance(declared, dict):
+        raise ValueError('Project target_skills must map targets to string lists')
+    specific = {}
+    for target, identifiers in declared.items():
+        target = 'claude' if target == 'claude-code' else target
+        if target not in ('codex', 'claude'):
+            raise ValueError('Unsupported target_skills target: ' + str(target))
+        if target not in selected_targets:
+            raise ValueError('target_skills target is not in project targets: ' + target)
+        if target in specific:
+            raise ValueError('Duplicate target_skills target alias: ' + target)
+        if not isinstance(identifiers, list) or any(not isinstance(x, str) for x in identifiers):
+            raise ValueError('Project target_skills.' + target + ' must be a string list')
+        overlap = set(identifiers).intersection(config.get('skip', []))
+        if overlap:
+            raise ValueError('Cannot skip explicit target skill: ' + sorted(overlap)[0])
+        specific[target] = list(identifiers)
+    if 'target_skills' in config:
+        config['target_skills'] = specific
+    selections = {}
+    for target in selected_targets:
+        try:
+            entries = catalog.resolve_selection(data, config.get('profiles', []),
+                                                config.get('skills', []) + specific.get(target, []),
+                                                config.get('skip', []))
+            for entry in entries:
+                if target not in entry.get('agents', ['codex', 'claude']):
+                    raise ValueError('Skill ' + entry['id'] + ' does not support target ' + target)
+        except ValueError as error:
+            raise ValueError('Project target ' + target + ': ' + str(error)) from error
+        selections[target] = entries
+    if not any(selections.values()):
+        raise ValueError('Project manifest selects no skills')
+    return config, selections
+
+
+def selected_entries(selections):
+    # A skill shared by targets needs only one source download and provenance row.
+    return list({entry['id']: entry for entries in selections.values() for entry in entries}.values())
+
+
+def project_config(project, per_target=False):
     project = project.expanduser().resolve(strict=True)
     if not project.is_dir():
         raise ValueError('Project must be a directory')
     path = guarded_path(project, PROJECT_FILE)
     if catalog.is_link(path) or not path.is_file():
         raise ValueError('Missing or unsafe .ai/project.json; run project init first')
-    data = read_json(path)
-    if data.get('schema_version') != 1:
-        raise ValueError('Unsupported project manifest schema')
-    for field in ('profiles', 'skills', 'skip', 'targets'):
-        if not isinstance(data.get(field, []), list) or any(not isinstance(x, str) for x in data.get(field, [])):
-            raise ValueError('Project ' + field + ' must be a string list')
-    selected_targets = data.get('targets')
-    if not selected_targets or len(selected_targets) != len(set(selected_targets)):
-        raise ValueError('Select distinct project targets')
-    selected_targets = ['claude' if target == 'claude-code' else target for target in selected_targets]
-    if len(selected_targets) != len(set(selected_targets)):
-        raise ValueError('Select distinct project targets')
-    data['targets'] = selected_targets
-    for target in selected_targets:
-        if target not in manifest()['targets']:
-            raise ValueError('Unsupported project target: ' + target)
-    entries = catalog.resolve_selection(catalog.load_catalog(), data.get('profiles', []),
-                                        data.get('skills', []), data.get('skip', []))
-    if not entries:
-        raise ValueError('Project manifest selects no skills')
-    return project, data, entries
+    config, selections = project_selection(read_json(path), catalog.load_catalog())
+    return project, config, selections if per_target else selected_entries(selections)
 
 
 def project_state(entry, project, target):
@@ -265,9 +319,10 @@ def project_state(entry, project, target):
     catalog.selection_files(entry)
     base = '.agents/skills/' if target == 'codex' else '.claude/skills/'
     dest = guarded_path(project, base + entry['name'])
+    before = project_fingerprint(dest)
     try:
         dest, unchanged = catalog.check_destination(entry, project, target)
-        return dest, 'unchanged' if unchanged else 'create', fingerprint(dest)
+        return dest, 'unchanged' if unchanged else 'create', before
     except ValueError as original:
         # Explicit sync may update only an intact previous catalog-owned copy.
         if catalog.is_link(dest) or not dest.is_dir():
@@ -276,54 +331,71 @@ def project_state(entry, project, target):
         if catalog.is_link(receipt) or not receipt.is_file():
             raise original
         prior = read_json(receipt)
-        if (target not in entry.get('agents', ['codex', 'claude'])
+        if (not isinstance(prior, dict)
+                or target not in entry.get('agents', ['codex', 'claude'])
                 or prior.get('id') != entry['id']
                 or catalog.payload_hash(catalog.existing_payload(dest)) != prior.get('installed_sha256', prior.get('sha256'))):
             raise original
         # Compare the old installation with its own contract. A new version may
         # add executable helpers that cannot yet exist in the old installation.
-        executable_files = prior.get('executable_files')
-        if executable_files is None:
-            # Legacy receipts did not record modes. Preserve checks for known
-            # existing helpers without rejecting newly added paths.
-            executable_files = [relative for relative in entry.get('executable_files', [])
-                                if dest.joinpath(*catalog.safe_path(relative).parts).exists()]
-        if (not isinstance(executable_files, list)
-                or any(not isinstance(relative, str) for relative in executable_files)):
-            raise ValueError('Invalid executable list in installed receipt')
-        for relative in executable_files:
-            path = dest.joinpath(*catalog.safe_path(relative).parts)
-            if os.name != 'nt' and (not path.is_file() or path.stat().st_mode & 0o111 != 0o111):
-                raise original
-        return dest, 'update', fingerprint(dest)
+        catalog.check_executable_modes(dest, catalog.installed_executables(prior))
+        return dest, 'update', before
 
 
-def project_plan(project):
-    project, config, entries = project_config(project)
+def project_jobs(project, config, selections):
+    """Preflight an already resolved manifest, including unpublished candidates."""
+    entries = selected_entries(selections)
+    selected_ids = {target: {entry['id'] for entry in selected}
+                    for target, selected in selections.items()}
     jobs = []
     for entry in entries:
+        exclusions = [
+            {'target': target,
+             'reason': 'unsupported' if target not in entry.get('agents', ['codex', 'claude'])
+                       else 'not_requested'}
+            for target in config['targets'] if entry['id'] not in selected_ids[target]
+        ]
         for target in config['targets']:
+            if entry['id'] not in selected_ids[target]:
+                continue
             dest, action, before = project_state(entry, project, target)
-            jobs.append({'entry': entry, 'target': target, 'destination': dest, 'action': action, 'before': before})
+            job = {'entry': entry, 'target': target, 'destination': dest, 'action': action, 'before': before}
+            if config['schema_version'] == 2:
+                job['excluded_targets'] = exclusions
+            jobs.append(job)
     lock = guarded_path(project, '.ai/project.lock.json')
     if catalog.is_link(lock) or (lock.exists() and not lock.is_file()):
         raise ValueError('Unsafe project lock destination')
     return project, config, entries, jobs
 
 
+def project_plan(project):
+    return project_jobs(*project_config(project, per_target=True))
+
+
 def public_project(jobs):
     return [{'id': j['entry']['id'], 'target': j['target'], 'destination': str(j['destination']),
              'action': j['action'], 'dependencies': j['entry'].get('dependencies', []),
-             'caveats': j['entry'].get('caveats', [])} for j in jobs]
+             'caveats': j['entry'].get('caveats', []),
+             **({'excluded_targets': j['excluded_targets']} if 'excluded_targets' in j else {})}
+            for j in jobs]
 
 
 def project_lock(config, entries, data):
-    return {'schema_version': 1, 'manifest': config,
+    lock = {'schema_version': config['schema_version'], 'manifest': config,
             'skills': [{'id': e['id'], 'sha256': e['sha256'],
                         'installed_sha256': e.get('installed_sha256', e['sha256']),
                         'source': e.get('source', 'personal'),
                         'commit': data['sources'][e['source']]['commit'] if e.get('source') else None}
                        for e in entries]}
+    if config['schema_version'] == 2:
+        _, selections = project_selection(config, data)
+        selected_ids = {target: {entry['id'] for entry in selected}
+                        for target, selected in selections.items()}
+        for entry in lock['skills']:
+            entry['targets'] = [target for target in config['targets']
+                                if entry['id'] in selected_ids[target]]
+    return lock
 
 
 def project_lock_current(project, expected):
@@ -351,7 +423,7 @@ def sync_project(project, source_trees=None):
     for job in jobs:
         dest = job['destination']
         guarded_path(project, dest.relative_to(project).as_posix())
-        if fingerprint(dest) != job['before']:
+        if project_fingerprint(dest) != job['before']:
             raise ValueError('Destination changed since preflight: ' + str(dest))
     # All predictable failures precede writes. Every item gets independent recovery.
     for job in jobs:
@@ -363,26 +435,161 @@ def sync_project(project, source_trees=None):
             catalog.install(data, entry, sandbox, job['target'], prepared=prepared[entry['id']])
             built = sandbox / ('.agents' if job['target'] == 'codex' else '.claude') / 'skills' / entry['name']
             guarded_path(project, dest.relative_to(project).as_posix())
-            replace_item(dest, lambda stage: shutil.copytree(built, stage), job['before'])
-    write_json(guarded_path(project, '.ai/project.lock.json'), lock)
+            replace_item(dest, lambda stage: shutil.copytree(built, stage), job['before'],
+                         snapshot=project_fingerprint)
+    if not project_lock_current(project, lock):
+        write_json(guarded_path(project, '.ai/project.lock.json'), lock)
     return public_project(jobs)
 
 
-def init_project(project, profiles, skills, skip, target):
+def default_project_profiles(config, data):
+    """Defaults affect explicit setup/addition only, never passive reconciliation."""
+    if 'project_defaults' not in config:
+        return []
+    defaults = config['project_defaults']
+    if (not isinstance(defaults, dict) or set(defaults) != {'profiles'}
+            or not isinstance(defaults['profiles'], list)
+            or any(not isinstance(value, str) or not value for value in defaults['profiles'])):
+        raise ValueError('Harness project_defaults must contain a profiles string list')
+    profiles = list(dict.fromkeys(defaults['profiles']))
+    for entry in catalog.resolve_selection(data, profiles):
+        if entry.get('delivery') != 'local':
+            raise ValueError('Harness project_defaults must use authored local project skills: ' + entry['id'])
+    return profiles
+
+
+def init_project(project, profiles, skills, skip, target, target_skills=None):
     project = project.expanduser().resolve(strict=True)
     if not project.is_dir():
         raise ValueError('Project must be a directory')
-    selected = catalog.resolve_selection(catalog.load_catalog(), profiles, skills, skip)
-    if not selected:
-        raise ValueError('Choose project profiles or skills')
-    value = {'schema_version': 1, 'targets': targets(target, manifest()),
-             'profiles': profiles, 'skills': skills, 'skip': skip}
+    config = manifest()
+    data = catalog.load_catalog()
+    defaults = default_project_profiles(config, data)
+    value = {'schema_version': 1, 'targets': targets(target, config),
+             'profiles': list(dict.fromkeys(defaults + list(profiles))) if defaults else profiles,
+             'skills': skills, 'skip': skip}
+    if target_skills is not None:
+        value.update(schema_version=2, target_skills=target_skills)
+    value, _ = project_selection(value, data)
     dest = guarded_path(project, PROJECT_FILE)
     if catalog.is_link(dest) or (dest.exists() and (not dest.is_file() or read_json(dest) != value)):
         raise ValueError('Project manifest already exists; edit it deliberately: ' + str(dest))
     if not dest.exists():
         write_json(dest, value)
     return value
+
+
+def add_project(project, profiles=(), skills=(), target_skills=None, dry_run=False):
+    """Declare incremental capabilities without installing copies or changing a lock."""
+    for field, values in (('profiles', profiles), ('skills', skills)):
+        if not isinstance(values, (list, tuple)) or any(not isinstance(x, str) or not x for x in values):
+            raise ValueError('Project additions ' + field + ' must be a string list')
+    if target_skills is None:
+        target_skills = {}
+    if (not isinstance(target_skills, dict)
+            or any(not isinstance(values, list)
+                   or any(not isinstance(x, str) or not x for x in values)
+                   for values in target_skills.values())):
+        raise ValueError('Project target_skills additions must map targets to string lists')
+    if not (profiles or skills or any(target_skills.values())):
+        raise ValueError('Select at least one --profile, --skill or --target-skill addition')
+    project = project.expanduser().resolve(strict=True)
+    if not project.is_dir():
+        raise ValueError('Project must be a directory')
+    path = guarded_path(project, PROJECT_FILE)
+    if catalog.is_link(path) or not path.is_file():
+        raise ValueError('Missing or unsafe .ai/project.json; run project init first')
+
+    def identity(item):
+        stat = item.lstat()
+        return stat.st_dev, stat.st_ino, stat.st_mode
+
+    # The existing manifest's bytes and identity must survive the whole preflight;
+    # parent identity catches an otherwise indistinguishable replacement directory.
+    parent_identity = {item: identity(item) for item in (project, path.parent)}
+    original_identity = identity(path)
+    original_bytes = path.read_bytes()
+    original = json.loads(original_bytes.decode('utf-8'))
+    data = catalog.load_catalog()
+    canonical, _ = project_selection(original, data)
+    candidate = dict(original)
+    defaults = default_project_profiles(manifest(), data)
+    if defaults or profiles or 'profiles' in original:
+        candidate['profiles'] = list(dict.fromkeys(defaults + original.get('profiles', []) + list(profiles)))
+    if skills or 'skills' in original:
+        candidate['skills'] = list(dict.fromkeys(original.get('skills', []) + list(skills)))
+    scoped = {target: list(dict.fromkeys(identifiers))
+              for target, identifiers in canonical.get('target_skills', {}).items()}
+    spellings = set()
+    for target, identifiers in target_skills.items():
+        target = 'claude' if target == 'claude-code' else target
+        if target in spellings:
+            raise ValueError('Duplicate target_skills target alias: ' + str(target))
+        spellings.add(target)
+        if target not in ('codex', 'claude'):
+            raise ValueError('Unsupported target_skills target: ' + str(target))
+        if target not in canonical['targets']:
+            raise ValueError('target_skills target is not in project targets: ' + target)
+        scoped[target] = list(dict.fromkeys(scoped.get(target, []) + identifiers))
+    explicit = set(skills).union(identifier for ids in target_skills.values() for identifier in ids)
+    skipped = explicit.intersection(original.get('skip', []))
+    if skipped:
+        raise ValueError('Cannot add skipped skill: ' + sorted(skipped)[0])
+    if target_skills or 'target_skills' in original:
+        candidate.update(schema_version=2, target_skills=scoped)
+    normalized, selections = project_selection(candidate, data)
+    _, _, _, jobs = project_jobs(project, normalized, selections)
+
+    def check_unchanged():
+        guarded_path(project, PROJECT_FILE)
+        if any(catalog.is_link(item) or not item.is_dir() or identity(item) != previous
+               for item, previous in parent_identity.items()):
+            raise ValueError('Project manifest parent changed since preflight')
+        if (catalog.is_link(path) or not path.is_file() or identity(path) != original_identity
+                or path.read_bytes() != original_bytes):
+            raise ValueError('Project manifest changed since preflight')
+        for job in jobs:
+            dest = job['destination']
+            guarded_path(project, dest.relative_to(project).as_posix())
+            if project_fingerprint(dest) != job['before']:
+                raise ValueError('Destination changed since preflight: ' + str(dest))
+
+    check_unchanged()
+    changed = candidate != original
+    if changed and not dry_run:
+        stage = path.with_name('.' + path.name + '-' + uuid.uuid4().hex)
+        try:
+            with stage.open('x', encoding='utf-8') as output:
+                output.write(json.dumps(candidate, indent=2, ensure_ascii=False) + '\n')
+            stage.chmod(original_identity[2] & 0o777)
+            check_unchanged()
+            os.replace(stage, path)
+        finally:
+            if stage.exists():
+                stage.unlink()
+    return {'status': 'planned' if dry_run else 'declared' if changed else 'unchanged',
+            'changed': changed, 'dry_run': dry_run, 'project': str(project),
+            'manifest_path': str(path), 'manifest': candidate,
+            'installations': public_project(jobs), 'installation': 'not_performed',
+            'next_steps': ['project sync', 'project doctor']}
+
+
+def parse_target_skills(values):
+    """Parse repeatable CLI TARGET:ID declarations without ambiguous aliases."""
+    if not values:
+        return None
+    result = {}
+    spellings = {}
+    for value in values:
+        target, separator, identifier = value.partition(':')
+        if not separator or not target or not identifier or ':' in identifier:
+            raise ValueError('Use --target-skill TARGET:ID')
+        canonical = 'claude' if target == 'claude-code' else target
+        if canonical in spellings and spellings[canonical] != target:
+            raise ValueError('Duplicate target_skills target alias: ' + canonical)
+        spellings[canonical] = target
+        result.setdefault(canonical, []).append(identifier)
+    return result
 
 
 def main(argv=None):
@@ -395,14 +602,21 @@ def main(argv=None):
         p.add_argument('--home', type=Path)
         p.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     project = commands.add_parser('project').add_subparsers(dest='action', required=True)
-    for name in ('init', 'plan', 'sync', 'doctor'):
-        p = project.add_parser(name)
+    for name in ('init', 'add', 'plan', 'sync', 'doctor'):
+        description = ('Declare additional capabilities; run project sync then doctor to install and verify.'
+                       if name == 'add' else None)
+        p = project.add_parser(name, description=description, help=description)
         p.add_argument('--project', type=Path, required=True)
         if name == 'init':
             p.add_argument('--target', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
+            p.add_argument('--skip', action='append', default=[])
+        if name in ('init', 'add'):
             p.add_argument('--profile', action='append', default=[])
             p.add_argument('--skill', action='append', default=[])
-            p.add_argument('--skip', action='append', default=[])
+            p.add_argument('--target-skill', action='append', default=[], metavar='TARGET:ID',
+                           help='Add a skill only to an active target (creates a version 2 manifest)')
+        if name == 'add':
+            p.add_argument('--dry-run', action='store_true', help='Validate and show the candidate without writes')
     args = parser.parse_args(argv)
     if args.command in ('plan', 'sync', 'doctor'):
         if args.command == 'sync':
@@ -412,7 +626,11 @@ def main(argv=None):
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return 1 if args.command == 'doctor' and any(j['action'] != 'unchanged' for j in result) else 0
     if args.action == 'init':
-        result = init_project(args.project, args.profile, args.skill, args.skip, args.target)
+        result = init_project(args.project, args.profile, args.skill, args.skip, args.target,
+                              parse_target_skills(args.target_skill))
+    elif args.action == 'add':
+        result = add_project(args.project, args.profile, args.skill,
+                             parse_target_skills(args.target_skill), args.dry_run)
     elif args.action == 'sync':
         result = sync_project(args.project)
     else:

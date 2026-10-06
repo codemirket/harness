@@ -14,10 +14,13 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
 - Read and apply the selected skills and relevant references. Reuse an unchanged
   selection; do not reload the entire catalog or impose a workflow on a trivial
   edit. Broad availability should improve quality without wasting context.
-- Reconcile declared project skills through this repository's installer. For a
-  new capability, select reviewed catalog entries that fit the actual outcome,
-  stack and lifecycle. Relevant project skill registration is part of authorized
-  project setup or implementation work; a recommendation alone does not install.
+- Start project setup with the rich `project-foundation` baseline. Add reviewed
+  specialists for current needs and credible later stages, grounded in the stack,
+  scope or roadmap. Do not install the entire catalog or every profile by default.
+- When a new capability is needed, persist it with `project add`, then run project
+  sync and doctor through this repository's installer. Keep it in the project's
+  catalog for reuse. Relevant registration is part of authorized setup or work;
+  recommendations and manifest edits alone are not completed installation.
 - Check dependencies and actual tool availability. Skill registration does not
   authorize dependency installation, hooks, account connections, deployment or
   external actions. Manual/indexed entries require their recorded review work.

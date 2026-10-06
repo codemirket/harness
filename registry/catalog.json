@@ -11746,11 +11746,31 @@
       "license": "MIT",
       "companion_requirements": [],
       "review_status": "adapted-static-review",
-      "coverage": "Full SKILL.md and every rules/*.md or references/*.md source; compiled AGENTS.md preamble sampled as generated mirror, not counted as separate capability; metadata read.",
+      "coverage": "Full SKILL.md and every rules/*.md or references/*.md source; compiled AGENTS.md preamble sampled as generated mirror, not counted as separate capability; metadata read. Compiled AGENTS.md relative Markdown navigation fully checked; exact-count adaptations rebase included resources without changing source rule/reference files.",
       "url": "https://github.com/vercel-labs/agent-skills/blob/063bee94c3f4df8453406c830b0a7df0f2860278/skills/react-best-practices/SKILL.md",
       "executable_files": [],
       "sha256": "f182ed39d4418d6162955ea518afea0cb0057c4c768332e89916d987839b6e45",
-      "installed_sha256": "3e2a7192b849b85867ac9bd3cbb1cb920b51b10fe12c6d6259d21e3cb98b42e0"
+      "installed_sha256": "a88bc1bcccdf68cbb8088512cbd9e4e048e99b5b36b85fc546bc8a318106235f",
+      "replacements": [
+        {
+          "path": "AGENTS.md",
+          "old": "](./async-defer-await.md",
+          "new": "](rules/async-defer-await.md",
+          "count": 1
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](./async-cheap-condition-before-await.md",
+          "new": "](rules/async-cheap-condition-before-await.md",
+          "count": 1
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](./server-hoist-static-io.md",
+          "new": "](rules/server-hoist-static-io.md",
+          "count": 1
+        }
+      ]
     },
     {
       "source": "vercel-agent-skills",
@@ -11822,11 +11842,49 @@
       "license": "MIT",
       "companion_requirements": [],
       "review_status": "adapted-static-review",
-      "coverage": "Full SKILL.md and every rules/*.md or references/*.md source; compiled AGENTS.md preamble sampled as generated mirror, not counted as separate capability; metadata read.",
+      "coverage": "Full SKILL.md and every rules/*.md or references/*.md source; compiled AGENTS.md preamble sampled as generated mirror, not counted as separate capability; metadata read. Compiled AGENTS.md relative Markdown navigation fully checked; exact-count adaptations rebase included resources without changing source rule/reference files.",
       "url": "https://github.com/vercel-labs/agent-skills/blob/063bee94c3f4df8453406c830b0a7df0f2860278/skills/react-view-transitions/SKILL.md",
       "executable_files": [],
       "sha256": "a066d282d8023bcd880be22efa36617c628333e4dac3d04938e2d61bb36a019b",
-      "installed_sha256": "7a06bdad5a67601e81cef23f7907a6389737cbbae6d1c39fff2ed029bb4a4478"
+      "installed_sha256": "8ad1e96c32290f4061991d32316a07e1bae99f7bf61d71c6f3929e70fcd700e9",
+      "replacements": [
+        {
+          "path": "AGENTS.md",
+          "old": "](css-recipes.md",
+          "new": "](references/css-recipes.md",
+          "count": 9
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](patterns.md",
+          "new": "](references/patterns.md",
+          "count": 9
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](../SKILL.md",
+          "new": "](SKILL.md",
+          "count": 2
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](troubleshooting.md",
+          "new": "](references/troubleshooting.md",
+          "count": 2
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](nextjs.md",
+          "new": "](references/nextjs.md",
+          "count": 4
+        },
+        {
+          "path": "AGENTS.md",
+          "old": "](implementation.md",
+          "new": "](references/implementation.md",
+          "count": 1
+        }
+      ]
     },
     {
       "source": "vercel-agent-skills",
@@ -14500,6 +14558,23 @@
     }
   ],
   "profiles": {
+    "project-foundation": {
+      "description": "Default rich project foundation: planning, context, collaboration, research, security, architecture, debugging, tests, CI, releases and documents. Load only the guidance relevant to each task; add specialists for the actual stack and credible later stages.",
+      "skills": [
+        "work-planning",
+        "context-management",
+        "agent-coordination",
+        "research-and-synthesis",
+        "security-judgment",
+        "architecture-review",
+        "debugging",
+        "test-design",
+        "ci-maintenance",
+        "release-operations",
+        "document-parsing",
+        "office-authoring"
+      ]
+    },
     "engineering-core": {
       "description": "General implementation, causal debugging, behavior tests, CI and architecture review.",
       "skills": [
