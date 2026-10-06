@@ -1,9 +1,7 @@
-"""Build verified, self-contained plugin marketplaces without installing them.
+"""Build verified, self-contained Codex plugin marketplaces without installing them.
 
-Manifest contracts reviewed against official OpenAI/Claude documentation:
+Manifest contracts reviewed against official OpenAI documentation:
 https://developers.openai.com/plugins/build/plugins
-https://code.claude.com/docs/en/plugin-marketplaces
-https://code.claude.com/docs/en/plugins-reference
 """
 import argparse
 import ctypes
@@ -148,8 +146,8 @@ def selections(config, data, names):
                 continue
             if entry['name'] in skill_names:
                 raise ValueError('Competing bundle skill name: ' + entry['name'])
-            if set(entry.get('agents', ['codex', 'claude'])) != {'codex', 'claude'}:
-                raise ValueError('Cross-app bundle requires Codex and Claude support: ' + entry['id'])
+            if 'codex' not in entry.get('agents', ['codex', 'claude']):
+                raise ValueError('Codex bundle requires Codex support: ' + entry['id'])
             skill_names[entry['name']] = entry['id']
             distinct[entry['id']] = entry
         if not distinct:
@@ -223,7 +221,7 @@ def export_bundles(names, output, *, root=None, data=None, config=None, source_t
         files[path] = content
         modes[path] = 0o755 if executable else 0o644
 
-    codex_entries, claude_entries = [], []
+    codex_entries = []
     for name, entries in selected.items():
         prefix = 'plugins/' + name + '/'
         description = config['bundles'][name]['description']
@@ -232,7 +230,6 @@ def export_bundles(names, output, *, root=None, data=None, config=None, source_t
             '$schema': 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json'})))
         attributed = dict(manifest, author={'name': config.get('owner', 'Personal AI')})
         add(prefix + '.codex-plugin/plugin.json', json_bytes(dict(attributed, skills='./skills/')))
-        add(prefix + '.claude-plugin/plugin.json', json_bytes(attributed))
         records[name] = []
         for entry in entries:
             prepared, source = payloads[entry['id']]
@@ -257,14 +254,10 @@ def export_bundles(names, output, *, root=None, data=None, config=None, source_t
         codex_entries.append({'name': name, 'source': {'source': 'local', 'path': './plugins/' + name},
                               'policy': {'installation': 'AVAILABLE', 'authentication': 'ON_INSTALL'},
                               'category': 'Productivity'})
-        claude_entries.append({'name': name, 'source': './plugins/' + name, 'description': description})
     add('.agents/plugins/marketplace.json', json_bytes({'name': config['name'], 'plugins': codex_entries}))
-    add('.claude-plugin/marketplace.json', json_bytes({'name': config['name'],
-        'owner': {'name': config.get('owner', 'Personal AI')},
-        'description': config.get('description', 'Personal agent guidance and reviewed project capabilities.'),
-        'plugins': claude_entries}))
     catalog.validate_paths(files)
     lock = {'schema_version': 1, 'name': config['name'], 'version': config['version'],
+            'clients': ['codex-desktop', 'codex-cli'],
             'bundles': records, 'files': {path: {'sha256': hashlib.sha256(content).hexdigest(),
             'mode': format(modes[path], '04o')} for path, content in sorted(files.items())}}
     add(LOCK, json_bytes(lock))

@@ -29,6 +29,8 @@ def manifest():
 
 
 def targets(choice, config):
+    # The legacy name addresses Claude Code CLI context, never Claude desktop.
+    choice = 'claude' if choice == 'claude-code' else choice
     names = list(config['targets']) if choice == 'both' else [choice]
     if any(name not in ('codex', 'claude') or name not in config['targets'] for name in names):
         raise ValueError('Unsupported target')
@@ -87,7 +89,7 @@ def write_json(path, value):
             temp.unlink()
 
 
-def global_plan(target='both', home=None, mode='auto'):
+def global_plan(target='codex', home=None, mode='auto'):
     config = manifest()
     data = catalog.load_catalog()
     home = (home or Path.home()).expanduser().resolve(strict=True)
@@ -198,7 +200,7 @@ def replace_item(dest, create, expected):
                     shutil.rmtree(item)
 
 
-def sync_global(target='both', home=None, mode='auto'):
+def sync_global(target='codex', home=None, mode='auto'):
     home, receipt, previous, jobs = global_plan(target, home, mode)
     for job in jobs:
         if job['action'] != 'unchanged':
@@ -238,6 +240,10 @@ def project_config(project):
     selected_targets = data.get('targets')
     if not selected_targets or len(selected_targets) != len(set(selected_targets)):
         raise ValueError('Select distinct project targets')
+    selected_targets = ['claude' if target == 'claude-code' else target for target in selected_targets]
+    if len(selected_targets) != len(set(selected_targets)):
+        raise ValueError('Select distinct project targets')
+    data['targets'] = selected_targets
     for target in selected_targets:
         if target not in manifest()['targets']:
             raise ValueError('Unsupported project target: ' + target)
@@ -384,7 +390,8 @@ def main(argv=None):
     commands = parser.add_subparsers(dest='command', required=True)
     for name in ('plan', 'sync', 'doctor'):
         p = commands.add_parser(name, help=name + ' declared global instructions and skills')
-        p.add_argument('--target', choices=['codex', 'claude', 'both'], default='both')
+        p.add_argument('--target', choices=['codex', 'claude-code', 'claude', 'both'], default='codex',
+                       help='Codex by default; Claude names provision supporting CLI context only')
         p.add_argument('--home', type=Path)
         p.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     project = commands.add_parser('project').add_subparsers(dest='action', required=True)
@@ -392,7 +399,7 @@ def main(argv=None):
         p = project.add_parser(name)
         p.add_argument('--project', type=Path, required=True)
         if name == 'init':
-            p.add_argument('--target', choices=['codex', 'claude', 'both'], default='both')
+            p.add_argument('--target', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
             p.add_argument('--profile', action='append', default=[])
             p.add_argument('--skill', action='append', default=[])
             p.add_argument('--skip', action='append', default=[])

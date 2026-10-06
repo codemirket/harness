@@ -5,10 +5,24 @@ description: Plan and run parallel agent work with bounded ownership, dependency
 
 # Agent coordination
 
-Use the current host's actual delegation tools. Agent availability, concurrent
-slots, filesystem sharing, and messaging permissions are capabilities to verify,
-not APIs to invent. Parallelism helps independent work; shared sequential state
-can make it slower or unsafe.
+Use ChatGPT/Codex host subagents as the normal delegation path when available.
+Verify actual tools, concurrent slots, filesystem sharing and messaging permissions;
+do not invent APIs or assume a model name. Parallelism helps independent work;
+shared sequential state can make it slower or unsafe.
+
+Use Claude Code selectively when a fresh perspective can resolve a material
+uncertainty: a bounded design critique, independent code review, or synthesis of
+supplied evidence. Explain the question it will resolve. Do not duplicate every
+assignment across providers, infer quality from brand, or promise lower cost.
+Honor an explicit user choice. If native agents or Claude are unavailable, continue
+locally where practical and report the missing capability rather than changing
+providers or authentication silently.
+
+For a Claude opinion, read [the CLI delegation contract](references/claude-code.md).
+The primary agent supplies a compact assignment and relevant constraints, checks
+the returned evidence, and owns all edits and integration. A subordinate worker
+returns its findings and does not start another provider, register skills, or
+reinterpret global coordination guidance as permission to delegate again.
 
 ## Decompose around deliverables
 

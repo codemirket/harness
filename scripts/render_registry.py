@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render human discovery docs and Claude guidance from canonical registry inputs."""
+"""Render human discovery docs from canonical registry inputs."""
 import argparse
 from collections import Counter
 import json
@@ -79,8 +79,7 @@ def render():
                 'See [verification evidence](verification.md) for source-byte checks, isolated registration and platform limits. Update source pins, reviewed payload hashes, integration notes and inventory together. Use `python3 ai.py catalog hash <id> --source-tree /reviewed/checkout` to calculate hashes; this does not approve new bytes. Regenerate discovery docs with `python3 scripts/render_registry.py`.', '',
                 'Global links follow the checkout; managed copies and project installations change through synchronization. Local edits are preserved. Shared instructions require appropriate skill pickup but cannot guarantee model behavior or enforce a security boundary.']
     return {ROOT / 'docs/catalog.md': '\n'.join(catalog) + '\n',
-            ROOT / 'docs/source-review.md': '\n'.join(sources) + '\n',
-            ROOT / 'instructions/CLAUDE.md': (ROOT / 'instructions/AGENTS.md').read_text()}
+            ROOT / 'docs/source-review.md': '\n'.join(sources) + '\n'}
 
 
 def main():

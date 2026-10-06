@@ -32,7 +32,7 @@ class SetupWrapperTests(unittest.TestCase):
                               cwd=self.base, env=env, text=True, capture_output=True)
 
     def test_dispatches_each_target_without_shell_interpolation(self):
-        for target in ('codex', 'claude', 'both'):
+        for target in ('codex', 'claude-code', 'claude', 'both'):
             result = self.run_wrapper([target])
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertEqual(json.loads(result.stdout), ['sync', '--target', target])
@@ -47,9 +47,14 @@ class SetupWrapperTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout), ['sync', '--target', 'both'])
 
     def test_rejects_invalid_target_or_argument_count(self):
-        for args in ([], ['other'], ['codex', 'extra'], ['codex;touch injected']):
+        for args in (['other'], ['codex', 'extra'], ['codex;touch injected']):
             self.assertEqual(self.run_wrapper(args).returncode, 2)
         self.assertFalse((self.base / 'injected').exists())
+
+    def test_default_wrapper_runs_complete_installer(self):
+        result = self.run_wrapper([])
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout), ['install'])
 
     def test_missing_checkout_and_harness_errors_propagate(self):
         self.entry.unlink()

@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Discover, compose, and register skills from the personal registry for Codex and Claude projects. Use when setting up project capabilities, selecting a workflow, finding specialist skills, or reviewing overlap and integration requirements.
+description: Discover, compose, and register project skills for the Codex desktop harness and supporting Claude Code CLI agents. Use when setting up project capabilities, selecting a workflow, finding specialist skills, or reviewing overlap and integration requirements.
 ---
 
 # Personal skill registry
@@ -8,7 +8,7 @@ description: Discover, compose, and register skills from the personal registry f
 Use this repository as the first discovery source for project capabilities across
 engineering, design, mobile/desktop, APIs, data, research, documents, marketing,
 agent collaboration, security and operations. Build a capable setup for the whole
-project lifecycle; there is no arbitrary cap on useful skills. Load only the
+project lifecycle; Codex desktop is the primary target. Load only the
 instructions relevant to the current task so broad availability stays efficient.
 
 ## Pick up and compose
@@ -47,7 +47,7 @@ installation. Resolve the actual project and targets; reuse existing authorizati
 For repeatable setup, declare the selection once and reconcile it:
 
 ```sh
-python3 scripts/harness.py project init --profile full-stack --profile backend-node --profile collaboration --target both --project /absolute/project
+python3 scripts/harness.py project init --profile full-stack --profile backend-node --profile collaboration --project /absolute/project
 python3 scripts/harness.py project plan --project /absolute/project
 python3 scripts/harness.py project sync --project /absolute/project
 python3 scripts/harness.py project doctor --project /absolute/project
@@ -65,7 +65,9 @@ copies, and preserves removed/unselected skills for deliberate cleanup. For a
 one-off copy, `scripts/catalog.py install <id> --agent both --project ...` remains
 available. Use `scripts/harness.py` where examples in repository docs use `ai.py`.
 
-Codex copies go in `.agents/skills`; Claude copies go in `.claude/skills`. Each copy
+Codex copies go in `.agents/skills`. Select `--target both` when the project also
+needs Claude Code CLI companion copies under `.claude/skills`; `--target claude-code`
+addresses only that delegate context. Claude desktop is unsupported. Each copy
 retains references, assets, licenses and provenance. Source bytes and catalog
 adaptations have separate hashes. Registration runs no upstream installer, hook,
 helper, dependency installation or external service. Apply a selected skill only
@@ -100,5 +102,5 @@ Project copies stay pinned until deliberately synchronized. Preserve edits and
 review the source/adapter diff before updating registry pins. The default global
 set and app destinations live in `registry/harness.json`. Global setup uses live
 links on macOS and managed copies on Windows; rerun setup to refresh copies.
-Plugin exports package declared bundles for supported clients. They do not activate
+Plugin exports package declared bundles for Codex. They do not activate
 plugins or provision runtimes. Read the runtime integration contract before setup.

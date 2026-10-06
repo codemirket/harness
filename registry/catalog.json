@@ -10930,7 +10930,7 @@
         "agent-coordination"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "eb2c517f65ed93b749201f0d8e889e37056f57a2eaae1fc48dce830dbfe2da85"
+      "sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3"
     },
     {
       "id": "context-management",

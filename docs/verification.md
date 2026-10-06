@@ -1,41 +1,44 @@
 # Verification evidence
 
-Completed on macOS, 2026-10-06. These checks establish reviewed bytes, registration, reconciliation and packaging. They do not certify every upstream workflow or every target device. Detailed per-entry results and input hashes are preserved in the [registration evidence](evidence/registration-2026-10-06.json).
+Verified on macOS, 2026-10-06, for the version 2 Codex desktop harness. Python 3.9.6 is the system interpreter used for the suite. These checks establish file behavior, runtime accessibility and bounded CLI operation; they do not certify every upstream workflow or target device.
 
 | Check | Result |
 | --- | --- |
-| Automated behavior tests | 146 tests pass across registrar, source remaps/replacements, registry data, global/project reconciliation, wrappers and plugin export. |
-| Source inventory | 28 pinned sources, 4,186 physical discovery records; the six added sources contribute 78 canonical bodies and 12 planning host mirrors. Per-source reports distinguish full body reads from partial runtime/reference review. |
-| Authored skill structure | All 29 authored skill folders pass the skill-creator validator. |
-| Project payloads | All 195 selections pass current source/adapted hash, name, license/extra-file and payload preparation checks. |
-| Actual isolated registration | All 195 entries install for every declared provider, with unchanged-repeat, receipt, content and executable-mode checks. 194 support both hosts; Claude-only Git guardrails installs for Claude and rejects Codex. |
-| New real downloads | All 17 Addy/Vercel project payloads fetched through two pinned archives match the reviewed local payloads, including shared-reference copies and literal corrections. |
-| Existing upstream downloads | Prior checks verified the unchanged 154 upstream selections using 12 archives plus bounded tree/raw-file retrieval for two large sources. Current local payload/registration checks were rerun after the installer refactor. |
-| Profiles | All 60 resolve to installable selections with required companions and no internal conflicts. |
-| Fresh usage simulation | An existing Next.js/PostgreSQL fixture produced 11 skills / 22 proposed registrations through the catalog skill's real commands, preserving project source, conventions and custom skills. No installation or dependency action was taken by that simulation. |
-| Global reconciliation | Link/copy behavior, managed updates, user-edit preservation, legacy migration, predictable preflight failures and backup recovery exercised with isolated homes. Real Mac setup now verifies 30 unchanged destinations: 14 skills and one guidance file for each host. |
-| Project update regressions | New executable helpers, old executable-mode changes, missing/stale lock, unsupported metadata, parent file collisions and parent-link changes during preparation are covered. |
-| Plugin export | All six declared bundles export together in an isolated build. Tests verify deterministic manifests/file locks, licenses, executable modes, collisions, failed-payload cleanup and atomic no-replace publication. The exported catalog CLI runs after its original fixture checkout is deleted. |
-| Native plugin validation | Claude Code's installed `plugin validate` accepts the marketplace and all six plugin manifests without manifest warnings. This validates packaging, not live activation. |
-| Shared guidance | AGENTS.md and CLAUDE.md match at 75 lines each; skill pickup is required for substantial work with unchanged selections reused. |
-| Documentation/configuration | Generated documentation drift check, repository-relative links, shell syntax and Git whitespace checks pass. |
+| Automated behavior tests | 283 tests pass across catalog registration, global/project reconciliation, wrappers, runtime diagnostics, settings, Claude delegation, combined installation, OS scheduling, Git maintenance and Codex plugin export. |
+| Installed runtimes | Codex desktop `26.930.61225` (build `13232`) is recognized and its executable accessible; Codex CLI `0.160.1` and Claude Code CLI `2.1.287` execute successfully. Desktop was not launched by diagnostics. |
+| CLI authentication | Both official status commands report authenticated. Account IDs, emails and credentials are omitted. Status is not a general model entitlement or quota test. |
+| Actual full installation | `ai.py install` passes on this Mac with native midnight schedule registration. All 30 guidance/skill destinations match. The 43 portable configured values already match, so no live app preferences were rewritten. |
+| Native scheduling | The actual Mac user crontab now contains one owned `0 0 * * *` maintenance job. The exact legacy installer line was migrated, unrelated cron bytes were compared and preserved, and a private backup was retained. Repeated schedule checks report unchanged. 34 isolated scheduler tests cover migration, quoting, inherited Python environment, concurrency and Windows task contracts. |
+| Scheduled update flow | 22 focused maintenance tests exercise local bare Git repositories, actual fast-forward plus fresh installer launch, dirty/ahead/divergent states, hooks/filter/submodule guards, credential configuration preservation, process locks, timeouts and bounded logs. A real launch of the registered argv from `/` with a minimal cron-like environment recorded `skipped_dirty`, preserving the current uncommitted work without fetching. Future cron delivery is not established by this manual run. |
+| Portable settings | Isolated tests cover allowlist exclusions, unrelated TOML/comment preservation, Unicode/CRLF handling, structural conflicts, open/unknown-app deferral, no-op while open, backup/replace failures, concurrent edits and symlink refusal. Focused settings tests also run on a newer Python with full TOML validation. |
+| Installer failures | Missing runtimes, unmanaged guidance, invalid settings and an open app block known writes. Tests cover settings failure after global setup, failure partway through global installation, authentication attention and unsupported custom `CODEX_HOME`. |
+| Live Claude delegation | Subscription route verified. A bounded connectivity request returned the requested text; a separate Read-tool request returned a random value present only in a temporary fixture file. A larger code-review request exceeded its 120-second limit and was cancelled without publishing a result. No automatic retry or billing fallback occurred. |
+| Delegation boundaries | Tests cover unsupported CLI controls, API opt-in, sensitive-path denials, preserved positive Read-deny rules, disabled updates, malformed/failing results, bounded output, timeouts/process-tree cancellation, partial write cleanup and no-overwrite publication. |
+| Changed authored skills | Both changed skills pass the skill-creator validator. The updated coordination payload and its Claude reference install and repeat unchanged in isolated Codex and Claude Code project directories. |
+| Global guidance | AGENTS.md is 80 lines; Claude Code guidance is 34 lines. Codex desktop is primary, native Codex/ChatGPT workers are preferred, and Claude Code remains a selective supporting CLI. |
+| Codex packaging | All six declared bundles export as version 2 with Codex marketplace/plugin manifests, verified skill bytes, retained licenses and deterministic file locks. No Claude marketplace or plugin manifests are generated. The foundation includes the settings source and complete installation/delegation engine. |
+| Documentation | Generated tables, local Markdown references, shell syntax and Git whitespace checks pass. |
 
-The global set was applied to this Mac. The old `components/AGENTS.md` was removed after its installed links migrated to `instructions/`. Unrelated registrations and scheduled jobs were preserved. Existing scheduled wrapper calls use the same new declarative installer. No cron schedule or other device was changed.
+The prior [registration evidence](evidence/registration-2026-10-06.json) records review and actual isolated installation of all 195 project selections across their declared providers, 60 resolved profiles, 28 pinned sources and 4,186 inventory records. It also records the source/adapted hashes and executable modes for that baseline. Upstream pins and payloads are unchanged by version 2; the changed authored coordination selection has a newly reviewed catalog hash and was reinstalled separately. Historical Claude marketplace validation describes the previous exporter, not current Claude desktop support.
 
-The registration API verifies source and adapted hashes separately. Extra files outside an upstream skill directory must be individually declared, mapped to safe relative paths and included in the source hash. Literal corrections require exact occurrence counts. Downloads and exports retain size/count limits; no limit was relaxed to pass a check. Upstream helpers are copied when reviewed but never executed during these checks.
+The current six-bundle export is `build/personal-marketplace-v2` (ignored generated output). Its `build-lock.json` records exact packaged bytes and modes. Older generated directories are not updated in place; use the version 2 export deliberately. Neither generation nor preference capture activates a marketplace, connects an account or publishes remotely.
 
-Known preflight failures leave requested skill destinations unchanged. An OS failure after installation starts can leave earlier completed items, with receipts and per-item recovery. Parent rechecks narrow concurrent mutation risks; the filesystem operations are not a general transaction or a security sandbox against a hostile concurrent process. Unselected or locally edited skills are preserved for deliberate cleanup.
+Known preflight failures preserve target files. Global installation has per-item receipts/recovery, and settings use a local backup and atomic replacement; together they are not a whole-install transaction. Process/path checks are not an OS security sandbox. Unselected or modified skills remain for deliberate cleanup. This Mac’s legacy midnight cron entry was replaced by the managed maintenance job. No other device was changed. The checkout must become clean before automatic pulls proceed; it is not stashed or committed by maintenance.
 
-Native Windows execution, live Codex/Claude discovery after refresh, paid APIs, browser binaries, cloud deployment and full runtime packages remain unverified. Windows managed-copy logic and portable paths were exercised on macOS, which is not native Windows evidence. Marketplace generation does not activate a plugin or change app settings. Instruction files cannot guarantee model behavior.
+Native Windows Task Scheduler execution, Windows process cancellation, visual theme parity and full plugin discovery after client refresh remain unverified. Windows branches were exercised with fixtures/static review on macOS. Paid API routes, browser binaries, cloud deployment and upstream runtime packages were not provisioned. CLI controls and instruction files cannot guarantee model behavior or detect every secret path.
 
-Reproduce repository checks:
+Reproduce local checks:
 
 ```sh
 python3 scripts/render_registry.py --check
 python3 -m unittest discover -s tests
 sh -n setup/macos.sh
 git diff --check
-python3 ai.py doctor --target both
+python3 ai.py runtime doctor --check-auth --json
+python3 ai.py settings doctor
+python3 ai.py check
+python3 ai.py schedule check
+python3 ai.py maintenance status
 ```
 
-After an upstream update, re-review changed bodies, companions, licenses and helpers; refresh hashes and rerun affected source/registration checks. After source changes, regenerate the marketplace rather than reusing a stale build. The build's own lock records the exact packaged bytes.
+After source updates, re-review changed bodies, companions, licenses and helpers; refresh hashes and run affected registration checks. Finish source changes before generating a new export. Check actual client discovery and one bounded workflow before distributing a build to another device.

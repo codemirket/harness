@@ -636,7 +636,7 @@ def main():
         selection.add_argument('--profile', action='append', default=[])
         selection.add_argument('--skill', action='append', default=[])
         selection.add_argument('--skip', action='append', default=[])
-        selection.add_argument('--agent', choices=['codex', 'claude', 'both'], required=True)
+        selection.add_argument('--agent', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
         selection.add_argument('--project', type=Path, required=True)
     showing = commands.add_parser('show', help='Show provenance, fit, dependencies, and caveats')
     showing.add_argument('id')
@@ -645,10 +645,12 @@ def main():
     hashing.add_argument('--source-tree', type=Path)
     installing = commands.add_parser('install', help='Register one pinned skill in an explicitly selected project')
     installing.add_argument('id')
-    installing.add_argument('--agent', choices=['codex', 'claude', 'both'], required=True)
+    installing.add_argument('--agent', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
     installing.add_argument('--project', type=Path, required=True)
     installing.add_argument('--source-tree', type=Path, help='Use a local source checkout; reviewed content hash still required')
     args = parser.parse_args()
+    if getattr(args, 'agent', None) == 'claude-code':
+        args.agent = 'claude'
     data = load_catalog()
     if args.command == 'profiles':
         for name, profile in data.get('profiles', {}).items():

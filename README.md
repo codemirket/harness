@@ -1,88 +1,116 @@
-# Personal AI harness
+# Personal Codex harness
 
-This repository is the source of truth for my shared agent instructions, global skills, project capability selections and Codex/Claude plugin bundles. It supports macOS and Windows using Python 3.9+ and the standard library.
+This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for the current counts, profiles and selections. [Source reviews](docs/source-review.md) distinguish reviewed installations from useful integrations that still need runtime or licensing work. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 195 project selections and 60 composable profiles. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
-## Install the declared global setup
+## Install and check
 
-```sh
-python3 ai.py plan --target both
-python3 ai.py sync --target both
-python3 ai.py doctor --target both
-```
-
-On Windows use `py -3` instead of `python3`. Choose `codex`, `claude` or `both`. The platform wrappers remain available for existing scheduled jobs:
+Keep the Git checkout in a stable directory. The harness needs Python 3.9+ and uses only its standard library.
 
 ```sh
-sh setup/macos.sh both
+python3 ai.py install --dry-run
+python3 ai.py install
+python3 ai.py check
 ```
 
-```powershell
-& .\setup\windows.ps1 both
+On Windows use `py -3`. Without arguments, `sh setup/macos.sh` and `& .\setup\windows.ps1` run the complete installer. It verifies Codex desktop, Codex CLI and Claude Code CLI; checks CLI sign-in status; reconciles global instructions and skills; merges the portable settings source; and registers a native daily **12:00 AM (00:00), local time** maintenance job. Missing applications produce official setup links. It does not download applications or sign in for you.
+
+Changes to app preferences require closing Codex desktop and other active Codex clients, running the installer from a terminal, then reopening the app. A matching configuration is a no-op and can be checked while the app is open. macOS uses live skill links; Windows defaults to managed copies. Conflicting user content stops preflight. See [setup, diagnostics and recovery](setup/README.md).
+
+Use `--no-schedule` with `install` or `check` when deliberately preparing an isolated home or an exported bundle without a Git checkout. This skips schedule registration and verification; it does not remove an existing job.
+
+## Daily maintenance
+
+The OS job uses user cron on macOS/Linux and Task Scheduler on Windows. It fetches the expected repository, fast-forwards a clean `main` checkout from `origin/main`, then launches fresh code to synchronize global guidance, skills and portable preferences. Local edits, untracked files, unfinished Git operations and ahead/diverged branches are preserved and reported for review. It never stashes, resets or commits them automatically.
+
+```sh
+python3 ai.py schedule plan
+python3 ai.py schedule install
+python3 ai.py schedule check
+python3 ai.py maintenance run
+python3 ai.py maintenance status
 ```
 
-The declared **14 global skills** cover selection, engineering, interface design, marketing, document workflows, research, parsing, office authoring, collaboration, context management, CI maintenance, AI evaluation, security and durable work planning. They are available broadly and loaded when relevant. Their exact IDs and app destinations live in [registry/harness.json](registry/harness.json).
+Changed preferences wait while Codex is open; global guidance can still refresh. Close Codex and run `python3 ai.py maintenance sync`, or let the next daily run retry. Schedule registration does not prove a successful run. Cron misses runs while the Mac is asleep; Windows catch-up requires the user session and scheduler conditions. See [scheduling, logs and recovery](docs/scheduling.md).
 
-[AGENTS.md](instructions/AGENTS.md) and [CLAUDE.md](instructions/CLAUDE.md) require skill pickup at project entry and when needs materially change. They reuse unchanged selections and preserve task-based judgment. Both remain below 100 lines. These are agent instructions; they are not a host-enforced execution policy.
+The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup and evidence-based work while remaining under 100 lines. [CLAUDE.md](instructions/CLAUDE.md) defines the supporting Claude Code role. Global availability does not load every skill into every task.
 
-macOS uses live links; Windows defaults to managed copies and requires no symbolic-link privileges. Setup preserves unrelated files and refuses to overwrite edited or unrecognized content. Rerun synchronization to refresh copies. See [setup and recovery](setup/README.md).
+## Share app preferences
+
+[registry/codex-settings.json](registry/codex-settings.json) contains reviewed portable values captured from this Mac: model/reasoning/response preferences, desktop themes and interaction preferences, and public plugin enablement flags. It excludes credentials, permission policies, project paths, remote devices, history, private plugins and account connections.
+
+```sh
+python3 ai.py settings plan
+python3 ai.py settings apply
+python3 ai.py settings doctor
+# Deliberately refresh the source after changing your preferred settings:
+python3 ai.py settings capture --output registry/codex-settings.json
+```
+
+Merging preserves unselected configuration and comments, and backs up an existing configuration locally. Missing source values do not remove target values. The harness does not install plugins or connect accounts; Codex may fetch configured plugins during marketplace refresh. Models, fonts, themes and plugins depend on each device and account. Desktop appearance keys are version-dependent. See [portable preferences](docs/settings.md).
+
+## Delegate selectively
+
+Use available Codex subagents for independent work. For a material uncertainty that benefits from Claude's perspective, give it a compact assignment and keep Codex responsible for verifying and integrating the findings:
+
+```sh
+python3 ai.py delegate claude --project /absolute/project --prompt-file /absolute/review.txt --plan
+python3 ai.py delegate claude --project /absolute/project --prompt-file /absolute/review.txt --timeout 120 --output /absolute/new-result.json
+```
+
+The runner uses the official installed Claude CLI and its existing authentication. It limits the session to reading project files, bounds execution and output, and blocks silent API/provider billing fallback. It cannot edit, run shell commands or start more agents. See the [delegation contract](skills/agent-coordination/references/claude-code.md) for limitations and how to supply a useful brief.
 
 ## Declare project capabilities
 
-Ask the agent to inspect the stack and compose a complete setup from the registry. For repeatable installation, save the selection in the target project's `.ai/project.json`:
+Inspect the stack and compose a setup in the target project's `.ai/project.json`:
 
 ```sh
 python3 ai.py catalog profiles
 python3 ai.py catalog list --scope project --query database
 python3 ai.py catalog search redis
 python3 ai.py catalog show database-systems
-python3 ai.py project init --project /absolute/project --target both --profile full-stack --profile backend-node --profile collaboration
+python3 ai.py project init --project /absolute/project --profile full-stack --profile backend-node --profile collaboration
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
-Repeat `--profile`, add `--skill <id>`, or omit optional selections with `--skip <id>` during initialization. Edit an existing manifest deliberately when needs change. Dependencies resolve automatically; required companions cannot be skipped. Compose lifecycle and platform profiles rather than limiting a project to a handful of skills.
+Codex is the default target. Repeat `--profile`, add `--skill <id>`, or omit optional selections with `--skip <id>`. Required companions resolve automatically. Use `--target both` only when Claude Code also needs project registrations; `claude-code` is a CLI-only target, and the legacy `claude` spelling remains compatible.
 
-Project copies go to `.agents/skills` for Codex and `.claude/skills` for Claude. Synchronization verifies pinned source and adapted hashes, retains references/assets/licenses, and records `.ai/project.lock.json`. It updates intact managed copies and preserves local edits. Unselected copies remain in place for deliberate cleanup. Predictable preparation failures occur before skill writes; later OS failures can leave earlier completed items.
+Project copies go to `.agents/skills` for Codex and optionally `.claude/skills` for Claude Code. Synchronization checks pinned source and adapted hashes, retains companions and licenses, and records `.ai/project.lock.json`. It preserves modified and unselected copies. For a one-off Codex registration, use `python3 ai.py catalog install <id> --project /absolute/project`.
 
-For a one-off copy, `python3 ai.py catalog install <id> --agent both --project /absolute/project` remains supported. The global `skill-catalog` includes locator-aware wrappers for running these commands from either linked or copied installations.
+## Export Codex plugins
 
-## Export personal plugin marketplaces
-
-The named bundles in `registry/harness.json` package foundation, web engineering, design, research/documents, marketing and engineering operations:
+Six bundles cover foundation, web engineering, design, research/documents, marketing and engineering operations:
 
 ```sh
 mkdir -p build
-python3 ai.py export --bundle personal-foundation --output build/personal-marketplace
+python3 ai.py export --bundle personal-foundation --output build/personal-marketplace-v2
 ```
 
-Repeat `--bundle` to include several bundles. The output must not already exist. Export writes both marketplace formats, portable and host-specific plugin manifests, pinned skill payloads and a reproducible build lock. The foundation bundle includes its own registry engine so skill selection works after the bundle is moved to another device.
-
-Export does not activate a plugin or provision its runtime. Use the generated marketplace with a supporting client and verify discovery in a fresh session. Avoid enabling an exported bundle alongside another installation of the same skills. See [plugin usage](docs/plugins.md) for client-specific steps and compatibility limits.
+Repeat `--bundle` to combine selections. The destination must be absent. Export produces a Codex marketplace, portable and Codex plugin manifests, verified payloads and a build lock. The foundation includes a movable registry engine. Export does not activate plugins; avoid installing the same skills globally and through a plugin. See [plugin usage](docs/plugins.md).
 
 ## Repository layout
 
 ```text
-ai.py                   Single command-line entry point
-instructions/           Shared AGENTS.md and matching CLAUDE.md
-registry/harness.json   Global selection, target adapters and named bundles
-registry/catalog.json   Curated entries, profiles, hashes and source pins
+ai.py                       Command-line entry point
+instructions/               Codex global and Claude Code delegate guidance
+registry/harness.json       Client, delegation, globals, bundles and maintenance policy
+registry/codex-settings.json Portable Codex app and model preferences
+registry/catalog.json       Curated entries, profiles, hashes and source pins
 registry/source-index.json  Broader discovery inventory and review status
-skills/                 All authored skill sources
-lib/                    Registration, reconciliation and export implementation
-setup/                  Stable macOS and Windows wrappers
-docs/                   Generated catalog, reviews, integration and verification evidence
-tests/                  Isolated behavior and regression checks
-build/                  Generated marketplace exports (ignored)
+skills/                     Authored skill sources
+lib/                        Installation, scheduling, settings, delegation and catalog code
+setup/                      Stable macOS and Windows wrappers
+docs/                       Catalog, reviews, integration and verification evidence
+tests/                      Isolated behavior and regression checks
+build/                      Generated marketplace exports (ignored)
 ```
-
-Source metadata is discovery data, not an instruction to execute code. Registration and export do not run upstream installers, hooks, helpers, dependencies or external services. Accounts, host permissions and runtime packages remain explicit integration work; their contracts are recorded in [runtime integrations](docs/runtime-integrations.md). Other clients need a reviewed target adapter rather than a guessed configuration path.
 
 ## Maintain the source of truth
 
-Review changed instructions, companions, licenses and executable behavior before updating source pins and payload hashes. Global links follow this checkout; project copies follow deliberate synchronization. Keep credentials and machine-specific preferences outside the repository.
+Review changed instructions, companions, licenses and executable behavior before updating pins and payload hashes. Global links follow this checkout; managed copies follow deliberate synchronization. Runtime packages and accounts remain separate integration work; see [runtime integrations](docs/runtime-integrations.md).
 
 ```sh
 python3 scripts/render_registry.py
@@ -91,4 +119,4 @@ sh -n setup/macos.sh
 git diff --check
 ```
 
-The renderer updates the human catalog/source tables and the CLAUDE mirror from their canonical inputs; `--check` detects drift. See [verification evidence](docs/verification.md) for completed checks and what remains unverified. No catalog can guarantee coverage of every future tool or task; indexed candidates make additional review possible without starting discovery from scratch.
+The renderer updates catalog/source tables; `--check` detects drift. Codex and Claude guidance have distinct roles and are maintained separately. [Verification evidence](docs/verification.md) records completed checks and remaining limits.

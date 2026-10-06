@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "config": {
+    "model": "gpt-6-astra",
+    "model_reasoning_effort": "xhigh",
+    "personality": "pragmatic",
+    "model_verbosity": "low",
+    "model_reasoning_summary": "concise"
+  },
+  "desktop": {
+    "conversationDetailMode": "STEPS_COMMANDS",
+    "show-context-window-usage": true,
+    "appearanceLightCodeThemeId": "codex",
+    "appearanceDarkCodeThemeId": "github",
+    "followUpQueueMode": "queue",
+    "enabled-reasoning-efforts": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "ultra",
+      "persistent",
+      "max"
+    ],
+    "browser-show-full-url": true,
+    "appearanceLightChromeTheme": {
+      "accent": "#3a83f7",
+      "accentSource": "chatgpt",
+      "contrast": 40,
+      "ink": "#0d0d0d",
+      "opaqueWindows": true,
+      "surface": "#ffffff",
+      "fonts": {
+        "code": "\"Geist Mono\", ui-monospace, \"SFMono-Regular\""
+      },
+      "semanticColors": {
+        "diffAdded": "#00a240",
+        "diffRemoved": "#e02e2a",
+        "skill": "#751ed9"
+      }
+    },
+    "appearanceDarkChromeTheme": {
+      "accent": "#1f6feb",
+      "contrast": 60,
+      "ink": "#e6edf3",
+      "opaqueWindows": false,
+      "surface": "#0d1117",
+      "semanticColors": {
+        "diffAdded": "#3fb950",
+        "diffRemoved": "#f85149",
+        "skill": "#bc8cff"
+      }
+    }
+  },
+  "plugins": {
+    "codex-app-tools@openai-bundled": {
+      "enabled": true
+    },
+    "browser@openai-bundled": {
+      "enabled": true
+    },
+    "chrome@openai-bundled": {
+      "enabled": true
+    },
+    "visualize@openai-bundled": {
+      "enabled": true
+    },
+    "documents@openai-primary-runtime": {
+      "enabled": true
+    },
+    "pdf@openai-primary-runtime": {
+      "enabled": true
+    },
+    "spreadsheets@openai-primary-runtime": {
+      "enabled": true
+    },
+    "presentations@openai-primary-runtime": {
+      "enabled": true
+    },
+    "computer-use@openai-bundled": {
+      "enabled": true
+    },
+    "unified-computer-use@openai-bundled": {
+      "enabled": true
+    },
+    "code-review@openai-bundled": {
+      "enabled": true
+    },
+    "template-creator@openai-primary-runtime": {
+      "enabled": true
+    },
+    "computer-history@openai-bundled": {
+      "enabled": true
+    }
+  },
+  "provenance": {
+    "configuration": "Codex user config.toml allowlist",
+    "official_sources": [
+      "https://learn.chatgpt.com/docs/config-file/config-reference",
+      "https://learn.chatgpt.com/docs/reference/settings",
+      "https://developers.openai.com/plugins/build/plugins"
+    ],
+    "desktop_contract": "Observed installed ChatGPT/Codex desktop setting keys; version-dependent",
+    "reviewed_desktop_version": "26.930.61225",
+    "reviewed_desktop_build": "13232",
+    "reviewed_desktop_module": ".vite/build/src-C1dW0Du8.js",
+    "reviewed_on": "2026-10-06"
+  },
+  "skipped_categories": [
+    "Authentication, tokens, account identifiers and connector settings",
+    "Permissions, sandbox, approval policies, browser access and trusted projects",
+    "Project paths, worktrees, remote devices, windows, history and recent models",
+    "MCP commands, environment variables, executables and cache paths",
+    "Private, organization-specific and local marketplace plugins",
+    "Telemetry, experiments, feature gates, hooks and notification commands",
+    "All desktop global-state and persisted-atom records",
+    "OS-specific shell, Dock, power, hotkey and external-link preferences"
+  ],
+  "limitations": [
+    "Configured allowlisted values only; absent source settings do not delete target settings.",
+    "Desktop appearance keys are observed in the installed app schema, not a stable public file API.",
+    "Close ChatGPT/Codex desktop before applying changed settings; reopen afterward.",
+    "Model, reasoning levels, themes, fonts and plugins may differ by device, client or account.",
+    "Plugin enabled flags do not install dependencies or connect accounts. Codex marketplace refresh may fetch configured plugins, even disabled ones.",
+    "No plugin permissions, credentials, generic plugin settings or private marketplace locations are synchronized.",
+    "Structural file checks do not establish that the UI rendered a theme or a model/plugin is available."
+  ],
+  "capture_summary": {
+    "portable_values": 43,
+    "portable_plugins": 13,
+    "private_or_local_plugins_skipped": 1
+  }
+}

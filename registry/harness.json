@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "personal-ai",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "global_skills": [
     "skill-catalog",
     "engineering-judgment",
@@ -22,12 +22,22 @@
     "codex": {
       "instructions": "instructions/AGENTS.md",
       "instruction_destination": ".codex/AGENTS.md",
-      "skills_destination": ".agents/skills"
+      "skills_destination": ".agents/skills",
+      "role": "primary",
+      "clients": [
+        "codex-desktop",
+        "codex-cli"
+      ]
     },
     "claude": {
       "instructions": "instructions/CLAUDE.md",
       "instruction_destination": ".claude/CLAUDE.md",
-      "skills_destination": ".claude/skills"
+      "skills_destination": ".claude/skills",
+      "role": "delegate",
+      "clients": [
+        "claude-code"
+      ],
+      "desktop_support": false
     }
   },
   "bundles": {
@@ -83,5 +93,21 @@
       ]
     }
   },
-  "runtime_policy": "Skill registration and plugin export do not run upstream executables, install dependencies, alter host permissions, or connect accounts. Manual runtime entries require their recorded integration work; no unresolved runtime is part of the default installation."
+  "runtime_policy": "Installation verifies Codex desktop, Codex CLI and Claude Code CLI without running a model or an upstream installer. Claude is supported as a CLI delegate only. Skill registration and Codex plugin export do not connect accounts or provision third-party runtimes.",
+  "primary_client": "codex-desktop",
+  "delegation": {
+    "primary": "codex-subagents",
+    "secondary": "claude-code",
+    "strategy": "Use available ChatGPT/Codex subagents by default. Use Claude Code selectively for a bounded independent perspective, specialist fit or explicit user preference. Codex retains orchestration and verification.",
+    "desktop_support": false
+  },
+  "settings_source": "registry/codex-settings.json",
+  "maintenance": {
+    "enabled": true,
+    "time": "00:00",
+    "timezone": "system",
+    "remote": "origin",
+    "branch": "main",
+    "expected_repository": "github.com/nazmirket/.ai"
+  }
 }

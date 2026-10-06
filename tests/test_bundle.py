@@ -63,11 +63,12 @@ class BundleTests(unittest.TestCase):
                          'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json')
         self.assertNotIn('skills', self.read('plugins/one/plugin.json'))
         self.assertEqual(self.read('plugins/one/.codex-plugin/plugin.json')['skills'], './skills/')
-        self.assertEqual(self.read('plugins/one/.claude-plugin/plugin.json')['name'], 'one')
+        self.assertFalse((plugin / '.claude-plugin').exists())
         codex = self.read('.agents/plugins/marketplace.json')['plugins'][0]
         self.assertEqual(codex['source'], {'source': 'local', 'path': './plugins/one'})
         self.assertEqual(codex['policy']['installation'], 'AVAILABLE')
-        self.assertEqual(self.read('.claude-plugin/marketplace.json')['plugins'][0]['source'], './plugins/one')
+        self.assertFalse((self.output / '.claude-plugin').exists())
+        self.assertEqual(lock['clients'], ['codex-desktop', 'codex-cli'])
         self.assertEqual(self.read('plugins/one/provenance.json')['skills'][0]['source_sha256'], self.entry['sha256'])
         self.assertNotIn(bundle.LOCK, lock['files'])
         for path, record in lock['files'].items():
