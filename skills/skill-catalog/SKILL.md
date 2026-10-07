@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Select catalog skills for a task, inspect coverage, and register justified project capabilities. Use at project setup or when substantial work needs a specialist workflow.
+description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when design, engineering, documentation, animation or research needs specialist guidance.
 ---
 
 # Personal skill registry
@@ -58,6 +58,16 @@ evidence. Apply only relevant criteria alongside the project's own gates.
 4. Native document, browser and image capabilities can satisfy a need directly.
    Reuse them when present; portable workflows remain available on other devices.
    Registering a prompt does not provide a compiler, renderer, API key or MCP tool.
+
+For a new or changed development environment, use the existing readiness command:
+`python3 scripts/harness.py runtime doctor --project /absolute/project --json`.
+It checks client/tool prerequisites without running project scripts. Start the
+app through the project's own workflow, then optionally supply `--url
+http://127.0.0.1:3000 --screenshot /absolute/new-capture.png` for a local response
+and isolated Chrome/Chromium/Edge capture. Inspect the image and changed behavior
+with available browser tools; a capture is not visual acceptance. Other runtimes,
+authenticated sessions and native renderers need their project-specific checks.
+Reuse readiness evidence while the relevant environment remains unchanged.
 
 ## Preview and register
 

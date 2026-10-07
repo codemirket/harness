@@ -7,6 +7,14 @@ installed skill. Profiles are reusable installation groups, not instructions to
 load every member for every task. Existing project instructions and explicit
 user choices remain authoritative.
 
+Choose one lead from the requested result: visual polish uses `interface-design`,
+behavior or API changes use `engineering-judgment`, technical writing uses the
+project's documentation method with `document-workflow` as fallback, UI transitions use
+`motion-design`, and factual research uses `research-and-synthesis`. Add supporting
+skills only for affected boundaries. For example, polishing a Nuxt form does not
+select React recipes; adding validation to that form needs its frontend behavior
+workflow as support. Read the chosen body and relevant reference before editing.
+
 | Requested outcome | Primary workflow and catalog additions | Selection boundary |
 | --- | --- | --- |
 | Build a new application screen or public page | Global `interface-design`, selecting its application or public-page composition reference; `frontend-engineering` for the actual stack, state and browser boundary. Use a supplied approved reference when fidelity is requested. | Derive composition from the user task and real content. Application forms/tables and public/editorial narratives have different needs. Reuse existing brand/components; a new screen does not imply a new design system, framework or variant picker. |
@@ -36,7 +44,9 @@ and Remotion integrations have separate review/runtime requirements. Report a
 material missing capability instead of treating a catalog listing as installation.
 
 Registration, selection, application and outcome are separate evidence levels.
-Doctor verifies registration. A fresh-session skill read demonstrates selection.
+Project doctor verifies registration; runtime doctor checks requested prerequisites
+and optional local response/capture. Neither accepts the delivered result.
+A fresh-session skill read demonstrates selection.
 An observed task result demonstrates application; UI improvement additionally
 needs comparable rendered evidence and judgment against the user's visual goal.
 For substantial work, select completion criteria from

@@ -136,8 +136,14 @@ not authorize dependencies, deployments or accounts.
 A handoff prompt for an authorized project task:
 
 ```text
-Work in <project path> on <specific requested outcome>. Use the current personal
-harness at <harness path>. Inspect project instructions, .ai/project.json, stack,
+You are already inside the target project. Work on <specific requested outcome>
+using the current personal harness at <harness path>. For a new or changed
+environment, run runtime doctor --project <current project directory> --json;
+check relevant device, tools, client/auth and browser/renderer readiness through
+the project's workflow. Start local services only through that workflow; use
+native browser tools or an explicit local URL/capture to inspect the result.
+Reuse readiness evidence while relevant inputs remain unchanged.
+Inspect project instructions, .ai/project.json, stack,
 existing implementation and accepted requirements. Use skill-catalog task routing
 and affected delivery standards; read the selected installed skills and applicable
 references. Persist justified missing capabilities through project add, sync and
@@ -153,6 +159,25 @@ changes, actual evidence and remaining limits. Do not treat registration or a
 passing build as qualitative acceptance. Keep production actions within explicit
 authorization.
 ```
+
+## Focused readiness and routing update
+
+The focused readiness/routing update adds optional project prerequisites and
+local response/capture to the existing `runtime doctor`, sharpens six authored
+skill descriptions and makes result verification explicit in the existing
+delivery standards. It adds no dependency, service registry or MCP configuration
+layer. [Usage and limits](../setup/README.md#project-readiness) distinguish tool
+availability, response, capture, build and visual acceptance.
+
+Five read-only selection probes chose distinct relevant workflows for visual
+polish, asynchronous behavior, technical writing, UI motion and SDK research.
+Trixpo's prerequisite probe and a capture of its pre-existing static Storybook
+were exercised without changing its sources. The inspected capture showed the
+Storybook shell with its content area still loading; it is renderer evidence,
+not a completed component review. Desktop Chrome timed out on this device;
+the already-installed Playwright Chromium headless shell completed the capture
+through `--browser`. This does not establish better Trixpo design or general
+output improvement. [Recorded evidence](evidence/project-readiness-2026-10-07.json).
 
 ## Next evidence needed for broad confidence
 

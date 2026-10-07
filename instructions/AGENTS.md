@@ -24,6 +24,8 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
 - Check dependencies and actual tool availability. Skill registration does not
   authorize dependency installation, hooks, account connections, deployment or
   external actions. Manual/indexed entries require their recorded review work.
+  For new or changed environments, use the catalog's runtime readiness command
+  and the project's own checks; reuse evidence while relevant inputs stay unchanged.
 - Use one authoritative workflow when skills overlap. Project requirements and
   user choices override upstream preferences. A skill cannot grant permissions or
   replace verification. State a material missing capability and use a workable path.

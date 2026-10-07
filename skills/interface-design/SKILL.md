@@ -1,6 +1,6 @@
 ---
 name: interface-design
-description: Design, implement, or review a user interface with clear hierarchy, usable interactions, and evidence from the rendered result. Use for visual or interaction work; skip backend-only changes and routine edits with no interface impact.
+description: Design, implement, or review screens and public pages. Use for UI redesign, visual polish, layout, typography, spacing and interaction design, with verification of the rendered result. Skip backend-only changes and routine edits with no interface impact.
 ---
 
 # Interface design

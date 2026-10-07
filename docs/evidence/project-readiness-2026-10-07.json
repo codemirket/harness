@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-10-07",
+  "scope": "Focused runtime readiness, task selection and delivery guidance; no product source edits.",
+  "source_sha256": {
+    "lib/runtime.py": "ddfc86b6454c1a02d8deec3b69cd06d677287b30a959ca62996e1938a47c2bb0",
+    "skills/skill-catalog/references/task-routing.md": "da52d14f4d9b806a3d2da350663f98d117d917bbb5ed0b28aa382851ce2901a1",
+    "skills/skill-catalog/references/delivery-standards.md": "926293d1003a6cb7bdb7ef8921325135996f60849c071200cbfd2596a0c059c5"
+  },
+  "unit_suite": {
+    "tests": 411,
+    "status": "passed",
+    "elapsed_seconds": 32.175,
+    "project_readiness_tests": 16
+  },
+  "skill_validation": {
+    "skills": 6,
+    "status": "passed",
+    "checks": "Unmodified quick_validate.validate_skill with installed Ruby/Psych YAML parsing; PyYAML unavailable in system and bundled Python."
+  },
+  "global_registration": {
+    "status": "passed",
+    "targets": {
+      "codex": {
+        "entries": 15,
+        "all_unchanged": true
+      },
+      "claude": {
+        "entries": 15,
+        "all_unchanged": true
+      }
+    }
+  },
+  "selection_review": {
+    "kind": "read-only agent review",
+    "observed_execution": false,
+    "results": [
+      {
+        "task": "Polish an existing Nuxt property editor",
+        "lead": "interface-design",
+        "reference": "application-composition",
+        "support": "frontend-engineering only if browser behavior changes"
+      },
+      {
+        "task": "Fix older search responses replacing newer results",
+        "lead": "engineering-judgment",
+        "support": "frontend-engineering / async-state"
+      },
+      {
+        "task": "Update pagination README/API examples",
+        "lead": "existing project documentation method, document-workflow fallback",
+        "reference": "technical-documentation"
+      },
+      {
+        "task": "Handle rapid drawer toggles and reduced motion",
+        "lead": "motion-design",
+        "reference": "interaction-recipes"
+      },
+      {
+        "task": "Investigate installed SDK authentication methods",
+        "lead": "research-and-synthesis",
+        "reference": "claim-verification"
+      }
+    ]
+  },
+  "live_readiness": {
+    "platform": "macos",
+    "trixpo": {
+      "source_edited": false,
+      "node": "24.19.0",
+      "pnpm": "11.23.0",
+      "git": "2.50.1",
+      "dependencies": "present",
+      "http_status": 200,
+      "render": "captured",
+      "source": "pre-existing static Storybook build; source freshness not established",
+      "inspection": "Storybook shell rendered; content area still loading. Full component/application readiness not established."
+    },
+    "controlled_page": {
+      "cli_exit_code": 0,
+      "http_status": 200,
+      "render": "captured",
+      "inspection": "Image inspected; visible Browser JavaScript executed text confirmed."
+    },
+    "renderer": "already-installed Playwright Chromium headless shell, cache revision 1234, supplied through --browser",
+    "desktop_chrome": "headless probe timed out; not marked successful",
+    "artifacts": [
+      {
+        "path": "build/readiness/native-headless-shell.png",
+        "sha256": "a9e75477c8f8736d93483f3ad4f511fbb82ccd3ed73707fd7e41f80df77d5cb2",
+        "dimensions": [
+          1280,
+          900
+        ]
+      },
+      {
+        "path": "build/readiness/trixpo-storybook.png",
+        "sha256": "550bea1964b8fea3c4e8dfb9bf8d4e3904cc4afd2c4fcb03454ae206090ea777",
+        "dimensions": [
+          1280,
+          900
+        ]
+      }
+    ],
+    "services": "Only temporary loopback servers created for probes; stopped after capture."
+  },
+  "limits": [
+    "Selection review is not independent product-task execution or proof of skill activation in a fresh production agent session.",
+    "Captures demonstrate browser execution; no visual quality gain, complete Trixpo component review or production readiness is claimed.",
+    "Browser final origin and protected workflows are unverified.",
+    "Native Windows capture and orphan cleanup remain unverified; tree termination is best effort after root exit.",
+    "Project builds and dependency integrity/semver constraints require the owning project checks.",
+    "Project skill copies remain pinned until deliberately synchronized; active Trixpo changes were preserved."
+  ]
+}

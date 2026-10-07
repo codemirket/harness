@@ -1,6 +1,6 @@
 ---
 name: document-workflow
-description: Plan substantial revisions to technical documentation or document artifacts and verify that facts, contracts, and editorial intent survive the change. Use with the relevant repository or format workflow; skip simple text corrections.
+description: Write or revise repository documentation, API guides, ADRs and substantial document artifacts. Verify facts, commands, examples and editorial intent with the relevant project or format workflow. Skip simple text corrections.
 ---
 
 # Document workflow

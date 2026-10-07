@@ -40,6 +40,21 @@ The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup an
 
 ## Deliver and evaluate quality
 
+For a new or changed development environment, check prerequisites before relying
+on them. Start the app with its existing project workflow, then optionally check
+the local response and capture a render:
+
+```sh
+python3 ai.py runtime doctor --project /absolute/project --json
+python3 ai.py runtime doctor --project /absolute/project --url http://127.0.0.1:3000 \
+  --screenshot /absolute/project/build/readiness.png --json
+```
+
+The screenshot path must be new. These checks use installed tools and an isolated
+browser profile; they do not run project scripts or accept visual quality.
+Inspect the captured image and actual interactions before claiming UI improvement.
+See [readiness details and limits](setup/README.md#project-readiness).
+
 [Delivery standards](skills/skill-catalog/references/delivery-standards.md) connect task selection to the evidence needed for frontend, motion, engineering, documentation, integrations and research. Selected skills now carry concrete composition examples, asynchronous state patterns, boundary decisions, integration failure handling, source-checked documentation and claim verification. Project conventions and actual tools determine the implementation.
 
 Five synthetic development exercises check delivered outputs separately from registration and qualitative review:

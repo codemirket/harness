@@ -13,7 +13,7 @@ def main():
   check                Read-only check of runtimes, global setup, settings and OS job
   schedule <command>   Plan, install or check the daily midnight OS schedule
   maintenance <command> Pull a clean checkout, sync, or read the last run status
-  runtime doctor       Discover Codex desktop, Codex CLI and Claude Code CLI
+  runtime doctor       Check clients; optionally inspect project tools and capture a local app
   settings <command>   Capture, plan, apply or diagnose portable Codex preferences
   delegate claude      Run a bounded, read-only Claude Code second opinion
   eval <command>       Prepare development tasks, check outputs and record reviews

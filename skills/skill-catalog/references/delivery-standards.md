@@ -17,12 +17,23 @@ references and preserve useful operational detail. For a long or delegated task,
 retain a compact note of decisions, affected inputs, checks and unresolved gaps.
 A routine edit needs no new task record, review panel or specialist installation.
 
+Before editing, choose the observable result that will establish completion; use
+the existing project workflow to obtain it after editing. In the final report,
+state what was exercised or inspected, the result, and a material gap if one
+remains. "Configured", "captured" and "passed review" describe different evidence.
+An unavailable check stays unverified; it is not replaced by a self-awarded score.
+
 ## Frontend and motion
 
 Name the user's task, primary action, content hierarchy and intended visual
 improvement. Select application or public-page composition guidance in
 `interface-design`; select interaction recipes in `motion-design` when motion is
 affected. Existing brand, components and behavior remain authoritative.
+
+For visual refinement, choose a concrete direction from the project's design
+owners or supplied references and name the baseline defects. Use comparable
+captures to assess those defects, then correct unresolved ones before claiming
+improvement. Keep this brief in the working task; no new design document is needed.
 
 Inspect actual renders with realistic content at affected widths, states and
 themes. For an improvement, compare equivalent before/after views and refine

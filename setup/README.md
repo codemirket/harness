@@ -29,6 +29,49 @@ python3 ai.py install --codex /absolute/codex --claude /absolute/claude --deskto
 
 Desktop verification checks identity metadata and executable accessibility without launching the GUI. PATH visibility is reported separately; discovered absolute CLI paths remain usable. Windows uses bounded package/known-location discovery; native Windows verification must run on that device. `--home /existing/home --no-schedule` supports isolated file preparation, but does not redirect account authentication; it reports auth as unchecked for another home. Native scheduling always belongs to the current OS user. Use `--no-schedule` with `install` or `check` for deliberate file-only setup, including exported bundles without a Git checkout. It skips registration/verification and leaves existing jobs in place.
 
+## Project readiness
+
+`runtime doctor --project /absolute/project` extends client discovery with bounded
+Node/package-manager and Git version probes, dependency-directory presence,
+available script names, and Chrome/Chromium/Edge discovery. It reads `package.json`
+in the selected directory, chooses its declared manager or a recognized lockfile,
+and reports declared engine constraints alongside actual versions. It does not
+evaluate semver ranges or prove dependency integrity. Non-Node toolchains use
+their existing project checks. Run from the workspace root for a monorepo.
+
+```sh
+python3 ai.py runtime doctor --project /absolute/project --json
+# Start the app through the project's existing workflow first, then:
+python3 ai.py runtime doctor --project /absolute/project --url http://127.0.0.1:3000 \
+  --screenshot /absolute/project/build/readiness.png --json
+```
+
+Use `--browser /absolute/chrome-or-edge` for a custom executable. A screenshot
+requires a URL and a new destination; it is never overwritten. The command creates
+the output directory only for a successful capture. URL probes accept loopback
+HTTP(S), reject credentials/query/fragment, bypass proxy settings and follow only
+bounded same-origin redirects. Capture uses a temporary profile and checks DOM
+and PNG dimensions (1280×900); it reports the image hash and leaves visual review
+unperformed; it does not verify the final browser origin after navigation.
+Browser page resources may access the network normally. This profile
+does not inherit an authenticated session; use native browser tools for protected
+workflows, interaction review, mobile layouts and other visual checks.
+
+Without a URL, startup and rendering remain `not_checked`; without a screenshot,
+browser launch remains unverified. Builds and project scripts are never run by
+doctor. Dependency installation, services and relevant build/test gates stay in
+the project's workflow. Missing requested prerequisites, failed HTTP or failed
+capture produce a nonzero exit; optional unavailable browsers do not block a
+tool-only check. Overall `ready` covers requested checks, not production readiness.
+`project doctor` continues to verify selected skills and their lock separately.
+
+The headless flags follow the [official Chrome command-line contract](https://developer.chrome.com/docs/automation-and-testing/headless-cli).
+Use an existing project renderer's executable through `--browser` when desktop
+Chrome cannot complete the probe. Windows process-tree termination uses the
+[documented taskkill options](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/taskkill)
+on deadline, but cleanup after an already-exited parent is best effort. Native
+Windows capture and cleanup still need on-device verification.
+
 ## App settings
 
 Review [the shared source](../registry/codex-settings.json) and [its scope](../docs/settings.md). Changed preferences require quitting Codex desktop and other active Codex clients, applying from a terminal, and reopening. The CLI conservatively defers if desktop process state is unknown. It never closes the app automatically. An unchanged configuration is safe to check while the app is open.

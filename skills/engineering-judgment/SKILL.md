@@ -1,6 +1,6 @@
 ---
 name: engineering-judgment
-description: Use for coding changes that require judgment about interfaces, behavior, debugging, tests, or review. Helps choose useful engineering techniques in an existing project. Simple mechanical edits need no additional workflow.
+description: Implement, debug or review application behavior, interfaces, APIs and service integrations in an existing project. Use when coding requires decisions about correctness, failure handling, tests or compatibility. Simple mechanical edits need no additional workflow.
 ---
 
 # Engineering judgment

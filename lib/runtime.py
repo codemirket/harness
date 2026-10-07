@@ -8,6 +8,9 @@ https://code.claude.com/docs/en/setup
 https://code.claude.com/docs/en/cli-reference
 """
 import argparse
+import hashlib
+import http.client
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -16,8 +19,13 @@ import re
 import shutil
 import signal
 import subprocess
+import struct
 import sys
+import tempfile
 import threading
+import urllib.error
+import urllib.parse
+import urllib.request
 
 MAX_OUTPUT = 64 * 1024
 MAX_METADATA = 1024 * 1024
@@ -38,12 +46,30 @@ def platform_name(value=None):
     return 'windows' if value in ('win32', 'windows') else 'macos' if value in ('darwin', 'macos') else 'linux' if value.startswith('linux') else value
 
 
-def run_probe(argv, *, timeout=5, env=None):
+def stop_process(process, env, *, windows=False):
+    try:
+        if windows:
+            taskkill = Path(env.get('SystemRoot', r'C:\Windows')) / 'System32/taskkill.exe'
+            try:
+                subprocess.run([str(taskkill), '/PID', str(process.pid), '/T', '/F'],
+                               stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                               shell=False, timeout=2, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            process.kill()
+        else:
+            os.killpg(process.pid, signal.SIGKILL)
+    except (OSError, ProcessLookupError):
+        pass
+
+
+def run_probe(argv, *, timeout=5, env=None, max_output=None, cwd=None):
     """No shell or stdin; cap captured output and kill on deadline/overflow."""
     child_env = dict(os.environ if env is None else env)
+    max_output = MAX_OUTPUT if max_output is None else max_output
     child_env.update({'CI': '1', 'NO_COLOR': '1', 'DISABLE_AUTOUPDATER': '1', 'DISABLE_UPDATES': '1'})
     options = {'stdin': subprocess.DEVNULL, 'stdout': subprocess.PIPE,
-               'stderr': subprocess.STDOUT, 'env': child_env, 'shell': False}
+               'stderr': subprocess.STDOUT, 'env': child_env, 'shell': False, 'cwd': cwd}
     if os.name == 'nt':
         options['creationflags'] = subprocess.CREATE_NO_WINDOW
     else:
@@ -56,11 +82,7 @@ def run_probe(argv, *, timeout=5, env=None):
     overflow = threading.Event()
 
     def stop():
-        try:
-            if os.name == 'nt': process.kill()
-            else: os.killpg(process.pid, signal.SIGKILL)
-        except (OSError, ProcessLookupError):
-            pass
+        stop_process(process, child_env, windows=os.name == 'nt')
 
     def read():
         total = 0
@@ -69,7 +91,7 @@ def run_probe(argv, *, timeout=5, env=None):
                 block = process.stdout.read(4096)
                 if not block: break
                 total += len(block)
-                if total > MAX_OUTPUT:
+                if total > max_output:
                     overflow.set()
                     stop()
                     break
@@ -350,6 +372,200 @@ def diagnose(*, home=None, codex=None, claude=None, desktop=None, check_auth=Fal
                        'Linux desktop is an official preview; feature support differs from macOS/Windows.']}
 
 
+def diagnose_tool(name, env, timeout, *, cwd=None):
+    path = path_lookup(name, env, platform_name())
+    record = {'path': path, 'state': 'not_found', 'version': None}
+    if not path: return record
+    command = [path]
+    if os.name == 'nt' and Path(path).suffix.lower() in ('.cmd', '.bat', '.ps1'):
+        # Run known JS entrypoints directly; never interpolate a shell wrapper.
+        scripts = {'npm': ('npm/bin/npm-cli.js',),
+                   'pnpm': ('pnpm/bin/pnpm.cjs', 'corepack/dist/pnpm.js'),
+                   'yarn': ('yarn/bin/yarn.js', 'corepack/dist/yarn.js')}
+        script = next((Path(path).parent / 'node_modules' / relative
+                       for relative in scripts.get(name, ())
+                       if (Path(path).parent / 'node_modules' / relative).is_file()), None)
+        node = path_lookup('node', env, platform_name())
+        if not script or not node:
+            record['state'] = 'unsupported_shell_wrapper'
+            return record
+        command = [node, str(script)]
+    result = run_probe(command + ['--version'], timeout=timeout,
+                       env=dict(env, COREPACK_ENABLE_NETWORK='0', COREPACK_ENABLE_DOWNLOAD_PROMPT='0'), cwd=cwd)
+    pattern = (r'(?m)^git version (\d+\.\d+\.\d+)' if name == 'git'
+               else r'(?m)^v?(\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?)\s*$')
+    match = re.search(pattern, result['text'])
+    record['state'] = result['status']
+    if result['status'] == 'ok':
+        record['state'] = 'available' if match else 'unrecognized_version'
+        record['version'] = match.group(1) if match else None
+    return record
+
+
+def discover_browser(env, explicit=None):
+    choices = [Path(explicit).expanduser()] if explicit else []
+    if not explicit:
+        choices += [Path(path) for name in ('google-chrome', 'chromium', 'chromium-browser', 'chrome', 'msedge')
+                    for path in [path_lookup(name, env, platform_name())] if path]
+        if platform_name() == 'macos':
+            choices += [Path(base) / app / 'Contents/MacOS' / binary
+                        for base in ('/Applications', str(Path.home() / 'Applications'))
+                        for app, binary in (('Google Chrome.app', 'Google Chrome'),
+                                            ('Chromium.app', 'Chromium'),
+                                            ('Microsoft Edge.app', 'Microsoft Edge'))]
+        elif platform_name() == 'windows':
+            choices += [Path(env[key]) / relative
+                        for key in ('ProgramFiles', 'ProgramFiles(x86)', 'LOCALAPPDATA') if env.get(key)
+                        for relative in ('Google/Chrome/Application/chrome.exe',
+                                         'Microsoft/Edge/Application/msedge.exe')]
+    path = next((path.resolve() for path in choices if path.is_file()
+                 and path.suffix.lower() not in ('.cmd', '.bat', '.ps1')
+                 and (os.name == 'nt' or os.access(path, os.X_OK))), None)
+    return {'state': 'available' if path else 'not_found', 'path': str(path) if path else None,
+            'launch_verified': False}
+
+
+def local_url(url):
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        host, port = parsed.hostname, parsed.port
+        loopback = host == 'localhost' or bool(host and ipaddress.ip_address(host).is_loopback)
+    except ValueError:
+        loopback = False
+    if (not loopback or parsed.scheme not in ('http', 'https') or parsed.username is not None
+            or parsed.password is not None or parsed.query or parsed.fragment):
+        raise ValueError('Use a loopback HTTP(S) URL without credentials, query or fragment')
+    return url
+
+
+def _probe_url_once(url, timeout):
+    local_url(url)
+    class SameOriginRedirect(urllib.request.HTTPRedirectHandler):
+        max_redirections = 2
+
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            local_url(newurl)
+            if urllib.parse.urlsplit(newurl)[:2] != urllib.parse.urlsplit(url)[:2]:
+                raise ValueError('Cross-origin redirect')
+            return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+    try:
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), SameOriginRedirect())
+        with opener.open(url, timeout=timeout) as response:
+            return {'state': 'responding', 'http_status': response.status}
+    except urllib.error.HTTPError as error:
+        return {'state': 'http_error', 'http_status': error.code}
+    except (OSError, ValueError, urllib.error.URLError, http.client.HTTPException):
+        return {'state': 'unreachable', 'http_status': None}
+
+
+def probe_url(url, timeout):
+    local_url(url)
+    # Socket timeouts alone cannot bound a server that drips headers indefinitely.
+    code = ('import json,runpy,sys; '
+            'probe=runpy.run_path(sys.argv[1])["_probe_url_once"]; '
+            'print(json.dumps(probe(sys.argv[2],float(sys.argv[3]))))')
+    result = run_probe([sys.executable, '-I', '-c', code, str(Path(__file__).resolve()), url, str(timeout)],
+                       timeout=timeout)
+    if result['status'] == 'ok':
+        try:
+            return json.loads(result['text'])
+        except ValueError:
+            pass
+    return {'state': result['status'] if result['status'] != 'ok' else 'invalid_response', 'http_status': None}
+
+
+def probe_render(url, browser, screenshot, env, timeout):
+    if browser['state'] != 'available': return {'state': 'browser_unavailable'}
+    # A fresh profile avoids using a logged-in personal browser. DOM/logs are not reported.
+    with tempfile.TemporaryDirectory(prefix='ai-render-') as temporary:
+        root = Path(temporary)
+        image = root / 'capture.png'
+        result = run_probe([browser['path'], '--headless', '--no-first-run', '--no-default-browser-check',
+                            '--user-data-dir=' + str(root / 'profile'), '--window-size=1280,900',
+                            '--timeout=' + str(int(timeout * 1000)), '--dump-dom',
+                            '--screenshot=' + str(image), url], env=env, timeout=timeout + 10,
+                           max_output=MAX_METADATA)
+        record = {'state': result['status'], 'exit_code': result['exit_code']}
+        if result['status'] != 'ok': return record
+        dom = result['text'].lower()
+        if '<html' not in dom or 'chrome-error://chromewebdata' in dom or 'id="main-frame-error"' in dom:
+            return {'state': 'page_error'}
+        if not image.is_file() or image.stat().st_size > 16 * 1024 * 1024:
+            return {'state': 'capture_missing_or_oversized'}
+        raw = image.read_bytes()
+        if (len(raw) < 45 or raw[:8] != b'\x89PNG\r\n\x1a\n' or raw[12:16] != b'IHDR'
+                or raw[-12:] != b'\x00\x00\x00\x00IEND\xaeB`\x82'):
+            return {'state': 'invalid_capture'}
+        width, height = struct.unpack('>II', raw[16:24])
+        if (width, height) != (1280, 900): return {'state': 'unexpected_dimensions'}
+        screenshot.parent.mkdir(parents=True, exist_ok=True)
+        with screenshot.open('xb') as stream: stream.write(raw)
+        return {'state': 'captured', 'screenshot': str(screenshot), 'width': width, 'height': height,
+                'sha256': hashlib.sha256(raw).hexdigest(), 'visual_review': 'not_performed',
+                'final_origin_verified': False}
+
+
+def diagnose_project(project, *, url=None, browser=None, screenshot=None, env=None, timeout=5):
+    """Inspect prerequisites; optional local HTTP/render probes, no script execution."""
+    if not isinstance(timeout, (int, float)) or not 0 < timeout <= 15:
+        raise ValueError('Probe timeout must be greater than zero and at most 15 seconds')
+    project = Path(project).expanduser().resolve()
+    if not project.is_dir(): raise ValueError('Project must be an existing directory')
+    if url: local_url(url)
+    if screenshot:
+        screenshot = Path(screenshot).expanduser().absolute()
+        if not url: raise ValueError('--screenshot requires --url')
+        if screenshot.suffix.lower() != '.png': raise ValueError('Screenshot destination must have a .png extension')
+        if screenshot.exists() or screenshot.is_symlink(): raise ValueError('Screenshot destination must be new')
+    env = dict(os.environ if env is None else env)
+    package_path = project / 'package.json'
+    package = read_metadata(package_path, json.loads) if package_path.exists() else None
+    if package_path.exists() and package is None: raise ValueError('Invalid or oversized package.json')
+    tools = {}
+    scripts = []
+    if package is not None:
+        tools['node'] = diagnose_tool('node', env, timeout, cwd=project)
+        declared = package.get('packageManager')
+        manager = declared.split('@', 1)[0] if isinstance(declared, str) else next(
+            (name for filename, name in (('pnpm-lock.yaml', 'pnpm'), ('yarn.lock', 'yarn'),
+                                        ('bun.lock', 'bun'), ('bun.lockb', 'bun'))
+             if (project / filename).is_file()), 'npm')
+        tools[manager] = (diagnose_tool(manager, env, timeout, cwd=project) if manager in ('npm', 'pnpm', 'yarn', 'bun')
+                          else {'state': 'unsupported_package_manager', 'path': None, 'version': None})
+        values = package.get('scripts', {})
+        if isinstance(values, dict):
+            scripts = sorted(name for name in values if re.fullmatch(r'[a-zA-Z0-9:_-]+', name)
+                             and (name in ('dev', 'start', 'build', 'test', 'check', 'lint', 'typecheck',
+                                           'preview', 'storybook', 'design:review') or name.startswith('dev:')))
+    if (project / '.git').exists(): tools['git'] = diagnose_tool('git', env, timeout, cwd=project)
+    browser_record = discover_browser(env, browser)
+    startup = probe_url(url, timeout) if url else {'state': 'not_checked'}
+    render = (probe_render(url, browser_record, screenshot, env, timeout)
+              if screenshot and startup['state'] == 'responding'
+              else {'state': 'startup_unavailable' if screenshot else 'not_checked'})
+    browser_record['launch_verified'] = render['state'] == 'captured'
+    dependencies_present = (project / 'node_modules').is_dir() or (project / '.pnp.cjs').is_file()
+    dependencies_needed = bool(package and (package.get('dependencies') or package.get('devDependencies')))
+    prerequisites_ready = (all(tool['state'] == 'available' for tool in tools.values())
+                           and (not dependencies_needed or dependencies_present))
+    return {'path': str(project), 'kind': 'node' if package is not None else 'files',
+            'tools': tools, 'declared_engines': package.get('engines', {}) if package else {},
+            'declared_package_manager': package.get('packageManager') if package else None,
+            'dependencies': ('present' if dependencies_present else 'not_found') if package is not None else 'not_checked',
+            'available_scripts': scripts, 'build': {'state': 'not_checked'},
+            'browser': browser_record, 'startup': startup, 'render': render,
+            'prerequisites_ready': prerequisites_ready,
+            'requested_checks_passed': (prerequisites_ready and (not url or startup['state'] == 'responding')
+                                       and (not screenshot or render['state'] == 'captured')),
+            'limits': ['Project scripts, dependency installation and builds are not run.',
+                       'Dependency presence and reported versions do not verify installation integrity or engine constraints.',
+                       'Non-Node toolchains need their project-specific readiness checks.',
+                       'HTTP response and capture do not verify application health, authenticated workflows or visual quality.',
+                       'Capture uses an isolated browser profile; final browser origin is unverified and page resources may access the network.',
+                       'Windows process-tree cleanup is best effort; native Windows capture remains unverified.']}
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='command', required=True)
@@ -358,9 +574,20 @@ def main(argv=None):
     doctor.add_argument('--home', type=Path)
     for name in ('codex', 'claude', 'desktop'): doctor.add_argument('--' + name, type=Path)
     doctor.add_argument('--check-auth', action='store_true')
+    doctor.add_argument('--project', type=Path, help='Inspect project prerequisites without running scripts')
+    doctor.add_argument('--url', help='Check an already-running loopback HTTP(S) app')
+    doctor.add_argument('--browser', type=Path, help='Chrome/Chromium/Edge executable for optional capture')
+    doctor.add_argument('--screenshot', type=Path, help='Capture local URL to a new PNG file for inspection')
     args = parser.parse_args(argv)
+    if (args.url or args.browser or args.screenshot) and not args.project:
+        parser.error('--url, --browser and --screenshot require --project')
+    project_report = diagnose_project(args.project, url=args.url, browser=args.browser,
+                                     screenshot=args.screenshot) if args.project else None
     report = diagnose(home=args.home, codex=args.codex, claude=args.claude,
                       desktop=args.desktop, check_auth=args.check_auth)
+    if project_report is not None:
+        report['project'] = project_report
+        report['ready'] = report['ready'] and project_report['requested_checks_passed']
     if args.json:
         print(json.dumps(report, indent=2))
     else:
@@ -369,4 +596,15 @@ def main(argv=None):
             if record['selected_path']: print('  ' + record['selected_path'])
             if record.get('next_step'): print('  ' + record['next_step'] + ' ' + report['guidance'][name]['url'])
             if args.check_auth: print('  auth: ' + record['auth']['state'])
-    return 0 if report['ready'] and not report['authentication_attention'] else 1
+        if project_report is not None:
+            for name, tool in project_report['tools'].items():
+                print(name + ': ' + tool['state'] + (' (' + tool['version'] + ')' if tool['version'] else ''))
+            print('project prerequisites: ' + ('available' if project_report['prerequisites_ready'] else 'attention'))
+            print('dependencies: ' + project_report['dependencies'])
+            if project_report['available_scripts']:
+                print('available scripts (not run): ' + ', '.join(project_report['available_scripts']))
+            print('browser: ' + project_report['browser']['state'])
+            for name in ('build', 'startup', 'render'): print(name + ': ' + project_report[name]['state'])
+            if project_report['render'].get('screenshot'): print('  ' + project_report['render']['screenshot'])
+    return 0 if (report['ready'] and not report['authentication_attention']
+                 and (project_report is None or project_report['requested_checks_passed'])) else 1

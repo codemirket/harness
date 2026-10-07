@@ -1,6 +1,6 @@
 ---
 name: motion-design
-description: Implement or review requested interface motion, including interruption, lifecycle, reduced motion, and measured rendering behavior. Use for animation work or observed motion problems.
+description: Implement or review UI animations and transitions, including hover, expand/collapse, enter/exit, interruption and reduced motion. Use for interface animation requests or observed motion problems; video production needs its own workflow.
 ---
 
 # Motion design

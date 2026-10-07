@@ -247,7 +247,7 @@
       "name": "skill-catalog",
       "scope": "global",
       "category": "catalog",
-      "description": "Compose, inspect and register complete project capability profiles from the personal registry.",
+      "description": "Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when design, engineering, documentation, animation or research needs specialist guidance.",
       "delivery": "global-link",
       "path": "skills/skill-catalog",
       "informed_by": [
@@ -271,7 +271,7 @@
       "name": "engineering-judgment",
       "scope": "global",
       "category": "coding",
-      "description": "Reason about behavior, interfaces, diagnosis, and verification with task-sized effort.",
+      "description": "Implement, debug or review application behavior, interfaces, APIs and service integrations in an existing project. Use when coding requires decisions about correctness, failure handling, tests or compatibility. Simple mechanical edits need no additional workflow.",
       "delivery": "global-link",
       "path": "skills/engineering-judgment",
       "informed_by": [
@@ -296,7 +296,7 @@
       "name": "interface-design",
       "scope": "global",
       "category": "design",
-      "description": "Apply hierarchy, real content, interaction states, accessibility, and rendered checks.",
+      "description": "Design, implement, or review screens and public pages. Use for UI redesign, visual polish, layout, typography, spacing and interaction design, with verification of the rendered result. Skip backend-only changes and routine edits with no interface impact.",
       "delivery": "global-link",
       "path": "skills/interface-design",
       "informed_by": [
@@ -346,7 +346,7 @@
       "name": "document-workflow",
       "scope": "global",
       "category": "documents",
-      "description": "Preserve technical claims, runnable examples, editorial intent and document layout using repository or native format workflows.",
+      "description": "Write or revise repository documentation, API guides, ADRs and substantial document artifacts. Verify facts, commands, examples and editorial intent with the relevant project or format workflow. Skip simple text corrections.",
       "delivery": "global-link",
       "path": "skills/document-workflow",
       "informed_by": [
@@ -453,7 +453,7 @@
       "name": "motion-design",
       "scope": "project",
       "category": "design",
-      "description": "Design purposeful motion with interruption behavior, reduced motion, and measured performance.",
+      "description": "Implement or review UI animations and transitions, including hover, expand/collapse, enter/exit, interruption and reduced motion. Use for interface animation requests or observed motion problems; video production needs its own workflow.",
       "delivery": "local",
       "path": "skills/motion-design",
       "license_files": [
@@ -475,7 +475,7 @@
         "accessibility",
         "interaction-recipes"
       ],
-      "sha256": "6dea56a73e02ef3374f7f4a3c14fa75433214bcb9c78687877532324af6dbc76"
+      "sha256": "17f83ecc09304d12ce7a31ba8e328411754bbf7b468541aed90995928acf14bd"
     },
     {
       "id": "experiment-design",
@@ -10932,7 +10932,7 @@
       "name": "research-and-synthesis",
       "scope": "project",
       "category": "research",
-      "description": "Investigate a consequential question through web, literature, repository, or supplied-document research and produce a traceable synthesis with uncertainty.",
+      "description": "Search and synthesize web, literature, repository or supplied-document evidence for technical questions, comparisons and research decisions. Verify material claims with appropriate sources and explain uncertainty. Routine local file lookup can use repository search directly.",
       "delivery": "local",
       "path": "skills/research-and-synthesis",
       "license_files": [
@@ -10951,7 +10951,7 @@
         "source-verification"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a"
+      "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
     },
     {
       "id": "document-parsing",

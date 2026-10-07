@@ -1,6 +1,6 @@
 ---
 name: research-and-synthesis
-description: Investigate a consequential question through web, literature, repository, or supplied-document research and produce a traceable synthesis with uncertainty.
+description: Search and synthesize web, literature, repository or supplied-document evidence for technical questions, comparisons and research decisions. Verify material claims with appropriate sources and explain uncertainty. Routine local file lookup can use repository search directly.
 ---
 
 # Research and synthesis
