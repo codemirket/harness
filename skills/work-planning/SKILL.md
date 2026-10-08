@@ -9,6 +9,11 @@ Choose planning effort from the cost of losing track, not the number of tool
 calls. Use the project's existing task record or the host's plan when it is
 sufficient. Do not create parallel records for the same work.
 
+For substantial work with interdependent outcomes or subjective acceptance, read
+[delivery review](references/delivery-review.md). It connects the completion
+conditions to a working slice, independent inspection and evidence-based repair;
+routine edits need no additional review process.
+
 ## Establish a useful plan
 
 Describe the intended result and observable completion conditions. Separate

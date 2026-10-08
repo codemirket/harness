@@ -21,7 +21,7 @@ model or project failure.
 | Routing | Explicit new-screen/public-page, API connector, MCP, technical documentation and research boundaries | Selected installed body and applicable reference, beyond a catalog match |
 | Expertise | Application/public-page composition, interaction recipes, async ownership, engineering boundaries, service reliability, technical writing and claim verification | Decisions grounded in task and project rather than generic style rules |
 | Execution | Domain delivery standards selected for substantial work | Actual renders, affected behaviors, examples, tool effects or supporting sources |
-| Evaluation | Five prepared development tasks with bounded checks and separate artifact review | Current checks and reviewed output with scope and limitations |
+| Evaluation | Seven prepared development tasks with bounded checks and separate artifact review | Current checks and reviewed output with scope and limitations |
 
 The shared entry point stays small. Detailed procedures live beside each skill
 and load only for a matching task. Profiles remain installation groups; they do
@@ -82,7 +82,7 @@ recorded checks and reviews. Changed case definitions require fresh preparation.
 An artifact replay after a verifier improvement is not a new independent trial.
 These editable local records are not a security boundary or proof of human approval.
 
-The frontend, documentation and research cases require separate qualitative review.
+Frontend, documentation, research, analysis and database cases require separate qualitative review.
 The frontend verifier can check image format/dimensions, labeled controls and a
 review note; it cannot judge composition or prove interactions. Inspect every
 required image and exercise the behaviors. Documentation needs source comparison
@@ -154,7 +154,14 @@ work, preserve brand and behavior, inspect comparable before/after renders at th
 affected widths/themes/states, and exercise controls, focus and async behavior.
 For engineering/integration, test affected contracts and failure/replay boundaries.
 For documentation, execute examples and verify claims. For research, check source
-applicability and counterevidence. Complete project gates and report delivered
+applicability and counterevidence. For product work, connect evidence to scope and
+observable acceptance; for analysis, reconcile grain, denominators and cohort mix.
+For database/operations work, verify actual state, compatibility and recovery within
+task authority. For substantial visual or cross-boundary work, use the existing task
+record and delivery-review guidance: inspect actual artifacts, separate requirement
+defects from preferences and unverified paths, and repair with fresh evidence.
+Distinguish browser emulation from physical-device verification.
+Complete project gates and report delivered
 changes, actual evidence and remaining limits. Do not treat registration or a
 passing build as qualitative acceptance. Keep production actions within explicit
 authorization.
@@ -194,3 +201,25 @@ this update does not claim improved Trixpo output. Pixel fidelity needs an accep
 reference, real content/assets and rendered comparison for that particular task.
 Production readiness also depends on the affected project's runtime, data,
 authorization, accessibility, deployment and release evidence.
+
+
+## Broader professional work
+
+The [2026-10-08 resource review](reviews/harness-upgrade.md) explains the source
+assessment, task-discovery defects and focused changes. Use `product-management`
+for evidence-to-delivery decisions and `data-analysis` for reproducible quantitative
+reasoning. The existing product-discovery/data-analytics profiles include them;
+add individual skills for narrower needs. Database, operations, QA, marketing and
+backend routes now name their lead and completion evidence explicitly.
+
+The two additional public development tasks exercise rollout analysis with
+population/denominator traps and a SQLite backfill with interruption and concurrent
+writer boundaries. Their verifiers test observable outputs; qualitative review
+assesses the supported decision and migration/recovery explanation. Neither is a
+production database certification or a causal experiment on real customers.
+
+For substantial work, choose observable conditions in the existing task record,
+exercise a small complete path and use a fresh reviewer when it adds useful
+judgment. Follow work-planning's delivery-review reference: inspect actual artifacts,
+separate defects/preferences/unverified paths and repair with new evidence. It adds
+no mandatory extra agents, stop hooks or permanent background work.

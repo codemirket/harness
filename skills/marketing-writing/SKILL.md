@@ -41,6 +41,10 @@ Scale the process to the deliverable; a button label needs less work than a laun
 
 ## Edit proportionately
 
+For a substantial revision, read [editorial preservation](references/editorial-preservation.md)
+for claim-preserving cuts, concrete phrasing and worked examples. Use the relevant
+example when a shorter edit has a similar risk; a label change needs no full review.
+
 For a small change, check only the affected text. For substantial copy, review:
 
 1. Meaning: the draft answers the brief and preserves required facts.

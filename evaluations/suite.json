@@ -90,6 +90,49 @@
       "review_artifacts": [
         "research.md"
       ]
+    },
+    {
+      "id": "analysis-rollout-decision",
+      "domain": "analysis",
+      "title": "Reconcile rollout conversion and make a supported product decision",
+      "prompt": "cases/analysis-rollout-decision/task.md",
+      "required_evidence": [
+        "Reproducible account-level conversion with reconciled exclusions and current-mix comparison",
+        "Source-grounded decision separating descriptive results from causal claims"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "data/accounts.csv",
+        "data/orders.csv",
+        "data/contract.md",
+        "data/output-schema.json"
+      ],
+      "review_artifacts": [
+        "decision.md",
+        "results.json",
+        "analyze.py"
+      ]
+    },
+    {
+      "id": "database-resumable-backfill",
+      "domain": "database",
+      "title": "Backfill a SQLite lookup key with restart and writer compatibility",
+      "prompt": "cases/database-resumable-backfill/task.md",
+      "required_evidence": [
+        "Bounded durable batches with atomic failure and process restart",
+        "Preserved data and old/new writer compatibility",
+        "Reproducible migration and recovery explanation with production limits"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "schema.sql"
+      ],
+      "review_artifacts": [
+        "migration.py",
+        "migration.md"
+      ]
     }
   ]
 }

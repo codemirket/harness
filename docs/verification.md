@@ -1,5 +1,18 @@
 # Verification evidence
 
+The 2026-10-08 [harness upgrade](reviews/harness-upgrade.md) passes **426 tests in
+32.315 seconds**. It fixes professional-role discovery gaps, adds product and
+quantitative-analysis workflows, and extends artifact review, visual/editorial
+craft and QA. Two isolated projects verify 56 byte-exact Codex/Claude copies and
+unchanged repeat sync. Three guided development cases pass checks and agent review:
+frontend (four checks plus independent rendered/browser inspection), analysis
+(nine checks plus independent SQL reconciliation), and SQLite backfill (13 checks
+plus nine local regressions). A separate editorial trial preserves facts and offer
+conditions. Six broken verifier instruments are rejected. Analysis outputs were
+replayed after fixture line-ending normalization, with identical data. These are development
+results, not a controlled quality gain or production/device certification.
+[Exact evidence and limits](evidence/harness-upgrade-2026-10-08.json).
+
 The 2026-10-08 [SVG studio addition](reviews/svg-studio.md) passes **425 tests in
 46.972 seconds**, including 14 SVG structural regressions. Both specialists install
 with byte-exact references/helper in Codex and Claude Code scratch projects; doctor

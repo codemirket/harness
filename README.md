@@ -2,7 +2,7 @@
 
 This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 199 project selections and 63 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 201 project selections and 63 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
 ## Install and check
 
@@ -36,7 +36,7 @@ Changed preferences wait while Codex is open; global guidance can still refresh.
 
 The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup and evidence-based work while remaining under 100 lines. [CLAUDE.md](instructions/CLAUDE.md) defines the supporting Claude Code role. Global availability does not load every skill into every task.
 
-[Task routing](skills/skill-catalog/references/task-routing.md) maps UI design, engineering, technical documentation, artifacts, motion and search outcomes to reviewed capabilities and their actual invocation names. [Routing audit](docs/reviews/skill-routing.md) records the Trixpo reference check and the limits of installation and selection evidence. UI refinement requires inspected, comparable renders and iteration against the requested visual goal.
+[Task routing](skills/skill-catalog/references/task-routing.md) maps design, illustration, motion, backend, databases, operations, QA, marketing, product, analysis, documentation and research outcomes to reviewed capabilities and their actual invocation names. [Routing audit](docs/reviews/skill-routing.md) records the Trixpo reference check and the limits of installation and selection evidence. UI refinement requires inspected, comparable renders and iteration against the requested visual goal.
 
 ## Deliver and evaluate quality
 
@@ -57,7 +57,7 @@ See [readiness details and limits](setup/README.md#project-readiness).
 
 [Delivery standards](skills/skill-catalog/references/delivery-standards.md) connect task selection to the evidence needed for frontend, motion, engineering, documentation, integrations and research. Selected skills now carry concrete composition examples, asynchronous state patterns, boundary decisions, integration failure handling, source-checked documentation and claim verification. Project conventions and actual tools determine the implementation.
 
-Five synthetic development exercises check delivered outputs separately from registration and qualitative review:
+Seven synthetic development exercises check delivered outputs separately from registration and qualitative review:
 
 ```sh
 python3 ai.py eval list
@@ -69,7 +69,13 @@ python3 ai.py eval check --run build/evaluation-runs/ledger
 python3 ai.py eval report --run build/evaluation-runs/ledger
 ```
 
-The CLI runs local candidate code with normal host permissions and bounded duration/output. It launches no model. Frontend, documentation and research cases also require recorded artifact review through `eval review`. Passing these development cases does not establish production readiness or a quality gain. See [the harness design, pilot evidence and next evaluation steps](docs/quality-harness.md).
+The CLI runs local candidate code with normal host permissions and bounded duration/output. It launches no model. Frontend, documentation, research, analysis and database cases also require recorded artifact review through `eval review`. Passing these development cases does not establish production readiness or a quality gain. See [the harness design, pilot evidence and next evaluation steps](docs/quality-harness.md).
+
+The [twelve-resource review](docs/reviews/harness-upgrade.md) records what was adopted,
+rejected or left optional. Product decisions now use `product-management`; quantitative
+work uses `data-analysis`. Both join existing opt-in profiles. Substantial work gets
+artifact-based delivery review, with specific design/editorial/QA guidance. The
+shared instructions stay under 100 lines, with no new service or default MCP.
 
 ## Share app preferences
 

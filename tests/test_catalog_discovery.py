@@ -49,6 +49,27 @@ class ShippedTaskDiscoveryTests(unittest.TestCase):
     def test_docx_discovers_portable_authoring_when_native_tools_are_absent(self):
         self.assertIn('office-authoring', self.matches('docx'))
 
+    def test_professional_role_requests_surface_reviewed_workflows(self):
+        # These queries previously surfaced only unreviewed inventory entries.
+        import json
+        data = catalog.load_catalog()
+        index = json.loads(catalog.INDEX.read_text())['skills']
+        routes = {
+            'database administrator': 'database-systems',
+            'DevOps': 'release-operations',
+            'quality assurance': 'test-design',
+            'deep research': 'research-and-synthesis',
+            'product manager': 'product-management',
+            'data analysis': 'data-analysis',
+        }
+        for query, expected in routes.items():
+            with self.subTest(query=query):
+                rows = catalog.search_entries(data, index, query)
+                self.assertTrue(rows)
+                self.assertIn(expected, {identifier for row in rows[:3]
+                                        for identifier in row['installable_ids']})
+                self.assertTrue(rows[0]['installable_ids'])
+
 
 class CombinedSearchTests(unittest.TestCase):
     def setUp(self):

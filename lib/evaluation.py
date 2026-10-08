@@ -21,7 +21,8 @@ from . import catalog, harness
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITE = ROOT / 'evaluations/suite.json'
-DOMAINS = ('frontend', 'engineering', 'documentation', 'integration', 'research')
+DOMAINS = ('frontend', 'engineering', 'documentation', 'integration', 'research',
+           'analysis', 'database')
 MAX_OUTPUT = 1024 * 1024
 MAX_TREE = 64 * 1024 * 1024
 

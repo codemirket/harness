@@ -23,6 +23,12 @@ state what was exercised or inspected, the result, and a material gap if one
 remains. "Configured", "captured" and "passed review" describe different evidence.
 An unavailable check stays unverified; it is not replaced by a self-awarded score.
 
+For substantial subjective or cross-boundary work, use `work-planning`'s
+delivery-review reference: retain observable conditions, exercise a small complete
+path, obtain an independent artifact review when useful, and repair concrete
+defects. Separate requirement failures, preferences and unverified paths. Keep the
+existing task record and host tools; do not create a mandatory multi-agent pipeline.
+
 ## Frontend and motion
 
 Name the user's task, primary action, content hierarchy and intended visual
@@ -72,6 +78,60 @@ Complete affected project gates and inspect actual consumers when mocks cannot
 establish integration, authorization, cache ownership or browser behavior. Support
 performance claims with measurements and environment assumptions. Explain material
 tradeoffs, compatibility changes and remaining verification gaps.
+
+For backend work, follow the result through the real consumer: auth/tenant scope,
+validation, persistence, events/jobs and retries where affected. A unit test of one
+handler cannot establish the contract of its dependencies or asynchronous result.
+
+## Databases and operations
+
+Name the engine/version, environment and data invariant or operational outcome.
+For persistence, exercise constraints and representative queries on the actual
+engine. Check meaningful concurrent writers, partial migration/restart and
+reconciliation. Retain exact units, tenant identity and deletion semantics. Show
+query-plan/workload measurements for performance claims; index presence is not
+proof. For recovery work, verify an isolated restore and application invariants.
+
+For infrastructure and releases, inspect target state, drift, immutable artifact,
+compatibility, health/business guardrails and recovery before an authorized change.
+Use project-native plans, logs, metrics and traces. Distinguish a mitigation from
+an established cause and a healthy endpoint from a recovered user journey. Check
+rollout and rollback against mixed-version/data constraints. A prepared plan or
+local rehearsal is useful evidence and must not be reported as production success.
+
+## Quality assurance
+
+Use `test-design`'s quality-assurance reference for substantial journey/release
+assessment. Prioritize risk and changed boundaries, then exercise the user path
+with realistic roles, data and relevant failure states. Observe the consequential
+effect: persisted value after reload, actual artifact, queued work completion or
+correctly rejected access. Keep independent expected outcomes and reproducible
+defects. Screenshots, test counts and coverage percentages do not certify the app.
+
+Identify tested browsers/devices and distinguish emulation from physical-device
+evidence. Accessibility, visual coherence, functional behavior and performance
+need their own affected checks; one passing dimension cannot substitute for another.
+
+## Product, analysis and marketing
+
+For product work, use `product-management` to connect an evidenced user problem to
+an explicit decision, alternatives/non-goals, a useful delivery slice and observable
+acceptance. Retain open business authority or evidence gaps rather than inventing
+them. A complete PRD is not evidence of customer demand or a delivered feature.
+
+For quantitative work, use `data-analysis`. Record population, grain, time window,
+units, denominator and exclusions. Reconcile inputs and joins; reproduce important
+numbers in a query/script/workbook and compare segment/cohort results when mix may
+explain the aggregate. State uncertainty, missingness and plausible alternatives.
+Separate description, forecast and causal effect. Charts need traceable values,
+honest scales and the context needed to make the proposed decision.
+
+For marketing, use `marketing-writing` for copy and the relevant specialist for
+positioning, research or experiments. Verify claims and preserve qualifications,
+offer conditions, attribution and brand voice through revisions. Inspect finished
+copy in its channel/layout when relevant. Conversion lift remains a hypothesis
+until a suitable measurement supports it. Identify missing proof without fabricating
+testimonials, urgency or outcomes. Publication and spending need actual task scope.
 
 ## Documentation and artifacts
 

@@ -1,0 +1,641 @@
+{
+  "date": "2026-10-08",
+  "base_commit": "ddfe7848fa3ab103f77d6aed2fb8f6c676e7b5be",
+  "scope": "Focused harness source/routing/workflow changes; no application project changes or new runtime/account connections.",
+  "source_review": "docs/reviews/harness-upgrade.md",
+  "counts": {
+    "global_defaults": 14,
+    "project_selections": 201,
+    "profiles": 63,
+    "foundation": 12,
+    "shared_instruction_lines": 91
+  },
+  "checks": {
+    "suite": {
+      "tests": 426,
+      "seconds": 32.315,
+      "status": "passed"
+    },
+    "generated_docs": "passed",
+    "shell_syntax": "passed",
+    "frontmatter": {
+      "parser": "Ruby/Psych safe_load shim; unchanged quick_validate.py rules",
+      "results": {
+        "work-planning": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "skill-catalog": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "test-design": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "interface-design": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "marketing-writing": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "ai-system-evaluation": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "product-management": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        },
+        "data-analysis": {
+          "passed": true,
+          "detail": "Skill is valid!"
+        }
+      }
+    },
+    "local_links": {
+      "checked": 121,
+      "errors": []
+    },
+    "affected_catalog_recheck": {
+      "tests": 107,
+      "status": "passed"
+    },
+    "staged_whitespace": "passed"
+  },
+  "skill_payloads": {
+    "skill-catalog": {
+      "payload_sha256": "862ebfadbcabad22a07fcd1b3d2faa2f733b41f72c72a12c7ecc6ed734664bcc",
+      "files": {
+        "SKILL.md": "7a0220114b4d893c7b24506d995dc32c2a0a6a5d2d90f6992272d9389b696fce",
+        "references/delivery-standards.md": "820f998b486eecccc86d2a9646dd6a74c5f5f469aedf4299b4446abc0a2d56db",
+        "references/task-routing.md": "033e7f01d5245866cc80ed27a2eea9c1ae5338b6bebb3c4ba8b1694cd559254a",
+        "scripts/__pycache__/catalog.cpython-314.pyc": "7def0cfe2d12f3ea4de66eb914110fc723702694e9039c6a7be30f7a66cfaf5b",
+        "scripts/catalog.py": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208",
+        "scripts/harness.py": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+      }
+    },
+    "interface-design": {
+      "payload_sha256": "24be38916df74d02a6e19a201b9ac2414705758edf95d0b5aae1307575ccfd9c",
+      "files": {
+        "SKILL.md": "a892c61885214469ae730c80af6cfe1371c7d41a7c924fffdfaac089f2d965b1",
+        "references/application-composition.md": "fb1321c2c0d06023ca3add2675fc0d15e0c53e1869156f4e4413f6db0021278c",
+        "references/art-direction-and-critique.md": "5b44f1ccb9d9aaf12db5527e905a31589ab67a0fe5ac96d0f3c72f386a6b7d1a",
+        "references/public-page-composition.md": "8308382627d93f55ee2e0a93871c9d66823f1a5abd1ba17557c402eacbcec3ec"
+      }
+    },
+    "marketing-writing": {
+      "payload_sha256": "1b36b25ffc87cf7020e41d0de086973733586f83ab3c5edc75d7692af906da14",
+      "files": {
+        "SKILL.md": "a600e57c0d166478b6703c932f1bd3ab70705db7b3a15b79acb911eab65c7b4b",
+        "references/editorial-preservation.md": "1c9d3caaf21c4d26af61743bd134a296107a618acf38dd94fbd44a0ae22b493d"
+      }
+    },
+    "test-design": {
+      "payload_sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175",
+      "files": {
+        ".upstream-licenses/docs/third-party-notices.md": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d",
+        "SKILL.md": "be270c702fca23cd5bf4487769267aa1e1e26da3486d69befc9e99a7b19323bf",
+        "references/quality-assurance.md": "28b6cf15ca63086cf28113180dd9cb0f20be1727f6e60242e336e2467f4e7ec8"
+      }
+    },
+    "ai-system-evaluation": {
+      "payload_sha256": "45942b0c712b47881044c4a752b5c16cfcb05748eb2f07f4cb780472e7f8d5c1",
+      "files": {
+        ".upstream-licenses/docs/third-party-notices.md": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d",
+        "SKILL.md": "aa1318217552d3ec18807bafe42d5506b7f4c4f297310b05b61067f4289624a5",
+        "references/harness-development.md": "757aafef7c08c250861aed59c4d2470b20fdb2bb5a4259a12c89690bb476649a"
+      }
+    },
+    "work-planning": {
+      "payload_sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23",
+      "files": {
+        ".upstream-licenses/docs/third-party-notices.md": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d",
+        "SKILL.md": "9077feca7459425d6436b32019bf8f8607b32f7a94c1558c1bd07c70605d153b",
+        "references/delivery-review.md": "d15b5dde5cef9e5c0d8b1a1a373b910bc62697c12d7ca0c617a1f52be953a519"
+      }
+    },
+    "product-management": {
+      "payload_sha256": "e73114d2a5dfd1a64280cb753ba44695f5d88d27ccf02164ba0ad6b8cc5b6605",
+      "files": {
+        "SKILL.md": "6a643abd2403aee9a6736f0a9566b96d0414d860e8eb59fcd9ee7dfd4743fa28",
+        "references/decision-to-delivery.md": "789e31766888f1894516bb80a20af4426fdd49ec9b6dac72434d293b6d0fd701"
+      }
+    },
+    "data-analysis": {
+      "payload_sha256": "1f74952e0130f23414ef9ae76ab118272cb9c9e5903db84a27ce12729742ad3f",
+      "files": {
+        "SKILL.md": "520da1805bd44cd7080432c4522dbe93ba25513d4e3fa0d4ab8353761a29a704",
+        "references/grain-and-comparisons.md": "e20fffd0b105fa0b843743ae53b3d9f1f83e0c09b6c2c9d9befd87c895ece5b9"
+      }
+    }
+  },
+  "discovery_queries": {
+    "database administrator": [
+      {
+        "name": "database-systems",
+        "installable_ids": [
+          "database-systems"
+        ]
+      },
+      {
+        "name": "database-admin",
+        "installable_ids": []
+      }
+    ],
+    "DevOps": [
+      {
+        "name": "observability-engineer",
+        "installable_ids": [
+          "awesome-observability-engineer"
+        ]
+      },
+      {
+        "name": "release-operations",
+        "installable_ids": [
+          "release-operations"
+        ]
+      },
+      {
+        "name": "skill-catalog",
+        "installable_ids": []
+      }
+    ],
+    "quality assurance": [
+      {
+        "name": "test-design",
+        "installable_ids": [
+          "test-design"
+        ]
+      },
+      {
+        "name": "testing-qa",
+        "installable_ids": []
+      }
+    ],
+    "product manager": [
+      {
+        "name": "product-management",
+        "installable_ids": [
+          "product-management"
+        ]
+      },
+      {
+        "name": "product-manager",
+        "installable_ids": []
+      },
+      {
+        "name": "product-manager-toolkit",
+        "installable_ids": []
+      }
+    ],
+    "data analysis": [
+      {
+        "name": "data-analysis",
+        "installable_ids": [
+          "data-analysis"
+        ]
+      },
+      {
+        "name": "bigquery-basics",
+        "installable_ids": [
+          "google-bigquery-basics"
+        ]
+      },
+      {
+        "name": "bigquery-optimization",
+        "installable_ids": [
+          "google-bigquery-optimization"
+        ]
+      }
+    ],
+    "deep research": [
+      {
+        "name": "research-and-synthesis",
+        "installable_ids": [
+          "research-and-synthesis"
+        ]
+      },
+      {
+        "name": "deep-research",
+        "installable_ids": []
+      },
+      {
+        "name": "deep-research",
+        "installable_ids": []
+      }
+    ]
+  },
+  "registration": [
+    {
+      "project": "analysis",
+      "selected": 14,
+      "copies": 28,
+      "all_payloads_byte_exact": true
+    },
+    {
+      "project": "database",
+      "selected": 14,
+      "copies": 28,
+      "all_payloads_byte_exact": true
+    }
+  ],
+  "repeat_sync": {
+    "analysis": {
+      "unchanged": 28
+    },
+    "database": {
+      "unchanged": 28
+    }
+  },
+  "global_doctor": {
+    "unchanged": 30
+  },
+  "export": {
+    "local_selection": "foundation plus product-management and data-analysis",
+    "path": "build/harness-review/export-local",
+    "verified_source_payloads": true,
+    "full_portable_cli": "Full suite checks seven domains and executes three seed cases after removing original checkout.",
+    "independently_compared_payloads": 14
+  },
+  "verifier_instruments": [
+    {
+      "label": "analysis-correct",
+      "exit_code": 0,
+      "failed": [],
+      "checks": 9
+    },
+    {
+      "label": "analysis-hardcoded",
+      "exit_code": 1,
+      "failed": [
+        "alternate-13",
+        "alternate-71",
+        "alternate-109",
+        "missing-stratum",
+        "conflicting-delivery"
+      ],
+      "checks": 9
+    },
+    {
+      "label": "analysis-wrong-denominator",
+      "exit_code": 1,
+      "failed": [
+        "fixture-calculation",
+        "reproducible-output",
+        "alternate-13",
+        "alternate-71",
+        "alternate-109",
+        "missing-stratum"
+      ],
+      "checks": 9
+    },
+    {
+      "label": "analysis-empty",
+      "exit_code": 1,
+      "failed": [
+        "fixture-calculation",
+        "alternate-13",
+        "alternate-71",
+        "alternate-109",
+        "missing-stratum",
+        "conflicting-delivery"
+      ],
+      "checks": 8
+    },
+    {
+      "label": "database-correct",
+      "exit_code": 0,
+      "failed": [],
+      "checks": 13
+    },
+    {
+      "label": "database-hardcoded-range",
+      "exit_code": 1,
+      "failed": [
+        "alternate-data"
+      ],
+      "checks": 13
+    },
+    {
+      "label": "database-per-row-commit",
+      "exit_code": 1,
+      "failed": [
+        "atomic-failure",
+        "process-restart"
+      ],
+      "checks": 13
+    },
+    {
+      "label": "database-noop",
+      "exit_code": 1,
+      "failed": [
+        "additive-expansion",
+        "migration-execution",
+        "alternate-data"
+      ],
+      "checks": 4
+    }
+  ],
+  "guided_trials": [
+    {
+      "case": "frontend-property-editor-hierarchy",
+      "domain": "frontend",
+      "condition": "candidate",
+      "model": "inherited Codex subagent; exact version unavailable",
+      "settings": "native tools; no new dependencies; source guidance snapshot",
+      "suite_sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4",
+      "case_sha256": "feabcadacbe0af5c9a08ce5532947cf183ccab7a80b7df19d250a2d485879f78",
+      "harness_sha256": "4f567bdc30bdfb2fa6fc0681042530d31eacf8a0474e49cdf8f3144224e5f57a",
+      "automated": "passed",
+      "review": {
+        "reviewer": "independent upgrade_review agent with primary image inspection",
+        "kind": "agent",
+        "decision": "accepted",
+        "rationale": "Compared all four actual final renders to matched baselines and brief. Independent fresh Chromium captures byte-matched submitted images; locale, editing, keyboard Save, theme, Draft, labels/focus and 320-1280px overflow checks passed. Original in-memory save behavior preserved. No physical device, screen reader, cross-browser or human preference acceptance claimed."
+      },
+      "accepted": true,
+      "artifact_root": "build/harness-review/runs/frontend/workspace",
+      "artifact_sha256": {
+        "index.html": "c387325068cac5d13a0cc24ee104239549b8e02567e90cd4daad4b880d594f67",
+        "styles.css": "0b062d26cd640643e2e4702db359b66136cfcf711acdee1dbf9abfbf010e985b",
+        "app.js": "487f064be4a19f592fa16c24f9e4e7fbfb2335047d04877ef8df6b85445b14c1",
+        "evidence/light-desktop.png": "8304b6f58a30ddbe981d06abeec24ba2e14c7846234a92999a582e7e864e681c",
+        "evidence/dark-desktop.png": "21a794689889679f2086513c8acbfeb8504376a3abb5685a79f37e9a84362fb4",
+        "evidence/light-narrow.png": "e1c3a5f5c500f6ea70a024ffeb113621460a9ff369eeeaf5f35fbaf74b805fa7",
+        "evidence/dark-narrow.png": "263082b6060fc3fc329f6629bbdb21af365cb9fb19830f665dfa3046156ebaf6"
+      },
+      "checks": [
+        {
+          "id": "semantic-controls",
+          "status": "passed",
+          "detail": "Editable controls are labeled and page exposes Draft and a Save action"
+        },
+        {
+          "id": "local-assets",
+          "status": "passed",
+          "detail": "Page loads local styles and behavior"
+        },
+        {
+          "id": "render-captures",
+          "status": "passed",
+          "detail": "Desktop and narrow PNG captures supplied; content, theme and design require review"
+        },
+        {
+          "id": "review-note",
+          "status": "passed",
+          "detail": "A render-review note is present; its claims require review"
+        }
+      ]
+    },
+    {
+      "case": "analysis-rollout-decision",
+      "domain": "analysis",
+      "condition": "candidate-artifact-replay",
+      "model": "inherited Codex subagent; exact version unavailable",
+      "settings": "Original trial outputs; fixture CRLF normalized to LF; no additional model execution",
+      "suite_sha256": "5c9ff0cb0748fc02f1d5e596b6139408e7f153a89814c195f0d2e2efe92ba737",
+      "case_sha256": "b59f10be605e1e4ad9e40ddedc8891044165cb7f85e274f5ad593af1dd6a4a1e",
+      "harness_sha256": "ad325f11b72b8d9a01cbf5b7604153a18e6cbc4099d19dc060901c9dd99257c1",
+      "automated": "passed",
+      "review": {
+        "reviewer": "primary agent; independent of original trial implementer",
+        "kind": "agent",
+        "decision": "accepted",
+        "rationale": "Original reviewed artifacts replayed unchanged after fixture CRLF-to-LF normalization; this is not a new model trial. Nine checks pass on final fixture bytes. Original source/brief review and independent SQL account controls remain applicable because parsed rows and delivered artifacts are identical; observational limits preserved."
+      },
+      "accepted": true,
+      "artifact_root": "build/harness-review/runs/analysis-final/workspace",
+      "artifact_sha256": {
+        "analyze.py": "87950f1cd121baf2a859058327f027d5f895b7d84475a8ac0fecc7aed2be0e0c",
+        "results.json": "5646099cbd6e69c2d3e54561c0467efdc01e290b5386dfebfcca2cbae28bd2a2",
+        "decision.md": "49fac2e9cda55bc19b8f2da2a93b78f74a2c4db3ab0e8f1d0f2ad0d5f863d957",
+        "working-note.md": "c854bc5989e84cb21e97d1d94b95e4528b0be3f789d4eb969d21c567b737a6ae"
+      },
+      "checks": [
+        {
+          "id": "fixture-control",
+          "status": "passed",
+          "detail": "Fixed fixture matches independently counted account and order controls"
+        },
+        {
+          "id": "fixture-calculation",
+          "status": "passed",
+          "detail": "Counts, per-device rates, current-mix rates and percentage-point difference match"
+        },
+        {
+          "id": "reproducible-output",
+          "status": "passed",
+          "detail": "Submitted results match fresh execution on immutable inputs"
+        },
+        {
+          "id": "alternate-13",
+          "status": "passed",
+          "detail": "Reordered, varied account populations and repeated deliveries calculate from inputs"
+        },
+        {
+          "id": "alternate-71",
+          "status": "passed",
+          "detail": "Reordered, varied account populations and repeated deliveries calculate from inputs"
+        },
+        {
+          "id": "alternate-109",
+          "status": "passed",
+          "detail": "Reordered, varied account populations and repeated deliveries calculate from inputs"
+        },
+        {
+          "id": "missing-stratum",
+          "status": "passed",
+          "detail": "Unobserved pilot stratum remains null; standardized pilot rate and delta are null"
+        },
+        {
+          "id": "conflicting-delivery",
+          "status": "passed",
+          "detail": "Conflicting order ID fails without emitting a successful result"
+        },
+        {
+          "id": "brief-artifact",
+          "status": "passed",
+          "detail": "Decision brief exists; recommendation, provenance and causal reasoning require qualitative review"
+        }
+      ],
+      "original_trial_provenance": {
+        "condition": "candidate",
+        "model": "inherited Codex subagent; exact version unavailable",
+        "settings": "native tools; stdlib; guided installed skill selection",
+        "suite_sha256": "5c9ff0cb0748fc02f1d5e596b6139408e7f153a89814c195f0d2e2efe92ba737",
+        "case_sha256": "7b81b154f1c45b937b16f6e081ae37c95458c688bf727cd2ca090e31c451fea5",
+        "harness_sha256": "f42d361e30e416d7f7fe1669533379ca46f0e3aea06c12a6fdb3468b7467c1b5"
+      },
+      "replay": "Unchanged original outputs replayed on final LF-normalized CSV bytes; parsed rows identical; no additional model execution."
+    },
+    {
+      "case": "database-resumable-backfill",
+      "domain": "database",
+      "condition": "candidate",
+      "model": "inherited Codex subagent; exact version unavailable",
+      "settings": "native tools; stdlib SQLite; guided installed skill selection",
+      "suite_sha256": "5c9ff0cb0748fc02f1d5e596b6139408e7f153a89814c195f0d2e2efe92ba737",
+      "case_sha256": "4902f3682c5b4c7982889d1ff8b213d2b3cd2a88eb1474e37dec7ea0d6c0e963",
+      "harness_sha256": "f42d361e30e416d7f7fe1669533379ca46f0e3aea06c12a6fdb3468b7467c1b5",
+      "automated": "passed",
+      "review": {
+        "reviewer": "primary agent; independent of trial implementer",
+        "kind": "agent",
+        "decision": "accepted",
+        "rationale": "Inspected transaction/trigger implementation and migration note against original task/schema and rubric. Re-executed all13 public checks and9 focused local checks. Verified additive preservation, independent writer compatibility, explicit-key rejection, rollback, bounded durable restart and documented rollout/reconciliation. Local SQLite evidence does not establish production load, restore or physical-crash durability."
+      },
+      "accepted": true,
+      "artifact_root": "build/harness-review/runs/database/workspace",
+      "artifact_sha256": {
+        "migration.py": "bce3502f0496f94ef24251ac844c88ef75844398480ea485c7d01cae0caf526a",
+        "migration.md": "59fbfb10f8bf5f6f98739931d01013f7e0a0a85f069bcd853371fa839055d696",
+        "check_migration.py": "d3c01f37023baa76b1a1213a59b5291812022e72c0510c16df494b688441d850",
+        "working-note.md": "8ba4da88a46fd2c3369b6be9c94b376519d84caaddcba3b28ccc808964c71569"
+      },
+      "checks": [
+        {
+          "id": "additive-expansion",
+          "status": "passed",
+          "detail": "Nullable key added; source rows preserved and existing rows remain pending"
+        },
+        {
+          "id": "repeat-expansion",
+          "status": "passed",
+          "detail": "Repeated expansion leaves rows and audit unchanged"
+        },
+        {
+          "id": "batch-validation",
+          "status": "passed",
+          "detail": "Invalid batch sizes raise ValueError before database changes"
+        },
+        {
+          "id": "bounded-durable-batch",
+          "status": "passed",
+          "detail": "Exactly the first two IDs are complete and visible to a new connection after return"
+        },
+        {
+          "id": "overlapping-writers",
+          "status": "passed",
+          "detail": "Legacy, paired and pending-key writes work on an independent connection during backfill"
+        },
+        {
+          "id": "reject-inconsistent-key",
+          "status": "passed",
+          "detail": "Incorrect explicit new keys fail without data changes"
+        },
+        {
+          "id": "atomic-failure",
+          "status": "passed",
+          "detail": "Injected statement failure propagates and rolls back the entire pending batch"
+        },
+        {
+          "id": "process-restart",
+          "status": "passed",
+          "detail": "New process resumes the next two rows; abrupt exit after return retains exactly the committed batch"
+        },
+        {
+          "id": "finish-resumable",
+          "status": "passed",
+          "detail": "Further bounded calls finish all pending rows, preserving duplicate normalized keys"
+        },
+        {
+          "id": "data-and-schema-preservation",
+          "status": "passed",
+          "detail": "Only intended source edits exist; original index, trigger, audit and unrelated data are preserved"
+        },
+        {
+          "id": "completed-idempotence",
+          "status": "passed",
+          "detail": "Repeated expansion/backfill after completion changes no rows or audit records"
+        },
+        {
+          "id": "alternate-data",
+          "status": "passed",
+          "detail": "Arbitrary sparse IDs, equal keys and ASCII trim semantics work on a second database"
+        },
+        {
+          "id": "migration-note",
+          "status": "passed",
+          "detail": "Migration note exists; operational reasoning and evidence require qualitative review"
+        }
+      ]
+    }
+  ],
+  "frontend_independent_review": {
+    "report_sha256": "95efcae97000cc1d8c7ad7b358b6873b00544f919c08a13930f5bd07761377e4",
+    "observations": [
+      "All four final images visually inspected against matched baselines by a separate reviewer and primary agent.",
+      "Fresh Chromium captures independently byte-matched the final submitted screenshots.",
+      "Locale, field editing, keyboard Save, theme, Draft, labels/focus and overflow passed at documented widths.",
+      "Inherited session-memory behavior preserved; page reload resets values."
+    ],
+    "runtime": "Chromium headless shell 151.0.7922.34 on macOS",
+    "physical_device": false
+  },
+  "analysis_independent_calculation": {
+    "method": "Independent SQLite EXISTS query against immutable CSVs",
+    "groups": [
+      [
+        "current",
+        "desktop",
+        8,
+        6
+      ],
+      [
+        "current",
+        "mobile",
+        32,
+        8
+      ],
+      [
+        "pilot",
+        "desktop",
+        32,
+        20
+      ],
+      [
+        "pilot",
+        "mobile",
+        8,
+        1
+      ]
+    ],
+    "observed_pooled_pp": 17.5,
+    "standardized_pp": -12.5
+  },
+  "database_additional_checks": {
+    "count": 9,
+    "status": "passed",
+    "python": "3.9.6",
+    "sqlite": "3.51.0",
+    "log_sha256": "47b5cb06f8b1587eaa74d0ef7c8c36993b74c1537c4bc0d8e9895da0552a529d"
+  },
+  "editorial_trial": {
+    "artifacts": {
+      "copy.md": "edd2da5bb74d02144e6e95b28b88693aa28cef267a29499c1915aef98aa72c6c",
+      "evidence.json": "4a48c360f504b7c57f17debdc08dd85a41e7cc2a422658fdf36171f5b71b846a"
+    },
+    "reviewer": "primary agent",
+    "observations": [
+      "Exact opening and CTA preserved.",
+      "Private pilot size9, reported result5, approximate20-40minutes and one weekly review retained.",
+      "No invented speed/accuracy/customer-count claim.",
+      "2-workspace/10-day/no-card conditions preserved; no unsupported free or continuation claim."
+    ],
+    "rendered_or_conversion_test": false
+  },
+  "limits": [
+    "Public guided development exercises, not held-out or controlled baseline/candidate quality comparison.",
+    "Exact model version unavailable; configuration labels, skill-read reports and local records are not execution attestation.",
+    "Agent review is separate from owner/human acceptance.",
+    "Codex and Claude project copies verified; no new Claude model task or native Windows execution.",
+    "No physical-device, Safari/Firefox, screen-reader, live provider, production migration, restore or load certification.",
+    "Frontend used a frozen guidance subset; its catalog CLI could not locate a full checkout, so the agent read the frozen files directly. Actual installer/export paths were tested separately.",
+    "New skills are available in existing opt-in profiles; other projects still require deliberate sync.",
+    "Ignored build artifacts remain local; committed evidence retains hashes and observations, and shipped cases allow new trials.",
+    "The analysis artifacts were replayed after fixture CRLF-to-LF normalization; original and final provenance are retained. This is not a second independent trial."
+  ]
+}

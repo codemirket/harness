@@ -74,6 +74,9 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
 - Finish source edits before final artifact generation. Reuse evidence only when
   relevant inputs, configuration, dependencies and environment are unchanged.
   Rerun affected checks; never present stale or unknown evidence as current.
+- For substantial visual or cross-boundary work, use work-planning's delivery-review
+  guidance when a fresh inspection can expose gaps. Review the actual result;
+  distinguish requirement defects, preferences and unverified paths, then repair.
 - Compare the result with the intended outcome. Report changes, rationale,
   verification and material remaining risks. State the limits of claims plainly.
 

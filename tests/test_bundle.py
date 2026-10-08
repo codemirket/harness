@@ -200,17 +200,21 @@ class BundleTests(unittest.TestCase):
                                 cwd=unrelated, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual({e['domain'] for e in json.loads(result.stdout)['cases']},
-                         {'frontend', 'engineering', 'documentation', 'integration', 'research'})
-        run = self.base / 'portable-run'
-        result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'prepare',
-                                 '--case', 'engineering-ledger-total', '--output', str(run),
-                                 '--model', 'test', '--condition', 'portable'],
-                                cwd=unrelated, text=True, capture_output=True)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'check', '--run', str(run)],
-                                cwd=unrelated, text=True, capture_output=True)
-        self.assertEqual(result.returncode, 1, result.stderr)
-        self.assertEqual(json.loads(result.stdout)['status'], 'failed')
+                         {'frontend', 'engineering', 'documentation', 'integration', 'research',
+                          'analysis', 'database'})
+        for identifier in ('engineering-ledger-total', 'analysis-rollout-decision',
+                           'database-resumable-backfill'):
+            with self.subTest(case=identifier):
+                run = self.base / ('portable-' + identifier)
+                result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'prepare',
+                                         '--case', identifier, '--output', str(run),
+                                         '--model', 'test', '--condition', 'portable'],
+                                        cwd=unrelated, text=True, capture_output=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'check', '--run', str(run)],
+                                        cwd=unrelated, text=True, capture_output=True)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertEqual(json.loads(result.stdout)['status'], 'failed')
 
     def test_snapshot_symlink_fails_without_export(self):
         self.foundation()

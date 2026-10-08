@@ -8,9 +8,9 @@ agent read the right advice, used the tools correctly or delivered a better resu
 
 Use the installed `skill-catalog/scripts/harness.py` engine, or `python3 ai.py` from
 the source checkout. The foundation plugin carries the same engine and fixtures.
-Run `eval list` to inspect five development cases: frontend hierarchy, refund
-totals, technical CLI documentation, paginated HTTP integration and source-based
-research. Each has a task, seed workspace, verifier and rubric.
+Run `eval list` to inspect seven development cases: frontend hierarchy, refund
+totals, technical CLI documentation, paginated HTTP integration, source-based
+research, rollout analysis and resumable database backfill. Each has a task, seed workspace, verifier and rubric.
 
 ```sh
 python3 ai.py eval list
@@ -47,7 +47,7 @@ limits are not an OS sandbox. Use only the authorized fixtures and outputs. No
 dependency installation, runtime provisioning, model call or account connection
 is performed by this CLI. Review code before running unfamiliar candidate code.
 
-The frontend, documentation and research cases require qualitative review after
+The frontend, documentation, research, analysis and database cases require qualitative review after
 their checks. Inspect the actual required output files against `rubric.md`; for
 frontend work view every required browser screenshot and exercise the behaviors.
 An existing PNG proves neither good composition nor usable interaction. The

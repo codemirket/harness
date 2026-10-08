@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, page transitions, complex motion, SVG/vector artwork, engineering, documentation or research needs specialist guidance.
+description: Route substantive tasks to reviewed skills and register project capabilities. Use at setup or when design, illustration, motion, backend, databases, DevOps, QA, marketing, product decisions, data analysis, documentation or research needs specialist guidance.
 ---
 
 # Personal skill registry
@@ -14,10 +14,14 @@ instructions relevant to the current task so availability stays efficient.
 
 ## Pick up and compose
 
-For UI design, engineering, documentation, animation or search work, read the
+For substantive work in the domains above, read the
 matching row in [task routing](references/task-routing.md). It distinguishes
 task workflows from registration profiles and catalog IDs from invocation names.
-Use the project's own route when it already resolves the task. A QA profile is
+Use the project's own route when it already resolves the task. When a name appears
+globally and in the project, prefer the project's managed copy and its integration
+note for that project; do not combine two versions. Discovery lists can be shortened
+by the host. Use catalog search for a missing capability rather than assuming the
+initial list is complete. A QA profile is
 not a visual redesign workflow, and a document file workflow is not an API-docs
 workflow. Read the selected body and integration note before applying it.
 For substantial work, read the affected domain in

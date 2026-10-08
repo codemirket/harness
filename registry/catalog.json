@@ -247,7 +247,7 @@
       "name": "skill-catalog",
       "scope": "global",
       "category": "catalog",
-      "description": "Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, page transitions, complex motion, SVG/vector artwork, engineering, documentation or research needs specialist guidance.",
+      "description": "Route substantive tasks to reviewed skills and register project capabilities. Use at setup or when design, illustration, motion, backend, databases, DevOps, QA, marketing, product decisions, data analysis, documentation or research needs specialist guidance.",
       "delivery": "global-link",
       "path": "skills/skill-catalog",
       "informed_by": [
@@ -338,7 +338,9 @@
         "Installed by platform setup; use only when its trigger matches."
       ],
       "tags": [
-        "marketing"
+        "marketing",
+        "copywriting",
+        "editorial-refinement"
       ]
     },
     {
@@ -397,7 +399,7 @@
       "name": "test-design",
       "scope": "project",
       "category": "coding",
-      "description": "Select observable behavior tests, independent oracles, boundaries, and useful seams.",
+      "description": "Design regression tests, assess QA readiness or investigate weak and flaky checks using independent expectations and observable behavior. Use for test strategy, substantial user-journey QA or nontrivial test changes.",
       "delivery": "local",
       "path": "skills/test-design",
       "license_files": [
@@ -416,9 +418,13 @@
       "tags": [
         "testing",
         "tdd",
-        "regression"
+        "regression",
+        "quality-assurance",
+        "qa",
+        "user-journey",
+        "test-strategy"
       ],
-      "sha256": "4c20399ede68444382408440c4bf978d1f779678da744d9520a047db5dd75f2e"
+      "sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175"
     },
     {
       "id": "architecture-review",
@@ -9798,8 +9804,9 @@
       ],
       "tags": [
         "observability",
-        "observability",
-        "engineer"
+        "engineer",
+        "devops",
+        "incident-response"
       ],
       "reviewed_files": [
         "SKILL.md"
@@ -11011,7 +11018,9 @@
         "research",
         "research-and-synthesis",
         "claim-verification",
-        "source-verification"
+        "source-verification",
+        "deep-research",
+        "evidence-synthesis"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
       "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
@@ -11131,7 +11140,11 @@
       ],
       "tags": [
         "deployment",
-        "release-operations"
+        "release-operations",
+        "devops",
+        "operations",
+        "rollout",
+        "recovery"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
       "sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
@@ -11261,7 +11274,7 @@
         "development-evaluation"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4"
+      "sha256": "45942b0c712b47881044c4a752b5c16cfcb05748eb2f07f4cb780472e7f8d5c1"
     },
     {
       "id": "frontend-engineering",
@@ -11308,7 +11321,10 @@
       ],
       "tags": [
         "database",
-        "database-systems"
+        "database-systems",
+        "database-administrator",
+        "dba",
+        "database-admin"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
       "sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa"
@@ -11357,7 +11373,7 @@
         "planning",
         "work-planning"
       ],
-      "sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332"
+      "sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23"
     },
     {
       "id": "search-visibility",
@@ -14767,6 +14783,68 @@
         "css-3d"
       ],
       "sha256": "027a298b9f0ffae17d837ef6b81e2a4189f5136a7c598fa2aa7aa36f458f15d0"
+    },
+    {
+      "id": "product-management",
+      "name": "product-management",
+      "scope": "project",
+      "category": "planning",
+      "description": "Turn product evidence, feature requests and roadmap choices into explicit outcomes, scope, delivery slices and measurable acceptance. Use for product prioritization, requirements or launch decisions; skip routine implementation with settled requirements.",
+      "delivery": "local",
+      "path": "skills/product-management",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available project tools and source evidence; no additional runtime is required for registration."
+      ],
+      "caveats": [
+        "Original portable workflow; source quality and actual task verification determine the result."
+      ],
+      "coverage": "Authored decision workflow with worked examples; registration is not a claim of professional certification.",
+      "tags": [
+        "product-management",
+        "product-manager",
+        "product",
+        "requirements",
+        "prioritization",
+        "roadmap",
+        "acceptance"
+      ],
+      "sha256": "e73114d2a5dfd1a64280cb753ba44695f5d88d27ccf02164ba0ad6b8cc5b6605"
+    },
+    {
+      "id": "data-analysis",
+      "name": "data-analysis",
+      "scope": "project",
+      "category": "data",
+      "description": "Analyze datasets, metrics and business questions with explicit grain, denominators, reconciled transformations and reproducible calculations. Use for quantitative investigation, cohort or funnel analysis, and interpreting analytical results; skip database administration and simple arithmetic.",
+      "delivery": "local",
+      "path": "skills/data-analysis",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available project tools and source evidence; no additional runtime is required for registration."
+      ],
+      "caveats": [
+        "Original portable workflow; source quality and actual task verification determine the result."
+      ],
+      "coverage": "Authored decision workflow with worked examples; registration is not a claim of professional certification.",
+      "tags": [
+        "data-analysis",
+        "analyst",
+        "analytics",
+        "quantitative-analysis",
+        "cohort",
+        "funnel",
+        "metrics"
+      ],
+      "sha256": "1f74952e0130f23414ef9ae76ab118272cb9c9e5903db84a27ce12729742ad3f"
     }
   ],
   "profiles": {
@@ -15065,8 +15143,9 @@
       ]
     },
     "data-analytics": {
-      "description": "Notebooks, BigQuery query/storage optimization and source-grounded data reports.",
+      "description": "Reproducible quantitative analysis with notebooks, BigQuery optimization and source-grounded reporting when needed.",
       "skills": [
+        "data-analysis",
         "openai-jupyter-notebook",
         "google-bigquery-basics",
         "google-bigquery-optimization",
@@ -15214,8 +15293,9 @@
       ]
     },
     "product-discovery": {
-      "description": "Challenge product premises and plan scope using portable Gstack methods and customer evidence.",
+      "description": "Evidence-led product decisions, prioritization and acceptance, with optional premise-challenging methods and customer research.",
       "skills": [
+        "product-management",
         "gstack-openclaw-office-hours",
         "gstack-openclaw-ceo-review",
         "customer-research",

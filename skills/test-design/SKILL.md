@@ -1,11 +1,16 @@
 ---
 name: test-design
-description: Design regression tests or repair weak and flaky tests using independent expectations and observable behavior. Use for a test strategy or nontrivial test changes.
+description: Design regression tests, assess QA readiness or investigate weak and flaky checks using independent expectations and observable behavior. Use for test strategy, substantial user-journey QA or nontrivial test changes.
 ---
 
 # Behavioral test design recipe
 
 Project opt-in when adding meaningful behavior, preventing regressions, or repairing weak/flaky tests. Use the existing project runner and conventions.
+
+For substantial QA or release assessment, read
+[quality assurance](references/quality-assurance.md) to select realistic journeys,
+observe their actual effects and report actionable defects. Keep the domain lead
+for implementation or visual direction; testing expertise does not replace it.
 
 1. Name the contract and realistic failure: wrong branch, malformed input, missing state change, ordering violation, boundary value, or incorrect external operation.
 2. Choose an observable boundary that reaches the bug. Unit, integration, and end-to-end tests serve different evidence needs; choose by behavior and isolation cost rather than a fixed preference.

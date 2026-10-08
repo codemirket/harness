@@ -39,6 +39,9 @@ composition exercise.
 - For public product pages, landing pages and editorial content, read
   [public page composition](references/public-page-composition.md). It offers
   content-led structures, asset decisions and worked visual directions.
+- When interpreting visual references or when visual quality is the main request,
+  read [art direction and critique](references/art-direction-and-critique.md).
+  It turns a reference into specific decisions and rendered corrections.
 - For a mixed product, use the application reference for its working screens and
   the public reference for its public narrative. Share brand roles and components;
   the surfaces can have different density and emphasis.

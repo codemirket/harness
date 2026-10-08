@@ -67,6 +67,7 @@ def render():
         selected = sum(e.get('source') == identifier for e in project)
         sources.append('| [' + source['repository'] + '](https://github.com/' + source['repository'] + '/tree/' + source['commit'] + ') | ' + str(n) + ' | ' + str(selected) + ' | ' + cell(source.get('license_summary', source.get('license', 'Per-entry review'))) + ' |')
     sources += ['', '## Detailed evidence', '',
+                '- [All-domain harness review](reviews/harness-upgrade.md): twelve requested resources, professional task routes, outcome review and focused product/analysis additions.',
                 '- [Vercel browser and React skills](reviews/vercel.md): runtime boundaries, host assumptions, React companions and deployment concerns.',
                 '- [Addy engineering and Remotion media](reviews/quality-media.md): shared-reference remaps, exact corrections and Remotion license uncertainty.',
                 '- [Planning and search visibility](reviews/planning-search.md): hook-bearing planning packages, measurement defects and authored replacements.',
