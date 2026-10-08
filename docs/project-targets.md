@@ -17,10 +17,38 @@ installation or checker exception:
 }
 ```
 
-This example installs the 12-skill project foundation for both clients and the
+This example installs the four complementary project skills for both clients and the
 guardrails payload for Claude Code only. It does not configure or execute its hook. Keep an
 existing project's own shared profiles, skills and skip list when adding scoped
 entries; the short example is not a replacement for that project's selection.
+
+The normal setup combines 14 global skills with these four project entries.
+Use `portable-foundation` explicitly for the full 12 portable fundamentals when
+the corresponding globals are absent. Do not install both versions by default:
+[Codex can list both same-name skills](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills),
+and [Claude Code gives personal skills precedence](https://code.claude.com/docs/en/skills#resolve-skills-that-share-a-name).
+A prose instruction to prefer the project copy cannot override that host behavior.
+For old projects, compare exact paths and retain the intended version; sync
+preserves unselected old copies, so removing a profile alone does not clean up
+duplicate registrations. Do not delete user-modified copies automatically.
+
+Plan, add previews, sync and doctor attach a `global_skill_name_overlap` warning
+when a selected project skill shares a configured global name, including through
+specialist profiles. This compares configuration; it does not prove the global
+copy is installed or determine which copy a client uses. Intentional portable
+selections remain valid.
+
+Plan, sync and doctor also append `kind: diagnostic`, `action: preserved` rows
+for unselected receipt-bearing copies under active targets. These identify the
+path, readable receipt ID and `global_overlap` when applicable. Unknown or malformed
+receipts and symlinks are reported without trusting them or traversing linked
+copies. Unmanaged ordinary directories without receipts are outside this check.
+Diagnostics neither install nor delete files, add lock entries, or fail doctor
+by themselves. Selected-copy drift and a stale lock still fail doctor. Review
+preserved paths and actual client discovery before deliberate cleanup or reselection.
+Existing name-collision preflight also remains strict: an unreadable `SKILL.md`
+in a target receiving selected skills can block reconciliation before reporting.
+The diagnostic error handling does not bypass that safety check.
 
 For a new project, `project init --target both
 --target-skill claude:matt-git-guardrails-claude-code --project /absolute/project`
@@ -72,6 +100,12 @@ add also selects the current foundation, so inspect its preview for extra entrie
 Use [the installer](../setup/README.md) to reconcile the declaration. Required
 files and both source/adapted hashes are checked before publishing changes.
 Registration proves file state, not tool availability or workflow activation.
+
+When current reviewed content matches an installed copy but its source provenance
+differs, project plan, sync and doctor report both origins. The receipt retains
+the original installation; the selection lock tracks the current catalog. Doctor
+can pass this content-equivalent state without claiming the newer source was
+fetched or reinstalled. Unchanged installed bytes and receipts keep their timestamps.
 
 ## Installed executable integrity
 

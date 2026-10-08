@@ -13,7 +13,16 @@ SPEC.loader.exec_module(catalog)
 
 
 class CatalogDataTests(unittest.TestCase):
-    def test_project_defaults_provide_a_rich_portable_foundation(self):
+    def test_default_project_skills_do_not_duplicate_global_discovery_names(self):
+        import json
+        config = json.loads((ROOT / 'registry/harness.json').read_text())
+        data = catalog.load_catalog()
+        entries = {entry['id']: entry for entry in data['skills']}
+        global_names = {entries[identifier]['name'] for identifier in config['global_skills']}
+        defaults = catalog.resolve_selection(data, profiles=config['project_defaults']['profiles'])
+        self.assertFalse(global_names.intersection(entry['name'] for entry in defaults))
+
+    def test_global_and_project_defaults_retain_the_rich_foundation_with_portable_option(self):
         import json
         config = json.loads((ROOT / 'registry/harness.json').read_text())
         data = catalog.load_catalog()
@@ -25,8 +34,12 @@ class CatalogDataTests(unittest.TestCase):
             'debugging', 'test-design', 'ci-maintenance', 'release-operations',
             'document-parsing', 'office-authoring',
         }
-        self.assertEqual({entry['id'] for entry in selected}, expected)
-        for entry in selected:
+        default_ids = {entry['id'] for entry in selected}
+        self.assertEqual(default_ids, {'architecture-review', 'debugging', 'test-design', 'release-operations'})
+        self.assertTrue(expected.issubset(default_ids | set(config['global_skills'])))
+        portable = catalog.resolve_selection(data, profiles=['portable-foundation'])
+        self.assertEqual({entry['id'] for entry in portable}, expected)
+        for entry in portable:
             with self.subTest(entry=entry['id']):
                 self.assertEqual(entry['scope'], 'project')
                 self.assertEqual(entry['delivery'], 'local')
@@ -56,6 +69,16 @@ class CatalogDataTests(unittest.TestCase):
                     self.assertEqual(catalog.skill_name(payload['SKILL.md']), entry['name'])
                     self.assertEqual(catalog.payload_hash(payload), entry['sha256'],
                                      'Review the changed local skill and update its catalog hash')
+
+    def test_authored_discovery_descriptions_match_the_installed_frontmatter(self):
+        for entry in catalog.load_catalog()['skills']:
+            if entry.get('delivery') not in ('local', 'global-link'):
+                continue
+            with self.subTest(entry=entry['id']):
+                body = (ROOT / entry['path'] / 'SKILL.md').read_text()
+                description = re.search(r'^description: (.+)$', body.split('---', 2)[1], re.M)
+                self.assertIsNotNone(description)
+                self.assertEqual(entry['description'], description.group(1))
 
     def test_profiles_resolve_for_both_agents_and_cannot_hide_manual_entries(self):
         data = catalog.load_catalog()

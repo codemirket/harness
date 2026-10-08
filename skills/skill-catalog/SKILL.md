@@ -17,9 +17,11 @@ instructions relevant to the current task so availability stays efficient.
 For substantive work in the domains above, read the
 matching row in [task routing](references/task-routing.md). It distinguishes
 task workflows from registration profiles and catalog IDs from invocation names.
-Use the project's own route when it already resolves the task. When a name appears
-globally and in the project, prefer the project's managed copy and its integration
-note for that project; do not combine two versions. Discovery lists can be shortened
+Use the project's own route when it already resolves the task. Avoid duplicate
+global/project names: Codex can list both, while Claude Code's personal copy takes
+precedence. For an existing overlap, inspect the exact paths and read the intended
+version explicitly; do not assume a project copy overrides the host or combine versions.
+Discovery lists can be shortened
 by the host. Use catalog search for a missing capability rather than assuming the
 initial list is complete. A QA profile is
 not a visual redesign workflow, and a document file workflow is not an API-docs
@@ -36,11 +38,12 @@ actual outcome; a profile is availability, not a request to load every member.
    registered skills. Reuse an unchanged selection and supplied context. Distinguish
    current work from credible later stages supported by the scope, stack or roadmap.
 2. Start with `project-foundation`, automatically included by project init/add:
-   work-planning, context-management, agent-coordination, research-and-synthesis,
-   security-judgment, architecture-review, debugging, test-design, ci-maintenance,
-   release-operations, document-parsing and office-authoring. These portable
-   fundamentals complement the shared global skills; they do not require every
-   task to run every workflow. Discover additional profiles and specialist entries:
+   architecture-review, debugging, test-design and release-operations. The 14
+   shared global skills supply planning, context, collaboration, research, security,
+   CI and documents, without duplicate default names. Verify those globals are
+   available; for a collaborator/environment without them, explicitly select
+   `portable-foundation` for the full 12 portable fundamentals. Do not combine its
+   overlapping copies with globals by default. Discover justified specialists:
 
    ```sh
    python3 scripts/catalog.py profiles
@@ -68,10 +71,14 @@ actual outcome; a profile is availability, not a request to load every member.
 
 For a new or changed development environment, use the existing readiness command:
 `python3 scripts/harness.py runtime doctor --project /absolute/project --json`.
-It checks client/tool prerequisites without running project scripts. Start the
+It reports client/tool prerequisites without running project scripts. In project
+mode, readiness reflects requested project checks; client readiness is separate,
+and explicit `--check-auth` still requires the requested authentication. Start the
 app through the project's own workflow, then optionally supply `--url
 http://127.0.0.1:3000 --screenshot /absolute/new-capture.png` for a local response
-and isolated Chrome/Chromium/Edge capture. Inspect the image and changed behavior
+and isolated Chrome/Chromium/Edge capture. If the default renderer is unavailable
+or times out, select a verified executable with `--browser /absolute/browser`.
+Inspect the image and changed behavior
 with available browser tools; a capture is not visual acceptance. Other runtimes,
 authenticated sessions and native renderers need their project-specific checks.
 Reuse readiness evidence while the relevant environment remains unchanged.
@@ -150,6 +157,20 @@ link and review the actual skill, local companions, executables, license chain,
 host assumptions and data flows. Do not treat an aggregate repository license as
 permission for every imported skill. See the repository's `docs/source-review.md`
 and `docs/runtime-integrations.md` by resolving this skill back to its checkout.
+
+Inspect behavior at discovery, reading and invocation separately. Some hosts run
+frontmatter hooks, inline command expansion or dependency/credential setup merely
+when a skill is viewed. Passive catalog search and file reading do not authorize
+those effects. Review activation metadata and helpers before registration; use a
+plain file read when a host's loader would introduce unauthorized side effects.
+Keep installation and execution within the task's existing authority.
+
+Review evidence belongs to the exact source, payload and review method. A familiar
+name, prior version's scan or successful task does not approve changed bytes or a
+same-name package from another source. Re-review changed behavior and companions
+before updating pins/hashes. Turn an observed failure into a focused correction
+or regression; do not automatically promote retrieved advice or a worker summary
+into global skills, permanent memory or new permissions.
 
 For an authorized extension, correct substantive defects, preserve notices, add
 the source/path/coverage/dependencies to the repository's `registry/catalog.json`, compute hashes

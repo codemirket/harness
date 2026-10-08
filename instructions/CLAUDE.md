@@ -11,9 +11,11 @@ CLI agent; Claude desktop is not a supported harness target.
   further unless the brief explicitly asks for it.
 - Read applicable project instructions and the relevant already available skills.
   Reuse supplied context. Do not load the full catalog or invent unavailable tools.
-- For authorized direct CLI setup, use `skill-catalog`: begin with the rich
-  `project-foundation` baseline and select specialists for current or credible
-  later needs. Persist additions with project add, sync and doctor. In a bounded
+- For authorized direct CLI setup, use `skill-catalog`: begin with
+  `project-foundation` plus shared global skills; use `portable-foundation` only
+  where the corresponding globals are absent. Personal skills override same-name
+  project skills; inspect exact paths for existing overlaps. Select specialists for
+  current or credible later needs. Persist additions with project add, sync and doctor. In a bounded
   delegate assignment, report missing skills to Codex unless registration is in
   scope; the brief and runner restrictions still apply.
 - Default delegated reviews are read-only. A prompt granting broader scope cannot

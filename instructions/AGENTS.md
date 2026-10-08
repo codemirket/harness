@@ -14,7 +14,9 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
 - Read and apply the selected skills and relevant references. Reuse an unchanged
   selection; do not reload the entire catalog or impose a workflow on a trivial
   edit. Broad availability should improve quality without wasting context.
-- Start project setup with the rich `project-foundation` baseline. Add reviewed
+- Start project setup with `project-foundation` plus the shared global skills.
+  Avoid duplicate default names; use `portable-foundation` explicitly where the
+  corresponding globals are absent. Add reviewed
   specialists for current needs and credible later stages, grounded in the stack,
   scope or roadmap. Do not install the entire catalog or every profile by default.
 - When a new capability is needed, persist it with `project add`, then run project

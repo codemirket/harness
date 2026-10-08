@@ -19,12 +19,15 @@ FIXTURE = r'''
 import json, os, signal, subprocess, sys, time
 from pathlib import Path
 args = sys.argv[1:]
-flags = "--print --output-format --restricted --safe-mode --tools --disallowedTools --permission-mode --permission-prompts --strict-mcp-config --mcp-config --no-session-persistence --setting-sources --settings --disable-slash-commands --no-chrome --append-system-prompt"
+flags = "--print --output-format --restricted --safe-mode --tools --disallowedTools --permission-mode --permission-prompts --strict-mcp-config --mcp-config --no-session-persistence --setting-sources --settings --disable-slash-commands --no-chrome --append-system-prompt --effort"
 mode = os.environ.get('FIXTURE_MODE', '')
 if os.environ.get('DISABLE_AUTOUPDATER') != '1' or os.environ.get('DISABLE_UPDATES') != '1':
     sys.exit(23)
 if '--help' in args:
-    print(flags.replace('--restricted', '') if mode == 'old' else flags)
+    if mode == 'old': flags = flags.replace('--restricted', '')
+    if mode == 'no-effort': flags = flags.replace('--effort', '')
+    if mode == 'effort-prefix': flags = flags.replace('--effort', '--effortful')
+    print(flags)
 elif 'auth' in args:
     if mode == 'bad-auth':
         print('not-json'); sys.exit(0)
@@ -100,6 +103,7 @@ class DelegateTests(unittest.TestCase):
         self.assertNotIn('--allowedTools', args)
         self.assertNotIn('--dangerously-skip-permissions', args)
         self.assertNotIn('--fallback-model', args)
+        self.assertNotIn('--effort', args)
 
     def test_read_exclusions_preserve_positive_user_and_project_denies_only(self):
         user_settings = self.base/'.claude/settings.json'
@@ -149,11 +153,45 @@ class DelegateTests(unittest.TestCase):
         self.assertEqual(call['cwd'], str(self.project))
         self.assertEqual(call['depth'], '1')
         self.assertEqual(call['args'][-2:], ['--model', 'sonnet'])
+        self.assertNotIn('--effort', call['args'])
         self.assertNotIn(self.prompt, call['args'])
         self.assertEqual(result, json.loads(output.read_text()))
         self.assertEqual(output.stat().st_mode & 0o777, 0o600)
         self.assertFalse((self.project/'injected').exists())
         self.assertNotIn('PRIVATE-', output.read_text())
+
+    def test_explicit_effort_is_preserved_in_plan_and_model_invocation(self):
+        for effort in ('low', 'medium', 'high', 'xhigh', 'max'):
+            with self.subTest(effort=effort):
+                call_path = self.base/'call.json'
+                if call_path.exists():
+                    call_path.unlink()
+                plan = self.run_delegate(plan=True, model='claude-opus-5-5', effort=effort)
+                self.assertFalse(call_path.exists())
+                self.assertEqual(plan['argv'][-4:], ['--model', 'claude-opus-5-5', '--effort', effort])
+                result = self.run_delegate(model='claude-opus-5-5', effort=effort)
+                call = json.loads(call_path.read_text())
+                self.assertEqual(call['args'], plan['argv'][1:])
+                self.assertEqual(result['argv'], plan['argv'])
+
+    def test_invalid_effort_fails_before_any_cli_request(self):
+        for effort in ('', 'maximum', 'MAX', '--help', 'max high', 1, True, [], {}):
+            with self.subTest(effort=effort), mock.patch.object(delegate, '_capture') as capture:
+                with self.assertRaisesRegex(delegate.DelegateError, 'Effort'):
+                    self.run_delegate(effort=effort)
+                capture.assert_not_called()
+
+    def test_missing_effort_capability_fails_closed_only_when_requested(self):
+        for mode in ('no-effort', 'effort-prefix'):
+            with self.subTest(mode=mode):
+                self.env['FIXTURE_MODE'] = mode
+                for plan in (True, False):
+                    with self.assertRaisesRegex(delegate.DelegateError, '--effort'):
+                        self.run_delegate(plan=plan, effort='max')
+                    self.assertFalse((self.base/'call.json').exists())
+                self.assertNotIn('--effort', self.run_delegate(plan=True)['argv'])
+                self.assertEqual(self.run_delegate()['action'], 'completed')
+                (self.base/'call.json').unlink()
 
     def test_api_and_unknown_provider_require_explicit_optin_before_inference(self):
         for name in ('ANTHROPIC_API_KEY', 'ANTHROPIC_BASE_URL', 'ANTHROPIC_AUTH_TOKEN', 'ANTHROPIC_PROFILE', 'CLAUDE_CODE_USE_VERTEX'):
@@ -322,6 +360,22 @@ class DelegateTests(unittest.TestCase):
         with contextlib.redirect_stderr(err):
             code = delegate.main(['--project',str(self.project),'--prompt-file',str(prompt)])
         self.assertEqual(code,1)
+
+    def test_main_passes_explicit_effort_and_rejects_invalid_choices(self):
+        prompt = self.base/'prompt.txt'; prompt.write_text(self.prompt)
+        args = ['--project', str(self.project), '--prompt-file', str(prompt),
+                '--executable', str(self.binary), '--model', 'claude-opus-5-5']
+        out, err = io.StringIO(), io.StringIO()
+        with mock.patch.dict(os.environ, self.env, clear=True), contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = delegate.main(args + ['--effort', 'max'])
+        self.assertEqual(code, 0, err.getvalue())
+        call = json.loads((self.base/'call.json').read_text())
+        self.assertEqual(call['args'][-4:], ['--model', 'claude-opus-5-5', '--effort', 'max'])
+        with contextlib.redirect_stderr(err), mock.patch.object(delegate, '_capture') as capture:
+            with self.assertRaises(SystemExit) as rejected:
+                delegate.main(args + ['--effort', 'maximum'])
+        self.assertEqual(rejected.exception.code, 2)
+        capture.assert_not_called()
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 
 This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 201 project selections and 63 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 201 project selections and 64 composable profiles. The default project foundation adds architecture, debugging, testing and release skills without duplicating the globals. An explicit 12-skill `portable-foundation` serves environments without the corresponding globals. Add specialists for current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
 ## Install and check
 
@@ -77,6 +77,11 @@ work uses `data-analysis`. Both join existing opt-in profiles. Substantial work 
 artifact-based delivery review, with specific design/editorial/QA guidance. The
 shared instructions stay under 100 lines, with no new service or default MCP.
 
+The [agent-runtime review](docs/reviews/agent-runtime-hardening.md) applies lessons
+from DeerFlow, OpenHuman, DeepAgents, Hermes and CodeGraph: bounded archive
+processing, passive skill loading, retrievable evidence and current-source checks
+for derived indexes. CodeGraph remains an optional project integration.
+
 ## Share app preferences
 
 [registry/codex-settings.json](registry/codex-settings.json) contains reviewed portable values captured from this Mac: model/reasoning/response preferences, desktop themes and interaction preferences, and public plugin enablement flags. It excludes credentials, permission policies, project paths, remote devices, history, private plugins and account connections.
@@ -106,7 +111,7 @@ The runner uses the official installed Claude CLI and its existing authenticatio
 
 Inspect the project's instructions, stack and roadmap. Initialize its `.ai/project.json` with the default `project-foundation` profile, then add reviewed specialists where the project has a concrete current or foreseeable need. Do not install the whole catalog or every profile.
 
-The foundation contains **work-planning, context-management, agent-coordination, research-and-synthesis, security-judgment, architecture-review, debugging, test-design, ci-maintenance, release-operations, document-parsing and office-authoring**. It complements the global skills. Skills remain registered for reuse; agents load only the guidance relevant to each task.
+The default project foundation contains **architecture-review, debugging, test-design and release-operations**. The configured globals supply planning, context, coordination, research, security, CI, parsing and office guidance. Use `portable-foundation` explicitly for all 12 fundamentals where those globals are absent. Skills remain registered for reuse; agents load only the guidance relevant to each task.
 
 ```sh
 python3 ai.py catalog profiles

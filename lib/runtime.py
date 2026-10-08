@@ -574,7 +574,8 @@ def main(argv=None):
     doctor.add_argument('--home', type=Path)
     for name in ('codex', 'claude', 'desktop'): doctor.add_argument('--' + name, type=Path)
     doctor.add_argument('--check-auth', action='store_true')
-    doctor.add_argument('--project', type=Path, help='Inspect project prerequisites without running scripts')
+    doctor.add_argument('--project', type=Path,
+                        help='Inspect project prerequisites without running scripts; use requested project checks for readiness')
     doctor.add_argument('--url', help='Check an already-running loopback HTTP(S) app')
     doctor.add_argument('--browser', type=Path, help='Chrome/Chromium/Edge executable for optional capture')
     doctor.add_argument('--screenshot', type=Path, help='Capture local URL to a new PNG file for inspection')
@@ -587,7 +588,11 @@ def main(argv=None):
                       desktop=args.desktop, check_auth=args.check_auth)
     if project_report is not None:
         report['project'] = project_report
-        report['ready'] = report['ready'] and project_report['requested_checks_passed']
+        # A project check does not require every supported client to be installed.
+        # Keep their aggregate and individual findings without changing diagnose(),
+        # whose all-client readiness is also consumed by complete installation.
+        report['clients_ready'] = report['ready']
+        report['ready'] = project_report['requested_checks_passed']
     if args.json:
         print(json.dumps(report, indent=2))
     else:
@@ -606,5 +611,4 @@ def main(argv=None):
             print('browser: ' + project_report['browser']['state'])
             for name in ('build', 'startup', 'render'): print(name + ': ' + project_report[name]['state'])
             if project_report['render'].get('screenshot'): print('  ' + project_report['render']['screenshot'])
-    return 0 if (report['ready'] and not report['authentication_attention']
-                 and (project_report is None or project_report['requested_checks_passed'])) else 1
+    return 0 if report['ready'] and not report['authentication_attention'] else 1

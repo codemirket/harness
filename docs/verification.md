@@ -1,5 +1,31 @@
 # Verification evidence
 
+The 2026-10-08 independent-review revisions pass **471 tests in 35.759 seconds**.
+Fresh scratch registration verifies 30 default-plus-specialist and 24 portable
+copies for Codex and Claude. Repeat sync preserves 110 file states. A portable-to-normal
+migration preserves all 84 skill-file states and reports 16 unselected copies;
+doctor passes with the current lock. Specialist-profile overlap warnings also pass.
+Actual POSIX permission checks and nested-receipt regressions verify diagnostic
+recovery while preserving strict selected-target name-collision preflight.
+Actual Codex CLI discovery lists 16 overlapping entries before the default repair,
+8 in a fresh normal setup, and still 16 after a preserving migration. This makes
+remaining cleanup visible without claiming it happened. All 14 eligible archive-mode
+sources pass a pinned-payload compatibility check, one selection per source;
+unchanged reader, source and selected-entry inputs were rechecked for applicability.
+An export preserves 40 original global payload files and its wrapper checks pass.
+[Dated evidence, source fingerprints and limits](evidence/independent-harness-verification-2026-10-08.json).
+These checks establish configuration behavior, not desktop invocation, all-domain
+task quality, production or physical-device readiness.
+
+The 2026-10-08 [agent-runtime hardening](reviews/agent-runtime-hardening.md) passes
+**441 tests in 35.406 seconds**, including 15 archive boundary regressions. Two
+real pinned GitHub archives preserve their source/adapted hashes. Both-target
+scratch registration verifies 24 exact copies and unchanged repeat sync. A guided
+continuity/trust trial completes the current requirement despite stale, missing
+and untrusted context, with five local tests and 25 independent behavior assertions.
+This is bounded development evidence; upstream runtimes and CodeGraph were not
+executed. [Exact evidence and limits](evidence/agent-runtime-hardening-2026-10-08.json).
+
 The 2026-10-08 [harness upgrade](reviews/harness-upgrade.md) passes **426 tests in
 32.315 seconds**. It fixes professional-role discovery gaps, adds product and
 quantitative-analysis workflows, and extends artifact review, visual/editorial
@@ -48,7 +74,7 @@ The migration repair and selective project-setup update reran the complete autom
 | Check | Result |
 | --- | --- |
 | Automated behavior tests | 368 tests pass in 24.709 seconds across catalog registration, global/project reconciliation, wrappers, runtime diagnostics, settings, Claude delegation, combined installation, OS scheduling, Git maintenance and Codex plugin export. The migration repairs add six payload-navigation, 22 provider-selection, eight exclusion-reporting and 19 executable-integrity regressions. Selective setup adds 29 incremental-registration tests and one shipped-foundation check. New exclusion, permission, addition and default-foundation regressions were observed failing before their corresponding fixes. |
-| Rich selective project setup | The new project-foundation profile contains 12 reviewed authored skills and composes with all 61 profiles. A fresh temporary both-target project installed 24 fundamental copies, then four copies for two shared specialties and one Claude-only addition. All 29 receipts and executable contracts passed. Add dry-run preserved files; add changed only the manifest; doctor detected the pending lock/install drift. Repeat add/sync/doctor preserved bytes, modes and timestamps. [Isolated evidence](evidence/project-foundation-2026-10-06.json). |
+| Rich selective project setup | At the 2026-10-06 baseline, project-foundation contained 12 reviewed authored skills and composed with all 61 profiles. A fresh temporary both-target project installed 24 fundamental copies, then four copies for two shared specialties and one Claude-only addition. All 29 receipts and executable contracts passed. Add dry-run preserved files; add changed only the manifest; doctor detected the pending lock/install drift. Repeat add/sync/doctor preserved bytes, modes and timestamps. [Isolated evidence](evidence/project-foundation-2026-10-06.json). |
 | Incremental declaration compatibility | Project add preserves prior choices, skips, targets and metadata, rejects unsupported selections and modified destinations, and requires subsequent sync/doctor. It upgrades to v2 for scoped additions without enabling new targets. Init/add include configured defaults; passive plan/sync/doctor keep existing manifests unchanged. Fixtures without project_defaults retain legacy initialization. Tests cover companions, conflicts, collisions, concurrent edits, publication failure and idempotence. |
 | Bundled navigation repair | Exact-count catalog adaptations repair 30 misbased links in two Vercel AGENTS.md companions, preserving upstream pins, source hashes, URL fragments, licenses and other source files. Complete pinned payloads were freshly installed and updated for both targets in temporary projects; source/adaptation tampering was rejected and modified copies preserved. [Occurrence and hash evidence](evidence/vercel-navigation-2026-10-06.json). |
 | Provider-specific reconciliation | Schema v2 target_skills resolve companions, compatibility, conflicts and names independently per target; v2 locks record each entry's targets. Plan/sync/doctor also report excluded active targets with unsupported or not_requested reasons. Schema v1 output and locks remain compatible. Tests cover unsupported combinations, stale target edges, one-off adoption, modified-copy preservation and repeat-sync timestamps. |
@@ -64,8 +90,8 @@ The migration repair and selective project-setup update reran the complete autom
 | Installer failures | Missing runtimes, unmanaged guidance, invalid settings and an open app block known writes. Tests cover settings failure after global setup, failure partway through global installation, authentication attention and unsupported custom `CODEX_HOME`. |
 | Live Claude delegation | Subscription route verified. A bounded connectivity request returned the requested text; a separate Read-tool request returned a random value present only in a temporary fixture file. A larger code-review request exceeded its 120-second limit and was cancelled without publishing a result. No automatic retry or billing fallback occurred. |
 | Delegation boundaries | Tests cover unsupported CLI controls, API opt-in, sensitive-path denials, preserved positive Read-deny rules, disabled updates, malformed/failing results, bounded output, timeouts/process-tree cancellation, partial write cleanup and no-overwrite publication. |
-| Authored skill validation | Catalog tests verify all authored project source hashes, including the 12 foundation skills. The changed skill-catalog body retains its existing frontmatter. Its quick_validate.py check could not run with either system or bundled Python because PyYAML is absent; no dependency was installed. The earlier coordination payload and Claude reference retain their isolated installation evidence. |
-| Global guidance | AGENTS.md is 83 lines; Claude Code guidance is 39 lines. Both describe the rich foundation plus project-specific specialties and persistent incremental registration. Codex desktop is primary, native Codex/ChatGPT workers are preferred, and Claude Code's bounded delegate restrictions remain intact. |
+| Authored skill validation | At the 2026-10-06 baseline, catalog tests verified all authored project source hashes, including the then-12 foundation skills. The changed skill-catalog body retains its existing frontmatter. Its quick_validate.py check could not run with either system or bundled Python because PyYAML is absent; no dependency was installed. The earlier coordination payload and Claude reference retain their isolated installation evidence. |
+| Global guidance (2026-10-06 baseline) | At that baseline AGENTS.md was 83 lines and Claude Code guidance 39 lines; these are historical counts, not the current files. Both describe the rich foundation plus project-specific specialties and persistent incremental registration. Codex desktop is primary, native Codex/ChatGPT workers are preferred, and Claude Code's bounded delegate restrictions remain intact. |
 | Codex packaging | All six declared bundles export as version 2 with Codex marketplace/plugin manifests, verified skill bytes, retained licenses and deterministic file locks. No Claude marketplace or plugin manifests are generated. The foundation includes the settings source and complete installation/delegation engine. |
 | Documentation | Generated tables, local Markdown references, shell syntax and Git whitespace checks pass. |
 

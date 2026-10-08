@@ -342,12 +342,42 @@ def project_state(entry, project, target):
         return dest, 'update', before
 
 
+def project_provenance(entry, dest, data):
+    """Explain a validated unchanged copy whose recorded source differs today.
+
+    This is diagnostic only: the receipt records the original installation, while
+    the project lock records the current selection. Equal installed content and
+    executable contracts require neither fetching the new pin nor relabeling old
+    bytes as a new installation.
+    """
+    receipt = dest / catalog.RECEIPT
+    if catalog.is_link(receipt) or not receipt.is_file():
+        raise ValueError('Missing or unsafe installed skill receipt: ' + str(receipt))
+    prior = read_json(receipt)
+    source = (data['sources'][entry['source']] if entry['delivery'] == 'upstream'
+              else {'repository': 'nazmirket/.ai', 'commit': None})
+    fields = ('repository', 'commit', 'path', 'sha256')
+    original = {key: prior.get(key) for key in fields}
+    current = {'repository': source['repository'], 'commit': source['commit'],
+               'path': entry['path'], 'sha256': entry['sha256']}
+    if original == current:
+        return None
+    return {'status': 'content_matches_current_selection',
+            'original_installation': original, 'current_selection': current,
+            'installed_sha256': entry.get('installed_sha256', entry['sha256']),
+            'executable_files': sorted(entry.get('executable_files', [])),
+            'note': 'Installed bytes and executable contract match the current selection. '
+                    'The receipt retains original installation provenance; this match '
+                    'does not claim the current source was fetched or reinstalled.'}
+
+
 def project_jobs(project, config, selections):
     """Preflight an already resolved manifest, including unpublished candidates."""
     entries = selected_entries(selections)
     selected_ids = {target: {entry['id'] for entry in selected}
                     for target, selected in selections.items()}
     jobs = []
+    data = None
     for entry in entries:
         exclusions = [
             {'target': target,
@@ -360,6 +390,12 @@ def project_jobs(project, config, selections):
                 continue
             dest, action, before = project_state(entry, project, target)
             job = {'entry': entry, 'target': target, 'destination': dest, 'action': action, 'before': before}
+            if action == 'unchanged':
+                if data is None:
+                    data = catalog.load_catalog()
+                provenance = project_provenance(entry, dest, data)
+                if provenance is not None:
+                    job['provenance'] = provenance
             if config['schema_version'] == 2:
                 job['excluded_targets'] = exclusions
             jobs.append(job)
@@ -373,12 +409,100 @@ def project_plan(project):
     return project_jobs(*project_config(project, per_target=True))
 
 
-def public_project(jobs):
-    return [{'id': j['entry']['id'], 'target': j['target'], 'destination': str(j['destination']),
+def preserved_project_copies(project, config, jobs, data, global_names):
+    """Report unselected paths without treating their receipts as mutation authority."""
+    selected = {job['destination'] for job in jobs}
+    known = {entry['id'] for entry in data['skills']}
+    diagnostics = []
+
+    def report(path, target, state, identifier=None, code='unselected_installed_copy'):
+        diagnostics.append({'kind': 'diagnostic', 'action': 'preserved', 'code': code,
+                            'id': identifier, 'name': path.name, 'target': target,
+                            'destination': str(path), 'receipt_state': state,
+                            'catalog_status': ('known' if identifier in known else 'removed_or_unknown'),
+                            'global_overlap': path.name in global_names,
+                            'global_skill_ids': global_names.get(path.name, []),
+                            'note': 'This path is not selected for this target and is preserved. '
+                                    'Review its contents and client skill discovery before cleanup or reselection.'})
+
+    for target in config['targets']:
+        relative = ('.agents' if target == 'codex' else '.claude') + '/skills'
+        root = project / relative
+        try:
+            guarded_path(project, relative)
+            if catalog.is_link(root):
+                report(root, target, 'not_read_link', code='uninspected_skill_root')
+                continue
+            if not root.exists():
+                continue
+            if not root.is_dir():
+                report(root, target, 'not_read_unsafe_root', code='uninspected_skill_root')
+                continue
+            children = sorted(root.iterdir())
+        except ValueError:
+            report(root, target, 'not_read_unsafe_root', code='uninspected_skill_root')
+            continue
+        except OSError:
+            report(root, target, 'not_read_inaccessible_root', code='uninspected_skill_root')
+            continue
+        for path in children:
+            if path in selected:
+                continue
+            # Unselected copies are advisory only. Even metadata lookup may fail
+            # when a visible directory denies search permission; never let this
+            # turn a completed publication into a diagnostic exception.
+            try:
+                if catalog.is_link(path):
+                    report(path, target, 'not_read_link', code='uninspected_skill_copy')
+                    continue
+                if not path.is_dir():
+                    continue
+                receipt = path / catalog.RECEIPT
+                if catalog.is_link(receipt):
+                    report(path, target, 'not_read_link')
+                    continue
+                if not receipt.exists():
+                    continue
+                state, identifier = 'invalid', None
+                if receipt.is_file():
+                    try:
+                        with receipt.open('rb') as stream:
+                            raw = stream.read(64 * 1024 + 1)
+                        value = json.loads(raw) if len(raw) <= 64 * 1024 else None
+                        if (isinstance(value, dict) and isinstance(value.get('id'), str)
+                                and re.fullmatch(r'[a-z0-9][a-z0-9._-]{0,199}', value['id'])):
+                            state, identifier = 'readable', value['id']
+                    except (ValueError, UnicodeError, RecursionError):
+                        pass
+                report(path, target, state, identifier)
+            except OSError:
+                report(path, target, 'unreadable', code='uninspected_skill_copy')
+    return diagnostics
+
+
+def public_project(jobs, *, project=None, config=None):
+    data = catalog.load_catalog()
+    global_ids = set(manifest()['global_skills'])
+    global_names = {}
+    for entry in data['skills']:
+        if entry['id'] in global_ids:
+            global_names.setdefault(entry['name'], []).append(entry['id'])
+    global_names = {name: sorted(identifiers) for name, identifiers in global_names.items()}
+    rows = [{'id': j['entry']['id'], 'target': j['target'], 'destination': str(j['destination']),
              'action': j['action'], 'dependencies': j['entry'].get('dependencies', []),
              'caveats': j['entry'].get('caveats', []),
+             **({'provenance': j['provenance']} if 'provenance' in j else {}),
              **({'excluded_targets': j['excluded_targets']} if 'excluded_targets' in j else {})}
             for j in jobs]
+    for row, job in zip(rows, jobs):
+        if job['entry']['name'] in global_names:
+            row['warnings'] = [{'code': 'global_skill_name_overlap',
+                                'global_skill_ids': global_names[job['entry']['name']],
+                                'note': 'This selected project skill shares a configured global skill name. '
+                                        'The selection is preserved; check which copy the client discovers.'}]
+    if project is not None:
+        rows.extend(preserved_project_copies(project, config, jobs, data, global_names))
+    return rows
 
 
 def project_lock(config, entries, data):
@@ -439,7 +563,7 @@ def sync_project(project, source_trees=None):
                          snapshot=project_fingerprint)
     if not project_lock_current(project, lock):
         write_json(guarded_path(project, '.ai/project.lock.json'), lock)
-    return public_project(jobs)
+    return public_project(jobs, project=project, config=config)
 
 
 def default_project_profiles(config, data):
@@ -635,11 +759,11 @@ def main(argv=None):
         result = sync_project(args.project)
     else:
         project, config, entries, jobs = project_plan(args.project)
-        result = public_project(jobs)
+        result = public_project(jobs, project=project, config=config)
     print(json.dumps(result, indent=2, ensure_ascii=False))
     if args.action == 'doctor':
         lock_ok = project_lock_current(project, project_lock(config, entries, catalog.load_catalog()))
         if not lock_ok:
             print('Missing or stale .ai/project.lock.json; run project sync to reconcile it.', file=sys.stderr)
-        return 1 if not lock_ok or any(j['action'] != 'unchanged' for j in result) else 0
+        return 1 if not lock_ok or any(j['action'] != 'unchanged' for j in jobs) else 0
     return 0

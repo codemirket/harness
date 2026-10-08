@@ -1,4 +1,4 @@
-# Human review
+# Artifact review
 
 Open the modified page and compare the four submitted screenshots with the files and with a fresh browser render. The automated verifier checks evidence presence and basic semantics only; it cannot judge visual quality.
 

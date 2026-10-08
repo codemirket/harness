@@ -67,6 +67,12 @@ covers, the reviewer kind and any missing evidence. Local JSON records are edita
 consistency/hash validation prevents accidental stale or inconsistent claims but
 does not attest runtime execution, reviewer identity or approval.
 
+`eval report` exposes the current `review_kind`, `reviewer` and `accepted_by`.
+`accepted` retains the combined check/review outcome; it is not human acceptance.
+`accepted_by: none` includes passing cases that require no review. Stale or invalid
+reviews cannot supply acceptance identity. Kind counts include only valid current
+reviews; decision counts remain separate.
+
 These public cases are for development and regression checks. Both conditions
 passing a small repair establishes neither superiority nor quality on real
 projects. Keep inputs, models, settings, tool access and budgets comparable; use

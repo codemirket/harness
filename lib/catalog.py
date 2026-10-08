@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Search the personal registry, plan profiles, and register reviewed skills. Python 3.9+."""
 import argparse
+from contextlib import contextmanager
+import gzip
 import hashlib
 import io
 import json
@@ -15,12 +17,16 @@ import tempfile
 import urllib.parse
 import urllib.request
 import unicodedata
+import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / 'registry' / 'catalog.json'
 INDEX = CATALOG.with_name('source-index.json')
 RECEIPT = '.skill-catalog.json'
 MAX_ARCHIVE = 100 * 1024 * 1024
+MAX_EXPANDED_ARCHIVE = 512 * 1024 * 1024
+MAX_ARCHIVE_MEMBERS = 100000
+MAX_ARCHIVE_METADATA_DEPTH = 32
 MAX_PAYLOAD = 32 * 1024 * 1024
 MAX_TREE = 16 * 1024 * 1024
 MAX_FILES = 4096
@@ -195,13 +201,106 @@ def read_local(source, entry):
     return files
 
 
+class _ExpandedArchiveReader:
+    """Bound gzip output before tar parsing, including metadata and skipped files."""
+
+    def __init__(self, stream):
+        self.stream = stream
+        self.remaining = MAX_EXPANDED_ARCHIVE
+
+    def read(self, size=-1):
+        size = self.remaining + 1 if size < 0 else min(size, self.remaining + 1)
+        content = self.stream.read(size)
+        self.remaining -= len(content)
+        if self.remaining < 0:
+            raise ValueError('Source archive exceeds expanded size limit')
+        return content
+
+
+class _SourceTarInfo(tarfile.TarInfo):
+    """Strict GitHub tar framing with budgets before extended-header processing."""
+
+    @classmethod
+    def fromtarfile(cls, archive):
+        depth = getattr(archive, '_source_metadata_depth', 0) + 1
+        if depth > MAX_ARCHIVE_METADATA_DEPTH:
+            raise ValueError('Source archive exceeds metadata nesting limit')
+        archive._source_metadata_depth = depth
+        try:
+            return super().fromtarfile(archive)
+        except tarfile.EOFHeaderError:
+            if depth != 1:
+                raise ValueError('Source archive metadata has no following member')
+            if archive.fileobj.read(tarfile.BLOCKSIZE) != b'\0' * tarfile.BLOCKSIZE:
+                raise ValueError('Source archive requires two zero end blocks')
+            archive._source_end_seen = True
+            raise
+        except tarfile.HeaderError as error:
+            # TarFile.next otherwise accepts invalid/truncated non-first headers
+            # as EOF, even with errorlevel=2.
+            raise ValueError('Invalid or truncated tar source archive') from error
+        finally:
+            archive._source_metadata_depth = depth - 1
+
+    def _proc_member(self, archive):
+        if self.size < 0:
+            raise ValueError('Invalid negative size in source archive member')
+        count = getattr(archive, '_source_header_count', 0) + 1
+        if count > MAX_ARCHIVE_MEMBERS:
+            raise ValueError('Source archive exceeds member count limit')
+        archive._source_header_count = count
+        return super()._proc_member(archive)
+
+    def _proc_sparse(self, *args):
+        raise ValueError('Sparse source archive members are unsupported')
+
+    def _apply_pax_info(self, headers, *args):
+        # TarInfo silently turns malformed PAX numeric fields into zero.
+        if 'size' in headers and not re.fullmatch(r'[0-9]+', headers['size']):
+            raise ValueError('Invalid size in source archive PAX metadata')
+        if any(key.startswith('GNU.sparse.') for key in headers):
+            self._proc_sparse()
+        return super()._apply_pax_info(headers, *args)
+
+    # Reject each GNU/PAX sparse dialect before its parser reads sparse maps.
+    _proc_gnusparse_00 = _proc_sparse
+    _proc_gnusparse_01 = _proc_sparse
+    _proc_gnusparse_10 = _proc_sparse
+
+
+@contextmanager
+def _open_archive(blob):
+    """Read GitHub gzip tar with PAX/GNU names, no sparse files, and zero padding."""
+    if len(blob) > MAX_ARCHIVE:
+        raise ValueError('Source archive exceeds compressed size limit')
+    try:
+        with gzip.GzipFile(fileobj=io.BytesIO(blob), mode='rb') as decoded:
+            bounded = _ExpandedArchiveReader(decoded)
+            with tarfile.open(fileobj=bounded, mode='r|', tarinfo=_SourceTarInfo) as archive:
+                yield archive
+                if not getattr(archive, '_source_end_seen', False):
+                    raise ValueError('Source archive is missing its end blocks')
+                # Drain through tar's stream to include its buffered read-ahead.
+                # GitHub archives have zero padding, not a second tar archive.
+                while True:
+                    padding = archive.fileobj.read(64 * 1024)
+                    if not padding:
+                        break
+                    if padding.strip(b'\0'):
+                        raise ValueError('Source archive has nonzero trailing data')
+    except (OSError, EOFError, zlib.error) as error:
+        raise ValueError('Invalid or truncated gzip source archive') from error
+    except RecursionError as error:
+        raise ValueError('Source archive metadata exceeds parser nesting limit') from error
+
+
 def read_archive(blob, entry):
     selection_files(entry)
     files = {}
     total = 0
     seen = set()
     roots = set()
-    with tarfile.open(fileobj=io.BytesIO(blob), mode='r:gz') as archive:
+    with _open_archive(blob) as archive:
         for member in archive:
             parts = safe_path(member.name.rstrip('/')).parts
             roots.add(parts[0])

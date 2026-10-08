@@ -1,6 +1,15 @@
-# Project-scoped design runtime recipes
+# Project-scoped runtime recipes
 
 These are operator recipes, not executed setup. They preserve the reviewed source revision and use commands actually present in pinned upstream documentation or source. Manual catalog status remains appropriate until the selected runtime/companions are reviewed and exercised on the target device. Source pinning alone does not pin a separately downloaded executable, browser, npm package, or container image.
+
+## Optional repository graph retrieval
+
+The [CodeGraph pilot](reviews/agent-runtime-hardening.md#optional-codegraph-pilot)
+records the reviewed source pin, host mutations, telemetry/update controls,
+discovery surface and required freshness checks. It remains a runtime candidate,
+not an installable catalog skill or default MCP. Use existing repository tools
+unless repeated structural questions justify a scoped trial. The portable
+`context-management` reference supplies retrieval guidance without a dependency.
 
 ## Common registration boundary
 

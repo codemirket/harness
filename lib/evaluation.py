@@ -386,6 +386,7 @@ def report(paths):
         current = {'run_sha256': json_digest(record), 'workspace_sha256': json_digest(inputs)}
         automated = 'not_run'
         reviewed = 'pending' if record['case']['review_required'] else 'not_required'
+        review_kind = reviewer = None
         for filename, label in (('checks.json', 'automated'), ('review.json', 'review')):
             if not (path / filename).exists():
                 continue
@@ -397,14 +398,21 @@ def report(paths):
                 automated = state
             else:
                 reviewed = state
+                if state in ('accepted', 'needs_changes'):
+                    review_kind, reviewer = value['kind'], value['reviewer']
         accepted = automated == 'passed' and reviewed in ('accepted', 'not_required')
+        accepted_by = review_kind if accepted and reviewed == 'accepted' else 'none'
         rows.append({'run': str(path), 'case': record['case']['id'], 'domain': record['case']['domain'],
                      'condition': record['condition'], 'model': record['model'],
                      'settings': record['settings'], 'suite_sha256': record['suite_sha256'],
                      'case_sha256': record['case_sha256'], 'harness_sha256': record['harness']['sha256'],
-                     'automated': automated, 'review': reviewed, 'accepted': accepted})
+                     'automated': automated, 'review': reviewed, 'review_kind': review_kind,
+                     'reviewer': reviewer, 'accepted': accepted, 'accepted_by': accepted_by})
     return {'runs': rows, 'automated_counts': dict(Counter(row['automated'] for row in rows)),
             'review_counts': dict(Counter(row['review'] for row in rows)),
+            'review_kind_counts': dict(Counter(row['review_kind'] for row in rows
+                                              if row['review_kind'] is not None)),
+            'accepted_by_counts': dict(Counter(row['accepted_by'] for row in rows)),
             'limits': ['Development cases, not a held-out benchmark.',
                        'Model/settings and reviewer identity are recorded labels, not runtime attestation.',
                        'Recorded review does not establish human approval or production readiness.',

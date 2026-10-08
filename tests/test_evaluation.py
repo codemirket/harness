@@ -49,8 +49,8 @@ sys.exit(0 if passed else 1)
     def solve(self):
         (self.run / 'workspace/candidate.py').write_text('def total(values):\n    return sum(values)\n')
 
-    def accept(self):
-        return evaluation.review(self.run, 'fixture reviewer', 'agent', 'accepted',
+    def accept(self, kind='agent'):
+        return evaluation.review(self.run, 'fixture reviewer', kind, 'accepted',
                                  ['candidate.py'], 'Reviewed behavior and implementation.')
 
     def test_prepare_copies_inputs_and_does_not_replace_existing_work(self):
@@ -85,6 +85,76 @@ sys.exit(0 if passed else 1)
         row = evaluation.report([self.run])['runs'][0]
         self.assertEqual((row['automated'], row['review']), ('stale', 'stale'))
         self.assertFalse(row['accepted'])
+
+    def test_report_preserves_current_review_identity_and_kind(self):
+        for kind in ('agent', 'human'):
+            with self.subTest(kind=kind):
+                self.run = self.root / ('run-' + kind)
+                self.prepare()
+                self.solve()
+                evaluation.check(self.run)
+                self.accept(kind)
+                row = evaluation.report([self.run])['runs'][0]
+                self.assertTrue(row['accepted'])
+                self.assertEqual(row['review_kind'], kind)
+                self.assertEqual(row['reviewer'], 'fixture reviewer')
+                self.assertEqual(row['accepted_by'], kind)
+
+    def test_report_without_required_review_has_no_reviewer_acceptance(self):
+        self.row['review_required'] = False
+        self.suite.write_text(json.dumps({'schema_version': 1, 'cases': [self.row]}))
+        self.prepare()
+        self.solve()
+        evaluation.check(self.run)
+        report = evaluation.report([self.run])
+        row = report['runs'][0]
+        self.assertTrue(row['accepted'])
+        self.assertEqual(row['review'], 'not_required')
+        self.assertIsNone(row['review_kind'])
+        self.assertIsNone(row['reviewer'])
+        self.assertEqual(row['accepted_by'], 'none')
+        self.assertEqual(report['review_kind_counts'], {})
+        self.assertEqual(report['accepted_by_counts'], {'none': 1})
+
+    def test_report_counts_only_current_valid_reviews_and_completed_acceptance(self):
+        runs = []
+        for scenario in ('agent', 'human', 'declined', 'invalid', 'stale', 'pending', 'failed-check'):
+            self.run = self.root / ('run-' + scenario)
+            self.prepare()
+            self.solve()
+            if scenario == 'failed-check':
+                (self.run / 'workspace/candidate.py').write_text('def total(values):\n    return 1\n')
+            evaluation.check(self.run)
+            if scenario == 'declined':
+                evaluation.review(self.run, 'human reviewer', 'human', 'needs_changes',
+                                  ['candidate.py'], 'Needs a clearer implementation.')
+            elif scenario != 'pending':
+                self.accept('human' if scenario == 'human' else 'agent')
+            if scenario == 'invalid':
+                value = json.loads((self.run / 'review.json').read_text())
+                value['reviewer'] = ''
+                (self.run / 'review.json').write_text(json.dumps(value))
+            elif scenario == 'stale':
+                (self.run / 'workspace/candidate.py').write_text('def total(values):\n    return 2\n')
+            runs.append(self.run)
+        report = evaluation.report(runs)
+        rows = {Path(row['run']).name: row for row in report['runs']}
+        self.assertEqual(report['review_kind_counts'], {'agent': 2, 'human': 2})
+        self.assertEqual(report['accepted_by_counts'], {'agent': 1, 'human': 1, 'none': 5})
+        for scenario, status in (('invalid', 'error'), ('stale', 'stale'), ('pending', 'pending')):
+            with self.subTest(scenario=scenario):
+                row = rows['run-' + scenario]
+                self.assertEqual(row['review'], status)
+                self.assertIsNone(row['review_kind'])
+                self.assertIsNone(row['reviewer'])
+                self.assertFalse(row['accepted'])
+                self.assertEqual(row['accepted_by'], 'none')
+        for scenario, kind in (('declined', 'human'), ('failed-check', 'agent')):
+            with self.subTest(scenario=scenario):
+                row = rows['run-' + scenario]
+                self.assertEqual(row['review_kind'], kind)
+                self.assertFalse(row['accepted'])
+                self.assertEqual(row['accepted_by'], 'none')
 
     def test_editing_a_success_label_does_not_accept_a_failed_check(self):
         self.prepare()

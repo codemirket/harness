@@ -110,6 +110,24 @@ class ProjectTargetReportingTests(HarnessFixture):
                     self.command(action)
                 self.assertEqual(snapshot(self.project, timestamps=True), before)
 
+    def test_target_with_no_selection_reports_preserved_copy_as_diagnostic_only(self):
+        self.declare(skills=[], target_skills={'claude': ['foundation']})
+        catalog.install(self.data, self.entry('foundation'), self.project, 'codex')
+        preserved = snapshot(self.project / '.agents', timestamps=True)
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action):
+                status, rows = self.command(action)
+                self.assertEqual(status, 0)
+                jobs = [row for row in rows if row.get('kind') != 'diagnostic']
+                diagnostics = [row for row in rows if row.get('kind') == 'diagnostic']
+                self.assertEqual(self.assignments(jobs), {('foundation', 'claude'):
+                                                        [{'target': 'codex', 'reason': 'not_requested'}]})
+                self.assertEqual(len(diagnostics), 1)
+                self.assertEqual(diagnostics[0]['target'], 'codex')
+                self.assertEqual(diagnostics[0]['action'], 'preserved')
+                self.assertFalse(diagnostics[0]['global_overlap'])
+                self.assertEqual(snapshot(self.project / '.agents', timestamps=True), preserved)
+
     def test_v1_output_and_lock_shape_remain_unchanged(self):
         self.initialize()
         expected_fields = {'id', 'target', 'destination', 'action', 'dependencies', 'caveats'}

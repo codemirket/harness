@@ -316,7 +316,8 @@
         "design",
         "ui-design",
         "frontend",
-        "composition"
+        "composition",
+        "designer"
       ]
     },
     {
@@ -324,7 +325,7 @@
       "name": "marketing-writing",
       "scope": "global",
       "category": "marketing",
-      "description": "Write credible audience-focused copy with context reuse and traceable proof.",
+      "description": "Draft or improve marketing copy, product messaging, landing-page text, campaign drafts, or customer-facing announcements. Use when persuasion, positioning, audience fit, or a clear next action matters. For document file creation use the available document skill; for SEO, analytics, paid campaigns, or research programs select a focused project skill from the catalog.",
       "delivery": "global-link",
       "path": "skills/marketing-writing",
       "informed_by": [
@@ -340,7 +341,8 @@
       "tags": [
         "marketing",
         "copywriting",
-        "editorial-refinement"
+        "editorial-refinement",
+        "marketer"
       ]
     },
     {
@@ -363,7 +365,8 @@
       "tags": [
         "documents",
         "documentation",
-        "technical-documentation"
+        "technical-documentation",
+        "documenter"
       ]
     },
     {
@@ -371,7 +374,7 @@
       "name": "debugging",
       "scope": "project",
       "category": "coding",
-      "description": "Reproduce and isolate a defect with falsifiable hypotheses and causal evidence.",
+      "description": "Investigate difficult or intermittent bugs with causal tracing, discriminating experiments, and a regression check. Use when an obvious local fix is insufficient.",
       "delivery": "local",
       "path": "skills/debugging",
       "license_files": [
@@ -390,7 +393,8 @@
       "tags": [
         "bug",
         "diagnosis",
-        "regression"
+        "regression",
+        "debugger"
       ],
       "sha256": "ba1fd66bfdfee6f64a55a666296966429b4efaeb92006edbd79da3c295713fea"
     },
@@ -422,7 +426,8 @@
         "quality-assurance",
         "qa",
         "user-journey",
-        "test-strategy"
+        "test-strategy",
+        "tester"
       ],
       "sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175"
     },
@@ -431,7 +436,7 @@
       "name": "architecture-review",
       "scope": "project",
       "category": "coding",
-      "description": "Assess concrete maintenance problems and compare small defensible architecture changes.",
+      "description": "Review a concrete architecture problem or maintenance hotspot, compare boundaries, and assess migration costs. Use for an explicit architecture review or a difficult structural change.",
       "delivery": "local",
       "path": "skills/architecture-review",
       "license_files": [
@@ -479,7 +484,8 @@
         "animation",
         "interaction",
         "accessibility",
-        "interaction-recipes"
+        "interaction-recipes",
+        "animator"
       ],
       "sha256": "b4c9597549bfbc0905a5353ebe9855c6607983aa29ba3c7f3aa4b50e9e2aea9e"
     },
@@ -542,7 +548,8 @@
         "icon",
         "logo",
         "bezier",
-        "svg-creation"
+        "svg-creation",
+        "illustrator"
       ],
       "sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d"
     },
@@ -551,7 +558,7 @@
       "name": "experiment-design",
       "scope": "project",
       "category": "marketing",
-      "description": "Plan and interpret experiments with assignment, guardrails, stopping rules, and uncertainty.",
+      "description": "Design and interpret product or marketing experiments with defensible metrics, assignment, stopping rules, and uncertainty. Use for A/B test planning or results review, not ordinary copy drafting.",
       "delivery": "local",
       "path": "skills/experiment-design",
       "license_files": [
@@ -580,7 +587,7 @@
       "name": "search-audit",
       "scope": "project",
       "category": "marketing",
-      "description": "Audit crawl, index, and content evidence against current official search guidance.",
+      "description": "Diagnose organic search visibility problems using crawl, indexing, content, and measurement evidence. Use for a requested SEO audit or a specific search issue; ordinary page implementation does not require an audit.",
       "delivery": "local",
       "path": "skills/search-audit",
       "license_files": [
@@ -608,7 +615,7 @@
       "name": "conversion-review",
       "scope": "project",
       "category": "marketing",
-      "description": "Trace visitor intent and funnel friction; propose testable changes without promised uplift.",
+      "description": "Diagnose a landing page, signup flow, or form against visitor intent and a measurable next action. Use for conversion review or a specific funnel problem, not every interface change.",
       "delivery": "local",
       "path": "skills/conversion-review",
       "license_files": [
@@ -637,7 +644,7 @@
       "name": "customer-research",
       "scope": "project",
       "category": "marketing",
-      "description": "Plan ethical interviews and synthesize customer evidence with traceability and sampling limits.",
+      "description": "Plan customer interviews or synthesize research into traceable needs, barriers, and buying decisions. Use when a project needs customer evidence, not as a mandatory intake for ordinary marketing edits.",
       "delivery": "local",
       "path": "skills/customer-research",
       "license_files": [
@@ -11020,7 +11027,8 @@
         "claim-verification",
         "source-verification",
         "deep-research",
-        "evidence-synthesis"
+        "evidence-synthesis",
+        "researcher"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
       "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
@@ -11071,7 +11079,7 @@
         "agent-coordination"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3"
+      "sha256": "a6ba8f742564be1c02176f70cc3cd9866dcb7a33c123d03f7a605b28c29a2123"
     },
     {
       "id": "context-management",
@@ -11092,17 +11100,20 @@
       ],
       "tags": [
         "context",
-        "context-management"
+        "context-management",
+        "code-graph",
+        "repository-retrieval",
+        "index-freshness"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e"
+      "sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91"
     },
     {
       "id": "desktop-integration",
       "name": "desktop-integration",
       "scope": "project",
       "category": "desktop",
-      "description": "Build and audit desktop application boundaries: native lifecycle, IPC, filesystem access, background work, updates, signing, and packaging for Electron, Tauri, or native shells.",
+      "description": "\"Build and audit desktop application boundaries: native lifecycle, IPC, filesystem access, background work, updates, signing, and packaging for Electron, Tauri, or native shells.\"",
       "delivery": "local",
       "path": "skills/desktop-integration",
       "license_files": [
@@ -11274,7 +11285,7 @@
         "development-evaluation"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "45942b0c712b47881044c4a752b5c16cfcb05748eb2f07f4cb780472e7f8d5c1"
+      "sha256": "46ddc3527633d02e349ca3dbd9400700b1ec1161d307254b6390479a86a0a312"
     },
     {
       "id": "frontend-engineering",
@@ -11348,9 +11359,11 @@
       ],
       "tags": [
         "security",
-        "security-judgment"
+        "security-judgment",
+        "agent-tool-security",
+        "prompt-injection"
       ],
-      "sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec"
+      "sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5"
     },
     {
       "id": "work-planning",
@@ -11371,7 +11384,8 @@
       ],
       "tags": [
         "planning",
-        "work-planning"
+        "work-planning",
+        "planner"
       ],
       "sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23"
     },
@@ -14849,20 +14863,12 @@
   ],
   "profiles": {
     "project-foundation": {
-      "description": "Default rich project foundation: planning, context, collaboration, research, security, architecture, debugging, tests, CI, releases and documents. Load only the guidance relevant to each task; add specialists for the actual stack and credible later stages.",
+      "description": "Default project skills complement the installed global harness: architecture, debugging, tests and releases. Planning, context, collaboration, research, security, CI and documents use the global leads. Add stack specialists as needed.",
       "skills": [
-        "work-planning",
-        "context-management",
-        "agent-coordination",
-        "research-and-synthesis",
-        "security-judgment",
         "architecture-review",
         "debugging",
         "test-design",
-        "ci-maintenance",
-        "release-operations",
-        "document-parsing",
-        "office-authoring"
+        "release-operations"
       ]
     },
     "engineering-core": {
@@ -15403,6 +15409,23 @@
         "advanced-motion",
         "svg-creation",
         "svg-animation"
+      ]
+    },
+    "portable-foundation": {
+      "description": "Explicit 12-skill portable foundation for collaborators or environments without the corresponding global skills. Avoid installing these duplicate names alongside global copies; normal configured devices use project-foundation.",
+      "skills": [
+        "work-planning",
+        "context-management",
+        "agent-coordination",
+        "research-and-synthesis",
+        "security-judgment",
+        "architecture-review",
+        "debugging",
+        "test-design",
+        "ci-maintenance",
+        "release-operations",
+        "document-parsing",
+        "office-authoring"
       ]
     }
   }

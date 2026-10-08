@@ -33,6 +33,28 @@ class DiscoveryTests(unittest.TestCase):
 
 
 class ShippedTaskDiscoveryTests(unittest.TestCase):
+    def test_documented_invocations_and_profiles_resolve_to_catalog_entries(self):
+        import fnmatch
+        import re
+        from pathlib import Path
+        data = catalog.load_catalog()
+        by_id = {entry['id']: entry for entry in data['skills']}
+        routing = (Path(__file__).resolve().parents[1] /
+                   'skills/skill-catalog/references/task-routing.md').read_text()
+        pairs = re.findall(r'`([^`]+)` \(invocation `([^`]+)`\)', routing)
+        self.assertTrue(pairs, 'The routing guide must exercise the invocation checks')
+        for identifier, invocation in pairs:
+            with self.subTest(identifier=identifier):
+                self.assertIn(identifier, by_id)
+                self.assertEqual(by_id[identifier]['name'], invocation)
+                self.assertEqual(by_id[identifier]['scope'], 'project')
+        for profile in re.findall(r'`([^`]+)` profiles?\b', routing):
+            with self.subTest(profile=profile):
+                matched = fnmatch.filter(data['profiles'], profile)
+                self.assertTrue(matched)
+                for name in matched:
+                    self.assertTrue(catalog.resolve_selection(data, profiles=[name]))
+
     def matches(self, query):
         return {row['id'] for row in catalog.load_catalog()['skills']
                 if row['scope'] == 'project' and catalog.matches(row, query)}
@@ -61,6 +83,9 @@ class ShippedTaskDiscoveryTests(unittest.TestCase):
             'deep research': 'research-and-synthesis',
             'product manager': 'product-management',
             'data analysis': 'data-analysis',
+            'code graph': 'context-management',
+            'repository retrieval': 'context-management',
+            'agent tool security': 'security-judgment',
         }
         for query, expected in routes.items():
             with self.subTest(query=query):
@@ -69,6 +94,30 @@ class ShippedTaskDiscoveryTests(unittest.TestCase):
                 self.assertIn(expected, {identifier for row in rows[:3]
                                         for identifier in row['installable_ids']})
                 self.assertTrue(rows[0]['installable_ids'])
+
+    def test_role_names_find_the_reviewed_lead_without_claiming_global_installability(self):
+        import json
+        data = catalog.load_catalog()
+        index = json.loads(catalog.INDEX.read_text())['skills']
+        routes = {
+            'designer': ('interface-design', False),
+            'documenter': ('document-workflow', False),
+            'tester': ('test-design', True),
+            'planner': ('work-planning', True),
+            'debugger': ('debugging', True),
+            'marketer': ('marketing-writing', False),
+            'illustrator': ('svg-creation', True),
+            'animator': ('motion-design', True),
+            'researcher': ('research-and-synthesis', True),
+        }
+        for query, (expected, installable) in routes.items():
+            with self.subTest(query=query):
+                rows = catalog.search_entries(data, index, query)
+                self.assertTrue(rows)
+                lead = rows[0]
+                self.assertIn(expected, lead['catalog_ids'])
+                self.assertEqual(expected in lead['installable_ids'], installable)
+                self.assertEqual(lead['review_status'], 'authored')
 
 
 class CombinedSearchTests(unittest.TestCase):

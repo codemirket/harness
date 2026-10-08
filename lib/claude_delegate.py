@@ -21,6 +21,7 @@ import time
 MAX_PROMPT_BYTES = 128 * 1024
 MAX_OUTPUT_BYTES = 1024 * 1024
 PROBE_TIMEOUT = 10
+EFFORT_LEVELS = ('low', 'medium', 'high', 'xhigh', 'max')
 REQUIRED_FLAGS = (
     '--print', '--output-format', '--restricted', '--safe-mode', '--tools',
     '--disallowedTools', '--permission-mode', '--permission-prompts',
@@ -214,7 +215,7 @@ def _billing_route(status, env):
     return route, indicators
 
 
-def inspect_runtime(executable=None, *, project=None, env=None):
+def inspect_runtime(executable=None, *, project=None, env=None, require_effort=False):
     """Probe help and official auth metadata only; this performs no model request."""
     child_env = dict(os.environ if env is None else env)
     cwd = Path(project or Path.cwd()).resolve(strict=True)
@@ -226,7 +227,8 @@ def inspect_runtime(executable=None, *, project=None, env=None):
     if code:
         raise DelegateError('Claude Code help probe failed; no model request was made.')
     help_text = output.decode('utf-8', errors='replace')
-    missing = [flag for flag in REQUIRED_FLAGS if not re.search(re.escape(flag) + r'(?=[\s,=<]|$)', help_text)]
+    required = REQUIRED_FLAGS + (('--effort',) if require_effort else ())
+    missing = [flag for flag in required if not re.search(re.escape(flag) + r'(?=[\s,=<]|$)', help_text)]
     if missing:
         raise DelegateError('Update Claude Code: required controls are unavailable: ' + ', '.join(missing))
     # Match the inference settings boundary; auth remains Claude Code's own flow.
@@ -322,7 +324,7 @@ def _read_denies(project, env):
     return rules
 
 
-def run_delegate(project, prompt, *, timeout=120, model=None, output=None,
+def run_delegate(project, prompt, *, timeout=120, model=None, effort=None, output=None,
                  executable=None, plan=False, allow_api=False, env=None):
     """Return a planned command or a validated successful result; otherwise raise.
 
@@ -338,6 +340,8 @@ def run_delegate(project, prompt, *, timeout=120, model=None, output=None,
         raise DelegateError('Prompt exceeds 128 KiB; supply a bounded assignment and relevant context.')
     if model is not None and (not isinstance(model, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/-]{0,199}', model)):
         raise DelegateError('Model must be a single explicit Claude model name or alias.')
+    if effort is not None and (not isinstance(effort, str) or effort not in EFFORT_LEVELS):
+        raise DelegateError('Effort must be one of: ' + ', '.join(EFFORT_LEVELS) + '.')
     if plan and output is not None:
         raise DelegateError('--plan is read-only; omit --output and inspect the printed plan.')
     destination = _output_path(output)
@@ -348,7 +352,8 @@ def run_delegate(project, prompt, *, timeout=120, model=None, output=None,
     if not cwd.is_dir():
         raise DelegateError('Project must be an existing directory.')
     read_denies = _read_denies(cwd, child_env)
-    runtime = inspect_runtime(executable, project=cwd, env=child_env)
+    runtime = inspect_runtime(executable, project=cwd, env=child_env,
+                              require_effort=effort is not None)
     settings = json.dumps({'disableAllHooks': True, 'autoMemoryEnabled': False,
                            'permissions': {'deny': read_denies}}, separators=(',', ':'))
     argv = [runtime['executable'], '--print', '--output-format', 'json',
@@ -360,6 +365,8 @@ def run_delegate(project, prompt, *, timeout=120, model=None, output=None,
             '--disable-slash-commands', '--no-chrome', '--append-system-prompt', SYSTEM_SCOPE]
     if model is not None:
         argv += ['--model', model]
+    if effort is not None:
+        argv += ['--effort', effort]
     report = {'action': 'planned' if plan else 'completed', 'project': str(cwd),
               'runtime': runtime, 'argv': argv, 'prompt_transport': 'stdin',
               'prompt_bytes': len(prompt_bytes), 'timeout_seconds': timeout,
@@ -411,6 +418,8 @@ def main(argv=None):
     parser.add_argument('--prompt-file', default='-', help='UTF-8 assignment file, or - for stdin (default).')
     parser.add_argument('--timeout', type=float, default=120)
     parser.add_argument('--model', help='Explicit model override; otherwise use the CLI default.')
+    parser.add_argument('--effort', choices=EFFORT_LEVELS,
+                        help='Explicit reasoning effort override; otherwise use the CLI default.')
     parser.add_argument('--output', help='Create a new JSON result file; never overwrite.')
     parser.add_argument('--executable', help='Official native Claude Code executable path or name.')
     parser.add_argument('--plan', action='store_true', help='Probe availability/auth and print argv; no model call or output file.')
@@ -427,7 +436,7 @@ def main(argv=None):
         if len(raw) > MAX_PROMPT_BYTES:
             raise DelegateError('Prompt exceeds 128 KiB.')
         result = run_delegate(args.project, raw.decode('utf-8'), timeout=args.timeout,
-                              model=args.model, output=args.output, executable=args.executable,
+                              model=args.model, effort=args.effort, output=args.output, executable=args.executable,
                               plan=args.plan, allow_api=args.allow_api)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0

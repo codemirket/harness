@@ -168,7 +168,20 @@ def prepare(data, entry, root, source_trees, cache):
         normalized.update(delivery='upstream', source='__bundle_local__')
         local_data = dict(data, sources=dict(data['sources'], __bundle_local__={
             'repository': 'nazmirket/.ai', 'commit': None}))
-        return catalog.prepare_payload(local_data, normalized, root, cache)
+        files, source = catalog.prepare_payload(local_data, normalized, root, cache)
+        # Global links track authored working files rather than a pinned payload.
+        # Exclude interpreter and Finder residue after ordinary safety validation;
+        # never redefine the byte contract of a reviewed/pinned selection.
+        if entry['scope'] == 'global' and not {'sha256', 'installed_sha256'}.intersection(entry):
+            files = {path: content for path, content in files.items()
+                     if '__pycache__' not in path.split('/')
+                     and path.rsplit('/', 1)[-1] != '.DS_Store'
+                     and not path.endswith(('.pyc', '.pyo'))}
+            catalog.check_selected(files, normalized)
+            for relative in catalog.executable_contract(entry.get('executable_files', [])):
+                if relative not in files:
+                    raise ValueError('Excluded runtime file is declared executable: ' + relative)
+        return files, source
     return catalog.prepare_payload(data, entry, (source_trees or {}).get(entry['source']), cache)
 
 

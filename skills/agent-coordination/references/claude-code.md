@@ -29,6 +29,14 @@ place of `python3 ai.py`. Windows can use the available Python 3.9+ command.
 user preference; otherwise the CLI chooses its default. No automatic retry or
 fallback to another provider occurs.
 
+When requested, `--effort low|medium|high|xhigh|max` passes an explicit reasoning
+effort to Claude Code; for example, add `--model claude-opus-5-5 --effort max` for
+a review requesting that model at maximum effort. Omit `--effort` to preserve the
+CLI default. The runner validates the value and checks CLI flag availability
+before a model request, failing rather than silently dropping the selection.
+Model/provider support is still enforced by Claude Code; an unsupported effort
+or failed response does not trigger a lower-effort retry or model fallback.
+
 Preview probes CLI help and its official authentication status, then prints argv
 without the prompt. It does not request a model response or write a result file.
 An actual invocation sends the assignment and any files Claude reads to its

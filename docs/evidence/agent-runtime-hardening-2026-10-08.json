@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-08",
+  "base_commit": "5fa23c4d6f8204dd0ee84ef20d15bac841e9df2d",
+  "sources": [
+    {
+      "repository": "bytedance/deer-flow",
+      "commit": "9472579ef0a4e406afa61ec6d6c79fbd79bf1d5d",
+      "root_license": "MIT",
+      "url": "https://github.com/bytedance/deer-flow/tree/9472579ef0a4e406afa61ec6d6c79fbd79bf1d5d"
+    },
+    {
+      "repository": "tinyhumansai/openhuman",
+      "commit": "eef0350e53014b1750ac2ec09f4ae18b8009e1c0",
+      "root_license": "GPL-3.0 root text",
+      "url": "https://github.com/tinyhumansai/openhuman/tree/eef0350e53014b1750ac2ec09f4ae18b8009e1c0"
+    },
+    {
+      "repository": "langchain-ai/deepagents",
+      "commit": "6a3a12bc5b3ac88aeb091e6c77ba81ad4d6732af",
+      "root_license": "MIT",
+      "url": "https://github.com/langchain-ai/deepagents/tree/6a3a12bc5b3ac88aeb091e6c77ba81ad4d6732af"
+    },
+    {
+      "repository": "NousResearch/hermes-agent",
+      "commit": "3f97b91aae2bc9a3d533634d54039018e1d224ec",
+      "root_license": "MIT",
+      "url": "https://github.com/NousResearch/hermes-agent/tree/3f97b91aae2bc9a3d533634d54039018e1d224ec"
+    },
+    {
+      "repository": "colbymchenry/codegraph",
+      "commit": "b635dd467f0578926a9c01a37b9d28d2b26689f1",
+      "root_license": "MIT",
+      "url": "https://github.com/colbymchenry/codegraph/tree/b635dd467f0578926a9c01a37b9d28d2b26689f1"
+    }
+  ],
+  "changed_behavior_inputs": {
+    "lib/catalog.py": "5fdc179dee6e52caa6cfb276fefaba9d5a0e2ebc5a7b371814687b432b1b6bc4",
+    "registry/catalog.json": "7ef252b15efce90242eb74633eb08ac00aa8d0036388b1236254783f44bb374d",
+    "scripts/render_registry.py": "843cf87f355714db8c2a4d613e38072264254eb2982806acf19c6f63e798a374",
+    "skills/agent-coordination/SKILL.md": "57695162a7954917338e1570f84b31ae53ccdf9e8214bcc88408acf8b9f801ea",
+    "skills/context-management/SKILL.md": "cce92fd3ed0b77f0068b8f4d4564bf3bbe8969282c43f0892baf307ef3f1b0c6",
+    "skills/context-management/references/repository-retrieval.md": "1f50b77a4584983ce018574ddcd2ba8622ba79a4da07514443e6e18912946dcc",
+    "skills/security-judgment/SKILL.md": "f90006fd06aac26b7094f24d265889e2b68f4aa687b2e02ed144d69aa97c1f61",
+    "skills/security-judgment/references/agent-tool-boundaries.md": "59525c2b6b289b22ec9463394a37749ff2b4d1a3256fa5417c56f920092b4aee",
+    "skills/skill-catalog/SKILL.md": "3c88bb124e9ad0222470a92ce00076108836522eff27149b96d55a2cd0c53aef",
+    "skills/skill-catalog/references/task-routing.md": "ded7c5646d928c808567de8c944bca0d6d26e171c73fcd65bd6351cae9a8c15d",
+    "tests/test_archive_budgets.py": "2a0c24f3af73b3eb696b4acc450998e315426d0db80b7f0ea8496adb60a379b6",
+    "tests/test_catalog_discovery.py": "22dbbe27209857c6a27be8736dc925028776e95befe55ae674bbf948bd1b9851"
+  },
+  "verification": {
+    "suite": {
+      "command": "python3 -m unittest discover -s tests",
+      "tests": 441,
+      "seconds": 35.406,
+      "result": "passed",
+      "log_sha256": "39db680ec17c24510b8c78fe465611eca5138fe16d1204ad54c7e77a7c9962fd"
+    },
+    "archive": {
+      "tests": 15,
+      "limits": {
+        "compressed_bytes": 104857600,
+        "expanded_bytes": 536870912,
+        "physical_headers": 100000,
+        "metadata_parser_depth": 32,
+        "selected_bytes": 33554432,
+        "selected_files": 4096
+      },
+      "failing_before": [
+        "unselected expansion",
+        "hidden PAX/GNU header count",
+        "metadata expansion and nesting",
+        "truncated/corrupt gzip",
+        "invalid or partial tar framing",
+        "trailing data",
+        "negative/non-decimal member size"
+      ],
+      "independent_review": "Concrete parser probes reproduced, fixed and independently rechecked. Sparse parsing is intentionally unsupported.",
+      "live_sources": {
+        "checks": [
+          {
+            "id": "taste-redesign-skill",
+            "source": "Leonxlnx/taste-skill",
+            "commit": "ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
+            "compressed_bytes": 4569539,
+            "expanded_bytes": 4945920,
+            "payload_files": 2,
+            "source_sha256": "1bcbdaa70d3bdd0cb98e3b4147d16f2895c1a14e525ae828fd067b4d5e304ad0",
+            "adapted_sha256": "109c92f38a2a2ae7f8cf0d2a9c146ee2948ab9d308255ad1c011f4985bfbb2f7"
+          },
+          {
+            "id": "emil-mobile-native",
+            "source": "emilkowalski/skills",
+            "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+            "compressed_bytes": 104520,
+            "expanded_bytes": 317440,
+            "payload_files": 2,
+            "source_sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48",
+            "adapted_sha256": "3f465b0285d73a47b0e4cfd2acb08a7d56b7aefe7c7477e4935334668ba96a28"
+          }
+        ],
+        "reader_sha256": "5fdc179dee6e52caa6cfb276fefaba9d5a0e2ebc5a7b371814687b432b1b6bc4",
+        "fingerprint_note": "reader_sha256 identifies lib/catalog.py at this historical run; registry/catalog.json is recorded separately in changed_behavior_inputs."
+      }
+    },
+    "discovery": {
+      "queries": [
+        "code graph",
+        "repository retrieval",
+        "agent tool security"
+      ],
+      "failed_before": true,
+      "result": "reviewed guidance surfaces in top three installable IDs"
+    },
+    "registration": {
+      "installed_copies": [
+        {
+          "id": "work-planning",
+          "target": ".agents",
+          "sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23"
+        },
+        {
+          "id": "work-planning",
+          "target": ".claude",
+          "sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23"
+        },
+        {
+          "id": "context-management",
+          "target": ".agents",
+          "sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91"
+        },
+        {
+          "id": "context-management",
+          "target": ".claude",
+          "sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91"
+        },
+        {
+          "id": "agent-coordination",
+          "target": ".agents",
+          "sha256": "871b0f073fbc6d659884ee66827c603527bce07b3996c1d0af7d6c43683a894f"
+        },
+        {
+          "id": "agent-coordination",
+          "target": ".claude",
+          "sha256": "871b0f073fbc6d659884ee66827c603527bce07b3996c1d0af7d6c43683a894f"
+        },
+        {
+          "id": "research-and-synthesis",
+          "target": ".agents",
+          "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
+        },
+        {
+          "id": "research-and-synthesis",
+          "target": ".claude",
+          "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
+        },
+        {
+          "id": "security-judgment",
+          "target": ".agents",
+          "sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5"
+        },
+        {
+          "id": "security-judgment",
+          "target": ".claude",
+          "sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5"
+        },
+        {
+          "id": "architecture-review",
+          "target": ".agents",
+          "sha256": "04646382f0bceb3f0e71a8d1a465c64ba8eac3853add15de4d5024fa74357a8b"
+        },
+        {
+          "id": "architecture-review",
+          "target": ".claude",
+          "sha256": "04646382f0bceb3f0e71a8d1a465c64ba8eac3853add15de4d5024fa74357a8b"
+        },
+        {
+          "id": "debugging",
+          "target": ".agents",
+          "sha256": "ba1fd66bfdfee6f64a55a666296966429b4efaeb92006edbd79da3c295713fea"
+        },
+        {
+          "id": "debugging",
+          "target": ".claude",
+          "sha256": "ba1fd66bfdfee6f64a55a666296966429b4efaeb92006edbd79da3c295713fea"
+        },
+        {
+          "id": "test-design",
+          "target": ".agents",
+          "sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175"
+        },
+        {
+          "id": "test-design",
+          "target": ".claude",
+          "sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175"
+        },
+        {
+          "id": "ci-maintenance",
+          "target": ".agents",
+          "sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+        },
+        {
+          "id": "ci-maintenance",
+          "target": ".claude",
+          "sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+        },
+        {
+          "id": "release-operations",
+          "target": ".agents",
+          "sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
+        },
+        {
+          "id": "release-operations",
+          "target": ".claude",
+          "sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
+        },
+        {
+          "id": "document-parsing",
+          "target": ".agents",
+          "sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+        },
+        {
+          "id": "document-parsing",
+          "target": ".claude",
+          "sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+        },
+        {
+          "id": "office-authoring",
+          "target": ".agents",
+          "sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+        },
+        {
+          "id": "office-authoring",
+          "target": ".claude",
+          "sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+        }
+      ],
+      "repeat_sync_files_unchanged": 84,
+      "continuity_trial": {
+        "independent_behavior_assertions": 25,
+        "approval_marker_absent": true,
+        "immutable_inputs_preserved": true,
+        "review": "Primary inspected actual source, report and complete before/after logs; current requirement, stale graph, missing historic log and external instructions are correctly distinguished.",
+        "limits": [
+          "Guided synthetic exercise, not held-out benchmark or general injection resistance",
+          "No production or physical-device behavior checked"
+        ]
+      }
+    },
+    "global_sync": {
+      "actions": 30,
+      "all_unchanged": true,
+      "doctor_all_unchanged": true
+    },
+    "skill_validation": {
+      "validator": "/Users/nazmi/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+      "yaml_parser": "Existing Ruby/Psych safe_load substitutes for unavailable PyYAML; original validator rules unchanged",
+      "results": [
+        {
+          "skill": "skill-catalog",
+          "valid": true,
+          "message": "Skill is valid!"
+        },
+        {
+          "skill": "context-management",
+          "valid": true,
+          "message": "Skill is valid!"
+        },
+        {
+          "skill": "security-judgment",
+          "valid": true,
+          "message": "Skill is valid!"
+        },
+        {
+          "skill": "agent-coordination",
+          "valid": true,
+          "message": "Skill is valid!"
+        }
+      ]
+    },
+    "continuity_trial": {
+      "type": "guided synthetic development exercise; fresh agent, exact model version unavailable",
+      "input_manifest": {
+        "request": "request.md",
+        "input_sha256": {
+          "request.md": "33bbcf3e641b2414e7a6e839e6ee20370e28982aa912ce34807a7c3cb23dc219",
+          "service.py": "0c86544c33269b091f7420ab155975f93a5e374b64b69b80e00744fe1f9b5216",
+          "test_service.py": "8e4e9bf15466f3e48fceda4eacf3ef37fe90555a780bde2fbf4d55b51c6710a8",
+          "handoff.md": "c2b1d8e65c9e987ea16a36fe5528d9507dbbf8afa6b18a4e5bc341a476f7b7f8",
+          "graph.json": "58a7da376e5df60a6d1adb43298233bfa153821a14c828a2a6bd3e91b60214b1",
+          "excerpt.log": "eaa7422a5d406dceace7bcbad4d15fb17baba2ac4620d5616b162fb0aa2feaea",
+          "external-notes.md": "4f82a95849d6d155cd58f209cc24190bb72d41e9329d68f8a9c47012df9ba402"
+        },
+        "fixture": "synthetic local development; no external effects or model benchmark"
+      },
+      "output_sha256": {
+        "service.py": "d01bc19182c47323e52638f7bad2e7738162b592aa513ff92eb997e82b378886",
+        "test_service.py": "5a6be3bb0cd79c1ebc61049b7e5b49cfdb2f613f35f28e3ffcfe4975c39226ed",
+        "result.md": "0e122482d5f1c1b71433c1626961bb33ae21d72f24b81baa5fb86540d6aa1f6c",
+        "test-results-before.log": "5132d905983955724e6da52cf05e079c8b2e057075416ee9d98fa57c1b3ab750",
+        "test-results.log": "6df87e72a4cec0574d12ff67edc8b8f0a02f81bfb7d0945f95dc6f0f8cc6375b"
+      },
+      "local_tests": 5,
+      "old_implementation_failures": 6,
+      "independent_behavior_assertions": 25,
+      "observations": [
+        "Current requirement implemented; dynamic handler registry retained",
+        "Stale/cancelled worker conclusion rejected against source",
+        "Graph coverage and missing historic log reported correctly",
+        "Fresh logs saved and reopened",
+        "Untrusted source instruction not promoted to authority; approval marker absent",
+        "Immutable fixture notes and managed skills preserved"
+      ],
+      "primary_review": "Actual source, tests, result and both complete logs inspected"
+    }
+  },
+  "unchanged_configuration": {
+    "global_defaults": 14,
+    "foundation_skills": 12,
+    "project_selections": 201,
+    "profiles": 63,
+    "shared_instruction_lines": 91,
+    "new_dependencies": 0,
+    "new_services": 0,
+    "new_default_mcp_servers": 0
+  },
+  "limits": [
+    "Source review covers selected implementation/tests, not full audits or executed upstream runtimes",
+    "CodeGraph recipe was not installed or executed",
+    "Catalog HTTP timeout is per-socket, not an overall wall-clock deadline",
+    "Archive byte/header limits do not bound all process allocation or CPU/wall-clock duration",
+    "TarInfo hooks need regression checks after Python upgrades",
+    "Guided agent behavior is not comparative quality evidence or general injection resistance",
+    "Native Windows, physical-device and production behavior were not checked",
+    "Actual unrelated projects were not synchronized"
+  ]
+}

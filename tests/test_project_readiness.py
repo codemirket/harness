@@ -226,9 +226,52 @@ class ProjectReadinessTests(unittest.TestCase):
                 self.assertFalse(output.exists())
 
     def test_cli_exit_and_overall_readiness_include_requested_project_check(self):
-        with mock.patch.object(runtime, 'diagnose_project', return_value={'requested_checks_passed': False}), \
-                mock.patch.object(runtime, 'diagnose', return_value={'ready': True, 'authentication_attention': []}), \
-                contextlib.redirect_stdout(io.StringIO()) as output:
-            code = runtime.main(['doctor', '--project', str(self.project), '--json'])
-        self.assertEqual(code, 1)
-        self.assertFalse(json.loads(output.getvalue())['ready'])
+        for clients_ready in (False, True):
+            with self.subTest(clients_ready=clients_ready), \
+                    mock.patch.object(runtime, 'diagnose_project', return_value={'requested_checks_passed': False}), \
+                    mock.patch.object(runtime, 'diagnose', return_value={
+                        'ready': clients_ready, 'authentication_attention': []}), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                code = runtime.main(['doctor', '--project', str(self.project), '--json'])
+            self.assertEqual(code, 1)
+            self.assertFalse(json.loads(output.getvalue())['ready'])
+
+    def test_cli_project_success_is_independent_of_missing_or_unverified_clients(self):
+        for unavailable, reason in (('claude', 'not_found'), ('desktop', 'identity_unverified')):
+            clients = {'codex': {'ready': True, 'probe_status': 'ok'},
+                       unavailable: {'ready': False, 'probe_status': reason}}
+            with self.subTest(unavailable=unavailable), \
+                    mock.patch.object(runtime, 'discover_browser', return_value=dict(self.browser)), \
+                    mock.patch.object(runtime, 'diagnose', return_value={
+                        'ready': False, 'authentication_attention': [], 'runtimes': clients}), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                code = runtime.main(['doctor', '--project', str(self.project), '--json'])
+            report = json.loads(output.getvalue())
+            self.assertEqual(code, 0)
+            self.assertTrue(report['ready'])
+            self.assertTrue(report['project']['requested_checks_passed'])
+            self.assertFalse(report['clients_ready'])
+            self.assertEqual(report['runtimes'], clients)
+
+    def test_cli_project_mode_preserves_explicit_auth_failure_semantics(self):
+        for attention, expected_exit in ((['claude'], 1), ([], 0)):
+            with self.subTest(attention=attention), \
+                    mock.patch.object(runtime, 'diagnose_project', return_value={'requested_checks_passed': True}), \
+                    mock.patch.object(runtime, 'diagnose', return_value={
+                        'ready': False, 'authentication_attention': attention}) as diagnose, \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                code = runtime.main(['doctor', '--project', str(self.project), '--check-auth', '--json'])
+            self.assertEqual(code, expected_exit)
+            self.assertTrue(diagnose.call_args.kwargs['check_auth'])
+            self.assertEqual(json.loads(output.getvalue())['authentication_attention'], attention)
+
+    def test_cli_without_project_keeps_all_client_readiness_requirement(self):
+        for ready, attention, expected_exit in ((False, [], 1), (True, [], 0), (True, ['codex'], 1)):
+            report = {'ready': ready, 'authentication_attention': attention}
+            with self.subTest(ready=ready, attention=attention), \
+                    mock.patch.object(runtime, 'diagnose', return_value=report), \
+                    contextlib.redirect_stdout(io.StringIO()) as output:
+                code = runtime.main(['doctor', '--check-auth', '--json'])
+            self.assertEqual(code, expected_exit)
+            self.assertEqual(json.loads(output.getvalue()), report)
+            self.assertNotIn('clients_ready', report)

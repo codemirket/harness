@@ -73,7 +73,15 @@ The installed `skill-catalog/scripts/harness.py` wrapper exposes the same comman
 Foundation exports include the engine and evaluation fixtures, so they can move
 without the original checkout. Use `--harness-source /absolute/snapshot` to record
 retained baseline guidance. Model/settings, reviewer identity and source fingerprints
-are recorded labels, not runtime attestation.
+are recorded labels, not runtime attestation. Reports retain the valid current
+review's `review_kind` and `reviewer`; `accepted_by` distinguishes `agent`, `human`
+and `none`. The compatible `accepted` boolean is a combined check/review outcome,
+not a claim of human approval. Kind counts exclude stale or invalid reviews.
+
+The later independent review changed five rubric headings from "Human review"
+to "Artifact review" without altering their criteria. This changes case hashes.
+Historical runs below retain their original provenance; preparing or replaying
+against current definitions is required before claiming a current accepted run.
 
 `check` executes copied local verifier and candidate code with normal host
 permissions, a 1–60 second limit and bounded output. It validates control files,

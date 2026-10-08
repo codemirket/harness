@@ -306,6 +306,195 @@ class GlobalHarnessTests(HarnessFixture):
 
 
 class ProjectHarnessTests(HarnessFixture):
+    def project_command(self, action):
+        with mock.patch('sys.stdout', new_callable=io.StringIO) as output, \
+                mock.patch('sys.stderr', new_callable=io.StringIO):
+            status = harness.main(['project', action, '--project', str(self.project)])
+        return status, json.loads(output.getvalue())
+
+    def test_selected_specialist_name_overlap_is_reported_without_dropping_selection(self):
+        self.entry('global-guidance')['name'] = 'feature'
+        self.initialize()
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action):
+                status, rows = self.project_command(action)
+                self.assertEqual(status, 0)
+                self.assertEqual({(row['id'], row['target']) for row in rows},
+                                 {(name, target) for name in ('foundation', 'feature')
+                                  for target in ('codex', 'claude')})
+                for row in rows:
+                    if row['id'] == 'feature':
+                        self.assertEqual(row['warnings'][0]['code'], 'global_skill_name_overlap')
+                        self.assertEqual(row['warnings'][0]['global_skill_ids'], ['global-guidance'])
+                    else:
+                        self.assertNotIn('warnings', row)
+        self.assertEqual(harness.read_json(self.project / '.ai/project.json')['profiles'], ['feature'])
+
+    def test_portable_to_normal_foundation_preserves_and_reports_unselected_copies(self):
+        self.config['global_skills'] += ['foundation', 'feature']
+        self.data['profiles']['portable-foundation'] = {'skills': ['feature']}
+        self.data['profiles']['normal-foundation'] = {'skills': ['foundation']}
+        self.save_registry()
+        harness.init_project(self.project, ['portable-foundation'], [], [], 'both')
+        harness.sync_project(self.project)
+        (self.destination('feature', 'claude', True) / 'personal.txt').write_text('Keep this customization.')
+        value = harness.read_json(self.project / '.ai/project.json')
+        value['profiles'] = ['normal-foundation']
+        harness.write_json(self.project / '.ai/project.json', value)
+        copies = {target: snapshot(self.project / target, timestamps=True)
+                  for target in ('.agents', '.claude')}
+        with mock.patch.object(catalog, 'prepare_payload', side_effect=AssertionError('No selected source work')):
+            self.assertEqual({job['entry']['id'] for job in harness.project_plan(self.project)[3]}, {'foundation'})
+            for action in ('plan', 'sync', 'doctor'):
+                with self.subTest(action=action):
+                    status, rows = self.project_command(action)
+                    self.assertEqual(status, 0)
+                    self.assertEqual(len(rows), 4)
+                    diagnostics = [row for row in rows if row.get('kind') == 'diagnostic']
+                    self.assertEqual(len(diagnostics), 2)
+                    self.assertTrue(all(row['action'] == 'preserved'
+                                        and row['code'] == 'unselected_installed_copy'
+                                        and row['global_overlap'] for row in diagnostics))
+                    for target in copies:
+                        self.assertEqual(snapshot(self.project / target, timestamps=True), copies[target])
+            before = snapshot(self.project, timestamps=True)
+            self.project_command('sync')
+            self.assertEqual(snapshot(self.project, timestamps=True), before)
+        self.assertEqual([row['id'] for row in harness.read_json(self.project / '.ai/project.lock.json')['skills']],
+                         ['foundation'])
+
+    def test_unselected_unknown_malformed_and_linked_copies_are_reported_without_traversal(self):
+        harness.write_json(self.project / '.ai/project.json',
+                           {'schema_version': 1, 'targets': ['codex'], 'profiles': [],
+                            'skills': ['foundation'], 'skip': []})
+        harness.sync_project(self.project)
+        outside = self.base / 'outside'
+        outside.mkdir()
+        (outside / catalog.RECEIPT).write_text('{"id":"do-not-read-outside"}')
+        root = self.project / '.agents/skills'
+        for name, raw in (('retired', '{"id":"removed-from-catalog"}'),
+                          ('old-foundation', '{"id":"foundation"}'),
+                          ('global-guidance', '{broken JSON'), ('invalid-schema', '[]')):
+            directory = root / name
+            directory.mkdir()
+            (directory / catalog.RECEIPT).write_text(raw)
+            (directory / 'personal.txt').write_text('Preserved user content.')
+        (root / 'unmanaged').mkdir()
+        (root / 'unmanaged/SKILL.md').write_text('No receipt; leave this alone.')
+        self.symlink(root / 'linked-copy', outside, True)
+        (root / 'linked-receipt').mkdir()
+        self.symlink(root / 'linked-receipt' / catalog.RECEIPT, outside / catalog.RECEIPT)
+        inactive = self.project / '.claude/skills/inactive'
+        inactive.mkdir(parents=True)
+        (inactive / catalog.RECEIPT).write_text('{"id":"inactive"}')
+        preserved = snapshot(root, timestamps=True)
+        outside_before = snapshot(outside, timestamps=True)
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action):
+                status, rows = self.project_command(action)
+                self.assertEqual(status, 0)
+                by_name = {row['name']: row for row in rows if row.get('kind') == 'diagnostic'}
+                self.assertEqual(set(by_name), {'retired', 'old-foundation', 'global-guidance', 'invalid-schema',
+                                                'linked-copy', 'linked-receipt'})
+                self.assertEqual(by_name['retired']['catalog_status'], 'removed_or_unknown')
+                self.assertEqual(by_name['old-foundation']['catalog_status'], 'known')
+                self.assertEqual(by_name['global-guidance']['receipt_state'], 'invalid')
+                self.assertTrue(by_name['global-guidance']['global_overlap'])
+                self.assertEqual(by_name['linked-copy']['receipt_state'], 'not_read_link')
+                self.assertEqual(by_name['linked-receipt']['receipt_state'], 'not_read_link')
+                self.assertNotIn('do-not-read-outside', json.dumps(rows))
+                self.assertEqual(snapshot(root, timestamps=True), preserved)
+                self.assertEqual(snapshot(outside, timestamps=True), outside_before)
+
+    def test_empty_job_diagnostics_do_not_follow_linked_skill_roots(self):
+        outside = self.base / 'outside-root'
+        outside.mkdir()
+        (outside / catalog.RECEIPT).write_text('{"id":"do-not-read-outside"}')
+        (self.project / '.agents').mkdir()
+        self.symlink(self.project / '.agents/skills', outside, True)
+        before = snapshot(self.project, timestamps=True)
+        rows = harness.preserved_project_copies(self.project, {'targets': ['codex']}, [], self.data, {})
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]['code'], 'uninspected_skill_root')
+        self.assertEqual(rows[0]['receipt_state'], 'not_read_link')
+        self.assertNotIn('do-not-read-outside', json.dumps(rows))
+        self.assertEqual(snapshot(self.project, timestamps=True), before)
+
+    def test_inaccessible_unselected_root_is_reported_without_cleanup(self):
+        root = self.project / '.agents/skills'
+        root.mkdir(parents=True)
+        before = snapshot(self.project, timestamps=True)
+        with mock.patch.object(Path, 'iterdir', side_effect=PermissionError('Fixture unreadable root')):
+            rows = harness.preserved_project_copies(self.project, {'targets': ['codex']}, [], self.data, {})
+        self.assertEqual(rows[0]['code'], 'uninspected_skill_root')
+        self.assertEqual(rows[0]['receipt_state'], 'not_read_inaccessible_root')
+        self.assertEqual(snapshot(self.project, timestamps=True), before)
+
+    def test_inaccessible_root_metadata_is_reported_before_enumeration(self):
+        root = self.project / '.agents/skills'
+        root.mkdir(parents=True)
+        before = snapshot(self.project, timestamps=True)
+        is_link = catalog.is_link
+        for blocked in (root.parent, root):
+            def denied_metadata(path):
+                if path == blocked:
+                    raise PermissionError('Fixture inaccessible root metadata')
+                return is_link(path)
+
+            with self.subTest(blocked=blocked), mock.patch.object(catalog, 'is_link', side_effect=denied_metadata), \
+                    mock.patch.object(Path, 'iterdir', side_effect=AssertionError('No enumeration after denied metadata')):
+                rows = harness.preserved_project_copies(self.project, {'targets': ['codex']}, [], self.data, {})
+                self.assertEqual(len(rows), 1)
+                self.assertEqual(rows[0]['code'], 'uninspected_skill_root')
+                self.assertEqual(rows[0]['receipt_state'], 'not_read_inaccessible_root')
+            self.assertEqual(snapshot(self.project, timestamps=True), before)
+
+    def test_inaccessible_unselected_receipt_metadata_does_not_interrupt_commands(self):
+        self.initialize('codex')
+        directory = self.destination('inaccessible-copy', 'codex', True)
+        directory.mkdir(parents=True)
+        receipt = directory / catalog.RECEIPT
+        receipt.write_text('{"id":"not-readable"}')
+        (directory / 'personal.txt').write_text('Preserve this copy.')
+        before = snapshot(directory, timestamps=True)
+        is_link = catalog.is_link
+
+        def denied_metadata(path):
+            if path == receipt:
+                raise PermissionError('Fixture directory has no search permission')
+            return is_link(path)
+
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action), mock.patch.object(catalog, 'is_link', side_effect=denied_metadata):
+                status, rows = self.project_command(action)
+                self.assertEqual(status, 0)
+                diagnostic = next(row for row in rows if row.get('name') == directory.name)
+                self.assertEqual(diagnostic['receipt_state'], 'unreadable')
+                self.assertEqual(diagnostic['action'], 'preserved')
+                self.assertNotIn('not-readable', json.dumps(rows))
+            self.assertEqual(snapshot(directory, timestamps=True), before)
+        self.assertTrue(self.destination('feature', 'codex', True).is_dir())
+
+    def test_deeply_nested_unselected_receipt_is_invalid_without_interrupting_commands(self):
+        self.initialize('codex')
+        directory = self.destination('overcomplex-copy', 'codex', True)
+        directory.mkdir(parents=True)
+        raw = '{"id":"retired","nested":' + '[' * 2000 + '0' + ']' * 2000 + '}'
+        self.assertLess(len(raw.encode()), 64 * 1024)
+        with self.assertRaises(RecursionError):
+            json.loads(raw)
+        (directory / catalog.RECEIPT).write_text(raw)
+        before = snapshot(directory, timestamps=True)
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action):
+                status, rows = self.project_command(action)
+                self.assertEqual(status, 0)
+                diagnostic = next(row for row in rows if row.get('name') == directory.name)
+                self.assertEqual(diagnostic['receipt_state'], 'invalid')
+                self.assertEqual(diagnostic['action'], 'preserved')
+                self.assertEqual(snapshot(directory, timestamps=True), before)
+        self.assertTrue(self.destination('feature', 'codex', True).is_dir())
+
     def add_helper(self, name='feature', relative='scripts/helper.py'):
         directory = self.repo / 'skills' / name
         helper = directory / relative
@@ -487,6 +676,105 @@ class ProjectHarnessTests(HarnessFixture):
             self.assertEqual(receipt['repository'], 'fixture/skills')
             self.assertEqual(receipt['commit'], 'b' * 40)
             self.assertEqual(receipt['sha256'], self.entry('feature')['sha256'])
+
+    def test_pin_only_change_reports_original_installation_without_reinstalling(self):
+        self.add_helper()
+        entry = self.entry('feature')
+        entry.update(delivery='upstream', source='fixture-upstream')
+        self.data['sources']['fixture-upstream'] = {
+            'repository': 'fixture/skills', 'commit': 'a' * 40}
+        self.initialize()
+        harness.sync_project(self.project, {'fixture-upstream': self.repo})
+        before = {target: snapshot(self.project / target, timestamps=True)
+                  for target in ('.agents', '.claude')}
+        self.data['sources']['fixture-upstream']['commit'] = 'b' * 40
+        with mock.patch.object(catalog, 'prepare_payload', side_effect=AssertionError('Unneeded source fetch')):
+            _, _, _, planned = harness.project_plan(self.project)
+            plan = harness.public_project(planned)
+            synced = harness.sync_project(self.project)
+            out = io.StringIO()
+            with mock.patch('sys.stdout', out):
+                self.assertEqual(harness.main(['project', 'doctor', '--project', str(self.project)]), 0)
+            self.assertEqual(json.loads(out.getvalue()), synced)
+            self.assertEqual(plan, synced)
+            locked = snapshot(self.project, timestamps=True)
+            self.assertEqual(harness.sync_project(self.project), synced)
+            self.assertEqual(snapshot(self.project, timestamps=True), locked)
+        lock = json.loads((self.project / '.ai/project.lock.json').read_text())
+        self.assertEqual(lock['skills'][1]['commit'], 'b' * 40)
+        for job in synced:
+            self.assertEqual(job['action'], 'unchanged')
+            if job['id'] == 'feature':
+                provenance = job['provenance']
+                self.assertEqual(provenance['status'], 'content_matches_current_selection')
+                self.assertEqual(provenance['original_installation']['commit'], 'a' * 40)
+                self.assertEqual(provenance['current_selection']['commit'], 'b' * 40)
+                self.assertEqual(provenance['installed_sha256'], entry['sha256'])
+                self.assertEqual(provenance['executable_files'], ['scripts/helper.py'])
+            else:
+                self.assertNotIn('provenance', job)
+        for target in before:
+            self.assertEqual(snapshot(self.project / target, timestamps=True), before[target])
+
+    def test_changed_source_and_adaptation_with_equal_installed_bytes_report_both_origins(self):
+        entry = self.entry('feature')
+        entry.update(delivery='upstream', source='fixture-upstream')
+        self.data['sources']['fixture-upstream'] = {
+            'repository': 'fixture/skills', 'commit': 'a' * 40}
+        self.initialize()
+        harness.sync_project(self.project, {'fixture-upstream': self.repo})
+        original_hash = entry['sha256']
+        guide = self.repo / 'skills/feature/references/guide.md'
+        installed_text = guide.read_text()
+        guide.write_text('# Different source\nUpstream wording.\n')
+        entry.update(source='replacement-upstream', sha256=catalog.payload_hash(catalog.read_local(self.repo, entry)),
+                     installed_sha256=original_hash,
+                     replacements=[{'path': 'references/guide.md', 'old': guide.read_text(),
+                                    'new': installed_text, 'count': 1}])
+        self.data['sources']['replacement-upstream'] = {
+            'repository': 'replacement/skills', 'commit': 'b' * 40}
+        # Independently verify this fixture really adapts to the same installed bytes.
+        prepared, _ = catalog.prepare_payload(self.data, entry, self.repo)
+        self.assertEqual(catalog.payload_hash(prepared), original_hash)
+        before = {target: snapshot(self.project / target, timestamps=True)
+                  for target in ('.agents', '.claude')}
+        with mock.patch.object(catalog, 'prepare_payload', side_effect=AssertionError('Unneeded source fetch')):
+            jobs = harness.sync_project(self.project)
+        for job in jobs:
+            if job['id'] == 'feature':
+                provenance = job['provenance']
+                self.assertEqual(provenance['original_installation']['repository'], 'fixture/skills')
+                self.assertEqual(provenance['original_installation']['sha256'], original_hash)
+                self.assertEqual(provenance['current_selection']['repository'], 'replacement/skills')
+                self.assertEqual(provenance['current_selection']['sha256'], entry['sha256'])
+                self.assertEqual(provenance['installed_sha256'], original_hash)
+        for target in before:
+            self.assertEqual(snapshot(self.project / target, timestamps=True), before[target])
+
+    def test_pin_only_change_does_not_accept_changed_copy_or_executable_modes(self):
+        self.add_helper()
+        entry = self.entry('feature')
+        entry.update(delivery='upstream', source='fixture-upstream')
+        self.data['sources']['fixture-upstream'] = {
+            'repository': 'fixture/skills', 'commit': 'a' * 40}
+        self.initialize()
+        harness.sync_project(self.project, {'fixture-upstream': self.repo})
+        self.data['sources']['fixture-upstream']['commit'] = 'b' * 40
+        guide = self.destination('feature', 'claude', True) / 'references/guide.md'
+        original = guide.read_bytes()
+        guide.write_bytes(b'User customization')
+        before = snapshot(self.project, timestamps=True)
+        with self.assertRaises(ValueError):
+            harness.sync_project(self.project)
+        self.assertEqual(snapshot(self.project, timestamps=True), before)
+        guide.write_bytes(original)
+        if os.name != 'nt':
+            helper = self.destination('feature', 'claude', True) / 'scripts/helper.py'
+            helper.chmod(helper.stat().st_mode & ~0o111)
+            before = snapshot(self.project, timestamps=True)
+            with self.assertRaises(ValueError):
+                harness.sync_project(self.project)
+            self.assertEqual(snapshot(self.project, timestamps=True), before)
 
     def test_unchanged_sync_does_not_reprepare_or_rewrite_installed_payloads(self):
         self.initialize()

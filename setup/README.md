@@ -142,10 +142,13 @@ Synchronization does not prune removed selections or uninstall any app. No permi
 ## Project capabilities and plugins
 
 Project initialization defaults to Codex and includes `project-foundation` from
-`registry/harness.json` automatically. Its 12 reviewed authored skills cover
-planning, context, collaboration, research, security, architecture, debugging,
-tests, CI, releases, document parsing and document creation. They are portable
-fundamentals; agents read only the workflows relevant to the current task.
+`registry/harness.json` automatically. Its four reviewed authored skills cover
+architecture, debugging, tests and releases. The 14 shared globals supply planning,
+context, collaboration, research, security, CI and documents without duplicate
+default names. Verify the globals are available with `ai.py doctor --target both`
+and host discovery. For environments without the corresponding globals, explicitly
+add `--profile portable-foundation` for all 12 portable fundamentals. Agents read
+only the workflows relevant to the current task.
 
 Inspect the project's actual stack, scope and roadmap before adding specialists.
 Choose capabilities needed now or for credible later stages, such as deployment
@@ -195,6 +198,10 @@ work, but dependency installation, hooks and accounts require their own scope.
 Existing manifests retain their selections under plan/sync/doctor; the new default
 is applied by init or an explicit add, never retroactively by reconciliation. An
 existing project can adopt it with `project add --profile project-foundation`.
+An existing foundation profile now resolves to four entries; sync preserves any
+older unselected copies. Inspect them and the global copies before deliberate
+cleanup. Choose the portability profile when those globals are absent; do not
+assume a stale local copy overrides a personal skill in Claude Code.
 Prior broad selections are preserved for deliberate review, not automatically
 pruned. Edit the manifest deliberately to remove selections or change targets.
 

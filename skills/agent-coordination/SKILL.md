@@ -53,12 +53,22 @@ integration or critical-path work rather than polling workers continuously.
   large full-history reads add cost without new information.
 - Preserve user steering across all workers. The primary agent owns scope decisions,
   user communication, conflict resolution, and final verification.
+- After cancellation or a changed assignment, reconcile late results against the
+  current scope and actual files before integration. Interrupting a worker may not
+  undo its writes or stop remote work; inspect owned artifacts and operation state
+  before reassigning the same destination or retrying an uncertain effect.
 
 ## Integrate and verify
 
 Require each result to identify changed files, observed behavior, tests/checks,
 assumptions, unresolved risks, and provenance for external claims. A worker's
 success message is a claim to assess, not a substitute for inspecting the result.
+For a substantial deliverable, connect acceptance conditions to retrievable artifact
+paths and executed checks with their relevant inputs. Distinguish work completed,
+partial/capped output, failed verification and unexecuted suggestions. Verify a
+referenced artifact exists; a finished process or a polished summary is not an
+accepted deliverable. Retrieve omitted evidence before drawing conclusions from
+truncated output.
 
 Review interfaces and combined behavior after integration; independently sound
 parts can conflict. Reuse current evidence for untouched components and rerun

@@ -9,6 +9,10 @@ Identify the actual asset, caller, trust boundary and permitted effect. Follow t
 project's established controls and supported platform APIs. An unfamiliar pattern
 is a reason to investigate, not proof of a vulnerability.
 
+For agent tools, retrieved instructions, skill loaders or approval/resume paths,
+read [agent tool boundaries](references/agent-tool-boundaries.md). Use the host's
+actual controls; ordinary application changes do not need this additional review.
+
 ## Enforce the boundary that matters
 
 Authenticate identity and authorize the specific operation on the actual resource.
