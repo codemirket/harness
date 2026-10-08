@@ -64,11 +64,12 @@
       ]
     },
     "design-studio": {
-      "description": "Interface exploration, redesign, motion and HTML publishing.",
+      "description": "Design exploration, redesign, editable SVG art and animation, and HTML publications.",
       "profiles": [
         "design-prototyping",
         "design-redesign",
-        "html-publications"
+        "html-publications",
+        "svg-studio"
       ]
     },
     "research-documents": {

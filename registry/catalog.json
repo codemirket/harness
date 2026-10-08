@@ -247,7 +247,7 @@
       "name": "skill-catalog",
       "scope": "global",
       "category": "catalog",
-      "description": "Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when design, engineering, documentation, animation or research needs specialist guidance.",
+      "description": "Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, SVG/vector artwork, animation, engineering, documentation or research needs specialist guidance.",
       "delivery": "global-link",
       "path": "skills/skill-catalog",
       "informed_by": [
@@ -475,7 +475,70 @@
         "accessibility",
         "interaction-recipes"
       ],
-      "sha256": "17f83ecc09304d12ce7a31ba8e328411754bbf7b468541aed90995928acf14bd"
+      "sha256": "0255f5670ba60b095e48fcb796a777f7e3208c229ef80625c96819eb0cbce584"
+    },
+    {
+      "id": "svg-animation",
+      "name": "svg-animation",
+      "scope": "project",
+      "category": "design",
+      "description": "Design, implement, or critique SVG animation, animated vector illustrations, logo reveals, path drawing, morphs, and SVG motion sequences. Use for vector choreography with editable geometry, reduced motion, playback and integration checks; ordinary UI transitions use motion-design.",
+      "delivery": "local",
+      "path": "skills/svg-animation",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use supported native SVG/CSS/Web Animations or an already installed project library; a browser is needed for motion verification."
+      ],
+      "caveats": [
+        "Original portable craft guidance; render and critique the actual output. Registration does not certify visual quality or untested exporters."
+      ],
+      "coverage": "Authored vector workflow with source-linked technical references and explicit visual/behavioral verification.",
+      "tags": [
+        "svg",
+        "animation",
+        "motion",
+        "path-drawing",
+        "morph",
+        "logo-reveal",
+        "svg-animation"
+      ],
+      "sha256": "6bdbff29c36b9db2a0f703f6c102c1f6b6b47f9f4c1f6a1ccb67e7a91948af4d"
+    },
+    {
+      "id": "svg-creation",
+      "name": "svg-creation",
+      "scope": "project",
+      "category": "design",
+      "description": "Create, refine, or review editable SVG vector illustrations, icons, logos, pictograms, and decorative artwork. Use for vector art, precise paths, scalable brand assets, or SVG cleanup; SVG choreography uses svg-animation, and page layout uses interface-design.",
+      "delivery": "local",
+      "path": "skills/svg-creation",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use existing vector/browser tools; the optional structural audit uses Python 3 standard library."
+      ],
+      "caveats": [
+        "Original portable craft guidance; render and critique the actual output. Registration does not certify visual quality or untested exporters."
+      ],
+      "coverage": "Authored vector workflow with source-linked technical references and explicit visual/behavioral verification.",
+      "tags": [
+        "svg",
+        "vector",
+        "vector-art",
+        "illustration",
+        "icon",
+        "logo",
+        "bezier",
+        "svg-creation"
+      ],
+      "sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d"
     },
     {
       "id": "experiment-design",
@@ -15172,6 +15235,13 @@
       "skills": [
         "search-visibility",
         "search-audit"
+      ]
+    },
+    "svg-studio": {
+      "description": "Editable SVG illustrations, icons and marks with vector choreography, reduced motion and rendered verification. No additional runtime or library is installed.",
+      "skills": [
+        "svg-creation",
+        "svg-animation"
       ]
     }
   }

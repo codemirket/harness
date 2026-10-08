@@ -58,7 +58,9 @@ when the task needs additional expertise; read only the matching workflow.
 - Preserve accurate copy, actual product behavior, and meaningful information.
   Label example data. Never invent customer endorsements or performance claims.
 - Choose supplied, licensed, or generated assets when they improve communication.
-  Use the available image tool for generation; do not require images for every UI.
+  Use the available image tool for raster generation; use catalog `svg-creation`
+  for editable vector illustrations, icons or marks. Read its vector-craft reference
+  and inspect assets in the real composition. Do not require images for every UI.
 - Show alternative directions only when exploration is requested or resolves an
   important uncertainty. Keep experimental previews separate from production.
 
@@ -85,6 +87,9 @@ when the task needs additional expertise; read only the matching workflow.
   Respect reduced-motion preferences and retain essential state information.
 - Measure relevant performance before making performance claims. Property names
   and library choices alone do not prove smooth rendering.
+- Route animated vector artwork, logo reveals, path drawing and morphs to
+  `svg-animation`; use `motion-design` for surrounding UI transitions. Read the
+  matching craft reference and verify actual embedding and reduced motion.
 
 ## Verify the result
 

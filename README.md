@@ -2,7 +2,7 @@
 
 This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 195 project selections and 61 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 197 project selections and 62 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
 ## Install and check
 
@@ -129,6 +129,12 @@ python3 ai.py project doctor --project /absolute/project
 For provider-specific additions, use `--target-skill claude:matt-git-guardrails-claude-code` with `project init --target both`, or `project add` when Claude is already a declared target. Scoped additions upgrade the manifest to schema v2 with `target_skills`. Shared selections still apply to every declared target; unsupported combinations fail explicitly. See [provider-specific selections and sidecar migration](docs/project-targets.md).
 
 Project copies go to `.agents/skills` for Codex and optionally `.claude/skills` for Claude Code. Synchronization checks pinned source and adapted hashes, retains companions and licenses, and records `.ai/project.lock.json`. It preserves modified and unselected copies. One-off catalog installation remains available for deliberate standalone use; ongoing project skills belong in the manifest and lock.
+
+For editable vector illustrations, icons, marks and SVG animation, add the
+`svg-studio` profile with `project add`, then sync and doctor. Its two focused
+skills cover vector craft and motion; the global selector and interface/motion
+workflows route relevant tasks to them. Existing projects need deliberate
+registration. [SVG workflow, examples and verification](docs/reviews/svg-studio.md).
 
 ## Export Codex plugins
 

@@ -42,6 +42,14 @@ states and interrupted/reduced motion where applicable. A successful build,
 screenshot capture or automated accessibility scan is supporting evidence;
 visual acceptance requires judgment against the requested goal.
 
+For vector assets, use `svg-creation` for deliberate composition and geometry;
+inspect silhouette, curves, optical weight, effect bounds and the minimum displayed
+size. Deliver editable source and verify real embedding plus repeated inline IDs.
+For vector motion, use `svg-animation`; inspect normal playback and intermediate
+beats, actual playback controls, reduced motion at load/live changes and lifecycle.
+Pure-vector delivery cannot be satisfied by a raster wrapped in SVG. Structural
+audits and sampled frames do not certify aesthetics, smoothness or untested exports.
+
 ## Engineering
 
 Define observable behavior and the affected interface/data invariants. Use

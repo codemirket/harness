@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "change": "Two authored SVG specialists, focused profile, routing and native editable examples.",
+  "environment": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "python": "3.9.6",
+    "browser": "151.0.7922.34",
+    "exact_agent_model": "Unavailable in this inherited agent runtime"
+  },
+  "unit_tests": {
+    "command": "python3 -m unittest discover -s tests -q",
+    "passed": 425,
+    "duration_seconds": 46.972,
+    "svg_audit_regressions": 14
+  },
+  "frontmatter_validation": {
+    "skills": [
+      "svg-creation",
+      "svg-animation",
+      "interface-design",
+      "motion-design",
+      "skill-catalog"
+    ],
+    "validator": "System skill-creator quick_validate.py; unchanged validator rules",
+    "yaml_parser": "Ruby/Psych substitution because PyYAML is unavailable",
+    "passed": true
+  },
+  "catalog": {
+    "global_defaults": 14,
+    "project_selections": 197,
+    "profiles": 62,
+    "svg_studio": [
+      "svg-creation",
+      "svg-animation"
+    ],
+    "payloads": {
+      "svg-animation": "6bdbff29c36b9db2a0f703f6c102c1f6b6b47f9f4c1f6a1ccb67e7a91948af4d",
+      "svg-creation": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d"
+    },
+    "design_studio_includes": [
+      "svg-animation",
+      "svg-creation"
+    ]
+  },
+  "installation": {
+    "scratch_project": "build/svg-install-test",
+    "persisted_manifest": {
+      "schema_version": 1,
+      "targets": [
+        "codex",
+        "claude"
+      ],
+      "profiles": [
+        "project-foundation",
+        "svg-studio"
+      ],
+      "skills": [],
+      "skip": []
+    },
+    "target_copies": 28,
+    "svg_copies": 4,
+    "source_payloads_byte_exact": true,
+    "doctors_and_repeat_sync": {
+      "project_doctor": {
+        "command": "python3 ai.py project doctor --project build/svg-install-test",
+        "exit_code": 0,
+        "records": 28,
+        "actions": {
+          "unchanged": 28
+        }
+      },
+      "global_doctor": {
+        "command": "python3 ai.py doctor --target both",
+        "exit_code": 0,
+        "records": 30,
+        "actions": {
+          "unchanged": 30
+        }
+      },
+      "repeat_sync": {
+        "command": "python3 ai.py project sync --project build/svg-install-test",
+        "exit_code": 0,
+        "records": 28,
+        "actions": {
+          "unchanged": 28
+        }
+      }
+    }
+  },
+  "export": {
+    "scope": "Isolated native plugin export of the shipped svg-studio profile; entire design-studio upstream export was not repeated.",
+    "final_path": "build/svg-export-final",
+    "files": 9,
+    "helper_and_references_retained": true
+  },
+  "structural_asset_audit": {
+    "reports": [
+      {
+        "file": "docs/examples/svg-studio/static.svg",
+        "errors": [],
+        "warnings": [],
+        "elements": {
+          "circle": 1,
+          "clipPath": 1,
+          "defs": 1,
+          "desc": 1,
+          "g": 28,
+          "linearGradient": 4,
+          "path": 88,
+          "rect": 2,
+          "stop": 12,
+          "svg": 1,
+          "title": 1
+        },
+        "ids": 61,
+        "local_references": 7
+      },
+      {
+        "file": "docs/examples/svg-studio/animated.svg",
+        "errors": [],
+        "warnings": [],
+        "elements": {
+          "circle": 1,
+          "clipPath": 1,
+          "defs": 1,
+          "desc": 1,
+          "g": 28,
+          "linearGradient": 4,
+          "path": 88,
+          "rect": 2,
+          "stop": 12,
+          "style": 1,
+          "svg": 1,
+          "title": 1
+        },
+        "ids": 61,
+        "local_references": 7
+      }
+    ],
+    "scope": "Structure only; no path/CSS conformance, sanitization or visual acceptance."
+  },
+  "forward_exercise": {
+    "worker": "svg_forward_test",
+    "assignment": "Original editorial coastal vector illustration and finite SVG animation, using new selected craft skills.",
+    "skill_selection": "Self-reported body/reference reads; not automated selection attestation.",
+    "evidence_path": "build/svg-forward-test/evidence.md",
+    "artifact_source_hashes": {
+      "static.svg": "79c5ee5c655c408bcea8cfa223b33d10b9bb62c595fbfefb9b26466bb7451b63",
+      "animated.svg": "8b8f8402591ff64cb05e61ba1fd90d6ae3f1712487d601d4dbc65b94e871b0aa",
+      "preview.html": "90641ea90540131cfe777fd4ea0c28b496be12c1adf4c8a43311e5260867e83c"
+    },
+    "issues_found_and_fixed": [
+      "Duplicate gradient/group ID found by structural audit.",
+      "Checker accepted invalid numeric/list syntax; ASCII digits and valid separators now enforced.",
+      "Checker treated CSS comments/strings and nonresource attributes as hard dependencies; common token scanning now skips them.",
+      "External autoplay shortened to 4.8 seconds without delays.",
+      "Host picture static fallback added after raw-image emulation limitation was observed."
+    ],
+    "integration_change": "A blank line in static.svg had trailing spaces removed before final primary browser verification. Geometry and attributes are unchanged; worker source hashes remain recorded separately."
+  },
+  "primary_browser_review": {
+    "browser": "151.0.7922.34",
+    "sourceHashes": {
+      "static.svg": "37b19c5b379af5f7ae196756bdaef66a75eb5678f80862e2d215ae2541f6ad17",
+      "animated.svg": "8b8f8402591ff64cb05e61ba1fd90d6ae3f1712487d601d4dbc65b94e871b0aa",
+      "preview.html": "90641ea90540131cfe777fd4ea0c28b496be12c1adf4c8a43311e5260867e83c"
+    },
+    "checks": [
+      "visible native geometry at initial load",
+      "five finite animations progress in ordinary playback",
+      "pause holds current time; Enter resumes",
+      "eight rapid replays do not stack animations",
+      "four deterministic storyboard captures",
+      "4.8-second animation reaches finished state",
+      "live reduced motion cancels inline motion and selects static image",
+      "restoring preference does not restart inline motion",
+      "disposal cancels motion and listeners",
+      "reduced motion at initial load",
+      "375px preview has no horizontal overflow",
+      "two explicitly namespaced varied inline instances have unique IDs",
+      "no browser script errors"
+    ],
+    "timeSamples": [
+      {
+        "time": 250.3500002062321,
+        "boat": "matrix(0.999951, -0.00989977, 0.00989977, 0.999951, -17.0368, 1.35786)"
+      },
+      {
+        "time": 417.0160002062321,
+        "boat": "matrix(0.999994, -0.00336387, 0.00336387, 0.999994, -15.4872, 0.324788)"
+      },
+      {
+        "time": 583.6760002062321,
+        "boat": "matrix(0.999996, 0.0027419, -0.0027419, 0.999996, -14.0396, -0.640275)"
+      },
+      {
+        "time": 733.6700002062322,
+        "boat": "matrix(0.999978, 0.00657101, -0.00657101, 0.999978, -13.1318, -1.2455)"
+      }
+    ],
+    "instances": {
+      "total": 122,
+      "unique": 122
+    },
+    "passed": true,
+    "limits": [
+      "Chromium on macOS only; no physical OS/device toggle, Safari/Firefox, print/exporter or FPS measurement.",
+      "Per-instance namespaces were explicitly applied; fixed-ID SVG files are not reusable framework components."
+    ]
+  },
+  "reference_mechanics": {
+    "browser": "151.0.7922.34",
+    "checks": [
+      "image-mode CSS drawing visibly progresses",
+      "inline path reaches final offset",
+      "rapid replay has one active animation",
+      "live reduced motion cancels reveal and retains visible base",
+      "inline reduced-motion load exposes settled route",
+      "cleanup cancels animation and removes replay listener"
+    ],
+    "imageFrozenUnderPageEmulation": false,
+    "limits": [
+      "This verifies reference mechanics in Chromium, not artistic quality or performance.",
+      "Main-page reduced-motion emulation did not freeze the nested SVG image."
+    ],
+    "passed": true
+  },
+  "raw_image_launch_observation": {
+    "browser": "151.0.7922.34",
+    "launchFlagRequested": "--force-prefers-reduced-motion",
+    "mainFrameMatch": false,
+    "imageHashes": [
+      "010a4130e51d8cf4b171b6c5e7cff60000727fa7c44a08e243bd3c2e55995e26",
+      "010a4130e51d8cf4b171b6c5e7cff60000727fa7c44a08e243bd3c2e55995e26"
+    ],
+    "passed": true,
+    "limit": "Chromium launch preference, not a real OS preference/device change."
+  },
+  "visual_review": {
+    "reviewer": "Primary agent",
+    "kind": "agent",
+    "decision": "Accepted for this development example",
+    "basis": [
+      "Artwork inspected at 320px and 800px: distinct lighthouse/boat silhouettes, balanced negative space and coherent warm/cool palette.",
+      "Current-source initial and settle frames inspected: coherent boat pose, consistent placement, no visible essential clipping.",
+      "375px whole preview inspected: complete artwork, readable controls and content, no horizontal overflow.",
+      "Two explicitly namespaced differently colored instances inspected together."
+    ],
+    "captures": {
+      "build/svg-primary-review/final.png": "5874962b282d37d2ce1e26ad47a08c6b59f3e7cb81eb1cab36041e487310731c",
+      "build/svg-primary-review/action.png": "5522751e5aef459d0564eb175b42f179a768e598657b8f4ff5047d90aabbfff7",
+      "build/svg-primary-review/preview-wide.png": "35e745d54d7cd55f0d0dc031dfd01c3e0e6d20c9b09ec325a621dfcc8bc81bff",
+      "build/svg-primary-review/initial.png": "98d3f618dec0f8cdc8b60bcf73281c1f5e5578665d7d7f93bf762ae5fb9965d1",
+      "build/svg-primary-review/preview-narrow.png": "19f58ae5a9976bdfa1dba804e691b075fe5f29f355f38edd356a777bba29e2c5",
+      "build/svg-primary-review/settle.png": "9da441b886a3a9e2d2653c9451c593dff1e6d0c5e8357bab51c2a1fb2128154c",
+      "build/svg-primary-review/two-instances.png": "73d5143eecc8a82f3b3ee3e3bab5112b934dfb7a9e3048c788756cae4c4e53bd"
+    },
+    "limits": [
+      "No human approval or baseline quality comparison.",
+      "Sampled frames and time progression do not establish perceptual smoothness or FPS."
+    ]
+  },
+  "remaining_limits": [
+    "No physical OS preference toggle or actual mobile hardware verification.",
+    "Safari, Firefox, vector editors and print/exporters were not exercised.",
+    "Normal-page media emulation did not reach raw SVG image motion; browser launch and host-picture observations are separate.",
+    "Native Windows installation/runtime was not tested this turn.",
+    "These are development examples and source guidance, not a held-out benchmark or general production quality guarantee."
+  ],
+  "retained_artifact_source_hashes": {
+    "static.svg": "37b19c5b379af5f7ae196756bdaef66a75eb5678f80862e2d215ae2541f6ad17",
+    "animated.svg": "8b8f8402591ff64cb05e61ba1fd90d6ae3f1712487d601d4dbc65b94e871b0aa",
+    "preview.html": "90641ea90540131cfe777fd4ea0c28b496be12c1adf4c8a43311e5260867e83c"
+  }
+}

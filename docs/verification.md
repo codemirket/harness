@@ -1,5 +1,17 @@
 # Verification evidence
 
+The 2026-10-08 [SVG studio addition](reviews/svg-studio.md) passes **425 tests in
+46.972 seconds**, including 14 SVG structural regressions. Both specialists install
+with byte-exact references/helper in Codex and Claude Code scratch projects; doctor
+and repeat sync pass. A focused native plugin export retains both payloads. An
+independent forward exercise produced editable art and a finite animation; the
+primary agent inspected actual 320/800 px artwork and current-source frames, and
+exercised replay, pause/keyboard resume, rapid replay, cleanup, live/initial reduced
+motion and narrow placement in Chromium. The host static-image alternative passes;
+raw-image media emulation has a separately recorded limitation. This is development
+evidence, not a quality benchmark, physical-device certification or human approval.
+[Exact checks, source hashes and limits](evidence/svg-studio-2026-10-08.json).
+
 The 2026-10-07 [delivery quality update](quality-harness.md) passes **395 tests in
 30.058 seconds**, including 17 evaluation regressions and portable foundation
 evaluation after removal of its original fixture checkout. Five development

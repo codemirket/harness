@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when design, engineering, documentation, animation or research needs specialist guidance.
+description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, SVG/vector artwork, animation, engineering, documentation or research needs specialist guidance.
 ---
 
 # Personal skill registry

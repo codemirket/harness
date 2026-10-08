@@ -14,6 +14,12 @@ matching task and installed-version support; effect naming uses
 capabilities. Do not follow unavailable upstream `animate` or
 `review-animations` sibling names as if they were installed.
 
+Vector illustration motion, logo reveals, path drawing and morphs use catalog
+`svg-animation` and its SVG motion-craft reference; `svg-creation` supports geometry.
+This workflow still owns the surrounding interface transitions. Use a vector
+specialist for the actual need rather than routing every animated icon to a new
+library or video renderer.
+
 For implementation or critique, read the matching sections of
 [interaction recipes](references/interaction-recipes.md): controls and feedback,
 menus/dialogs, disclosure and tab changes, list/data updates, or gestures. The
