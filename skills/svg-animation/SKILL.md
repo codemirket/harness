@@ -8,7 +8,9 @@ description: Design, implement, or critique SVG animation, animated vector illus
 Build motion from a strong static vector composition and a clear communication
 goal. Let this workflow lead vector choreography; use `svg-creation` for artwork
 and the project's frontend workflow for application lifecycle. Ordinary menus,
-dialogs and UI transitions stay with `motion-design`.
+dialogs and control transitions stay with `motion-design`. Use `page-transitions`
+for navigation and `advanced-motion` for a larger DOM timeline or scroll sequence;
+this workflow still owns vector geometry, path effects and morph craft.
 
 ## Establish the motion contract
 

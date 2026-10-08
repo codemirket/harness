@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, SVG/vector artwork, animation, engineering, documentation or research needs specialist guidance.
+description: Route substantive tasks to reviewed catalog workflows, inspect coverage and register needed project skills. Use at setup or when interface design, page transitions, complex motion, SVG/vector artwork, engineering, documentation or research needs specialist guidance.
 ---
 
 # Personal skill registry
@@ -23,6 +23,9 @@ workflow. Read the selected body and integration note before applying it.
 For substantial work, read the affected domain in
 [delivery standards](references/delivery-standards.md) to choose completion
 evidence. Apply only relevant criteria alongside the project's own gates.
+For animation-heavy projects, the `motion-studio` profile supplies focused control,
+page-transition, advanced choreography and SVG workflows. Select the lead for the
+actual outcome; a profile is availability, not a request to load every member.
 
 1. At project entry or a material change of needs, inspect project instructions,
    `.ai/project.json`, stack, platforms, lifecycle needs, available tools and already

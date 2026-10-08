@@ -88,8 +88,11 @@ when the task needs additional expertise; read only the matching workflow.
 - Measure relevant performance before making performance claims. Property names
   and library choices alone do not prove smooth rendering.
 - Route animated vector artwork, logo reveals, path drawing and morphs to
-  `svg-animation`; use `motion-design` for surrounding UI transitions. Read the
-  matching craft reference and verify actual embedding and reduced motion.
+  `svg-animation`; use `motion-design` for controls, `page-transitions` for
+  navigation continuity or `advanced-motion` for complex timelines, layout/scroll
+  transformations and CSS 3D scenes. Read the matching craft reference and verify
+  actual rendering, interruption and reduced motion. A full WebGL/3D pipeline
+  needs its own justified capability; these workflows add no runtime by default.
 
 ## Verify the result
 

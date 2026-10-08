@@ -9,8 +9,9 @@ The harness now provides two authored, project-selectable workflows:
   storyboard beats, path drawing, reveals, compatible morph geometry, transform
   origins, embedding, playback, lifecycle and reduced motion.
 
-The `svg-studio` profile contains only these two skills. The `design-studio` plugin
-bundle includes it. Global defaults remain at 14; no library, renderer, editor,
+The `svg-studio` profile contains only these two skills. The broader `motion-studio`
+profile and `design-studio` plugin bundle also include them, alongside page and
+advanced DOM motion. Global defaults remain at 14; no library, renderer, editor,
 MCP server, hook, account or paid service is added. Native geometry and existing
 browser/animation tooling supply the implementation path. A project's already
 installed library remains usable when it solves a concrete requirement.

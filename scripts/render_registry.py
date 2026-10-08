@@ -73,6 +73,7 @@ def render():
                 '- [Engineering and full runtimes](reviews/expanded-engineering.md): Matt, Superpowers, Gstack, Graphify and context-mode.',
                 '- [Design and visual publishing](reviews/expanded-design.md): UI UX Pro Max, Hallmark, Taste, Emil, Diagram Design, OpenDesign, Impeccable and Archify.',
                 '- [SVG creation and animation](reviews/svg-studio.md): authored vector craft, native motion, integration boundaries and rendered development evidence.',
+                '- [Page transitions and advanced motion](reviews/motion-studio.md): navigation ownership, complex choreography, layout/scroll/3D mechanics and browser development evidence.',
                 '- [Systems, marketing and productivity](reviews/expanded-marketing-systems.md): ECC, Awesome Skills, marketingskills and ADHD.',
                 '- [Provider sources](reviews/providers.md): OpenAI, Google, Anthropic and Caveman.', '',
                 'Earlier engineering/design/marketing reports retain historical review evidence; their minimal-selection recommendations are superseded by the current registry. Source descriptions are untrusted discovery data. Temporary checkout names in review provenance are not installation dependencies.', '',

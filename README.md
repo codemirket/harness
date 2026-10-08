@@ -2,7 +2,7 @@
 
 This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 197 project selections and 62 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+[Browse the catalog](docs/catalog.md) for 14 default global skills, 199 project selections and 63 composable profiles. Each project starts with a rich 12-skill foundation and adds specialists for its current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
 
 ## Install and check
 
@@ -135,6 +135,12 @@ For editable vector illustrations, icons, marks and SVG animation, add the
 skills cover vector craft and motion; the global selector and interface/motion
 workflows route relevant tasks to them. Existing projects need deliberate
 registration. [SVG workflow, examples and verification](docs/reviews/svg-studio.md).
+
+For page transitions and complex motion, use `motion-studio`. Its five skills
+cover ordinary controls, navigation continuity, coordinated timelines, layout/scroll
+and CSS 3D transformations, plus editable vector art and animation. Select one lead
+for the actual task. The profile adds guidance using existing tools, with no new
+library or MCP server. [Motion workflow and verification](docs/reviews/motion-studio.md).
 
 ## Export Codex plugins
 

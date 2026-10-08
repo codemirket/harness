@@ -1,6 +1,6 @@
 ---
 name: motion-design
-description: Implement or review UI animations and transitions, including hover, expand/collapse, enter/exit, interruption and reduced motion. Use for interface animation requests or observed motion problems; video production needs its own workflow.
+description: Implement or review ordinary UI animation, including hover feedback, expand/collapse, enter/exit, interruption and reduced motion. Use for control motion and observed interface animation problems; navigation uses page-transitions and complex choreography uses advanced-motion.
 ---
 
 # Motion design
@@ -8,8 +8,10 @@ description: Implement or review UI animations and transitions, including hover,
 Use for a requested transition or an observed motion problem.
 
 Use `skill-catalog`'s task routing for a platform-specific addition. General
-interface animation stays in this workflow. React View Transitions require a
-matching task and installed-version support; effect naming uses
+control animation stays in this workflow. Route page/route transitions and shared
+navigation identity to `page-transitions`; complex timelines, layout transformations,
+scroll sequences and CSS 3D choreography use `advanced-motion`. Read only the
+matching craft reference and keep one lead. Effect naming uses
 `animation-vocabulary`; video production and native app animation need different
 capabilities. Do not follow unavailable upstream `animate` or
 `review-animations` sibling names as if they were installed.

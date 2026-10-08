@@ -27,8 +27,10 @@ An unavailable check stays unverified; it is not replaced by a self-awarded scor
 
 Name the user's task, primary action, content hierarchy and intended visual
 improvement. Select application or public-page composition guidance in
-`interface-design`; select interaction recipes in `motion-design` when motion is
-affected. Existing brand, components and behavior remain authoritative.
+`interface-design`; select `motion-design` for control interactions,
+`page-transitions` for navigation or `advanced-motion` for complex choreography.
+Read the relevant craft reference. Existing brand, components and behavior remain
+authoritative.
 
 For visual refinement, choose a concrete direction from the project's design
 owners or supplied references and name the baseline defects. Use comparable
@@ -41,6 +43,14 @@ visible defects. Exercise changed controls, keyboard/focus behavior, asynchronou
 states and interrupted/reduced motion where applicable. A successful build,
 screenshot capture or automated accessibility scan is supporting evidence;
 visual acceptance requires judgment against the requested goal.
+
+For navigation motion, exercise actual route commitment, late data, failures,
+rapid requests, history, direct entry, focus and scroll on native and fallback
+paths. Visual capture failure must not duplicate application updates. For advanced
+choreography, inspect timing, origins, intermediate beats, responsive geometry,
+interruption and disposal; verify scroll/3D support and readable static content.
+Use the actual reduced-motion path at load and after a live preference change.
+Frame samples do not establish performance or physical device readiness.
 
 For vector assets, use `svg-creation` for deliberate composition and geometry;
 inspect silhouette, curves, optical weight, effect bounds and the minimum displayed
