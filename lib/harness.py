@@ -372,7 +372,7 @@ def project_provenance(entry, dest, data):
         raise ValueError('Missing or unsafe installed skill receipt: ' + str(receipt))
     prior = read_json(receipt)
     source = (data['sources'][entry['source']] if entry['delivery'] == 'upstream'
-              else {'repository': 'nazmirket/.ai', 'commit': None})
+              else {'repository': 'codemirket/harness', 'commit': None})
     fields = ('repository', 'commit', 'path', 'sha256')
     original = {key: prior.get(key) for key in fields}
     current = {'repository': source['repository'], 'commit': source['commit'],

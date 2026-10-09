@@ -1,18 +1,35 @@
-# Personal Agentic Harness
+# Harness
 
-A shared toolkit for **Codex Desktop** and **Claude Desktop Code**: reusable skills,
-MCP configuration, working instructions and executable checks for finished work.
-Keep capability sources in one repository and install them through small,
-client-specific adapters.
+A shared working environment for **Codex Desktop** and **Claude Desktop Code**.
+Give your agents reusable skills, consistent instructions and practical ways to
+check their work, while keeping each project's conventions in charge.
+
+**[Adoption guide](docs/adoption.md)** · [Setup reference](setup/README.md) ·
+[Skill catalog](docs/catalog.md) · [Contributing](CONTRIBUTING.md)
 
 The workflow is **make → render or exercise → inspect → repair**. It covers UI,
 animation, illustration, office documents, Markdown and software engineering.
-It is a personal setup you can fork and adapt; review the defaults before installing.
+The harness began as a personal setup and is available to fork, adapt and use
+with your own projects. Installation uses Python's standard library; optional
+tools supply browsers, document renderers and other runtimes when you need them.
 
 ![Fieldwork Studio, the included interactive UI specimen](docs/assets/fieldwork-studio.png)
 
 *The included [Fieldwork Studio example](examples/craft-lab/) has working search,
 filters, saved items, keyboard-operable previews and original SVG illustrations.*
+
+## How it fits together
+
+| Layer | What it provides | Where it lives |
+| --- | --- | --- |
+| Shared foundation | 14 global workflows for engineering, design, research, planning and review | This checkout, installed into your selected clients |
+| Project selection | A small foundation plus the specialists your project needs | Your project's `.ai/project.json`, lock and skill directories |
+| Verification tools | Installation checks, runtime diagnostics and artifact checks | The `ai.py` CLI and optional local tools |
+
+Start with one client and one project. Add specialists when the work calls for
+them. A skill supplies instructions and supporting resources; it does not supply
+an account, install a dependency or guarantee an agent will follow it. Verify a
+real task in your client after setup.
 
 ## What you get
 
@@ -51,11 +68,14 @@ for how a discovered defect becomes a repeatable check.
 ## Quick start
 
 You need Git, Python **3.9+**, and at least one supported client installed and signed
-in. Keep the clone in a stable location: linked installations depend on it.
+in. Keep the clone in a stable location: links and the installed catalog helpers
+depend on it, including when skill files use copy mode.
+For a guided walkthrough, a rehearsal that leaves your home configuration alone,
+and adoption into an existing repository, start with the [adoption guide](docs/adoption.md).
 
 ```sh
-git clone https://github.com/nazmirket/.ai.git personal-ai
-cd personal-ai
+git clone https://github.com/codemirket/harness.git
+cd harness
 
 # Preview the exact changes first. Choose one client or use --target all.
 python3 ai.py install --target codex-desktop --dry-run
@@ -105,18 +125,27 @@ project. Inspect that project's instructions and current Git changes first.
 
 ```sh
 python3 ai.py project init --project /absolute/project --target all
-python3 ai.py project add --project /absolute/project --skill svg-creation --skill motion-design --dry-run
-python3 ai.py project add --project /absolute/project --skill svg-creation --skill motion-design
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
-Use only the client targets and specialists that fit the project. Init adds the
+Use `init` only when the project has no manifest; for an existing registration,
+start with `plan`. Replace `all` with your chosen client if you use only one.
+Init adds the
 small `project-foundation`; add records selections; sync installs verified
 payloads; doctor checks them. Existing manifests retain their selections.
 Codex project skills go under `.agents/skills`, Claude skills under `.claude/skills`.
 Modified and unselected copies are preserved rather than silently deleted.
+
+For example, when a project needs editable vector artwork:
+
+```sh
+python3 ai.py project add --project /absolute/project --skill svg-creation --dry-run
+python3 ai.py project add --project /absolute/project --skill svg-creation
+python3 ai.py project sync --project /absolute/project
+python3 ai.py project doctor --project /absolute/project
+```
 
 Browse the [skill catalog](docs/catalog.md) and [target selection guide](docs/project-targets.md).
 Some optional skills are fetched from pinned upstream sources and require network
@@ -197,8 +226,8 @@ make quality checks automatic. See [plugin setup and updates](docs/plugins.md).
 
 Fork this repository to maintain your own choices. Keep credentials, personal
 configurations and generated reports outside Git. Review upstream changes before
-pulling: linked skills immediately reflect edits to the checkout. For managed
-copies, rerun installation; for project skills, run plan, sync and doctor.
+pulling: linked skills and catalog helpers immediately use the changed checkout.
+For managed skill copies, rerun installation; for project skills, run plan, sync and doctor.
 There is no automatic update schedule by default.
 
 If installation reports a conflict, preserve the existing content and review the
@@ -217,7 +246,7 @@ git diff --check
 ```
 
 Run the shell syntax check on a POSIX shell. Browser/vector integration tests need
-their optional runtimes and explicitly skip when unavailable. The latest recorded
+their optional runtimes and explicitly skip when unavailable. A recorded
 macOS run passed **552 tests** with no skips; see the [verification record](docs/research/verification-2026-10-09.md)
 for scope and limits. Windows client installation is supported, but the recorded
 artifact-rendering evidence is from macOS, not a Windows runtime certification.
@@ -225,6 +254,32 @@ artifact-rendering evidence is from macOS, not a Windows runtime certification.
 For changes, keep target adapters separate from shared capabilities, add behavior
 checks for consequential changes, update affected documentation and preserve
 upstream attribution. Never make a failing check pass by weakening it.
+See [Contributing](CONTRIBUTING.md) for the repository map, isolated checks and
+what to include with a proposed change.
+
+## Find your next step
+
+| I want to… | Read |
+| --- | --- |
+| Adopt the harness or introduce it to a team | [Adoption guide](docs/adoption.md) |
+| Understand installation, conflicts and recovery | [Setup reference](setup/README.md) |
+| Choose skills for a task | [Capability contracts](docs/capabilities.md) and [catalog](docs/catalog.md) |
+| Use different skills for Codex and Claude | [Project targets](docs/project-targets.md) |
+| Render and inspect an artifact | [Workbench guide](docs/workbench.md) |
+| Package skills as a plugin | [Plugin guide](docs/plugins.md) |
+| Review provenance and redistribution terms | [Source review](docs/source-review.md) and [notices](docs/third-party-notices.md) |
+
+### Existing clones
+
+This repository moved from `nazmirket/.ai` to `codemirket/harness`. Update your
+remote from inside your existing clone:
+
+```sh
+git remote set-url origin https://github.com/codemirket/harness.git
+```
+
+The checkout can keep its existing directory name. Keeping it in place preserves
+source-backed skill links. Review and pull updates using the [adoption guide](docs/adoption.md).
 
 ## License
 

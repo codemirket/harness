@@ -1,5 +1,8 @@
 # Install and reconcile
 
+For the first-time walkthrough, examples and team adoption, start with the
+[adoption guide](../docs/adoption.md). This page is the installation reference.
+
 Run from a stable checkout with Python 3.9+; no Python packages are required.
 Both desktop targets are selected by default. The installer prepares configuration
 for existing clients; installing clients and authenticating remain separate steps.
@@ -34,7 +37,9 @@ python3 ai.py check --target all --home /absolute/test-home --mode copy
 
 `--mode auto` selects the platform default; `link` keeps source-backed files and
 `copy` creates managed copies. Repeat an explicit mode when checking it. Keep the
-checkout available when using links.
+checkout available in either mode: links use source files directly, and installed
+catalog helpers retain a pointer to this checkout even in copy mode. Copies snapshot
+skill files; the helpers still invoke the live source CLI.
 An alternate `--home` prepares files there; it does not switch accounts, launch a
 client with that home or verify that a live client reads those files.
 

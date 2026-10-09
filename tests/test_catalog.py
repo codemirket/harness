@@ -407,7 +407,7 @@ class InstallTests(CatalogFixture):
         with mock.patch.object(catalog, 'ROOT', self.source):
             self.install(entry=entry)
         receipt = json.loads((self.target() / catalog.RECEIPT).read_text())
-        self.assertEqual(receipt['repository'], 'nazmirket/.ai')
+        self.assertEqual(receipt['repository'], 'codemirket/harness')
         self.assertIsNone(receipt['commit'])
         self.assertEqual(catalog.existing_payload(self.target()), self.files)
 

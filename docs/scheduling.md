@@ -17,7 +17,7 @@ for those. The OS job does not open an AI session.
 | macOS/Linux | Current user’s crontab, `0 0 * * *` | Runs at local midnight when the machine and cron service are available. Missed runs are not caught up. |
 | Windows 11 | Current-user Task Scheduler task | Daily local midnight, least privilege, interactive user session, `StartWhenAvailable` catch-up. No stored password or elevation. |
 
-The policy is declared in [harness.json](../registry/harness.json): `maintenance.enabled` (false by default), time `00:00`, timezone `system`, remote `origin`, branch `main`, expected repository identity `github.com/nazmirket/.ai`. The supported contract is daily local midnight; do not treat these fields as a general scheduling language.
+The policy is declared in [harness.json](../registry/harness.json): `maintenance.enabled` (false by default), time `00:00`, timezone `system`, remote `origin`, branch `main`, expected repository identity `github.com/codemirket/harness`. The supported contract is daily local midnight; do not treat these fields as a general scheduling language.
 
 ## Register and inspect
 

@@ -167,7 +167,7 @@ def prepare(data, entry, root, source_trees, cache):
             normalized.setdefault('sha256', catalog.payload_hash(original))
         normalized.update(delivery='upstream', source='__bundle_local__')
         local_data = dict(data, sources=dict(data['sources'], __bundle_local__={
-            'repository': 'nazmirket/.ai', 'commit': None}))
+            'repository': 'codemirket/harness', 'commit': None}))
         files, source = catalog.prepare_payload(local_data, normalized, root, cache)
         # Global links track authored working files rather than a pinned payload.
         # Exclude interpreter and Finder residue after ordinary safety validation;

@@ -614,7 +614,7 @@ def adapt_payload(original, entry):
 
 def prepare_payload(data, entry, source_tree=None, archive_cache=None):
     if entry['delivery'] == 'local':
-        source = {'repository': 'nazmirket/.ai', 'commit': None}
+        source = {'repository': 'codemirket/harness', 'commit': None}
         source_tree = ROOT
     else:
         source = data['sources'][entry['source']]

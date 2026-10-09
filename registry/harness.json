@@ -98,7 +98,7 @@
     "timezone": "system",
     "remote": "origin",
     "branch": "main",
-    "expected_repository": "github.com/nazmirket/.ai"
+    "expected_repository": "github.com/codemirket/harness"
   },
   "default_target": "all",
   "instructions": "instructions/AGENTS.md",
