@@ -269,18 +269,6 @@ what to include with a proposed change.
 | Package skills as a plugin | [Plugin guide](docs/plugins.md) |
 | Review provenance and redistribution terms | [Source review](docs/source-review.md) and [notices](docs/third-party-notices.md) |
 
-### Existing clones
-
-This repository moved from `nazmirket/.ai` to `codemirket/harness`. Update your
-remote from inside your existing clone:
-
-```sh
-git remote set-url origin https://github.com/codemirket/harness.git
-```
-
-The checkout can keep its existing directory name. Keeping it in place preserves
-source-backed skill links. Review and pull updates using the [adoption guide](docs/adoption.md).
-
 ## License
 
 Original harness code, documentation and examples are available under the
