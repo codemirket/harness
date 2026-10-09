@@ -73,6 +73,62 @@ depend on it, including when skill files use copy mode.
 For a guided walkthrough, a rehearsal that leaves your home configuration alone,
 and adoption into an existing repository, start with the [adoption guide](docs/adoption.md).
 
+### Install in one line
+
+Review [what installation changes](#what-installation-changes) and close the
+selected client before running a command in your terminal. Choose **one** command:
+each clones the harness into `harness` under your home directory, installs the
+selected target and checks the result. Git and Python must already be installed.
+Keep that checkout: installed catalog helpers depend on it.
+
+**macOS / Linux — Codex:**
+
+```sh
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target codex-desktop && python3 "$HOME/harness/ai.py" check --target codex-desktop
+```
+
+**macOS / Linux — Claude Code:**
+
+```sh
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target claude-desktop && python3 "$HOME/harness/ai.py" check --target claude-desktop
+```
+
+**macOS / Linux — both clients:**
+
+```sh
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target all && python3 "$HOME/harness/ai.py" check --target all
+```
+
+**Windows — PowerShell 7+**, with the Python launcher (`py`) available. These
+commands use `&&` to stop if a preceding step fails; Windows PowerShell 5.1 does
+not support that operator. For 5.1, use the step-by-step commands below, replacing
+`python3` with `py -3`, and stop if a command fails.
+
+Codex:
+
+```powershell
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target codex-desktop && py -3 "$HOME/harness/ai.py" check --target codex-desktop
+```
+
+Claude Code:
+
+```powershell
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target claude-desktop && py -3 "$HOME/harness/ai.py" check --target claude-desktop
+```
+
+Both clients:
+
+```powershell
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target all && py -3 "$HOME/harness/ai.py" check --target all
+```
+
+These are first-install commands. A failed clone stops the chain, including when
+the destination already contains a checkout. For an existing clone, run `install`
+and `check` from that checkout as shown below. To preview before making changes,
+use the step-by-step path and its `--dry-run` command.
+
+### Install step by step
+
 ```sh
 git clone https://github.com/codemirket/harness.git
 cd harness
