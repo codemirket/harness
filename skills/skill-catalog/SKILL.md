@@ -15,6 +15,13 @@ instructions relevant to the current task so availability stays efficient.
 
 ## Pick up and compose
 
+For a broad capability request, use `python3 scripts/harness.py capabilities list`
+and `capabilities show ID`. The 23 capability contracts name a lead, a concrete
+deliverable, a discriminating failure probe and runtime prerequisites. Supporting
+skills are conditional, not an instruction to install everything. `capabilities
+check` validates source coverage and hashes; it does not certify expertise or
+client activation. Read `docs/capabilities.md` in the resolved checkout for the map.
+
 For substantive work in the domains above, read the
 matching row in [task routing](references/task-routing.md). It distinguishes
 task workflows from registration profiles and catalog IDs from invocation names.

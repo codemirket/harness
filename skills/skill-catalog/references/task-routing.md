@@ -8,7 +8,8 @@ load every member for every task. Existing project instructions and explicit
 user choices remain authoritative.
 
 Choose one lead from the requested result: visual polish uses `interface-design`,
-behavior or API changes use `engineering-judgment`, technical writing uses the
+server construction uses `backend-engineering`, other behavior or connector changes
+use `engineering-judgment`, technical writing uses the
 project's documentation method with `document-workflow` as fallback, ordinary control
 motion uses `motion-design`, navigation motion uses `page-transitions`, complex in-page
 choreography uses `advanced-motion`, vector artwork uses `svg-creation`, SVG choreography uses
@@ -25,9 +26,9 @@ workflow as support. Read the chosen body and relevant reference before editing.
 | Explore alternative UI directions | Global `interface-design`; `emil-prototype` (invocation `prototype`) when the user requests exploration; `open-design-reference-design-contract` (invocation `reference-design-contract`) for an explicit durable visual handoff. | `prototype` preserves explicit invocation semantics. Do not trigger a multi-variant picker on every UI fix or create competing design documents. The `design-prototyping` profile contains several separate recipes; select those needed. |
 | Fix UI overflow, extreme content or mobile platform behavior | `emil-break-ui` (invocation `break-ui`) for realistic content stress; `emil-mobile-native` (invocation `mobile-native`) for viewport, touch and safe-area problems. | These diagnose concrete failures. They do not establish visual quality. Use existing fixtures/review tools; diagnostic controls stay outside production. |
 | Implement or debug application behavior | Global `engineering-judgment`; authored `debugging`, `test-design` and `architecture-review` as needed. Add `frontend-engineering` for browser rendering, forms and data flow; choose a matching backend/platform profile from actual dependencies. | Reuse the project's selected implementation workflow. React/Next, Vue/Nuxt and SvelteKit guidance are different branches; do not select React recipes for a Nuxt application. A mechanical edit needs no specialist registration. |
-| Build backend services, workers or domain behavior | Global `engineering-judgment`, with boundary-decisions and service-integration references as applicable; select the actual `backend-*` profile, `database-systems` for persistence and `test-design` for affected contracts. | Trace auth, durable effects and callers. HTTP success, a queued job and completed business work are distinct states. No forced microservices, new framework or second contract owner. |
+| Build backend services, workers or domain behavior | `backend-engineering`, with global `engineering-judgment` for boundary decisions and external service integration; select the actual `backend-*` profile, `database-systems` for persistence and `test-design` for affected contracts. | Trace auth, durable effects and callers. HTTP success, a queued job and completed business work are distinct states. No forced microservices, new framework or second contract owner. |
 | Administer a database, repair queries or evolve stored data | `database-systems` and its matching engine reference; `data-migrations` for schema/backfill changes. The `databases` profile groups portable data workflows. | Establish environment, constraints, workload and recovery. Test actual engine behavior, concurrency and restart where relevant; a schema listing or successful backup command does not prove correctness or restore readiness. |
-| Diagnose operations, prepare infrastructure or release a service | `debugging` for diagnosis; `release-operations` for rollout/recovery; `ci-maintenance` for pipelines. `awesome-observability-engineer` (invocation `observability-engineer`) and `awesome-terraform-specialist` (invocation `terraform-specialist`) support matching needs in `operations`. | Identify exact target/artifact and current signals. Preserve incident evidence and distinguish mitigation from cause. Read adaptations; a persona capability list or production-audit score is not verified readiness. Production authority stays with the task. |
+| Diagnose operations, prepare infrastructure or release a service | `debugging` for diagnosis; `infrastructure-engineering` for configuration/drift; `release-operations` for rollout/recovery; `ci-maintenance` for pipelines. `awesome-observability-engineer` (invocation `observability-engineer`) and `awesome-terraform-specialist` (invocation `terraform-specialist`) support matching needs in `operations`. | Identify exact target/artifact and current signals. Preserve incident evidence and distinguish mitigation from cause. Read adaptations; a persona capability list or production-audit score is not verified readiness. Production authority stays with the task. |
 | Assess QA readiness or find regressions in a user journey | `test-design` and its quality-assurance reference, supported by the actual domain lead; `testing-web` or `testing-systems` only for relevant toolchains. Use available browser tools; `openai-playwright` (invocation `playwright`) when its runtime is ready. | Follow real effects through reload, failure and affected roles. A screenshot, mocked response or green happy path is insufficient for the unexercised boundary. QA validates the brief; it does not supply a visual direction. |
 | Add or repair a service/API connector | Global `engineering-judgment` with its service-integration reference; `ecc-api-connector` (invocation `api-connector-builder`) for the existing connector pattern. Add `ecc-contract-first` (invocation `contract-first`) when independent consumers/providers need a shared schema. | Match provider versions and project architecture. Verify auth, mapping, pagination and affected failure/replay behavior. Contract work does not imply a new generator. Controlled tests and live provider evidence are separate. |
 | Build or connect an MCP server/client | `mcp-integration` for protocol, transport, discovery, client lifecycle and server-side authorization; use the API connector route for an underlying external service when relevant. | Protocol registration alone does not prove authentication or successful client tasks. Use current official MCP/SDK docs and actually exercise the affected client boundary. |
@@ -52,6 +53,28 @@ lead. It checks derived-index freshness and coverage; registration does not supp
 a graph runtime. Agent tool security and instruction-provenance questions use
 `security-judgment`'s agent-tool-boundaries reference, with `mcp-integration` only
 when the protocol boundary is affected.
+
+## Additional focused leads
+
+Use these authored routes where the named boundary is the task. Keep the existing
+stack implementation skill as support; do not combine competing lead workflows.
+
+| Task | Lead | Evidence that matters |
+| --- | --- | --- |
+| Define or document a brand identity | `brand-guidelines` | Extract or propose semantic tokens, voice and asset rules; apply them to inspected real specimens. Preserve approved identity. |
+| Design an iOS, Android or mobile-web journey | `mobile-design` | Name the platform; exercise back navigation, keyboard, text scaling and state recovery. Browser reflow is not native-device evidence. |
+| Design reliability, capacity or failure containment | `systems-engineering` | Trace the topology and budgets, then exercise bounded overload or dependency failure and recovery. |
+| Change infrastructure or environment configuration | `infrastructure-engineering` | Inspect desired/observed state, plan effects, persistence and recovery. `release-operations` owns authorized rollout. |
+| Create a project or scaffold a package | `project-scaffolding` | Use the selected stack, stage generation, preserve existing work and run the first complete slice. |
+| Diagnose or improve resource efficiency | `performance-engineering` | Profile a real bottleneck; compare identical workloads with result parity and resource tradeoffs. |
+| Take a CEO perspective on strategic choices | `executive-strategy` | Compare customer value, economics, cash timing, capacity and decision-changing thresholds. Advice is not business authority. |
+
+Design revision uses `interface-design` with a preserved baseline and identical
+comparison states; `brand-guidelines` supports identity constraints. Interface QA
+uses `test-design` and its interface-QA reference for asynchronous behavior,
+keyboard/focus and durable results. Illustration routes by requested format:
+`svg-creation` for editable vectors, the available native image-generation skill
+for bitmap work. Neither supplies the other's runtime.
 
 For a substantial task, state the selected workflow and its purpose briefly.
 Read its installed `SKILL.md`, applicable integration note and relevant references;

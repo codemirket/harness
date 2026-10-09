@@ -23,3 +23,6 @@ for implementation or visual direction; testing expertise does not replace it.
 Avoid tests that only assert a constant equals its configured literal or source text contains itself. A source/configuration test is useful when it validates a real contract, schema, reference, or consumer requirement.
 
 Technique sources: Matt Pocock tdd/tests.md and mocking.md, commit 4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d; Superpowers test-driven-development/writing-good-tests.md, commit 8ca22dba9a94f28898bbce59f2537ff4d87c747d. Original wording; no dependency additions.
+
+For substantial interface QA, read [interface QA](references/interface-qa.md)
+for race, focus, persistence and cross-device probes beyond a static capture.

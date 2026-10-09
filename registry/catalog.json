@@ -396,7 +396,7 @@
         "regression",
         "debugger"
       ],
-      "sha256": "ba1fd66bfdfee6f64a55a666296966429b4efaeb92006edbd79da3c295713fea"
+      "sha256": "04fa3e2bf41311894667c12abe7266c88bd02153b74589901b58254ce1d1ab3e"
     },
     {
       "id": "test-design",
@@ -429,7 +429,7 @@
         "test-strategy",
         "tester"
       ],
-      "sha256": "c531a683450dc4e6716ca446fffa54e1cd499b3d3ae004bf51a2ee1aca3da175"
+      "sha256": "fa46d33de110c862dd01c69a74701d7478b240717f7899856a1fbb609ee2a97d"
     },
     {
       "id": "architecture-review",
@@ -457,7 +457,7 @@
         "refactoring",
         "modules"
       ],
-      "sha256": "04646382f0bceb3f0e71a8d1a465c64ba8eac3853add15de4d5024fa74357a8b"
+      "sha256": "7dc4f15515d257ded2b6e99f711e24368f9b3e361094a8f8b341e6e5910c05d1"
     },
     {
       "id": "motion-design",
@@ -487,7 +487,7 @@
         "interaction-recipes",
         "animator"
       ],
-      "sha256": "97a78d1ffe0d7ae42db6855ae3e03552c4178f4140348a351dfc8296ee618146"
+      "sha256": "8d4ed2f3c01e97b627c6a97b4d50ff216399c7f6fe7b253f6ffa642eeafdafb9"
     },
     {
       "id": "svg-animation",
@@ -580,7 +580,7 @@
         "conversion",
         "statistics"
       ],
-      "sha256": "77480113828dc721e30c391e471bb7b0568b8fec239fb520d679d3c12db8f837"
+      "sha256": "265572d403af1119935630b56a9bf83a8d38cc704e139969de5983ee0a288143"
     },
     {
       "id": "search-audit",
@@ -608,7 +608,7 @@
         "schema",
         "indexing"
       ],
-      "sha256": "0a983a0f7ee9e510834b10cd85a0c329e9f2768970644d986c50cbd1fbcf67be"
+      "sha256": "f768bc8410712739c3e70c970254fa23b642bf2bee76f6574d278cc317954c00"
     },
     {
       "id": "conversion-review",
@@ -637,7 +637,7 @@
         "signup",
         "conversion"
       ],
-      "sha256": "d1f640e9c3361f3db9b78f11e280090e187e46fcbb994103d983ad7b0d024343"
+      "sha256": "025ff2597b672fe3aa7121fc3bb1f024cb0f921629cb7362979d943d49c9f103"
     },
     {
       "id": "customer-research",
@@ -664,7 +664,7 @@
         "customers",
         "research"
       ],
-      "sha256": "41f3d2abc7c6450a8107391dcabca3a804d541b5d990a2568587e9cc7e173092"
+      "sha256": "d01e5ddb8e10ec44fafd15c64446bacd30fb8d6234973148b601abb84de83bd6"
     },
     {
       "name": "domain-modeling",
@@ -11031,7 +11031,7 @@
         "researcher"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
+      "sha256": "3b1c833bdca57fcde54450cd8e8a6cef045ff0ffc3f6ddf0482bff37f981949f"
     },
     {
       "id": "document-parsing",
@@ -11055,7 +11055,7 @@
         "document-parsing"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+      "sha256": "d7bf0fd8ca2854d5e5ed24917f49d1976a364caffc98a114fdda6a9c6f1cfa01"
     },
     {
       "id": "agent-coordination",
@@ -11079,7 +11079,7 @@
         "agent-coordination"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "5f0a95be762751e38b07b41d2031a2814544a4c26d1258ba0006cbbbb172a30c"
+      "sha256": "0054bf4e0b861c9433dea78d6382c79eaf6787d759e85988ffc519b30d42aeb7"
     },
     {
       "id": "context-management",
@@ -11106,7 +11106,7 @@
         "index-freshness"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91"
+      "sha256": "f37267b972c71bc320890eff82f05be8c54aa3faf00e16ed4d3921cbd7b22918"
     },
     {
       "id": "desktop-integration",
@@ -11130,7 +11130,7 @@
         "desktop-integration"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "a27587b85e5131d73dcc839cbce66a8d6b43b73b74c32f7caf15fce23ef12bb8"
+      "sha256": "a00dfff83aa5b93116f64d07fc065d77e53f381abcd59a9616dae0c4bcf83064"
     },
     {
       "id": "release-operations",
@@ -11158,7 +11158,7 @@
         "recovery"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
+      "sha256": "7cd78440cefd37fde6454193875ec3f25d373b9ebf66f69a4bc301cb3566853c"
     },
     {
       "id": "data-migrations",
@@ -11182,7 +11182,7 @@
         "data-migrations"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe"
+      "sha256": "62ee7e33cf989fdee89d7026fb160923cab1cdf50f12d97931a6625f271ac0f7"
     },
     {
       "id": "office-authoring",
@@ -11209,7 +11209,7 @@
         "pptx"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "0fc6dc13d27f46021f63fed437191e9be56768aeea670194b534092901981125"
+      "sha256": "bc2193728a710ff44cdfd4e1b252ea7cdbce8a799c088d25b3feeb4d840c16f7"
     },
     {
       "id": "ci-maintenance",
@@ -11233,7 +11233,7 @@
         "ci-maintenance"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      "sha256": "47b6d63af69471a18ce9f2eb284342bb338f876b2e89fd23cda8b8f4e2f4aed0"
     },
     {
       "id": "mcp-integration",
@@ -11259,7 +11259,7 @@
         "protocol"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "08b7a4bc69fcf653fb05e9e2c276a95b9e4988e21496e86cd09200086e557a5b"
+      "sha256": "58aaf71ba89406c845a70b0b5c9d4c0847332c7481075a0766827118e79a9779"
     },
     {
       "id": "ai-system-evaluation",
@@ -11285,7 +11285,7 @@
         "development-evaluation"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "46ddc3527633d02e349ca3dbd9400700b1ec1161d307254b6390479a86a0a312"
+      "sha256": "c90b3c58360c8755c6f7e86464823cde56f4ce00db90b81e389c1d7f41213d42"
     },
     {
       "id": "frontend-engineering",
@@ -11311,7 +11311,7 @@
         "forms"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "6a78679ff2b58055c75d6658022930f47fec410d4d96a16d19c352e4a9ef4d9c"
+      "sha256": "11aad5b1f3e8ee32a3d26ed6b74d8621fc3fc929a4cfeec3eaa73bbaa8ea4ae0"
     },
     {
       "id": "database-systems",
@@ -11338,7 +11338,7 @@
         "database-admin"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa"
+      "sha256": "587d681ec7b2ab72a47c9c77206cb9b0dfd0266faf714ac612c0da8ad83cc417"
     },
     {
       "id": "security-judgment",
@@ -11363,7 +11363,7 @@
         "agent-tool-security",
         "prompt-injection"
       ],
-      "sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5"
+      "sha256": "2a0a01366d0e04b4189c9b237730445f8a38f4f331ea71092ec2fa57e9adec36"
     },
     {
       "id": "work-planning",
@@ -11387,7 +11387,7 @@
         "work-planning",
         "planner"
       ],
-      "sha256": "1a68e94ee59306e4726743237f7b218d9bd047813d494c408265a28eade32841"
+      "sha256": "9fd86b63b2598b77255e14d3d120967e58cedf57ca5d6cee9af2af18ae0bb7c3"
     },
     {
       "id": "search-visibility",
@@ -11410,7 +11410,7 @@
         "search",
         "search-visibility"
       ],
-      "sha256": "65fefd6ba90203dad4f37e3666316b9687ffbbe3aba5a5ba74c4d7d7ceb62622"
+      "sha256": "a977830cb0db907a3cdda582817b3b8bc9c4087b5ec0dc04478992cd2d570065"
     },
     {
       "source": "vercel-agent-browser",
@@ -14859,6 +14859,241 @@
         "metrics"
       ],
       "sha256": "1f74952e0130f23414ef9ae76ab118272cb9c9e5903db84a27ce12729742ad3f"
+    },
+    {
+      "id": "backend-engineering",
+      "name": "backend-engineering",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Build or change server endpoints, application services and background jobs with explicit contracts, domain invariants and bounded resource use. Use for request-to-storage behavior; use database-systems for database mechanics and engineering-judgment for external integration contracts.",
+      "delivery": "local",
+      "path": "skills/backend-engineering",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "backend",
+        "api",
+        "server",
+        "service",
+        "idempotency"
+      ],
+      "sha256": "80dde26b2865caf003d30468c927b461d5227a924c96843d18bf97594c5e9f31"
+    },
+    {
+      "id": "systems-engineering",
+      "name": "systems-engineering",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Design or diagnose service topology, reliability, capacity and cross-service failure behavior. Use for dependency chains, queues, overload, recovery and consistency across components; use architecture-review for code structure and release-operations for rollout.",
+      "delivery": "local",
+      "path": "skills/systems-engineering",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "systems",
+        "capacity",
+        "reliability",
+        "backpressure",
+        "topology"
+      ],
+      "sha256": "6acb68cc5732127c7463c563b9cf2884791507522d72dc85acfba73f21449a80"
+    },
+    {
+      "id": "infrastructure-engineering",
+      "name": "infrastructure-engineering",
+      "scope": "project",
+      "category": "operations",
+      "description": "Implement or review infrastructure configuration, containers, networking, storage and environment reproducibility. Use for desired-versus-observed drift and infrastructure changes; use release-operations for deployment execution and ci-maintenance for pipeline failures.",
+      "delivery": "local",
+      "path": "skills/infrastructure-engineering",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "devops",
+        "infrastructure",
+        "iac",
+        "containers",
+        "drift"
+      ],
+      "sha256": "310331daff22ba05e00cdc43a123b1863ab919fb375c27e02b71405e52aa8a4a"
+    },
+    {
+      "id": "project-scaffolding",
+      "name": "project-scaffolding",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Create a project or add a new application/package using an explicitly selected stack and its native generator while preserving existing repository work. Use for greenfield setup and scoped scaffolds, not as a reason to rewrite an established application.",
+      "delivery": "local",
+      "path": "skills/project-scaffolding",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "scaffold",
+        "scaffolding",
+        "bootstrap",
+        "generator",
+        "greenfield"
+      ],
+      "sha256": "325a7efeefc499b1f97f07ebb0307968f81b179565eadc3a4d2c1f93bb18b0be"
+    },
+    {
+      "id": "performance-engineering",
+      "name": "performance-engineering",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Diagnose and improve latency, throughput, memory or resource cost using a measured baseline and controlled comparison. Use for profiling, query/service optimization and capacity experiments; avoid speculative tuning and speed claims from a single timing.",
+      "delivery": "local",
+      "path": "skills/performance-engineering",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "optimization",
+        "efficiency",
+        "profiling",
+        "benchmark",
+        "performance"
+      ],
+      "sha256": "535a1f633cfa3bdfa897a49718c3df6e5f15552042d0ec136fb9dd788a620db4"
+    },
+    {
+      "id": "brand-guidelines",
+      "name": "brand-guidelines",
+      "scope": "project",
+      "category": "design",
+      "description": "Create, extract or refine a usable brand system with color and typography tokens, mark and asset rules, voice examples and rendered applications. Use for brand guidelines, identity consistency and brand handoff; a single screen polish uses interface-design.",
+      "delivery": "local",
+      "path": "skills/brand-guidelines",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "brand",
+        "branding",
+        "identity",
+        "guidelines",
+        "tokens",
+        "voice"
+      ],
+      "sha256": "514fd83ee6bf8cf453170a3204e85b5dead87746f921ab5fef219a473147f0aa"
+    },
+    {
+      "id": "mobile-design",
+      "name": "mobile-design",
+      "scope": "project",
+      "category": "design",
+      "description": "Design or review mobile journeys, navigation, touch targets, keyboard behavior, adaptive layouts and accessibility for iOS, Android or mobile web. Use for mobile product design and platform adaptation; native implementation still uses the project's actual platform workflow.",
+      "delivery": "local",
+      "path": "skills/mobile-design",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "mobile",
+        "design",
+        "ios",
+        "android",
+        "keyboard",
+        "touch"
+      ],
+      "sha256": "ceb7eca625b3cab19956f764da020af3fbd2f6c03adccb0921f056d08fb846f2"
+    },
+    {
+      "id": "executive-strategy",
+      "name": "executive-strategy",
+      "scope": "project",
+      "category": "planning",
+      "description": "Evaluate company-level strategic choices, resource allocation and operating priorities through customer value, economics, cash, capacity and explicit tradeoffs. Use for CEO-perspective decisions, business-model choices or strategic plans; use product-management for settled product scope and delivery.",
+      "delivery": "local",
+      "path": "skills/executive-strategy",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use the existing project toolchain; registration installs no runtime or dependencies."
+      ],
+      "caveats": [
+        "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
+      ],
+      "coverage": "Original portable workflow with concrete decision boundaries, worked reference and acceptance probes.",
+      "tags": [
+        "ceo",
+        "executive",
+        "strategy",
+        "allocation",
+        "cash",
+        "capacity"
+      ],
+      "sha256": "8540bb14e1454ac1550da9effb425a7dd0f3b3057769707c0f8d04c4c8e1d789"
     }
   ],
   "profiles": {
@@ -14883,6 +15118,7 @@
     "architecture": {
       "description": "Domain models, contracts, ADRs and meaningful module boundaries.",
       "skills": [
+        "systems-engineering",
         "matt-domain-modeling",
         "matt-codebase-design",
         "ecc-contract-first",
@@ -14948,6 +15184,7 @@
     "full-stack": {
       "description": "Cross-layer web contracts, database integrity, security, testing and release preparation. Add a backend/framework profile.",
       "skills": [
+        "backend-engineering",
         "frontend-engineering",
         "ecc-api-design",
         "ecc-contract-first",
@@ -14962,6 +15199,7 @@
     "backend-node": {
       "description": "TypeScript NestJS APIs and external API connectors.",
       "skills": [
+        "backend-engineering",
         "ecc-nestjs-patterns",
         "ecc-api-design",
         "ecc-contract-first",
@@ -14971,6 +15209,7 @@
     "backend-python": {
       "description": "FastAPI and Django patterns with API contracts and behavioral testing.",
       "skills": [
+        "backend-engineering",
         "ecc-fastapi-patterns",
         "ecc-django-patterns",
         "ecc-api-design",
@@ -14980,6 +15219,7 @@
     "backend-dotnet": {
       "description": "ASP.NET Core and .NET backend patterns.",
       "skills": [
+        "backend-engineering",
         "openai-aspnet-core",
         "ecc-dotnet-patterns",
         "ecc-api-design"
@@ -14988,6 +15228,7 @@
     "backend-java": {
       "description": "Spring Boot, JPA and API contracts.",
       "skills": [
+        "backend-engineering",
         "ecc-springboot-patterns",
         "ecc-jpa-patterns",
         "ecc-api-design"
@@ -14996,6 +15237,7 @@
     "backend-go": {
       "description": "Go gRPC services and Go testing.",
       "skills": [
+        "backend-engineering",
         "awesome-grpc-golang",
         "ecc-golang-testing",
         "ecc-contract-first"
@@ -15004,6 +15246,7 @@
     "backend-ruby": {
       "description": "Rails applications, contracts and behavioral tests.",
       "skills": [
+        "backend-engineering",
         "ecc-rails-patterns",
         "ecc-api-design",
         "test-design"
@@ -15012,6 +15255,7 @@
     "backend-php": {
       "description": "Laravel applications, contracts and behavioral tests.",
       "skills": [
+        "backend-engineering",
         "ecc-laravel-patterns",
         "ecc-api-design",
         "test-design"
@@ -15039,6 +15283,7 @@
     "mobile-apple": {
       "description": "SwiftUI implementation and protocol-based test seams. Requires Apple tooling for builds.",
       "skills": [
+        "mobile-design",
         "ecc-swiftui-patterns",
         "ecc-swift-protocol-di-testing",
         "test-design"
@@ -15047,6 +15292,7 @@
     "mobile-android": {
       "description": "Android/KMP architecture, Compose and coroutine/Flow behavior.",
       "skills": [
+        "mobile-design",
         "ecc-android-clean-architecture",
         "ecc-compose-multiplatform-patterns",
         "ecc-kotlin-coroutines-flows",
@@ -15056,6 +15302,7 @@
     "mobile-react-native": {
       "description": "React Native architecture and shared mobile interaction/testing concerns.",
       "skills": [
+        "mobile-design",
         "ecc-react-native-patterns",
         "test-design",
         "motion-design"
@@ -15064,6 +15311,7 @@
     "mobile-flutter": {
       "description": "Flutter/Dart review and regression design; complex implementation examples remain review-required.",
       "skills": [
+        "mobile-design",
         "ecc-flutter-dart-code-review",
         "test-design",
         "architecture-review"
@@ -15115,6 +15363,7 @@
     "performance": {
       "description": "Repeatable benchmarks, latency paths and observable regressions.",
       "skills": [
+        "performance-engineering",
         "ecc-benchmark-optimization",
         "ecc-latency-critical-systems",
         "awesome-observability-engineer"
@@ -15141,6 +15390,7 @@
     "operations": {
       "description": "Terraform, observability, release readiness, rollout and recovery.",
       "skills": [
+        "infrastructure-engineering",
         "awesome-terraform-specialist",
         "awesome-observability-engineer",
         "ecc-production-audit",
@@ -15340,6 +15590,7 @@
     "react-native-vercel": {
       "description": "Optional Vercel React Native/Expo guidance with native API/version checks and behavior tests.",
       "skills": [
+        "mobile-design",
         "vercel-react-native-skills",
         "test-design"
       ]
@@ -15426,6 +15677,27 @@
         "release-operations",
         "document-parsing",
         "office-authoring"
+      ]
+    },
+    "brand-system": {
+      "description": "Brand guidelines, editable visual assets and inspected applications using original portable workflows.",
+      "skills": [
+        "brand-guidelines",
+        "svg-creation"
+      ]
+    },
+    "project-start": {
+      "description": "Scoped project scaffolding with existing-stack preservation and a runnable first slice.",
+      "skills": [
+        "project-scaffolding"
+      ]
+    },
+    "business-decisions": {
+      "description": "Company-wide allocation, product choices and reproducible data interpretation.",
+      "skills": [
+        "executive-strategy",
+        "product-management",
+        "data-analysis"
       ]
     }
   }

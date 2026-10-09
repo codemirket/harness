@@ -12,6 +12,7 @@ def main():
   install [--target codex-desktop|claude-desktop|all] [--dry-run]
                        Install shared guidance, skills, MCP and target settings (default: both desktops)
   check [--target ...]  Read-only installation and configuration drift check
+  capabilities <command> List task contracts, required evidence and source integrity
   workbench <command>  Render and check browser, vector, office and Markdown artifacts
   handoff --output DIR Package skills and instructions for Claude Chat/Cowork Customize
   schedule <command>   Plan, install or check the daily midnight OS schedule
@@ -31,6 +32,9 @@ Schedules, model/appearance preferences and legacy runtime setup are explicit co
     if sys.argv[1] in ('install', 'check'):
         from lib import target_install
         return target_install.main(sys.argv[1:])
+    if sys.argv[1] == 'capabilities':
+        from lib import capabilities
+        return capabilities.main(sys.argv[2:])
     if sys.argv[1] == 'workbench':
         from lib import workbench
         return workbench.main(sys.argv[2:])

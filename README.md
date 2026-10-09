@@ -29,6 +29,25 @@ The installer needs only Python's standard library. Artifact tools use optional,
 already-installed runtimes. Neither installation nor a passing check guarantees
 visual quality; inspect the actual result. See [research and design decisions](docs/research/decisions-2026-10-09.md).
 
+The [23 capability contracts](docs/capabilities.md) cover engineering, brand/web/mobile
+design, assets/motion, SEO/research, QA, product/business decisions, data, systems,
+infrastructure, scaffolding and optimization. Each names a lead workflow, expected
+deliverable, failure probe and prerequisites. These are inspectable requirements,
+not an expertise rating. Specialists stay project-selected; the global set remains small.
+
+```sh
+python3 ai.py capabilities list
+python3 ai.py capabilities show backend-engineering
+python3 ai.py capabilities check
+```
+
+`show` identifies project IDs to register through `project add`, then `project sync`
+and `project doctor`. `check` verifies local source coverage and hashes for both
+targets; it does not test client activation or runtime behavior. See the
+[assurance review](docs/reviews/capability-assurance-2026-10-09.md) for exercised
+results and remaining gaps, and [feedback controls](skills/ai-system-evaluation/references/feedback-controls.md)
+for how a discovered defect becomes a repeatable check.
+
 ## Quick start
 
 You need Git, Python **3.9+**, and at least one supported client installed and signed

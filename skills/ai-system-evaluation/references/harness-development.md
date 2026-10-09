@@ -4,6 +4,10 @@ Use this workflow when changing shared routing, skill content or agent execution
 guidance. Registration checks prove availability; they cannot establish that an
 agent read the right advice, used the tools correctly or delivered a better result.
 
+For the repair strategy, use [feedback controls](feedback-controls.md): connect
+an observed failure to specific guidance and an independently useful sensor.
+Keep deterministic correctness, semantic review and human acceptance distinct.
+
 ## Prepare comparable runs
 
 Use the installed `skill-catalog/scripts/harness.py` engine, or `python3 ai.py` from

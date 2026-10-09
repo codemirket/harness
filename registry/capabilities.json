@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "scope": "Workflow coverage, not certification or automatic runtime activation. Select supporting skills only for affected boundaries.",
+  "capabilities": [
+    {
+      "id": "frontend-engineering",
+      "title": "Frontend Engineering",
+      "lead": "frontend-engineering",
+      "support": [
+        "engineering-judgment",
+        "test-design"
+      ],
+      "deliverable": "A working user journey with explicit loading, empty, error and durable-success states.",
+      "failure_probe": "Reverse response order and repeat a mutation; older intent must not win and durable effects must not duplicate.",
+      "prerequisites": "Actual framework runtime and browser; backend boundary for durable effects."
+    },
+    {
+      "id": "backend-engineering",
+      "title": "Backend Engineering",
+      "lead": "backend-engineering",
+      "support": [
+        "database-systems",
+        "test-design"
+      ],
+      "deliverable": "A versioned service contract exercised through authorization, persistence and failure recovery.",
+      "failure_probe": "Replay an idempotency key with another payload and simulate commit-before-timeout.",
+      "prerequisites": "Target language/framework, isolated datastore and controlled dependency."
+    },
+    {
+      "id": "brand-guidelines",
+      "title": "Brand Guidelining",
+      "lead": "brand-guidelines",
+      "support": [
+        "interface-design",
+        "marketing-writing"
+      ],
+      "deliverable": "An editable brand guide with semantic tokens, voice examples, asset rules and real specimens.",
+      "failure_probe": "Apply the rules to a dense screen and a small/dark asset; expose conflicting tokens or illegible marks.",
+      "prerequisites": "Approved brand inputs or explicitly proposed direction; renderer and font/asset rights."
+    },
+    {
+      "id": "web-design",
+      "title": "Web Design",
+      "lead": "interface-design",
+      "support": [
+        "frontend-engineering"
+      ],
+      "deliverable": "Rendered pages with purposeful composition, real content, responsive states and working interactions.",
+      "failure_probe": "Use long real labels and narrow width; the primary action and content hierarchy remain usable.",
+      "prerequisites": "Local app/browser; supplied, existing or explicitly proposed design direction and content."
+    },
+    {
+      "id": "mobile-design",
+      "title": "Mobile Design",
+      "lead": "mobile-design",
+      "support": [
+        "interface-design"
+      ],
+      "deliverable": "Platform-specific navigation, touch/input, accessibility and state recovery verified in context.",
+      "failure_probe": "Open the keyboard, enlarge text and return via back navigation without losing entered state.",
+      "prerequisites": "Named native/web platform; simulator for native build/layout; physical hardware for touch, keyboard and gesture claims."
+    },
+    {
+      "id": "seo",
+      "title": "SEO Expertise",
+      "lead": "search-visibility",
+      "support": [
+        "search-audit"
+      ],
+      "deliverable": "URL-level crawl/index/content findings tied to observations and an ordered remediation plan.",
+      "failure_probe": "A robots-allowed but noindex page must not be reported indexable; inaccessible Search Console stays unknown.",
+      "prerequisites": "Authorized public URLs; current search-provider docs; dashboards only when available."
+    },
+    {
+      "id": "deep-research",
+      "title": "Deep Researches",
+      "lead": "research-and-synthesis",
+      "support": [
+        "document-parsing"
+      ],
+      "deliverable": "A source-linked synthesis with claim-level support, counterevidence, applicability and unresolved uncertainty.",
+      "failure_probe": "Introduce conflicting versions and a syndicated copy; neither stale claims nor duplicates become independent support.",
+      "prerequisites": "Search/retrieval tools and primary sources; access limitations recorded."
+    },
+    {
+      "id": "interface-qa",
+      "title": "Interface QA Engineering",
+      "lead": "test-design",
+      "support": [
+        "frontend-engineering",
+        "interface-design"
+      ],
+      "deliverable": "A defect report from exercised roles/states with reproducible triggers, expected results and exact visual evidence.",
+      "failure_probe": "Break keyboard focus return and inject a stale response; catch behavior defects despite a good screenshot.",
+      "prerequisites": "Real browser and app; a11y tools/screen reader where required."
+    },
+    {
+      "id": "illustration",
+      "title": "Illustration",
+      "lead": "svg-creation",
+      "support": [
+        "interface-design"
+      ],
+      "deliverable": "A coherent original illustration composed for its placement with editable geometry or the requested raster source.",
+      "failure_probe": "Inspect the actual crop and small-size silhouette; a raster wrapped in SVG fails editable-vector requirements.",
+      "prerequisites": "Vector renderer; for raster choose the available native image-generation skill/provider instead of the vector lead."
+    },
+    {
+      "id": "visual-assets",
+      "title": "Crafting Visual Assets",
+      "lead": "svg-creation",
+      "support": [
+        "brand-guidelines"
+      ],
+      "deliverable": "A consistent asset family with master sources, export sizes, naming and integration contracts.",
+      "failure_probe": "Place two inline instances and render light/dark/minimum sizes to reveal ID collisions or disappearing detail.",
+      "prerequisites": "Existing vector/image tools, asset rights and target consumer; for bitmap assets select the native image-generation/editing workflow instead of the vector lead."
+    },
+    {
+      "id": "animation",
+      "title": "Animation",
+      "lead": "motion-design",
+      "support": [
+        "page-transitions",
+        "advanced-motion",
+        "svg-animation"
+      ],
+      "deliverable": "Motion that communicates actual state, handles interruption and preserves reduced-motion functionality.",
+      "failure_probe": "Reverse or cancel midway, unmount and change motion preference; no stale state or trapped control.",
+      "prerequisites": "Actual UI engine/browser; native platform or video renderer for those distinct deliverables."
+    },
+    {
+      "id": "project-review",
+      "title": "Project Review",
+      "lead": "architecture-review",
+      "support": [
+        "security-judgment",
+        "test-design"
+      ],
+      "deliverable": "Prioritized findings with concrete triggers, affected consumers, consequences and a scoped repair plan.",
+      "failure_probe": "Seed a plausible cross-boundary defect; the review must trace it rather than list generic best practices.",
+      "prerequisites": "Repository/history, runnable relevant checks and stated review boundary."
+    },
+    {
+      "id": "planning",
+      "title": "Planning",
+      "lead": "work-planning",
+      "support": [
+        "context-management"
+      ],
+      "deliverable": "An executable sequence with dependencies, decisions, ownership, acceptance evidence and resume state.",
+      "failure_probe": "Change a blocking assumption halfway; dependent work and the durable plan must reconcile.",
+      "prerequisites": "Authoritative brief and current project state; no extra runtime required."
+    },
+    {
+      "id": "product-management",
+      "title": "Product Management",
+      "lead": "product-management",
+      "support": [
+        "customer-research",
+        "experiment-design"
+      ],
+      "deliverable": "A defensible product decision, bounded delivery slice, guardrails and measurement contract.",
+      "failure_probe": "A loud customer request with no population baseline must not become invented universal demand.",
+      "prerequisites": "Actual customer/product evidence and decision owner."
+    },
+    {
+      "id": "database",
+      "title": "Database Expert",
+      "lead": "database-systems",
+      "support": [
+        "data-migrations"
+      ],
+      "deliverable": "Correct constraints, representative query plans and migration/recovery evidence on the named engine.",
+      "failure_probe": "Interrupt a batch and resume under old/new writers; preserve every row and invariant.",
+      "prerequisites": "Named database engine/version, representative isolated data and recovery path."
+    },
+    {
+      "id": "systems-engineering",
+      "title": "System Engineering",
+      "lead": "systems-engineering",
+      "support": [
+        "architecture-review",
+        "security-judgment"
+      ],
+      "deliverable": "A coherent system model, capacity/failure analysis, contracts and a verifiable operational design.",
+      "failure_probe": "Fail a dependency or exhaust a bounded queue; identify propagation, backpressure and recovery.",
+      "prerequisites": "Target topology, workload/limits, telemetry and an isolated failure experiment."
+    },
+    {
+      "id": "devops-infrastructure",
+      "title": "Devops and Infrastructure Engineering",
+      "lead": "infrastructure-engineering",
+      "support": [
+        "release-operations",
+        "ci-maintenance"
+      ],
+      "deliverable": "Reviewed infrastructure plan and reproducible build/release/recovery evidence for an exact target.",
+      "failure_probe": "Present stale plan, secret-bearing output or mixed-version rollback; detect invalid assumptions before changes.",
+      "prerequisites": "Existing IaC/build/runtime tools and explicit target access; production mutation requires task authorization."
+    },
+    {
+      "id": "marketing",
+      "title": "Marketing Expert",
+      "lead": "marketing-writing",
+      "support": [
+        "customer-research",
+        "conversion-review"
+      ],
+      "deliverable": "Audience-specific positioning/copy with traceable claims and channel fit; a measurable experiment when the task requires one.",
+      "failure_probe": "Remove the claimed proof or change offer conditions; revised copy must retain truth and qualifications.",
+      "prerequisites": "Approved offer, customer evidence and channel context; publication/spend separately authorized."
+    },
+    {
+      "id": "executive-strategy",
+      "title": "CEO perspective",
+      "lead": "executive-strategy",
+      "support": [
+        "product-management",
+        "data-analysis"
+      ],
+      "deliverable": "A strategic choice connecting customer value, economics, capacity, cash timing and reversibility.",
+      "failure_probe": "Stress adoption, margin or capacity assumptions; show when the recommendation changes and who decides.",
+      "prerequisites": "Actual business facts; explicit hypothetical labels for absent financial/market evidence."
+    },
+    {
+      "id": "data-analysis",
+      "title": "Data Analysis and Deep Understanding",
+      "lead": "data-analysis",
+      "support": [
+        "database-systems",
+        "research-and-synthesis"
+      ],
+      "deliverable": "Reproducible reconciled analysis with grain, units, population, missingness, alternatives and a supported decision.",
+      "failure_probe": "Duplicate joined rows and shift segment mix; totals reconcile and aggregate uplift is not mistaken for causality.",
+      "prerequisites": "Authorized data and query/script/workbook runtime; source meaning beyond column names."
+    },
+    {
+      "id": "project-scaffolding",
+      "title": "Project Scafolding",
+      "lead": "project-scaffolding",
+      "support": [
+        "architecture-review",
+        "test-design"
+      ],
+      "deliverable": "A minimal runnable project or vertical slice with verified startup, tests, config and ownership.",
+      "failure_probe": "Scaffold into a nonempty repository with existing conventions; preserve all unrelated files and detect conflicts.",
+      "prerequisites": "Chosen stack and available generator/toolchain; no automatic dependency install or unrelated framework."
+    },
+    {
+      "id": "design-revision",
+      "title": "Design Revisioning",
+      "lead": "interface-design",
+      "support": [
+        "brand-guidelines",
+        "frontend-engineering"
+      ],
+      "deliverable": "An attributable revision preserving approved constraints, working behavior and comparable before/after views.",
+      "failure_probe": "A polish request must not silently change labels, brand identity or data behavior; compare identical states.",
+      "prerequisites": "Baseline source/renders, requested revision scope and existing tokens/components."
+    },
+    {
+      "id": "optimization",
+      "title": "Efficiency and Optimization Expert",
+      "lead": "performance-engineering",
+      "support": [
+        "frontend-engineering",
+        "database-systems"
+      ],
+      "deliverable": "A measured bottleneck fix with correctness parity, representative workload and repeatable before/after measurements.",
+      "failure_probe": "A faster run with changed inputs, warm cache or weaker correctness must not count as an improvement.",
+      "prerequisites": "Target profiler/load/query tools, comparable runtime and data; cost limits where relevant."
+    }
+  ]
+}

@@ -66,6 +66,13 @@ beats, actual playback controls, reduced motion at load/live changes and lifecyc
 Pure-vector delivery cannot be satisfied by a raster wrapped in SVG. Structural
 audits and sampled frames do not certify aesthetics, smoothness or untested exports.
 
+For brand work, deliver rules another designer can apply: semantic tokens,
+type/mark/voice examples, editable assets and an inspected application. Distinguish
+extracted conventions, proposed changes and approved decisions. For native mobile,
+verify platform navigation, keyboard/insets, enlarged text and state restoration
+on the named simulator/device; web emulation does not establish native readiness.
+
+
 ## Engineering
 
 Define observable behavior and the affected interface/data invariants. Use
@@ -82,6 +89,12 @@ tradeoffs, compatibility changes and remaining verification gaps.
 For backend work, follow the result through the real consumer: auth/tenant scope,
 validation, persistence, events/jobs and retries where affected. A unit test of one
 handler cannot establish the contract of its dependencies or asynchronous result.
+
+For scaffolding, compare the final repository against its original state, preserve
+unrelated work, and execute a useful entry point through the selected stack.
+For optimization, retain comparable baseline/candidate inputs, raw measurements,
+correctness parity and important cost tradeoffs. A faster incorrect result or
+changed workload does not establish improvement.
 
 ## Databases and operations
 
@@ -113,6 +126,11 @@ evidence. Accessibility, visual coherence, functional behavior and performance
 need their own affected checks; one passing dimension cannot substitute for another.
 
 ## Product, analysis and marketing
+
+For executive decisions, connect customer evidence to unit economics, cash timing,
+capacity and work displaced. Reproduce material calculations and show what change
+in assumptions reverses the recommendation. Label fictional figures and proposed
+targets. Keep recommendation, approved allocation and execution distinguishable.
 
 For product work, use `product-management` to connect an evidenced user problem to
 an explicit decision, alternatives/non-goals, a useful delivery slice and observable
