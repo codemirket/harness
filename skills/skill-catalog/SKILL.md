@@ -8,8 +8,8 @@ description: Route substantive tasks to reviewed skills and register project cap
 Use this repository as the first discovery source for project capabilities across
 engineering, design, mobile/desktop, APIs, data, research, documents, marketing,
 agent collaboration, security and operations. Give each project a rich foundation
-plus specialists justified by its work. Zed is the primary editor; Codex Desktop
-and Claude Desktop Code use the same capability sources.
+plus specialists justified by its work. Codex Desktop and Claude Desktop Code
+use the same capability sources.
 Registering skills makes them available for reuse. Read and apply only the
 instructions relevant to the current task so availability stays efficient.
 
@@ -19,9 +19,9 @@ For substantive work in the domains above, read the
 matching row in [task routing](references/task-routing.md). It distinguishes
 task workflows from registration profiles and catalog IDs from invocation names.
 Use the project's own route when it already resolves the task. Avoid duplicate
-global/project names: Codex can list both; Zed prefers the project copy, while
-Claude Code (including Desktop Code) prefers the personal copy. For an existing overlap, inspect the exact paths and read the intended
-version explicitly; do not assume a project copy overrides the host or combine versions.
+global/project names: Codex can list both, while Claude Code (including Desktop
+Code) prefers the personal copy. For an existing overlap, inspect the exact paths
+and read the intended version explicitly; do not assume a project copy overrides the host or combine versions.
 Discovery lists can be shortened
 by the host. Use catalog search for a missing capability rather than assuming the
 initial list is complete. A QA profile is
@@ -125,11 +125,10 @@ copies, and preserves removed/unselected skills for deliberate cleanup. Avoid
 one-off `catalog install` for ongoing project needs: it bypasses the managed
 selection and lock. Use `scripts/harness.py` where repository docs use `ai.py`.
 
-Zed and Codex share `.agents/skills`; Claude Desktop Code and its CLI use
-`.claude/skills`. Use `--target zed`, `--target codex-desktop`,
-`--target claude-desktop` or `--target all` when initializing projects. The legacy
-`both` means Codex and Claude. Active Codex/Zed targets must have identical effective
-selections because they share discovery; divergent target-specific selections fail.
+Codex Desktop uses `.agents/skills`; Claude Desktop Code and its CLI use
+`.claude/skills`. Use `--target codex-desktop`, `--target claude-desktop`, or
+`--target all` when initializing projects. The default `all` and legacy `both`
+select Codex and Claude. Each target can have its own additional selections.
 Chat/Cowork use account Customize instead of local Code files; see the harness's
 `docs/targets.md` and `ai.py handoff --help` for manual packages. Each local copy
 retains references, assets, licenses and provenance. Source bytes and catalog
@@ -200,11 +199,20 @@ and content checks without POSIX execute-bit enforcement.
 
 Project copies stay pinned until deliberately synchronized. Preserve edits and
 review the source/adapter diff before updating registry pins. The default global
-set lives in `registry/harness.json`; paths/settings/extensions live in
+set lives in `registry/harness.json`; paths and settings live in
 `registry/targets.json`, and neutral MCP definitions in `registry/mcp.json`.
-`ai.py install --target zed` reconciles selected files and configuration; `check`
+`ai.py install --target all` reconciles selected files and configuration; `check`
 reports drift. Global setup uses live links on macOS and managed copies on Windows.
-Native permission settings and extension policy are configured values, not a guarantee
+Native permission settings are configured values, not a guarantee
 of agent compliance. Verify discovery and relevant behavior inside the selected client.
 Plugin exports package declared bundles for Codex. They do not activate
 plugins or provision runtimes. Read the runtime integration contract before setup.
+
+## Executable craft workbench
+
+Use `python3 scripts/harness.py workbench doctor` to probe configured local
+authoring tools. `workbench browser`, `vector`, `documents` and `markdown` expose
+repeatable artifact operations; each has `--help`. Read `docs/workbench.md` in the
+resolved harness for scenarios, runtime configuration and evidence limits.
+Use the matching craft skill to make and critique the artifact. Reports never
+replace visual inspection or the project's real tests. No dependencies are installed.

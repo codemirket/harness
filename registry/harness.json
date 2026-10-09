@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "personal-ai",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "global_skills": [
     "skill-catalog",
     "engineering-judgment",
@@ -75,10 +75,17 @@
         "operations",
         "collaboration"
       ]
+    },
+    "personal-workbench": {
+      "description": "Shared craft workflows with executable browser, vector, office and Markdown tools; configure existing runtimes locally.",
+      "global_skills": true,
+      "skills": [
+        "svg-creation",
+        "motion-design"
+      ]
     }
   },
   "runtime_policy": "Install selected target configuration without installing applications, dependencies, logging in, or starting MCP servers. Verify activation in the selected client.",
-  "primary_client": "zed",
   "delegation": {
     "primary": "host-subagents",
     "secondary": "claude-code",
@@ -93,7 +100,7 @@
     "branch": "main",
     "expected_repository": "github.com/nazmirket/.ai"
   },
-  "default_target": "zed",
+  "default_target": "all",
   "instructions": "instructions/AGENTS.md",
   "target_source": "registry/targets.json",
   "mcp_source": "registry/mcp.json"

@@ -1,18 +1,19 @@
 # Install and reconcile
 
 Run from a stable checkout with Python 3.9+; no Python packages are required.
-Zed is the default target. The installer prepares configuration for an existing
-client; installing the client and authenticating remain separate steps.
+Both desktop targets are selected by default. The installer prepares configuration
+for existing clients; installing clients and authenticating remain separate steps.
 
 ## Target installation
 
 ```sh
-python3 ai.py install --target zed --dry-run
-python3 ai.py install --target zed
-python3 ai.py check --target zed
+python3 ai.py install --target all --dry-run
+python3 ai.py install --target all
+python3 ai.py check --target all
 ```
 
-Supported public targets are `zed`, `codex-desktop`, `claude-desktop`, and `all`.
+Supported public targets are `codex-desktop`, `claude-desktop`, and `all`.
+`all` selects both clients; legacy `both` is equivalent.
 Use `py -3` instead of `python3` on Windows. The platform wrappers in this folder
 provide convenient entry points; the Python CLI is the complete interface.
 
@@ -46,14 +47,9 @@ prepared configuration as an active capability.
 
 After `check` passes, open a new session in the selected client. Verify shared
 instructions and a representative skill are available, inspect MCP server status,
-and test one relevant tool. In Zed, also inspect the Extensions page for declared
-extensions. These checks establish client discovery and invocation separately
-from file correctness. Model access, service availability and tool behavior need
+and test one relevant tool. These checks establish client discovery and invocation
+separately from file correctness. Model access, service availability and tool behavior need
 their own evidence.
-
-For Zed external agents, install the engine's target too: Codex configuration for
-Codex, Claude configuration for Claude. Zed's native instruction and skill loader
-does not govern those agents.
 
 ## Ownership and recovery
 
@@ -72,7 +68,7 @@ Installation does not prune removed skills or uninstall applications.
 Project setup is separate from global installation:
 
 ```sh
-python3 ai.py project init --project /absolute/project --target zed
+python3 ai.py project init --project /absolute/project --target all
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
@@ -83,17 +79,16 @@ Use `--target all` for all clients. Init adds the configured `project-foundation
 not install: follow it with sync and doctor. Existing manifests keep their choices.
 Use `portable-foundation` explicitly when the shared globals are absent.
 
-Codex and Zed share project `.agents/skills` and require identical selections.
-Claude uses `.claude/skills`. Source pins, required companions and payload hashes
-remain checked. Sync preserves modified and unselected copies. See [project
+Codex uses project `.agents/skills`; Claude uses `.claude/skills`. Source pins,
+required companions and payload hashes remain checked. Sync preserves modified and unselected copies. See [project
 targets](../docs/project-targets.md), [catalog](../docs/catalog.md), and the optional
 [Codex plugin export](../docs/plugins.md) workflow.
 
 ## Project readiness
 
 `runtime doctor` remains an optional diagnostic, separate from install/check.
-Its legacy client probes cover Codex and Claude Code CLI, not Zed or Claude
-Desktop activation. It probes project prerequisites without installing them or
+Its legacy client probes cover Codex and Claude Code CLI, not desktop client
+activation. It probes project prerequisites without installing them or
 running project scripts. For a running local app:
 
 ```sh

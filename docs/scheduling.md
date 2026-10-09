@@ -9,7 +9,7 @@ existing OS job; inspect and remove an unwanted job deliberately.
 The retained legacy job runs at **12:00 AM (00:00) every day in the device's local
 timezone**. It refreshes this repository and reconciles Codex/Claude guidance,
 skills and portable Codex preferences. It does **not** manage the new target
-settings, Zed extensions or neutral MCP registry. Use target `install` and `check`
+settings or neutral MCP registry. Use target `install` and `check`
 for those. The OS job does not open an AI session.
 
 | Device | Scheduler | Timing and conditions |
@@ -36,7 +36,7 @@ checks the stored scheduler contract, not whether a run succeeds.
 
 The historical complete installer remains available as `ai.py legacy-install`
 for compatibility. Its broader runtime, preferences and scheduling behavior is
-separate from modern target installation. Do not use it as the Zed installer.
+separate from modern target installation.
 
 An existing exact legacy midnight installer line is replaced by the owned maintenance entry. Other cron jobs and tasks remain untouched. Modified legacy lines, malformed ownership markers, a conflicting Windows task, or an existing `CRON_TZ` override require review. Scheduler changes are backed up locally before replacement and checked afterward; concurrent edits are not silently overwritten.
 

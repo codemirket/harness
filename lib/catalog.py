@@ -530,7 +530,6 @@ def check_executable_modes(target, executable_files):
 
 def supports_target(entry, target):
     # Existing catalog agents describe skill format families, not desktop apps.
-    # Zed accepts portable Codex-family skills; Claude-only entries stay scoped.
     return target_registry.skill_family(target) in entry.get('agents', ['codex', 'claude'])
 
 

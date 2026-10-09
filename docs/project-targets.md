@@ -1,14 +1,19 @@
 # Provider-specific project selections
 
-New project setup defaults to Zed. Public target names are `zed`,
-`codex-desktop`, `claude-desktop`, and `all`; the desktop aliases resolve to
-`codex` and `claude` in manifests and locks. `all` selects all three. Existing
-`codex`, `claude-code`, `claude`, and `both` selections remain compatible; `both`
-continues to mean Codex and Claude. Zed and Codex discover the same project
-`.agents/skills` directory, so a project selecting both must give them identical
-resolved skill selections. Differing selections fail rather than overwriting a
-shared destination. Claude uses `.claude/skills`. See [target coverage](targets.md)
-for native Zed versus ACP and Claude Desktop Code boundaries.
+New project setup defaults to both Codex Desktop and Claude Desktop Code. Public
+target names are `codex-desktop`, `claude-desktop`, and `all`; desktop aliases
+resolve to `codex` and `claude` in manifests and locks. The legacy `codex`,
+`claude-code`, `claude`, and `both` names remain compatible; `both` and `all`
+select the same two targets. Codex uses `.agents/skills`; Claude uses
+`.claude/skills`. See [target coverage](targets.md) for Desktop Code and account
+customization boundaries.
+
+Manifests from the former three-client setup must remove `zed` from `targets`
+and `target_skills` before reconciliation. Preserve any desired portable skills
+by declaring them for Codex, then run plan, sync and doctor to regenerate the lock.
+Do not hand-edit the lock or delete `.agents/skills`: Codex uses that directory.
+Unsupported targets fail before project writes; existing client settings are not
+uninstalled.
 
 A shared selection applies to every target in `.ai/project.json`. Use schema v2
 and `target_skills` to add explicitly scoped skills without creating a separate

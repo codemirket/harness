@@ -4,7 +4,7 @@ Apply the user's instructions and the current project's conventions. Keep projec
 architecture and specialized workflows in that project's own instructions. Honor
 an explicitly selected model, tool or workflow. This repository is the personal
 source of truth for shared guidance, skills, MCP definitions and target settings.
-Zed is the primary editor; Codex Desktop and Claude Desktop Code are equal targets.
+Codex Desktop and Claude Desktop Code are the installation targets.
 
 ## Pick up skills for the work
 

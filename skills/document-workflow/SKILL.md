@@ -53,3 +53,8 @@ broken hierarchy. Broaden the inspection when a template or global style changes
 
 Report the delivered file or live document, the meaningful changes, and the
 checks actually completed. Distinguish a successful save from a verified result.
+
+For repository Markdown, `workbench markdown INPUT --output NEW_DIR` through the
+installed skill-catalog launcher checks local links, ATX heading levels and fences.
+Read its limitations and inspect the actual renderer. It neither executes examples
+nor checks external links, prose quality or technical correctness.

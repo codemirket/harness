@@ -306,14 +306,6 @@ def project_selection(config, data):
         selections[target] = entries
     if not any(selections.values()):
         raise ValueError('Project manifest selects no skills')
-    shared_roots = {}
-    for target, entries in selections.items():
-        root = target_registry.project_skills_dir(target)
-        identifiers = {entry['id'] for entry in entries}
-        if root in shared_roots and shared_roots[root][1] != identifiers:
-            raise ValueError('Targets ' + shared_roots[root][0] + ' and ' + target
-                             + ' share ' + root + '; select the same effective skills for both')
-        shared_roots[root] = (target, identifiers)
     return config, selections
 
 
@@ -748,7 +740,7 @@ def main(argv=None):
     for name in ('plan', 'sync', 'doctor'):
         p = commands.add_parser(name, help=name + ' declared global instructions and skills')
         p.add_argument('--target', choices=target_registry.CHOICES, default=default_target,
-                       help='Client target; both means Codex and Claude, all includes Zed')
+                       help='Client target; both and all mean Codex and Claude')
         p.add_argument('--home', type=Path)
         p.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     project = commands.add_parser('project').add_subparsers(dest='action', required=True)

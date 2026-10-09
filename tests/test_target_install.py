@@ -6,7 +6,7 @@ import unittest
 from unittest import mock
 import zipfile
 
-from lib import configuration, handoff, target_install, targets
+from lib import configuration, handoff, target_install
 
 
 class TargetInstallTests(unittest.TestCase):
@@ -15,16 +15,18 @@ class TargetInstallTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.home = Path(self.temp.name).resolve()
 
-    def run_install(self, target='zed', **kwargs):
-        return target_install.run(target=target, home=self.home, mode='copy', **kwargs)
+    def run_install(self, target=None, **kwargs):
+        if target is not None:
+            kwargs['target'] = target
+        return target_install.run(home=self.home, mode='copy', **kwargs)
 
-    def test_default_is_zed_and_dry_run_writes_nothing(self):
+    def test_default_is_both_desktops_and_dry_run_writes_nothing(self):
         report = self.run_install(dry_run=True)
-        self.assertEqual(report['targets'], ['zed'])
+        self.assertEqual(report['targets'], ['codex', 'claude'])
         self.assertEqual(list(self.home.iterdir()), [])
 
     def test_running_real_home_client_blocks_before_writes(self):
-        with mock.patch.object(Path, 'home', return_value=self.home), mock.patch.object(target_install, 'running_clients', return_value=['zed']):
+        with mock.patch.object(Path, 'home', return_value=self.home), mock.patch.object(target_install, 'running_clients', return_value=['codex']):
             report = self.run_install()
         self.assertFalse(report['ready'])
         self.assertIn('Close clients', report['blockers'][0])
@@ -40,9 +42,8 @@ class TargetInstallTests(unittest.TestCase):
         self.assertTrue(self.run_install('all')['ready'])
         for path, expected in files.items():
             self.assertEqual((path.read_bytes(), path.stat().st_mtime_ns), expected, path)
-        zed = configuration.parse_json((self.home / '.config/zed/settings.json').read_text())
-        self.assertEqual(zed['auto_install_extensions']['toml'], True)
-        self.assertEqual(zed['context_servers']['openai-docs'], {'url': 'https://developers.openai.com/mcp'})
+        self.assertEqual(report['targets'], ['codex', 'claude'])
+        self.assertFalse((self.home / '.config/zed').exists())
         claude = json.loads((self.home / '.claude.json').read_text())
         self.assertEqual(claude['mcpServers']['openai-docs']['type'], 'http')
         codex = (self.home / '.codex/config.toml').read_text()
@@ -50,20 +51,19 @@ class TargetInstallTests(unittest.TestCase):
         self.assertIn('mcp_servers.openai-docs.url', codex)
 
     def test_client_starting_after_preflight_defers_configuration(self):
-        with mock.patch.object(Path, 'home', return_value=self.home), mock.patch.object(target_install, 'running_clients', side_effect=[[], ['zed']]):
+        with mock.patch.object(Path, 'home', return_value=self.home), mock.patch.object(target_install, 'running_clients', side_effect=[[], ['codex']]):
             report = self.run_install()
         self.assertEqual(report['status'], 'partially_applied')
         self.assertFalse(report['ready'])
-        self.assertFalse((self.home / '.config/zed/settings.json').exists())
+        self.assertFalse((self.home / '.claude/settings.json').exists())
 
-    def test_preserves_jsonc_and_makes_private_exact_backup(self):
-        path = self.home / '.config/zed/settings.json'
+    def test_preserves_unrelated_json_and_makes_private_exact_backup(self):
+        path = self.home / '.claude/settings.json'
         path.parent.mkdir(parents=True)
-        original = '// private preference\n{"theme":"Personal", "agent":{"tool_permissions":{"default":"allow"}},}\n'
+        original = '{"theme":"Personal", "permissions":{"defaultMode":"plan"}}\n'
         path.write_text(original)
         result = self.run_install()
         self.assertTrue(result['ready'])
-        self.assertIn('// private preference', path.read_text())
         self.assertEqual(configuration.parse_json(path.read_text())['theme'], 'Personal')
         backup = Path(result['backups'][0])
         self.assertEqual(backup.read_text(), original)
@@ -71,7 +71,7 @@ class TargetInstallTests(unittest.TestCase):
             self.assertEqual(backup.stat().st_mode & 0o777, 0o600)
 
     def test_malformed_settings_preflight_does_not_write_guidance(self):
-        path = self.home / '.config/zed/settings.json'
+        path = self.home / '.claude/settings.json'
         path.parent.mkdir(parents=True)
         path.write_text('{broken')
         with self.assertRaises(ValueError):
@@ -102,9 +102,8 @@ class TargetInstallTests(unittest.TestCase):
         self.assertEqual(original.read_text(), '{}')
 
     def test_endpoint_change_cannot_forward_existing_credentials(self):
-        path = self.home / '.config/zed/settings.json'
-        path.parent.mkdir(parents=True)
-        original = json.dumps({'context_servers': {'openai-docs': {'url': 'https://internal.invalid/mcp', 'headers': {'Authorization': 'TEST_SENTINEL'}}}})
+        path = self.home / '.claude.json'
+        original = json.dumps({'mcpServers': {'openai-docs': {'url': 'https://internal.invalid/mcp', 'headers': {'Authorization': 'TEST_SENTINEL'}}}})
         path.write_text(original)
         with self.assertRaisesRegex(ValueError, 'identity conflict'):
             self.run_install()
@@ -121,8 +120,8 @@ class TargetInstallTests(unittest.TestCase):
 
     def test_check_reports_configuration_drift_without_repair(self):
         self.run_install()
-        path = self.home / '.config/zed/settings.json'
-        path.write_text(path.read_text().replace('"confirm"', '"allow"'))
+        path = self.home / '.claude/settings.json'
+        path.write_text(path.read_text().replace('"default"', '"plan"'))
         before = path.read_bytes()
         result = self.run_install(command='check')
         self.assertFalse(result['ready'])
@@ -143,7 +142,7 @@ class TargetInstallTests(unittest.TestCase):
         self.assertTrue((self.home / '.agents/skills/skill-catalog/SKILL.md').exists())
 
     def test_stale_preflight_does_not_overwrite_concurrent_edit(self):
-        _, configs, _ = target_install.prepare('zed', self.home, 'copy')
+        _, configs, _ = target_install.prepare('claude', self.home, 'copy')
         path = configs[0]['path']
         path.parent.mkdir(parents=True)
         path.write_text('{"theme":"new"}')
@@ -162,10 +161,31 @@ class TargetInstallTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'already exists'):
             handoff.export(output)
 
-    def test_windows_zed_adapter_respects_isolated_home(self):
-        with mock.patch.object(targets.sys, 'platform', 'win32'):
-            adapter = targets.global_adapter('zed', self.home)
-        self.assertEqual(adapter['settings_destination'], 'AppData/Roaming/Zed/settings.json')
+    def test_removed_target_is_rejected_before_writes(self):
+        with self.assertRaisesRegex(ValueError, 'Unsupported target: zed'):
+            self.run_install('zed')
+        self.assertEqual(list(self.home.iterdir()), [])
+
+    def test_existing_zed_configuration_is_untouched(self):
+        path = self.home / '.config/zed/settings.json'
+        path.parent.mkdir(parents=True)
+        original = '{"context_servers":{"personal":{"command":"local-server"}}}\n'
+        path.write_text(original)
+        before = path.stat().st_mtime_ns
+        self.assertTrue(self.run_install()['ready'])
+        self.assertEqual(path.read_text(), original)
+        self.assertEqual(path.stat().st_mtime_ns, before)
+
+    def test_handoff_preserves_stdio_transport_fields_without_a_zed_adapter(self):
+        servers = {'local': {'transport': 'stdio', 'command': '/not/executed',
+                             'args': ['--read-only'], 'env': {'MODE': 'test'}}}
+        output = self.home / 'handoff'
+        with mock.patch.object(target_install, 'mcp_sources', return_value=servers):
+            handoff.export(output)
+        value = json.loads((output / 'chat-mcp-fragment.json').read_text())
+        self.assertEqual(value, {'mcpServers': {'local': {
+            'command': '/not/executed', 'args': ['--read-only'], 'env': {'MODE': 'test'}}}})
+
 
 
 if __name__ == '__main__':

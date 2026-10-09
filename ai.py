@@ -9,9 +9,10 @@ def main():
     if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
         print('''Personal agent harness (Python 3.9+, standard library)
 
-  install [--target zed|codex-desktop|claude-desktop|all] [--dry-run]
-                       Install shared guidance, skills, MCP and target settings (default: Zed)
+  install [--target codex-desktop|claude-desktop|all] [--dry-run]
+                       Install shared guidance, skills, MCP and target settings (default: both desktops)
   check [--target ...]  Read-only installation and configuration drift check
+  workbench <command>  Render and check browser, vector, office and Markdown artifacts
   handoff --output DIR Package skills and instructions for Claude Chat/Cowork Customize
   schedule <command>   Plan, install or check the daily midnight OS schedule
   maintenance <command> Pull a clean checkout, sync, or read the last run status
@@ -30,6 +31,9 @@ Schedules, model/appearance preferences and legacy runtime setup are explicit co
     if sys.argv[1] in ('install', 'check'):
         from lib import target_install
         return target_install.main(sys.argv[1:])
+    if sys.argv[1] == 'workbench':
+        from lib import workbench
+        return workbench.main(sys.argv[2:])
     if sys.argv[1] == 'handoff':
         from lib import handoff
         return handoff.main(sys.argv[2:])

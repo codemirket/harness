@@ -24,8 +24,8 @@ class BundleTests(unittest.TestCase):
         self.base = Path(self.temp.name).resolve()
         self.root = self.base / 'harness'
         self.root.mkdir()
-        for name in ('registry', 'instructions', 'skills', 'docs', 'setup', 'lib', 'evaluations'):
-            (self.root / name).mkdir()
+        for name in ('registry', 'instructions', 'skills', 'docs', 'setup', 'lib', 'evaluations', 'scripts/workbench', 'examples/craft-lab'):
+            (self.root / name).mkdir(parents=True)
         self.source = self.base / 'upstream'
         (self.source / 'skills/test/references').mkdir(parents=True)
         (self.source / 'skills/test/SKILL.md').write_bytes(SKILL)
@@ -153,7 +153,9 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(list(self.base.glob('.ai-export-*')))
 
     def foundation(self):
-        for filename in ('ai.py', 'lib/catalog.py', 'lib/targets.py', 'registry/targets.json', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py',
+        for filename in ('ai.py', 'lib/catalog.py', 'lib/targets.py', 'registry/targets.json', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py', 'lib/workbench.py', 'lib/settings.py',
+                         'scripts/workbench/markdown.py', 'examples/craft-lab/README.md',
+                         'scripts/workbench/browser.mjs', 'scripts/workbench/vector.mjs', 'scripts/workbench/documents.py',
                          'skills/skill-catalog/scripts/catalog.py', 'skills/skill-catalog/scripts/harness.py',
                          'skills/skill-catalog/SKILL.md', 'scripts/render_registry.py'):
             target = self.root / filename
@@ -188,6 +190,8 @@ class BundleTests(unittest.TestCase):
         self.assertFalse((plugin / '_harness/docs/build').exists())
         self.assertFalse((plugin / '_harness/.git').exists())
         self.assertTrue((plugin / '_harness/scripts/render_registry.py').is_file())
+        self.assertTrue((plugin / '_harness/scripts/workbench/browser.mjs').is_file())
+        self.assertTrue((plugin / '_harness/examples/craft-lab/README.md').is_file())
         shutil.rmtree(self.root)
         unrelated = self.base / 'unrelated'
         unrelated.mkdir()
@@ -202,6 +206,10 @@ class BundleTests(unittest.TestCase):
         self.assertEqual({e['domain'] for e in json.loads(result.stdout)['cases']},
                          {'frontend', 'engineering', 'documentation', 'integration', 'research',
                           'analysis', 'database'})
+        result = subprocess.run([sys.executable, '-B', str(engine), 'workbench', 'markdown', '--help'],
+                                cwd=unrelated, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('New report directory', result.stdout)
         for identifier in ('engineering-ledger-total', 'analysis-rollout-decision',
                            'database-resumable-backfill'):
             with self.subTest(case=identifier):

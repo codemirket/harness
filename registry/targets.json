@@ -1,16 +1,6 @@
 {
   "schema_version": 1,
   "targets": {
-    "zed": {
-      "instructions": "instructions/AGENTS.md",
-      "instruction_destination": ".config/zed/AGENTS.md",
-      "skills_destination": ".agents/skills",
-      "settings_destination": ".config/zed/settings.json",
-      "settings_format": "jsonc",
-      "settings": {"agent": {"tool_permissions": {"default": "confirm"}}},
-      "extensions": {"toml": true},
-      "surface": "Zed native agent; ACP agents also require their own target installation"
-    },
     "codex": {
       "instructions": "instructions/AGENTS.md",
       "instruction_destination": ".codex/AGENTS.md",

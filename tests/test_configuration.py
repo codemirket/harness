@@ -1,4 +1,4 @@
-"""Lossless configuration updates, including JSONC used by Zed."""
+"""Lossless configuration updates preserve comments, layout and unrelated values."""
 import unittest
 
 from lib.configuration import merge_json, parse_json

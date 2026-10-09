@@ -130,9 +130,9 @@ class CatalogDataTests(unittest.TestCase):
         agents = (ROOT / 'instructions/AGENTS.md').read_text()
         from lib import targets
         adapters = targets.load()
-        self.assertIn('Zed is the primary editor', agents)
-        self.assertEqual(config['primary_client'], 'zed')
-        self.assertEqual(set(adapters), {'zed', 'codex', 'claude'})
+        self.assertIn('Codex Desktop and Claude Desktop Code are the installation targets', agents)
+        self.assertEqual(config['default_target'], 'all')
+        self.assertEqual(set(adapters), {'codex', 'claude'})
         self.assertEqual({entry['instructions'] for entry in adapters.values()},
                          {'instructions/AGENTS.md'})
         self.assertEqual(adapters['claude']['skills_destination'], '.claude/skills')

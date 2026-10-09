@@ -45,13 +45,20 @@ def mcp_sources():
     return result
 
 
+def mcp_fields(source):
+    """Render transport fields shared by desktop and account handoffs."""
+    fields = ('url',) if source['transport'] == 'http' else ('command', 'args', 'env')
+    value = {key: source[key] for key in fields if key in source}
+    if source['transport'] == 'stdio':
+        value.setdefault('args', [])
+    return value
+
+
 def mcp_config(target, servers):
+    target = targets.normalize(target)
     result = {}
     for name, source in servers.items():
-        fields = ('url',) if source['transport'] == 'http' else ('command', 'args', 'env')
-        value = {key: source[key] for key in fields if key in source}
-        if source['transport'] == 'stdio':
-            value.setdefault('args', [])
+        value = mcp_fields(source)
         if target == 'claude':
             value = dict(type=source['transport'], **value)
         result[name] = value
@@ -73,13 +80,7 @@ def configs_for(target, home, servers):
     if not isinstance(desired, dict):
         raise ValueError('Target settings must be an object')
     mcp = mcp_config(target, servers)
-    if target == 'zed':
-        extensions = adapter.get('extensions', {})
-        if not isinstance(extensions, dict) or any(not re.fullmatch(r'[a-z0-9-]+', k) or type(v) is not bool for k, v in extensions.items()):
-            raise ValueError('Zed extensions must map extension IDs to booleans')
-        desired['auto_install_extensions'] = extensions
-        desired['context_servers'] = mcp
-    elif target == 'codex':
+    if target == 'codex':
         desired['mcp_servers'] = mcp
     yield adapter['settings_destination'], adapter['settings_format'], desired
     if target == 'claude':
@@ -133,7 +134,7 @@ def config_plan(home, relative, format_, desired):
             except ValueError:
                 raise ValueError('Claude configuration requires strict JSON: ' + str(path)) from None
         actual = configuration.parse_json(text) if text.strip() else {}
-        check_transports(actual, desired, 'context_servers' if 'context_servers' in desired else 'mcpServers')
+        check_transports(actual, desired, 'mcpServers')
         merged, keys = configuration.merge_json(text, desired)
     return {'path': path, 'relative': relative, 'before': before,
             'content': merged.encode('utf-8'), 'keys': keys, 'changed': before != merged.encode('utf-8')}
@@ -151,13 +152,12 @@ def running_clients(selected):
             names = {Path(row.strip()).name.lower() for row in result.stdout.splitlines()}
     except (OSError, subprocess.SubprocessError):
         raise ValueError('Cannot verify that target clients are closed') from None
-    matches = {'zed': {'zed', 'zed.exe', 'zed-editor'},
-               'codex': {'codex', 'codex.exe', 'chatgpt', 'chatgpt.exe'},
+    matches = {'codex': {'codex', 'codex.exe', 'chatgpt', 'chatgpt.exe'},
                'claude': {'claude', 'claude.exe'}}
     return [target for target in selected if names & matches[target]]
 
 
-def prepare(target='zed', home=None, mode='auto'):
+def prepare(target='all', home=None, mode='auto'):
     selected = targets.names(target)
     targets.validate_home_environment(home, selected)
     base, _, _, jobs = harness.global_plan(target, home, mode)
@@ -174,7 +174,7 @@ def prepare(target='zed', home=None, mode='auto'):
               'guidance': harness.public_jobs(jobs),
               'configuration': [{'path': str(job['path']), 'changed': job['changed'], 'keys': job['keys']} for job in configs],
               'mcp_servers': list(sources), 'blockers': [],
-              'limits': ['Checks verify files and declared values, not client discovery, model access, MCP connectivity or extension activation.',
+              'limits': ['Checks verify files and declared values, not client discovery, model access or MCP connectivity.',
                          'Instructions guide behavior. Client settings remain user-editable; existing tool-specific rules and project/managed policies may override defaults.',
                          'Removed selections are preserved. Review obsolete installed skills and MCP entries deliberately.']}
     public['changes_pending'] = any(job['action'] != 'unchanged' for job in jobs) or any(job['changed'] for job in configs)
@@ -204,7 +204,7 @@ def write_config(base, job):
     return backup
 
 
-def run(command='install', target='zed', home=None, mode='auto', dry_run=False):
+def run(command='install', target='all', home=None, mode='auto', dry_run=False):
     base, configs, report = prepare(target, home, mode)
     if command == 'check' or dry_run or report['blockers']:
         return report
@@ -236,7 +236,7 @@ def run(command='install', target='zed', home=None, mode='auto', dry_run=False):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['install', 'check'])
-    parser.add_argument('--target', choices=targets.CHOICES, default=harness.manifest().get('default_target', 'zed'))
+    parser.add_argument('--target', choices=targets.CHOICES, default=harness.manifest().get('default_target', 'all'))
     parser.add_argument('--home', type=Path, help='Existing isolated home for rehearsal or portable preparation')
     parser.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     parser.add_argument('--dry-run', action='store_true')

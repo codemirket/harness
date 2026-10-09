@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "url": "http://127.0.0.1:4173",
+  "viewports": [
+    {"name": "desktop", "width": 1440, "height": 1000},
+    {"name": "mobile", "width": 390, "height": 844}
+  ],
+  "motion": ["no-preference", "reduce"],
+  "timeout_ms": 60000,
+  "actions": [
+    {"op": "capture", "label": "library", "times_ms": [0]},
+    {"op": "click", "selector": "[data-testid=filter-ceramic]"},
+    {"op": "capture", "label": "ceramics", "times_ms": [0]},
+    {"op": "fill", "selector": "[data-testid=search]", "value": "Celadon"},
+    {"op": "click", "selector": "[data-testid=favorite-celadon]"},
+    {"op": "click", "selector": "[data-testid=preview-celadon]"},
+    {"op": "capture", "label": "preview-opening", "times_ms": [0, 100, 240]}
+  ],
+  "assertions": [
+    {"op": "visible", "selector": "[data-testid=preview-dialog]"},
+    {"op": "text", "selector": "#preview-title", "expected": "Celadon glaze"},
+    {"op": "value", "selector": "[data-testid=search]", "expected": "Celadon"},
+    {"op": "count", "selector": "[data-testid=material-card]", "expected": 1},
+    {"op": "text", "selector": "#saved-count", "expected": "1"}
+  ]
+}

@@ -32,7 +32,8 @@ def export(output):
         sources = target_install.mcp_sources()
         remote = {name: {'url': source['url'], 'description': source.get('description', '')}
                   for name, source in sources.items() if source['transport'] == 'http'}
-        local = target_install.mcp_config('zed', {name: source for name, source in sources.items() if source['transport'] == 'stdio'})
+        local = {name: target_install.mcp_fields(source)
+                 for name, source in sources.items() if source['transport'] == 'stdio'}
         for name, value in [('remote-connectors.json', remote), ('chat-mcp-fragment.json', {'mcpServers': local})]:
             (stage / name).write_text(json.dumps(value, indent=2) + '\n', encoding='utf-8')
         (stage / 'README.txt').write_text(

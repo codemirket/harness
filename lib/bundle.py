@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MAX_EXPORT = 512 * 1024 * 1024
 MAX_EXPORT_FILES = 100000
 MAX_SNAPSHOT = 128 * 1024 * 1024
-SNAPSHOT_PATHS = ('ai.py', 'lib', 'registry', 'instructions', 'skills', 'docs', 'setup', 'evaluations')
+SNAPSHOT_PATHS = ('ai.py', 'lib', 'registry', 'instructions', 'skills', 'docs', 'setup', 'evaluations', 'scripts/workbench', 'examples/craft-lab')
 SKIP_DIRS = {'.git', '__pycache__', 'node_modules', 'build', 'dist', 'coverage',
              '.cache', '.pytest_cache', '.mypy_cache', '.ruff_cache'}
 LOCK = 'build-lock.json'

@@ -233,3 +233,23 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Historical Windmill skills
+
+The historical `skills/windmill/**` Markdown files introduced in commit
+`a2ac544b1efab36cf932ad47055b3dedf93c1f84` and removed in commit `68d8e01d`
+remain available in Git history. They are third-party Windmill material, excluded
+from this repository's MIT grant for original harness work. They are not included
+in current installation selections.
+
+Copyright (c) Windmill Labs, Inc 2022, unless a file specifies otherwise.
+The applicable upstream default is GNU Affero General Public License version 3
+(AGPLv3). Retained texts: [upstream license scope](licenses/windmill-LICENSE.txt)
+and [full AGPLv3 license](licenses/windmill-LICENSE-AGPL.txt).
+
+Upstream source: [Windmill skill sources](https://github.com/windmill-labs/windmill/tree/fb22e5ce368eba9146e0d51b8fdabb52ca9f68f0/system_prompts/auto-generated/skills).
+The pinned upstream revision is a provenance comparison, not a claim that every
+historical file matches that later revision byte for byte. The exact distributed
+historical source remains in this repository's original commit. Preserve these
+notices and the applicable terms when redistributing that historical material;
+the current harness license does not relicense it.

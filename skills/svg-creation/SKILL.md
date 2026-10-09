@@ -88,3 +88,8 @@ requested exports and concise integration details: dimensions, palette hooks,
 label/decorative treatment, dependencies and animation handoff groups. Report
 observed quality, the inspected sizes/context and material gaps. A browser preview
 does not establish print/editor fidelity or compatibility on untested devices.
+
+For repeatable multi-size light/dark renders, run the harness
+`workbench vector INPUT.svg --output NEW_DIR` through the installed skill-catalog
+launcher. It requires existing sharp and Python runtimes. Inspect its PNGs and
+source; a successful report leaves visual acceptance to the reviewer.

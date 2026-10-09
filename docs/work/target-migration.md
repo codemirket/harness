@@ -1,6 +1,18 @@
 # Target migration: 2026-10-09
 
-## Outcome and scope
+## Current target scope
+
+The user subsequently removed Zed from the requested harness. Installation and
+new project setup now default to `all`: Codex Desktop and Claude Desktop Code.
+The shared capability sources, safe configuration merging, and manual Claude
+Chat/Cowork handoff remain. Existing local Zed settings are preserved. Manifests
+that still name the removed target require explicit migration before sync.
+
+The conversion and local installation evidence below is historical; it does not
+establish the current target set. Verification of the removal is recorded at the
+end of this document.
+
+## Original outcome and scope
 
 Convert the personal Codex-first harness into a shared capability source with
 Zed as the default and explicit Codex Desktop and Claude Desktop Code adapters.
@@ -84,3 +96,29 @@ The TOML extension installation includes its local extension manifest. An empty
 project initially showed no configured MCP servers; opening the harness project
 resolved that view. No model request or MCP tool invocation was submitted, so
 model entitlement, prompt application and tool-result behavior remain unverified.
+
+## Removal verification: 2026-10-09
+
+- Removed the target adapter, CLI/wrapper choices, extension policy, platform paths,
+  catalog compatibility mapping and project shared-destination constraint for Zed.
+  Public desktop aliases and legacy `both` remain compatible; `all` selects only
+  Codex and Claude, and is the new installation/project default.
+- Kept neutral skill/MCP sources and shared instructions. Claude account exports
+  now use shared transport fields directly rather than a removed client renderer.
+- Updated current setup guidance. The earlier conversion evidence above remains
+  historical. Existing Zed configuration is neither removed nor rewritten.
+- Full repository suite: 520 tests passed in 36.194 seconds on macOS. Regression
+  coverage includes rejected removed targets, preserved existing Zed settings,
+  two-target defaults, separate project selections and stdio account handoffs.
+- Isolated CLI checks passed for default/all copy and link installation, read-only
+  check, repeat no-op installation, project init/plan/sync/doctor and repeat sync.
+  Each home had 14 global skills per client; each project had four foundation skills
+  per client. Install/check/project/catalog CLI paths rejected `zed`.
+- Claude account handoff generated 13 portable skill archives. Registry rendering,
+  shell syntax and whitespace checks passed. Final prose edits were followed by
+  the focused adapter/installer and catalog checks.
+
+Verification used temporary homes and projects. No client settings were installed
+in the real home, and no model or MCP request was invoked. Native Windows wrapper
+execution was not tested on this Mac. Shared instruction/skill links naturally
+follow the revised source content.

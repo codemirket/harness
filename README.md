@@ -1,104 +1,194 @@
-# Personal agentic harness
+# Personal Agentic Harness
 
-One source for my instructions, skills and MCP servers, installed through small
-adapters for **Zed**, **Codex Desktop** and **Claude Desktop Code**. Zed is the
-default. Each target also receives the settings it can enforce; Zed can manage
-extension installation. Shared capabilities stay independent of client layouts.
+A shared toolkit for **Codex Desktop** and **Claude Desktop Code**: reusable skills,
+MCP configuration, working instructions and executable checks for finished work.
+Keep capability sources in one repository and install them through small,
+client-specific adapters.
 
-## Install
+The workflow is **make → render or exercise → inspect → repair**. It covers UI,
+animation, illustration, office documents, Markdown and software engineering.
+It is a personal setup you can fork and adapt; review the defaults before installing.
 
-Keep this checkout in a stable directory. Python 3.9+ and its standard library
-are sufficient. Run from this repository; on Windows use `py -3`.
+![Fieldwork Studio, the included interactive UI specimen](docs/assets/fieldwork-studio.png)
 
-```sh
-python3 ai.py install --target zed --dry-run
-python3 ai.py install --target zed
-python3 ai.py check --target zed
-```
+*The included [Fieldwork Studio example](examples/craft-lab/) has working search,
+filters, saved items, keyboard-operable previews and original SVG illustrations.*
 
-Use `--target codex-desktop`, `--target claude-desktop`, or `--target all` for the
-other installations. Close selected clients before applying changed settings.
-The installer preserves unrelated settings and comments, backs up existing
-configuration, and stops on conflicting unmanaged content.
+## What you get
 
-Installation supplies shared instructions, 14 global skills, selected MCP
-configuration and target settings. It does not install applications, dependencies,
-log in, start MCP servers or register a schedule. `check` verifies installed files
-and configuration drift; client activation is a separate check.
-
-Claude Desktop installation covers local **Code** sessions and Claude Code CLI.
-Chat and Cowork use different customization surfaces. For account upload assets:
-
-```sh
-mkdir -p build
-python3 ai.py handoff --output build/claude-account-handoff
-```
-
-The destination must be new. Upload and enable the generated skills manually;
-the handoff does not connect accounts or activate tools. See [target coverage and
-limits](docs/targets.md) and [setup and recovery](setup/README.md).
-
-## Sources
-
-| Source | Owns |
+| Capability | Concrete output |
 | --- | --- |
-| [instructions/AGENTS.md](instructions/AGENTS.md) | Shared working principles |
-| [skills/](skills/) | Authored capability content |
-| [registry/harness.json](registry/harness.json) | Shared selections and defaults |
-| [registry/targets.json](registry/targets.json) | Target paths, settings and extensions |
-| [registry/mcp.json](registry/mcp.json) | Client-neutral HTTP and stdio MCP definitions |
-| [registry/catalog.json](registry/catalog.json) | Reviewed project skills, profiles and source pins |
+| UI and motion | Browser journeys, desktop/mobile screenshots and normal/reduced-motion frames |
+| Vector assets | Editable SVG, multi-size light/dark renders and a contact sheet |
+| Office documents | Editable DOCX/PPTX/XLSX, page renders and formula recalculation |
+| Markdown | Local link, heading and fence checks, plus technical/editorial review workflows |
+| Engineering and QA | Project-specific behavior tests, failure investigation and independent artifact review |
+| Shared setup | 14 global skills, project skill selection, MCP definitions and native target settings |
 
-OpenAI documentation MCP is enabled by default; Microsoft Learn is available but
-disabled. Change the neutral registry to change selection. Credentials and account
-connections belong outside this repository.
+The installer needs only Python's standard library. Artifact tools use optional,
+already-installed runtimes. Neither installation nor a passing check guarantees
+visual quality; inspect the actual result. See [research and design decisions](docs/research/decisions-2026-10-09.md).
 
-Instructions guide agent behavior. Permission settings constrain supported client
-actions but remain user-editable. Existing per-tool approvals are preserved, so
-installing a default confirmation policy is not a complete lockdown.
+## Quick start
 
-## Add project capabilities
+You need Git, Python **3.9+**, and at least one supported client installed and signed
+in. Keep the clone in a stable location: linked installations depend on it.
 
-Inspect the project's instructions, stack and scope first. Start with
-`project-foundation`, then add relevant specialists from the [catalog](docs/catalog.md).
-The foundation supplies architecture, debugging, testing and release guidance;
-global skills supply the shared workflows.
+```sh
+git clone https://github.com/nazmirket/.ai.git personal-ai
+cd personal-ai
+
+# Preview the exact changes first. Choose one client or use --target all.
+python3 ai.py install --target codex-desktop --dry-run
+
+# Close the selected client before applying changed settings.
+python3 ai.py install --target codex-desktop
+python3 ai.py check --target codex-desktop
+```
+
+For Claude, substitute `--target claude-desktop`. `--target all` installs both.
+On Windows, use `py -3` in place of `python3`. The installer supports managed
+copies as well as links; add `--mode copy` consistently to install/check to keep
+copies. See [setup and recovery](setup/README.md).
+
+After installation, reopen the client and start a fresh session. Confirm that
+shared instructions and `skill-catalog` are available, inspect MCP status, and
+exercise a representative skill. `check` verifies files and configuration;
+it cannot establish that a running client has loaded them.
+
+### What installation changes
+
+| Target | Guidance | Skills | Configuration |
+| --- | --- | --- | --- |
+| Codex Desktop / CLI | `~/.codex/AGENTS.md` | `~/.agents/skills/` | `~/.codex/config.toml` |
+| Claude Desktop Code / CLI | `~/.claude/CLAUDE.md` | `~/.claude/skills/` | `~/.claude/settings.json`, `~/.claude.json` for MCP |
+
+The defaults include OpenAI's documentation MCP server and selected native
+permission settings. Review [target defaults](registry/targets.json),
+[MCP definitions](registry/mcp.json) and [shared instructions](instructions/AGENTS.md)
+before applying them. Unrelated configuration is preserved; conflicting unmanaged
+files stop installation. Changed configuration receives a local backup.
+
+Installation does not install clients or packages, log into accounts, start MCP
+servers, register a schedule, change projects or enable every skill in the catalog.
+Optional model, appearance and plugin preferences are a separate command and
+contain the maintainer's choices; they are not universal defaults.
+
+**Claude Chat and Cowork:** local Code configuration does not configure those
+surfaces. Use the manual [account handoff](docs/targets.md) for supported skill
+uploads; local shell tools and account connections do not transfer automatically.
+Zed is not an installation target.
+
+## Add capabilities to a project
+
+Run these commands from the harness checkout, with the absolute path to your
+project. Inspect that project's instructions and current Git changes first.
 
 ```sh
 python3 ai.py project init --project /absolute/project --target all
-python3 ai.py project add --project /absolute/project --skill database-systems --dry-run
-python3 ai.py project add --project /absolute/project --skill database-systems
+python3 ai.py project add --project /absolute/project --skill svg-creation --skill motion-design --dry-run
+python3 ai.py project add --project /absolute/project --skill svg-creation --skill motion-design
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
-`add` updates the declaration; `sync` installs verified payloads and records the
-lock. Existing selections and modified or unselected copies are preserved.
-Zed and Codex share `.agents/skills`, so their selections must agree when both
-are enabled. Claude uses `.claude/skills`. See [project target selection](docs/project-targets.md).
+Use only the client targets and specialists that fit the project. Init adds the
+small `project-foundation`; add records selections; sync installs verified
+payloads; doctor checks them. Existing manifests retain their selections.
+Codex project skills go under `.agents/skills`, Claude skills under `.claude/skills`.
+Modified and unselected copies are preserved rather than silently deleted.
 
-## Optional tools
+Browse the [skill catalog](docs/catalog.md) and [target selection guide](docs/project-targets.md).
+Some optional skills are fetched from pinned upstream sources and require network
+access. Review their dependencies and licenses before selecting them.
 
-The core install has no scheduled side effects. Existing scheduling commands are
-an explicit opt-in; review [legacy maintenance scope](docs/scheduling.md) before
-using them. They are separate from target installation.
+## Run the workbench
 
-- [Portable Codex preferences](docs/settings.md): optional themes and app settings
-  through `ai.py settings`; not applied by the target installer.
-- [Runtime integrations](docs/runtime-integrations.md): prerequisites and manual setup.
-- [Project readiness](setup/README.md#project-readiness): inspect installed tools
-  and optionally a running local app.
-- [Quality evaluation](docs/quality-harness.md): bounded development exercises.
-- [Codex plugin exports](docs/plugins.md): alternative packaging for selected skills.
-- [Bounded Claude delegation](skills/agent-coordination/references/claude-code.md):
-  optional independent review using an installed CLI.
+Start by discovering which tools are available:
 
-## Maintain
+```sh
+python3 ai.py workbench doctor
+```
 
-Review capability content and executable behavior before updating source pins.
-Links follow this checkout; managed copies refresh on installation or sync.
-Installation and registration do not prove an agent used a skill successfully.
+| Operation | Optional prerequisites |
+| --- | --- |
+| Browser scenarios | Node.js, Playwright and a compatible Chromium browser |
+| Vector rendering | Node.js, sharp and Python |
+| Office inspection | Python standard library |
+| Office rendering | LibreOffice, Poppler (`pdfinfo`, `pdftoppm`) |
+| Office demo authoring | python-docx, python-pptx and openpyxl, plus renderers |
+| Markdown checks | Python standard library |
+
+Configure existing executable and module paths with `workbench configure`; they
+stay in `~/.agent-harness/toolchain.json`, outside the repository. Nothing is
+downloaded automatically. The [workbench guide](docs/workbench.md) documents exact
+configuration, environment overrides, scenario schema and evidence limits.
+
+To try the included UI, run this in one terminal:
+
+```sh
+python3 -m http.server 4173 --bind 127.0.0.1 --directory examples/craft-lab
+```
+
+Open `http://127.0.0.1:4173`. With the optional tools configured, run in another
+terminal from the same checkout:
+
+```sh
+mkdir -p build
+python3 ai.py workbench browser --scenario examples/craft-lab/scenario.json --output build/browser-review
+python3 ai.py workbench vector examples/craft-lab/fieldwork.svg --output build/vector-review
+python3 ai.py workbench documents demo --output build/office-demo
+python3 ai.py workbench markdown README.md --output build/readme-review
+```
+
+Use a new output directory each time; existing artifacts are never overwritten.
+On Windows create `build` with `New-Item -ItemType Directory -Force build`.
+Open the generated PNGs and editable originals, inspect the reports, and fix
+observed problems. Stop the local server when finished. Generated artifacts are
+ignored by Git. Raster image generation uses an available host tool or your
+separately connected provider; this repository does not supply an image model.
+
+## Optional Codex plugin
+
+The same source can be packaged as a single `personal-workbench` plugin:
+
+```sh
+mkdir -p build
+python3 ai.py export --bundle personal-workbench --output build/personal-marketplace
+codex plugin marketplace add ./build/personal-marketplace
+```
+
+Use the supported desktop plugin interface to install and verify it. This bundle
+contains the global workflows, SVG/motion skills, executable helpers and examples.
+Avoid enabling duplicate plugin and direct-install copies of the same skills.
+Plugin packaging does not install global instruction files, provision runtimes or
+make quality checks automatic. See [plugin setup and updates](docs/plugins.md).
+
+## Customize and update
+
+| File or directory | Purpose |
+| --- | --- |
+| [instructions/AGENTS.md](instructions/AGENTS.md) | Shared working principles |
+| [skills/](skills/) | Capability instructions, references and helpers |
+| [registry/harness.json](registry/harness.json) | Global selections, project defaults and plugin bundles |
+| [registry/targets.json](registry/targets.json) | Client destinations and native settings |
+| [registry/mcp.json](registry/mcp.json) | Shared MCP definitions |
+| [registry/catalog.json](registry/catalog.json) | Reviewed project skills, profiles and source pins |
+
+Fork this repository to maintain your own choices. Keep credentials, personal
+configurations and generated reports outside Git. Review upstream changes before
+pulling: linked skills immediately reflect edits to the checkout. For managed
+copies, rerun installation; for project skills, run plan, sync and doctor.
+There is no automatic update schedule by default.
+
+If installation reports a conflict, preserve the existing content and review the
+proposed change. Do not delete files to force a pass. Recovery, backup behavior
+and isolated-home rehearsals are documented in [setup](setup/README.md#ownership-and-recovery).
+There is no general uninstall command; remove only confirmed harness-owned links
+or files and restore the relevant configuration backup after reviewing it.
+
+## Development and verification
 
 ```sh
 python3 scripts/render_registry.py --check
@@ -107,4 +197,23 @@ sh -n setup/macos.sh
 git diff --check
 ```
 
-See [migration decisions and verification](docs/work/target-migration.md).
+Run the shell syntax check on a POSIX shell. Browser/vector integration tests need
+their optional runtimes and explicitly skip when unavailable. The latest recorded
+macOS run passed **552 tests** with no skips; see the [verification record](docs/research/verification-2026-10-09.md)
+for scope and limits. Windows client installation is supported, but the recorded
+artifact-rendering evidence is from macOS, not a Windows runtime certification.
+
+For changes, keep target adapters separate from shared capabilities, add behavior
+checks for consequential changes, update affected documentation and preserve
+upstream attribution. Never make a failing check pass by weakening it.
+
+## License
+
+Original harness code, documentation and examples are available under the
+[MIT License](LICENSE). Third-party and adapted material retains its own terms;
+see [third-party notices](docs/third-party-notices.md), per-file attribution and the
+[source review](docs/source-review.md). Catalog entries do not relicense upstream
+skills, models, services or optional tools.
+
+Historical Windmill skill sources retained in Git history remain under AGPLv3,
+as documented in the third-party notices; they are not part of the current install.

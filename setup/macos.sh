@@ -2,11 +2,11 @@
 # Compatibility entry point for existing cron jobs and manual setup.
 set -eu
 if [ "$#" -gt 1 ]; then
-    printf 'Usage: sh %s [zed|codex-desktop|claude-desktop|all|codex|claude-code|both]\n' "$0" >&2
+    printf 'Usage: sh %s [codex-desktop|claude-desktop|all|codex|claude-code|both]\n' "$0" >&2
     exit 2
 fi
 if [ "$#" -eq 1 ]; then
-    case $1 in zed|codex-desktop|claude-desktop|all|codex|claude-code|claude|both) ;; *) printf 'Choose zed, codex-desktop, claude-desktop or all.\n' >&2; exit 2 ;; esac
+    case $1 in codex-desktop|claude-desktop|all|codex|claude-code|claude|both) ;; *) printf 'Choose codex-desktop, claude-desktop or all.\n' >&2; exit 2 ;; esac
 fi
 shared_dir=${AI_SHARED_DIR:-"$(CDPATH='' cd "$(dirname "$0")/.." && pwd -P)"}
 if [ ! -f "$shared_dir/ai.py" ]; then
@@ -21,7 +21,7 @@ if [ "$#" -eq 0 ]; then
     exec python3 "$shared_dir/ai.py" install
 fi
 case $1 in
-    zed|codex-desktop|claude-desktop|all) exec python3 "$shared_dir/ai.py" install --target "$1" ;;
+    codex-desktop|claude-desktop|all) exec python3 "$shared_dir/ai.py" install --target "$1" ;;
 esac
 # Explicit legacy targets remain suitable for existing scheduled skill syncs.
 exec python3 "$shared_dir/ai.py" sync --target "$1"

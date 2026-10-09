@@ -296,7 +296,7 @@
       "name": "interface-design",
       "scope": "global",
       "category": "design",
-      "description": "Design, implement, or review screens and public pages. Use for UI redesign, visual polish, layout, typography, spacing and interaction design, with verification of the rendered result. Skip backend-only changes and routine edits with no interface impact.",
+      "description": "Build and refine usable product screens and public pages with deliberate visual direction, real content, working states and inspected browser evidence. Use for UI design, redesign, visual polish and interaction work. Skip backend-only changes.",
       "delivery": "global-link",
       "path": "skills/interface-design",
       "informed_by": [
@@ -487,7 +487,7 @@
         "interaction-recipes",
         "animator"
       ],
-      "sha256": "b4c9597549bfbc0905a5353ebe9855c6607983aa29ba3c7f3aa4b50e9e2aea9e"
+      "sha256": "97a78d1ffe0d7ae42db6855ae3e03552c4178f4140348a351dfc8296ee618146"
     },
     {
       "id": "svg-animation",
@@ -551,7 +551,7 @@
         "svg-creation",
         "illustrator"
       ],
-      "sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d"
+      "sha256": "b0f1358dfc5a4fb39c47fc2afab8678a175416948547b0e475cc43ae7320d799"
     },
     {
       "id": "experiment-design",
@@ -11189,7 +11189,7 @@
       "name": "office-authoring",
       "scope": "project",
       "category": "documents",
-      "description": "Create or revise Word documents, spreadsheets, and slide decks with structured content, editable source, calculation checks, and rendered verification. Use an available native format skill when it provides a stronger implementation workflow.",
+      "description": "Create and revise editable Word documents, spreadsheets and slide decks; render the saved artifacts, inspect every page and verify calculations. Use a capable native format skill when available, with the portable document workbench as a cross-client fallback.",
       "delivery": "local",
       "path": "skills/office-authoring",
       "license_files": [
@@ -11209,7 +11209,7 @@
         "pptx"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+      "sha256": "0fc6dc13d27f46021f63fed437191e9be56768aeea670194b534092901981125"
     },
     {
       "id": "ci-maintenance",
@@ -11387,7 +11387,7 @@
         "work-planning",
         "planner"
       ],
-      "sha256": "ac3c9e875c381f38923f4fc9c78b243e47238dd414962a7f0b52a022217ebe23"
+      "sha256": "1a68e94ee59306e4726743237f7b218d9bd047813d494c408265a28eade32841"
     },
     {
       "id": "search-visibility",
