@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "personal-ai",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "global_skills": [
     "skill-catalog",
     "engineering-judgment",
@@ -22,28 +22,6 @@
     "profiles": [
       "project-foundation"
     ]
-  },
-  "targets": {
-    "codex": {
-      "instructions": "instructions/AGENTS.md",
-      "instruction_destination": ".codex/AGENTS.md",
-      "skills_destination": ".agents/skills",
-      "role": "primary",
-      "clients": [
-        "codex-desktop",
-        "codex-cli"
-      ]
-    },
-    "claude": {
-      "instructions": "instructions/CLAUDE.md",
-      "instruction_destination": ".claude/CLAUDE.md",
-      "skills_destination": ".claude/skills",
-      "role": "delegate",
-      "clients": [
-        "claude-code"
-      ],
-      "desktop_support": false
-    }
   },
   "bundles": {
     "personal-foundation": {
@@ -99,21 +77,24 @@
       ]
     }
   },
-  "runtime_policy": "Installation verifies Codex desktop, Codex CLI and Claude Code CLI without running a model or an upstream installer. Claude is supported as a CLI delegate only. Skill registration and Codex plugin export do not connect accounts or provision third-party runtimes.",
-  "primary_client": "codex-desktop",
+  "runtime_policy": "Install selected target configuration without installing applications, dependencies, logging in, or starting MCP servers. Verify activation in the selected client.",
+  "primary_client": "zed",
   "delegation": {
-    "primary": "codex-subagents",
+    "primary": "host-subagents",
     "secondary": "claude-code",
-    "strategy": "Use available ChatGPT/Codex subagents by default. Use Claude Code selectively for a bounded independent perspective, specialist fit or explicit user preference. Codex retains orchestration and verification.",
-    "desktop_support": false
+    "strategy": "Use the selected host agent and available bounded workers. Honor explicit provider choices; the initiating agent owns integration and verification."
   },
   "settings_source": "registry/codex-settings.json",
   "maintenance": {
-    "enabled": true,
+    "enabled": false,
     "time": "00:00",
     "timezone": "system",
     "remote": "origin",
     "branch": "main",
     "expected_repository": "github.com/nazmirket/.ai"
-  }
+  },
+  "default_target": "zed",
+  "instructions": "instructions/AGENTS.md",
+  "target_source": "registry/targets.json",
+  "mcp_source": "registry/mcp.json"
 }

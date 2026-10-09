@@ -4,7 +4,7 @@ Use a bounded question whose answer can materially improve the primary agent's
 work. Good assignments include finding a concrete correctness defect in named
 files, comparing two designs against supplied constraints, or checking whether a
 conclusion follows from supplied research. Claude is an independent reviewer;
-the primary ChatGPT/Codex agent retains implementation and integration ownership.
+the initiating agent retains implementation and integration ownership.
 
 ## Prepare and preview
 

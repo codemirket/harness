@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "targets": {
+    "zed": {
+      "instructions": "instructions/AGENTS.md",
+      "instruction_destination": ".config/zed/AGENTS.md",
+      "skills_destination": ".agents/skills",
+      "settings_destination": ".config/zed/settings.json",
+      "settings_format": "jsonc",
+      "settings": {"agent": {"tool_permissions": {"default": "confirm"}}},
+      "extensions": {"toml": true},
+      "surface": "Zed native agent; ACP agents also require their own target installation"
+    },
+    "codex": {
+      "instructions": "instructions/AGENTS.md",
+      "instruction_destination": ".codex/AGENTS.md",
+      "skills_destination": ".agents/skills",
+      "settings_destination": ".codex/config.toml",
+      "settings_format": "toml",
+      "settings": {"approval_policy": "on-request", "sandbox_mode": "workspace-write"},
+      "surface": "Codex Desktop and CLI"
+    },
+    "claude": {
+      "instructions": "instructions/AGENTS.md",
+      "instruction_destination": ".claude/CLAUDE.md",
+      "skills_destination": ".claude/skills",
+      "settings_destination": ".claude/settings.json",
+      "settings_format": "json",
+      "settings": {"permissions": {"defaultMode": "default"}},
+      "surface": "Claude Desktop Code mode and Claude Code CLI"
+    }
+  }
+}

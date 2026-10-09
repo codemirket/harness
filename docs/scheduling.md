@@ -1,31 +1,42 @@
-# Daily native maintenance
+# Optional legacy maintenance
 
-Complete installation registers a job for **12:00 AM (00:00) every day in the device’s local timezone**. The job refreshes this repository and reconciles its global guidance, skills and portable Codex preferences. It uses the OS scheduler; it does not open an AI session.
+Modern `ai.py install` and `ai.py check` neither register nor verify schedules.
+Maintenance is disabled by default in `registry/harness.json`; deliberately enable
+`maintenance.enabled` before opting into registration or execution. A disabled
+policy blocks registration and maintenance runs. It does not unregister an
+existing OS job; inspect and remove an unwanted job deliberately.
+
+The retained legacy job runs at **12:00 AM (00:00) every day in the device's local
+timezone**. It refreshes this repository and reconciles Codex/Claude guidance,
+skills and portable Codex preferences. It does **not** manage the new target
+settings, Zed extensions or neutral MCP registry. Use target `install` and `check`
+for those. The OS job does not open an AI session.
 
 | Device | Scheduler | Timing and conditions |
 | --- | --- | --- |
 | macOS/Linux | Current user’s crontab, `0 0 * * *` | Runs at local midnight when the machine and cron service are available. Missed runs are not caught up. |
 | Windows 11 | Current-user Task Scheduler task | Daily local midnight, least privilege, interactive user session, `StartWhenAvailable` catch-up. No stored password or elevation. |
 
-The policy is declared in [harness.json](../registry/harness.json): maintenance enabled, time `00:00`, timezone `system`, remote `origin`, branch `main`, expected repository identity `github.com/nazmirket/.ai`. The supported contract is daily local midnight; do not treat these fields as a general scheduling language.
+The policy is declared in [harness.json](../registry/harness.json): `maintenance.enabled` (false by default), time `00:00`, timezone `system`, remote `origin`, branch `main`, expected repository identity `github.com/nazmirket/.ai`. The supported contract is daily local midnight; do not treat these fields as a general scheduling language.
 
 ## Register and inspect
 
-```sh
-python3 ai.py install --dry-run
-python3 ai.py install
-python3 ai.py check
+After reviewing and explicitly enabling the maintenance policy:
 
+```sh
 python3 ai.py schedule plan
 python3 ai.py schedule install
 python3 ai.py schedule check
 ```
 
-Use `py -3` on Windows. Full installation preflights the schedule alongside global ownership and settings, then registers and reads back the OS job. `check` includes registration drift. `--no-schedule` on `install` or `check` explicitly skips this component for isolated homes or exported bundles without a Git checkout; it does not remove an existing job.
+Use `py -3` on Windows. These commands manage only the current OS user's owned
+job. Registration requires a valid Git checkout and enabled policy. It can be
+performed while Codex is open or the repository has local edits. Registration
+checks the stored scheduler contract, not whether a run succeeds.
 
-Scheduled runs always follow the repository's settings source. An alternative `install --settings` manifest requires `--no-schedule` so the next scheduled run does not silently replace that choice.
-
-The direct schedule commands only manage the current OS user’s owned job. Registration requires a valid Git checkout and the declared maintenance policy. It can be performed while Codex is open or the repository has local edits. The full installer still requires its other preflight checks to pass.
+The historical complete installer remains available as `ai.py legacy-install`
+for compatibility. Its broader runtime, preferences and scheduling behavior is
+separate from modern target installation. Do not use it as the Zed installer.
 
 An existing exact legacy midnight installer line is replaced by the owned maintenance entry. Other cron jobs and tasks remain untouched. Modified legacy lines, malformed ownership markers, a conflicting Windows task, or an existing `CRON_TZ` override require review. Scheduler changes are backed up locally before replacement and checked afterward; concurrent edits are not silently overwritten.
 
@@ -42,7 +53,7 @@ The updater checks repository identity, the `main` branch and its `origin/main` 
 
 Local changes, untracked files, local-ahead or divergent history, an unexpected remote, and active Git operations stop the run. The updater does not stash, reset, commit, push or resolve conflicts automatically. Resolve the reported condition deliberately, then run maintenance again; the daily job remains registered. Uncommitted work in this checkout is a temporary reason to skip an update, not a reason to discard the work.
 
-The refreshed process reconciles global registrations for Codex and the supporting Claude Code CLI, preserving unmanaged or modified content. It also applies the allowlisted [portable preferences](settings.md). It does not synchronize every project, update catalog pins independently, install runtime dependencies, connect plugin accounts or invoke a model.
+The refreshed process reconciles global registrations for Codex and the Claude Code CLI, preserving unmanaged or modified content. It also applies the allowlisted [portable preferences](settings.md). It does not synchronize every project, update catalog pins independently, install runtime dependencies, connect plugin accounts or invoke a model.
 
 A process lock prevents overlapping maintenance runs. Git and child-process output is bounded, and durable reports omit raw remote URLs, credentials and Git error output. A failed fetch or synchronization remains a failed/partial run; it is not reported as ready merely because the scheduler launched.
 

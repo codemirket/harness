@@ -10,7 +10,7 @@ import sys
 import tempfile
 import uuid
 
-from . import catalog
+from . import catalog, targets as target_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / 'registry/harness.json'
@@ -25,14 +25,14 @@ def manifest():
     data = read_json(MANIFEST)
     if data.get('schema_version') != 1:
         raise ValueError('Unsupported harness schema')
+    if 'targets' not in data:
+        data['targets'] = target_registry.load()
     return data
 
 
 def targets(choice, config):
-    # The legacy name addresses Claude Code CLI context, never Claude desktop.
-    choice = 'claude' if choice == 'claude-code' else choice
-    names = list(config['targets']) if choice == 'both' else [choice]
-    if any(name not in ('codex', 'claude') or name not in config['targets'] for name in names):
+    names = target_registry.names(choice)
+    if any(name not in config['targets'] for name in names):
         raise ValueError('Unsupported target')
     return names
 
@@ -100,6 +100,8 @@ def write_json(path, value):
 def global_plan(target='codex', home=None, mode='auto'):
     config = manifest()
     data = catalog.load_catalog()
+    selected_targets = targets(target, config)
+    target_registry.validate_home_environment(home, selected_targets)
     home = (home or Path.home()).expanduser().resolve(strict=True)
     if not home.is_dir():
         raise ValueError('Home must be an existing directory')
@@ -114,11 +116,13 @@ def global_plan(target='codex', home=None, mode='auto'):
         raise ValueError('Invalid harness receipt')
     by_id = {entry['id']: entry for entry in data['skills']}
     jobs = []
-    for app in targets(target, config):
-        adapter = config['targets'][app]
+    for app in selected_targets:
+        adapter = target_registry.global_adapter(app, home, config['targets'][app])
         specs = [('instructions', adapter['instructions'], adapter['instruction_destination'], False)]
         for identifier in config['global_skills']:
             entry = by_id[identifier]
+            if not catalog.supports_target(entry, app):
+                raise ValueError('Global skill ' + identifier + ' does not support target ' + app)
             if entry.get('delivery') not in ('local', 'global-link'):
                 raise ValueError('Default global skills must be authored local selections: ' + identifier)
             specs.append((identifier, entry['path'], adapter['skills_destination'] + '/' + entry['name'], True))
@@ -142,13 +146,14 @@ def global_plan(target='codex', home=None, mode='auto'):
                 desired = {'kind': 'link', 'target': str(source)}
             dest = guarded_path(home, dest_rel)
             actual = fingerprint(dest)
-            key = app + ':' + identifier
-            old = previous['items'].get(key)
-            owned = old and old.get('destination') == dest_rel and old.get('fingerprint') == actual
+            owned = any(old.get('destination') == dest_rel and old.get('fingerprint') == actual
+                        for old in previous['items'].values() if isinstance(old, dict))
             # Existing repository links from the earlier installers are known migrations.
             legacy = set()
             if identifier == 'instructions':
                 legacy.add(str(ROOT / 'components/AGENTS.md'))
+                if app == 'claude':
+                    legacy.add(str(ROOT / 'instructions/CLAUDE.md'))
             legacy.add(str(source))
             is_legacy = actual and actual['kind'] == 'link' and actual['target'] in legacy
             if actual == desired:
@@ -162,10 +167,15 @@ def global_plan(target='codex', home=None, mode='auto'):
             jobs.append({'target': app, 'id': identifier, 'source': source, 'destination': dest,
                          'relative_destination': dest_rel, 'directory': directory, 'mode': mode,
                          'action': action, 'before': actual, 'desired': desired, 'payload': payload})
-    # No hidden duplicate writes, even if the declarative target manifest is edited.
-    paths = [str(j['destination']).casefold() for j in jobs]
-    if len(paths) != len(set(paths)):
-        raise ValueError('Duplicate global destinations')
+    # Shared client discovery roots may contain the same authored skill. Reject
+    # collisions unless every input to the physical publication is identical.
+    destinations = {}
+    for job in jobs:
+        key = str(job['destination']).casefold()
+        prior = destinations.setdefault(key, job)
+        if any(prior[field] != job[field] for field in
+               ('destination', 'id', 'source', 'desired', 'mode', 'payload')):
+            raise ValueError('Conflicting global destinations: ' + str(job['destination']))
     return home, receipt, previous, jobs
 
 
@@ -210,8 +220,9 @@ def replace_item(dest, create, expected, snapshot=fingerprint):
 
 def sync_global(target='codex', home=None, mode='auto'):
     home, receipt, previous, jobs = global_plan(target, home, mode)
+    published = set()
     for job in jobs:
-        if job['action'] != 'unchanged':
+        if job['action'] != 'unchanged' and job['destination'] not in published:
             def create(stage):
                 if job['mode'] == 'link':
                     stage.symlink_to(job['source'], target_is_directory=job['directory'])
@@ -224,12 +235,20 @@ def sync_global(target='codex', home=None, mode='auto'):
                 else:
                     stage.write_bytes(job['payload'])
             replace_item(job['destination'], create, job['before'])
+            published.add(job['destination'])
         previous['items'][job['target'] + ':' + job['id']] = {
             'destination': job['relative_destination'], 'source': str(job['source']),
             'fingerprint': job['desired']}
         # Keep ownership evidence for completed items if a later OS failure occurs.
         write_json(receipt, previous)
     return public_jobs(jobs)
+
+
+def normalize_project_target(target, context='project target'):
+    try:
+        return target_registry.normalize(target)
+    except ValueError as error:
+        raise ValueError('Unsupported ' + context + ': ' + str(target)) from error
 
 
 def project_selection(config, data):
@@ -248,21 +267,19 @@ def project_selection(config, data):
     selected_targets = config.get('targets')
     if not selected_targets or len(selected_targets) != len(set(selected_targets)):
         raise ValueError('Select distinct project targets')
-    selected_targets = ['claude' if target == 'claude-code' else target for target in selected_targets]
+    selected_targets = [normalize_project_target(target) for target in selected_targets]
     if len(selected_targets) != len(set(selected_targets)):
         raise ValueError('Select distinct project targets')
     config['targets'] = selected_targets
     for target in selected_targets:
-        if target not in ('codex', 'claude') or target not in manifest()['targets']:
+        if target not in manifest()['targets']:
             raise ValueError('Unsupported project target: ' + target)
     declared = config.get('target_skills', {})
     if not isinstance(declared, dict):
         raise ValueError('Project target_skills must map targets to string lists')
     specific = {}
     for target, identifiers in declared.items():
-        target = 'claude' if target == 'claude-code' else target
-        if target not in ('codex', 'claude'):
-            raise ValueError('Unsupported target_skills target: ' + str(target))
+        target = normalize_project_target(target, 'target_skills target')
         if target not in selected_targets:
             raise ValueError('target_skills target is not in project targets: ' + target)
         if target in specific:
@@ -282,13 +299,21 @@ def project_selection(config, data):
                                                 config.get('skills', []) + specific.get(target, []),
                                                 config.get('skip', []))
             for entry in entries:
-                if target not in entry.get('agents', ['codex', 'claude']):
+                if not catalog.supports_target(entry, target):
                     raise ValueError('Skill ' + entry['id'] + ' does not support target ' + target)
         except ValueError as error:
             raise ValueError('Project target ' + target + ': ' + str(error)) from error
         selections[target] = entries
     if not any(selections.values()):
         raise ValueError('Project manifest selects no skills')
+    shared_roots = {}
+    for target, entries in selections.items():
+        root = target_registry.project_skills_dir(target)
+        identifiers = {entry['id'] for entry in entries}
+        if root in shared_roots and shared_roots[root][1] != identifiers:
+            raise ValueError('Targets ' + shared_roots[root][0] + ' and ' + target
+                             + ' share ' + root + '; select the same effective skills for both')
+        shared_roots[root] = (target, identifiers)
     return config, selections
 
 
@@ -312,12 +337,12 @@ def project_state(entry, project, target):
     # Metadata rejection must never be treated as permission to update an old copy.
     if entry['scope'] != 'project' or entry.get('delivery') not in ('upstream', 'local'):
         raise ValueError('This entry is not approved for automatic project installation')
-    if target not in ('codex', 'claude') or target not in entry.get('agents', ['codex', 'claude']):
+    if not catalog.supports_target(entry, target):
         raise ValueError('Skill does not support this agent: ' + target)
     if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', entry['name']):
         raise ValueError('Unsafe installation name')
     catalog.selection_files(entry)
-    base = '.agents/skills/' if target == 'codex' else '.claude/skills/'
+    base = target_registry.project_skills_dir(target) + '/'
     dest = guarded_path(project, base + entry['name'])
     before = project_fingerprint(dest)
     try:
@@ -332,7 +357,7 @@ def project_state(entry, project, target):
             raise original
         prior = read_json(receipt)
         if (not isinstance(prior, dict)
-                or target not in entry.get('agents', ['codex', 'claude'])
+                or not catalog.supports_target(entry, target)
                 or prior.get('id') != entry['id']
                 or catalog.payload_hash(catalog.existing_payload(dest)) != prior.get('installed_sha256', prior.get('sha256'))):
             raise original
@@ -381,7 +406,7 @@ def project_jobs(project, config, selections):
     for entry in entries:
         exclusions = [
             {'target': target,
-             'reason': 'unsupported' if target not in entry.get('agents', ['codex', 'claude'])
+             'reason': 'unsupported' if not catalog.supports_target(entry, target)
                        else 'not_requested'}
             for target in config['targets'] if entry['id'] not in selected_ids[target]
         ]
@@ -426,7 +451,7 @@ def preserved_project_copies(project, config, jobs, data, global_names):
                                     'Review its contents and client skill discovery before cleanup or reselection.'})
 
     for target in config['targets']:
-        relative = ('.agents' if target == 'codex' else '.claude') + '/skills'
+        relative = target_registry.project_skills_dir(target)
         root = project / relative
         try:
             guarded_path(project, relative)
@@ -550,17 +575,19 @@ def sync_project(project, source_trees=None):
         if project_fingerprint(dest) != job['before']:
             raise ValueError('Destination changed since preflight: ' + str(dest))
     # All predictable failures precede writes. Every item gets independent recovery.
+    published = set()
     for job in jobs:
         entry = job['entry']; dest = job['destination']
-        if job['action'] == 'unchanged':
+        if job['action'] == 'unchanged' or dest in published:
             continue
         with tempfile.TemporaryDirectory(prefix='personal-ai-skill-') as temp:
             sandbox = Path(temp)
             catalog.install(data, entry, sandbox, job['target'], prepared=prepared[entry['id']])
-            built = sandbox / ('.agents' if job['target'] == 'codex' else '.claude') / 'skills' / entry['name']
+            built = sandbox / target_registry.project_skills_dir(job['target']) / entry['name']
             guarded_path(project, dest.relative_to(project).as_posix())
             replace_item(dest, lambda stage: shutil.copytree(built, stage), job['before'],
                          snapshot=project_fingerprint)
+            published.add(dest)
     if not project_lock_current(project, lock):
         write_json(guarded_path(project, '.ai/project.lock.json'), lock)
     return public_project(jobs, project=project, config=config)
@@ -646,12 +673,10 @@ def add_project(project, profiles=(), skills=(), target_skills=None, dry_run=Fal
               for target, identifiers in canonical.get('target_skills', {}).items()}
     spellings = set()
     for target, identifiers in target_skills.items():
-        target = 'claude' if target == 'claude-code' else target
+        target = normalize_project_target(target, 'target_skills target')
         if target in spellings:
             raise ValueError('Duplicate target_skills target alias: ' + str(target))
         spellings.add(target)
-        if target not in ('codex', 'claude'):
-            raise ValueError('Unsupported target_skills target: ' + str(target))
         if target not in canonical['targets']:
             raise ValueError('target_skills target is not in project targets: ' + target)
         scoped[target] = list(dict.fromkeys(scoped.get(target, []) + identifiers))
@@ -708,7 +733,7 @@ def parse_target_skills(values):
         target, separator, identifier = value.partition(':')
         if not separator or not target or not identifier or ':' in identifier:
             raise ValueError('Use --target-skill TARGET:ID')
-        canonical = 'claude' if target == 'claude-code' else target
+        canonical = normalize_project_target(target, 'target_skills target')
         if canonical in spellings and spellings[canonical] != target:
             raise ValueError('Duplicate target_skills target alias: ' + canonical)
         spellings[canonical] = target
@@ -717,12 +742,13 @@ def parse_target_skills(values):
 
 
 def main(argv=None):
+    default_target = manifest().get('default_target', 'codex')
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='command', required=True)
     for name in ('plan', 'sync', 'doctor'):
         p = commands.add_parser(name, help=name + ' declared global instructions and skills')
-        p.add_argument('--target', choices=['codex', 'claude-code', 'claude', 'both'], default='codex',
-                       help='Codex by default; Claude names provision supporting CLI context only')
+        p.add_argument('--target', choices=target_registry.CHOICES, default=default_target,
+                       help='Client target; both means Codex and Claude, all includes Zed')
         p.add_argument('--home', type=Path)
         p.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     project = commands.add_parser('project').add_subparsers(dest='action', required=True)
@@ -732,7 +758,7 @@ def main(argv=None):
         p = project.add_parser(name, description=description, help=description)
         p.add_argument('--project', type=Path, required=True)
         if name == 'init':
-            p.add_argument('--target', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
+            p.add_argument('--target', choices=target_registry.CHOICES, default=default_target)
             p.add_argument('--skip', action='append', default=[])
         if name in ('init', 'add'):
             p.add_argument('--profile', action='append', default=[])

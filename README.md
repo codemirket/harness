@@ -1,196 +1,110 @@
-# Personal Codex harness
+# Personal agentic harness
 
-This repository is my source of truth for **Codex desktop**: personal guidance, global and project skills, portable app preferences, and Codex plugin bundles. Codex CLI supports installation, automation and diagnostics. ChatGPT/Codex subagents are the normal delegation path; Claude Code CLI provides bounded second opinions when useful. Claude desktop is outside this harness.
+One source for my instructions, skills and MCP servers, installed through small
+adapters for **Zed**, **Codex Desktop** and **Claude Desktop Code**. Zed is the
+default. Each target also receives the settings it can enforce; Zed can manage
+extension installation. Shared capabilities stay independent of client layouts.
 
-[Browse the catalog](docs/catalog.md) for 14 default global skills, 201 project selections and 64 composable profiles. The default project foundation adds architecture, debugging, testing and release skills without duplicating the globals. An explicit 12-skill `portable-foundation` serves environments without the corresponding globals. Add specialists for current work and credible later stages. Coverage includes web, desktop, mobile, APIs, integrations, databases, research, AI systems, documents, design, media, marketing, testing, security and operations. [Source reviews](docs/source-review.md) distinguish reviewed payloads from integrations that need additional work.
+## Install
 
-## Install and check
-
-Keep the Git checkout in a stable directory. The harness needs Python 3.9+ and uses only its standard library.
+Keep this checkout in a stable directory. Python 3.9+ and its standard library
+are sufficient. Run from this repository; on Windows use `py -3`.
 
 ```sh
-python3 ai.py install --dry-run
-python3 ai.py install
-python3 ai.py check
+python3 ai.py install --target zed --dry-run
+python3 ai.py install --target zed
+python3 ai.py check --target zed
 ```
 
-On Windows use `py -3`. Without arguments, `sh setup/macos.sh` and `& .\setup\windows.ps1` run the complete installer. It verifies Codex desktop, Codex CLI and Claude Code CLI; checks CLI sign-in status; reconciles global instructions and skills; merges the portable settings source; and registers a native daily **12:00 AM (00:00), local time** maintenance job. Missing applications produce official setup links. It does not download applications or sign in for you.
+Use `--target codex-desktop`, `--target claude-desktop`, or `--target all` for the
+other installations. Close selected clients before applying changed settings.
+The installer preserves unrelated settings and comments, backs up existing
+configuration, and stops on conflicting unmanaged content.
 
-Changes to app preferences require closing Codex desktop and other active Codex clients, running the installer from a terminal, then reopening the app. A matching configuration is a no-op and can be checked while the app is open. macOS uses live skill links; Windows defaults to managed copies. Conflicting user content stops preflight. See [setup, diagnostics and recovery](setup/README.md).
+Installation supplies shared instructions, 14 global skills, selected MCP
+configuration and target settings. It does not install applications, dependencies,
+log in, start MCP servers or register a schedule. `check` verifies installed files
+and configuration drift; client activation is a separate check.
 
-Use `--no-schedule` with `install` or `check` when deliberately preparing an isolated home or an exported bundle without a Git checkout. This skips schedule registration and verification; it does not remove an existing job.
-
-## Daily maintenance
-
-The OS job uses user cron on macOS/Linux and Task Scheduler on Windows. It fetches the expected repository, fast-forwards a clean `main` checkout from `origin/main`, then launches fresh code to synchronize global guidance, skills and portable preferences. Local edits, untracked files, unfinished Git operations and ahead/diverged branches are preserved and reported for review. It never stashes, resets or commits them automatically.
+Claude Desktop installation covers local **Code** sessions and Claude Code CLI.
+Chat and Cowork use different customization surfaces. For account upload assets:
 
 ```sh
-python3 ai.py schedule plan
-python3 ai.py schedule install
-python3 ai.py schedule check
-python3 ai.py maintenance run
-python3 ai.py maintenance status
+mkdir -p build
+python3 ai.py handoff --output build/claude-account-handoff
 ```
 
-Changed preferences wait while Codex is open; global guidance can still refresh. Close Codex and run `python3 ai.py maintenance sync`, or let the next daily run retry. Schedule registration does not prove a successful run. Cron misses runs while the Mac is asleep; Windows catch-up requires the user session and scheduler conditions. See [scheduling, logs and recovery](docs/scheduling.md).
+The destination must be new. Upload and enable the generated skills manually;
+the handoff does not connect accounts or activate tools. See [target coverage and
+limits](docs/targets.md) and [setup and recovery](setup/README.md).
 
-The global [AGENTS.md](instructions/AGENTS.md) requires relevant skill pickup and evidence-based work while remaining under 100 lines. [CLAUDE.md](instructions/CLAUDE.md) defines the supporting Claude Code role. Global availability does not load every skill into every task.
+## Sources
 
-[Task routing](skills/skill-catalog/references/task-routing.md) maps design, illustration, motion, backend, databases, operations, QA, marketing, product, analysis, documentation and research outcomes to reviewed capabilities and their actual invocation names. [Routing audit](docs/reviews/skill-routing.md) records the Trixpo reference check and the limits of installation and selection evidence. UI refinement requires inspected, comparable renders and iteration against the requested visual goal.
+| Source | Owns |
+| --- | --- |
+| [instructions/AGENTS.md](instructions/AGENTS.md) | Shared working principles |
+| [skills/](skills/) | Authored capability content |
+| [registry/harness.json](registry/harness.json) | Shared selections and defaults |
+| [registry/targets.json](registry/targets.json) | Target paths, settings and extensions |
+| [registry/mcp.json](registry/mcp.json) | Client-neutral HTTP and stdio MCP definitions |
+| [registry/catalog.json](registry/catalog.json) | Reviewed project skills, profiles and source pins |
 
-## Deliver and evaluate quality
+OpenAI documentation MCP is enabled by default; Microsoft Learn is available but
+disabled. Change the neutral registry to change selection. Credentials and account
+connections belong outside this repository.
 
-For a new or changed development environment, check prerequisites before relying
-on them. Start the app with its existing project workflow, then optionally check
-the local response and capture a render:
+Instructions guide agent behavior. Permission settings constrain supported client
+actions but remain user-editable. Existing per-tool approvals are preserved, so
+installing a default confirmation policy is not a complete lockdown.
 
-```sh
-python3 ai.py runtime doctor --project /absolute/project --json
-python3 ai.py runtime doctor --project /absolute/project --url http://127.0.0.1:3000 \
-  --screenshot /absolute/project/build/readiness.png --json
-```
+## Add project capabilities
 
-The screenshot path must be new. These checks use installed tools and an isolated
-browser profile; they do not run project scripts or accept visual quality.
-Inspect the captured image and actual interactions before claiming UI improvement.
-See [readiness details and limits](setup/README.md#project-readiness).
-
-[Delivery standards](skills/skill-catalog/references/delivery-standards.md) connect task selection to the evidence needed for frontend, motion, engineering, documentation, integrations and research. Selected skills now carry concrete composition examples, asynchronous state patterns, boundary decisions, integration failure handling, source-checked documentation and claim verification. Project conventions and actual tools determine the implementation.
-
-Seven synthetic development exercises check delivered outputs separately from registration and qualitative review:
-
-```sh
-python3 ai.py eval list
-mkdir -p build/evaluation-runs
-python3 ai.py eval prepare --case engineering-ledger-total --output build/evaluation-runs/ledger \
-  --model 'exact model/version or unavailable' --condition candidate
-# Assign the prepared task; edit only its workspace, then:
-python3 ai.py eval check --run build/evaluation-runs/ledger
-python3 ai.py eval report --run build/evaluation-runs/ledger
-```
-
-The CLI runs local candidate code with normal host permissions and bounded duration/output. It launches no model. Frontend, documentation, research, analysis and database cases also require recorded artifact review through `eval review`. Passing these development cases does not establish production readiness or a quality gain. See [the harness design, pilot evidence and next evaluation steps](docs/quality-harness.md).
-
-The [twelve-resource review](docs/reviews/harness-upgrade.md) records what was adopted,
-rejected or left optional. Product decisions now use `product-management`; quantitative
-work uses `data-analysis`. Both join existing opt-in profiles. Substantial work gets
-artifact-based delivery review, with specific design/editorial/QA guidance. The
-shared instructions stay under 100 lines, with no new service or default MCP.
-
-The [agent-runtime review](docs/reviews/agent-runtime-hardening.md) applies lessons
-from DeerFlow, OpenHuman, DeepAgents, Hermes and CodeGraph: bounded archive
-processing, passive skill loading, retrievable evidence and current-source checks
-for derived indexes. CodeGraph remains an optional project integration.
-
-## Share app preferences
-
-[registry/codex-settings.json](registry/codex-settings.json) contains reviewed portable values captured from this Mac: model/reasoning/response preferences, desktop themes and interaction preferences, and public plugin enablement flags. It excludes credentials, permission policies, project paths, remote devices, history, private plugins and account connections.
+Inspect the project's instructions, stack and scope first. Start with
+`project-foundation`, then add relevant specialists from the [catalog](docs/catalog.md).
+The foundation supplies architecture, debugging, testing and release guidance;
+global skills supply the shared workflows.
 
 ```sh
-python3 ai.py settings plan
-python3 ai.py settings apply
-python3 ai.py settings doctor
-# Deliberately refresh the source after changing your preferred settings:
-python3 ai.py settings capture --output registry/codex-settings.json
-```
-
-Merging preserves unselected configuration and comments, and backs up an existing configuration locally. Missing source values do not remove target values. The harness does not install plugins or connect accounts; Codex may fetch configured plugins during marketplace refresh. Models, fonts, themes and plugins depend on each device and account. Desktop appearance keys are version-dependent. See [portable preferences](docs/settings.md).
-
-## Delegate selectively
-
-Use available Codex subagents for independent work. For a material uncertainty that benefits from Claude's perspective, give it a compact assignment and keep Codex responsible for verifying and integrating the findings:
-
-```sh
-python3 ai.py delegate claude --project /absolute/project --prompt-file /absolute/review.txt --plan
-python3 ai.py delegate claude --project /absolute/project --prompt-file /absolute/review.txt --timeout 120 --output /absolute/new-result.json
-```
-
-The runner uses the official installed Claude CLI and its existing authentication. It limits the session to reading project files, bounds execution and output, and blocks silent API/provider billing fallback. It cannot edit, run shell commands or start more agents. See the [delegation contract](skills/agent-coordination/references/claude-code.md) for limitations and how to supply a useful brief.
-
-## Declare project capabilities
-
-Inspect the project's instructions, stack and roadmap. Initialize its `.ai/project.json` with the default `project-foundation` profile, then add reviewed specialists where the project has a concrete current or foreseeable need. Do not install the whole catalog or every profile.
-
-The default project foundation contains **architecture-review, debugging, test-design and release-operations**. The configured globals supply planning, context, coordination, research, security, CI, parsing and office guidance. Use `portable-foundation` explicitly for all 12 fundamentals where those globals are absent. Skills remain registered for reuse; agents load only the guidance relevant to each task.
-
-```sh
-python3 ai.py catalog profiles
-python3 ai.py catalog list --scope project --query database
-python3 ai.py catalog search redis
-python3 ai.py catalog show database-systems
-python3 ai.py project init --project /absolute/project
+python3 ai.py project init --project /absolute/project --target all
+python3 ai.py project add --project /absolute/project --skill database-systems --dry-run
+python3 ai.py project add --project /absolute/project --skill database-systems
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
 
-Codex is the default target. At initialization, add justified profiles with `--profile`, individual entries with `--skill <id>`, or project exceptions with `--skip <id>`. Required companions resolve automatically and cannot be skipped. Use `--target both` only when Claude Code also needs project registrations; `claude-code` is a CLI-only target, and the legacy `claude` spelling remains compatible.
+`add` updates the declaration; `sync` installs verified payloads and records the
+lock. Existing selections and modified or unselected copies are preserved.
+Zed and Codex share `.agents/skills`, so their selections must agree when both
+are enabled. Claude uses `.claude/skills`. See [project target selection](docs/project-targets.md).
 
-When an existing project needs a new skill, persist it in the project catalog and install it through the same workflow. For example, when a database becomes part of the project:
+## Optional tools
 
-```sh
-python3 ai.py project add --project /absolute/project --skill database-systems --dry-run
-python3 ai.py project add --project /absolute/project --skill database-systems
-python3 ai.py project sync --project /absolute/project
-python3 ai.py project doctor --project /absolute/project
-```
+The core install has no scheduled side effects. Existing scheduling commands are
+an explicit opt-in; review [legacy maintenance scope](docs/scheduling.md) before
+using them. They are separate from target installation.
 
-`project add` preserves existing choices and metadata, adds the configured foundation and requested selections, and validates the candidate before updating the manifest. It does not install payloads or update the lock; follow it with sync and doctor. Existing manifests and installations gain no new selections merely by running plan/sync. For details, see [project selection and incremental registration](setup/README.md#project-capabilities-and-plugins).
+- [Portable Codex preferences](docs/settings.md): optional themes and app settings
+  through `ai.py settings`; not applied by the target installer.
+- [Runtime integrations](docs/runtime-integrations.md): prerequisites and manual setup.
+- [Project readiness](setup/README.md#project-readiness): inspect installed tools
+  and optionally a running local app.
+- [Quality evaluation](docs/quality-harness.md): bounded development exercises.
+- [Codex plugin exports](docs/plugins.md): alternative packaging for selected skills.
+- [Bounded Claude delegation](skills/agent-coordination/references/claude-code.md):
+  optional independent review using an installed CLI.
 
-For provider-specific additions, use `--target-skill claude:matt-git-guardrails-claude-code` with `project init --target both`, or `project add` when Claude is already a declared target. Scoped additions upgrade the manifest to schema v2 with `target_skills`. Shared selections still apply to every declared target; unsupported combinations fail explicitly. See [provider-specific selections and sidecar migration](docs/project-targets.md).
+## Maintain
 
-Project copies go to `.agents/skills` for Codex and optionally `.claude/skills` for Claude Code. Synchronization checks pinned source and adapted hashes, retains companions and licenses, and records `.ai/project.lock.json`. It preserves modified and unselected copies. One-off catalog installation remains available for deliberate standalone use; ongoing project skills belong in the manifest and lock.
-
-For editable vector illustrations, icons, marks and SVG animation, add the
-`svg-studio` profile with `project add`, then sync and doctor. Its two focused
-skills cover vector craft and motion; the global selector and interface/motion
-workflows route relevant tasks to them. Existing projects need deliberate
-registration. [SVG workflow, examples and verification](docs/reviews/svg-studio.md).
-
-For page transitions and complex motion, use `motion-studio`. Its five skills
-cover ordinary controls, navigation continuity, coordinated timelines, layout/scroll
-and CSS 3D transformations, plus editable vector art and animation. Select one lead
-for the actual task. The profile adds guidance using existing tools, with no new
-library or MCP server. [Motion workflow and verification](docs/reviews/motion-studio.md).
-
-## Export Codex plugins
-
-Six bundles cover foundation, web engineering, design, research/documents, marketing and engineering operations:
+Review capability content and executable behavior before updating source pins.
+Links follow this checkout; managed copies refresh on installation or sync.
+Installation and registration do not prove an agent used a skill successfully.
 
 ```sh
-mkdir -p build
-python3 ai.py export --bundle personal-foundation --output build/personal-marketplace-v2
-```
-
-Repeat `--bundle` to combine selections. The destination must be absent. Export produces a Codex marketplace, portable and Codex plugin manifests, verified payloads and a build lock. The foundation includes a movable registry engine. Export does not activate plugins; avoid installing the same skills globally and through a plugin. See [plugin usage](docs/plugins.md).
-
-## Repository layout
-
-```text
-ai.py                       Command-line entry point
-instructions/               Codex global and Claude Code delegate guidance
-registry/harness.json       Client, delegation, global/project defaults and maintenance policy
-registry/codex-settings.json Portable Codex app and model preferences
-registry/catalog.json       Curated entries, profiles, hashes and source pins
-registry/source-index.json  Broader discovery inventory and review status
-skills/                     Authored skill sources
-lib/                        Installation, scheduling, settings, delegation and catalog code
-evaluations/                Development tasks, seed workspaces, verifiers and review rubrics
-setup/                      Stable macOS and Windows wrappers
-docs/                       Catalog, reviews, integration and verification evidence
-tests/                      Isolated behavior and regression checks
-build/                      Generated marketplace exports (ignored)
-```
-
-## Maintain the source of truth
-
-Review changed instructions, companions, licenses and executable behavior before updating pins and payload hashes. Global links follow this checkout; managed copies follow deliberate synchronization. Runtime packages and accounts remain separate integration work; see [runtime integrations](docs/runtime-integrations.md).
-
-```sh
-python3 scripts/render_registry.py
+python3 scripts/render_registry.py --check
 python3 -m unittest discover -s tests
 sh -n setup/macos.sh
 git diff --check
 ```
 
-The renderer updates catalog/source tables; `--check` detects drift. Codex and Claude guidance have distinct roles and are maintained separately. [Verification evidence](docs/verification.md) records completed checks and remaining limits.
+See [migration decisions and verification](docs/work/target-migration.md).

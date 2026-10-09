@@ -128,13 +128,14 @@ class CatalogDataTests(unittest.TestCase):
         self.assertEqual(actual, {e['name'] for e in entries.values()
                                   if e.get('delivery') in ('local', 'global-link')})
         agents = (ROOT / 'instructions/AGENTS.md').read_text()
-        delegate = (ROOT / 'instructions/CLAUDE.md').read_text()
-        self.assertIn('Codex desktop', agents)
-        self.assertIn('supporting', delegate)
-        self.assertIn('CLI agent', delegate)
-        self.assertEqual(config['primary_client'], 'codex-desktop')
-        self.assertEqual(config['targets']['claude']['clients'], ['claude-code'])
-        self.assertFalse(config['targets']['claude']['desktop_support'])
+        from lib import targets
+        adapters = targets.load()
+        self.assertIn('Zed is the primary editor', agents)
+        self.assertEqual(config['primary_client'], 'zed')
+        self.assertEqual(set(adapters), {'zed', 'codex', 'claude'})
+        self.assertEqual({entry['instructions'] for entry in adapters.values()},
+                         {'instructions/AGENTS.md'})
+        self.assertEqual(adapters['claude']['skills_destination'], '.claude/skills')
         self.assertLessEqual(len(agents.splitlines()), 100)
 
 

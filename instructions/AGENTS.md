@@ -3,8 +3,8 @@
 Apply the user's instructions and the current project's conventions. Keep project
 architecture and specialized workflows in that project's own instructions. Honor
 an explicitly selected model, tool or workflow. This repository is the personal
-source of truth for guidance, skills and portable Codex desktop settings. Codex
-desktop is the primary client; Codex CLI supports automation and diagnostics.
+source of truth for shared guidance, skills, MCP definitions and target settings.
+Zed is the primary editor; Codex Desktop and Claude Desktop Code are equal targets.
 
 ## Pick up skills for the work
 
@@ -61,10 +61,10 @@ desktop is the primary client; Codex CLI supports automation and diagnostics.
   constraints, deliverables and required evidence. Use disjoint files for writers
   and read-only reviewers. Workers delegate further only when assigned to do so.
   The primary agent integrates, reviews, verifies and reports the result.
-- Prefer available ChatGPT/Codex subagents. Use Claude Code CLI selectively when
+- Prefer available host subagents. Use Claude Code CLI selectively when
   an independent perspective, specialist fit or explicit request justifies it.
   Follow `agent-coordination` for the bounded runner, tool scope and checks. Keep
-  Codex in charge; never invoke Claude recursively or silently switch billing.
+  the initiating agent in charge; never invoke Claude recursively or silently switch billing.
 
 ## Verify with relevant evidence
 

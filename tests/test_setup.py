@@ -46,6 +46,12 @@ class SetupWrapperTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), ['sync', '--target', 'both'])
 
+    def test_modern_targets_run_configuration_installer(self):
+        for target in ('zed', 'codex-desktop', 'claude-desktop', 'all'):
+            result = self.run_wrapper([target])
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout), ['install', '--target', target])
+
     def test_rejects_invalid_target_or_argument_count(self):
         for args in (['other'], ['codex', 'extra'], ['codex;touch injected']):
             self.assertEqual(self.run_wrapper(args).returncode, 2)

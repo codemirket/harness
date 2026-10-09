@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Codex desktop harness with portable settings and selective Claude CLI delegation."""
+"""Personal agent harness: shared capabilities, explicit target adapters."""
 import sys
 
 from lib import catalog, harness
@@ -7,26 +7,35 @@ from lib import catalog, harness
 
 def main():
     if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
-        print('''Personal Codex desktop harness (Python 3.9+)
+        print('''Personal agent harness (Python 3.9+, standard library)
 
-  install [--dry-run]   Verify runtimes; install guidance, skills, settings and daily OS job
-  check                Read-only check of runtimes, global setup, settings and OS job
+  install [--target zed|codex-desktop|claude-desktop|all] [--dry-run]
+                       Install shared guidance, skills, MCP and target settings (default: Zed)
+  check [--target ...]  Read-only installation and configuration drift check
+  handoff --output DIR Package skills and instructions for Claude Chat/Cowork Customize
   schedule <command>   Plan, install or check the daily midnight OS schedule
   maintenance <command> Pull a clean checkout, sync, or read the last run status
   runtime doctor       Check clients; optionally inspect project tools and capture a local app
   settings <command>   Capture, plan, apply or diagnose portable Codex preferences
   delegate claude      Run a bounded, read-only Claude Code second opinion
   eval <command>       Prepare development tasks, check outputs and record reviews
-  plan | sync | doctor Reconcile global guidance and skills (default: Codex)
+  plan | sync | doctor Reconcile only global guidance and skills
   project <command>    Initialize, add, plan, sync or diagnose selected project skills
   catalog <command>    Browse and register reviewed skills
   export               Build Codex plugin bundles
 
-Use COMMAND --help for its arguments. Claude desktop is not supported.''')
+Use COMMAND --help. Claude Desktop means local Code mode; Chat/Cowork use account customization.
+Schedules, model/appearance preferences and legacy runtime setup are explicit commands.''')
         return 0
     if sys.argv[1] in ('install', 'check'):
+        from lib import target_install
+        return target_install.main(sys.argv[1:])
+    if sys.argv[1] == 'handoff':
+        from lib import handoff
+        return handoff.main(sys.argv[2:])
+    if sys.argv[1] == 'legacy-install':
         from lib import install
-        return install.main(sys.argv[1:])
+        return install.main(['install'] + sys.argv[2:])
     if sys.argv[1] == 'schedule':
         from lib import schedule
         return schedule.main(sys.argv[2:])

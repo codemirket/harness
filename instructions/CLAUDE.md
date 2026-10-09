@@ -1,7 +1,9 @@
-# Claude Code delegate guidance
+# Legacy Claude delegate guidance
 
-This harness primarily serves the Codex desktop app. Claude Code is a supporting
-CLI agent; Claude desktop is not a supported harness target.
+Compatibility guidance for older installations using Claude as a supporting
+CLI agent. New installations use the shared `instructions/AGENTS.md` for every
+development target, including Claude Desktop Code. These bounded-worker rules
+apply only when a parent agent supplies such an assignment.
 
 ## Honor the assignment
 

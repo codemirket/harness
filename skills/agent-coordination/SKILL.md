@@ -5,7 +5,7 @@ description: Plan and run parallel agent work with bounded ownership, dependency
 
 # Agent coordination
 
-Use ChatGPT/Codex host subagents as the normal delegation path when available.
+Use the selected host's subagents as the normal delegation path when available.
 Verify actual tools, concurrent slots, filesystem sharing and messaging permissions;
 do not invent APIs or assume a model name. Parallelism helps independent work;
 shared sequential state can make it slower or unsafe.

@@ -95,10 +95,11 @@ class HarnessFixture(unittest.TestCase):
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         (self.repo / 'lib').mkdir()
         (self.repo / 'lib/__init__.py').write_text('')
-        for filename in ('catalog.py', 'harness.py'):
+        for filename in ('catalog.py', 'harness.py', 'targets.py'):
             shutil.copyfile(REPOSITORY / 'lib' / filename, self.repo / 'lib' / filename)
         shutil.copyfile(REPOSITORY / 'ai.py', self.repo / 'ai.py')
         self.save_registry()
+        shutil.copyfile(REPOSITORY / 'registry/targets.json', self.repo / 'registry/targets.json')
         self.patch(harness, 'ROOT', self.repo)
         self.patch(harness, 'MANIFEST', self.repo / 'registry/harness.json')
         self.patch(catalog, 'ROOT', self.repo)

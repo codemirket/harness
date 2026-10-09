@@ -19,6 +19,12 @@ import urllib.request
 import unicodedata
 import zlib
 
+if __package__:
+    from . import targets as target_registry
+else:  # Preserve direct script and importlib-based review tooling.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from lib import targets as target_registry
+
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / 'registry' / 'catalog.json'
 INDEX = CATALOG.with_name('source-index.json')
@@ -522,10 +528,17 @@ def check_executable_modes(target, executable_files):
             raise ValueError('Undeclared executable mode in installed payload: ' + str(target / relative))
 
 
+def supports_target(entry, target):
+    # Existing catalog agents describe skill format families, not desktop apps.
+    # Zed accepts portable Codex-family skills; Claude-only entries stay scoped.
+    return target_registry.skill_family(target) in entry.get('agents', ['codex', 'claude'])
+
+
 def check_destination(entry, project, agent):
     if entry['scope'] != 'project' or entry.get('delivery') not in ('upstream', 'local'):
         raise ValueError('This entry is not approved for automatic project installation')
-    if agent not in ('codex', 'claude') or agent not in entry.get('agents', ['codex', 'claude']):
+    agent = target_registry.normalize(agent)
+    if not supports_target(entry, agent):
         raise ValueError('Skill does not support this agent: ' + agent)
     project = project.expanduser().resolve(strict=True)
     if not project.is_dir():
@@ -535,7 +548,7 @@ def check_destination(entry, project, agent):
     if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', name):
         raise ValueError('Unsafe installation name')
     safe_path(name)
-    target_root = project / ('.agents' if agent == 'codex' else '.claude') / 'skills'
+    target_root = project / target_registry.project_skills_dir(agent)
     # Never follow a project metadata directory into a different checkout/home.
     for part in (target_root.parent, target_root):
         if is_link(part):
@@ -729,7 +742,7 @@ def resolve_selection(data, profiles=(), identifiers=(), skip=()):
 
 def install_many(data, entries, project, agent, source_trees=None):
     """Preflight the whole selection and verify every payload before project writes."""
-    agents = ('codex', 'claude') if agent == 'both' else (agent,)
+    agents = target_registry.names(agent)
     jobs = [(entry, target_agent) for entry in entries for target_agent in agents]
     states = [(entry, target_agent, *check_destination(entry, project, target_agent))
               for entry, target_agent in jobs]
@@ -818,7 +831,7 @@ def main():
         selection.add_argument('--profile', action='append', default=[])
         selection.add_argument('--skill', action='append', default=[])
         selection.add_argument('--skip', action='append', default=[])
-        selection.add_argument('--agent', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
+        selection.add_argument('--agent', choices=target_registry.CHOICES, default='codex')
         selection.add_argument('--project', type=Path, required=True)
     showing = commands.add_parser('show', help='Show provenance, fit, dependencies, and caveats')
     showing.add_argument('id')
@@ -827,12 +840,10 @@ def main():
     hashing.add_argument('--source-tree', type=Path)
     installing = commands.add_parser('install', help='Register one pinned skill in an explicitly selected project')
     installing.add_argument('id')
-    installing.add_argument('--agent', choices=['codex', 'claude-code', 'claude', 'both'], default='codex')
+    installing.add_argument('--agent', choices=target_registry.CHOICES, default='codex')
     installing.add_argument('--project', type=Path, required=True)
     installing.add_argument('--source-tree', type=Path, help='Use a local source checkout; reviewed content hash still required')
     args = parser.parse_args()
-    if getattr(args, 'agent', None) == 'claude-code':
-        args.agent = 'claude'
     data = load_catalog()
     if args.command == 'profiles':
         for name, profile in data.get('profiles', {}).items():
@@ -858,7 +869,7 @@ def main():
         if args.command == 'plan':
             rows = []
             for entry in entries:
-                agents = ('codex', 'claude') if args.agent == 'both' else (args.agent,)
+                agents = target_registry.names(args.agent)
                 for agent in agents:
                     target, unchanged = check_destination(entry, args.project, agent)
                     rows.append({'id': entry['id'], 'agent': agent, 'destination': str(target),

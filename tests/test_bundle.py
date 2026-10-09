@@ -153,7 +153,7 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(list(self.base.glob('.ai-export-*')))
 
     def foundation(self):
-        for filename in ('ai.py', 'lib/catalog.py', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py',
+        for filename in ('ai.py', 'lib/catalog.py', 'lib/targets.py', 'registry/targets.json', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py',
                          'skills/skill-catalog/scripts/catalog.py', 'skills/skill-catalog/scripts/harness.py',
                          'skills/skill-catalog/SKILL.md', 'scripts/render_registry.py'):
             target = self.root / filename

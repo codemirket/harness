@@ -1,5 +1,7 @@
 # Verification evidence
 
+Current multi-target installation evidence is recorded in [the target migration](work/target-migration.md). Dated Codex-first records below remain historical and do not describe the new default installer.
+
 The 2026-10-08 independent-review revisions pass **471 tests in 35.759 seconds**.
 Fresh scratch registration verifies 30 default-plus-specialist and 24 portable
 copies for Codex and Claude. Repeat sync preserves 110 file states. A portable-to-normal

@@ -434,13 +434,13 @@ def render_key(path):
     return '.'.join(k if re.fullmatch(r'[A-Za-z0-9_-]+', k) else json.dumps(k) for k in path)
 
 
-def merge_config(text, desired):
+def merge_config(text, desired, validator=validate_value):
     assignments, tables = parse_document(text)
     replacements = []
     additions = {}
     changes = []
     for path, value in desired.items():
-        validate_value(path, value)
+        validator(path, value)
         # Table declarations are values too: a scalar cannot replace a table,
         # and a setting under an array of tables is not a singleton preference.
         # Check before the same-value fast path to reject deceptive no-ops.
@@ -470,7 +470,7 @@ def merge_config(text, desired):
             additions.setdefault(table, []).append((path[len(table):], value))
         if present:
             try:
-                validate_value(path, current)
+                validator(path, current)
             except ValueError:
                 current = '<unrecognized configured value>'
         changes.append({'key': render_key(path), 'before': current, 'after': value})

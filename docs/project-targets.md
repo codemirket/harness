@@ -1,5 +1,15 @@
 # Provider-specific project selections
 
+New project setup defaults to Zed. Public target names are `zed`,
+`codex-desktop`, `claude-desktop`, and `all`; the desktop aliases resolve to
+`codex` and `claude` in manifests and locks. `all` selects all three. Existing
+`codex`, `claude-code`, `claude`, and `both` selections remain compatible; `both`
+continues to mean Codex and Claude. Zed and Codex discover the same project
+`.agents/skills` directory, so a project selecting both must give them identical
+resolved skill selections. Differing selections fail rather than overwriting a
+shared destination. Claude uses `.claude/skills`. See [target coverage](targets.md)
+for native Zed versus ACP and Claude Desktop Code boundaries.
+
 A shared selection applies to every target in `.ai/project.json`. Use schema v2
 and `target_skills` to add explicitly scoped skills without creating a separate
 installation or checker exception:

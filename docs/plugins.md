@@ -39,7 +39,7 @@ codex plugin marketplace list
 
 Choose the desired plugin in the supporting desktop client's plugin interface and verify it after refresh. For a trusted repository, the documented enable setting is `[plugins."personal-foundation@personal-ai"]` with `enabled = true` in `.codex/config.toml`. Merge that entry with existing configuration only when choosing this installation route. Client surfaces and managed policies differ; the exporter does not claim activation from manifest creation. See [OpenAI's current plugin packaging and marketplace documentation](https://developers.openai.com/plugins/build/plugins).
 
-Claude desktop and Claude plugin marketplace export are unsupported. The supporting Claude Code CLI uses direct skill registrations and the [bounded delegation runner](../skills/agent-coordination/references/claude-code.md). Older generated exports may contain Claude manifests; build a fresh version 2 export instead of reusing them.
+Claude plugin marketplace export is unsupported. Claude Desktop Code and the CLI use direct skill registrations; Chat/Cowork use the manual `ai.py handoff` packages. The CLI also supports the [bounded delegation runner](../skills/agent-coordination/references/claude-code.md). Older generated exports may contain Claude manifests; build a fresh version 2 export instead of reusing them.
 
 ## Update and verify
 
