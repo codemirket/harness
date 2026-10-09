@@ -169,6 +169,13 @@ instructions. Inspect its current Git status and `.ai/project.json`, if present.
 Retain the project's architecture, required checks and authorization boundaries.
 The harness is shared guidance, not a replacement project template.
 
+For Codex, inspect the intended project instruction chain before diagnosing
+missing guidance: `python3 ai.py context doctor --project /absolute/project`.
+Add `--cwd /absolute/project/subdirectory` for a nested launch directory. This
+read-only audit reports overrides and byte-budget problems; it does not determine
+the running client's trust, global instructions or configuration. See the
+[context guide](context.md) for limits and a handoff workflow.
+
 For a project that has no harness manifest, run from the harness checkout,
 replacing `/absolute/project` with its existing directory:
 

@@ -11106,7 +11106,7 @@
         "index-freshness"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "f37267b972c71bc320890eff82f05be8c54aa3faf00e16ed4d3921cbd7b22918"
+      "sha256": "6d3b441e5150ca098f5a0e9d12c8a18c11ba67465d41afd1d63337d80e49d661"
     },
     {
       "id": "desktop-integration",

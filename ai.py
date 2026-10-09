@@ -18,6 +18,7 @@ def main():
   schedule <command>   Plan, install or check the daily midnight OS schedule
   maintenance <command> Pull a clean checkout, sync, or read the last run status
   runtime doctor       Check clients; optionally inspect project tools and capture a local app
+  context doctor       Audit project instruction selection and byte budgets without running a client
   settings <command>   Capture, plan, apply or diagnose portable Codex preferences
   delegate claude      Run a bounded, read-only Claude Code second opinion
   eval <command>       Prepare development tasks, check outputs and record reviews
@@ -53,6 +54,9 @@ Schedules, model/appearance preferences and legacy runtime setup are explicit co
     if sys.argv[1] == 'runtime':
         from lib import runtime
         return runtime.main(sys.argv[2:])
+    if sys.argv[1] == 'context':
+        from lib import context
+        return context.main(sys.argv[2:])
     if sys.argv[1] == 'settings':
         from lib import settings
         return settings.main(sys.argv[2:])

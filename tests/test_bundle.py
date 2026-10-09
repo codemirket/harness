@@ -153,7 +153,7 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(list(self.base.glob('.ai-export-*')))
 
     def foundation(self):
-        for filename in ('ai.py', 'lib/catalog.py', 'lib/targets.py', 'registry/targets.json', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py', 'lib/workbench.py', 'lib/settings.py',
+        for filename in ('ai.py', 'lib/catalog.py', 'lib/targets.py', 'registry/targets.json', 'lib/harness.py', 'lib/bundle.py', 'lib/evaluation.py', 'lib/workbench.py', 'lib/settings.py', 'lib/context.py',
                          'scripts/workbench/markdown.py', 'examples/craft-lab/README.md',
                          'scripts/workbench/browser.mjs', 'scripts/workbench/vector.mjs', 'scripts/workbench/documents.py',
                          'skills/skill-catalog/scripts/catalog.py', 'skills/skill-catalog/scripts/harness.py',
@@ -176,6 +176,8 @@ class BundleTests(unittest.TestCase):
 
     def test_foundation_cli_runs_from_unrelated_cwd_after_original_checkout_removed(self):
         self.foundation()
+        for name in ('AGENTS.md', 'CLAUDE.md', 'CONTRIBUTING.md'):
+            (self.root / name).write_text('# Portable repository guide\n')
         (self.root / 'lib/__pycache__').mkdir()
         (self.root / 'lib/__pycache__/junk.pyc').write_bytes(b'ignored')
         (self.root / 'docs/build').mkdir()
@@ -192,14 +194,21 @@ class BundleTests(unittest.TestCase):
         self.assertTrue((plugin / '_harness/scripts/render_registry.py').is_file())
         self.assertTrue((plugin / '_harness/scripts/workbench/browser.mjs').is_file())
         self.assertTrue((plugin / '_harness/examples/craft-lab/README.md').is_file())
+        for name in ('AGENTS.md', 'CLAUDE.md', 'CONTRIBUTING.md'):
+            self.assertEqual((plugin / '_harness' / name).read_text(), '# Portable repository guide\n')
         shutil.rmtree(self.root)
         unrelated = self.base / 'unrelated'
         unrelated.mkdir()
+        (unrelated / 'AGENTS.md').write_text('# Project instructions\nRun the project checks.\n')
         result = subprocess.run([sys.executable, '-B', str(plugin / 'skills/skill-catalog/scripts/catalog.py'),
                                  'list', '--json'], cwd=unrelated, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual({e['id'] for e in json.loads(result.stdout)}, {'test', 'skill-catalog'})
         engine = plugin / 'skills/skill-catalog/scripts/harness.py'
+        result = subprocess.run([sys.executable, '-B', str(engine), 'context', 'doctor',
+                                 '--project', str(unrelated)], cwd=unrelated, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(json.loads(result.stdout)['ok'])
         result = subprocess.run([sys.executable, '-B', str(engine), 'eval', 'list'],
                                 cwd=unrelated, text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)

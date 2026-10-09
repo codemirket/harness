@@ -101,7 +101,7 @@ def snapshot(root):
         raise ValueError('Linked harness renderer path')
     if renderer.exists():
         add(renderer)
-    for pattern in ('README.md', 'LICENSE*', 'NOTICE*'):
+    for pattern in ('README.md', 'AGENTS.md', 'CLAUDE.md', 'CONTRIBUTING.md', 'LICENSE*', 'NOTICE*'):
         for path in sorted(root.glob(pattern)):
             add(path)
     catalog.validate_paths(files)

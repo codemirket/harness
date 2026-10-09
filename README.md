@@ -31,6 +31,11 @@ them. A skill supplies instructions and supporting resources; it does not supply
 an account, install a dependency or guarantee an agent will follow it. Verify a
 real task in your client after setup.
 
+To investigate project instructions that seem to be missing, run
+`python3 ai.py context doctor --project /absolute/project`. This read-only audit
+reports selected and shadowed Codex-style instruction files and byte-budget
+problems. See [context diagnostics and handoffs](docs/context.md) for its scope.
+
 ## What you get
 
 | Capability | Concrete output |
@@ -295,6 +300,7 @@ or files and restore the relevant configuration backup after reviewing it.
 ## Development and verification
 
 ```sh
+python3 ai.py context doctor --project .
 python3 scripts/render_registry.py --check
 python3 -m unittest discover -s tests
 sh -n setup/macos.sh
@@ -319,6 +325,8 @@ what to include with a proposed change.
 | --- | --- |
 | Adopt the harness or introduce it to a team | [Adoption guide](docs/adoption.md) |
 | Understand installation, conflicts and recovery | [Setup reference](setup/README.md) |
+| Inspect instruction discovery or resume long work | [Context guide](docs/context.md) |
+| Understand or change the harness itself | [Architecture map](docs/architecture.md) and [Contributing](CONTRIBUTING.md) |
 | Choose skills for a task | [Capability contracts](docs/capabilities.md) and [catalog](docs/catalog.md) |
 | Use different skills for Codex and Claude | [Project targets](docs/project-targets.md) |
 | Render and inspect an artifact | [Workbench guide](docs/workbench.md) |

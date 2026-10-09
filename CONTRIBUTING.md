@@ -12,6 +12,10 @@ private prompts and identifying project data from examples and logs.
 
 ## Find the owning source
 
+Start from the repository's [AGENTS.md](AGENTS.md) and [architecture map](docs/architecture.md).
+The root instructions govern this project; `instructions/AGENTS.md` is the payload
+installed into users' clients.
+
 | Location | Responsibility |
 | --- | --- |
 | `ai.py`, `lib/` | CLI, installation, catalog resolution and verification |
@@ -50,9 +54,11 @@ temporary project for `project init`, `add`, `sync` and `doctor` tests.
 
 ## Verify the changed behavior
 
-Run these checks from the harness checkout:
+Run these checks from the full harness source checkout. Packaged plugin `_harness`
+snapshots omit the repository test suite; clone the source for contribution work.
 
 ```sh
+python3 ai.py context doctor --project .
 python3 scripts/render_registry.py --check
 python3 -m unittest discover -s tests
 sh -n setup/macos.sh

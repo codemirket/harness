@@ -9,6 +9,10 @@ Keep the working context sufficient to make the next decision correctly. Context
 reduction is useful only when it preserves the facts and constraints that matter.
 Do not compress every message or change the user's preferred writing style.
 
+When preparing a substantial handoff or diagnosing lost context, use
+[context lifecycle](references/context-lifecycle.md) to choose what to persist,
+retrieve, summarize or delegate and check that another session can resume safely.
+
 ## Retrieve deliberately
 
 Read indexes, symbols, schemas, and relevant slices before large files. Search for

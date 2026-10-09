@@ -91,6 +91,11 @@ with available browser tools; a capture is not visual acceptance. Other runtimes
 authenticated sessions and native renderers need their project-specific checks.
 Reuse readiness evidence while the relevant environment remains unchanged.
 
+When Codex project guidance appears missing, `python3 scripts/harness.py context
+doctor --project /absolute/project` audits the supplied root-to-cwd instruction
+chain and byte budget. Use `--cwd` for nested launch directories. This is a static
+project-only check, not a resolver of live client trust, global settings or context.
+
 ## Preview and register
 
 Relevant skill registration is part of authorized project setup or implementation
