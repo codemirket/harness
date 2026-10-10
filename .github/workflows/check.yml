@@ -16,11 +16,15 @@ jobs:
       - name: Install pinned toolchain
         run: rustup show active-toolchain
       - name: Bootstrap Mirket
-        run: cargo build --locked --bin mirket
+        shell: pwsh
+        run: |
+          cargo install --locked --debug --path . --bin mirket --root "$env:RUNNER_TEMP/mirket-bootstrap"
+          if ($LASTEXITCODE -ne 0) { throw 'Mirket bootstrap failed' }
+          Add-Content -Path $env:GITHUB_PATH -Value "$env:RUNNER_TEMP/mirket-bootstrap/bin"
       - name: Check through Mirket
-        run: cargo run --locked --bin mirket -- dev check --project .
+        run: mirket dev check --project .
       - name: Package native binaries
-        run: cargo run --locked --bin mirket -- dev dist --project . --output dist
+        run: mirket dev dist --project . --output dist
       - name: Verify packaged runtime and installers
         shell: pwsh
         run: |

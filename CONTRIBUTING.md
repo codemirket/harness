@@ -7,12 +7,17 @@ Keep secrets, account state and private prompts out of code, logs and fixtures.
 
 ## Bootstrap the development CLI
 
-Install the official Rust toolchain, then build from this full source checkout:
+Install the official Rust toolchain, then install the development CLI from this
+full source checkout:
 
 ```sh
-cargo build --locked --bin mirket
-./target/debug/mirket dev check --project .
+cargo install --locked --debug --path . --bin mirket
+mirket dev check --project .
 ```
+
+Keep the CLI on PATH outside Cargo's build output directory. Development checks
+and builds replace output executables, which Windows cannot do while that same
+executable is running. CI installs its bootstrap into a separate temporary prefix.
 
 `mirket dev fmt` formats the Rust sources. `mirket dev check` runs formatting, Clippy with warnings denied, and all Rust test
 targets. Use `mirket dev build --release` to build the CLI and standalone target

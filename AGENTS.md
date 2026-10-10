@@ -10,7 +10,8 @@ this file governs development of the harness itself.
   model, workflow and authorization choices.
 - Use [architecture](docs/architecture.md) to find owners and
   [CONTRIBUTING.md](CONTRIBUTING.md) for isolated development. All harness operations
-  run through `mirket`. Cargo is needed to bootstrap the CLI from source.
+  run through `mirket`. Cargo is needed to bootstrap the CLI from source; install
+  it outside Cargo's build output so checks can replace their executable targets.
 - Keep modules focused: catalog/project selection, installation/update, durable
   task state/MCP and CLI presentation. Do not add parallel installation logic,
   alternate state formats, implicit tool execution or host permission bypasses.
@@ -30,7 +31,8 @@ this file governs development of the harness itself.
 - Keep docs about the current product. Remove obsolete files, duplicate outputs
   and task-owned scratch safely. Do not rewrite Git history or unrelated projects.
 
-After an initial bootstrap with `cargo build --locked --bin mirket`, run:
+After an initial bootstrap with
+`cargo install --locked --debug --path . --bin mirket`, run:
 
 ```sh
 mirket dev check --project .
