@@ -250,8 +250,13 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
         "doctor did not identify missing managed files"
     );
 
+    let managed = home.join(".mirket/bin").join(if cfg!(windows) {
+        "mirket.exe"
+    } else {
+        "mirket"
+    });
     let updated = successful_json(
-        source,
+        &managed,
         &home,
         &["update", "--json"],
         Duration::from_secs(360),
@@ -281,11 +286,6 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
         home.join(".codex/AGENTS.md").is_file() && home.join(".claude/CLAUDE.md").is_file(),
         "update removed a selected client's instructions"
     );
-    let managed = home.join(".mirket/bin").join(if cfg!(windows) {
-        "mirket.exe"
-    } else {
-        "mirket"
-    });
     ensure!(
         sha256(&fs::read(&managed)?) == expected_digest,
         "installed managed binary differs from the official published SHA-256"

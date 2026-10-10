@@ -47,9 +47,11 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) setup failed" }
             & $runtime --home $testHome doctor --json
             if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) doctor failed" }
-            & $runtime --home $testHome update --from $runtime --sha256 $asset.sha256
+            $managedName = if ($IsWindows) { 'mirket.exe' } else { 'mirket' }
+            $managed = Join-Path $testHome ".mirket/bin/$managedName"
+            & $managed --home $testHome update --from $runtime --sha256 $asset.sha256
             if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) update failed" }
-            & $runtime --home $testHome doctor --json
+            & $managed --home $testHome doctor --json
             if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) post-update doctor failed" }
             Remove-Item -LiteralPath $testHome -Recurse -Force
           }
