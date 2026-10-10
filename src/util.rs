@@ -52,13 +52,20 @@ pub fn reject_symlink_components(path: &Path) -> Result<()> {
     let mut current = std::path::PathBuf::new();
     for part in path.components() {
         current.push(part);
+        // A Windows drive or UNC prefix identifies a volume, not a filesystem
+        // entry. Inspect it only after RootDir completes the rooted path.
+        if matches!(part, Component::Prefix(_)) {
+            continue;
+        }
         match fs::symlink_metadata(&current) {
             Ok(meta) if meta.file_type().is_symlink() => {
                 bail!("refusing symlink: {}", current.display())
             }
             Ok(_) => {}
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => {}
-            Err(err) => return Err(err.into()),
+            Err(err) => {
+                return Err(err).with_context(|| format!("inspect path {}", current.display()));
+            }
         }
     }
     Ok(())
@@ -108,6 +115,22 @@ pub fn read_bounded(path: &Path, max_bytes: u64) -> Result<Vec<u8>> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(windows)]
+    #[test]
+    fn canonical_windows_paths_support_io_and_missing_destinations() {
+        let temporary = tempfile::tempdir().unwrap();
+        let root = temporary.path().canonicalize().unwrap();
+        assert!(matches!(
+            root.components().next(),
+            Some(Component::Prefix(_))
+        ));
+        reject_symlink_components(&root).unwrap();
+        let file = root.join("new-directory").join("file.txt");
+        reject_symlink_components(&file).unwrap();
+        atomic_write(&file, b"checked Windows path").unwrap();
+        assert_eq!(read_bounded(&file, 64).unwrap(), b"checked Windows path");
+    }
+
     #[cfg(unix)]
     #[test]
     fn dropping_lock_owner_releases_while_an_inherited_descriptor_remains() {

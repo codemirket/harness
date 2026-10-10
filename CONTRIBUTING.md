@@ -20,6 +20,11 @@ installers. The locked dependency graph and pinned toolchain are authoritative.
 `mirket dev test FILTER` runs a focused test selection. `--ignored` explicitly
 selects opt-in tests, including real package downloads.
 
+After publishing the checkout's version, run
+`mirket dev test published_update --ignored` to exercise the public GitHub update
+in a disposable home. It verifies the published binary's digest, recovery of a
+missing managed skill, saved setup choices and unchanged unrelated client settings.
+
 Keep client setup isolated from development. Use existing empty temporary home
 and project directories with explicit absolute paths:
 

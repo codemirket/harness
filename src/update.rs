@@ -7,7 +7,6 @@ use anyhow::{Context, Result, bail};
 use reqwest::{Url, blocking::Client, redirect::Policy};
 use serde::{Deserialize, Serialize};
 use std::{
-    fs,
     io::{Read, Seek, SeekFrom},
     path::{Path, PathBuf},
     process::{Command, Stdio},
@@ -317,7 +316,7 @@ fn download(client: &Client, url: &str, max: u64) -> Result<Vec<u8>> {
 fn make_executable(path: &Path) -> Result<()> {
     #[cfg(unix)]
     {
-        use std::os::unix::fs::PermissionsExt;
+        use std::{fs, os::unix::fs::PermissionsExt};
         fs::set_permissions(path, fs::Permissions::from_mode(0o755))?;
     }
     #[cfg(not(unix))]
