@@ -11285,7 +11285,7 @@
         "development-evaluation"
       ],
       "coverage": "Authored for this registry; reviewed as source guidance, not runtime certification.",
-      "sha256": "c90b3c58360c8755c6f7e86464823cde56f4ce00db90b81e389c1d7f41213d42"
+      "sha256": "6731876f0aada19d8d198637f05b4a84913a2a0fab6991a388a949bab89e0dfa"
     },
     {
       "id": "frontend-engineering",
@@ -11387,7 +11387,7 @@
         "work-planning",
         "planner"
       ],
-      "sha256": "9fd86b63b2598b77255e14d3d120967e58cedf57ca5d6cee9af2af18ae0bb7c3"
+      "sha256": "dcae9bd885ad088747ab83065d189ced8c0a94a972002d192dcd07ab3db6eb3e"
     },
     {
       "id": "search-visibility",

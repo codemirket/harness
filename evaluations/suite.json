@@ -133,6 +133,30 @@
         "migration.py",
         "migration.md"
       ]
+    },
+    {
+      "id": "visual-illustrated-explainer",
+      "domain": "frontend",
+      "title": "Combine expressive illustration with an exact publication workflow",
+      "prompt": "cases/visual-illustrated-explainer/task.md",
+      "required_evidence": [
+        "Original bitmap illustration inspected at use size and in detail",
+        "Native diagram preserving all facts and private/public boundary",
+        "Actual desktop and narrow page captures plus method and inspection record"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "facts.json"
+      ],
+      "review_artifacts": [
+        "index.html",
+        "bird-art.png",
+        "workflow.svg",
+        "evidence/desktop.png",
+        "evidence/narrow.png",
+        "evidence/inspection.md"
+      ]
     }
   ]
 }

@@ -12,9 +12,10 @@ Keep deterministic correctness, semantic review and human acceptance distinct.
 
 Use the installed `skill-catalog/scripts/harness.py` engine, or `python3 ai.py` from
 the source checkout. The foundation plugin carries the same engine and fixtures.
-Run `eval list` to inspect seven development cases: frontend hierarchy, refund
+Run `eval list` to inspect development cases: frontend hierarchy, refund
 totals, technical CLI documentation, paginated HTTP integration, source-based
-research, rollout analysis and resumable database backfill. Each has a task, seed workspace, verifier and rubric.
+research, rollout analysis, resumable database backfill and an illustrated explainer.
+Each has a task, seed workspace, verifier and rubric.
 
 ```sh
 python3 ai.py eval list

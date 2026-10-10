@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    "Private notebook",
+    "Editorial review",
+    "Public journal"
+  ],
+  "private": [
+    "Private notebook",
+    "Editorial review"
+  ],
+  "edges": [
+    {
+      "from": "Private notebook",
+      "to": "Editorial review",
+      "label": "Submit"
+    },
+    {
+      "from": "Editorial review",
+      "to": "Public journal",
+      "label": "Approve"
+    },
+    {
+      "from": "Editorial review",
+      "to": "Private notebook",
+      "label": "Request revision"
+    }
+  ]
+}

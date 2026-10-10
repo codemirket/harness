@@ -21,7 +21,7 @@ model or project failure.
 | Routing | Explicit new-screen/public-page, API connector, MCP, technical documentation and research boundaries | Selected installed body and applicable reference, beyond a catalog match |
 | Expertise | Application/public-page composition, interaction recipes, async ownership, engineering boundaries, service reliability, technical writing and claim verification | Decisions grounded in task and project rather than generic style rules |
 | Execution | Domain delivery standards selected for substantial work | Actual renders, affected behaviors, examples, tool effects or supporting sources |
-| Evaluation | Seven prepared development tasks with bounded checks and separate artifact review | Current checks and reviewed output with scope and limitations |
+| Evaluation | Prepared development tasks with bounded checks and separate artifact review | Current checks and reviewed output with scope and limitations |
 
 The shared entry point stays small. Detailed procedures live beside each skill
 and load only for a matching task. Profiles remain installation groups; they do

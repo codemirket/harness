@@ -29,6 +29,12 @@ path, obtain an independent artifact review when useful, and repair concrete
 defects. Separate requirement failures, preferences and unverified paths. Keep the
 existing task record and host tools; do not create a mandatory multi-agent pipeline.
 
+For visual outputs in any format, apply `work-planning`'s artifact-review reference.
+Inspect both the full composition and focal details in the actual saved output.
+Use its relevant format checks and acceptance decision; technical success cannot
+offset a defective drawing, misleading diagram or broken motion. Scale the review
+to the change without skipping the visual judgment.
+
 ## Frontend and motion
 
 Name the user's task, primary action, content hierarchy and intended visual

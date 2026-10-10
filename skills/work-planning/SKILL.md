@@ -76,5 +76,6 @@ Record the useful verification and any genuine limitation, then deliver the
 result. Retain or archive the task note according to project conventions;
 do not delete user records or extend the task solely to keep a plan active.
 
-For substantial artifact delivery, use [artifact review](references/artifact-review.md)
-to inspect the result independently of the author's claims.
+For visual delivery and substantial cross-boundary delivery, use
+[artifact review](references/artifact-review.md) to inspect the actual result,
+judge the relevant craft and resolve defects independently of the author's claims.

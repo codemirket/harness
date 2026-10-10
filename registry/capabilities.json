@@ -97,24 +97,26 @@
     {
       "id": "illustration",
       "title": "Illustration",
-      "lead": "svg-creation",
+      "lead": "skill-catalog",
       "support": [
+        "svg-creation",
         "interface-design"
       ],
       "deliverable": "A coherent original illustration composed for its placement with editable geometry or the requested raster source.",
-      "failure_probe": "Inspect the actual crop and small-size silhouette; a raster wrapped in SVG fails editable-vector requirements.",
-      "prerequisites": "Vector renderer; for raster choose the available native image-generation skill/provider instead of the vector lead."
+      "failure_probe": "Review the actual artifact against the complete brief at use size and in focal detail; attractive materials cannot excuse malformed contact or incorrect construction. A raster wrapped in SVG fails editable-vector requirements.",
+      "prerequisites": "Select the production lead by medium before registration: available native image generation/editing for bitmap art; svg-creation for native vector requirements. Confirm runtime and preserve requested editability, animation and format."
     },
     {
       "id": "visual-assets",
       "title": "Crafting Visual Assets",
-      "lead": "svg-creation",
+      "lead": "skill-catalog",
       "support": [
+        "svg-creation",
         "brand-guidelines"
       ],
       "deliverable": "A consistent asset family with master sources, export sizes, naming and integration contracts.",
-      "failure_probe": "Place two inline instances and render light/dark/minimum sizes to reveal ID collisions or disappearing detail.",
-      "prerequisites": "Existing vector/image tools, asset rights and target consumer; for bitmap assets select the native image-generation/editing workflow instead of the vector lead."
+      "failure_probe": "Inspect the asset family at intended sizes and backgrounds for lost detail, inconsistent construction or crops; for SVG, also place two inline instances to expose ID collisions.",
+      "prerequisites": "Confirm asset rights and target consumer. Select the production lead by medium before registration: available native image generation/editing for bitmap art; svg-creation for native vector requirements. Confirm runtime and preserve requested editability, animation and format."
     },
     {
       "id": "animation",

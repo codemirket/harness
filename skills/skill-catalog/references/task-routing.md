@@ -12,7 +12,8 @@ server construction uses `backend-engineering`, other behavior or connector chan
 use `engineering-judgment`, technical writing uses the
 project's documentation method with `document-workflow` as fallback, ordinary control
 motion uses `motion-design`, navigation motion uses `page-transitions`, complex in-page
-choreography uses `advanced-motion`, vector artwork uses `svg-creation`, SVG choreography uses
+choreography uses `advanced-motion`, bitmap artwork uses the available native image
+workflow, vector artwork uses `svg-creation`, SVG choreography uses
 `svg-animation`, factual research uses `research-and-synthesis`, product decisions
 use `product-management`, and quantitative investigation uses `data-analysis`. Add supporting
 skills only for affected boundaries. For example, polishing a Nuxt form does not
@@ -74,7 +75,11 @@ comparison states; `brand-guidelines` supports identity constraints. Interface Q
 uses `test-design` and its interface-QA reference for asynchronous behavior,
 keyboard/focus and durable results. Illustration routes by requested format:
 `svg-creation` for editable vectors, the available native image-generation skill
-for bitmap work. Neither supplies the other's runtime.
+for bitmap work. When the medium is unspecified, choose from the intended result
+and available tools before registration: complex organic illustration need not be
+constructed as SVG just because it will appear on a website. Exact diagrams and
+existing vector systems favor native geometry. Preserve explicit editability,
+animation and format requirements; neither workflow supplies the other's runtime.
 
 For a substantial task, state the selected workflow and its purpose briefly.
 Read its installed `SKILL.md`, applicable integration note and relevant references;

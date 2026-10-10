@@ -76,9 +76,12 @@ Codex Desktop and Claude Desktop Code are the installation targets.
 - Finish source edits before final artifact generation. Reuse evidence only when
   relevant inputs, configuration, dependencies and environment are unchanged.
   Rerun affected checks; never present stale or unknown evidence as current.
-- For substantial visual or cross-boundary work, use work-planning's delivery-review
-  guidance when a fresh inspection can expose gaps. Review the actual result;
-  distinguish requirement defects, preferences and unverified paths, then repair.
+- For visual work, inspect the actual rendered result at its intended size and in
+  detail. Use work-planning's artifact-review guidance to judge composition,
+  meaning and drawing or motion craft. An unresolved defect in a focal element
+  blocks acceptance; repair and reinspect before recommending it. Passing technical
+  checks cannot establish visual quality. For substantial cross-boundary work,
+  use delivery-review guidance when a fresh inspection can expose gaps.
 - Compare the result with the intended outcome. Report changes, rationale,
   verification and material remaining risks. State the limits of claims plainly.
 
