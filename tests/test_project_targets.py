@@ -15,7 +15,7 @@ class ProjectTargetTests(HarnessFixture):
         self.entry('optional')['agents'] = ['claude']
 
     def declare(self, **changes):
-        value = {'schema_version': 2, 'targets': ['codex', 'claude'],
+        value = {'schema_version': 1, 'targets': ['codex', 'claude'],
                  'profiles': [], 'skills': ['foundation'], 'skip': [],
                  'target_skills': {'claude': ['optional']}}
         value.update(changes)
@@ -44,7 +44,7 @@ class ProjectTargetTests(HarnessFixture):
         self.assertFalse(self.destination('optional', 'codex', True).exists())
         self.assertTrue(self.destination('optional', 'claude', True).is_dir())
         lock = harness.read_json(self.project / '.ai/project.lock.json')
-        self.assertEqual(lock['schema_version'], 2)
+        self.assertEqual(lock['schema_version'], 1)
         self.assertEqual(lock['manifest'], config)
         self.assertEqual({row['id']: row['targets'] for row in lock['skills']},
                          {'foundation': ['codex', 'claude'], 'optional': ['claude']})
@@ -75,18 +75,14 @@ class ProjectTargetTests(HarnessFixture):
             harness.sync_project(self.project)
         self.assertEqual(snapshot(self.project, timestamps=True), before)
 
-    def test_shared_provider_only_selection_is_rejected_for_both_schemas(self):
-        for schema in (1, 2):
-            config = self.declare(schema_version=schema, skills=['optional'])
-            if schema == 1:
-                config.pop('target_skills')
-                harness.write_json(self.project / '.ai/project.json', config)
-            before = snapshot(self.project, timestamps=True)
-            for command in ('plan', 'sync', 'doctor'):
-                with self.subTest(schema=schema, command=command):
-                    with self.assertRaisesRegex(ValueError, 'optional does not support target codex'):
-                        harness.main(['project', command, '--project', str(self.project)])
-                    self.assertEqual(snapshot(self.project, timestamps=True), before)
+    def test_shared_provider_only_selection_is_rejected(self):
+        self.declare(skills=['optional'])
+        before = snapshot(self.project, timestamps=True)
+        for command in ('plan', 'sync', 'doctor'):
+            with self.subTest(command=command):
+                with self.assertRaisesRegex(ValueError, 'optional does not support target codex'):
+                    harness.main(['project', command, '--project', str(self.project)])
+                self.assertEqual(snapshot(self.project, timestamps=True), before)
 
     def test_conflicts_are_local_to_each_target(self):
         self.entry('feature')['conflicts'] = ['optional']
@@ -131,19 +127,22 @@ class ProjectTargetTests(HarnessFixture):
         with self.assertRaisesRegex(ValueError, 'Cannot skip explicit target skill: optional'):
             harness.project_plan(self.project)
 
-    def test_malformed_target_declarations_and_alias_collisions_are_read_only(self):
+    def test_malformed_target_declarations_and_obsolete_schemas_are_read_only(self):
         cases = [
-            ({'schema_version': 1}, 'requires schema_version 2'),
+            ({'schema_version': 2}, 'Unsupported project manifest schema'),
+            ({'schema_version': 0}, 'Unsupported project manifest schema'),
+            ({'schema_version': '1'}, 'Unsupported project manifest schema'),
             ({'schema_version': True}, 'Unsupported project manifest schema'),
             ({'target_skills': None}, 'must map targets'),
             ({'target_skills': []}, 'must map targets'),
             ({'target_skills': {'claude': 'optional'}}, 'must be a string list'),
             ({'target_skills': {'claude': [None]}}, 'must be a string list'),
             ({'target_skills': {'other': ['optional']}}, 'Unsupported target_skills target'),
-            ({'target_skills': {'both': ['optional']}}, 'Unsupported target_skills target'),
+            ({'target_skills': {'all': ['optional']}}, 'Unsupported target_skills target'),
             ({'targets': ['codex']}, 'not in project targets'),
-            ({'targets': ['codex', 'claude', 'claude-code']}, 'distinct project targets'),
-            ({'target_skills': {'claude': [], 'claude-code': ['optional']}}, 'Duplicate target_skills'),
+            ({'targets': ['codex', 'claude', 'claude']}, 'distinct project targets'),
+            ({'targets': ['codex', 'claude', 'claude-code']}, 'Unsupported project target'),
+            ({'target_skills': {'claude': [], 'claude-code': ['optional']}}, 'Unsupported target_skills target'),
             ({'target_skills': {'claude': ['missing']}}, 'Unknown catalog id'),
             ({'target_skills': {'claude': ['global-guidance']}}, 'not installable'),
         ]
@@ -165,23 +164,24 @@ class ProjectTargetTests(HarnessFixture):
                     harness.sync_project(self.project)
                 self.entry('optional')[field] = original
 
-    def test_claude_code_alias_normalizes_manifest_and_lock_without_rewriting_input(self):
-        original = self.declare(targets=['codex', 'claude-code'], target_skills={'claude-code': ['optional']})
-        harness.sync_project(self.project)
-        lock = harness.read_json(self.project / '.ai/project.lock.json')
-        self.assertEqual(lock['manifest']['targets'], ['codex', 'claude'])
-        self.assertEqual(lock['manifest']['target_skills'], {'claude': ['optional']})
-        self.assertEqual(harness.read_json(self.project / '.ai/project.json'), original)
-        self.assertEqual(self.doctor(), 0)
+    def test_obsolete_target_names_are_rejected_without_rewriting_input(self):
+        for target in ('codex-desktop', 'claude-desktop', 'claude-code', 'both', 'all'):
+            with self.subTest(target=target):
+                original = self.declare(targets=[target], target_skills={})
+                before = snapshot(self.project, timestamps=True)
+                with self.assertRaisesRegex(ValueError, 'Unsupported project target'):
+                    harness.sync_project(self.project)
+                self.assertEqual(harness.read_json(self.project / '.ai/project.json'), original)
+                self.assertEqual(snapshot(self.project, timestamps=True), before)
 
     def test_cli_initializes_and_validates_target_declarations(self):
         with mock.patch('sys.stdout', new_callable=io.StringIO):
-            status = harness.main(['project', 'init', '--project', str(self.project), '--target', 'both',
-                                   '--skill', 'foundation', '--target-skill', 'claude-code:optional',
-                                   '--target-skill', 'claude-code:feature'])
+            status = harness.main(['project', 'init', '--project', str(self.project), '--target', 'all',
+                                   '--skill', 'foundation', '--target-skill', 'claude:optional',
+                                   '--target-skill', 'claude:feature'])
         self.assertEqual(status, 0)
         value = harness.read_json(self.project / '.ai/project.json')
-        self.assertEqual(value['schema_version'], 2)
+        self.assertEqual(value['schema_version'], 1)
         self.assertEqual(value['target_skills'], {'claude': ['optional', 'feature']})
         for arguments in (['optional'], ['claude:'], [':optional'], ['claude:optional:other'],
                           ['claude:optional', 'claude-code:feature']):
@@ -221,7 +221,7 @@ class ProjectTargetTests(HarnessFixture):
         mutations = [lambda lock: lock['skills'][-1].update(targets=['codex', 'claude']),
                      lambda lock: lock['skills'][0].update(targets=['claude']),
                      lambda lock: lock['skills'][-1].pop('targets'),
-                     lambda lock: lock.update(schema_version=1)]
+                     lambda lock: lock.update(schema_version=2)]
         for mutate in mutations:
             lock = copy.deepcopy(expected)
             mutate(lock)
@@ -266,15 +266,16 @@ class ProjectTargetTests(HarnessFixture):
         self.assertEqual([row['id'] for row in lock['skills']], ['foundation'])
         self.assertEqual(self.doctor(), 0)
 
-    def test_existing_v1_lock_and_default_init_contract_remain_unchanged(self):
+    def test_default_init_and_lock_use_the_full_initial_release_contract(self):
         config = self.initialize()
         self.assertEqual(config['schema_version'], 1)
-        self.assertNotIn('target_skills', config)
+        self.assertEqual(config['target_skills'], {})
         harness.sync_project(self.project)
         lock = harness.read_json(self.project / '.ai/project.lock.json')
         self.assertEqual(lock['schema_version'], 1)
-        self.assertTrue(all(set(row) == {'id', 'sha256', 'installed_sha256', 'source', 'commit'}
+        self.assertTrue(all(set(row) == {'id', 'sha256', 'installed_sha256', 'source', 'commit', 'targets'}
                             for row in lock['skills']))
+        self.assertTrue(all(row['targets'] == ['codex', 'claude'] for row in lock['skills']))
         before = snapshot(self.project, timestamps=True)
         self.assertEqual(self.doctor(), 0)
         harness.sync_project(self.project)
@@ -283,11 +284,11 @@ class ProjectTargetTests(HarnessFixture):
     def test_real_cli_entry_point_reconciles_both_targets(self):
         self.save_registry()
         arguments = [sys.executable, str(self.repo / 'ai.py'), 'project']
-        init = subprocess.run(arguments + ['init', '--project', str(self.project), '--target', 'both',
-                              '--skill', 'foundation', '--target-skill', 'claude-code:optional'],
+        init = subprocess.run(arguments + ['init', '--project', str(self.project), '--target', 'all',
+                              '--skill', 'foundation', '--target-skill', 'claude:optional'],
                               cwd=self.repo, text=True, capture_output=True)
         self.assertEqual(init.returncode, 0, init.stderr)
-        self.assertEqual(json.loads(init.stdout)['schema_version'], 2)
+        self.assertEqual(json.loads(init.stdout)['schema_version'], 1)
         for action in ('plan', 'sync', 'doctor', 'sync'):
             result = subprocess.run(arguments + [action, '--project', str(self.project)],
                                     cwd=self.repo, text=True, capture_output=True)

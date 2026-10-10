@@ -22,7 +22,7 @@ specialists and optional tools as your work needs them.
 
 | Layer | What it contains | How you manage it |
 | --- | --- | --- |
-| Shared installation | Working principles, global skills, selected client settings and MCP definitions | `install`, then `check` |
+| Shared installation | Working principles, global skills and MCP definitions | `install`, then `check` |
 | Project selection | A small foundation plus skills chosen for the project's actual work | `project init` / `project add`, then `plan`, `sync`, `doctor` |
 | Runtime tools | Clients, compilers, browsers, renderers, credentials and connected services | Install and configure separately; inspect with the readiness tools and the client's own UI |
 
@@ -55,8 +55,8 @@ On Windows, use `py -3` wherever this guide shows `python3`.
 
 | Select | Intended surface | Files prepared under your home directory |
 | --- | --- | --- |
-| `--target codex-desktop` | Codex Desktop and Codex CLI | `.codex/AGENTS.md`, `.agents/skills/`, `.codex/config.toml` |
-| `--target claude-desktop` | Claude Desktop **Code** sessions and Claude Code CLI | `.claude/CLAUDE.md`, `.claude/skills/`, `.claude/settings.json`, `.claude.json` |
+| `--target codex` | Codex Desktop and Codex CLI | `.codex/AGENTS.md`, `.agents/skills/`, `.codex/config.toml` |
+| `--target claude` | Claude Desktop **Code** sessions and Claude Code CLI | `.claude/CLAUDE.md`, `.claude/skills/`, `.claude.json` |
 | `--target all` | Both of the above | Both sets of destinations |
 
 The default is both clients, so use an explicit target throughout your first
@@ -66,12 +66,11 @@ local Code installation does not configure them. Custom `CODEX_HOME` or
 layout. See [target coverage](targets.md) for these boundaries.
 
 Read [shared instructions](../instructions/AGENTS.md),
-[target settings](../registry/targets.json) and [MCP definitions](../registry/mcp.json)
-before installing. The defaults include Codex's `on-request` approval policy and
-`workspace-write` sandbox, Claude's `default` permission mode, and OpenAI's
-documentation MCP server. Selected settings are applied to your client; unrelated
-configuration is preserved. Instructions guide behavior, while native client
-settings provide the controls supported by that client.
+[target destinations](../registry/targets.json) and [MCP definitions](../registry/mcp.json)
+before installing. The default MCP registration is OpenAI's public documentation
+server. Permission, sandbox, model and appearance choices remain owned by your
+client. Instructions guide behavior; native client settings provide the actual
+controls. Unrelated configuration is preserved.
 
 Optional model, appearance and plugin preferences are managed separately and
 reflect the maintainer's choices. They are not required for adoption.
@@ -97,9 +96,9 @@ The following commands use the same variable in either shell. Substitute `py -3`
 on Windows. Change the target if you selected Claude or both clients.
 
 ```sh
-python3 ai.py install --target codex-desktop --home "$harness_trial/home" --mode copy --dry-run
-python3 ai.py install --target codex-desktop --home "$harness_trial/home" --mode copy
-python3 ai.py check --target codex-desktop --home "$harness_trial/home" --mode copy
+python3 ai.py install --target codex --home "$harness_trial/home" --mode copy --dry-run
+python3 ai.py install --target codex --home "$harness_trial/home" --mode copy
+python3 ai.py check --target codex --home "$harness_trial/home" --mode copy
 ```
 
 Read the report and inspect the files in the temporary home. The dry run previews
@@ -110,7 +109,7 @@ home used by a running client or authenticate an account.
 Now rehearse project selection using a locally authored SVG workflow:
 
 ```sh
-python3 ai.py project init --project "$harness_trial/project" --target codex-desktop
+python3 ai.py project init --project "$harness_trial/project" --target codex
 python3 ai.py catalog show svg-creation
 python3 ai.py project add --project "$harness_trial/project" --skill svg-creation --dry-run
 python3 ai.py project add --project "$harness_trial/project" --skill svg-creation
@@ -141,22 +140,21 @@ The `auto` mode chooses the platform default; an explicit mode makes your choice
 clear. This guide uses copies for a first installation:
 
 ```sh
-python3 ai.py install --target codex-desktop --mode copy --dry-run
+python3 ai.py install --target codex --mode copy --dry-run
 ```
 
-Review the proposed paths and settings. Close the selected client before applying
-changed settings, then run:
+Review the proposed paths and MCP entries, then run:
 
 ```sh
-python3 ai.py install --target codex-desktop --mode copy
-python3 ai.py check --target codex-desktop --mode copy
+python3 ai.py install --target codex --mode copy
+python3 ai.py check --target codex --mode copy
 ```
 
 Repeat the explicit mode when checking. Existing settings receive a local backup
 before replacement. If the installer reports an ownership conflict, follow the
 recovery guidance below before retrying.
 
-Reopen the client and start a fresh session. Confirm the shared instructions and
+Start a fresh client session. Confirm the shared instructions and
 `skill-catalog` are discoverable, inspect MCP status, and invoke one relevant
 skill or tool. Check the actual paths if another plugin or earlier installation
 supplies the same skill name. Avoid enabling duplicate direct-install and plugin
@@ -180,7 +178,7 @@ For a project that has no harness manifest, run from the harness checkout,
 replacing `/absolute/project` with its existing directory:
 
 ```sh
-python3 ai.py project init --project /absolute/project --target codex-desktop
+python3 ai.py project init --project /absolute/project --target codex
 python3 ai.py project plan --project /absolute/project
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
@@ -204,19 +202,49 @@ For another task, discover the relevant contract and inspect the proposed skills
 
 ```sh
 python3 ai.py capabilities list
-python3 ai.py capabilities show backend-engineering
+python3 ai.py capabilities plan "Backend Engineer"
+python3 ai.py capabilities plan "CFO" --with "Excel Expert"
 python3 ai.py catalog search "database"
 ```
+
+A capability plan is read-only: it exposes the selected lead files, source
+fingerprints, acceptance criteria and prerequisites. Role lookup uses the declared
+IDs, titles and aliases; it does not guess from arbitrary prose. Register project
+leads explicitly, for example:
+
+```sh
+python3 ai.py project add --project /absolute/project --capability "CFO" --capability "Excel Expert" --dry-run
+python3 ai.py project add --project /absolute/project --capability "CFO" --capability "Excel Expert"
+python3 ai.py project sync --project /absolute/project
+python3 ai.py project doctor --project /absolute/project
+```
+
+The manifest stores concrete skill IDs. Global-only roles use the shared
+installation; `project add` reports that boundary instead of adding duplicates.
+Profiles still select coherent stack packages, while roles select focused leads.
 
 Read dependencies, compatibility and caveats before selection. A catalog search
 also includes indexed discovery records; finding one does not make it a reviewed
 installable skill. [The catalog](catalog.md) and [project target guide](project-targets.md)
 explain profiles, provider-specific selections and source verification.
 
-`runtime doctor` reports prerequisites without installing tools or running project
-scripts. Missing optional tools may make a diagnostic unsuccessful even when the
-skills are installed correctly. Its CLI client probes do not establish desktop
-activation. Also run the project's own setup and required checks.
+`runtime doctor --json` reports four independent runtimes: `codex_desktop`,
+`claude_desktop`, `codex` and `claude`. Use `--codex-desktop` and `--claude-desktop`
+to supply app paths, or `--codex` and `--claude` for CLI executables. Missing either
+desktop app prevents aggregate client readiness even when both CLIs authenticate.
+The optional `--check-auth` checks CLI login status; it does not establish available
+quota, model entitlement or Desktop activation.
+
+Native macOS verification checks each app's bundle identity and executable access.
+The diagnostic never launches the desktop apps: recognized metadata is not proof
+that a fresh session loads or uses the harness. Windows and Linux native behavior
+remains unverified in this release verification; Claude desktop discovery there is
+explicitly unverified, and an explicit executable path provides presence evidence
+only. See [target coverage](targets.md) for the platform limits.
+
+Project diagnostics do not install tools or run project scripts. Missing optional
+tools may make a diagnostic unsuccessful even when skills are installed correctly.
+Also run the project's own setup and required checks.
 
 ## 5. Try one real task and judge the result
 
@@ -260,7 +288,7 @@ exercise once the appropriate tools are available.
 
 Fork the repository if you want to own the shared defaults. Change working
 principles in `instructions/`, global selections in `registry/harness.json`,
-client policy in `registry/targets.json`, and server definitions in
+client destinations in `registry/targets.json`, and server definitions in
 `registry/mcp.json`. Preserve upstream attribution and review the
 [third-party terms](third-party-notices.md) when redistributing selected skills.
 Keep credentials and machine-specific runtime configuration outside Git.

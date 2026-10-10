@@ -346,27 +346,23 @@ def _configuration(root, git):
 
 def _sync_apply(home=None, mode='auto'):
     """Fresh-process installer entry; no fetch, runtime probe, models or scheduler."""
-    from . import harness, settings
+    from . import target_install
     if mode not in ('auto', 'link', 'copy'):
         return _report('sync_failed', reason='Unsupported installation mode.')
     try:
-        harness.global_plan('both', home, mode)
-        settings.plan(home)
+        installation = target_install.run(target='all', home=home, mode=mode)
     except (ValueError, OSError, KeyError):
-        return _report('sync_failed', reason='Global/settings preflight failed; no installation was attempted.')
-    try:
-        jobs = harness.sync_global('both', home, mode)
-    except (ValueError, OSError, KeyError):
-        return _report('sync_failed', reason='Global sync failed; completed items retain ownership receipts.')
-    try:
-        preferences = settings.apply(home)
-    except (ValueError, OSError, KeyError):
-        return _report('sync_failed', globals_completed=True,
-                       reason='Global sync completed but preferences failed; inspect settings separately.')
-    pending = bool(preferences.get('app_must_close') or preferences.get('status') == 'deferred_app_must_close')
-    return _report('deferred_preferences' if pending else 'synced', 1 if pending else 0,
-                   globals_completed=True, global_items=len(jobs), preferences_pending=pending,
-                   preferences_applied=bool(preferences.get('applied')))
+        return _report('sync_failed', installation_status='failed',
+                       guidance_completed=False, partially_applied=False,
+                       reason='Installation preflight failed; no private diagnostics were retained.')
+    ready = (installation.get('ready') is True
+             and installation.get('guidance_completed') is True
+             and installation.get('status') != 'partially_applied')
+    return _report('synced' if ready else 'sync_failed', 0 if ready else 1,
+                   installation_status=installation['status'],
+                   guidance_completed=installation.get('guidance_completed') is True,
+                   global_items=len(installation.get('guidance', [])),
+                   partially_applied=installation.get('status') == 'partially_applied')
 
 
 def _check_default_home(home):
@@ -470,14 +466,19 @@ def run(root=None, home=None, mode='auto'):
                 child = json.loads(output)
             except (ValueError, UnicodeError):
                 raise MaintenanceError('sync_failed', 'Fresh installer failed or returned invalid bounded output.') from None
-            if not isinstance(child, dict) or child.get('status') not in ('synced', 'deferred_preferences'):
+            if not isinstance(child, dict) or child.get('status') not in ('synced', 'sync_failed'):
                 raise MaintenanceError('sync_failed', 'Fresh installer reported failure; no raw diagnostics were retained.')
-            pending = child.get('status') == 'deferred_preferences'
-            if code != (1 if pending else 0) or child.get('exit_code') != code:
+            failed = child['status'] == 'sync_failed'
+            if code != (1 if failed else 0) or child.get('exit_code') != code:
                 raise MaintenanceError('sync_failed', 'Fresh installer exit status did not match its report.')
-            result = _report('deferred_preferences' if pending else 'updated' if after != before else 'current',
-                             1 if pending else 0, revision_before=before, revision_after=after,
-                             preferences_pending=pending, globals_completed=True)
+            if (type(child.get('guidance_completed')) is not bool
+                    or type(child.get('partially_applied')) is not bool
+                    or not failed and not child['guidance_completed']):
+                raise MaintenanceError('sync_failed', 'Fresh installer did not confirm its installation state.')
+            result = _report('sync_failed' if failed else 'updated' if after != before else 'current',
+                             1 if failed else 0, revision_before=before, revision_after=after,
+                             guidance_completed=child['guidance_completed'],
+                             partially_applied=child['partially_applied'])
     except MaintenanceError as error:
         result = _report(error.status, reason=str(error), revision_before=before, revision_after=after)
     except KeyboardInterrupt:

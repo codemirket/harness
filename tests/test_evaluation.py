@@ -53,6 +53,41 @@ sys.exit(0 if passed else 1)
         return evaluation.review(self.run, 'fixture reviewer', kind, 'accepted',
                                  ['candidate.py'], 'Reviewed behavior and implementation.')
 
+    def test_role_contract_changes_are_part_of_harness_provenance(self):
+        registry = self.source / 'registry'
+        registry.mkdir()
+        roles = registry / 'capabilities.json'
+        roles.write_text('{"role":"cash"}')
+        before = evaluation.harness_inputs(self.source)
+        self.assertIn('registry/capabilities.json', before['files'])
+        roles.write_text('{"role":"profit"}')
+        self.assertNotEqual(before['sha256'], evaluation.harness_inputs(self.source)['sha256'])
+
+    def assert_registry_mutation_changes_provenance(self, name, original, changed):
+        path = self.source / 'registry' / name
+        path.parent.mkdir(exist_ok=True)
+        path.write_text(json.dumps(original))
+        before = evaluation.harness_inputs(self.source)
+        key = 'registry/' + name
+        self.assertIn(key, before['files'])
+        path.write_text(json.dumps(changed))
+        after = evaluation.harness_inputs(self.source)
+        self.assertNotEqual(before['files'][key], after['files'][key])
+        self.assertNotEqual(before['sha256'], after['sha256'])
+
+    def test_target_destinations_are_part_of_harness_provenance(self):
+        self.assert_registry_mutation_changes_provenance('targets.json',
+            {'codex': {'instructions': '.codex/AGENTS.md'}},
+            {'codex': {'instructions': '.codex/OTHER.md'}})
+
+    def test_mcp_configuration_is_part_of_harness_provenance(self):
+        self.assert_registry_mutation_changes_provenance('mcp.json',
+            {'openai-docs': {'enabled': True}}, {'openai-docs': {'enabled': False}})
+
+    def test_explicit_codex_preferences_are_part_of_harness_provenance(self):
+        self.assert_registry_mutation_changes_provenance('codex-settings.json',
+            {'config': {'model_verbosity': 'low'}}, {'config': {'model_verbosity': 'high'}})
+
     def test_prepare_copies_inputs_and_does_not_replace_existing_work(self):
         result = self.prepare()
         self.assertEqual(result['status'], 'prepared')

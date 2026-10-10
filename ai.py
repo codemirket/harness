@@ -9,10 +9,10 @@ def main():
     if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
         print('''Personal agent harness (Python 3.9+, standard library)
 
-  install [--target codex-desktop|claude-desktop|all] [--dry-run]
-                       Install shared guidance, skills, MCP and target settings (default: both desktops)
+  install [--target codex|claude|all] [--dry-run]
+                       Install shared guidance, skills and MCP (default: both desktops)
   check [--target ...]  Read-only installation and configuration drift check
-  capabilities <command> List task contracts, required evidence and source integrity
+  capabilities <command> Compose role contracts, selected read paths and acceptance evidence
   workbench <command>  Render and check browser, vector, office and Markdown artifacts
   handoff --output DIR Package skills and instructions for Claude Chat/Cowork Customize
   schedule <command>   Plan, install or check the daily midnight OS schedule
@@ -28,7 +28,7 @@ def main():
   export               Build Codex plugin bundles
 
 Use COMMAND --help. Claude Desktop means local Code mode; Chat/Cowork use account customization.
-Schedules, model/appearance preferences and legacy runtime setup are explicit commands.''')
+Schedules and model/appearance preferences are explicit commands.''')
         return 0
     if sys.argv[1] in ('install', 'check'):
         from lib import target_install
@@ -42,9 +42,6 @@ Schedules, model/appearance preferences and legacy runtime setup are explicit co
     if sys.argv[1] == 'handoff':
         from lib import handoff
         return handoff.main(sys.argv[2:])
-    if sys.argv[1] == 'legacy-install':
-        from lib import install
-        return install.main(['install'] + sys.argv[2:])
     if sys.argv[1] == 'schedule':
         from lib import schedule
         return schedule.main(sys.argv[2:])

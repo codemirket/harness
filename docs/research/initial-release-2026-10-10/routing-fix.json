@@ -1,0 +1,27 @@
+{
+  "observed": "Claude discovered globals but did not invoke/read router or specialists on finance and localization",
+  "changes": [
+    {
+      "path": "instructions/AGENTS.md",
+      "before": {
+        "sha256": "0e562792277a8cbc6273f15215386dcb8d194f52385e94e823338cbd411e2721",
+        "mode": 420
+      },
+      "after": {
+        "sha256": "c0e5e85a3320666b5ad9b860e8ec495589e0a247b450297f14e58027f5e4d34b",
+        "mode": 420
+      }
+    },
+    {
+      "path": "skills/skill-catalog/SKILL.md",
+      "before": {
+        "sha256": "c75b50487c66ebc0daddd71cb74b8573f58c146da83daba22d824a3bcad226a7",
+        "mode": 420
+      },
+      "after": {
+        "sha256": "b5cf78ec4d2102722b39c4eec844626ac2bd0460f49fd58fa29c514d6a95728a",
+        "mode": 420
+      }
+    }
+  ]
+}

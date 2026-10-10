@@ -7,6 +7,8 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from lib import capabilities
 
 
 def cell(value):
@@ -67,6 +69,7 @@ def render():
         selected = sum(e.get('source') == identifier for e in project)
         sources.append('| [' + source['repository'] + '](https://github.com/' + source['repository'] + '/tree/' + source['commit'] + ') | ' + str(n) + ' | ' + str(selected) + ' | ' + cell(source.get('license_summary', source.get('license', 'Per-entry review'))) + ' |')
     sources += ['', '## Detailed evidence', '',
+                '- [Fundamental redesign review](research/harness-2026-10-10/README.md): fresh path-level decisions for all forty requested repositories and two documentation services, professional role coverage and implementation evidence.',
                 '- [Agent runtime patterns and hardening](reviews/agent-runtime-hardening.md): DeerFlow, OpenHuman, DeepAgents, Hermes and CodeGraph; archive limits, passive loading, evidence provenance and optional graph retrieval.',
                 '- [All-domain harness review](reviews/harness-upgrade.md): twelve requested resources, professional task routes, outcome review and focused product/analysis additions.',
                 '- [Vercel browser and React skills](reviews/vercel.md): runtime boundaries, host assumptions, React companions and deployment concerns.',
@@ -84,9 +87,11 @@ def render():
                 'Remotion lacks an explicit verified license at the pinned revision and remains manual. Vercel agent-skills declares MIT in README/frontmatter but supplies no standalone license file; that evidence and caveat are retained. Context-mode uses Elastic-2.0. Anthropic office implementations have restrictive local terms. Awesome Skills has per-source exceptions. OpenDesign includes advertisement-only wrappers. These boundaries are not erased by marketplace export.', '',
                 '## Verification and maintenance', '',
                 'See [verification evidence](verification.md) for source-byte checks, isolated registration and platform limits. Update source pins, reviewed payload hashes, integration notes and inventory together. Use `python3 ai.py catalog hash <id> --source-tree /reviewed/checkout` to calculate hashes; this does not approve new bytes. Regenerate discovery docs with `python3 scripts/render_registry.py`.', '',
+                'Project synchronization requires the complete [receipt contract](project-targets.md#provenance-and-executable-integrity), including source and installed hashes, explicit commit provenance and the executable-file list. Missing fields are not inferred from the current catalog.', '',
                 'Global links follow the checkout; managed copies and project installations change through synchronization. Local edits are preserved. Shared instructions require appropriate skill pickup but cannot guarantee model behavior or enforce a security boundary.']
     return {ROOT / 'docs/catalog.md': '\n'.join(catalog) + '\n',
-            ROOT / 'docs/source-review.md': '\n'.join(sources) + '\n'}
+            ROOT / 'docs/source-review.md': '\n'.join(sources) + '\n',
+            ROOT / 'docs/capabilities.md': capabilities.markdown(ROOT)}
 
 
 def main():

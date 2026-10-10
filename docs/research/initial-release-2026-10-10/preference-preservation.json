@@ -1,0 +1,11 @@
+{
+  "codex_prior_values_preserved": true,
+  "mcp_openai_docs_enabled": true,
+  "codex_native_preferences": {
+    "sandbox_mode": null,
+    "approval_policy": null,
+    "model": "gpt-6-astra",
+    "model_reasoning_effort": "max"
+  },
+  "private_backup_removed": true
+}

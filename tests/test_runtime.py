@@ -1,4 +1,5 @@
 """Runtime diagnostics verify observable states without real auth or installations."""
+import io
 import json
 import os
 from pathlib import Path
@@ -31,10 +32,21 @@ class RuntimeTests(unittest.TestCase):
         return runtime.diagnose_cli(name, home=self.home, env=self.env,
                                    platform=runtime.platform_name(), explicit=getattr(self, name), **kwargs)
 
+    def test_doctor_exit_reports_readiness_and_authentication_attention(self):
+        report = {'ready': True, 'authentication_attention': [], 'runtimes': {}}
+        with mock.patch.object(runtime, 'diagnose', return_value=report), \
+             mock.patch('sys.stdout', new_callable=io.StringIO):
+            self.assertEqual(runtime.main(['doctor', '--json']), 0)
+            report['ready'] = False
+            self.assertEqual(runtime.main(['doctor', '--json']), 1)
+            report['ready'] = True
+            report['authentication_attention'] = ['codex']
+            self.assertEqual(runtime.main(['doctor', '--json', '--check-auth']), 1)
+
     def test_missing_explicit_path_does_not_fall_back_or_execute(self):
         with mock.patch.object(runtime, 'run_probe') as run:
             report = runtime.diagnose(home=self.home, codex=self.missing, claude=self.missing,
-                                      desktop=self.missing, env=self.env)
+                                      codex_desktop=self.missing, claude_desktop=self.missing, env=self.env)
         run.assert_not_called()
         for name in ('codex', 'claude'):
             self.assertFalse(report['runtimes'][name]['present'])
@@ -104,7 +116,7 @@ class RuntimeTests(unittest.TestCase):
     def test_discovery_home_override_does_not_claim_auth_for_that_user(self):
         with mock.patch.object(runtime, 'run_probe', return_value={'status': 'ok', 'exit_code': 0, 'text': 'codex-cli 1.2.3'}) as run:
             report = runtime.diagnose(home=self.home, codex=self.codex, claude=self.missing,
-                                      desktop=self.missing, env=self.env, check_auth=True)
+                                      codex_desktop=self.missing, claude_desktop=self.missing, env=self.env, check_auth=True)
         self.assertEqual(run.call_count, 1)
         self.assertEqual(report['runtimes']['codex']['auth']['reason'], 'discovery_home_override')
 
@@ -116,7 +128,7 @@ class RuntimeTests(unittest.TestCase):
                     'CFBundleExecutable': 'ChatGPT'}
         (app / 'Contents/Info.plist').write_bytes(plistlib.dumps(metadata))
         with mock.patch.object(runtime, 'run_probe') as run:
-            report = runtime.diagnose_desktop(home=self.home, env=self.env, platform='macos', explicit=app)
+            report = runtime.diagnose_desktop('codex', home=self.home, env=self.env, platform='macos', explicit=app)
         run.assert_not_called()
         self.assertEqual(report['identity'], 'com.openai.codex')
         self.assertEqual(report['version'], '26.930.61225')
@@ -125,14 +137,96 @@ class RuntimeTests(unittest.TestCase):
         self.assertIsNone(report['can_execute'])
         metadata['CFBundleIdentifier'] = 'org.unrelated.app'
         (app / 'Contents/Info.plist').write_bytes(plistlib.dumps(metadata))
-        self.assertFalse(runtime.diagnose_desktop(home=self.home, env=self.env, platform='macos', explicit=app)['identity_verified'])
+        self.assertFalse(runtime.diagnose_desktop('codex', home=self.home, env=self.env, platform='macos', explicit=app)['identity_verified'])
+
+    def test_claude_mac_bundle_is_identified_independently_without_launch(self):
+        app = self.home / 'Claude.app'
+        executable = app / 'Contents/MacOS/Claude'
+        executable.parent.mkdir(parents=True)
+        executable.write_text('must never launch')
+        executable.chmod(0o755)
+        metadata = {'CFBundleIdentifier': 'com.anthropic.claudefordesktop',
+                    'CFBundleShortVersionString': '2.31226.1', 'CFBundleExecutable': 'Claude'}
+        (app / 'Contents/Info.plist').write_bytes(plistlib.dumps(metadata))
+        with mock.patch.object(runtime, 'run_probe', side_effect=AssertionError('No app launch')):
+            report = runtime.diagnose_desktop('claude', home=self.home, env=self.env,
+                                              platform='macos', explicit=app)
+            wrong = runtime.diagnose_desktop('codex', home=self.home, env=self.env,
+                                             platform='macos', explicit=app)
+        self.assertEqual(report['identity'], 'com.anthropic.claudefordesktop')
+        self.assertEqual(report['version'], '2.31226.1')
+        self.assertTrue(report['identity_verified'])
+        self.assertTrue(report['executable_present'])
+        self.assertTrue(report['executable_accessible'])
+        self.assertFalse(report['launch_verified'])
+        self.assertEqual(report['auth']['state'], 'not_checked')
+        self.assertFalse(wrong['identity_verified'])
+
+    def test_authenticated_clis_cannot_hide_missing_claude_desktop(self):
+        codex_app = {'present': True, 'selected_path': str(self.home), 'version': '1.2.3',
+                     'identity_verified': True, 'executable_accessible': True,
+                     'probe_status': 'metadata_only', 'auth': {'state': 'not_checked'}}
+        missing_app = {'present': False, 'selected_path': None, 'version': None,
+                       'identity_verified': False, 'executable_accessible': False,
+                       'probe_status': 'not_found', 'auth': {'state': 'not_checked'}}
+        cli = {'present': True, 'selected_path': str(self.codex), 'version': '1.2.3',
+               'can_execute': True, 'selected_on_path': True, 'probe_status': 'ok',
+               'auth': {'state': 'authenticated'}}
+        with mock.patch.object(runtime, 'diagnose_desktop',
+                               side_effect=[codex_app, missing_app]), \
+             mock.patch.object(runtime, 'diagnose_cli', side_effect=lambda *a, **k: dict(cli)) as probe, \
+             mock.patch.object(runtime.Path, 'home', return_value=self.home):
+            report = runtime.diagnose(home=self.home, env=self.env, check_auth=True)
+        self.assertFalse(report['ready'])
+        self.assertEqual(set(report['runtimes']), {'codex_desktop', 'claude_desktop', 'codex', 'claude'})
+        self.assertTrue(report['runtimes']['codex_desktop']['ready'])
+        self.assertFalse(report['runtimes']['claude_desktop']['ready'])
+        self.assertEqual(report['authentication_attention'], [])
+        self.assertEqual(probe.call_args_list[0].kwargs['desktop_path'], self.home)
+        self.assertIsNone(probe.call_args_list[1].kwargs['desktop_path'])
+
+    def test_claude_desktop_on_unverified_platform_never_claims_identity(self):
+        for platform in ('windows', 'linux'):
+            with self.subTest(platform=platform), \
+                 mock.patch.object(runtime, 'platform_name', return_value=platform), \
+                 mock.patch.object(runtime, 'run_probe', side_effect=AssertionError('No app execution')):
+                report = runtime.diagnose_desktop('claude', home=self.home, env=self.env,
+                                                  platform=platform, explicit=self.claude)
+                unavailable = runtime.diagnose_desktop('claude', home=self.home, env=self.env,
+                                                       platform=platform)
+            self.assertTrue(report['present'])
+            self.assertEqual(report['probe_status'], 'presence_only')
+            self.assertFalse(report['identity_verified'])
+            self.assertFalse(report['launch_verified'])
+            self.assertIsNone(report['can_execute'])
+            self.assertEqual(unavailable['probe_status'], 'discovery_unverified')
+
+    def test_explicit_desktop_flags_are_distinct_and_old_flag_is_rejected(self):
+        report = {'ready': False, 'authentication_attention': [], 'runtimes': {}}
+        with mock.patch.object(runtime, 'diagnose', return_value=report) as diagnose, \
+             mock.patch('sys.stdout', new_callable=io.StringIO):
+            self.assertEqual(runtime.main(['doctor', '--json', '--codex-desktop', str(self.codex),
+                                           '--claude-desktop', str(self.claude)]), 1)
+        self.assertEqual(diagnose.call_args.kwargs['codex_desktop'], self.codex)
+        self.assertEqual(diagnose.call_args.kwargs['claude_desktop'], self.claude)
+        with mock.patch('sys.stderr', new_callable=io.StringIO), self.assertRaises(SystemExit) as error:
+            runtime.main(['doctor', '--desktop', str(self.codex)])
+        self.assertEqual(error.exception.code, 2)
+
+    def test_unsupported_desktop_platform_is_distinct_from_a_missing_app(self):
+        for client in ('codex', 'claude'):
+            with self.subTest(client=client):
+                report = runtime.diagnose_desktop(client, home=self.home, env=self.env,
+                                                  platform='unsupported-os', explicit=self.claude)
+            self.assertEqual(report['probe_status'], 'unsupported_platform')
+            self.assertFalse(report['identity_verified'])
 
     def test_windows_discovery_on_other_host_never_claims_execution(self):
         if runtime.platform_name() == 'windows': self.skipTest('Requires non-Windows host')
         exe = self.home / 'Codex.exe'
         exe.write_bytes(b'not Windows executable')
         with mock.patch.object(runtime, 'run_probe') as run:
-            report = runtime.diagnose(home=self.home, codex=exe, claude=exe, desktop=exe,
+            report = runtime.diagnose(home=self.home, codex=exe, claude=exe, codex_desktop=exe, claude_desktop=exe,
                                       env=self.env, platform='windows', check_auth=True)
         run.assert_not_called()
         self.assertFalse(report['native_validation'])
@@ -179,7 +273,7 @@ class RuntimeTests(unittest.TestCase):
         self.assertLessEqual(len(result['text']), 100)
 
     def test_linux_desktop_support_is_preview_not_unsupported(self):
-        record = runtime.diagnose_desktop(home=self.home, env=self.env, platform='linux', explicit=self.missing)
+        record = runtime.diagnose_desktop('codex', home=self.home, env=self.env, platform='linux', explicit=self.missing)
         self.assertEqual(record['support'], 'preview')
         self.assertFalse(record['launch_verified'])
 

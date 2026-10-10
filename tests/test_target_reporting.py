@@ -12,7 +12,7 @@ class ProjectTargetReportingTests(HarnessFixture):
         self.entry('optional')['agents'] = ['claude']
 
     def declare(self, **changes):
-        value = {'schema_version': 2, 'targets': ['codex', 'claude'],
+        value = {'schema_version': 1, 'targets': ['codex', 'claude'],
                  'profiles': [], 'skills': ['foundation'], 'skip': [],
                  'target_skills': {'claude': ['optional']}}
         value.update(changes)
@@ -27,7 +27,7 @@ class ProjectTargetReportingTests(HarnessFixture):
     def assignments(self, rows):
         self.assertIsInstance(rows, list)
         for row in rows:
-            self.assertIn('excluded_targets', row, 'Schema v2 rows must explain omitted active targets')
+            self.assertIn('excluded_targets', row, 'Project rows must explain omitted active targets')
         return {(row['id'], row['target']): row['excluded_targets'] for row in rows}
 
     def test_plan_sync_and_doctor_report_same_explicit_provider_exclusions(self):
@@ -77,13 +77,13 @@ class ProjectTargetReportingTests(HarnessFixture):
         self.assertEqual(status, 0)
         self.assertEqual(self.assignments(rows), expected)
 
-    def test_v2_single_target_does_not_report_inactive_provider_as_excluded(self):
-        self.declare(targets=['claude-code'], skills=[], target_skills={'claude-code': ['optional']})
+    def test_single_target_does_not_report_inactive_provider_as_excluded(self):
+        self.declare(targets=['claude'], skills=[], target_skills={'claude': ['optional']})
         status, rows = self.command('sync')
         self.assertEqual(status, 0)
         self.assertEqual(self.assignments(rows), {('optional', 'claude'): []})
 
-    def test_v2_shared_only_selection_has_explicit_empty_exclusions(self):
+    def test_shared_only_selection_has_explicit_empty_exclusions(self):
         self.declare(target_skills={'codex': [], 'claude': []})
         status, rows = self.command('plan')
         self.assertEqual(status, 0)
@@ -128,16 +128,18 @@ class ProjectTargetReportingTests(HarnessFixture):
                 self.assertFalse(diagnostics[0]['global_overlap'])
                 self.assertEqual(snapshot(self.project / '.agents', timestamps=True), preserved)
 
-    def test_v1_output_and_lock_shape_remain_unchanged(self):
+    def test_shared_selection_uses_full_output_and_lock_contract(self):
         self.initialize()
-        expected_fields = {'id', 'target', 'destination', 'action', 'dependencies', 'caveats'}
+        expected_fields = {'id', 'target', 'destination', 'action', 'dependencies', 'caveats',
+                           'excluded_targets'}
         for action in ('plan', 'sync', 'doctor'):
             with self.subTest(action=action):
                 status, rows = self.command(action)
                 self.assertEqual(status, 0)
                 self.assertTrue(rows)
                 self.assertTrue(all(set(row) == expected_fields for row in rows))
+                self.assertTrue(all(row['excluded_targets'] == [] for row in rows))
         lock = harness.read_json(self.project / '.ai/project.lock.json')
         self.assertEqual(lock['schema_version'], 1)
-        self.assertTrue(all(set(row) == {'id', 'sha256', 'installed_sha256', 'source', 'commit'}
+        self.assertTrue(all(set(row) == {'id', 'sha256', 'installed_sha256', 'source', 'commit', 'targets'}
                             for row in lock['skills']))

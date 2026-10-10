@@ -1,0 +1,83 @@
+{
+  "label": "codex-finance",
+  "surface": "Codex Desktop bundled CLI",
+  "invocation": {
+    "provider": "codex",
+    "case": "finance",
+    "argv": [
+      "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "-C",
+      "<scratch>/trials/codex/finance",
+      "-s",
+      "workspace-write",
+      "-c",
+      "approval_policy=\"never\"",
+      "-o",
+      "<scratch>/runs/codex/finance/final.md",
+      "Read TASK.md and complete the requested task yourself. Do not delegate."
+    ],
+    "cwd": "<scratch>/trials/codex/finance",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "native_result": {
+    "provider": "codex",
+    "case": "finance",
+    "status": "completed",
+    "exit_code": 0,
+    "seconds": 316.359
+  },
+  "input_unchanged": true,
+  "trace": {
+    "models": [],
+    "tools": {
+      "shell": 13
+    },
+    "skill_calls": [],
+    "usage": {
+      "input_tokens": 388909,
+      "cached_input_tokens": 340224,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 14022,
+      "reasoning_output_tokens": 4500
+    },
+    "raw_stream_sha256": "a751dfadeb504b07aef2627277f4f327a6ed58fa2e264ca3d7110f03f147d2a6",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "tool-trace.jsonl": "e860539e2affb4bf5123d78439734d252a790701e3db889d214a16f8e2f35286",
+    "results.json": "1b313f2fc27f00879c2a9cefad3d2803f7862177f988f7f1646373788956d677",
+    "final.md": "296811ef56fd89aaeda46ba2cc6d71dca23a721c484c79fd8997e627978e8bce",
+    "TASK.md": "40c8c6a6df25808d67809873beabe43f068011ff21ca015ffca14858f051092f",
+    "verification.json": "8f50c8d8717decae8b692a850f1c32b71e2418df30ce2f328a665448e4795bd2",
+    "decision.md": "8e6534db3c0e8fc565afa4bfeff0fa79a008a5cb60add096e96f3ded54549fdd",
+    "ledger.json": "5be1e094f76fde050cd4c8a0c0648f2fe296009b04bfc10720c04e276a967eeb",
+    "analyze.py": "e6604ecd342030013db34a14ca4fbbbc23d3948690f6c48e57ae9db06844e1f7"
+  },
+  "verifier_passed": true,
+  "guidance_use": {
+    "bodies_received": [
+      "skill-catalog",
+      "financial-analysis",
+      "engineering-judgment"
+    ],
+    "references_received": [
+      "cash-and-earnings.md",
+      "boundary-decisions.md"
+    ],
+    "original_source_lines": [
+      8,
+      18,
+      24
+    ],
+    "trace": "tool-trace.jsonl",
+    "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+    "limits": []
+  }
+}

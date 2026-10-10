@@ -1,0 +1,120 @@
+{
+  "label": "claude-finance-before",
+  "surface": "Claude Code CLI",
+  "invocation": {
+    "provider": "claude",
+    "case": "finance",
+    "argv": [
+      "<home>/.local/bin/claude",
+      "--print",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--no-session-persistence",
+      "--permission-prompts",
+      "none",
+      "Read TASK.md and complete the requested task yourself. Do not delegate."
+    ],
+    "cwd": "<scratch>/trials/claude/finance",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "native_result": {
+    "provider": "claude",
+    "case": "finance",
+    "status": "completed",
+    "exit_code": 0,
+    "seconds": 263.26
+  },
+  "input_unchanged": true,
+  "trace": {
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "tools": {
+      "Bash": 8,
+      "Write": 2
+    },
+    "skill_calls": [],
+    "model": "claude-opus-5-5",
+    "discovered_harness_skills": [
+      "agent-coordination",
+      "ai-system-evaluation",
+      "ci-maintenance",
+      "context-management",
+      "document-parsing",
+      "document-workflow",
+      "engineering-judgment",
+      "interface-design",
+      "marketing-writing",
+      "office-authoring",
+      "research-and-synthesis",
+      "security-judgment",
+      "skill-catalog",
+      "work-planning"
+    ],
+    "subtype": "success",
+    "is_error": false,
+    "duration_ms": 259537,
+    "num_turns": 11,
+    "usage": {
+      "input_tokens": 22,
+      "cache_creation_input_tokens": 47879,
+      "cache_read_input_tokens": 439141,
+      "output_tokens": 25777,
+      "output_tokens_details": {
+        "thinking_tokens": 12018
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 47879,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 986,
+          "cache_read_input_tokens": 55655,
+          "cache_creation_input_tokens": 715,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 715
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "raw_stream_sha256": "a150400e09ebab14f1c36a06f36d75e1705094e2b587632848ebb6e52cbd3223",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "tool-trace.jsonl": "dc0d3313b81557e5d58de345621ffdef3d2e8907eec9dcfa951c3921c4f4a0a3",
+    "results.json": "1b313f2fc27f00879c2a9cefad3d2803f7862177f988f7f1646373788956d677",
+    "final.md": "4deb9462f18c942a8097f0302ff12053d75741d212f8842b43d3006754463310",
+    "TASK.md": "40c8c6a6df25808d67809873beabe43f068011ff21ca015ffca14858f051092f",
+    "verification.json": "4dd998947d64f97bfaab3a9981e7014dd4062b6c891af9b3694dc7a5f39262cb",
+    "decision.md": "e4278f28dccc909ebc86d059b0d7acc197b13fe687c5974b7e8f811f0b05e8fc",
+    "ledger.json": "5be1e094f76fde050cd4c8a0c0648f2fe296009b04bfc10720c04e276a967eeb",
+    "analyze.py": "c3e8ec5c209d3c4b65364c66dfc093d7652c2ca04a0700e3910b2fd899a2bc37"
+  },
+  "verifier_passed": false,
+  "guidance_use": {
+    "bodies_received": [],
+    "references_received": [],
+    "original_source_lines": [],
+    "trace": "tool-trace.jsonl",
+    "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+    "limits": [
+      "No relevant skill invocation or body read found."
+    ]
+  }
+}

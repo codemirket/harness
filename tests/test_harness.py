@@ -61,14 +61,14 @@ class HarnessFixture(unittest.TestCase):
         self.config = {
             'schema_version': 1,
             'global_skills': ['skill-catalog', 'global-guidance'],
-            'targets': {
-                'codex': {'instructions': 'instructions/AGENTS.md',
-                          'instruction_destination': '.codex/AGENTS.md',
-                          'skills_destination': '.agents/skills'},
-                'claude': {'instructions': 'instructions/CLAUDE.md',
-                           'instruction_destination': '.claude/CLAUDE.md',
-                           'skills_destination': '.claude/skills'},
-            },
+        }
+        self.adapters = {
+            'codex': {'instructions': 'instructions/AGENTS.md',
+                      'instruction_destination': '.codex/AGENTS.md',
+                      'skills_destination': '.agents/skills'},
+            'claude': {'instructions': 'instructions/CLAUDE.md',
+                       'instruction_destination': '.claude/CLAUDE.md',
+                       'skills_destination': '.claude/skills'},
         }
         self.data = {'schema_version': 1, 'sources': {}, 'skills': [],
                      'profiles': {'feature': {'description': 'A realistic dependency closure.',
@@ -89,7 +89,7 @@ class HarnessFixture(unittest.TestCase):
                 'sha256': reviewed_hash(files),
                 'requires': ['foundation'] if name == 'feature' else [],
             })
-        # Exercise the real copied compatibility scripts against a complete local CLI.
+        # Exercise the real copied skill entry points against a complete local CLI.
         shutil.copytree(REPOSITORY / 'skills/skill-catalog/scripts',
                         self.repo / 'skills/skill-catalog/scripts',
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
@@ -99,9 +99,9 @@ class HarnessFixture(unittest.TestCase):
             shutil.copyfile(REPOSITORY / 'lib' / filename, self.repo / 'lib' / filename)
         shutil.copyfile(REPOSITORY / 'ai.py', self.repo / 'ai.py')
         self.save_registry()
-        shutil.copyfile(REPOSITORY / 'registry/targets.json', self.repo / 'registry/targets.json')
         self.patch(harness, 'ROOT', self.repo)
         self.patch(harness, 'MANIFEST', self.repo / 'registry/harness.json')
+        self.patch(harness.target_registry, 'ROOT', self.repo)
         self.patch(catalog, 'ROOT', self.repo)
         self.patch(catalog, 'load_catalog', lambda: self.data)
         self.patch(catalog.urllib.request, 'urlopen',
@@ -116,6 +116,8 @@ class HarnessFixture(unittest.TestCase):
         (self.repo / 'registry').mkdir(exist_ok=True)
         (self.repo / 'registry/harness.json').write_text(json.dumps(self.config))
         (self.repo / 'registry/catalog.json').write_text(json.dumps(self.data))
+        (self.repo / 'registry/targets.json').write_text(json.dumps(
+            {'schema_version': 1, 'targets': self.adapters}))
 
     def entry(self, identifier):
         return next(entry for entry in self.data['skills'] if entry['id'] == identifier)
@@ -124,7 +126,7 @@ class HarnessFixture(unittest.TestCase):
         base = self.project if project else self.home
         return base / ('.agents' if target == 'codex' else '.claude') / 'skills' / name
 
-    def initialize(self, target='both'):
+    def initialize(self, target='all'):
         return harness.init_project(self.project, ['feature'], [], ['optional'], target)
 
     def revise(self, name):
@@ -146,7 +148,7 @@ class GlobalHarnessTests(HarnessFixture):
         for mode in ('copy', 'link'):
             with self.subTest(mode=mode):
                 before = snapshot(self.home, timestamps=True)
-                _, _, _, jobs = harness.global_plan('both', self.home, mode)
+                _, _, _, jobs = harness.global_plan('all', self.home, mode)
                 self.assertEqual(len(jobs), 6)
                 self.assertEqual({j['target'] for j in jobs}, {'codex', 'claude'})
                 self.assertTrue(all(j['action'] == 'create' for j in jobs))
@@ -159,7 +161,7 @@ class GlobalHarnessTests(HarnessFixture):
         unrelated = self.destination('user-skill', 'claude')
         unrelated.mkdir(parents=True)
         (unrelated / 'notes.md').write_bytes(b'Personal unrelated content')
-        harness.sync_global('both', self.home, 'copy')
+        harness.sync_global('all', self.home, 'copy')
         self.assertEqual((self.home / '.codex/AGENTS.md').read_text(), 'Codex guidance\n')
         self.assertEqual((self.home / '.claude/CLAUDE.md').read_text(), 'Claude guidance\n')
         for target in ('codex', 'claude'):
@@ -168,7 +170,7 @@ class GlobalHarnessTests(HarnessFixture):
                              b'# Guide\nPreserve the existing project.\n')
         before = {target: snapshot(self.destination(target=target), timestamps=True)
                   for target in ('codex', 'claude')}
-        jobs = harness.sync_global('both', self.home, 'copy')
+        jobs = harness.sync_global('all', self.home, 'copy')
         self.assertTrue(all(j['action'] == 'unchanged' for j in jobs))
         for target in before:
             self.assertEqual(snapshot(self.destination(target=target), timestamps=True), before[target])
@@ -181,18 +183,18 @@ class GlobalHarnessTests(HarnessFixture):
         probe = self.base / 'probe'
         self.symlink(probe, self.repo, True)
         probe.unlink()
-        jobs = harness.sync_global('both', self.home, 'link')
+        jobs = harness.sync_global('all', self.home, 'link')
         for job in jobs:
             self.assertTrue(Path(job['destination']).is_symlink())
             self.assertEqual(os.readlink(job['destination']), job['source'])
         links_before = {job['destination']: Path(job['destination']).lstat().st_mtime_ns for job in jobs}
-        jobs = harness.sync_global('both', self.home, 'link')
+        jobs = harness.sync_global('all', self.home, 'link')
         self.assertTrue(all(job['action'] == 'unchanged' for job in jobs))
         self.assertEqual({job['destination']: Path(job['destination']).lstat().st_mtime_ns for job in jobs},
                          links_before)
 
     def test_copy_catalog_wrapper_resolves_checkout_from_an_unrelated_cwd(self):
-        harness.sync_global('both', self.home, 'copy')
+        harness.sync_global('all', self.home, 'copy')
         environment = dict(os.environ, HOME=str(self.home), PYTHONDONTWRITEBYTECODE='1')
         for target in ('codex', 'claude'):
             directory = self.destination('skill-catalog', target)
@@ -211,7 +213,7 @@ class GlobalHarnessTests(HarnessFixture):
                         self.assertTrue(all(row['action'] == 'unchanged' for row in result))
 
     def test_managed_copy_update_keeps_unrelated_directories_and_other_target_receipts(self):
-        harness.sync_global('both', self.home, 'copy')
+        harness.sync_global('all', self.home, 'copy')
         other = self.destination('unrelated')
         other.mkdir()
         (other / 'file').write_bytes(b'Keep')
@@ -227,26 +229,28 @@ class GlobalHarnessTests(HarnessFixture):
         self.assertEqual(len(receipt['items']), 6)
 
     def test_user_edited_copy_blocks_all_updates_and_preserves_receipt(self):
-        harness.sync_global('both', self.home, 'copy')
+        harness.sync_global('all', self.home, 'copy')
         edited = self.destination(target='claude') / 'SKILL.md'
         edited.write_bytes(edited.read_bytes() + b'\nPersonal edits.\n')
         self.revise('global-guidance')
         before = snapshot(self.home, timestamps=True)
         with self.assertRaises(ValueError):
-            harness.sync_global('both', self.home, 'copy')
+            harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home, timestamps=True), before)
 
-    def test_known_legacy_instruction_links_migrate_without_following_them(self):
-        for target, destination in (('codex', '.codex/AGENTS.md'), ('claude', '.claude/CLAUDE.md')):
-            link = self.home / destination
-            link.parent.mkdir(parents=True, exist_ok=True)
-            self.symlink(link, self.repo / 'components/AGENTS.md')  # Deliberately dangling legacy link.
-        harness.sync_global('both', self.home, 'copy')
-        self.assertEqual((self.home / '.codex/AGENTS.md').read_text(), 'Codex guidance\n')
-        self.assertEqual((self.home / '.claude/CLAUDE.md').read_text(), 'Claude guidance\n')
-        self.assertFalse((self.repo / 'components').exists())
+    def test_repository_link_without_receipt_cannot_authorize_replacement(self):
+        link = self.home / '.codex/AGENTS.md'
+        link.parent.mkdir()
+        for relative in ('components/AGENTS.md', 'instructions/CLAUDE.md', 'instructions/AGENTS.md'):
+            with self.subTest(relative=relative):
+                self.symlink(link, self.repo / relative)
+                before = snapshot(self.home, timestamps=True)
+                with self.assertRaisesRegex(ValueError, 'Unmanaged or modified destination'):
+                    harness.sync_global('all', self.home, 'copy')
+                self.assertEqual(snapshot(self.home, timestamps=True), before)
+                link.unlink()
 
-    def test_unknown_link_is_not_claimed_as_legacy(self):
+    def test_unmanaged_instruction_link_is_preserved(self):
         foreign = self.base / 'foreign-instructions'
         foreign.write_text('Personal guidance')
         link = self.home / '.claude/CLAUDE.md'
@@ -254,7 +258,7 @@ class GlobalHarnessTests(HarnessFixture):
         self.symlink(link, foreign)
         before = snapshot(self.home, timestamps=True)
         with self.assertRaises(ValueError):
-            harness.sync_global('both', self.home, 'copy')
+            harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home, timestamps=True), before)
         self.assertEqual(foreign.read_text(), 'Personal guidance')
 
@@ -264,14 +268,14 @@ class GlobalHarnessTests(HarnessFixture):
         (destination / 'SKILL.md').write_text('User-owned file')
         before = snapshot(self.home, timestamps=True)
         with self.assertRaises(ValueError):
-            harness.sync_global('both', self.home, 'copy')
+            harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home, timestamps=True), before)
         self.assertFalse((self.home / '.agents').exists())
 
     def test_missing_later_instruction_source_prevents_any_global_writes(self):
         (self.repo / 'instructions/CLAUDE.md').unlink()
         with self.assertRaises(ValueError):
-            harness.sync_global('both', self.home, 'copy')
+            harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home), {})
 
     def test_completed_global_items_keep_receipts_after_later_os_failure_and_retry(self):
@@ -286,11 +290,11 @@ class GlobalHarnessTests(HarnessFixture):
 
         with mock.patch.object(harness, 'replace_item', side_effect=replace_item):
             with self.assertRaises(OSError):
-                harness.sync_global('both', self.home, 'copy')
+                harness.sync_global('all', self.home, 'copy')
         receipt = json.loads((self.home / '.agent-harness/state.json').read_text())
         self.assertEqual(set(receipt['items']), {'codex:instructions'})
         self.assertEqual((self.home / '.codex/AGENTS.md').read_text(), 'Codex guidance\n')
-        jobs = harness.sync_global('both', self.home, 'copy')
+        jobs = harness.sync_global('all', self.home, 'copy')
         self.assertEqual(jobs[0]['action'], 'unchanged')
         self.assertTrue(all(job['action'] == 'create' for job in jobs[1:]))
         self.assertEqual(len(json.loads((self.home / '.agent-harness/state.json').read_text())['items']), 6)
@@ -301,7 +305,7 @@ class GlobalHarnessTests(HarnessFixture):
         self.symlink(self.home / '.agents', outside, True)
         before = snapshot(self.home, timestamps=True)
         with self.assertRaises(ValueError):
-            harness.sync_global('both', self.home, 'copy')
+            harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home, timestamps=True), before)
         self.assertEqual(snapshot(outside), {})
 
@@ -336,7 +340,7 @@ class ProjectHarnessTests(HarnessFixture):
         self.data['profiles']['portable-foundation'] = {'skills': ['feature']}
         self.data['profiles']['normal-foundation'] = {'skills': ['foundation']}
         self.save_registry()
-        harness.init_project(self.project, ['portable-foundation'], [], [], 'both')
+        harness.init_project(self.project, ['portable-foundation'], [], [], 'all')
         harness.sync_project(self.project)
         (self.destination('feature', 'claude', True) / 'personal.txt').write_text('Keep this customization.')
         value = harness.read_json(self.project / '.ai/project.json')
@@ -520,7 +524,7 @@ class ProjectHarnessTests(HarnessFixture):
             if os.name != 'nt':
                 self.assertEqual(helper.stat().st_mode & 0o111, 0o111)
 
-    def test_legacy_receipt_allows_new_executable_without_requiring_it_in_old_copy(self):
+    def test_incomplete_receipt_cannot_authorize_a_new_executable(self):
         self.initialize('codex')
         harness.sync_project(self.project)
         receipt = self.destination('feature', 'codex', True) / catalog.RECEIPT
@@ -528,8 +532,28 @@ class ProjectHarnessTests(HarnessFixture):
         previous.pop('executable_files')
         receipt.write_text(json.dumps(previous))
         self.add_helper()
+        before = snapshot(self.project, timestamps=True)
+        with self.assertRaises(ValueError):
+            harness.sync_project(self.project)
+        self.assertEqual(snapshot(self.project, timestamps=True), before)
+        self.assertFalse((receipt.parent / 'scripts/helper.py').exists())
+
+    def test_receipt_requires_installed_hash_for_unchanged_and_updated_payloads(self):
+        self.initialize('codex')
         harness.sync_project(self.project)
-        self.assertTrue((receipt.parent / 'scripts/helper.py').is_file())
+        receipt = self.destination('feature', 'codex', True) / catalog.RECEIPT
+        previous = json.loads(receipt.read_text())
+        self.assertEqual(previous['installed_sha256'], previous['sha256'])
+        previous.pop('installed_sha256')
+        receipt.write_text(json.dumps(previous))
+        for changed_source in (False, True):
+            with self.subTest(changed_source=changed_source):
+                if changed_source:
+                    self.revise('feature')
+                before = snapshot(self.project, timestamps=True)
+                with self.assertRaises(ValueError):
+                    harness.sync_project(self.project)
+                self.assertEqual(snapshot(self.project, timestamps=True), before)
 
     @unittest.skipIf(os.name == 'nt', 'POSIX executable modes')
     def test_removed_upstream_helper_does_not_hide_user_mode_change(self):
@@ -629,7 +653,7 @@ class ProjectHarnessTests(HarnessFixture):
 
     def test_init_rejects_invalid_or_conflicting_manifest_without_overwriting(self):
         with self.assertRaises(ValueError):
-            harness.init_project(self.project, ['missing'], [], [], 'both')
+            harness.init_project(self.project, ['missing'], [], [], 'all')
         self.assertEqual(snapshot(self.project), {})
         self.initialize()
         before = snapshot(self.project, timestamps=True)

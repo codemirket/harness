@@ -1,4 +1,4 @@
-"""Compatibility wrappers preserve target dispatch, root discovery and failure exit codes."""
+"""Setup wrappers preserve canonical target dispatch, checkout discovery and errors."""
 import json
 import os
 from pathlib import Path
@@ -32,35 +32,31 @@ class SetupWrapperTests(unittest.TestCase):
                               cwd=self.base, env=env, text=True, capture_output=True)
 
     def test_dispatches_each_target_without_shell_interpolation(self):
-        for target in ('codex', 'claude-code', 'claude', 'both'):
+        for target in ('codex', 'claude', 'all'):
             result = self.run_wrapper([target])
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(result.stdout), ['sync', '--target', target])
+            self.assertEqual(json.loads(result.stdout), ['install', '--target', target])
             self.assertEqual(list(self.home.iterdir()), [])
 
     def test_discovers_checkout_from_own_location(self):
         (self.repo / 'setup').mkdir()
         wrapper = self.repo / 'setup/macos.sh'
         shutil.copyfile(ROOT / 'setup/macos.sh', wrapper)
-        result = self.run_wrapper(['both'], override=False, script=wrapper)
+        result = self.run_wrapper(['all'], override=False, script=wrapper)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(json.loads(result.stdout), ['sync', '--target', 'both'])
-
-    def test_modern_targets_run_configuration_installer(self):
-        for target in ('codex-desktop', 'claude-desktop', 'all'):
-            result = self.run_wrapper([target])
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(json.loads(result.stdout), ['install', '--target', target])
+        self.assertEqual(json.loads(result.stdout), ['install', '--target', 'all'])
 
     def test_rejects_invalid_target_or_argument_count(self):
-        for args in (['other'], ['zed'], ['codex', 'extra'], ['codex;touch injected']):
+        for args in (['other'], ['zed'], ['codex-desktop'], ['claude-desktop'],
+                     ['claude-code'], ['both'], ['install'], ['codex', 'extra'],
+                     ['codex;touch injected']):
             self.assertEqual(self.run_wrapper(args).returncode, 2)
         self.assertFalse((self.base / 'injected').exists())
 
     def test_default_wrapper_runs_complete_installer(self):
         result = self.run_wrapper([])
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(json.loads(result.stdout), ['install'])
+        self.assertEqual(json.loads(result.stdout), ['install', '--target', 'all'])
 
     def test_missing_checkout_and_harness_errors_propagate(self):
         self.entry.unlink()

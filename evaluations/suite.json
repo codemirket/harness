@@ -157,6 +157,45 @@
         "evidence/narrow.png",
         "evidence/inspection.md"
       ]
+    },
+    {
+      "id": "finance-cash-decision",
+      "domain": "analysis",
+      "title": "Reconcile profit with cash obligations and delayed receipts",
+      "prompt": "cases/finance-cash-decision/task.md",
+      "required_evidence": [
+        "Reproducible cash and profit reconciliation with duplicate handling",
+        "Decision grounded in base/downside liquidity with explicit horizon and authority"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "ledger.json"
+      ],
+      "review_artifacts": [
+        "analyze.py",
+        "results.json",
+        "decision.md"
+      ]
+    },
+    {
+      "id": "localization-ui-contract",
+      "domain": "documentation",
+      "title": "Localize operational UI without changing meaning or executable tokens",
+      "prompt": "cases/localization-ui-contract/task.md",
+      "required_evidence": [
+        "Localized JSON with intact ICU, placeholders and markup",
+        "Semantic and terminology review with honest UI/native-review limits"
+      ],
+      "review_required": true,
+      "split": "development",
+      "immutable_inputs": [
+        "en.json"
+      ],
+      "review_artifacts": [
+        "tr.json",
+        "translation-qa.md"
+      ]
     }
   ]
 }

@@ -25,8 +25,9 @@ def manifest():
     data = read_json(MANIFEST)
     if data.get('schema_version') != 1:
         raise ValueError('Unsupported harness schema')
-    if 'targets' not in data:
-        data['targets'] = target_registry.load()
+    if 'targets' in data:
+        raise ValueError('Declare client adapters in registry/targets.json, not the harness manifest')
+    data['targets'] = target_registry.load()
     return data
 
 
@@ -148,19 +149,11 @@ def global_plan(target='codex', home=None, mode='auto'):
             actual = fingerprint(dest)
             owned = any(old.get('destination') == dest_rel and old.get('fingerprint') == actual
                         for old in previous['items'].values() if isinstance(old, dict))
-            # Existing repository links from the earlier installers are known migrations.
-            legacy = set()
-            if identifier == 'instructions':
-                legacy.add(str(ROOT / 'components/AGENTS.md'))
-                if app == 'claude':
-                    legacy.add(str(ROOT / 'instructions/CLAUDE.md'))
-            legacy.add(str(source))
-            is_legacy = actual and actual['kind'] == 'link' and actual['target'] in legacy
             if actual == desired:
                 action = 'unchanged'
             elif actual is None:
                 action = 'create'
-            elif owned or is_legacy:
+            elif owned:
                 action = 'update'
             else:
                 raise ValueError('Unmanaged or modified destination; preserving it: ' + str(dest))
@@ -255,10 +248,8 @@ def project_selection(config, data):
     """Validate declarations and resolve each target's complete selection."""
     if not isinstance(config, dict) or type(config.get('schema_version')) is not int:
         raise ValueError('Unsupported project manifest schema')
-    if config['schema_version'] not in (1, 2):
+    if config['schema_version'] != 1:
         raise ValueError('Unsupported project manifest schema')
-    if config['schema_version'] == 1 and 'target_skills' in config:
-        raise ValueError('Project target_skills requires schema_version 2')
     config = dict(config)
     for field in ('profiles', 'skills', 'skip', 'targets'):
         if (not isinstance(config.get(field, []), list)
@@ -268,8 +259,6 @@ def project_selection(config, data):
     if not selected_targets or len(selected_targets) != len(set(selected_targets)):
         raise ValueError('Select distinct project targets')
     selected_targets = [normalize_project_target(target) for target in selected_targets]
-    if len(selected_targets) != len(set(selected_targets)):
-        raise ValueError('Select distinct project targets')
     config['targets'] = selected_targets
     for target in selected_targets:
         if target not in manifest()['targets']:
@@ -282,8 +271,6 @@ def project_selection(config, data):
         target = normalize_project_target(target, 'target_skills target')
         if target not in selected_targets:
             raise ValueError('target_skills target is not in project targets: ' + target)
-        if target in specific:
-            raise ValueError('Duplicate target_skills target alias: ' + target)
         if not isinstance(identifiers, list) or any(not isinstance(x, str) for x in identifiers):
             raise ValueError('Project target_skills.' + target + ' must be a string list')
         overlap = set(identifiers).intersection(config.get('skip', []))
@@ -351,7 +338,7 @@ def project_state(entry, project, target):
         if (not isinstance(prior, dict)
                 or not catalog.supports_target(entry, target)
                 or prior.get('id') != entry['id']
-                or catalog.payload_hash(catalog.existing_payload(dest)) != prior.get('installed_sha256', prior.get('sha256'))):
+                or catalog.payload_hash(catalog.existing_payload(dest)) != prior.get('installed_sha256')):
             raise original
         # Compare the old installation with its own contract. A new version may
         # add executable helpers that cannot yet exist in the old installation.
@@ -370,11 +357,11 @@ def project_provenance(entry, dest, data):
     receipt = dest / catalog.RECEIPT
     if catalog.is_link(receipt) or not receipt.is_file():
         raise ValueError('Missing or unsafe installed skill receipt: ' + str(receipt))
-    prior = read_json(receipt)
+    prior = catalog.validate_receipt(read_json(receipt))
     source = (data['sources'][entry['source']] if entry['delivery'] == 'upstream'
               else {'repository': 'codemirket/harness', 'commit': None})
     fields = ('repository', 'commit', 'path', 'sha256')
-    original = {key: prior.get(key) for key in fields}
+    original = {key: prior[key] for key in fields}
     current = {'repository': source['repository'], 'commit': source['commit'],
                'path': entry['path'], 'sha256': entry['sha256']}
     if original == current:
@@ -413,8 +400,7 @@ def project_jobs(project, config, selections):
                 provenance = project_provenance(entry, dest, data)
                 if provenance is not None:
                     job['provenance'] = provenance
-            if config['schema_version'] == 2:
-                job['excluded_targets'] = exclusions
+            job['excluded_targets'] = exclusions
             jobs.append(job)
     lock = guarded_path(project, '.ai/project.lock.json')
     if catalog.is_link(lock) or (lock.exists() and not lock.is_file()):
@@ -508,8 +494,8 @@ def public_project(jobs, *, project=None, config=None):
     rows = [{'id': j['entry']['id'], 'target': j['target'], 'destination': str(j['destination']),
              'action': j['action'], 'dependencies': j['entry'].get('dependencies', []),
              'caveats': j['entry'].get('caveats', []),
-             **({'provenance': j['provenance']} if 'provenance' in j else {}),
-             **({'excluded_targets': j['excluded_targets']} if 'excluded_targets' in j else {})}
+             'excluded_targets': j['excluded_targets'],
+             **({'provenance': j['provenance']} if 'provenance' in j else {})}
             for j in jobs]
     for row, job in zip(rows, jobs):
         if job['entry']['name'] in global_names:
@@ -529,13 +515,12 @@ def project_lock(config, entries, data):
                         'source': e.get('source', 'personal'),
                         'commit': data['sources'][e['source']]['commit'] if e.get('source') else None}
                        for e in entries]}
-    if config['schema_version'] == 2:
-        _, selections = project_selection(config, data)
-        selected_ids = {target: {entry['id'] for entry in selected}
-                        for target, selected in selections.items()}
-        for entry in lock['skills']:
-            entry['targets'] = [target for target in config['targets']
-                                if entry['id'] in selected_ids[target]]
+    _, selections = project_selection(config, data)
+    selected_ids = {target: {entry['id'] for entry in selected}
+                    for target, selected in selections.items()}
+    for entry in lock['skills']:
+        entry['targets'] = [target for target in config['targets']
+                            if entry['id'] in selected_ids[target]]
     return lock
 
 
@@ -610,9 +595,8 @@ def init_project(project, profiles, skills, skip, target, target_skills=None):
     defaults = default_project_profiles(config, data)
     value = {'schema_version': 1, 'targets': targets(target, config),
              'profiles': list(dict.fromkeys(defaults + list(profiles))) if defaults else profiles,
-             'skills': skills, 'skip': skip}
-    if target_skills is not None:
-        value.update(schema_version=2, target_skills=target_skills)
+             'skills': skills, 'skip': skip,
+             'target_skills': target_skills if target_skills is not None else {}}
     value, _ = project_selection(value, data)
     dest = guarded_path(project, PROJECT_FILE)
     if catalog.is_link(dest) or (dest.exists() and (not dest.is_file() or read_json(dest) != value)):
@@ -663,12 +647,8 @@ def add_project(project, profiles=(), skills=(), target_skills=None, dry_run=Fal
         candidate['skills'] = list(dict.fromkeys(original.get('skills', []) + list(skills)))
     scoped = {target: list(dict.fromkeys(identifiers))
               for target, identifiers in canonical.get('target_skills', {}).items()}
-    spellings = set()
     for target, identifiers in target_skills.items():
         target = normalize_project_target(target, 'target_skills target')
-        if target in spellings:
-            raise ValueError('Duplicate target_skills target alias: ' + str(target))
-        spellings.add(target)
         if target not in canonical['targets']:
             raise ValueError('target_skills target is not in project targets: ' + target)
         scoped[target] = list(dict.fromkeys(scoped.get(target, []) + identifiers))
@@ -677,7 +657,7 @@ def add_project(project, profiles=(), skills=(), target_skills=None, dry_run=Fal
     if skipped:
         raise ValueError('Cannot add skipped skill: ' + sorted(skipped)[0])
     if target_skills or 'target_skills' in original:
-        candidate.update(schema_version=2, target_skills=scoped)
+        candidate['target_skills'] = scoped
     normalized, selections = project_selection(candidate, data)
     _, _, _, jobs = project_jobs(project, normalized, selections)
 
@@ -716,19 +696,15 @@ def add_project(project, profiles=(), skills=(), target_skills=None, dry_run=Fal
 
 
 def parse_target_skills(values):
-    """Parse repeatable CLI TARGET:ID declarations without ambiguous aliases."""
+    """Parse repeatable CLI TARGET:ID declarations using canonical target names."""
     if not values:
         return None
     result = {}
-    spellings = {}
     for value in values:
         target, separator, identifier = value.partition(':')
         if not separator or not target or not identifier or ':' in identifier:
             raise ValueError('Use --target-skill TARGET:ID')
         canonical = normalize_project_target(target, 'target_skills target')
-        if canonical in spellings and spellings[canonical] != target:
-            raise ValueError('Duplicate target_skills target alias: ' + canonical)
-        spellings[canonical] = target
         result.setdefault(canonical, []).append(identifier)
     return result
 
@@ -740,7 +716,7 @@ def main(argv=None):
     for name in ('plan', 'sync', 'doctor'):
         p = commands.add_parser(name, help=name + ' declared global instructions and skills')
         p.add_argument('--target', choices=target_registry.CHOICES, default=default_target,
-                       help='Client target; both and all mean Codex and Claude')
+                       help='Client target; all selects Codex and Claude')
         p.add_argument('--home', type=Path)
         p.add_argument('--mode', choices=['auto', 'link', 'copy'], default='auto')
     project = commands.add_parser('project').add_subparsers(dest='action', required=True)
@@ -755,11 +731,19 @@ def main(argv=None):
         if name in ('init', 'add'):
             p.add_argument('--profile', action='append', default=[])
             p.add_argument('--skill', action='append', default=[])
+            p.add_argument('--capability', action='append', default=[], metavar='ROLE',
+                           help='Register an exact capability ID or role alias (lead only; support is conditional)')
             p.add_argument('--target-skill', action='append', default=[], metavar='TARGET:ID',
-                           help='Add a skill only to an active target (creates a version 2 manifest)')
+                           help='Add a skill only to an active target')
         if name == 'add':
             p.add_argument('--dry-run', action='store_true', help='Validate and show the candidate without writes')
     args = parser.parse_args(argv)
+    if args.command == 'project' and args.action in ('init', 'add') and args.capability:
+        from . import capabilities
+        args.skill = list(dict.fromkeys(args.skill + capabilities.selected_skills(args.capability, ROOT)))
+        if args.action == 'add' and not (args.skill or args.profile or args.target_skill):
+            raise ValueError('These capabilities use shared global leads; verify global installation with doctor. '
+                             'Use capabilities plan to inspect their task contracts.')
     if args.command in ('plan', 'sync', 'doctor'):
         if args.command == 'sync':
             result = sync_global(args.target, args.home, args.mode)

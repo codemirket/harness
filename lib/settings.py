@@ -543,7 +543,9 @@ def plan(home=None, settings_path=None):
             'instruction': 'Quit ChatGPT/Codex desktop and active Codex clients, rerun settings apply, then reopen the app.' if changes else 'Portable configured preferences already match.'}
 
 
-def _atomic_write(path, content, mode):
+def _atomic_write(path, content, mode, validate=None):
+    if validate:
+        validate()
     with tempfile.NamedTemporaryFile(prefix='.personal-ai-settings-', dir=path.parent, delete=False) as stream:
         temporary = Path(stream.name)
         try:
@@ -555,6 +557,8 @@ def _atomic_write(path, content, mode):
             temporary.unlink(missing_ok=True)
             raise
     try:
+        if validate:
+            validate()
         os.replace(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)

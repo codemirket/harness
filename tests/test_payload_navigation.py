@@ -74,7 +74,7 @@ class PayloadNavigationTests(unittest.TestCase):
         return next(item for item in self.review['skills'] if item['id'] == entry['id'])
 
     def install(self):
-        return catalog.install_many(self.data, self.entries, self.project, 'both',
+        return catalog.install_many(self.data, self.entries, self.project, 'all',
                                     {'vercel-agent-skills': self.source})
 
     def test_catalog_changes_remain_scoped_to_reviewed_navigation_and_provenance(self):

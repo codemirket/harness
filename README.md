@@ -9,8 +9,9 @@ check their work, while keeping each project's conventions in charge.
 
 The workflow is **make → render or exercise → inspect → repair**. It covers UI,
 animation, illustration, office documents, Markdown and software engineering.
-The harness began as a personal setup and is available to fork, adapt and use
-with your own projects. Installation uses Python's standard library; optional
+This is the **1.0.0 initial release**, with one configuration contract and the
+canonical client names `codex` and `claude`; `all` selects both. Fork, adapt and use
+it with your own projects. Installation uses Python's standard library; optional
 tools supply browsers, document renderers and other runtimes when you need them.
 
 ![Fieldwork Studio, the included interactive UI specimen](docs/assets/fieldwork-studio.png)
@@ -45,30 +46,35 @@ problems. See [context diagnostics and handoffs](docs/context.md) for its scope.
 | Office documents | Editable DOCX/PPTX/XLSX, page renders and formula recalculation |
 | Markdown | Local link, heading and fence checks, plus technical/editorial review workflows |
 | Engineering and QA | Project-specific behavior tests, failure investigation and independent artifact review |
-| Shared setup | 14 global skills, project skill selection, MCP definitions and native target settings |
+| Shared setup | 14 global skills, project skill selection and native MCP registration |
 
 The installer needs only Python's standard library. Artifact tools use optional,
 already-installed runtimes. Neither installation nor a passing check guarantees
-visual quality; inspect the actual result. See [research and design decisions](docs/research/decisions-2026-10-09.md).
+visual quality; inspect the actual result. See [research and design decisions](docs/research/harness-2026-10-10/README.md).
 
-The [23 capability contracts](docs/capabilities.md) cover engineering, brand/web/mobile
-design, assets/motion, SEO/research, QA, product/business decisions, data, systems,
-infrastructure, scaffolding and optimization. Each names a lead workflow, expected
-deliverable, failure probe and prerequisites. These are inspectable requirements,
-not an expertise rating. Specialists stay project-selected; the global set remains small.
+The [33 capability contracts](docs/capabilities.md) cover the requested design,
+engineering, operations, research, business, financial, translation and document
+roles. Each defines an outcome, lead workflow, acceptance evidence, failure probe
+and prerequisites. Compose only the expertise needed for a task:
 
 ```sh
-python3 ai.py capabilities list
-python3 ai.py capabilities show backend-engineering
+python3 ai.py capabilities plan "CFO" --with "Excel Expert"
+python3 ai.py capabilities show "Mobile App Engineer"
 python3 ai.py capabilities check
 ```
 
-`show` identifies project IDs to register through `project add`, then `project sync`
-and `project doctor`. `check` verifies local source coverage and hashes for both
-targets; it does not test client activation or runtime behavior. See the
-[assurance review](docs/reviews/capability-assurance-2026-10-09.md) for exercised
-results and remaining gaps, and [feedback controls](skills/ai-system-evaluation/references/feedback-controls.md)
-for how a discovered defect becomes a repeatable check.
+`plan` resolves explicit role names, deduplicates leads and reports the exact files,
+entrypoint bytes and source fingerprint. It performs no model calls or installation.
+Register missing project leads with `project add --capability ROLE`, then sync and
+doctor. Optional supporting skills remain conditional; shared globals are not
+copied into every project. A plan does not establish runtime readiness or client
+activation.
+
+The [October 10 review and redesign](docs/research/harness-2026-10-10/README.md)
+records all 40 requested repositories and two documentation services, pinned
+findings, adopted methods, rejected practices and verification limits. The core
+uses host tools and portable authored guidance. Optional runtimes, hooks and
+provider packages require their own reviewed integration.
 
 ## Quick start
 
@@ -80,8 +86,8 @@ and adoption into an existing repository, start with the [adoption guide](docs/a
 
 ### Install in one line
 
-Review [what installation changes](#what-installation-changes) and close the
-selected client before running a command in your terminal. Choose **one** command:
+Review [what installation changes](#what-installation-changes) before running a
+command in your terminal. Choose **one** command:
 each clones the harness into `harness` under your home directory, installs the
 selected target and checks the result. Git and Python must already be installed.
 Keep that checkout: installed catalog helpers depend on it.
@@ -89,13 +95,13 @@ Keep that checkout: installed catalog helpers depend on it.
 **macOS / Linux — Codex:**
 
 ```sh
-git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target codex-desktop && python3 "$HOME/harness/ai.py" check --target codex-desktop
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target codex && python3 "$HOME/harness/ai.py" check --target codex
 ```
 
 **macOS / Linux — Claude Code:**
 
 ```sh
-git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target claude-desktop && python3 "$HOME/harness/ai.py" check --target claude-desktop
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && python3 "$HOME/harness/ai.py" install --target claude && python3 "$HOME/harness/ai.py" check --target claude
 ```
 
 **macOS / Linux — both clients:**
@@ -112,13 +118,13 @@ not support that operator. For 5.1, use the step-by-step commands below, replaci
 Codex:
 
 ```powershell
-git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target codex-desktop && py -3 "$HOME/harness/ai.py" check --target codex-desktop
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target codex && py -3 "$HOME/harness/ai.py" check --target codex
 ```
 
 Claude Code:
 
 ```powershell
-git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target claude-desktop && py -3 "$HOME/harness/ai.py" check --target claude-desktop
+git clone https://github.com/codemirket/harness.git "$HOME/harness" && py -3 "$HOME/harness/ai.py" install --target claude && py -3 "$HOME/harness/ai.py" check --target claude
 ```
 
 Both clients:
@@ -139,19 +145,19 @@ git clone https://github.com/codemirket/harness.git
 cd harness
 
 # Preview the exact changes first. Choose one client or use --target all.
-python3 ai.py install --target codex-desktop --dry-run
+python3 ai.py install --target codex --dry-run
 
-# Close the selected client before applying changed settings.
-python3 ai.py install --target codex-desktop
-python3 ai.py check --target codex-desktop
+# Apply the reviewed guidance and MCP registration.
+python3 ai.py install --target codex
+python3 ai.py check --target codex
 ```
 
-For Claude, substitute `--target claude-desktop`. `--target all` installs both.
+For Claude, substitute `--target claude`. `--target all` installs both.
 On Windows, use `py -3` in place of `python3`. The installer supports managed
 copies as well as links; add `--mode copy` consistently to install/check to keep
 copies. See [setup and recovery](setup/README.md).
 
-After installation, reopen the client and start a fresh session. Confirm that
+After installation, start a fresh client session. Confirm that
 shared instructions and `skill-catalog` are available, inspect MCP status, and
 exercise a representative skill. `check` verifies files and configuration;
 it cannot establish that a running client has loaded them.
@@ -161,13 +167,14 @@ it cannot establish that a running client has loaded them.
 | Target | Guidance | Skills | Configuration |
 | --- | --- | --- | --- |
 | Codex Desktop / CLI | `~/.codex/AGENTS.md` | `~/.agents/skills/` | `~/.codex/config.toml` |
-| Claude Desktop Code / CLI | `~/.claude/CLAUDE.md` | `~/.claude/skills/` | `~/.claude/settings.json`, `~/.claude.json` for MCP |
+| Claude Desktop Code / CLI | `~/.claude/CLAUDE.md` | `~/.claude/skills/` | `~/.claude.json` for MCP |
 
-The defaults include OpenAI's documentation MCP server and selected native
-permission settings. Review [target defaults](registry/targets.json),
+The default MCP registration is OpenAI's public documentation server. Review
+[target destinations](registry/targets.json),
 [MCP definitions](registry/mcp.json) and [shared instructions](instructions/AGENTS.md)
 before applying them. Unrelated configuration is preserved; conflicting unmanaged
-files stop installation. Changed configuration receives a local backup.
+files stop installation. Changed configuration receives a local backup. Host
+permission, model and appearance choices remain under the client's control.
 
 Installation does not install clients or packages, log into accounts, start MCP
 servers, register a schedule, change projects or enable every skill in the catalog.
@@ -177,7 +184,6 @@ contain the maintainer's choices; they are not universal defaults.
 **Claude Chat and Cowork:** local Code configuration does not configure those
 surfaces. Use the manual [account handoff](docs/targets.md) for supported skill
 uploads; local shell tools and account connections do not transfer automatically.
-Zed is not an installation target.
 
 ## Add capabilities to a project
 
@@ -199,11 +205,11 @@ payloads; doctor checks them. Existing manifests retain their selections.
 Codex project skills go under `.agents/skills`, Claude skills under `.claude/skills`.
 Modified and unselected copies are preserved rather than silently deleted.
 
-For example, when a project needs editable vector artwork:
+For example, when a project needs financial decision support:
 
 ```sh
-python3 ai.py project add --project /absolute/project --skill svg-creation --dry-run
-python3 ai.py project add --project /absolute/project --skill svg-creation
+python3 ai.py project add --project /absolute/project --capability "CFO" --capability "Excel Expert" --dry-run
+python3 ai.py project add --project /absolute/project --capability "CFO" --capability "Excel Expert"
 python3 ai.py project sync --project /absolute/project
 python3 ai.py project doctor --project /absolute/project
 ```
@@ -281,7 +287,7 @@ make quality checks automatic. See [plugin setup and updates](docs/plugins.md).
 | [instructions/AGENTS.md](instructions/AGENTS.md) | Shared working principles |
 | [skills/](skills/) | Capability instructions, references and helpers |
 | [registry/harness.json](registry/harness.json) | Global selections, project defaults and plugin bundles |
-| [registry/targets.json](registry/targets.json) | Client destinations and native settings |
+| [registry/targets.json](registry/targets.json) | Client destinations and native MCP formats |
 | [registry/mcp.json](registry/mcp.json) | Shared MCP definitions |
 | [registry/catalog.json](registry/catalog.json) | Reviewed project skills, profiles and source pins |
 
@@ -308,9 +314,9 @@ git diff --check
 ```
 
 Run the shell syntax check on a POSIX shell. Browser/vector integration tests need
-their optional runtimes and explicitly skip when unavailable. A recorded
-macOS run passed **552 tests** with no skips; see the [verification record](docs/research/verification-2026-10-09.md)
-for scope and limits. Windows client installation is supported, but the recorded
+their optional runtimes and explicitly skip when unavailable. The initial-release
+macOS run passed **593 tests** with no skips; see the [installation and activation record](docs/research/initial-release-2026-10-10/README.md)
+for native task trials, observed repairs and limits. Windows client installation is supported, but the recorded
 artifact-rendering evidence is from macOS, not a Windows runtime certification.
 
 For changes, keep target adapters separate from shared capabilities, add behavior

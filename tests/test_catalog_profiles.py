@@ -117,7 +117,7 @@ class ProfilePayloadTests(unittest.TestCase):
     def target(self, name='alpha', agent='codex'):
         return self.project / ('.agents' if agent == 'codex' else '.claude') / 'skills' / name
 
-    def install(self, agent='both', entries=None):
+    def install(self, agent='all', entries=None):
         return catalog.install_many(self.data, self.entries if entries is None else entries,
                                     self.project, agent, {'fixture': self.source})
 
@@ -173,7 +173,7 @@ class ProfilePayloadTests(unittest.TestCase):
 
     def test_download_is_reused_across_entries_and_agents(self):
         with mock.patch.object(catalog, 'download', return_value=archive_bytes(self.members)) as download:
-            catalog.install_many(self.data, self.entries, self.project, 'both')
+            catalog.install_many(self.data, self.entries, self.project, 'all')
         download.assert_called_once_with(self.data['sources']['fixture'])
         self.assertEqual(catalog.existing_payload(self.target('beta', 'claude')), self.files['beta'])
 
@@ -276,7 +276,7 @@ class ProfilePayloadTests(unittest.TestCase):
             with self.subTest(paths=paths), mock.patch.object(
                     catalog, 'download', return_value=archive_bytes(members)):
                 with self.assertRaises(ValueError):
-                    catalog.install_many(self.data, [self.entries[0], entry], self.project, 'both')
+                    catalog.install_many(self.data, [self.entries[0], entry], self.project, 'all')
                 self.assert_empty()
 
 

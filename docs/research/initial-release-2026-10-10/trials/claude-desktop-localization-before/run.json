@@ -1,0 +1,51 @@
+{
+  "label": "claude-desktop-localization-before",
+  "surface": "Claude Desktop Code",
+  "invocation": {
+    "surface": "Claude Desktop Code",
+    "model": "Opus 5.5",
+    "effort": "Extra",
+    "session_id": "47198448-84d4-40f6-9f16-3117de6eb078",
+    "prompt": "Read TASK.md and complete the requested task yourself. Do not delegate.",
+    "skill_names_in_prompt": false
+  },
+  "native_result": {
+    "status": "completed",
+    "native_ui_observed": true
+  },
+  "input_unchanged": true,
+  "trace": {
+    "models": [
+      "<synthetic>",
+      "claude-opus-5-5"
+    ],
+    "tools": {
+      "Bash": 6,
+      "Write": 2
+    },
+    "skill_calls": [],
+    "raw_stream_sha256": "275c354a535050a8aaf85eb461f917f277d749d51c3491de8ded7ceaed1571e0",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "tr.json": "aa0ad0a5db084751568a8c5b368dfce7b723f2b3e1cac50c888c3b284f3fbc5e",
+    "translation-qa.md": "203230c9fea02ef81ff5caa4c5de6339ce1ea1ea2fa5522d2788c334aff90e9a",
+    "tool-trace.jsonl": "9dc483122f0c128fafb0e1939a0733c183928605520e02b29498a1e0164a9798",
+    "en.json": "5ba07c8da6fe537ed935ead1773026047287b9b6a559480bfa0061c78da2ae82",
+    "final.md": "cd5c8329e26e25f78e9364fc2a21154f3f912280097ceb47980be55e864172c1",
+    "TASK.md": "44f10c0942be8ff9738237359cd08682ee50c3baa441dbd6158343975d8c279e",
+    "verification.json": "391627bb8b0abdcc56498c97c1c928740e1587fe6eaa23931be6195b89268a3f"
+  },
+  "verifier_passed": true,
+  "guidance_use": {
+    "bodies_received": [],
+    "references_received": [],
+    "original_source_lines": [],
+    "trace": "tool-trace.jsonl",
+    "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+    "limits": [
+      "No relevant skill invocation or body read found."
+    ]
+  }
+}

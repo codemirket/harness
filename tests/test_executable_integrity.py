@@ -1,4 +1,5 @@
 """Project payload modes are a separate contract from source/adapted byte hashes."""
+import io
 import json
 import os
 from pathlib import Path
@@ -29,7 +30,7 @@ class ExecutableIntegrityTests(HarnessFixture):
         self.initialize()
         harness.sync_project(self.project)
 
-    def legacy_receipts(self):
+    def remove_executable_contracts(self):
         for target in ('codex', 'claude'):
             path = self.installed(catalog.RECEIPT, target)
             value = json.loads(path.read_text())
@@ -133,48 +134,56 @@ class ExecutableIntegrityTests(HarnessFixture):
         self.assertTrue(all(job['action'] == 'unchanged' for job in jobs))
         self.assertEqual(snapshot(self.project, timestamps=True), before)
 
-    @unittest.skipIf(os.name == 'nt', 'POSIX executable modes')
-    def test_legacy_receipts_reject_undeclared_bits_before_update(self):
+    def test_missing_executable_contract_blocks_unchanged_receipt_without_writes(self):
         self.install_project()
-        self.legacy_receipts()
-        self.installed().chmod(0o755)
-        self.add_helper()
-        self.assert_preserved_failure('Undeclared executable')
+        self.remove_executable_contracts()
+        self.assert_preserved_failure('missing the required executable_files contract')
+        with self.assertRaisesRegex(ValueError, 'missing the required executable_files contract'):
+            catalog.check_destination(self.entry('feature'), self.project, 'claude')
 
-    def test_legacy_receipts_allow_new_helper_paths_and_record_current_contract(self):
-        self.install_project()
-        self.legacy_receipts()
-        self.add_helper()
-        harness.sync_project(self.project)
-        for target in ('codex', 'claude'):
-            self.assertEqual(json.loads(self.installed(catalog.RECEIPT, target).read_text())['executable_files'],
-                             ['scripts/helper.py'])
+    def assert_all_project_commands_preserve_invalid_receipt(self):
+        before = snapshot(self.project, timestamps=True)
+        for action in ('plan', 'sync', 'doctor'):
+            with self.subTest(action=action), mock.patch('sys.stdout', new_callable=io.StringIO):
+                with self.assertRaises(ValueError):
+                    harness.main(['project', action, '--project', str(self.project)])
+                self.assertEqual(snapshot(self.project, timestamps=True), before)
 
-    @unittest.skipIf(os.name == 'nt', 'POSIX executable modes')
-    def test_new_declaration_cannot_disguise_legacy_ordinary_file_execute_drift(self):
+    def test_missing_receipt_fields_block_all_commands_for_current_and_changed_source(self):
         self.install_project()
-        self.legacy_receipts()
-        for target in ('codex', 'claude'):
-            self.installed('references/guide.md', target).chmod(0o755)
-        self.entry('feature')['executable_files'] = ['references/guide.md']
-        self.assert_preserved_failure('Undeclared executable')
+        receipt = self.installed(catalog.RECEIPT)
+        original = json.loads(receipt.read_text())
+        self.assertIsNone(original['commit'])
+        for changed_source in (False, True):
+            if changed_source:
+                self.revise('feature')
+            for field in original:
+                with self.subTest(field=field, changed_source=changed_source):
+                    incomplete = dict(original)
+                    incomplete.pop(field)
+                    receipt.write_text(json.dumps(incomplete))
+                    self.assert_all_project_commands_preserve_invalid_receipt()
 
-    @unittest.skipIf(os.name == 'nt', 'POSIX executable modes')
-    def test_legacy_existing_helper_requires_review_without_prior_mode_contract(self):
-        self.add_helper()
+    def test_invalid_receipt_provenance_blocks_reconciliation_without_relabeling_it(self):
         self.install_project()
-        self.legacy_receipts()
-        self.assert_preserved_failure('Undeclared executable')
+        receipt = self.installed(catalog.RECEIPT)
+        original = json.loads(receipt.read_text())
+        invalid = {'id': False, 'repository': [], 'commit': 'main',
+                   'path': '../outside', 'sha256': None,
+                   'installed_sha256': 'invalid', 'executable_files': False}
+        for changed_source in (False, True):
+            if changed_source:
+                self.revise('feature')
+            for field, value in invalid.items():
+                with self.subTest(field=field, changed_source=changed_source):
+                    receipt.write_text(json.dumps(dict(original, **{field: value})))
+                    self.assert_all_project_commands_preserve_invalid_receipt()
 
-    @unittest.skipIf(os.name == 'nt', 'POSIX executable modes')
-    def test_legacy_receipt_does_not_authorize_unknown_removed_executable(self):
-        self.add_helper()
+    def test_new_helper_cannot_repair_an_incomplete_receipt(self):
         self.install_project()
-        self.legacy_receipts()
-        (self.repo / 'skills/feature/scripts/helper.py').unlink()
-        self.entry('feature')['executable_files'] = []
-        self.revise('feature')
-        self.assert_preserved_failure('Undeclared executable')
+        self.remove_executable_contracts()
+        self.add_helper()
+        self.assert_preserved_failure('missing the required executable_files contract')
 
     def test_invalid_prior_executable_contract_is_not_accepted_as_unchanged(self):
         self.install_project()

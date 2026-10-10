@@ -9,7 +9,7 @@ from test_harness import HarnessFixture, catalog, harness, snapshot
 
 class TargetAdapterTests(HarnessFixture):
     def declare(self, **changes):
-        value = {'schema_version': 2, 'targets': ['codex', 'claude'],
+        value = {'schema_version': 1, 'targets': ['codex', 'claude'],
                  'profiles': [], 'skills': ['foundation'], 'skip': [], 'target_skills': {}}
         value.update(changes)
         harness.write_json(self.project / '.ai/project.json', value)
@@ -50,22 +50,24 @@ class TargetAdapterTests(HarnessFixture):
         self.assertEqual(snapshot(self.home, timestamps=True), before)
 
     def test_conflicting_global_destinations_fail_before_writes(self):
-        self.config['targets']['codex']['instruction_destination'] = '.claude/CLAUDE.md'
+        self.adapters['codex']['instruction_destination'] = '.claude/CLAUDE.md'
         self.save_registry()
         before = snapshot(self.home)
         with self.assertRaisesRegex(ValueError, 'Conflicting global destinations'):
             harness.sync_global('all', self.home, 'copy')
         self.assertEqual(snapshot(self.home), before)
 
-    def test_legacy_claude_instruction_link_migrates_to_shared_source(self):
+    def test_unmanaged_instruction_link_is_preserved(self):
         destination = self.home / '.claude/CLAUDE.md'
         destination.parent.mkdir()
-        self.symlink(destination, self.repo / 'instructions/CLAUDE.md')
-        self.config['targets']['claude']['instructions'] = 'instructions/AGENTS.md'
-        self.save_registry()
-        harness.sync_global('claude-desktop', self.home, 'copy')
-        self.assertEqual(destination.read_text(), 'Codex guidance\n')
-        self.assertFalse(destination.is_symlink())
+        source = self.base / 'personal-guidance.md'
+        source.write_text('Personal guidance\n')
+        self.symlink(destination, source)
+        before = snapshot(self.home, timestamps=True)
+        with self.assertRaisesRegex(ValueError, 'Unmanaged or modified destination'):
+            harness.sync_global('claude', self.home, 'copy')
+        self.assertEqual(snapshot(self.home, timestamps=True), before)
+        self.assertEqual(source.read_text(), 'Personal guidance\n')
 
     def test_project_separate_roots_publish_and_lock_keeps_both_targets(self):
         value = self.declare()
@@ -110,28 +112,25 @@ class TargetAdapterTests(HarnessFixture):
         self.assertEqual({row['target'] for row in rows if row['id'] == 'optional'}, {'claude'})
         self.assertFalse((self.project / '.agents/skills/optional').exists())
 
-    def test_desktop_aliases_normalize_and_all_matches_legacy_both(self):
-        self.assertEqual(harness.targets('both', self.config), ['codex', 'claude'])
-        self.assertEqual(harness.targets('all', self.config), ['codex', 'claude'])
-        self.declare(targets=['codex-desktop', 'claude-desktop'])
-        harness.sync_project(self.project)
-        lock = harness.read_json(self.project / '.ai/project.lock.json')
-        self.assertEqual(lock['manifest']['targets'], ['codex', 'claude'])
-        self.assertEqual(harness.parse_target_skills(['claude-desktop:optional']), {'claude': ['optional']})
-        with self.assertRaisesRegex(ValueError, 'Duplicate target_skills target alias'):
-            harness.parse_target_skills(['claude-desktop:optional', 'claude-code:foundation'])
+    def test_only_canonical_targets_and_all_are_accepted(self):
+        self.assertEqual(harness.targets('all', harness.manifest()), ['codex', 'claude'])
+        for target in ('codex-desktop', 'claude-desktop', 'claude-code', 'both'):
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, 'Unsupported target'):
+                harness.targets(target, harness.manifest())
+        self.assertEqual(harness.parse_target_skills(['claude:optional']), {'claude': ['optional']})
+        with self.assertRaisesRegex(ValueError, 'Unsupported target_skills target'):
+            harness.parse_target_skills(['claude-desktop:optional'])
 
-    def test_schema_one_codex_manifest_still_reconciles(self):
-        value = self.declare(schema_version=1, targets=['codex'])
-        value.pop('target_skills')
-        harness.write_json(self.project / '.ai/project.json', value)
+    def test_current_schema_supports_an_empty_target_specific_selection(self):
+        value = self.declare(targets=['codex'])
         harness.sync_project(self.project)
         lock = harness.read_json(self.project / '.ai/project.lock.json')
         self.assertEqual(lock['schema_version'], 1)
-        self.assertEqual(lock['manifest']['targets'], ['codex'])
+        self.assertEqual(lock['manifest'], value)
+        self.assertEqual(lock['skills'][0]['targets'], ['codex'])
         self.assertTrue((self.project / '.agents/skills/foundation/SKILL.md').is_file())
 
-    def test_legacy_catalog_installer_accepts_all_without_duplicate_write(self):
+    def test_catalog_registration_publishes_each_target_once(self):
         entry = self.entry('foundation')
         with mock.patch.object(catalog.shutil, 'copytree', wraps=catalog.shutil.copytree) as copytree:
             catalog.install_many(self.data, [entry], self.project, 'all')
@@ -149,9 +148,7 @@ class TargetAdapterTests(HarnessFixture):
             harness.sync_global('codex', self.home, 'copy')
         self.assertEqual(snapshot(self.home), before)
 
-    def test_capability_manifest_without_inline_targets_uses_target_registry(self):
-        self.config.pop('targets')
-        self.save_registry()
+    def test_harness_always_uses_the_dedicated_target_registry(self):
         with mock.patch.object(harness.target_registry, 'load', return_value={
             'codex': {'instructions': 'instructions/AGENTS.md',
                     'instruction_destination': '.codex/AGENTS.md',
@@ -159,6 +156,14 @@ class TargetAdapterTests(HarnessFixture):
             rows = harness.sync_global('codex', self.home, 'copy')
         self.assertEqual({row['target'] for row in rows}, {'codex'})
         self.assertEqual((self.home / '.codex/AGENTS.md').read_text(), 'Codex guidance\n')
+
+    def test_embedded_target_adapters_are_rejected_before_writes(self):
+        self.config['targets'] = self.adapters
+        self.save_registry()
+        before = snapshot(self.home, timestamps=True)
+        with self.assertRaisesRegex(ValueError, 'registry/targets.json'):
+            harness.sync_global('all', self.home, 'copy')
+        self.assertEqual(snapshot(self.home, timestamps=True), before)
 
     def test_global_plan_checks_custom_client_roots_before_default_home_access(self):
         with mock.patch.object(harness.target_registry, 'validate_home_environment',

@@ -16,7 +16,7 @@ class ArchiveBudgetTests(CatalogFixture):
     def assert_rejected_before_install(self, blob, pattern):
         with mock.patch.object(catalog, 'download', return_value=blob):
             with self.assertRaisesRegex(ValueError, pattern):
-                catalog.install_many(self.data, [self.entry], self.project, 'both')
+                catalog.install_many(self.data, [self.entry], self.project, 'all')
         self.assert_project_empty()
 
     def raw_members(self):
@@ -32,7 +32,7 @@ class ArchiveBudgetTests(CatalogFixture):
         with mock.patch.object(catalog, 'MAX_EXPANDED_ARCHIVE', 16 * 1024, create=True):
             with mock.patch.object(catalog, 'download', return_value=blob):
                 with self.assertRaisesRegex(ValueError, 'expanded size limit'):
-                    catalog.install_many(self.data, [self.entry], self.project, 'both')
+                    catalog.install_many(self.data, [self.entry], self.project, 'all')
         self.assert_project_empty()
 
     def test_unselected_empty_members_are_bounded(self):
@@ -90,7 +90,7 @@ class ArchiveBudgetTests(CatalogFixture):
         for invalid in (blob[:-8], blob[:-8] + bytes([blob[-8] ^ 1]) + blob[-7:]):
             with self.subTest(tail=invalid[-8:]), mock.patch.object(catalog, 'download', return_value=invalid):
                 with self.assertRaises((ValueError, tarfile.TarError)):
-                    catalog.install_many(self.data, [self.entry], self.project, 'both')
+                    catalog.install_many(self.data, [self.entry], self.project, 'all')
                 self.assert_project_empty()
 
     def test_missing_partial_or_invalid_tar_headers_do_not_publish(self):

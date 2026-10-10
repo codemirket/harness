@@ -1,0 +1,897 @@
+{
+  "bundles": {
+    "personal-foundation": [
+      {
+        "executable_files": [],
+        "export_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "id": "agent-coordination",
+        "installed_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "agent-coordination",
+        "path": "skills/agent-coordination",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4",
+        "id": "ai-system-evaluation",
+        "installed_sha256": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ai-system-evaluation",
+        "path": "skills/ai-system-evaluation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "5afdd84b5d63870deefee30b932e782b6b1911a200245016128a8b9a778385b4"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "id": "ci-maintenance",
+        "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ci-maintenance",
+        "path": "skills/ci-maintenance",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "id": "context-management",
+        "installed_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "context-management",
+        "path": "skills/context-management",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "id": "document-parsing",
+        "installed_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "document-parsing",
+        "path": "skills/document-parsing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "08f72757419fe57924b6e3294ba07f75163836895108878436c8a37bab8622b1",
+        "id": "document-workflow",
+        "installed_sha256": "08f72757419fe57924b6e3294ba07f75163836895108878436c8a37bab8622b1",
+        "license_files": [],
+        "name": "document-workflow",
+        "path": "skills/document-workflow",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "08f72757419fe57924b6e3294ba07f75163836895108878436c8a37bab8622b1"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "76681a3a986b021196b8d99c9bc0bae238372e2cc0a038ac689a19474fedf357",
+        "id": "engineering-judgment",
+        "installed_sha256": "76681a3a986b021196b8d99c9bc0bae238372e2cc0a038ac689a19474fedf357",
+        "license_files": [],
+        "name": "engineering-judgment",
+        "path": "skills/engineering-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "76681a3a986b021196b8d99c9bc0bae238372e2cc0a038ac689a19474fedf357"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "09026a6266ad2f4b4b406b0bee70797907a7918a36c8c16073511a459d39e9a5",
+        "id": "interface-design",
+        "installed_sha256": "09026a6266ad2f4b4b406b0bee70797907a7918a36c8c16073511a459d39e9a5",
+        "license_files": [],
+        "name": "interface-design",
+        "path": "skills/interface-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "09026a6266ad2f4b4b406b0bee70797907a7918a36c8c16073511a459d39e9a5"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b",
+        "id": "marketing-writing",
+        "installed_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b",
+        "license_files": [],
+        "name": "marketing-writing",
+        "path": "skills/marketing-writing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "id": "office-authoring",
+        "installed_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "office-authoring",
+        "path": "skills/office-authoring",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a",
+        "id": "research-and-synthesis",
+        "installed_sha256": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "research-and-synthesis",
+        "path": "skills/research-and-synthesis",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "17a378123dec7213aeb06d4c0f590f0832942b6d0733720a2ae4920fd591320a"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec",
+        "id": "security-judgment",
+        "installed_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "security-judgment",
+        "path": "skills/security-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "e896759914329a95aceb2f03568fa1bbd02fb69f89c9c8f726bae0d64d8717fc",
+        "id": "skill-catalog",
+        "installed_sha256": "26281e4e165efed7c77a9318d9f6fa1cc6887fddc9730e3c0fc17e15f9206ab1",
+        "license_files": [],
+        "name": "skill-catalog",
+        "path": "skills/skill-catalog",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "26281e4e165efed7c77a9318d9f6fa1cc6887fddc9730e3c0fc17e15f9206ab1"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332",
+        "id": "work-planning",
+        "installed_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "work-planning",
+        "path": "skills/work-planning",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332"
+      }
+    ]
+  },
+  "clients": [
+    "codex-desktop",
+    "codex-cli"
+  ],
+  "files": {
+    ".agents/plugins/marketplace.json": {
+      "mode": "0644",
+      "sha256": "44583d30e9a155a2d322617901263ac6ff4e2810623c4bc061e6f4dd419a5125"
+    },
+    "plugins/personal-foundation/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "08cd73539e2e58f48524f19fc279f4a7179196ad382d2d33b600d3449327d02c"
+    },
+    "plugins/personal-foundation/_harness/README.md": {
+      "mode": "0644",
+      "sha256": "0194e62121c0ae1b7870eba97a56c3a28f16c7bfa25161f466463a5b66f248ee"
+    },
+    "plugins/personal-foundation/_harness/ai.py": {
+      "mode": "0644",
+      "sha256": "6286dbfedab25a156bcb4c384899228fa6e5d60138e9df228d9550dc4a480109"
+    },
+    "plugins/personal-foundation/_harness/docs/catalog.md": {
+      "mode": "0644",
+      "sha256": "36503a0298c117b69048825528bba41c0aa8868f232de8e1c276b0b6936e2414"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/project-foundation-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "34baa8c2c1fd9b69247774518c702f29755d6fc5af3fce20e1baa11b68644446"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/project-targets-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "f069ab472deb222ffdcfe11fcc015d192ad3d751683ae91a9d44ea37e6401614"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/quality-harness-2026-10-07.json": {
+      "mode": "0644",
+      "sha256": "74fcba74118fec2605b3b69acf91d63caa36430101563df7bd2fa781dfe8ef1e"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/registration-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "b6ff04c6192b1a56b7ded292937a5c58e99eab00351551029f8d9b9617e45bda"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/skill-routing-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "ed7f83ab43507e734a92d1dea807fdd72f51bf386f5b2fcdc9ef61f6df079abb"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/trixpo-installer-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "56c50ddcc414aeeff42e9648abd4645112879b53e5d692e875c677c13b961b68"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/vercel-navigation-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "07f9d74e837b1a1be34ceb7dbb8ca297909868f8512ac874d8285421f3a7c322"
+    },
+    "plugins/personal-foundation/_harness/docs/plugins.md": {
+      "mode": "0644",
+      "sha256": "232e00ff3817e23c2cf9891cdb3f168e55ea4bf238e5be35acec36ecbaf123e9"
+    },
+    "plugins/personal-foundation/_harness/docs/project-targets.md": {
+      "mode": "0644",
+      "sha256": "a120983d7e09cdfad23382c91dd06c92d758177f657e039e9d39dea846170c0b"
+    },
+    "plugins/personal-foundation/_harness/docs/quality-harness.md": {
+      "mode": "0644",
+      "sha256": "172f206286a9d3033c8e85bcb878a7b9234d47a40443113a3fda405e43898c63"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/design.md": {
+      "mode": "0644",
+      "sha256": "b22e12a7e7e6eee89df2e2fafc260fec08870f6670bcbe05f8a23fece72b5b27"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/engineering.md": {
+      "mode": "0644",
+      "sha256": "dc50f8d5bfef37319870431fa3f6b140794d4e87e0d8a0ffa65ff6ff9a49916b"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-design.md": {
+      "mode": "0644",
+      "sha256": "3ac53ffede9b2f6958935049e500536374c800c1420f950e5fc6f8bc42a7b25f"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-engineering.md": {
+      "mode": "0644",
+      "sha256": "580738266320b8bf649955476f20071907147695a57bed948c88c0808b4db17a"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-marketing-systems.md": {
+      "mode": "0644",
+      "sha256": "bbeb96546031d778a35a70b4c02b8285a36ed1afa9d454b08084d1dff0853792"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/marketing.md": {
+      "mode": "0644",
+      "sha256": "ac4a42249dbe88b9fead1a0c50fbc3eb23471445323358110248444e718527f7"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/planning-search.md": {
+      "mode": "0644",
+      "sha256": "3cb47de9ea0874d2cba4e3e5c3ff55cfb83ecab05f355e77f70c8f298048889f"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/providers.md": {
+      "mode": "0644",
+      "sha256": "82dd5dbf5ccea5374322a936ee988cb66f399b94bac6e1433b77fa88180d370e"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/quality-media.md": {
+      "mode": "0644",
+      "sha256": "d837baa16baa082d4eeefe79e6d9e97cf9c42dcb8bc93fce0827ef56b2b3cf73"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/skill-routing.md": {
+      "mode": "0644",
+      "sha256": "dae80acb5c8331d8c89d6690798060dffad8cf396c6fe75f0f0cf26b41e9ad5f"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/vercel.md": {
+      "mode": "0644",
+      "sha256": "28c0d9961f3012e219f51819715aa2bfcb094b28c34255fc9c48fb1460a0521f"
+    },
+    "plugins/personal-foundation/_harness/docs/runtime-integrations.md": {
+      "mode": "0644",
+      "sha256": "43dfb3a334f1407ee06022a8bcc86eac6defbcc2ba91bfd10f72c28d92c9e8e3"
+    },
+    "plugins/personal-foundation/_harness/docs/scheduling.md": {
+      "mode": "0644",
+      "sha256": "3a78562bf65a5564ab03930eb19c3b34df612914a5215950cfa070b774a6de84"
+    },
+    "plugins/personal-foundation/_harness/docs/settings.md": {
+      "mode": "0644",
+      "sha256": "521830e68ef2912563ab5ff2dfbf910a141dc5a38f63fa903efcc188bb6814ed"
+    },
+    "plugins/personal-foundation/_harness/docs/source-review.md": {
+      "mode": "0644",
+      "sha256": "0bd104460b26874f4449b79d1ec0f06184c9159ab1c299e06830739deb61269d"
+    },
+    "plugins/personal-foundation/_harness/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/_harness/docs/verification.md": {
+      "mode": "0644",
+      "sha256": "ca8088f3d701bc82db50d22100d62bdcc111aad4cb7a1ddcb1d89ed4fb10eec0"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/documentation-filter-cli/rubric.md": {
+      "mode": "0644",
+      "sha256": "7a5bf3fa231f2b6f4682387651be5fc547dca57f1f027e77e0e5436befa29f5c"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/documentation-filter-cli/task.md": {
+      "mode": "0644",
+      "sha256": "025b5e59efe3cd7f2c468253f3be6a869843b56ea93b23840b658d1d1c642195"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/documentation-filter-cli/verify.py": {
+      "mode": "0644",
+      "sha256": "1abcf797d71fc869863b2be0a88078d2b996c4f1b6d3ae51b57d08591d66dbcf"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/documentation-filter-cli/workspace/mini_lookup.py": {
+      "mode": "0644",
+      "sha256": "6901c5f0dc06bd42ee9860c486db46813d5e89f040de0f06b0a7f6bdddeddf07"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/documentation-filter-cli/workspace/records.csv": {
+      "mode": "0644",
+      "sha256": "90006db32db0ab4b310359a843ca28d047fe04ebacdf6471c86acf404a02374d"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/engineering-ledger-total/rubric.md": {
+      "mode": "0644",
+      "sha256": "3bf0fdd984bcf460956ab92ea69b60daa65e7faf4414d3bab44826a0eca01534"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/engineering-ledger-total/task.md": {
+      "mode": "0644",
+      "sha256": "cbdf98387880ce1af9549c4381d95f6ab8961f3f78431dd7dadbf93170a4e1d8"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/engineering-ledger-total/verify.py": {
+      "mode": "0644",
+      "sha256": "c81afbf5092a2064fea1dd8ee8e0a063cbfc2ef03bee45c65d935647ac8dcd09"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/engineering-ledger-total/workspace/ledger.py": {
+      "mode": "0644",
+      "sha256": "f1bae5ff08b0b8f5f4526acd784ddd8661e2aea1a459a2c0403dc271c5b7e260"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/rubric.md": {
+      "mode": "0644",
+      "sha256": "9e6358903602768cfef5cf8b46e4d05b8a31c6c44450260076753782c54b1dce"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/task.md": {
+      "mode": "0644",
+      "sha256": "a73eb9582703222f2731e6c0c7729169ae3e40e3d9022b13aa8c648fb90b7c35"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/verify.py": {
+      "mode": "0644",
+      "sha256": "da59e87e3decd77583e88c928afc1182b77ed863db762a79c7e1ab9e42ea60dc"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/app.js": {
+      "mode": "0644",
+      "sha256": "487f064be4a19f592fa16c24f9e4e7fbfb2335047d04877ef8df6b85445b14c1"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/index.html": {
+      "mode": "0644",
+      "sha256": "55133863c8139ecd035c8e1e0cd0220a9f9277ada914ee1dde28cbfe7266a19a"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/styles.css": {
+      "mode": "0644",
+      "sha256": "3f53cf1d441baddd95ea8a6122e0018178bbaa6a3eddf7b58dcb5894bdab093b"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/integration-paginated-client/rubric.md": {
+      "mode": "0644",
+      "sha256": "be621570024b506f1ce1b3e701d04d39679ef918b82bbde04b3288769a01fff7"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/integration-paginated-client/task.md": {
+      "mode": "0644",
+      "sha256": "43665f429935c68bc5248111c852a7a285e7b61878ebcf2a4425c1c3b03cd1b3"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/integration-paginated-client/verify.py": {
+      "mode": "0644",
+      "sha256": "9d1453d79ca13c9fb7049e8c5a037b984cb805a0111b99170ebca4018e0f3ea5"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/integration-paginated-client/workspace/client.py": {
+      "mode": "0644",
+      "sha256": "a51e631344c621679d86f311989cc21e71c148e88c96172bd1f160c127923ff7"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/integration-paginated-client/workspace/protocol.md": {
+      "mode": "0644",
+      "sha256": "41126f3acdccf5e5c484d01cb26801c64e88b9c245fca0621c4aba415b335cda"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/rubric.md": {
+      "mode": "0644",
+      "sha256": "4fbbc2bf1b63026e2efe769aaa1f5b6ed2c99dc4a277b6b64fd4bcbf158a3d5b"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/task.md": {
+      "mode": "0644",
+      "sha256": "5e6f987a5ed410d8d255f033dd8ded6e573fba73ac3bc525bcafc894d28ca959"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/verify.py": {
+      "mode": "0644",
+      "sha256": "2e30b18af3e2419d40c34463b5281a71f2c4a2fdaa450e501f12a077dfbf7881"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/workspace/sources/deployment.json": {
+      "mode": "0644",
+      "sha256": "38d16fd8d377c26c8b2f473b27405ebad405521ed82e179ea3916d16862b5df4"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/workspace/sources/field-note.md": {
+      "mode": "0644",
+      "sha256": "5495bf2ebc89882803a31a89d55971e1d8425b322137d31e83ce7de3181101b6"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/workspace/sources/legacy-3.9.md": {
+      "mode": "0644",
+      "sha256": "e6247ae07c5cb6d6938e361042a5d78f83118c54dc5ff80ba6c6b99adf50b03d"
+    },
+    "plugins/personal-foundation/_harness/evaluations/cases/research-cache-decision/workspace/sources/release-4.2.md": {
+      "mode": "0644",
+      "sha256": "b8b3ea6d584efc2ddae25c13bea25d18728e8e9075dc4021bc4f972b6d59c9b7"
+    },
+    "plugins/personal-foundation/_harness/evaluations/suite.json": {
+      "mode": "0644",
+      "sha256": "12c4936399ccb9be846942ae98cd0fb12c96055211ea95ff525eab110e20c4c4"
+    },
+    "plugins/personal-foundation/_harness/instructions/AGENTS.md": {
+      "mode": "0644",
+      "sha256": "825e0ab1865adf6b3de678f7f48af1635c96b20212ae8b055e16a8ab20d1f38e"
+    },
+    "plugins/personal-foundation/_harness/instructions/CLAUDE.md": {
+      "mode": "0644",
+      "sha256": "a75133ce28c9a6e22b33a0eea6c6a4d1baf460dfa848da5347e9539d188ba8fd"
+    },
+    "plugins/personal-foundation/_harness/lib/__init__.py": {
+      "mode": "0644",
+      "sha256": "5e7b496fc3265544eda97a62e3390637c783cc0acf9e472c2a1dcba3a7932bca"
+    },
+    "plugins/personal-foundation/_harness/lib/bundle.py": {
+      "mode": "0644",
+      "sha256": "74a99367b957ac074dcf8c1f08f1832385b225d369d423c4cfbbc2c6f8f9b9c5"
+    },
+    "plugins/personal-foundation/_harness/lib/catalog.py": {
+      "mode": "0644",
+      "sha256": "2e722a63096b9625af5e6aa690a8fbc5078423a8a0aca45e7df44fc1958b3c19"
+    },
+    "plugins/personal-foundation/_harness/lib/claude_delegate.py": {
+      "mode": "0644",
+      "sha256": "92aef32f8ab878b113f89da5b8176d4ce91561733607fb7616e81dd72775e5d0"
+    },
+    "plugins/personal-foundation/_harness/lib/evaluation.py": {
+      "mode": "0644",
+      "sha256": "1d0fc5bb441349a080428b02df1f630837f6f0c036ff2865c0e94c20b7d92369"
+    },
+    "plugins/personal-foundation/_harness/lib/harness.py": {
+      "mode": "0644",
+      "sha256": "beef10da784eccfa769f52e3fde8b69dddb58c581a882cfcfe38904290b40b16"
+    },
+    "plugins/personal-foundation/_harness/lib/install.py": {
+      "mode": "0644",
+      "sha256": "79e161b39aae8e5718b66317905930b7f88d832a262bdc10b3576dbfb641f568"
+    },
+    "plugins/personal-foundation/_harness/lib/maintenance.py": {
+      "mode": "0644",
+      "sha256": "6c0ddcd6fbd446ae3392ee4ec4db2db9b9d86641bdbe43d15c017f75cb636e9c"
+    },
+    "plugins/personal-foundation/_harness/lib/runtime.py": {
+      "mode": "0644",
+      "sha256": "e74d03f00f394403fe22cf85dad6aa6cf3a1ff91cf63044f7a4c3d54297fb738"
+    },
+    "plugins/personal-foundation/_harness/lib/schedule.py": {
+      "mode": "0644",
+      "sha256": "8c5c15c6baaef4a836ec10399836c365c2188bc55091b5fbe66457a43af6c066"
+    },
+    "plugins/personal-foundation/_harness/lib/settings.py": {
+      "mode": "0644",
+      "sha256": "b512f62150471d25213af034c0ee15a3e68a972cbc02917f173170e7e6936647"
+    },
+    "plugins/personal-foundation/_harness/registry/catalog.json": {
+      "mode": "0644",
+      "sha256": "eec7ea8438bcec0557295008cc1751a606a4adefc0cfb1816f1c6b9bae128bed"
+    },
+    "plugins/personal-foundation/_harness/registry/codex-settings.json": {
+      "mode": "0644",
+      "sha256": "2b2df83201b055858bdaa44c19f903e9e5bf74a05403b73c7129f50765bbe99a"
+    },
+    "plugins/personal-foundation/_harness/registry/harness.json": {
+      "mode": "0644",
+      "sha256": "3c832e84ba7d3a2be564b3c8523c27acebc7e90b69a6f5fd7889fe08f600f363"
+    },
+    "plugins/personal-foundation/_harness/registry/source-index.json": {
+      "mode": "0644",
+      "sha256": "34c2d57ac14b5f78425bccbd2dbc52540d2c466ecc488e4ce50e42431fc3ceaa"
+    },
+    "plugins/personal-foundation/_harness/scripts/render_registry.py": {
+      "mode": "0644",
+      "sha256": "d68e4e169d8f9e22ac8f0848810fd00a6f77bd586bbf77b615bf561c1f1adad8"
+    },
+    "plugins/personal-foundation/_harness/setup/README.md": {
+      "mode": "0644",
+      "sha256": "36644be38264ea4cfb277a392ab83309ae1a42d4d9d2cc8395790f5f134fa728"
+    },
+    "plugins/personal-foundation/_harness/setup/macos.sh": {
+      "mode": "0644",
+      "sha256": "6458b9d922658df213ba4b42be4e106ad88d3705064c7bb346b6698a07b77ffb"
+    },
+    "plugins/personal-foundation/_harness/setup/windows.ps1": {
+      "mode": "0644",
+      "sha256": "44f00509d59f6414d2d31ab8877e9962cc17fbef3171934079cfb7f0aa6a00db"
+    },
+    "plugins/personal-foundation/_harness/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f0d375ecd0530e9661f0889794ffc2e52447e9ba4fd901d6fc9e79e45479d4a"
+    },
+    "plugins/personal-foundation/_harness/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "68c98a5d8929e39546cc3ccea00c8648458450e7e153ca9c4f3f2582997088d7"
+    },
+    "plugins/personal-foundation/_harness/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "aa1318217552d3ec18807bafe42d5506b7f4c4f297310b05b61067f4289624a5"
+    },
+    "plugins/personal-foundation/_harness/skills/ai-system-evaluation/references/harness-development.md": {
+      "mode": "0644",
+      "sha256": "d5164155dc7d7d11feced38393ad9a3ea6f15bd7afc657956a7cfe37f063b2eb"
+    },
+    "plugins/personal-foundation/_harness/skills/architecture-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ae412e790f586e3cb67fde541e47aa31b110bd07eaaa0449c0651811482bed82"
+    },
+    "plugins/personal-foundation/_harness/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-foundation/_harness/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6b09473c8ccec29e9b8ac26da208f637d05bc5296e2bfe93df75da38830be68e"
+    },
+    "plugins/personal-foundation/_harness/skills/conversion-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3185dc4a5df853153e39adc8bf6da20cd9e6309f23097fcc866416b94d886e5"
+    },
+    "plugins/personal-foundation/_harness/skills/customer-research/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7b545cd7873fdfed1897cac31bef40a81dc86b542fb0f7c57835ae309181fc6b"
+    },
+    "plugins/personal-foundation/_harness/skills/data-migrations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "328b7094de84dff98084c4bc4bf73bd351242d42a971fe00af26b0cf7d1efedf"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/SKILL.md": {
+      "mode": "0644",
+      "sha256": "502b8aa0716ae2aadd461937f3a60557cc0b164250803cc44e93aab184253f14"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/document-databases.md": {
+      "mode": "0644",
+      "sha256": "8a0993f6ee028a37c5f0f62df3b76abd0116428b2246c903bc224fd834b050ae"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/postgresql.md": {
+      "mode": "0644",
+      "sha256": "b11f5bddb744c1732ea396200ef03a61c2b0ff62ecd36560bff6dfb3c9d3e789"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/redis.md": {
+      "mode": "0644",
+      "sha256": "4117c83032d35f2eed801a4b45c910b21233f3b8321c1c49fcbe438649f510f7"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/sqlite.md": {
+      "mode": "0644",
+      "sha256": "71fce40e84a1bad3f37d6eff8fcffe8b8bad3680c6268218a5f6c036f971c080"
+    },
+    "plugins/personal-foundation/_harness/skills/debugging/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f75d0137318eb9370b86faf125865b6662cc677c706ff6cd8d3b4cc7b596a64b"
+    },
+    "plugins/personal-foundation/_harness/skills/desktop-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f361b96379f1d013de0e984603b14ec82f529f9c52c278de3dcb7c82493350bd"
+    },
+    "plugins/personal-foundation/_harness/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-foundation/_harness/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0f9d9bf9642f449c52dbd2fbf1c72cf8e1bd7937889f8d9df3e46dccf2b1d981"
+    },
+    "plugins/personal-foundation/_harness/skills/document-workflow/references/technical-documentation.md": {
+      "mode": "0644",
+      "sha256": "d1d5727fd5c3430c479aa34c12bac05ff9231e5dcd7ade07e13f074877b069b8"
+    },
+    "plugins/personal-foundation/_harness/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3f26ffba34cca88e5609c5f23241b861b5c53e1a3b2227472ef95b6e13e4349"
+    },
+    "plugins/personal-foundation/_harness/skills/engineering-judgment/references/boundary-decisions.md": {
+      "mode": "0644",
+      "sha256": "3454dd979eb101679c2063666be7f77eeacbf1377e29a4dc3a5c36a5738375d7"
+    },
+    "plugins/personal-foundation/_harness/skills/engineering-judgment/references/service-integration.md": {
+      "mode": "0644",
+      "sha256": "82ea8ec2b2f53cd5bb390056e92e5dff83dda9cc9df608009b275416792cda80"
+    },
+    "plugins/personal-foundation/_harness/skills/experiment-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "953c4dfcf377a729cf702759f3201163f1af67e3a664fedbcd07bb650b00a71d"
+    },
+    "plugins/personal-foundation/_harness/skills/frontend-engineering/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e966ca941af7ca62a6be2395a529194732d8ec5699b17aed5bfd0ff602561fb2"
+    },
+    "plugins/personal-foundation/_harness/skills/frontend-engineering/references/async-state.md": {
+      "mode": "0644",
+      "sha256": "853b34029fd3f4ed8ecdc349ff133e2a9adc9b0e92efcb89a9c0ee7bb0093a21"
+    },
+    "plugins/personal-foundation/_harness/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "37eaf3cbed7a19af8fe61b604cc5ec82ce726c30723aad1149e62087bd69ce40"
+    },
+    "plugins/personal-foundation/_harness/skills/interface-design/references/application-composition.md": {
+      "mode": "0644",
+      "sha256": "fb1321c2c0d06023ca3add2675fc0d15e0c53e1869156f4e4413f6db0021278c"
+    },
+    "plugins/personal-foundation/_harness/skills/interface-design/references/public-page-composition.md": {
+      "mode": "0644",
+      "sha256": "8308382627d93f55ee2e0a93871c9d66823f1a5abd1ba17557c402eacbcec3ec"
+    },
+    "plugins/personal-foundation/_harness/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b2a97535681d53ef58e64b19e7f7486ee1e02063953e7e653bcae7a2f21a9d8a"
+    },
+    "plugins/personal-foundation/_harness/skills/mcp-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "17d10bc94ecc9db1680f353c2f374e106b248d95a86cdb55b8d65b0d5dfd4a9d"
+    },
+    "plugins/personal-foundation/_harness/skills/mcp-integration/references/protocol-completion.md": {
+      "mode": "0644",
+      "sha256": "059b205862b013d1892b5163c46ad64e044f4a76c11ca4e3a8ee50c9f6ab9141"
+    },
+    "plugins/personal-foundation/_harness/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "363e4fbb1741ef7b667e0e51cc9f3c7b275d4b76b6c6d8c8a6f1874b800e3429"
+    },
+    "plugins/personal-foundation/_harness/skills/motion-design/references/interaction-recipes.md": {
+      "mode": "0644",
+      "sha256": "b42ae5bc721ee4e76f2857fd7daa828f207f10fff5806a004163100fa9588edf"
+    },
+    "plugins/personal-foundation/_harness/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1eca21028951ea4101ac4eeddd1366b88aea8535ebc4045e6cbae8967dad510b"
+    },
+    "plugins/personal-foundation/_harness/skills/release-operations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54ed12cd1ff0554440a726c51b79f3dda23d9a5a89282966af415b29121bc556"
+    },
+    "plugins/personal-foundation/_harness/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b0bc0e38682d833681f1d5cae1b69630ca77c44b14f260dfdf157ef39f7e2b06"
+    },
+    "plugins/personal-foundation/_harness/skills/research-and-synthesis/references/claim-verification.md": {
+      "mode": "0644",
+      "sha256": "688f1582323c4cd87870b645f6a43aad93aa033a3af1668f7c9ffa531d066e25"
+    },
+    "plugins/personal-foundation/_harness/skills/search-audit/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84ae19cd5cd890ece5a8f8b2315211fae5eb5d1ca42b34d8010909ee9b597f9a"
+    },
+    "plugins/personal-foundation/_harness/skills/search-visibility/SKILL.md": {
+      "mode": "0644",
+      "sha256": "368aafe9c86315788360dbb239e0b5e8ded6e69eb6dc20c0b7ed54c664ae698e"
+    },
+    "plugins/personal-foundation/_harness/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "bbf4811c0c9aab814110d754a8a9a9b23629fa1edbbfa799de0efd0000dd8781"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "22736ead7acc50873156e18298bc229b5c5cafa4fa605fbca6a178fb69b066e4"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/references/delivery-standards.md": {
+      "mode": "0644",
+      "sha256": "eebadef51f9ab988757f29cd09fa156fc70cb267e29c9164ff5a2c08deb1ff95"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/references/task-routing.md": {
+      "mode": "0644",
+      "sha256": "c77367e8bcbc9122a6fe5bd66fe1a780efa8a393daa184ef1620555625bbbdd6"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-foundation/_harness/skills/test-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6280f34081218dd15fe7020df638887ccfca1269b7dd4370c39d0eb351cfaf8b"
+    },
+    "plugins/personal-foundation/_harness/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "85cc93d685796bfffc49c08d3d7554b6e89387bce440b18249ba36695813bf00"
+    },
+    "plugins/personal-foundation/plugin.json": {
+      "mode": "0644",
+      "sha256": "212758b3e992d9240bb957437cd6b6757d16b9648c01825ad4ee724863c7fd77"
+    },
+    "plugins/personal-foundation/provenance.json": {
+      "mode": "0644",
+      "sha256": "9df66de41e109329e1ab81f5e8fd24f3cdf03db00e576f327938b14352b79b23"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f0d375ecd0530e9661f0889794ffc2e52447e9ba4fd901d6fc9e79e45479d4a"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "68c98a5d8929e39546cc3ccea00c8648458450e7e153ca9c4f3f2582997088d7"
+    },
+    "plugins/personal-foundation/skills/ai-system-evaluation/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "aa1318217552d3ec18807bafe42d5506b7f4c4f297310b05b61067f4289624a5"
+    },
+    "plugins/personal-foundation/skills/ai-system-evaluation/references/harness-development.md": {
+      "mode": "0644",
+      "sha256": "d5164155dc7d7d11feced38393ad9a3ea6f15bd7afc657956a7cfe37f063b2eb"
+    },
+    "plugins/personal-foundation/skills/ci-maintenance/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-foundation/skills/context-management/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6b09473c8ccec29e9b8ac26da208f637d05bc5296e2bfe93df75da38830be68e"
+    },
+    "plugins/personal-foundation/skills/document-parsing/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-foundation/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0f9d9bf9642f449c52dbd2fbf1c72cf8e1bd7937889f8d9df3e46dccf2b1d981"
+    },
+    "plugins/personal-foundation/skills/document-workflow/references/technical-documentation.md": {
+      "mode": "0644",
+      "sha256": "d1d5727fd5c3430c479aa34c12bac05ff9231e5dcd7ade07e13f074877b069b8"
+    },
+    "plugins/personal-foundation/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3f26ffba34cca88e5609c5f23241b861b5c53e1a3b2227472ef95b6e13e4349"
+    },
+    "plugins/personal-foundation/skills/engineering-judgment/references/boundary-decisions.md": {
+      "mode": "0644",
+      "sha256": "3454dd979eb101679c2063666be7f77eeacbf1377e29a4dc3a5c36a5738375d7"
+    },
+    "plugins/personal-foundation/skills/engineering-judgment/references/service-integration.md": {
+      "mode": "0644",
+      "sha256": "82ea8ec2b2f53cd5bb390056e92e5dff83dda9cc9df608009b275416792cda80"
+    },
+    "plugins/personal-foundation/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "37eaf3cbed7a19af8fe61b604cc5ec82ce726c30723aad1149e62087bd69ce40"
+    },
+    "plugins/personal-foundation/skills/interface-design/references/application-composition.md": {
+      "mode": "0644",
+      "sha256": "fb1321c2c0d06023ca3add2675fc0d15e0c53e1869156f4e4413f6db0021278c"
+    },
+    "plugins/personal-foundation/skills/interface-design/references/public-page-composition.md": {
+      "mode": "0644",
+      "sha256": "8308382627d93f55ee2e0a93871c9d66823f1a5abd1ba17557c402eacbcec3ec"
+    },
+    "plugins/personal-foundation/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b2a97535681d53ef58e64b19e7f7486ee1e02063953e7e653bcae7a2f21a9d8a"
+    },
+    "plugins/personal-foundation/skills/office-authoring/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1eca21028951ea4101ac4eeddd1366b88aea8535ebc4045e6cbae8967dad510b"
+    },
+    "plugins/personal-foundation/skills/research-and-synthesis/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b0bc0e38682d833681f1d5cae1b69630ca77c44b14f260dfdf157ef39f7e2b06"
+    },
+    "plugins/personal-foundation/skills/research-and-synthesis/references/claim-verification.md": {
+      "mode": "0644",
+      "sha256": "688f1582323c4cd87870b645f6a43aad93aa033a3af1668f7c9ffa531d066e25"
+    },
+    "plugins/personal-foundation/skills/security-judgment/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "bbf4811c0c9aab814110d754a8a9a9b23629fa1edbbfa799de0efd0000dd8781"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/.harness-source.json": {
+      "mode": "0644",
+      "sha256": "3aa130343a384555002179d0737f8d6dde67149b27e01f5cbb81a822cf202181"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "22736ead7acc50873156e18298bc229b5c5cafa4fa605fbca6a178fb69b066e4"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/references/delivery-standards.md": {
+      "mode": "0644",
+      "sha256": "eebadef51f9ab988757f29cd09fa156fc70cb267e29c9164ff5a2c08deb1ff95"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/references/task-routing.md": {
+      "mode": "0644",
+      "sha256": "c77367e8bcbc9122a6fe5bd66fe1a780efa8a393daa184ef1620555625bbbdd6"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-foundation/skills/work-planning/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "85cc93d685796bfffc49c08d3d7554b6e89387bce440b18249ba36695813bf00"
+    }
+  },
+  "name": "personal-ai",
+  "schema_version": 1,
+  "version": "2.0.0"
+}

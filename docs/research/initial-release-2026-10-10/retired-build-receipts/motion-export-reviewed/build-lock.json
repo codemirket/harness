@@ -1,0 +1,151 @@
+{
+  "bundles": {
+    "motion-check": [
+      {
+        "executable_files": [],
+        "export_sha256": "027a298b9f0ffae17d837ef6b81e2a4189f5136a7c598fa2aa7aa36f458f15d0",
+        "id": "advanced-motion",
+        "installed_sha256": "027a298b9f0ffae17d837ef6b81e2a4189f5136a7c598fa2aa7aa36f458f15d0",
+        "license_files": [],
+        "name": "advanced-motion",
+        "path": "skills/advanced-motion",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "027a298b9f0ffae17d837ef6b81e2a4189f5136a7c598fa2aa7aa36f458f15d0"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "b4c9597549bfbc0905a5353ebe9855c6607983aa29ba3c7f3aa4b50e9e2aea9e",
+        "id": "motion-design",
+        "installed_sha256": "b4c9597549bfbc0905a5353ebe9855c6607983aa29ba3c7f3aa4b50e9e2aea9e",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "motion-design",
+        "path": "skills/motion-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "b4c9597549bfbc0905a5353ebe9855c6607983aa29ba3c7f3aa4b50e9e2aea9e"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "22133f102724d18734e6fe39718038973327a0340218a3c4121f9029f5796913",
+        "id": "page-transitions",
+        "installed_sha256": "22133f102724d18734e6fe39718038973327a0340218a3c4121f9029f5796913",
+        "license_files": [],
+        "name": "page-transitions",
+        "path": "skills/page-transitions",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "22133f102724d18734e6fe39718038973327a0340218a3c4121f9029f5796913"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "528a237b3b38a3d0d15804bb37ddc37bc5d55995d9e873d7f00cfdef3b0a5e4b",
+        "id": "svg-animation",
+        "installed_sha256": "528a237b3b38a3d0d15804bb37ddc37bc5d55995d9e873d7f00cfdef3b0a5e4b",
+        "license_files": [],
+        "name": "svg-animation",
+        "path": "skills/svg-animation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "528a237b3b38a3d0d15804bb37ddc37bc5d55995d9e873d7f00cfdef3b0a5e4b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d",
+        "id": "svg-creation",
+        "installed_sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d",
+        "license_files": [],
+        "name": "svg-creation",
+        "path": "skills/svg-creation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "5b59821275bb268857f4aa86a7858070de52756da85c99ade750f323d17c509d"
+      }
+    ]
+  },
+  "clients": [
+    "codex-desktop",
+    "codex-cli"
+  ],
+  "files": {
+    ".agents/plugins/marketplace.json": {
+      "mode": "0644",
+      "sha256": "bbd0d51d11108669c4d208dbfaf361ef4cf2e1f646bde47981e4c9a25a0b1389"
+    },
+    "plugins/motion-check/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "009eda803a558065db619638247f6760836e43736efac34e7943a850e3f29d9c"
+    },
+    "plugins/motion-check/plugin.json": {
+      "mode": "0644",
+      "sha256": "b6de2afa637f26791674fec7a71dac53230b7de7c2513b325c7348f2a6dd5021"
+    },
+    "plugins/motion-check/provenance.json": {
+      "mode": "0644",
+      "sha256": "8f42b16dd22ef374cd94539a38798913630d5e3e3ffdfa6545cbc74c9d6a00ea"
+    },
+    "plugins/motion-check/skills/advanced-motion/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ff6ec84923cbc145a9f90f196a8eae645e0496e07cd8031bb011bb7e67cedc46"
+    },
+    "plugins/motion-check/skills/advanced-motion/references/scene-mechanics.md": {
+      "mode": "0644",
+      "sha256": "c6580f0c4e833d4dca8fa1c76e0d140370e2a41223c4cc63774281023ca57cfe"
+    },
+    "plugins/motion-check/skills/motion-design/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/motion-check/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "2e119acc1ced8c7c9cafc14e9703148e9a06c6037fa1fa9018f5e99199337757"
+    },
+    "plugins/motion-check/skills/motion-design/references/interaction-recipes.md": {
+      "mode": "0644",
+      "sha256": "b42ae5bc721ee4e76f2857fd7daa828f207f10fff5806a004163100fa9588edf"
+    },
+    "plugins/motion-check/skills/page-transitions/SKILL.md": {
+      "mode": "0644",
+      "sha256": "04ad9dc1b4d50c21d6f80dd0aa4c304a84610fff9bf738eea07cbe236c918531"
+    },
+    "plugins/motion-check/skills/page-transitions/references/navigation-craft.md": {
+      "mode": "0644",
+      "sha256": "49818c3a7a7fadcc0ced4c9cf7f5a08d3d149a913e25d0bc733bb24a5aa40976"
+    },
+    "plugins/motion-check/skills/svg-animation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6f5781f79a308ca642d104baa530d436ccd22c514d85468f913d52c7cd8b026c"
+    },
+    "plugins/motion-check/skills/svg-animation/references/svg-motion-craft.md": {
+      "mode": "0644",
+      "sha256": "f4af062877ec86e58637babca106226d0b3c48e51e0fbd24a7158cdd957ddbe4"
+    },
+    "plugins/motion-check/skills/svg-creation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4dac1773fc90efc880d267edaf102b9c1d793c6d5027e5cda183b41370d0483c"
+    },
+    "plugins/motion-check/skills/svg-creation/references/vector-craft.md": {
+      "mode": "0644",
+      "sha256": "db124874b2d9466ddd9c31d79fe7d1bb6e11c9e495bfa5c8ec12a50d054411f2"
+    },
+    "plugins/motion-check/skills/svg-creation/scripts/audit_svg.py": {
+      "mode": "0644",
+      "sha256": "a70542a0ac853bdc67a6cd87b6ba9cdceb470296420a51c2bf90b25d2f3bd753"
+    }
+  },
+  "name": "personal-ai",
+  "schema_version": 1,
+  "version": "2.0.0"
+}

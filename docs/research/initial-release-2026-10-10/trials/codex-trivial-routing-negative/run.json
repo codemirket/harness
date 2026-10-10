@@ -1,0 +1,52 @@
+{
+  "invocation": {
+    "provider": "codex",
+    "case": "trivial",
+    "argv": [
+      "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "-C",
+      "<scratch>/trials/codex/trivial",
+      "-s",
+      "workspace-write",
+      "-c",
+      "approval_policy=\"never\"",
+      "-o",
+      "<scratch>/runs/codex/trivial-routing-negative/final.md",
+      "Translate this single sentence into Turkish: \"The meeting starts at nine.\" Return only the translation.\n"
+    ],
+    "cwd": "<scratch>/trials/codex/trivial",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "trace": {
+    "models": [],
+    "tools": {},
+    "skill_calls": [],
+    "usage": {
+      "input_tokens": 21170,
+      "cached_input_tokens": 13184,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 50,
+      "reasoning_output_tokens": 34
+    },
+    "raw_stream_sha256": "5491d045066c20d55c592b196b63cfb8dd1732f1486ea8adac791a160645a4bf",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "final.md": "7a5f9cb84e1f5b8882a24c9de2678957d4998f6113135942db23f6641138ce07",
+    "tool-trace.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_result": {
+    "provider": "codex",
+    "case": "trivial",
+    "status": "completed",
+    "exit_code": 0,
+    "seconds": 8.667
+  }
+}

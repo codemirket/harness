@@ -1,0 +1,79 @@
+{
+  "bundles": {
+    "svg-check": [
+      {
+        "executable_files": [],
+        "export_sha256": "267c838ad356ab189e440e2d234694557d5c20368b147d3289abe2b5a500b95d",
+        "id": "svg-animation",
+        "installed_sha256": "267c838ad356ab189e440e2d234694557d5c20368b147d3289abe2b5a500b95d",
+        "license_files": [],
+        "name": "svg-animation",
+        "path": "skills/svg-animation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "267c838ad356ab189e440e2d234694557d5c20368b147d3289abe2b5a500b95d"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "3aae9211cc97ac862eb7227042d7ea2d1ae5680cf547eb3fc4279082530aed25",
+        "id": "svg-creation",
+        "installed_sha256": "3aae9211cc97ac862eb7227042d7ea2d1ae5680cf547eb3fc4279082530aed25",
+        "license_files": [],
+        "name": "svg-creation",
+        "path": "skills/svg-creation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "3aae9211cc97ac862eb7227042d7ea2d1ae5680cf547eb3fc4279082530aed25"
+      }
+    ]
+  },
+  "clients": [
+    "codex-desktop",
+    "codex-cli"
+  ],
+  "files": {
+    ".agents/plugins/marketplace.json": {
+      "mode": "0644",
+      "sha256": "56894b56d0befb0d165a84ea73c8ea9f7b2e8d84455a98f61e1ae978d141a380"
+    },
+    "plugins/svg-check/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "0786b95c8825ecef87e7c8d4c50851937c7717940de64bcc17759bff73c608b8"
+    },
+    "plugins/svg-check/plugin.json": {
+      "mode": "0644",
+      "sha256": "0f89cdf713cb243443cd14b66a11224d3e5f11b8657995227a58694b0cad9f21"
+    },
+    "plugins/svg-check/provenance.json": {
+      "mode": "0644",
+      "sha256": "c72199b52580229c50ebfad8f60e091f6a1342db44605c1078628026b43f3817"
+    },
+    "plugins/svg-check/skills/svg-animation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "021bbdee7a6770f2e780655e7a7b3b07ec52dc3c20345f9c9d6cf7ff4429593f"
+    },
+    "plugins/svg-check/skills/svg-animation/references/svg-motion-craft.md": {
+      "mode": "0644",
+      "sha256": "ed7ef9a143d5abc2732597e4be137a36396107ec4f793ac0e5f12c09815eaea8"
+    },
+    "plugins/svg-check/skills/svg-creation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4dac1773fc90efc880d267edaf102b9c1d793c6d5027e5cda183b41370d0483c"
+    },
+    "plugins/svg-check/skills/svg-creation/references/vector-craft.md": {
+      "mode": "0644",
+      "sha256": "db124874b2d9466ddd9c31d79fe7d1bb6e11c9e495bfa5c8ec12a50d054411f2"
+    },
+    "plugins/svg-check/skills/svg-creation/scripts/audit_svg.py": {
+      "mode": "0644",
+      "sha256": "d501408dce1cf7cb89ef0eba6a519235a368422128d97cea7460276464f8b7be"
+    }
+  },
+  "name": "personal-ai",
+  "schema_version": 1,
+  "version": "2.0.0"
+}

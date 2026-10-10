@@ -32,7 +32,7 @@ class ProjectAddTests(HarnessFixture):
 
     def test_init_uses_configured_baseline_without_installing(self):
         self.baseline()
-        value = harness.init_project(self.project, [], [], [], 'both')
+        value = harness.init_project(self.project, [], [], [], 'all')
         self.assertEqual(value['profiles'], ['project-foundation'])
         self.assertEqual(value['skills'], [])
         self.assertEqual(value['schema_version'], 1)
@@ -47,9 +47,10 @@ class ProjectAddTests(HarnessFixture):
         self.assertEqual(value['profiles'], ['project-foundation', 'feature'])
         self.assertEqual({e['id'] for e in harness.project_plan(self.project)[2]}, {'foundation', 'feature'})
 
-    def test_init_without_default_metadata_retains_legacy_contract(self):
+    def test_init_without_default_profiles_uses_explicit_selection(self):
         expected = {'schema_version': 1, 'targets': ['codex', 'claude'],
-                    'profiles': ['feature'], 'skills': [], 'skip': ['optional']}
+                    'profiles': ['feature'], 'skills': [], 'skip': ['optional'],
+                    'target_skills': {}}
         self.assertEqual(self.initialize(), expected)
 
     def test_plan_sync_doctor_do_not_inject_new_defaults_into_existing_manifest(self):
@@ -93,13 +94,13 @@ class ProjectAddTests(HarnessFixture):
         self.assertEqual(result['manifest']['profiles'], ['feature'])
         self.assertEqual({j['id'] for j in result['installations']}, {'optional', 'feature', 'foundation'})
 
-    def test_target_addition_upgrades_only_when_needed_and_normalizes_alias(self):
+    def test_target_addition_uses_initial_schema_and_preserves_metadata(self):
         self.entry('optional')['agents'] = ['claude']
-        self.declare(targets=['codex', 'claude-code'], metadata={'keep': True})
-        result = harness.add_project(self.project, target_skills={'claude-code': ['optional', 'optional']})
+        self.declare(metadata={'keep': True})
+        result = harness.add_project(self.project, target_skills={'claude': ['optional', 'optional']})
         value = result['manifest']
-        self.assertEqual(value['schema_version'], 2)
-        self.assertEqual(value['targets'], ['codex', 'claude-code'])
+        self.assertEqual(value['schema_version'], 1)
+        self.assertEqual(value['targets'], ['codex', 'claude'])
         self.assertEqual(value['target_skills'], {'claude': ['optional']})
         self.assertEqual(value['metadata'], {'keep': True})
         self.assertEqual({(j['id'], j['target']) for j in result['installations']},
@@ -109,7 +110,7 @@ class ProjectAddTests(HarnessFixture):
         self.assertEqual(next(row['targets'] for row in rows if row['id'] == 'optional'), ['claude'])
 
     def test_existing_scoped_selection_is_preserved_when_adding_another_target(self):
-        self.declare(schema_version=2, target_skills={'claude-code': ['optional']})
+        self.declare(target_skills={'claude': ['optional']})
         result = harness.add_project(self.project, target_skills={'codex': ['feature']})
         self.assertEqual(result['manifest']['target_skills'],
                          {'claude': ['optional'], 'codex': ['feature']})
@@ -189,7 +190,7 @@ class ProjectAddTests(HarnessFixture):
         self.assert_add_failure_preserved('Unsupported target_skills', target_skills={'other': ['optional']})
 
     def test_conflicts_and_name_collisions_are_checked_per_target(self):
-        self.declare(schema_version=2, target_skills={'claude': ['optional']})
+        self.declare(target_skills={'claude': ['optional']})
         self.entry('feature')['conflicts'] = ['optional']
         self.assert_add_failure_preserved('Conflicting selections', skills=['feature'])
         result = harness.add_project(self.project, target_skills={'codex': ['feature']})
@@ -290,7 +291,7 @@ class ProjectAddTests(HarnessFixture):
                 harness.add_project(self.project, skills=['feature'])
         self.assertEqual(snapshot(self.project, timestamps=True), mutated[0])
 
-    def test_malformed_additions_and_alias_ambiguity_are_read_only(self):
+    def test_malformed_additions_and_unsupported_targets_are_read_only(self):
         self.declare()
         cases = [({'profiles': 'feature'}, 'must be a string list'),
                  ({'skills': [None]}, 'must be a string list'),
@@ -299,7 +300,7 @@ class ProjectAddTests(HarnessFixture):
                  ({'target_skills': {'claude': 'optional'}}, 'must map targets'),
                  ({'target_skills': {'claude': [None]}}, 'must map targets'),
                  ({'target_skills': {'claude': ['optional'], 'claude-code': ['feature']}},
-                  'Duplicate target_skills target alias')]
+                  'Unsupported target_skills target')]
         for arguments, message in cases:
             with self.subTest(arguments=arguments):
                 self.assert_add_failure_preserved(message, **arguments)
@@ -353,12 +354,12 @@ class ProjectAddTests(HarnessFixture):
                                     cwd=self.base, text=True, capture_output=True)
             self.assertEqual(result.returncode, expected, result.stderr)
             return json.loads(result.stdout)
-        run('init', '--target', 'both')
+        run('init', '--target', 'all')
         run('sync')
         lock_before = (self.project / '.ai/project.lock.json').read_bytes()
-        preview = run('add', '--skill', 'feature', '--target-skill', 'claude-code:optional', '--dry-run')
+        preview = run('add', '--skill', 'feature', '--target-skill', 'claude:optional', '--dry-run')
         self.assertEqual(preview['status'], 'planned')
-        result = run('add', '--skill', 'feature', '--target-skill', 'claude-code:optional')
+        result = run('add', '--skill', 'feature', '--target-skill', 'claude:optional')
         self.assertEqual(result['status'], 'declared')
         self.assertEqual(result['installation'], 'not_performed')
         self.assertEqual((self.project / '.ai/project.lock.json').read_bytes(), lock_before)
@@ -370,6 +371,6 @@ class ProjectAddTests(HarnessFixture):
                           ('feature', 'codex'), ('feature', 'claude'), ('optional', 'claude')})
         run('doctor')
         before = snapshot(self.project, timestamps=True)
-        run('add', '--skill', 'feature', '--target-skill', 'claude-code:optional')
+        run('add', '--skill', 'feature', '--target-skill', 'claude:optional')
         self.assertTrue(all(j['action'] == 'unchanged' for j in run('sync')))
         self.assertEqual(snapshot(self.project, timestamps=True), before)

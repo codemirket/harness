@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "personal-ai",
-  "version": "3.1.0",
+  "version": "1.0.0",
   "global_skills": [
     "skill-catalog",
     "engineering-judgment",
@@ -102,6 +102,5 @@
   },
   "default_target": "all",
   "instructions": "instructions/AGENTS.md",
-  "target_source": "registry/targets.json",
   "mcp_source": "registry/mcp.json"
 }

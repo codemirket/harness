@@ -1,13 +1,14 @@
 ---
 name: skill-catalog
-description: Route substantive tasks to reviewed skills and register project capabilities. Use at setup or when design, illustration, motion, backend, databases, DevOps, QA, marketing, product decisions, data analysis, documentation or research needs specialist guidance.
+description: Select and read the specialist workflow before substantive engineering, design, research, business, finance, translation or document work. Covers cash-flow and budget analysis, localization, product and marketing decisions, data and spreadsheets, software and operations. Use for capability discovery and project registration; skip trivial edits, single-sentence translations and unchanged selections already read for the current task.
 ---
 
 # Personal skill registry
 
 Use this repository as the first discovery source for project capabilities across
-engineering, design, mobile/desktop, APIs, data, research, documents, marketing,
-agent collaboration, security and operations. Give each project a rich foundation
+engineering, design, mobile/desktop, APIs, data, research, documents, finance,
+localization, business, marketing, agent collaboration, security and operations.
+Give each project a rich foundation
 plus specialists justified by its work. Codex Desktop and Claude Desktop Code
 use the same capability sources.
 Registering skills makes them available for reuse. Read and apply only the
@@ -16,11 +17,29 @@ instructions relevant to the current task so availability stays efficient.
 ## Pick up and compose
 
 For a broad capability request, use `python3 scripts/harness.py capabilities list`
-and `capabilities show ID`. The 23 capability contracts name a lead, a concrete
-deliverable, a discriminating failure probe and runtime prerequisites. Supporting
-skills are conditional, not an instruction to install everything. `capabilities
-check` validates source coverage and hashes; it does not certify expertise or
-client activation. Read `docs/capabilities.md` in the resolved checkout for the map.
+and `capabilities show ID`. Contracts include all requested professional roles,
+with aliases, a focused lead, deliverable, failure probe and acceptance evidence.
+Compose only the actual task boundaries:
+
+```sh
+python3 scripts/harness.py capabilities plan "CFO" --with "Excel Expert"
+python3 scripts/harness.py project add --project /absolute/project --capability "CFO"
+```
+
+The plan is a read-only execution brief: exact role/ID lookup, selected read paths,
+source hashes, entrypoint bytes, concrete registration IDs and prerequisites.
+It does not classify arbitrary prompts, execute tools or claim the host loaded a
+skill. Read the lead, then only relevant references. The agent selects the outcome;
+the CLI makes that choice reproducible. `--with` adds another capability's lead;
+the broader support lists remain optional. Register additional support only when
+its boundary is affected. `project add --capability` persists the concrete lead,
+then sync and doctor install/verify it. Globally supplied leads need no duplicate
+project registration. `capabilities check` verifies local guidance and hashes;
+`docs/capabilities.md` in the resolved checkout is the complete role map.
+
+For work crossing several roles, read [task execution](references/task-execution.md)
+for evidence ownership, tool selection and bounded recovery. Routine work does not
+need this extra process.
 
 For substantive work in the domains above, read the
 matching row in [task routing](references/task-routing.md). It distinguishes
@@ -138,9 +157,8 @@ one-off `catalog install` for ongoing project needs: it bypasses the managed
 selection and lock. Use `scripts/harness.py` where repository docs use `ai.py`.
 
 Codex Desktop uses `.agents/skills`; Claude Desktop Code and its CLI use
-`.claude/skills`. Use `--target codex-desktop`, `--target claude-desktop`, or
-`--target all` when initializing projects. The default `all` and legacy `both`
-select Codex and Claude. Each target can have its own additional selections.
+`.claude/skills`. Use `--target codex`, `--target claude`, or
+`--target all` when initializing projects. The default `all` selects Codex and Claude. Each target can have its own additional selections.
 Chat/Cowork use account Customize instead of local Code files; see the harness's
 `docs/targets.md` and `ai.py handoff --help` for manual packages. Each local copy
 retains references, assets, licenses and provenance. Source bytes and catalog
@@ -148,21 +166,19 @@ adaptations have separate hashes. Registration runs no upstream installer, hook,
 helper, dependency installation or external service. Apply a selected skill only
 after reading its installed integration note, body and relevant references.
 
-For a provider-specific addition, use `project init --target both --target-skill
+For a provider-specific addition, use `project init --target all --target-skill
 claude:matt-git-guardrails-claude-code` alongside the shared profiles/skills. For an
 existing project whose targets already include Claude, use `project add --project
 /absolute/project --target-skill claude:matt-git-guardrails-claude-code`, then sync
-and doctor. Add upgrades to schema v2 and records `target_skills`; it does not
-activate new targets. The shared
-selection still applies to every declared target; unsupported combinations fail
-instead of being silently filtered. Target-specific IDs cannot also be skipped.
-Required companions, conflicts and install names resolve independently per target.
-Schema v2 locks record each resolved entry's actual `targets`; doctor verifies
-these assignments. V2 command rows report `excluded_targets` with `unsupported`
-or `not_requested` reasons; exclusions never excuse incompatible explicit requests.
-V1 manifests and locks keep their existing shared behavior.
-Do not hand-edit locks or introduce a sidecar for provider exceptions. Resolve this
-skill to its checkout for `docs/project-targets.md`, including migration guidance.
+and doctor. Add records `target_skills` in the schema 1 manifest; it does not
+activate new targets. Shared selections apply to every declared target; unsupported
+combinations fail rather than being silently filtered. Target-specific IDs cannot
+also be skipped. Companions, conflicts and names resolve independently per target.
+Locks record each resolved entry's exact `targets`, which doctor verifies. Command
+rows report `excluded_targets` with `unsupported` or `not_requested` reasons;
+exclusions never excuse incompatible explicit requests. Do not hand-edit locks.
+See `docs/project-targets.md` in the resolved checkout for the declaration contract.
+
 
 ## Use the wider inventory
 

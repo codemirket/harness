@@ -18,7 +18,7 @@ architecture for projects that adopt the harness.
 | Client installation | [target_install.py](../lib/target_install.py), [targets.py](../lib/targets.py), [configuration.py](../lib/configuration.py) | Explicit target selection and selected configuration merging; [targets](targets.md) |
 | Global and project reconciliation | [harness.py](../lib/harness.py) | Plans, preserved modifications, managed copies and project locks; [project targets](project-targets.md) |
 | Reviewed skill catalog | [catalog.py](../lib/catalog.py) | Pinned sources, adaptations, hashes, companions and executable contracts; [source review](source-review.md) |
-| Task capability contracts | [capabilities.py](../lib/capabilities.py) | Discoverable deliverables, prerequisites and failure probes; [capabilities](capabilities.md) |
+| Task capability contracts | [capabilities.py](../lib/capabilities.py) | Explicit role resolution, bounded composition, acceptance and failure probes; [capabilities](capabilities.md) |
 | Runtime and preferences | [runtime.py](../lib/runtime.py), [settings.py](../lib/settings.py) | Readiness and explicitly managed preferences; [settings](settings.md) |
 | Project instruction audit | [context.py](../lib/context.py) | Explicit root-to-cwd selection, shadowing and byte-budget diagnostics; [context](context.md) |
 | Scheduling and maintenance | [schedule.py](../lib/schedule.py), [maintenance.py](../lib/maintenance.py) | Explicit schedule registration and bounded checkout maintenance; [scheduling](scheduling.md) |
@@ -27,9 +27,10 @@ architecture for projects that adopt the harness.
 | Export and handoff | [bundle.py](../lib/bundle.py), [handoff.py](../lib/handoff.py) | Local packages with provenance; [plugins](plugins.md) and [target coverage](targets.md) |
 | Bounded Claude delegation | [claude_delegate.py](../lib/claude_delegate.py) | Explicit worker/tool limits; [coordination workflow](../skills/agent-coordination/SKILL.md) |
 
-[install.py](../lib/install.py) retains the older combined installation path behind
-`legacy-install`; current `install` and `check` dispatch to `target_install.py`.
-Check the actual command's `--help` before modifying a compatibility path.
+`install` and `check` dispatch to `target_install.py`; both use the same target
+definitions and configuration contract. Client names are `codex` and `claude`,
+with `all` selecting both. Project manifests, locks and capability contracts use
+schema version `1`.
 Exported `_harness` snapshots contain the runtime and reference documentation,
 including this map, but omit the contributor test suite. Use the full source
 checkout for the contribution gates below.
@@ -43,11 +44,17 @@ checkout for the contribution gates below.
   pins, payload contracts and profiles. Authored payloads live in [skills/](../skills/).
   [instructions/AGENTS.md](../instructions/AGENTS.md) is shared installed guidance;
   the root [AGENTS.md](../AGENTS.md) governs contributors to this repository.
+- [registry/capabilities.json](../registry/capabilities.json) owns explicit role
+  aliases and outcome contracts. `capabilities plan` validates selected authored
+  payloads and returns a deduplicated read sequence, byte cost and fingerprint.
+  Optional support is not implicitly loaded. `project init/add --capability`
+  resolves project leads into ordinary skill IDs; host execution stays outside it.
 - A consuming project's `.ai/project.json` declares its selections. Its generated
   `.ai/project.lock.json` records resolved provenance and target assignments. Use
   project commands to reconcile it; do not hand-edit a lock to conceal drift.
 - [scripts/render_registry.py](../scripts/render_registry.py) generates
-  [catalog documentation](catalog.md) and [source review tables](source-review.md).
+  [catalog documentation](catalog.md), [capability contracts](capabilities.md) and
+  [source review tables](source-review.md).
   Change authoritative inputs first, regenerate, then run `--check`.
 - `build/` contains ignored generated artifacts and scratch evidence. Dated
   [verification records](verification.md) describe their original inputs and limits;

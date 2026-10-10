@@ -1,16 +1,16 @@
-# Optional legacy maintenance
+# Optional maintenance
 
-Modern `ai.py install` and `ai.py check` neither register nor verify schedules.
+`ai.py install` and `ai.py check` neither register nor verify schedules.
 Maintenance is disabled by default in `registry/harness.json`; deliberately enable
 `maintenance.enabled` before opting into registration or execution. A disabled
 policy blocks registration and maintenance runs. It does not unregister an
 existing OS job; inspect and remove an unwanted job deliberately.
 
-The retained legacy job runs at **12:00 AM (00:00) every day in the device's local
-timezone**. It refreshes this repository and reconciles Codex/Claude guidance,
-skills and portable Codex preferences. It does **not** manage the new target
-settings or neutral MCP registry. Use target `install` and `check`
-for those. The OS job does not open an AI session.
+The job runs at **12:00 AM (00:00) every day in the device's local timezone**.
+It refreshes this repository, then uses the same target installer as
+`ai.py install --target all` to reconcile guidance, global skills and enabled MCP
+definitions. It preserves host permissions, models and appearance. The OS job does
+not open an AI session.
 
 | Device | Scheduler | Timing and conditions |
 | --- | --- | --- |
@@ -34,11 +34,10 @@ job. Registration requires a valid Git checkout and enabled policy. It can be
 performed while Codex is open or the repository has local edits. Registration
 checks the stored scheduler contract, not whether a run succeeds.
 
-The historical complete installer remains available as `ai.py legacy-install`
-for compatibility. Its broader runtime, preferences and scheduling behavior is
-separate from modern target installation.
-
-An existing exact legacy midnight installer line is replaced by the owned maintenance entry. Other cron jobs and tasks remain untouched. Modified legacy lines, malformed ownership markers, a conflicting Windows task, or an existing `CRON_TZ` override require review. Scheduler changes are backed up locally before replacement and checked afterward; concurrent edits are not silently overwritten.
+Registration manages only the owned maintenance entry. Other cron jobs and tasks
+remain untouched. Malformed ownership markers, a conflicting Windows task, or an
+existing `CRON_TZ` override require review. Scheduler changes are backed up locally
+before replacement and checked afterward; concurrent edits are not silently overwritten.
 
 Keep both the checkout and Python executable at stable paths. Re-run schedule registration after moving either. Registration confirms the stored scheduler contract, not that the OS has successfully launched it.
 
@@ -53,21 +52,26 @@ The updater checks repository identity, the `main` branch and its `origin/main` 
 
 Local changes, untracked files, local-ahead or divergent history, an unexpected remote, and active Git operations stop the run. The updater does not stash, reset, commit, push or resolve conflicts automatically. Resolve the reported condition deliberately, then run maintenance again; the daily job remains registered. Uncommitted work in this checkout is a temporary reason to skip an update, not a reason to discard the work.
 
-The refreshed process reconciles global registrations for Codex and the Claude Code CLI, preserving unmanaged or modified content. It also applies the allowlisted [portable preferences](settings.md). It does not synchronize every project, update catalog pins independently, install runtime dependencies, connect plugin accounts or invoke a model.
+The refreshed process reconciles Codex and Claude Desktop Code registrations with
+the target installer, preserving unmanaged or modified content. It does not apply
+optional portable preferences, synchronize every project, update catalog pins
+independently, install runtime dependencies, connect plugin accounts or invoke a model.
 
 A process lock prevents overlapping maintenance runs. Git and child-process output is bounded, and durable reports omit raw remote URLs, credentials and Git error output. A failed fetch or synchronization remains a failed/partial run; it is not reported as ready merely because the scheduler launched.
 
-## Preferences while Codex is open
+## Apply the current checkout
 
-Global instructions and skills can refresh while Codex is open. If portable preferences already match, no settings write is needed. If changes are needed, maintenance leaves the live configuration alone and reports deferred work. It never forces Codex to close.
-
-The next eligible daily run retries. To finish sooner, close Codex desktop and other active Codex clients, then run:
+To reconcile the current checkout without another fetch, run:
 
 ```sh
 python3 ai.py maintenance sync
 ```
 
-This applies the current checkout without another fetch; review the resulting report and reopen Codex after settings change. A deferred settings report is not completed preference synchronization. App theme rendering, model access and plugin execution still need confirmation on the destination device.
+The installer checks configuration snapshots before writes and backs up changed
+files. Review the report, then start fresh client sessions to confirm skill
+discovery and MCP activation. Matching files alone do not prove that the client
+used a workflow. Model access and tool invocation need evidence on the destination
+device.
 
 ## Last-run evidence and recovery
 

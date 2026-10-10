@@ -1,0 +1,144 @@
+{
+  "label": "claude-finance-repaired",
+  "surface": "Claude Code CLI",
+  "invocation": {
+    "provider": "claude",
+    "case": "finance-repair",
+    "argv": [
+      "<home>/.local/bin/claude",
+      "--print",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--no-session-persistence",
+      "--permission-prompts",
+      "none",
+      "Read TASK.md and complete the requested task yourself. Do not delegate."
+    ],
+    "cwd": "<scratch>/trials/claude/finance-repair",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "native_result": {
+    "provider": "claude",
+    "case": "finance-repair",
+    "status": "completed",
+    "exit_code": 0,
+    "seconds": 535.315
+  },
+  "input_unchanged": true,
+  "trace": {
+    "models": [
+      "claude-opus-5-5"
+    ],
+    "tools": {
+      "Bash": 16,
+      "Skill": 1,
+      "Write": 2,
+      "Edit": 2
+    },
+    "skill_calls": [
+      "skill-catalog"
+    ],
+    "model": "claude-opus-5-5",
+    "discovered_harness_skills": [
+      "agent-coordination",
+      "ai-system-evaluation",
+      "ci-maintenance",
+      "context-management",
+      "document-parsing",
+      "document-workflow",
+      "engineering-judgment",
+      "interface-design",
+      "marketing-writing",
+      "office-authoring",
+      "research-and-synthesis",
+      "security-judgment",
+      "skill-catalog",
+      "work-planning"
+    ],
+    "subtype": "success",
+    "is_error": false,
+    "duration_ms": 531775,
+    "num_turns": 23,
+    "usage": {
+      "input_tokens": 40,
+      "cache_creation_input_tokens": 106324,
+      "cache_read_input_tokens": 1503580,
+      "output_tokens": 56116,
+      "output_tokens_details": {
+        "thinking_tokens": 31624
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 106324,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "global",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 1230,
+          "cache_read_input_tokens": 114183,
+          "cache_creation_input_tokens": 632,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 632
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "raw_stream_sha256": "2750a0e0ec7069be20f50079dafa52fa086eac2cf9985f7668ef35d2c6a94276",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "tool-trace.jsonl": "2da1a59c37a7783e1b2261c9db5ceb23cddbfcc75aa07a41dd1895f310feb710",
+    "results.json": "1b313f2fc27f00879c2a9cefad3d2803f7862177f988f7f1646373788956d677",
+    "final.md": "b5b8d3feacfff96f7ef3fa50555bceaf6801f86b8c511cd8b6a8c360bf61cdca",
+    "TASK.md": "ad82de570a0172e3edca803e6b36bff80b47ad6dac6f19bc91217875c99a1e29",
+    "verification.json": "8f50c8d8717decae8b692a850f1c32b71e2418df30ce2f328a665448e4795bd2",
+    "decision.md": "beba5acbbab0d2ec86e90824f8b1d8f313971df62f7e161e2ade734f91159e9a",
+    "ledger.json": "5be1e094f76fde050cd4c8a0c0648f2fe296009b04bfc10720c04e276a967eeb",
+    "analyze.py": "d4d765adbd97ccf0b0ebe4909c4e2cc3eaef7212268900795f9dca1fa6147fac",
+    "test_analyze.py": "80d12e59ceb7e12f5323e4bb73a4e8a5238d39df8660b3d84e917a2dd673733f",
+    "decision.native.md": "458eddf4d2f87ec5ca9f8d9d5b73d5688b855327f8d06a3857b4df260069fe77",
+    "tests.log": "8201585203cc241a08dda3da6f705ebf66379fd17e27f72c70f160c069a42a6b"
+  },
+  "verifier_passed": true,
+  "post_native_edit": {
+    "editor": "integrating Codex agent",
+    "reason": "Independent review found two sensitivity-table sentences conflating month-end sufficiency with within-month timing, plus an omitted standalone synthetic-input label. The integrating agent corrected those three prose points; decision.native.md preserves the original native wording.",
+    "changed_artifact": "decision.md",
+    "native_sha256": "458eddf4d2f87ec5ca9f8d9d5b73d5688b855327f8d06a3857b4df260069fe77",
+    "reviewed_sha256": "beba5acbbab0d2ec86e90824f8b1d8f313971df62f7e161e2ade734f91159e9a",
+    "code_and_results_changed": false
+  },
+  "guidance_use": {
+    "bodies_received": [
+      "skill-catalog",
+      "financial-analysis"
+    ],
+    "references_received": [
+      "cash-and-earnings.md"
+    ],
+    "original_source_lines": [
+      8,
+      16,
+      18
+    ],
+    "trace": "tool-trace.jsonl",
+    "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+    "limits": [
+      "The reference body was fully received in a batch whose later commands failed; the batch itself did not succeed."
+    ]
+  }
+}

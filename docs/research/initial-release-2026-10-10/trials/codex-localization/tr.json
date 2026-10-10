@@ -1,0 +1,8 @@
+{
+  "refund": "Tedarikçi geri ödemeyi onaylayana kadar {booking_id} numaralı rezervasyonu iptal etmeyin. Talepte bulunmak, geri ödemenin onaylandığı anlamına gelmez.",
+  "price": "Tahmini toplam: €1.250,50. Yerel vergiler bu tutara dahil değildir.",
+  "deadline": "10 Ekim 2026 tarihinde saat 17:00'ye (Europe/Istanbul) kadar onaylayın.",
+  "seats": "{count, plural, =0 {Müsait koltuk yok} one {# koltuk müsait} other {# koltuk müsait}}",
+  "button": "İptal talebinde bulun",
+  "preview": "<strong>{name}</strong>, rezervasyonunuz beklemede, henüz onaylanmadı."
+}

@@ -139,7 +139,9 @@ def harness_inputs(source):
     for name in ('skills', 'instructions', 'lib'):
         if (source / name).is_dir():
             files.update({name + '/' + key: value for key, value in tree(source / name).items()})
-    for name in ('ai.py', 'AGENTS.md', 'registry/catalog.json', 'registry/harness.json'):
+    for name in ('ai.py', 'AGENTS.md', 'registry/catalog.json', 'registry/harness.json',
+                 'registry/capabilities.json', 'registry/targets.json', 'registry/mcp.json',
+                 'registry/codex-settings.json'):
         item = source / name
         if item.exists():
             if catalog.is_link(item) or not item.is_file():

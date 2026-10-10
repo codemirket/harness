@@ -99,7 +99,7 @@ class RemoteFileFetchTests(unittest.TestCase):
         second_files = {'SKILL.md': second_skill, '.upstream-licenses/LICENSE': LICENSE}
         second = dict(self.entry, id='other', name='other-skill', path='skills/other',
                       sha256=reviewed_hash(second_files))
-        catalog.install_many(self.data, [self.entry, second], self.project, 'both')
+        catalog.install_many(self.data, [self.entry, second], self.project, 'all')
         self.assertEqual(self.urls.count(self.tree_url), 1)
         self.assertEqual(self.urls.count(self.raw_url('LICENSE')), 1)
         self.assertEqual(len(self.urls), 5)
@@ -109,7 +109,7 @@ class RemoteFileFetchTests(unittest.TestCase):
     def test_same_size_content_tampering_fails_full_reviewed_hash_before_writes(self):
         self.raw['skills/fixture/references/guide.md'] = b'X' * len(GUIDE)
         with self.assertRaisesRegex(ValueError, 'reviewed content'):
-            catalog.install_many(self.data, [self.entry], self.project, 'both')
+            catalog.install_many(self.data, [self.entry], self.project, 'all')
         self.assertEqual(list(self.project.iterdir()), [])
 
     def test_rejects_malformed_missing_and_truncated_tree(self):

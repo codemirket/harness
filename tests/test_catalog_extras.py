@@ -139,16 +139,16 @@ class ExtraFilesTests(CatalogFixture):
                 self.assertEqual(self.prepare(mode, entry), expected)
         self.assertEqual(entry['sha256'], reviewed_hash(self.files))
         self.assertEqual((self.source / 'shared/method.md').read_bytes(), self.files['references/shared-method.md'])
-        catalog.install_many(self.data, [entry], self.project, 'both', {'fixture': self.source})
+        catalog.install_many(self.data, [entry], self.project, 'all', {'fixture': self.source})
         self.assertTrue(all('Already installed' in result for result in
-                            catalog.install_many(self.data, [entry], self.project, 'both', {'fixture': self.source})))
+                            catalog.install_many(self.data, [entry], self.project, 'all', {'fixture': self.source})))
 
     def test_source_checksum_is_checked_before_replacement(self):
         entry = dict(self.entry, replacements=[dict(path='references/shared-method.md', old='Method', new='Recipe', count=1)])
         (self.source / 'shared/method.md').write_bytes(b'# Recipe\nKeep ../shared/example.md literal.\n')
         with mock.patch.object(catalog, 'adapt_payload', side_effect=AssertionError('Must not adapt unreviewed source')):
             with self.assertRaisesRegex(ValueError, 'reviewed content'):
-                catalog.install_many(self.data, [entry], self.project, 'both', {'fixture': self.source})
+                catalog.install_many(self.data, [entry], self.project, 'all', {'fixture': self.source})
         self.assert_project_empty()
 
     def test_bad_replacements_and_hashes_fail_before_project_writes(self):
@@ -159,11 +159,11 @@ class ExtraFilesTests(CatalogFixture):
         for change in variants:
             entry = dict(self.entry, replacements=[change])
             with self.subTest(change=change), self.assertRaises(ValueError):
-                catalog.install_many(self.data, [entry], self.project, 'both', {'fixture': self.source})
+                catalog.install_many(self.data, [entry], self.project, 'all', {'fixture': self.source})
             self.assert_project_empty()
         entry = dict(self.entry, replacements=[base], installed_sha256='0' * 64)
         with self.assertRaisesRegex(ValueError, 'installed hash'):
-            catalog.install_many(self.data, [entry], self.project, 'both', {'fixture': self.source})
+            catalog.install_many(self.data, [entry], self.project, 'all', {'fixture': self.source})
         self.assert_project_empty()
 
     def test_extra_directory_is_not_a_file_and_mapping_same_source_collision_fails(self):

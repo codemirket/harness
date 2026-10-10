@@ -1,0 +1,56 @@
+{
+  "invocation": {
+    "provider": "codex",
+    "case": "docs",
+    "argv": [
+      "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "-C",
+      "<scratch>/trials/codex/docs",
+      "-s",
+      "workspace-write",
+      "-c",
+      "approval_policy=\"never\"",
+      "-o",
+      "<scratch>/runs/codex/docs/final.md",
+      "Read TASK.md and complete the requested task yourself. Do not delegate."
+    ],
+    "cwd": "<scratch>/trials/codex/docs",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "trace": {
+    "models": [],
+    "tools": {
+      "shell": 5,
+      "openai-docs.search_openai_docs": 2,
+      "openai-docs.fetch_openai_doc": 1
+    },
+    "skill_calls": [],
+    "usage": {
+      "input_tokens": 219805,
+      "cached_input_tokens": 183552,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1078,
+      "reasoning_output_tokens": 345
+    },
+    "raw_stream_sha256": "863ebfe5cfc6f79465d1d34612d12308fb5477488a2672cbe05e1602bc78a0d5",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "artifacts": {
+    "final.md": "0860cc501c1979a2d8b49a09dd94f4eb127e2040e30f49cfc9478c146fe34fd4",
+    "tool-trace.jsonl": "cf4ae878793e87dee6f106bb03a5fa5f67b3f6fe27c4f2d811d6aebc7cd73977"
+  },
+  "native_result": {
+    "provider": "codex",
+    "case": "docs",
+    "status": "completed",
+    "exit_code": 0,
+    "seconds": 40.618
+  }
+}

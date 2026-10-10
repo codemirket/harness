@@ -1,0 +1,68 @@
+{
+  "currency": "EUR",
+  "periods": [
+    "2026-01",
+    "2026-02",
+    "2026-03"
+  ],
+  "opening_cash_cents": 6000000,
+  "minimum_reserve_cents": 1000000,
+  "transactions": [
+    {
+      "id": "invoice-jan",
+      "kind": "invoice",
+      "recognized_period": "2026-01",
+      "cash_period": "2026-02",
+      "amount_cents": 5000000
+    },
+    {
+      "id": "invoice-feb",
+      "kind": "invoice",
+      "recognized_period": "2026-02",
+      "cash_period": "2026-03",
+      "amount_cents": 5000000
+    },
+    {
+      "id": "invoice-mar",
+      "kind": "invoice",
+      "recognized_period": "2026-03",
+      "cash_period": "2026-04",
+      "amount_cents": 5000000
+    },
+    {
+      "id": "cost-jan",
+      "kind": "operating_cost",
+      "recognized_period": "2026-01",
+      "cash_period": "2026-01",
+      "amount_cents": 3000000
+    },
+    {
+      "id": "cost-feb",
+      "kind": "operating_cost",
+      "recognized_period": "2026-02",
+      "cash_period": "2026-02",
+      "amount_cents": 3000000
+    },
+    {
+      "id": "cost-mar",
+      "kind": "operating_cost",
+      "recognized_period": "2026-03",
+      "cash_period": "2026-03",
+      "amount_cents": 3000000
+    },
+    {
+      "id": "principal",
+      "kind": "financing_payment",
+      "recognized_period": null,
+      "cash_period": "2026-02",
+      "amount_cents": 7000000
+    },
+    {
+      "id": "invoice-jan",
+      "kind": "invoice",
+      "recognized_period": "2026-01",
+      "cash_period": "2026-02",
+      "amount_cents": 5000000
+    }
+  ]
+}

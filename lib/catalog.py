@@ -492,10 +492,38 @@ def executable_contract(value):
 
 
 def installed_executables(receipt):
-    # A legacy receipt cannot authorize existing execute bits: a new catalog
-    # declaration is not evidence of the old contract. Non-executable legacy
-    # copies can still update, including gaining newly declared helper files.
-    return executable_contract(receipt.get('executable_files', []))
+    return validate_receipt(receipt)['executable_files']
+
+
+def validate_receipt(receipt):
+    """Require complete saved provenance before a copy can authorize reconciliation."""
+    fields = {'id', 'repository', 'commit', 'path', 'sha256', 'installed_sha256',
+              'executable_files'}
+    if not isinstance(receipt, dict):
+        raise ValueError('Installed receipt must be an object')
+    missing = fields - set(receipt)
+    if missing:
+        raise ValueError('Installed receipt is missing the required ' + sorted(missing)[0] + ' contract')
+    for field in ('id', 'path'):
+        value = receipt[field]
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError('Invalid installed receipt ' + field)
+        safe_path(value)
+    repository = receipt['repository']
+    if (not isinstance(repository, str)
+            or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*', repository)):
+        raise ValueError('Invalid installed receipt repository')
+    commit = receipt['commit']
+    if commit is None:
+        if repository != 'codemirket/harness':
+            raise ValueError('Installed upstream receipt requires a pinned commit')
+    elif not isinstance(commit, str) or not re.fullmatch(r'(?:[a-f0-9]{40}|[a-f0-9]{64})', commit):
+        raise ValueError('Invalid installed receipt commit')
+    for field in ('sha256', 'installed_sha256'):
+        if not isinstance(receipt[field], str) or not re.fullmatch(r'[a-f0-9]{64}', receipt[field]):
+            raise ValueError('Invalid installed receipt ' + field)
+    executable_contract(receipt['executable_files'])
+    return receipt
 
 
 def executable_modes(target):
@@ -559,7 +587,8 @@ def check_destination(entry, project, agent):
         receipt = target / RECEIPT
         prior = json.loads(receipt.read_text(encoding='utf-8')) if receipt.is_file() and not is_link(receipt) else {}
         if (isinstance(prior, dict) and prior.get('id') == entry['id']
-                and payload_hash(existing_payload(target)) == entry.get('installed_sha256', entry['sha256'])):
+                and payload_hash(existing_payload(target)) == prior.get('installed_sha256')
+                == entry.get('installed_sha256', entry['sha256'])):
             prior_executables = installed_executables(prior)
             check_executable_modes(target, prior_executables)
             current_executables = executable_contract(entry.get('executable_files', []))
@@ -663,9 +692,9 @@ def install(data, entry, project, agent, source_tree=None, prepared=None):
     files, source = prepared if prepared is not None else prepare_payload(data, entry, source_tree)
     receipt = {'id': entry['id'], 'repository': source['repository'],
                'commit': source['commit'], 'path': entry['path'], 'sha256': entry['sha256'],
+               'installed_sha256': entry.get('installed_sha256', entry['sha256']),
                'executable_files': list(entry.get('executable_files', []))}
-    if 'installed_sha256' in entry:
-        receipt['installed_sha256'] = entry['installed_sha256']
+    validate_receipt(receipt)
     target_root = target.parent
     target_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='.skill-catalog-', dir=target_root) as staging:

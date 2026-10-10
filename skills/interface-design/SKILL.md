@@ -27,6 +27,11 @@ claims and customer evidence supplied or verified. If the direction is uncertain
 and costly to change, show a small coded specimen before extending it. Routine
 repairs do not need speculative alternatives or a permission ceremony.
 
+For a new screen, meaningful redesign or design QA, use
+[brief to proof](references/brief-to-proof.md) to connect the actual content,
+composition, state matrix and final inspection. Reuse the current task record;
+the reference does not require another planning document.
+
 ## Build a coherent result
 
 - Put the primary task first. Group related actions and demote supporting detail.

@@ -1,11 +1,9 @@
 """Install portable capabilities through explicit client adapters, without launching clients."""
 import argparse
-import copy
 import json
 import os
 from pathlib import Path
 import re
-import subprocess
 import sys
 import tempfile
 
@@ -75,16 +73,10 @@ def scalar(path, value):
 
 
 def configs_for(target, home, servers):
+    """Register integrations without taking ownership of host preferences."""
     adapter = targets.global_adapter(target, home)
-    desired = copy.deepcopy(adapter.get('settings', {}))
-    if not isinstance(desired, dict):
-        raise ValueError('Target settings must be an object')
-    mcp = mcp_config(target, servers)
-    if target == 'codex':
-        desired['mcp_servers'] = mcp
-    yield adapter['settings_destination'], adapter['settings_format'], desired
-    if target == 'claude':
-        yield '.claude.json', 'json', {'mcpServers': mcp}
+    key = 'mcp_servers' if target == 'codex' else 'mcpServers'
+    yield adapter['mcp_destination'], adapter['mcp_format'], {key: mcp_config(target, servers)}
 
 
 def check_transports(actual, desired, root):
@@ -140,23 +132,6 @@ def config_plan(home, relative, format_, desired):
             'content': merged.encode('utf-8'), 'keys': keys, 'changed': before != merged.encode('utf-8')}
 
 
-def running_clients(selected):
-    try:
-        if os.name == 'nt':
-            import csv
-            import io
-            result = subprocess.run(['tasklist', '/FO', 'CSV', '/NH'], capture_output=True, text=True, timeout=10, check=True)
-            names = {row[0].lower() for row in csv.reader(io.StringIO(result.stdout)) if row}
-        else:
-            result = subprocess.run(['ps', '-A', '-o', 'comm='], capture_output=True, text=True, timeout=10, check=True)
-            names = {Path(row.strip()).name.lower() for row in result.stdout.splitlines()}
-    except (OSError, subprocess.SubprocessError):
-        raise ValueError('Cannot verify that target clients are closed') from None
-    matches = {'codex': {'codex', 'codex.exe', 'chatgpt', 'chatgpt.exe'},
-               'claude': {'claude', 'claude.exe'}}
-    return [target for target in selected if names & matches[target]]
-
-
 def prepare(target='all', home=None, mode='auto'):
     selected = targets.names(target)
     targets.validate_home_environment(home, selected)
@@ -166,28 +141,25 @@ def prepare(target='all', home=None, mode='auto'):
     for name in selected:
         for relative, format_, desired in configs_for(name, base, sources):
             configs.append(config_plan(base, relative, format_, desired))
-    changed_targets = [name for name in selected if any(job['changed'] for job in configs
-                       if job['relative'] in [spec[0] for spec in configs_for(name, base, sources)])]
-    isolated = home is not None and base != Path.home().resolve()
-    running = running_clients(changed_targets) if changed_targets and not isolated else []
     public = {'targets': selected, 'status': 'planned', 'ready': False,
-              'guidance': harness.public_jobs(jobs),
+              'guidance': harness.public_jobs(jobs), 'guidance_completed': False,
               'configuration': [{'path': str(job['path']), 'changed': job['changed'], 'keys': job['keys']} for job in configs],
               'mcp_servers': list(sources), 'blockers': [],
               'limits': ['Checks verify files and declared values, not client discovery, model access or MCP connectivity.',
-                         'Instructions guide behavior. Client settings remain user-editable; existing tool-specific rules and project/managed policies may override defaults.',
+                         'Host model, approval, sandbox and appearance preferences remain unchanged. Start a fresh client session to load new guidance and integrations.',
                          'Removed selections are preserved. Review obsolete installed skills and MCP entries deliberately.']}
     public['changes_pending'] = any(job['action'] != 'unchanged' for job in jobs) or any(job['changed'] for job in configs)
-    if running:
-        public['blockers'].append('Close clients before changing their configuration: ' + ', '.join(running))
     public['ready'] = not public['changes_pending'] and not public['blockers']
     return base, configs, public
 
 
 def write_config(base, job):
     path = harness.guarded_path(base, job['relative'])
-    if catalog.is_link(path) or (path.read_bytes() if path.exists() else None) != job['before']:
-        raise ValueError('Configuration changed after preflight: ' + str(path))
+    def unchanged():
+        current = harness.guarded_path(base, job['relative'])
+        if catalog.is_link(current) or (current.read_bytes() if current.exists() else None) != job['before']:
+            raise ValueError('Configuration changed after preflight: ' + str(current))
+    unchanged()
     if not job['changed']:
         return None
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -197,10 +169,8 @@ def write_config(base, job):
             os.chmod(stream.name, 0o600)
             stream.write(job['before'])
             backup = stream.name
-    # Recheck after backup creation; an app/editor may have written meanwhile.
-    if catalog.is_link(path) or (path.read_bytes() if path.exists() else None) != job['before']:
-        raise ValueError('Configuration changed during backup: ' + str(path))
-    settings._atomic_write(path, job['content'], 0o600)
+    # Validate parents and bytes after backup and after staging, before publication.
+    settings._atomic_write(path, job['content'], 0o600, validate=unchanged)
     return backup
 
 
@@ -216,11 +186,8 @@ def run(command='install', target='all', home=None, mode='auto', dry_run=False):
             if catalog.is_link(path) or (path.read_bytes() if path.exists() else None) != job['before']:
                 raise ValueError('Configuration changed after preflight: ' + str(path))
         report['guidance'] = harness.sync_global(target, base, mode)
+        report['guidance_completed'] = True
         for job in configs:
-            if job['changed'] and base == Path.home().resolve():
-                running = running_clients(targets.names(target))
-                if running:
-                    raise ValueError('Client started after preflight; configuration deferred: ' + ', '.join(running))
             backup = write_config(base, job)
             if backup:
                 report['backups'].append(backup)

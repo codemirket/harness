@@ -1,6 +1,10 @@
 # Verification evidence
 
-Current multi-target installation evidence is recorded in [the target migration](work/target-migration.md). Dated Codex-first records below remain historical and do not describe the new default installer.
+Current installation, native skill activation and initial-release checks are recorded
+in the [2026-10-10 release verification](research/initial-release-2026-10-10/README.md).
+The [earlier target migration](work/target-migration.md) and dated records below are
+historical evidence for their recorded source bytes. They do not describe the
+current installer, target names or settings ownership.
 
 The 2026-10-08 independent-review revisions pass **471 tests in 35.759 seconds**.
 Fresh scratch registration verifies 30 default-plus-specialist and 24 portable

@@ -247,7 +247,7 @@
       "name": "skill-catalog",
       "scope": "global",
       "category": "catalog",
-      "description": "Route substantive tasks to reviewed skills and register project capabilities. Use at setup or when design, illustration, motion, backend, databases, DevOps, QA, marketing, product decisions, data analysis, documentation or research needs specialist guidance.",
+      "description": "Select and read the specialist workflow before substantive engineering, design, research, business, finance, translation or document work. Covers cash-flow and budget analysis, localization, product and marketing decisions, data and spreadsheets, software and operations. Use for capability discovery and project registration; skip trivial edits, single-sentence translations and unchanged selections already read for the current task.",
       "delivery": "global-link",
       "path": "skills/skill-catalog",
       "informed_by": [
@@ -5675,7 +5675,21 @@
       "url": "https://github.com/Leonxlnx/taste-skill/blob/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b/skills/redesign-skill/SKILL.md",
       "selection_reason": "Distinct useful visual profile or redesign checklist when selected for a fitting project.",
       "sha256": "1bcbdaa70d3bdd0cb98e3b4147d16f2895c1a14e525ae828fd067b4d5e304ad0",
-      "installed_sha256": "109c92f38a2a2ae7f8cf0d2a9c146ee2948ab9d308255ad1c011f4985bfbb2f7"
+      "installed_sha256": "1e09c4349ad099a03e29a6f3b6dcd2ce614f7fcf27adfa91e952edc52aab7ca4",
+      "replacements": [
+        {
+          "path": "SKILL.md",
+          "old": "- **Fake round numbers like `99.99%`, `50%`, `$100.00`.** Use organic, messy data: `47.2%`, `$99.00`, `+1 (312) 847-1928`.",
+          "new": "- **Unverified statistics, prices, and contacts.** Preserve supplied or verified values. Use fictional figures only for explicitly illustrative fixtures and label them visibly as sample data; never add precision to make invented claims look real.",
+          "count": 1
+        },
+        {
+          "path": "SKILL.md",
+          "old": "- **All blog post dates identical.** Randomize dates to appear real.",
+          "new": "- **Publication dates.** Preserve verified dates. If a date is unknown or a placeholder, label it as unknown or sample content; never randomize dates to imply a publication history.",
+          "count": 1
+        }
+      ]
     },
     {
       "name": "design-taste-frontend",
@@ -15094,6 +15108,271 @@
         "capacity"
       ],
       "sha256": "8540bb14e1454ac1550da9effb425a7dd0f3b3057769707c0f8d04c4c8e1d789"
+    },
+    {
+      "id": "financial-analysis",
+      "name": "financial-analysis",
+      "scope": "project",
+      "category": "planning",
+      "description": "Build or review business budgets, forecasts, cash runway, unit economics and financial decision models. Use for CFO work and financial feasibility; use a spreadsheet capability as well when editing a workbook. This is not a securities recommendation or a substitute for jurisdiction-specific accounting or tax review.",
+      "delivery": "local",
+      "path": "skills/financial-analysis",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "finance",
+        "cfo",
+        "cash",
+        "forecast",
+        "runway",
+        "unit-economics"
+      ],
+      "sha256": "a84d7e701e358763e90f9eb800502ff86875196fe626347fb679ae88209f3ee0"
+    },
+    {
+      "id": "market-analysis",
+      "name": "market-analysis",
+      "scope": "project",
+      "category": "research",
+      "description": "Research market size, customer segments, competitors, demand and routes to market for a business decision. Use for market analyst work and evidence-based TAM, SAM and SOM estimates. Use marketing-writing for copy alone and financial-analysis for the operating forecast.",
+      "delivery": "local",
+      "path": "skills/market-analysis",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "market",
+        "tam",
+        "sam",
+        "som",
+        "competitor",
+        "demand"
+      ],
+      "sha256": "9a5941b411d5c1315dcc6aa7112ee0663ef46fd7c1948c54cd679b604eee390c"
+    },
+    {
+      "id": "venture-validation",
+      "name": "venture-validation",
+      "scope": "project",
+      "category": "planning",
+      "description": "Evaluate a business idea, venture or new offer through customer evidence, business model assumptions and bounded experiments. Use for entrepreneur and founder decisions about what to test, build or stop. This does not authorize spending, outreach, incorporation or investment transactions.",
+      "delivery": "local",
+      "path": "skills/venture-validation",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "entrepreneur",
+        "founder",
+        "venture",
+        "pilot",
+        "validation"
+      ],
+      "sha256": "bba7f4e485cea3930622fb0aea7bca56cb819742630ea6fad08e1da5b4a05317"
+    },
+    {
+      "id": "localization",
+      "name": "localization",
+      "scope": "project",
+      "category": "documents",
+      "description": "Translate and localize prose, product interfaces and structured message files while preserving meaning, register, terminology and runtime tokens. Use for substantial multilingual work and translation QA. Handle a simple sentence directly without adding a localization project workflow.",
+      "delivery": "local",
+      "path": "skills/localization",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "translation",
+        "locale",
+        "translator",
+        "icu",
+        "language"
+      ],
+      "sha256": "ccbc7d8065237c7a1ffdeb86582cb4a0d8978c7935f604037b7a125c6f9c1d79"
+    },
+    {
+      "id": "spreadsheet-analysis",
+      "name": "spreadsheet-analysis",
+      "scope": "project",
+      "category": "documents",
+      "description": "Analyze, audit and build spreadsheet models with traceable inputs, preserved workbook features, verified formulas and reconciled business results. Use for Excel expert work, spreadsheet QA and analytical XLSX or CSV deliverables; choose the host's live Excel capability for an active workbook session.",
+      "delivery": "local",
+      "path": "skills/spreadsheet-analysis",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "excel",
+        "spreadsheet",
+        "formulas",
+        "recalculation",
+        "workbook"
+      ],
+      "sha256": "a7d7634366853fb6fc52400975865054b79f3f6a063836f8137e064554880f00"
+    },
+    {
+      "id": "graphic-design",
+      "name": "graphic-design",
+      "scope": "project",
+      "category": "design",
+      "description": "Create and refine visual identities, illustrations, posters, campaign graphics, diagrams and coherent asset families. Use for graphic composition, typography, visual storytelling and production exports for screen or print. Pair with interface-design for working UI and the available native document or media skill for its file format.",
+      "delivery": "local",
+      "path": "skills/graphic-design",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "graphic",
+        "illustration",
+        "composition",
+        "typography",
+        "print",
+        "assets"
+      ],
+      "sha256": "7915a071ddd00fccc89b03403d44040b7ad5748813f2418cba3485d88707657f"
+    },
+    {
+      "id": "technical-leadership",
+      "name": "technical-leadership",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Evaluate technology investment and lead changes spanning teams or components. Use for CTO-level build/buy, platform and migration choices, or senior engineering lead work on interfaces, sequencing, delegation and integration. Use architecture-review for a bounded code-structure question.",
+      "delivery": "local",
+      "path": "skills/technical-leadership",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "cto",
+        "team-lead",
+        "architecture",
+        "capacity",
+        "integration"
+      ],
+      "sha256": "603aed8a757299c501d216c4aa1877096052e33f9ac1f4289046cfd10715e309"
+    },
+    {
+      "id": "mobile-engineering",
+      "name": "mobile-engineering",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Implement, debug or review native and shared-framework mobile apps across lifecycle, navigation, offline state, permissions and platform builds. Use for iOS, Android, React Native or Flutter engineering; use mobile-design for journey/layout decisions and frontend-engineering for ordinary mobile web.",
+      "delivery": "local",
+      "path": "skills/mobile-engineering",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "mobile",
+        "ios",
+        "android",
+        "offline",
+        "lifecycle"
+      ],
+      "sha256": "b8fac3bb40519806fb0b30a035e57b47507b730602465c9d37399ad798b9ec7b"
+    },
+    {
+      "id": "it-operations",
+      "name": "it-operations",
+      "scope": "project",
+      "category": "engineering",
+      "description": "Diagnose workstation, operating-system, network, DNS/TLS, access and storage problems for a specific user or service. Use for IT troubleshooting and reversible repairs; use infrastructure-engineering for desired infrastructure configuration and systems-engineering for service topology/capacity design.",
+      "delivery": "local",
+      "path": "skills/it-operations",
+      "license_files": [],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "dependencies": [
+        "Use available host or project tools; registration installs no runtime, account or dependencies."
+      ],
+      "caveats": [
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+      ],
+      "coverage": "Original portable workflow with decision boundaries, a worked reference and observable acceptance.",
+      "tags": [
+        "it",
+        "network",
+        "dns",
+        "tls",
+        "workstation",
+        "access"
+      ],
+      "sha256": "787ecc118edc35a27d065ee08bcd594f7dfffb196d0ae715e4c68f58c0bf50d0"
     }
   ],
   "profiles": {

@@ -1,11 +1,12 @@
 """Read-only primary runtime discovery; no installation, login or model inference.
 
-Official contracts reviewed 2026-10-06:
+Official CLI/Codex contracts reviewed 2026-10-06; Claude desktop 2026-10-10:
 https://learn.chatgpt.com/docs/codex/cli
 https://learn.chatgpt.com/docs/windows/windows-app
 https://learn.chatgpt.com/docs/linux/linux-app
 https://code.claude.com/docs/en/setup
 https://code.claude.com/docs/en/cli-reference
+https://code.claude.com/docs/en/desktop
 """
 import argparse
 import hashlib
@@ -30,7 +31,8 @@ import urllib.request
 MAX_OUTPUT = 64 * 1024
 MAX_METADATA = 1024 * 1024
 VERSION = r'(\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?)'
-MAC_IDENTITIES = {'com.openai.codex'}
+MAC_IDENTITIES = {'codex': 'com.openai.codex', 'claude': 'com.anthropic.claudefordesktop'}
+MAC_APPS = {'codex': ('ChatGPT.app', 'Codex.app'), 'claude': ('Claude.app',)}
 BUNDLED_CODEX = ('Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex',
                  'Contents/Resources/codex-cli/bin/codex', 'Contents/Resources/codex')
 WINDOWS_PACKAGES = ("$ErrorActionPreference='Stop'; "
@@ -253,28 +255,45 @@ def windows_packages(env, timeout):
     return valid, 'ok'
 
 
-def diagnose_desktop(*, home, env, platform, explicit=None, timeout=5):
+def diagnose_desktop(client, *, home, env, platform, explicit=None, timeout=5):
+    if client not in MAC_IDENTITIES:
+        raise ValueError('Unsupported desktop client: ' + str(client))
     record = {'present': False, 'selected_path': None, 'version': None, 'identity': None,
               'identity_verified': False, 'can_execute': None, 'launch_verified': False,
               'probe_status': 'not_found', 'auth': {'state': 'not_checked'},
-              'support': 'preview' if platform == 'linux' else 'available' if platform in ('macos', 'windows') else 'unknown'}
+              'support': ('preview' if client == 'codex' else 'beta') if platform == 'linux'
+                         else 'available' if platform in ('macos', 'windows') else 'unknown'}
     if platform == 'macos':
-        choices = [Path(explicit).expanduser()] if explicit else [Path('/Applications/ChatGPT.app'),
-                  Path('/Applications/Codex.app'), home / 'Applications/ChatGPT.app', home / 'Applications/Codex.app']
+        choices = [Path(explicit).expanduser()] if explicit else [
+            base / name for base in (Path('/Applications'), home / 'Applications') for name in MAC_APPS[client]]
         for app in choices:
             if not app.exists(): continue
             record.update(present=True, selected_path=str(app), probe_status='unrecognized_app')
             metadata = read_metadata(app / 'Contents/Info.plist', plistlib.loads)
-            if not metadata or metadata.get('CFBundleIdentifier') not in MAC_IDENTITIES: continue
+            if not metadata or metadata.get('CFBundleIdentifier') != MAC_IDENTITIES[client]: continue
             record.update(identity=metadata['CFBundleIdentifier'], identity_verified=True,
                           version=str(metadata.get('CFBundleShortVersionString', '')) or None,
                           probe_status='metadata_only')
             binary = metadata.get('CFBundleExecutable')
-            if isinstance(binary, str) and Path(binary).name == binary:
+            if isinstance(binary, str) and binary not in ('.', '..') and Path(binary).name == binary:
                 executable = app / 'Contents/MacOS' / binary
                 record['executable_present'] = executable.is_file()
                 record['executable_accessible'] = executable.is_file() and os.access(executable, os.X_OK)
             return record
+    elif client == 'claude' and platform in ('windows', 'linux'):
+        # Discovery locations and executable identity need native verification.
+        # An explicitly supplied file is presence evidence, never app readiness.
+        record['probe_status'] = 'discovery_unverified'
+        if explicit:
+            path = Path(explicit).expanduser()
+            record['probe_status'] = 'not_found'
+            if path.is_file():
+                record.update(present=True, selected_path=str(path), executable_present=True,
+                              executable_accessible=os.access(path, os.R_OK if platform == 'windows' else os.X_OK),
+                              probe_status='presence_only')
+        if platform != platform_name():
+            record['probe_status'] = 'not_native_platform'
+        return record
     elif platform == 'windows':
         local = Path(env.get('LOCALAPPDATA', str(home / 'AppData/Local')))
         choices = [Path(explicit).expanduser()] if explicit else [
@@ -302,6 +321,8 @@ def diagnose_desktop(*, home, env, platform, explicit=None, timeout=5):
                         record.update(identity=value['ProductName'], identity_verified=True,
                                       version=value.get('FileVersion'), probe_status='metadata_only')
             return record
+        if explicit:
+            return record
         packages, status = windows_packages(env, timeout)
         record['package_query_status'] = status
         for package in packages:
@@ -320,10 +341,12 @@ def diagnose_desktop(*, home, env, platform, explicit=None, timeout=5):
         if path.is_file():
             record.update(present=True, selected_path=str(path), probe_status='presence_only',
                           executable_present=os.access(path, os.X_OK))
+    else:
+        record['probe_status'] = 'unsupported_platform'
     return record
 
 
-def diagnose(*, home=None, codex=None, claude=None, desktop=None, check_auth=False,
+def diagnose(*, home=None, codex=None, claude=None, codex_desktop=None, claude_desktop=None, check_auth=False,
              timeout=5, platform=None, env=None):
     if not isinstance(timeout, (int, float)) or not 0 < timeout <= 15:
         raise ValueError('Probe timeout must be greater than zero and at most 15 seconds')
@@ -331,14 +354,18 @@ def diagnose(*, home=None, codex=None, claude=None, desktop=None, check_auth=Fal
     platform = platform_name(platform)
     home = Path(home).expanduser().resolve() if home else Path.home()
     if not home.is_dir(): raise ValueError('Discovery home must be an existing directory')
-    app = diagnose_desktop(home=home, env=env, platform=platform, explicit=desktop, timeout=timeout)
-    desktop_path = Path(app['selected_path']) if app['identity_verified'] else None
+    apps = {name + '_desktop': diagnose_desktop(name, home=home, env=env, platform=platform,
+            explicit=explicit, timeout=timeout) for name, explicit in
+            (('codex', codex_desktop), ('claude', claude_desktop))}
+    codex_app = apps['codex_desktop']
+    desktop_path = Path(codex_app['selected_path']) if codex_app['identity_verified'] else None
     # --home controls discovery only, never silently changes which user's auth is checked.
     auth_allowed = check_auth and home.resolve() == Path.home().resolve()
-    runtimes = {'desktop': app}
+    runtimes = dict(apps)
     for name, explicit in (('codex', codex), ('claude', claude)):
         runtimes[name] = diagnose_cli(name, home=home, env=env, platform=platform, explicit=explicit,
-                                      desktop_path=desktop_path, check_auth=auth_allowed, timeout=timeout)
+                                      desktop_path=desktop_path if name == 'codex' else None,
+                                      check_auth=auth_allowed, timeout=timeout)
         if check_auth and not auth_allowed:
             runtimes[name]['auth'] = {'state': 'not_checked', 'reason': 'discovery_home_override'}
     guidance = {
@@ -347,16 +374,22 @@ def diagnose(*, home=None, codex=None, claude=None, desktop=None, check_auth=Fal
         'claude': {'url': 'https://code.claude.com/docs/en/setup',
                    'install': 'winget install Anthropic.ClaudeCode' if platform == 'windows' else 'Review the official native installer or package-manager instructions.',
                    'login': 'claude auth login'},
-        'desktop': {'url': ('https://learn.chatgpt.com/docs/linux/linux-app' if platform == 'linux' else
+        'codex_desktop': {'url': ('https://learn.chatgpt.com/docs/linux/linux-app' if platform == 'linux' else
                            'https://learn.chatgpt.com/docs/windows/windows-app' if platform == 'windows' else
-                           'https://chatgpt.com/download'), 'install': 'Download the official desktop application for your OS.'}}
+                           'https://chatgpt.com/download'), 'install': 'Download the official Codex desktop application for your OS.'},
+        'claude_desktop': {'url': 'https://code.claude.com/docs/en/desktop',
+                           'install': 'Download the official Claude desktop application for your OS.'}}
     for name, record in runtimes.items():
         record['ready'] = (bool(record['present'] and record.get('executable_accessible')
                               and record['identity_verified'] and platform == platform_name())
-                           if name == 'desktop' else bool(record['version'] and record['can_execute']
+                           if name.endswith('_desktop') else bool(record['version'] and record['can_execute']
                                                           and record['probe_status'] == 'ok'))
-        if not record['present']: record['next_step'] = guidance[name]['install']
-        elif name != 'desktop' and not record.get('selected_on_path'):
+        if record['probe_status'] == 'unsupported_platform':
+            record['next_step'] = 'Desktop discovery is unsupported on this platform; verify official runtime support.'
+        elif record['probe_status'] == 'discovery_unverified':
+            record['next_step'] = 'Desktop discovery on this platform is unverified; inspect the installed app and supply its explicit path.'
+        elif not record['present']: record['next_step'] = guidance[name]['install']
+        elif not name.endswith('_desktop') and not record.get('selected_on_path'):
             record['next_step'] = 'Use the discovered absolute path, or add its directory to PATH in your shell configuration.'
         elif record['probe_status'] not in ('ok', 'metadata_only', 'package_metadata_only'):
             record['next_step'] = 'Review the probe status and verify this runtime using the official setup documentation.'
@@ -366,10 +399,11 @@ def diagnose(*, home=None, codex=None, claude=None, desktop=None, check_auth=Fal
             'ready': all(record['ready'] for record in runtimes.values()),
             'authentication_attention': [name for name in ('codex', 'claude')
                 if check_auth and runtimes[name]['auth']['state'] != 'authenticated'],
-            'limits': ['Desktop apps are not launched; metadata is not signature or login validation.',
-                       'No auth files are read. Auth status checks are optional and do not establish model/service access.',
+            'limits': ['Both desktop applications and both CLIs are reported independently; CLI authentication does not prove desktop activation.',
+                       'Desktop apps are not launched; metadata is not signature or login validation.',
+                       'No auth files are read. Auth status checks are optional and do not establish model/service access, quota or entitlement.',
                        'Discovery covers PATH and bounded known locations; an undiscovered custom installation may still exist.',
-                       'Linux desktop is an official preview; feature support differs from macOS/Windows.']}
+                       'Codex Linux desktop is preview; Claude Linux desktop is beta. Claude desktop identity/discovery outside macOS remains unverified by this diagnostic.']}
 
 
 def diagnose_tool(name, env, timeout, *, cwd=None):
@@ -572,7 +606,8 @@ def main(argv=None):
     doctor = commands.add_parser('doctor', help='Discover runtimes without installing or signing in')
     doctor.add_argument('--json', action='store_true')
     doctor.add_argument('--home', type=Path)
-    for name in ('codex', 'claude', 'desktop'): doctor.add_argument('--' + name, type=Path)
+    for name in ('codex', 'claude', 'codex-desktop', 'claude-desktop'):
+        doctor.add_argument('--' + name, type=Path)
     doctor.add_argument('--check-auth', action='store_true')
     doctor.add_argument('--project', type=Path,
                         help='Inspect project prerequisites without running scripts; use requested project checks for readiness')
@@ -585,12 +620,12 @@ def main(argv=None):
     project_report = diagnose_project(args.project, url=args.url, browser=args.browser,
                                      screenshot=args.screenshot) if args.project else None
     report = diagnose(home=args.home, codex=args.codex, claude=args.claude,
-                      desktop=args.desktop, check_auth=args.check_auth)
+                      codex_desktop=args.codex_desktop, claude_desktop=args.claude_desktop,
+                      check_auth=args.check_auth)
     if project_report is not None:
         report['project'] = project_report
         # A project check does not require every supported client to be installed.
-        # Keep their aggregate and individual findings without changing diagnose(),
-        # whose all-client readiness is also consumed by complete installation.
+        # Keep aggregate and individual client findings separate from project checks.
         report['clients_ready'] = report['ready']
         report['ready'] = project_report['requested_checks_passed']
     if args.json:

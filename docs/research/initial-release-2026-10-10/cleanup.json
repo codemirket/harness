@@ -1,0 +1,316 @@
+{
+  "managed_archive_request": "queued; no completion observed",
+  "task_worktree_removed_with_git_after_full_byte_and_mode_comparison": true,
+  "original_nonignored_files_preserved": 457,
+  "unrelated_visual_acceptance_worktree_preserved": true,
+  "scratch_top_level_items": [
+    "Claude.zip",
+    "applied-before-final-integration.json",
+    "applied.json",
+    "baseline.json",
+    "claude-discovery-answer.txt",
+    "claude-discovery.log",
+    "claude-package",
+    "desktop-routed-workspace.json",
+    "documentation-integration.json",
+    "final-integration.json",
+    "finance-final-tests.log",
+    "home-copy",
+    "home-link",
+    "install-plan.json",
+    "installation-final.json",
+    "installation.json",
+    "isolated-installation.json",
+    "latest",
+    "markdown-checks-resolved.json",
+    "markdown-checks.json",
+    "markdown-final-review-0",
+    "markdown-final-review-1",
+    "markdown-final-review-2",
+    "markdown-final-review-3",
+    "markdown-resolved-0",
+    "markdown-resolved-1",
+    "markdown-resolved-10",
+    "markdown-resolved-2",
+    "markdown-resolved-3",
+    "markdown-resolved-4",
+    "markdown-resolved-5",
+    "markdown-resolved-6",
+    "markdown-resolved-7",
+    "markdown-resolved-8",
+    "markdown-resolved-9",
+    "preference-preservation.json",
+    "project-release",
+    "report-preview",
+    "retain_evidence.py",
+    "retain_supplement.py",
+    "review-routed.md",
+    "review.md",
+    "routing-fix.json",
+    "run_trial.py",
+    "runs",
+    "runtime-final.json",
+    "schedule-final.json",
+    "schedule-observation.json",
+    "tests-final-worktree.log",
+    "tests-final.log",
+    "tests-integration.log",
+    "tests-release.log",
+    "trials",
+    "worktree-cleanup.json"
+  ],
+  "scratch_removed": true,
+  "native_client_history": "Completed Claude Desktop session history remains owned by the client; it was not purged as scratch. The repository retains redacted traces and independent artifacts.",
+  "removed_ephemeral_claude_project_directories": [
+    "-private-var-folders-rk-rdby38mj0l30jyvbk965q2lc0000gn-T-harness-initial-release-ctt4c72g-trials-claude-finance-repair",
+    "-private-var-folders-rk-rdby38mj0l30jyvbk965q2lc0000gn-T-harness-initial-release-ctt4c72g-trials-claude-finance",
+    "-private-var-folders-rk-rdby38mj0l30jyvbk965q2lc0000gn-T-harness-initial-release-ctt4c72g-trials-claude-finance-routed",
+    "-private-var-folders-rk-rdby38mj0l30jyvbk965q2lc0000gn-T-harness-initial-release-ctt4c72g-trials-claude-trivial",
+    "-private-var-folders-rk-rdby38mj0l30jyvbk965q2lc0000gn-T-harness-initial-release-ctt4c72g-trials-claude-docs"
+  ],
+  "private_config_backup_removed_after_preservation_check": true,
+  "temporary_documents_picker_directory_removed": true,
+  "retired_generated_builds": {
+    "review": "Independent read-only inspection found no active references in parsed Codex/Claude configuration, Claude marketplace registrations, harness state/toolchain files or installed skill/plugin symlinks.",
+    "removed": [
+      {
+        "path": "build/capability-marketplace",
+        "files": 307,
+        "bytes": 7056633,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/capability-marketplace/build-lock.json",
+            "sha256": "c1d78c90dc784c9a7f7afb88ac1c5d8bec301cd12a9358f576349d5c0db1ee76"
+          }
+        ]
+      },
+      {
+        "path": "build/capability-marketplace-final",
+        "files": 307,
+        "bytes": 7057184,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/capability-marketplace-final/build-lock.json",
+            "sha256": "6c5a8e6df8148f0715b64871b998322b9eb4fb88b7a233ea6a2780ffd354ad06"
+          }
+        ]
+      },
+      {
+        "path": "build/personal-marketplace",
+        "files": 506,
+        "bytes": 8094127,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/personal-marketplace/build-lock.json",
+            "sha256": "e5a628c279429d5658a99eaca192ac86592512cdbde8c6bc863b5c0f57268aed"
+          }
+        ]
+      },
+      {
+        "path": "build/personal-marketplace-v2",
+        "files": 511,
+        "bytes": 8269827,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/personal-marketplace-v2/build-lock.json",
+            "sha256": "462a938288d526f11756405e4cbf78896bdfe7f89bcdffc38e53d6f1cb63221e"
+          }
+        ]
+      },
+      {
+        "path": "build/personal-marketplace-v2-before-scheduling",
+        "files": 508,
+        "bytes": 8204245,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/personal-marketplace-v2-before-scheduling/build-lock.json",
+            "sha256": "2700a9d7b509cec451417882fb73e0ae4c6ad85234979e1430aef1a6389aa84e"
+          }
+        ]
+      },
+      {
+        "path": "build/personal-workbench-ready",
+        "files": 269,
+        "bytes": 6602038,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/personal-workbench-ready/build-lock.json",
+            "sha256": "9fff69939467dfab75400f78d97142a83dd68e2ca8037de0c815533f1b1bb86a"
+          }
+        ]
+      },
+      {
+        "path": "build/personal-workbench-v3.1",
+        "files": 269,
+        "bytes": 6601825,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/personal-workbench-v3.1/build-lock.json",
+            "sha256": "b9dec6dd2096fadc61dda0d0651f4969b0a82890cfe51db6e06a5a3160be4ad1"
+          }
+        ]
+      },
+      {
+        "path": "build/public-plugin-check",
+        "files": 273,
+        "bytes": 6798587,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/public-plugin-check/build-lock.json",
+            "sha256": "a555035a2eb1ea97261f95b36f3e7e5312331026083a767e63c56bcfafd09ee2"
+          }
+        ]
+      },
+      {
+        "path": "build/quality-harness-foundation-20261007",
+        "files": 168,
+        "bytes": 5584422,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/quality-harness-foundation-20261007/build-lock.json",
+            "sha256": "5f28aef787d168e370437676821962294d42aaa5dbf6468e247f3ad37af340ac"
+          }
+        ]
+      },
+      {
+        "path": "build/motion-export-final",
+        "files": 17,
+        "bytes": 102582,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/motion-export-final/build-lock.json",
+            "sha256": "7505412cc2e3b5de98012fa2c1408a0f1b8409a8464631f0a8d83463ef6e05be"
+          }
+        ]
+      },
+      {
+        "path": "build/motion-export-reviewed",
+        "files": 17,
+        "bytes": 103028,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/motion-export-reviewed/build-lock.json",
+            "sha256": "c1904314faf34a1e202acc04e6a18f260575bed1b445ed2340195a0acc0fbc99"
+          }
+        ]
+      },
+      {
+        "path": "build/svg-export-final",
+        "files": 10,
+        "bytes": 39470,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/svg-export-final/build-lock.json",
+            "sha256": "fcf9a112ef03628fcec5013fb27b26a946f3d94e83f2777b855a27c822d86695"
+          }
+        ]
+      },
+      {
+        "path": "build/svg-export-test",
+        "files": 10,
+        "bytes": 37823,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/svg-export-test/build-lock.json",
+            "sha256": "05b4d9a2cc188f38e83d7e21da74019a3cca61a58e30e3e9b67029e70ac6d754"
+          }
+        ]
+      },
+      {
+        "path": "build/agent-runtime-review/foundation-export",
+        "files": 223,
+        "bytes": 6082169,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/agent-runtime-review/foundation-export/build-lock.json",
+            "sha256": "90793e795d8d93652e654d857268eddca2defafdd6fde3317c3a98bff779c504"
+          }
+        ]
+      },
+      {
+        "path": "build/dual-independent-review/foundation-export",
+        "files": 223,
+        "bytes": 6084030,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/dual-independent-review/foundation-export/build-lock.json",
+            "sha256": "265e6d8379250b456fd17a14eaae795b65627146c083f60a25951a248ba49167"
+          }
+        ]
+      },
+      {
+        "path": "build/dual-independent-review/foundation-final-export",
+        "files": 222,
+        "bytes": 6093158,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/dual-independent-review/foundation-final-export/build-lock.json",
+            "sha256": "cda3f632a78bdae974b040ac61e092a30f3befb55dd6cdc4b35ddd0ee39d3f78"
+          }
+        ]
+      },
+      {
+        "path": "build/dual-independent-review/foundation-r3-export",
+        "files": 222,
+        "bytes": 6098827,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/dual-independent-review/foundation-r3-export/build-lock.json",
+            "sha256": "f1b2165faf1b5c8f995e968b66ff9038be0f2c0452c9d484a33f41c60bb12da5"
+          }
+        ]
+      },
+      {
+        "path": "build/dual-independent-review/foundation-r4-export",
+        "files": 223,
+        "bytes": 6153899,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/dual-independent-review/foundation-r4-export/build-lock.json",
+            "sha256": "bc3c8e93ea5069016c07db99c9fecd0fdd195ad48d8f94734b41b445460e52ac"
+          }
+        ]
+      },
+      {
+        "path": "build/harness-review/export-local",
+        "files": 37,
+        "bytes": 231620,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/harness-review/export-local/build-lock.json",
+            "sha256": "cdb0e4d3a0e009d9acecf6cb1b997be6a68a51618ca0d5dbb0f95ff0d8198fa3"
+          }
+        ]
+      },
+      {
+        "path": "build/harness-source-review/final-export",
+        "files": 310,
+        "bytes": 7085651,
+        "receipts": [
+          {
+            "file": "retired-build-receipts/harness-source-review/final-export/build-lock.json",
+            "sha256": "a9bbb25e3ed692d9d45da9e5660dc711151e371eb5527823c33b51fba8149997"
+          }
+        ]
+      },
+      {
+        "path": "build/motion-install-test",
+        "files": 112,
+        "bytes": 548261,
+        "receipts": []
+      },
+      {
+        "path": "build/svg-install-test",
+        "files": 92,
+        "bytes": 428531,
+        "receipts": []
+      }
+    ],
+    "preserved": "Historical reports, screenshots, office artifacts, source review material, frozen independent review inputs and visual-acceptance work remain. The entire build directory was not deleted."
+  },
+  "removed_generated_python_caches": [
+    "lib/__pycache__",
+    "tests/__pycache__",
+    "skills/skill-catalog/scripts/__pycache__"
+  ]
+}

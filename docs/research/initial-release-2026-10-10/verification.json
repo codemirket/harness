@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-10",
+  "harness_fingerprint": "83c78e8475558f2bf7e2abfc021d2ceed420b6bf71df18f9f60c2e678117a856",
+  "full_suite": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests"
+    ],
+    "cwd": "<harness>",
+    "tests": 593,
+    "seconds": 55.337,
+    "skips": 0,
+    "exit_code": 0,
+    "log": "tests.log"
+  },
+  "final_source_gates": [
+    {
+      "command": [
+        "python3",
+        "ai.py",
+        "context",
+        "doctor",
+        "--project",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"schema_version\": 1,\n  \"project\": \"<harness>\",\n  \"cwd\": \"<harness>\",\n  \"max_bytes\": 32768,\n  \"fallback_names\": [],\n  \"selected_bytes\": 2854,\n  \"included_bytes\": 2854,\n  \"files\": [\n    {\n      \"path\": \"<harness>/AGENTS.md\",\n      \"status\": \"selected\",\n      \"bytes\": 2854,\n      \"included_bytes\": 2854,\n      \"inspected_bytes\": 2854,\n      \"lines\": 54,\n      \"shadowed\": []\n    }\n  ],\n  \"diagnostics\": [],\n  \"limits\": [\n    \"Static project-only audit of the supplied root-to-cwd chain; no client is launched.\",\n    \"Root, cwd, fallbacks and byte budget are supplied assumptions, not resolved client configuration.\",\n    \"Global instructions, project trust, root markers, extra environments, skills and session caches are not inspected.\",\n    \"Links and special files are refused; Codex itself may support linked instruction files.\",\n    \"Reads are capped at 1 MiB per selected file; line counts describe only the inspected prefix.\",\n    \"No instruction text is returned. This snapshot does not prove active client discovery or compliance.\",\n    \"Filesystem checks do not provide isolation from concurrent adversarial directory replacement.\"\n  ],\n  \"ok\": true\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "ai.py",
+        "capabilities",
+        "check"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"valid\",\n  \"capabilities\": 33,\n  \"skills\": {\n    \"frontend-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"11aad5b1f3e8ee32a3d26ed6b74d8621fc3fc929a4cfeec3eaa73bbaa8ea4ae0\"\n    },\n    \"engineering-judgment\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"b0a652d925af8c26767b9eca0d65db9de5a8310ee12c347028f5b141e9ba36ad\"\n    },\n    \"test-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"fa46d33de110c862dd01c69a74701d7478b240717f7899856a1fbb609ee2a97d\"\n    },\n    \"backend-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"80dde26b2865caf003d30468c927b461d5227a924c96843d18bf97594c5e9f31\"\n    },\n    \"database-systems\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"587d681ec7b2ab72a47c9c77206cb9b0dfd0266faf714ac612c0da8ad83cc417\"\n    },\n    \"brand-guidelines\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"514fd83ee6bf8cf453170a3204e85b5dead87746f921ab5fef219a473147f0aa\"\n    },\n    \"interface-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"3d55c42289a3ee8f563088ed95f3f67ce445da5f911ec5b80a0e44f08adcf73d\"\n    },\n    \"marketing-writing\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"1b36b25ffc87cf7020e41d0de086973733586f83ab3c5edc75d7692af906da14\"\n    },\n    \"mobile-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"ceb7eca625b3cab19956f764da020af3fbd2f6c03adccb0921f056d08fb846f2\"\n    },\n    \"search-visibility\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"a977830cb0db907a3cdda582817b3b8bc9c4087b5ec0dc04478992cd2d570065\"\n    },\n    \"search-audit\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"f768bc8410712739c3e70c970254fa23b642bf2bee76f6574d278cc317954c00\"\n    },\n    \"research-and-synthesis\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"3b1c833bdca57fcde54450cd8e8a6cef045ff0ffc3f6ddf0482bff37f981949f\"\n    },\n    \"document-parsing\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"d7bf0fd8ca2854d5e5ed24917f49d1976a364caffc98a114fdda6a9c6f1cfa01\"\n    },\n    \"skill-catalog\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"9262bba53e50e08bf563a66d05a56529b209953b7efb034f7dae1e0bf6d02bba\"\n    },\n    \"svg-creation\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"b0f1358dfc5a4fb39c47fc2afab8678a175416948547b0e475cc43ae7320d799\"\n    },\n    \"motion-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"8d4ed2f3c01e97b627c6a97b4d50ff216399c7f6fe7b253f6ffa642eeafdafb9\"\n    },\n    \"page-transitions\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"22133f102724d18734e6fe39718038973327a0340218a3c4121f9029f5796913\"\n    },\n    \"advanced-motion\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"027a298b9f0ffae17d837ef6b81e2a4189f5136a7c598fa2aa7aa36f458f15d0\"\n    },\n    \"svg-animation\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"528a237b3b38a3d0d15804bb37ddc37bc5d55995d9e873d7f00cfdef3b0a5e4b\"\n    },\n    \"architecture-review\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"7dc4f15515d257ded2b6e99f711e24368f9b3e361094a8f8b341e6e5910c05d1\"\n    },\n    \"security-judgment\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"2a0a01366d0e04b4189c9b237730445f8a38f4f331ea71092ec2fa57e9adec36\"\n    },\n    \"work-planning\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"dcae9bd885ad088747ab83065d189ced8c0a94a972002d192dcd07ab3db6eb3e\"\n    },\n    \"context-management\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"6d3b441e5150ca098f5a0e9d12c8a18c11ba67465d41afd1d63337d80e49d661\"\n    },\n    \"product-management\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"e73114d2a5dfd1a64280cb753ba44695f5d88d27ccf02164ba0ad6b8cc5b6605\"\n    },\n    \"customer-research\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"d01e5ddb8e10ec44fafd15c64446bacd30fb8d6234973148b601abb84de83bd6\"\n    },\n    \"experiment-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"265572d403af1119935630b56a9bf83a8d38cc704e139969de5983ee0a288143\"\n    },\n    \"data-migrations\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"62ee7e33cf989fdee89d7026fb160923cab1cdf50f12d97931a6625f271ac0f7\"\n    },\n    \"systems-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"6acb68cc5732127c7463c563b9cf2884791507522d72dc85acfba73f21449a80\"\n    },\n    \"infrastructure-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"310331daff22ba05e00cdc43a123b1863ab919fb375c27e02b71405e52aa8a4a\"\n    },\n    \"release-operations\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"7cd78440cefd37fde6454193875ec3f25d373b9ebf66f69a4bc301cb3566853c\"\n    },\n    \"ci-maintenance\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"47b6d63af69471a18ce9f2eb284342bb338f876b2e89fd23cda8b8f4e2f4aed0\"\n    },\n    \"conversion-review\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"025ff2597b672fe3aa7121fc3bb1f024cb0f921629cb7362979d943d49c9f103\"\n    },\n    \"executive-strategy\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"8540bb14e1454ac1550da9effb425a7dd0f3b3057769707c0f8d04c4c8e1d789\"\n    },\n    \"data-analysis\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"1f74952e0130f23414ef9ae76ab118272cb9c9e5903db84a27ce12729742ad3f\"\n    },\n    \"project-scaffolding\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"325a7efeefc499b1f97f07ebb0307968f81b179565eadc3a4d2c1f93bb18b0be\"\n    },\n    \"performance-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"535a1f633cfa3bdfa897a49718c3df6e5f15552042d0ec136fb9dd788a620db4\"\n    },\n    \"financial-analysis\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"a84d7e701e358763e90f9eb800502ff86875196fe626347fb679ae88209f3ee0\"\n    },\n    \"spreadsheet-analysis\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"a7d7634366853fb6fc52400975865054b79f3f6a063836f8137e064554880f00\"\n    },\n    \"technical-leadership\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"603aed8a757299c501d216c4aa1877096052e33f9ac1f4289046cfd10715e309\"\n    },\n    \"agent-coordination\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"0054bf4e0b861c9433dea78d6382c79eaf6787d759e85988ffc519b30d42aeb7\"\n    },\n    \"market-analysis\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"9a5941b411d5c1315dcc6aa7112ee0663ef46fd7c1948c54cd679b604eee390c\"\n    },\n    \"venture-validation\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"bba7f4e485cea3930622fb0aea7bca56cb819742630ea6fad08e1da5b4a05317\"\n    },\n    \"localization\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"ccbc7d8065237c7a1ffdeb86582cb4a0d8978c7935f604037b7a125c6f9c1d79\"\n    },\n    \"document-workflow\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"9206b4e2661a08a902a9c2ab8f5a822360e2a20014ac8b3601bb1dbd549268f2\"\n    },\n    \"office-authoring\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"bc2193728a710ff44cdfd4e1b252ea7cdbce8a799c088d25b3feeb4d840c16f7\"\n    },\n    \"mobile-engineering\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"b8fac3bb40519806fb0b30a035e57b47507b730602465c9d37399ad798b9ec7b\"\n    },\n    \"it-operations\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"787ecc118edc35a27d065ee08bcd594f7dfffb196d0ae715e4c68f58c0bf50d0\"\n    },\n    \"debugging\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"04fa3e2bf41311894667c12abe7266c88bd02153b74589901b58254ce1d1ab3e\"\n    },\n    \"graphic-design\": {\n      \"status\": \"source_verified\",\n      \"sha256\": \"7915a071ddd00fccc89b03403d44040b7ad5748813f2418cba3485d88707657f\"\n    }\n  },\n  \"failures\": [],\n  \"limits\": [\n    \"Checks establish local guidance and catalog integrity, not skill activation or task quality.\",\n    \"Prerequisites and actual project registration must be checked on the target host.\",\n    \"A delivery is accepted only after its observable criteria and relevant failure probes are exercised.\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/render_registry.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "sh",
+        "-n",
+        "setup/macos.sh"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "markdown": {
+    "passed": 13,
+    "report": "markdown-checks.json",
+    "rendered_inspection": "Dossier README rendered with the existing bundled marked library and inspected in Chrome: heading, list, complete evidence table and scope paragraphs are readable without clipping. This was a temporary browser preview, not a Codex native editor inspection."
+  },
+  "artifact_integrity": {
+    "checked": 71,
+    "mismatches": 0
+  },
+  "native_checks": {
+    "final_finance": 8,
+    "final_localization": 8,
+    "finance_candidate_tests": 21,
+    "both_trivial_prompts_tool_calls": 0,
+    "both_docs_mcp_search_and_fetch": true
+  },
+  "retained_failures": [
+    "Initial Claude substantive tasks omitted specialist activation.",
+    "Initial and routed Claude finance rejected a valid sparse horizon.",
+    "Codex interface CLI timed out after browser launch failure; host browser continuation inspected the saved artifact."
+  ],
+  "remaining_limits": [
+    "Known development cases, not a blind benchmark or evidence of all-role quality.",
+    "Codex generation used its Desktop-bundled CLI; separate host browser continuation is identified.",
+    "Claude Desktop rerun could see the earlier translation in its parent folder.",
+    "Native Windows/Linux clients, physical devices, screen readers and human translation acceptance not tested.",
+    "Optional skill-creator quick validator unavailable without PyYAML; repository skill and catalog checks passed."
+  ],
+  "cleanup": "Completed; see cleanup.json. Original checkout and installed source fingerprint match the tested code.",
+  "maintenance": {
+    "enabled": false,
+    "user_crontab_present": false,
+    "probe": "crontab -l exited 1, stdout empty, stderr reported no crontab; no schedule changes were made."
+  },
+  "post_cleanup_checks": {
+    "installation_ready": true,
+    "changes_pending": false,
+    "blockers": [],
+    "source_fingerprint_unchanged": true,
+    "generated_docs_match": true,
+    "whitespace_check": true,
+    "markdown_documents": 13,
+    "trial_artifact_hashes_verified": 71,
+    "retired_build_receipts_verified": 20,
+    "temporary_worktree_and_scratch_absent": true
+  }
+}

@@ -1,0 +1,161 @@
+[
+  {
+    "label": "codex-finance",
+    "verifier_passed": true,
+    "checks": 8,
+    "skill_calls": [],
+    "guidance_use": {
+      "bodies_received": [
+        "skill-catalog",
+        "financial-analysis",
+        "engineering-judgment"
+      ],
+      "references_received": [
+        "cash-and-earnings.md",
+        "boundary-decisions.md"
+      ],
+      "original_source_lines": [
+        8,
+        18,
+        24
+      ],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": []
+    }
+  },
+  {
+    "label": "codex-localization",
+    "verifier_passed": true,
+    "checks": 8,
+    "skill_calls": [],
+    "guidance_use": {
+      "bodies_received": [
+        "skill-catalog",
+        "localization"
+      ],
+      "references_received": [
+        "message-integrity.md"
+      ],
+      "original_source_lines": [
+        10,
+        26,
+        30
+      ],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": []
+    }
+  },
+  {
+    "label": "claude-finance-before",
+    "verifier_passed": false,
+    "checks": 8,
+    "skill_calls": [],
+    "guidance_use": {
+      "bodies_received": [],
+      "references_received": [],
+      "original_source_lines": [],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": [
+        "No relevant skill invocation or body read found."
+      ]
+    }
+  },
+  {
+    "label": "claude-finance-routed",
+    "verifier_passed": false,
+    "checks": 8,
+    "skill_calls": [
+      "skill-catalog"
+    ],
+    "guidance_use": {
+      "bodies_received": [
+        "skill-catalog",
+        "financial-analysis"
+      ],
+      "references_received": [
+        "cash-and-earnings.md"
+      ],
+      "original_source_lines": [
+        10,
+        18,
+        20
+      ],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": []
+    }
+  },
+  {
+    "label": "claude-finance-repaired",
+    "verifier_passed": true,
+    "checks": 8,
+    "skill_calls": [
+      "skill-catalog"
+    ],
+    "guidance_use": {
+      "bodies_received": [
+        "skill-catalog",
+        "financial-analysis"
+      ],
+      "references_received": [
+        "cash-and-earnings.md"
+      ],
+      "original_source_lines": [
+        8,
+        16,
+        18
+      ],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": [
+        "The reference body was fully received in a batch whose later commands failed; the batch itself did not succeed."
+      ]
+    }
+  },
+  {
+    "label": "claude-desktop-localization-before",
+    "verifier_passed": true,
+    "checks": 8,
+    "skill_calls": [],
+    "guidance_use": {
+      "bodies_received": [],
+      "references_received": [],
+      "original_source_lines": [],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": [
+        "No relevant skill invocation or body read found."
+      ]
+    }
+  },
+  {
+    "label": "claude-desktop-localization-routed",
+    "verifier_passed": true,
+    "checks": 8,
+    "skill_calls": [
+      "skill-catalog"
+    ],
+    "guidance_use": {
+      "bodies_received": [
+        "skill-catalog",
+        "localization"
+      ],
+      "references_received": [
+        "message-integrity.md"
+      ],
+      "original_source_lines": [
+        44,
+        73,
+        76
+      ],
+      "trace": "tool-trace.jsonl",
+      "basis": "Independent inspection of actual native tool output, documented in review-before.md and review-routed.md. Skill listings and reasoning text are not invocation proof.",
+      "limits": [
+        "Localization body was fully received before a separator failed; the reference was successfully read in a separate retry."
+      ]
+    }
+  }
+]

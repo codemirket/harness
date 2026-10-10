@@ -1,0 +1,1347 @@
+{
+  "bundles": {
+    "personal-workbench": [
+      {
+        "executable_files": [],
+        "export_sha256": "5f0a95be762751e38b07b41d2031a2814544a4c26d1258ba0006cbbbb172a30c",
+        "id": "agent-coordination",
+        "installed_sha256": "5f0a95be762751e38b07b41d2031a2814544a4c26d1258ba0006cbbbb172a30c",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "agent-coordination",
+        "path": "skills/agent-coordination",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "5f0a95be762751e38b07b41d2031a2814544a4c26d1258ba0006cbbbb172a30c"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "46ddc3527633d02e349ca3dbd9400700b1ec1161d307254b6390479a86a0a312",
+        "id": "ai-system-evaluation",
+        "installed_sha256": "46ddc3527633d02e349ca3dbd9400700b1ec1161d307254b6390479a86a0a312",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ai-system-evaluation",
+        "path": "skills/ai-system-evaluation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "46ddc3527633d02e349ca3dbd9400700b1ec1161d307254b6390479a86a0a312"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "id": "ci-maintenance",
+        "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ci-maintenance",
+        "path": "skills/ci-maintenance",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91",
+        "id": "context-management",
+        "installed_sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "context-management",
+        "path": "skills/context-management",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "4ce15001613e91871b5826e5a172e2d611b0615c70d0372bd47df1593523db91"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "id": "document-parsing",
+        "installed_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "document-parsing",
+        "path": "skills/document-parsing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "9206b4e2661a08a902a9c2ab8f5a822360e2a20014ac8b3601bb1dbd549268f2",
+        "id": "document-workflow",
+        "installed_sha256": "9206b4e2661a08a902a9c2ab8f5a822360e2a20014ac8b3601bb1dbd549268f2",
+        "license_files": [],
+        "name": "document-workflow",
+        "path": "skills/document-workflow",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "9206b4e2661a08a902a9c2ab8f5a822360e2a20014ac8b3601bb1dbd549268f2"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "b0a652d925af8c26767b9eca0d65db9de5a8310ee12c347028f5b141e9ba36ad",
+        "id": "engineering-judgment",
+        "installed_sha256": "b0a652d925af8c26767b9eca0d65db9de5a8310ee12c347028f5b141e9ba36ad",
+        "license_files": [],
+        "name": "engineering-judgment",
+        "path": "skills/engineering-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "b0a652d925af8c26767b9eca0d65db9de5a8310ee12c347028f5b141e9ba36ad"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5ce62ca331e072420ce72fa9b6615f2e3250f145d056c95142bba50c1dcbb746",
+        "id": "interface-design",
+        "installed_sha256": "5ce62ca331e072420ce72fa9b6615f2e3250f145d056c95142bba50c1dcbb746",
+        "license_files": [],
+        "name": "interface-design",
+        "path": "skills/interface-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "5ce62ca331e072420ce72fa9b6615f2e3250f145d056c95142bba50c1dcbb746"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "1b36b25ffc87cf7020e41d0de086973733586f83ab3c5edc75d7692af906da14",
+        "id": "marketing-writing",
+        "installed_sha256": "1b36b25ffc87cf7020e41d0de086973733586f83ab3c5edc75d7692af906da14",
+        "license_files": [],
+        "name": "marketing-writing",
+        "path": "skills/marketing-writing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "1b36b25ffc87cf7020e41d0de086973733586f83ab3c5edc75d7692af906da14"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "97a78d1ffe0d7ae42db6855ae3e03552c4178f4140348a351dfc8296ee618146",
+        "id": "motion-design",
+        "installed_sha256": "97a78d1ffe0d7ae42db6855ae3e03552c4178f4140348a351dfc8296ee618146",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "motion-design",
+        "path": "skills/motion-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "97a78d1ffe0d7ae42db6855ae3e03552c4178f4140348a351dfc8296ee618146"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0fc6dc13d27f46021f63fed437191e9be56768aeea670194b534092901981125",
+        "id": "office-authoring",
+        "installed_sha256": "0fc6dc13d27f46021f63fed437191e9be56768aeea670194b534092901981125",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "office-authoring",
+        "path": "skills/office-authoring",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0fc6dc13d27f46021f63fed437191e9be56768aeea670194b534092901981125"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11",
+        "id": "research-and-synthesis",
+        "installed_sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "research-and-synthesis",
+        "path": "skills/research-and-synthesis",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "90b24da719e27e786de722ec97e65b2eba1ddedbb9306d8e5a7243b84b28ab11"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5",
+        "id": "security-judgment",
+        "installed_sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "security-judgment",
+        "path": "skills/security-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "faa245aaae9352bfeaf16ddcc51ed63d03b35d5440ffa6615739da422e43f8a5"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "923565bb296c6b3fc4acec87400c328c7ac87f516fb423bbf968ef972ed02ab6",
+        "id": "skill-catalog",
+        "installed_sha256": "81ee0649d0633a882b2a729ccb436f2f58f059ce303f3427c8739845f2c157df",
+        "license_files": [],
+        "name": "skill-catalog",
+        "path": "skills/skill-catalog",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "81ee0649d0633a882b2a729ccb436f2f58f059ce303f3427c8739845f2c157df"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "b0f1358dfc5a4fb39c47fc2afab8678a175416948547b0e475cc43ae7320d799",
+        "id": "svg-creation",
+        "installed_sha256": "b0f1358dfc5a4fb39c47fc2afab8678a175416948547b0e475cc43ae7320d799",
+        "license_files": [],
+        "name": "svg-creation",
+        "path": "skills/svg-creation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "b0f1358dfc5a4fb39c47fc2afab8678a175416948547b0e475cc43ae7320d799"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "1a68e94ee59306e4726743237f7b218d9bd047813d494c408265a28eade32841",
+        "id": "work-planning",
+        "installed_sha256": "1a68e94ee59306e4726743237f7b218d9bd047813d494c408265a28eade32841",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "work-planning",
+        "path": "skills/work-planning",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "1a68e94ee59306e4726743237f7b218d9bd047813d494c408265a28eade32841"
+      }
+    ]
+  },
+  "clients": [
+    "codex-desktop",
+    "codex-cli"
+  ],
+  "files": {
+    ".agents/plugins/marketplace.json": {
+      "mode": "0644",
+      "sha256": "216ccd7349e84d029eac6d0e599771646b58d5f7109cf9556a2d26af12b4dee2"
+    },
+    "plugins/personal-workbench/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "b4334f361d2dba0b9097ad9d99095d3ba3b9ef6a197029d698d243c7afd0790f"
+    },
+    "plugins/personal-workbench/_harness/LICENSE": {
+      "mode": "0644",
+      "sha256": "7869aaab16983c610671e57df928446a5e54c97cf04a9bfb6a3686f89f1a6d2c"
+    },
+    "plugins/personal-workbench/_harness/README.md": {
+      "mode": "0644",
+      "sha256": "b6ce7d27e686a226b7a859d774a2359de6661a88b1dfc6642b0d1cc03d412011"
+    },
+    "plugins/personal-workbench/_harness/ai.py": {
+      "mode": "0644",
+      "sha256": "c553b892fa30f454e0980eeeaf758c5b2ccf60c38d3d3e2c51bbb4a3a1c74ac7"
+    },
+    "plugins/personal-workbench/_harness/docs/assets/fieldwork-studio.png": {
+      "mode": "0644",
+      "sha256": "b6d72d5360c2e6838b098536c9776538c2b2fabe0c508ba61a71126d1d04fe14"
+    },
+    "plugins/personal-workbench/_harness/docs/catalog.md": {
+      "mode": "0644",
+      "sha256": "f4d8696a6f21c4631f7529bf90733b3ae031c2437dfda9bd39e9b6b5b613b091"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/agent-runtime-hardening-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "b75c894f60cc481bc6d01e090d5a59821476bcdcecba260f22805263d73615ca"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/harness-upgrade-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "8268fc2993b08889ba7b054131a1472afb46ca05c78460b0a8209d8aaecb2c8b"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/independent-harness-review-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "e9625bd3393dde835d05205b790b5715b8183e4c5dff0aaef4daf47982924464"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/independent-harness-verification-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "f034d3d5bed171eacd0614a1bfd87aae364ee3e9d4838b7217bcea13694dcb53"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/motion-studio-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "23530ef67cf539eb96cdfb4ec8526040e4336d55a0660cc4da6aac86d3bf6b97"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/project-foundation-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "34baa8c2c1fd9b69247774518c702f29755d6fc5af3fce20e1baa11b68644446"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/project-readiness-2026-10-07.json": {
+      "mode": "0644",
+      "sha256": "1d3c1277bac769ceb34385f4c8bb11ac14cad68db23eff7049dcb0a7b5235a7e"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/project-targets-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "f069ab472deb222ffdcfe11fcc015d192ad3d751683ae91a9d44ea37e6401614"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/quality-harness-2026-10-07.json": {
+      "mode": "0644",
+      "sha256": "74fcba74118fec2605b3b69acf91d63caa36430101563df7bd2fa781dfe8ef1e"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/registration-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "b6ff04c6192b1a56b7ded292937a5c58e99eab00351551029f8d9b9617e45bda"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/skill-routing-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "ed7f83ab43507e734a92d1dea807fdd72f51bf386f5b2fcdc9ef61f6df079abb"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/svg-studio-2026-10-08.json": {
+      "mode": "0644",
+      "sha256": "ccaf59a768df46644dbf5be96fefd6cd3cb68b4ecb70dd4ca5c26c0a9a1b0f2e"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/trixpo-installer-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "56c50ddcc414aeeff42e9648abd4645112879b53e5d692e875c677c13b961b68"
+    },
+    "plugins/personal-workbench/_harness/docs/evidence/vercel-navigation-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "07f9d74e837b1a1be34ceb7dbb8ca297909868f8512ac874d8285421f3a7c322"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/app.js": {
+      "mode": "0644",
+      "sha256": "e442bbf31e2c8fd6762108e8525d36776ec581d4b98c425d43a29aca88097489"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/content/field-notes.json": {
+      "mode": "0644",
+      "sha256": "ff1c2c966940bdffcd0e401aef8d5386e4d28353fe1f8a1ad8863342072e4e38"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/content/tidelines.json": {
+      "mode": "0644",
+      "sha256": "a1e93a41aff65d58397c7bced2d5712644d271c85a6dd6482b4d14c7b6421109"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/index.html": {
+      "mode": "0644",
+      "sha256": "cdff5af7c89cab823d0e9d6010b279b439cbc83609b9d90c8b39076a327ee081"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/server.cjs": {
+      "mode": "0644",
+      "sha256": "4afbefcbdfc65159caa9ee2c58eb121d7488f673f860111f6f4d815d4c4fc806"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/motion-studio/styles.css": {
+      "mode": "0644",
+      "sha256": "6e5776ca96e7123e474d8f34498d0d13459c34f03acffb4c77ffad3a056f8180"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/svg-studio/animated.svg": {
+      "mode": "0644",
+      "sha256": "8b8f8402591ff64cb05e61ba1fd90d6ae3f1712487d601d4dbc65b94e871b0aa"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/svg-studio/preview.html": {
+      "mode": "0644",
+      "sha256": "90641ea90540131cfe777fd4ea0c28b496be12c1adf4c8a43311e5260867e83c"
+    },
+    "plugins/personal-workbench/_harness/docs/examples/svg-studio/static.svg": {
+      "mode": "0644",
+      "sha256": "37b19c5b379af5f7ae196756bdaef66a75eb5678f80862e2d215ae2541f6ad17"
+    },
+    "plugins/personal-workbench/_harness/docs/plugins.md": {
+      "mode": "0644",
+      "sha256": "fb29829c62091ffa8009b46018d8b5a1f623cf76d6a01b275555858342a3fe87"
+    },
+    "plugins/personal-workbench/_harness/docs/project-targets.md": {
+      "mode": "0644",
+      "sha256": "1d84595cb66b51aaace862ecc7071a2776d40c228b6e9b8f7ff6ad06ba9b04ce"
+    },
+    "plugins/personal-workbench/_harness/docs/quality-harness.md": {
+      "mode": "0644",
+      "sha256": "97c8a13e61270df653e6d97520968e56aea2745d2c1fa65ed29d0bb3803f2fb7"
+    },
+    "plugins/personal-workbench/_harness/docs/research/decisions-2026-10-09.md": {
+      "mode": "0644",
+      "sha256": "4c9ab0061c735ff3854c66137a1432d1208f75d411ff6bcc7307873ac7985e44"
+    },
+    "plugins/personal-workbench/_harness/docs/research/document-capabilities-2026-10-09.md": {
+      "mode": "0644",
+      "sha256": "82b70e83c7dc0c87f068f77b122075593f5869effc6b9005b0304fb4486657af"
+    },
+    "plugins/personal-workbench/_harness/docs/research/engineering-harnesses-2026-10-09.md": {
+      "mode": "0644",
+      "sha256": "f04f0285a273406dfcf1d9391c48604ce4f891f0d3e02e21f1741e2f156f9c51"
+    },
+    "plugins/personal-workbench/_harness/docs/research/verification-2026-10-09.md": {
+      "mode": "0644",
+      "sha256": "0c41fc13507bcd06112ac66f9f5b760aaf0bf8847da17446e265daeab992c6da"
+    },
+    "plugins/personal-workbench/_harness/docs/research/visual-capabilities-2026-10-09.md": {
+      "mode": "0644",
+      "sha256": "ab1147df30d61e08eea2b43a207aa54ac2c6fbaa67a101a16e33a789ed078ba2"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/agent-runtime-hardening.md": {
+      "mode": "0644",
+      "sha256": "19a27ad1f3fed83b5dc4d82f5f35842c8979b4e04687a177f58f144240015b6b"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/design.md": {
+      "mode": "0644",
+      "sha256": "b22e12a7e7e6eee89df2e2fafc260fec08870f6670bcbe05f8a23fece72b5b27"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/engineering.md": {
+      "mode": "0644",
+      "sha256": "dc50f8d5bfef37319870431fa3f6b140794d4e87e0d8a0ffa65ff6ff9a49916b"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/expanded-design.md": {
+      "mode": "0644",
+      "sha256": "3ac53ffede9b2f6958935049e500536374c800c1420f950e5fc6f8bc42a7b25f"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/expanded-engineering.md": {
+      "mode": "0644",
+      "sha256": "580738266320b8bf649955476f20071907147695a57bed948c88c0808b4db17a"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/expanded-marketing-systems.md": {
+      "mode": "0644",
+      "sha256": "bbeb96546031d778a35a70b4c02b8285a36ed1afa9d454b08084d1dff0853792"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/harness-upgrade.md": {
+      "mode": "0644",
+      "sha256": "01ea23c0928d1122239ab01d3f5c569f6654348b5dc4d7f0e6d9f87d6cfb7aa4"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness-handoff.md": {
+      "mode": "0644",
+      "sha256": "6b33bbd86d3edfb273c55a493d47886178c56554804166d423f291e2e2dfde58"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness-review.md": {
+      "mode": "0644",
+      "sha256": "75d1f96e08f6d56a894e0543eace6111f261c09b00e3b24ae7f544ef8f1ffc63"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/acceptance-criteria.md": {
+      "mode": "0644",
+      "sha256": "653c2b973468a107363c4f35fa7f73b4886ac601bb313207b15317050131ea0a"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/astra-r1.md": {
+      "mode": "0644",
+      "sha256": "06e3fa59340f9540286110cccc53eb44848ee1b1a3dbf14f15a0353c8eff4a06"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/astra-r2.md": {
+      "mode": "0644",
+      "sha256": "08a42474632c1205dd9e266cab2e28a29402eca81b380e1d8f8fd50327ba4074"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/astra-r3.md": {
+      "mode": "0644",
+      "sha256": "e3dabc6c1f37418bdd3818f7df94bd288ce4cb83400ac837d1ad339055f88a0a"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/astra-r4.md": {
+      "mode": "0644",
+      "sha256": "4ca08420c417e85596b89ffd555c738474786118166bb13d50769d8e9b18086a"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/astra-r5.md": {
+      "mode": "0644",
+      "sha256": "f8d8d3db34718a824ccfe5c27f0e8698822ae0760a5acbf3c2428f07e47ff16e"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/opus-r1.md": {
+      "mode": "0644",
+      "sha256": "c2da4999cbd0a12fa33c1f059432fab35486ba15de3f75d64b3f5ad005ed2e2d"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/independent-harness/opus-r2.md": {
+      "mode": "0644",
+      "sha256": "e27998aba3d6dbac46c0dd177dfff37c078a5063088f8cf752c5379db8b8dbc5"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/marketing.md": {
+      "mode": "0644",
+      "sha256": "ac4a42249dbe88b9fead1a0c50fbc3eb23471445323358110248444e718527f7"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/motion-studio.md": {
+      "mode": "0644",
+      "sha256": "b7444e769aad9a514c2d5daaf9750859bff60f95bd3367c60839d398988ed3fd"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/planning-search.md": {
+      "mode": "0644",
+      "sha256": "3cb47de9ea0874d2cba4e3e5c3ff55cfb83ecab05f355e77f70c8f298048889f"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/providers.md": {
+      "mode": "0644",
+      "sha256": "82dd5dbf5ccea5374322a936ee988cb66f399b94bac6e1433b77fa88180d370e"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/quality-media.md": {
+      "mode": "0644",
+      "sha256": "d837baa16baa082d4eeefe79e6d9e97cf9c42dcb8bc93fce0827ef56b2b3cf73"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/skill-routing.md": {
+      "mode": "0644",
+      "sha256": "dae80acb5c8331d8c89d6690798060dffad8cf396c6fe75f0f0cf26b41e9ad5f"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/svg-studio.md": {
+      "mode": "0644",
+      "sha256": "ed6ca51ac63bde2ae20ccb190643162f09115f9569e9ed728e59cd5dbdfa019d"
+    },
+    "plugins/personal-workbench/_harness/docs/reviews/vercel.md": {
+      "mode": "0644",
+      "sha256": "28c0d9961f3012e219f51819715aa2bfcb094b28c34255fc9c48fb1460a0521f"
+    },
+    "plugins/personal-workbench/_harness/docs/runtime-integrations.md": {
+      "mode": "0644",
+      "sha256": "e6c07f90ae91cd295d2bebcf03f28976588d557b6db0d8928ebf205a2a7289f7"
+    },
+    "plugins/personal-workbench/_harness/docs/scheduling.md": {
+      "mode": "0644",
+      "sha256": "b4b03121d17a3e2d5902c4bfce416fd58cd914630aeebe9e9eed10469b932e13"
+    },
+    "plugins/personal-workbench/_harness/docs/settings.md": {
+      "mode": "0644",
+      "sha256": "521830e68ef2912563ab5ff2dfbf910a141dc5a38f63fa903efcc188bb6814ed"
+    },
+    "plugins/personal-workbench/_harness/docs/source-review.md": {
+      "mode": "0644",
+      "sha256": "3445c823dab9405844b7b2cc1f08ca517530deba14dd8917de353f5eeb474a37"
+    },
+    "plugins/personal-workbench/_harness/docs/targets.md": {
+      "mode": "0644",
+      "sha256": "e795cbe1681a1e4b0addd5d921cbb792ebe746355cefeef52e4a85361b437768"
+    },
+    "plugins/personal-workbench/_harness/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/_harness/docs/verification.md": {
+      "mode": "0644",
+      "sha256": "a89e4943a820e6cbb19e7e7aaeffcc901b0f1161275d17d26861710058d8bf39"
+    },
+    "plugins/personal-workbench/_harness/docs/work/target-migration.md": {
+      "mode": "0644",
+      "sha256": "e17115703efb3ef12a5324b0a09e2423784ee903b49951293917a40982c25955"
+    },
+    "plugins/personal-workbench/_harness/docs/workbench.md": {
+      "mode": "0644",
+      "sha256": "5cf254ac0eca97ff64b82d41696de983e9d86449b7f7ee33739f039d784e98c6"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/rubric.md": {
+      "mode": "0644",
+      "sha256": "ebe1ed10ac58efb9aaf580d90946b91f28f3f1840e26cc2ea15f40b2c5811a94"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/task.md": {
+      "mode": "0644",
+      "sha256": "a63397b26c8110dc9d7cac14b108cce2819d3d2b1e72eee9755869c2fee9a5d8"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/verify.py": {
+      "mode": "0644",
+      "sha256": "d56c911d5488e9ac86392cac7d4db4e155effdc334748500fcc0f46926a197ae"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/workspace/data/accounts.csv": {
+      "mode": "0644",
+      "sha256": "d1af07218bdf6bc1d425bf0869d95be808db928c214d3a019a9290557174886a"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/workspace/data/contract.md": {
+      "mode": "0644",
+      "sha256": "7874f03596f3274c2937eb799e3ea4fd7756920f4cbcb4af13f7c423fee9e8c2"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/workspace/data/orders.csv": {
+      "mode": "0644",
+      "sha256": "78831f3348cab32e86c2f9ed27b07204f608954d751813e0c528ecc55c728de5"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/analysis-rollout-decision/workspace/data/output-schema.json": {
+      "mode": "0644",
+      "sha256": "0886e5fa798a2f61ac5c5b5a146865b539d1633facff9607ede888b8eb4f86f4"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/database-resumable-backfill/rubric.md": {
+      "mode": "0644",
+      "sha256": "a0a3974ac69707372dac22df9d2f7ab95fba9e134e86ee7f85dcd569cff0d1cf"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/database-resumable-backfill/task.md": {
+      "mode": "0644",
+      "sha256": "23ba147c79492ac7aad496b2e79615a48202a1059ad9b8d74853b5bd5023ec0d"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/database-resumable-backfill/verify.py": {
+      "mode": "0644",
+      "sha256": "977c0c75642c7d87e66e3820b6a8647957122fabd63cd8034e3d680585586510"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/database-resumable-backfill/workspace/migration.py": {
+      "mode": "0644",
+      "sha256": "68052b4a4624fc6b1a816c1379c1150923e995e48f7b70270102fde6506e570f"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/database-resumable-backfill/workspace/schema.sql": {
+      "mode": "0644",
+      "sha256": "b4980dccb10e414979ecf272b503867425595162023a2348703c8e9fea025b28"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/documentation-filter-cli/rubric.md": {
+      "mode": "0644",
+      "sha256": "0045552a4ba23eb0edf21ee8d0aceb2e2b08cffa3562b1f45b686297cf68c253"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/documentation-filter-cli/task.md": {
+      "mode": "0644",
+      "sha256": "025b5e59efe3cd7f2c468253f3be6a869843b56ea93b23840b658d1d1c642195"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/documentation-filter-cli/verify.py": {
+      "mode": "0644",
+      "sha256": "1abcf797d71fc869863b2be0a88078d2b996c4f1b6d3ae51b57d08591d66dbcf"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/documentation-filter-cli/workspace/mini_lookup.py": {
+      "mode": "0644",
+      "sha256": "6901c5f0dc06bd42ee9860c486db46813d5e89f040de0f06b0a7f6bdddeddf07"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/documentation-filter-cli/workspace/records.csv": {
+      "mode": "0644",
+      "sha256": "90006db32db0ab4b310359a843ca28d047fe04ebacdf6471c86acf404a02374d"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/engineering-ledger-total/rubric.md": {
+      "mode": "0644",
+      "sha256": "57e9634730324ebc50aac6b7616e38a74e30330b847ee9603e28d0db3d9a19dc"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/engineering-ledger-total/task.md": {
+      "mode": "0644",
+      "sha256": "cbdf98387880ce1af9549c4381d95f6ab8961f3f78431dd7dadbf93170a4e1d8"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/engineering-ledger-total/verify.py": {
+      "mode": "0644",
+      "sha256": "c81afbf5092a2064fea1dd8ee8e0a063cbfc2ef03bee45c65d935647ac8dcd09"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/engineering-ledger-total/workspace/ledger.py": {
+      "mode": "0644",
+      "sha256": "f1bae5ff08b0b8f5f4526acd784ddd8661e2aea1a459a2c0403dc271c5b7e260"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/rubric.md": {
+      "mode": "0644",
+      "sha256": "ee077e0b8c295e3ef84cd78ca9f948af83aec229423fee2e52c0b128db68ad28"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/task.md": {
+      "mode": "0644",
+      "sha256": "a73eb9582703222f2731e6c0c7729169ae3e40e3d9022b13aa8c648fb90b7c35"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/verify.py": {
+      "mode": "0644",
+      "sha256": "da59e87e3decd77583e88c928afc1182b77ed863db762a79c7e1ab9e42ea60dc"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/app.js": {
+      "mode": "0644",
+      "sha256": "487f064be4a19f592fa16c24f9e4e7fbfb2335047d04877ef8df6b85445b14c1"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/index.html": {
+      "mode": "0644",
+      "sha256": "55133863c8139ecd035c8e1e0cd0220a9f9277ada914ee1dde28cbfe7266a19a"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/frontend-property-editor-hierarchy/workspace/styles.css": {
+      "mode": "0644",
+      "sha256": "3f53cf1d441baddd95ea8a6122e0018178bbaa6a3eddf7b58dcb5894bdab093b"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/integration-paginated-client/rubric.md": {
+      "mode": "0644",
+      "sha256": "12d41d26f0b234a883f2523355a4b523affdb2befacc31e2d83bdbc3dfecd234"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/integration-paginated-client/task.md": {
+      "mode": "0644",
+      "sha256": "43665f429935c68bc5248111c852a7a285e7b61878ebcf2a4425c1c3b03cd1b3"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/integration-paginated-client/verify.py": {
+      "mode": "0644",
+      "sha256": "9d1453d79ca13c9fb7049e8c5a037b984cb805a0111b99170ebca4018e0f3ea5"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/integration-paginated-client/workspace/client.py": {
+      "mode": "0644",
+      "sha256": "a51e631344c621679d86f311989cc21e71c148e88c96172bd1f160c127923ff7"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/integration-paginated-client/workspace/protocol.md": {
+      "mode": "0644",
+      "sha256": "41126f3acdccf5e5c484d01cb26801c64e88b9c245fca0621c4aba415b335cda"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/rubric.md": {
+      "mode": "0644",
+      "sha256": "4735b82ea98eabc5a4459cf17401e5ad9d2e9757df1447c6ce5ed2fe7ecf1f69"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/task.md": {
+      "mode": "0644",
+      "sha256": "5e6f987a5ed410d8d255f033dd8ded6e573fba73ac3bc525bcafc894d28ca959"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/verify.py": {
+      "mode": "0644",
+      "sha256": "2e30b18af3e2419d40c34463b5281a71f2c4a2fdaa450e501f12a077dfbf7881"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/workspace/sources/deployment.json": {
+      "mode": "0644",
+      "sha256": "38d16fd8d377c26c8b2f473b27405ebad405521ed82e179ea3916d16862b5df4"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/workspace/sources/field-note.md": {
+      "mode": "0644",
+      "sha256": "5495bf2ebc89882803a31a89d55971e1d8425b322137d31e83ce7de3181101b6"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/workspace/sources/legacy-3.9.md": {
+      "mode": "0644",
+      "sha256": "e6247ae07c5cb6d6938e361042a5d78f83118c54dc5ff80ba6c6b99adf50b03d"
+    },
+    "plugins/personal-workbench/_harness/evaluations/cases/research-cache-decision/workspace/sources/release-4.2.md": {
+      "mode": "0644",
+      "sha256": "b8b3ea6d584efc2ddae25c13bea25d18728e8e9075dc4021bc4f972b6d59c9b7"
+    },
+    "plugins/personal-workbench/_harness/evaluations/suite.json": {
+      "mode": "0644",
+      "sha256": "5c9ff0cb0748fc02f1d5e596b6139408e7f153a89814c195f0d2e2efe92ba737"
+    },
+    "plugins/personal-workbench/_harness/examples/craft-lab/README.md": {
+      "mode": "0644",
+      "sha256": "501ba4dc518a05006e885751b2a6317c564f421081c8c3760ab35b7f1b682181"
+    },
+    "plugins/personal-workbench/_harness/examples/craft-lab/fieldwork.svg": {
+      "mode": "0644",
+      "sha256": "e1ef76c0818b3695a44c78a93e8a6214f21bdebe6beba1bbbe099574e3ffeaa6"
+    },
+    "plugins/personal-workbench/_harness/examples/craft-lab/index.html": {
+      "mode": "0644",
+      "sha256": "d64bfa6c9e7a5b0d3557d34596c39b882f153184ce18256d0f02f7b2364b2a1e"
+    },
+    "plugins/personal-workbench/_harness/examples/craft-lab/scenario.json": {
+      "mode": "0644",
+      "sha256": "f7780827eb4b5d3886d78ac388e8ea1d3b08d1f596623a2b27869c42d90721ad"
+    },
+    "plugins/personal-workbench/_harness/instructions/AGENTS.md": {
+      "mode": "0644",
+      "sha256": "44001ae12b2cb077a961666413711158ed315addb1676b343ad5ab76f0a02322"
+    },
+    "plugins/personal-workbench/_harness/instructions/CLAUDE.md": {
+      "mode": "0644",
+      "sha256": "c38377684957f46e96ddb0a427fb03bc7ef81c6dc3d4cfec5c0353482e60c501"
+    },
+    "plugins/personal-workbench/_harness/lib/__init__.py": {
+      "mode": "0644",
+      "sha256": "5e7b496fc3265544eda97a62e3390637c783cc0acf9e472c2a1dcba3a7932bca"
+    },
+    "plugins/personal-workbench/_harness/lib/bundle.py": {
+      "mode": "0644",
+      "sha256": "703f97da0d20a78d5d6a72cfdfcd88401bf4a0f53d9e9e3108ae778d6c0bfd8c"
+    },
+    "plugins/personal-workbench/_harness/lib/catalog.py": {
+      "mode": "0644",
+      "sha256": "f513003955f38f8c456dc6c8c3504a8bebf3eab5031f3d20e654dfb6df12104b"
+    },
+    "plugins/personal-workbench/_harness/lib/claude_delegate.py": {
+      "mode": "0644",
+      "sha256": "d6d09eb32124b9ed34879f8db6656f1e0853f4aabe047221ce9d4f74950a0ab6"
+    },
+    "plugins/personal-workbench/_harness/lib/configuration.py": {
+      "mode": "0644",
+      "sha256": "ff993179767d6507ccb4cb8734780f1a4a937dc4cb2fc4a5982485baa5192aa5"
+    },
+    "plugins/personal-workbench/_harness/lib/evaluation.py": {
+      "mode": "0644",
+      "sha256": "5c8e213a39a4c108adddad5bcd37b4ac9b86c1ba867216f33ff635d670862c82"
+    },
+    "plugins/personal-workbench/_harness/lib/handoff.py": {
+      "mode": "0644",
+      "sha256": "d068cfa3f9342cc4b30d454baacf6e933647d6b037077c2c6787a602d87d4222"
+    },
+    "plugins/personal-workbench/_harness/lib/harness.py": {
+      "mode": "0644",
+      "sha256": "5ee3d2a894b2a24dafb24fb559ba663dd69af9433a4ba73bfdddc46012a2e19c"
+    },
+    "plugins/personal-workbench/_harness/lib/install.py": {
+      "mode": "0644",
+      "sha256": "79e161b39aae8e5718b66317905930b7f88d832a262bdc10b3576dbfb641f568"
+    },
+    "plugins/personal-workbench/_harness/lib/maintenance.py": {
+      "mode": "0644",
+      "sha256": "6c0ddcd6fbd446ae3392ee4ec4db2db9b9d86641bdbe43d15c017f75cb636e9c"
+    },
+    "plugins/personal-workbench/_harness/lib/runtime.py": {
+      "mode": "0644",
+      "sha256": "2f9c2c5a4817a69675bb42dd5b478d39835c503cc2a099f2c875f90066b3b078"
+    },
+    "plugins/personal-workbench/_harness/lib/schedule.py": {
+      "mode": "0644",
+      "sha256": "8c5c15c6baaef4a836ec10399836c365c2188bc55091b5fbe66457a43af6c066"
+    },
+    "plugins/personal-workbench/_harness/lib/settings.py": {
+      "mode": "0644",
+      "sha256": "f6d25716a15e4d1fac95ac4ecaed6a6f253ef33a322029022740fb39cfb8eebb"
+    },
+    "plugins/personal-workbench/_harness/lib/target_install.py": {
+      "mode": "0644",
+      "sha256": "9e3efc1dbd2061ca5e09b9ed9f03b78548f53c4916c26181f7a1cb6821f9605e"
+    },
+    "plugins/personal-workbench/_harness/lib/targets.py": {
+      "mode": "0644",
+      "sha256": "ebdebf20deadc288eb435ac57b4662b08dd2f67a5f0ce76ddffebcacb1501387"
+    },
+    "plugins/personal-workbench/_harness/lib/workbench.py": {
+      "mode": "0644",
+      "sha256": "bdd3f509becb233477c692790dd15466effa64c3f7e5c4e3b15b451f21f16304"
+    },
+    "plugins/personal-workbench/_harness/registry/catalog.json": {
+      "mode": "0644",
+      "sha256": "10e221bfac4c7141273f35dd9d2d370401926baabfe40ecc22018deb6793896e"
+    },
+    "plugins/personal-workbench/_harness/registry/codex-settings.json": {
+      "mode": "0644",
+      "sha256": "2b2df83201b055858bdaa44c19f903e9e5bf74a05403b73c7129f50765bbe99a"
+    },
+    "plugins/personal-workbench/_harness/registry/harness.json": {
+      "mode": "0644",
+      "sha256": "244090003aff691079f9cd28416ad94a70b41d693ef279ec30a33ca34950e286"
+    },
+    "plugins/personal-workbench/_harness/registry/mcp.json": {
+      "mode": "0644",
+      "sha256": "464f058f8c073d455e65d3c89202aa1e95f1ad7e436fc60751030844b35cc955"
+    },
+    "plugins/personal-workbench/_harness/registry/source-index.json": {
+      "mode": "0644",
+      "sha256": "34c2d57ac14b5f78425bccbd2dbc52540d2c466ecc488e4ce50e42431fc3ceaa"
+    },
+    "plugins/personal-workbench/_harness/registry/targets.json": {
+      "mode": "0644",
+      "sha256": "7bda079122f8d49fd59b817e7f9baae2f68ed2a0bd9064a3d6dddedd76432386"
+    },
+    "plugins/personal-workbench/_harness/scripts/render_registry.py": {
+      "mode": "0644",
+      "sha256": "843cf87f355714db8c2a4d613e38072264254eb2982806acf19c6f63e798a374"
+    },
+    "plugins/personal-workbench/_harness/scripts/workbench/browser.mjs": {
+      "mode": "0644",
+      "sha256": "1fed263bbc32ca42ef3ab9a5eadf4d2e650e8424390f44399de7983907894548"
+    },
+    "plugins/personal-workbench/_harness/scripts/workbench/documents.py": {
+      "mode": "0644",
+      "sha256": "c23af91de5aa45cfbfabbabb76a57b9a5f3738d45ad3bf8c9d03afc8195f7706"
+    },
+    "plugins/personal-workbench/_harness/scripts/workbench/markdown.py": {
+      "mode": "0644",
+      "sha256": "a5d5f2927d146e95d502fc85aa1c77b1379411e063bea41499d13052fa96953c"
+    },
+    "plugins/personal-workbench/_harness/scripts/workbench/vector.mjs": {
+      "mode": "0644",
+      "sha256": "e87443d02cf4a36750d8d907a11d74cfdf91b759d9244ec3bd3cf8bcf1bc745b"
+    },
+    "plugins/personal-workbench/_harness/setup/README.md": {
+      "mode": "0644",
+      "sha256": "5d1990026ba52dd494506f47dfc90cde2e684e0fb51f5e88d430ceaee5e31ff9"
+    },
+    "plugins/personal-workbench/_harness/setup/macos.sh": {
+      "mode": "0644",
+      "sha256": "b80bbe6f11e4842d01314fd386d8712089d8ed3edd235fe6e2e07e9b965f0983"
+    },
+    "plugins/personal-workbench/_harness/setup/windows.ps1": {
+      "mode": "0644",
+      "sha256": "75dfc7e0ed07fe04d612c9164c5975a90bee16f310129613ee9aae875febfc4c"
+    },
+    "plugins/personal-workbench/_harness/skills/advanced-motion/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ff6ec84923cbc145a9f90f196a8eae645e0496e07cd8031bb011bb7e67cedc46"
+    },
+    "plugins/personal-workbench/_harness/skills/advanced-motion/references/scene-mechanics.md": {
+      "mode": "0644",
+      "sha256": "c6580f0c4e833d4dca8fa1c76e0d140370e2a41223c4cc63774281023ca57cfe"
+    },
+    "plugins/personal-workbench/_harness/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "755a3b88b337dcef8df6407e77e022f467f47340e5c3c19f79088b90d7b77275"
+    },
+    "plugins/personal-workbench/_harness/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "152971e2585a0add76378723a138012f92b1c32847773a4ce99f3225a8f43a98"
+    },
+    "plugins/personal-workbench/_harness/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "aa1318217552d3ec18807bafe42d5506b7f4c4f297310b05b61067f4289624a5"
+    },
+    "plugins/personal-workbench/_harness/skills/ai-system-evaluation/references/harness-development.md": {
+      "mode": "0644",
+      "sha256": "d4f2c1f26970490be90d3075bae8c2978317bbe4a9d0fe8851b95d3fdc4c532d"
+    },
+    "plugins/personal-workbench/_harness/skills/architecture-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ae412e790f586e3cb67fde541e47aa31b110bd07eaaa0449c0651811482bed82"
+    },
+    "plugins/personal-workbench/_harness/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-workbench/_harness/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cce92fd3ed0b77f0068b8f4d4564bf3bbe8969282c43f0892baf307ef3f1b0c6"
+    },
+    "plugins/personal-workbench/_harness/skills/context-management/references/repository-retrieval.md": {
+      "mode": "0644",
+      "sha256": "1f50b77a4584983ce018574ddcd2ba8622ba79a4da07514443e6e18912946dcc"
+    },
+    "plugins/personal-workbench/_harness/skills/conversion-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3185dc4a5df853153e39adc8bf6da20cd9e6309f23097fcc866416b94d886e5"
+    },
+    "plugins/personal-workbench/_harness/skills/customer-research/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7b545cd7873fdfed1897cac31bef40a81dc86b542fb0f7c57835ae309181fc6b"
+    },
+    "plugins/personal-workbench/_harness/skills/data-analysis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "520da1805bd44cd7080432c4522dbe93ba25513d4e3fa0d4ab8353761a29a704"
+    },
+    "plugins/personal-workbench/_harness/skills/data-analysis/references/grain-and-comparisons.md": {
+      "mode": "0644",
+      "sha256": "e20fffd0b105fa0b843743ae53b3d9f1f83e0c09b6c2c9d9befd87c895ece5b9"
+    },
+    "plugins/personal-workbench/_harness/skills/data-migrations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "328b7094de84dff98084c4bc4bf73bd351242d42a971fe00af26b0cf7d1efedf"
+    },
+    "plugins/personal-workbench/_harness/skills/database-systems/SKILL.md": {
+      "mode": "0644",
+      "sha256": "502b8aa0716ae2aadd461937f3a60557cc0b164250803cc44e93aab184253f14"
+    },
+    "plugins/personal-workbench/_harness/skills/database-systems/references/document-databases.md": {
+      "mode": "0644",
+      "sha256": "8a0993f6ee028a37c5f0f62df3b76abd0116428b2246c903bc224fd834b050ae"
+    },
+    "plugins/personal-workbench/_harness/skills/database-systems/references/postgresql.md": {
+      "mode": "0644",
+      "sha256": "b11f5bddb744c1732ea396200ef03a61c2b0ff62ecd36560bff6dfb3c9d3e789"
+    },
+    "plugins/personal-workbench/_harness/skills/database-systems/references/redis.md": {
+      "mode": "0644",
+      "sha256": "4117c83032d35f2eed801a4b45c910b21233f3b8321c1c49fcbe438649f510f7"
+    },
+    "plugins/personal-workbench/_harness/skills/database-systems/references/sqlite.md": {
+      "mode": "0644",
+      "sha256": "71fce40e84a1bad3f37d6eff8fcffe8b8bad3680c6268218a5f6c036f971c080"
+    },
+    "plugins/personal-workbench/_harness/skills/debugging/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f75d0137318eb9370b86faf125865b6662cc677c706ff6cd8d3b4cc7b596a64b"
+    },
+    "plugins/personal-workbench/_harness/skills/desktop-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f361b96379f1d013de0e984603b14ec82f529f9c52c278de3dcb7c82493350bd"
+    },
+    "plugins/personal-workbench/_harness/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-workbench/_harness/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4f3372afa0eb36e907423c3204a13d7e9cd7b0f0711a35bbbfd42bf73f73144e"
+    },
+    "plugins/personal-workbench/_harness/skills/document-workflow/references/technical-documentation.md": {
+      "mode": "0644",
+      "sha256": "d1d5727fd5c3430c479aa34c12bac05ff9231e5dcd7ade07e13f074877b069b8"
+    },
+    "plugins/personal-workbench/_harness/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84fa9e001d9e6a0f69a349d77b1eed2f9167f80671a400b22124cd9c97a60bb2"
+    },
+    "plugins/personal-workbench/_harness/skills/engineering-judgment/references/boundary-decisions.md": {
+      "mode": "0644",
+      "sha256": "3454dd979eb101679c2063666be7f77eeacbf1377e29a4dc3a5c36a5738375d7"
+    },
+    "plugins/personal-workbench/_harness/skills/engineering-judgment/references/service-integration.md": {
+      "mode": "0644",
+      "sha256": "82ea8ec2b2f53cd5bb390056e92e5dff83dda9cc9df608009b275416792cda80"
+    },
+    "plugins/personal-workbench/_harness/skills/experiment-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "953c4dfcf377a729cf702759f3201163f1af67e3a664fedbcd07bb650b00a71d"
+    },
+    "plugins/personal-workbench/_harness/skills/frontend-engineering/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e966ca941af7ca62a6be2395a529194732d8ec5699b17aed5bfd0ff602561fb2"
+    },
+    "plugins/personal-workbench/_harness/skills/frontend-engineering/references/async-state.md": {
+      "mode": "0644",
+      "sha256": "853b34029fd3f4ed8ecdc349ff133e2a9adc9b0e92efcb89a9c0ee7bb0093a21"
+    },
+    "plugins/personal-workbench/_harness/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "609a688fbe6f2a1a0f2d33e409bb0d6be4187b13554d26edbfb9a52dbc7cedda"
+    },
+    "plugins/personal-workbench/_harness/skills/interface-design/references/application-composition.md": {
+      "mode": "0644",
+      "sha256": "fb1321c2c0d06023ca3add2675fc0d15e0c53e1869156f4e4413f6db0021278c"
+    },
+    "plugins/personal-workbench/_harness/skills/interface-design/references/art-direction-and-critique.md": {
+      "mode": "0644",
+      "sha256": "5b44f1ccb9d9aaf12db5527e905a31589ab67a0fe5ac96d0f3c72f386a6b7d1a"
+    },
+    "plugins/personal-workbench/_harness/skills/interface-design/references/public-page-composition.md": {
+      "mode": "0644",
+      "sha256": "8308382627d93f55ee2e0a93871c9d66823f1a5abd1ba17557c402eacbcec3ec"
+    },
+    "plugins/personal-workbench/_harness/skills/interface-design/references/workbench.md": {
+      "mode": "0644",
+      "sha256": "efb9e79a98ae421a5dc9ef9a0c688debc2eee1c93b319d4b0fdaf781354bd159"
+    },
+    "plugins/personal-workbench/_harness/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a600e57c0d166478b6703c932f1bd3ab70705db7b3a15b79acb911eab65c7b4b"
+    },
+    "plugins/personal-workbench/_harness/skills/marketing-writing/references/editorial-preservation.md": {
+      "mode": "0644",
+      "sha256": "1c9d3caaf21c4d26af61743bd134a296107a618acf38dd94fbd44a0ae22b493d"
+    },
+    "plugins/personal-workbench/_harness/skills/mcp-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "17d10bc94ecc9db1680f353c2f374e106b248d95a86cdb55b8d65b0d5dfd4a9d"
+    },
+    "plugins/personal-workbench/_harness/skills/mcp-integration/references/protocol-completion.md": {
+      "mode": "0644",
+      "sha256": "059b205862b013d1892b5163c46ad64e044f4a76c11ca4e3a8ee50c9f6ab9141"
+    },
+    "plugins/personal-workbench/_harness/skills/motion-design/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/personal-workbench/_harness/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "af4451ea245fac5c171d11a8e904409ffc029250dca51febebbb99dc8731e37d"
+    },
+    "plugins/personal-workbench/_harness/skills/motion-design/references/interaction-recipes.md": {
+      "mode": "0644",
+      "sha256": "b42ae5bc721ee4e76f2857fd7daa828f207f10fff5806a004163100fa9588edf"
+    },
+    "plugins/personal-workbench/_harness/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e545afcf233cfb78419a0e598f3dfb27abe7599c8fcea06400174b7fe8888260"
+    },
+    "plugins/personal-workbench/_harness/skills/office-authoring/references/production.md": {
+      "mode": "0644",
+      "sha256": "5bc6ac5ab1db222bc1362a7c0b9e3b71347d6300d3a35cc2fa6f7a81ccee5a68"
+    },
+    "plugins/personal-workbench/_harness/skills/page-transitions/SKILL.md": {
+      "mode": "0644",
+      "sha256": "04ad9dc1b4d50c21d6f80dd0aa4c304a84610fff9bf738eea07cbe236c918531"
+    },
+    "plugins/personal-workbench/_harness/skills/page-transitions/references/navigation-craft.md": {
+      "mode": "0644",
+      "sha256": "49818c3a7a7fadcc0ced4c9cf7f5a08d3d149a913e25d0bc733bb24a5aa40976"
+    },
+    "plugins/personal-workbench/_harness/skills/product-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6a643abd2403aee9a6736f0a9566b96d0414d860e8eb59fcd9ee7dfd4743fa28"
+    },
+    "plugins/personal-workbench/_harness/skills/product-management/references/decision-to-delivery.md": {
+      "mode": "0644",
+      "sha256": "789e31766888f1894516bb80a20af4426fdd49ec9b6dac72434d293b6d0fd701"
+    },
+    "plugins/personal-workbench/_harness/skills/release-operations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54ed12cd1ff0554440a726c51b79f3dda23d9a5a89282966af415b29121bc556"
+    },
+    "plugins/personal-workbench/_harness/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0678f382048ed7f38a6bc5773562605c1a0982b763b61e89f3211047a246ee76"
+    },
+    "plugins/personal-workbench/_harness/skills/research-and-synthesis/references/claim-verification.md": {
+      "mode": "0644",
+      "sha256": "688f1582323c4cd87870b645f6a43aad93aa033a3af1668f7c9ffa531d066e25"
+    },
+    "plugins/personal-workbench/_harness/skills/search-audit/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84ae19cd5cd890ece5a8f8b2315211fae5eb5d1ca42b34d8010909ee9b597f9a"
+    },
+    "plugins/personal-workbench/_harness/skills/search-visibility/SKILL.md": {
+      "mode": "0644",
+      "sha256": "368aafe9c86315788360dbb239e0b5e8ded6e69eb6dc20c0b7ed54c664ae698e"
+    },
+    "plugins/personal-workbench/_harness/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f90006fd06aac26b7094f24d265889e2b68f4aa687b2e02ed144d69aa97c1f61"
+    },
+    "plugins/personal-workbench/_harness/skills/security-judgment/references/agent-tool-boundaries.md": {
+      "mode": "0644",
+      "sha256": "59525c2b6b289b22ec9463394a37749ff2b4d1a3256fa5417c56f920092b4aee"
+    },
+    "plugins/personal-workbench/_harness/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "eb2dd544f794b3afd50e10e6cbc61d3b9586e884cde1b7dac05a9d1bfe342e42"
+    },
+    "plugins/personal-workbench/_harness/skills/skill-catalog/references/delivery-standards.md": {
+      "mode": "0644",
+      "sha256": "820f998b486eecccc86d2a9646dd6a74c5f5f469aedf4299b4446abc0a2d56db"
+    },
+    "plugins/personal-workbench/_harness/skills/skill-catalog/references/task-routing.md": {
+      "mode": "0644",
+      "sha256": "9f6e86dfae20c6abd5bb4e98168f51088d798ed6de5219730c5107a148ddcd47"
+    },
+    "plugins/personal-workbench/_harness/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-workbench/_harness/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-workbench/_harness/skills/svg-animation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6f5781f79a308ca642d104baa530d436ccd22c514d85468f913d52c7cd8b026c"
+    },
+    "plugins/personal-workbench/_harness/skills/svg-animation/references/svg-motion-craft.md": {
+      "mode": "0644",
+      "sha256": "f4af062877ec86e58637babca106226d0b3c48e51e0fbd24a7158cdd957ddbe4"
+    },
+    "plugins/personal-workbench/_harness/skills/svg-creation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "2318f0bc546008e0c9cb485b730e015ba73eb047e23137344b6a6459a892b89f"
+    },
+    "plugins/personal-workbench/_harness/skills/svg-creation/references/vector-craft.md": {
+      "mode": "0644",
+      "sha256": "db124874b2d9466ddd9c31d79fe7d1bb6e11c9e495bfa5c8ec12a50d054411f2"
+    },
+    "plugins/personal-workbench/_harness/skills/svg-creation/scripts/audit_svg.py": {
+      "mode": "0644",
+      "sha256": "a70542a0ac853bdc67a6cd87b6ba9cdceb470296420a51c2bf90b25d2f3bd753"
+    },
+    "plugins/personal-workbench/_harness/skills/test-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "be270c702fca23cd5bf4487769267aa1e1e26da3486d69befc9e99a7b19323bf"
+    },
+    "plugins/personal-workbench/_harness/skills/test-design/references/quality-assurance.md": {
+      "mode": "0644",
+      "sha256": "28b6cf15ca63086cf28113180dd9cb0f20be1727f6e60242e336e2467f4e7ec8"
+    },
+    "plugins/personal-workbench/_harness/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "862c74a28266ad13bd417a99cd3a78d11622cd08d63d2175f2bf655266c6a8dd"
+    },
+    "plugins/personal-workbench/_harness/skills/work-planning/references/artifact-review.md": {
+      "mode": "0644",
+      "sha256": "b5795bc012d8bbddf8c5b0a0ea3c0e8c5cd246fcf338fa9d3cd4df51e8d58cb8"
+    },
+    "plugins/personal-workbench/_harness/skills/work-planning/references/delivery-review.md": {
+      "mode": "0644",
+      "sha256": "d15b5dde5cef9e5c0d8b1a1a373b910bc62697c12d7ca0c617a1f52be953a519"
+    },
+    "plugins/personal-workbench/plugin.json": {
+      "mode": "0644",
+      "sha256": "ae5f6b9ec43fb50c6c413b7c9e63051521dca3328e2719d7bfc17f21639f1da6"
+    },
+    "plugins/personal-workbench/provenance.json": {
+      "mode": "0644",
+      "sha256": "bf6e1d022c2daa14ef4c7b34d425cc1ef1e5d13dd3a8c9ec40ea81b886ef294a"
+    },
+    "plugins/personal-workbench/skills/agent-coordination/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "755a3b88b337dcef8df6407e77e022f467f47340e5c3c19f79088b90d7b77275"
+    },
+    "plugins/personal-workbench/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "152971e2585a0add76378723a138012f92b1c32847773a4ce99f3225a8f43a98"
+    },
+    "plugins/personal-workbench/skills/ai-system-evaluation/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "aa1318217552d3ec18807bafe42d5506b7f4c4f297310b05b61067f4289624a5"
+    },
+    "plugins/personal-workbench/skills/ai-system-evaluation/references/harness-development.md": {
+      "mode": "0644",
+      "sha256": "d4f2c1f26970490be90d3075bae8c2978317bbe4a9d0fe8851b95d3fdc4c532d"
+    },
+    "plugins/personal-workbench/skills/ci-maintenance/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-workbench/skills/context-management/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cce92fd3ed0b77f0068b8f4d4564bf3bbe8969282c43f0892baf307ef3f1b0c6"
+    },
+    "plugins/personal-workbench/skills/context-management/references/repository-retrieval.md": {
+      "mode": "0644",
+      "sha256": "1f50b77a4584983ce018574ddcd2ba8622ba79a4da07514443e6e18912946dcc"
+    },
+    "plugins/personal-workbench/skills/document-parsing/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-workbench/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4f3372afa0eb36e907423c3204a13d7e9cd7b0f0711a35bbbfd42bf73f73144e"
+    },
+    "plugins/personal-workbench/skills/document-workflow/references/technical-documentation.md": {
+      "mode": "0644",
+      "sha256": "d1d5727fd5c3430c479aa34c12bac05ff9231e5dcd7ade07e13f074877b069b8"
+    },
+    "plugins/personal-workbench/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84fa9e001d9e6a0f69a349d77b1eed2f9167f80671a400b22124cd9c97a60bb2"
+    },
+    "plugins/personal-workbench/skills/engineering-judgment/references/boundary-decisions.md": {
+      "mode": "0644",
+      "sha256": "3454dd979eb101679c2063666be7f77eeacbf1377e29a4dc3a5c36a5738375d7"
+    },
+    "plugins/personal-workbench/skills/engineering-judgment/references/service-integration.md": {
+      "mode": "0644",
+      "sha256": "82ea8ec2b2f53cd5bb390056e92e5dff83dda9cc9df608009b275416792cda80"
+    },
+    "plugins/personal-workbench/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "609a688fbe6f2a1a0f2d33e409bb0d6be4187b13554d26edbfb9a52dbc7cedda"
+    },
+    "plugins/personal-workbench/skills/interface-design/references/application-composition.md": {
+      "mode": "0644",
+      "sha256": "fb1321c2c0d06023ca3add2675fc0d15e0c53e1869156f4e4413f6db0021278c"
+    },
+    "plugins/personal-workbench/skills/interface-design/references/art-direction-and-critique.md": {
+      "mode": "0644",
+      "sha256": "5b44f1ccb9d9aaf12db5527e905a31589ab67a0fe5ac96d0f3c72f386a6b7d1a"
+    },
+    "plugins/personal-workbench/skills/interface-design/references/public-page-composition.md": {
+      "mode": "0644",
+      "sha256": "8308382627d93f55ee2e0a93871c9d66823f1a5abd1ba17557c402eacbcec3ec"
+    },
+    "plugins/personal-workbench/skills/interface-design/references/workbench.md": {
+      "mode": "0644",
+      "sha256": "efb9e79a98ae421a5dc9ef9a0c688debc2eee1c93b319d4b0fdaf781354bd159"
+    },
+    "plugins/personal-workbench/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a600e57c0d166478b6703c932f1bd3ab70705db7b3a15b79acb911eab65c7b4b"
+    },
+    "plugins/personal-workbench/skills/marketing-writing/references/editorial-preservation.md": {
+      "mode": "0644",
+      "sha256": "1c9d3caaf21c4d26af61743bd134a296107a618acf38dd94fbd44a0ae22b493d"
+    },
+    "plugins/personal-workbench/skills/motion-design/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/motion-design/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/personal-workbench/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "af4451ea245fac5c171d11a8e904409ffc029250dca51febebbb99dc8731e37d"
+    },
+    "plugins/personal-workbench/skills/motion-design/references/interaction-recipes.md": {
+      "mode": "0644",
+      "sha256": "b42ae5bc721ee4e76f2857fd7daa828f207f10fff5806a004163100fa9588edf"
+    },
+    "plugins/personal-workbench/skills/office-authoring/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e545afcf233cfb78419a0e598f3dfb27abe7599c8fcea06400174b7fe8888260"
+    },
+    "plugins/personal-workbench/skills/office-authoring/references/production.md": {
+      "mode": "0644",
+      "sha256": "5bc6ac5ab1db222bc1362a7c0b9e3b71347d6300d3a35cc2fa6f7a81ccee5a68"
+    },
+    "plugins/personal-workbench/skills/research-and-synthesis/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0678f382048ed7f38a6bc5773562605c1a0982b763b61e89f3211047a246ee76"
+    },
+    "plugins/personal-workbench/skills/research-and-synthesis/references/claim-verification.md": {
+      "mode": "0644",
+      "sha256": "688f1582323c4cd87870b645f6a43aad93aa033a3af1668f7c9ffa531d066e25"
+    },
+    "plugins/personal-workbench/skills/security-judgment/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f90006fd06aac26b7094f24d265889e2b68f4aa687b2e02ed144d69aa97c1f61"
+    },
+    "plugins/personal-workbench/skills/security-judgment/references/agent-tool-boundaries.md": {
+      "mode": "0644",
+      "sha256": "59525c2b6b289b22ec9463394a37749ff2b4d1a3256fa5417c56f920092b4aee"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/.harness-source.json": {
+      "mode": "0644",
+      "sha256": "3aa130343a384555002179d0737f8d6dde67149b27e01f5cbb81a822cf202181"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "eb2dd544f794b3afd50e10e6cbc61d3b9586e884cde1b7dac05a9d1bfe342e42"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/references/delivery-standards.md": {
+      "mode": "0644",
+      "sha256": "820f998b486eecccc86d2a9646dd6a74c5f5f469aedf4299b4446abc0a2d56db"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/references/task-routing.md": {
+      "mode": "0644",
+      "sha256": "9f6e86dfae20c6abd5bb4e98168f51088d798ed6de5219730c5107a148ddcd47"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-workbench/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-workbench/skills/svg-creation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "2318f0bc546008e0c9cb485b730e015ba73eb047e23137344b6a6459a892b89f"
+    },
+    "plugins/personal-workbench/skills/svg-creation/references/vector-craft.md": {
+      "mode": "0644",
+      "sha256": "db124874b2d9466ddd9c31d79fe7d1bb6e11c9e495bfa5c8ec12a50d054411f2"
+    },
+    "plugins/personal-workbench/skills/svg-creation/scripts/audit_svg.py": {
+      "mode": "0644",
+      "sha256": "a70542a0ac853bdc67a6cd87b6ba9cdceb470296420a51c2bf90b25d2f3bd753"
+    },
+    "plugins/personal-workbench/skills/work-planning/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-workbench/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "862c74a28266ad13bd417a99cd3a78d11622cd08d63d2175f2bf655266c6a8dd"
+    },
+    "plugins/personal-workbench/skills/work-planning/references/artifact-review.md": {
+      "mode": "0644",
+      "sha256": "b5795bc012d8bbddf8c5b0a0ea3c0e8c5cd246fcf338fa9d3cd4df51e8d58cb8"
+    },
+    "plugins/personal-workbench/skills/work-planning/references/delivery-review.md": {
+      "mode": "0644",
+      "sha256": "d15b5dde5cef9e5c0d8b1a1a373b910bc62697c12d7ca0c617a1f52be953a519"
+    }
+  },
+  "name": "personal-ai",
+  "schema_version": 1,
+  "version": "3.1.0"
+}

@@ -236,6 +236,56 @@ class LocalSourceTests(CatalogFixture):
 
 
 class InstallTests(CatalogFixture):
+    def saved_files(self):
+        return {path.relative_to(self.project).as_posix():
+                (path.read_bytes(), path.stat().st_mtime_ns, path.stat().st_mode)
+                for path in self.project.rglob('*') if path.is_file()}
+
+    def test_every_generated_receipt_field_is_required_for_adoption(self):
+        self.install()
+        path = self.target() / catalog.RECEIPT
+        original = json.loads(path.read_text())
+        for field in original:
+            with self.subTest(field=field):
+                incomplete = dict(original)
+                incomplete.pop(field)
+                path.write_text(json.dumps(incomplete))
+                before = self.saved_files()
+                with self.assertRaises(ValueError):
+                    self.install()
+                self.assertEqual(self.saved_files(), before)
+
+    def test_invalid_receipt_values_cannot_authorize_an_unchanged_copy(self):
+        self.install()
+        path = self.target() / catalog.RECEIPT
+        original = json.loads(path.read_text())
+        invalid = {
+            'id': [None, True, {}, '', '../outside'],
+            'repository': [None, {}, 'owner', 'https://example.test/repo', '../repo'],
+            'commit': [None, True, 14, 'HEAD', 'a' * 39, 'g' * 40],
+            'path': [None, True, '', '../outside', '/absolute'],
+            'sha256': [False, [], 'g' * 64, 'a' * 63],
+            'installed_sha256': [False, [], 'g' * 64, 'a' * 63],
+            'executable_files': [False, [False], ['../outside'], [catalog.RECEIPT]],
+        }
+        for field, values in invalid.items():
+            for value in values:
+                with self.subTest(field=field, value=value):
+                    path.write_text(json.dumps(dict(original, **{field: value})))
+                    before = self.saved_files()
+                    with self.assertRaises(ValueError):
+                        self.install()
+                    self.assertEqual(self.saved_files(), before)
+
+    def test_local_receipt_has_an_explicit_null_commit(self):
+        self.install()
+        original = json.loads((self.target() / catalog.RECEIPT).read_text())
+        local = dict(original, repository='codemirket/harness', commit=None)
+        self.assertEqual(catalog.validate_receipt(local), local)
+        local.pop('commit')
+        with self.assertRaisesRegex(ValueError, 'required commit'):
+            catalog.validate_receipt(local)
+
     def test_registers_for_each_agent_and_preserves_payload_and_provenance(self):
         for agent in ('codex', 'claude'):
             with self.subTest(agent=agent):
@@ -248,6 +298,7 @@ class InstallTests(CatalogFixture):
                     'id': self.entry['id'], 'repository': 'example/skills',
                     'commit': 'a' * 40, 'path': 'skills/fixture',
                     'sha256': self.entry['sha256'],
+                    'installed_sha256': self.entry['sha256'],
                     'executable_files': [],
                 })
         self.assertFalse((self.project / '.codex').exists())

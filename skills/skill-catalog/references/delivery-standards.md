@@ -206,3 +206,26 @@ held-out benchmark. Use `ai-system-evaluation` for representative comparisons;
 preserve exact input/configuration versions, actual artifacts and reviewer basis.
 An agent's reported selection or self-awarded score does not certify application
 or quality. Retain human and agent review as distinct kinds of evidence.
+
+## Finance, markets and localization
+
+For financial work, reconcile grain, period, currency and source totals before
+interpreting ratios. Separate recognized profit, cash timing and financing; model
+an evidence-based downside and name the decision-changing assumption. Workbook
+formulas must recalculate in the actual engine, with independent control totals
+and inspected saved output. Unknown cached values are not zero.
+
+Market and venture decisions need dated comparable evidence, bottom-up units,
+addressable constraints and a test that could disconfirm the recommendation.
+An interview quotation is evidence of what one person said, not demand at scale.
+Do not substitute arbitrary market shares or uncalibrated scores for evidence.
+
+Translation must preserve meaning, uncertainty, negation, commitments and all
+executable placeholders or markup. Review numbers, locale conventions and glossary
+consistency; inspect actual UI layout when it is part of the delivery. Automated
+token checks cannot establish natural language quality or native-human review.
+
+Mobile and IT operations need the affected platform and consumer path: lifecycle,
+offline/retry and state restoration for apps; layer-specific diagnosis and recovery
+for access or device incidents. Record untested platforms explicitly. A role name
+never broadens access, production authority or professional credentials.

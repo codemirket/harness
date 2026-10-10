@@ -1,0 +1,3876 @@
+{
+  "bundles": {
+    "design-studio": [
+      {
+        "executable_files": [],
+        "export_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+        "id": "emil-break-ui",
+        "installed_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "break-ui",
+        "path": "skills/break-ui",
+        "source": {
+          "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+          "license_summary": "MIT",
+          "repository": "emilkowalski/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+        },
+        "source_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48",
+        "id": "emil-mobile-native",
+        "installed_sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "mobile-native",
+        "path": "skills/mobile-native",
+        "source": {
+          "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+          "license_summary": "MIT",
+          "repository": "emilkowalski/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+        },
+        "source_sha256": "5f912e486cd1fa0affca5b10b343f6fb7f507cce0a1d029b69f61df9e2d04d48"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "584d17af928ac06c3ed7a85de45c6f6169126582d1305141d4c58c94b96c34fc",
+        "id": "emil-pick-ui-library",
+        "installed_sha256": "584d17af928ac06c3ed7a85de45c6f6169126582d1305141d4c58c94b96c34fc",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "pick-ui-library",
+        "path": "skills/pick-ui-library",
+        "source": {
+          "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+          "license_summary": "MIT",
+          "repository": "emilkowalski/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+        },
+        "source_sha256": "2af7283384da9067f74e94bd3a17123d4b9a8858c66053f00ee20b68da5d7bf2"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0e512a88605e1159e1c47d28bbeb79aa8b9ef338b81c906ea000946654650edf",
+        "id": "emil-prototype",
+        "installed_sha256": "0e512a88605e1159e1c47d28bbeb79aa8b9ef338b81c906ea000946654650edf",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "prototype",
+        "path": "skills/prototype",
+        "source": {
+          "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+          "license_summary": "MIT",
+          "repository": "emilkowalski/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+        },
+        "source_sha256": "cbd3a04e83793f90ca0a398b70ea7af2ec090f11ee08ff1831662af6c14921e8"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "cadf3ba5a5a61dc2856bdf49728a6a2956b5133bc415c2c4c45e5621bfb2ae4d",
+        "id": "motion-design",
+        "installed_sha256": "cadf3ba5a5a61dc2856bdf49728a6a2956b5133bc415c2c4c45e5621bfb2ae4d",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "motion-design",
+        "path": "skills/motion-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "cadf3ba5a5a61dc2856bdf49728a6a2956b5133bc415c2c4c45e5621bfb2ae4d"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0672d4d968fbce3b6d1f3090b088abab1cc15ebf8cd34fceb6173535c8fbd58d",
+        "id": "open-design-article-magazine",
+        "installed_sha256": "0672d4d968fbce3b6d1f3090b088abab1cc15ebf8cd34fceb6173535c8fbd58d",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "article-magazine",
+        "path": "skills/article-magazine",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "94e9106d3cc174a909ece7e039cc88411e9a811adb36b822bd07c7a588d8c3b4"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5c7b540d95a221e69a2a4bc4efe56b9e722486fcac1b938e3517a1a0e29eb361",
+        "id": "open-design-deck-open-slide-canvas",
+        "installed_sha256": "5c7b540d95a221e69a2a4bc4efe56b9e722486fcac1b938e3517a1a0e29eb361",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "deck-open-slide-canvas",
+        "path": "skills/deck-open-slide-canvas",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "f84beef8c978bb2f9fba3d7194570eb2b5b7e724ff2ba2b11a2e7c770b7041ef"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "c9cf84388cebf131fd40492b127c1161a3bba78eeb350095791d914ad86916cc",
+        "id": "open-design-deck-swiss-international",
+        "installed_sha256": "c9cf84388cebf131fd40492b127c1161a3bba78eeb350095791d914ad86916cc",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "deck-swiss-international",
+        "path": "skills/deck-swiss-international",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "f1bb5f7c4bf9042d76465d60ad744116672fe8784cc45d1554fe7099033a9dac"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "aa25a6428fe3804289376b4aa89c1778ff327ab0ae710e24dfcda3af14b5e345",
+        "id": "open-design-doc-kami-parchment",
+        "installed_sha256": "aa25a6428fe3804289376b4aa89c1778ff327ab0ae710e24dfcda3af14b5e345",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "doc-kami-parchment",
+        "path": "skills/doc-kami-parchment",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "66453e483fcbd266c16fb470d769904f66c06be17ef2610df825294acaf981b8"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "2fc8eeb1bb3bebb5489d32cc098b568ac0b1088dbefab8f4efe2bb73d688f2b6",
+        "id": "open-design-faq-page",
+        "installed_sha256": "2fc8eeb1bb3bebb5489d32cc098b568ac0b1088dbefab8f4efe2bb73d688f2b6",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "faq-page",
+        "path": "skills/faq-page",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "bc9cdfb2f8b7dc78eb750d3d786c1698617dff9a0d2ccf55b04d23bcb5c00c05"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7cf6c5c98cb7802262197f0bc738af654f73856a64a44249b75d42e456f1b862",
+        "id": "open-design-frame-data-chart-nyt",
+        "installed_sha256": "7cf6c5c98cb7802262197f0bc738af654f73856a64a44249b75d42e456f1b862",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "frame-data-chart-nyt",
+        "path": "skills/frame-data-chart-nyt",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "1c51dd5a576c3093623a80fe0482d91f7d57e6917254c833ad0f9fd0e8cc6d1c"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "dd029ce228b42f9ce3c1a804bcb95d7e234bfb1709470f7f11b3ca1f03dde4fe",
+        "id": "open-design-frame-flowchart-sticky",
+        "installed_sha256": "dd029ce228b42f9ce3c1a804bcb95d7e234bfb1709470f7f11b3ca1f03dde4fe",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "frame-flowchart-sticky",
+        "path": "skills/frame-flowchart-sticky",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "dc58f39436b093d18409a652d936ac27d5fddfeb087ec2517d183d86fcae4408"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0bc748f1bf43aa05acbf15acedb2714cc139b856bcbc5e3c4d048be11a26d089",
+        "id": "open-design-login-flow",
+        "installed_sha256": "0bc748f1bf43aa05acbf15acedb2714cc139b856bcbc5e3c4d048be11a26d089",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "login-flow",
+        "path": "skills/login-flow",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "1aed213b9dd39b2fb34acf02e08073fe11e0c1cc2ab0564c076fceb3ed876cad"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "42b1591d1bc4de7a3de70de5f6d05ce19f3d10ced67e505b208443b461adfecb",
+        "id": "open-design-reference-design-contract",
+        "installed_sha256": "42b1591d1bc4de7a3de70de5f6d05ce19f3d10ced67e505b208443b461adfecb",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "reference-design-contract",
+        "path": "skills/reference-design-contract",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "4a8119734fb4edcd0ff3ce1d956ec0fb30fec90dfaea47e6ed3bc9d89a7db19c"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "109c92f38a2a2ae7f8cf0d2a9c146ee2948ab9d308255ad1c011f4985bfbb2f7",
+        "id": "taste-redesign-skill",
+        "installed_sha256": "109c92f38a2a2ae7f8cf0d2a9c146ee2948ab9d308255ad1c011f4985bfbb2f7",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "redesign-existing-projects",
+        "path": "skills/redesign-skill",
+        "source": {
+          "commit": "ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
+          "license_summary": "MIT",
+          "repository": "Leonxlnx/taste-skill",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/Leonxlnx/taste-skill/tree/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b"
+        },
+        "source_sha256": "1bcbdaa70d3bdd0cb98e3b4147d16f2895c1a14e525ae828fd067b4d5e304ad0"
+      }
+    ],
+    "engineering-operations": [
+      {
+        "executable_files": [],
+        "export_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "id": "agent-coordination",
+        "installed_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "agent-coordination",
+        "path": "skills/agent-coordination",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5fadfb540f51920cab41b9d44685358b076a1b580dceb099fea128b235b3fdbf",
+        "id": "awesome-observability-engineer",
+        "installed_sha256": "5fadfb540f51920cab41b9d44685358b076a1b580dceb099fea128b235b3fdbf",
+        "license_files": [
+          "LICENSE",
+          "LICENSE-CONTENT",
+          "docs/sources/sources.md"
+        ],
+        "name": "observability-engineer",
+        "path": "skills/observability-engineer",
+        "source": {
+          "commit": "bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5",
+          "fetch_mode": "files",
+          "license_summary": "CC-BY-4.0 for original non-code content; MIT tooling; per-source exceptions",
+          "repository": "sickn33/agentic-awesome-skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/tree/bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5"
+        },
+        "source_sha256": "c90d18a3543a810ceeef3d64850041d9a624e0321cecf045658711fb205c8526"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "6700af1d7060fd193347b01a929ba679fee8a5461be19a31d1a2b1c269772315",
+        "id": "awesome-security-auditor",
+        "installed_sha256": "6700af1d7060fd193347b01a929ba679fee8a5461be19a31d1a2b1c269772315",
+        "license_files": [
+          "LICENSE",
+          "LICENSE-CONTENT",
+          "docs/sources/sources.md"
+        ],
+        "name": "security-auditor",
+        "path": "skills/security-auditor",
+        "source": {
+          "commit": "bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5",
+          "fetch_mode": "files",
+          "license_summary": "CC-BY-4.0 for original non-code content; MIT tooling; per-source exceptions",
+          "repository": "sickn33/agentic-awesome-skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/tree/bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5"
+        },
+        "source_sha256": "d31ed8eb0ba25c4e38be0615a14b3ebefa58a77cc8c0fc42f0c0ecc6a2e4f7c5"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8cbdfd5260bd7b23e406684edb87c28307fc9dd5565cfd16d564d39ed343f72b",
+        "id": "awesome-terraform-specialist",
+        "installed_sha256": "8cbdfd5260bd7b23e406684edb87c28307fc9dd5565cfd16d564d39ed343f72b",
+        "license_files": [
+          "LICENSE",
+          "LICENSE-CONTENT",
+          "docs/sources/sources.md"
+        ],
+        "name": "terraform-specialist",
+        "path": "skills/terraform-specialist",
+        "source": {
+          "commit": "bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5",
+          "fetch_mode": "files",
+          "license_summary": "CC-BY-4.0 for original non-code content; MIT tooling; per-source exceptions",
+          "repository": "sickn33/agentic-awesome-skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/tree/bdacd76ed9e388733b5f91a5c75a4e8183a7c0b5"
+        },
+        "source_sha256": "8264dddfbe5152cbda4b209158749ebc3d63084d96b927aa92b742bbc25ba107"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "id": "ci-maintenance",
+        "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ci-maintenance",
+        "path": "skills/ci-maintenance",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "id": "context-management",
+        "installed_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "context-management",
+        "path": "skills/context-management",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe",
+        "id": "data-migrations",
+        "installed_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "data-migrations",
+        "path": "skills/data-migrations",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa",
+        "id": "database-systems",
+        "installed_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "database-systems",
+        "path": "skills/database-systems",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8c9b52719cf659572b9b489c791757e4209b9d5c466ca4bbf21514abfefb274c",
+        "id": "ecc-architecture-decision-records",
+        "installed_sha256": "8c9b52719cf659572b9b489c791757e4209b9d5c466ca4bbf21514abfefb274c",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "architecture-decision-records",
+        "path": "skills/architecture-decision-records",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "6bdab6bb06ea60eccee0cb5130aec5f057f7e48b83bfa32e951b6a677af07da8"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "1c18ba91741547a11a494d53b3c7b08583abf9515d2fda57b56e6581b5089b08",
+        "id": "ecc-contract-first",
+        "installed_sha256": "1c18ba91741547a11a494d53b3c7b08583abf9515d2fda57b56e6581b5089b08",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "contract-first",
+        "path": "skills/contract-first",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "3dce0e470e85b5a6e91dd94d2b6f08e95605032b3fa760146a88919c45bc516b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "cc9e955153ca83ba4b751ae190a51fc5ad6db297b96775b1fc6622e4f4eb550d",
+        "id": "ecc-hexagonal-architecture",
+        "installed_sha256": "cc9e955153ca83ba4b751ae190a51fc5ad6db297b96775b1fc6622e4f4eb550d",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "hexagonal-architecture",
+        "path": "skills/hexagonal-architecture",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "36d165c619fcea7f3d2ec10bec1f609e06b65c6c30c46d687d624948959389d6"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "c270ab27d42a20cb48403842341bdedb3b01a3990c47ccb9e078ff2ea9c30fdf",
+        "id": "ecc-mysql-patterns",
+        "installed_sha256": "c270ab27d42a20cb48403842341bdedb3b01a3990c47ccb9e078ff2ea9c30fdf",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "mysql-patterns",
+        "path": "skills/mysql-patterns",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "7e92fd55329c6c598a45e86dab2c8024228be5580a53493ea7947f3fbcd8810d"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "ce82fd9183c245f8c84f190b53fed061f68339781875076d2bd5840185e596b9",
+        "id": "ecc-production-audit",
+        "installed_sha256": "ce82fd9183c245f8c84f190b53fed061f68339781875076d2bd5840185e596b9",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "production-audit",
+        "path": "skills/production-audit",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "f2ce939bb415cdc69a0e302b944032374901e103eab9812113bf2c907adec7c3"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "9a2252c694eb54c0c7aaa140e5c594405601c45825534d444429e3a644de9bc7",
+        "id": "matt-codebase-design",
+        "installed_sha256": "9a2252c694eb54c0c7aaa140e5c594405601c45825534d444429e3a644de9bc7",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "codebase-design",
+        "path": "skills/engineering/codebase-design",
+        "source": {
+          "commit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+          "license_summary": "MIT (PR skill also copied third-party material; attribution retained)",
+          "repository": "mattpocock/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+        },
+        "source_sha256": "c63ab52b7a2a2069b1383f632e9d3419b5b688ffd288968c7a3664c4af50204d"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "2c3aac14e652b351b3fca627aa2433b731979aaafa0fdca66881884d74c0f1c3",
+        "id": "matt-domain-modeling",
+        "installed_sha256": "2c3aac14e652b351b3fca627aa2433b731979aaafa0fdca66881884d74c0f1c3",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "domain-modeling",
+        "path": "skills/engineering/domain-modeling",
+        "source": {
+          "commit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+          "license_summary": "MIT (PR skill also copied third-party material; attribution retained)",
+          "repository": "mattpocock/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+        },
+        "source_sha256": "24c6292ef93a3ded99e3491de8f9d7ac8e31bddf4549aaa1e1d64f79512fbefb"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "bfee88b3a082b3ec86314b110e9716b2af3e90f3d401614e9906e03fc17b4a74",
+        "id": "matt-handoff",
+        "installed_sha256": "bfee88b3a082b3ec86314b110e9716b2af3e90f3d401614e9906e03fc17b4a74",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "handoff",
+        "path": "skills/productivity/handoff",
+        "source": {
+          "commit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+          "license_summary": "MIT (PR skill also copied third-party material; attribution retained)",
+          "repository": "mattpocock/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+        },
+        "source_sha256": "fa2cc580a28e2d963b8236e5fdc0354dd394b98336a6d0f8d269fa6a8b7bfef8"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "08916a868f4f95a9741443593c52677dd4ee393d9cad9de887a8b2aad107166e",
+        "id": "matt-to-questionnaire",
+        "installed_sha256": "08916a868f4f95a9741443593c52677dd4ee393d9cad9de887a8b2aad107166e",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "to-questionnaire",
+        "path": "skills/productivity/to-questionnaire",
+        "source": {
+          "commit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+          "license_summary": "MIT (PR skill also copied third-party material; attribution retained)",
+          "repository": "mattpocock/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+        },
+        "source_sha256": "9bfddd68c049d68daafe0a66f61496822c42ffb9640e00100127a7a71b2b3794"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "304163c49a7196dba9028bc7765e7a8c4719c558740ec8ed30b9e13971c0767b",
+        "id": "openai-security-best-practices",
+        "installed_sha256": "304163c49a7196dba9028bc7765e7a8c4719c558740ec8ed30b9e13971c0767b",
+        "license_files": [
+          "skills/.curated/security-best-practices/LICENSE.txt"
+        ],
+        "name": "security-best-practices",
+        "path": "skills/.curated/security-best-practices",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "9ff4e8a998f598caa3f8cd3063a9cfb7a7cc181847ce0d0af48976bf5c7955cb"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "5b17be35bf5a26815437e0dfae9019c79db67091272c253ccef954f0a34ad55d",
+        "id": "openai-security-threat-model",
+        "installed_sha256": "5b17be35bf5a26815437e0dfae9019c79db67091272c253ccef954f0a34ad55d",
+        "license_files": [
+          "skills/.curated/security-threat-model/LICENSE.txt"
+        ],
+        "name": "security-threat-model",
+        "path": "skills/.curated/security-threat-model",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "164a4cbb245d1f40d1fb38db1459a2df5968837c2765e162fb03f2825b32df09"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f",
+        "id": "release-operations",
+        "installed_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "release-operations",
+        "path": "skills/release-operations",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
+      }
+    ],
+    "marketing-growth": [
+      {
+        "executable_files": [],
+        "export_sha256": "d1f640e9c3361f3db9b78f11e280090e187e46fcbb994103d983ad7b0d024343",
+        "id": "conversion-review",
+        "installed_sha256": "d1f640e9c3361f3db9b78f11e280090e187e46fcbb994103d983ad7b0d024343",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "conversion-review",
+        "path": "skills/conversion-review",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "d1f640e9c3361f3db9b78f11e280090e187e46fcbb994103d983ad7b0d024343"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "41f3d2abc7c6450a8107391dcabca3a804d541b5d990a2568587e9cc7e173092",
+        "id": "customer-research",
+        "installed_sha256": "41f3d2abc7c6450a8107391dcabca3a804d541b5d990a2568587e9cc7e173092",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "customer-research",
+        "path": "skills/customer-research",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "41f3d2abc7c6450a8107391dcabca3a804d541b5d990a2568587e9cc7e173092"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "a2e6c51507d0af91c858af7dfb8b282930ee293cd57d78da1f0b2c27f55348dd",
+        "id": "ecc-article-writing",
+        "installed_sha256": "a2e6c51507d0af91c858af7dfb8b282930ee293cd57d78da1f0b2c27f55348dd",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "article-writing",
+        "path": "skills/article-writing",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "455ed27db66c787c1d0f4143a260621d375f82187302394ccedd6642b1d8f912"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "fde76d7c6738f975e064b8fb3eaad4036a0bd26109a0fb36d8a673c426ad6859",
+        "id": "ecc-brand-voice",
+        "installed_sha256": "fde76d7c6738f975e064b8fb3eaad4036a0bd26109a0fb36d8a673c426ad6859",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "brand-voice",
+        "path": "skills/brand-voice",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "46c4ba472b0643c76dc3c6ced1c7b3b157bebad9e1953ccc3c77efabac4da623"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8cbe768b06a59036d58e326c30fd827b06bbcf5a5f12709e4ce041faa03033ce",
+        "id": "ecc-content-engine",
+        "installed_sha256": "8cbe768b06a59036d58e326c30fd827b06bbcf5a5f12709e4ce041faa03033ce",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "content-engine",
+        "path": "skills/content-engine",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "c2cb9e7799a02964ae2b261f5da943484deee1fe53044a2dd454698f4bc1094b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "f959048f968d72b9a408e39745a61d93fcb4e312cbd60b17b74442b0acb6dd14",
+        "id": "ecc-market-research",
+        "installed_sha256": "f959048f968d72b9a408e39745a61d93fcb4e312cbd60b17b74442b0acb6dd14",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "market-research",
+        "path": "skills/market-research",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "8246ab6e0448076fcb14b489b95a43b0973b8654e5f6fbf651b84ac406300dc9"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "64dfbe12f07ade59c01ea394452a58dea47170e4fa13fd438b63703d0948e9c8",
+        "id": "ecc-marketing-campaign",
+        "installed_sha256": "64dfbe12f07ade59c01ea394452a58dea47170e4fa13fd438b63703d0948e9c8",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "marketing-campaign",
+        "path": "skills/marketing-campaign",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "f3d3031b9e6898812dbe2a2cfb44a24a833d9fcc037a2ef48edbbf02a4ef6330"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "77480113828dc721e30c391e471bb7b0568b8fec239fb520d679d3c12db8f837",
+        "id": "experiment-design",
+        "installed_sha256": "77480113828dc721e30c391e471bb7b0568b8fec239fb520d679d3c12db8f837",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "experiment-design",
+        "path": "skills/experiment-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "77480113828dc721e30c391e471bb7b0568b8fec239fb520d679d3c12db8f837"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "56806ac6a8d1fcf2e1bb90af976e3dded938293dbf0e4784949086795a229e11",
+        "id": "marketing-competitors",
+        "installed_sha256": "56806ac6a8d1fcf2e1bb90af976e3dded938293dbf0e4784949086795a229e11",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "competitors",
+        "path": "skills/competitors",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "0a42c9a1bb8052a0a45dcefa90dc8d6f366eb6fcda99af6c27e13cab3d2e5aa4"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "380be56d0c228915d0a66a7bc52f7114ed5d3667bcd053e5cbde683847c7bd59",
+        "id": "marketing-cro",
+        "installed_sha256": "380be56d0c228915d0a66a7bc52f7114ed5d3667bcd053e5cbde683847c7bd59",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "cro",
+        "path": "skills/cro",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "0b5fc4929880f3bca8cebbedb9ed25ba54764460a3e2acba22d349ea0a70b15b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "eaf291fdb4906fa4c68dbd07dca06527f2e55eff6a1e8c161b8f7d2b673c5465",
+        "id": "marketing-emails",
+        "installed_sha256": "eaf291fdb4906fa4c68dbd07dca06527f2e55eff6a1e8c161b8f7d2b673c5465",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "emails",
+        "path": "skills/emails",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "3958a59c7d5829711e8655b7a44e70f8173c8ec1d1fede455d2a7ce072452419"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "a52718bc4767a1737c34030b2896ad57056ced2eed59e176a12ab70875b6d68b",
+        "id": "marketing-launch",
+        "installed_sha256": "a52718bc4767a1737c34030b2896ad57056ced2eed59e176a12ab70875b6d68b",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "launch",
+        "path": "skills/launch",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "ced1276f35c21bae795175c7ec9961e3d24a07060c0d18b7815c9d34e8652e69"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "14450fd4841058154ba2a7d7e6107665794d47a90e8c921654221a713b4763d5",
+        "id": "marketing-onboarding",
+        "installed_sha256": "14450fd4841058154ba2a7d7e6107665794d47a90e8c921654221a713b4763d5",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "onboarding",
+        "path": "skills/onboarding",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "9554ad30a8afd2d44e59a0d5db16128389aae19fe96a5a8aa31589b47a464843"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "25a03c8cded107df0bb5a559ec839f15bf700d304c79fd87852f4095a5e36c4b",
+        "id": "marketing-pricing",
+        "installed_sha256": "25a03c8cded107df0bb5a559ec839f15bf700d304c79fd87852f4095a5e36c4b",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "pricing",
+        "path": "skills/pricing",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "cb6810bfb085451215b0e98bd0ea300f5a0d898d10304622304e11779be2de05"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "06262eebc179c3fb3bd20bcb39670bcc90766ad847f1501149e911db4177363d",
+        "id": "marketing-product-context",
+        "installed_sha256": "06262eebc179c3fb3bd20bcb39670bcc90766ad847f1501149e911db4177363d",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "product-marketing",
+        "path": "skills/product-marketing",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "88e218047c547038c48aba454fb70ff1b1482db2a0573f07861719448ebf5d58"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "bedd6cbbdc81412d16aeef4eadd8241a2b253959b2d9fffff646cbb9aae67e61",
+        "id": "marketing-referrals",
+        "installed_sha256": "bedd6cbbdc81412d16aeef4eadd8241a2b253959b2d9fffff646cbb9aae67e61",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "referrals",
+        "path": "skills/referrals",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "448da2cf26c5e4e3b95af8c4ad72f6084f04214d47ed799a6f9536f8600817be"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "4a6c16d95cdebfef1787a7722e2beef925f6570266117dd57af4c546452f6fdc",
+        "id": "marketing-revops",
+        "installed_sha256": "4a6c16d95cdebfef1787a7722e2beef925f6570266117dd57af4c546452f6fdc",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "revops",
+        "path": "skills/revops",
+        "source": {
+          "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
+          "license_summary": "MIT",
+          "repository": "coreyhaines31/marketingskills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+        },
+        "source_sha256": "aa46ec612c34c5c830aec88f8f82dc9458b25adbf677b9e67ba462aa692f2486"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "bafae2ae4de15ee9b289014543759c95cdece42da53c24592749753383da30f3",
+        "id": "open-design-card-twitter",
+        "installed_sha256": "bafae2ae4de15ee9b289014543759c95cdece42da53c24592749753383da30f3",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "card-twitter",
+        "path": "skills/card-twitter",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "7783245427849ce3dda768221e3b71d2c1a3e955eafcebb687ecbdc5943988c3"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "304adb81eec9e0008e9c91c44a4c780f005782f62491c2fe6fdb87de67d16d06",
+        "id": "open-design-poster-hero",
+        "installed_sha256": "304adb81eec9e0008e9c91c44a4c780f005782f62491c2fe6fdb87de67d16d06",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "poster-hero",
+        "path": "skills/poster-hero",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "e2ed9782a75aa2a128be8ef853799e4cd06ea16939bffb69faf908cc0f9b22a6"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0a983a0f7ee9e510834b10cd85a0c329e9f2768970644d986c50cbd1fbcf67be",
+        "id": "search-audit",
+        "installed_sha256": "0a983a0f7ee9e510834b10cd85a0c329e9f2768970644d986c50cbd1fbcf67be",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "search-audit",
+        "path": "skills/search-audit",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0a983a0f7ee9e510834b10cd85a0c329e9f2768970644d986c50cbd1fbcf67be"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "65fefd6ba90203dad4f37e3666316b9687ffbbe3aba5a5ba74c4d7d7ceb62622",
+        "id": "search-visibility",
+        "installed_sha256": "65fefd6ba90203dad4f37e3666316b9687ffbbe3aba5a5ba74c4d7d7ceb62622",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "search-visibility",
+        "path": "skills/search-visibility",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "65fefd6ba90203dad4f37e3666316b9687ffbbe3aba5a5ba74c4d7d7ceb62622"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "a248d9267a384e34cc6c313a41335855f0e2fa667d0569621d1332d00ae5873e",
+        "id": "ui-ux-pro-max-banner-design",
+        "installed_sha256": "a248d9267a384e34cc6c313a41335855f0e2fa667d0569621d1332d00ae5873e",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "banner-design",
+        "path": ".claude/skills/banner-design",
+        "source": {
+          "commit": "477bcb28c9812b385cb51a4605ddf30d7b2266e2",
+          "license_summary": "MIT",
+          "repository": "nextlevelbuilder/ui-ux-pro-max-skill",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/477bcb28c9812b385cb51a4605ddf30d7b2266e2"
+        },
+        "source_sha256": "ea782a43dede5708dc5ee09ac43251b413eb24f3f377ad4fb3c87768c92124a3"
+      }
+    ],
+    "personal-foundation": [
+      {
+        "executable_files": [],
+        "export_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "id": "agent-coordination",
+        "installed_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "agent-coordination",
+        "path": "skills/agent-coordination",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0def6dbbf1baf8a44af20f4a074c06985a743dea69032fe1d90647fdc0e07ea3"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "30bae814114575f1709705531042a999c0b2e84794f91f9e28f66259d6ba1d01",
+        "id": "ai-system-evaluation",
+        "installed_sha256": "30bae814114575f1709705531042a999c0b2e84794f91f9e28f66259d6ba1d01",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ai-system-evaluation",
+        "path": "skills/ai-system-evaluation",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "30bae814114575f1709705531042a999c0b2e84794f91f9e28f66259d6ba1d01"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "id": "ci-maintenance",
+        "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ci-maintenance",
+        "path": "skills/ci-maintenance",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "id": "context-management",
+        "installed_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "context-management",
+        "path": "skills/context-management",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "0bd98abb11268172835186bed525e7d9ce61c05305a692d76c1df5deb979c32e"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "id": "document-parsing",
+        "installed_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "document-parsing",
+        "path": "skills/document-parsing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8763b143c4f8899a98d42c910111e0720094e1f895102d09cf38738811683695",
+        "id": "document-workflow",
+        "installed_sha256": "8763b143c4f8899a98d42c910111e0720094e1f895102d09cf38738811683695",
+        "license_files": [],
+        "name": "document-workflow",
+        "path": "skills/document-workflow",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "8763b143c4f8899a98d42c910111e0720094e1f895102d09cf38738811683695"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "98be58aeaae77c68fa5fa4d6afe7c464dad5589f5c2822bdf7ccd47a29efe1ed",
+        "id": "engineering-judgment",
+        "installed_sha256": "98be58aeaae77c68fa5fa4d6afe7c464dad5589f5c2822bdf7ccd47a29efe1ed",
+        "license_files": [],
+        "name": "engineering-judgment",
+        "path": "skills/engineering-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "98be58aeaae77c68fa5fa4d6afe7c464dad5589f5c2822bdf7ccd47a29efe1ed"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "2d4ea538c62c9d666058719fac62e84dc70e1539c9b0fce01bc9898ac2c7a5cf",
+        "id": "interface-design",
+        "installed_sha256": "2d4ea538c62c9d666058719fac62e84dc70e1539c9b0fce01bc9898ac2c7a5cf",
+        "license_files": [],
+        "name": "interface-design",
+        "path": "skills/interface-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "2d4ea538c62c9d666058719fac62e84dc70e1539c9b0fce01bc9898ac2c7a5cf"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b",
+        "id": "marketing-writing",
+        "installed_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b",
+        "license_files": [],
+        "name": "marketing-writing",
+        "path": "skills/marketing-writing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "dbb6584f94922e097292468e56b0dde9a51a7a659bf50fee80d68cda29ae540b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "id": "office-authoring",
+        "installed_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "office-authoring",
+        "path": "skills/office-authoring",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b",
+        "id": "research-and-synthesis",
+        "installed_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "research-and-synthesis",
+        "path": "skills/research-and-synthesis",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec",
+        "id": "security-judgment",
+        "installed_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "security-judgment",
+        "path": "skills/security-judgment",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "75eca8883d766513ad12d8308a52b55e70c17ccdb1e0cb37687ff8979f298bec"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8c6311882142a4e38eab14ee802640fe181968bef1c4ae611b62345296a15802",
+        "id": "skill-catalog",
+        "installed_sha256": "203f913f7b4ccc892cb978b2df6a5fa36fdbe877c93fa726d57510fcecd80064",
+        "license_files": [],
+        "name": "skill-catalog",
+        "path": "skills/skill-catalog",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "203f913f7b4ccc892cb978b2df6a5fa36fdbe877c93fa726d57510fcecd80064"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332",
+        "id": "work-planning",
+        "installed_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "work-planning",
+        "path": "skills/work-planning",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "8dbae6ab608deca37d6e23c08dde8d03979f1c364f3f1651f5edbc104c3ad332"
+      }
+    ],
+    "research-documents": [
+      {
+        "executable_files": [],
+        "export_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "id": "document-parsing",
+        "installed_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "document-parsing",
+        "path": "skills/document-parsing",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "13fc40db34ef4bfd923a8e78961e5a6f0b7e96452d75e943bf0611ada32bbad0"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "b132df149ce729ccb2edd2dcf4d94b0a994a8bcd81f0a0d5feaec72de6f298a2",
+        "id": "google-retrieving-developer-knowledge",
+        "installed_sha256": "b132df149ce729ccb2edd2dcf4d94b0a994a8bcd81f0a0d5feaec72de6f298a2",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "retrieving-developer-knowledge",
+        "path": "skills/developers/retrieving-developer-knowledge",
+        "source": {
+          "commit": "d6eee396ed6a51871cc3f0979c5ff1be26d35d10",
+          "license_summary": "Apache-2.0",
+          "repository": "google/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/google/skills/tree/d6eee396ed6a51871cc3f0979c5ff1be26d35d10"
+        },
+        "source_sha256": "652853ddc07aed8d379abc20db86da8f69ebfdb7f2cb66dffd38f24eaaaaf470"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "id": "office-authoring",
+        "installed_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "office-authoring",
+        "path": "skills/office-authoring",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "d8bfc3b4f2287de41ef4e84e0cb59a1007f2dd1ef0a726b73cfba9224190a7fc"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "2f16cf41cc695dc49b60eacd6e81597f54d016fe7748423a1ab0adbd27b4191b",
+        "id": "open-design-research-decision-room",
+        "installed_sha256": "2f16cf41cc695dc49b60eacd6e81597f54d016fe7748423a1ab0adbd27b4191b",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "research-decision-room",
+        "path": "skills/research-decision-room",
+        "source": {
+          "commit": "53231d40b778d88eba23f35547bf99485d3ae9fc",
+          "fetch_mode": "files",
+          "license_summary": "Apache-2.0 root; file-specific upstream declarations",
+          "repository": "nexu-io/open-design",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/nexu-io/open-design/tree/53231d40b778d88eba23f35547bf99485d3ae9fc"
+        },
+        "source_sha256": "ab549dfd749aada5450d2a5d5ea325225d679f605b7fe78bf2ab873f66adfedb"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "db0b8d8ba225be62ab83fe9bdf0e54a54be7a2389d2f94ad35a5f1f5164476a9",
+        "id": "openai-pdf",
+        "installed_sha256": "db0b8d8ba225be62ab83fe9bdf0e54a54be7a2389d2f94ad35a5f1f5164476a9",
+        "license_files": [
+          "skills/.curated/pdf/LICENSE.txt"
+        ],
+        "name": "pdf",
+        "path": "skills/.curated/pdf",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "8f289580a7a2e3519721f894ef9f172c7f0c128838d0947940e774f16e22c7d5"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b",
+        "id": "research-and-synthesis",
+        "installed_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "research-and-synthesis",
+        "path": "skills/research-and-synthesis",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "76194ad29d8e59007bce3ff650908d10da413285dae6ab45f7c2d4deede5c64b"
+      }
+    ],
+    "web-engineering": [
+      {
+        "executable_files": [],
+        "export_sha256": "b6aef6f1ebd21fab7fabd05201dc05bd4e77b00affa3cfb79a311ef7105eacb6",
+        "id": "addy-api-and-interface-design",
+        "installed_sha256": "b6aef6f1ebd21fab7fabd05201dc05bd4e77b00affa3cfb79a311ef7105eacb6",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "api-and-interface-design",
+        "path": "skills/api-and-interface-design",
+        "source": {
+          "canonical_skills": 25,
+          "commit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+          "license_files": [
+            "LICENSE"
+          ],
+          "license_summary": "MIT",
+          "notes": [
+            "Root MIT covers this checkout; retain LICENSE for copies/adaptations.",
+            "Individual skill copy misses repo-level shared references unless exact extra_files/remaps are applied.",
+            "Claude/Codex plugin manifests expose all skills. Session-start meta-skill hook is present but explicitly not wired by default. Other optional hooks are separate integration, not part of candidate installs."
+          ],
+          "repository": "addyosmani/agent-skills",
+          "review_coverage": "All canonical SKILL.md bodies read in full. Selected project skill local companions and shared references read in full. Static review only; no upstream execution or runtime validation.",
+          "reviewed_on": "2026-10-06",
+          "tracked_bytes": 1051016,
+          "tracked_files": 210,
+          "url": "https://github.com/addyosmani/agent-skills/tree/1401c8b8030e023baeebb31781a6653fe8e93026"
+        },
+        "source_sha256": "7e663636b9c938654ac685a1e5769e43e1a3f97748066181c8db0d77b80b4e41"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "0f9e82177260b682dd31861fa1caeed8a10400c4bc41481b33b62e065b784b45",
+        "id": "addy-code-review-and-quality",
+        "installed_sha256": "0f9e82177260b682dd31861fa1caeed8a10400c4bc41481b33b62e065b784b45",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "code-review-and-quality",
+        "path": "skills/code-review-and-quality",
+        "source": {
+          "canonical_skills": 25,
+          "commit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+          "license_files": [
+            "LICENSE"
+          ],
+          "license_summary": "MIT",
+          "notes": [
+            "Root MIT covers this checkout; retain LICENSE for copies/adaptations.",
+            "Individual skill copy misses repo-level shared references unless exact extra_files/remaps are applied.",
+            "Claude/Codex plugin manifests expose all skills. Session-start meta-skill hook is present but explicitly not wired by default. Other optional hooks are separate integration, not part of candidate installs."
+          ],
+          "repository": "addyosmani/agent-skills",
+          "review_coverage": "All canonical SKILL.md bodies read in full. Selected project skill local companions and shared references read in full. Static review only; no upstream execution or runtime validation.",
+          "reviewed_on": "2026-10-06",
+          "tracked_bytes": 1051016,
+          "tracked_files": 210,
+          "url": "https://github.com/addyosmani/agent-skills/tree/1401c8b8030e023baeebb31781a6653fe8e93026"
+        },
+        "source_sha256": "84446bc61e126f23f91d84f9c29c13078c0947cf67dfeeb759e03008595a6401"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "4d028f16bd8575ec00428707d3cf79f10799778d3d9e5b59a3fff41938335b1c",
+        "id": "addy-performance-optimization",
+        "installed_sha256": "4d028f16bd8575ec00428707d3cf79f10799778d3d9e5b59a3fff41938335b1c",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "performance-optimization",
+        "path": "skills/performance-optimization",
+        "source": {
+          "canonical_skills": 25,
+          "commit": "1401c8b8030e023baeebb31781a6653fe8e93026",
+          "license_files": [
+            "LICENSE"
+          ],
+          "license_summary": "MIT",
+          "notes": [
+            "Root MIT covers this checkout; retain LICENSE for copies/adaptations.",
+            "Individual skill copy misses repo-level shared references unless exact extra_files/remaps are applied.",
+            "Claude/Codex plugin manifests expose all skills. Session-start meta-skill hook is present but explicitly not wired by default. Other optional hooks are separate integration, not part of candidate installs."
+          ],
+          "repository": "addyosmani/agent-skills",
+          "review_coverage": "All canonical SKILL.md bodies read in full. Selected project skill local companions and shared references read in full. Static review only; no upstream execution or runtime validation.",
+          "reviewed_on": "2026-10-06",
+          "tracked_bytes": 1051016,
+          "tracked_files": 210,
+          "url": "https://github.com/addyosmani/agent-skills/tree/1401c8b8030e023baeebb31781a6653fe8e93026"
+        },
+        "source_sha256": "dc6cd7810e19352a00a0f997361b760c300cd384b63363d4d88739ee61294a01"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "id": "ci-maintenance",
+        "installed_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "ci-maintenance",
+        "path": "skills/ci-maintenance",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "7b052ddc5a2e645ab7e1cac09388f7f0006af627b4051190033b5c134f8fe212"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe",
+        "id": "data-migrations",
+        "installed_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "data-migrations",
+        "path": "skills/data-migrations",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "c2f8bd15cdbb9b8d6c5e14dcd295ef8b7e98e098372c46357430a0d60252cebe"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa",
+        "id": "database-systems",
+        "installed_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "database-systems",
+        "path": "skills/database-systems",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "3960f85c86f5c227f213bb88006c2989e2d86fb68e9c5a24b62c98df365918aa"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "a3120069fddb45de06894bce39c6265d114a9f5fd9b08e2e64ac9d2ee2e3ebed",
+        "id": "ecc-api-connector",
+        "installed_sha256": "a3120069fddb45de06894bce39c6265d114a9f5fd9b08e2e64ac9d2ee2e3ebed",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "api-connector-builder",
+        "path": "skills/api-connector-builder",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "8e93ae6677198fe0760a3a6b5982053d38a9ba7a1b2b3f4d4ee7c6b80ef48580"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "e0e0f0a705c9aed6d840e8f3e38b25d9637ad6c4a0f0326096933b91252949a4",
+        "id": "ecc-api-design",
+        "installed_sha256": "e0e0f0a705c9aed6d840e8f3e38b25d9637ad6c4a0f0326096933b91252949a4",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "api-design",
+        "path": "skills/api-design",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "a746b9d3d99c9ae0879dae2ed6740acfc6d3edde2d5020e20f65d8e2f14e4a1f"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "1c18ba91741547a11a494d53b3c7b08583abf9515d2fda57b56e6581b5089b08",
+        "id": "ecc-contract-first",
+        "installed_sha256": "1c18ba91741547a11a494d53b3c7b08583abf9515d2fda57b56e6581b5089b08",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "contract-first",
+        "path": "skills/contract-first",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "3dce0e470e85b5a6e91dd94d2b6f08e95605032b3fa760146a88919c45bc516b"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "81652e0d62998aa214754fc00299dfd05992993ec16b448d44e6e8136fb968c1",
+        "id": "ecc-nestjs-patterns",
+        "installed_sha256": "81652e0d62998aa214754fc00299dfd05992993ec16b448d44e6e8136fb968c1",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "nestjs-patterns",
+        "path": "skills/nestjs-patterns",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "5fbcbd8e0096d72060158c13881bf9e400c9005faf86a2e4e1dad459e8b11b70"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "a5e52eee28ce35c8978e6fa1c55d287a6caf6df88810442254b4a0ff3ba6a10f",
+        "id": "ecc-react-testing",
+        "installed_sha256": "a5e52eee28ce35c8978e6fa1c55d287a6caf6df88810442254b4a0ff3ba6a10f",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "react-testing",
+        "path": "skills/react-testing",
+        "source": {
+          "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
+          "license_summary": "MIT",
+          "repository": "affaan-m/ECC",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+        },
+        "source_sha256": "50e2390f1dd8fc79d3ee5ae96726b09cc5272f56e91936b20280214fd9bdc63d"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+        "id": "emil-break-ui",
+        "installed_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115",
+        "license_files": [
+          "LICENSE"
+        ],
+        "name": "break-ui",
+        "path": "skills/break-ui",
+        "source": {
+          "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+          "license_summary": "MIT",
+          "repository": "emilkowalski/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+        },
+        "source_sha256": "c1187cc77d0469d7320c3d8b8097d89824a7cb3ec4af6df8ea0c200d3c7d1115"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "b279d7d86c50470398e6b9f8083f2391761e0433c9e404fcf352eb42778440e9",
+        "id": "frontend-engineering",
+        "installed_sha256": "b279d7d86c50470398e6b9f8083f2391761e0433c9e404fcf352eb42778440e9",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "frontend-engineering",
+        "path": "skills/frontend-engineering",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "b279d7d86c50470398e6b9f8083f2391761e0433c9e404fcf352eb42778440e9"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "d2a9208b6d7137e0479b3e992da281cabcb20301f42ac9f2c1de321755b71f93",
+        "id": "mcp-integration",
+        "installed_sha256": "d2a9208b6d7137e0479b3e992da281cabcb20301f42ac9f2c1de321755b71f93",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "mcp-integration",
+        "path": "skills/mcp-integration",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "d2a9208b6d7137e0479b3e992da281cabcb20301f42ac9f2c1de321755b71f93"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "2491c4432260055c9f900ae8e05a9034835f05c10250f729de1adaf4e21da2b5",
+        "id": "openai-cli-creator",
+        "installed_sha256": "2491c4432260055c9f900ae8e05a9034835f05c10250f729de1adaf4e21da2b5",
+        "license_files": [
+          "skills/.curated/cli-creator/LICENSE.txt"
+        ],
+        "name": "cli-creator",
+        "path": "skills/.curated/cli-creator",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "ba9e2c07ddc2c895ae00434741113263f23129615562e04918fa336b805ebf65"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "30002bc5c98fa1667aefcd58305667312fe8e8b801688b7448dfc560f540c336",
+        "id": "openai-playwright",
+        "installed_sha256": "30002bc5c98fa1667aefcd58305667312fe8e8b801688b7448dfc560f540c336",
+        "license_files": [
+          "skills/.curated/playwright/LICENSE.txt"
+        ],
+        "name": "playwright",
+        "path": "skills/.curated/playwright",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "ecf7d14cf5695f8c0a4ef948c7e967c7f6c0a879483a5709e1f3a519d5fa7023"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "304163c49a7196dba9028bc7765e7a8c4719c558740ec8ed30b9e13971c0767b",
+        "id": "openai-security-best-practices",
+        "installed_sha256": "304163c49a7196dba9028bc7765e7a8c4719c558740ec8ed30b9e13971c0767b",
+        "license_files": [
+          "skills/.curated/security-best-practices/LICENSE.txt"
+        ],
+        "name": "security-best-practices",
+        "path": "skills/.curated/security-best-practices",
+        "source": {
+          "commit": "49f948faa9258a0c61caceaf225e179651397431",
+          "license_summary": "Per-skill Apache-2.0; deprecated in favor of openai/plugins",
+          "repository": "openai/skills",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+        },
+        "source_sha256": "9ff4e8a998f598caa3f8cd3063a9cfb7a7cc181847ce0d0af48976bf5c7955cb"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f",
+        "id": "release-operations",
+        "installed_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "release-operations",
+        "path": "skills/release-operations",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "456ba45eba14219f1a76104db9a5410cf696984e701f6be40c8278c11658198f"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "4c20399ede68444382408440c4bf978d1f779678da744d9520a047db5dd75f2e",
+        "id": "test-design",
+        "installed_sha256": "4c20399ede68444382408440c4bf978d1f779678da744d9520a047db5dd75f2e",
+        "license_files": [
+          "docs/third-party-notices.md"
+        ],
+        "name": "test-design",
+        "path": "skills/test-design",
+        "source": {
+          "commit": null,
+          "repository": "nazmirket/.ai"
+        },
+        "source_sha256": "4c20399ede68444382408440c4bf978d1f779678da744d9520a047db5dd75f2e"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "8f49044ccd0d670be8044229f8c8c5bddec9f538ba2116694f2f15d4d4ca64e0",
+        "id": "vercel-composition-patterns",
+        "installed_sha256": "8f49044ccd0d670be8044229f8c8c5bddec9f538ba2116694f2f15d4d4ca64e0",
+        "license_files": [
+          "README.md"
+        ],
+        "name": "vercel-composition-patterns",
+        "path": "skills/composition-patterns",
+        "source": {
+          "commit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+          "license_files": [
+            "README.md"
+          ],
+          "license_summary": "MIT declared in root README and React skill frontmatter; no standalone LICENSE or NOTICE in this revision",
+          "repository": "vercel-labs/agent-skills",
+          "review_coverage": "All 9 canonical SKILL bodies; all 125 individual React rule/reference files; compiled AGENTS preambles sampled as generated mirrors; both deployment scripts; optimization entrypoints and selected integration helpers. Not all optimize internals audited.",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/vercel-labs/agent-skills/tree/063bee94c3f4df8453406c830b0a7df0f2860278",
+          "version": "skill metadata varies; React 1.0.0, deploy 3.0.0, optimize 1.2.0"
+        },
+        "source_sha256": "de636f019e48213f5ed2884e7e78dcc2efd684d463edf161b9a6a168c560c88c"
+      },
+      {
+        "executable_files": [],
+        "export_sha256": "3e2a7192b849b85867ac9bd3cbb1cb920b51b10fe12c6d6259d21e3cb98b42e0",
+        "id": "vercel-react-best-practices",
+        "installed_sha256": "3e2a7192b849b85867ac9bd3cbb1cb920b51b10fe12c6d6259d21e3cb98b42e0",
+        "license_files": [
+          "README.md"
+        ],
+        "name": "vercel-react-best-practices",
+        "path": "skills/react-best-practices",
+        "source": {
+          "commit": "063bee94c3f4df8453406c830b0a7df0f2860278",
+          "license_files": [
+            "README.md"
+          ],
+          "license_summary": "MIT declared in root README and React skill frontmatter; no standalone LICENSE or NOTICE in this revision",
+          "repository": "vercel-labs/agent-skills",
+          "review_coverage": "All 9 canonical SKILL bodies; all 125 individual React rule/reference files; compiled AGENTS preambles sampled as generated mirrors; both deployment scripts; optimization entrypoints and selected integration helpers. Not all optimize internals audited.",
+          "reviewed_on": "2026-10-06",
+          "url": "https://github.com/vercel-labs/agent-skills/tree/063bee94c3f4df8453406c830b0a7df0f2860278",
+          "version": "skill metadata varies; React 1.0.0, deploy 3.0.0, optimize 1.2.0"
+        },
+        "source_sha256": "f182ed39d4418d6162955ea518afea0cb0057c4c768332e89916d987839b6e45"
+      }
+    ]
+  },
+  "clients": [
+    "codex-desktop",
+    "codex-cli"
+  ],
+  "files": {
+    ".agents/plugins/marketplace.json": {
+      "mode": "0644",
+      "sha256": "f357f624aa3c8af450ef738e9985b547f00b800b532e92565caae188aee95c06"
+    },
+    "plugins/design-studio/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "2e98edb3c8c630c4513f773d492bb2358539fcaf383c057a9e17656d2d828fce"
+    },
+    "plugins/design-studio/plugin.json": {
+      "mode": "0644",
+      "sha256": "982a82dc6638795c4166b6d1bfa03cc8807da797fa621fca80bcf967bd768208"
+    },
+    "plugins/design-studio/provenance.json": {
+      "mode": "0644",
+      "sha256": "71e7ae957d4e01da02c3aad4b2b96f9a27d46efbdbb8618d39c98e437d554529"
+    },
+    "plugins/design-studio/skills/article-magazine/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/article-magazine/SKILL.md": {
+      "mode": "0644",
+      "sha256": "3e83e6af0246c0cb8b6442daa16dd345c581fcc0270625edd76f9b4a2af9cc4b"
+    },
+    "plugins/design-studio/skills/article-magazine/example.html": {
+      "mode": "0644",
+      "sha256": "812682183f2173cce7b571a6da96bd73370c029aa7cce88bfe63d1d383f11976"
+    },
+    "plugins/design-studio/skills/article-magazine/example.md": {
+      "mode": "0644",
+      "sha256": "fb601f86e45a07fb4eab7eb7a69c0d85d8e68afdd2aa00affcf0488568f36091"
+    },
+    "plugins/design-studio/skills/break-ui/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/design-studio/skills/break-ui/CATALOG.md": {
+      "mode": "0644",
+      "sha256": "7358efcc6bb48e35187be1c064cf60022dcb18c72c18fab58b606dfc5f421f15"
+    },
+    "plugins/design-studio/skills/break-ui/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e7eec1d70ac56a04255e9c0dbe98084ea3d544cc04aaad34f32c95d6fa9dff5e"
+    },
+    "plugins/design-studio/skills/deck-open-slide-canvas/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/deck-open-slide-canvas/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0632b2822bff8da376a3f0497d7a2bf019dccf601fc02f1d5c970857ba57d94e"
+    },
+    "plugins/design-studio/skills/deck-open-slide-canvas/example.html": {
+      "mode": "0644",
+      "sha256": "fffbc7c4fed7a5f45a07f61d05e50dbba11740a69b2633d55763c67c0b3f018b"
+    },
+    "plugins/design-studio/skills/deck-open-slide-canvas/example.md": {
+      "mode": "0644",
+      "sha256": "910e72ee20384b4fdce8156788bf5fb56e4ad7aba7105048fd0a96dfd62e529f"
+    },
+    "plugins/design-studio/skills/deck-swiss-international/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/deck-swiss-international/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f9da31f2cb1d0dce7179c4a90112d76ba66a441e34afba1db6c463dfc51a776"
+    },
+    "plugins/design-studio/skills/deck-swiss-international/example.html": {
+      "mode": "0644",
+      "sha256": "fcd94bf610076be855e5949d1d94620a626fe18d36e55394f04768374953d40c"
+    },
+    "plugins/design-studio/skills/deck-swiss-international/example.md": {
+      "mode": "0644",
+      "sha256": "5dbe6011e60295f6aa3c0744126b49f03623a4d4b23f69de4f128e5c77934247"
+    },
+    "plugins/design-studio/skills/doc-kami-parchment/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/doc-kami-parchment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "dafb42c222c68c220fd0a59ed528b5424f1cf571f047c14b0103c71edaa5b77e"
+    },
+    "plugins/design-studio/skills/doc-kami-parchment/example.html": {
+      "mode": "0644",
+      "sha256": "4c14a0e155c66f5e4e7969a1f9baeae84ed83b447d9684285c5957a1879123d2"
+    },
+    "plugins/design-studio/skills/doc-kami-parchment/example.md": {
+      "mode": "0644",
+      "sha256": "5dfd7c287cd765991c5c37ecbe0c91487073bc1f9df0d587bc757e1ef1451d2a"
+    },
+    "plugins/design-studio/skills/faq-page/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/faq-page/SKILL.md": {
+      "mode": "0644",
+      "sha256": "3d08ebcde034944d15a944cb1e3258abcbed03eaaa74872b3eb8904a7def6306"
+    },
+    "plugins/design-studio/skills/faq-page/example.html": {
+      "mode": "0644",
+      "sha256": "f41b39fe2a512f81745aca91b8e0a26dc2c668f58985f385253c58a7e7a85ce6"
+    },
+    "plugins/design-studio/skills/frame-data-chart-nyt/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/frame-data-chart-nyt/SKILL.md": {
+      "mode": "0644",
+      "sha256": "662fd6715b867ccdc48e6949299d80cd600022a94522e9b8149c81a13dc73d36"
+    },
+    "plugins/design-studio/skills/frame-data-chart-nyt/example.html": {
+      "mode": "0644",
+      "sha256": "3e862686c117bbdea84219bd83af36633bdd689a42dc8f9f4a3350ccc8f76956"
+    },
+    "plugins/design-studio/skills/frame-data-chart-nyt/example.md": {
+      "mode": "0644",
+      "sha256": "1f9b43852eb42310c3ef846799af6874e17bb3fcd29140bbfa7058f20bdcae8c"
+    },
+    "plugins/design-studio/skills/frame-flowchart-sticky/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/frame-flowchart-sticky/SKILL.md": {
+      "mode": "0644",
+      "sha256": "743fc4b8330b00d0b3b80ac8a3cab20db8a8fba2b21259597f88500283ef801f"
+    },
+    "plugins/design-studio/skills/frame-flowchart-sticky/example.html": {
+      "mode": "0644",
+      "sha256": "c0152ff2dad05ed7e3f419bf47acffa99afd2c8a07df9a16469e110e5435fd3b"
+    },
+    "plugins/design-studio/skills/frame-flowchart-sticky/example.md": {
+      "mode": "0644",
+      "sha256": "1265f167cb0775361be16e3168a27050288be3dd149344715a4f0dabaf309dee"
+    },
+    "plugins/design-studio/skills/login-flow/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/login-flow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "bb9651864b476bc2fb0a6e2d8428eacb6c5922509d2cfb39b8ac109dba74bf10"
+    },
+    "plugins/design-studio/skills/login-flow/example.html": {
+      "mode": "0644",
+      "sha256": "013afd9a21a1485e506ada8b53070503069a38f3f11a61c52ee56dd312ab1305"
+    },
+    "plugins/design-studio/skills/login-flow/references/checklist.md": {
+      "mode": "0644",
+      "sha256": "0cb368437114e5e7d85c2e8b7af74fd4fef3752ffa0c813588f256aa7b44e782"
+    },
+    "plugins/design-studio/skills/mobile-native/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/design-studio/skills/mobile-native/SKILL.md": {
+      "mode": "0644",
+      "sha256": "888b7651d66d66dbac4e72b7c554638eb19bd971d686d6cbdf030a5ef3788f55"
+    },
+    "plugins/design-studio/skills/motion-design/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/design-studio/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9911ce01675acd41baa4d8ca94104fe1961b2eccb348c28dd13b4fbea5e9a1dc"
+    },
+    "plugins/design-studio/skills/pick-ui-library/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/design-studio/skills/pick-ui-library/SKILL.md": {
+      "mode": "0644",
+      "sha256": "90c7ffb75d954155d9f1786255d3027ea91b2c3eb9fca1ded01f4002c6263305"
+    },
+    "plugins/design-studio/skills/prototype/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/design-studio/skills/prototype/PICKER.md": {
+      "mode": "0644",
+      "sha256": "31a55eec94715cc79942e91e172e539e3031dcd5e2e5ee7c1446cf2caee960a6"
+    },
+    "plugins/design-studio/skills/prototype/SKILL.md": {
+      "mode": "0644",
+      "sha256": "304970a2341cb0ae397f497013c2a3da346d89021ae006ab13a1d6a3ed69707f"
+    },
+    "plugins/design-studio/skills/redesign-existing-projects/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4575a543ab88dad12ccea7d97e563d0bce5b448b06072e65d3264497dad326df"
+    },
+    "plugins/design-studio/skills/redesign-existing-projects/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4da24e17f837cf20fef7c4807b43dcd39434770046bb748c6e215cd2c35e5bac"
+    },
+    "plugins/design-studio/skills/reference-design-contract/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/design-studio/skills/reference-design-contract/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9ffb78e9206844df6e90fc210f9c3376f2f929c0e1df5f6126b7b0ff4da58b8d"
+    },
+    "plugins/design-studio/skills/reference-design-contract/example.html": {
+      "mode": "0644",
+      "sha256": "f0dd9db227e079d9f435d8c8e83c07980ff5756153f184ecb4ff5b4a2993b26b"
+    },
+    "plugins/design-studio/skills/reference-design-contract/references/checklist.md": {
+      "mode": "0644",
+      "sha256": "45b0fb2dc33a82c192f37e2454f049f08729e5abe04cf7c3bc978acc6048b599"
+    },
+    "plugins/engineering-operations/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "3c34d9c48b09e10b47c6edf5d4152e4c279947aacd1067ee971be510c1c05877"
+    },
+    "plugins/engineering-operations/plugin.json": {
+      "mode": "0644",
+      "sha256": "1213bbb97147b43b56f78c2f9692fa3382fdbfb956f3294f168fc740e64ddc2e"
+    },
+    "plugins/engineering-operations/provenance.json": {
+      "mode": "0644",
+      "sha256": "210f2423eb8edf9402c5fe1e2c83aeb9c3d061faa3622b9f4144bc4c4832e080"
+    },
+    "plugins/engineering-operations/skills/agent-coordination/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f0d375ecd0530e9661f0889794ffc2e52447e9ba4fd901d6fc9e79e45479d4a"
+    },
+    "plugins/engineering-operations/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "68c98a5d8929e39546cc3ccea00c8648458450e7e153ca9c4f3f2582997088d7"
+    },
+    "plugins/engineering-operations/skills/architecture-decision-records/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/engineering-operations/skills/architecture-decision-records/SKILL.md": {
+      "mode": "0644",
+      "sha256": "8d0061c03041c74127b8424e2d6e3035c738a7d926f52bcc663e8e78ba06f02e"
+    },
+    "plugins/engineering-operations/skills/ci-maintenance/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/engineering-operations/skills/codebase-design/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+    },
+    "plugins/engineering-operations/skills/codebase-design/DEEPENING.md": {
+      "mode": "0644",
+      "sha256": "f3dd099ce99289bd213914d8ee3e2429b78309c3957ca4583f7659551b1d53c1"
+    },
+    "plugins/engineering-operations/skills/codebase-design/DESIGN-IT-TWICE.md": {
+      "mode": "0644",
+      "sha256": "52b52e75655a27aea59c6966b410bac82448968ad46ef1ebb9f07c274e3ae010"
+    },
+    "plugins/engineering-operations/skills/codebase-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a790857626c54134427927240b14797a2a74006652878f1b641e96297a1e2652"
+    },
+    "plugins/engineering-operations/skills/codebase-design/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "edebc9e4fcfe102114012575eaa9600b9b5fd08c311664f389c36e7bc717740f"
+    },
+    "plugins/engineering-operations/skills/context-management/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6b09473c8ccec29e9b8ac26da208f637d05bc5296e2bfe93df75da38830be68e"
+    },
+    "plugins/engineering-operations/skills/contract-first/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/engineering-operations/skills/contract-first/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7c20f3b22e68d5d17114c26a102ce2c12e12b6c2598233fde2dd40b8d5448f7f"
+    },
+    "plugins/engineering-operations/skills/data-migrations/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/data-migrations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "328b7094de84dff98084c4bc4bf73bd351242d42a971fe00af26b0cf7d1efedf"
+    },
+    "plugins/engineering-operations/skills/database-systems/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/database-systems/SKILL.md": {
+      "mode": "0644",
+      "sha256": "502b8aa0716ae2aadd461937f3a60557cc0b164250803cc44e93aab184253f14"
+    },
+    "plugins/engineering-operations/skills/database-systems/references/document-databases.md": {
+      "mode": "0644",
+      "sha256": "8a0993f6ee028a37c5f0f62df3b76abd0116428b2246c903bc224fd834b050ae"
+    },
+    "plugins/engineering-operations/skills/database-systems/references/postgresql.md": {
+      "mode": "0644",
+      "sha256": "b11f5bddb744c1732ea396200ef03a61c2b0ff62ecd36560bff6dfb3c9d3e789"
+    },
+    "plugins/engineering-operations/skills/database-systems/references/redis.md": {
+      "mode": "0644",
+      "sha256": "4117c83032d35f2eed801a4b45c910b21233f3b8321c1c49fcbe438649f510f7"
+    },
+    "plugins/engineering-operations/skills/database-systems/references/sqlite.md": {
+      "mode": "0644",
+      "sha256": "71fce40e84a1bad3f37d6eff8fcffe8b8bad3680c6268218a5f6c036f971c080"
+    },
+    "plugins/engineering-operations/skills/domain-modeling/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+    },
+    "plugins/engineering-operations/skills/domain-modeling/ADR-FORMAT.md": {
+      "mode": "0644",
+      "sha256": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0"
+    },
+    "plugins/engineering-operations/skills/domain-modeling/GLOSSARY-FORMAT.md": {
+      "mode": "0644",
+      "sha256": "21dcc40cdec8e151a829b98ab1517c1867bc444e3665134a98c6983411996801"
+    },
+    "plugins/engineering-operations/skills/domain-modeling/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e925459f4874f0fcf14c62e3e22f8d239fa72fa8eff7c1c6b03f1bae2dd44df4"
+    },
+    "plugins/engineering-operations/skills/domain-modeling/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b"
+    },
+    "plugins/engineering-operations/skills/handoff/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+    },
+    "plugins/engineering-operations/skills/handoff/SKILL.md": {
+      "mode": "0644",
+      "sha256": "df738797c0a54d07711d1dd78271816f97cf709f1c4561396f5fefe836166c38"
+    },
+    "plugins/engineering-operations/skills/handoff/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "5c479fd562c691851690e8b18c8501045bef0943c10743d636b2fae26add1d28"
+    },
+    "plugins/engineering-operations/skills/hexagonal-architecture/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/engineering-operations/skills/hexagonal-architecture/SKILL.md": {
+      "mode": "0644",
+      "sha256": "c54020ed039a7614440a6d6b6dc9f39a1800076313da495978cd10f46c195965"
+    },
+    "plugins/engineering-operations/skills/mysql-patterns/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/engineering-operations/skills/mysql-patterns/SKILL.md": {
+      "mode": "0644",
+      "sha256": "85f7bb484c996443625f06844382c303edaf76464c0ae394f006f709cd2cb7a2"
+    },
+    "plugins/engineering-operations/skills/observability-engineer/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d"
+    },
+    "plugins/engineering-operations/skills/observability-engineer/.upstream-licenses/LICENSE-CONTENT": {
+      "mode": "0644",
+      "sha256": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf"
+    },
+    "plugins/engineering-operations/skills/observability-engineer/.upstream-licenses/docs/sources/sources.md": {
+      "mode": "0644",
+      "sha256": "39a8aeab54c25e033cd52ea22a87e16d8294bcf6be5113484fbde8010f6794c6"
+    },
+    "plugins/engineering-operations/skills/observability-engineer/SKILL.md": {
+      "mode": "0644",
+      "sha256": "c471984dd1d36c74f6cced1f60770d681682ea6b7c339b9f7143e8c231e80d55"
+    },
+    "plugins/engineering-operations/skills/production-audit/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/engineering-operations/skills/production-audit/SKILL.md": {
+      "mode": "0644",
+      "sha256": "91b1995f97868a71f4edaacc72da93c22d2026854310e9aad3fc071bc1502d42"
+    },
+    "plugins/engineering-operations/skills/release-operations/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/engineering-operations/skills/release-operations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54ed12cd1ff0554440a726c51b79f3dda23d9a5a89282966af415b29121bc556"
+    },
+    "plugins/engineering-operations/skills/security-auditor/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d"
+    },
+    "plugins/engineering-operations/skills/security-auditor/.upstream-licenses/LICENSE-CONTENT": {
+      "mode": "0644",
+      "sha256": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf"
+    },
+    "plugins/engineering-operations/skills/security-auditor/.upstream-licenses/docs/sources/sources.md": {
+      "mode": "0644",
+      "sha256": "39a8aeab54c25e033cd52ea22a87e16d8294bcf6be5113484fbde8010f6794c6"
+    },
+    "plugins/engineering-operations/skills/security-auditor/SKILL.md": {
+      "mode": "0644",
+      "sha256": "576b26c01abddfdbdd96b54b90d5a19491632364f96b4d5b4fe88249884cd572"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/.upstream-licenses/skills/.curated/security-best-practices/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/SKILL.md": {
+      "mode": "0644",
+      "sha256": "623a26dcb09e5177b5094f97751243061847e715cb536bbbc4d89e8e586dc6ba"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "6e9c6f2edce448eb2b589f81ad6e3f722665021785513bcbfd0bf7b86b529171"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/golang-general-backend-security.md": {
+      "mode": "0644",
+      "sha256": "a73c47c34497b120672d48411fe51dc90d426a571801a0b3f649e2ce4ec658b4"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-express-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "427835cbb5be7ba96172ea6ca9af80ddd4419c833e9ebf870996740c80d8406c"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-general-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "3a7bc7b3f6e7ff043db9dbaa8933894d7a19d987d0607e4ddae5d70184a63d63"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-jquery-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "bcbad2fa6c2a02709e47e889e70102c76886bf36bc798624d27db570eccf40da"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "71c773f7a97ce60c853adfa100b3d88b3b7bc4c6b8acaef1432ffabd923ee182"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "d3030c0f24bddb56b9bbb91bbec1ee49eb7778bce4d3e0297b2641b2fc6b0d9c"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/javascript-typescript-vue-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "77c6a747f9f17e3df03aad0fcb20d99ac7898001b81aef8b80908e45ac14a688"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/python-django-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "4fb69b5d45f10e588d1a8c35cdc5f59e18910f6b46a93e2d342d90f286f8dfd2"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/python-fastapi-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "7383c7f4fc271190b05e562ada7e825982a2c76b6c79a9f95a1da7687b65a616"
+    },
+    "plugins/engineering-operations/skills/security-best-practices/references/python-flask-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "9606d69190c04c167fdeac57e61297547a57b0542fd89dede36f355970446929"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/.upstream-licenses/skills/.curated/security-threat-model/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/SKILL.md": {
+      "mode": "0644",
+      "sha256": "550a74431a1b8ed498d3bd92a4266127d2ae8971c86bad392f7d8f09ab1b9db5"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "3319b59736312abceca614e341c0e59cae47263e3b58a22b2b5ddf1e5fc8c227"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/references/prompt-template.md": {
+      "mode": "0644",
+      "sha256": "81a59aa3fb3ac3a739d6a26ab38e4015965f215581ee54becef21a2b121ec29b"
+    },
+    "plugins/engineering-operations/skills/security-threat-model/references/security-controls-and-assets.md": {
+      "mode": "0644",
+      "sha256": "d536cfa9acad2523dc39134bcf33b9566c29dd9a57b407cbc9901637230c6b98"
+    },
+    "plugins/engineering-operations/skills/terraform-specialist/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "af98370a7edc0f00ec46979d049517833c9a7fa2ba74e3cf8cc42f7db557299d"
+    },
+    "plugins/engineering-operations/skills/terraform-specialist/.upstream-licenses/LICENSE-CONTENT": {
+      "mode": "0644",
+      "sha256": "deae07ece522fbca65ab33f0c18ca9630b1077a8f3f233c0af445235b3fb6fcf"
+    },
+    "plugins/engineering-operations/skills/terraform-specialist/.upstream-licenses/docs/sources/sources.md": {
+      "mode": "0644",
+      "sha256": "39a8aeab54c25e033cd52ea22a87e16d8294bcf6be5113484fbde8010f6794c6"
+    },
+    "plugins/engineering-operations/skills/terraform-specialist/SKILL.md": {
+      "mode": "0644",
+      "sha256": "98408f2825c257c9fc5e3f20262a9b363d1b3ee931727558acfa001f3a56fc49"
+    },
+    "plugins/engineering-operations/skills/to-questionnaire/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+    },
+    "plugins/engineering-operations/skills/to-questionnaire/SKILL.md": {
+      "mode": "0644",
+      "sha256": "456c15fe70303e93d83b8b9c5101e01ba70469404586db5e0301535029d18721"
+    },
+    "plugins/engineering-operations/skills/to-questionnaire/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "9e8a06c38c8842eea8d4922cb9d1ead8e3ace647bab259b943c994a1b4742bc2"
+    },
+    "plugins/marketing-growth/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "4d33691c065bfd4772cc8fe4c6352045661a371e6aacfc5f5049ea6d1a992e7b"
+    },
+    "plugins/marketing-growth/plugin.json": {
+      "mode": "0644",
+      "sha256": "2aefe2f994edcafc496f3f760f65898548552e8b42490985e5fa4d5ec51478f0"
+    },
+    "plugins/marketing-growth/provenance.json": {
+      "mode": "0644",
+      "sha256": "680434819e5bb805a9710f1ec527e0e558c73f3d82ca23b1edc09dfce438d9b2"
+    },
+    "plugins/marketing-growth/skills/article-writing/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/marketing-growth/skills/article-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "4b0b5344412fcd86cf0b701de24d5a9fb7d6fb56ed0c66e70f01e1a43ffa27a7"
+    },
+    "plugins/marketing-growth/skills/banner-design/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "738f69dfa83db5c347c678fb9d90e560877059f0de93a327c39001bff92dc014"
+    },
+    "plugins/marketing-growth/skills/banner-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "2b3c29477e97ca5a6a2d6a5f24860ab7d29e5a61ca0602d7bffea50d8608b37f"
+    },
+    "plugins/marketing-growth/skills/banner-design/references/banner-sizes-and-styles.md": {
+      "mode": "0644",
+      "sha256": "c8906fb1073a576ee8c680d9bc8586249cbc4ed36690da960d65a1c9c37143b7"
+    },
+    "plugins/marketing-growth/skills/brand-voice/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/marketing-growth/skills/brand-voice/SKILL.md": {
+      "mode": "0644",
+      "sha256": "66e62782ac7ce5f66ab579ff31668e2aa0fd6576e94f6a5aa760dfc82ecab0ff"
+    },
+    "plugins/marketing-growth/skills/brand-voice/references/voice-profile-schema.md": {
+      "mode": "0644",
+      "sha256": "3c5c2b04fd4b68642d2d3279829541bc56d211fdefc3498e86c1486abee8261b"
+    },
+    "plugins/marketing-growth/skills/card-twitter/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/marketing-growth/skills/card-twitter/SKILL.md": {
+      "mode": "0644",
+      "sha256": "46232a096239ba37e5f1b8b66c4b480d298c5f2272bfef0aec0b30ad515229ee"
+    },
+    "plugins/marketing-growth/skills/card-twitter/example.html": {
+      "mode": "0644",
+      "sha256": "06de166dae4af1bffcbeea53043923ce04cfdbe08904e2baab310bfff3290ca7"
+    },
+    "plugins/marketing-growth/skills/card-twitter/example.md": {
+      "mode": "0644",
+      "sha256": "b0050e4b74eb94849db705418e630c41f5d259d1ca03002677cff94644ed9b10"
+    },
+    "plugins/marketing-growth/skills/competitors/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/competitors/SKILL.md": {
+      "mode": "0644",
+      "sha256": "74a59b21371c02add61114a7e9e6dab2f67774f497c53d502e84a71a50ca1593"
+    },
+    "plugins/marketing-growth/skills/competitors/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "da6c92781fdd077dbac1ea9c35cd1fb4f0ec542075ee00966c058d3287a2d2e7"
+    },
+    "plugins/marketing-growth/skills/competitors/references/content-architecture.md": {
+      "mode": "0644",
+      "sha256": "893b0bf30a630753bff02345029a96959ac359a5221467132d553d8e09a2d433"
+    },
+    "plugins/marketing-growth/skills/competitors/references/templates.md": {
+      "mode": "0644",
+      "sha256": "138f4367a45fc9cc775f9fd67324f8a6f1e1f5c3c1a90bd952db4731f080844f"
+    },
+    "plugins/marketing-growth/skills/content-engine/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/marketing-growth/skills/content-engine/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cbdeb4f9de50f6b6443de37f08d8e95e58a0b2b650172470dade613acbc2506e"
+    },
+    "plugins/marketing-growth/skills/conversion-review/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/marketing-growth/skills/conversion-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3185dc4a5df853153e39adc8bf6da20cd9e6309f23097fcc866416b94d886e5"
+    },
+    "plugins/marketing-growth/skills/cro/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/cro/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0cb5b3083a310d6cebac981aa38452737f89b44cb0273f0dc2b77607e580755a"
+    },
+    "plugins/marketing-growth/skills/cro/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "62f3003602836e2b49d797ca582e7703629a6b07b131eb77b51b2bb39fe65775"
+    },
+    "plugins/marketing-growth/skills/cro/references/experiments.md": {
+      "mode": "0644",
+      "sha256": "bbcc356c0af36cfaa4556bf9e929deac30c65cafb37f909d7c51d4777fe254ca"
+    },
+    "plugins/marketing-growth/skills/cro/references/form.md": {
+      "mode": "0644",
+      "sha256": "e3115b0fdfb3968915b8e3acdc32a6e5f1d2c6a335ebbed25bee9b601ec573d7"
+    },
+    "plugins/marketing-growth/skills/customer-research/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/marketing-growth/skills/customer-research/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7b545cd7873fdfed1897cac31bef40a81dc86b542fb0f7c57835ae309181fc6b"
+    },
+    "plugins/marketing-growth/skills/emails/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/emails/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7eeb1027926bf215ae1990baa77f1fca43b703f55ca6a3f397d0ea45dc8ee2a2"
+    },
+    "plugins/marketing-growth/skills/emails/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "b90182c8b6edbb866ef82ad022db3d2fe8598e7329469117fb39edd9ab069f67"
+    },
+    "plugins/marketing-growth/skills/emails/references/copy-guidelines.md": {
+      "mode": "0644",
+      "sha256": "02f08897e4aa99ecc4ec1893d61d0c26d0c5e62e09af26f175087455e9b68e01"
+    },
+    "plugins/marketing-growth/skills/emails/references/email-types.md": {
+      "mode": "0644",
+      "sha256": "a5dd4f0555a7b21d2ff426948d15657825b9d16265652563f5e272d2e1879bfd"
+    },
+    "plugins/marketing-growth/skills/emails/references/sequence-templates.md": {
+      "mode": "0644",
+      "sha256": "f8f318f10e29abcd009cbee29e2bd178981d96c973099b508d30af6c10ab8d79"
+    },
+    "plugins/marketing-growth/skills/experiment-design/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/marketing-growth/skills/experiment-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "953c4dfcf377a729cf702759f3201163f1af67e3a664fedbcd07bb650b00a71d"
+    },
+    "plugins/marketing-growth/skills/launch/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/launch/SKILL.md": {
+      "mode": "0644",
+      "sha256": "c85119ba54ada267e94665b9de614f9705343dc1e95c714b1021607a91667c04"
+    },
+    "plugins/marketing-growth/skills/launch/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "f46936c348ea86dbe517ab18795e1dc1dd7fe27c23434e21a9e5434efc98cdfb"
+    },
+    "plugins/marketing-growth/skills/market-research/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/marketing-growth/skills/market-research/SKILL.md": {
+      "mode": "0644",
+      "sha256": "d5895b04c589768f53932eaeac092ea09d08fadbd66b257935555a06a98bef60"
+    },
+    "plugins/marketing-growth/skills/marketing-campaign/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/marketing-growth/skills/marketing-campaign/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b6c6b7b73b892270e37853c13e9c465ba833774b6c4c12d207b39c584321ef54"
+    },
+    "plugins/marketing-growth/skills/onboarding/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/onboarding/SKILL.md": {
+      "mode": "0644",
+      "sha256": "839940948a535f7028348d4117944c7f27ba650022b4ade856bbdcfb90a20603"
+    },
+    "plugins/marketing-growth/skills/onboarding/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "6086b1c34a6f171800bf32bf569ff08d7385c3c36637ce9f1a4cc2527bb36b47"
+    },
+    "plugins/marketing-growth/skills/onboarding/references/activation-models.md": {
+      "mode": "0644",
+      "sha256": "a13e82d8e3ebf810a0f0fb51fe91bbe349d8175baee5a97a85934fa20f63a8f7"
+    },
+    "plugins/marketing-growth/skills/onboarding/references/experiments.md": {
+      "mode": "0644",
+      "sha256": "b4caad0b50ca9483a6a79846d0b24a7bab62850b45a3f2232d73f78629468932"
+    },
+    "plugins/marketing-growth/skills/onboarding/references/minimum-path-to-value.md": {
+      "mode": "0644",
+      "sha256": "c2b7c71b8436a1456888a26b9c8892c33cd9e1b1bf758f6fd7282c00f87dcdc3"
+    },
+    "plugins/marketing-growth/skills/poster-hero/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/marketing-growth/skills/poster-hero/SKILL.md": {
+      "mode": "0644",
+      "sha256": "80d7cfd9c51d9781d069924dad0a54bdb683a8f490b1c3cd2694b72fac7702dc"
+    },
+    "plugins/marketing-growth/skills/poster-hero/example.html": {
+      "mode": "0644",
+      "sha256": "cb9a8407e06d45c6c10c14eec56eafaca4d3bfa80f7a3ed93f9fbe8522aa99ec"
+    },
+    "plugins/marketing-growth/skills/poster-hero/example.md": {
+      "mode": "0644",
+      "sha256": "25815bbcc8e171a4e16dc15006ef446368da0af3aabeaba9c90edba064e4953f"
+    },
+    "plugins/marketing-growth/skills/pricing/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/pricing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "51fbbc6ae82846cb3940fd081bec583046aea65f555b0bb629af455da7f14056"
+    },
+    "plugins/marketing-growth/skills/pricing/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "b0c88f299db5223ca2a9f27a9f61800bc63ee21fd845a53f5c92bb5695d0995f"
+    },
+    "plugins/marketing-growth/skills/pricing/references/pricing-models.md": {
+      "mode": "0644",
+      "sha256": "2cdb900b74f56a796c0331725e73eff4ecd84f8021b42efbb0a5b4903d1d9b16"
+    },
+    "plugins/marketing-growth/skills/pricing/references/pricing-page-teardown.md": {
+      "mode": "0644",
+      "sha256": "b58a3bffa58ae7c3a475aba33887daaa98e0dc0de57ea948314256b08aa306ad"
+    },
+    "plugins/marketing-growth/skills/pricing/references/research-methods.md": {
+      "mode": "0644",
+      "sha256": "b6aab09860dbab2f11d69cc9c179cc7f6e1a100ede28e5c49b59070a2caaeb15"
+    },
+    "plugins/marketing-growth/skills/pricing/references/tier-structure.md": {
+      "mode": "0644",
+      "sha256": "b59910d37cceb74484f28b065963daa60f5c4fb1ffc36a0584d0f3cad11f3e30"
+    },
+    "plugins/marketing-growth/skills/product-marketing/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/product-marketing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "3fb70a8ae7b6b506e7c2f08330a81e99de840943e289fb4a7c7fe76b4a59b272"
+    },
+    "plugins/marketing-growth/skills/product-marketing/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "0c6599b88f50ec1be91096a36ba6c5a15cf8312151394e3469e5ddb991b19afb"
+    },
+    "plugins/marketing-growth/skills/referrals/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/referrals/SKILL.md": {
+      "mode": "0644",
+      "sha256": "77e82529d6a1573eabcd1a70439f1bc7ceae93d8f2434a232772415e12eff973"
+    },
+    "plugins/marketing-growth/skills/referrals/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "4571af1f18088b12450b9a02d37ff8299e779e44b46ef6f44094119337a0a051"
+    },
+    "plugins/marketing-growth/skills/referrals/references/affiliate-programs.md": {
+      "mode": "0644",
+      "sha256": "d4dce216644514c703cd1200a51aee539f56bc251df0a6465c3df543f7060638"
+    },
+    "plugins/marketing-growth/skills/referrals/references/program-examples.md": {
+      "mode": "0644",
+      "sha256": "2baad60cdb251414ea559bd4dcf23d6c394ff66e593ae9392453f2e24f585c8a"
+    },
+    "plugins/marketing-growth/skills/referrals/references/viral-mechanisms.md": {
+      "mode": "0644",
+      "sha256": "04224240fae94bcf9bc64c7d8cac507bdd570049144e4df33946ac4ae8a483e4"
+    },
+    "plugins/marketing-growth/skills/revops/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    "plugins/marketing-growth/skills/revops/SKILL.md": {
+      "mode": "0644",
+      "sha256": "d0dbfdc4907cc0c5d44b94009007153c06fe0ec3887c189f40eb7d0e008f6a6c"
+    },
+    "plugins/marketing-growth/skills/revops/evals/evals.json": {
+      "mode": "0644",
+      "sha256": "bda1dd0d19785c8d5f71370fba0cab11c9af16c06813dcee2157e559dafbefc1"
+    },
+    "plugins/marketing-growth/skills/revops/references/automation-playbooks.md": {
+      "mode": "0644",
+      "sha256": "567efd379af6102e7eec95b7a630f29451c5a16ad93c4ae91a97d52ccb8428ea"
+    },
+    "plugins/marketing-growth/skills/revops/references/lifecycle-definitions.md": {
+      "mode": "0644",
+      "sha256": "210c730e815b82f6c06d67482e667c40f9ae2179886e318ccb25f1e31e09ca1f"
+    },
+    "plugins/marketing-growth/skills/revops/references/routing-rules.md": {
+      "mode": "0644",
+      "sha256": "9057c207550ff289e84d6b25ca9d38b436c98a517e0aa4f30c2ff8f09f5d8370"
+    },
+    "plugins/marketing-growth/skills/revops/references/scoring-models.md": {
+      "mode": "0644",
+      "sha256": "923062ddfd0e0eab5fbdb51286c484afd3fee6d42b10eb91b40a39e764b1beb5"
+    },
+    "plugins/marketing-growth/skills/search-audit/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/marketing-growth/skills/search-audit/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84ae19cd5cd890ece5a8f8b2315211fae5eb5d1ca42b34d8010909ee9b597f9a"
+    },
+    "plugins/marketing-growth/skills/search-visibility/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/marketing-growth/skills/search-visibility/SKILL.md": {
+      "mode": "0644",
+      "sha256": "368aafe9c86315788360dbb239e0b5e8ded6e69eb6dc20c0b7ed54c664ae698e"
+    },
+    "plugins/personal-foundation/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "08cd73539e2e58f48524f19fc279f4a7179196ad382d2d33b600d3449327d02c"
+    },
+    "plugins/personal-foundation/_harness/README.md": {
+      "mode": "0644",
+      "sha256": "20c7a54dad8d2ec0181db790c545db58868aa0ed9bc0e8422774e8db1434190f"
+    },
+    "plugins/personal-foundation/_harness/ai.py": {
+      "mode": "0644",
+      "sha256": "35884bd1ba157c22211903377d625b68eb9e8c5e34a6eaf952d74079ae14228e"
+    },
+    "plugins/personal-foundation/_harness/docs/catalog.md": {
+      "mode": "0644",
+      "sha256": "f327fa78c5b00fbcf53d67046231a705428eb4f3598f9106e579b3a166b93a5a"
+    },
+    "plugins/personal-foundation/_harness/docs/evidence/registration-2026-10-06.json": {
+      "mode": "0644",
+      "sha256": "b6ff04c6192b1a56b7ded292937a5c58e99eab00351551029f8d9b9617e45bda"
+    },
+    "plugins/personal-foundation/_harness/docs/plugins.md": {
+      "mode": "0644",
+      "sha256": "232e00ff3817e23c2cf9891cdb3f168e55ea4bf238e5be35acec36ecbaf123e9"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/design.md": {
+      "mode": "0644",
+      "sha256": "b22e12a7e7e6eee89df2e2fafc260fec08870f6670bcbe05f8a23fece72b5b27"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/engineering.md": {
+      "mode": "0644",
+      "sha256": "dc50f8d5bfef37319870431fa3f6b140794d4e87e0d8a0ffa65ff6ff9a49916b"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-design.md": {
+      "mode": "0644",
+      "sha256": "3ac53ffede9b2f6958935049e500536374c800c1420f950e5fc6f8bc42a7b25f"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-engineering.md": {
+      "mode": "0644",
+      "sha256": "580738266320b8bf649955476f20071907147695a57bed948c88c0808b4db17a"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/expanded-marketing-systems.md": {
+      "mode": "0644",
+      "sha256": "bbeb96546031d778a35a70b4c02b8285a36ed1afa9d454b08084d1dff0853792"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/marketing.md": {
+      "mode": "0644",
+      "sha256": "ac4a42249dbe88b9fead1a0c50fbc3eb23471445323358110248444e718527f7"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/planning-search.md": {
+      "mode": "0644",
+      "sha256": "3cb47de9ea0874d2cba4e3e5c3ff55cfb83ecab05f355e77f70c8f298048889f"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/providers.md": {
+      "mode": "0644",
+      "sha256": "82dd5dbf5ccea5374322a936ee988cb66f399b94bac6e1433b77fa88180d370e"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/quality-media.md": {
+      "mode": "0644",
+      "sha256": "d837baa16baa082d4eeefe79e6d9e97cf9c42dcb8bc93fce0827ef56b2b3cf73"
+    },
+    "plugins/personal-foundation/_harness/docs/reviews/vercel.md": {
+      "mode": "0644",
+      "sha256": "91d63e7fb6734379a0048b02fbd22777746ad5cdfcab45d9d2a7ac7f2d99a5c1"
+    },
+    "plugins/personal-foundation/_harness/docs/runtime-integrations.md": {
+      "mode": "0644",
+      "sha256": "43dfb3a334f1407ee06022a8bcc86eac6defbcc2ba91bfd10f72c28d92c9e8e3"
+    },
+    "plugins/personal-foundation/_harness/docs/scheduling.md": {
+      "mode": "0644",
+      "sha256": "3a78562bf65a5564ab03930eb19c3b34df612914a5215950cfa070b774a6de84"
+    },
+    "plugins/personal-foundation/_harness/docs/settings.md": {
+      "mode": "0644",
+      "sha256": "521830e68ef2912563ab5ff2dfbf910a141dc5a38f63fa903efcc188bb6814ed"
+    },
+    "plugins/personal-foundation/_harness/docs/source-review.md": {
+      "mode": "0644",
+      "sha256": "6402589280531a54fba894f56c5fc0229a3c71a31dd1e69287f0881ec1360213"
+    },
+    "plugins/personal-foundation/_harness/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/_harness/docs/verification.md": {
+      "mode": "0644",
+      "sha256": "cd6e0876d484dfe2340cd7bdd642c3d8d427aaeef7d189cbee46e3f2b355b5ea"
+    },
+    "plugins/personal-foundation/_harness/instructions/AGENTS.md": {
+      "mode": "0644",
+      "sha256": "630223517d0d46d6626db9f0ef4e2c45fea0de7921748c47dcd6b32a9a4020d0"
+    },
+    "plugins/personal-foundation/_harness/instructions/CLAUDE.md": {
+      "mode": "0644",
+      "sha256": "da04d443216856071bc6b251844e79ba49596a768f3e875200bc0ba1d76a1cca"
+    },
+    "plugins/personal-foundation/_harness/lib/__init__.py": {
+      "mode": "0644",
+      "sha256": "5e7b496fc3265544eda97a62e3390637c783cc0acf9e472c2a1dcba3a7932bca"
+    },
+    "plugins/personal-foundation/_harness/lib/bundle.py": {
+      "mode": "0644",
+      "sha256": "8e23f9dd077c4c1811e31989a4466cd6e6b78c02b76c462dea9c1784f60a1da7"
+    },
+    "plugins/personal-foundation/_harness/lib/catalog.py": {
+      "mode": "0644",
+      "sha256": "36c3d5a000ef7792b01201ca92621a994c139dacecfcc74aff9670a41f9b092a"
+    },
+    "plugins/personal-foundation/_harness/lib/claude_delegate.py": {
+      "mode": "0644",
+      "sha256": "92aef32f8ab878b113f89da5b8176d4ce91561733607fb7616e81dd72775e5d0"
+    },
+    "plugins/personal-foundation/_harness/lib/harness.py": {
+      "mode": "0644",
+      "sha256": "1137a7e629e50438b4a8631c7c53bea67aa48a2cd26bd8e97b73d0e021fd93c2"
+    },
+    "plugins/personal-foundation/_harness/lib/install.py": {
+      "mode": "0644",
+      "sha256": "79e161b39aae8e5718b66317905930b7f88d832a262bdc10b3576dbfb641f568"
+    },
+    "plugins/personal-foundation/_harness/lib/maintenance.py": {
+      "mode": "0644",
+      "sha256": "6c0ddcd6fbd446ae3392ee4ec4db2db9b9d86641bdbe43d15c017f75cb636e9c"
+    },
+    "plugins/personal-foundation/_harness/lib/runtime.py": {
+      "mode": "0644",
+      "sha256": "e74d03f00f394403fe22cf85dad6aa6cf3a1ff91cf63044f7a4c3d54297fb738"
+    },
+    "plugins/personal-foundation/_harness/lib/schedule.py": {
+      "mode": "0644",
+      "sha256": "8c5c15c6baaef4a836ec10399836c365c2188bc55091b5fbe66457a43af6c066"
+    },
+    "plugins/personal-foundation/_harness/lib/settings.py": {
+      "mode": "0644",
+      "sha256": "b512f62150471d25213af034c0ee15a3e68a972cbc02917f173170e7e6936647"
+    },
+    "plugins/personal-foundation/_harness/registry/catalog.json": {
+      "mode": "0644",
+      "sha256": "254c52cb92fcfad5c421df6dc4e9de1f88472fe61dce0005322391b93ea52800"
+    },
+    "plugins/personal-foundation/_harness/registry/codex-settings.json": {
+      "mode": "0644",
+      "sha256": "2b2df83201b055858bdaa44c19f903e9e5bf74a05403b73c7129f50765bbe99a"
+    },
+    "plugins/personal-foundation/_harness/registry/harness.json": {
+      "mode": "0644",
+      "sha256": "ed3d6855d2a189933d911e36d2ebb16fd14ffaa9474987e5274ddafb95a0ac5b"
+    },
+    "plugins/personal-foundation/_harness/registry/source-index.json": {
+      "mode": "0644",
+      "sha256": "34c2d57ac14b5f78425bccbd2dbc52540d2c466ecc488e4ce50e42431fc3ceaa"
+    },
+    "plugins/personal-foundation/_harness/scripts/render_registry.py": {
+      "mode": "0644",
+      "sha256": "d5e63fd78775fa0c9dacbe823eded00cca43cfa8d5f5e9d6a7eafe44ff8cedaa"
+    },
+    "plugins/personal-foundation/_harness/setup/README.md": {
+      "mode": "0644",
+      "sha256": "3e235a305509786576ff85883ad058f6ad8cae5afdc81349137e1c5f531b40f0"
+    },
+    "plugins/personal-foundation/_harness/setup/macos.sh": {
+      "mode": "0644",
+      "sha256": "6458b9d922658df213ba4b42be4e106ad88d3705064c7bb346b6698a07b77ffb"
+    },
+    "plugins/personal-foundation/_harness/setup/windows.ps1": {
+      "mode": "0644",
+      "sha256": "44f00509d59f6414d2d31ab8877e9962cc17fbef3171934079cfb7f0aa6a00db"
+    },
+    "plugins/personal-foundation/_harness/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f0d375ecd0530e9661f0889794ffc2e52447e9ba4fd901d6fc9e79e45479d4a"
+    },
+    "plugins/personal-foundation/_harness/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "68c98a5d8929e39546cc3ccea00c8648458450e7e153ca9c4f3f2582997088d7"
+    },
+    "plugins/personal-foundation/_harness/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "8ffb3c67bd005474ee73c9ca597fe8c433bfd0b1676ca716ba57d2695954e775"
+    },
+    "plugins/personal-foundation/_harness/skills/architecture-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ae412e790f586e3cb67fde541e47aa31b110bd07eaaa0449c0651811482bed82"
+    },
+    "plugins/personal-foundation/_harness/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-foundation/_harness/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6b09473c8ccec29e9b8ac26da208f637d05bc5296e2bfe93df75da38830be68e"
+    },
+    "plugins/personal-foundation/_harness/skills/conversion-review/SKILL.md": {
+      "mode": "0644",
+      "sha256": "a3185dc4a5df853153e39adc8bf6da20cd9e6309f23097fcc866416b94d886e5"
+    },
+    "plugins/personal-foundation/_harness/skills/customer-research/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7b545cd7873fdfed1897cac31bef40a81dc86b542fb0f7c57835ae309181fc6b"
+    },
+    "plugins/personal-foundation/_harness/skills/data-migrations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "328b7094de84dff98084c4bc4bf73bd351242d42a971fe00af26b0cf7d1efedf"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/SKILL.md": {
+      "mode": "0644",
+      "sha256": "502b8aa0716ae2aadd461937f3a60557cc0b164250803cc44e93aab184253f14"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/document-databases.md": {
+      "mode": "0644",
+      "sha256": "8a0993f6ee028a37c5f0f62df3b76abd0116428b2246c903bc224fd834b050ae"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/postgresql.md": {
+      "mode": "0644",
+      "sha256": "b11f5bddb744c1732ea396200ef03a61c2b0ff62ecd36560bff6dfb3c9d3e789"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/redis.md": {
+      "mode": "0644",
+      "sha256": "4117c83032d35f2eed801a4b45c910b21233f3b8321c1c49fcbe438649f510f7"
+    },
+    "plugins/personal-foundation/_harness/skills/database-systems/references/sqlite.md": {
+      "mode": "0644",
+      "sha256": "71fce40e84a1bad3f37d6eff8fcffe8b8bad3680c6268218a5f6c036f971c080"
+    },
+    "plugins/personal-foundation/_harness/skills/debugging/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f75d0137318eb9370b86faf125865b6662cc677c706ff6cd8d3b4cc7b596a64b"
+    },
+    "plugins/personal-foundation/_harness/skills/desktop-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f361b96379f1d013de0e984603b14ec82f529f9c52c278de3dcb7c82493350bd"
+    },
+    "plugins/personal-foundation/_harness/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-foundation/_harness/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "d5da028f3a9694ecdee236d6c01f40a5725b6069e566734f8582552172ec3f5a"
+    },
+    "plugins/personal-foundation/_harness/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ec09925a6e53d8e97a3f1146f59605ba9bc2a9febebf8513f6b35d89e51eafa4"
+    },
+    "plugins/personal-foundation/_harness/skills/experiment-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "953c4dfcf377a729cf702759f3201163f1af67e3a664fedbcd07bb650b00a71d"
+    },
+    "plugins/personal-foundation/_harness/skills/frontend-engineering/SKILL.md": {
+      "mode": "0644",
+      "sha256": "c742f446f1f3e7bda8f7a596c8583216382e07595ee986ed3fa9d3c09eed6b19"
+    },
+    "plugins/personal-foundation/_harness/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6aa66c2abb5a6248e37a4bad03970746bcdd2fbdfc7952215ba4f51f2a39839f"
+    },
+    "plugins/personal-foundation/_harness/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b2a97535681d53ef58e64b19e7f7486ee1e02063953e7e653bcae7a2f21a9d8a"
+    },
+    "plugins/personal-foundation/_harness/skills/mcp-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ad5c4aa0b17d523859482f3bc5b5c2b70430cb3ac14b433e277cc3e1d76bf661"
+    },
+    "plugins/personal-foundation/_harness/skills/motion-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9911ce01675acd41baa4d8ca94104fe1961b2eccb348c28dd13b4fbea5e9a1dc"
+    },
+    "plugins/personal-foundation/_harness/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1eca21028951ea4101ac4eeddd1366b88aea8535ebc4045e6cbae8967dad510b"
+    },
+    "plugins/personal-foundation/_harness/skills/release-operations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54ed12cd1ff0554440a726c51b79f3dda23d9a5a89282966af415b29121bc556"
+    },
+    "plugins/personal-foundation/_harness/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "150bfdc1496a8bed06e3f152ea33df4dc1bca57c8a87b3f3e3821d61857d1597"
+    },
+    "plugins/personal-foundation/_harness/skills/search-audit/SKILL.md": {
+      "mode": "0644",
+      "sha256": "84ae19cd5cd890ece5a8f8b2315211fae5eb5d1ca42b34d8010909ee9b597f9a"
+    },
+    "plugins/personal-foundation/_harness/skills/search-visibility/SKILL.md": {
+      "mode": "0644",
+      "sha256": "368aafe9c86315788360dbb239e0b5e8ded6e69eb6dc20c0b7ed54c664ae698e"
+    },
+    "plugins/personal-foundation/_harness/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "bbf4811c0c9aab814110d754a8a9a9b23629fa1edbbfa799de0efd0000dd8781"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0c302bab19b847375ed272ad842d5e544331911b85260f29a1ec4bc64974809c"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-foundation/_harness/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-foundation/_harness/skills/test-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6280f34081218dd15fe7020df638887ccfca1269b7dd4370c39d0eb351cfaf8b"
+    },
+    "plugins/personal-foundation/_harness/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "85cc93d685796bfffc49c08d3d7554b6e89387bce440b18249ba36695813bf00"
+    },
+    "plugins/personal-foundation/plugin.json": {
+      "mode": "0644",
+      "sha256": "212758b3e992d9240bb957437cd6b6757d16b9648c01825ad4ee724863c7fd77"
+    },
+    "plugins/personal-foundation/provenance.json": {
+      "mode": "0644",
+      "sha256": "5e0f252ea040d3fe7d895cc9760d6881f89ed4af75080e6d441f60590eb13abf"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/SKILL.md": {
+      "mode": "0644",
+      "sha256": "9f0d375ecd0530e9661f0889794ffc2e52447e9ba4fd901d6fc9e79e45479d4a"
+    },
+    "plugins/personal-foundation/skills/agent-coordination/references/claude-code.md": {
+      "mode": "0644",
+      "sha256": "68c98a5d8929e39546cc3ccea00c8648458450e7e153ca9c4f3f2582997088d7"
+    },
+    "plugins/personal-foundation/skills/ai-system-evaluation/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/ai-system-evaluation/SKILL.md": {
+      "mode": "0644",
+      "sha256": "8ffb3c67bd005474ee73c9ca597fe8c433bfd0b1676ca716ba57d2695954e775"
+    },
+    "plugins/personal-foundation/skills/ci-maintenance/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/personal-foundation/skills/context-management/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/context-management/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6b09473c8ccec29e9b8ac26da208f637d05bc5296e2bfe93df75da38830be68e"
+    },
+    "plugins/personal-foundation/skills/document-parsing/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/personal-foundation/skills/document-workflow/SKILL.md": {
+      "mode": "0644",
+      "sha256": "d5da028f3a9694ecdee236d6c01f40a5725b6069e566734f8582552172ec3f5a"
+    },
+    "plugins/personal-foundation/skills/engineering-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ec09925a6e53d8e97a3f1146f59605ba9bc2a9febebf8513f6b35d89e51eafa4"
+    },
+    "plugins/personal-foundation/skills/interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6aa66c2abb5a6248e37a4bad03970746bcdd2fbdfc7952215ba4f51f2a39839f"
+    },
+    "plugins/personal-foundation/skills/marketing-writing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "b2a97535681d53ef58e64b19e7f7486ee1e02063953e7e653bcae7a2f21a9d8a"
+    },
+    "plugins/personal-foundation/skills/office-authoring/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1eca21028951ea4101ac4eeddd1366b88aea8535ebc4045e6cbae8967dad510b"
+    },
+    "plugins/personal-foundation/skills/research-and-synthesis/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "150bfdc1496a8bed06e3f152ea33df4dc1bca57c8a87b3f3e3821d61857d1597"
+    },
+    "plugins/personal-foundation/skills/security-judgment/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/security-judgment/SKILL.md": {
+      "mode": "0644",
+      "sha256": "bbf4811c0c9aab814110d754a8a9a9b23629fa1edbbfa799de0efd0000dd8781"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/.harness-source.json": {
+      "mode": "0644",
+      "sha256": "3aa130343a384555002179d0737f8d6dde67149b27e01f5cbb81a822cf202181"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/SKILL.md": {
+      "mode": "0644",
+      "sha256": "0c302bab19b847375ed272ad842d5e544331911b85260f29a1ec4bc64974809c"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/scripts/catalog.py": {
+      "mode": "0644",
+      "sha256": "ea32921736cd1c2dc8e53542e3a55119700844f04189983f003d7c9f9d753208"
+    },
+    "plugins/personal-foundation/skills/skill-catalog/scripts/harness.py": {
+      "mode": "0644",
+      "sha256": "02dbe6e7c3def13833867c804d0a0eede1ccb9e4f945af5eb14fba46b62002d1"
+    },
+    "plugins/personal-foundation/skills/work-planning/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/personal-foundation/skills/work-planning/SKILL.md": {
+      "mode": "0644",
+      "sha256": "85cc93d685796bfffc49c08d3d7554b6e89387bce440b18249ba36695813bf00"
+    },
+    "plugins/research-documents/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "dd24c522177718a0a34c578cb08fca1f9a823d5262ea152ed91f891747562f00"
+    },
+    "plugins/research-documents/plugin.json": {
+      "mode": "0644",
+      "sha256": "70a7ea3f5520259cbb8cf0fedf13ad3fd9e04f7b5a38c0d2204f486a9af43259"
+    },
+    "plugins/research-documents/provenance.json": {
+      "mode": "0644",
+      "sha256": "67a1d13f7dc6b9240fd858a4bd1d21bf34ffba11f20866d4d573313543ecdb95"
+    },
+    "plugins/research-documents/skills/document-parsing/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/research-documents/skills/document-parsing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cfc1f1fe6835e325323edc85d0e3c5c7322173384d619e2c8597fc55ccd80636"
+    },
+    "plugins/research-documents/skills/office-authoring/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/research-documents/skills/office-authoring/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1eca21028951ea4101ac4eeddd1366b88aea8535ebc4045e6cbae8967dad510b"
+    },
+    "plugins/research-documents/skills/pdf/.upstream-licenses/skills/.curated/pdf/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/research-documents/skills/pdf/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/research-documents/skills/pdf/SKILL.md": {
+      "mode": "0644",
+      "sha256": "8e28de755868420b6e9028e00ea3bed6498738dfba06165bbe6d19c93fac3185"
+    },
+    "plugins/research-documents/skills/pdf/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "f8b223e25343559f57e1839ccd849fd1494a9729da33da04bb5074b7f80f4887"
+    },
+    "plugins/research-documents/skills/pdf/assets/pdf.png": {
+      "mode": "0644",
+      "sha256": "17da356d195d4e3fa24f9becbee6b8d9e60e13005762b5ab0809c520c76da6ee"
+    },
+    "plugins/research-documents/skills/research-and-synthesis/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/research-documents/skills/research-and-synthesis/SKILL.md": {
+      "mode": "0644",
+      "sha256": "150bfdc1496a8bed06e3f152ea33df4dc1bca57c8a87b3f3e3821d61857d1597"
+    },
+    "plugins/research-documents/skills/research-decision-room/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "9d95806a26532623360eb84bb17d298f394b55ef73fb4c0796d99b4319b2b0da"
+    },
+    "plugins/research-documents/skills/research-decision-room/SKILL.md": {
+      "mode": "0644",
+      "sha256": "5a923fc834407c54385e8a42fbf79535834788e34e8200a1ae61d0d65b67a118"
+    },
+    "plugins/research-documents/skills/research-decision-room/example.html": {
+      "mode": "0644",
+      "sha256": "4db7d498dfdc303ce01cae16003c5975741bbc7cc5629eb8d9010d7a74c80926"
+    },
+    "plugins/research-documents/skills/research-decision-room/references/checklist.md": {
+      "mode": "0644",
+      "sha256": "3943cffce04a46c749a2f02978f18a74c0784fbca0f9c8cdf5813fa462a2bf0e"
+    },
+    "plugins/research-documents/skills/research-decision-room/references/evidence-model.md": {
+      "mode": "0644",
+      "sha256": "3cf26d78129ec5d401fd795847667e872535df734de829f5a7a962f66e66c206"
+    },
+    "plugins/research-documents/skills/retrieving-developer-knowledge/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "plugins/research-documents/skills/retrieving-developer-knowledge/SKILL.md": {
+      "mode": "0644",
+      "sha256": "620a10c7a9dcd565919828ce549ae9348edc6262be7e21046d7b6a977f10f09d"
+    },
+    "plugins/research-documents/skills/retrieving-developer-knowledge/references/api-fallback.md": {
+      "mode": "0644",
+      "sha256": "0608ebee1a94eb26ff67a3cfca403f574652e27f58cc9a949e6f325d9f5a811d"
+    },
+    "plugins/research-documents/skills/retrieving-developer-knowledge/references/mcp-usage.md": {
+      "mode": "0644",
+      "sha256": "b4c0a6d6638796c6a2fd89c6cf3fa7a11162fb864a6072d04c9ca8d49e07872f"
+    },
+    "plugins/research-documents/skills/retrieving-developer-knowledge/references/supported-domains.md": {
+      "mode": "0644",
+      "sha256": "a3292832af739ad40f530eff852e0d4017c329d7df6e9ae02c98f44a719732f2"
+    },
+    "plugins/web-engineering/.codex-plugin/plugin.json": {
+      "mode": "0644",
+      "sha256": "f2a7ba20c62e4cdf21d7fe1453e648bd71c87961b65f53d0e1abf711430e44d8"
+    },
+    "plugins/web-engineering/plugin.json": {
+      "mode": "0644",
+      "sha256": "b2b64395f7193dbfc5ee2ee062f36ed1d235aec7efbb737576f4b68d20dfcd58"
+    },
+    "plugins/web-engineering/provenance.json": {
+      "mode": "0644",
+      "sha256": "73b3fc8aa0c03f3d2e3f8c3be5c74ab9537daba2ff04189440a445f3ab38e677"
+    },
+    "plugins/web-engineering/skills/api-and-interface-design/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7"
+    },
+    "plugins/web-engineering/skills/api-and-interface-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "d8afe05b4c68d4193bd3de9965cfe5477f00ee578e7b1c3473a2777b2fc416d3"
+    },
+    "plugins/web-engineering/skills/api-connector-builder/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/web-engineering/skills/api-connector-builder/SKILL.md": {
+      "mode": "0644",
+      "sha256": "f22833f0deb28057993474a378511f620bea043a00545dcdb7a9bb6f5dc9e4b4"
+    },
+    "plugins/web-engineering/skills/api-design/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/web-engineering/skills/api-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "2333aafb10fc4d78fe0c982b849b1a0d4966cbbeb528bccf9f3e49d5c6a9f919"
+    },
+    "plugins/web-engineering/skills/break-ui/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "4ff5bdb7887ec1435c9cab0e8d1a7caee704d894d65c2a008ccc68b1cc2f260b"
+    },
+    "plugins/web-engineering/skills/break-ui/CATALOG.md": {
+      "mode": "0644",
+      "sha256": "7358efcc6bb48e35187be1c064cf60022dcb18c72c18fab58b606dfc5f421f15"
+    },
+    "plugins/web-engineering/skills/break-ui/SKILL.md": {
+      "mode": "0644",
+      "sha256": "e7eec1d70ac56a04255e9c0dbe98084ea3d544cc04aaad34f32c95d6fa9dff5e"
+    },
+    "plugins/web-engineering/skills/ci-maintenance/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/ci-maintenance/SKILL.md": {
+      "mode": "0644",
+      "sha256": "99f27a16180a542adf5a77b80e299cfc21ddc262608503285f808105f0c8b5a4"
+    },
+    "plugins/web-engineering/skills/cli-creator/.upstream-licenses/skills/.curated/cli-creator/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/web-engineering/skills/cli-creator/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/web-engineering/skills/cli-creator/SKILL.md": {
+      "mode": "0644",
+      "sha256": "027315f18d90e57f90bd4e405955a7dd92364ceadd078e915e2306389ace86c0"
+    },
+    "plugins/web-engineering/skills/cli-creator/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "356c648dcdd7e10d65df0c348175344b36f28c7da51e031010a7385124a89f4c"
+    },
+    "plugins/web-engineering/skills/cli-creator/references/agent-cli-patterns.md": {
+      "mode": "0644",
+      "sha256": "ac11612b780a80a97b15a5ffca23b21a182f854003911cce2363dd69b6126272"
+    },
+    "plugins/web-engineering/skills/code-review-and-quality/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7"
+    },
+    "plugins/web-engineering/skills/code-review-and-quality/SKILL.md": {
+      "mode": "0644",
+      "sha256": "261a8879cf5c2b33c5f5cf9135e27c4d585c368b0c55c899008dd99292ba7f9c"
+    },
+    "plugins/web-engineering/skills/code-review-and-quality/references/performance-checklist.md": {
+      "mode": "0644",
+      "sha256": "40f564d1e62341e277c01ba42c42d95264b9ef3b8e5a23249dc6e121a7e70067"
+    },
+    "plugins/web-engineering/skills/code-review-and-quality/references/security-checklist.md": {
+      "mode": "0644",
+      "sha256": "37774056502fe8970dcd2fd27dca5fa31f2a55232649fc3056c89c3af7d62755"
+    },
+    "plugins/web-engineering/skills/contract-first/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/web-engineering/skills/contract-first/SKILL.md": {
+      "mode": "0644",
+      "sha256": "7c20f3b22e68d5d17114c26a102ce2c12e12b6c2598233fde2dd40b8d5448f7f"
+    },
+    "plugins/web-engineering/skills/data-migrations/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/data-migrations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "328b7094de84dff98084c4bc4bf73bd351242d42a971fe00af26b0cf7d1efedf"
+    },
+    "plugins/web-engineering/skills/database-systems/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/database-systems/SKILL.md": {
+      "mode": "0644",
+      "sha256": "502b8aa0716ae2aadd461937f3a60557cc0b164250803cc44e93aab184253f14"
+    },
+    "plugins/web-engineering/skills/database-systems/references/document-databases.md": {
+      "mode": "0644",
+      "sha256": "8a0993f6ee028a37c5f0f62df3b76abd0116428b2246c903bc224fd834b050ae"
+    },
+    "plugins/web-engineering/skills/database-systems/references/postgresql.md": {
+      "mode": "0644",
+      "sha256": "b11f5bddb744c1732ea396200ef03a61c2b0ff62ecd36560bff6dfb3c9d3e789"
+    },
+    "plugins/web-engineering/skills/database-systems/references/redis.md": {
+      "mode": "0644",
+      "sha256": "4117c83032d35f2eed801a4b45c910b21233f3b8321c1c49fcbe438649f510f7"
+    },
+    "plugins/web-engineering/skills/database-systems/references/sqlite.md": {
+      "mode": "0644",
+      "sha256": "71fce40e84a1bad3f37d6eff8fcffe8b8bad3680c6268218a5f6c036f971c080"
+    },
+    "plugins/web-engineering/skills/frontend-engineering/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/frontend-engineering/SKILL.md": {
+      "mode": "0644",
+      "sha256": "c742f446f1f3e7bda8f7a596c8583216382e07595ee986ed3fa9d3c09eed6b19"
+    },
+    "plugins/web-engineering/skills/mcp-integration/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/mcp-integration/SKILL.md": {
+      "mode": "0644",
+      "sha256": "ad5c4aa0b17d523859482f3bc5b5c2b70430cb3ac14b433e277cc3e1d76bf661"
+    },
+    "plugins/web-engineering/skills/nestjs-patterns/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/web-engineering/skills/nestjs-patterns/SKILL.md": {
+      "mode": "0644",
+      "sha256": "058fca9050fe421bfb8caae48fe002f0db924e094141aadb62f97039a4e32291"
+    },
+    "plugins/web-engineering/skills/performance-optimization/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "6f202f8bd568cd730dbb2b0d1f8e243bc74c2fa1f64dbce9b2c7ea08bd5c9fd7"
+    },
+    "plugins/web-engineering/skills/performance-optimization/SKILL.md": {
+      "mode": "0644",
+      "sha256": "82a9b9d2d8681e9d6713ca65a279390f7d1866905f094dd87ed62d9b7b1ec38d"
+    },
+    "plugins/web-engineering/skills/performance-optimization/references/optimization-patterns.md": {
+      "mode": "0644",
+      "sha256": "d213e0617efc980e3f0cb6d9204e79f8efd54e0e2391df1c20cd675c1f52fca2"
+    },
+    "plugins/web-engineering/skills/performance-optimization/references/performance-checklist.md": {
+      "mode": "0644",
+      "sha256": "40f564d1e62341e277c01ba42c42d95264b9ef3b8e5a23249dc6e121a7e70067"
+    },
+    "plugins/web-engineering/skills/playwright/.upstream-licenses/skills/.curated/playwright/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda"
+    },
+    "plugins/web-engineering/skills/playwright/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda"
+    },
+    "plugins/web-engineering/skills/playwright/NOTICE.txt": {
+      "mode": "0644",
+      "sha256": "417d5d3372914ecfd9fe102ac1d7dc2119253209f9718d6c222f616876c1904b"
+    },
+    "plugins/web-engineering/skills/playwright/SKILL.md": {
+      "mode": "0644",
+      "sha256": "1b7a5eb10ebb48e81799fea7e5c44617eea927f06c0c8853986f9d66414e03fb"
+    },
+    "plugins/web-engineering/skills/playwright/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "ddda43720fc566fffa45264be8f17f7745a3cee28d5245d41d3b963bc9967230"
+    },
+    "plugins/web-engineering/skills/playwright/assets/playwright-small.svg": {
+      "mode": "0644",
+      "sha256": "f1d213c0f76735d8272c3d3e9fbf71fe7b894e2d1588907044c780f2c33a9732"
+    },
+    "plugins/web-engineering/skills/playwright/assets/playwright.png": {
+      "mode": "0644",
+      "sha256": "521669f088c838196c6c852ccc9abdd7234d8f37fc9a8a7a9af7db2d50193381"
+    },
+    "plugins/web-engineering/skills/playwright/references/cli.md": {
+      "mode": "0644",
+      "sha256": "7c069a8206ba20b9ddbdc42436b04de30bb3aa4a825ba98680757ee62e954900"
+    },
+    "plugins/web-engineering/skills/playwright/references/workflows.md": {
+      "mode": "0644",
+      "sha256": "a2b5835a00ebee3906c146adf7f764f7718ea3f89a8702d86eaa135dfe0fc8c2"
+    },
+    "plugins/web-engineering/skills/playwright/scripts/playwright_cli.sh": {
+      "mode": "0644",
+      "sha256": "aa3fdff5d0e4556177f4dfd5f04117e772aa54f94b6a2e34b6c0edf629c6b9b5"
+    },
+    "plugins/web-engineering/skills/react-testing/.upstream-licenses/LICENSE": {
+      "mode": "0644",
+      "sha256": "326146379f01bb137c0a5d3c54770c1aa31076705c8b88a7f6b26a460f6221b2"
+    },
+    "plugins/web-engineering/skills/react-testing/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54e1db4dc8fd67a3b1e57a03a04ea5e2edc4dbaeafaa1493b11ff8e5db8b9fc2"
+    },
+    "plugins/web-engineering/skills/release-operations/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/release-operations/SKILL.md": {
+      "mode": "0644",
+      "sha256": "54ed12cd1ff0554440a726c51b79f3dda23d9a5a89282966af415b29121bc556"
+    },
+    "plugins/web-engineering/skills/security-best-practices/.upstream-licenses/skills/.curated/security-best-practices/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/web-engineering/skills/security-best-practices/LICENSE.txt": {
+      "mode": "0644",
+      "sha256": "4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9"
+    },
+    "plugins/web-engineering/skills/security-best-practices/SKILL.md": {
+      "mode": "0644",
+      "sha256": "623a26dcb09e5177b5094f97751243061847e715cb536bbbc4d89e8e586dc6ba"
+    },
+    "plugins/web-engineering/skills/security-best-practices/agents/openai.yaml": {
+      "mode": "0644",
+      "sha256": "6e9c6f2edce448eb2b589f81ad6e3f722665021785513bcbfd0bf7b86b529171"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/golang-general-backend-security.md": {
+      "mode": "0644",
+      "sha256": "a73c47c34497b120672d48411fe51dc90d426a571801a0b3f649e2ce4ec658b4"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-express-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "427835cbb5be7ba96172ea6ca9af80ddd4419c833e9ebf870996740c80d8406c"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-general-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "3a7bc7b3f6e7ff043db9dbaa8933894d7a19d987d0607e4ddae5d70184a63d63"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-jquery-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "bcbad2fa6c2a02709e47e889e70102c76886bf36bc798624d27db570eccf40da"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-typescript-nextjs-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "71c773f7a97ce60c853adfa100b3d88b3b7bc4c6b8acaef1432ffabd923ee182"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-typescript-react-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "d3030c0f24bddb56b9bbb91bbec1ee49eb7778bce4d3e0297b2641b2fc6b0d9c"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/javascript-typescript-vue-web-frontend-security.md": {
+      "mode": "0644",
+      "sha256": "77c6a747f9f17e3df03aad0fcb20d99ac7898001b81aef8b80908e45ac14a688"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/python-django-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "4fb69b5d45f10e588d1a8c35cdc5f59e18910f6b46a93e2d342d90f286f8dfd2"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/python-fastapi-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "7383c7f4fc271190b05e562ada7e825982a2c76b6c79a9f95a1da7687b65a616"
+    },
+    "plugins/web-engineering/skills/security-best-practices/references/python-flask-web-server-security.md": {
+      "mode": "0644",
+      "sha256": "9606d69190c04c167fdeac57e61297547a57b0542fd89dede36f355970446929"
+    },
+    "plugins/web-engineering/skills/test-design/.upstream-licenses/docs/third-party-notices.md": {
+      "mode": "0644",
+      "sha256": "ea512e3520eafe3beb60d852e07fcafdb6cab878a1c21d2a01094c9c0ea2c65d"
+    },
+    "plugins/web-engineering/skills/test-design/SKILL.md": {
+      "mode": "0644",
+      "sha256": "6280f34081218dd15fe7020df638887ccfca1269b7dd4370c39d0eb351cfaf8b"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/.upstream-licenses/README.md": {
+      "mode": "0644",
+      "sha256": "7c02f64b08fc6c4eef03c01d64f3e2ed478193ccfcbd14edba379abe23304651"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/AGENTS.md": {
+      "mode": "0644",
+      "sha256": "89e3ddd58fcf99a53a50e25dfd21b8cde1be5f10b7df6bacd3dfa6796932f516"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/README.md": {
+      "mode": "0644",
+      "sha256": "85915a43a6f0b4efe525e3cf6398dd866166da2025837c4460468a24a940da94"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/SKILL.md": {
+      "mode": "0644",
+      "sha256": "cd0c0db8a9cd29edc50f1c31ec58cb12f35ff927d38d7fbbef7cfe64a48a5c5b"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/metadata.json": {
+      "mode": "0644",
+      "sha256": "49262ed5cb4186f31ee980cf8d990be0170c51efed4908d0464a1cff9905bd05"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/_sections.md": {
+      "mode": "0644",
+      "sha256": "a174213b87e6911e2b766995a2cbaf8d1534057076e82fb79fe3f0ecb38047df"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/_template.md": {
+      "mode": "0644",
+      "sha256": "587f7d16b0660eb61fee4a4d3d7df2b3077d6835de170602c7d6e60bee559131"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/architecture-avoid-boolean-props.md": {
+      "mode": "0644",
+      "sha256": "007555ebb020f4d552582a2c4db194db71a1fd33094012e5187bcfa4f8c392d5"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/architecture-compound-components.md": {
+      "mode": "0644",
+      "sha256": "f246af13dc269b521cf20eb8ad99a0cb645beac381c8c9b117262c34612c8457"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/patterns-children-over-render-props.md": {
+      "mode": "0644",
+      "sha256": "7c45a0d21b3c4126a32cba916ee31adeae195386ad1dbbe6634aedb7457aa0ad"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/patterns-explicit-variants.md": {
+      "mode": "0644",
+      "sha256": "8c19e596e61807549d01ce8c6954c6358199f97a8511c0c02c625ec0efda8c0e"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/react19-no-forwardref.md": {
+      "mode": "0644",
+      "sha256": "881830adb7534c4b2d70db426556646ad9837f5478f744f35641f635ada22227"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/state-context-interface.md": {
+      "mode": "0644",
+      "sha256": "09e73afbf9285fa416679cc864a287b9e8b821d0969272ab784295386d8c9bc3"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/state-decouple-implementation.md": {
+      "mode": "0644",
+      "sha256": "76a8c1eb29a70d8996ab3f71260345af2f7bc89deab815a421d6c87c6591a9c3"
+    },
+    "plugins/web-engineering/skills/vercel-composition-patterns/rules/state-lift-state.md": {
+      "mode": "0644",
+      "sha256": "74c54038a6c554c748fe31cec673b80861b5d920b7553cf78cdf10d18b4b759b"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/.upstream-licenses/README.md": {
+      "mode": "0644",
+      "sha256": "7c02f64b08fc6c4eef03c01d64f3e2ed478193ccfcbd14edba379abe23304651"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/AGENTS.md": {
+      "mode": "0644",
+      "sha256": "fc93e7421177bbf869cce892bc60a6c83a4517d974bc3bf65c4e2c1e58a6ccf6"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/README.md": {
+      "mode": "0644",
+      "sha256": "9eafb2123d3b8b2aef41fba0db2648a3f4f49996f8c7c8bb2c86263befd8b48a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/SKILL.md": {
+      "mode": "0644",
+      "sha256": "860ecd636798d32e372a41cbdadffa146419852ee688875039b72c0487c873e9"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/metadata.json": {
+      "mode": "0644",
+      "sha256": "c4e18bac3290fbe1b471a605867d4df68b03144ea26b8befdbe8f9d8fd124354"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/_sections.md": {
+      "mode": "0644",
+      "sha256": "01c59969e4e867f0708c8f8ef9c6d87fab9a07d0586244f429ff84013db8a115"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/_template.md": {
+      "mode": "0644",
+      "sha256": "99df2a3ea088c6c22de2484ddc7e964d0e9923846f44c63380343ecc64455442"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/advanced-effect-event-deps.md": {
+      "mode": "0644",
+      "sha256": "55ed8f9f27a1bff803d6fa55828176207714b02123cbb97ddb8a90d88024a723"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/advanced-event-handler-refs.md": {
+      "mode": "0644",
+      "sha256": "a3097edeecfb2ff6851cd66ed8cdf0617c3c88180504bee824aa6e75a215bbbc"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/advanced-init-once.md": {
+      "mode": "0644",
+      "sha256": "3e4dc22173eb0e2b6dcf583e3babd862b8696328f8f59aee7c4d746c5bc05f6c"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/advanced-use-latest.md": {
+      "mode": "0644",
+      "sha256": "8a3f64dfe5a77d1564248faf17fe662ae75b55d497a243cb30b38eb07ccbbf9a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-api-routes.md": {
+      "mode": "0644",
+      "sha256": "523338540d73427dc14c0cbb19f2741ebccdf8b105a7b2c1b33d2905cf237a42"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-cheap-condition-before-await.md": {
+      "mode": "0644",
+      "sha256": "03107c1f70a293cd58a8abc5474c5548e20ea4efdf01b6d45aae7ad0ac1cb32c"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-defer-await.md": {
+      "mode": "0644",
+      "sha256": "f3c142d090615abdcc99d31c123be37b31f0f1ed8d9ec9f7789a3bc6883ae0fb"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-dependencies.md": {
+      "mode": "0644",
+      "sha256": "16ef469f877e30c6b8e1e1b4bc3e527312fa3c6318cb785a4eca186ea236131a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-parallel.md": {
+      "mode": "0644",
+      "sha256": "6d2f841896279e976dfcdc1ac89e70771ac188baadfd43c096b5706cb838b961"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/async-suspense-boundaries.md": {
+      "mode": "0644",
+      "sha256": "de05fedac2eb7ae563b887b5a424464ec3dfaf84e5b7797467ebe2a796ac8afc"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-analyzable-paths.md": {
+      "mode": "0644",
+      "sha256": "62090b5c815fd71bf1133dce754f51abc16a9456d0ccd025fd627de27726e92a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-barrel-imports.md": {
+      "mode": "0644",
+      "sha256": "e648f6d54525f07a691357040ca5bff6ea3424788a91ff63812adb29622a671b"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-conditional.md": {
+      "mode": "0644",
+      "sha256": "09c8259c3efb04fc0abb8e412ccbda217c222ae8118516283e571c995fe3a7d4"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-defer-third-party.md": {
+      "mode": "0644",
+      "sha256": "3719fb47b191e8db4fe22686ec88448ad5af9e6838585425abbe103d0b642e37"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-dynamic-imports.md": {
+      "mode": "0644",
+      "sha256": "401817a7369f315fc5a68a1095742ff7d53d0461906880dc9d64a41495ee1986"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/bundle-preload.md": {
+      "mode": "0644",
+      "sha256": "d1f7cc28da7cd5ab249acd287edc5b761afcfb194e9cb62cd44c5f3543db2de2"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/client-event-listeners.md": {
+      "mode": "0644",
+      "sha256": "242a873349febc1ce685e85617994784dbab92c2eaa68aed7fed5a83e7680e93"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/client-localstorage-schema.md": {
+      "mode": "0644",
+      "sha256": "0fb7cdf9dc93fdf22f87e3669f953fb9d4ac9b0be42eec4a29fe9a2560610b88"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/client-passive-event-listeners.md": {
+      "mode": "0644",
+      "sha256": "1f35016f9053de69e884ee9be00654e37979c2ca85f5e57764dc2626ff7acb4b"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/client-swr-dedup.md": {
+      "mode": "0644",
+      "sha256": "644652c39c6cc00de8d1c77a7273612e868dc3f7edda30764164c12ec0f764a3"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-batch-dom-css.md": {
+      "mode": "0644",
+      "sha256": "480b891b9eaf96e929dc1e964274a4828e3a78009b7d00ccd965a0d425215959"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-cache-function-results.md": {
+      "mode": "0644",
+      "sha256": "3daaa11d24f4295cb6be8bc6f407f2ce83cc7b5bd1f0e68891ea8ab835721dc7"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-cache-property-access.md": {
+      "mode": "0644",
+      "sha256": "73e47431e74878a927061bf0ddc7cd91a7556cb35d2573f3421e82300d9ae311"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-cache-storage.md": {
+      "mode": "0644",
+      "sha256": "11b826b0433898c1ece2d3547010d8e77db9fb240185748c45db91493de9b6cc"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-combine-iterations.md": {
+      "mode": "0644",
+      "sha256": "71add08aeeb43091d4ff4c0b2842cce8b4bdef8ad3e732cc034bb5a84827e746"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-early-exit.md": {
+      "mode": "0644",
+      "sha256": "925ce5ce87f3347186ca62212f29cc6baa2b8c85a96d2720ad07c3d0abf781c0"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-flatmap-filter.md": {
+      "mode": "0644",
+      "sha256": "9e5b166a41914d975bef7635467f8fb32cd98b5c3126c0bc6f163490812fb5f0"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-hoist-regexp.md": {
+      "mode": "0644",
+      "sha256": "f9e9aef2f7c2307dd7310f283df85dcada45fc43e9bb941b0c3aa414dec21ec4"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-index-maps.md": {
+      "mode": "0644",
+      "sha256": "5df1bdc2cfabb2c98abd55d26762e5c18189535c2e686184f426082e62920391"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-length-check-first.md": {
+      "mode": "0644",
+      "sha256": "8b54a311c826b299272f29187fc58bc55772a04c4a72eeb29456ee96dc9fc624"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-min-max-loop.md": {
+      "mode": "0644",
+      "sha256": "87dfb67e2f39df6ad8bcfb5b78c5fb364d3c07554ad188a202408d99f3763421"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-request-idle-callback.md": {
+      "mode": "0644",
+      "sha256": "ee08f83905b4011abbc33d594033157d77561b5bbd9b36b04f0f409581ffec32"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-set-map-lookups.md": {
+      "mode": "0644",
+      "sha256": "a7fd781a6ba9ad49065961b6f9a90ef486bf6b648390e1a08704025f98e1642b"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/js-tosorted-immutable.md": {
+      "mode": "0644",
+      "sha256": "d0a5e1b0fec48a0a81397957e2f068e224329f7c42cb5feeed8aae6fa64025e8"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-activity.md": {
+      "mode": "0644",
+      "sha256": "1e5e7eaf3555e61d6a2e900089c676527d26259501db5594f59544b6c664f85a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-animate-svg-wrapper.md": {
+      "mode": "0644",
+      "sha256": "9c6ae0ca7a51434e803887c64cded760956579a1452ccb80a461a03f9c937c77"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-conditional-render.md": {
+      "mode": "0644",
+      "sha256": "2ec2fa23c4148285144687050c52369adba3da2fbe3d486f8d3e0aad8f06f2bc"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-content-visibility.md": {
+      "mode": "0644",
+      "sha256": "64eee6d5b916fe74df33363994b27fc7f71bea3bcedc7ee04bda23107ca3e6e4"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-hoist-jsx.md": {
+      "mode": "0644",
+      "sha256": "93b229560fae92005ed9a2a829064607b39b2e984e92d221d05b2d41df2b7c0e"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-hydration-no-flicker.md": {
+      "mode": "0644",
+      "sha256": "dc7ab358c67c177bca6e6f360fbc935ebe4efa928c0ba3ebd3f9f3d9e2000ca3"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-hydration-suppress-warning.md": {
+      "mode": "0644",
+      "sha256": "915bacb934e2927d84b37a3f3d225a47b309ac8f9e494ed2bcb66ce07c5676a2"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-resource-hints.md": {
+      "mode": "0644",
+      "sha256": "351b1095d641717b930f1b2253282b7120af3023bc74e06c17675168d4286864"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-script-defer-async.md": {
+      "mode": "0644",
+      "sha256": "4cea07b7875ba7fc2c7465ff23b63a2bb334f90aaf2d9293d38d67b05fdb32ab"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-svg-precision.md": {
+      "mode": "0644",
+      "sha256": "ed468533f6e95f622859c884b122cf21f9f593ed6bb3d500a54de4b9f9bcb9fb"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rendering-usetransition-loading.md": {
+      "mode": "0644",
+      "sha256": "3a1249c3f13026b6f54ab5712c388df219d6af01b12aa542749acd99a46f4bc1"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-defer-reads.md": {
+      "mode": "0644",
+      "sha256": "234050a77faf50cb306be10a9e15bd4421134ab5907e75f13e6d78e2bd262dc9"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-dependencies.md": {
+      "mode": "0644",
+      "sha256": "17eb5830956fb56486fd3cfc7431f5849d39751730c05ad9e77dd4f0c27169c5"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-derived-state-no-effect.md": {
+      "mode": "0644",
+      "sha256": "cb11ec76f50aa7b6847269f02d79b120c889a30d9ecd2c1d578f75144419c77a"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-derived-state.md": {
+      "mode": "0644",
+      "sha256": "1c326bb67b01fb084eb00c8911b0a7cff54681c2315b629f88e49b64eaa6481d"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-functional-setstate.md": {
+      "mode": "0644",
+      "sha256": "5e68df6b2ae8058e67f476ff1ac67bde159f5a9d18df439e46eabcdeb7b52e58"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-lazy-state-init.md": {
+      "mode": "0644",
+      "sha256": "4ae844740f266fc8cbf050701230286624a2440ec5be67b9a63d9edc3c580573"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-memo-with-default-value.md": {
+      "mode": "0644",
+      "sha256": "81c47476564ad8a79fc68fc442734255ca7d6829424359464503fda0a9f9a0dd"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-memo.md": {
+      "mode": "0644",
+      "sha256": "1f258990c2f27ff6256b3cc5c43300631bb3f0d81f749aed08d07fcdcc131dd1"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-move-effect-to-event.md": {
+      "mode": "0644",
+      "sha256": "abc2cbf167bee056743023351e96806a411d3398da8802093620aecf0721f029"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-no-inline-components.md": {
+      "mode": "0644",
+      "sha256": "1cc32907a770272524ba682eef9e7efdd8ad4533b6f89b718a1fcd7d1d0eb6a3"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-simple-expression-in-memo.md": {
+      "mode": "0644",
+      "sha256": "5bdcf2d1558ba5204e643c887b7b4060f89630969425651eb68e96427d97f800"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-split-combined-hooks.md": {
+      "mode": "0644",
+      "sha256": "6f45d703343484ef9acef9388397f3642966ae6a5a258899a0cf1f9977cfbf6c"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-transitions.md": {
+      "mode": "0644",
+      "sha256": "60f4033909a62df5e5b8c601494f9e50a562e2f8c1c2d81eac24f38142265f1c"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-use-deferred-value.md": {
+      "mode": "0644",
+      "sha256": "8c3579576a61a949884167745dcfaf1d5426ba305cc61fd0a79602d70fda4909"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/rerender-use-ref-transient-values.md": {
+      "mode": "0644",
+      "sha256": "f1a649af9d1d0b5c762f6c9c4c1c70c90d7df82aa10296ee87aadb78c1b76c54"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-after-nonblocking.md": {
+      "mode": "0644",
+      "sha256": "d0b8d24a3db9f0f65f9e2bddbf230b0e03a5f60e1229d93a4a18f5e7a991c7c2"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-auth-actions.md": {
+      "mode": "0644",
+      "sha256": "a2ca8aa102839251c7971ec784560fab943c20b36fe6f80365d4110c13260c23"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-cache-lru.md": {
+      "mode": "0644",
+      "sha256": "1924b64561841923b88a657085097a0aeba3e0ba2d5470b9f5c15cc10d6ae70f"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-cache-react.md": {
+      "mode": "0644",
+      "sha256": "fddeea6c870bb3da4134b61d54b7d09b83d2603f929b7547cd3dc1dc269edd5c"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-dedup-props.md": {
+      "mode": "0644",
+      "sha256": "c2747424cdac46be62f835f245a0aa887b0090b416d28e2ac8676702645eeb37"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-hoist-static-io.md": {
+      "mode": "0644",
+      "sha256": "5abea4dd882b13661bd5f7dfb93f9e547d5f08176c61c448ade91b210ed5d49f"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-no-shared-module-state.md": {
+      "mode": "0644",
+      "sha256": "4d869bf1cd2f1632e5ca4c0e64b1cf0e71c5f5a0f940bc8a22174d205e735ed7"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-parallel-fetching.md": {
+      "mode": "0644",
+      "sha256": "569a2e9fc04f9606686cd75c5894ef8781b502786a7fffe241396846c7733472"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-parallel-nested-fetching.md": {
+      "mode": "0644",
+      "sha256": "ad5d9656984d4a959997a2367bf59cc6632297b4634a1dd13a087939d83f30b3"
+    },
+    "plugins/web-engineering/skills/vercel-react-best-practices/rules/server-serialization.md": {
+      "mode": "0644",
+      "sha256": "f4c7d68b29c82381baad059c4a7f09e868e71ec9c3115a26ad3ae7d24c0dfe1f"
+    }
+  },
+  "name": "personal-ai",
+  "schema_version": 1,
+  "version": "2.0.0"
+}

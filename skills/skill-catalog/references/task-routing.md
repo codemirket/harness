@@ -69,6 +69,15 @@ stack implementation skill as support; do not combine competing lead workflows.
 | Create a project or scaffold a package | `project-scaffolding` | Use the selected stack, stage generation, preserve existing work and run the first complete slice. |
 | Diagnose or improve resource efficiency | `performance-engineering` | Profile a real bottleneck; compare identical workloads with result parity and resource tradeoffs. |
 | Take a CEO perspective on strategic choices | `executive-strategy` | Compare customer value, economics, cash timing, capacity and decision-changing thresholds. Advice is not business authority. |
+| Assess cash, margins, runway or a financing decision | `financial-analysis`; `spreadsheet-analysis` when the deliverable is a workbook | Reconcile source grain, currency, cash versus profit, liabilities and stress scenarios. Preserve business definitions; advice does not authorize spending. |
+| Own technical direction or lead an engineering team | `technical-leadership` | Compare feasible options and failure modes; assign bounded ownership, dependency order and integration evidence. No unrequested model switch or extra management ceremony. |
+| Estimate markets or analyze competitors | `market-analysis` | Dated source ledger, comparable definitions, bottom-up units and channel/capacity limits. Test assumptions instead of assigning arbitrary market shares. |
+| Validate a venture or business idea | `venture-validation` | Identify the riskiest assumption and cheapest discriminating test, with success/stop thresholds and explicit cash constraints. |
+| Translate or localize content | `localization` | Preserve meaning, terminology, numbers and executable tokens; verify locale conventions and actual layout where relevant. Do not claim native-human review without it. |
+| Model, reconcile or audit a spreadsheet | `spreadsheet-analysis` with the available native spreadsheet skill | Inspect formulas, ranges and units; independently reconcile totals, recalculate with the actual engine and inspect the saved workbook. Live Excel and file workflows have different tools. |
+| Implement a native or cross-platform mobile app | `mobile-engineering`; matching stack only when present | Exercise lifecycle, navigation, offline/retry behavior and the affected device/platform path. A web preview cannot verify native behavior. |
+| Diagnose a workstation, network or account-access problem | `it-operations` | Isolate the failing layer with reversible probes, preserve access and verify recovery from the affected consumer. Protect credentials and scope remote changes. |
+| Direct graphic composition or mixed-medium artwork | `graphic-design` | Choose medium from purpose, compose at delivery size and inspect focal detail, hierarchy and export. Native image tools or SVG specialists supply the relevant production method. |
 
 Design revision uses `interface-design` with a preserved baseline and identical
 comparison states; `brand-guidelines` supports identity constraints. Interface QA

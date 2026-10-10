@@ -1,0 +1,59 @@
+{
+  "native_result": {
+    "provider": "codex",
+    "case": "interface",
+    "status": "timeout",
+    "exit_code": -15,
+    "seconds": 600.018
+  },
+  "invocation": {
+    "provider": "codex",
+    "case": "interface",
+    "argv": [
+      "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex",
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "-C",
+      "<scratch>/trials/codex/interface",
+      "-s",
+      "workspace-write",
+      "-c",
+      "approval_policy=\"never\"",
+      "-o",
+      "<scratch>/runs/codex/interface/final.md",
+      "Read TASK.md and complete the requested task yourself. Do not delegate."
+    ],
+    "cwd": "<scratch>/trials/codex/interface",
+    "model": "existing client default",
+    "auth": "existing subscription",
+    "skill_names_in_prompt": false
+  },
+  "trace": {
+    "models": [],
+    "tools": {
+      "shell": 21,
+      "cua_repl.js": 3
+    },
+    "skill_calls": [],
+    "raw_stream_sha256": "d5c4d6af32f6a06cf251ea3f796c9088dfaf6cd3d7d5e0285927b77baa5a53f6",
+    "raw_stream_retained": false,
+    "trace_method": "Tool requests and output status/hash/excerpts only. Hidden reasoning, account/session metadata and full documentation responses excluded. Paths normalized; long inputs marked truncated."
+  },
+  "browser_continuation": {
+    "surface": "Codex Desktop host subagent with CUA Chrome",
+    "artifact_changed": false,
+    "inspection": "QA.md",
+    "standalone_screenshots": false
+  },
+  "artifacts": {
+    "index.html": "b8a25496eb081b22b6a4d6e2526a239c00578f1075f4701e999ade26d709084c",
+    "capabilities.json": "0825ec8ef0d643d779aa74fbafffd6a2ae82a31794bb44f7a1d2c3d9dddcc773",
+    "tool-trace.jsonl": "a490abc437f19179299e9c16468ed3e900bf66367a728f16b5aa8184b73da27b",
+    "QA.md": "792a3b2c79c1ac71c41a63975546ac6e5b2d95e49203af1d3cfb36c456dd8c63",
+    "TASK.md": "4bc0fdf32d998d87612adff1f74378447037502429dcfd7d3fa3d16906fdb980",
+    "qa/verify.mjs": "dbe228cac7653440948f0fcc05c08a73317e8db63249352ead668d331aca585e",
+    "qa/source-checks.json": "5085972c11817663a87acf1c0b6e5c850cc3962e8a2f6ba78360065712da60e5"
+  }
+}

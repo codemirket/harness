@@ -5,19 +5,17 @@
       "instructions": "instructions/AGENTS.md",
       "instruction_destination": ".codex/AGENTS.md",
       "skills_destination": ".agents/skills",
-      "settings_destination": ".codex/config.toml",
-      "settings_format": "toml",
-      "settings": {"approval_policy": "on-request", "sandbox_mode": "workspace-write"},
-      "surface": "Codex Desktop and CLI"
+      "surface": "Codex Desktop and CLI",
+      "mcp_destination": ".codex/config.toml",
+      "mcp_format": "toml"
     },
     "claude": {
       "instructions": "instructions/AGENTS.md",
       "instruction_destination": ".claude/CLAUDE.md",
       "skills_destination": ".claude/skills",
-      "settings_destination": ".claude/settings.json",
-      "settings_format": "json",
-      "settings": {"permissions": {"defaultMode": "default"}},
-      "surface": "Claude Desktop Code mode and Claude Code CLI"
+      "surface": "Claude Desktop Code mode and Claude Code CLI",
+      "mcp_destination": ".claude.json",
+      "mcp_format": "json"
     }
   }
 }

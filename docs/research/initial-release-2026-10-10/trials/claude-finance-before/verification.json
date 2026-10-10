@@ -1,0 +1,46 @@
+{
+  "exit_code": 1,
+  "verifier_sha256": "83ff545c2cde9c5885b333e4d22f0d28be8d8b2f7a5543e1cec1bdb4c929f47c",
+  "checks": [
+    {
+      "id": "independent-controls",
+      "status": "passed",
+      "detail": "Hand-calculated EUR cash controls and reserve financing match"
+    },
+    {
+      "id": "fixture",
+      "status": "passed",
+      "detail": "Actual input-derived values, types and scenario contracts"
+    },
+    {
+      "id": "funded-reordered",
+      "status": "passed",
+      "detail": "Actual input-derived values, types and scenario contracts"
+    },
+    {
+      "id": "sparse-horizon",
+      "status": "failed",
+      "detail": "Actual input-derived values, types and scenario contracts"
+    },
+    {
+      "id": "year-boundary",
+      "status": "passed",
+      "detail": "Actual input-derived values, types and scenario contracts"
+    },
+    {
+      "id": "conflicting-id",
+      "status": "passed",
+      "detail": "Conflicting record does not silently become a valid financial report"
+    },
+    {
+      "id": "saved-output",
+      "status": "passed",
+      "detail": "Delivered output matches independently reconstructed source values"
+    },
+    {
+      "id": "decision-artifact",
+      "status": "passed",
+      "detail": "Decision artifact exists; its substance requires separate qualitative review"
+    }
+  ]
+}

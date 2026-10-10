@@ -84,30 +84,14 @@ class ScheduleTests(ScheduleFixture):
             result = schedule.apply(**self.options)
         self.assertEqual(result['status'], 'blocked'); self.assertEqual(self.writes, [])
 
-    def test_exact_legacy_migration_only(self):
-        root = Path('/Users/alice/repo'); home = Path('/Users/alice')
-        legacy = schedule.legacy_line(root, home)
-        self.assertIsNotNone(legacy)
-        before = '# retain\n' + legacy + '\n0 1 * * * echo keep\n'
-        after, migrated = schedule.merge_crontab(before, '0 0 * * * new', legacy)
-        self.assertTrue(migrated); self.assertNotIn(legacy, after)
-        self.assertTrue(after.startswith('# retain\n')); self.assertTrue(after.endswith('0 1 * * * echo keep\n'))
-        similar = legacy.replace('codex_status=$?', 'codex_status=0')
-        with self.assertRaisesRegex(ValueError, 'modified same-repository'):
-            schedule.merge_crontab(similar + '\n', '0 0 * * * new', legacy)
-
-    def test_legacy_mentions_in_comments_echo_and_other_repos_are_preserved(self):
-        script = '/Users/alice/repo/setup/macos.sh'
-        text = ('# /bin/sh ' + script + ' codex\n'
-                '0 1 * * * echo ' + script + ' codex\n'
-                '0 1 * * * echo "/bin/sh ' + script + ' codex"\n'
-                '0 2 * * * /bin/sh /other/repo/setup/macos.sh codex\n'
-                '0 3 * * * echo ok # /bin/sh ' + script + ' codex\n')
-        merged, migrated = schedule.merge_crontab(text, '0 0 * * * new', legacy_script=script)
-        self.assertTrue(merged.startswith(text)); self.assertFalse(migrated)
-        for command in ['/bin/sh ' + script + ' codex', "'/Users/alice/repo/setup/macos.sh' both"]:
-            with self.assertRaises(ValueError):
-                schedule.merge_crontab('3 2 * * * '+command+'\n', '0 0 * * * new', legacy_script=script)
+    def test_unowned_jobs_and_comments_are_preserved_without_interpretation(self):
+        text = ('# installer reference\n'
+                '0 1 * * * /bin/sh /Users/alice/repo/setup/macos.sh codex\n'
+                '0 2 * * * /bin/sh /other/repo/setup/macos.sh claude\n'
+                '0 3 * * * echo "same command; same path"\n')
+        merged = schedule.merge_crontab(text, '0 0 * * * new')
+        self.assertTrue(merged.startswith(text))
+        self.assertEqual(merged.count(schedule.BEGIN), 1)
 
     def test_launcher_ignores_inherited_python_environment(self):
         report = schedule.plan(**self.options)
@@ -116,16 +100,15 @@ class ScheduleTests(ScheduleFixture):
         result = subprocess.run(report['command'][:4] + ['-c', 'import sys; assert sys.flags.ignore_environment and sys.flags.no_user_site and sys.dont_write_bytecode'], env=env, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_ambiguous_markers_or_duplicate_legacy_refuse(self):
+    def test_ambiguous_or_duplicate_owned_markers_refuse(self):
         line = '0 0 * * * command'
         cases = [schedule.BEGIN+'\n', schedule.END+'\n',
                  schedule.BEGIN+'\n'+line+'\nextra\n'+schedule.END+'\n',
                  (schedule.BEGIN+'\n'+line+'\n'+schedule.END+'\n')*2,
-                 '# BEGIN personal-ai daily-maintenance v99\n',
-                 'legacy\nlegacy\n']
+                 '# BEGIN personal-ai daily-maintenance v99\n']
         for text in cases:
             with self.subTest(text=text), self.assertRaises(ValueError):
-                schedule.merge_crontab(text, line, 'legacy')
+                schedule.merge_crontab(text, line)
 
     def test_cron_timezone_conflict_refused(self):
         self.cron = 'CRON_TZ=UTC\n' + self.cron

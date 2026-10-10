@@ -18,7 +18,7 @@ class CapabilityTests(unittest.TestCase):
         (self.root/'skills/lead').mkdir(parents=True)
         self.body = b'---\nname: lead\ndescription: Exercise a real task.\n---\nRead the contract and verify the result.\n'
         (self.root/'skills/lead/SKILL.md').write_bytes(self.body)
-        self.row = dict(id='capability',title='Capability',lead='lead',support=[],deliverable='Observable result',failure_probe='Inject failed state',prerequisites='Existing runtime')
+        self.row = dict(id='capability',title='Capability',lead='lead',support=[],deliverable='Observable result',failure_probe='Inject failed state',prerequisites='Existing runtime',aliases=['Example Role'],acceptance=['Observe the consumer'])
         self.manifest = dict(schema_version=1,scope='Guidance, not runtime proof',capabilities=[self.row])
         self.entry = dict(id='lead',name='lead',scope='project',delivery='local',path='skills/lead',license_files=[],sha256=catalog.payload_hash({'SKILL.md':self.body}))
         self.index = dict(schema_version=1,skills=[self.entry],sources={},profiles={})
@@ -79,6 +79,9 @@ class CapabilityTests(unittest.TestCase):
 
     def test_shipped_contracts_cover_requested_domains_and_generated_guide(self):
         expected={'frontend-engineering','backend-engineering','brand-guidelines','web-design','mobile-design','seo','deep-research','interface-qa','illustration','visual-assets','animation','project-review','planning','product-management','database','systems-engineering','devops-infrastructure','marketing','executive-strategy','data-analysis','project-scaffolding','design-revision','optimization'}
+        expected |= {'financial-analysis','technical-leadership','market-analysis','venture-validation',
+                     'localization','spreadsheet-analysis','mobile-engineering','it-operations',
+                     'documentation','graphic-design'}
         self.assertEqual({r['id'] for r in capabilities.contracts(ROOT)['capabilities']},expected)
         self.assertEqual((ROOT/'docs/capabilities.md').read_text(),capabilities.markdown(ROOT))
         self.assertEqual(capabilities.check(ROOT)['status'],'valid')

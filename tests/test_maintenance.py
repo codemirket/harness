@@ -26,10 +26,10 @@ from pathlib import Path
 assert sys.argv[1:3] == ['maintenance','sync']
 home=Path(sys.argv[sys.argv.index('--home')+1])
 (home/'fresh-sync.txt').write_text(%r)
-print(json.dumps({'schema_version':1,'status':%r,'exit_code':%s}))
+print(json.dumps({'schema_version':1,'status':%r,'exit_code':%s,'guidance_completed':True,'partially_applied':%s}))
 raise SystemExit(%s)
-''' % (version, status, 1 if status == 'deferred_preferences' else 0,
-       1 if status == 'deferred_preferences' else 0)
+''' % (version, status, 1 if status == 'sync_failed' else 0,
+       status == 'sync_failed', 1 if status == 'sync_failed' else 0)
 
 
 @unittest.skipUnless(shutil.which('git'), 'Git required for local integration fixtures')
@@ -210,13 +210,13 @@ class MaintenanceTests(unittest.TestCase):
             self.assertNotIn('fetch',calls)
         self.assertFalse((self.home/'fresh-sync.txt').exists())
 
-    def test_deferred_preferences_remain_nonzero_after_successful_update(self):
-        self.push(status='deferred_preferences')
+    def test_partial_installation_remains_nonzero_after_successful_source_update(self):
+        self.push(status='sync_failed')
         result = self.run_job()
-        self.assertEqual(result['status'], 'deferred_preferences', result)
+        self.assertEqual(result['status'], 'sync_failed', result)
         self.assertEqual(result['exit_code'], 1)
-        self.assertTrue(result['preferences_pending'])
-        self.assertTrue(result['globals_completed'])
+        self.assertTrue(result['partially_applied'])
+        self.assertTrue(result['guidance_completed'])
 
     def test_unsafe_status_log_or_lock_preserves_external_content(self):
         external = self.base/'private'; external.write_text('PRIVATE-SENTINEL')
@@ -271,6 +271,16 @@ time.sleep(20)
         self.assertNotIn('PRIVATE-RAW-DIAGNOSTIC',json.dumps(result))
         self.assertNotIn('PRIVATE-RAW-DIAGNOSTIC',(self.home/'.agent-harness/logs/maintenance.log').read_text())
 
+    def test_child_success_without_completed_guidance_is_rejected(self):
+        content = entry('claimed').replace("'guidance_completed':True", "'guidance_completed':False")
+        (self.source / 'ai.py').write_text(content)
+        self.git(self.source, 'add', 'ai.py')
+        self.git(self.source, 'commit', '-m', 'incomplete installer claim')
+        self.git(self.source, 'push')
+        result = self.run_job()
+        self.assertEqual(result['status'], 'sync_failed', result)
+        self.assertEqual(result['exit_code'], 1)
+
 
 class SyncAndIdentityTests(unittest.TestCase):
     def setUp(self):
@@ -289,24 +299,41 @@ class SyncAndIdentityTests(unittest.TestCase):
                        'https://github.com/example/harness?token=private'):
             self.assertFalse(maintenance._remote_matches(remote,expected))
 
-    def test_sync_preflights_both_components_and_defers_settings_safely(self):
-        from lib import harness,settings
-        with mock.patch.object(harness,'global_plan') as plan, \
-             mock.patch.object(harness,'sync_global',return_value=[{}]) as globals_sync, \
-             mock.patch.object(settings,'plan',return_value={'app_must_close':True}), \
-             mock.patch.object(settings,'apply',return_value={'status':'deferred_app_must_close','app_must_close':True}) as apply:
-            result=maintenance.sync(home=self.home, mode='copy')
-            self.assertEqual(result['status'],'deferred_preferences')
-            self.assertTrue(result['globals_completed'])
-            globals_sync.assert_called_once_with('both',self.home,'copy')
-            apply.assert_called_once_with(self.home)
-        with mock.patch.object(harness,'global_plan'), \
-             mock.patch.object(settings,'plan',side_effect=ValueError('PRIVATE')), \
-             mock.patch.object(harness,'sync_global') as globals_sync:
-            result=maintenance.sync(home=self.home)
-            self.assertEqual(result['status'],'sync_failed')
-            globals_sync.assert_not_called()
-            self.assertNotIn('PRIVATE',json.dumps(result))
+    def test_sync_uses_shared_installer_and_does_not_apply_preferences(self):
+        from lib import settings, target_install
+        report = {'status': 'installed', 'ready': True,
+                  'guidance_completed': True, 'guidance': [{}]}
+        with mock.patch.object(target_install, 'run', return_value=report) as install, \
+             mock.patch.object(settings, 'plan', side_effect=AssertionError('Preferences are user-owned')), \
+             mock.patch.object(settings, 'apply', side_effect=AssertionError('Preferences are user-owned')):
+            result = maintenance.sync(home=self.home, mode='copy')
+        install.assert_called_once_with(target='all', home=self.home, mode='copy')
+        self.assertEqual(result['status'], 'synced')
+        self.assertEqual(result['exit_code'], 0)
+        self.assertTrue(result['guidance_completed'])
+        self.assertFalse(result['partially_applied'])
+        self.assertEqual(result['global_items'], 1)
+
+    def test_sync_preserves_partial_installation_state_without_private_errors(self):
+        from lib import target_install
+        report = {'status': 'partially_applied', 'ready': False,
+                  'guidance_completed': True, 'guidance': [{}], 'blockers': ['PRIVATE']}
+        with mock.patch.object(target_install, 'run', return_value=report):
+            result = maintenance.sync(home=self.home)
+        self.assertEqual(result['status'], 'sync_failed')
+        self.assertEqual(result['exit_code'], 1)
+        self.assertTrue(result['guidance_completed'])
+        self.assertTrue(result['partially_applied'])
+        self.assertNotIn('PRIVATE', json.dumps(result))
+
+    def test_sync_preflight_failure_never_claims_completed_installation(self):
+        from lib import target_install
+        with mock.patch.object(target_install, 'run', side_effect=ValueError('PRIVATE')):
+            result = maintenance.sync(home=self.home)
+        self.assertEqual(result['status'], 'sync_failed')
+        self.assertFalse(result['guidance_completed'])
+        self.assertFalse(result['partially_applied'])
+        self.assertNotIn('PRIVATE', json.dumps(result))
 
     def test_status_is_readonly_before_first_run(self):
         with tempfile.TemporaryDirectory() as directory:

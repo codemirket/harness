@@ -127,50 +127,8 @@ def cron_line(command, home):
     return '0 0 * * * ' + cron_escape(' '.join(shlex.quote(x) for x in invocation)) + ' >/dev/null 2>&1'
 
 
-def legacy_line(root, home):
-    # Deliberately exact: only the original generated job is a known migration.
-    script = str(root / 'setup/macos.sh')
-    log = str(home / 'Library/Logs/shared-ai-install.log')
-    if any(ch.isspace() or ch in "'\"\\%$`;|&<>" for ch in script + log):
-        return None
-    return ('0 0 * * * { /bin/date; /bin/sh ' + script + ' codex; codex_status=$?; /bin/sh ' + script +
-            ' claude; claude_status=$?; /bin/echo "codex_exit=$codex_status claude_exit=$claude_status"; '
-            'test "$codex_status" -eq 0 && test "$claude_status" -eq 0; } >> ' + log + ' 2>&1')
-
-
-def legacy_variant(row, script):
-    """Recognize installer invocations, not comments or arbitrary path mentions."""
-    stripped = row.lstrip()
-    if not script or not stripped or stripped.startswith('#'):
-        return False
-    fields = stripped.split(None, 1 if stripped.startswith('@') else 5)
-    if len(fields) != (2 if stripped.startswith('@') else 6):
-        return False
-    try:
-        lexer = shlex.shlex(fields[-1], posix=True, punctuation_chars=';&|(){}<>')
-        lexer.whitespace_split = True
-        tokens = list(lexer)
-    except ValueError:
-        # A recognizable active invocation with broken quoting needs review too.
-        return ('/bin/sh ' + str(script)) in fields[-1]
-    separators = {';', '&&', '||', '|', '&', '{', '(', ')', '}'}
-    shells = {'sh', '/bin/sh', 'bash', '/bin/bash', 'zsh', '/bin/zsh'}
-    for index, token in enumerate(tokens[:-1]):
-        if token != str(script) or tokens[index + 1] not in ('codex', 'claude', 'claude-code', 'both'):
-            continue
-        start = index - 1 if index > 0 and tokens[index - 1] in shells else index
-        if start == 0 or tokens[start - 1] in separators:
-            return True
-    return False
-
-
-def merge_crontab(text, line, legacy=None, legacy_script=None):
+def merge_crontab(text, line):
     rows = text.splitlines(keepends=True)
-    if legacy_script is None and legacy and '/bin/sh ' in legacy:
-        legacy_script = legacy.split('/bin/sh ', 1)[1].split(' codex;', 1)[0]
-    for row in rows:
-        if row.rstrip('\r\n') != legacy and legacy_variant(row, legacy_script):
-            raise ValueError('A modified same-repository legacy installer job requires manual review; preserving all jobs')
     starts = [i for i, row in enumerate(rows) if row.rstrip('\r\n') == BEGIN]
     ends = [i for i, row in enumerate(rows) if row.rstrip('\r\n') == END]
     marker_rows = [row for row in rows if 'personal-ai daily-maintenance' in row]
@@ -178,9 +136,6 @@ def merge_crontab(text, line, legacy=None, legacy_script=None):
         raise ValueError('Ambiguous or malformed owned cron markers; resolve manually')
     if starts and (ends[0] != starts[0] + 2 or not rows[starts[0] + 1].startswith('0 0 * * * ')):
         raise ValueError('Unexpected content inside owned cron block; preserving it')
-    legacy_indices = [i for i, row in enumerate(rows) if legacy and row.rstrip('\r\n') == legacy]
-    if len(legacy_indices) > 1 or (starts and legacy_indices):
-        raise ValueError('Multiple owned or legacy jobs; resolve duplicates manually')
     for row in rows:
         match = re.match(r'\s*SHELL\s*=\s*(.*?)\s*$', row)
         if match and match[1].strip("\"'") not in ('/bin/sh', '/bin/bash', '/bin/zsh', '/bin/dash', '/usr/bin/sh', '/usr/bin/bash', '/usr/bin/zsh', '/usr/bin/dash'):
@@ -190,12 +145,9 @@ def merge_crontab(text, line, legacy=None, legacy_script=None):
         raise ValueError('Existing CRON_TZ requires manual review to preserve local midnight and unrelated jobs')
     block = BEGIN + '\n' + line + '\n' + END + '\n'
     if starts:
-        return ''.join(rows[:starts[0]]) + block + ''.join(rows[ends[0] + 1:]), False
-    if legacy_indices:
-        i = legacy_indices[0]
-        return ''.join(rows[:i]) + block + ''.join(rows[i + 1:]), True
+        return ''.join(rows[:starts[0]]) + block + ''.join(rows[ends[0] + 1:])
     prefix = '\n' if text and not text.endswith('\n') else ''
-    return text + prefix + block, False
+    return text + prefix + block
 
 
 def powershell_tool():
@@ -371,10 +323,9 @@ def _prepare(root=None, home=None, mode='auto', python=None):
         if selected == 'crontab':
             tool = crontab_tool()
             previous = read_crontab(tool)
-            desired, migrated = merge_crontab(previous, cron_line(command, home), legacy_line(root, home), root / 'setup/macos.sh')
+            desired = merge_crontab(previous, cron_line(command, home))
             if len(desired.encode('utf-8')) > MAX_BYTES:
                 raise ValueError('Resulting crontab exceeds the supported size')
-            report['legacy_migration'] = migrated
             changed = desired != previous
             sid = None
         else:

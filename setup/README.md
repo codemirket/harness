@@ -15,19 +15,20 @@ python3 ai.py install --target all
 python3 ai.py check --target all
 ```
 
-Supported public targets are `codex-desktop`, `claude-desktop`, and `all`.
-`all` selects both clients; legacy `both` is equivalent.
+Supported public targets are `codex`, `claude`, and `all`.
+`all` selects both clients.
 Use `py -3` instead of `python3` on Windows. The platform wrappers in this folder
 provide convenient entry points; the Python CLI is the complete interface.
 
-The installer preflights shared guidance, skills, target settings and MCP entries,
+The installer preflights shared guidance, skills and MCP entries,
 then reconciles the selected destinations. It preserves unrelated configuration
-and comments. Selected settings are replaced by the declared source values;
-conflicting MCP endpoint definitions fail rather than silently replacing them.
+and comments. Host permissions, sandbox policy, model and appearance are preserved.
+Conflicting MCP endpoint definitions fail rather than silently replacing them.
 
-Close selected clients before applying changed settings, then reopen them. The
-installer does not close applications. A matching installation is a no-op;
-`check` is read-only and can run while clients are open.
+Installation can run while clients are open. Configuration snapshots detect
+concurrent edits before replacement, with backups for changed files. Start a fresh
+session afterward to verify discovery. A matching installation is a no-op;
+`check` is read-only.
 
 ```sh
 # Prepare an existing isolated home without changing your own installation:
@@ -92,8 +93,8 @@ targets](../docs/project-targets.md), [catalog](../docs/catalog.md), and the opt
 ## Project readiness
 
 `runtime doctor` remains an optional diagnostic, separate from install/check.
-Its legacy client probes cover Codex and Claude Code CLI, not desktop client
-activation. It probes project prerequisites without installing them or
+Its client probes inspect desktop application metadata and CLI availability;
+they do not establish desktop activation. It probes project prerequisites without installing them or
 running project scripts. For a running local app:
 
 ```sh
@@ -107,15 +108,14 @@ page resources may access the network. Inspect the image and actual interactions
 A successful HTTP probe or screenshot does not establish visual acceptance,
 dependency integrity or production readiness. Run the project's required checks.
 
-## Optional legacy workflows
+## Optional workflows
 
 `ai.py settings plan/apply/doctor` manages optional portable Codex preferences.
 It is not part of target installation. See [settings scope](../docs/settings.md).
 
 Scheduling is opt-in and separate. Existing jobs are not removed by installing the
 new harness. Review [scheduling](../docs/scheduling.md) before using
-`ai.py schedule install` or `ai.py maintenance run`; these commands retain their
-legacy maintenance workflow and are not a general all-target scheduler.
+`ai.py schedule install` or `ai.py maintenance run`.
 
 For Claude Chat/Cowork account customization, run
 `python3 ai.py handoff --output /absolute/new-directory`, then follow the generated

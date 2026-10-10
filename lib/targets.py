@@ -4,8 +4,7 @@ import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ALIASES = {'codex-desktop': 'codex', 'claude-code': 'claude', 'claude-desktop': 'claude'}
-CHOICES = ('codex', 'codex-desktop', 'claude-desktop', 'claude-code', 'claude', 'both', 'all')
+CHOICES = ('codex', 'claude', 'all')
 
 
 def load():
@@ -16,14 +15,13 @@ def load():
 
 
 def normalize(name):
-    name = ALIASES.get(name, name)
     if name not in ('codex', 'claude'):
         raise ValueError('Unsupported target: ' + str(name))
     return name
 
 
 def names(choice):
-    if choice in ('both', 'all'):
+    if choice == 'all':
         return ['codex', 'claude']
     return [normalize(choice)]
 
