@@ -459,7 +459,8 @@
       "prerequisites": "Authorized financial inputs with units, period and accounting basis; calculator or spreadsheet runtime; current local rules for regulated questions.",
       "aliases": [
         "CFO",
-        "Chief Financial Officer"
+        "Chief Financial Officer",
+        "Financial Analyst"
       ],
       "acceptance": [
         "Opening cash plus receipts minus payments reconciles to closing cash",

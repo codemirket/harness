@@ -1,109 +1,77 @@
-# Contributing to Harness
+# Contributing to Mirket
 
-Contributions that make a real workflow easier to adopt, use or verify are welcome.
-Useful starting points include an unclear setup step, a reproducible installer
-failure, a missing failure case, or a specialist workflow with a concrete task
-and evidence that it helps.
+Start with [AGENTS.md](AGENTS.md) and the [architecture](docs/architecture.md).
+A contribution should improve an actual outcome: a clear setup experience,
+a reproducible failure, useful expertise or evidence that a task was handled well.
+Keep secrets, account state and private prompts out of code, logs and fixtures.
 
-For usage, begin with the [adoption guide](docs/adoption.md). Report reproducible
-problems in [GitHub Issues](https://github.com/codemirket/harness/issues), and
-propose changes through a pull request from your fork. Remove credentials,
-private prompts and identifying project data from examples and logs.
+## Bootstrap the development CLI
 
-## Find the owning source
-
-Start from the repository's [AGENTS.md](AGENTS.md) and [architecture map](docs/architecture.md).
-The root instructions govern this project; `instructions/AGENTS.md` is the payload
-installed into users' clients.
-
-| Location | Responsibility |
-| --- | --- |
-| `ai.py`, `lib/` | CLI, installation, catalog resolution and verification |
-| `instructions/AGENTS.md` | Shared working principles |
-| `skills/` | Authored workflows, references and helpers |
-| `registry/harness.json` | Global selection, project defaults and bundles |
-| `registry/targets.json`, `registry/mcp.json` | Client configuration and MCP definitions |
-| `registry/catalog.json` | Reviewed entries, profiles, source pins and payload contracts |
-| `scripts/render_registry.py` | Generated catalog documentation |
-| `tests/` | Automated behavior checks |
-| `examples/`, `evaluations/` | Inspectable specimens and task exercises |
-| `docs/`, `setup/` | Guides, reference material and dated evidence |
-
-Keep client-specific adapters separate from shared guidance. Existing projects
-retain authority over their architecture, commands and release rules. Avoid
-expanding the global skill set when a project-selected specialist solves the need.
-
-## Develop without changing your installed clients
-
-Use Git and Python 3.9+ in a separate checkout. The core installer needs no pip
-packages. Be aware that a checkout used for a linked installation is live: editing
-its shared skills also changes what the installed links expose.
-
-For installer work, create an empty temporary directory and pass its absolute
-path explicitly:
+Install the official Rust toolchain, then build from this full source checkout:
 
 ```sh
-python3 ai.py install --target all --home /absolute/empty-test-home --mode copy --dry-run
-python3 ai.py install --target all --home /absolute/empty-test-home --mode copy
-python3 ai.py check --target all --home /absolute/empty-test-home --mode copy
+cargo build --locked --bin mirket
+./target/debug/mirket dev check --project .
 ```
 
-The home directory must exist. This prepares files there; it does not launch
-either client or demonstrate that a live client discovers them. Use a separate
-temporary project for `project init`, `add`, `sync` and `doctor` tests.
+`mirket dev fmt` formats the Rust sources. `mirket dev check` runs formatting, Clippy with warnings denied, and all Rust test
+targets. Use `mirket dev build --release` to build the CLI and standalone target
+installers. The locked dependency graph and pinned toolchain are authoritative.
+`mirket dev test FILTER` runs a focused test selection. `--ignored` explicitly
+selects opt-in tests, including real package downloads.
 
-## Verify the changed behavior
-
-Run these checks from the full harness source checkout. Packaged plugin `_harness`
-snapshots omit the repository test suite; clone the source for contribution work.
+Keep client setup isolated from development. Use existing empty temporary home
+and project directories with explicit absolute paths:
 
 ```sh
-python3 ai.py context doctor --project .
-python3 scripts/render_registry.py --check
-python3 -m unittest discover -s tests
-sh -n setup/macos.sh
-git diff --check
+mirket --home /absolute/test-home setup --target all --yes
+mirket --home /absolute/test-home doctor --json
+mirket --home /absolute/test-home project init --project /absolute/test-project
+mirket --home /absolute/test-home project sync --project /absolute/test-project
+mirket --home /absolute/test-home project doctor --project /absolute/test-project
 ```
 
-Run the shell check in a POSIX shell. When changing catalog data, regenerate its
-documentation with `python3 scripts/render_registry.py` before the `--check` step.
-Optional browser/vector checks may skip if their runtimes are unavailable; report
-those skips. Do not install dependencies or connect services as an incidental part
-of verification. See the [workbench guide](docs/workbench.md) for tool configuration.
+Installation does not prove native-client activation. Test protocol discovery,
+actual tool invocation and useful task output separately. Use host permissions
+and the user's chosen provider. Report unavailable native platforms precisely.
 
-For documentation, execute affected examples in an appropriate isolated environment
-and check local links and structure:
+## Verify boundaries
+
+Choose meaningful tests from changed behavior. Installer changes must cover
+existing configuration, modified managed files, symlink/path escapes, interruption
+and recovery. Update changes must check candidate identity and digest before
+execution, then verify the new setup or preserve a recoverable installation.
+State changes need concurrent-revision, idempotency and stale-evidence probes.
+MCP changes need actual SDK-client exchanges and bounded malformed input.
+
+Run `mirket benchmark` on an optimized binary for named local workloads; report
+sample count, target and binary identity. Do not turn machine-dependent timing
+into flaky correctness gates. Repeat performance tests after relevant changes.
+
+## Add expertise
+
+Read [source review](docs/source-review.md). Keep authored skills focused on a
+recognizable deliverable, prerequisites, useful references and failure probes.
+Preserve upstream attribution and licenses. Test the selected payload and its
+project installation, then exercise the intended task where tools are available.
+A skill's presence or an agent repeating its name is not evidence of quality.
+
+## Package
 
 ```sh
-python3 ai.py workbench markdown README.md --output /absolute/new-readme-report
+mirket dev dist --project . --output /absolute/new-dist
 ```
 
-The output directory must not already exist. Inspect the rendered Markdown too;
-the checker does not execute examples, fetch external links or judge prose.
+This builds native release binaries, copies standalone installers and writes
+checksums plus the release manifest. It does not publish. Native CI runners test
+and package their target. Combine their manifests through the CLI:
 
-For installer changes, preserve user modifications, unrelated configuration and
-failure diagnostics. Test the affected conflict or recovery path. For workflow
-changes, show a representative task and its resulting artifact; installing a
-skill or having an agent name it is not proof of a useful outcome.
+```sh
+mirket dev manifest --input /absolute/macos/mirket-release.json --input /absolute/windows/mirket-release.json --output /absolute/release/mirket-release.json
+```
 
-## Add or update a skill
-
-Start with the [source review process](docs/source-review.md). Review the actual
-body, companions, helpers, activation behavior, dependencies and license before
-registering an upstream entry. A catalog search result is only discovery data.
-
-Keep the skill focused on a recognizable task. State prerequisites and what a
-finished result should demonstrate. Preserve attribution, source pins and notices;
-refresh applicable hashes after changing payloads. Test registration in a temporary
-project and exercise the intended workflow with the required tools available.
-
-## Make the change easy to review
-
-Describe the problem, the resulting behavior and the checks you actually ran.
-Include a small reproduction or before/after example when it clarifies the change.
-Identify unverified clients, operating systems and optional runtimes explicitly.
-Do not rewrite dated evidence to imply that an older run tested new source bytes.
-
-Original harness material uses the [MIT License](LICENSE). Imported and adapted
-material retains its own terms; preserve the [third-party notices](docs/third-party-notices.md)
-and any more specific per-file notices.
+The command verifies the listed local binaries against their checksums, requires
+one version and unique targets, and writes a new manifest without executing the
+binaries. Upload that manifest and the packaged executables only after publication
+is explicitly authorized.
+The operating system must match the executable target.

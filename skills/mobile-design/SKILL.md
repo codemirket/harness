@@ -51,7 +51,7 @@ not prescribe bottom navigation or large targets to unrelated desktop surfaces.
 
 ## Verify the right claim
 
-Use the harness browser workbench or existing browser tools for mobile web:
+Use the host's browser tools or explicitly registered local tools for mobile web:
 compact/wide layouts, normal/reduced motion, input/focus and failure recovery.
 Use native simulator/emulator tests for the built app when available, then physical
 hardware for important touch, keyboard, safe-area, gesture and performance claims.

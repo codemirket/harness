@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "name": "personal-ai",
+  "name": "mirket",
   "version": "1.0.0",
   "global_skills": [
     "skill-catalog",
@@ -22,85 +22,5 @@
     "profiles": [
       "project-foundation"
     ]
-  },
-  "bundles": {
-    "personal-foundation": {
-      "description": "Personal global reasoning, research, document and collaboration skills.",
-      "global_skills": true,
-      "profiles": []
-    },
-    "web-engineering": {
-      "description": "React/Next and Node/NestJS web engineering, quality, browser tests and API integrations.",
-      "profiles": [
-        "full-stack",
-        "backend-node",
-        "testing-web",
-        "integrations",
-        "react-next",
-        "react-composition",
-        "web-quality"
-      ]
-    },
-    "design-studio": {
-      "description": "Design exploration, redesign, page transitions, complex motion, SVG illustration/animation and HTML publications.",
-      "profiles": [
-        "design-prototyping",
-        "design-redesign",
-        "html-publications",
-        "motion-studio"
-      ]
-    },
-    "research-documents": {
-      "description": "Evidence-based research, extraction and editable document creation.",
-      "profiles": [
-        "research",
-        "documents"
-      ]
-    },
-    "marketing-growth": {
-      "description": "Positioning, campaigns, content, experimentation and growth operations.",
-      "profiles": [
-        "marketing-strategy",
-        "marketing-growth",
-        "marketing-content",
-        "search-visibility"
-      ]
-    },
-    "engineering-operations": {
-      "description": "Architecture, data integrity, security, observability and release operations.",
-      "profiles": [
-        "architecture",
-        "databases",
-        "security",
-        "operations",
-        "collaboration"
-      ]
-    },
-    "personal-workbench": {
-      "description": "Shared craft workflows with executable browser, vector, office and Markdown tools; configure existing runtimes locally.",
-      "global_skills": true,
-      "skills": [
-        "svg-creation",
-        "motion-design"
-      ]
-    }
-  },
-  "runtime_policy": "Install selected target configuration without installing applications, dependencies, logging in, or starting MCP servers. Verify activation in the selected client.",
-  "delegation": {
-    "primary": "host-subagents",
-    "secondary": "claude-code",
-    "strategy": "Use the selected host agent and available bounded workers. Honor explicit provider choices; the initiating agent owns integration and verification."
-  },
-  "settings_source": "registry/codex-settings.json",
-  "maintenance": {
-    "enabled": false,
-    "time": "00:00",
-    "timezone": "system",
-    "remote": "origin",
-    "branch": "main",
-    "expected_repository": "github.com/codemirket/harness"
-  },
-  "default_target": "all",
-  "instructions": "instructions/AGENTS.md",
-  "mcp_source": "registry/mcp.json"
+  }
 }

@@ -1,5 +1,6 @@
+/target/
+/dist/
+/.mirket/
 .DS_Store
-node_modules/
-coverage/
-__pycache__/
-build/
+*.db-shm
+*.db-wal

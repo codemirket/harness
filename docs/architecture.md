@@ -1,93 +1,57 @@
-# Harness architecture
+# Architecture
 
-Harness maintains reusable agent guidance and makes installation state inspectable.
-The core command line uses Python 3.9+ and the standard library. It selects reviewed
-payloads, preserves their provenance, reconciles declared files and reports drift.
-Projects retain their own architecture, verification commands and release authority.
+Mirket has one command surface and one Rust implementation of each operation.
+The executable embeds the authored guidance and catalog. Target installers call
+the same CLI library; MCP tools call the same catalog and state methods.
 
-Start with [adoption](adoption.md) to use it or [CONTRIBUTING](../CONTRIBUTING.md)
-to change it. This map describes the current boundaries; it does not prescribe an
-architecture for projects that adopt the harness.
+| Source | Responsibility |
+| --- | --- |
+| `src/cli.rs` | Arguments, interactive setup, presentation and dispatch |
+| `src/catalog.rs` | Embedded content, capability contracts, bounded discovery, verified upstream payloads |
+| `src/project.rs` | Explicit project selections, target copies and integrity receipts |
+| `src/install.rs` | Client configuration, setup transaction and device doctor |
+| `src/update.rs` | Release selection, candidate verification and setup replay |
+| `src/state.rs` | Registered roots, durable tasks, revisions, idempotency and artifact evidence |
+| `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
+| `src/tools.rs` | Explicitly registered executables and CLI-only invocation |
+| `src/dev.rs` | Build/check/package operations and performance measurement |
+| `src/release.rs` | Verification and assembly of native release manifests |
+| `src/util.rs`, `src/paths.rs` | Bounded I/O, integrity, atomic writes and path ownership |
+| `setup/*.rs` | Standalone installers using the same CLI entrypoint |
+| `registry/`, `skills/`, `instructions/` | Reviewed content and host-neutral working principles |
 
-## Command owners
+## Local state
 
-[ai.py](../ai.py) dispatches commands to focused modules:
+`~/.mirket` holds the managed binary, saved setup, install receipt, verified
+payload cache, registered tools and SQLite task database. `--home` changes the
+user-home boundary for all harness/client installation paths. Each project's
+`.mirket` directory contains its own selection and copy receipts.
 
-| Area | Owning source | Contract and detailed guide |
-| --- | --- | --- |
-| Client installation | [target_install.py](../lib/target_install.py), [targets.py](../lib/targets.py), [configuration.py](../lib/configuration.py) | Explicit target selection and selected configuration merging; [targets](targets.md) |
-| Global and project reconciliation | [harness.py](../lib/harness.py) | Plans, preserved modifications, managed copies and project locks; [project targets](project-targets.md) |
-| Reviewed skill catalog | [catalog.py](../lib/catalog.py) | Pinned sources, adaptations, hashes, companions and executable contracts; [source review](source-review.md) |
-| Task capability contracts | [capabilities.py](../lib/capabilities.py) | Explicit role resolution, bounded composition, acceptance and failure probes; [capabilities](capabilities.md) |
-| Runtime and preferences | [runtime.py](../lib/runtime.py), [settings.py](../lib/settings.py) | Readiness and explicitly managed preferences; [settings](settings.md) |
-| Project instruction audit | [context.py](../lib/context.py) | Explicit root-to-cwd selection, shadowing and byte-budget diagnostics; [context](context.md) |
-| Scheduling and maintenance | [schedule.py](../lib/schedule.py), [maintenance.py](../lib/maintenance.py) | Explicit schedule registration and bounded checkout maintenance; [scheduling](scheduling.md) |
-| Artifact workbench | [workbench.py](../lib/workbench.py), [scripts/workbench/](../scripts/workbench/) | Separate browser, vector, document and Markdown operations; [workbench](workbench.md) |
-| Development evaluation | [evaluation.py](../lib/evaluation.py), [evaluations/](../evaluations/) | Fixture preparation, executed checks and artifact-bound reviews; [delivery quality](quality-harness.md) |
-| Export and handoff | [bundle.py](../lib/bundle.py), [handoff.py](../lib/handoff.py) | Local packages with provenance; [plugins](plugins.md) and [target coverage](targets.md) |
-| Bounded Claude delegation | [claude_delegate.py](../lib/claude_delegate.py) | Explicit worker/tool limits; [coordination workflow](../skills/agent-coordination/SKILL.md) |
+SQLite transactions are short; WAL permits concurrent reads. Task mutations use
+expected revisions and idempotency keys. An identical retry returns its recorded
+result; reusing a key for another intention fails. The catalog is parsed once
+and shared immutably. Retrieval and downloads have explicit size limits.
 
-`install` and `check` dispatch to `target_install.py`; both use the same target
-definitions and configuration contract. Client names are `codex` and `claude`,
-with `all` selecting both. Project manifests, locks and capability contracts use
-schema version `1`.
-Exported `_harness` snapshots contain the runtime and reference documentation,
-including this map, but omit the contributor test suite. Use the full source
-checkout for the contribution gates below.
+## Trust and execution
 
-## Authoritative inputs and derived state
+Only explicit CLI project registration admits a canonical root to task tracking.
+MCP cannot register a filesystem root or execute a command. Skill resources come
+from the embedded catalog. Evidence reads stay inside registered project roots
+and reject symlink traversal. Host permissions remain the real execution boundary.
 
-- [registry/harness.json](../registry/harness.json) selects global skills, project
-  defaults and export bundles. [registry/targets.json](../registry/targets.json)
-  defines client adapters; [registry/mcp.json](../registry/mcp.json) holds MCP definitions.
-- [registry/catalog.json](../registry/catalog.json) owns reviewed entries, source
-  pins, payload contracts and profiles. Authored payloads live in [skills/](../skills/).
-  [instructions/AGENTS.md](../instructions/AGENTS.md) is shared installed guidance;
-  the root [AGENTS.md](../AGENTS.md) governs contributors to this repository.
-- [registry/capabilities.json](../registry/capabilities.json) owns explicit role
-  aliases and outcome contracts. `capabilities plan` validates selected authored
-  payloads and returns a deduplicated read sequence, byte cost and fingerprint.
-  Optional support is not implicitly loaded. `project init/add --capability`
-  resolves project leads into ordinary skill IDs; host execution stays outside it.
-- A consuming project's `.ai/project.json` declares its selections. Its generated
-  `.ai/project.lock.json` records resolved provenance and target assignments. Use
-  project commands to reconcile it; do not hand-edit a lock to conceal drift.
-- [scripts/render_registry.py](../scripts/render_registry.py) generates
-  [catalog documentation](catalog.md), [capability contracts](capabilities.md) and
-  [source review tables](source-review.md).
-  Change authoritative inputs first, regenerate, then run `--check`.
-- `build/` contains ignored generated artifacts and scratch evidence. Dated
-  [verification records](verification.md) describe their original inputs and limits;
-  they do not certify later edits.
+Content hashes establish bytes and detect stale evidence. They do not prove that
+an agent applied the guidance, that a check actually ran or that a reviewer is
+human. Callers must use the project's real verification tools and report what
+they observed. Local state is user-owned and is not an attestation service.
 
-## State changes and trust boundaries
+Installation stages all changes, checks ownership/conflicts and preserves
+unrelated configuration. Updates run a verified new executable to apply its own
+embedded payload and saved setup choices. The update and setup locks coordinate
+writers; failed setup must leave the installed runtime recoverable.
 
-`plan`, `check`, `doctor` and dry-run commands expose their documented state without
-installing it. Installation and synchronization write selected destinations;
-project `init` and `add` update declarations, while project `sync` reconciles copies
-and the lock. Keep optional probes separate: authentication checks, local browser
-captures, evaluation execution and workbench rendering have their own effects.
+## Extension boundary
 
-Known installer preflight conflicts block writes; recovery is scoped to individual
-operations, not a transaction across every client and file. Modified or unselected
-copies are preserved for deliberate resolution. POSIX executable contracts and
-source/adaptation hashes are part of integrity, not permission to execute helpers.
-
-Registration does not install runtime dependencies, connect accounts or prove that
-a client loaded a skill. Likewise, worktrees separate checkouts but do not by
-themselves isolate services, databases, networks or credentials. Native client
-permissions remain distinct from instructions and local validation.
-
-The evaluator runs local verifier and candidate code under host permissions. Its
-input fingerprints and review records detect relevant drift; they are not a
-security sandbox or proof of human approval. Keep automated results, inspected
-artifacts, client activation and production outcomes as separate evidence.
-
-## Verification and change flow
-
-Locate the owner above, inspect the relevant existing tests, and exercise the
-changed consumer behavior in an isolated fixture. Follow the concrete commands in
-[CONTRIBUTING](../CONTRIBUTING.md) and the root [project map](../AGENTS.md). Extend
-tests for meaningful failures and preservation guarantees, not for exact prose.
-For a changed workflow, inspect a representative result as well as its registration.
-Record actual checks and remaining limits without upgrading historical evidence.
+`mirket tool` registers explicit local executable paths and hashes. Invocation
+uses argv directly, inherits the caller's permissions and observes a timeout.
+There is no MCP execution tool or implicit package installer. Additional package
+sources and binaries can use this registry without creating separate setup flows.

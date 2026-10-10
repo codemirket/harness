@@ -32,9 +32,10 @@ relevant inputs change. Fix the owning source, repeat the failing probe, and ret
 the smallest regression that prevents recurrence. A control that never catches
 the intended defect needs repair; adding more guidance does not compensate.
 
-For this harness, `capabilities check` checks source coverage, `project doctor`
-checks installed copies, `runtime doctor` probes prerequisites, and `eval` plus
-the artifact workbench exercise specific results. None substitutes for the other.
+For Mirket, `mirket catalog check` checks source coverage, `mirket project doctor`
+checks installed copies and `mirket doctor` checks the environment. Task evidence
+records current artifacts; project tests exercise their behavior. None substitutes
+for the other.
 Use existing project checks for project architecture and domain behavior; this
 portable repository cannot impose one application's fitness functions globally.
 

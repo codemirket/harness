@@ -1,8 +1,7 @@
 # Route the task to a capability
 
 Use the row that matches the requested outcome, then inspect the chosen entry
-with `catalog show <id>`. Commands run through `scripts/catalog.py` relative to
-the skill directory. IDs register catalog entries; invocation names identify the
+with `mirket catalog show <id>`. All harness operations run through `mirket`. IDs register catalog entries; invocation names identify the
 installed skill. Profiles are reusable installation groups, not instructions to
 load every member for every task. Existing project instructions and explicit
 user choices remain authoritative.
@@ -93,7 +92,7 @@ animation and format requirements; neither workflow supplies the other's runtime
 For a substantial task, state the selected workflow and its purpose briefly.
 Read its installed `SKILL.md`, applicable integration note and relevant references;
 the catalog description alone does not apply the workflow. If a needed reviewed
-entry is absent, register through `project add`, then sync and doctor, within
+entry is absent, register through `mirket project add`, then sync and doctor, within
 existing authorization. Do not edit installed copies or hand-edit the lock.
 
 Never follow an upstream sibling name blindly. Confirm it is installed and
@@ -104,12 +103,12 @@ and Remotion integrations have separate review/runtime requirements. Report a
 material missing capability instead of treating a catalog listing as installation.
 
 Registration, selection, application and outcome are separate evidence levels.
-Project doctor verifies registration; runtime doctor checks requested prerequisites
-and optional local response/capture. Neither accepts the delivered result.
+`mirket project doctor` verifies installed copies; `mirket doctor` checks installation
+and registered tools. Neither accepts the delivered result.
 A fresh-session skill read demonstrates selection.
 An observed task result demonstrates application; UI improvement additionally
 needs comparable rendered evidence and judgment against the user's visual goal.
 For substantial work, select completion criteria from
 [delivery standards](delivery-standards.md). The harness's development evaluation
-workflow is available through `ai.py eval`; use it to assess output separately
+workflow is available through Mirket task tracking; use it to assess output separately
 from discovery and installation, following the `ai-system-evaluation` guidance.

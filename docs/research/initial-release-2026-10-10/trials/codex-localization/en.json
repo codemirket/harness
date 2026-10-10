@@ -1,8 +1,0 @@
-{
-  "refund": "Do not cancel {booking_id} until the supplier confirms the refund. A request is not a confirmed refund.",
-  "price": "Estimated total: €1,250.50. This excludes local taxes.",
-  "deadline": "Confirm by 17:00 (Europe/Istanbul) on 10 October 2026.",
-  "seats": "{count, plural, =0 {No seats available} one {# seat available} other {# seats available}}",
-  "button": "Request cancellation",
-  "preview": "<strong>{name}</strong>, your booking is pending, not confirmed."
-}

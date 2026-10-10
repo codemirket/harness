@@ -72,16 +72,10 @@ need the user's authorization under the project's rules.
 
 ## Verify and deliver
 
-Optionally run the bundled standard-library structural check:
-
-```sh
-python3 scripts/audit_svg.py /absolute/path/art.svg --json
-```
-
-Run it relative to this skill directory or use the installed script's absolute
-path. It checks XML, `viewBox`, IDs and common local references, and reports active
-content, raster elements and dependencies for inspection. It does not validate
-path grammar, all CSS, accessibility, clipping, security or aesthetics.
+Use an available XML/SVG validator or explicitly approved renderer through
+`mirket tool run`. Check namespace, finite viewBox dimensions, IDs and references,
+font dependencies, external resources and active content. Structural validation
+is not sanitization or visual acceptance.
 
 Render the real integration and inspect it. Deliver the editable SVG/component,
 requested exports and concise integration details: dimensions, palette hooks,
@@ -89,7 +83,6 @@ label/decorative treatment, dependencies and animation handoff groups. Report
 observed quality, the inspected sizes/context and material gaps. A browser preview
 does not establish print/editor fidelity or compatibility on untested devices.
 
-For repeatable multi-size light/dark renders, run the harness
-`workbench vector INPUT.svg --output NEW_DIR` through the installed skill-catalog
-launcher. It requires existing sharp and Python runtimes. Inspect its PNGs and
-source; a successful report leaves visual acceptance to the reviewer.
+For repeatable multi-size light/dark renders, use an available browser or
+explicitly registered renderer through `mirket tool run`. Inspect the actual
+output and source; structural checks leave visual acceptance to the reviewer.

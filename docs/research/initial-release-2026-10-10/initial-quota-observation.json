@@ -1,8 +1,0 @@
-{
-  "provider": "claude",
-  "case": "trivial",
-  "status": "completed",
-  "exit_code": 1,
-  "seconds": 4.697,
-  "reason": "Session quota reached; user reset it, then subsequent native tasks completed."
-}

@@ -44,8 +44,8 @@ when nested containers also apply padding.
 
 ## A bounded responsive-web exercise
 
-Use an existing local server and configured browser. For the harness specimen,
-the browser workbench can capture 390×844 and a wider layout in both motion modes.
+Use an existing local server and configured browser. For a materials catalog,
+capture 390×844 and a wider layout in both motion modes.
 Exercise filter Paper → search Cotton → preview → save → dismiss → Saved.
 Assert the rendered result and saved state, then remove the last item and recover.
 Inspect the actual mobile capture; an overflow number alone misses tiny labels,

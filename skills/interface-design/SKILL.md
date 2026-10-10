@@ -69,8 +69,8 @@ layouts, then repair observed clipping, weak hierarchy, unreadable text, missing
 assets and broken behavior. A screenshot capture or passing build is not visual
 acceptance.
 
-Use [the workbench recipe](references/workbench.md) for reproducible browser
-scenarios, motion frames and the working Fieldwork example. Keep diagnostic tools
+Use [browser evidence](references/workbench.md) for reproducible scenarios,
+motion frames and inspection criteria. Keep diagnostic tools
 outside the product interface. For large changes, obtain an independent review of
 the rendered result when a reviewer is available. Ask for located defects and
 specific repairs, separating functional defects from preferences. Otherwise do a

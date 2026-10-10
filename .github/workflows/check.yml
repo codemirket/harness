@@ -1,0 +1,55 @@
+name: Mirket checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install pinned toolchain
+        run: rustup show active-toolchain
+      - name: Bootstrap Mirket
+        run: cargo build --locked --bin mirket
+      - name: Check through Mirket
+        run: cargo run --locked --bin mirket -- dev check --project .
+      - name: Package native binaries
+        run: cargo run --locked --bin mirket -- dev dist --project . --output dist
+      - name: Verify packaged runtime and installers
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $manifest = Get-Content dist/mirket-release.json -Raw | ConvertFrom-Json
+          $asset = $manifest.assets[0]
+          $runtimeName = [IO.Path]::GetFileName(([uri]$asset.url).AbsolutePath)
+          $runtime = Join-Path (Get-Location) "dist/$runtimeName"
+          $variants = @{ 'mirket' = 'all'; 'install-codex' = 'codex'; 'install-claude' = 'claude'; 'install-all' = 'all' }
+          foreach ($variant in $variants.GetEnumerator()) {
+            $testHome = Join-Path $env:RUNNER_TEMP "mirket-release-$($variant.Key)"
+            New-Item -ItemType Directory -Path $testHome | Out-Null
+            $installerName = $runtimeName -replace '^mirket-', "$($variant.Key)-"
+            $installer = Join-Path (Get-Location) "dist/$installerName"
+            if ($variant.Key -eq 'mirket') {
+              & $installer --home $testHome setup --target $variant.Value --microsoft-learn --yes
+            } else {
+              & $installer --home $testHome --microsoft-learn --yes
+            }
+            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) setup failed" }
+            & $runtime --home $testHome doctor --json
+            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) doctor failed" }
+            & $runtime --home $testHome update --from $runtime --sha256 $asset.sha256
+            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) update failed" }
+            & $runtime --home $testHome doctor --json
+            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) post-update doctor failed" }
+            Remove-Item -LiteralPath $testHome -Recurse -Force
+          }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: mirket-${{ matrix.os }}
+          path: dist/

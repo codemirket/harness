@@ -28,10 +28,9 @@ or screen-reader acceptance. Match native apps to their platform test tools.
 
 ## Produce evidence that points to a fix
 
-Use the project's tests and actual browser tools. The workbench browser runner
-can replay bounded local scenarios and save assertions, errors and motion samples.
-Its declarative subset cannot inject every race or prove backend persistence;
-use a focused project test or controlled service for those cases. Never fabricate
+Use the project's tests and actual browser tools. Capture assertions, errors and
+motion samples for relevant local scenarios. Use a focused project test or
+controlled service to inject races and observe backend persistence. Never fabricate
 an available tool or weaken an assertion to fit the collector.
 
 A useful finding states: exact build/context, reproduction, expected vs observed

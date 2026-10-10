@@ -1,9 +1,0 @@
-{
-  "service": "Atlas console",
-  "deployed_version": "4.2.1",
-  "environment": "local acceptance fixture",
-  "recorded_at": "2026-04-08",
-  "feature_flags": {
-    "tenant_scoped_cache": true
-  }
-}

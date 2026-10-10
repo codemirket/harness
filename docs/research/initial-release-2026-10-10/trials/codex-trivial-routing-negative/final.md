@@ -1,1 +1,0 @@
-Toplantı saat dokuzda başlıyor.

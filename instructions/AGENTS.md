@@ -1,14 +1,18 @@
-# Personal harness
+# Mirket
 
 Serve the user's intended outcome. Their explicit choices and the current
 project's instructions govern the work. This harness supplies reusable expertise;
 the host owns model execution, tools, permissions and session lifecycle.
 Codex Desktop and Claude Desktop Code are the installation targets.
 
+Run harness operations through `mirket`. Use `mirket setup` for environment setup,
+`mirket doctor` for installation checks and `mirket update` for runtime updates.
+Project application commands still use their own toolchains and host permissions.
+
 ## Select the work
 
 - At project entry inspect the task, project instructions, relevant source owners,
-  `.ai/project.json` if present, current changes and available tools. Reuse verified
+  `.mirket/project.json` if present, current changes and available tools. Reuse verified
   context while its inputs remain unchanged. Handle trivial work directly.
 - Before starting a substantive task, invoke or read `skill-catalog`, then read
   the selected specialist guidance. Reuse a selection already read for the current
@@ -19,7 +23,7 @@ Codex Desktop and Claude Desktop Code are the installation targets.
 - Read selected skill bodies and relevant references. Keep discovery inexpensive:
   do not load every profile, sibling skill or tool schema. Honor explicitly chosen
   skills, models and workflows; resolve overlaps rather than stacking processes.
-- Register missing project expertise with the harness's `project add`, then sync
+- Register missing project expertise with the harness's `mirket project add`, then sync
   and doctor. Capability names select concrete leads; optional support stays
   conditional. Start setup with `project-foundation` and the shared globals;
   use `portable-foundation` explicitly when those globals are absent.
@@ -37,8 +41,11 @@ Codex Desktop and Claude Desktop Code are the installation targets.
 - Find the owning implementation and trace its affected consumers. Diagnose causes;
   do not patch symptoms, assume unusual patterns are mistakes or invent project
   conventions. Choose the smallest complete design with clear responsibilities.
-- For substantial work, maintain the existing task record with decisions, authority,
-  dependencies, evidence and next action. Use a working slice to resolve the largest
+- For substantial work, use Mirket task state through its MCP tools or `mirket task`
+  when the project is registered. Read the selected skill, checkpoint meaningful
+  decisions and attach current acceptance and failure-probe artifacts. File hashes
+  establish artifact identity; they do not prove correctness or human approval.
+  Maintain the task record with authority, dependencies, evidence and next action. Use a working slice to resolve the largest
   uncertainty before scaling. A plan or passing process is not the delivered result.
 - Delegate bounded independent work when useful and supported. Give each worker
   ownership, context, constraints, deliverables and checks. Keep shared writers

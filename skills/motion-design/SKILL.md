@@ -45,8 +45,8 @@ and `skills/review-animations/SKILL.md`, MIT at commit
 e8a175de22ae1e49370fc144c1f3bb9aeedf988d. These recipes intentionally do not carry
 upstream fixed timing tables, blanket easing bans, or mandatory sibling invocation.
 
-For repeatable evidence use the harness `workbench browser --scenario FILE
---output NEW_DIR` through skill-catalog's launcher. Capture timed frames after
-input, include normal/reduced motion and an explicit resulting-state assertion.
+For repeatable evidence use available browser tools or an approved registered
+renderer through `mirket tool run`. Capture timed frames after input, include
+normal/reduced motion and an explicit resulting-state assertion.
 The frame offsets start at capture; inspect reversal live and profile when needed.
 A static screenshot comparison that disables animations cannot verify motion.

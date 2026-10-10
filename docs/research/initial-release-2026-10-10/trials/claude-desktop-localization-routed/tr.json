@@ -1,8 +1,0 @@
-{
-  "refund": "Tedarikçi iadeyi onaylayana kadar {booking_id} numaralı rezervasyonu iptal etmeyin. Talep, onaylanmış bir iade anlamına gelmez.",
-  "price": "Tahmini toplam: €1.250,50. Bu tutar yerel vergileri içermez.",
-  "deadline": "En geç 10 Ekim 2026 saat 17:00'ye kadar (Europe/Istanbul) onaylayın.",
-  "seats": "{count, plural, =0 {Müsait koltuk yok} one {# koltuk müsait} other {# koltuk müsait}}",
-  "button": "İptal talep et",
-  "preview": "<strong>{name}</strong>, rezervasyonunuz beklemede, onaylanmış değil."
-}

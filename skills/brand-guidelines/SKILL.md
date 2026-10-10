@@ -56,7 +56,7 @@ requested color profile, material and proofing process.
 The bundled helper measures opaque sRGB color pairs with Python standard library:
 
 ```sh
-python3 scripts/contrast.py '#647066' '#fffefa'
+mirket craft contrast '#647066' '#fffefa'
 ```
 
 Resolve that script relative to this skill directory. It does not inspect images,
