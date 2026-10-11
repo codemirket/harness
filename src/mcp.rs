@@ -110,8 +110,10 @@ struct ProjectPage {
 struct Plan {
     /// Capability name or role alias, such as Backend Engineer or CFO.
     capability: String,
-    /// Conditional support selected for actual task boundaries; omit unrelated expertise.
+    /// Up to 12 supporting capability names or role aliases, such as Security Engineer.
+    /// Optional skill IDs belong in skill_read, not here. Omit unrelated expertise.
     #[serde(default)]
+    #[schemars(length(max = 12))]
     supporting: Vec<String>,
 }
 
@@ -226,10 +228,7 @@ impl MirketServer {
     )]
     async fn capability_plan(&self, Parameters(args): Parameters<Plan>) -> CallToolResult {
         self.run(move |_, catalog| {
-            if args.capability.len() > 128
-                || args.supporting.len() > 16
-                || args.supporting.iter().any(|item| item.len() > 128)
-            {
+            if args.capability.len() > 128 || args.supporting.iter().any(|item| item.len() > 128) {
                 bail!("capability selection exceeds its limit");
             }
             catalog.capability_plan(&args.capability, &args.supporting)

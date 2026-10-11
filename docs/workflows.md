@@ -8,8 +8,9 @@ through the `mirket` CLI; the host starts its MCP endpoint with `mirket mcp serv
 
 Use `mirket capabilities plan ROLE` for exact role/ID lookup, or `mirket catalog
 search WORDS` for bounded discovery. A plan selects one lead and only explicitly
-requested capability leads. `--with` composes role names. The contract's `support`
-IDs are conditional skills; read one with `mirket catalog read ID` and add it to
+requested capability leads. CLI `--with` and MCP `capability_plan.supporting`
+compose up to 12 capability names or role aliases. The contract's `support`
+IDs are conditional skills; read one with `skill_read` or `mirket catalog read ID` and add it to
 the project with `mirket project add --skill ID` only when needed.
 Read the selected skill body and relevant references before
 substantive work. A skill name or installation receipt is not evidence of use.

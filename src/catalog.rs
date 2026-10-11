@@ -494,7 +494,9 @@ impl Catalog {
         let primary = self.capability(name)?;
         let mut contracts = vec![primary];
         for name in supporting {
-            let row = self.capability(name)?;
+            let row = self.capability(name).with_context(|| {
+                "supporting entries must be capability names or role aliases; for optional skill IDs use skill_read or mirket catalog read ID"
+            })?;
             if !contracts.iter().any(|existing| existing.id == row.id) {
                 contracts.push(row);
             }
@@ -531,7 +533,7 @@ impl Catalog {
             "project_skills":project_skills,"runtime_status":"not_checked",
             "activation_status":"not_observed",
             "authority":"Expertise does not grant execution permissions or professional authority.",
-            "support_policy":"Contract support IDs are optional skills: read one with mirket catalog read ID and register it with mirket project add --skill ID only when needed. --with composes capability names from mirket capabilities list.",
+            "support_policy":"Contract support IDs are optional skills: read one with skill_read or mirket catalog read ID and register it with mirket project add --skill ID only when needed. MCP supporting and CLI --with compose up to 12 capability names or role aliases from mirket capabilities list, not optional skill IDs.",
             "next_steps":["Read selected lead guidance and relevant references.",
                 "Register missing project leads with mirket project add, then sync and doctor.",
                 "Inspect available tools and actual task inputs.",

@@ -1062,6 +1062,55 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     let call = |name: &'static str, args: Value| {
         CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
     };
+    let plan_tool = tools
+        .iter()
+        .find(|tool| tool.name == "capability_plan")
+        .unwrap();
+    assert_eq!(
+        plan_tool.input_schema["properties"]["supporting"]["maxItems"],
+        12
+    );
+    let support_skill = client
+        .call_tool(call(
+            "capability_plan",
+            json!({
+                "capability": "Backend Engineer", "supporting": ["security-judgment"]
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(support_skill.is_error, Some(true));
+    assert!(
+        serde_json::to_string(&support_skill)
+            .unwrap()
+            .contains("skill_read")
+    );
+    let composed = client
+        .call_tool(call(
+            "capability_plan",
+            json!({
+                "capability": "Backend Engineer", "supporting": ["Security Engineer"]
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(composed.is_error, Some(false));
+    assert_eq!(
+        composed.structured_content.unwrap()["read_sequence"][1]["id"],
+        "security-judgment"
+    );
+    for (count, rejected) in [(12, false), (13, true)] {
+        let bounded = client
+            .call_tool(call(
+                "capability_plan",
+                json!({
+                    "capability": "Backend Engineer", "supporting": vec!["Security Engineer"; count]
+                }),
+            ))
+            .await
+            .unwrap();
+        assert_eq!(bounded.is_error, Some(rejected), "supporting count {count}");
+    }
     let started=client.call_tool(call("task_start",json!({"project_id":f.project_id,"objective":"test task","skills":["engineering-judgment"],"acceptance":"saved output matches expected units","failure_probe":"malformed units rejected","key":"start"}))).await.unwrap();
     assert_eq!(started.is_error, Some(false));
     let task = started.structured_content.unwrap();
