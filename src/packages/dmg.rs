@@ -4,7 +4,7 @@ use super::{Artifact, archive};
 use crate::util;
 use anyhow::{Context, Result, bail};
 use sha2::{Digest, Sha256};
-#[cfg(any(target_os = "macos", test))]
+#[cfg(any(target_os = "macos", all(test, unix)))]
 use std::io::Write;
 use std::{
     collections::{BTreeSet, VecDeque},
@@ -136,7 +136,7 @@ pub(super) fn link_target(application: &Path, link: &Path) -> Result<String> {
         .map_err(|_| anyhow::anyhow!("non-UTF8 application symlink"))
 }
 
-#[cfg(any(target_os = "macos", test))]
+#[cfg(any(target_os = "macos", all(test, unix)))]
 fn copy_application(source: &Path, destination: &Path, maximum_bytes: u64) -> Result<()> {
     struct CopyState {
         source: PathBuf,
