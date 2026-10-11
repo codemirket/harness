@@ -345,7 +345,9 @@ pub(super) fn relative_name(root: &Path, file: &Path) -> Result<String> {
         .to_str()
         .context("non-UTF8 package path")?;
     #[cfg(windows)]
-    let relative = relative.replace('\\', "/");
+    let normalized = relative.replace('\\', "/");
+    #[cfg(windows)]
+    let relative = normalized.as_str();
     normal_path(relative)?;
     Ok(relative.to_string())
 }

@@ -51,6 +51,12 @@ enum Command {
         from: Option<PathBuf>,
         #[arg(long, requires = "from")]
         sha256: Option<String>,
+        /// Refresh an existing absolute mirket executable outside the managed runtime.
+        #[arg(long, conflicts_with = "check")]
+        entrypoint: Option<PathBuf>,
+        /// Authorize replacement of these existing entrypoint bytes.
+        #[arg(long, requires = "entrypoint")]
+        expected_entrypoint_sha256: Option<String>,
     },
     /// Find, inspect, and prepare reviewed expertise.
     Catalog {
@@ -847,12 +853,16 @@ fn dispatch(cli: Cli) -> Result<i32> {
             check,
             from,
             sha256,
+            entrypoint,
+            expected_entrypoint_sha256,
         } => serde_json::to_value(crate::update::update(
             &paths,
             &crate::update::UpdateOptions {
                 from,
                 sha256,
                 check,
+                entrypoint,
+                expected_entrypoint_sha256,
             },
         )?)?,
         Command::Catalog { command } => match command {

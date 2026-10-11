@@ -145,6 +145,24 @@ origin and HTTPS. Never replace the expected digest just to accept a mismatch.
 A bootstrap CLI on PATH forwards to a verified newer managed release, including
 new commands and version output. Published versions must be immutable.
 
+To replace a separate CLI file on PATH with the same verified release, run the
+managed CLI and identify both the destination and its current SHA-256 digest:
+
+```sh
+/absolute/home/.mirket/bin/mirket update \
+  --entrypoint /absolute/bin/mirket \
+  --expected-entrypoint-sha256 CURRENT_ENTRYPOINT_SHA256
+```
+
+The entrypoint must be an existing regular file named `mirket` (`mirket.exe` on
+Windows), with an absolute path and no symlinks. Mirket checks its current bytes
+before updating the environment and again before replacing the file. A changed
+digest refuses replacement; an entrypoint already matching the candidate is a
+safe retry. This option cannot be combined with `--check`. On Windows, invoke a
+different Mirket executable because a running entrypoint cannot be replaced.
+If the environment update succeeds but entrypoint replacement fails, the error
+identifies that partial outcome so the replacement can be retried.
+
 Updates reapply selected global setup, package choices and package settings using
 the new executable's embedded definitions. They do not follow upstream package
 releases independently. Project skill selections remain explicit;

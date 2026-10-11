@@ -57,9 +57,9 @@ impl Target {
 pub struct SetupOptions {
     pub targets: Vec<Target>,
     pub microsoft_learn: bool,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub packages: Vec<String>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub package_settings: BTreeMap<String, Value>,
 }
 impl Default for SetupOptions {

@@ -1,14 +1,14 @@
 use crate::{
     install::{OperationLock, Target, read_state, read_state_snapshot},
     paths::Paths,
-    util::{atomic_write, read_bounded, sha256},
+    util::{atomic_write, read_bounded, reject_symlink_components, sha256},
 };
 use anyhow::{Context, Result, bail};
 use reqwest::{Url, blocking::Client, redirect::Policy};
 use serde::{Deserialize, Serialize};
 use std::{
-    io::{Read, Seek, SeekFrom},
-    path::{Path, PathBuf},
+    io::{Read, Seek, SeekFrom, Write},
+    path::{Component, Path, PathBuf},
     process::{Command, Stdio},
     thread,
     time::{Duration, Instant},
@@ -23,6 +23,8 @@ pub struct UpdateOptions {
     pub from: Option<PathBuf>,
     pub sha256: Option<String>,
     pub check: bool,
+    pub entrypoint: Option<PathBuf>,
+    pub expected_entrypoint_sha256: Option<String>,
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct UpdateReport {
@@ -31,6 +33,14 @@ pub struct UpdateReport {
     pub updated: bool,
     pub reconfigured: bool,
     pub binary: PathBuf,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entrypoint: Option<EntrypointReport>,
+}
+#[derive(Debug, Clone, Serialize)]
+pub struct EntrypointReport {
+    pub path: PathBuf,
+    pub sha256: String,
+    pub updated: bool,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -61,6 +71,15 @@ pub fn target_triple() -> Result<&'static str> {
 pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     if options.from.is_some() != options.sha256.is_some() {
         bail!("offline update requires both --from and --sha256");
+    }
+    if options.expected_entrypoint_sha256.is_some() && options.entrypoint.is_none() {
+        bail!("--expected-entrypoint-sha256 requires --entrypoint");
+    }
+    if options.check && options.entrypoint.is_some() {
+        bail!("--entrypoint cannot be combined with --check");
+    }
+    if let Some(digest) = &options.expected_entrypoint_sha256 {
+        validate_digest(digest)?;
     }
     let _lock = OperationLock::acquire(paths, "update")?;
     let (state, expected_state) = read_state_snapshot(paths)?
@@ -107,6 +126,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
                 updated: false,
                 reconfigured: false,
                 binary: paths.binary(),
+                entrypoint: None,
             });
         }
         (
@@ -121,6 +141,19 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     if candidate_bytes.is_empty() {
         bail!("update artifact is empty");
     }
+    let entrypoint = options
+        .entrypoint
+        .as_deref()
+        .map(|path| {
+            EntrypointPlan::prepare(
+                paths,
+                path,
+                options.expected_entrypoint_sha256.as_deref(),
+                &candidate_bytes,
+                &expected_digest,
+            )
+        })
+        .transpose()?;
     // A staged executable owns its embedded payload and performs the same setup
     // transaction as an ordinary installation. No updater-specific payload path exists.
     let staging = tempfile::Builder::new()
@@ -162,6 +195,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
             updated: false,
             reconfigured: false,
             binary: paths.binary(),
+            entrypoint: None,
         });
     }
     let before = read_bounded(&paths.binary(), MAX_BINARY)
@@ -188,6 +222,10 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     if state.options.microsoft_learn {
         command.arg("--microsoft-learn");
     }
+    if let Some(plan) = &entrypoint {
+        plan.recheck()
+            .context("entrypoint changed before setup; installation was not changed")?;
+    }
     run_bounded(&mut command, Duration::from_secs(1800)).context(
         "new runtime setup failed; run mirket setup to recover any interrupted transaction",
     )?;
@@ -201,13 +239,133 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
             "updated runtime did not produce the expected binary and saved setup; run mirket doctor to inspect the installation"
         );
     }
+    let entrypoint = entrypoint
+        .map(|plan| plan.apply(&available_version, &paths.binary()))
+        .transpose()?;
     Ok(UpdateReport {
         current_version,
         available_version,
         updated: old_digest != expected_digest,
         reconfigured: true,
         binary: paths.binary(),
+        entrypoint,
     })
+}
+
+struct EntrypointPlan {
+    path: PathBuf,
+    before_digest: String,
+    before_permissions: std::fs::Permissions,
+    digest: String,
+    staged: tempfile::NamedTempFile,
+}
+
+fn same_permissions(left: &std::fs::Permissions, right: &std::fs::Permissions) -> bool {
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        left.mode() == right.mode()
+    }
+    #[cfg(not(unix))]
+    {
+        // Temporary Windows attributes change when a staged file is persisted.
+        left.readonly() == right.readonly()
+    }
+}
+
+impl EntrypointPlan {
+    fn prepare(
+        paths: &Paths,
+        path: &Path,
+        expected: Option<&str>,
+        bytes: &[u8],
+        digest: &str,
+    ) -> Result<Self> {
+        if !path.is_absolute()
+            || path
+                .components()
+                .any(|part| matches!(part, Component::CurDir | Component::ParentDir))
+            || !matches!(
+                path.file_name().and_then(|name| name.to_str()),
+                Some("mirket" | "mirket.exe")
+            )
+        {
+            bail!("entrypoint must be an absolute mirket or mirket.exe file without traversal");
+        }
+        reject_symlink_components(path)?;
+        let before_digest =
+            sha256(&read_bounded(path, MAX_BINARY).context("read existing entrypoint")?);
+        let path = path.canonicalize()?;
+        if path == paths.binary().canonicalize()? {
+            bail!("entrypoint must be separate from the managed runtime");
+        }
+        #[cfg(windows)]
+        if path == std::env::current_exe()?.canonicalize()? {
+            bail!(
+                "cannot replace the executing Windows entrypoint; run update from the distinct managed or published executable"
+            );
+        }
+        if before_digest != digest
+            && expected.is_none_or(|value| !value.eq_ignore_ascii_case(&before_digest))
+        {
+            bail!(
+                "entrypoint SHA-256 does not match; supply --expected-entrypoint-sha256 for the existing file; installation was not changed"
+            );
+        }
+        let before_permissions = std::fs::metadata(&path)?.permissions();
+        let mut staged = tempfile::Builder::new()
+            .prefix(".mirket-entrypoint-")
+            .tempfile_in(path.parent().context("entrypoint has no parent")?)?;
+        staged.write_all(bytes)?;
+        make_executable(staged.path())?;
+        staged.as_file().sync_all()?;
+        Ok(Self {
+            path,
+            before_digest,
+            before_permissions,
+            digest: digest.into(),
+            staged,
+        })
+    }
+
+    fn recheck(&self) -> Result<()> {
+        if sha256(&read_bounded(&self.path, MAX_BINARY)?) != self.before_digest
+            || !same_permissions(
+                &std::fs::metadata(&self.path)?.permissions(),
+                &self.before_permissions,
+            )
+        {
+            bail!("entrypoint changed since preflight; refusing to overwrite it");
+        }
+        Ok(())
+    }
+
+    fn apply(self, installed_version: &str, managed_binary: &Path) -> Result<EntrypointReport> {
+        (|| {
+        self.recheck()?;
+        let permissions = self.staged.as_file().metadata()?.permissions();
+        let updated = self.before_digest != self.digest || !same_permissions(&self.before_permissions, &permissions);
+        if updated {
+            self.staged.persist(&self.path)
+                .with_context(|| format!("replace entrypoint {}; close processes using that file and retry from the managed executable", self.path.display()))?;
+        }
+        if sha256(&read_bounded(&self.path, MAX_BINARY)?) != self.digest
+            || !same_permissions(&std::fs::metadata(&self.path)?.permissions(), &permissions)
+        {
+            bail!(
+                "entrypoint changed after replacement; inspect {}",
+                self.path.display()
+            );
+        }
+        Ok(EntrypointReport {
+            path: self.path,
+            sha256: self.digest,
+            updated,
+        })
+        })().with_context(|| {
+            format!("managed runtime updated to {installed_version}, but entrypoint refresh failed; retry from {} with the same explicit entrypoint options", managed_binary.display())
+        })
+    }
 }
 
 pub fn validate_manifest(manifest: &ReleaseManifest) -> Result<()> {
@@ -367,4 +525,67 @@ fn run_bounded(command: &mut Command, timeout: Duration) -> Result<Vec<u8>> {
         bail!("mirket child exited with {status}: {}", message.trim());
     }
     Ok(bytes)
+}
+
+#[cfg(test)]
+mod entrypoint_tests {
+    use super::*;
+
+    #[test]
+    fn entrypoint_update_late_failure_reports_partial_success_without_overwrite() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        std::fs::create_dir_all(paths.binary().parent().unwrap()).unwrap();
+        std::fs::write(paths.binary(), b"previous runtime").unwrap();
+        let path = paths.home.join("mirket");
+        std::fs::write(&path, b"previous entrypoint").unwrap();
+        let candidate = b"verified candidate";
+        let version = env!("CARGO_PKG_VERSION");
+        let old_digest = sha256(b"previous entrypoint");
+        let plan = EntrypointPlan::prepare(
+            &paths,
+            &path,
+            Some(&old_digest),
+            candidate,
+            &sha256(candidate),
+        )
+        .unwrap();
+        // Exercise the commit boundary after the managed setup has completed.
+        std::fs::write(paths.binary(), candidate).unwrap();
+        std::fs::write(&path, b"concurrent edit").unwrap();
+        let error = format!("{:#}", plan.apply(version, &paths.binary()).unwrap_err());
+        assert!(
+            error.contains(&format!(
+                "managed runtime updated to {version}, but entrypoint refresh failed"
+            )),
+            "{error}"
+        );
+        assert!(
+            error.contains("entrypoint changed since preflight"),
+            "{error}"
+        );
+        assert_eq!(std::fs::read(paths.binary()).unwrap(), candidate);
+        assert_eq!(std::fs::read(&path).unwrap(), b"concurrent edit");
+        assert!(
+            EntrypointPlan::prepare(
+                &paths,
+                &path,
+                Some(&old_digest),
+                candidate,
+                &sha256(candidate)
+            )
+            .is_err()
+        );
+        std::fs::write(&path, b"previous entrypoint").unwrap();
+        let retry = EntrypointPlan::prepare(
+            &paths,
+            &path,
+            Some(&old_digest),
+            candidate,
+            &sha256(candidate),
+        )
+        .unwrap();
+        assert!(retry.apply(version, &paths.binary()).unwrap().updated);
+        assert_eq!(std::fs::read(path).unwrap(), candidate);
+    }
 }

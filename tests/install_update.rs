@@ -104,6 +104,12 @@ fn setup_preserves_unrelated_settings_and_verifies_actual_payload() {
     let options = SetupOptions::default();
     let report = fixture.setup(&options).unwrap();
     assert!(report.files > 20);
+    let receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    assert_eq!(
+        receipt["options"],
+        serde_json::json!({"targets": ["codex", "claude"], "microsoft_learn": false})
+    );
     assert_eq!(
         fixture.read(".codex/AGENTS.md"),
         fixture.catalog.instructions()
@@ -443,6 +449,7 @@ fn update_rejects_bad_digest_before_executing_or_mutating() {
             from: Some(fixture.binary.clone()),
             sha256: Some("0".repeat(64)),
             check: false,
+            ..UpdateOptions::default()
         },
     )
     .unwrap_err()
@@ -450,6 +457,205 @@ fn update_rejects_bad_digest_before_executing_or_mutating() {
     assert!(error.contains("SHA-256 does not match"));
     assert_eq!(fs::read(fixture.paths.binary()).unwrap(), before);
     assert_eq!(fs::read(fixture.paths.settings()).unwrap(), receipt);
+}
+
+fn entrypoint_options(fixture: &Fixture) -> UpdateOptions {
+    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
+        .canonicalize()
+        .unwrap();
+    let entrypoint = fixture.paths.home.join("path").join(if cfg!(windows) {
+        "mirket.exe"
+    } else {
+        "mirket"
+    });
+    fs::create_dir_all(entrypoint.parent().unwrap()).unwrap();
+    fs::write(&entrypoint, b"previous entrypoint").unwrap();
+    UpdateOptions {
+        sha256: Some(sha256(&fs::read(&artifact).unwrap())),
+        from: Some(artifact),
+        entrypoint: Some(entrypoint),
+        expected_entrypoint_sha256: Some(sha256(b"previous entrypoint")),
+        ..UpdateOptions::default()
+    }
+}
+
+#[test]
+fn entrypoint_update_rejects_invalid_destinations_before_changing_installation() {
+    let fixture = Fixture::new();
+    fixture.setup(&codex()).unwrap();
+    let options = entrypoint_options(&fixture);
+    let receipt = fs::read(fixture.paths.settings()).unwrap();
+    let binary = fs::read(fixture.paths.binary()).unwrap();
+    let path = options.entrypoint.as_ref().unwrap();
+    let mut probes = Vec::new();
+    let mut probe = options.clone();
+    probe.expected_entrypoint_sha256 = Some("0".repeat(64));
+    probes.push(probe);
+    let mut probe = options.clone();
+    probe.expected_entrypoint_sha256 = None;
+    probes.push(probe);
+    for destination in [
+        PathBuf::from("mirket"),
+        fixture.paths.home.join("path/../path/mirket"),
+        fixture.paths.home.join("personal-tool"),
+        fixture.paths.home.join("missing/mirket"),
+        fixture.paths.binary(),
+    ] {
+        let mut probe = options.clone();
+        probe.entrypoint = Some(destination);
+        probes.push(probe);
+    }
+    let mut probe = options.clone();
+    probe.check = true;
+    probes.push(probe);
+    let mut probe = options.clone();
+    probe.entrypoint = None;
+    probes.push(probe);
+    let directory = fixture.paths.home.join("directory/mirket");
+    fs::create_dir_all(&directory).unwrap();
+    let mut probe = options.clone();
+    probe.entrypoint = Some(directory);
+    probes.push(probe);
+    for probe in probes {
+        assert!(update::update(&fixture.paths, &probe).is_err(), "{probe:?}");
+        assert_eq!(fs::read(path).unwrap(), b"previous entrypoint");
+        assert_eq!(fs::read(fixture.paths.settings()).unwrap(), receipt);
+        assert_eq!(fs::read(fixture.paths.binary()).unwrap(), binary);
+    }
+}
+
+#[cfg(unix)]
+#[test]
+fn entrypoint_update_rejects_file_and_parent_symlinks() {
+    use std::os::unix::fs::symlink;
+    let fixture = Fixture::new();
+    fixture.setup(&codex()).unwrap();
+    let options = entrypoint_options(&fixture);
+    let receipt = fs::read(fixture.paths.settings()).unwrap();
+    let links = fixture.paths.home.join("links");
+    fs::create_dir(&links).unwrap();
+    symlink(options.entrypoint.as_ref().unwrap(), links.join("mirket")).unwrap();
+    symlink(fixture.paths.home.join("path"), links.join("directory")).unwrap();
+    for destination in [links.join("mirket"), links.join("directory/mirket")] {
+        let mut probe = options.clone();
+        probe.entrypoint = Some(destination);
+        assert!(
+            format!("{:#}", update::update(&fixture.paths, &probe).unwrap_err())
+                .contains("symlink")
+        );
+    }
+    assert_eq!(
+        fs::read(options.entrypoint.unwrap()).unwrap(),
+        b"previous entrypoint"
+    );
+    assert_eq!(fs::read(fixture.paths.settings()).unwrap(), receipt);
+}
+
+#[test]
+fn entrypoint_update_copies_verified_binary_and_retries_idempotently() {
+    let fixture = Fixture::new();
+    fixture.setup(&codex()).unwrap();
+    let options = entrypoint_options(&fixture);
+    let path = options.entrypoint.as_ref().unwrap();
+    let personal = path.parent().unwrap().join("personal-tool");
+    fs::write(&personal, b"unrelated executable").unwrap();
+    let mut command = std::process::Command::new(env!("CARGO_BIN_EXE_mirket"));
+    command
+        .env("MIRKET_DIRECT", "1")
+        .arg("--home")
+        .arg(&fixture.paths.home)
+        .args(["--json", "update", "--from"])
+        .arg(options.from.as_ref().unwrap())
+        .arg("--sha256")
+        .arg(options.sha256.as_ref().unwrap())
+        .arg("--entrypoint")
+        .arg(path)
+        .arg("--expected-entrypoint-sha256")
+        .arg(options.expected_entrypoint_sha256.as_ref().unwrap());
+    let first = command.output().unwrap();
+    assert!(
+        first.status.success(),
+        "{}",
+        String::from_utf8_lossy(&first.stderr)
+    );
+    let first: serde_json::Value = serde_json::from_slice(&first.stdout).unwrap();
+    assert_eq!(first["updated"], true);
+    assert_eq!(first["entrypoint"]["updated"], true);
+    assert_eq!(first["entrypoint"]["path"], path.to_str().unwrap());
+    assert_eq!(
+        first["entrypoint"]["sha256"],
+        *options.sha256.as_ref().unwrap()
+    );
+    assert_eq!(
+        fs::read(path).unwrap(),
+        fs::read(fixture.paths.binary()).unwrap()
+    );
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        assert_eq!(
+            fs::metadata(path).unwrap().permissions().mode() & 0o777,
+            0o755
+        );
+    }
+    let actual = std::process::Command::new(path)
+        .env("MIRKET_DIRECT", "1")
+        .arg("--version")
+        .output()
+        .unwrap();
+    assert!(actual.status.success());
+    assert_eq!(
+        String::from_utf8(actual.stdout).unwrap().trim(),
+        format!("mirket {}", env!("CARGO_PKG_VERSION"))
+    );
+    let second = command.output().unwrap();
+    assert!(
+        second.status.success(),
+        "{}",
+        String::from_utf8_lossy(&second.stderr)
+    );
+    let second: serde_json::Value = serde_json::from_slice(&second.stdout).unwrap();
+    assert_eq!(second["updated"], false);
+    assert_eq!(second["entrypoint"]["updated"], false);
+    assert_eq!(fs::read(&personal).unwrap(), b"unrelated executable");
+    assert!(!fs::read_dir(path.parent().unwrap()).unwrap().any(|entry| {
+        entry
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .starts_with(".mirket-entrypoint-")
+    }));
+}
+
+#[cfg(unix)]
+#[test]
+fn entrypoint_update_refuses_destination_changed_after_preflight() {
+    let fixture = Fixture::new();
+    fixture.setup(&codex()).unwrap();
+    let mut options = entrypoint_options(&fixture);
+    let path = options.entrypoint.as_ref().unwrap();
+    let quoted = format!("'{}'", path.to_str().unwrap().replace('\'', "'\\''"));
+    let bytes = format!(
+        "#!/bin/sh\nif [ \"$1\" = \"--version\" ]; then printf 'concurrent edit' > {quoted}; printf 'mirket {}\\n'; exit 0; fi\nexit 88\n",
+        env!("CARGO_PKG_VERSION")
+    );
+    let artifact = fixture.paths.home.join("changing-candidate");
+    fs::write(&artifact, &bytes).unwrap();
+    options.from = Some(artifact);
+    options.sha256 = Some(sha256(bytes.as_bytes()));
+    let receipt = fs::read(fixture.paths.settings()).unwrap();
+    let binary = fs::read(fixture.paths.binary()).unwrap();
+    let error = format!(
+        "{:#}",
+        update::update(&fixture.paths, &options).unwrap_err()
+    );
+    assert!(
+        error.contains("entrypoint changed since preflight"),
+        "{error}"
+    );
+    assert_eq!(fs::read(path).unwrap(), b"concurrent edit");
+    assert_eq!(fs::read(fixture.paths.settings()).unwrap(), receipt);
+    assert_eq!(fs::read(fixture.paths.binary()).unwrap(), binary);
 }
 
 #[test]
@@ -467,6 +673,7 @@ fn offline_update_runs_new_cli_and_reapplies_saved_setup() {
             from: Some(artifact),
             sha256: Some(digest.clone()),
             check: false,
+            ..UpdateOptions::default()
         },
     )
     .unwrap();
@@ -517,6 +724,7 @@ fn failing_new_runtime_preserves_installation() {
             from: Some(candidate),
             sha256: Some(sha256(bytes.as_bytes())),
             check: false,
+            ..UpdateOptions::default()
         },
     );
     assert!(
