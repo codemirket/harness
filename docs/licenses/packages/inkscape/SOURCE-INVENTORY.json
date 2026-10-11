@@ -1,0 +1,1612 @@
+{
+  "build_recipe": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/tree/21f3e2d4bfa7fba114e652618158fcf146e5bac7",
+  "jhb_commit": "268140ee54a163016e12310b5be76627d00402ee",
+  "scope": "Recipe modules are a source map including build dependencies; not a proven binary SBOM or complete corresponding-source bundle. Includes referring to jhb require that pinned submodule.",
+  "modules": [
+    {
+      "id": "mm-common",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "mm-common/1.0/mm-common-1.0.6.tar.xz",
+        "version": "1.0.6",
+        "hash": "sha256:b55c46037dbcdabc5cee3b389ea11cc3910adb68ebe883e9477847aa660862e7"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "cairomm3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "cairomm-1.14.5.tar.xz",
+        "version": "1.14.5",
+        "hash": "sha256:70136203540c884e89ce1c9edfb6369b9953937f6cd596d97c78c9758a5d48db",
+        "repo": "cairographics"
+      },
+      "repository": {
+        "name": "cairographics",
+        "href": "http://cairographics.org/releases/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "glibmm3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "glibmm/2.66/glibmm-2.66.7.tar.xz",
+        "version": "2.66.7",
+        "hash": "sha256:fe02c1e5f5825940d82b56b6ec31a12c06c05c1583cfe62f934d0763e1e542b3"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "pangomm3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "pangomm/2.46/pangomm-2.46.2.tar.xz",
+        "version": "2.46.2",
+        "hash": "sha256:57442ab4dc043877bfe3839915731ab2d693fc6634a71614422fb530c9eaa6f4"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "atkmm3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "atkmm/2.28/atkmm-2.28.4.tar.xz",
+        "version": "2.28.4",
+        "hash": "sha256:0a142a8128f83c001efb8014ee463e9a766054ef84686af953135e04d28fdab3"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "libsigc++2",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "libsigc++/2.12/libsigc++-2.12.1.tar.xz",
+        "version": "2.12.1",
+        "hash": "sha256:a9dbee323351d109b7aee074a9cb89ca3e7bcf8ad8edef1851f4cf359bd50843"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "gtkmm3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-gtkmm.modules",
+      "branch": {
+        "module": "gtkmm/3.24/gtkmm-3.24.10.tar.xz",
+        "version": "3.24.10",
+        "hash": "sha256:7ab7e2266808716e26c39924ace1fb46da86c17ef39d989624c42314b32b5a76"
+      },
+      "repository": {},
+      "patches": [
+        {
+          "file": "gtkmm-3-bad-const-property-background.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/gtkmm-3-bad-const-property-background.patch"
+        }
+      ]
+    },
+    {
+      "id": "libtasn1",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "libtasn1/libtasn1-4.20.0.tar.gz",
+        "version": "4.20.0",
+        "hash": "sha256:92e0e3bd4c02d4aeee76036b2ddd83f0c732ba4cda5cb71d583272b23587a76c",
+        "repo": "ftp.gnu.org"
+      },
+      "repository": {
+        "name": "ftp.gnu.org",
+        "href": "https://ftp.gnu.org/gnu/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "p11-kit",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "p11-glue/p11-kit/releases/download/0.25.5/p11-kit-0.25.5.tar.xz",
+        "version": "0.25.5",
+        "hash": "sha256:04d0a86450cdb1be018f26af6699857171a188ac6d5b8c90786a60854e1198e5",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "p11-kit-libintl.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/p11-kit-libintl.patch"
+        }
+      ]
+    },
+    {
+      "id": "gnutls",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "gcrypt/gnutls/v3.8/gnutls-3.8.9.tar.xz",
+        "version": "3.8.9",
+        "hash": "sha256:69e113d802d1670c4d5ac1b99040b1f2d5c7c05daec5003813c049b5184820ed",
+        "repo": "gnupg.org"
+      },
+      "repository": {
+        "name": "gnupg.org",
+        "href": "https://gnupg.org/ftp/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libgpg-error",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "gcrypt/libgpg-error/libgpg-error-1.51.tar.bz2",
+        "version": "1.51",
+        "hash": "sha256:be0f1b2db6b93eed55369cdf79f19f72750c8c7c39fc20b577e724545427e6b2",
+        "repo": "gnupg.org"
+      },
+      "repository": {
+        "name": "gnupg.org",
+        "href": "https://gnupg.org/ftp/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libgcrypt",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "gcrypt/libgcrypt/libgcrypt-1.11.0.tar.bz2",
+        "version": "1.11.0",
+        "hash": "sha256:09120c9867ce7f2081d6aaa1775386b98c2f2f246135761aae47d81f58685b9c",
+        "repo": "gnupg.org"
+      },
+      "repository": {
+        "name": "gnupg.org",
+        "href": "https://gnupg.org/ftp/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gsettings-desktop-schemas",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "gsettings-desktop-schemas/46/gsettings-desktop-schemas-46.0.tar.xz",
+        "version": "46.0",
+        "hash": "shas56:493a46a1161b6388d57aa72f632a79ce96c42d5ffbd1d0b00f496ec5876f8575"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "libproxy",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "libproxy/libproxy/archive/refs/tags/0.5.9.tar.gz",
+        "version": "0.5.9",
+        "hash": "sha256:a1976c3ac4affedc17e6d40cf78c9d8eca6751520ea3cbbec1a8850f7ded1565",
+        "checkoutdir": "libproxy-0.5.9",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "glib-networking",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "glib-networking/2.80/glib-networking-2.80.1.tar.xz",
+        "version": "2.80.1",
+        "hash": "sha256:b80e2874157cd55071f1b6710fa0b911d5ac5de106a9ee2a4c9c7bee61782f8e"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "libpsl",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "rockdaboot/libpsl/releases/download/0.21.5/libpsl-0.21.5.tar.gz",
+        "version": "0.21.5",
+        "hash": "sha256:1dcc9ceae8b128f3c0b3f654decd0e1e891afc6ff81098f227ef260449dae208",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libsoup",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-network.modules",
+      "branch": {
+        "module": "libsoup/2.74/libsoup-2.74.3.tar.xz",
+        "version": "2.74.3",
+        "hash": "sha256:e4b77c41cfc4c8c5a035fcdc320c7bc6cfb75ef7c5a034153df1413fa1d92f13"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "packaging",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-python.modules",
+      "branch": {
+        "module": "a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz",
+        "version": "25.0",
+        "hash": "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f",
+        "repo": "pymodules"
+      },
+      "repository": {
+        "name": "pymodules",
+        "href": "https://pypi.python.org/packages/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "pycairo",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-python.modules",
+      "branch": {
+        "module": "pygobject/pycairo/releases/download/v1.27.0/pycairo-1.27.0.tar.gz",
+        "version": "1.27.0",
+        "hash": "sha256:5cb21e7a00a2afcafea7f14390235be33497a2cce53a98a19389492a60628430",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "pygobject3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-python.modules",
+      "branch": {
+        "module": "pygobject/3.51/pygobject-3.51.0.tar.xz",
+        "version": "3.51.0",
+        "hash": "sha256:5d8ec64b034a29a14c3739541436a07ea0de83c8a394c6e5ecaa9e2e5b7b4e72"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "wheel",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-python.modules",
+      "branch": {
+        "module": "fc/ef/0335f7217dd1e8096a9e8383e1d472aa14717878ffe07c4772e68b6e8735/wheel-0.40.0.tar.gz",
+        "version": "0.40.0",
+        "hash": "sha256:cd1196f3faee2b31968d626e1731c94f99cbdb67cf5a46e4f5656cbee7738873",
+        "repo": "pymodules"
+      },
+      "repository": {
+        "name": "pymodules",
+        "href": "https://pypi.python.org/packages/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gtksourceview3",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "gtksourceview/4.8/gtksourceview-4.8.4.tar.xz",
+        "version": "4.8.4",
+        "hash": "sha256:7ec9d18fb283d1f84a3a3eff3b7a72b09a10c9c006597b3fbabbb5958420a87d"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "shared-mime-info",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "2.4/shared-mime-info-2.4.tar.bz2",
+        "version": "2.4",
+        "hash": "sha256:32dc32ae39ff1c1bf8434dd3b36770b48538a1772bc0298509d034f057005992",
+        "repo": "shared-mime-info"
+      },
+      "repository": {
+        "name": "shared-mime-info",
+        "href": "https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gsettings-desktop-schemas",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "gsettings-desktop-schemas/46/gsettings-desktop-schemas-46.0.tar.xz",
+        "version": "46.0",
+        "hash": "sha256:493a46a1161b6388d57aa72f632a79ce96c42d5ffbd1d0b00f496ec5876f8575"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "sqlite",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "2024/sqlite-autoconf-3460000.tar.gz",
+        "version": "3.46.0",
+        "hash": "sha256:6f8e6a7b335273748816f9b3b62bbdc372a889de8782d7f048c653a447417a7d",
+        "repo": "sqlite"
+      },
+      "repository": {
+        "name": "sqlite",
+        "href": "http://www.sqlite.org/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "enchant",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "rrthomas/enchant/releases/download/v2.6.9/enchant-2.6.9.tar.gz",
+        "version": "2.6.9",
+        "hash": "sha256:d9a5a10dc9b38a43b3a0fa22c76ed6ebb7e09eb535aff62954afcdbd40efff6b",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "enchant-relocatable.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/enchant-relocatable.patch"
+        },
+        {
+          "file": "enchant-no_groff.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/enchant-no_groff.patch"
+        }
+      ]
+    },
+    {
+      "id": "gmp",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "gmp/gmp-6.3.0.tar.bz2",
+        "version": "6.3.0",
+        "hash": "sha256:ac28211a7cfb609bae2e2c8d6058d66c8fe96434f740cf6fe2e47b000d1c20cb",
+        "repo": "ftp.gnu.org"
+      },
+      "repository": {
+        "name": "ftp.gnu.org",
+        "href": "https://ftp.gnu.org/gnu/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "iso-codes",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "iso-codes",
+        "revision": "v4.19.0",
+        "repo": "iso-codes"
+      },
+      "repository": {
+        "name": "iso-codes",
+        "href": "https://salsa.debian.org/iso-codes-team/",
+        "type": "git"
+      },
+      "patches": []
+    },
+    {
+      "id": "libxml2",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx-random.modules",
+      "branch": {
+        "module": "libxml2/2.13/libxml2-2.13.9.tar.xz",
+        "version": "2.13.9",
+        "hash": "sha256:a2c9ae7b770da34860050c309f903221c67830c86e4a7e760692b803df95143a"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "meson",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "repo": "system"
+      },
+      "repository": {
+        "name": "system",
+        "type": "system"
+      },
+      "patches": []
+    },
+    {
+      "id": "libffi",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "libffi/libffi/releases/download/v3.4.7/libffi-3.4.7.tar.gz",
+        "version": "3.4.7",
+        "hash": "sha256:138607dee268bdecf374adf9144c00e839e38541f75f24a1fcf18b78fda48b2d",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libpcre2",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.bz2",
+        "version": "10.45",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "glib-no-introspection",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "glib/2.83/glib-2.83.4.tar.xz",
+        "version": "2.83.4",
+        "hash": "sha256:4edc4dc184f46d1220694b7775c5d7c62265c83b0e9632d844da127c181fc391"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "glib",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "glib/2.83/glib-2.83.4.tar.xz",
+        "version": "2.83.4",
+        "hash": "sha256:4edc4dc184f46d1220694b7775c5d7c62265c83b0e9632d844da127c181fc391"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "freetype-no-harfbuzz",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "freetype/freetype-2.13.3.tar.xz",
+        "version": "2.13.3",
+        "hash": "sha256:0550350666d427c74daeb85d5ac7bb353acba5f76956395995311a9c6f063289",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "http://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "icu",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "unicode-org/icu/releases/download/release-76-1/icu4c-76_1-src.tgz",
+        "version": "76.1",
+        "checkoutdir": "icu",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "harfbuzz-no-cairo",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "harfbuzz/harfbuzz/releases/download/12.2.0/harfbuzz-12.2.0.tar.xz",
+        "version": "12.2.0",
+        "hash": "sha256:ecb603aa426a8b24665718667bda64a84c1504db7454ee4cadbd362eea64e545",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "freetype",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "freetype/freetype-2.13.3.tar.xz",
+        "version": "2.13.3",
+        "hash": "sha256:0550350666d427c74daeb85d5ac7bb353acba5f76956395995311a9c6f063289",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "http://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "fontconfig",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "fontconfig-2.16.0.tar.xz",
+        "version": "2.16.0",
+        "hash": "sha256:6a33dc555cc9ba8b10caf7695878ef134eeb36d0af366041f639b1da9b6ed220",
+        "repo": "fontconfig"
+      },
+      "repository": {
+        "name": "fontconfig",
+        "href": "http://www.freedesktop.org/software/fontconfig/release/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "pixman",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "releases/pixman-0.44.2.tar.gz",
+        "version": "0.44.2",
+        "repo": "cairographics"
+      },
+      "repository": {
+        "name": "cairographics",
+        "href": "https://www.cairographics.org/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "cairo",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "releases/cairo-1.18.2.tar.xz",
+        "version": "1.18.2",
+        "hash": "sha256:a62b9bb42425e844cc3d6ddde043ff39dbabedd1542eba57a2eb79f85889d45a",
+        "repo": "cairographics"
+      },
+      "repository": {
+        "name": "cairographics",
+        "href": "https://www.cairographics.org/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gobject-introspection",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "gobject-introspection/1.82/gobject-introspection-1.82.0.tar.xz",
+        "version": "1.82.0",
+        "hash": "sha256:0f5a4c1908424bf26bc41e9361168c363685080fbdb87a196c891c8401ca2f09"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "graphite2",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "silnrsi/graphite/releases/download/1.3.14/graphite2-1.3.14.tgz",
+        "version": "1.3.14",
+        "hash": "sha256:f99d1c13aa5fa296898a181dff9b82fb25f6cc0933dbaa7a475d8109bd54209d",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "graphite2-install_name_dir.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/graphite2-install_name_dir.patch"
+        }
+      ]
+    },
+    {
+      "id": "harfbuzz",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "harfbuzz/harfbuzz/releases/download/12.2.0/harfbuzz-12.2.0.tar.xz",
+        "version": "12.2.0",
+        "hash": "sha256:ecb603aa426a8b24665718667bda64a84c1504db7454ee4cadbd362eea64e545",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "fribidi",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "fribidi/fribidi/releases/download/v1.0.16/fribidi-1.0.16.tar.xz",
+        "version": "1.0.16",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "pango",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "pango/1.56/pango-1.56.1.tar.xz",
+        "version": "1.56.1",
+        "hash": "sha256:426be66460c98b8378573e7f6b0b2ab450f6bb6d2ec7cecc33ae81178f246480"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "atk",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "atk/2.38/atk-2.38.0.tar.xz",
+        "version": "2.38.0",
+        "hash": "sha256:ac4de2a4ef4bd5665052952fe169657e65e895c5057dffb3c2a810f6191a0c36"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "gdk-pixbuf",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "gdk-pixbuf/2.42/gdk-pixbuf-2.42.12.tar.xz",
+        "version": "2.42.12",
+        "hash": "sha256:b9505b3445b9a7e48ced34760c3bcb73e966df3ac94c95a148cb669ab748e3c7"
+      },
+      "repository": {},
+      "patches": [
+        {
+          "file": "gdk-pixbuf-loader-name.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/gdk-pixbuf-loader-name.patch"
+        }
+      ]
+    },
+    {
+      "id": "hicolor-icon-theme",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "hicolor-icon-theme-0.17.tar.xz",
+        "version": "0.17",
+        "repo": "hicolor"
+      },
+      "repository": {
+        "name": "hicolor",
+        "href": "https://icon-theme.freedesktop.org/releases/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libepoxy",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "anholt/libepoxy/archive/refs/tags/1.5.10.tar.gz",
+        "version": "1.5.10",
+        "hash": "sha256:a7ced37f4102b745ac86d6a70a9da399cc139ff168ba6b8002b4d8d43c900c15",
+        "checkoutdir": "libepoxy-1.5.10",
+        "repo": "github-tarball"
+      },
+      "repository": {
+        "name": "github-tarball",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gtk+-3.0",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "gtk/3.24/gtk-3.24.51.tar.xz",
+        "version": "3.24.51",
+        "hash": "sha256:0013877c6bd23c2dbe42ad7c70a053d0e449be66736574e37867c49c5f905a4f"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "librsvg",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "librsvg/2.56/librsvg-2.56.1.tar.xz",
+        "version": "2.56.1",
+        "hash": "sha256:1685aeacae9a441dcb12c0c3ec63706172a2f52705dafbefb8e7311d4d5e430b"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "adwaita-icon-theme",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "adwaita-icon-theme/47/adwaita-icon-theme-47.0.tar.xz",
+        "version": "47.0",
+        "hash": "sha256:ad088a22958cb8469e41d9f1bba0efb27e586a2102213cd89cc26db2e002bdfe"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "adwaita-icon-theme-legacy",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/gtk-osx.modules",
+      "branch": {
+        "module": "adwaita-icon-theme-legacy/46/adwaita-icon-theme-legacy-46.2.tar.xz",
+        "version": "46.2",
+        "hash": "sha256:548480f58589a54b72d18833b755b15ffbd567e3187249d74e2e1f8f99f22fb4"
+      },
+      "repository": {},
+      "patches": []
+    },
+    {
+      "id": "bdwgc",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "ivmai/bdwgc/releases/download/v8.0.4/gc-8.0.4.tar.gz",
+        "version": "8.0.4",
+        "hash": "sha256:436a0ddc67b1ac0b0405b61a9675bca9e075c8156f4debd1d06f3a56c7cd289d",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "boost",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "1.87.0/source/boost_1_87_0.tar.bz2",
+        "version": "1.87.0",
+        "hash": "sha256:af57be25cb4c4f4b413ed692fe378affb4352ea50fbe294a11ef548f4d527d89",
+        "repo": "boost"
+      },
+      "repository": {
+        "name": "boost",
+        "href": "https://archives.boost.io/release/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "doubleconversion",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "google/double-conversion/archive/v3.1.5.tar.gz",
+        "version": "3.1.5",
+        "hash": "sha256:a63ecb93182134ba4293fd5f22d6e08ca417caafa244afaa751cbfddf6415b13",
+        "checkoutdir": "doubleconversion-3.1.5",
+        "rename-tarball": "doubleconversion-3.1.5.tar.gz",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "cppunit",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "cppunit-1.15.1.tar.gz",
+        "version": "1.15.1",
+        "hash": "sha256:89c5c6665337f56fd2db36bc3805a5619709d51fb136e51937072f63fcc717a7",
+        "repo": "libreoffice"
+      },
+      "repository": {
+        "name": "libreoffice",
+        "href": "https://dev-www.libreoffice.org/src/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "ghostscript",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "ArtifexSoftware/ghostpdl-downloads/releases/download/gs10051/ghostscript-10.05.1.tar.xz",
+        "version": "10.05.1",
+        "hash": "sha256:22f2bdca15c28830c9715cddc5c296ea66898bfdab0b604a4e0bcfeb03af6cad",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "ghostscript_configure_libtiff.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/ghostscript_configure_libtiff.patch"
+        },
+        {
+          "file": "ghostscript_link_cupsimage.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/ghostscript_link_cupsimage.patch"
+        }
+      ]
+    },
+    {
+      "id": "googletest",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "google/googletest/archive/release-1.12.1.tar.gz",
+        "version": "1.12.1",
+        "hash": "sha256:81964fe578e9bd7c94dfdb09c8e4d6e6759e19967e397dbea48d1c10e45d0df2",
+        "checkoutdir": "googletest-1.12.1",
+        "rename-tarball": "googletest-1.12.1.tar.gz",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gsl",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "gsl/gsl-1.9.tar.gz",
+        "version": "1.9",
+        "hash": "sha256:fcd1c6784997c2312d922d107fcb30462f5be4335ebdfa8e1e0e07568c962250",
+        "repo": "gnu"
+      },
+      "repository": {
+        "name": "gnu",
+        "href": "http://ftp.halifax.rwth-aachen.de/gnu/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gspell",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "gspell/1.14/gspell-1.14.0.tar.xz",
+        "version": "1.14.0",
+        "hash": "sha256:64ea1d8e9edc1c25b45a920e80daf67559d1866ffcd7f8432fecfea6d0fe8897",
+        "repo": "gnome_web"
+      },
+      "repository": {
+        "name": "gnome_web",
+        "href": "https://download.gnome.org/sources/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "gtkmacbundler",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "gtk-mac-bundler/-/archive/58d951c8/gtk-mac-bundler-58d951c8.tar.bz2",
+        "version": "58d951c8",
+        "hash": "sha256:4617a36dadb7fe9ad242bdd826819e78098a089ccb3c4a002eb7b105ea0ca97c",
+        "checkoutdir": "gtk-mac-bundler_58d951c8",
+        "rename-tarball": "gtk-mac-bundler_58d951c8.tar.bz2",
+        "repo": "gnome_gitlab"
+      },
+      "repository": {
+        "name": "gnome_gitlab",
+        "href": "https://gitlab.gnome.org/GNOME/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "gtk-mac-bundler_configure.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/gtk-mac-bundler_configure.patch"
+        }
+      ]
+    },
+    {
+      "id": "imagemagick",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "ImageMagick/ImageMagick6/archive/6.9.12-7.tar.gz",
+        "version": "6.9.12-7",
+        "hash": "sha256:6abbd6afe7130edba7652a49c03a699657d6a71cf631a3c82014a31c8f93996d",
+        "checkoutdir": "imagemagick-6.9.12-7",
+        "rename-tarball": "imagemagick-6.9.12-7.tar.gz",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "imagemagick_configure_pango.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/imagemagick_configure_pango.patch"
+        }
+      ]
+    },
+    {
+      "id": "lcms",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "lcms/lcms2-2.17.tar.gz",
+        "version": "2.17",
+        "hash": "sha256:d11af569e42a1baa1650d20ad61d12e41af4fead4aa7964a01f93b08b53ab074",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "https://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libcdr",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "LibreOffice/libcdr/archive/libcdr-0.1.8.tar.gz",
+        "version": "0.1.8",
+        "hash": "sha256:4c71c1b454e570073b4175a8d40b727e17ad1cb69a5dc73d2fb8d3c6338a9b56",
+        "checkoutdir": "libcdr-0.1.8",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "librevenge",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "libwpd/librevenge/librevenge-0.0.5/librevenge-0.0.5.tar.gz",
+        "version": "0.0.5",
+        "hash": "sha256:04fd10d3eea39644c0d7231be9c6c174f3955c51a710266935e8c147e7045d9e",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "https://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "libvisio",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "LibreOffice/libvisio/archive/libvisio-0.1.7.tar.gz",
+        "version": "0.1.7",
+        "hash": "sha256:68b8a0b45e39b6ba154fe79169f2887cc19f6ee2b82f287b4b625c70294aff27",
+        "checkoutdir": "libvisio-0.1.7",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "openjpeg",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "uclouvain/openjpeg/archive/v2.4.0.tar.gz",
+        "version": "2.4.0",
+        "hash": "sha256:8702ba68b442657f11aaeb2b338443ca8d5fb95b0d845757968a7be31ef7f16d",
+        "checkoutdir": "openjpeg-2.4.0",
+        "rename-tarball": "openjpeg-2.4.0.tar.gz",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "openmp",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "llvm/llvm-project/releases/download/llvmorg-15.0.7/openmp-15.0.7.src.tar.xz",
+        "version": "15.0.7",
+        "hash": "sha256:3f168d38e7a37b928dcb94b33ce947f75d81eef6fa6a4f9d16b6dc5511c07358",
+        "checkoutdir": "openmp-15.0.7",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "openmp-cmake.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/openmp-cmake.patch"
+        }
+      ]
+    },
+    {
+      "id": "poppler",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "poppler-24.02.0.tar.xz",
+        "version": "24.02.0",
+        "hash": "sha256:19187a3fdd05f33e7d604c4799c183de5ca0118640c88b370ddcf3136343222e",
+        "repo": "poppler"
+      },
+      "repository": {
+        "name": "poppler",
+        "href": "https://poppler.freedesktop.org/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "potrace",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "potrace/1.16/potrace-1.16.tar.gz",
+        "version": "1.16",
+        "hash": "sha256:be8248a17dedd6ccbaab2fcc45835bb0502d062e40fbded3bc56028ce5eb7acc",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "https://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    },
+    {
+      "id": "rust",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "rust-lang/rustup/archive/1.25.2.tar.gz",
+        "version": "1.25.2",
+        "hash": "sha256:dc9bb5d3dbac5cea9afa9b9c3c96fcf644a1e7ed6188a6b419dfe3605223b5f3",
+        "checkoutdir": "rustup-1.25.2",
+        "rename-tarball": "rustup-1.25.2.tar.gz",
+        "repo": "github"
+      },
+      "repository": {
+        "name": "github",
+        "href": "https://github.com/",
+        "type": "tarball"
+      },
+      "patches": [
+        {
+          "file": "rust-cmake_install.patch",
+          "strip": "1",
+          "source": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/patches/rust-cmake_install.patch"
+        }
+      ]
+    },
+    {
+      "id": "fig2dev",
+      "source_definition": "https://gitlab.com/inkscape/infra/inkscape-ci-macos/-/blob/21f3e2d4bfa7fba114e652618158fcf146e5bac7/modulesets/inkscape.modules",
+      "branch": {
+        "module": "mcj/fig2dev-3.2.8b.tar.xz",
+        "version": "3.2.8b",
+        "hash": "sha256:418a164aa9fad72d25bb4fec8d7b452fe3a2f12f990cf22e05c0eb16cecb68cb",
+        "repo": "sourceforge"
+      },
+      "repository": {
+        "name": "sourceforge",
+        "href": "https://downloads.sourceforge.net/sourceforge/",
+        "type": "tarball"
+      },
+      "patches": []
+    }
+  ],
+  "schema_version": 1,
+  "package": "inkscape",
+  "version": "1.4.4",
+  "reviewed_on": "2026-10-10",
+  "artifact": {
+    "url": "https://media.inkscape.org/dl/resources/file/Inkscape-1.4.4_arm64.dmg",
+    "size": 156920591,
+    "sha256": "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
+    "source_commit": "dcaf3e7d9e6724cd18d6bd2b4f3d4f12ab691871",
+    "build_recipe_commit": "21f3e2d4bfa7fba114e652618158fcf146e5bac7"
+  },
+  "source_submodules": [
+    {
+      "path": "po",
+      "commit": "4d0992748d6192716036a90bf29d3b9f8ca423ac",
+      "source": "https://gitlab.com/inkscape/translations/-/tree/4d0992748d6192716036a90bf29d3b9f8ca423ac"
+    },
+    {
+      "path": "src/3rdparty/2geom",
+      "commit": "23316118755def8156c268f767894c145130e07d",
+      "source": "https://gitlab.com/inkscape/lib2geom/-/tree/23316118755def8156c268f767894c145130e07d"
+    },
+    {
+      "path": "src/3rdparty/libcroco",
+      "commit": "0b5d1c68a3fd1452bd1671ed4fb493ee88fdaf13",
+      "source": "https://gitlab.com/inkscape/libcroco/-/tree/0b5d1c68a3fd1452bd1671ed4fb493ee88fdaf13"
+    },
+    {
+      "path": "src/3rdparty/libdepixelize",
+      "commit": "9395d85f53e486105169944d69df615a82b80927",
+      "source": "https://gitlab.com/inkscape/devel/libdepixelize/-/tree/9395d85f53e486105169944d69df615a82b80927"
+    },
+    {
+      "path": "src/3rdparty/libuemf",
+      "commit": "8acdea46acfd180f5496eb3ffa671e8b54e5fb32",
+      "source": "https://gitlab.com/inkscape/devel/libuemf/-/tree/8acdea46acfd180f5496eb3ffa671e8b54e5fb32"
+    },
+    {
+      "path": "share/extensions",
+      "commit": "4f0376d82cc5f2feca21409f818d182b268af431",
+      "source": "https://gitlab.com/inkscape/extensions/-/tree/4f0376d82cc5f2feca21409f818d182b268af431"
+    },
+    {
+      "path": "share/themes",
+      "commit": "2fc6ece138323f905c9b475c3bcdef0d007eb233",
+      "source": "https://gitlab.com/inkscape/themes/-/tree/2fc6ece138323f905c9b475c3bcdef0d007eb233"
+    }
+  ],
+  "additional_source_pins": [
+    {
+      "component": "customized CPython framework",
+      "version": "3.10.19",
+      "source": "https://gitlab.com/dehesselle/python_macos/-/tree/2bf1104ca5479f4a0b4839710b5b3a9fd3402a86",
+      "build_tag": "v21.3",
+      "archive": "https://gitlab.com/api/v4/projects/26780227/packages/generic/python_macos/v21.3/python_310_arm64_inkscape.tar.xz",
+      "status": "Recipe and source tag reviewed; complete runtime source closure not archived."
+    },
+    {
+      "component": "Ghostscript",
+      "version": "10.05.1",
+      "source": "https://github.com/ArtifexSoftware/ghostpdl/tree/7f64bc848f6b67ae204182e6e088eec110061490",
+      "license": "AGPL-3.0-or-later",
+      "license_exceptions": "Retained in GHOSTSCRIPT-LICENSE.txt; includes font embedding exception and separate CMap notices."
+    }
+  ],
+  "bundled_notice_files": [
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/LICENSE.txt",
+      "size": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/pip-23.0.1.dist-info/LICENSE.txt",
+      "size": 1093,
+      "sha256": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+      "size": 7634,
+      "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/importlib_metadata-8.0.0.dist-info/LICENSE",
+      "size": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/inflect-7.3.1.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/jaraco.collections-5.1.0.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/jaraco.context-5.3.0.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/jaraco.functools-4.0.1.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/jaraco.text-3.12.1.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/more_itertools-10.3.0.dist-info/LICENSE",
+      "size": 1053,
+      "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE",
+      "size": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.APACHE",
+      "size": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.BSD",
+      "size": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/platformdirs-4.2.2.dist-info/licenses/LICENSE",
+      "size": 1089,
+      "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/tomli-2.0.1.dist-info/LICENSE",
+      "size": 1072,
+      "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/typeguard-4.3.0.dist-info/LICENSE",
+      "size": 1130,
+      "sha256": "6163f7987dfb38d6bc320ce2b70b2f02b862bc41126516d552ef1cd43247e758"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/typing_extensions-4.12.2.dist-info/LICENSE",
+      "size": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE",
+      "size": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.APACHE",
+      "size": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.BSD",
+      "size": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/wheel-0.45.1.dist-info/LICENSE.txt",
+      "size": 1107,
+      "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/_vendor/zipp-3.19.2.dist-info/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/config/NOTICE",
+      "size": 493,
+      "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools/config/_validate_pyproject/NOTICE",
+      "size": 18737,
+      "sha256": "5d300dbfa643138b013b75ac9caeee591f951b8b0ee24288c34ccd926c4780c8"
+    },
+    {
+      "path": "Contents/Frameworks/Python.framework/Versions/3.10/lib/python3.10/site-packages/setuptools-79.0.1.dist-info/licenses/LICENSE",
+      "size": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/appdirs-1.4.4.dist-info/licenses/LICENSE.txt",
+      "size": 1097,
+      "sha256": "36ddb4d0a745a93ab203203d7190814b1b89727d254caff48c7a7afbbd47000b"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/beautifulsoup4-4.14.2.dist-info/licenses/LICENSE",
+      "size": 1441,
+      "sha256": "55b4d8d4b1e5bc86d10efac91b74c87bcb77526b0f5b9edaf8b9cd2adc7397b2"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/cachecontrol-0.14.4.dist-info/licenses/LICENSE.txt",
+      "size": 558,
+      "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/certifi-2025.11.12.dist-info/licenses/LICENSE",
+      "size": 989,
+      "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/charset_normalizer-3.4.4.dist-info/licenses/LICENSE",
+      "size": 1071,
+      "sha256": "6d0d41bfe170ac6c7dc248c9a63e254d0fb45a60d50a8257d0af92c6e249b887"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/cssselect-1.3.0.dist-info/licenses/LICENSE",
+      "size": 1517,
+      "sha256": "5c8da9f744e0afba81a48c9b5dbe73048f798b3287d6f1af8a05ee08ebb10892"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/idna-3.11.dist-info/licenses/LICENSE.md",
+      "size": 1541,
+      "sha256": "b7a336abf3b04e180ec065cdd16e705d079e1cc7a14f910aa6e9187f36b9cd87"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/lxml-6.0.2.dist-info/licenses/LICENSE.txt",
+      "size": 1507,
+      "sha256": "8fc2b568133516e46845d2147917adeee1648e70ae9ab5ed6c5417afef4ce855"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/lxml-6.0.2.dist-info/licenses/LICENSES.txt",
+      "size": 1514,
+      "sha256": "41d49dd406aa0e1548a6d5f21a30d6bf638b3cd96eb7289dd348d83ed2e40392"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/msgpack-1.1.2.dist-info/licenses/COPYING",
+      "size": 614,
+      "sha256": "492dedba85da5872f78e6091bcd1fea474d660d35acb4dee964b8aab3f007427"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/numpy/LICENSE.txt",
+      "size": 41428,
+      "sha256": "e990db89a3a70f3398d2cc69784bc475cb272b5dc3f6f0a5876b634966cbbe53"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/numpy/core/include/numpy/libdivide/LICENSE.txt",
+      "size": 1018,
+      "sha256": "fbc539f47d0cf83bc61378080fb873d5c14630126cacbfe754035c3926daa5ec"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/numpy-1.22.1.dist-info/LICENSE.txt",
+      "size": 41428,
+      "sha256": "e990db89a3a70f3398d2cc69784bc475cb272b5dc3f6f0a5876b634966cbbe53"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/numpy-1.22.1.dist-info/LICENSES_bundled.txt",
+      "size": 634,
+      "sha256": "572237b9b267fe755d82a28e213f69176bd56afa162a5a641b37a06e300728d1"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/packaging-23.0.dist-info/licenses/LICENSE",
+      "size": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/packaging-23.0.dist-info/licenses/LICENSE.APACHE",
+      "size": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/packaging-23.0.dist-info/licenses/LICENSE.BSD",
+      "size": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/pillow-12.0.0.dist-info/licenses/LICENSE",
+      "size": 1453,
+      "sha256": "17f240ae101143707e5e7303a5d800450d9ccc7475b463cedb555cefdb3c6ece"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/pyparsing-3.0.9.dist-info/licenses/LICENSE",
+      "size": 1023,
+      "sha256": "10d5120a16805804ffda8b688c220bfb4e8f39741b57320604d455a309e01972"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/pyparsing-3.2.5.dist-info/licenses/LICENSE",
+      "size": 1023,
+      "sha256": "10d5120a16805804ffda8b688c220bfb4e8f39741b57320604d455a309e01972"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/pypdf-6.3.0.dist-info/licenses/LICENSE",
+      "size": 1605,
+      "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/pyserial-3.5.dist-info/licenses/LICENSE.txt",
+      "size": 1885,
+      "sha256": "f91cb9813de6a5b142b8f7f2dede630b5134160aedaeaf55f4d6a7e2593ca3f3"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/requests-2.32.5.dist-info/licenses/LICENSE",
+      "size": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/six-1.17.0.dist-info/licenses/LICENSE",
+      "size": 1066,
+      "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/soupsieve-2.8.dist-info/licenses/LICENSE.md",
+      "size": 1096,
+      "sha256": "571d0dafef795a196a0bbc3ac9b160a06b3cad41c320fecd98da3e26a8c81971"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/tinycss2-1.5.1.dist-info/licenses/LICENSE",
+      "size": 1534,
+      "sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/typing_extensions-4.15.0.dist-info/licenses/LICENSE",
+      "size": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/urllib3-2.5.0.dist-info/licenses/LICENSE.txt",
+      "size": 1093,
+      "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+    },
+    {
+      "path": "Contents/Resources/lib/python3.10/site-packages/zstandard-0.25.0.dist-info/licenses/LICENSE",
+      "size": 1484,
+      "sha256": "788fe85e53724a40b299051c4abc9cf74d42b27e7968325b80891c25f79adb4b"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/doc/COPYING",
+      "size": 1814,
+      "sha256": "6dade9d083ebec650d74dcfcdd93e9646214113eb1ecd1e8a9c3bf2dad91481e"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/doc/LICENSE",
+      "size": 1234,
+      "sha256": "534200aff254864912ae0387543f2268f5bd77dece6f3900dbbff8b1826fc835"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/LICENSE.txt",
+      "size": 18093,
+      "sha256": "640d90f6ee401241ff62834d0d1b33f83049e99b8bfdfa04ed1b0a1635dde3e7"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/inkman/inkman/LICENSE.txt",
+      "size": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/other/clipart/LICENSE.txt",
+      "size": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/other/extension-afdesign/LICENSE",
+      "size": 18032,
+      "sha256": "6ce8b650f6b2bbd3a61a7ca1c54939737536b45ee59dd8d346e08cd1c58d9998"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/other/extension-curve/LICENSE",
+      "size": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/other/extension-xaml/LICENSE.txt",
+      "size": 18032,
+      "sha256": "6ce8b650f6b2bbd3a61a7ca1c54939737536b45ee59dd8d346e08cd1c58d9998"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/extensions/other/gcodetools/LICENSE.txt",
+      "size": 18032,
+      "sha256": "6ce8b650f6b2bbd3a61a7ca1c54939737536b45ee59dd8d346e08cd1c58d9998"
+    },
+    {
+      "path": "Contents/Resources/share/inkscape/themes/LICENSE.txt",
+      "size": 600,
+      "sha256": "c183caf8d9ffb02f7b20b6a2660568f667eb68193b921de19be3aa09f5aa49d6"
+    }
+  ],
+  "bundled_notice_unique_texts": 45,
+  "runtime_observations": {
+    "regular_files": 12446,
+    "regular_bytes": 646332964,
+    "symlinks": 41,
+    "symlink_policy": "Every observed link is relative, resolves to an existing member inside Inkscape.app; preserve the unmodified signed bundle.",
+    "minimum_macos": "11.3",
+    "native_macho_files": 240,
+    "native_dylib_files": 96,
+    "python_native_load_path_caveat": [
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imaging.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libtiff.6.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imaging.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libjpeg.9.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imaging.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libopenjp2.7.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imaging.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libz.1.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imagingcms.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/liblcms2.2.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_imagingft.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libfreetype.6.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_webp.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libwebp.7.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_webp.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libwebpmux.3.dylib"
+      },
+      {
+        "file": "Contents/Resources/lib/python3.10/site-packages/PIL/_webp.cpython-310-darwin.so",
+        "command": "LC_LOAD_DYLIB",
+        "path": "/Users/Shared/work/mibap-0.82/lib/libwebpdemux.2.dylib"
+      }
+    ],
+    "python_execution_scope": "Bundled Python helpers and extensions are not exposed or verified by the Mirket editor profile."
+  },
+  "coverage_limits": [
+    "This download contains compiled native libraries and helpers without a complete bundled machine-readable SBOM or all native dependency copyright/license notices. The named notices are retained but are not a completeness attestation.",
+    "The release source tag and macOS recipe commit are pinned, including source archive hashes and build patches. The recipe is not by itself a verified, archived corresponding-source closure for every linked library, Ghostscript/font/CMap data and the customized Python framework.",
+    "MacOS recipe dynamically installs prebuilt Python framework from python_macos/v21.3 and NumPy universal2 wheel; their corresponding source/build parameters need separate preservation before Mirket rehosts these binary contents.",
+    "External upstream source URLs are not an availability guarantee. If Mirket conveys binary copies, GPLv3 section6(d) requires equivalent no-charge corresponding-source access and clear directions adjacent to the binary, while the distributor remains responsible for availability.",
+    "GPL-3.0-or-later is the Inkscape binary license; Ghostscript is a separate AGPL-3.0-or-later component, plus its own documented font/CMap exceptions. Other libraries retain their own licenses."
+  ],
+  "jhb_source": "https://github.com/dehesselle/jhb/tree/268140ee54a163016e12310b5be76627d00402ee"
+}

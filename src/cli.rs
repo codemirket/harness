@@ -1,6 +1,7 @@
 use crate::{
     catalog::Catalog,
     install::{self, SetupOptions, Target},
+    packages,
     paths::Paths,
     project,
     state::State,
@@ -81,6 +82,11 @@ enum Command {
         #[command(subcommand)]
         command: ToolCommand,
     },
+    /// Select, configure, check and run reviewed local MCP packages.
+    Package {
+        #[command(subcommand)]
+        command: PackageCommand,
+    },
     /// Deterministic checks for authored artifacts.
     Craft {
         #[command(subcommand)]
@@ -128,6 +134,12 @@ struct SetupArgs {
     /// Enable the Microsoft Learn documentation server.
     #[arg(long,num_args=0..=1,default_missing_value="true",action=clap::ArgAction::Set)]
     microsoft_learn: Option<bool>,
+    /// Select an optional local MCP package; repeat to replace the saved selection.
+    #[arg(long = "package", conflicts_with = "no_packages")]
+    packages: Vec<String>,
+    /// Set up without optional MCP packages and clear their saved selection.
+    #[arg(long, conflicts_with = "packages")]
+    no_packages: bool,
 }
 #[derive(Subcommand)]
 enum CatalogCommand {
@@ -248,8 +260,9 @@ enum TaskCommand {
     List {
         #[arg(long, default_value = ".")]
         project: PathBuf,
-        #[arg(long, default_value_t = 0)]
-        offset: usize,
+        /// Opaque next_cursor from the previous page; tasks are newest-created first.
+        #[arg(long)]
+        cursor: Option<String>,
         #[arg(long, default_value_t = 20)]
         limit: usize,
     },
@@ -262,6 +275,12 @@ enum TaskCommand {
         capability: String,
         #[arg(long = "with")]
         supporting: Vec<String>,
+        /// Use task-specific acceptance criteria, paired with --failure-probe.
+        #[arg(long, requires = "failure_probe")]
+        acceptance: Option<String>,
+        /// Use a task-specific failure probe, paired with --acceptance.
+        #[arg(long, requires = "acceptance")]
+        failure_probe: Option<String>,
         #[arg(long)]
         key: String,
     },
@@ -335,6 +354,57 @@ enum ToolCommand {
     },
 }
 #[derive(Subcommand)]
+enum PackageCommand {
+    /// List reviewed MCP packages, readiness and packaging requirements.
+    List,
+    /// Inspect the pinned source, files, runtime and tool policy for a package.
+    Show { id: String },
+    /// Verify the content of selected packages without starting their processes.
+    Status,
+    /// Add selected packages through the saved environment setup.
+    Install {
+        #[arg(required = true, num_args = 1..)]
+        ids: Vec<String>,
+    },
+    /// Remove selected package registrations through the saved environment setup.
+    Remove {
+        #[arg(required = true, num_args = 1..)]
+        ids: Vec<String>,
+    },
+    /// Configure a selected package and reapply the saved environment setup.
+    Configure {
+        id: String,
+        #[arg(long, conflicts_with = "site")]
+        database: Option<PathBuf>,
+        #[arg(long, conflicts_with = "database")]
+        site: Option<String>,
+    },
+    /// Serve an installed package through the filtered local MCP bridge.
+    Serve {
+        id: String,
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+    },
+    /// Check actual package startup and filtered MCP tool discovery.
+    Probe {
+        id: String,
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        /// Include filtered tool schemas and annotations for choosing call arguments.
+        #[arg(long)]
+        schemas: bool,
+    },
+    /// Execute one permitted package tool; arguments must be a JSON object.
+    Call {
+        id: String,
+        tool: String,
+        #[arg(long, default_value = "{}")]
+        arguments: String,
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+    },
+}
+#[derive(Subcommand)]
 enum CraftCommand {
     Contrast {
         foreground: String,
@@ -343,6 +413,11 @@ enum CraftCommand {
 }
 #[derive(Subcommand)]
 enum DevCommand {
+    /// Resolve approved workspace dependency changes while preserving other locked versions.
+    Lock {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+    },
     Fmt {
         #[arg(long, default_value = ".")]
         project: PathBuf,
@@ -467,19 +542,37 @@ fn ask(prompt: &str, default: &str) -> Result<String> {
     })
 }
 
-fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Result<i32> {
-    let saved = install::saved_options(paths)?;
+fn setup_options(args: &SetupArgs, saved: Option<&SetupOptions>) -> SetupOptions {
     let mut options = SetupOptions {
         targets: args
             .target
             .map(TargetChoice::targets)
-            .or_else(|| saved.as_ref().map(|s| s.targets.clone()))
+            .or_else(|| saved.map(|s| s.targets.clone()))
             .unwrap_or_else(|| TargetChoice::All.targets()),
         microsoft_learn: args
             .microsoft_learn
-            .or_else(|| saved.as_ref().map(|s| s.microsoft_learn))
+            .or_else(|| saved.map(|s| s.microsoft_learn))
             .unwrap_or(false),
+        packages: if args.no_packages {
+            vec![]
+        } else if !args.packages.is_empty() {
+            args.packages.clone()
+        } else {
+            saved.map(|s| s.packages.clone()).unwrap_or_default()
+        },
+        package_settings: saved
+            .map(|s| s.package_settings.clone())
+            .unwrap_or_default(),
     };
+    options
+        .package_settings
+        .retain(|id, _| options.packages.contains(id));
+    options
+}
+
+fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Result<i32> {
+    let snapshot = install::setup_snapshot(paths)?;
+    let mut options = setup_options(&args, snapshot.options.as_ref());
     if args.dry_run {
         emit(&install::plan(paths, catalog, &options)?)?;
         return Ok(0);
@@ -538,8 +631,40 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
                 break;
             }
         }
+        if args.packages.is_empty() && !args.no_packages {
+            println!(
+                "\nOptional local MCP packages: doc-scraper (documentation search), jscpd (duplicate-code checks).\nPackages download pinned artifacts during setup. Use mirket package list for other reviewed packages."
+            );
+            let default = if options.packages.is_empty() {
+                "none".to_owned()
+            } else {
+                options.packages.join(", ")
+            };
+            loop {
+                let answer = ask("Package IDs separated by commas, or none", &default)?;
+                let selected: Vec<String> = if answer.eq_ignore_ascii_case("none") {
+                    vec![]
+                } else {
+                    answer
+                        .split(|c: char| c == ',' || c.is_ascii_whitespace())
+                        .filter(|id| !id.is_empty())
+                        .map(str::to_owned)
+                        .collect()
+                };
+                match packages::Registry::embedded()?.validate_selection(&selected) {
+                    Ok(()) => {
+                        options.packages = selected;
+                        break;
+                    }
+                    Err(error) => println!("{error:#}"),
+                }
+            }
+            options
+                .package_settings
+                .retain(|id, _| options.packages.contains(id));
+        }
         println!(
-            "\nTargets: {}\nOpenAI Docs: enabled\nMicrosoft Learn: {}\nSetup writes managed skill copies, shared instructions and MCP entries. Existing file conflicts stop setup for inspection.",
+            "\nTargets: {}\nOpenAI Docs: enabled\nMicrosoft Learn: {}\nOptional MCP packages: {}\nSetup writes managed skill copies, shared instructions and MCP entries. Existing file conflicts stop setup for inspection.",
             options
                 .targets
                 .iter()
@@ -550,7 +675,12 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
                 "enabled"
             } else {
                 "disabled"
-            }
+            },
+            if options.packages.is_empty() {
+                "none".to_owned()
+            } else {
+                options.packages.join(", ")
+            },
         );
         if !matches!(
             ask("Apply this setup?", "yes")?.to_lowercase().as_str(),
@@ -560,7 +690,8 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
             return Ok(0);
         }
     }
-    let report = install::setup_checked(paths, catalog, &options, args.expected_state.as_deref())?;
+    let token = args.expected_state.as_deref().unwrap_or(&snapshot.token);
+    let report = install::setup_checked(paths, catalog, &options, Some(token))?;
     if as_json {
         emit(&report)?;
     } else {
@@ -577,6 +708,28 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
         );
     }
     Ok(0)
+}
+
+fn package_arguments(arguments: &str) -> Result<serde_json::Map<String, Value>> {
+    if arguments.len() > crate::package_mcp::MAX_REQUEST_BYTES {
+        bail!("package arguments exceed 128 KiB");
+    }
+    let value: Value =
+        serde_json::from_str(arguments).context("package arguments must be valid JSON")?;
+    value
+        .as_object()
+        .cloned()
+        .context("package arguments must be a JSON object")
+}
+
+fn saved_package_options(paths: &Paths) -> Result<(SetupOptions, String)> {
+    let snapshot = install::setup_snapshot(paths)?;
+    Ok((
+        snapshot
+            .options
+            .context("run mirket setup before selecting or configuring packages")?,
+        snapshot.token,
+    ))
 }
 
 fn dispatch(cli: Cli) -> Result<i32> {
@@ -612,6 +765,18 @@ fn dispatch(cli: Cli) -> Result<i32> {
     {
         return runtime()?.block_on(crate::tools::run(&paths, &name, &cwd, &args, timeout));
     }
+    if let Command::Package {
+        command: PackageCommand::Serve { id, project },
+    } = cli.command
+    {
+        let launch = packages::launch(&paths, &id, &project)?;
+        if let Some(editor) = packages::Registry::embedded()?.get(&id)?.adapter {
+            runtime()?.block_on(crate::editor_mcp::serve(editor, launch))?;
+        } else {
+            runtime()?.block_on(crate::package_mcp::serve(launch))?;
+        }
+        return Ok(0);
+    }
     let catalog = Catalog::embedded()?;
     let value = match cli.command {
         Command::Info => {
@@ -621,6 +786,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
         Command::Doctor { project } => {
             let report = install::doctor(&paths, &catalog)?;
             let tools = crate::tools::doctor(&paths)?;
+            let package_checks = &report.packages;
             let project_report = project
                 .as_ref()
                 .map(|p| project::doctor(&catalog, p))
@@ -640,10 +806,11 @@ fn dispatch(cli: Cli) -> Result<i32> {
             let ok = report.ok
                 && protocol["ok"] == true
                 && tools["ok"] == true
+                && package_checks["ok"] == true
                 && project_report.as_ref().is_none_or(|p| p["ok"] == true);
             if cli.json {
                 emit(
-                    &json!({"ok":ok,"installation":report,"mcp":protocol,"tools":tools,"project":project_report}),
+                    &json!({"ok":ok,"installation":report,"mcp":protocol,"tools":tools,"packages":package_checks,"project":project_report}),
                 )?;
             } else {
                 println!(
@@ -662,6 +829,13 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }
                 if tools["ok"] != true {
                     emit(&tools)?;
+                }
+                if package_checks["checks"]
+                    .as_array()
+                    .is_some_and(|checks| !checks.is_empty())
+                    || package_checks["ok"] != true
+                {
+                    emit(&package_checks)?;
                 }
                 if let Some(project) = project_report {
                     emit(&project)?;
@@ -789,18 +963,20 @@ fn dispatch(cli: Cli) -> Result<i32> {
             match command {
                 TaskCommand::List {
                     project,
-                    offset,
+                    cursor,
                     limit,
                 } => {
                     let project = crate::paths::canonical_project(&project)?;
                     let project_id = state.project_id(&project)?;
-                    state.tasks(&project_id, offset, limit)?
+                    state.tasks(&project_id, cursor.as_deref(), limit)?
                 }
                 TaskCommand::Start {
                     project,
                     objective,
                     capability,
                     supporting,
+                    acceptance,
+                    failure_probe,
                     key,
                 } => {
                     let project = crate::paths::canonical_project(&project)?;
@@ -813,12 +989,14 @@ fn dispatch(cli: Cli) -> Result<i32> {
                             skills.push(lead);
                         }
                     }
+                    let acceptance = acceptance.unwrap_or_else(|| primary.acceptance.join("; "));
+                    let failure_probe = failure_probe.as_deref().unwrap_or(&primary.failure_probe);
                     state.begin(
                         &project_id,
                         &objective,
                         &skills,
-                        &primary.acceptance.join("; "),
-                        &primary.failure_probe,
+                        &acceptance,
+                        failure_probe,
                         &key,
                     )?
                 }
@@ -870,6 +1048,88 @@ fn dispatch(cli: Cli) -> Result<i32> {
             ToolCommand::Remove { name } => crate::tools::remove(&paths, &name)?,
             ToolCommand::Run { .. } => unreachable!(),
         },
+        Command::Package { command } => match command {
+            PackageCommand::List => packages::Registry::embedded()?.list(),
+            PackageCommand::Show { id } => {
+                serde_json::to_value(packages::Registry::embedded()?.get(&id)?)?
+            }
+            PackageCommand::Status => {
+                let selected = install::saved_options(&paths)?
+                    .map(|s| s.packages)
+                    .unwrap_or_default();
+                packages::doctor(&paths, &selected)?
+            }
+            PackageCommand::Install { ids } => {
+                let (mut options, token) = saved_package_options(&paths)?;
+                for id in ids {
+                    if !options.packages.contains(&id) {
+                        options.packages.push(id);
+                    }
+                }
+                serde_json::to_value(install::setup_checked(
+                    &paths,
+                    &catalog,
+                    &options,
+                    Some(&token),
+                )?)?
+            }
+            PackageCommand::Remove { ids } => {
+                let (mut options, token) = saved_package_options(&paths)?;
+                let registry = packages::Registry::embedded()?;
+                for id in &ids {
+                    registry.get(id)?;
+                    options.package_settings.remove(id);
+                }
+                options.packages.retain(|id| !ids.contains(id));
+                serde_json::to_value(install::setup_checked(
+                    &paths,
+                    &catalog,
+                    &options,
+                    Some(&token),
+                )?)?
+            }
+            PackageCommand::Configure { id, database, site } => {
+                let (mut options, token) = saved_package_options(&paths)?;
+                if !options.packages.contains(&id) {
+                    bail!("package {id} is not selected; use mirket package install {id}");
+                }
+                packages::configure_options(
+                    &mut options,
+                    &id,
+                    database.as_deref(),
+                    site.as_deref(),
+                )?;
+                serde_json::to_value(install::setup_checked(
+                    &paths,
+                    &catalog,
+                    &options,
+                    Some(&token),
+                )?)?
+            }
+            PackageCommand::Probe {
+                id,
+                project,
+                schemas,
+            } => {
+                let launch = packages::client_launch(&paths, &id, &project)?;
+                runtime()?.block_on(crate::package_mcp::probe_with_schemas(launch, schemas))?
+            }
+            PackageCommand::Call {
+                id,
+                tool,
+                arguments,
+                project,
+            } => {
+                let arguments = package_arguments(&arguments)?;
+                let launch = packages::client_launch(&paths, &id, &project)?;
+                let result =
+                    runtime()?.block_on(crate::package_mcp::call(launch, tool, arguments))?;
+                let failed = result.is_error == Some(true);
+                emit(&result)?;
+                return Ok(if failed { 1 } else { 0 });
+            }
+            PackageCommand::Serve { .. } => unreachable!(),
+        },
         Command::Craft {
             command:
                 CraftCommand::Contrast {
@@ -878,6 +1138,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 },
         } => crate::craft::contrast(&foreground, &background)?,
         Command::Dev { command } => match command {
+            DevCommand::Lock { project } => crate::dev::lock(&project)?,
             DevCommand::Fmt { project } => crate::dev::format(&project)?,
             DevCommand::Check { project } => crate::dev::check(&project)?,
             DevCommand::Test {
@@ -910,5 +1171,67 @@ mod tests {
         assert!(Cli::try_parse_from(["mirket", "setup", "--yes", "--target", "all"]).is_ok());
         assert!(Cli::try_parse_from(["mirket", "setup", "--target", "other"]).is_err());
         assert!(Cli::try_parse_from(["mirket", "update", "--sha256", "bad"]).is_err());
+        assert!(
+            Cli::try_parse_from(["mirket", "setup", "--package", "jscpd", "--no-packages"])
+                .is_err()
+        );
+        assert!(Cli::try_parse_from(["mirket", "package", "install"]).is_err());
+        assert!(
+            Cli::try_parse_from([
+                "mirket",
+                "package",
+                "configure",
+                "dbhub",
+                "--database",
+                "/tmp/db.sqlite",
+                "--site",
+                "https://example.com"
+            ])
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn package_mcp_setup_selection_is_explicit_and_preserves_saved_configuration() {
+        fn args(arguments: &[&str]) -> SetupArgs {
+            let parsed = Cli::try_parse_from(arguments).unwrap();
+            let Command::Setup(args) = parsed.command else {
+                panic!("setup args expected")
+            };
+            args
+        }
+        let empty = setup_options(&args(&["mirket", "setup", "--yes"]), None);
+        assert!(empty.packages.is_empty());
+        let mut saved = SetupOptions {
+            packages: vec!["dbhub".into(), "jscpd".into()],
+            ..SetupOptions::default()
+        };
+        saved
+            .package_settings
+            .insert("dbhub".into(), json!({"database":"/tmp/example.sqlite"}));
+        let retained = setup_options(&args(&["mirket", "setup", "--yes"]), Some(&saved));
+        assert_eq!(retained.packages, saved.packages);
+        assert_eq!(retained.package_settings, saved.package_settings);
+        let replaced = setup_options(
+            &args(&["mirket", "setup", "--yes", "--package", "jscpd"]),
+            Some(&saved),
+        );
+        assert_eq!(replaced.packages, ["jscpd"]);
+        assert!(replaced.package_settings.is_empty());
+        let removed = setup_options(
+            &args(&["mirket", "setup", "--yes", "--no-packages"]),
+            Some(&saved),
+        );
+        assert!(removed.packages.is_empty());
+        assert!(removed.package_settings.is_empty());
+    }
+
+    #[test]
+    fn package_mcp_cli_arguments_are_bounded_objects() {
+        assert_eq!(package_arguments("{}").unwrap().len(), 0);
+        assert!(package_arguments("[]").is_err());
+        assert!(package_arguments("null").is_err());
+        assert!(package_arguments("{invalid}").is_err());
+        assert!(package_arguments(&" ".repeat(crate::package_mcp::MAX_REQUEST_BYTES + 1)).is_err());
     }
 }

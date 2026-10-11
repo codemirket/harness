@@ -162,6 +162,9 @@ pub fn add(
                 .profiles()
                 .get(profile)
                 .with_context(|| format!("unknown profile: {profile}"))?;
+            if profile.include_globals {
+                ids.extend(catalog.global_skills().iter().cloned());
+            }
             ids.extend(
                 profile
                     .skills
@@ -251,6 +254,9 @@ pub fn remove(
         );
         for profile in profiles {
             ids.extend(catalog.profiles()[profile].skills.iter().cloned());
+            if catalog.profiles()[profile].include_globals {
+                ids.extend(catalog.global_skills().iter().cloned());
+            }
         }
         if let Some(specific) = config.target_skills.get_mut(target) {
             specific.retain(|id| !ids.contains(id));
@@ -818,6 +824,65 @@ mod tests {
         assert!(!temp.path().join(".claude/skills").join(name).exists());
         assert!(!temp.path().join(".agents/skills/skill-catalog").exists());
         assert_eq!(doctor(&catalog, temp.path()).unwrap()["status"], "healthy");
+    }
+
+    #[test]
+    fn portable_foundation_delivers_shared_guidance_only_to_selected_targets() {
+        let catalog = Catalog::embedded().unwrap();
+        for target in [None, Some("codex")] {
+            let project = tempfile::tempdir().unwrap();
+            let root = project.path().canonicalize().unwrap();
+            init(&catalog, &root, &["codex".into(), "claude".into()]).unwrap();
+            add(
+                &catalog,
+                &root,
+                &["portable-foundation".into()],
+                &[],
+                &[],
+                target,
+            )
+            .unwrap();
+            sync(&catalog, &root, &root.join("cache")).unwrap();
+            for host in ["codex", "claude"] {
+                for id in catalog.global_skills() {
+                    let skill = catalog.skill(id).unwrap();
+                    assert_eq!(
+                        destination(&root, host, skill)
+                            .unwrap()
+                            .join("SKILL.md")
+                            .is_file(),
+                        target.is_none() || target == Some(host),
+                        "portable {id} on {host} for {target:?}"
+                    );
+                }
+            }
+            assert_eq!(doctor(&catalog, &root).unwrap()["ok"], true);
+            remove(
+                &catalog,
+                &root,
+                &["portable-foundation".into()],
+                &[],
+                &[],
+                target,
+            )
+            .unwrap();
+            sync_with_options(&catalog, &root, &root.join("cache"), true).unwrap();
+            for host in ["codex", "claude"] {
+                for id in catalog.global_skills() {
+                    assert!(
+                        !destination(&root, host, catalog.skill(id).unwrap())
+                            .unwrap()
+                            .exists()
+                    );
+                }
+                assert!(
+                    root.join(target_skills_dir(host).unwrap())
+                        .join("debugging/SKILL.md")
+                        .is_file()
+                );
+            }
+            assert_eq!(doctor(&catalog, &root).unwrap()["ok"], true);
+        }
     }
 
     #[test]

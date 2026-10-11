@@ -188,7 +188,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     if state.options.microsoft_learn {
         command.arg("--microsoft-learn");
     }
-    run_bounded(&mut command, Duration::from_secs(120)).context(
+    run_bounded(&mut command, Duration::from_secs(1800)).context(
         "new runtime setup failed; run mirket setup to recover any interrupted transaction",
     )?;
     // Verify the committed generation instead of trusting a successful child exit.

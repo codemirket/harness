@@ -15,6 +15,7 @@ use toml_edit::{DocumentMut, Item, Table};
 
 const MAX_FILE: u64 = 256 * 1024 * 1024;
 const MAX_SETTINGS: u64 = 16 * 1024 * 1024;
+const ABSENT_SETUP_TOKEN: &str = "absent";
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "lowercase")]
@@ -56,12 +57,18 @@ impl Target {
 pub struct SetupOptions {
     pub targets: Vec<Target>,
     pub microsoft_learn: bool,
+    #[serde(default)]
+    pub packages: Vec<String>,
+    #[serde(default)]
+    pub package_settings: BTreeMap<String, Value>,
 }
 impl Default for SetupOptions {
     fn default() -> Self {
         Self {
             targets: vec![Target::Codex, Target::Claude],
             microsoft_learn: false,
+            packages: Vec::new(),
+            package_settings: BTreeMap::new(),
         }
     }
 }
@@ -72,6 +79,7 @@ pub struct SetupReport {
     pub files: usize,
     pub changed: usize,
     pub binary: PathBuf,
+    pub packages: Vec<String>,
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct DoctorCheck {
@@ -84,6 +92,8 @@ pub struct DoctorReport {
     pub ok: bool,
     pub installed: bool,
     pub checks: Vec<DoctorCheck>,
+    #[serde(skip)]
+    pub packages: Value,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -116,6 +126,47 @@ impl OperationLock {
 pub fn saved_options(paths: &Paths) -> Result<Option<SetupOptions>> {
     Ok(read_state(paths)?.map(|state| state.options))
 }
+
+/// Saved choices and the exact receipt generation they came from, read together.
+/// Pass the token to `setup_checked` when deriving a change from these choices.
+pub struct SetupSnapshot {
+    pub options: Option<SetupOptions>,
+    pub token: String,
+}
+
+pub fn setup_snapshot(paths: &Paths) -> Result<SetupSnapshot> {
+    let (options, token) = match read_state_snapshot(paths)? {
+        Some((state, token)) => (Some(state.options), token),
+        None => (None, ABSENT_SETUP_TOKEN.to_owned()),
+    };
+    Ok(SetupSnapshot { options, token })
+}
+
+fn expected_receipt(token: &str) -> Result<Option<&str>> {
+    if token == ABSENT_SETUP_TOKEN {
+        Ok(None)
+    } else if token.len() == 64
+        && token
+            .bytes()
+            .all(|byte| byte.is_ascii_digit() || matches!(byte, b'a'..=b'f'))
+    {
+        Ok(Some(token))
+    } else {
+        bail!("invalid setup generation token");
+    }
+}
+
+fn check_setup_generation(paths: &Paths, token: Option<&str>, phase: &str) -> Result<()> {
+    if let Some(token) = token {
+        let expected = expected_receipt(token)?;
+        let actual = read_optional(&paths.settings(), MAX_SETTINGS)?.map(|bytes| sha256(&bytes));
+        if actual.as_deref() != expected {
+            bail!("setup selection changed during {phase}; retry with the current saved choices");
+        }
+    }
+    Ok(())
+}
+
 pub(crate) fn read_state(paths: &Paths) -> Result<Option<InstallState>> {
     Ok(read_state_snapshot(paths)?.map(|(state, _)| state))
 }
@@ -140,10 +191,12 @@ pub(crate) fn read_state_snapshot(paths: &Paths) -> Result<Option<(InstallState,
         }
     }
     for servers in state.servers.values() {
-        if servers
-            .keys()
-            .any(|name| !matches!(name.as_str(), "mirket" | "openai-docs" | "microsoft-learn"))
-        {
+        if servers.keys().any(|name| {
+            !matches!(name.as_str(), "mirket" | "openai-docs" | "microsoft-learn")
+                && !name
+                    .strip_prefix("mirket-package-")
+                    .is_some_and(crate::packages::valid_id)
+        }) {
             bail!("invalid server ownership in setup receipt");
         }
     }
@@ -215,21 +268,19 @@ fn setup_from_binary_checked(
     binary: &Path,
     expected_state: Option<&str>,
 ) -> Result<SetupReport> {
+    if let Some(token) = expected_state {
+        expected_receipt(token)?;
+    }
     let _lock = OperationLock::acquire(paths, "setup")?;
     // Recovery can replace the on-disk path of the process that is executing us.
     // Preserve the chosen runtime bytes before restoring any destination.
     let binary = read_bounded(binary, MAX_FILE).context("read mirket executable")?;
     recover_setup(paths)?;
-    if let Some(expected) = expected_state {
-        let actual = read_optional(&paths.settings(), MAX_SETTINGS)?.map(|bytes| sha256(&bytes));
-        if actual.as_deref() != Some(expected) {
-            bail!(
-                "setup selection changed during update; retry mirket update with the current saved choices"
-            );
-        }
-    }
+    check_setup_generation(paths, expected_state, "update or configuration")?;
     cleanup_retired_runtime(paths)?;
     let (changes, report) = prepare(paths, catalog, options, &binary)?;
+    crate::packages::prepare(paths, &options.packages)?;
+    check_setup_generation(paths, expected_state, "package preparation")?;
     apply_changes(paths, &changes)?;
     Ok(report)
 }
@@ -247,6 +298,21 @@ fn validate_options(options: &SetupOptions) -> Result<()> {
     let unique: BTreeSet<_> = options.targets.iter().collect();
     if unique.len() != options.targets.len() {
         bail!("setup targets must not be repeated");
+    }
+    if options.packages.len() > 32
+        || options
+            .packages
+            .iter()
+            .any(|id| !crate::packages::valid_id(id))
+        || options.packages.iter().collect::<BTreeSet<_>>().len() != options.packages.len()
+        || options.package_settings.len() > 32
+        || options
+            .package_settings
+            .keys()
+            .any(|id| !crate::packages::valid_id(id))
+        || serde_json::to_vec(&options.package_settings)?.len() > 64 * 1024
+    {
+        bail!("invalid package selection or settings");
     }
     Ok(())
 }
@@ -374,6 +440,7 @@ fn prepare(
     binary: &[u8],
 ) -> Result<(Vec<Change>, SetupReport)> {
     validate_options(options)?;
+    crate::packages::Registry::embedded()?.validate_selection(&options.packages)?;
     reject_symlink_components(&paths.root)?;
     let prior = read_state(paths)?;
     if let Some(state) = &prior
@@ -468,7 +535,7 @@ fn prepare(
     let mut new_servers = BTreeMap::new();
     for target in [Target::Codex, Target::Claude] {
         let wanted = if options.targets.contains(&target) {
-            desired_servers(paths, target, options.microsoft_learn)
+            desired_servers(paths, target, options)?
         } else {
             BTreeMap::new()
         };
@@ -504,6 +571,7 @@ fn prepare(
         files: receipt.files.len(),
         changed: changes.len(),
         binary: paths.binary(),
+        packages: options.packages.clone(),
     };
     Ok((changes, report))
 }
@@ -550,8 +618,9 @@ fn existing_files(root: &Path) -> Result<Vec<PathBuf>> {
 fn desired_servers(
     paths: &Paths,
     target: Target,
-    microsoft_learn: bool,
-) -> BTreeMap<String, Value> {
+    options: &SetupOptions,
+) -> Result<BTreeMap<String, Value>> {
+    let packages = crate::packages::Registry::embedded()?;
     let args = json!(["--home", paths.home, "mcp", "serve"]);
     let mut servers = BTreeMap::new();
     let mirket = match target {
@@ -559,11 +628,30 @@ fn desired_servers(
         Target::Claude => json!({"type": "stdio", "command": paths.binary(), "args": args}),
     };
     servers.insert("mirket".into(), mirket);
+    for id in &options.packages {
+        let args = json!(["--home", paths.home, "package", "serve", id]);
+        let mut value = match target {
+            Target::Codex => json!({"command":paths.binary(),"args":args}),
+            Target::Claude => json!({"type":"stdio","command":paths.binary(),"args":args}),
+        };
+        if packages.get(id)?.adapter.is_some() {
+            match target {
+                Target::Codex => {
+                    value["startup_timeout_sec"] = json!(90);
+                    value["tool_timeout_sec"] = json!(120);
+                }
+                Target::Claude => {
+                    value["timeout"] = json!(120_000);
+                }
+            }
+        }
+        servers.insert(format!("mirket-package-{id}"), value);
+    }
     for (name, url) in [
         ("openai-docs", "https://developers.openai.com/mcp"),
         ("microsoft-learn", "https://learn.microsoft.com/api/mcp"),
     ] {
-        if name == "microsoft-learn" && !microsoft_learn {
+        if name == "microsoft-learn" && !options.microsoft_learn {
             continue;
         }
         let value = match target {
@@ -572,7 +660,7 @@ fn desired_servers(
         };
         servers.insert(name.into(), value);
     }
-    servers
+    Ok(servers)
 }
 fn validate_server_change(
     name: &str,
@@ -710,6 +798,11 @@ fn json_to_toml(value: &Value) -> Result<Item> {
         }
         Value::String(value) => Ok(toml_edit::value(value)),
         Value::Bool(value) => Ok(toml_edit::value(*value)),
+        Value::Number(value) => Ok(toml_edit::value(
+            value
+                .as_i64()
+                .context("MCP numeric setting must be a signed integer")?,
+        )),
         Value::Array(values) => {
             let mut array = toml_edit::Array::new();
             for value in values {
@@ -909,6 +1002,18 @@ fn apply_changes(paths: &Paths, changes: &[Change]) -> Result<()> {
     if changes.is_empty() {
         return Ok(());
     }
+    // Downloads can take time. Revalidate every destination before the first
+    // mutation, then retain per-write checks for edits during activation.
+    for change in changes {
+        if read_optional(&change.path, MAX_FILE)? != change.before
+            || file_mode(&change.path)? != change.before_mode
+        {
+            bail!(
+                "file changed before setup activation: {}",
+                change.path.display()
+            );
+        }
+    }
     prepare_journal(paths, changes)?;
     for change in changes {
         let operation = (|| -> Result<()> {
@@ -957,6 +1062,7 @@ pub fn doctor(paths: &Paths, catalog: &Catalog) -> Result<DoctorReport> {
                 ok: false,
                 installed: false,
                 checks,
+                packages: json!({"ok":false,"status":"not_run","reason":"installation is absent"}),
             });
         }
         Err(error) => {
@@ -965,6 +1071,7 @@ pub fn doctor(paths: &Paths, catalog: &Catalog) -> Result<DoctorReport> {
                 ok: false,
                 installed: true,
                 checks,
+                packages: json!({"ok":false,"status":"not_run","reason":"installation receipt is invalid"}),
             });
         }
     };
@@ -1020,6 +1127,15 @@ pub fn doctor(paths: &Paths, catalog: &Catalog) -> Result<DoctorReport> {
         }
         Err(error) => checks.push(check("configuration", false, &error.to_string())),
     }
+    let packages = match crate::packages::doctor(paths, &state.options.packages) {
+        Ok(report) => report,
+        Err(error) => json!({"ok":false,"error":format!("{error:#}")}),
+    };
+    checks.push(check(
+        "packages",
+        packages["ok"] == true,
+        &serde_json::to_string(&packages)?,
+    ));
     for target in &state.options.targets {
         let executable = find_client(*target, paths);
         checks.push(DoctorCheck { name: format!("{target} client"), status: if executable.is_some() { "pass" } else { "warning" }.into(), message: executable.map_or_else(|| format!("The {target} executable was not found. Install the client separately; setup does not install or authenticate it."), |path| format!("Executable found at {}. Authentication and live skill/MCP activation require a client task.", path.display())) });
@@ -1030,6 +1146,7 @@ pub fn doctor(paths: &Paths, catalog: &Catalog) -> Result<DoctorReport> {
         ok,
         installed: true,
         checks,
+        packages,
     })
 }
 fn check(name: &str, valid: bool, message: &str) -> DoctorCheck {
@@ -1122,6 +1239,79 @@ fn cleanup_retired_runtime(paths: &Paths) -> Result<()> {
 #[cfg(test)]
 mod recovery_tests {
     use super::*;
+
+    #[test]
+    fn editor_timeout_settings_round_trip_and_preserve_other_servers() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        let options = SetupOptions {
+            packages: vec!["inkscape".into(), "glaxnimate".into()],
+            ..SetupOptions::default()
+        };
+        for (target, original) in [
+            (Target::Codex, b"# personal setting\nmodel = 'mine'\n[mcp_servers.personal]\ncommand = 'own-server'\n".as_slice()),
+            (Target::Claude, br#"{"theme":"dark","mcpServers":{"personal":{"command":"own-server"}}}"#.as_slice()),
+        ] {
+            let wanted = desired_servers(&paths, target, &options).unwrap();
+            let merged = merge_config(target, Some(original), &BTreeMap::new(), &wanted).unwrap();
+            assert_eq!(merge_config(target, Some(&merged), &wanted, &wanted).unwrap(), merged);
+            for id in ["inkscape", "glaxnimate"] {
+                let name = format!("mirket-package-{id}");
+                match target {
+                    Target::Codex => {
+                        let document: DocumentMut = std::str::from_utf8(&merged).unwrap().parse().unwrap();
+                        assert_eq!(document["model"].as_str(), Some("mine"));
+                        assert_eq!(document["mcp_servers"]["personal"]["command"].as_str(), Some("own-server"));
+                        assert_eq!(toml_to_json(&document["mcp_servers"][&name]).unwrap(), wanted[&name]);
+                        assert_eq!(document["mcp_servers"][&name]["startup_timeout_sec"].as_integer(), Some(90));
+                        assert_eq!(document["mcp_servers"][&name]["tool_timeout_sec"].as_integer(), Some(120));
+                    }
+                    Target::Claude => {
+                        let document: Value = serde_json::from_slice(&merged).unwrap();
+                        assert_eq!(document["theme"], "dark");
+                        assert_eq!(document["mcpServers"]["personal"]["command"], "own-server");
+                        assert_eq!(document["mcpServers"][&name], wanted[&name]);
+                        assert_eq!(document["mcpServers"][&name]["timeout"], 120_000);
+                    }
+                }
+            }
+        }
+    }
+    #[test]
+    fn late_destination_edit_prevents_all_setup_writes() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let first = paths.home.join(".codex/AGENTS.md");
+        let later = paths.home.join(".claude/CLAUDE.md");
+        atomic_write(&first, b"first before").unwrap();
+        atomic_write(&later, b"later before").unwrap();
+        let mut changes = Vec::new();
+        add_change(
+            &mut changes,
+            first.clone(),
+            Some(b"first after".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        add_change(
+            &mut changes,
+            later.clone(),
+            Some(b"later after".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        atomic_write(&later, b"concurrent user edit").unwrap();
+        assert!(
+            apply_changes(&paths, &changes)
+                .unwrap_err()
+                .to_string()
+                .contains("before setup activation")
+        );
+        assert_eq!(fs::read(first).unwrap(), b"first before");
+        assert_eq!(fs::read(later).unwrap(), b"concurrent user edit");
+        assert!(!transaction_path(&paths).exists());
+    }
     #[test]
     fn interrupted_setup_restores_before_images_and_is_repeatable() {
         let temporary = tempfile::tempdir().unwrap();
@@ -1194,6 +1384,7 @@ mod recovery_tests {
         let options = SetupOptions {
             targets: vec![Target::Codex],
             microsoft_learn: false,
+            ..SetupOptions::default()
         };
         setup_from_binary(&paths, &catalog, &options, &source).unwrap();
         let mut changes = Vec::new();

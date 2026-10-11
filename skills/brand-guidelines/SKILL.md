@@ -53,13 +53,13 @@ copy and crop across them. Test long/localized content and relevant accessibilit
 states. Screen contrast does not establish print reproduction; print needs the
 requested color profile, material and proofing process.
 
-The bundled helper measures opaque sRGB color pairs with Python standard library:
+The Mirket CLI measures opaque sRGB color pairs:
 
 ```sh
 mirket craft contrast '#647066' '#fffefa'
 ```
 
-Resolve that script relative to this skill directory. It does not inspect images,
+This calculation does not inspect images,
 gradients, transparency, focus geometry or the whole page. Read the reference's
 WCAG source before interpreting thresholds; report exact measured pairs.
 

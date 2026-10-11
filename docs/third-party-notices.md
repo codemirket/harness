@@ -10,6 +10,92 @@ that informed the authored guidance. They apply to their respective upstream
 materials, not as a blanket license for this repository or unrelated assets.
 Direct upstream project installations also retain their source's own LICENSE.
 
+## Rust runtime
+
+Native distributions include `RUST-NOTICES.txt`, generated from the pinned Cargo
+dependency closure and the selected Rust toolchain. It retains dependency
+identities, license declarations and actual notice texts, including bundled
+native source notices and the standard-library inventory. The inventory includes
+build and target-specific dependencies; it is not a claim that every listed
+source component is linked into every executable. Some crate archives omit their
+upstream license files; their exact-source supplements and provenance are kept in
+[`licenses/rust-runtime`](licenses/rust-runtime/).
+
+These notices accompany Mirket binaries independently of the optional packages
+below. Publish each native distribution's notice file alongside its executables.
+
+## Runtime packages
+
+Optional MCP and editor packages retain their own licenses and dependency notices.
+The package registry pins the downloaded artifacts; setup preserves archive notices
+and copies the curated notice files into each installed generation. These
+licenses apply to their respective components, independently of Mirket's license.
+
+| Component | Upstream license | Retained notices and provenance |
+| --- | --- | --- |
+| Doc Scraper 2.11.0 | Apache-2.0 | [License](licenses/packages/native/doc-scraper/LICENSE), [dependency notices](licenses/packages/native/doc-scraper/THIRD_PARTY_LICENSES.txt), [provenance](licenses/packages/native/doc-scraper/PROVENANCE.json) |
+| jscpd 5.4.1 | MIT | [License](licenses/packages/native/jscpd/LICENSE), [dependency notices](licenses/packages/native/jscpd/THIRD_PARTY_LICENSES.txt), [provenance](licenses/packages/native/jscpd/PROVENANCE.json) |
+| Node.js 24.21.0 | MIT and bundled dependency licenses | [Complete upstream license file](licenses/packages/optional/NODE-LICENSE.txt) |
+| Chrome Headless Shell 155.0.8059.12 | BSD-3-Clause and bundled dependency licenses | Platform-specific `LICENSE.headless_shell` retained in each browser archive; [source and packaging notes](licenses/packages/optional/CHROMIUM-NOTICES.md) |
+| Playwright MCP 0.0.83 | Apache-2.0 | [Server and dependency notices](licenses/packages/optional/playwright-NOTICES.txt) |
+| DBHub 1.5.0 | MIT | [Server and dependency notices](licenses/packages/optional/dbhub-NOTICES.txt) |
+| Safe-Docx 0.25.0 | Apache-2.0 | [Server and dependency notices](licenses/packages/optional/safe-docx-NOTICES.txt) |
+| Semiotic 3.12.1 | Apache-2.0 | [Server, embedded SDK and dependency notices](licenses/packages/optional/semiotic-NOTICES.txt) |
+| agent-device 0.21.24 | MIT | [Server and bundled component notices](licenses/packages/optional/agent-device-NOTICES.txt) |
+| CPython 3.13.16, python-build-standalone 20261009 | Python-2.0 and bundled dependency licenses | [Runtime and dependency notices](licenses/packages/python/cpython/THIRD_PARTY_LICENSES.txt), [selected runtime provenance](licenses/packages/python/cpython/PROVENANCE.json) |
+| MarkItDown 0.1.8, MCP wrapper 0.0.1a7 | MIT and bundled dependency licenses | [Server, wheel and dependency notices](licenses/packages/python/markitdown/THIRD_PARTY_LICENSES.txt), [profile and artifact provenance](licenses/packages/python/markitdown/PROVENANCE.json) |
+| Inkscape 1.4.4 | GPL-3.0-or-later application; bundled Ghostscript is AGPL-3.0-or-later; other components retain their own licenses | [License scope](licenses/packages/inkscape/README.md), [bundled notices](licenses/packages/inkscape/BUNDLED-NOTICES.txt), [source inventory](licenses/packages/inkscape/SOURCE-INVENTORY.json), [artifact lock](../registry/package-locks/inkscape.json) |
+| Glaxnimate 0.6.0 distribution, binary `0.6.0-git-d2da67a` | GPL-3.0-or-later application; bundled Python lottie includes AGPL-3.0 terms; other components retain their own licenses | [License scope](licenses/packages/glaxnimate/README.md), [source notices](licenses/packages/glaxnimate/SOURCE-NOTICES.txt), [bundled notices](licenses/packages/glaxnimate/BUNDLED-NOTICES.txt), [source inventory](licenses/packages/glaxnimate/SOURCE-INVENTORY.json), [artifact lock](../registry/package-locks/glaxnimate.json) |
+
+Exact source revisions, archive identities and selected targets are recorded in
+[`packages-native.json`](../registry/packages-native.json),
+[`packages-optional.json`](../registry/packages-optional.json),
+[`packages-python.json`](../registry/packages-python.json) and
+[`packages-editors.json`](../registry/packages-editors.json). The
+[`package-locks`](../registry/package-locks/) directory records dependency
+resolution and notice inventories, including Semiotic's embedded SDK,
+[private Python artifacts](../registry/package-locks/python-runtime.json) and
+[MarkItDown wheels](../registry/package-locks/python-markitdown.json).
+Profile-specific dependency omissions are recorded in the inventories and
+provenance files; no omitted dependency is installed implicitly. MarkItDown uses
+its official entrypoint with the `docx`, `pdf`, `pptx` and `xlsx` extras rather
+than the wrapper's declared `all` extra. Its provenance records this explicit
+dependency selection and the excluded audio, cloud, LLM, YouTube and plugin extras.
+
+Native provenance records distinguish source dependency inventories from the
+components linked into each platform binary and retain unresolved notice gaps.
+The recorded hashes establish artifact identity; Mirket does not independently
+reproduce upstream binaries. See [local MCP packages](packages.md) for the
+selected profiles and runtime prerequisites.
+
+### Editor application distribution
+
+Mirket releases contain Rust editor adapters, pinned package definitions and
+notices. Installation downloads the unmodified signed Inkscape and Glaxnimate
+applications from their official upstream distributors; Mirket does not rehost
+the editor binaries. All application contents and original notices are retained.
+The adapters exchange ordinary vector, animation and image files with separate
+application processes and do not link against their libraries.
+
+The retained inventories record exact artifact identities and application source
+pins, available bundled notices and the source/build evidence that was reviewed.
+They do not establish complete native component notice coverage, independently
+reproduced builds or a maintained corresponding-source service. Inkscape's
+inventory includes pinned packaging recipes but not a verified archived source
+closure for every bundled library, Ghostscript resource and customized Python
+component. Glaxnimate's exact Craft dependency recipes/options and complete
+Qt/KDE/FFmpeg source and notice closure remain unverified.
+
+Private local use and conveying binary copies to others have different license
+obligations. Before Mirket supplies these binaries through a release, mirror or
+shared cache, complete the component review and provide the corresponding source,
+build/install scripts, notices and recipient rights required by the applicable
+licenses. A link to the main application repository alone is insufficient for a
+bundle with additional components. A separate process is not a blanket licensing
+exception. The package-specific license scope documents link the relevant
+upstream and FSF guidance; the current download path is not a redistribution
+compliance certification.
+
 ## mattpocock/skills
 
 [4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d](https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d)

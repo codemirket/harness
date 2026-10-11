@@ -10,15 +10,15 @@
         "engineering-judgment",
         "test-design"
       ],
-      "deliverable": "A working user journey with explicit loading, empty, error and durable-success states.",
-      "failure_probe": "Reverse response order and repeat a mutation; older intent must not win and durable effects must not duplicate.",
-      "prerequisites": "Actual framework runtime and browser; backend boundary for durable effects.",
+      "deliverable": "A working browser feature with the loading, empty, error and persistence states relevant to its actual behavior.",
+      "failure_probe": "Choose the affected boundary: reverse asynchronous response order, repeat a durable mutation, or stress layout/keyboard behavior for a presentation-only change.",
+      "prerequisites": "Actual framework runtime and browser; a backend boundary only when the feature has durable effects.",
       "aliases": [
         "Frontend Engineer"
       ],
       "acceptance": [
-        "Actual user journey including failure and reload",
-        "No duplicate durable effects or stale-intent wins"
+        "Actual user journey and relevant failure/recovery states exercised",
+        "Stale intent and duplicate effects checked where asynchronous or durable work exists"
       ]
     },
     {
@@ -102,13 +102,15 @@
       "title": "SEO Expertise",
       "lead": "search-visibility",
       "support": [
-        "search-audit"
+        "data-analysis"
       ],
       "deliverable": "URL-level crawl/index/content findings tied to observations and an ordered remediation plan.",
       "failure_probe": "A robots-allowed but noindex page must not be reported indexable; inaccessible Search Console stays unknown.",
       "prerequisites": "Authorized public URLs; current search-provider docs; dashboards only when available.",
       "aliases": [
-        "SEO Expert"
+        "SEO Expert",
+        "SEO Analyst",
+        "GEO Specialist"
       ],
       "acceptance": [
         "URL-level observations linked to retrieval dates",
@@ -157,7 +159,7 @@
     {
       "id": "illustration",
       "title": "Illustration",
-      "lead": "skill-catalog",
+      "lead": "graphic-design",
       "support": [
         "svg-creation",
         "interface-design"
@@ -176,7 +178,7 @@
     {
       "id": "visual-assets",
       "title": "Crafting Visual Assets",
-      "lead": "skill-catalog",
+      "lead": "graphic-design",
       "support": [
         "svg-creation",
         "brand-guidelines"
@@ -203,7 +205,7 @@
       ],
       "deliverable": "Motion that communicates actual state, handles interruption and preserves reduced-motion functionality.",
       "failure_probe": "Reverse or cancel midway, unmount and change motion preference; no stale state or trapped control.",
-      "prerequisites": "Actual UI engine/browser; native platform or video renderer for those distinct deliverables.",
+      "prerequisites": "Choose the production method from the artifact: motion-design for UI controls, page-transitions for navigation, advanced-motion for DOM scenes, svg-animation for SVG or an actual native/video workflow. Verify the corresponding runtime.",
       "aliases": [
         "Motion Designer"
       ],
@@ -276,8 +278,8 @@
       "support": [
         "data-migrations"
       ],
-      "deliverable": "Correct constraints, representative query plans and migration/recovery evidence on the named engine.",
-      "failure_probe": "Interrupt a batch and resume under old/new writers; preserve every row and invariant.",
+      "deliverable": "Correct query, constraint, migration or recovery behavior on the named engine, verified for the requested operation.",
+      "failure_probe": "For a migration, interrupt and resume under relevant writers; for a query or constraint repair, use skewed or conflicting data that exposes the reported failure.",
       "prerequisites": "Named database engine/version, representative isolated data and recovery path.",
       "aliases": [
         "Database Admin",
@@ -285,8 +287,8 @@
         "DBA"
       ],
       "acceptance": [
-        "Named-engine invariant and query behavior exercised",
-        "Interrupted migration and recovery evidence tied to actual inputs"
+        "Named-engine behavior and relevant invariants exercised",
+        "Query, migration or recovery evidence matches the requested operation and actual inputs"
       ]
     },
     {
@@ -295,14 +297,18 @@
       "lead": "systems-engineering",
       "support": [
         "architecture-review",
-        "security-judgment"
+        "security-judgment",
+        "release-operations",
+        "debugging"
       ],
       "deliverable": "A coherent system model, capacity/failure analysis, contracts and a verifiable operational design.",
       "failure_probe": "Fail a dependency or exhaust a bounded queue; identify propagation, backpressure and recovery.",
       "prerequisites": "Target topology, workload/limits, telemetry and an isolated failure experiment.",
       "aliases": [
         "System Engineer",
-        "Systems Engineer"
+        "Systems Engineer",
+        "Site Reliability Engineer",
+        "SRE"
       ],
       "acceptance": [
         "Capacity and failure propagation traced across contracts",
@@ -335,17 +341,20 @@
       "lead": "marketing-writing",
       "support": [
         "customer-research",
-        "conversion-review"
+        "conversion-review",
+        "market-analysis",
+        "search-visibility",
+        "experiment-design"
       ],
-      "deliverable": "Audience-specific positioning/copy with traceable claims and channel fit; a measurable experiment when the task requires one.",
-      "failure_probe": "Remove the claimed proof or change offer conditions; revised copy must retain truth and qualifications.",
-      "prerequisites": "Approved offer, customer evidence and channel context; publication/spend separately authorized.",
+      "deliverable": "Audience-specific positioning/copy or a channel plan using the selected marketing specialty, traceable claims and measurable intended outcomes.",
+      "failure_probe": "Remove the claimed proof or change offer conditions; preserve truth and qualifications. A copy draft, email open or click alone must not establish a completed channel program or commercial outcome.",
+      "prerequisites": "Approved offer, customer evidence and channel context; select the actual research, search, conversion or channel specialty for work beyond copy. Publication, outreach and spend require authority.",
       "aliases": [
         "Marketing Expert"
       ],
       "acceptance": [
         "Offer, claims and qualifications match approved evidence",
-        "Copy inspected in intended channel; impact claims require measurement"
+        "Copy or plan inspected against its intended channel and outcome; impact claims require measurement"
       ]
     },
     {
@@ -581,8 +590,8 @@
         "backend-engineering",
         "test-design"
       ],
-      "deliverable": "A runnable mobile feature on the chosen stack with lifecycle recovery, secure storage, deep links and recoverable network effects.",
-      "failure_probe": "Kill and relaunch after an offline mutation or revoke a permission; state must recover without duplicating the effect.",
+      "deliverable": "A runnable mobile feature on the chosen stack, with lifecycle, storage, navigation and network boundaries verified where affected.",
+      "failure_probe": "Exercise an affected boundary: kill/relaunch during pending work, revoke a used permission, or check keyboard/text scaling for a presentation-only change.",
       "prerequisites": "Named iOS/Android/cross-platform stack and available SDK/build/simulator; devices and signing for claims needing them.",
       "aliases": [
         "Mobile App Engineer",
@@ -590,7 +599,7 @@
       ],
       "acceptance": [
         "Build and user journey exercised on the actual target runtime",
-        "Lifecycle, offline/retry and permission cases checked; device limits disclosed"
+        "Affected lifecycle, offline/retry, permissions or presentation cases checked; device limits disclosed"
       ]
     },
     {
@@ -653,6 +662,197 @@
         "Actual use-size composition and focal details inspected",
         "Editable masters and required exports verified; licensed/source assets traceable"
       ]
+    },
+    {
+      "id": "security-engineering",
+      "title": "Application and Agent Security",
+      "lead": "security-judgment",
+      "support": [
+        "architecture-review",
+        "test-design",
+        "mcp-integration"
+      ],
+      "aliases": [
+        "Security Engineer",
+        "Application Security Engineer"
+      ],
+      "deliverable": "A traced threat or authorization boundary, scoped remediation and adversarial regression evidence for the actual application or agent tool.",
+      "prerequisites": "Authorized target, affected assets and principals, runnable isolated probes; a compliance or penetration-test claim requires its own scope and expertise.",
+      "acceptance": [
+        "Resource and operation authorization checked at the owning boundary",
+        "Observed exploitability, fixes and residual limits distinguished"
+      ],
+      "failure_probe": "A hidden UI action still callable by another tenant must be refused at the server; a prompt rule cannot substitute for enforcement."
+    },
+    {
+      "id": "quality-assurance",
+      "title": "Quality Assurance",
+      "lead": "test-design",
+      "support": [
+        "debugging",
+        "engineering-judgment"
+      ],
+      "aliases": [
+        "QA Engineer",
+        "Quality Engineer",
+        "Software Test Engineer"
+      ],
+      "deliverable": "A risk-based assessment of real user journeys, durable effects, actionable defects and checked repairs.",
+      "prerequisites": "Acceptance criteria, exact build/runtime and isolated representative fixtures; relevant native or browser runtime for claims about those targets.",
+      "acceptance": [
+        "Assertions use independent expected results and observe the actual effect",
+        "Failure and recovery cases exercise the changed consumer boundary"
+      ],
+      "failure_probe": "A success response with the wrong persisted record must fail even when the UI toast and happy-path test are green."
+    },
+    {
+      "id": "ai-engineering",
+      "title": "AI Application Engineering",
+      "lead": "ai-system-evaluation",
+      "support": [
+        "backend-engineering",
+        "data-analysis",
+        "security-judgment",
+        "mcp-integration"
+      ],
+      "aliases": [
+        "AI Engineer",
+        "LLM Engineer",
+        "Agent Engineer"
+      ],
+      "deliverable": "A bounded LLM, retrieval or tool-using feature evaluated on representative tasks, grounded outputs, failure behavior and measured resource costs.",
+      "prerequisites": "Chosen model/provider and approved tools/data; evaluation inputs with provenance and an executable application boundary. Model training is a separate specialty.",
+      "acceptance": [
+        "Retrieval, tool effects and task outcomes evaluated separately against fixed criteria",
+        "Failures, sample size, resource costs and untested model/runtime conditions reported"
+      ],
+      "failure_probe": "A fluent answer with a nonexistent supporting source or a tool success without its promised effect must fail evaluation."
+    },
+    {
+      "id": "data-engineering",
+      "title": "Data Engineering",
+      "lead": "data-engineering",
+      "support": [
+        "database-systems",
+        "data-migrations",
+        "data-analysis"
+      ],
+      "aliases": [
+        "Data Engineer",
+        "Analytics Engineer"
+      ],
+      "deliverable": "A replayable ingestion or transformation pipeline with explicit grain, schema, lineage, freshness and reconciled published output.",
+      "prerequisites": "Authorized source/sink access, actual engine and orchestration runtime, representative isolated data, ownership and retention rules.",
+      "acceptance": [
+        "Source-to-output counts and business aggregates reconcile at the declared grain",
+        "Late input, duplicate delivery, interruption and replay preserve invariants"
+      ],
+      "failure_probe": "Crash after the sink commits but before the source checkpoint; replay must not double-count or silently discard the record."
+    },
+    {
+      "id": "accessibility-engineering",
+      "title": "Accessibility Engineering",
+      "lead": "accessibility-engineering",
+      "support": [
+        "frontend-engineering",
+        "mobile-design",
+        "test-design"
+      ],
+      "aliases": [
+        "Accessibility Engineer",
+        "Accessibility Specialist"
+      ],
+      "deliverable": "An accessible user journey with corrected semantics, focus, input alternatives and evidence from applicable manual and automated checks.",
+      "prerequisites": "Named platform/browser or device, acceptance standard and representative content; assistive technology for claims requiring it.",
+      "acceptance": [
+        "Keyboard, focus, names/roles/states and relevant content alternatives checked through the journey",
+        "Automation, manual inspection and assistive-technology evidence reported separately"
+      ],
+      "failure_probe": "A page with no automated violations but a keyboard-inaccessible modal or silently failed form must not pass."
+    },
+    {
+      "id": "user-research",
+      "title": "User Experience Research",
+      "lead": "customer-research",
+      "support": [
+        "product-management",
+        "data-analysis",
+        "experiment-design"
+      ],
+      "aliases": [
+        "UX Researcher",
+        "User Researcher"
+      ],
+      "deliverable": "A decision-focused study or synthesis connecting observed behavior to traceable findings, counterexamples and bounded recommendations.",
+      "prerequisites": "Product question, target users and authorized source material; consent and explicit outreach authority for real participants.",
+      "acceptance": [
+        "Observation, participant report and researcher inference remain distinct",
+        "Findings trace to tasks, segments and evidence with sampling limits"
+      ],
+      "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand."
+    },
+    {
+      "id": "desktop-engineering",
+      "title": "Desktop Application Engineering",
+      "lead": "desktop-integration",
+      "support": [
+        "frontend-engineering",
+        "security-judgment",
+        "release-operations"
+      ],
+      "aliases": [
+        "Desktop App Engineer",
+        "Desktop Engineer"
+      ],
+      "deliverable": "A working desktop feature across UI, IPC, filesystem and lifecycle boundaries with packaged-runtime and recovery evidence.",
+      "prerequisites": "Actual OS/framework version, build/signing prerequisites and an isolated target runtime; signing and distribution authority remain explicit.",
+      "acceptance": [
+        "Privileged interfaces validate caller, resource and operation scope",
+        "Launch, close/reopen, cancellation and packaged resource behavior exercised on named targets"
+      ],
+      "failure_probe": "A feature working in development but reading a missing packaged resource or leaving a child alive after quit must fail acceptance."
+    },
+    {
+      "id": "mcp-engineering",
+      "title": "MCP Engineering",
+      "lead": "mcp-integration",
+      "support": [
+        "backend-engineering",
+        "security-judgment",
+        "test-design"
+      ],
+      "aliases": [
+        "MCP Engineer",
+        "MCP Server Engineer"
+      ],
+      "deliverable": "A narrowly scoped MCP server or client integration with typed contracts, bounded lifecycle and useful verified tool effects.",
+      "prerequisites": "Installed SDK/protocol version, actual client/transport and authorized project or service fixtures.",
+      "acceptance": [
+        "Initialization, discovery and calls verified through an actual protocol client",
+        "Authorization, cancellation, malformed input and promised effects exercised independently"
+      ],
+      "failure_probe": "A discoverable tool returning success without its required artifact or accepting an escaped resource path must fail."
+    },
+    {
+      "id": "experimentation",
+      "title": "Experiment Design and Analysis",
+      "lead": "experiment-design",
+      "support": [
+        "data-analysis",
+        "product-management"
+      ],
+      "aliases": [
+        "Experimentation Analyst",
+        "Experiment Designer",
+        "A/B Testing Analyst"
+      ],
+      "deliverable": "A falsifiable experiment specification or results assessment with assignment, metrics, stopping rules, uncertainty and a supported decision.",
+      "prerequisites": "Decision owner, population/exposure definitions, measured baseline and suitable validated analysis tools; traffic or spend changes require authority.",
+      "acceptance": [
+        "Assignment and analysis units, exclusions, guardrails and stopping rules explicit",
+        "Integrity and sample-ratio checks precede effect interpretation"
+      ],
+      "failure_probe": "An apparent uplift caused by repeated users, sample-ratio mismatch or unplanned repeated peeking must not be declared a valid causal win."
     }
   ]
 }

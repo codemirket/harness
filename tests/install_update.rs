@@ -45,12 +45,54 @@ fn codex() -> SetupOptions {
     SetupOptions {
         targets: vec![Target::Codex],
         microsoft_learn: false,
+        ..SetupOptions::default()
     }
 }
 fn claude() -> SetupOptions {
     SetupOptions {
         targets: vec![Target::Claude],
         microsoft_learn: true,
+        ..SetupOptions::default()
+    }
+}
+
+#[test]
+fn package_setup_rejects_conflicts_before_downloading_or_changing_state() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    let receipt = fixture.read(".mirket/setup.json");
+    fixture.write(
+        ".codex/config.toml",
+        "[mcp_servers.mirket-package-jscpd]\ncommand = 'personal-server'\n",
+    );
+    let config = fixture.read(".codex/config.toml");
+    let options = SetupOptions {
+        packages: vec!["jscpd".into()],
+        ..SetupOptions::default()
+    };
+    assert!(
+        fixture
+            .setup(&options)
+            .unwrap_err()
+            .to_string()
+            .contains("conflicts")
+    );
+    assert_eq!(receipt, fixture.read(".mirket/setup.json"));
+    assert_eq!(config, fixture.read(".codex/config.toml"));
+    assert!(!fixture.paths.root.join("packages").exists());
+}
+
+#[test]
+fn runtime_and_unknown_packages_fail_before_installation() {
+    for package in ["nodejs", "invented-package"] {
+        let fixture = Fixture::new();
+        let options = SetupOptions {
+            packages: vec![package.into()],
+            ..SetupOptions::default()
+        };
+        assert!(fixture.setup(&options).is_err());
+        assert!(!fixture.paths.settings().exists());
+        assert!(!fixture.paths.root.join("packages").exists());
     }
 }
 
@@ -462,15 +504,18 @@ fn failing_new_runtime_preserves_installation() {
     let fixture = Fixture::new();
     fixture.setup(&codex()).unwrap();
     let candidate = fixture.paths.home.join("failing-runtime");
-    let bytes = b"#!/bin/sh\nif [ \"$1\" = \"--version\" ]; then echo 'mirket 1.0.0'; exit 0; fi\necho 'fixture setup failure' >&2\nexit 4\n";
-    fs::write(&candidate, bytes).unwrap();
+    let bytes = format!(
+        "#!/bin/sh\nif [ \"$1\" = \"--version\" ]; then echo 'mirket {}'; exit 0; fi\necho 'fixture setup failure' >&2\nexit 4\n",
+        env!("CARGO_PKG_VERSION")
+    );
+    fs::write(&candidate, &bytes).unwrap();
     let receipt = fs::read(fixture.paths.settings()).unwrap();
     let binary = fs::read(fixture.paths.binary()).unwrap();
     let outcome = update::update(
         &fixture.paths,
         &UpdateOptions {
             from: Some(candidate),
-            sha256: Some(sha256(bytes)),
+            sha256: Some(sha256(bytes.as_bytes())),
             check: false,
         },
     );
@@ -560,7 +605,8 @@ fn newer_managed_runtime_requires_matching_owned_bytes_and_prevents_downgrade() 
     assert!(install::newer_runtime(&fixture.paths).unwrap().is_none());
     let mut receipt: serde_json::Value =
         serde_json::from_slice(&fs::read(fixture.paths.settings()).unwrap()).unwrap();
-    receipt["version"] = "1.1.0".into();
+    let next_major = env!("CARGO_PKG_VERSION_MAJOR").parse::<u64>().unwrap() + 1;
+    receipt["version"] = format!("{next_major}.0.0").into();
     fs::write(
         fixture.paths.settings(),
         serde_json::to_vec(&receipt).unwrap(),

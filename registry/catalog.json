@@ -534,33 +534,6 @@
       ]
     },
     {
-      "id": "search-audit",
-      "name": "search-audit",
-      "scope": "project",
-      "category": "marketing",
-      "description": "Diagnose organic search visibility problems using crawl, indexing, content, and measurement evidence. Use for a requested SEO audit or a specific search issue; ordinary page implementation does not require an audit.",
-      "delivery": "embedded",
-      "path": "skills/search-audit",
-      "license_files": [
-        "docs/third-party-notices.md"
-      ],
-      "informed_by": [
-        "marketing"
-      ],
-      "dependencies": [
-        "Use the project’s existing tools and conventions."
-      ],
-      "caveats": [
-        "Original focused guidance; select for a demonstrated project need."
-      ],
-      "tags": [
-        "seo",
-        "search",
-        "schema",
-        "indexing"
-      ]
-    },
-    {
       "id": "conversion-review",
       "name": "conversion-review",
       "scope": "project",
@@ -4286,72 +4259,6 @@
     },
     {
       "name": "context-mode",
-      "path": "configs/antigravity-cli/skills/context-mode",
-      "description": "Mandatory routing rules for Antigravity CLI. Invoke when exploring a codebase, reading files for analysis, listing context-mode tools, searching, parsing, counting, comparing, summarizing, fetching web content, or running data-heavy commands.",
-      "category": "context-management",
-      "license": "Elastic-2.0",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "context",
-        "retrieval",
-        "mcp",
-        "context-mode"
-      ],
-      "id": "context-mode-context-mode-antigravity-cli",
-      "source": "context-mode",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "Node >=22.5.0; native better-sqlite3 compatible runtime or rebuild toolchain.",
-        "Full context-mode MCP/plugin integration plus host-specific hooks/routing.",
-        "Runtime tools must be registered; SKILL directory copying alone cannot implement them."
-      ],
-      "caveats": [
-        "Elastic-2.0 limits hosted/managed service offerings and requires license/notice retention, including modification notices.",
-        "Hooks enforce routing and persist local session/content data; reviewed version includes optional hosted Insight dashboard.",
-        "ctx-upgrade executes returned commands and installs latest; do not invoke as a substitute for reviewed pinned updates.",
-        "ctx-purge is destructive; choose exact project/session scope and obtain required authorization.",
-        "98% reduction is an upstream benchmark/marketing claim, not a verified guarantee for this user."
-      ],
-      "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/configs/antigravity-cli/skills/context-mode/SKILL.md"
-    },
-    {
-      "name": "context-mode",
-      "path": "configs/copilot-cli/skills/context-mode",
-      "description": "MANDATORY routing rules for context-mode. Invoke whenever you analyze, count, filter, compare, search, parse, or transform data; fetch a URL; or run a data-heavy command — so raw bytes stay out of the context window.",
-      "category": "context-management",
-      "license": "Elastic-2.0",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "context",
-        "retrieval",
-        "mcp",
-        "context-mode"
-      ],
-      "id": "context-mode-context-mode-copilot-cli",
-      "source": "context-mode",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "Node >=22.5.0; native better-sqlite3 compatible runtime or rebuild toolchain.",
-        "Full context-mode MCP/plugin integration plus host-specific hooks/routing.",
-        "Runtime tools must be registered; SKILL directory copying alone cannot implement them."
-      ],
-      "caveats": [
-        "Elastic-2.0 limits hosted/managed service offerings and requires license/notice retention, including modification notices.",
-        "Hooks enforce routing and persist local session/content data; reviewed version includes optional hosted Insight dashboard.",
-        "ctx-upgrade executes returned commands and installs latest; do not invoke as a substitute for reviewed pinned updates.",
-        "ctx-purge is destructive; choose exact project/session scope and obtain required authorization.",
-        "98% reduction is an upstream benchmark/marketing claim, not a verified guarantee for this user."
-      ],
-      "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/configs/copilot-cli/skills/context-mode/SKILL.md"
-    },
-    {
-      "name": "context-mode",
       "path": "skills/context-mode",
       "description": "Use context-mode tools (ctx_execute, ctx_execute_file) instead of Bash/cat when processing large outputs. Triggers: \"analyze logs\", \"summarize output\", \"process data\", \"parse JSON\", \"filter results\", \"extract errors\", \"check build output\", \"analyze dependencies\", \"process API response\", \"large file analysis\", \"page snapshot\", \"browser snapshot\", \"DOM structure\", \"inspect page\", \"accessibility tree\", \"Playwright snapshot\", \"run tests\", \"test output\", \"coverage report\", \"git log\", \"recent commits\", \"diff between branches\", \"list containers\", \"pod status\", \"disk usage\", \"fetch docs\", \"API reference\", \"index documentation\", \"call API\", \"check response\", \"query results\", \"find TODOs\", \"count lines\", \"codebase statistics\", \"security audit\", \"outdated packages\", \"dependency tree\", \"cloud resources\", \"CI/CD output\". Also triggers on ANY MCP tool output that may exceed 20 lines. Subagent routing is handled automatically via PreToolUse hook.",
       "category": "context-management",
@@ -4381,7 +4288,23 @@
         "ctx-purge is destructive; choose exact project/session scope and obtain required authorization.",
         "98% reduction is an upstream benchmark/marketing claim, not a verified guarantee for this user."
       ],
-      "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/skills/context-mode/SKILL.md"
+      "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/skills/context-mode/SKILL.md",
+      "variants": [
+        {
+          "host": "antigravity-cli",
+          "source": "context-mode",
+          "path": "configs/antigravity-cli/skills/context-mode",
+          "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/configs/antigravity-cli/skills/context-mode/SKILL.md",
+          "license": "Elastic-2.0"
+        },
+        {
+          "host": "copilot-cli",
+          "source": "context-mode",
+          "path": "configs/copilot-cli/skills/context-mode",
+          "url": "https://github.com/mksglu/context-mode/blob/e5fcca6802d484db3f4ec04f6d2021938852b2a0/configs/copilot-cli/skills/context-mode/SKILL.md",
+          "license": "Elastic-2.0"
+        }
+      ]
     },
     {
       "name": "ctx-doctor",
@@ -10163,7 +10086,15 @@
       ],
       "tags": [
         "search",
-        "search-visibility"
+        "search-visibility",
+        "seo",
+        "schema",
+        "indexing",
+        "geo",
+        "seo-audit"
+      ],
+      "informed_by": [
+        "marketing"
       ]
     },
     {
@@ -12364,221 +12295,6 @@
       "selection_reason": "Full lifecycle router; clashes with personal catalog routing and imposes process-first/spec-first behavior across sessions. Keep as explicit alternative plugin, not a global overlay."
     },
     {
-      "id": "planning-with-files-ar",
-      "name": "planning-with-files-ar",
-      "scope": "manual",
-      "category": "planning",
-      "description": "Persistent task recovery and single-owner plan state are useful for substantial tasks; hook-bearing runtime and rigid per-action bookkeeping belong to explicit project opt-in, with further runtime audit before installation.",
-      "delivery": "reference",
-      "source": "planning-with-files",
-      "path": "skills/i18n/planning-with-files-ar",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "dependencies": [
-        "POSIX sh/coreutils for hook routes; Python 3 for fast injection and optional history modes; PowerShell helpers on Windows; Git for Windows shell for Codex hook adapter.",
-        "Selected skill directory includes scripts/templates; plugin deployment additionally needs root scripts, hooks manifests and host adapters."
-      ],
-      "caveats": [
-        "No unattended installation approved. Five lifecycle hook groups are in SKILL frontmatter itself; plugin adds startup hooks.",
-        "Writes task files, .planning state and user cache; optional Stop continuation must be deliberately selected and bounded.",
-        "History metadata/replay is explicit opt-in, not automatic; hook output can enter the host model-provider request.",
-        "Runtime coverage is partial: full skill-hook.sh, resolve-plan-dir.sh, check-complete.sh, gate-stop.sh and small Codex launchers; catchup/injector and remaining PowerShell/runtime implementations are not fully audited.",
-        "Use authored work-planning globally; do not copy fixed two-action logging, three-strike escalation or assumed model/host capability policies."
-      ],
-      "tags": [
-        "planning",
-        "context",
-        "workflow",
-        "hooks"
-      ],
-      "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-ar/SKILL.md",
-      "agents": [
-        "codex",
-        "claude"
-      ],
-      "companion_requirements": [
-        "scripts/",
-        "templates/",
-        "reference.md",
-        "examples.md"
-      ],
-      "requires": []
-    },
-    {
-      "id": "planning-with-files-de",
-      "name": "planning-with-files-de",
-      "scope": "manual",
-      "category": "planning",
-      "description": "Persistent task recovery and single-owner plan state are useful for substantial tasks; hook-bearing runtime and rigid per-action bookkeeping belong to explicit project opt-in, with further runtime audit before installation.",
-      "delivery": "reference",
-      "source": "planning-with-files",
-      "path": "skills/i18n/planning-with-files-de",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "dependencies": [
-        "POSIX sh/coreutils for hook routes; Python 3 for fast injection and optional history modes; PowerShell helpers on Windows; Git for Windows shell for Codex hook adapter.",
-        "Selected skill directory includes scripts/templates; plugin deployment additionally needs root scripts, hooks manifests and host adapters."
-      ],
-      "caveats": [
-        "No unattended installation approved. Five lifecycle hook groups are in SKILL frontmatter itself; plugin adds startup hooks.",
-        "Writes task files, .planning state and user cache; optional Stop continuation must be deliberately selected and bounded.",
-        "History metadata/replay is explicit opt-in, not automatic; hook output can enter the host model-provider request.",
-        "Runtime coverage is partial: full skill-hook.sh, resolve-plan-dir.sh, check-complete.sh, gate-stop.sh and small Codex launchers; catchup/injector and remaining PowerShell/runtime implementations are not fully audited.",
-        "Use authored work-planning globally; do not copy fixed two-action logging, three-strike escalation or assumed model/host capability policies."
-      ],
-      "tags": [
-        "planning",
-        "context",
-        "workflow",
-        "hooks"
-      ],
-      "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-de/SKILL.md",
-      "agents": [
-        "codex",
-        "claude"
-      ],
-      "companion_requirements": [
-        "scripts/",
-        "templates/",
-        "reference.md",
-        "examples.md"
-      ],
-      "requires": []
-    },
-    {
-      "id": "planning-with-files-es",
-      "name": "planning-with-files-es",
-      "scope": "manual",
-      "category": "planning",
-      "description": "Persistent task recovery and single-owner plan state are useful for substantial tasks; hook-bearing runtime and rigid per-action bookkeeping belong to explicit project opt-in, with further runtime audit before installation.",
-      "delivery": "reference",
-      "source": "planning-with-files",
-      "path": "skills/i18n/planning-with-files-es",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "dependencies": [
-        "POSIX sh/coreutils for hook routes; Python 3 for fast injection and optional history modes; PowerShell helpers on Windows; Git for Windows shell for Codex hook adapter.",
-        "Selected skill directory includes scripts/templates; plugin deployment additionally needs root scripts, hooks manifests and host adapters."
-      ],
-      "caveats": [
-        "No unattended installation approved. Five lifecycle hook groups are in SKILL frontmatter itself; plugin adds startup hooks.",
-        "Writes task files, .planning state and user cache; optional Stop continuation must be deliberately selected and bounded.",
-        "History metadata/replay is explicit opt-in, not automatic; hook output can enter the host model-provider request.",
-        "Runtime coverage is partial: full skill-hook.sh, resolve-plan-dir.sh, check-complete.sh, gate-stop.sh and small Codex launchers; catchup/injector and remaining PowerShell/runtime implementations are not fully audited.",
-        "Use authored work-planning globally; do not copy fixed two-action logging, three-strike escalation or assumed model/host capability policies."
-      ],
-      "tags": [
-        "planning",
-        "context",
-        "workflow",
-        "hooks"
-      ],
-      "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-es/SKILL.md",
-      "agents": [
-        "codex",
-        "claude"
-      ],
-      "companion_requirements": [
-        "scripts/",
-        "templates/",
-        "reference.md",
-        "examples.md"
-      ],
-      "requires": []
-    },
-    {
-      "id": "planning-with-files-zh",
-      "name": "planning-with-files-zh",
-      "scope": "manual",
-      "category": "planning",
-      "description": "Persistent task recovery and single-owner plan state are useful for substantial tasks; hook-bearing runtime and rigid per-action bookkeeping belong to explicit project opt-in, with further runtime audit before installation.",
-      "delivery": "reference",
-      "source": "planning-with-files",
-      "path": "skills/i18n/planning-with-files-zh",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "dependencies": [
-        "POSIX sh/coreutils for hook routes; Python 3 for fast injection and optional history modes; PowerShell helpers on Windows; Git for Windows shell for Codex hook adapter.",
-        "Selected skill directory includes scripts/templates; plugin deployment additionally needs root scripts, hooks manifests and host adapters."
-      ],
-      "caveats": [
-        "No unattended installation approved. Five lifecycle hook groups are in SKILL frontmatter itself; plugin adds startup hooks.",
-        "Writes task files, .planning state and user cache; optional Stop continuation must be deliberately selected and bounded.",
-        "History metadata/replay is explicit opt-in, not automatic; hook output can enter the host model-provider request.",
-        "Runtime coverage is partial: full skill-hook.sh, resolve-plan-dir.sh, check-complete.sh, gate-stop.sh and small Codex launchers; catchup/injector and remaining PowerShell/runtime implementations are not fully audited.",
-        "Use authored work-planning globally; do not copy fixed two-action logging, three-strike escalation or assumed model/host capability policies."
-      ],
-      "tags": [
-        "planning",
-        "context",
-        "workflow",
-        "hooks"
-      ],
-      "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-zh/SKILL.md",
-      "agents": [
-        "codex",
-        "claude"
-      ],
-      "companion_requirements": [
-        "scripts/",
-        "templates/",
-        "reference.md",
-        "examples.md"
-      ],
-      "requires": []
-    },
-    {
-      "id": "planning-with-files-zht",
-      "name": "planning-with-files-zht",
-      "scope": "manual",
-      "category": "planning",
-      "description": "Persistent task recovery and single-owner plan state are useful for substantial tasks; hook-bearing runtime and rigid per-action bookkeeping belong to explicit project opt-in, with further runtime audit before installation.",
-      "delivery": "reference",
-      "source": "planning-with-files",
-      "path": "skills/i18n/planning-with-files-zht",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "dependencies": [
-        "POSIX sh/coreutils for hook routes; Python 3 for fast injection and optional history modes; PowerShell helpers on Windows; Git for Windows shell for Codex hook adapter.",
-        "Selected skill directory includes scripts/templates; plugin deployment additionally needs root scripts, hooks manifests and host adapters."
-      ],
-      "caveats": [
-        "No unattended installation approved. Five lifecycle hook groups are in SKILL frontmatter itself; plugin adds startup hooks.",
-        "Writes task files, .planning state and user cache; optional Stop continuation must be deliberately selected and bounded.",
-        "History metadata/replay is explicit opt-in, not automatic; hook output can enter the host model-provider request.",
-        "Runtime coverage is partial: full skill-hook.sh, resolve-plan-dir.sh, check-complete.sh, gate-stop.sh and small Codex launchers; catchup/injector and remaining PowerShell/runtime implementations are not fully audited.",
-        "Use authored work-planning globally; do not copy fixed two-action logging, three-strike escalation or assumed model/host capability policies."
-      ],
-      "tags": [
-        "planning",
-        "context",
-        "workflow",
-        "hooks"
-      ],
-      "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-zht/SKILL.md",
-      "agents": [
-        "codex",
-        "claude"
-      ],
-      "companion_requirements": [
-        "scripts/",
-        "templates/",
-        "reference.md",
-        "examples.md"
-      ],
-      "requires": []
-    },
-    {
       "id": "planning-with-files",
       "name": "planning-with-files",
       "scope": "manual",
@@ -12619,7 +12335,44 @@
         "reference.md",
         "examples.md"
       ],
-      "requires": []
+      "requires": [],
+      "variants": [
+        {
+          "language": "ar",
+          "source": "planning-with-files",
+          "path": "skills/i18n/planning-with-files-ar",
+          "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-ar/SKILL.md",
+          "license": "MIT"
+        },
+        {
+          "language": "de",
+          "source": "planning-with-files",
+          "path": "skills/i18n/planning-with-files-de",
+          "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-de/SKILL.md",
+          "license": "MIT"
+        },
+        {
+          "language": "es",
+          "source": "planning-with-files",
+          "path": "skills/i18n/planning-with-files-es",
+          "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-es/SKILL.md",
+          "license": "MIT"
+        },
+        {
+          "language": "zh",
+          "source": "planning-with-files",
+          "path": "skills/i18n/planning-with-files-zh",
+          "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-zh/SKILL.md",
+          "license": "MIT"
+        },
+        {
+          "language": "zht",
+          "source": "planning-with-files",
+          "path": "skills/i18n/planning-with-files-zht",
+          "url": "https://github.com/OthmanAdi/planning-with-files/blob/dab9d16fbd9314448b319d112e99f497d7638d89/skills/i18n/planning-with-files-zht/SKILL.md",
+          "license": "MIT"
+        }
+      ]
     },
     {
       "id": "geo-seo-claude-geo",
@@ -13915,6 +13668,61 @@
         "workstation",
         "access"
       ]
+    },
+    {
+      "id": "data-engineering",
+      "name": "data-engineering",
+      "scope": "project",
+      "category": "data",
+      "description": "Build, debug or review ingestion and transformation pipelines, incremental loads, CDC, event processing and data backfills. Use when source-to-consumer correctness, replay, freshness or recovery is the deliverable; use data-analysis for interpreting results and database-systems for database administration or query tuning.",
+      "delivery": "embedded",
+      "path": "skills/data-engineering",
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
+      "tags": [
+        "etl",
+        "elt",
+        "pipeline",
+        "ingestion",
+        "cdc",
+        "replay",
+        "event-time",
+        "lineage"
+      ],
+      "dependencies": [
+        "Use the actual project runtime and authorized fixtures; the skill supplies methods, not native tools or external permissions."
+      ],
+      "caveats": [
+        "Source inspection, execution, measured outcomes and human acceptance remain distinct evidence."
+      ]
+    },
+    {
+      "id": "accessibility-engineering",
+      "name": "accessibility-engineering",
+      "scope": "project",
+      "category": "accessibility",
+      "description": "Assess and repair accessibility barriers in real web or app journeys, including semantics, keyboard and assistive-technology behavior, forms, focus, contrast and reflow. Use for accessibility engineering or a scoped audit; visual polish alone uses interface-design, and general functional QA uses test-design.",
+      "delivery": "embedded",
+      "path": "skills/accessibility-engineering",
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
+      "tags": [
+        "a11y",
+        "wcag",
+        "keyboard",
+        "focus",
+        "screen-reader",
+        "semantics",
+        "assistive-technology"
+      ],
+      "dependencies": [
+        "Use the actual project runtime and authorized fixtures; the skill supplies methods, not native tools or external permissions."
+      ],
+      "caveats": [
+        "Source inspection, execution, measured outcomes and human acceptance remain distinct evidence."
+      ]
     }
   ],
   "profiles": {
@@ -14104,6 +13912,7 @@
     "mobile-apple": {
       "description": "SwiftUI implementation and protocol-based test seams. Requires Apple tooling for builds.",
       "skills": [
+        "mobile-engineering",
         "mobile-design",
         "ecc-swiftui-patterns",
         "ecc-swift-protocol-di-testing",
@@ -14113,6 +13922,7 @@
     "mobile-android": {
       "description": "Android/KMP architecture, Compose and coroutine/Flow behavior.",
       "skills": [
+        "mobile-engineering",
         "mobile-design",
         "ecc-android-clean-architecture",
         "ecc-compose-multiplatform-patterns",
@@ -14123,6 +13933,7 @@
     "mobile-react-native": {
       "description": "React Native architecture and shared mobile interaction/testing concerns.",
       "skills": [
+        "mobile-engineering",
         "mobile-design",
         "ecc-react-native-patterns",
         "test-design",
@@ -14132,6 +13943,7 @@
     "mobile-flutter": {
       "description": "Flutter/Dart review and regression design; complex implementation examples remain review-required.",
       "skills": [
+        "mobile-engineering",
         "mobile-design",
         "ecc-flutter-dart-code-review",
         "test-design",
@@ -14232,6 +14044,7 @@
     "data-pipelines": {
       "description": "Document ingestion, Airflow DAG design and data migration integrity.",
       "skills": [
+        "data-engineering",
         "document-parsing",
         "google-managed-airflow-dag-authoring",
         "data-migrations"
@@ -14334,7 +14147,7 @@
       "skills": [
         "experiment-design",
         "conversion-review",
-        "search-audit",
+        "search-visibility",
         "marketing-cro",
         "marketing-onboarding",
         "marketing-emails",
@@ -14411,6 +14224,7 @@
     "react-native-vercel": {
       "description": "Optional Vercel React Native/Expo guidance with native API/version checks and behavior tests.",
       "skills": [
+        "mobile-engineering",
         "mobile-design",
         "vercel-react-native-skills",
         "test-design"
@@ -14462,8 +14276,7 @@
     "search-visibility": {
       "description": "Evidence-led organic/AI search review, crawler-purpose distinctions and content findings without invented visibility scores.",
       "skills": [
-        "search-visibility",
-        "search-audit"
+        "search-visibility"
       ]
     },
     "svg-studio": {
@@ -14484,21 +14297,14 @@
       ]
     },
     "portable-foundation": {
-      "description": "Explicit 12-skill portable foundation for collaborators or environments without the corresponding global skills. Avoid installing these duplicate names alongside global copies; normal configured devices use project-foundation.",
+      "description": "Project foundation plus all shared Mirket guidance, explicitly copied into the selected project targets when those hosts have no global installation. Use project-foundation with normal shared setup.",
       "skills": [
-        "work-planning",
-        "context-management",
-        "agent-coordination",
-        "research-and-synthesis",
-        "security-judgment",
         "architecture-review",
         "debugging",
         "test-design",
-        "ci-maintenance",
-        "release-operations",
-        "document-parsing",
-        "office-authoring"
-      ]
+        "release-operations"
+      ],
+      "include_globals": true
     },
     "brand-system": {
       "description": "Brand guidelines, editable visual assets and inspected applications using original portable workflows.",

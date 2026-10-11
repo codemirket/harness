@@ -347,9 +347,9 @@ fn interrupted_task_reopens_with_same_project_and_partial_evidence() {
         "engineering-judgment"
     );
     assert!(recovered.complete(id(&task), 3, "finish").is_err());
-    let listed = recovered.tasks(&f.project_id, 0, 10).unwrap();
+    let listed = recovered.tasks(&f.project_id, None, 10).unwrap();
     assert_eq!(listed["tasks"][0]["id"], task["id"]);
-    assert_eq!(listed["next_offset"], Value::Null);
+    assert_eq!(listed["next_cursor"], Value::Null);
 }
 
 #[test]
@@ -402,10 +402,13 @@ fn paginated_task_and_project_discovery_survives_lost_session_ids() {
     for index in 0..4 {
         f.begin(&format!("task-{index}"));
     }
-    let first = f.state.tasks(&f.project_id, 0, 2).unwrap();
-    let second = f.state.tasks(&f.project_id, 2, 2).unwrap();
-    assert_eq!(first["next_offset"], 2);
-    assert_eq!(second["next_offset"], Value::Null);
+    let first = f.state.tasks(&f.project_id, None, 2).unwrap();
+    let second = f
+        .state
+        .tasks(&f.project_id, first["next_cursor"].as_str(), 2)
+        .unwrap();
+    assert!(first["next_cursor"].is_string());
+    assert_eq!(second["next_cursor"], Value::Null);
     for task in first["tasks"].as_array().unwrap() {
         assert!(
             !second["tasks"]
@@ -415,12 +418,408 @@ fn paginated_task_and_project_discovery_survives_lost_session_ids() {
                 .any(|other| other["id"] == task["id"])
         );
     }
-    assert!(f.state.tasks(&f.project_id, 0, 21).is_err());
+    assert!(f.state.tasks(&f.project_id, None, 21).is_err());
     assert!(f.state.projects_page(0, 11).is_err());
     assert_eq!(
         f.state.projects_page(0, 1).unwrap()["projects"][0]["id"],
         f.project_id
     );
+}
+
+#[test]
+fn runtime_state_read_open_does_not_need_the_writer_lock() {
+    let f = Fixture::new();
+    let task = f.begin("read-with-writer");
+    let writer = rusqlite::Connection::open(f.paths.database()).unwrap();
+    writer.execute_batch("BEGIN IMMEDIATE").unwrap();
+    let reader = State::open(&f.paths).expect("a valid WAL state must open without a writer lock");
+    assert_eq!(reader.status(id(&task)).unwrap(), task);
+    writer.execute_batch("ROLLBACK").unwrap();
+}
+
+#[test]
+fn runtime_state_task_pages_do_not_skip_a_task_updated_between_pages() {
+    let f = Fixture::new();
+    for index in 0..4 {
+        f.begin(&format!("pagination-{index}"));
+    }
+    let before = f.state.tasks(&f.project_id, None, 20).unwrap();
+    let first = f.state.tasks(&f.project_id, None, 1).unwrap();
+    let updated = before["tasks"].as_array().unwrap().last().unwrap();
+    // Make the ordering change deterministic without a wall-clock sleep.
+    let database = rusqlite::Connection::open(f.paths.database()).unwrap();
+    database.execute("UPDATE tasks SET updated=0", []).unwrap();
+    f.state
+        .checkpoint(id(updated), 1, "Progress after the first page", "progress")
+        .unwrap();
+    let mut seen = vec![id(&first["tasks"][0]).to_owned()];
+    let mut cursor = first["next_cursor"].as_str().map(str::to_owned);
+    while let Some(current) = cursor {
+        let page = f.state.tasks(&f.project_id, Some(&current), 1).unwrap();
+        seen.extend(
+            page["tasks"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| id(v).to_owned()),
+        );
+        cursor = page["next_cursor"].as_str().map(str::to_owned);
+    }
+    seen.sort();
+    let mut expected: Vec<_> = before["tasks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|v| id(v).to_owned())
+        .collect();
+    expected.sort();
+    assert_eq!(
+        seen, expected,
+        "every original task must appear exactly once"
+    );
+}
+
+#[test]
+fn runtime_state_cursor_handles_creation_ties_and_inserts_and_is_project_bound() {
+    let f = Fixture::new();
+    let database = rusqlite::Connection::open(f.paths.database()).unwrap();
+    for index in 0..6 {
+        let task = f.begin(&format!("ordered-{index}"));
+        database
+            .execute(
+                "UPDATE tasks SET created=?2 WHERE id=?1",
+                rusqlite::params![id(&task), 100 + index / 2],
+            )
+            .unwrap();
+    }
+    let all = f.state.tasks(&f.project_id, None, 20).unwrap();
+    let first = f.state.tasks(&f.project_id, None, 2).unwrap();
+    let cursor = first["next_cursor"].as_str().unwrap();
+    let inserted = f.begin("newer-insert");
+    let other_root = f.project.join("another-project");
+    fs::create_dir(&other_root).unwrap();
+    let other = f.state.register_project(&other_root).unwrap();
+    assert!(
+        f.state
+            .tasks(other["id"].as_str().unwrap(), Some(cursor), 2)
+            .unwrap_err()
+            .to_string()
+            .contains("cross-project")
+    );
+    for invalid in [
+        "",
+        "0",
+        "tasks1",
+        "tasks1:wrong:0:t_00000000000000000000000000000000",
+        &"x".repeat(129),
+    ] {
+        assert!(
+            f.state.tasks(&f.project_id, Some(invalid), 2).is_err(),
+            "{invalid}"
+        );
+    }
+    let mut seen: Vec<_> = first["tasks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|v| id(v).to_owned())
+        .collect();
+    let mut cursor = Some(cursor.to_owned());
+    while let Some(position) = cursor {
+        let page = f.state.tasks(&f.project_id, Some(&position), 2).unwrap();
+        seen.extend(
+            page["tasks"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| id(v).to_owned()),
+        );
+        cursor = page["next_cursor"].as_str().map(str::to_owned);
+    }
+    let expected: Vec<_> = all["tasks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|v| id(v).to_owned())
+        .collect();
+    assert_eq!(seen, expected);
+    assert!(!seen.iter().any(|task| task == id(&inserted)));
+}
+
+#[test]
+fn runtime_state_initialization_rejects_incompatible_schema_without_repair() {
+    for mutation in [
+        "DROP TABLE checkpoints",
+        "ALTER TABLE tasks ADD COLUMN unexpected TEXT",
+        "CREATE TRIGGER unexpected AFTER INSERT ON tasks BEGIN DELETE FROM operations; END",
+        "CREATE TABLE sqlitexunexpected (value TEXT)",
+        "PRAGMA user_version=0",
+    ] {
+        let f = Fixture::new();
+        let database = rusqlite::Connection::open(f.paths.database()).unwrap();
+        database.execute_batch(mutation).unwrap();
+        let before: String = database.query_row("SELECT group_concat(sql,';') FROM (SELECT sql FROM sqlite_schema WHERE sql IS NOT NULL ORDER BY name)",[],|row|row.get(0)).unwrap();
+        let error = State::open(&f.paths).unwrap_err().to_string();
+        assert!(error.contains("schema"), "{mutation}: {error}");
+        let after: String = database.query_row("SELECT group_concat(sql,';') FROM (SELECT sql FROM sqlite_schema WHERE sql IS NOT NULL ORDER BY name)",[],|row|row.get(0)).unwrap();
+        assert_eq!(
+            before, after,
+            "incompatible state must not be repaired implicitly"
+        );
+    }
+}
+
+#[test]
+fn runtime_state_concurrent_initializers_share_one_valid_schema() {
+    let home = tempfile::tempdir().unwrap();
+    let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
+    let barrier = Arc::new(Barrier::new(8));
+    let threads: Vec<_> = (0..8)
+        .map(|_| {
+            let paths = paths.clone();
+            let barrier = barrier.clone();
+            std::thread::spawn(move || {
+                barrier.wait();
+                State::open(&paths)
+            })
+        })
+        .collect();
+    for thread in threads {
+        thread
+            .join()
+            .unwrap()
+            .expect("parallel initialization must succeed");
+    }
+    State::open(&paths).unwrap();
+    let database = rusqlite::Connection::open(paths.database()).unwrap();
+    let journal: String = database
+        .pragma_query_value(None, "journal_mode", |row| row.get(0))
+        .unwrap();
+    assert_eq!(journal, "wal");
+    assert_eq!(
+        database
+            .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
+            .unwrap(),
+        1
+    );
+}
+
+#[test]
+fn runtime_state_cli_task_start_scopes_verification_criteria() {
+    let f = Fixture::new();
+    let invoke = |args: &[&str]| {
+        std::process::Command::new(env!("CARGO_BIN_EXE_mirket"))
+            .env("MIRKET_DIRECT", "1")
+            .arg("--home")
+            .arg(&f.paths.home)
+            .args(args)
+            .output()
+            .unwrap()
+    };
+    let start = |key: &str, overrides: &[&str]| {
+        let mut args = vec![
+            "task",
+            "start",
+            "--project",
+            f.project.to_str().unwrap(),
+            "--capability",
+            "Accessibility Engineer",
+            "--objective",
+            "Review accessible markup from source",
+            "--key",
+            key,
+        ];
+        args.extend_from_slice(overrides);
+        invoke(&args)
+    };
+    let defaults = start("default-criteria", &[]);
+    assert!(
+        defaults.status.success(),
+        "{}",
+        String::from_utf8_lossy(&defaults.stderr)
+    );
+    let defaults: Value = serde_json::from_slice(&defaults.stdout).unwrap();
+    let catalog = Catalog::embedded().unwrap();
+    let capability = catalog.capability("Accessibility Engineer").unwrap();
+    assert_eq!(defaults["acceptance"], capability.acceptance.join("; "));
+    assert_eq!(defaults["failure_probe"], capability.failure_probe);
+
+    let acceptance = "Source-only review: accessible names and form labels match the saved markup.\nKeyboard and assistive-technology behavior remain untested.";
+    let failure_probe =
+        "A missing explicit accessible name is reported without claiming runtime accessibility.";
+    let scoped = start(
+        "scoped-criteria",
+        &["--acceptance", acceptance, "--failure-probe", failure_probe],
+    );
+    assert!(
+        scoped.status.success(),
+        "{}",
+        String::from_utf8_lossy(&scoped.stderr)
+    );
+    let scoped: Value = serde_json::from_slice(&scoped.stdout).unwrap();
+    let persisted = invoke(&["task", "status", id(&scoped)]);
+    assert!(persisted.status.success());
+    let persisted: Value = serde_json::from_slice(&persisted.stdout).unwrap();
+    assert_eq!(persisted["acceptance"], acceptance);
+    assert_eq!(persisted["failure_probe"], failure_probe);
+    assert_eq!(persisted["skills"], json!([capability.lead]));
+
+    for (key, overrides, missing) in [
+        (
+            "acceptance-only",
+            vec!["--acceptance", acceptance],
+            "--failure-probe",
+        ),
+        (
+            "failure-only",
+            vec!["--failure-probe", failure_probe],
+            "--acceptance",
+        ),
+    ] {
+        let rejected = start(key, &overrides);
+        assert_eq!(rejected.status.code(), Some(2));
+        let error = String::from_utf8_lossy(&rejected.stderr);
+        assert!(error.contains("required arguments"), "{error}");
+        assert!(error.contains(missing), "{error}");
+    }
+    for (key, accept, probe, expected) in [
+        (
+            "empty-acceptance",
+            "",
+            failure_probe,
+            "acceptance must contain",
+        ),
+        (
+            "empty-probe",
+            acceptance,
+            " \n",
+            "failure probe must contain",
+        ),
+    ] {
+        let rejected = start(key, &["--acceptance", accept, "--failure-probe", probe]);
+        assert_eq!(rejected.status.code(), Some(1));
+        let error = String::from_utf8_lossy(&rejected.stderr);
+        assert!(error.contains(expected), "{error}");
+    }
+    assert_eq!(
+        f.state.tasks(&f.project_id, None, 20).unwrap()["tasks"]
+            .as_array()
+            .unwrap()
+            .len(),
+        2,
+        "rejected overrides must not create tasks"
+    );
+}
+
+#[test]
+fn runtime_state_cli_uses_cursor_and_reads_while_a_writer_is_active() {
+    let f = Fixture::new();
+    for index in 0..3 {
+        f.begin(&format!("cli-page-{index}"));
+    }
+    let invoke = |args: &[&str]| {
+        std::process::Command::new(env!("CARGO_BIN_EXE_mirket"))
+            .arg("--home")
+            .arg(&f.paths.home)
+            .args(args)
+            .output()
+            .unwrap()
+    };
+    let root = f.project.to_str().unwrap();
+    let first = invoke(&["task", "list", "--project", root, "--limit", "1"]);
+    assert!(
+        first.status.success(),
+        "{}",
+        String::from_utf8_lossy(&first.stderr)
+    );
+    let first: Value = serde_json::from_slice(&first.stdout).unwrap();
+    let cursor = first["next_cursor"].as_str().unwrap();
+    assert!(first.get("next_offset").is_none());
+    let next = invoke(&[
+        "task",
+        "list",
+        "--project",
+        root,
+        "--limit",
+        "1",
+        "--cursor",
+        cursor,
+    ]);
+    assert!(
+        next.status.success(),
+        "{}",
+        String::from_utf8_lossy(&next.stderr)
+    );
+    let next: Value = serde_json::from_slice(&next.stdout).unwrap();
+    assert_ne!(first["tasks"][0]["id"], next["tasks"][0]["id"]);
+    assert!(
+        !invoke(&["task", "list", "--project", root, "--offset", "1"])
+            .status
+            .success()
+    );
+    let writer = rusqlite::Connection::open(f.paths.database()).unwrap();
+    writer.execute_batch("BEGIN IMMEDIATE").unwrap();
+    let status = invoke(&["task", "status", id(&first["tasks"][0])]);
+    assert!(
+        status.status.success(),
+        "{}",
+        String::from_utf8_lossy(&status.stderr)
+    );
+    writer.execute_batch("ROLLBACK").unwrap();
+}
+
+#[tokio::test]
+async fn runtime_state_mcp_advertises_and_follows_only_task_cursors() {
+    let f = Fixture::new();
+    for index in 0..3 {
+        f.begin(&format!("mcp-page-{index}"));
+    }
+    let server = MirketServer::new(&f.paths, Catalog::embedded().unwrap()).unwrap();
+    let (a, b) = tokio::io::duplex(8192);
+    let host = tokio::spawn(server.serve(a));
+    let mut client = ().serve(b).await.unwrap();
+    let mut host = host.await.unwrap().unwrap();
+    let tools = client.list_all_tools().await.unwrap();
+    let task_status = tools
+        .iter()
+        .find(|tool| tool.name == "task_status")
+        .unwrap();
+    let schema = serde_json::to_value(&task_status.input_schema).unwrap();
+    assert!(schema["properties"].get("cursor").is_some());
+    assert!(schema["properties"].get("offset").is_none());
+    let request = |args: Value| {
+        CallToolRequestParams::new("task_status").with_arguments(args.as_object().unwrap().clone())
+    };
+    let first = client
+        .call_tool(request(json!({"project_id":f.project_id,"limit":1})))
+        .await
+        .unwrap();
+    assert_eq!(first.is_error, Some(false));
+    let first = first.structured_content.unwrap();
+    let second = client
+        .call_tool(request(
+            json!({"project_id":f.project_id,"limit":1,"cursor":first["next_cursor"]}),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(second.is_error, Some(false));
+    assert_ne!(
+        first["tasks"][0]["id"],
+        second.structured_content.unwrap()["tasks"][0]["id"]
+    );
+    let offset = client
+        .call_tool(request(json!({"project_id":f.project_id,"offset":1})))
+        .await;
+    assert!(offset.is_err() || offset.unwrap().is_error == Some(true));
+    let invalid = client
+        .call_tool(request(
+            json!({"project_id":f.project_id,"cursor":"invalid"}),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(invalid.is_error, Some(true));
+    client.close().await.unwrap();
+    host.close().await.unwrap();
 }
 
 #[test]

@@ -51,6 +51,16 @@ disclose the reference; do not call automatic tracing professional refinement.
 Use existing tools first. Additional editors, libraries, fonts and optimizers
 need the user's authorization under the project's rules.
 
+When Mirket's `inkscape` package is selected, discover its current schemas with
+`mirket package probe inkscape --schemas --project /absolute/project` or the
+host's MCP tools. Use `svg_save` for editable source, `svg_inspect` for dimensions,
+IDs and rendered bounds, and `svg_export` for a distinct PNG, plain SVG or PDF.
+The adapter accepts self-contained vectors in existing project directories;
+scripts, linked images, filters and stylesheet elements are excluded. Choose
+another authorized workflow when the asset needs unsupported features. Existing
+outputs need explicit overwrite intent; use the returned digest as the revision
+precondition when refining. Keep semantic source groups and inspect saved exports.
+
 ## Make the asset usable
 
 - Match the integration contract. An inline component needs instance-unique

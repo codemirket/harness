@@ -9,6 +9,11 @@ Define the decision the research should inform, the relevant customer segments,
 and what is already known. Distinguish research planning, analysis of supplied
 material, and contacting participants; outreach requires explicit authorization.
 
+For research into how people complete tasks in a prototype or product, read
+[task-based usability studies](references/usability-studies.md). Use `test-design`
+for ordinary functional verification; a participant study is not required for every
+interface change.
+
 ## Gather useful evidence
 
 - Choose participants based on the decision. Include relevant non-buyers, lost

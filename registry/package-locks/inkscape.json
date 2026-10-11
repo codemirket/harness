@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "package": "inkscape",
+  "version": "1.4.4",
+  "kind": "editor",
+  "distribution": "Direct download of the upstream unmodified signed app; no Inkscape binary is included in Mirket releases.",
+  "platform": "aarch64-apple-darwin",
+  "minimum_macos": "11.3",
+  "artifact": {
+    "url": "https://media.inkscape.org/dl/resources/file/Inkscape-1.4.4_arm64.dmg",
+    "sha256": "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
+    "download_bytes": 156920591,
+    "format": "dmg",
+    "image_uncompressed_bytes": 684425216,
+    "selected_bundle": "Inkscape.app",
+    "executable": "Inkscape.app/Contents/MacOS/inkscape",
+    "regular_files": 12446,
+    "regular_bytes": 646332964,
+    "symlinks": 41
+  },
+  "source": {
+    "repository": "https://gitlab.com/inkscape/inkscape",
+    "tag": "INKSCAPE_1_4_4",
+    "commit": "dcaf3e7d9e6724cd18d6bd2b4f3d4f12ab691871",
+    "tarball_url": "https://media.inkscape.org/dl/resources/file/inkscape-1.4.4.tar.xz",
+    "macos_build_repository": "https://gitlab.com/inkscape/infra/inkscape-ci-macos",
+    "macos_build_commit": "21f3e2d4bfa7fba114e652618158fcf146e5bac7",
+    "jhb_commit": "268140ee54a163016e12310b5be76627d00402ee",
+    "python_macos_commit": "2bf1104ca5479f4a0b4839710b5b3a9fd3402a86",
+    "ci_job_url": "https://gitlab.com/inkscape/inkscape/-/jobs/14205356154"
+  },
+  "license": {
+    "inkscape_binary": "GPL-3.0-or-later",
+    "separate_bundled_ghostscript": "AGPL-3.0-or-later",
+    "other_components": "Individual licenses and notices retained; full native license/source closure not attested.",
+    "inventory": "docs/licenses/packages/inkscape/SOURCE-INVENTORY.json"
+  },
+  "verification": {
+    "artifact_digest": "Computed from the official HTTPS artifact; no independently published SHA256 was retrieved.",
+    "code_signature": "codesign --verify --deep --strict passed; this checks the signed bundle, not notarization or malware safety.",
+    "signer_team": "SW3D6BB6A6",
+    "identifier": "org.inkscape.Inkscape",
+    "binary_source_identity": "Signed Info.plist CICommitSha matches pinned source.",
+    "native_platform": "macOS 26.6.2 ARM64",
+    "validated_operations": [
+      "version",
+      "query-all bounds",
+      "PNG 640x360 plus visual inspection",
+      "plain SVG plus XML inspection",
+      "PDF 1.5 plus visually inspected re-render"
+    ],
+    "failure_case": "Malformed SVG can return exit0 with parser errors and no output; adapter requires semantic output validation.",
+    "profile_environment": [
+      "private HOME",
+      "private INKSCAPE_PROFILE_DIR",
+      "private TMPDIR",
+      "PATH=/usr/bin:/bin:/usr/sbin:/sbin",
+      "LANG=en_US.UTF-8",
+      "LC_ALL=en_US.UTF-8"
+    ],
+    "limits": [
+      "Other operating systems and CPU architectures are not enabled by this definition.",
+      "Inkscape macOS CLI intentionally disables Python extensions; Mirket does not bypass that behavior.",
+      "No general Python, Ghostscript, extension, scripting, or arbitrary action interface is exposed."
+    ]
+  },
+  "notices": [
+    {
+      "path": "docs/licenses/packages/inkscape/AGPL-3.0.txt",
+      "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/BUNDLED-NOTICES.txt",
+      "sha256": "b57ee95bd88fbc96229dd9efda6b0fc4693e28b4f21defbd6a6ad0d0e8168818"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/COPYING",
+      "sha256": "6dade9d083ebec650d74dcfcdd93e9646214113eb1ecd1e8a9c3bf2dad91481e"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/GHOSTSCRIPT-LICENSE.txt",
+      "sha256": "8ce064f423b7c24a011b6ebf9431b8bf9861a5255e47c84bfb23fc526d030a8b"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/GPL-3.0.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/README.md",
+      "sha256": "b9b0f58176d71fb5512a07475dd35c234d845735d35d37b4fe05cb1553eeea80"
+    },
+    {
+      "path": "docs/licenses/packages/inkscape/SOURCE-INVENTORY.json",
+      "sha256": "fd3e4f0cb94cbd222d9160d8e754849368a9cb330f594d4d119047e670ccff54"
+    }
+  ]
+}

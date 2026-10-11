@@ -81,6 +81,14 @@ pub fn format(project: &Path) -> Result<Value> {
     Ok(json!({"ok":true,"source":project}))
 }
 
+/// Resolve newly approved workspace dependency requirements while retaining
+/// registry versions already present in the lockfile where constraints permit.
+pub fn lock(project: &Path) -> Result<Value> {
+    let project = checkout(project)?;
+    cargo(&project, &["update", "--workspace"])?;
+    Ok(json!({"ok":true,"source":project,"lockfile":"Cargo.lock"}))
+}
+
 pub fn test(project: &Path, filter: Option<&str>, ignored: bool) -> Result<Value> {
     let project = checkout(project)?;
     let mut args = vec!["test", "--locked", "--all-targets"];
@@ -129,6 +137,7 @@ pub fn dist(project: &Path, output: &Path) -> Result<Value> {
     );
     let stage = tempfile::tempdir_in(&parent)?;
     let binaries = stage_binaries(&artifacts, stage.path())?;
+    let rust_notices = dependency_notices(&project, &source)?;
     let info = executable_info(&binaries["mirket"].path, &source.version)?;
     let manifest = package_binaries(stage.path(), &binaries, &info)?;
     util::atomic_write(
@@ -143,9 +152,62 @@ pub fn dist(project: &Path, output: &Path) -> Result<Value> {
         &stage.path().join("NOTICE.md"),
         &util::read_bounded(&project.join("docs/third-party-notices.md"), 256 * 1024)?,
     )?;
+    util::atomic_write(&stage.path().join("RUST-NOTICES.txt"), &rust_notices)?;
     std::fs::rename(stage.path(), &output)?;
     Ok(
         json!({"ok":true,"target":info.target,"version":info.version,"output":output,"published":false}),
+    )
+}
+
+fn dependency_notices(project: &Path, source: &SourcePackage) -> Result<Vec<u8>> {
+    let metadata = command_output(
+        Command::new(cargo_program()).current_dir(project).args([
+            "metadata",
+            "--locked",
+            "--format-version",
+            "1",
+        ]),
+        "read locked Cargo notice metadata",
+        Duration::from_secs(120),
+        16 * 1024 * 1024,
+    )?;
+    // Query through Cargo so its configured compiler and toolchain own the
+    // sysroot choice, just as in the release build. This does not install tools.
+    let sysroot = command_output(
+        Command::new(cargo_program()).current_dir(project).args([
+            "rustc",
+            "--locked",
+            "--release",
+            "--lib",
+            "--",
+            "--print",
+            "sysroot",
+        ]),
+        "locate release Rust standard-library notices",
+        Duration::from_secs(120),
+        MAX_CARGO_MESSAGE,
+    )?;
+    let sysroot = String::from_utf8(sysroot)?;
+    let sysroot = sysroot.trim();
+    if sysroot.lines().count() != 1 || !Path::new(sysroot).is_absolute() {
+        bail!("Cargo did not report one absolute Rust sysroot for release notices");
+    }
+    let sysroot = Path::new(sysroot).canonicalize()?;
+    let compiler = sysroot
+        .join("bin")
+        .join(if cfg!(windows) { "rustc.exe" } else { "rustc" });
+    let version = command_output(
+        Command::new(compiler).arg("--version"),
+        "identify notice toolchain",
+        Duration::from_secs(10),
+        64 * 1024,
+    )?;
+    crate::rust_notices::generate(
+        project,
+        &source.id,
+        &metadata,
+        &sysroot,
+        String::from_utf8(version)?.trim(),
     )
 }
 
@@ -514,8 +576,9 @@ fn package_binaries(
 }
 
 fn stats(mut samples: Vec<f64>) -> Value {
+    let ordered_samples = samples.clone();
     samples.sort_by(f64::total_cmp);
-    json!({"samples":samples.len(),"median_us":samples[samples.len()/2],"p95_us":samples[((samples.len()-1)*95)/100],"min_us":samples[0]})
+    json!({"samples":samples.len(),"median_us":samples[samples.len()/2],"p95_us":samples[((samples.len()-1)*95)/100],"min_us":samples[0],"raw_us":ordered_samples})
 }
 
 pub fn benchmark(catalog: &Catalog, iterations: usize) -> Result<Value> {
@@ -524,13 +587,26 @@ pub fn benchmark(catalog: &Catalog, iterations: usize) -> Result<Value> {
     }
     let exe = std::env::current_exe()?;
     let mut startup = Vec::new();
+    let mut catalog_startup = Vec::new();
     for _ in 0..iterations.min(30) {
         let begin = Instant::now();
-        let output = Command::new(&exe).args(["--version"]).output()?;
+        let output = Command::new(&exe)
+            .env("MIRKET_DIRECT", "1")
+            .arg("--version")
+            .output()?;
         if !output.status.success() {
-            bail!("startup probe failed");
+            bail!("version startup probe failed");
         }
         startup.push(begin.elapsed().as_secs_f64() * 1e6);
+        let begin = Instant::now();
+        let output = Command::new(&exe)
+            .env("MIRKET_DIRECT", "1")
+            .args(["catalog", "search", "database", "--limit", "20", "--json"])
+            .output()?;
+        if !output.status.success() {
+            bail!("catalog startup probe failed");
+        }
+        catalog_startup.push(begin.elapsed().as_secs_f64() * 1e6);
     }
     let mut search = Vec::new();
     let mut plan = Vec::new();
@@ -548,7 +624,7 @@ pub fn benchmark(catalog: &Catalog, iterations: usize) -> Result<Value> {
     }
     let bytes = util::read_bounded(&exe, 256 * 1024 * 1024).context("read benchmark binary")?;
     Ok(
-        json!({"version":env!("CARGO_PKG_VERSION"),"target":env!("MIRKET_TARGET"),"binary_sha256":util::sha256(&bytes),"binary_bytes":bytes.len(),"process_version_startup":stats(startup),"catalog_search":stats(search),"capability_plan":stats(plan),"skill_read":stats(read),"scope":"Local warmed filesystem, sequential calls; startup includes process scheduling. No model, network or application-quality measurement."}),
+        json!({"version":env!("CARGO_PKG_VERSION"),"target":env!("MIRKET_TARGET"),"binary_sha256":util::sha256(&bytes),"binary_bytes":bytes.len(),"process_version_startup":stats(startup),"process_catalog_startup":stats(catalog_startup),"catalog_search":stats(search),"capability_plan":stats(plan),"skill_read":stats(read),"scope":"Local warmed filesystem, sequential calls; process probes include scheduling, output capture and serialization. Catalog startup includes a fresh process and catalog initialization. In-process samples reuse the immutable catalog. Raw samples are in observation order; median is the upper middle sample and p95 uses floor((n-1)*0.95). No model, network or application-quality measurement."}),
     )
 }
 

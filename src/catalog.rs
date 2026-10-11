@@ -89,6 +89,9 @@ pub struct Source {
 pub struct Profile {
     pub description: String,
     pub skills: Vec<String>,
+    /// Explicit portable delivery for a project whose hosts have no shared installation.
+    #[serde(default)]
+    pub include_globals: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -148,11 +151,18 @@ struct CatalogData {
 struct CatalogInner {
     data: CatalogData,
     by_id: HashMap<String, usize>,
-    search: Vec<String>,
+    search: Vec<SearchDocument>,
     globals: Vec<String>,
     capabilities: Vec<Capability>,
     capability_names: HashMap<String, usize>,
     payloads: HashMap<String, Payload>,
+    document_digests: HashMap<String, BTreeMap<String, OnceLock<String>>>,
+}
+
+struct SearchDocument {
+    text: String,
+    positive: String,
+    names: Vec<String>,
 }
 
 #[derive(Clone)]
@@ -168,11 +178,15 @@ impl Catalog {
     }
 
     fn load() -> Result<CatalogInner> {
-        let data: CatalogData = serde_json::from_str(CATALOG)?;
+        Self::load_sources(CATALOG, CAPABILITIES, HARNESS)
+    }
+
+    fn load_sources(catalog: &str, capabilities: &str, harness: &str) -> Result<CatalogInner> {
+        let data: CatalogData = serde_json::from_str(catalog)?;
         ensure!(data.schema_version == 1, "unsupported catalog schema");
-        let harness: Value = serde_json::from_str(HARNESS)?;
+        let harness: Value = serde_json::from_str(harness)?;
         let globals: Vec<String> = serde_json::from_value(harness["global_skills"].clone())?;
-        let contracts: Value = serde_json::from_str(CAPABILITIES)?;
+        let contracts: Value = serde_json::from_str(capabilities)?;
         ensure!(
             contracts["schema_version"] == 1,
             "unsupported capability schema"
@@ -181,6 +195,7 @@ impl Catalog {
             serde_json::from_value(contracts["capabilities"].clone())?;
         let mut by_id = HashMap::new();
         let mut payloads = HashMap::new();
+        let mut document_digests = HashMap::new();
         let mut search = Vec::new();
         for (i, skill) in data.skills.iter().enumerate() {
             validate_id(&skill.id)?;
@@ -189,17 +204,27 @@ impl Catalog {
                 "duplicate skill {}",
                 skill.id
             );
-            search.push(
-                format!(
-                    "{} {} {} {} {}",
-                    skill.id,
-                    skill.name,
-                    skill.description,
-                    skill.category,
-                    skill.tags.join(" ")
-                )
-                .to_lowercase(),
-            );
+            let mut names = vec![skill.id.to_lowercase(), skill.name.to_lowercase()];
+            for role in capabilities.iter().filter(|role| role.lead == skill.id) {
+                names.extend(
+                    std::iter::once(&role.id)
+                        .chain(std::iter::once(&role.title))
+                        .chain(&role.aliases)
+                        .map(|name| name.to_lowercase()),
+                );
+            }
+            let positive = format!(
+                "{} {} {}",
+                names.join(" "),
+                skill.category,
+                skill.tags.join(" ")
+            )
+            .to_lowercase();
+            search.push(SearchDocument {
+                text: format!("{} {}", positive, skill.description.to_lowercase()),
+                positive,
+                names,
+            });
             if skill.delivery == "embedded" {
                 validate_id(&skill.name)?;
                 let prefix = skill
@@ -218,6 +243,13 @@ impl Catalog {
                     skill_name(files.get("SKILL.md").context("missing SKILL.md")?)? == skill.name,
                     "skill invocation differs from catalog: {}",
                     skill.id
+                );
+                document_digests.insert(
+                    skill.id.clone(),
+                    files
+                        .keys()
+                        .map(|path| (path.clone(), OnceLock::new()))
+                        .collect(),
                 );
                 payloads.insert(
                     skill.id.clone(),
@@ -275,8 +307,21 @@ impl Catalog {
                 );
             }
             ensure!(
-                !capability.acceptance.is_empty(),
-                "capability acceptance is empty"
+                !capability.acceptance.is_empty()
+                    && capability
+                        .acceptance
+                        .iter()
+                        .all(|item| !item.trim().is_empty())
+                    && [
+                        &capability.title,
+                        &capability.deliverable,
+                        &capability.failure_probe,
+                        &capability.prerequisites
+                    ]
+                    .iter()
+                    .all(|item| !item.trim().is_empty()),
+                "incomplete capability contract: {}",
+                capability.id
             );
             for name in std::iter::once(&capability.id)
                 .chain(std::iter::once(&capability.title))
@@ -296,6 +341,7 @@ impl Catalog {
             capabilities,
             capability_names,
             payloads,
+            document_digests,
         })
     }
 
@@ -330,23 +376,50 @@ impl Catalog {
         ensure!(query.len() <= 1024, "search exceeds 1024 bytes");
         ensure!((1..=100).contains(&limit), "limit must be 1..=100");
         let terms: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
-        let matches: Vec<&Skill> = self
+        let phrase = terms.join(" ");
+        let mut matches: Vec<_> = self
             .skills()
             .iter()
             .enumerate()
             .filter_map(|(i, skill)| {
-                terms
+                let document = &self.0.search[i];
+                if !terms.iter().all(|term| document.text.contains(term)) {
+                    return None;
+                }
+                let positive = terms.iter().all(|term| document.positive.contains(term));
+                let delivery = match skill.delivery.as_str() {
+                    "embedded" => 2,
+                    "upstream" => 1,
+                    _ => 0,
+                };
+                let name_match = document
+                    .names
                     .iter()
-                    .all(|term| self.0.search[i].contains(term))
-                    .then_some(skill)
+                    .map(|name| {
+                        if name == &phrase {
+                            3
+                        } else if name.starts_with(&phrase) {
+                            2
+                        } else if name.contains(&phrase) {
+                            1
+                        } else {
+                            0
+                        }
+                    })
+                    .max()
+                    .unwrap_or(0);
+                Some(((skill.id == phrase, positive, delivery, name_match), skill))
             })
             .collect();
+        matches.sort_unstable_by(|(a_rank, a), (b_rank, b)| {
+            b_rank.cmp(a_rank).then_with(|| a.id.cmp(&b.id))
+        });
         ensure!(offset <= matches.len(), "offset exceeds result count");
         let page: Vec<Value> = matches
             .iter()
             .skip(offset)
             .take(limit)
-            .map(|skill| {
+            .map(|(_, skill)| {
                 json!({
                     "id": skill.id, "name": skill.name, "description": skill.description,
                     "scope": skill.scope, "delivery": skill.delivery, "category": skill.category,
@@ -398,7 +471,9 @@ impl Catalog {
         Ok(SkillDocument {
             id: id.into(),
             path: path.into(),
-            sha256: sha256(bytes),
+            sha256: self.0.document_digests[id][path]
+                .get_or_init(|| sha256(bytes))
+                .clone(),
             content,
         })
     }
@@ -442,8 +517,10 @@ impl Catalog {
                 .get("SKILL.md")
                 .context("missing skill body")?;
             let global = self.global_skills().contains(&row.lead);
+            let digest =
+                self.0.document_digests[&row.lead]["SKILL.md"].get_or_init(|| sha256(body));
             reads.push(json!({"id":row.lead,"name":skill.name,"path":"SKILL.md",
-                "sha256":sha256(body),"payload_sha256":payload.sha256,"bytes":body.len(),
+                "sha256":digest,"payload_sha256":payload.sha256,"bytes":body.len(),
                 "delivery":if global {"global"} else {"project"}}));
             if !global {
                 project_skills.push(row.lead.clone());
@@ -454,6 +531,7 @@ impl Catalog {
             "project_skills":project_skills,"runtime_status":"not_checked",
             "activation_status":"not_observed",
             "authority":"Expertise does not grant execution permissions or professional authority.",
+            "support_policy":"Contract support IDs are optional skills: read one with mirket catalog read ID and register it with mirket project add --skill ID only when needed. --with composes capability names from mirket capabilities list.",
             "next_steps":["Read selected lead guidance and relevant references.",
                 "Register missing project leads with mirket project add, then sync and doctor.",
                 "Inspect available tools and actual task inputs.",
@@ -474,17 +552,34 @@ impl Catalog {
         let mut selected = Vec::new();
         let mut visiting = BTreeSet::new();
         let mut seen = BTreeSet::new();
+        let mut explicit = ids.to_vec();
         for profile in profiles {
             let profile = self
                 .profiles()
                 .get(profile)
                 .with_context(|| format!("unknown profile: {profile}"))?;
-            for id in &profile.skills {
-                self.visit(id, target, &mut visiting, &mut seen, &mut selected)?;
+            if profile.include_globals {
+                explicit.extend(self.global_skills().iter().cloned());
             }
         }
-        for id in ids {
-            self.visit(id, target, &mut visiting, &mut seen, &mut selected)?;
+        let local_globals: BTreeSet<_> = explicit
+            .iter()
+            .filter(|id| self.global_skills().contains(id))
+            .map(String::as_str)
+            .collect();
+        for id in profiles
+            .iter()
+            .flat_map(|name| &self.profiles()[name].skills)
+            .chain(&explicit)
+        {
+            self.visit(
+                id,
+                target,
+                &local_globals,
+                &mut visiting,
+                &mut seen,
+                &mut selected,
+            )?;
         }
         let mut names = BTreeMap::new();
         for skill in &selected {
@@ -510,12 +605,13 @@ impl Catalog {
         &'a self,
         id: &str,
         target: &str,
+        local_globals: &BTreeSet<&str>,
         visiting: &mut BTreeSet<String>,
         seen: &mut BTreeSet<String>,
         selected: &mut Vec<&'a Skill>,
     ) -> Result<()> {
         let skill = self.skill(id)?;
-        if self.global_skills().iter().any(|global| global == id) {
+        if self.global_skills().iter().any(|global| global == id) && !local_globals.contains(id) {
             return Ok(());
         }
         ensure!(!visiting.contains(id), "cyclic skill requirement: {id}");
@@ -523,7 +619,8 @@ impl Catalog {
             return Ok(());
         }
         ensure!(
-            skill.scope == "project" && matches!(skill.delivery.as_str(), "embedded" | "upstream"),
+            (skill.scope == "project" || local_globals.contains(id))
+                && matches!(skill.delivery.as_str(), "embedded" | "upstream"),
             "skill is not installable: {id}"
         );
         ensure!(
@@ -532,7 +629,7 @@ impl Catalog {
         );
         visiting.insert(id.into());
         for dependency in &skill.requires {
-            self.visit(dependency, target, visiting, seen, selected)?;
+            self.visit(dependency, target, local_globals, visiting, seen, selected)?;
         }
         visiting.remove(id);
         seen.insert(id.into());
@@ -556,6 +653,10 @@ impl Catalog {
             ensure!(!profile.skills.is_empty(), "empty profile: {name}");
             for id in &profile.skills {
                 self.skill(id)?;
+            }
+            for target in ["codex", "claude"] {
+                self.selection(std::slice::from_ref(name), &[], target)
+                    .with_context(|| format!("invalid profile {name} for {target}"))?;
             }
         }
         Ok(
@@ -1181,6 +1282,47 @@ mod tests {
         assert_eq!(plan["read_sequence"].as_array().unwrap().len(), 2);
         assert!(catalog.capability("some made-up CFO title").is_err());
         assert!(catalog.check().is_ok());
+    }
+
+    #[test]
+    fn search_prefers_positive_specialists_over_exclusions_and_reference_copies() {
+        let catalog = Catalog::embedded().unwrap();
+        for (query, expected) in [
+            ("backend", "backend-engineering"),
+            ("context", "context-management"),
+            ("research", "research-and-synthesis"),
+            ("CFO", "financial-analysis"),
+        ] {
+            let page = catalog.search(query, 0, 5).unwrap();
+            assert_eq!(page["items"][0]["id"], expected, "{query}");
+        }
+        let exact = catalog.search("matt-research", 0, 5).unwrap();
+        assert_eq!(exact["items"][0]["id"], "matt-research");
+        let all = catalog.search("research", 0, 100).unwrap();
+        let first = catalog.search("research", 0, 2).unwrap();
+        let second = catalog.search("research", 2, 2).unwrap();
+        assert_eq!(
+            first["items"],
+            json!(&all["items"].as_array().unwrap()[..2])
+        );
+        assert_eq!(
+            second["items"],
+            json!(&all["items"].as_array().unwrap()[2..4])
+        );
+    }
+
+    #[test]
+    fn catalog_check_rejects_conflicting_profile_composition() {
+        let mut data: Value = serde_json::from_str(CATALOG).unwrap();
+        data["profiles"]["conflicting"] = json!({
+            "description":"Invalid combined invocation ownership",
+            "skills":["matt-prototype","emil-prototype"]
+        });
+        let catalog = Catalog(Arc::new(
+            Catalog::load_sources(&data.to_string(), CAPABILITIES, HARNESS).unwrap(),
+        ));
+        let error = catalog.check().unwrap_err().to_string();
+        assert!(error.contains("invalid profile conflicting"), "{error}");
     }
 
     #[test]

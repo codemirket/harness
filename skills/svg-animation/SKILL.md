@@ -36,6 +36,20 @@ Verify target support for morphing, motion paths and exporter behavior against
 current official documentation and a small render. Use a workable transform,
 crossfade or path construction when a requested technique is unavailable.
 
+When Mirket's `glaxnimate` package is selected, inspect its MCP schemas with
+`mirket package probe glaxnimate --schemas --project /absolute/project`.
+`animation_create` imports a static SVG and typed translation/opacity keyframes
+on named groups into an editable `.rawr`; `animation_inspect`, `animation_frame`,
+`animation_retime` and `animation_export` support verification and refinement.
+This headless profile is solid-color shape geometry with linear motion, one
+composition and a bounded duration. Text, gradients, clips, dashed strokes,
+path morphing and arbitrary editor scripts are excluded. Preserve the static SVG,
+editable `.rawr` and exported SVG as separate artifacts. Playback is once/freeze
+unless looping is explicitly requested. The exported SMIL has no media-query
+controller: provide and test a static alternative in a reduced-motion-aware host
+such as the reference's `<picture>` example. Do not promise reduced motion when
+the raw animated SVG is opened directly.
+
 ## Choreograph and build
 
 1. Make the unanimated/reduced-motion composition meaningful and visible. Keep

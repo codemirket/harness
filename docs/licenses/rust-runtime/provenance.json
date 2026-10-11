@@ -1,0 +1,58 @@
+[
+  {
+    "name": "include_dir",
+    "version": "0.7.4",
+    "source": "registry+https://github.com/rust-lang/crates.io-index",
+    "checksum": "923d117408f1e49d914f1a379a309cffe4f18c05cf4e3d12e613a15fc81bd0dd",
+    "vcs_commit": "d742c6fffce99ee89da91b934e7ce6fb2a82680c",
+    "files": [
+      {
+        "path": "include_dir-0.7.4-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/Michael-F-Bryan/include_dir/d742c6fffce99ee89da91b934e7ce6fb2a82680c/LICENSE",
+        "sha256": "9369f62987b3a116111f2edfdc4cc72633e44ddc94d5d0c68659cf537b76a31f"
+      }
+    ]
+  },
+  {
+    "name": "include_dir_macros",
+    "version": "0.7.4",
+    "source": "registry+https://github.com/rust-lang/crates.io-index",
+    "checksum": "7cab85a7ed0bd5f0e76d93846e0147172bed2e2d3f859bcc33a8d9699cad1a75",
+    "vcs_commit": "d742c6fffce99ee89da91b934e7ce6fb2a82680c",
+    "files": [
+      {
+        "path": "include_dir-0.7.4-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/Michael-F-Bryan/include_dir/d742c6fffce99ee89da91b934e7ce6fb2a82680c/LICENSE",
+        "sha256": "9369f62987b3a116111f2edfdc4cc72633e44ddc94d5d0c68659cf537b76a31f"
+      }
+    ]
+  },
+  {
+    "name": "rmcp",
+    "version": "3.5.1",
+    "source": "registry+https://github.com/rust-lang/crates.io-index",
+    "checksum": "ab5023804cbe0304cbe06197ac16e645a0a0d0ffa2953bf735c15c2fa0213350",
+    "vcs_commit": "79437f291b2c44053d00dcd5db969fd0cca7c887",
+    "files": [
+      {
+        "path": "rmcp-3.5.1-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/modelcontextprotocol/rust-sdk/79437f291b2c44053d00dcd5db969fd0cca7c887/LICENSE",
+        "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+      }
+    ]
+  },
+  {
+    "name": "rmcp-macros",
+    "version": "3.5.1",
+    "source": "registry+https://github.com/rust-lang/crates.io-index",
+    "checksum": "a1da498700030856ba63114bceefa30ba21f5e278cb975e5b9de3529fe842b40",
+    "vcs_commit": "79437f291b2c44053d00dcd5db969fd0cca7c887",
+    "files": [
+      {
+        "path": "rmcp-3.5.1-LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/modelcontextprotocol/rust-sdk/79437f291b2c44053d00dcd5db969fd0cca7c887/LICENSE",
+        "sha256": "0382b0057770ca05e9c350a50aa3b1c1fea84da0bc81d723bf00b9aa841be58a"
+      }
+    ]
+  }
+]

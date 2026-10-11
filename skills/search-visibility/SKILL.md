@@ -15,6 +15,9 @@ Record the date, URL, status, and retrieval method for important observations.
 Separate raw HTML, rendered content, authenticated dashboards, search results,
 and server logs: each answers a different question. Failed access or missing
 data is unknown, not proof of absence or a score of zero.
+Use owner search-console and analytics data with dates, segments and coverage
+limits when available. Absence from a public search result does not establish
+deindexing.
 
 For crawler rules and search features, consult current provider documentation.
 Keep these concepts distinct:
@@ -37,6 +40,9 @@ canonical target, sitemap entry, internal links, and content availability.
 Evaluate robots rules for the actual agent and URL, including grouped agents
 and allow/disallow precedence. A spoofed user-agent request cannot establish
 that the genuine crawler's IP range is allowed through a CDN or firewall.
+Canonical declarations are signals to investigate, not guaranteed directives.
+A blocked crawler may never see a page's `noindex`; evaluate access and indexing
+rules together before proposing a change.
 
 Compare raw and rendered content when JavaScript delivery is relevant. Inspect
 the content itself; a framework marker or word count does not prove rendering
@@ -71,6 +77,9 @@ Prioritize findings by the demonstrated obstacle, affected pages, user value,
 effort, and confidence. For each recommendation, give supporting evidence,
 the proposed change, and a way to check it. Separate hypotheses worth testing
 from confirmed defects. Preserve unfavorable results and relevant limitations.
+After changes, exercise redirects, metadata, structured data and navigation on
+the affected pages. Check for loops and unintentionally hidden content. Distinguish
+verified local behavior from outcomes requiring later crawling or traffic data.
 
 Use bounded crawling of authorized targets. Third-party search and audit tools
 receive submitted URLs or queries; avoid sending private content unnecessarily.

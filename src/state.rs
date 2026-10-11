@@ -14,6 +14,38 @@ const MAX_SKILLS: usize = 16;
 const MAX_EVIDENCE: i64 = 16;
 const MAX_CHECKPOINTS: i64 = 256;
 const MAX_SNAPSHOT_BYTES: usize = 60 * 1024;
+const SCHEMA: &[(&str, &str)] = &[
+    ("projects", "CREATE TABLE projects (
+        id TEXT PRIMARY KEY, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL,
+        created INTEGER NOT NULL
+    ) STRICT"),
+    ("tasks", "CREATE TABLE tasks (
+        id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
+        objective TEXT NOT NULL, skills TEXT NOT NULL, acceptance TEXT NOT NULL,
+        failure_probe TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('active','complete')),
+        revision INTEGER NOT NULL, created INTEGER NOT NULL, updated INTEGER NOT NULL
+    ) STRICT"),
+    ("deliveries", "CREATE TABLE deliveries (
+        task_id TEXT NOT NULL REFERENCES tasks(id), skill_id TEXT NOT NULL,
+        content_hash TEXT NOT NULL, payload_hash TEXT NOT NULL, delivered INTEGER NOT NULL,
+        PRIMARY KEY(task_id,skill_id)
+    ) STRICT"),
+    ("evidence", "CREATE TABLE evidence (
+        task_id TEXT NOT NULL REFERENCES tasks(id), path TEXT NOT NULL,
+        kind TEXT NOT NULL CHECK(kind IN ('acceptance','failure_probe')),
+        summary TEXT NOT NULL, sha256 TEXT NOT NULL, size INTEGER NOT NULL, recorded INTEGER NOT NULL,
+        PRIMARY KEY(task_id,path,kind)
+    ) STRICT"),
+    ("checkpoints", "CREATE TABLE checkpoints (
+        task_id TEXT NOT NULL REFERENCES tasks(id), revision INTEGER NOT NULL,
+        note TEXT NOT NULL, created INTEGER NOT NULL, PRIMARY KEY(task_id,revision)
+    ) STRICT"),
+    ("operations", "CREATE TABLE operations (
+        scope TEXT NOT NULL, key TEXT NOT NULL, fingerprint TEXT NOT NULL,
+        response TEXT NOT NULL, PRIMARY KEY(scope,key)
+    ) STRICT"),
+    ("tasks_project", "CREATE INDEX tasks_project ON tasks(project_id,updated)"),
+];
 
 #[derive(Clone, Debug)]
 pub struct State {
@@ -54,14 +86,82 @@ fn identity(path: &Path) -> Result<String> {
     }
 }
 
+fn validate_schema(conn: &Connection) -> Result<()> {
+    let mut statement = conn.prepare(
+        "SELECT name,sql FROM sqlite_schema WHERE sql IS NOT NULL AND name NOT GLOB 'sqlite_*'",
+    )?;
+    let mut rows = statement.query([])?;
+    let mut count = 0;
+    while let Some(row) = rows.next()? {
+        let name: String = row.get(0)?;
+        let sql: String = row.get(1)?;
+        let expected = SCHEMA
+            .iter()
+            .find(|(candidate, _)| *candidate == name)
+            .with_context(|| format!("incompatible Mirket state schema object: {name}"))?
+            .1;
+        // SQLite retains the declared constraints in sqlite_schema. Whitespace
+        // is insignificant for this fixed schema; changed declarations fail closed.
+        if !sql.split_whitespace().eq(expected.split_whitespace()) {
+            bail!("incompatible Mirket state schema declaration: {name}");
+        }
+        count += 1;
+    }
+    if count != SCHEMA.len() {
+        bail!("incomplete Mirket state schema");
+    }
+    Ok(())
+}
+
+fn empty_schema(conn: &Connection) -> Result<()> {
+    let count: i64 = conn.query_row(
+        "SELECT count(*) FROM sqlite_schema WHERE sql IS NOT NULL",
+        [],
+        |row| row.get(0),
+    )?;
+    if count != 0 {
+        bail!("unversioned nonempty Mirket state schema; refusing implicit repair");
+    }
+    Ok(())
+}
+
+fn task_position(project_id: &str, cursor: &str) -> Result<(i64, String)> {
+    bounded(cursor, "task cursor", 128)?;
+    let mut parts = cursor.split(':');
+    let (Some("tasks1"), Some(project), Some(created), Some(task), None) = (
+        parts.next(),
+        parts.next(),
+        parts.next(),
+        parts.next(),
+        parts.next(),
+    ) else {
+        bail!("invalid task cursor; use next_cursor from a task listing");
+    };
+    let timestamp: i64 = created.parse().context("invalid task cursor timestamp")?;
+    if project != project_id
+        || timestamp < 0
+        || timestamp.to_string() != created
+        || !task.strip_prefix("t_").is_some_and(|digest| {
+            digest.len() == 32
+                && digest
+                    .bytes()
+                    .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+        })
+    {
+        bail!("invalid or cross-project task cursor");
+    }
+    Ok((timestamp, task.into()))
+}
+
 impl State {
     pub fn open(paths: &Paths) -> Result<Self> {
         paths.ensure()?;
         let state = Self {
             database: paths.database(),
         };
-        let conn = state.connection()?;
-        let version: i64 = conn.pragma_query_value(None, "user_version", |row| row.get(0))?;
+        let mut conn = state.connection()?;
+        let read = conn.transaction()?;
+        let version: i64 = read.pragma_query_value(None, "user_version", |row| row.get(0))?;
         if version != 0 && version != 1 {
             bail!("unsupported Mirket state format: {version}");
         }
@@ -70,41 +170,48 @@ impl State {
             use std::os::unix::fs::PermissionsExt;
             fs::set_permissions(&state.database, fs::Permissions::from_mode(0o600))?;
         }
-        conn.pragma_update(None, "journal_mode", "WAL")?;
-        conn.pragma_update(None, "synchronous", "NORMAL")?;
-        conn.execute_batch("BEGIN IMMEDIATE;
-            CREATE TABLE IF NOT EXISTS projects (
-                id TEXT PRIMARY KEY, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL,
-                created INTEGER NOT NULL
-            ) STRICT;
-            CREATE TABLE IF NOT EXISTS tasks (
-                id TEXT PRIMARY KEY, project_id TEXT NOT NULL REFERENCES projects(id),
-                objective TEXT NOT NULL, skills TEXT NOT NULL, acceptance TEXT NOT NULL,
-                failure_probe TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('active','complete')),
-                revision INTEGER NOT NULL, created INTEGER NOT NULL, updated INTEGER NOT NULL
-            ) STRICT;
-            CREATE TABLE IF NOT EXISTS deliveries (
-                task_id TEXT NOT NULL REFERENCES tasks(id), skill_id TEXT NOT NULL,
-                content_hash TEXT NOT NULL, payload_hash TEXT NOT NULL, delivered INTEGER NOT NULL,
-                PRIMARY KEY(task_id,skill_id)
-            ) STRICT;
-            CREATE TABLE IF NOT EXISTS evidence (
-                task_id TEXT NOT NULL REFERENCES tasks(id), path TEXT NOT NULL,
-                kind TEXT NOT NULL CHECK(kind IN ('acceptance','failure_probe')),
-                summary TEXT NOT NULL, sha256 TEXT NOT NULL, size INTEGER NOT NULL, recorded INTEGER NOT NULL,
-                PRIMARY KEY(task_id,path,kind)
-            ) STRICT;
-            CREATE TABLE IF NOT EXISTS checkpoints (
-                task_id TEXT NOT NULL REFERENCES tasks(id), revision INTEGER NOT NULL,
-                note TEXT NOT NULL, created INTEGER NOT NULL, PRIMARY KEY(task_id,revision)
-            ) STRICT;
-            CREATE TABLE IF NOT EXISTS operations (
-                scope TEXT NOT NULL, key TEXT NOT NULL, fingerprint TEXT NOT NULL,
-                response TEXT NOT NULL, PRIMARY KEY(scope,key)
-            ) STRICT;
-            CREATE INDEX IF NOT EXISTS tasks_project ON tasks(project_id,updated);
-            PRAGMA user_version=1;
-            COMMIT;")?;
+        if version == 1 {
+            validate_schema(&read)?;
+            let journal: String =
+                read.pragma_query_value(None, "journal_mode", |row| row.get(0))?;
+            if journal != "wal" {
+                bail!("Mirket state requires WAL journal mode");
+            }
+            read.commit()?;
+            return Ok(state);
+        }
+        empty_schema(&read)?;
+        read.commit()?;
+
+        // WAL mode cannot be changed inside a transaction. Concurrent first
+        // openers may briefly contend on that transition before the writer lock.
+        let deadline = std::time::Instant::now() + Duration::from_millis(750);
+        loop {
+            match conn.pragma_update(None, "journal_mode", "WAL") {
+                Ok(()) => break,
+                Err(error)
+                    if error.sqlite_error_code() == Some(rusqlite::ErrorCode::DatabaseBusy)
+                        && std::time::Instant::now() < deadline =>
+                {
+                    std::thread::sleep(Duration::from_millis(10));
+                }
+                Err(error) => return Err(error).context("initialize Mirket WAL journal"),
+            }
+        }
+        let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+        let version: i64 = tx.pragma_query_value(None, "user_version", |row| row.get(0))?;
+        match version {
+            0 => {
+                empty_schema(&tx)?;
+                for (_, sql) in SCHEMA {
+                    tx.execute_batch(sql)?;
+                }
+                tx.pragma_update(None, "user_version", 1)?;
+            }
+            1 => validate_schema(&tx)?,
+            _ => bail!("unsupported Mirket state format: {version}"),
+        }
+        tx.commit()?;
         Ok(state)
     }
 
@@ -241,25 +348,35 @@ impl State {
         Ok(json!({"projects":projects,"next_offset":next_offset}))
     }
 
-    pub fn tasks(&self, project_id: &str, offset: usize, limit: usize) -> Result<Value> {
-        if !(1..=20).contains(&limit) || offset > 1_000_000 {
-            bail!("task page size must be 1..=20 and offset at most 1000000");
+    pub fn tasks(&self, project_id: &str, cursor: Option<&str>, limit: usize) -> Result<Value> {
+        if !(1..=20).contains(&limit) {
+            bail!("task page size must be 1..=20");
         }
         let conn = self.connection()?;
         Self::root(&conn, project_id)?;
-        let mut query = conn.prepare("SELECT id,objective,status,revision,updated FROM tasks WHERE project_id=?1 ORDER BY updated DESC,id LIMIT ?2 OFFSET ?3")?;
-        let mut tasks = query.query_map(params![project_id,limit+1,offset], |row| {
+        let position = cursor
+            .map(|value| task_position(project_id, value))
+            .transpose()?;
+        let mut query = conn.prepare("SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 AND (?2 IS NULL OR (created,id)<(?2,?3)) ORDER BY created DESC,id DESC LIMIT ?4")?;
+        let mut tasks = query.query_map(params![project_id,position.as_ref().map(|p|p.0),position.as_ref().map(|p|p.1.as_str()),limit+1], |row| {
             let objective: String = row.get(1)?;
             let preview: String = objective.chars().take(256).collect();
-            Ok(json!({"id":row.get::<_,String>(0)?,"objective_preview":preview,"status":row.get::<_,String>(2)?,"revision":row.get::<_,i64>(3)?,"updated":row.get::<_,i64>(4)?}))
+            Ok(json!({"id":row.get::<_,String>(0)?,"objective_preview":preview,"status":row.get::<_,String>(2)?,"revision":row.get::<_,i64>(3)?,"updated":row.get::<_,i64>(4)?,"created":row.get::<_,i64>(5)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
-        let next_offset = if tasks.len() > limit {
-            Some(offset + limit)
+        let next_cursor = if tasks.len() > limit {
+            tasks.truncate(limit);
+            let last = tasks.last().context("missing task page boundary")?;
+            Some(format!(
+                "tasks1:{project_id}:{}:{}",
+                last["created"]
+                    .as_i64()
+                    .context("invalid task creation time")?,
+                last["id"].as_str().context("invalid task id")?
+            ))
         } else {
             None
         };
-        tasks.truncate(limit);
-        Ok(json!({"project_id":project_id,"tasks":tasks,"next_offset":next_offset}))
+        Ok(json!({"project_id":project_id,"tasks":tasks,"next_cursor":next_cursor}))
     }
 
     fn root(conn: &Connection, project_id: &str) -> Result<PathBuf> {

@@ -15,7 +15,11 @@ filesystem authority. Never run installers, package scripts or hooks incidentall
 during review. Package runtime and skill guidance are separate resources.
 
 Authored skills synthesize focused methods with concrete deliverables and failure
-probes. Prefer project-specific selection to expanding global context. Keep exact
+probes. Reuse an existing lead for a role when its actual methods fit. Add a new
+skill only for a distinct uncovered deliverable. Consolidate repeated methods
+with their unique failure checks; keep provider alternatives and their complete
+dependency closures when they offer a distinct approach. Manual language or host
+variants belong on the primary reference record, with their source paths retained. Prefer project-specific selection to expanding global context. Keep exact
 role aliases in the capability contracts and optional support conditional.
 
 Run `mirket catalog check`, inspect `mirket capabilities plan ROLE`, then install

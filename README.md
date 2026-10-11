@@ -1,18 +1,19 @@
 # Mirket
 
 Mirket is a local agent harness for **Codex Desktop** and **Claude Desktop Code**.
-One Rust CLI installs reviewed expertise, serves a local MCP server, coordinates
+One Rust CLI installs reviewed expertise and local MCP packages, coordinates
 project work and checks the evidence attached to a task.
 
 ```text
 mirket setup       Choose clients and configure your environment
-mirket doctor      Check installation, configuration and registered tools
+mirket doctor      Check installation, configuration and selected packages
 mirket update      Update the CLI and reapply your saved setup
 ```
 
-The runtime contains its shared instructions, 52 authored skills and 33 capability
-contracts. It starts without a source checkout, Python, Node or a background
-service. External project tools remain separate, explicitly selected dependencies.
+The runtime contains shared instructions, authored specialist skills and outcome
+contracts discoverable through `mirket capabilities list`. The core starts without a source checkout, Python, Node or a background
+service. Optional MCP packages bring pinned runtimes when required. Project SDKs
+and native applications remain explicit prerequisites.
 
 ## Install and set up
 
@@ -29,7 +30,8 @@ mirket setup
 mirket doctor
 ```
 
-Setup presents client and documentation choices before applying them. It installs a managed runtime under
+Setup presents client, documentation and optional package choices before applying
+them. It installs a managed runtime under
 `~/.mirket/bin`, skill copies and instructions in the selected client locations,
 and a local `mirket` MCP entry. A new host session loads the configured tools.
 
@@ -57,7 +59,9 @@ mirket catalog read database-systems
 
 Capability contracts cover engineering, design, infrastructure, quality,
 executive decisions, finance, product, marketing, market analysis, research,
-translation, project management, spreadsheets and documentation. A plan selects
+translation, project management, spreadsheets and documentation. Specialized roles
+also cover security, accessibility, data pipelines, AI applications, MCP, desktop
+apps, user research and experimentation. See [role selection](docs/roles.md). A plan selects
 one lead per requested outcome and supplies prerequisites, acceptance criteria
 and a failure probe. Read the relevant guidance instead of loading the catalog.
 
@@ -81,7 +85,9 @@ configure --target codex|claude|all` to choose clients, and `mirket project sync
 
 Project selection lives in `.mirket/project.json`. The foundation supplies
 architecture, debugging, testing and release workflows; add specialties justified
-by the project. Target membership is explicit and installed copies have integrity
+by the project. When the selected hosts have no shared installation, explicitly
+choose the `portable-foundation` profile to copy shared guidance into the project.
+Target membership is explicit and installed copies have integrity
 receipts. Project instructions and the user's choices remain authoritative.
 
 For coordination without project skill copies, use `mirket project register`.
@@ -98,12 +104,38 @@ conflicting or repeated writes. Completion checks required skill delivery and
 current acceptance/failure-probe artifacts.
 
 These checks establish workflow and artifact consistency. They cannot prove
-semantic correctness, reviewer identity or human approval. Mirket cannot select
-a host model, expand host permissions, spawn agents or execute shell commands
-through MCP. The host retains execution, tools and session lifecycle.
+semantic correctness, reviewer identity or human approval. The coordination
+server cannot select a host model, expand host permissions, spawn agents or
+execute shell commands. The host retains execution, tools and session lifecycle.
 See [workflow and MCP](docs/workflows.md) for the CLI equivalents and boundaries.
 
-## Extend the runtime
+## Add local MCP capabilities
+
+Select reviewed packages through the same CLI:
+
+```sh
+mirket package list
+mirket package install doc-scraper jscpd
+mirket package probe jscpd --project /absolute/project
+```
+
+Packages cover documentation search, duplicate-code analysis, browser QA, SQLite
+inspection, Word editing, local document extraction, static SVG charts and device
+automation. Each profile pins its artifacts, runtimes and notices, including
+private Node or CPython runtimes where needed. Setup downloads verified archives
+without running package managers or lifecycle hooks. On a fresh home,
+`setup --yes` selects no optional packages; saved choices are reused by setup and
+update.
+
+The selected profiles require no paid API. Browser navigation and documentation
+crawling still use the network. SDKs and native applications remain prerequisites
+where needed. `package status` checks files, `package probe` checks MCP discovery,
+and a real task establishes useful output. See [local MCP packages](docs/packages.md)
+for configuration, output policies and platform limits. MarkItDown's local
+text/Office/PDF profile supports macOS and Linux on ARM64 and x64; Windows is
+unavailable.
+
+## Register other executables
 
 Approved local executables can be registered and invoked through the CLI:
 
@@ -116,7 +148,7 @@ mirket tool run renderer -- --help
 Registration pins the executable's bytes. A changed binary requires inspection
 and explicit registration again. Execution inherits the CLI's host permissions;
 there is no implicit package download, shell evaluation or sandbox. This registry
-provides a single boundary for additional binaries and tool packages.
+is for explicit local executables; curated MCP packages use `mirket package`.
 
 ## Develop and verify
 
@@ -132,8 +164,12 @@ mirket dev dist --project . --output /absolute/new-dist
 The [architecture guide](docs/architecture.md) explains responsibilities,
 [contribution guide](CONTRIBUTING.md) covers isolated checks, and
 [source review](docs/source-review.md) describes catalog admission.
+After an approved production dependency change, `mirket dev lock --project .`
+reconciles the workspace lockfile. Real package tests are opt-in and require an
+explicitly marked disposable installation.
 Measurements cover named workloads and the machine that ran them; they do not
 claim universal model-quality or latency improvements.
 
-Original material is [MIT licensed](LICENSE). Imported and adapted guidance keeps
-its [source notices](docs/third-party-notices.md) and catalog provenance.
+Original material is [MIT licensed](LICENSE). Imported guidance and package
+components retain their [source notices](docs/third-party-notices.md), licenses
+and provenance.

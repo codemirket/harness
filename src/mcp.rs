@@ -153,8 +153,8 @@ struct Task {
     /// Read one task by ID, or omit and supply project_id to discover interrupted tasks.
     task_id: Option<String>,
     project_id: Option<String>,
-    #[serde(default)]
-    offset: usize,
+    /// Opaque next_cursor from a previous page. Task updates do not move pages; newly inserted tasks are not a frozen snapshot.
+    cursor: Option<String>,
     #[serde(default = "page_size")]
     limit: usize,
 }
@@ -296,13 +296,13 @@ impl MirketServer {
     }
 
     #[tool(
-        description = "Read a durable task by task_id, or list task IDs in a registered project with project_id and pagination. Resume here after interruption.",
+        description = "Read a durable task by task_id, or list task IDs newest-created first with project_id and an optional returned cursor. Follow next_cursor; updates do not move tasks between pages. Resume here after interruption.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn task_status(&self, Parameters(args): Parameters<Task>) -> CallToolResult {
         self.run(move |state, _| match (args.task_id, args.project_id) {
             (Some(task), None) => state.status(&task),
-            (None, Some(project)) => state.tasks(&project, args.offset, args.limit),
+            (None, Some(project)) => state.tasks(&project, args.cursor.as_deref(), args.limit),
             _ => bail!("provide exactly one of task_id or project_id"),
         })
         .await

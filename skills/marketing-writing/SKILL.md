@@ -8,6 +8,14 @@ description: Draft or improve marketing copy, product messaging, landing-page te
 Produce useful, credible copy that helps the intended reader make a decision.
 Scale the process to the deliverable; a button label needs less work than a launch.
 
+For a broader marketing request, select the actual outcome before writing copy.
+Use `customer-research` for audience evidence, `market-analysis` for market sizing,
+`search-visibility` for organic discovery, `conversion-review` for funnel repairs
+and `experiment-design` for causal tests. For channel operations, inspect the
+`marketing-strategy`, `marketing-growth` or `marketing-community` profile with
+`mirket catalog profiles`, then read and select only the relevant skill. A copy
+draft is not a completed launch, email program, pricing analysis or channel plan.
+
 ## Establish the brief
 
 1. Read relevant product, audience, brand, and research material already available.

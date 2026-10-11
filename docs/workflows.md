@@ -8,7 +8,10 @@ through the `mirket` CLI; the host starts its MCP endpoint with `mirket mcp serv
 
 Use `mirket capabilities plan ROLE` for exact role/ID lookup, or `mirket catalog
 search WORDS` for bounded discovery. A plan selects one lead and only explicitly
-requested support. Read the selected skill body and relevant references before
+requested capability leads. `--with` composes role names. The contract's `support`
+IDs are conditional skills; read one with `mirket catalog read ID` and add it to
+the project with `mirket project add --skill ID` only when needed.
+Read the selected skill body and relevant references before
 substantive work. A skill name or installation receipt is not evidence of use.
 
 ## Track a concrete outcome
@@ -27,6 +30,27 @@ mirket task status TASK_ID
 Use the returned task ID and current revision in subsequent operations. Each
 operation needs a unique idempotency key; repeat exactly the same key and input
 after an uncertain response. A different intention gets a different key.
+
+The capability supplies default acceptance and failure-probe criteria. When the
+requested outcome has a different scope, set both explicitly at task creation:
+
+```sh
+mirket task start --project /absolute/project --capability "Accessibility Engineer" \
+  --objective "Review and repair the supplied dialog source; no browser is available" \
+  --acceptance "Preserve the dialog purpose and text; deliver corrected source and separate observed defects from unverified runtime behavior" \
+  --failure-probe "A zero-violations scanner summary must not conceal the source defects or become a keyboard or screen-reader claim" \
+  --key dialog-source-review
+```
+
+Both options are required together. Criteria describe the user's actual requested
+outcome; an unavailable check stays unverified. Do not narrow an already required
+outcome merely to mark failed or unfinished work complete.
+
+Task lists use `--limit N` and the returned `next_cursor` as `--cursor TOKEN`.
+Tasks are ordered by immutable creation time and ID, so a checkpoint does not
+move a task across pages. A cursor belongs to one project. Traversal is not a
+frozen snapshot of tasks created later; start a fresh list to discover new work.
+Catalog search and project listing use their own offset pagination.
 
 ```sh
 mirket task read TASK_ID financial-analysis --revision REVISION --key read-finance
