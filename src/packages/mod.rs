@@ -695,6 +695,9 @@ pub(crate) fn is_retired_id(id: &str) -> bool {
             | "dbhub"
             | "doc-scraper"
             | "jscpd"
+            | "glaxnimate"
+            | "helios"
+            | "openpencil"
     )
 }
 
@@ -908,6 +911,9 @@ mod tests {
             "dbhub",
             "doc-scraper",
             "jscpd",
+            "glaxnimate",
+            "helios",
+            "openpencil",
             "python",
         ] {
             assert!(

@@ -298,7 +298,7 @@ fn removed_documentation_saved_choice_update_replays_without_removed_cli_flag() 
     );
 }
 
-const REMOVED_PACKAGE_IDS: [&str; 7] = [
+const REMOVED_PACKAGE_IDS: [&str; 10] = [
     "semiotic",
     "agent-device",
     "safe-docx",
@@ -306,6 +306,9 @@ const REMOVED_PACKAGE_IDS: [&str; 7] = [
     "dbhub",
     "doc-scraper",
     "jscpd",
+    "glaxnimate",
+    "helios",
+    "openpencil",
 ];
 
 fn record_removed_packages(fixture: &Fixture, customized: bool) {
@@ -325,10 +328,15 @@ fn record_removed_packages(fixture: &Fixture, customized: bool) {
             "site":"private-fixture"
         });
         let args = serde_json::json!(["--home", fixture.paths.home, "package", "serve", id]);
-        let owned = serde_json::json!({"command":fixture.paths.binary(),"args":args});
-        receipt["servers"]["codex"][&name] = owned.clone();
+        let mut owned = serde_json::json!({"command":fixture.paths.binary(),"args":args});
         let mut claude_owned = owned.clone();
         claude_owned["type"] = serde_json::json!("stdio");
+        if matches!(id, "glaxnimate" | "helios" | "openpencil") {
+            owned["startup_timeout_sec"] = serde_json::json!(90);
+            owned["tool_timeout_sec"] = serde_json::json!(120);
+            claude_owned["timeout"] = serde_json::json!(120_000);
+        }
+        receipt["servers"]["codex"][&name] = owned.clone();
         receipt["servers"]["claude"][&name] = claude_owned.clone();
         let mut table = toml_edit::Table::new();
         table.insert(
@@ -340,6 +348,11 @@ fn record_removed_packages(fixture: &Fixture, customized: bool) {
             arguments.push(arg.as_str().unwrap());
         }
         table.insert("args", toml_edit::value(arguments));
+        for key in ["startup_timeout_sec", "tool_timeout_sec"] {
+            if let Some(value) = owned.get(key) {
+                table.insert(key, toml_edit::value(value.as_i64().unwrap()));
+            }
+        }
         if customized {
             table.insert("enabled", toml_edit::value(false));
             claude_owned["env"] = serde_json::json!({"PERSONAL_SETTING":"preserve"});
@@ -355,6 +368,11 @@ fn record_removed_packages(fixture: &Fixture, customized: bool) {
     }
     fixture.write("documents/private.sqlite", "private database remains");
     fixture.write("documents/private.docx", "private document remains");
+    fixture.write(
+        "documents/illustration.svg",
+        "editable illustration remains",
+    );
+    fixture.write("documents/animation.json", "editable animation remains");
     fixture.write(".codex/config.toml", codex.to_string());
     fixture.write(".claude.json", serde_json::to_vec_pretty(&claude).unwrap());
     fixture.write(
@@ -379,6 +397,14 @@ fn assert_removed_package_user_data(fixture: &Fixture) {
     assert_eq!(
         fixture.read("documents/private.docx"),
         b"private document remains"
+    );
+    assert_eq!(
+        fixture.read("documents/illustration.svg"),
+        b"editable illustration remains"
+    );
+    assert_eq!(
+        fixture.read("documents/animation.json"),
+        b"editable animation remains"
     );
 }
 
