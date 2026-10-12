@@ -32,6 +32,8 @@ pub struct Api {
     socket: PathBuf,
     #[cfg(unix)]
     identity: SocketIdentity,
+    #[cfg(unix)]
+    _socket_pin: std::sync::Arc<tempfile::TempDir>,
 }
 
 #[cfg(unix)]
@@ -80,6 +82,21 @@ impl Api {
         {
             ensure!(socket.is_absolute(), "Podman API socket must be absolute");
             let identity = socket_identity(socket, None)?;
+            // Keep the filesystem inode alive, including across Api clones. An
+            // unlinked socket's inode can otherwise be immediately reused on
+            // Linux, making uid/device/inode checks accept a replaced endpoint.
+            let pin = tempfile::Builder::new()
+                .prefix(".mirket-api-")
+                .tempdir_in(socket.parent().context("Podman socket has no parent")?)
+                .context("create private Podman socket identity pin")?;
+            let pinned_socket = pin.path().join("socket");
+            std::fs::hard_link(socket, &pinned_socket)
+                .context("retain private Podman socket identity")?;
+            ensure!(
+                socket_identity(&pinned_socket, Some(identity.uid))? == identity
+                    && socket_identity(socket, Some(identity.uid))? == identity,
+                "Podman API socket changed while retaining its identity"
+            );
             let client = Client::builder()
                 .no_proxy()
                 .redirect(reqwest::redirect::Policy::none())
@@ -93,6 +110,7 @@ impl Api {
                 client,
                 socket: socket.to_owned(),
                 identity,
+                _socket_pin: std::sync::Arc::new(pin),
             })
         }
     }
@@ -669,6 +687,9 @@ mod tests {
         let socket = root.join("private.sock");
         let listener = UnixListener::bind(&socket).unwrap();
         let api = Api::new(&socket).unwrap();
+        let clone = api.clone();
+        let pin = api._socket_pin.path().to_owned();
+        assert!(api.check_socket().is_ok());
         let alias = root.join("alias.sock");
         symlink(&socket, &alias).unwrap();
         assert!(Api::new(&alias).is_err());
@@ -676,6 +697,11 @@ mod tests {
         std::fs::remove_file(&socket).unwrap();
         let _replacement = UnixListener::bind(&socket).unwrap();
         assert!(api.check_socket().is_err());
+        drop(api);
+        assert!(pin.join("socket").exists());
+        assert!(clone.check_socket().is_err());
+        drop(clone);
+        assert!(!pin.exists());
     }
 
     #[cfg(unix)]

@@ -36,6 +36,9 @@ connection and helper paths avoid selecting an unrelated engine. Short owned
 runtime directories under `/private/tmp/mirket-<identity>` accommodate macOS Unix
 socket limits. No workload receives that socket. `environment stop` preserves
 the VM's images and durable service volumes.
+Each native API client retains a private socket hard link for its lifetime so an
+unlinked endpoint cannot reuse the captured inode and pass the identity check.
+The final client clone's drop removes that pin.
 Before stopping, Mirket reads the bounded loopback VM inspection response and
 checks its actual private disk, EFI, sharing and socket identities. A changed
 endpoint, unavailable identity or foreign runtime stops the operation before any

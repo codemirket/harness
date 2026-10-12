@@ -1,6 +1,5 @@
 //! Offline boundary probes. Fixtures are fixed programs in disposable homes,
 //! not a daemon, image installer, or evidence of native-container readiness.
-use mirket::{paths::Paths, podman::Engine};
 use std::{fs, path::Path, process::Command};
 
 fn cli(home: &Path, args: &[&str]) -> std::process::Output {
@@ -34,6 +33,7 @@ mod unix {
     use super::*;
     #[cfg(target_os = "macos")]
     use mirket::util;
+    use mirket::{paths::Paths, podman::Engine};
     #[cfg(target_os = "macos")]
     use serde_json::{Value, json};
     #[cfg(target_os = "macos")]
