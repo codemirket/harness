@@ -66,6 +66,11 @@ pub fn distinct_output<'a>(
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => None,
         Err(error) => return Err(error.into()),
     };
+    #[cfg(windows)]
+    let target_identity = target
+        .as_ref()
+        .map(|_| windows_identity::read(&output))
+        .transpose()?;
     for input in inputs {
         if name.eq_ignore_ascii_case(input) {
             bail!("export must be distinct from every editable input");
@@ -84,10 +89,68 @@ pub fn distinct_output<'a>(
                 bail!("export aliases an editable input file");
             }
         }
+        #[cfg(windows)]
+        if let Some((_, target)) = &target_identity {
+            let (_source_handle, identity) = windows_identity::read(&source)?;
+            if *target == identity {
+                bail!("export aliases an editable input file");
+            }
+        }
         #[cfg(not(unix))]
         let _ = source_metadata;
     }
     Ok(())
+}
+
+#[cfg(windows)]
+mod windows_identity {
+    use super::*;
+    use std::{ffi::c_void, os::windows::io::AsRawHandle};
+
+    // FILE_ID_INFO uses the volume and full 128-bit ID, including on ReFS.
+    // https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info
+    #[repr(C)]
+    #[derive(PartialEq, Eq)]
+    pub(super) struct Identity {
+        volume: u64,
+        id: [u8; 16],
+    }
+
+    #[link(name = "kernel32")]
+    unsafe extern "system" {
+        #[link_name = "GetFileInformationByHandleEx"]
+        fn file_information(handle: *mut c_void, class: i32, buffer: *mut c_void, size: u32)
+        -> i32;
+    }
+
+    pub(super) fn read(path: &Path) -> Result<(fs::File, Identity)> {
+        let file = fs::File::open(path).context("open artifact for Windows file identity")?;
+        let mut identity = Identity {
+            volume: 0,
+            id: [0; 16],
+        };
+        // SAFETY: the read-only File keeps a valid handle alive; repr(C)
+        // Identity is the documented FILE_ID_INFO layout and the exact buffer
+        // size is passed. Class 0x12 selects only that fixed structure.
+        // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getfileinformationbyhandleex
+        let result = unsafe {
+            file_information(
+                file.as_raw_handle(),
+                0x12,
+                (&mut identity as *mut Identity).cast(),
+                std::mem::size_of::<Identity>() as u32,
+            )
+        };
+        if result == 0 {
+            return Err(std::io::Error::last_os_error())
+                .context("filesystem could not establish Windows artifact identity");
+        }
+        if identity.id == [0; 16] {
+            bail!("filesystem did not supply a usable Windows artifact identity");
+        }
+        // Keep both compared handles alive so IDs cannot be reused mid-check.
+        Ok((file, identity))
+    }
 }
 
 pub struct Destination {
@@ -236,7 +299,7 @@ mod tests {
                 "{name}"
             );
         }
-        #[cfg(unix)]
+        #[cfg(any(unix, windows))]
         {
             fs::hard_link(root.join("source.svg"), root.join("alias.svg")).unwrap();
             assert!(distinct_output(&root, "alias.svg", ["source.svg"]).is_err());
@@ -251,7 +314,7 @@ mod tests {
             .unwrap();
         distinct_output(&root, "out.svg", ["source.svg"]).unwrap();
         assert_eq!(fs::read(root.join("source.svg")).unwrap(), original);
-        #[cfg(unix)]
+        #[cfg(any(unix, windows))]
         assert_eq!(fs::read(root.join("alias.svg")).unwrap(), original);
     }
 
