@@ -142,6 +142,17 @@ origin and HTTPS. Never replace the expected digest just to accept a mismatch.
 A bootstrap CLI on PATH forwards to a verified newer managed release, including
 new commands and version output. Published versions must be immutable.
 
+For a 2.0.0 installation, download and verify the 3.0.0 executable first, then
+run that executable's `update` against the existing home. Close the selected
+desktop clients before this reconfiguration. The 2.0.0 updater and bootstrap
+require receipt fields and saved choices removed in 3.0.0; they cannot verify
+the new receipt. Use the resulting managed 3.0.0 executable for further commands.
+If PATH contains a separate 2.0.0 executable, replace it during this update with
+the entrypoint options below, invoking the downloaded 3.0.0 executable. Preserve
+the setup receipt: it identifies owned settings and files for reconciliation.
+If the old updater already reported an error after installation, run 3.0.0
+`doctor`, then 3.0.0 `update` to complete and verify the saved setup.
+
 To replace a separate CLI file on PATH with the same verified release, run the
 managed CLI and identify both the destination and its current SHA-256 digest:
 
