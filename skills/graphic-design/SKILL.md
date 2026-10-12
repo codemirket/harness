@@ -35,6 +35,12 @@ costly direction, make a small specimen or a few meaningfully different concepts
 Continue from a clear brief or existing direction; routine refinements do not
 require a new approval ceremony.
 
+For artwork that will move, let the static composition establish the hierarchy
+first. Identify one focal action, the parts that respond, the intended material
+or weight, and the resting pose. A restrained editorial illustration and an
+energetic graphic campaign need different rhythm as well as different colors.
+Keep important copy and the message understandable without playback.
+
 ## Choose the production route
 
 Read [production and proof](references/production-and-proof.md) for tool selection,
@@ -46,12 +52,19 @@ rights, color, export and final inspection.
 - Use native SVG/vector tooling for editable marks, icons, technical linework and
   scalable vector illustration. Raster generation does not produce vector paths;
   wrapping a bitmap in an SVG does not make it vector artwork.
+- For editable design files and structured visual layouts, use Penpot. Read [design documents](references/design-documents.md)
+  for its supported profile, saved-file refinement and preview checks. Ordinary
+  website implementation still belongs in the project's frontend tools.
 - For diagrams, preserve the meaning of nodes, relationships, direction and
   conditions before arranging them. Use a suitable diagram or plotting workflow
   when it improves semantic accuracy and maintainability.
 - Use the capable native document, slide, spreadsheet or motion skill when that
   format is the requested deliverable. A flattened image is not an editable deck,
   workbook or document.
+- For artwork inside an expressive website, use `advanced-motion` for the shared
+  scene and its medium-selection reference; `svg-animation` owns editable vector
+  choreography. `interface-design` owns page hierarchy and usable controls.
+  Choose those supports for the actual output, not every graphic commission.
 
 Use tools already available. A missing renderer, font, editor or print profile is
 a specific limitation to resolve; skill selection does not install or authorize

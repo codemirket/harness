@@ -676,24 +676,15 @@ mod tests {
             .prefix("mirket-dmg-live-")
             .tempdir_in(std::env::temp_dir().canonicalize().unwrap())
             .unwrap();
-        for (image, app, executable, digest, files, links) in [
-            (
-                "inkscape.dmg",
-                "Inkscape.app",
-                "inkscape",
-                "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
-                12_446,
-                41,
-            ),
-            (
-                "glaxnimate.dmg",
-                "glaxnimate.app",
-                "glaxnimate",
-                "5f768da0e37acb94a5f3841a19715f99e121646fd983ffa00a4b675bfea9bd75",
-                15_266,
-                474,
-            ),
-        ] {
+        let (image, app, executable, digest, files, links) = (
+            "inkscape.dmg",
+            "Inkscape.app",
+            "inkscape",
+            "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
+            12_446,
+            41,
+        );
+        {
             let stage = tempfile::Builder::new()
                 .prefix("dmg-extraction-")
                 .tempdir_in(fixture_home.path())

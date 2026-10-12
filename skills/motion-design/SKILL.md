@@ -1,6 +1,6 @@
 ---
 name: motion-design
-description: Implement or review ordinary UI animation, including hover feedback, expand/collapse, enter/exit, interruption and reduced motion. Use for control motion and observed interface animation problems; navigation uses page-transitions and complex choreography uses advanced-motion.
+description: Implement or review ordinary UI animation, including hover/focus feedback, color changes, expand/collapse, enter/exit and reduced motion. Use for controls and observed interface animation problems; navigation uses page-transitions and substantial visual scenes use advanced-motion.
 ---
 
 # Motion design
@@ -16,11 +16,16 @@ matching craft reference and keep one lead. Effect naming uses
 capabilities. Do not follow unavailable upstream `animate` or
 `review-animations` sibling names as if they were installed.
 
+A button color transition or focus treatment stays here. A brand-led animated
+gradient, layered landing-page sequence or procedural graphic belongs with the
+larger scene in `advanced-motion`; do not expand a small interaction into one.
+
 Vector illustration motion, logo reveals, path drawing and morphs use catalog
 `svg-animation` and its SVG motion-craft reference; `svg-creation` supports geometry.
 This workflow still owns the surrounding interface transitions. Use a vector
 specialist for the actual need rather than routing every animated icon to a new
-library or video renderer.
+library or video renderer. When the requested deliverable is an encoded film,
+use `advanced-motion`'s local-video reference and verify the selected HyperFrames or Motion Canvas runtime.
 
 For implementation or critique, read the matching sections of
 [interaction recipes](references/interaction-recipes.md): controls and feedback,

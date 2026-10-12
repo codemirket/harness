@@ -50,6 +50,46 @@ pub fn read(root: &Path, name: &str, extensions: &[&str], limit: u64) -> Result<
         .with_context(|| format!("read project artifact {name}"))
 }
 
+/// Keep exports separate from every editable input. Canonicalization alone does
+/// not resolve case or normalization aliases on every filesystem. Callers still
+/// apply their extension/profile checks through `read` and `Destination`.
+pub fn distinct_output<'a>(
+    root: &Path,
+    name: &str,
+    inputs: impl IntoIterator<Item = &'a str>,
+) -> Result<()> {
+    util::safe_relative(Path::new(name))?;
+    let output = root.join(name);
+    util::reject_symlink_components(&output)?;
+    let target = match fs::metadata(&output) {
+        Ok(metadata) => Some(metadata),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => None,
+        Err(error) => return Err(error.into()),
+    };
+    for input in inputs {
+        if name.eq_ignore_ascii_case(input) {
+            bail!("export must be distinct from every editable input");
+        }
+        util::safe_relative(Path::new(input))?;
+        let source = root.join(input);
+        util::reject_symlink_components(&source)?;
+        let source_metadata = fs::metadata(&source)?;
+        if target.is_some() && output.canonicalize()? == source.canonicalize()? {
+            bail!("export resolves to an editable input");
+        }
+        #[cfg(unix)]
+        if let Some(target) = &target {
+            use std::os::unix::fs::MetadataExt;
+            if source_metadata.dev() == target.dev() && source_metadata.ino() == target.ino() {
+                bail!("export aliases an editable input file");
+            }
+        }
+        #[cfg(not(unix))]
+        let _ = source_metadata;
+    }
+    Ok(())
+}
+
 pub struct Destination {
     root: PathBuf,
     name: String,
@@ -181,5 +221,57 @@ mod tests {
         for name in ["link.svg", "alias/out.svg"] {
             assert!(scoped(&root, name, &["svg"]).is_err());
         }
+    }
+
+    #[test]
+    fn export_alias_guard_preserves_source_and_allows_distinct_outputs() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let original = b"editable source must survive";
+        fs::write(root.join("source.svg"), original).unwrap();
+        fs::write(root.join("other.svg"), b"another input").unwrap();
+        for name in ["source.svg", "Source.svg", "SOURCE.SVG"] {
+            assert!(
+                distinct_output(&root, name, ["source.svg"]).is_err(),
+                "{name}"
+            );
+        }
+        #[cfg(unix)]
+        {
+            fs::hard_link(root.join("source.svg"), root.join("alias.svg")).unwrap();
+            assert!(distinct_output(&root, "alias.svg", ["source.svg"]).is_err());
+        }
+        assert!(distinct_output(&root, "other.svg", ["source.svg", "other.svg"]).is_err());
+        assert!(distinct_output(&root, "../source.svg", ["source.svg"]).is_err());
+        assert!(distinct_output(&root, "out.svg", ["../source.svg"]).is_err());
+        distinct_output(&root, "out.svg", ["source.svg", "other.svg"]).unwrap();
+        Destination::new(&root, "out.svg", &["svg"], false, None)
+            .unwrap()
+            .publish(b"exported output", "image/svg+xml")
+            .unwrap();
+        distinct_output(&root, "out.svg", ["source.svg"]).unwrap();
+        assert_eq!(fs::read(root.join("source.svg")).unwrap(), original);
+        #[cfg(unix)]
+        assert_eq!(fs::read(root.join("alias.svg")).unwrap(), original);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn export_normalization_and_symlink_aliases_are_refused() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let composed = "caf\u{e9}.svg";
+        let decomposed = "cafe\u{301}.svg";
+        fs::write(root.join(composed), b"editable").unwrap();
+        // Normalization equivalence depends on the filesystem. A hard link also
+        // exercises the identity guard on filesystems with distinct spellings.
+        if !root.join(decomposed).exists() {
+            fs::hard_link(root.join(composed), root.join(decomposed)).unwrap();
+        }
+        assert!(distinct_output(&root, decomposed, [composed]).is_err());
+        std::os::unix::fs::symlink(composed, root.join("link.svg")).unwrap();
+        assert!(distinct_output(&root, "link.svg", [composed]).is_err());
+        assert!(distinct_output(&root, "out.svg", ["link.svg"]).is_err());
+        assert_eq!(fs::read(root.join(composed)).unwrap(), b"editable");
     }
 }

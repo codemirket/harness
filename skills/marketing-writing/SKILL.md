@@ -8,6 +8,11 @@ description: Draft or improve marketing copy, product messaging, landing-page te
 Produce useful, credible copy that helps the intended reader make a decision.
 Scale the process to the deliverable; a button label needs less work than a launch.
 
+For anti-slop or generic-copy refinement, use
+[editorial preservation](references/editorial-preservation.md). Replace empty
+emphasis with supported meaning while retaining voice, conditions and uncertainty;
+do not invent specificity or apply a word blacklist.
+
 For a broader marketing request, select the actual outcome before writing copy.
 Use `customer-research` for audience evidence, `market-analysis` for market sizing,
 `search-visibility` for organic discovery, `conversion-review` for funnel repairs

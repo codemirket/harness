@@ -52,21 +52,40 @@ impl Target {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 pub struct SetupOptions {
     pub targets: Vec<Target>,
-    pub microsoft_learn: bool,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub packages: Vec<String>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub package_settings: BTreeMap<String, Value>,
 }
+impl<'de> Deserialize<'de> for SetupOptions {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        // Accept only the retired receipt key, never a current setup option.
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct ReceiptOptions {
+            targets: Vec<Target>,
+            #[serde(default, rename = "microsoft_learn")]
+            _removed_documentation_selection: bool,
+            #[serde(default)]
+            packages: Vec<String>,
+            #[serde(default)]
+            package_settings: BTreeMap<String, Value>,
+        }
+        let options = ReceiptOptions::deserialize(deserializer)?;
+        Ok(Self {
+            targets: options.targets,
+            packages: options.packages,
+            package_settings: options.package_settings,
+        })
+    }
+}
 impl Default for SetupOptions {
     fn default() -> Self {
         Self {
             targets: vec![Target::Codex, Target::Claude],
-            microsoft_learn: false,
             packages: Vec::new(),
             package_settings: BTreeMap::new(),
         }
@@ -170,16 +189,52 @@ fn check_setup_generation(paths: &Paths, token: Option<&str>, phase: &str) -> Re
 pub(crate) fn read_state(paths: &Paths) -> Result<Option<InstallState>> {
     Ok(read_state_snapshot(paths)?.map(|(state, _)| state))
 }
+
+pub(crate) struct RemovedReplayChoices {
+    pub microsoft_learn: bool,
+    pub packages: Vec<String>,
+    pub targets: Vec<Target>,
+}
+
+/// An updater may supply retired arguments, but only the exact saved generation
+/// can authorize their removal. No live configuration or receipt is changed here.
+pub(crate) fn removed_replay_choices(
+    paths: &Paths,
+    expected: &str,
+) -> Result<RemovedReplayChoices> {
+    expected_receipt(expected)?.context("update replay requires an existing receipt")?;
+    let (state, identity) =
+        read_state_snapshot(paths)?.context("update replay receipt is absent")?;
+    if identity != expected {
+        bail!("update replay receipt changed; run mirket setup with current saved choices");
+    }
+    let bytes = read_bounded(&paths.settings(), MAX_SETTINGS)?;
+    if sha256(&bytes) != identity {
+        bail!("update replay receipt changed while reading retired choices");
+    }
+    let receipt: Value = serde_json::from_slice(&bytes)?;
+    Ok(RemovedReplayChoices {
+        microsoft_learn: receipt["options"]["microsoft_learn"].as_bool() == Some(true),
+        packages: receipt["options"]
+            .get("packages")
+            .map(|values| serde_json::from_value(values.clone()))
+            .transpose()?
+            .unwrap_or_default(),
+        targets: state.options.targets,
+    })
+}
+
 pub(crate) fn read_state_snapshot(paths: &Paths) -> Result<Option<(InstallState, String)>> {
     let Some(bytes) = read_optional(&paths.settings(), MAX_SETTINGS)? else {
         return Ok(None);
     };
-    let state: InstallState =
+    let mut state: InstallState =
         serde_json::from_slice(&bytes).context("invalid mirket setup receipt")?;
     if state.format != 1 {
         bail!("unsupported mirket setup receipt format");
     }
     validate_options(&state.options)?;
+    crate::packages::normalize_saved_selection(&mut state.options);
     crate::update::parse_version(&state.version)?;
     if state.files.len() > 20_000 {
         bail!("setup receipt contains too many files");
@@ -647,20 +702,35 @@ fn desired_servers(
         }
         servers.insert(format!("mirket-package-{id}"), value);
     }
-    for (name, url) in [
-        ("openai-docs", "https://developers.openai.com/mcp"),
-        ("microsoft-learn", "https://learn.microsoft.com/api/mcp"),
-    ] {
-        if name == "microsoft-learn" && !options.microsoft_learn {
-            continue;
-        }
-        let value = match target {
-            Target::Codex => json!({"url":url}),
-            Target::Claude => json!({"type":"http", "url":url}),
-        };
-        servers.insert(name.into(), value);
-    }
+    let value = match target {
+        Target::Codex => json!({"url":"https://developers.openai.com/mcp"}),
+        Target::Claude => json!({"type":"http", "url":"https://developers.openai.com/mcp"}),
+    };
+    servers.insert("openai-docs".into(), value);
     Ok(servers)
+}
+fn preserve_removed_server(
+    target: Target,
+    name: &str,
+    current: Option<&Value>,
+    previous: Option<&Value>,
+    wanted: Option<&Value>,
+) -> bool {
+    if wanted.is_some() {
+        return false;
+    }
+    if name == "microsoft-learn" {
+        let installed = match target {
+            Target::Codex => json!({"url":"https://learn.microsoft.com/api/mcp"}),
+            Target::Claude => json!({"type":"http","url":"https://learn.microsoft.com/api/mcp"}),
+        };
+        // Receipt equality and the exact owned contract are both necessary.
+        // A customized entry is left intact and omitted from the new receipt.
+        return previous != Some(&installed) || current != previous;
+    }
+    name.strip_prefix("mirket-package-")
+        .is_some_and(crate::packages::is_retired_id)
+        && current != previous
 }
 fn validate_server_change(
     name: &str,
@@ -707,6 +777,9 @@ fn merge_config(
             for name in names {
                 let current = servers.get(&name);
                 let desired = wanted.get(&name);
+                if preserve_removed_server(target, &name, current, old.get(&name), desired) {
+                    continue;
+                }
                 validate_server_change(&name, current, old.get(&name), desired)?;
                 if current != desired {
                     changed = true;
@@ -738,6 +811,10 @@ fn merge_config(
             for name in names {
                 let current = servers.get(&name).map(toml_to_json).transpose()?;
                 let desired = wanted.get(&name);
+                if preserve_removed_server(target, &name, current.as_ref(), old.get(&name), desired)
+                {
+                    continue;
+                }
                 validate_server_change(&name, current.as_ref(), old.get(&name), desired)?;
                 if current.as_ref() != desired {
                     changed = true;
@@ -1245,7 +1322,7 @@ mod recovery_tests {
         let temporary = tempfile::tempdir().unwrap();
         let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
         let options = SetupOptions {
-            packages: vec!["inkscape".into(), "glaxnimate".into()],
+            packages: vec!["inkscape".into(), "axe-core".into()],
             ..SetupOptions::default()
         };
         for (target, original) in [
@@ -1255,7 +1332,7 @@ mod recovery_tests {
             let wanted = desired_servers(&paths, target, &options).unwrap();
             let merged = merge_config(target, Some(original), &BTreeMap::new(), &wanted).unwrap();
             assert_eq!(merge_config(target, Some(&merged), &wanted, &wanted).unwrap(), merged);
-            for id in ["inkscape", "glaxnimate"] {
+            for id in ["inkscape", "axe-core"] {
                 let name = format!("mirket-package-{id}");
                 match target {
                     Target::Codex => {
@@ -1383,7 +1460,6 @@ mod recovery_tests {
         fs::write(&source, b"installed-runtime").unwrap();
         let options = SetupOptions {
             targets: vec![Target::Codex],
-            microsoft_learn: false,
             ..SetupOptions::default()
         };
         setup_from_binary(&paths, &catalog, &options, &source).unwrap();

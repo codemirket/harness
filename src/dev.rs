@@ -89,9 +89,31 @@ pub fn lock(project: &Path) -> Result<Value> {
     Ok(json!({"ok":true,"source":project,"lockfile":"Cargo.lock"}))
 }
 
-pub fn test(project: &Path, filter: Option<&str>, ignored: bool) -> Result<Value> {
+pub fn test(
+    project: &Path,
+    filter: Option<&str>,
+    ignored: bool,
+    release: bool,
+    test_target: Option<&str>,
+) -> Result<Value> {
     let project = checkout(project)?;
-    let mut args = vec!["test", "--locked", "--all-targets"];
+    let mut args = vec!["test", "--locked"];
+    if let Some(target) = test_target {
+        if target.is_empty()
+            || target.len() > 64
+            || !target
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'_' || b == b'-')
+        {
+            bail!("test target must contain 1..64 letters, digits, underscores or hyphens");
+        }
+        args.extend(["--test", target]);
+    } else {
+        args.push("--all-targets");
+    }
+    if release {
+        args.push("--release");
+    }
     if let Some(filter) = filter {
         if filter.starts_with('-') {
             bail!("test filter cannot begin with '-'");
@@ -102,12 +124,22 @@ pub fn test(project: &Path, filter: Option<&str>, ignored: bool) -> Result<Value
         args.extend(["--", "--ignored"]);
     }
     cargo(&project, &args)?;
-    Ok(json!({"ok":true,"filter":filter,"ignored":ignored,"source":project}))
+    Ok(
+        json!({"ok":true,"filter":filter,"test_target":test_target,"ignored":ignored,"profile":if release{"release"}else{"debug"},"source":project}),
+    )
 }
 
-pub fn build(project: &Path, release: bool) -> Result<Value> {
+pub fn build(project: &Path, release: bool, binary: Option<&str>) -> Result<Value> {
     let project = checkout(project)?;
-    let mut args = vec!["build", "--locked", "--bins"];
+    let mut args = vec!["build", "--locked"];
+    if let Some(binary) = binary {
+        if !BINARIES.contains(&binary) {
+            bail!("choose a Mirket binary: mirket, install-codex, install-claude, install-all");
+        }
+        args.extend(["--bin", binary]);
+    } else {
+        args.push("--bins");
+    }
     if release {
         args.push("--release");
     }

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "packages": [
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "version": "9.0.2-linux",
+      "kind": "runtime",
+      "status": "ready",
+      "summary": "Pinned Linux ARM64/x64 FFmpeg/FFprobe 9.0.2 with decoded-output verification and target-specific notices. Approved binaries are for local personal use; their build enables nonfree components.",
+      "license": "GPLv3 and component terms; upstream nonfree build is local-use only and not redistributable",
+      "source": "https://ffmpeg.martin-riedl.de/info/detail/linux/arm64/1789931697_9.0.2",
+      "tools": {
+        "allowed": [],
+        "input_policy": "none"
+      },
+      "notices": [
+        "container-runtime/README.md",
+        "container-runtime/FFMPEG-LINUX-ARM64-VERSIONS.txt",
+        "container-runtime/FFMPEG-LINUX-X64-VERSIONS.txt",
+        "container-runtime/FFMPEG-LICENSE.md",
+        "container-runtime/FFMPEG-COPYING.GPLv3",
+        "container-runtime/FFMPEG-COPYING.LGPLv3"
+      ],
+      "platforms": {
+        "aarch64-unknown-linux-gnu": {
+          "executable": "bin/ffmpeg",
+          "artifacts": [
+            {
+              "url": "https://ffmpeg.martin-riedl.de/download/linux/arm64/1789931697_9.0.2/ffmpeg.zip",
+              "sha256": "93a76ae90db5474eecdf951a729857c64f3de23567228d6a7d5e6e8e3cd1021b",
+              "format": "zip",
+              "max_download_bytes": 29360128,
+              "max_unpacked_bytes": 60817408,
+              "files": [
+                {
+                  "path": "ffmpeg",
+                  "destination": "bin/ffmpeg",
+                  "executable": true
+                }
+              ]
+            },
+            {
+              "url": "https://ffmpeg.martin-riedl.de/download/linux/arm64/1789931697_9.0.2/ffprobe.zip",
+              "sha256": "bcbe80fb741c180083327afaf5434812e006b33cacde2016b9aeaf6936128330",
+              "format": "zip",
+              "max_download_bytes": 29360128,
+              "max_unpacked_bytes": 60817408,
+              "files": [
+                {
+                  "path": "ffprobe",
+                  "destination": "bin/ffprobe",
+                  "executable": true
+                }
+              ]
+            }
+          ]
+        },
+        "x86_64-unknown-linux-gnu": {
+          "executable": "bin/ffmpeg",
+          "artifacts": [
+            {
+              "url": "https://ffmpeg.martin-riedl.de/download/linux/amd64/1789931100_9.0.2/ffmpeg.zip",
+              "sha256": "fa8ecf4abbd290d98f7d188b8649cc6b391ae209a98452be955a15aab1909d7f",
+              "format": "zip",
+              "max_download_bytes": 33554432,
+              "max_unpacked_bytes": 92274688,
+              "files": [
+                {
+                  "path": "ffmpeg",
+                  "destination": "bin/ffmpeg",
+                  "executable": true
+                }
+              ]
+            },
+            {
+              "url": "https://ffmpeg.martin-riedl.de/download/linux/amd64/1789931100_9.0.2/ffprobe.zip",
+              "sha256": "3f428c49070be3d24ec338602b76d412e401ffcb8a5641ef0e729181a232fc32",
+              "format": "zip",
+              "max_download_bytes": 33554432,
+              "max_unpacked_bytes": 91226112,
+              "files": [
+                {
+                  "path": "ffprobe",
+                  "destination": "bin/ffprobe",
+                  "executable": true
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

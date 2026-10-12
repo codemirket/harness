@@ -1,0 +1,129 @@
+<svg class="solar-instrument" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720" role="img" aria-labelledby="solstice-art-title solstice-art-description">
+  <title id="solstice-art-title">An instrument for noticing light</title>
+  <desc id="solstice-art-description">An amber sun within a fine-lined celestial dial, with calibrated rings, a tilted orbital path and a horizontal sight line. An expressive illustration, not a scientific measurement.</desc>
+  <defs>
+    <linearGradient id="solstice-solar-shading" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0bc" stop-opacity=".38"/>
+      <stop offset=".57" stop-color="#ffc56d" stop-opacity="0"/>
+      <stop offset="1" stop-color="#8b491f" stop-opacity=".36"/>
+    </linearGradient>
+  </defs>
+  <g id="solstice-calibration" fill="none" stroke="#878476" stroke-width=".8">
+    <circle cx="360" cy="360" r="282" stroke="#a5a08f" stroke-width=".65"/>
+    <circle cx="360" cy="360" r="244"/>
+    <circle cx="360" cy="360" r="225" stroke="#b8af99" stroke-width=".65"/>
+      <path d="M360.00 109.00L360.00 94.00"/>
+      <path d="M382.57 101.99L383.18 95.01"/>
+      <path d="M404.97 104.93L406.19 98.04"/>
+      <path d="M426.00 113.69L428.85 103.06"/>
+      <path d="M448.58 116.62L450.98 110.04"/>
+      <path d="M469.46 125.27L472.42 118.92"/>
+      <path d="M485.50 142.63L493.00 129.64"/>
+      <path d="M508.56 147.84L512.57 142.11"/>
+      <path d="M526.48 161.59L530.98 156.23"/>
+      <path d="M540.31 179.69L548.09 171.91"/>
+      <path d="M558.41 193.52L563.77 189.02"/>
+      <path d="M572.16 211.44L577.89 207.43"/>
+      <path d="M577.37 234.50L590.36 227.00"/>
+      <path d="M594.73 250.54L601.08 247.58"/>
+      <path d="M603.38 271.42L609.96 269.02"/>
+      <path d="M606.31 294.00L616.94 291.15"/>
+      <path d="M615.07 315.03L621.96 313.81"/>
+      <path d="M618.01 337.43L624.99 336.82"/>
+      <path d="M611.00 360.00L626.00 360.00"/>
+      <path d="M618.01 382.57L624.99 383.18"/>
+      <path d="M615.07 404.97L621.96 406.19"/>
+      <path d="M606.31 426.00L616.94 428.85"/>
+      <path d="M603.38 448.58L609.96 450.98"/>
+      <path d="M594.73 469.46L601.08 472.42"/>
+      <path d="M577.37 485.50L590.36 493.00"/>
+      <path d="M572.16 508.56L577.89 512.57"/>
+      <path d="M558.41 526.48L563.77 530.98"/>
+      <path d="M540.31 540.31L548.09 548.09"/>
+      <path d="M526.48 558.41L530.98 563.77"/>
+      <path d="M508.56 572.16L512.57 577.89"/>
+      <path d="M485.50 577.37L493.00 590.36"/>
+      <path d="M469.46 594.73L472.42 601.08"/>
+      <path d="M448.58 603.38L450.98 609.96"/>
+      <path d="M426.00 606.31L428.85 616.94"/>
+      <path d="M404.97 615.07L406.19 621.96"/>
+      <path d="M382.57 618.01L383.18 624.99"/>
+      <path d="M360.00 611.00L360.00 626.00"/>
+      <path d="M337.43 618.01L336.82 624.99"/>
+      <path d="M315.03 615.07L313.81 621.96"/>
+      <path d="M294.00 606.31L291.15 616.94"/>
+      <path d="M271.42 603.38L269.02 609.96"/>
+      <path d="M250.54 594.73L247.58 601.08"/>
+      <path d="M234.50 577.37L227.00 590.36"/>
+      <path d="M211.44 572.16L207.43 577.89"/>
+      <path d="M193.52 558.41L189.02 563.77"/>
+      <path d="M179.69 540.31L171.91 548.09"/>
+      <path d="M161.59 526.48L156.23 530.98"/>
+      <path d="M147.84 508.56L142.11 512.57"/>
+      <path d="M142.63 485.50L129.64 493.00"/>
+      <path d="M125.27 469.46L118.92 472.42"/>
+      <path d="M116.62 448.58L110.04 450.98"/>
+      <path d="M113.69 426.00L103.06 428.85"/>
+      <path d="M104.93 404.97L98.04 406.19"/>
+      <path d="M101.99 382.57L95.01 383.18"/>
+      <path d="M109.00 360.00L94.00 360.00"/>
+      <path d="M101.99 337.43L95.01 336.82"/>
+      <path d="M104.93 315.03L98.04 313.81"/>
+      <path d="M113.69 294.00L103.06 291.15"/>
+      <path d="M116.62 271.42L110.04 269.02"/>
+      <path d="M125.27 250.54L118.92 247.58"/>
+      <path d="M142.63 234.50L129.64 227.00"/>
+      <path d="M147.84 211.44L142.11 207.43"/>
+      <path d="M161.59 193.52L156.23 189.02"/>
+      <path d="M179.69 179.69L171.91 171.91"/>
+      <path d="M193.52 161.59L189.02 156.23"/>
+      <path d="M211.44 147.84L207.43 142.11"/>
+      <path d="M234.50 142.63L227.00 129.64"/>
+      <path d="M250.54 125.27L247.58 118.92"/>
+      <path d="M271.42 116.62L269.02 110.04"/>
+      <path d="M294.00 113.69L291.15 103.06"/>
+      <path d="M315.03 104.93L313.81 98.04"/>
+      <path d="M337.43 101.99L336.82 95.01"/>
+  </g>
+  <g id="solstice-reference-lines" fill="none" stroke="#aaa28c" stroke-width=".7">
+    <path d="M48 360H672M360 48V672" stroke-dasharray="2 5"/>
+    <path d="M164 191L556 529M164 529L556 191" stroke="#c2b8a0" stroke-dasharray="1 5"/>
+    <ellipse cx="360" cy="360" rx="270" ry="114" transform="rotate(-25 360 360)" stroke="#817c66" stroke-width=".9"/>
+    <ellipse cx="360" cy="360" rx="220" ry="79" transform="rotate(36 360 360)" stroke="#beb29a"/>
+    <path d="M115 460H605" stroke="#514f42" stroke-width=".85"/>
+    <path d="M115 455V465M605 455V465" stroke="#514f42"/>
+  </g>
+  <g id="solstice-sun-placement" transform="translate(360 335)">
+    <g id="solstice-sun" data-solar-motion="" style="transform:translate(-35px,32px)">
+      <circle r="97" fill="none" stroke="#b6894c" stroke-width=".7" opacity=".6"/>
+      <circle r="90" fill="none" stroke="#b6894c" stroke-width=".45" opacity=".6"/>
+      <circle class="solar-color" r="82" fill="#d68e38"/>
+      <circle r="82" fill="url(#solstice-solar-shading)"/>
+      <path d="M-59-56A82 82 0 0 1 57-59" fill="none" stroke="#fff0c0" stroke-opacity=".75" stroke-width=".7"/>
+      <circle r="3" fill="#6a4d27"/>
+      <path d="M-8 0H8M0-8V8" fill="none" stroke="#604b2a" stroke-width=".7"/>
+    </g>
+  </g>
+  <g id="solstice-sight-lines" fill="none" stroke="#6e6957" stroke-width=".8">
+    <path d="M360 135V180M355 140H365M355 175H365"/>
+    <path d="M482 242L551 173H599"/>
+    <circle cx="482" cy="242" r="3" fill="#f5f1e7"/>
+    <path d="M225 536L190 571H122"/>
+    <circle cx="225" cy="536" r="3" fill="#f5f1e7"/>
+    <path d="M340 582H380M360 563V601"/>
+    <circle cx="360" cy="582" r="7"/>
+  </g>
+  <g id="solstice-annotations" fill="#64614f" font-family="Helvetica,Arial,sans-serif" font-size="10" letter-spacing="1.5">
+    <text x="360" y="34" text-anchor="middle">N</text>
+    <text x="360" y="698" text-anchor="middle">S</text>
+    <text x="27" y="363" text-anchor="middle">W</text>
+    <text x="693" y="363" text-anchor="middle">E</text>
+    <text x="360" y="107" text-anchor="middle" font-size="8">0°</text>
+    <text x="618" y="363" text-anchor="middle" font-size="8">90°</text>
+    <text x="101" y="363" text-anchor="middle" font-size="8">270°</text>
+    <text x="550" y="156" font-size="11">23°26′</text>
+    <text x="121" y="590" font-size="8" letter-spacing="1">OBLIQUITY / I</text>
+    <text x="585" y="479" text-anchor="end" font-size="8" letter-spacing="1">LOCAL HORIZON</text>
+    <text x="376" y="158" font-size="8" letter-spacing="1">ZENITH</text>
+  </g>
+</svg>

@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "packages": [
+    {
+      "id": "hyperframes",
+      "name": "HyperFrames HTML/video producer",
+      "version": "0.8.149",
+      "kind": "engine",
+      "adapter": "hyperframes",
+      "status": "ready",
+      "reason": "Pinned upstream capture and producer pipeline with Mirket-owned local adapter and explicit Node, Chromium, FFmpeg/FFprobe runtimes; macOS ARM64 first.",
+      "summary": "Inspect, sample, verify and render editable local HTML/GSAP compositions with mapped media/audio to MP4 or transparent WebM.",
+      "license": "Apache-2.0; GSAP and bundled dependencies retain their own terms",
+      "source": "https://github.com/heygen-com/hyperframes/tree/bf881bf79d68cc78b52624f6431644ac152b2723",
+      "dependencies": [
+        "nodejs",
+        "chromium",
+        "ffmpeg"
+      ],
+      "notices": [
+        "hyperframes/@babel__parser/LICENSE",
+        "hyperframes/@chenglou__pretext/LICENSE",
+        "hyperframes/@fontsource__archivo-black/LICENSE",
+        "hyperframes/@fontsource__eb-garamond/LICENSE",
+        "hyperframes/@fontsource__ibm-plex-mono/LICENSE",
+        "hyperframes/@fontsource__inter/LICENSE",
+        "hyperframes/@fontsource__jetbrains-mono/LICENSE",
+        "hyperframes/@fontsource__lato/LICENSE",
+        "hyperframes/@fontsource__league-gothic/LICENSE",
+        "hyperframes/@fontsource__montserrat/LICENSE",
+        "hyperframes/@fontsource__noto-sans-jp/LICENSE",
+        "hyperframes/@fontsource__nunito/LICENSE",
+        "hyperframes/@fontsource__open-sans/LICENSE",
+        "hyperframes/@fontsource__oswald/LICENSE",
+        "hyperframes/@fontsource__outfit/LICENSE",
+        "hyperframes/@fontsource__playfair-display/LICENSE",
+        "hyperframes/@fontsource__poppins/LICENSE",
+        "hyperframes/@fontsource__roboto/LICENSE",
+        "hyperframes/@fontsource__source-code-pro/LICENSE",
+        "hyperframes/@fontsource__space-mono/LICENSE",
+        "hyperframes/@hono__node-server/LICENSE",
+        "hyperframes/@jridgewell__sourcemap-codec/LICENSE",
+        "hyperframes/@puppeteer__browsers/LICENSE",
+        "hyperframes/HYPERFRAMES-APACHE-2.0.txt",
+        "hyperframes/README.md",
+        "hyperframes/SOURCE-INVENTORY.json",
+        "hyperframes/acorn-walk/LICENSE",
+        "hyperframes/acorn/LICENSE",
+        "hyperframes/ansi-regex--5.0.1/license",
+        "hyperframes/ansi-regex/license",
+        "hyperframes/ansi-styles/license",
+        "hyperframes/ast-types/LICENSE",
+        "hyperframes/boolbase/LICENSE",
+        "hyperframes/chromium-bidi/LICENSE",
+        "hyperframes/chromium-bidi/out/Default/gen/src/THIRD_PARTY_NOTICES",
+        "hyperframes/cliui/LICENSE.txt",
+        "hyperframes/css-select/LICENSE",
+        "hyperframes/css-what/LICENSE",
+        "hyperframes/cssesc/LICENSE-MIT.txt",
+        "hyperframes/cssom/LICENSE.txt",
+        "hyperframes/devtools-protocol/LICENSE",
+        "hyperframes/dom-serializer/LICENSE",
+        "hyperframes/domelementtype/LICENSE",
+        "hyperframes/domhandler/LICENSE",
+        "hyperframes/domutils/LICENSE",
+        "hyperframes/emoji-regex/LICENSE-MIT.txt",
+        "hyperframes/entities/LICENSE",
+        "hyperframes/esbuild/LICENSE.md",
+        "hyperframes/escalade/license",
+        "hyperframes/esprima/LICENSE.BSD",
+        "hyperframes/get-caller-file/LICENSE.md",
+        "hyperframes/get-east-asian-width/license",
+        "hyperframes/gsap/STANDARD-LICENSE.txt",
+        "hyperframes/hono/LICENSE",
+        "hyperframes/htmlparser2/LICENSE",
+        "hyperframes/is-fullwidth-code-point/license",
+        "hyperframes/linkedom/LICENSE",
+        "hyperframes/magic-string/LICENSE",
+        "hyperframes/mitt/LICENSE",
+        "hyperframes/modern-tar/LICENSE",
+        "hyperframes/nanoid/LICENSE",
+        "hyperframes/nth-check/LICENSE",
+        "hyperframes/picocolors/LICENSE",
+        "hyperframes/postcss-selector-parser/LICENSE-MIT",
+        "hyperframes/postcss/LICENSE",
+        "hyperframes/puppeteer-core/LICENSE",
+        "hyperframes/recast/LICENSE",
+        "hyperframes/source-map-js/LICENSE",
+        "hyperframes/source-map/LICENSE",
+        "hyperframes/string-width--7.2.0/license",
+        "hyperframes/string-width/license",
+        "hyperframes/strip-ansi--6.0.1/license",
+        "hyperframes/strip-ansi/license",
+        "hyperframes/tiny-invariant/LICENSE",
+        "hyperframes/tslib/CopyrightNotice.txt",
+        "hyperframes/tslib/LICENSE.txt",
+        "hyperframes/typed-query-selector/LICENSE",
+        "hyperframes/uhyphen/LICENSE",
+        "hyperframes/util-deprecate/LICENSE",
+        "hyperframes/wawoff2/LICENSE",
+        "hyperframes/webdriver-bidi-protocol/LICENSE",
+        "hyperframes/wrap-ansi/license",
+        "hyperframes/ws/LICENSE",
+        "hyperframes/y18n/LICENSE",
+        "hyperframes/yargs-parser/LICENSE.txt",
+        "hyperframes/yargs/LICENSE",
+        "hyperframes/zod/LICENSE"
+      ],
+      "common": [
+        {
+          "url": "https://registry.npmjs.org/hyperframes/-/hyperframes-0.8.149.tgz",
+          "sha256": "ef6ba1d7806fb482fd7a605d9f586d6dfa05ad4b2ab04618e8a494f4b191cf7b",
+          "format": "tar-gz",
+          "max_download_bytes": 8388608,
+          "max_unpacked_bytes": 33554432,
+          "strip_prefix": "package",
+          "destination": "node_modules/hyperframes"
+        },
+        {
+          "url": "https://registry.npmjs.org/@hono/node-server/-/node-server-2.0.12.tgz",
+          "sha256": "529895f679d9e0a6702a7a906f10fc10b523645ec787d9ffd72811c63886edcf",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 196608,
+          "strip_prefix": "package",
+          "destination": "node_modules/@hono/node-server"
+        },
+        {
+          "url": "https://registry.npmjs.org/@puppeteer/browsers/-/browsers-3.2.2.tgz",
+          "sha256": "2a3aaa0bb30b66f059e640d5a4c641426c00c344f0a5007c3e6a3a8df5eb4099",
+          "format": "tar-gz",
+          "max_download_bytes": 131072,
+          "max_unpacked_bytes": 589824,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers"
+        },
+        {
+          "url": "https://registry.npmjs.org/yargs/-/yargs-18.0.0.tgz",
+          "sha256": "99800bd5af16c7d01de7040265eb60b9cb3cc8c92aaec96701568700b5853350",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 327680,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs"
+        },
+        {
+          "url": "https://registry.npmjs.org/cliui/-/cliui-9.0.1.tgz",
+          "sha256": "26d72549682051eb3e6ae24514ab8d15d21e2d7a54f3a58b0ecb58fe4c5971cd",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/cliui"
+        },
+        {
+          "url": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.2.0.tgz",
+          "sha256": "2fa01de86a5022ef32773abbc4e84a53a1c5d31f5a5cbf03ed2575f10408543f",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/cliui/node_modules/strip-ansi"
+        },
+        {
+          "url": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-6.2.2.tgz",
+          "sha256": "e746bb8f5dd8805dc40c399b91a4a232db7d9f93fe2d83b771a9cace7b5231d7",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/cliui/node_modules/strip-ansi/node_modules/ansi-regex"
+        },
+        {
+          "url": "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-9.0.2.tgz",
+          "sha256": "0a42a5c5cee0936544691a75aa7aef11620971c961988473f99b5a6540f78e7e",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/cliui/node_modules/wrap-ansi"
+        },
+        {
+          "url": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-6.2.3.tgz",
+          "sha256": "e939cf5138d7a5d4e34100acd0153577b2953305931157a1cfe9faa56383911b",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/cliui/node_modules/wrap-ansi/node_modules/ansi-styles"
+        },
+        {
+          "url": "https://registry.npmjs.org/string-width/-/string-width-7.2.0.tgz",
+          "sha256": "3e90901a98cadef6986fe2953e6d181f49730d81c7855776a6337fef93bbf1f3",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/string-width"
+        },
+        {
+          "url": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-10.6.0.tgz",
+          "sha256": "9f40e54c0586f30882ece0ee0d22654394b89321e89cb55e8faf12ed8ccff981",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/string-width/node_modules/emoji-regex"
+        },
+        {
+          "url": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.2.0.tgz",
+          "sha256": "2fa01de86a5022ef32773abbc4e84a53a1c5d31f5a5cbf03ed2575f10408543f",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/string-width/node_modules/strip-ansi"
+        },
+        {
+          "url": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-6.2.2.tgz",
+          "sha256": "e746bb8f5dd8805dc40c399b91a4a232db7d9f93fe2d83b771a9cace7b5231d7",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/string-width/node_modules/strip-ansi/node_modules/ansi-regex"
+        },
+        {
+          "url": "https://registry.npmjs.org/yargs-parser/-/yargs-parser-22.0.0.tgz",
+          "sha256": "2b640247b9ca6f540c708dfea99bafeae59a46db66f491fb5b6d55fce1614d65",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/@puppeteer/browsers/node_modules/yargs/node_modules/yargs-parser"
+        },
+        {
+          "url": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz",
+          "sha256": "0e0eadcdaada805db5d85b53ad5cdca0760b996ee199ec9658e7b34aa6c8e0d9",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/ansi-regex"
+        },
+        {
+          "url": "https://registry.npmjs.org/chromium-bidi/-/chromium-bidi-17.0.2.tgz",
+          "sha256": "9041e3c370ab510804159903fb926df69a377d120f83e657ebd4b22752ccbfbc",
+          "format": "tar-gz",
+          "max_download_bytes": 917504,
+          "max_unpacked_bytes": 12386304,
+          "strip_prefix": "package",
+          "destination": "node_modules/chromium-bidi"
+        },
+        {
+          "url": "https://registry.npmjs.org/zod/-/zod-3.25.76.tgz",
+          "sha256": "9e1f1a05f0dd0c1dab64ee91ceb9bf55cd44d35368c70edda80a2fdc70a88377",
+          "format": "tar-gz",
+          "max_download_bytes": 720896,
+          "max_unpacked_bytes": 4718592,
+          "strip_prefix": "package",
+          "destination": "node_modules/chromium-bidi/node_modules/zod"
+        },
+        {
+          "url": "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.1680125.tgz",
+          "sha256": "6b987edd4a7db51e25d771759b9e230390ba50b4a5902749535b01c51ebf7877",
+          "format": "tar-gz",
+          "max_download_bytes": 720896,
+          "max_unpacked_bytes": 4849664,
+          "strip_prefix": "package",
+          "destination": "node_modules/devtools-protocol"
+        },
+        {
+          "url": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz",
+          "sha256": "b5ccd9fbfb08098eefbeb6b6b4b40db6db3acf9243e327e039925aa8661cb107",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/emoji-regex"
+        },
+        {
+          "url": "https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz",
+          "sha256": "ba2755afc0e6c6705326711fd218ebe107a527eccbd6485155fde98ed000bee7",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/escalade"
+        },
+        {
+          "url": "https://registry.npmjs.org/get-caller-file/-/get-caller-file-2.0.5.tgz",
+          "sha256": "7b13e1c81949ff4c1baae4ac4e34990492d5e8a86dab7e3b90027b1f5126935f",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/get-caller-file"
+        },
+        {
+          "url": "https://registry.npmjs.org/get-east-asian-width/-/get-east-asian-width-1.6.0.tgz",
+          "sha256": "4451f58e2f5a4ef27ae8b4ba25b64be97d3a8413dc8614a4321a10d418eee6d7",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/get-east-asian-width"
+        },
+        {
+          "url": "https://registry.npmjs.org/gsap/-/gsap-3.15.0.tgz",
+          "sha256": "d2e33ad202d4811e9084883f7ff9a27967ac4095caef51ca4c9d20697a253b1c",
+          "format": "tar-gz",
+          "max_download_bytes": 2097152,
+          "max_unpacked_bytes": 8192000,
+          "strip_prefix": "package",
+          "destination": "node_modules/gsap"
+        },
+        {
+          "url": "https://registry.npmjs.org/hono/-/hono-4.12.18.tgz",
+          "sha256": "34e071001c39c0eb80306809e9f0b98406e218248195be051c4908ef144af5a0",
+          "format": "tar-gz",
+          "max_download_bytes": 327680,
+          "max_unpacked_bytes": 1835008,
+          "strip_prefix": "package",
+          "destination": "node_modules/hono"
+        },
+        {
+          "url": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz",
+          "sha256": "6f415dae5dc6070f1b42daee6165eab941a97101982305facc8bafdaf300bc4a",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/is-fullwidth-code-point"
+        },
+        {
+          "url": "https://registry.npmjs.org/mitt/-/mitt-3.0.1.tgz",
+          "sha256": "2ef69c669574ad5b86fdb8b30aed8c8c1705931f19a68bc4b1b234c6d26d7306",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/mitt"
+        },
+        {
+          "url": "https://registry.npmjs.org/modern-tar/-/modern-tar-0.8.4.tgz",
+          "sha256": "5aacbc6fec77fd39f90a6c949b1674d407724e0612c84d1e19fd0374da118b22",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/modern-tar"
+        },
+        {
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.18.tgz",
+          "sha256": "b9dc81cb403ea2510314dd2d1ad8d71934f325db90c1b43805e781b87e3fb009",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/nanoid"
+        },
+        {
+          "url": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",
+          "sha256": "d3aedb2807967b7eb37fd11b03b7e3701e725af79c650d0812ff7213f8f882d9",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/picocolors"
+        },
+        {
+          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz",
+          "sha256": "f63d6d9bce28989cd083add85af717c0264e44323d35c909ae99ac934e9641a6",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 327680,
+          "strip_prefix": "package",
+          "destination": "node_modules/postcss"
+        },
+        {
+          "url": "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-25.11.0.tgz",
+          "sha256": "77514cf17c99014aa8e3d5726bf8f064e5888f654e7a85aeb20a784030192a01",
+          "format": "tar-gz",
+          "max_download_bytes": 1441792,
+          "max_unpacked_bytes": 7798784,
+          "strip_prefix": "package",
+          "destination": "node_modules/puppeteer-core"
+        },
+        {
+          "url": "https://registry.npmjs.org/ws/-/ws-8.21.3.tgz",
+          "sha256": "df3454ef205791ce50b5b9241762dcf9bfe1aa9f7f01d3057229be7dac0c2dc3",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 196608,
+          "strip_prefix": "package",
+          "destination": "node_modules/puppeteer-core/node_modules/ws"
+        },
+        {
+          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+          "sha256": "f126a6f9fca487a43219d8cb8c3a955279187a966119d548eb5cd47e999d4853",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 196608,
+          "strip_prefix": "package",
+          "destination": "node_modules/source-map-js"
+        },
+        {
+          "url": "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz",
+          "sha256": "adbb4fb1b26e8069af99adff0079369c93f17cf887b91086691d671ddbd52934",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/string-width"
+        },
+        {
+          "url": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz",
+          "sha256": "9bdb75d0bff49f156dd8c3bcb0e06b3fa96c3d88ddd4c342a4345866a40c08ca",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/strip-ansi"
+        },
+        {
+          "url": "https://registry.npmjs.org/typed-query-selector/-/typed-query-selector-2.12.2.tgz",
+          "sha256": "afdb97c8109ae91f3aa97a7a9063d77d3be5a0b26b99ecfea146bd6ac6f13d57",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/typed-query-selector"
+        },
+        {
+          "url": "https://registry.npmjs.org/webdriver-bidi-protocol/-/webdriver-bidi-protocol-0.4.3.tgz",
+          "sha256": "d98dd553a4683e6346be3a75efad1b4fc03c4ed1e33232a26c86063a6916c756",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 393216,
+          "strip_prefix": "package",
+          "destination": "node_modules/webdriver-bidi-protocol"
+        },
+        {
+          "url": "https://registry.npmjs.org/y18n/-/y18n-5.0.8.tgz",
+          "sha256": "d43743bad3a7cb3af5d3b6bf70fd32fe3923ea86e4148109c6dd0126deada769",
+          "format": "tar-gz",
+          "max_download_bytes": 65536,
+          "max_unpacked_bytes": 131072,
+          "strip_prefix": "package",
+          "destination": "node_modules/y18n"
+        },
+        {
+          "url": "https://registry.npmjs.org/esbuild/-/esbuild-0.25.12.tgz",
+          "sha256": "227584145829e5c4782734b3fb7b91b49c6aa12876d6cf070e6a3d9d4de543f9",
+          "format": "tar-gz",
+          "max_download_bytes": 61894,
+          "max_unpacked_bytes": 270686,
+          "strip_prefix": "package",
+          "destination": "node_modules/esbuild"
+        }
+      ],
+      "embedded": [
+        {
+          "path": "hyperframes/runner.mjs",
+          "destination": "runner.mjs",
+          "executable": false
+        },
+        {
+          "path": "hyperframes/verification.mjs",
+          "destination": "verification.mjs",
+          "executable": false
+        }
+      ],
+      "platforms": {
+        "aarch64-unknown-linux-gnu": {
+          "executable": "{node}",
+          "artifacts": [
+            {
+              "url": "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.25.12.tgz",
+              "sha256": "d5e01d210e026823d559e2b82554cdcdab6fd87c4a57b519b392ef183c1f87fd",
+              "format": "tar-gz",
+              "max_download_bytes": 4194304,
+              "max_unpacked_bytes": 10485760,
+              "strip_prefix": "package",
+              "destination": "node_modules/@esbuild/linux-arm64"
+            }
+          ]
+        },
+        "x86_64-unknown-linux-gnu": {
+          "executable": "{node}",
+          "artifacts": [
+            {
+              "url": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.25.12.tgz",
+              "sha256": "f7efc127658a108dcda9d4210b01804ee8f5d6b3acbd6d63f20aa51d3b50bd5f",
+              "format": "tar-gz",
+              "max_download_bytes": 5242880,
+              "max_unpacked_bytes": 10485760,
+              "strip_prefix": "package",
+              "destination": "node_modules/@esbuild/linux-x64"
+            }
+          ]
+        }
+      },
+      "launch": {
+        "args": [
+          "{root}/runner.mjs"
+        ],
+        "env": {
+          "MIRKET_HYPERFRAMES_ROOT": "{root}",
+          "MIRKET_CHROMIUM": "{chromium}",
+          "MIRKET_FFMPEG": "{ffmpeg}",
+          "MIRKET_FFPROBE": "{ffprobe}",
+          "PUPPETEER_SKIP_DOWNLOAD": "true",
+          "HYPERFRAMES_TELEMETRY_DISABLED": "1"
+        }
+      },
+      "tools": {
+        "allowed": [
+          "composition_inspect",
+          "composition_frame",
+          "composition_verify",
+          "composition_render"
+        ],
+        "input_policy": "none"
+      },
+      "container": {
+        "image_base": {
+          "aarch64-unknown-linux-gnu": "mcr.microsoft.com/playwright@sha256:824f1a789072e648c62541c2cfa4479c4061a290d5c27766d67dc1dcbc19b321",
+          "x86_64-unknown-linux-gnu": "mcr.microsoft.com/playwright@sha256:cf0daee9b994042e011bc29f20cdff1a9f682a039b43fcd738f7d8a9d3bcd9d6"
+        },
+        "cpu": 2,
+        "memory_mib": 1536,
+        "pids": 256,
+        "network": false,
+        "verified_hosts": [
+          "aarch64-apple-darwin"
+        ]
+      }
+    }
+  ]
+}

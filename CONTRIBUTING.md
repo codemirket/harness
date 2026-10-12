@@ -22,6 +22,19 @@ executable is running. CI installs its bootstrap into a separate temporary prefi
 `mirket dev fmt` formats the Rust sources. `mirket dev check` runs formatting,
 Clippy with warnings denied, and all Rust test targets. Use
 `mirket dev build --release` to build the CLI and standalone target installers.
+When changing owned JavaScript report or export verification, exercise the exact
+production helpers with the existing selected Node runtime:
+
+```sh
+node tests/axe_report.cjs
+node tests/hyperframes_verification.mjs
+node tests/hyperframes_verification.mjs --ffmpeg /absolute/verified/ffmpeg
+```
+
+The last command adds real MP4/WebM decoder probes. Core Rust checks do not
+silently install or require an optional package runtime. Helper probes do not
+replace an affected full browser/producer invocation or visual inspection.
+
 The locked dependency graph and pinned toolchain are authoritative. After a
 production dependency change has been approved under [AGENTS.md](AGENTS.md),
 run `mirket dev lock --project .` to resolve the workspace requirements while
@@ -30,6 +43,11 @@ resulting `Cargo.lock` diff before running checks; lockfile reconciliation is no
 permission to add a dependency.
 `mirket dev test FILTER` runs a focused test selection. `--ignored` explicitly
 selects opt-in tests, including real package downloads.
+Use `--release` for installed native-package checks so they exercise the optimized
+CLI within actual client startup budgets. Debug integrity scans of large native
+application bundles are unsuitable for performance conclusions.
+`--test NAME` selects one integration target to avoid compiling unrelated native
+test binaries. The required `mirket dev check` still runs every standard target.
 
 After publishing the checkout's version, run
 `mirket dev test published_update --ignored` to exercise the public GitHub update
@@ -82,6 +100,23 @@ Preserve upstream attribution and licenses. Test the selected payload and its
 project installation, then exercise the intended task where tools are available.
 A skill's presence or an agent repeating its name is not evidence of quality.
 
+The embedded browser-motion examples also have an optional rendered acceptance
+probe in `tests/browser_motion.cjs`. Use an already available Playwright and
+Chromium installation; the probe never downloads either. Serve the **installed**
+`advanced-motion/assets` directory with an existing local server, then run:
+
+```sh
+node tests/browser_motion.cjs http://127.0.0.1:8765/ /absolute/evidence/motion
+```
+
+It records normal playback and frames at desktop/narrow sizes, checks reduced
+motion at load and live changes, rapid input, scroll reversal, static/Canvas
+fallbacks, and explicit lifecycle events. An optional fourth argument selects a
+scenario prefix for a focused rerun, such as `signal-390-normal`. Inspect the
+recordings and frames against the brief; the assertions do not accept aesthetics,
+prove native back/forward-cache behavior, or benchmark a physical mobile device.
+Keep generated evidence outside shipped source and stop the preview server.
+
 ## Add a local MCP package
 
 Use the existing package registry and setup flow. Every installable definition
@@ -102,9 +137,9 @@ Use an isolated home and project for real package checks:
 
 ```sh
 mirket --home /absolute/test-home setup --target all --yes
-mirket --home /absolute/test-home package install jscpd
+mirket --home /absolute/test-home package install playwright
 mirket --home /absolute/test-home package status
-mirket --home /absolute/test-home package probe jscpd --project /absolute/test-project
+mirket --home /absolute/test-home package probe playwright --project /absolute/test-project
 ```
 
 Then use `mirket package call` with a meaningful fixture and a discriminating
@@ -125,7 +160,7 @@ required packages in an explicit disposable home:
 
 ```sh
 mirket --home /absolute/test-home setup --target all --yes
-mirket --home /absolute/test-home package install jscpd playwright dbhub safe-docx semiotic markitdown
+mirket --home /absolute/test-home package install playwright
 ```
 
 The home must contain a file named `.mirket-package-test-home` with exactly
@@ -137,44 +172,39 @@ On supported macOS or Linux targets, run the suites explicitly:
 
 ```sh
 MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_live --project . --ignored
-MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_documents_live --project . --ignored
-MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_python_live --project . --ignored
 MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_lifecycle_live --project . --ignored
 ```
 
-The browser/SQLite suite changes a real local page, reads a fixture database and
-checks denied operations. The document suite edits, saves and reopens DOCX files,
-checks source preservation and overwrite refusal, and reconciles SVG chart marks
-with their data. The Python suite checks local conversion and refused network,
-escape and unsupported-content inputs. The lifecycle suite verifies removal,
-reinstallation, update repair, drift refusal and preservation of unrelated client
-settings. The SQLite suite changes the disposable home's database selection;
-configure another existing fixture database before running a full doctor on
-that home. These checks do not establish native
-client activation, device readiness or document layout acceptance.
+For the macOS ARM64 creative profiles, install the chosen packages in that marked
+disposable home, then run their opt-in suites through `mirket dev test`:
+`packages_hyperframes_live`, `packages_motion_canvas_live`,
+`packages_penpot_live` and `packages_axe_core_live`. Use an existing absolute
+`MIRKET_PACKAGE_TEST_HOME`; renderer/design suites document evidence-directory
+variables in their source. Container engines and Penpot need explicit Podman registration, an initialized
+and started disposable Mirket environment, and the selected package profile. Stop it afterward. Inspect real frames,
+saved documents and playback separately; byte consistency cannot accept art direction.
 
-To retain the document suite's outputs, set `MIRKET_PACKAGE_TEST_OUTPUT` to an
-existing absolute disposable evidence directory. It writes its fixed artifact
-names there, replacing earlier test artifacts with the same names. Keep evidence
-outside shipped source, inspect the saved files and retain only useful artifacts.
-The suites create and remove their own task fixtures; remove the separately
-provisioned test home and unneeded evidence when verification is complete.
+The browser suite changes a real local page and checks denied operations. The
+lifecycle suite verifies removal, reinstallation, update repair, drift refusal
+and preservation of unrelated client settings. These checks do not establish
+native client activation or visual acceptance. Retain useful evidence outside
+shipped source and remove the separately provisioned test home afterward.
 
 For the editor profile on macOS ARM64, use a local disposable home outside
-file-provider folders. Install both signed applications, create the same explicit
+file-provider folders. Install the signed application, create the same explicit
 test-home marker, then run:
 
 ```sh
-mirket --home /absolute/test-home package install inkscape glaxnimate
+mirket --home /absolute/test-home package install inkscape
 MIRKET_PACKAGE_TEST_HOME=/absolute/test-home MIRKET_PACKAGE_TEST_OUTPUT=/absolute/evidence mirket dev test packages_editors_live --project . --ignored
 ```
 
-The editor suite exercises all eight tools against native applications, distinct
+The editor suite exercises all three tools against the native application, distinct
 editable/exported artifacts, malformed or unsupported input, source preservation,
 overwrite refusal, saved-choice update replay and managed-copy drift. Its SVG
-fixture is durable test source; generated PNG, PDF, native animation and browser
+fixture is durable test source; generated PNG, PDF and browser
 evidence belong outside shipped source. Inspect the saved illustration at intended
-and small sizes, animation samples and actual browser playback. Neither byte
+and small sizes and actual browser playback. Neither byte
 checks nor differing frame hashes establish visual acceptance. Normal gates also
 cover fake-success outputs, transport disconnects, deadlines, request cancellation,
 descendant cleanup and archive failures.

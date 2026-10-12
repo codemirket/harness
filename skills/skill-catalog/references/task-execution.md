@@ -40,6 +40,13 @@ tool. Installing a second runtime is justified only by an unmet outcome and its
 reviewed costs, data flows and permissions. Do not route through a new daemon
 when existing native tools suffice.
 
+Choose a tool for a concrete missing effect or observation: editable geometry,
+rendered behavior, real calculation, source retrieval or measured performance.
+Use the least costly available route that can establish that result; add a more
+capable tool when the first route cannot. Independent calls may run together,
+but dependent effects need ordering. Reuse evidence while its inputs are unchanged.
+Tool counts, a larger stack and repeated captures without inspection are not quality.
+
 ## Work with a verification loop
 
 Keep four task facts in the existing record when the task warrants persistence:

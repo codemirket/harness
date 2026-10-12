@@ -1,0 +1,17 @@
+{
+  "name": "mj-context-menu",
+  "version": "0.6.1",
+  "maintainers": [
+    {
+      "name": "zorkow",
+      "email": "Volker.Sorge@gmail.com"
+    }
+  ],
+  "author": null,
+  "license": "Apache-2.0",
+  "repository": {
+    "url": "git+https://github.com/zorkow/context-menu.git",
+    "type": "git"
+  },
+  "gitHead": "8ddd26a41f834cd23b9bb20737dfae5fa9b05eb4"
+}

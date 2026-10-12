@@ -40,9 +40,9 @@ jobs:
             $installerName = $runtimeName -replace '^mirket-', "$($variant.Key)-"
             $installer = Join-Path (Get-Location) "dist/$installerName"
             if ($variant.Key -eq 'mirket') {
-              & $installer --home $testHome setup --target $variant.Value --microsoft-learn --yes
+              & $installer --home $testHome setup --target $variant.Value --yes
             } else {
-              & $installer --home $testHome --microsoft-learn --yes
+              & $installer --home $testHome --yes
             }
             if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) setup failed" }
             & $runtime --home $testHome doctor --json

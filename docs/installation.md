@@ -11,14 +11,13 @@ notices accompanying the native distributions. Source installation uses
 `cargo install --locked --path . --bin mirket`; normal use needs only the compiled
 binary.
 
-Setup prompts for Codex, Claude or both, optional Microsoft Learn docs, local MCP
+Setup prompts for Codex, Claude or both, local MCP
 and editor packages, and confirmation. `--yes` uses explicit flags or saved
 choices without prompting. A fresh unattended setup selects no optional packages:
 
 ```sh
 mirket setup --target all --yes
-mirket setup --target codex --microsoft-learn --yes
-mirket setup --target all --package doc-scraper --package jscpd --yes
+mirket setup --target all --package playwright --yes
 mirket setup --dry-run --target all
 mirket doctor
 ```
@@ -29,31 +28,29 @@ installation retrieves pinned artifacts and required runtimes without executing
 package managers or lifecycle hooks. See [local MCP packages](packages.md) for
 configuration, platform support and invocation checks.
 
-Node and CPython are private package dependencies; installing them does not
-replace system runtimes. MarkItDown's text/Office/PDF profile is available on
-macOS 14+ and Linux glibc 2.28+ for ARM64 and x64, with Windows unavailable.
-DBHub's local SQLite profile is also macOS/Linux only. Playwright has no native
-Windows ARM64 browser package. Device SDKs, simulators and applications used for
-document rendering remain separate prerequisites.
+Package runtimes are private dependencies and do not replace system runtimes.
+Native applications and operating-system prerequisites remain explicit.
 
-Inkscape and Glaxnimate are selectable native editor packages with Mirket's Rust
-MCP adapters. Their complete application bundles supply the required native
-libraries and private runtimes; no separate editor or Python installation is
-needed. Both profiles are macOS ARM64 only: Inkscape requires macOS 11.3 or later,
-and Glaxnimate requires macOS 13.0 or later. Native checks cover a logged-in
-macOS 26.6.2 ARM64 session; other macOS versions and native host activation
-require separate verification. The workflow uses command-line rendering and
-Qt offscreen animation without opening a GUI editing session. No external X11
-server was used; operation without a logged-in session or WindowServer is
-unverified. Live SVG text still needs the intended fonts available to the editor.
-Inspect the tool schemas and follow the
-[editable source walkthrough](packages.md#create-vector-graphics-and-animation):
+Inkscape's complete signed application bundle supplies its native libraries.
+The SVG profile covers macOS ARM64, with a declared minimum macOS 11.3; live text
+needs available fonts. Headless browser design/QA and media profiles reuse private
+Node/Chromium and shared FFmpeg/FFprobe, initially verified on macOS ARM64.
+No package manager, upstream installer or first-render download runs while serving.
 
 ```sh
-mirket package install inkscape glaxnimate
+mirket package install inkscape axe-core hyperframes motion-canvas
 mirket package probe inkscape --schemas --project /absolute/project
-mirket package probe glaxnimate --schemas --project /absolute/project
 ```
+
+Container renderers and Penpot require the approved native Podman client selected
+through `mirket tool register podman --executable /absolute/path/to/podman`.
+Initialize and start the dedicated environment with `mirket environment init` and
+`mirket environment start`. These are explicit operations; MCP calls never start
+a VM or install host software. See [execution environment](podman.md).
+Install `penpot`, then `mirket package start penpot` before probing its tools.
+The service has a loopback frontend, durable volumes and private credentials;
+its design operations run in an active headless Chromium session.
+Use `mirket package stop penpot` to stop owned containers while retaining designs.
 
 Use an existing writable project directory. Editor artifact arguments are
 project-relative paths; sources and exports are distinct, and overwriting an
@@ -71,8 +68,8 @@ normal local directory outside those managed folders. The default home normally
 stores the packages under `~/.mirket`; `--home` redirects client configuration as
 well as package storage, so it is not merely a cache-location option.
 
-OpenAI Docs is configured by setup. Microsoft Learn is optional. These servers
-are documentation integrations; setup does not log in or invoke their tools.
+OpenAI Docs is configured by setup. This documentation integration does not
+log in or invoke tools during setup.
 
 | Target | Instructions | Skills | MCP configuration |
 | --- | --- | --- | --- |

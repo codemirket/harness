@@ -1,6 +1,9 @@
 //! Reviewed MCP packages. Setup owns activation; this module owns pinned content.
 mod archive;
+pub mod container;
 mod dmg;
+mod embedded;
+mod services;
 mod store;
 
 use crate::{package_mcp::LaunchSpec, paths::Paths, util};
@@ -14,10 +17,13 @@ use std::{
 };
 
 static NOTICES: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/docs/licenses/packages");
-const NATIVE: &str = include_str!("../../registry/packages-native.json");
 const OPTIONAL: &str = include_str!("../../registry/packages-optional.json");
-const PYTHON: &str = include_str!("../../registry/packages-python.json");
 const EDITORS: &str = include_str!("../../registry/packages-editors.json");
+const ENGINES: &str = include_str!("../../registry/packages-engines.json");
+const AXE: &str = include_str!("../../registry/packages-axe-core.json");
+const HYPERFRAMES: &str = include_str!("../../registry/packages-hyperframes.json");
+const MOTION_CANVAS: &str = include_str!("../../registry/packages-motion-canvas.json");
+const PENPOT: &str = include_str!("../../registry/packages-penpot.json");
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -40,6 +46,15 @@ pub struct Package {
     pub notices: Vec<String>,
     #[serde(default)]
     pub common: Vec<Artifact>,
+    /// Reviewed first-party files compiled from runtime/packages into this CLI.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub embedded: Vec<Member>,
+    /// Reviewed, digest-pinned local service closure. Explicit CLI lifecycle only.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub service: Option<services::Service>,
+    /// Verified Linux execution closure. The native CLI remains the controller.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub container: Option<container::Profile>,
     #[serde(default)]
     pub platforms: BTreeMap<String, Platform>,
     #[serde(default)]
@@ -118,7 +133,15 @@ pub struct Registry {
 
 impl Registry {
     pub fn embedded() -> Result<Self> {
-        Self::parse(&[NATIVE, OPTIONAL, PYTHON, EDITORS])
+        Self::parse(&[
+            OPTIONAL,
+            EDITORS,
+            ENGINES,
+            AXE,
+            HYPERFRAMES,
+            MOTION_CANVAS,
+            PENPOT,
+        ])
     }
     fn parse(documents: &[&str]) -> Result<Self> {
         let mut packages = BTreeMap::new();
@@ -147,8 +170,8 @@ impl Registry {
             .with_context(|| format!("unknown package: {id}; use mirket package list"))
     }
     pub fn list(&self) -> Value {
-        json!({"packages":self.packages.values().filter(|p| p.kind!="runtime").map(|p|json!({"id":p.id,"kind":p.kind,"adapter":p.adapter,"name":p.name,"version":p.version,"status":p.status,"reason":p.reason,"summary":p.summary,"license":p.license,"dependencies":p.dependencies,"platforms":p.platforms.keys().collect::<Vec<_>>()})).collect::<Vec<_>>(),
-            "runtime_ownership":"Packages execute under host permissions. A license label is not a dependency audit or sandbox.",
+        json!({"packages":self.packages.values().filter(|p| p.kind!="runtime").map(|p|json!({"id":p.id,"kind":p.kind,"adapter":p.adapter,"name":p.name,"version":p.version,"status":p.status,"reason":p.reason,"summary":p.summary,"license":p.license,"dependencies":p.dependencies,"platforms":p.container.as_ref().map(|c|c.verified_hosts.clone()).unwrap_or_else(||p.platforms.keys().cloned().collect()),"payload_platforms":p.platforms.keys().collect::<Vec<_>>(),"execution":if p.container.is_some(){"offline-podman"}else if p.service.is_some(){"podman-services-native-browser"}else{"native"}})).collect::<Vec<_>>(),
+            "runtime_ownership":"The CLI and client launchers are native. Reviewed OCI profiles enforce workload boundaries; native package paths use host permissions. Payload pins alone do not establish platform readiness.",
             "downloads":"Only explicit setup downloads pinned artifacts; serving never installs software."})
     }
     pub fn validate_selection(&self, ids: &[String]) -> Result<()> {
@@ -159,26 +182,46 @@ impl Registry {
         let target = crate::update::target_triple()?;
         for id in ids {
             let package = self.get(id)?;
+            if let Some(profile) = &package.container
+                && !profile.verified_hosts.iter().any(|host| host == target)
+            {
+                bail!(
+                    "package {id} OCI controller is held on {target}; Linux payload pins do not establish host readiness"
+                );
+            }
             if !seen.insert(id) {
                 bail!("package selection repeats {id}");
             }
-            if !matches!(package.kind.as_str(), "mcp" | "editor") {
-                bail!("select an MCP or editor package; runtimes are resolved as dependencies");
-            }
-        }
-        for id in self.order(ids)? {
-            let package = self.get(&id)?;
-            if package.status != "ready" {
+            if !matches!(package.kind.as_str(), "mcp" | "editor" | "engine") {
                 bail!(
-                    "package {id} is held: {}",
-                    package
-                        .reason
-                        .as_deref()
-                        .unwrap_or("packaging verification is incomplete")
+                    "select an MCP, editor or engine package; runtimes are resolved as dependencies"
                 );
             }
-            if !package.platforms.contains_key(target) {
-                bail!("package {id} has no reviewed package for {target}");
+        }
+        let mut checked = BTreeSet::new();
+        for selected in ids {
+            let execution_target = if self.get(selected)?.container.is_some() {
+                container::target()
+            } else {
+                target
+            };
+            for id in self.order(std::slice::from_ref(selected))? {
+                if !checked.insert((id.clone(), execution_target)) {
+                    continue;
+                }
+                let package = self.get(&id)?;
+                if package.status != "ready" {
+                    bail!(
+                        "package {id} is held: {}",
+                        package
+                            .reason
+                            .as_deref()
+                            .unwrap_or("packaging verification is incomplete")
+                    );
+                }
+                if !package.platforms.contains_key(execution_target) {
+                    bail!("package {id} has no reviewed package for {execution_target}");
+                }
             }
         }
         Ok(())
@@ -223,17 +266,25 @@ impl Registry {
         for name in &package.notices {
             bytes.extend_from_slice(notice(name)?);
         }
+        embedded::append_identity(&mut bytes, &package.embedded)?;
+        if package.container.is_some() {
+            container::append_identity(&mut bytes);
+        }
         for dep in &package.dependencies {
             bytes.extend_from_slice(self.identity(dep, target)?.as_bytes());
         }
         Ok(util::sha256(&bytes))
     }
+    #[cfg(test)]
     fn root(&self, paths: &Paths, id: &str) -> Result<PathBuf> {
+        self.root_for(paths, id, crate::update::target_triple()?)
+    }
+    fn root_for(&self, paths: &Paths, id: &str, target: &str) -> Result<PathBuf> {
         Ok(paths
             .root
             .join("packages")
             .join("store")
-            .join(self.identity(id, crate::update::target_triple()?)?))
+            .join(self.identity(id, target)?))
     }
 }
 
@@ -253,14 +304,17 @@ pub(crate) fn valid_id(id: &str) -> bool {
 }
 fn validate_package(package: &Package) -> Result<()> {
     if !valid_id(&package.id)
-        || !matches!(package.kind.as_str(), "mcp" | "editor" | "runtime")
+        || !matches!(
+            package.kind.as_str(),
+            "mcp" | "editor" | "engine" | "runtime"
+        )
         || !matches!(package.status.as_str(), "ready" | "held")
     {
         bail!("invalid package identity, kind or status");
     }
-    if (package.kind == "editor") != package.adapter.is_some() {
+    if matches!(package.kind.as_str(), "editor" | "engine") != package.adapter.is_some() {
         bail!(
-            "editor packages require an explicit Mirket-owned adapter; MCP servers and runtimes cannot declare one"
+            "editor and engine packages require an explicit Mirket-owned adapter; MCP servers and runtimes cannot declare one"
         );
     }
     if package.version.is_empty()
@@ -288,7 +342,7 @@ fn validate_package(package: &Package) -> Result<()> {
         {
             bail!("invalid package platform {target}");
         }
-        if !["{node}", "{python}"].contains(&platform.executable.as_str()) {
+        if platform.executable != "{node}" {
             archive::normal_path(&platform.executable)?;
         }
         for artifact in &platform.artifacts {
@@ -298,22 +352,28 @@ fn validate_package(package: &Package) -> Result<()> {
     for artifact in &package.common {
         archive::validate_artifact(artifact)?;
     }
+    embedded::validate(&package.embedded)?;
+    if let Some(service) = &package.service {
+        if package.id != "penpot"
+            || package
+                .platforms
+                .keys()
+                .any(|t| t != "aarch64-apple-darwin")
+        {
+            bail!("local service profile is only verified for Penpot on macOS ARM64");
+        }
+        services::validate(service)?;
+    }
+    if let Some(profile) = &package.container {
+        container::validate(profile, &package.id)?;
+    }
     if package.dependencies.iter().any(|s| !valid_id(s)) {
         bail!("invalid dependency ID");
     }
     if package.launch.args.len() > 128 || package.launch.env.len() > 64 {
         bail!("package launch is too large");
     }
-    if !matches!(
-        package.tools.input_policy.as_str(),
-        "none"
-            | "browser"
-            | "jscpd-local"
-            | "markitdown-local"
-            | "safe-docx-local"
-            | "semiotic-svg"
-            | "dbhub-readonly"
-    ) {
+    if !matches!(package.tools.input_policy.as_str(), "none" | "browser") {
         bail!("unknown package input policy");
     }
     Ok(())
@@ -323,26 +383,70 @@ fn validate_package(package: &Package) -> Result<()> {
 pub fn prepare(paths: &Paths, selected: &[String]) -> Result<()> {
     let registry = Registry::embedded()?;
     registry.validate_selection(selected)?;
-    for id in registry.order(selected)? {
-        store::install(paths, &registry, &id)?;
+    for id in selected {
+        let package = registry.get(id)?;
+        let target = if package.container.is_some() {
+            container::target()
+        } else {
+            crate::update::target_triple()?
+        };
+        for dep in registry.order(std::slice::from_ref(id))? {
+            services::prepare(paths, registry.get(&dep)?)?;
+            store::install_target(paths, &registry, &dep, target)?;
+        }
     }
     Ok(())
+}
+
+const MACHINE_SHA: &str = "633971788fcfe7df04f49da53f06c98b28933c5df2f684d57c2f9831411cac77";
+pub fn verify_machine_image(path: &Path) -> Result<bool> {
+    Ok(store::file_identity(path, 1024 * 1024 * 1024)?.sha256 == MACHINE_SHA)
+}
+pub fn machine_image(paths: &Paths) -> Result<PathBuf> {
+    let client = reqwest::blocking::Client::builder()
+        .https_only(true)
+        .timeout(std::time::Duration::from_secs(240))
+        .build()?;
+    store::download(
+        paths,
+        &Artifact {
+            url: format!("https://quay.io/v2/podman/machine-os/blobs/sha256:{MACHINE_SHA}"),
+            sha256: MACHINE_SHA.into(),
+            format: "file".into(),
+            max_download_bytes: 1024 * 1024 * 1024,
+            max_unpacked_bytes: 0,
+            strip_prefix: None,
+            destination: String::new(),
+            files: Vec::new(),
+        },
+        &client,
+    )
 }
 
 pub fn doctor(paths: &Paths, selected: &[String]) -> Result<Value> {
     let registry = Registry::embedded()?;
     registry.validate_selection(selected)?;
-    let settings = crate::install::saved_options(paths)?
-        .map(|o| o.package_settings)
-        .unwrap_or_default();
-    let checks=registry.order(selected)?.into_iter().map(|id| {
-        let readiness = if id=="dbhub" {
-            settings.get(&id).and_then(|s|s.get("database")).and_then(Value::as_str)
-                .context("DBHub needs mirket package configure dbhub --database /absolute/database.sqlite")
-                .and_then(|p|sqlite_database(Path::new(p)).map(|_|()))
-        } else { Ok(()) };
-        match readiness.and_then(|()|store::verify(paths,&registry,&id)) {
-            Ok(receipt)=>json!({"id":id,"ok":true,"files":receipt.files.len(),"version":registry.get(&id).map(|p|&p.version).ok(),"status":"local_receipt_verified","runtime_status":"not_invoked"}),
+    let mut generations = BTreeSet::new();
+    for selected in selected {
+        let target = if registry.get(selected)?.container.is_some() {
+            container::target()
+        } else {
+            crate::update::target_triple()?
+        };
+        for id in registry.order(std::slice::from_ref(selected))? {
+            generations.insert((id, target));
+        }
+    }
+    let checks=generations.into_iter().map(|(id,target)| {
+        let checked = (|| {
+            let package = registry.get(&id)?;
+            services::verify(paths, package)?;
+            let receipt = store::verify_target(paths, &registry, &id,target)?;
+            let health = package.service.as_ref().map(|_|services::status(paths,package)).transpose()?;
+            Ok::<_, anyhow::Error>((receipt, health))
+        })();
+        match checked {
+            Ok((receipt,health))=>json!({"id":id,"ok":true,"files":receipt.files.len(),"version":registry.get(&id).map(|p|&p.version).ok(),"status":"local_receipt_verified","runtime_status":"not_invoked","service":health}),
             Err(error)=>json!({"id":id,"ok":false,"error":format!("{error:#}")}),
         }
     }).collect::<Vec<_>>();
@@ -378,7 +482,7 @@ fn substitute(value: &str, variables: &BTreeMap<&str, String>) -> Result<String>
     Ok(out)
 }
 
-/// Resolve the installed executable. Editor applications are consumed by the
+/// Resolve the installed executable. Editor applications and engines use the
 /// Mirket-owned adapter, never connected as though they were upstream MCP servers.
 pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     let saved = crate::install::saved_options(paths)?.context("run mirket setup first")?;
@@ -388,13 +492,32 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     let registry = Registry::embedded()?;
     registry.validate_selection(&saved.packages)?;
     let selected = vec![id.into()];
+    let uses_container = registry.get(id)?.container.is_some();
+    let target = if uses_container {
+        container::target()
+    } else {
+        crate::update::target_triple()?
+    };
+    let mut selected_receipt = None;
     for dep in registry.order(&selected)? {
-        store::verify(paths, &registry, &dep)?;
+        let receipt = store::verify_target(paths, &registry, &dep, target)?;
+        if dep == id {
+            selected_receipt = Some(receipt);
+        }
     }
+    let container_runtime = if uses_container {
+        Some(container::runtime(
+            paths,
+            &registry,
+            id,
+            selected_receipt.context("selected generation")?,
+        )?)
+    } else {
+        None
+    };
     let project = crate::paths::canonical_project(project)?;
     let package = registry.get(id)?;
-    let target = crate::update::target_triple()?;
-    let root = registry.root(paths, id)?;
+    let root = registry.root_for(paths, id, target)?;
     let data = paths.root.join("packages").join("data").join(id);
     util::ensure_directory(&data)?;
     let home = data.join("home");
@@ -407,13 +530,13 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     let mut runtime_paths = Vec::new();
     for (dep, placeholder) in [
         ("nodejs", "node"),
-        ("python", "python"),
         ("chromium", "chromium"),
+        ("ffmpeg", "ffmpeg"),
     ] {
         if registry.order(&selected)?.iter().any(|id| id == dep) {
             let p = registry.get(dep)?;
             let binary = registry
-                .root(paths, dep)?
+                .root_for(paths, dep, target)?
                 .join(&p.platforms[target].executable);
             runtime_paths.push(
                 binary
@@ -424,9 +547,13 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
             variables.insert(placeholder, binary.to_string_lossy().into_owned());
         }
     }
-    let config = configuration(paths, id, &data, &saved.package_settings)?;
-    if let Some(config) = config {
-        variables.insert("config", config.to_string_lossy().into_owned());
+    if variables.contains_key("ffmpeg") {
+        let probe = registry
+            .root_for(paths, "ffmpeg", target)?
+            .join("bin/ffprobe");
+        if probe.is_file() {
+            variables.insert("ffprobe", probe.to_string_lossy().into_owned());
+        }
     }
     let executable = &package.platforms[target].executable;
     let command = if executable.starts_with('{') {
@@ -436,7 +563,7 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     };
     util::reject_symlink_components(&command)?;
     let mut env = BTreeMap::new();
-    // Credentials, NODE_OPTIONS, Python startup hooks, user profiles and proxies
+    // Credentials, NODE_OPTIONS, user profiles and proxies
     // are intentionally absent. This controls environment, not OS permissions.
     for name in [
         "PATH",
@@ -477,7 +604,11 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     for (key, value) in &package.launch.env {
         env.insert(key.clone(), substitute(value, &variables)?);
     }
+    if package.service.is_some() {
+        env.extend(services::launch_env(paths, package)?);
+    }
     Ok(LaunchSpec {
+        container: container_runtime,
         startup_timeout: std::time::Duration::from_secs(30),
         command,
         args: package
@@ -491,23 +622,11 @@ pub fn launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
         allowed_tools: package.tools.allowed.clone(),
         denied_tools: package.tools.denied.clone(),
         input_policy: package.tools.input_policy.clone(),
-        read_only_sqlite: if id == "dbhub" {
-            Some(sqlite_database(Path::new(
-                saved
-                    .package_settings
-                    .get(id)
-                    .and_then(|v| v.get("database"))
-                    .and_then(Value::as_str)
-                    .context("DBHub database is not configured")?,
-            ))?)
-        } else {
-            None
-        },
     })
 }
 
-/// CLI probe/call use a real stdio client for both upstream servers and owned
-/// editor adapters. Persistent host sessions enter `package serve` directly.
+/// CLI probe/call use a real stdio client for upstream servers and owned
+/// adapters. Persistent host sessions enter `package serve` directly.
 pub fn client_launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSpec> {
     let registry = Registry::embedded()?;
     let package = registry.get(id)?;
@@ -520,11 +639,32 @@ pub fn client_launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSp
     }
     registry.validate_selection(&saved.packages)?;
     let cwd = crate::paths::canonical_project(project)?;
+    let mut env = BTreeMap::from([
+        ("PATH".into(), "/usr/bin:/bin:/usr/sbin:/sbin".into()),
+        ("LANG".into(), "en_US.UTF-8".into()),
+    ]);
+    if package
+        .adapter
+        .is_some_and(|editor| editor != crate::editor_mcp::Editor::Inkscape)
+    {
+        // CLI probe/call and directly hosted serve use the same host-selected
+        // temporary storage without inheriting unrelated host environment.
+        env.insert(
+            "TMPDIR".into(),
+            std::env::temp_dir()
+                .canonicalize()
+                .context("resolve the host temporary directory for the local design runtime")?
+                .to_str()
+                .context("design runtime temporary directory must be UTF-8")?
+                .to_owned(),
+        );
+    }
     // The executing `serve` child verifies every native package byte before it
     // starts the editor. Repeating that full inventory in the CLI client doubles
     // startup cost without adding a trust boundary. Reuse this CLI's executable.
     Ok(LaunchSpec {
         command: std::env::current_exe()?.canonicalize()?,
+        container: None,
         startup_timeout: std::time::Duration::from_secs(90),
         args: vec![
             "--home".into(),
@@ -535,224 +675,71 @@ pub fn client_launch(paths: &Paths, id: &str, project: &Path) -> Result<LaunchSp
             "--project".into(),
             cwd.to_string_lossy().into_owned(),
         ],
-        env: BTreeMap::from([
-            ("PATH".into(), "/usr/bin:/bin:/usr/sbin:/sbin".into()),
-            ("LANG".into(), "en_US.UTF-8".into()),
-        ]),
+        env,
         cwd,
         allowed_tools: package.tools.allowed.clone(),
         denied_tools: package.tools.denied.clone(),
         input_policy: "none".into(),
-        read_only_sqlite: None,
     })
 }
 
-fn configuration(
-    _paths: &Paths,
-    id: &str,
-    data: &Path,
-    settings: &BTreeMap<String, Value>,
-) -> Result<Option<PathBuf>> {
-    match id {
-        "dbhub" => {
-            let database=settings.get(id).and_then(|s|s.get("database")).and_then(Value::as_str).context("DBHub needs a selected local database: mirket package configure dbhub --database /absolute/database.sqlite")?;
-            let database = sqlite_database(Path::new(database))?;
-            let dsn = sqlite_dsn(&database)?;
-            let quoted = toml_edit::Value::from(dsn).to_string();
-            let content = format!(
-                "[[sources]]\nid = \"local\"\ndsn = {quoted}\n\n[[tools]]\nname = \"execute_sql\"\nsource = \"local\"\nreadonly = true\nmax_rows = 200\n\n[[tools]]\nname = \"search_objects\"\nsource = \"local\"\n"
-            );
-            Ok(Some(write_config(data, "toml", content.as_bytes())?))
-        }
-        "jscpd" => Ok(Some(write_config(data, "json", b"{\"semantic\":false}\n")?)),
-        "doc-scraper" => {
-            let site = settings
-                .get(id)
-                .and_then(|s| s.get("site"))
-                .and_then(Value::as_str)
-                .unwrap_or("https://modelcontextprotocol.io");
-            let url = documentation_site(site)?;
-            let key = if site == "https://modelcontextprotocol.io" {
-                "mcp".into()
-            } else {
-                format!("site-{}", &util::sha256(site.as_bytes())[..12])
-            };
-            // JSON is valid YAML and avoids shell/YAML quoting for native paths.
-            let content = json!({"output_base_dir":data.join("pages"),"state_dir":data.join("state"),"num_workers":2,"num_image_workers":1,"max_requests":4,"max_requests_per_host":2,"default_delay_per_host":"500ms","global_crawl_timeout":"2m","per_page_timeout":"30s","max_page_size_bytes":4194304,"skip_images":true,"enable_jsonl_output":true,"http_client_settings":{"timeout":"30s","max_idle_conns_per_host":2,"allow_private_networks":false},"sites":{key:{"start_urls":[site],"allowed_domain":url.host_str(),"allowed_path_prefix":"/","content_selector":"auto","max_depth":1,"respect_nofollow":true}}});
-            Ok(Some(write_config(
-                data,
-                "yaml",
-                &serde_json::to_vec_pretty(&content)?,
-            )?))
-        }
-        _ => Ok(None),
-    }
+/// Receipt migration removes only explicitly retired selections and settings.
+/// Mutable package data and user-selected external files are never deleted here.
+pub(crate) fn is_retired_id(id: &str) -> bool {
+    matches!(
+        id,
+        "semiotic"
+            | "agent-device"
+            | "safe-docx"
+            | "markitdown"
+            | "dbhub"
+            | "doc-scraper"
+            | "jscpd"
+    )
 }
 
-fn write_config(data: &Path, extension: &str, content: &[u8]) -> Result<PathBuf> {
-    let path = data
-        .join("configurations")
-        .join(format!("{}.{}", util::sha256(content), extension));
-    util::reject_symlink_components(&path)?;
-    if path.exists() {
-        if util::read_bounded(&path, 128 * 1024)? != content {
-            bail!("generated package configuration has drifted");
-        }
-    } else {
-        util::atomic_write(&path, content)?;
-    }
-    Ok(path)
+pub(crate) fn normalize_saved_selection(options: &mut crate::install::SetupOptions) -> Vec<String> {
+    let removed = options
+        .packages
+        .iter()
+        .filter(|id| is_retired_id(id))
+        .cloned()
+        .collect();
+    options.packages.retain(|id| !is_retired_id(id));
+    options.package_settings.retain(|id, _| !is_retired_id(id));
+    removed
 }
 
-fn sqlite_dsn(path: &Path) -> Result<String> {
-    let text = path.to_str().context("DBHub database path must be UTF-8")?;
-    // DBHub 1.5 uses URL.pathname without percent decoding. Reject paths it
-    // would silently reinterpret rather than opening another database.
-    if text
-        .chars()
-        .any(|c| c.is_whitespace() || matches!(c, '%' | '?' | '#') || !c.is_ascii())
-    {
-        bail!("DBHub requires a database path without spaces, non-ASCII or URI escapes");
+pub fn service_start(paths: &Paths, id: &str, port: Option<u16>) -> Result<Value> {
+    let selected = crate::install::saved_options(paths)?.context("run mirket setup first")?;
+    if !selected.packages.iter().any(|p| p == id) {
+        bail!("package is not selected; use mirket package install {id}");
     }
-    #[cfg(windows)]
-    {
-        let _ = text;
-        bail!("DBHub SQLite path handling has not been verified on Windows");
-    }
-    #[cfg(not(windows))]
-    {
-        Ok(format!("sqlite://{text}"))
-    }
+    services::start(paths, &Registry::embedded()?, id, port)
 }
-
-fn documentation_site(site: &str) -> Result<reqwest::Url> {
-    let url = reqwest::Url::parse(site)?;
-    if url.scheme() != "https"
-        || url.host_str().is_none()
-        || !url.username().is_empty()
-        || url.password().is_some()
-        || url.fragment().is_some()
-    {
-        bail!("documentation site must be a credential-free HTTPS URL without a fragment");
-    }
-    Ok(url)
-}
-
-fn sqlite_database(path: &Path) -> Result<PathBuf> {
-    use std::io::Read;
-    if !path.is_absolute() {
-        bail!("database path must be absolute");
-    }
-    util::reject_symlink_components(path)?;
-    if !std::fs::symlink_metadata(path)?.is_file() {
-        bail!("database must be a regular existing file");
-    }
-    let path = path.canonicalize()?;
-    sqlite_dsn(&path)?;
-    let mut header = [0u8; 16];
-    std::fs::File::open(&path)?
-        .read_exact(&mut header)
-        .context("read SQLite header")?;
-    if &header != b"SQLite format 3\0" {
-        bail!("database does not have a SQLite file header");
-    }
-    Ok(path)
-}
-
-pub fn configure_options(
-    options: &mut crate::install::SetupOptions,
-    id: &str,
-    database: Option<&Path>,
-    site: Option<&str>,
-) -> Result<()> {
-    Registry::embedded()?.get(id)?;
-    match id {
-        "dbhub" => {
-            let path = database.context("supply --database /absolute/database.sqlite")?;
-            let path = sqlite_database(path)?;
-            if site.is_some() {
-                bail!("--site applies only to doc-scraper");
-            }
-            options
-                .package_settings
-                .insert(id.into(), json!({"database":path}));
-        }
-        "doc-scraper" => {
-            if database.is_some() {
-                bail!("--database applies only to dbhub");
-            }
-            let url =
-                documentation_site(site.context("supply --site https://documentation-site")?)?;
-            options
-                .package_settings
-                .insert(id.into(), json!({"site":url.as_str()}));
-        }
-        _ => bail!("package {id} has no user configuration"),
-    }
-    Ok(())
+pub fn service_stop(paths: &Paths, id: &str, purge_data: bool) -> Result<Value> {
+    services::stop(paths, id, purge_data)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[cfg(unix)]
-    #[test]
-    fn database_aliases_use_one_canonical_path_for_configuration_and_validation() {
-        let root = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
-        let path = root.path().join("inventory.sqlite");
-        let db = rusqlite::Connection::open(&path).unwrap();
-        db.execute_batch("CREATE TABLE inventory(count INTEGER);")
-            .unwrap();
-        drop(db);
-        let alias = PathBuf::from(format!("/{}", path.display()));
-        assert_eq!(sqlite_database(&alias).unwrap(), path);
-        let mut options = crate::install::SetupOptions::default();
-        configure_options(&mut options, "dbhub", Some(&alias), None).unwrap();
-        assert_eq!(
-            options.package_settings["dbhub"]["database"],
-            path.to_str().unwrap()
-        );
-        let config = configuration(
-            &Paths::new(root.path().into()).unwrap(),
-            "dbhub",
-            &root.path().join("data"),
-            &options.package_settings,
-        )
-        .unwrap()
-        .unwrap();
-        let parsed = std::fs::read_to_string(config)
-            .unwrap()
-            .parse::<toml_edit::DocumentMut>()
-            .unwrap();
-        assert_eq!(
-            parsed["sources"]
-                .as_array_of_tables()
-                .unwrap()
-                .get(0)
-                .unwrap()["dsn"]
-                .as_str()
-                .unwrap(),
-            format!("sqlite://{}", path.display())
-        );
-    }
     #[test]
     fn catalog_has_reviewed_profiles_and_no_unpinned_downloads() {
         let registry = Registry::embedded().unwrap();
         for id in [
-            "doc-scraper",
-            "jscpd",
             "playwright",
-            "dbhub",
-            "markitdown",
-            "safe-docx",
-            "semiotic",
-            "agent-device",
+            "inkscape",
+            "axe-core",
+            "hyperframes",
+            "motion-canvas",
+            "penpot",
         ] {
             assert!(registry.get(id).is_ok(), "{id}");
         }
         assert_eq!(
-            registry.get("jscpd").unwrap().tools.input_policy,
-            "jscpd-local"
+            registry.get("playwright").unwrap().tools.input_policy,
+            "browser"
         );
     }
     #[test]
@@ -770,18 +757,163 @@ mod tests {
         );
     }
     #[test]
+    #[cfg(all(target_os = "macos", target_arch = "aarch64"))]
+    fn mixed_selection_resolves_each_execution_target_without_native_render_fallback() {
+        let registry = Registry::embedded().unwrap();
+        registry
+            .validate_selection(&[
+                "motion-canvas".into(),
+                "hyperframes".into(),
+                "axe-core".into(),
+            ])
+            .unwrap();
+        let mut missing = Registry {
+            packages: registry.packages.clone(),
+        };
+        missing
+            .packages
+            .get_mut("nodejs")
+            .unwrap()
+            .platforms
+            .remove(container::target());
+        assert!(
+            missing
+                .validate_selection(&["motion-canvas".into(), "axe-core".into()])
+                .is_err()
+        );
+        let mut missing = Registry {
+            packages: registry.packages.clone(),
+        };
+        missing
+            .packages
+            .get_mut("nodejs")
+            .unwrap()
+            .platforms
+            .remove("aarch64-apple-darwin");
+        missing
+            .validate_selection(&["motion-canvas".into()])
+            .unwrap();
+        assert!(
+            missing
+                .validate_selection(&["motion-canvas".into(), "axe-core".into()])
+                .is_err()
+        );
+    }
+    #[test]
     fn held_profile_fails_before_resolution_or_installation() {
-        let mut package = Registry::embedded().unwrap().get("jscpd").unwrap().clone();
+        let mut package = Registry::embedded()
+            .unwrap()
+            .get("playwright")
+            .unwrap()
+            .clone();
+        package.dependencies.clear();
         package.status = "held".into();
         package.reason = Some("runtime verification is incomplete".into());
         let document = json!({"schema_version":1,"packages":[package]}).to_string();
         let registry = Registry::parse(&[&document]).unwrap();
         assert!(
             registry
-                .validate_selection(&["jscpd".into()])
+                .validate_selection(&["playwright".into()])
                 .unwrap_err()
                 .to_string()
                 .contains("is held")
         );
+    }
+    #[test]
+    fn owned_engine_selection_requires_an_adapter_and_preserves_runtime_boundary() {
+        let mut package = Registry::embedded()
+            .unwrap()
+            .get("playwright")
+            .unwrap()
+            .clone();
+        package.dependencies.clear();
+        package.kind = "engine".into();
+        assert!(validate_package(&package).is_err());
+        package.adapter = Some(crate::editor_mcp::Editor::Inkscape);
+        validate_package(&package).unwrap();
+        let document = json!({"schema_version":1,"packages":[package.clone()]}).to_string();
+        let registry = Registry::parse(&[&document]).unwrap();
+        registry.validate_selection(&[package.id.clone()]).unwrap();
+        for kind in ["runtime", "mcp"] {
+            package.kind = kind.into();
+            assert!(validate_package(&package).is_err());
+        }
+        package.kind = "editor".into();
+        validate_package(&package).unwrap();
+        package.adapter = None;
+        assert!(validate_package(&package).is_err());
+    }
+    #[test]
+    fn missing_embedded_source_is_refused_during_registry_validation() {
+        let mut package = Registry::embedded()
+            .unwrap()
+            .get("playwright")
+            .unwrap()
+            .clone();
+        package.dependencies.clear();
+        package.embedded = vec![Member {
+            path: "absent/runner.mjs".into(),
+            destination: "mirket/runner.mjs".into(),
+            executable: false,
+        }];
+        let document = json!({"schema_version":1,"packages":[package]}).to_string();
+        assert!(
+            Registry::parse(&[&document])
+                .unwrap_err()
+                .to_string()
+                .contains("missing embedded package source")
+        );
+    }
+    #[test]
+    fn retired_saved_choices_are_removed_without_admitting_unknown_ids_or_touching_data() {
+        let home = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let preserved = home.path().join("documents/customer.docx");
+        std::fs::create_dir_all(preserved.parent().unwrap()).unwrap();
+        std::fs::write(&preserved, b"private user document").unwrap();
+        let mut options = crate::install::SetupOptions {
+            packages: vec![
+                "playwright".into(),
+                "safe-docx".into(),
+                "dbhub".into(),
+                "unknown-user-package".into(),
+            ],
+            package_settings: BTreeMap::from([
+                ("safe-docx".into(), json!({"document": preserved})),
+                (
+                    "dbhub".into(),
+                    json!({"database":"/external/private.sqlite"}),
+                ),
+                ("unknown-user-package".into(), json!({"keep": true})),
+            ]),
+            ..Default::default()
+        };
+        assert_eq!(
+            normalize_saved_selection(&mut options),
+            ["safe-docx", "dbhub"]
+        );
+        assert_eq!(options.packages, ["playwright", "unknown-user-package"]);
+        assert_eq!(options.package_settings.len(), 1);
+        assert_eq!(std::fs::read(preserved).unwrap(), b"private user document");
+        assert!(
+            Registry::embedded()
+                .unwrap()
+                .validate_selection(&options.packages)
+                .is_err()
+        );
+        for id in [
+            "semiotic",
+            "agent-device",
+            "safe-docx",
+            "markitdown",
+            "dbhub",
+            "doc-scraper",
+            "jscpd",
+            "python",
+        ] {
+            assert!(
+                Registry::embedded().unwrap().get(id).is_err(),
+                "{id} is exposed"
+            );
+        }
     }
 }

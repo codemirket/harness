@@ -219,9 +219,6 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
         "--expected-state",
         &expected_state,
     ]);
-    if state.options.microsoft_learn {
-        command.arg("--microsoft-learn");
-    }
     if let Some(plan) = &entrypoint {
         plan.recheck()
             .context("entrypoint changed before setup; installation was not changed")?;

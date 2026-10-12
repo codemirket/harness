@@ -12,6 +12,10 @@ correctness, `interface-design` for composition, and `advanced-motion` for compl
 in-page transformations. Ordinary controls stay with `motion-design`; vector
 illustrations and morphs use `svg-creation` and `svg-animation`.
 
+A landing-page scroll reveal is an in-page scene, not route navigation. Select
+this workflow only when an actual page/context change needs continuity; a visual
+brief alone does not justify adding a router or intercepting links.
+
 Read [navigation craft](references/navigation-craft.md) before substantial work.
 Apply its matching SPA, multi-page, shared-element and interruption guidance.
 Registration does not install a router or animation runtime.

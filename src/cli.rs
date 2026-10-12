@@ -88,7 +88,12 @@ enum Command {
         #[command(subcommand)]
         command: ToolCommand,
     },
-    /// Select, configure, check and run reviewed local MCP packages.
+    /// Administer Mirket's private rootless Podman environment.
+    Environment {
+        #[command(subcommand)]
+        command: EnvironmentCommand,
+    },
+    /// Select, install, check and run reviewed local MCP packages.
     Package {
         #[command(subcommand)]
         command: PackageCommand,
@@ -116,6 +121,21 @@ enum TargetChoice {
     Claude,
     All,
 }
+
+#[derive(Subcommand)]
+enum EnvironmentCommand {
+    /// Initialize a staging-only VM from the reviewed boot image.
+    Init {
+        /// Existing exact pinned boot image; otherwise download through the package cache.
+        #[arg(long)]
+        image: Option<PathBuf>,
+    },
+    Start,
+    Stop,
+    Status,
+    /// Remove proven orphaned render workers; preserve active jobs and service data.
+    Recover,
+}
 impl TargetChoice {
     fn targets(self) -> Vec<Target> {
         match self {
@@ -137,9 +157,6 @@ struct SetupArgs {
     dry_run: bool,
     #[arg(long, hide = true)]
     expected_state: Option<String>,
-    /// Enable the Microsoft Learn documentation server.
-    #[arg(long,num_args=0..=1,default_missing_value="true",action=clap::ArgAction::Set)]
-    microsoft_learn: Option<bool>,
     /// Select an optional local MCP package; repeat to replace the saved selection.
     #[arg(long = "package", conflicts_with = "no_packages")]
     packages: Vec<String>,
@@ -367,6 +384,19 @@ enum PackageCommand {
     Show { id: String },
     /// Verify the content of selected packages without starting their processes.
     Status,
+    /// Start a reviewed local service profile; never downloads images.
+    Start {
+        id: String,
+        #[arg(long)]
+        port: Option<u16>,
+    },
+    /// Stop owned services; retain designs unless --purge-data is explicitly supplied.
+    Stop {
+        id: String,
+        /// Permanently remove this home's owned design volumes, accounts and service state.
+        #[arg(long)]
+        purge_data: bool,
+    },
     /// Add selected packages through the saved environment setup.
     Install {
         #[arg(required = true, num_args = 1..)]
@@ -376,14 +406,6 @@ enum PackageCommand {
     Remove {
         #[arg(required = true, num_args = 1..)]
         ids: Vec<String>,
-    },
-    /// Configure a selected package and reapply the saved environment setup.
-    Configure {
-        id: String,
-        #[arg(long, conflicts_with = "site")]
-        database: Option<PathBuf>,
-        #[arg(long, conflicts_with = "database")]
-        site: Option<String>,
     },
     /// Serve an installed package through the filtered local MCP bridge.
     Serve {
@@ -439,12 +461,21 @@ enum DevCommand {
         project: PathBuf,
         #[arg(long)]
         ignored: bool,
+        /// Exercise the optimized CLI and native startup budgets used in a release.
+        #[arg(long)]
+        release: bool,
+        /// Build and run this integration-test target instead of all targets.
+        #[arg(long = "test")]
+        test_target: Option<String>,
     },
     Build {
         #[arg(long, default_value = ".")]
         project: PathBuf,
         #[arg(long)]
         release: bool,
+        /// Build one Mirket binary instead of all standalone installers.
+        #[arg(long)]
+        bin: Option<String>,
     },
     Dist {
         #[arg(long, default_value = ".")]
@@ -513,6 +544,16 @@ pub fn entry(installer_target: Option<&str>) {
             }
         }
     }
+    let args = match reconcile_update_replay_args(
+        args,
+        std::env::var_os("MIRKET_DIRECT").is_some_and(|value| value == "1"),
+    ) {
+        Ok(args) => args,
+        Err(error) => {
+            eprintln!("mirket: update replay refused: {error:#}");
+            std::process::exit(1);
+        }
+    };
     let cli = Cli::parse_from(args);
     let as_json = cli.json;
     match dispatch(cli) {
@@ -526,6 +567,86 @@ pub fn entry(installer_target: Option<&str>) {
             std::process::exit(1);
         }
     }
+}
+
+fn reconcile_update_replay_args(
+    args: Vec<std::ffi::OsString>,
+    direct: bool,
+) -> Result<Vec<std::ffi::OsString>> {
+    if !direct {
+        return Ok(args);
+    }
+    let mut command = 1;
+    while command < args.len() {
+        match args[command].to_str().unwrap_or("") {
+            "--home" => command += 2,
+            "--json" => command += 1,
+            value if value.starts_with("--home=") => command += 1,
+            "setup" => break,
+            _ => return Ok(args),
+        }
+    }
+    if command >= args.len() {
+        return Ok(args);
+    }
+    let mut reconciled = Vec::with_capacity(args.len());
+    let mut removed_documentation = 0usize;
+    let mut removed_packages = Vec::new();
+    let mut passed_packages = Vec::new();
+    let mut index = 0;
+    while index < args.len() {
+        let argument = args[index].to_str().unwrap_or("");
+        if argument == "--microsoft-learn" || argument == "--microsoft-learn=true" {
+            removed_documentation += 1;
+            index += 1;
+            continue;
+        }
+        let (package, count) = if argument == "--package" {
+            (args.get(index + 1).and_then(|arg| arg.to_str()), 2)
+        } else {
+            (argument.strip_prefix("--package="), 1)
+        };
+        if let Some(id) = package {
+            passed_packages.push(id.to_owned());
+            if packages::is_retired_id(id) {
+                removed_packages.push(id.to_owned());
+                index += count;
+                continue;
+            }
+        }
+        reconciled.push(args[index].clone());
+        index += 1;
+    }
+    if removed_documentation == 0 && removed_packages.is_empty() {
+        return Ok(args);
+    }
+    let parsed =
+        Cli::try_parse_from(&reconciled).context("invalid saved setup replay arguments")?;
+    let Command::Setup(setup) = parsed.command else {
+        bail!("retired arguments are only accepted for authenticated setup replay");
+    };
+    if !setup.yes || setup.dry_run || setup.no_packages || removed_documentation > 1 {
+        bail!("retired arguments require unattended saved setup replay");
+    }
+    let home = parsed
+        .home
+        .context("update replay requires an explicit --home")?;
+    let paths = Paths::new(home)?;
+    let token = setup
+        .expected_state
+        .as_deref()
+        .context("update replay requires --expected-state")?;
+    let saved = install::removed_replay_choices(&paths, token)?;
+    if setup.target.map(TargetChoice::targets).as_ref() != Some(&saved.targets) {
+        bail!("update replay targets do not match the saved receipt");
+    }
+    if removed_documentation != 0 && !saved.microsoft_learn {
+        bail!("retired documentation argument does not match the saved receipt");
+    }
+    if !removed_packages.is_empty() && passed_packages != saved.packages {
+        bail!("retired package arguments do not match the saved receipt");
+    }
+    Ok(reconciled)
 }
 
 fn emit(value: &impl serde::Serialize) -> Result<()> {
@@ -555,10 +676,6 @@ fn setup_options(args: &SetupArgs, saved: Option<&SetupOptions>) -> SetupOptions
             .map(TargetChoice::targets)
             .or_else(|| saved.map(|s| s.targets.clone()))
             .unwrap_or_else(|| TargetChoice::All.targets()),
-        microsoft_learn: args
-            .microsoft_learn
-            .or_else(|| saved.map(|s| s.microsoft_learn))
-            .unwrap_or(false),
         packages: if args.no_packages {
             vec![]
         } else if !args.packages.is_empty() {
@@ -618,28 +735,9 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
                 break;
             }
         }
-        if args.microsoft_learn.is_none() {
-            loop {
-                options.microsoft_learn = match ask(
-                    "Enable Microsoft Learn documentation?",
-                    if options.microsoft_learn { "yes" } else { "no" },
-                )?
-                .to_lowercase()
-                .as_str()
-                {
-                    "yes" | "y" => true,
-                    "no" | "n" => false,
-                    _ => {
-                        println!("Enter yes or no.");
-                        continue;
-                    }
-                };
-                break;
-            }
-        }
         if args.packages.is_empty() && !args.no_packages {
             println!(
-                "\nOptional local MCP packages: doc-scraper (documentation search), jscpd (duplicate-code checks).\nPackages download pinned artifacts during setup. Use mirket package list for other reviewed packages."
+                "\nOptional local MCP packages download pinned artifacts during setup. Use mirket package list to review available packages."
             );
             let default = if options.packages.is_empty() {
                 "none".to_owned()
@@ -670,18 +768,13 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
                 .retain(|id, _| options.packages.contains(id));
         }
         println!(
-            "\nTargets: {}\nOpenAI Docs: enabled\nMicrosoft Learn: {}\nOptional MCP packages: {}\nSetup writes managed skill copies, shared instructions and MCP entries. Existing file conflicts stop setup for inspection.",
+            "\nTargets: {}\nOpenAI Docs: enabled\nOptional MCP packages: {}\nSetup writes managed skill copies, shared instructions and MCP entries. Existing file conflicts stop setup for inspection.",
             options
                 .targets
                 .iter()
                 .map(ToString::to_string)
                 .collect::<Vec<_>>()
                 .join(", "),
-            if options.microsoft_learn {
-                "enabled"
-            } else {
-                "disabled"
-            },
             if options.packages.is_empty() {
                 "none".to_owned()
             } else {
@@ -733,7 +826,7 @@ fn saved_package_options(paths: &Paths) -> Result<(SetupOptions, String)> {
     Ok((
         snapshot
             .options
-            .context("run mirket setup before selecting or configuring packages")?,
+            .context("run mirket setup before selecting packages")?,
         snapshot.token,
     ))
 }
@@ -1058,6 +1151,19 @@ fn dispatch(cli: Cli) -> Result<i32> {
             ToolCommand::Remove { name } => crate::tools::remove(&paths, &name)?,
             ToolCommand::Run { .. } => unreachable!(),
         },
+        Command::Environment { command } => {
+            let engine = crate::podman::Engine::resolve(&paths)?;
+            match command {
+                EnvironmentCommand::Init { image } => engine.init(&match image {
+                    Some(path) => path,
+                    None => packages::machine_image(&paths)?,
+                })?,
+                EnvironmentCommand::Start => engine.start()?,
+                EnvironmentCommand::Stop => engine.stop()?,
+                EnvironmentCommand::Status => engine.status(),
+                EnvironmentCommand::Recover => engine.recover()?,
+            }
+        }
         Command::Package { command } => match command {
             PackageCommand::List => packages::Registry::embedded()?.list(),
             PackageCommand::Show { id } => {
@@ -1068,6 +1174,10 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     .map(|s| s.packages)
                     .unwrap_or_default();
                 packages::doctor(&paths, &selected)?
+            }
+            PackageCommand::Start { id, port } => packages::service_start(&paths, &id, port)?,
+            PackageCommand::Stop { id, purge_data } => {
+                packages::service_stop(&paths, &id, purge_data)?
             }
             PackageCommand::Install { ids } => {
                 let (mut options, token) = saved_package_options(&paths)?;
@@ -1091,24 +1201,6 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     options.package_settings.remove(id);
                 }
                 options.packages.retain(|id| !ids.contains(id));
-                serde_json::to_value(install::setup_checked(
-                    &paths,
-                    &catalog,
-                    &options,
-                    Some(&token),
-                )?)?
-            }
-            PackageCommand::Configure { id, database, site } => {
-                let (mut options, token) = saved_package_options(&paths)?;
-                if !options.packages.contains(&id) {
-                    bail!("package {id} is not selected; use mirket package install {id}");
-                }
-                packages::configure_options(
-                    &mut options,
-                    &id,
-                    database.as_deref(),
-                    site.as_deref(),
-                )?;
                 serde_json::to_value(install::setup_checked(
                     &paths,
                     &catalog,
@@ -1155,8 +1247,20 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 project,
                 filter,
                 ignored,
-            } => crate::dev::test(&project, filter.as_deref(), ignored)?,
-            DevCommand::Build { project, release } => crate::dev::build(&project, release)?,
+                release,
+                test_target,
+            } => crate::dev::test(
+                &project,
+                filter.as_deref(),
+                ignored,
+                release,
+                test_target.as_deref(),
+            )?,
+            DevCommand::Build {
+                project,
+                release,
+                bin,
+            } => crate::dev::build(&project, release, bin.as_deref())?,
             DevCommand::Dist { project, output } => crate::dev::dist(&project, &output)?,
             DevCommand::Manifest { inputs, output } => crate::release::manifest(&inputs, &output)?,
         },
@@ -1172,6 +1276,42 @@ fn dispatch(cli: Cli) -> Result<i32> {
 mod tests {
     use super::*;
     #[test]
+    fn removed_replay_is_scoped_to_setup_and_requires_an_explicit_home() {
+        let args = [
+            "mirket",
+            "tool",
+            "run",
+            "fixture",
+            "--",
+            "setup",
+            "--microsoft-learn",
+        ]
+        .map(std::ffi::OsString::from)
+        .to_vec();
+        assert_eq!(
+            reconcile_update_replay_args(args.clone(), true).unwrap(),
+            args
+        );
+        let args = [
+            "mirket",
+            "setup",
+            "--yes",
+            "--target",
+            "all",
+            "--expected-state",
+            &"0".repeat(64),
+            "--microsoft-learn",
+        ]
+        .map(std::ffi::OsString::from)
+        .to_vec();
+        assert!(reconcile_update_replay_args(args.clone(), true).is_err());
+        assert_eq!(
+            reconcile_update_replay_args(args.clone(), false).unwrap(),
+            args
+        );
+    }
+
+    #[test]
     fn cli_definitions_are_consistent() {
         use clap::CommandFactory;
         Cli::command().debug_assert();
@@ -1182,23 +1322,18 @@ mod tests {
         assert!(Cli::try_parse_from(["mirket", "setup", "--target", "other"]).is_err());
         assert!(Cli::try_parse_from(["mirket", "update", "--sha256", "bad"]).is_err());
         assert!(
-            Cli::try_parse_from(["mirket", "setup", "--package", "jscpd", "--no-packages"])
-                .is_err()
-        );
-        assert!(Cli::try_parse_from(["mirket", "package", "install"]).is_err());
-        assert!(
             Cli::try_parse_from([
                 "mirket",
-                "package",
-                "configure",
-                "dbhub",
-                "--database",
-                "/tmp/db.sqlite",
-                "--site",
-                "https://example.com"
+                "setup",
+                "--package",
+                "playwright",
+                "--no-packages"
             ])
             .is_err()
         );
+        assert!(Cli::try_parse_from(["mirket", "package", "install"]).is_err());
+        assert!(Cli::try_parse_from(["mirket", "package", "configure"]).is_err());
+        assert!(Cli::try_parse_from(["mirket", "setup", "--microsoft-learn"]).is_err());
     }
 
     #[test]
@@ -1213,20 +1348,20 @@ mod tests {
         let empty = setup_options(&args(&["mirket", "setup", "--yes"]), None);
         assert!(empty.packages.is_empty());
         let mut saved = SetupOptions {
-            packages: vec!["dbhub".into(), "jscpd".into()],
+            packages: vec!["playwright".into(), "inkscape".into()],
             ..SetupOptions::default()
         };
         saved
             .package_settings
-            .insert("dbhub".into(), json!({"database":"/tmp/example.sqlite"}));
+            .insert("playwright".into(), json!({"fixture":"saved-selection"}));
         let retained = setup_options(&args(&["mirket", "setup", "--yes"]), Some(&saved));
         assert_eq!(retained.packages, saved.packages);
         assert_eq!(retained.package_settings, saved.package_settings);
         let replaced = setup_options(
-            &args(&["mirket", "setup", "--yes", "--package", "jscpd"]),
+            &args(&["mirket", "setup", "--yes", "--package", "inkscape"]),
             Some(&saved),
         );
-        assert_eq!(replaced.packages, ["jscpd"]);
+        assert_eq!(replaced.packages, ["inkscape"]);
         assert!(replaced.package_settings.is_empty());
         let removed = setup_options(
             &args(&["mirket", "setup", "--yes", "--no-packages"]),

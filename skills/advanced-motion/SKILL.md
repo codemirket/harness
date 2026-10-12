@@ -1,24 +1,36 @@
 ---
 name: advanced-motion
-description: Design, implement or review coordinated DOM animation, complex timelines, FLIP/layout motion, CSS 3D and scroll-driven scenes. Use for choreography or transform/lifecycle problems beyond ordinary controls; SVG art and navigation transitions use their own workflows.
+description: Art-direct, implement and review expressive website motion, coordinated sequences, animated color and gradients, scroll scenes, procedural Canvas graphics and local web-composition video exports. Use for a substantial visual scene or choreography beyond ordinary controls; SVG art and navigation transitions retain their own specialist workflows.
 ---
 
 # Advanced motion
 
-Lead substantial DOM choreography: sequences across elements, changing layout,
-layered transforms, dimensional scenes and motion tied to scroll or reactive data.
+Lead substantial browser compositions: sequences across elements, animated surfaces,
+changing layout, layered transforms and motion tied to scroll or reactive data.
 Choose one lead from the requested result. Ordinary controls, menus and feedback
 use `motion-design`; navigation/shared page-transition semantics use
 `page-transitions`; vector artwork and path morphs use `svg-creation` and
 `svg-animation`. Support those workflows only at an affected DOM boundary.
-Use `interface-design` for composition and the project's frontend workflow for
-state/lifecycle integration; neither a new visual direction nor a framework is implied.
+Use `interface-design` for the page's content and hierarchy, `graphic-design` for
+an asset family, and the project's frontend workflow for state/lifecycle integration.
+A new visual direction, framework, model or external design service is not implied.
 
-For implementation, read the matching sections of
-[scene mechanics and craft](references/scene-mechanics.md): coordinated clocks,
-interrupted FLIP, transform/3D topology, scroll ranges or responsive rebuilding.
-Reuse the project's motion tokens and existing APIs. Examples explain mechanics,
-not required timings, styling or architecture.
+Read only the reference needed for the current decision:
+
+- [Art direction and medium](references/art-direction-and-medium.md) turns a brief
+  into a visual concept, motion language and DOM/SVG/Canvas/WebGL/video choice.
+- [Scene mechanics](references/scene-mechanics.md) covers coordinated clocks,
+  interrupted FLIP, transform/3D topology, scroll ranges and responsive rebuilding.
+- [Animated surfaces and procedural graphics](references/surface-and-procedural-craft.md)
+  covers gradients, color, Canvas lifecycle and frame-based export boundaries.
+- [Rendered examples](references/rendered-examples.md) provides two contrasting,
+  editable browser compositions and a reproduction/critique path.
+- [Local video export](references/local-video.md) selects HyperFrames for web
+  compositions or Motion Canvas for drawn scenes, with inspected local exports.
+
+Reuse the project's tokens and APIs. Examples demonstrate choices, not a required
+palette, timing system or architecture. A form-spacing repair or ordinary button
+hover does not need this scene workflow.
 
 ## Establish the scene contract
 
@@ -26,6 +38,11 @@ Inspect the actual DOM/component tree, current effects, installed versions,
 embedding, target browsers and renderer. Identify each animated property's owner,
 measured geometry and inputs that can invalidate it. A catalog entry is not runtime
 availability; the existing GSAP catalog entries are manual review candidates.
+
+Connect the scene to the brief: who should notice what, which visual relationship
+carries the brand, and what should remain still. Choose a small motion vocabulary
+that reinforces composition, typography and material; do not start with an effect
+inventory. Build and render one representative beat before extending a direction.
 
 Define the trigger, meaningful initial/settled states, focal beats, replay/loop
 policy and response to interruption. A brief storyboard in the working task can
@@ -100,9 +117,13 @@ Review normal playback and sampled important beats, initial/settled poses and lo
 seams where applicable. Refine collisions, origin drift, clipping, unreadable overlap,
 awkward pacing and velocity jumps. Seeking helps frame inspection; it cannot certify
 real-time smoothness. Compare a supplied reference at equivalent beats and placement.
+Write a correction against an observed relationship, such as a bright midpoint
+competing with the heading or a delayed response breaking causality, then inspect
+the same scenario after the change. Keep capture/seek controls outside production UI.
 
 Exercise relevant rapid triggers, retarget/reversal, pause/replay, scroll reversal,
 resize/content arrival, unmount/remount, reduced motion and two instances. Review the
-actual embedding at intended and narrow sizes. Profile observed jank or a performance
+actual embedding at intended and narrow sizes, including its readable no-script
+and reduced-motion composition. Profile observed jank or a performance
 claim with the project's/browser's tools; property names and library choice are not
 measurements. Report editable implementation, rendered evidence and untested targets.

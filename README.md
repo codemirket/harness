@@ -115,25 +115,30 @@ Select reviewed packages through the same CLI:
 
 ```sh
 mirket package list
-mirket package install doc-scraper jscpd
-mirket package probe jscpd --project /absolute/project
+mirket package install playwright
+mirket package probe playwright --project /absolute/project
 ```
 
-Packages cover documentation search, duplicate-code analysis, browser QA, SQLite
-inspection, Word editing, local document extraction, static SVG charts and device
-automation. Each profile pins its artifacts, runtimes and notices, including
-private Node or CPython runtimes where needed. Setup downloads verified archives
+Packages cover browser QA, accessibility audits, editable SVG artwork, drawn-scene
+animation, web-composition video export and self-hosted design documents. Each profile pins its
+artifacts, runtimes and notices, including
+private Node runtimes where needed. Setup downloads verified archives
 without running package managers or lifecycle hooks. On a fresh home,
 `setup --yes` selects no optional packages; saved choices are reused by setup and
 update.
 
-The selected profiles require no paid API. Browser navigation and documentation
-crawling still use the network. SDKs and native applications remain prerequisites
+The selected profiles require no paid API. Browser navigation can use the network.
+Native applications and a running Podman environment remain prerequisites
 where needed. `package status` checks files, `package probe` checks MCP discovery,
 and a real task establishes useful output. See [local MCP packages](docs/packages.md)
-for configuration, output policies and platform limits. MarkItDown's local
-text/Office/PDF profile supports macOS and Linux on ARM64 and x64; Windows is
-unavailable.
+for output policies, platform limits and runtime prerequisites.
+
+For editable HTML/CSS/SVG/Canvas films, select `hyperframes`. Use `motion-canvas`
+for generator-driven drawn scenes, `inkscape` for SVG artwork and `penpot` for
+self-hosted editable design files. `axe-core` audits real local browser states.
+The creative/browser profiles initially cover macOS ARM64. Penpot needs an
+explicitly registered running Mirket Podman environment. See [packages](docs/packages.md)
+and the [motion workflow](docs/animation-engines.md).
 
 ## Register other executables
 

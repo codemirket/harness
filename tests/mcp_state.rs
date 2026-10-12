@@ -1053,7 +1053,7 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     });
     let client = ().serve(client_transport).await.unwrap();
     let tools = client.list_all_tools().await.unwrap();
-    assert_eq!(tools.len(), 9);
+    assert_eq!(tools.len(), 10);
     assert!(
         !tools
             .iter()
@@ -1062,6 +1062,29 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     let call = |name: &'static str, args: Value| {
         CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
     };
+    let described = client
+        .call_tool(call("catalog_show", json!({"skill_id":"ecc-rust-testing"})))
+        .await
+        .unwrap();
+    assert_eq!(described.is_error, Some(false));
+    let described = described.structured_content.unwrap();
+    assert_eq!(described["guidance_access"]["body_readable"], false);
+    assert!(described["source_pin"]["commit"].as_str().unwrap().len() == 40);
+    assert!(described["caveats"].is_array());
+    for skill_id in ["ecc-rust-testing", "missing-skill"] {
+        let result = client
+            .call_tool(call("skill_read", json!({"skill_id":skill_id})))
+            .await
+            .unwrap();
+        assert_eq!(result.is_error, Some(true));
+    }
+    for skill_id in ["missing-skill", ""] {
+        let result = client
+            .call_tool(call("catalog_show", json!({"skill_id":skill_id})))
+            .await
+            .unwrap();
+        assert_eq!(result.is_error, Some(true));
+    }
     let plan_tool = tools
         .iter()
         .find(|tool| tool.name == "capability_plan")

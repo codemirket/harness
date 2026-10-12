@@ -30,7 +30,7 @@ use tokio::{
 
 pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
-const GUIDE: &str = "Mirket coordinates expertise, task state and verification evidence. Call capability_plan to choose a lead and conditional support, then skill_read for the selected guidance. Use project_list to find a root registered by the CLI. For substantial work call task_start, read each selected skill with its task/revision/key, checkpoint progress, record actual acceptance and failure-probe artifact paths, and task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Resources expose embedded skill files only. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
+const GUIDE: &str = "Mirket coordinates expertise, task state and verification evidence. Use capability_plan or catalog_search to select metadata for one lead and conditional support. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
 
 #[derive(Clone)]
 pub struct MirketServer {
@@ -119,9 +119,17 @@ struct Plan {
 
 #[derive(Deserialize, schemars::JsonSchema)]
 #[serde(deny_unknown_fields)]
+struct SkillSelection {
+    /// One exact catalog skill ID, obtained from discovery.
+    #[schemars(length(min = 1, max = 128))]
+    skill_id: String,
+}
+
+#[derive(Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
 struct SkillRead {
     skill_id: String,
-    /// Embedded path, usually SKILL.md or a referenced file under references/.
+    /// Embedded path, usually SKILL.md or a file under references/ or assets/.
     #[serde(default = "skill_path")]
     path: String,
     /// Set task_id, revision and key together to record delivery of the selected SKILL.md.
@@ -208,7 +216,7 @@ enum FinishAction {
 #[tool_router]
 impl MirketServer {
     #[tool(
-        description = "Find reviewed skills and capabilities by keyword. Results are paginated; retrieve selected bodies with skill_read.",
+        description = "Find reviewed skills by keyword with bounded pagination and explicit guidance access routes. Use catalog_show for a selected entry's pins and caveats; skill_read only returns embedded bodies.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn catalog_search(&self, Parameters(args): Parameters<Search>) -> CallToolResult {
@@ -218,6 +226,20 @@ impl MirketServer {
                 bail!("query, offset or page size exceeds its limit");
             }
             catalog.search(&args.query, args.offset, args.limit)
+        })
+        .await
+    }
+
+    #[tool(
+        description = "Inspect one selected skill's source pin, dependencies, adaptation, caveats and read route without fetching a payload or executing tools. Upstream and reference entries are not readable via skill_read.",
+        annotations(read_only_hint = true, open_world_hint = false)
+    )]
+    async fn catalog_show(&self, Parameters(args): Parameters<SkillSelection>) -> CallToolResult {
+        self.run(move |_, catalog| {
+            if args.skill_id.is_empty() || args.skill_id.len() > 128 {
+                bail!("selected skill ID must contain 1..=128 bytes");
+            }
+            catalog.describe(&args.skill_id)
         })
         .await
     }
@@ -237,7 +259,7 @@ impl MirketServer {
     }
 
     #[tool(
-        description = "Read an embedded skill body or reference. Supply task_id, revision and key together to record delivery of a selected SKILL.md. Delivery means content was returned, not that the agent applied it.",
+        description = "Read an embedded skill body, reference or source asset. Supply task_id, revision and key together to record delivery of a selected SKILL.md. Delivery means content was returned, not that the agent applied it.",
         annotations(
             read_only_hint = false,
             destructive_hint = false,
@@ -421,9 +443,8 @@ impl ServerHandler for MirketServer {
         Ok(ListResourceTemplatesResult::with_all_items(vec![
             ResourceTemplate::new(
                 "mirket://skills/{skill_id}/{+path}",
-                "Embedded skill body or reference",
-            )
-            .with_mime_type("text/markdown"),
+                "Embedded skill body, reference or source asset",
+            ),
         ]))
     }
 
@@ -450,10 +471,23 @@ impl ServerHandler for MirketServer {
                     Some(json!({"reason":error.to_string()})),
                 )
             })?;
+        let mime_type = skill_resource_mime(path);
         Ok(ReadResourceResult::new(vec![
-            ResourceContents::text(doc.content, uri).with_mime_type("text/markdown"),
+            ResourceContents::text(doc.content, uri).with_mime_type(mime_type),
         ])
         .into())
+    }
+}
+
+fn skill_resource_mime(path: &str) -> &'static str {
+    match path.rsplit('.').next().unwrap_or("") {
+        "md" | "markdown" => "text/markdown",
+        "html" | "htm" => "text/html",
+        "css" => "text/css",
+        "js" | "mjs" => "text/javascript",
+        "svg" => "image/svg+xml",
+        "json" => "application/json",
+        _ => "text/plain",
     }
 }
 
@@ -547,6 +581,7 @@ pub async fn protocol_probe(
         let names: Vec<String> = tools.iter().map(|tool| tool.name.to_string()).collect();
         let expected = [
             "catalog_search",
+            "catalog_show",
             "capability_plan",
             "skill_read",
             "project_list",
@@ -594,6 +629,40 @@ pub async fn protocol_probe(
             if result??.is_error == Some(true) {
                 bail!("concurrent catalog request failed");
             }
+        }
+        let selected = client
+            .call_tool(
+                CallToolRequestParams::new("catalog_show").with_arguments(
+                    json!({"skill_id":"ecc-rust-testing"})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                ),
+            )
+            .await?;
+        if selected.is_error == Some(true)
+            || selected.structured_content.as_ref().is_none_or(|value| {
+                value["guidance_access"]["body_readable"] != false
+                    || value["source_pin"]["commit"]
+                        .as_str()
+                        .is_none_or(|pin| pin.len() != 40)
+                    || !value["caveats"].is_array()
+            })
+        {
+            bail!("selected upstream metadata did not establish its pinned read route");
+        }
+        let upstream = client
+            .call_tool(
+                CallToolRequestParams::new("skill_read").with_arguments(
+                    json!({"skill_id":"ecc-rust-testing"})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                ),
+            )
+            .await?;
+        if upstream.is_error != Some(true) {
+            bail!("embedded-only skill_read accepted an upstream payload");
         }
         let read = client
             .call_tool(
@@ -653,6 +722,7 @@ pub async fn protocol_probe(
         "startup_ms":startup_ms,"request_median_ms":percentile(0.5),"request_p95_ms":percentile(0.95),
         "sequential_requests_per_second":iterations as f64/elapsed_seconds,"concurrent_requests":4,
         "tools":names,"skill_delivery":true,"resource_read":true,"malformed_input_rejected":true,"arbitrary_resource_rejected":true,
+        "selected_metadata_read_route":true,"upstream_body_rejected":true,
         "measurement":"One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee."}),
         )
     };

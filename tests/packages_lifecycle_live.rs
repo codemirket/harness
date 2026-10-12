@@ -49,8 +49,8 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
         options["packages"]
             .as_array()
             .context("packages")?
-            .contains(&json!("jscpd")),
-        "install jscpd in the disposable home first"
+            .contains(&json!("playwright")),
+        "install playwright in the disposable home first"
     );
     ensure!(
         options["targets"] == json!(["codex", "claude"]),
@@ -59,11 +59,17 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
     let project = tempfile::tempdir_in(std::env::temp_dir().canonicalize()?)?;
     let paths = Paths::new(home.clone())?;
     // Resolve the actual generation; operations and execution below use the CLI.
-    let launch = packages::launch(&paths, "jscpd", project.path())?;
-    let store_root = launch
-        .command
+    let launch = packages::launch(&paths, "playwright", project.path())?;
+    let node_modules = launch.args.first().context("Playwright entrypoint")?;
+    let store_root = Path::new(node_modules)
         .parent()
-        .context("native executable parent")?;
+        .context("Playwright directory")?
+        .parent()
+        .context("node_modules directory")?
+        .parent()
+        .context("scope directory")?
+        .parent()
+        .context("package generation")?;
     let codex_path = home.join(".codex/config.toml");
     let claude_path = home.join(".claude.json");
     let mut codex = fs::read_to_string(&codex_path)?.parse::<toml_edit::DocumentMut>()?;
@@ -80,20 +86,20 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
     fs::write(&codex_path, codex.to_string())?;
     fs::write(&claude_path, serde_json::to_vec_pretty(&claude)?)?;
 
-    success(&home, &["package", "remove", "jscpd"])?;
+    success(&home, &["package", "remove", "playwright"])?;
     let removed = selected(&home)?;
     ensure!(
         !removed["packages"]
             .as_array()
             .unwrap()
-            .contains(&json!("jscpd")),
+            .contains(&json!("playwright")),
         "selection was retained"
     );
     ensure!(
         removed["package_settings"] == options["package_settings"],
         "unrelated settings changed"
     );
-    let not_selected = invoke(&home, &["package", "probe", "jscpd"])?;
+    let not_selected = invoke(&home, &["package", "probe", "playwright"])?;
     ensure!(
         !not_selected.status.success()
             && String::from_utf8_lossy(&not_selected.stderr).contains("not selected"),
@@ -103,7 +109,7 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
         store_root.is_dir(),
         "removal purged reusable package content"
     );
-    success(&home, &["package", "install", "jscpd"])?;
+    success(&home, &["package", "install", "playwright"])?;
     let reinstalled = selected(&home)?;
     let membership = |value: &Value| {
         value["packages"]
@@ -143,7 +149,7 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
     let marker = store_root.join("unexpected-package-fixture");
     ensure!(!marker.exists(), "drift marker already exists");
     fs::write(&marker, "extra content must block launch and setup\n")?;
-    let probe = invoke(&home, &["package", "probe", "jscpd"])?;
+    let probe = invoke(&home, &["package", "probe", "playwright"])?;
     let setup = invoke(&home, &["setup", "--yes"])?;
     fs::remove_file(&marker)?;
     for output in [probe, setup] {
@@ -177,7 +183,7 @@ fn packages_lifecycle_live_removal_update_and_drift_preserve_ownership() -> Resu
         &[
             "package",
             "probe",
-            "jscpd",
+            "playwright",
             "--project",
             project.path().to_str().unwrap(),
         ],

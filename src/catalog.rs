@@ -115,6 +115,18 @@ pub struct SkillDocument {
     pub content: String,
 }
 
+fn guidance_access(skill: &Skill) -> Value {
+    json!({
+        "body_readable":skill.delivery == "embedded",
+        "metadata":"catalog_show or mirket catalog show ID",
+        "read_route":match skill.delivery.as_str() {
+            "embedded" => "skill_read or mirket catalog read ID; task-bound first read for tracked work",
+            "upstream" => "Inspect pinned source, adaptation and caveats first. Explicitly select with mirket project add --skill ID, then project sync and doctor; read the installed host skill. skill_read does not fetch upstream guidance.",
+            _ => "Reference only: inspect its source manually under host permissions; not installable or readable via skill_read."
+        }
+    })
+}
+
 #[derive(Debug, Clone)]
 pub struct Payload {
     pub files: BTreeMap<String, Vec<u8>>,
@@ -372,6 +384,37 @@ impl Catalog {
             .with_context(|| format!("unknown skill: {id}"))
     }
 
+    /// Selected discovery metadata, without payloads or large patch tables.
+    /// This is data to assess a choice; it never fetches or executes guidance.
+    pub fn describe(&self, id: &str) -> Result<Value> {
+        let skill = self.skill(id)?;
+        let source = skill
+            .source
+            .as_ref()
+            .and_then(|id| self.0.data.sources.get(id));
+        let result = json!({
+            "id":skill.id,"name":skill.name,"description":skill.description,
+            "scope":skill.scope,"delivery":skill.delivery,"path":skill.path,
+            "category":skill.category,"tags":skill.tags,"agents":skill.agents,
+            "requires":skill.requires,"conflicts":skill.conflicts,
+            "adaptation":skill.adaptation,"source_id":skill.source,"source_pin":source,
+            "license_files":skill.license_files,"sha256":skill.sha256,
+            "installed_sha256":skill.installed_sha256,
+            "dependencies":skill.metadata.get("dependencies"),
+            "caveats":skill.metadata.get("caveats"),
+            "asset_requirements":skill.metadata.get("asset_requirements"),
+            "companion_requirements":skill.metadata.get("companion_requirements"),
+            "optional_companions":skill.metadata.get("optional_companions"),
+            "url":skill.metadata.get("url"),"license":skill.metadata.get("license"),
+            "guidance_access":guidance_access(skill)
+        });
+        ensure!(
+            serde_json::to_vec(&result)?.len() <= 32 * 1024,
+            "selected metadata exceeds 32 KiB; inspect mirket catalog show {id} through the host CLI"
+        );
+        Ok(result)
+    }
+
     pub fn search(&self, query: &str, offset: usize, limit: usize) -> Result<Value> {
         ensure!(query.len() <= 1024, "search exceeds 1024 bytes");
         ensure!((1..=100).contains(&limit), "limit must be 1..=100");
@@ -408,7 +451,20 @@ impl Catalog {
                     })
                     .max()
                     .unwrap_or(0);
-                Some(((skill.id == phrase, positive, delivery, name_match), skill))
+                let exact_tags = terms
+                    .iter()
+                    .filter(|term| skill.tags.iter().any(|tag| tag.eq_ignore_ascii_case(term)))
+                    .count();
+                Some((
+                    (
+                        skill.id == phrase,
+                        positive,
+                        delivery,
+                        exact_tags,
+                        name_match,
+                    ),
+                    skill,
+                ))
             })
             .collect();
         matches.sort_unstable_by(|(a_rank, a), (b_rank, b)| {
@@ -423,7 +479,8 @@ impl Catalog {
                 json!({
                     "id": skill.id, "name": skill.name, "description": skill.description,
                     "scope": skill.scope, "delivery": skill.delivery, "category": skill.category,
-                    "installable": skill.delivery == "embedded" || skill.delivery == "upstream"
+                    "installable": skill.delivery == "embedded" || skill.delivery == "upstream",
+                    "guidance_access": guidance_access(skill)
                 })
             })
             .collect();
@@ -455,7 +512,7 @@ impl Catalog {
             .0
             .payloads
             .get(id)
-            .with_context(|| format!("skill is not embedded: {id}"))?;
+            .with_context(|| format!("skill is not embedded: {id}; inspect catalog_show or mirket catalog show {id} for its pinned source, caveats and read route"))?;
         let bytes = payload
             .files
             .get(path)
@@ -534,7 +591,7 @@ impl Catalog {
             "activation_status":"not_observed",
             "authority":"Expertise does not grant execution permissions or professional authority.",
             "support_policy":"Contract support IDs are optional skills: read one with skill_read or mirket catalog read ID and register it with mirket project add --skill ID only when needed. MCP supporting and CLI --with compose up to 12 capability names or role aliases from mirket capabilities list, not optional skill IDs.",
-            "next_steps":["Read selected lead guidance and relevant references.",
+            "next_steps":["For substantial work start a task from selected metadata, then make the first selected lead read task-bound; short untracked work reads directly once. Reuse unchanged guidance and retrieve references only when needed.",
                 "Register missing project leads with mirket project add, then sync and doctor.",
                 "Inspect available tools and actual task inputs.",
                 "Deliver the task and record observable acceptance and failure-probe evidence."]}),
@@ -1294,6 +1351,11 @@ mod tests {
             ("context", "context-management"),
             ("research", "research-and-synthesis"),
             ("CFO", "financial-analysis"),
+            ("axe-core", "accessibility-engineering"),
+            ("accessibility-audit", "accessibility-engineering"),
+            ("accessible", "accessibility-engineering"),
+            ("logo", "svg-creation"),
+            ("generic copy", "marketing-writing"),
         ] {
             let page = catalog.search(query, 0, 5).unwrap();
             assert_eq!(page["items"][0]["id"], expected, "{query}");
@@ -1311,6 +1373,65 @@ mod tests {
             second["items"],
             json!(&all["items"].as_array().unwrap()[2..4])
         );
+    }
+
+    #[test]
+    fn discovery_reports_read_routes_and_bounded_selected_metadata() {
+        let catalog = Catalog::embedded().unwrap();
+        for query in ["anti slop", "anti-slop", "anti ai-slop"] {
+            let page = catalog.search(query, 0, 10).unwrap();
+            let items = page["items"].as_array().unwrap();
+            assert_eq!(items[0]["id"], "interface-design");
+            assert!(
+                items
+                    .iter()
+                    .take(2)
+                    .any(|row| row["id"] == "marketing-writing")
+            );
+            assert_eq!(items[0]["guidance_access"]["body_readable"], true);
+        }
+        let upstream = catalog.search("rust testing", 0, 10).unwrap();
+        let row = upstream["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|row| row["id"] == "ecc-rust-testing")
+            .unwrap();
+        assert_eq!(row["installable"], true);
+        assert_eq!(row["guidance_access"]["body_readable"], false);
+        let selected = catalog.describe("ecc-rust-testing").unwrap();
+        assert_eq!(selected["source_pin"]["repository"], "affaan-m/ECC");
+        assert_eq!(
+            selected["source_pin"]["commit"],
+            "ef648e01899ba3e8dc6371642deaaf64b4477775"
+        );
+        assert!(
+            selected["adaptation"]
+                .as_str()
+                .unwrap()
+                .contains("requirements")
+        );
+        assert!(!selected["caveats"].as_array().unwrap().is_empty());
+        assert!(selected.get("replacements").is_none());
+        assert!(
+            catalog
+                .read("ecc-rust-testing", "SKILL.md", MAX_FILE)
+                .is_err()
+        );
+        assert!(catalog.describe("missing-skill").is_err());
+        for skill in catalog.skills() {
+            let selected = catalog.describe(&skill.id).unwrap();
+            assert!(serde_json::to_vec(&selected).unwrap().len() <= 32 * 1024);
+            if skill.delivery == "reference" {
+                assert_eq!(selected["guidance_access"]["body_readable"], false);
+                assert!(
+                    selected["guidance_access"]["read_route"]
+                        .as_str()
+                        .unwrap()
+                        .contains("Reference only")
+                );
+            }
+        }
     }
 
     #[test]

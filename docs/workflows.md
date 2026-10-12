@@ -12,8 +12,16 @@ requested capability leads. CLI `--with` and MCP `capability_plan.supporting`
 compose up to 12 capability names or role aliases. The contract's `support`
 IDs are conditional skills; read one with `skill_read` or `mirket catalog read ID` and add it to
 the project with `mirket project add --skill ID` only when needed.
-Read the selected skill body and relevant references before
-substantive work. A skill name or installation receipt is not evidence of use.
+For tracked work, start the task from this metadata before the first body read,
+then make that read task-bound. Short untracked work reads directly once. Reuse
+unchanged guidance and retrieve references only when needed. A skill name or
+installation receipt is not evidence of use.
+
+Search includes explicit guidance access routes. MCP `catalog_show` returns
+selected source pins, adaptation, dependencies and caveats without fetching.
+`skill_read` reads embedded content only. Explicitly selected upstream guidance
+is read from its installed host path after project sync and doctor; reference
+entries require manual source inspection under host permissions.
 
 ## Track a concrete outcome
 
@@ -81,6 +89,7 @@ local editable records cannot attest reviewer identity or human approval.
 | Tool | Operation |
 | --- | --- |
 | `catalog_search` | Bounded reviewed-catalog discovery |
+| `catalog_show` | Selected metadata, pins, caveats and correct read route |
 | `capability_plan` | Exact role selection and outcome contract |
 | `skill_read` | Embedded skill/reference content; optional task delivery receipt |
 | `project_list` | Paginated roots already registered through the CLI |

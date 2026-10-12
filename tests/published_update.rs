@@ -173,14 +173,7 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
     successful_json(
         source,
         &home,
-        &[
-            "setup",
-            "--target",
-            "all",
-            "--microsoft-learn",
-            "--yes",
-            "--json",
-        ],
+        &["setup", "--target", "all", "--yes", "--json"],
         local_timeout,
     )?;
     let healthy = successful_json(source, &home, &["doctor", "--json"], local_timeout)?;
@@ -188,8 +181,8 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
     let receipt_path = home.join(".mirket/setup.json");
     let before: Value = serde_json::from_slice(&fs::read(&receipt_path)?)?;
     ensure!(
-        before["options"] == json!({"targets":["codex","claude"],"microsoft_learn":true}),
-        "setup did not save both clients and Microsoft Learn"
+        before["options"] == json!({"targets":["codex","claude"]}),
+        "setup did not save both clients"
     );
     let codex_config = fs::read(home.join(".codex/config.toml"))?;
     let claude_config = fs::read(home.join(".claude.json"))?;
@@ -209,11 +202,10 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
         "setup changed unrelated Claude configuration"
     );
     ensure!(
-        codex["mcp_servers"]["microsoft-learn"]["url"].as_str()
-            == Some("https://learn.microsoft.com/api/mcp")
-            && claude["mcpServers"]["microsoft-learn"]["url"]
-                == "https://learn.microsoft.com/api/mcp",
-        "setup did not enable Microsoft Learn in both clients"
+        codex["mcp_servers"]["openai-docs"]["url"].as_str()
+            == Some("https://developers.openai.com/mcp")
+            && claude["mcpServers"]["openai-docs"]["url"] == "https://developers.openai.com/mcp",
+        "setup did not enable OpenAI Docs in both clients"
     );
 
     let removed_relative = before["files"]

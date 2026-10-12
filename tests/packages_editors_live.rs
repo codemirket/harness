@@ -95,11 +95,10 @@ async fn packages_editors_live_artifacts_failures_and_update_replay() -> Result<
     let project_arg = root.to_str().context("UTF8 project")?;
     let mut trace = vec![];
     let mut inkscape = start(&home, &root, "inkscape").await?;
-    let mut glax = start(&home, &root, "glaxnimate").await?;
-    for (client, count) in [(&inkscape, 3), (&glax, 5)] {
-        let tools = client.list_all_tools().await?;
+    {
+        let tools = inkscape.list_all_tools().await?;
         ensure!(
-            tools.len() == count && tools.iter().all(|t| t.output_schema.is_some()),
+            tools.len() == 3 && tools.iter().all(|t| t.output_schema.is_some()),
             "discovery/schema contract changed"
         );
         trace.push(json!({"discovery":tools}));
@@ -220,123 +219,7 @@ async fn packages_editors_live_artifacts_failures_and_update_replay() -> Result<
         &mut trace,
     )
     .await?;
-    let motion=good(&glax,"animation_create",json!({"source":"courier.svg","output":"courier.rawr","duration_seconds":3.0,"tracks":[{"target_id":"aircraft","translate":[{"at":0.0,"x":-38.0,"y":18.0},{"at":0.6,"x":12.0,"y":-18.0},{"at":1.0,"x":28.0,"y":-24.0}]},{"target_id":"trail","opacity":[{"at":0.0,"value":0.35},{"at":0.6,"value":0.8},{"at":1.0,"value":0.4}]}]}),&mut trace).await?;
-    ensure!(
-        motion["animation"]["keyframes"]
-            .as_u64()
-            .is_some_and(|n| n >= 6),
-        "animation lost keyframes"
-    );
-    good(
-        &glax,
-        "animation_inspect",
-        json!({"path":"courier.rawr"}),
-        &mut trace,
-    )
-    .await?;
-    let mut frame_digests = vec![];
-    for frame in [0, 54, 108, 179] {
-        let output = format!("frame-{frame:03}.png");
-        let value = good(
-            &glax,
-            "animation_frame",
-            json!({"source":"courier.rawr","output":output,"format":"png","frame":frame}),
-            &mut trace,
-        )
-        .await?;
-        frame_digests.push(value["artifact"]["sha256"].clone());
-    }
-    ensure!(
-        frame_digests.windows(2).all(|pair| pair[0] != pair[1]),
-        "native sampled frames did not change"
-    );
-    good(
-        &glax,
-        "animation_frame",
-        json!({"source":"courier.rawr","output":"frame-middle.svg","format":"svg","frame":90}),
-        &mut trace,
-    )
-    .await?;
-    good(
-        &glax,
-        "animation_export",
-        json!({"source":"courier.rawr","output":"courier-animated.svg"}),
-        &mut trace,
-    )
-    .await?;
-    let exported = fs::read_to_string(root.join("courier-animated.svg"))?;
-    fs::write(
-        root.join("playback.html"),
-        include_str!("fixtures/editors/playback.html").replace("<!-- ANIMATION -->", &exported),
-    )?;
-    ensure!(
-        exported.contains("animateTransform")
-            && exported.contains("repeatCount=\"1\"")
-            && exported.contains("fill=\"freeze\"")
-            && !exported.contains("animateMotion"),
-        "finite SVG motion was not normalized"
-    );
-    let before = fs::read(root.join("courier.rawr"))?;
-    if root.join("Courier.rawr").exists() {
-        bad(&glax, "animation_retime", json!({"source":"courier.rawr","output":"Courier.rawr","duration_seconds":4.5,"overwrite":true}), &mut trace).await?;
-        ensure!(
-            fs::read(root.join("courier.rawr"))? == before,
-            "case alias replaced animation source"
-        );
-    }
-    good(
-        &glax,
-        "animation_retime",
-        json!({"source":"courier.rawr","output":"courier-slow.rawr","duration_seconds":4.5}),
-        &mut trace,
-    )
-    .await?;
-    good(
-        &glax,
-        "animation_export",
-        json!({"source":"courier-slow.rawr","output":"courier-slow.svg"}),
-        &mut trace,
-    )
-    .await?;
-    ensure!(
-        fs::read(root.join("courier.rawr"))? == before,
-        "refinement overwrote source"
-    );
-    bad(
-        &glax,
-        "animation_frame",
-        json!({"source":"courier.rawr","output":"invalid.png","format":"png","frame":180}),
-        &mut trace,
-    )
-    .await?;
-    bad(
-        &glax,
-        "animation_export",
-        json!({"source":"courier.rawr","output":"courier-animated.svg"}),
-        &mut trace,
-    )
-    .await?;
-    fs::write(
-        root.join("unsupported.svg"),
-        r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g id="text"><text x="10" y="20">unsupported</text></g></svg>"#,
-    )?;
-    bad(&glax,"animation_create",json!({"source":"unsupported.svg","output":"unsupported.rawr","duration_seconds":2,"tracks":[{"target_id":"text","opacity":[{"at":0,"value":1},{"at":1,"value":0.5}]}]}),&mut trace).await?;
-    ensure!(
-        !root.join("unsupported.rawr").exists(),
-        "unsupported features published"
-    );
-    fs::write(root.join("malformed.rawr"), b"{}")?;
-    bad(
-        &glax,
-        "animation_inspect",
-        json!({"path":"malformed.rawr"}),
-        &mut trace,
-    )
-    .await?;
     inkscape.close().await?;
-    glax.close().await?;
-    fs::remove_file(root.join("unsupported.svg"))?;
-    fs::remove_file(root.join("malformed.rawr"))?;
     ensure!(
         !fs::read_dir(&root)?.any(|e| e.is_ok_and(|e| e
             .file_name()
@@ -344,7 +227,8 @@ async fn packages_editors_live_artifacts_failures_and_update_replay() -> Result<
             .starts_with(".mirket-editor-"))),
         "private workspaces leaked"
     );
-    for id in ["inkscape", "glaxnimate"] {
+    {
+        let id = "inkscape";
         trace.push(success(&home, &["package", "show", id])?);
         trace.push(success(
             &home,

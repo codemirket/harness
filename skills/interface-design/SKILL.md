@@ -8,6 +8,16 @@ description: Build and refine usable product screens and public pages with delib
 Make the screen work, look at it, and improve the specific things that are wrong.
 The deliverable is the working interface, not a declaration of design principles.
 
+For an anti-slop or less generic design request, use the existing
+[art direction and critique](references/art-direction-and-critique.md): tie each
+visible choice to this brief and repair located defects in the actual render.
+Do not replace the product's identity with a checklist of fashionable effects.
+
+When the requested deliverable is an editable design document, use
+`graphic-design` and its design-document reference with the optional headless
+Penpot tools (shared design files). A static design export does not implement responsive behavior,
+accessible controls or a working website.
+
 ## Before composing
 
 Identify the person, their immediate task and the important action. Inspect the
@@ -52,10 +62,17 @@ the reference does not require another planning document.
 
 ## Motion that survives use
 
-Name the purpose: feedback, continuity, state change, or explanation. Reuse the
-project's timing conventions. CSS or WAAPI may be enough; springs, layout changes
+Name the purpose: feedback, continuity, state change, explanation or a requested
+expressive visual narrative. Reuse the project's timing conventions. CSS or WAAPI
+may be enough; springs, layout changes
 or timelines may justify the existing motion library. Do not install a library
 for a simple fade. Test reversal, rapid repeated input and exit while entering.
+
+Choose a lead from the changed result: `motion-design` for control feedback,
+`page-transitions` for navigation, `svg-animation` for vector art, or
+`advanced-motion` for a coordinated landing-page/scroll/procedural scene. The latter's
+art-direction reference connects brand, typography, material and rhythm before
+effects are chosen. An ordinary UI repair does not need an advanced scene.
 
 Provide a reduced-motion path that preserves meaning. Inspect normal-speed
 playback as well as intermediate frames. Performance claims require measurement;

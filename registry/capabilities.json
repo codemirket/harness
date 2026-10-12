@@ -201,17 +201,21 @@
       "support": [
         "page-transitions",
         "advanced-motion",
-        "svg-animation"
+        "svg-animation",
+        "graphic-design",
+        "interface-design"
       ],
-      "deliverable": "Motion that communicates actual state, handles interruption and preserves reduced-motion functionality.",
-      "failure_probe": "Reverse or cancel midway, unmount and change motion preference; no stale state or trapped control.",
-      "prerequisites": "Choose the production method from the artifact: motion-design for UI controls, page-transitions for navigation, advanced-motion for DOM scenes, svg-animation for SVG or an actual native/video workflow. Verify the corresponding runtime.",
+      "deliverable": "Purposeful motion matched to the brief and brand, with an editable implementation, readable static composition and interruption-safe behavior.",
+      "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. A screenshot or successful build alone cannot accept motion.",
+      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or an available frame-based workflow for requested video. Use the existing host model and project tools; verify actual browser/renderer readiness.",
       "aliases": [
         "Motion Designer"
       ],
       "acceptance": [
-        "Motion inspected through interruption and relevant intermediate frames",
-        "Reduced motion retains full user functionality"
+        "Art direction and a restrained motion vocabulary demonstrated in the rendered result",
+        "Normal playback and important intermediate frames inspected at intended and narrow sizes",
+        "Reduced motion at load and live changes retain content and full user functionality",
+        "Editable sources and exports kept distinct; performance claims tied to measurements"
       ]
     },
     {

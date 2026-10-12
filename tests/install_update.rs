@@ -44,16 +44,628 @@ impl Fixture {
 fn codex() -> SetupOptions {
     SetupOptions {
         targets: vec![Target::Codex],
-        microsoft_learn: false,
         ..SetupOptions::default()
     }
 }
 fn claude() -> SetupOptions {
     SetupOptions {
         targets: vec![Target::Claude],
-        microsoft_learn: true,
         ..SetupOptions::default()
     }
+}
+
+// Removal fixtures model exact receipts/configuration from installed clients.
+// They never contact the documentation endpoint or write to the real home.
+fn documentation_server(target: Target) -> serde_json::Value {
+    match target {
+        Target::Codex => serde_json::json!({"url":"https://learn.microsoft.com/api/mcp"}),
+        Target::Claude => {
+            serde_json::json!({"type":"http","url":"https://learn.microsoft.com/api/mcp"})
+        }
+    }
+}
+
+fn write_documentation_entry(fixture: &Fixture, target: Target, customized: bool) {
+    match target {
+        Target::Codex => {
+            let mut config = String::from_utf8(fixture.read(".codex/config.toml"))
+                .unwrap()
+                .parse::<toml_edit::DocumentMut>()
+                .unwrap();
+            let mut server = toml_edit::Table::new();
+            server.insert(
+                "url",
+                toml_edit::value("https://learn.microsoft.com/api/mcp"),
+            );
+            if customized {
+                server.insert("enabled", toml_edit::value(false));
+            }
+            config["mcp_servers"]["microsoft-learn"] = toml_edit::Item::Table(server);
+            fixture.write(".codex/config.toml", config.to_string());
+        }
+        Target::Claude => {
+            let mut config: serde_json::Value =
+                serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
+            config["mcpServers"]["microsoft-learn"] = documentation_server(target);
+            if customized {
+                config["mcpServers"]["microsoft-learn"]["headers"] =
+                    serde_json::json!({"x-personal":"keep-private"});
+            }
+            fixture.write(".claude.json", serde_json::to_vec_pretty(&config).unwrap());
+        }
+    }
+}
+
+fn record_documentation_ownership(fixture: &Fixture, target: Target, customized: bool) {
+    let mut receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    receipt["options"]["microsoft_learn"] = serde_json::json!(true);
+    let mut owned = documentation_server(target);
+    if customized {
+        owned["headers"] = serde_json::json!({"x-personal":"keep-private"});
+    }
+    receipt["servers"][target.to_string()]["microsoft-learn"] = owned;
+    fixture.write(
+        ".mirket/setup.json",
+        serde_json::to_vec_pretty(&receipt).unwrap(),
+    );
+}
+
+fn documentation_entry(fixture: &Fixture, target: Target) -> Option<serde_json::Value> {
+    match target {
+        Target::Codex => {
+            let config = String::from_utf8(fixture.read(".codex/config.toml"))
+                .unwrap()
+                .parse::<toml_edit::DocumentMut>()
+                .unwrap();
+            config["mcp_servers"]
+                .as_table_like()
+                .unwrap()
+                .get("microsoft-learn")
+                .map(|entry| serde_json::json!({"toml":entry.to_string()}))
+        }
+        Target::Claude => {
+            let config: serde_json::Value =
+                serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
+            config["mcpServers"].get("microsoft-learn").cloned()
+        }
+    }
+}
+
+#[test]
+fn removed_documentation_setup_removes_only_exact_owned_entries_and_receipt_choice() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    for target in [Target::Codex, Target::Claude] {
+        write_documentation_entry(&fixture, target, false);
+        record_documentation_ownership(&fixture, target, false);
+    }
+    fixture.write("documents/design.md", "private document stays");
+    fixture.write(
+        ".mirket/packages/data/personal/index.db",
+        "private index stays",
+    );
+    assert_eq!(
+        install::saved_options(&fixture.paths).unwrap(),
+        Some(SetupOptions::default())
+    );
+    assert!(
+        !install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+    fixture.setup(&SetupOptions::default()).unwrap();
+    for target in [Target::Codex, Target::Claude] {
+        assert!(documentation_entry(&fixture, target).is_none());
+    }
+    let receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    assert!(receipt["options"].get("microsoft_learn").is_none());
+    for target in ["codex", "claude"] {
+        assert!(receipt["servers"][target].get("microsoft-learn").is_none());
+    }
+    assert_eq!(
+        fixture.read("documents/design.md"),
+        b"private document stays"
+    );
+    assert_eq!(
+        fixture.read(".mirket/packages/data/personal/index.db"),
+        b"private index stays"
+    );
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+    assert_eq!(fixture.setup(&SetupOptions::default()).unwrap().changed, 0);
+}
+
+#[test]
+fn removed_documentation_preserves_customized_and_unmanaged_entries() {
+    for owned in [false, true] {
+        let fixture = Fixture::new();
+        fixture.setup(&SetupOptions::default()).unwrap();
+        for target in [Target::Codex, Target::Claude] {
+            write_documentation_entry(&fixture, target, owned);
+            if owned {
+                record_documentation_ownership(&fixture, target, false);
+            }
+        }
+        let configs = [
+            fixture.read(".codex/config.toml"),
+            fixture.read(".claude.json"),
+        ];
+        fixture.setup(&SetupOptions::default()).unwrap();
+        assert_eq!(
+            configs,
+            [
+                fixture.read(".codex/config.toml"),
+                fixture.read(".claude.json")
+            ]
+        );
+        let receipt: serde_json::Value =
+            serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+        for target in ["codex", "claude"] {
+            assert!(receipt["servers"][target].get("microsoft-learn").is_none());
+        }
+        assert!(
+            install::doctor(&fixture.paths, &fixture.catalog)
+                .unwrap()
+                .ok
+        );
+    }
+}
+
+#[test]
+fn removed_documentation_does_not_delete_a_customized_receipt_contract() {
+    let fixture = Fixture::new();
+    fixture.setup(&claude()).unwrap();
+    write_documentation_entry(&fixture, Target::Claude, true);
+    record_documentation_ownership(&fixture, Target::Claude, true);
+    let original = fixture.read(".claude.json");
+    fixture.setup(&claude()).unwrap();
+    assert_eq!(original, fixture.read(".claude.json"));
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+}
+
+#[test]
+fn removed_documentation_cleanup_is_preflighted_before_any_target_changes() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    write_documentation_entry(&fixture, Target::Codex, false);
+    record_documentation_ownership(&fixture, Target::Codex, false);
+    fixture.write(".claude.json", "{malformed-settings");
+    let before = fixture.read(".codex/config.toml");
+    let receipt = fixture.read(".mirket/setup.json");
+    assert!(fixture.setup(&SetupOptions::default()).is_err());
+    assert_eq!(before, fixture.read(".codex/config.toml"));
+    assert_eq!(receipt, fixture.read(".mirket/setup.json"));
+    assert_eq!(fixture.read(".claude.json"), b"{malformed-settings");
+}
+
+#[test]
+fn removed_documentation_receipt_migration_remains_strict() {
+    for invalid in [
+        serde_json::json!({"targets":["codex"],"microsoft_learn":"true"}),
+        serde_json::json!({"targets":["codex"],"unexpected_option":true}),
+    ] {
+        assert!(serde_json::from_value::<SetupOptions>(invalid).is_err());
+    }
+    for removed in [false, true] {
+        let options: SetupOptions = serde_json::from_value(serde_json::json!({
+            "targets":["codex"],"microsoft_learn":removed
+        }))
+        .unwrap();
+        assert_eq!(
+            serde_json::to_value(options).unwrap(),
+            serde_json::json!({"targets":["codex"]})
+        );
+    }
+}
+
+#[test]
+fn removed_documentation_saved_choice_update_replays_without_removed_cli_flag() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    for target in [Target::Codex, Target::Claude] {
+        write_documentation_entry(&fixture, target, false);
+        record_documentation_ownership(&fixture, target, false);
+    }
+    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
+        .canonicalize()
+        .unwrap();
+    let report = update::update(
+        &fixture.paths,
+        &UpdateOptions {
+            sha256: Some(sha256(&fs::read(&artifact).unwrap())),
+            from: Some(artifact),
+            ..UpdateOptions::default()
+        },
+    )
+    .unwrap();
+    assert!(report.updated && report.reconfigured);
+    for target in [Target::Codex, Target::Claude] {
+        assert!(documentation_entry(&fixture, target).is_none());
+    }
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+}
+
+const REMOVED_PACKAGE_IDS: [&str; 7] = [
+    "semiotic",
+    "agent-device",
+    "safe-docx",
+    "markitdown",
+    "dbhub",
+    "doc-scraper",
+    "jscpd",
+];
+
+fn record_removed_packages(fixture: &Fixture, customized: bool) {
+    let mut receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    receipt["options"]["packages"] = serde_json::json!(REMOVED_PACKAGE_IDS);
+    let mut codex = String::from_utf8(fixture.read(".codex/config.toml"))
+        .unwrap()
+        .parse::<toml_edit::DocumentMut>()
+        .unwrap();
+    let mut claude: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
+    for id in REMOVED_PACKAGE_IDS {
+        let name = format!("mirket-package-{id}");
+        receipt["options"]["package_settings"][id] = serde_json::json!({
+            "database":fixture.paths.home.join("documents/private.sqlite"),
+            "site":"private-fixture"
+        });
+        let args = serde_json::json!(["--home", fixture.paths.home, "package", "serve", id]);
+        let owned = serde_json::json!({"command":fixture.paths.binary(),"args":args});
+        receipt["servers"]["codex"][&name] = owned.clone();
+        let mut claude_owned = owned.clone();
+        claude_owned["type"] = serde_json::json!("stdio");
+        receipt["servers"]["claude"][&name] = claude_owned.clone();
+        let mut table = toml_edit::Table::new();
+        table.insert(
+            "command",
+            toml_edit::value(fixture.paths.binary().to_str().unwrap()),
+        );
+        let mut arguments = toml_edit::Array::new();
+        for arg in args.as_array().unwrap() {
+            arguments.push(arg.as_str().unwrap());
+        }
+        table.insert("args", toml_edit::value(arguments));
+        if customized {
+            table.insert("enabled", toml_edit::value(false));
+            claude_owned["env"] = serde_json::json!({"PERSONAL_SETTING":"preserve"});
+        }
+        codex["mcp_servers"][&name] = toml_edit::Item::Table(table);
+        claude["mcpServers"][&name] = claude_owned;
+        for category in ["data", "cache", "store"] {
+            fixture.write(
+                &format!(".mirket/packages/{category}/{id}/user-data"),
+                format!("{id}:{category}:preserve"),
+            );
+        }
+    }
+    fixture.write("documents/private.sqlite", "private database remains");
+    fixture.write("documents/private.docx", "private document remains");
+    fixture.write(".codex/config.toml", codex.to_string());
+    fixture.write(".claude.json", serde_json::to_vec_pretty(&claude).unwrap());
+    fixture.write(
+        ".mirket/setup.json",
+        serde_json::to_vec_pretty(&receipt).unwrap(),
+    );
+}
+
+fn assert_removed_package_user_data(fixture: &Fixture) {
+    for id in REMOVED_PACKAGE_IDS {
+        for category in ["data", "cache", "store"] {
+            assert_eq!(
+                fixture.read(&format!(".mirket/packages/{category}/{id}/user-data")),
+                format!("{id}:{category}:preserve").as_bytes()
+            );
+        }
+    }
+    assert_eq!(
+        fixture.read("documents/private.sqlite"),
+        b"private database remains"
+    );
+    assert_eq!(
+        fixture.read("documents/private.docx"),
+        b"private document remains"
+    );
+}
+
+#[test]
+fn removed_packages_saved_choices_remove_owned_launches_without_erasing_user_data() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    record_removed_packages(&fixture, false);
+    let saved = install::saved_options(&fixture.paths).unwrap().unwrap();
+    assert!(saved.packages.is_empty() && saved.package_settings.is_empty());
+    fixture.setup(&saved).unwrap();
+    let codex = String::from_utf8(fixture.read(".codex/config.toml")).unwrap();
+    let claude = String::from_utf8(fixture.read(".claude.json")).unwrap();
+    let receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    for id in REMOVED_PACKAGE_IDS {
+        let name = format!("mirket-package-{id}");
+        assert!(!codex.contains(&name) && !claude.contains(&name));
+        assert!(receipt["servers"]["codex"].get(&name).is_none());
+        assert!(receipt["servers"]["claude"].get(&name).is_none());
+    }
+    assert_removed_package_user_data(&fixture);
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+}
+
+#[test]
+fn removed_packages_customized_launches_are_preserved_and_released() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    record_removed_packages(&fixture, true);
+    let before = [
+        fixture.read(".codex/config.toml"),
+        fixture.read(".claude.json"),
+    ];
+    fixture
+        .setup(&install::saved_options(&fixture.paths).unwrap().unwrap())
+        .unwrap();
+    assert_eq!(
+        before,
+        [
+            fixture.read(".codex/config.toml"),
+            fixture.read(".claude.json")
+        ]
+    );
+    let receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    for id in REMOVED_PACKAGE_IDS {
+        let name = format!("mirket-package-{id}");
+        assert!(receipt["servers"]["codex"].get(&name).is_none());
+        assert!(receipt["servers"]["claude"].get(&name).is_none());
+    }
+    assert_removed_package_user_data(&fixture);
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+}
+
+#[test]
+fn removed_packages_native_candidate_update_replays_sanitized_saved_choices() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    record_removed_packages(&fixture, false);
+    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
+        .canonicalize()
+        .unwrap();
+    let report = update::update(
+        &fixture.paths,
+        &UpdateOptions {
+            sha256: Some(sha256(&fs::read(&artifact).unwrap())),
+            from: Some(artifact),
+            ..UpdateOptions::default()
+        },
+    )
+    .unwrap();
+    assert!(report.updated && report.reconfigured);
+    assert_eq!(
+        install::saved_options(&fixture.paths).unwrap(),
+        Some(SetupOptions::default())
+    );
+    let receipt: serde_json::Value =
+        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+    for id in REMOVED_PACKAGE_IDS {
+        for target in ["codex", "claude"] {
+            assert!(
+                receipt["servers"][target]
+                    .get(format!("mirket-package-{id}"))
+                    .is_none()
+            );
+        }
+    }
+    assert_removed_package_user_data(&fixture);
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+}
+
+#[test]
+fn removed_packages_do_not_hide_invalid_receipt_shape_before_normalization() {
+    for invalid_options in [
+        serde_json::json!({"targets":["codex","claude"],"packages":["semiotic","semiotic"]}),
+        serde_json::json!({"targets":["codex","claude"],"packages":vec!["jscpd";33]}),
+        serde_json::json!({"targets":["codex","claude"],"package_settings":{"dbhub":{"private": "x".repeat(70*1024)}}}),
+    ] {
+        let fixture = Fixture::new();
+        fixture.setup(&SetupOptions::default()).unwrap();
+        let mut receipt: serde_json::Value =
+            serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
+        receipt["options"] = invalid_options;
+        fixture.write(
+            ".mirket/setup.json",
+            serde_json::to_vec_pretty(&receipt).unwrap(),
+        );
+        let before = fixture.read(".mirket/setup.json");
+        assert!(install::saved_options(&fixture.paths).is_err());
+        assert_eq!(before, fixture.read(".mirket/setup.json"));
+    }
+}
+
+fn run_removed_replay(
+    fixture: &Fixture,
+    direct: &str,
+    arguments: &[String],
+) -> std::process::Output {
+    std::process::Command::new(env!("CARGO_BIN_EXE_mirket"))
+        .env("MIRKET_DIRECT", direct)
+        .arg("--home")
+        .arg(&fixture.paths.home)
+        .args(["setup", "--yes", "--target", "all"])
+        .args(arguments)
+        .output()
+        .unwrap()
+}
+
+#[test]
+fn removed_arguments_are_reconciled_only_for_an_exact_authenticated_update_replay() {
+    for explicit_packages in [false, true] {
+        let fixture = Fixture::new();
+        fixture.setup(&SetupOptions::default()).unwrap();
+        record_removed_packages(&fixture, false);
+        for target in [Target::Codex, Target::Claude] {
+            write_documentation_entry(&fixture, target, false);
+            record_documentation_ownership(&fixture, target, false);
+        }
+        let token = sha256(&fixture.read(".mirket/setup.json"));
+        let mut arguments = vec!["--expected-state".into(), token, "--microsoft-learn".into()];
+        if explicit_packages {
+            for id in REMOVED_PACKAGE_IDS {
+                arguments.extend(["--package".into(), id.into()]);
+            }
+        }
+        let outcome = run_removed_replay(&fixture, "1", &arguments);
+        assert!(
+            outcome.status.success(),
+            "{}",
+            String::from_utf8_lossy(&outcome.stderr)
+        );
+        assert_eq!(
+            install::saved_options(&fixture.paths).unwrap(),
+            Some(SetupOptions::default())
+        );
+        for target in [Target::Codex, Target::Claude] {
+            assert!(documentation_entry(&fixture, target).is_none());
+        }
+        assert_removed_package_user_data(&fixture);
+        assert!(
+            install::doctor(&fixture.paths, &fixture.catalog)
+                .unwrap()
+                .ok
+        );
+    }
+}
+
+#[test]
+fn removed_arguments_replay_refuses_unproven_or_inconsistent_choices_without_writes() {
+    let fixture = Fixture::new();
+    fixture.setup(&SetupOptions::default()).unwrap();
+    record_removed_packages(&fixture, false);
+    for target in [Target::Codex, Target::Claude] {
+        write_documentation_entry(&fixture, target, false);
+        record_documentation_ownership(&fixture, target, false);
+    }
+    let token = sha256(&fixture.read(".mirket/setup.json"));
+    let original = [
+        fixture.read(".mirket/setup.json"),
+        fixture.read(".codex/config.toml"),
+        fixture.read(".claude.json"),
+    ];
+    let valid = vec![
+        "--expected-state".into(),
+        token.clone(),
+        "--microsoft-learn".into(),
+    ];
+    let mut cases = vec![
+        vec!["--microsoft-learn".into()],
+        vec![
+            "--expected-state".into(),
+            "0".repeat(64),
+            "--microsoft-learn".into(),
+        ],
+        vec![
+            "--expected-state".into(),
+            token.clone(),
+            "--microsoft-learn=false".into(),
+        ],
+    ];
+    for extra in [
+        vec!["--dry-run".into()],
+        vec!["--no-packages".into()],
+        vec!["--microsoft-learn".into()],
+        vec!["--package".into(), "jscpd".into()],
+    ] {
+        let mut arguments = valid.clone();
+        arguments.extend(extra);
+        cases.push(arguments);
+    }
+    for arguments in cases {
+        let outcome = run_removed_replay(&fixture, "1", &arguments);
+        assert!(
+            !outcome.status.success(),
+            "unproven replay accepted: {arguments:?}"
+        );
+        assert_eq!(
+            original,
+            [
+                fixture.read(".mirket/setup.json"),
+                fixture.read(".codex/config.toml"),
+                fixture.read(".claude.json")
+            ]
+        );
+    }
+    for direct in ["0", "false", ""] {
+        let outcome = run_removed_replay(&fixture, direct, &valid);
+        assert!(!outcome.status.success());
+        assert_eq!(
+            original,
+            [
+                fixture.read(".mirket/setup.json"),
+                fixture.read(".codex/config.toml"),
+                fixture.read(".claude.json")
+            ]
+        );
+    }
+    let mut receipt: serde_json::Value = serde_json::from_slice(&original[0]).unwrap();
+    receipt["options"]["microsoft_learn"] = serde_json::json!(false);
+    fixture.write(
+        ".mirket/setup.json",
+        serde_json::to_vec_pretty(&receipt).unwrap(),
+    );
+    let false_receipt = fixture.read(".mirket/setup.json");
+    let outcome = run_removed_replay(
+        &fixture,
+        "1",
+        &[
+            "--expected-state".into(),
+            sha256(&false_receipt),
+            "--microsoft-learn".into(),
+        ],
+    );
+    assert!(!outcome.status.success());
+    assert_eq!(false_receipt, fixture.read(".mirket/setup.json"));
+    receipt["options"]["microsoft_learn"] = serde_json::json!(true);
+    receipt["options"]["targets"] = serde_json::json!(["claude"]);
+    fixture.write(
+        ".mirket/setup.json",
+        serde_json::to_vec_pretty(&receipt).unwrap(),
+    );
+    let other_targets = fixture.read(".mirket/setup.json");
+    let outcome = run_removed_replay(
+        &fixture,
+        "1",
+        &[
+            "--expected-state".into(),
+            sha256(&other_targets),
+            "--microsoft-learn".into(),
+        ],
+    );
+    assert!(!outcome.status.success());
+    assert_eq!(other_targets, fixture.read(".mirket/setup.json"));
+    assert_removed_package_user_data(&fixture);
 }
 
 #[test]
@@ -63,11 +675,11 @@ fn package_setup_rejects_conflicts_before_downloading_or_changing_state() {
     let receipt = fixture.read(".mirket/setup.json");
     fixture.write(
         ".codex/config.toml",
-        "[mcp_servers.mirket-package-jscpd]\ncommand = 'personal-server'\n",
+        "[mcp_servers.mirket-package-playwright]\ncommand = 'personal-server'\n",
     );
     let config = fixture.read(".codex/config.toml");
     let options = SetupOptions {
-        packages: vec!["jscpd".into()],
+        packages: vec!["playwright".into()],
         ..SetupOptions::default()
     };
     assert!(
@@ -108,7 +720,7 @@ fn setup_preserves_unrelated_settings_and_verifies_actual_payload() {
         serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
     assert_eq!(
         receipt["options"],
-        serde_json::json!({"targets": ["codex", "claude"], "microsoft_learn": false})
+        serde_json::json!({"targets": ["codex", "claude"]})
     );
     assert_eq!(
         fixture.read(".codex/AGENTS.md"),
@@ -132,7 +744,6 @@ fn setup_preserves_unrelated_settings_and_verifies_actual_payload() {
         claude["mcpServers"]["mirket"]["args"][1],
         fixture.paths.home.to_str().unwrap()
     );
-    assert!(claude["mcpServers"].get("microsoft-learn").is_none());
     assert_eq!(
         install::saved_options(&fixture.paths).unwrap(),
         Some(options.clone())
@@ -693,8 +1304,8 @@ fn offline_update_runs_new_cli_and_reapplies_saved_setup() {
     let settings: serde_json::Value =
         serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
     assert_eq!(
-        settings["mcpServers"]["microsoft-learn"]["url"],
-        "https://learn.microsoft.com/api/mcp"
+        settings["mcpServers"]["openai-docs"]["url"],
+        "https://developers.openai.com/mcp"
     );
     assert!(!fs::read_dir(&fixture.paths.root).unwrap().any(|entry| {
         entry

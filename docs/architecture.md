@@ -4,7 +4,7 @@ Mirket has one command surface and one Rust implementation of each operation.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
 methods. Optional package bridges launch pinned local servers separately; editor
-packages use Mirket-owned MCP adapters around pinned native applications.
+and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
 
 | Source | Responsibility |
 | --- | --- |
@@ -15,14 +15,19 @@ packages use Mirket-owned MCP adapters around pinned native applications.
 | `src/update.rs` | Release selection, candidate verification and setup replay |
 | `src/state.rs` | Registered roots, durable tasks, revisions, idempotency and artifact evidence |
 | `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
-| `src/package_mcp.rs` | Filtered package tool bridges, SQL/document input policies, process lifecycle and request limits |
+| `src/package_mcp.rs` | Filtered browser package tools, process lifecycle and request limits |
 | `src/editor_mcp/mod.rs`, `src/editor_mcp/process.rs` | Typed editor MCP tools, native startup checks, private jobs, cancellation and bounded process output |
-| `src/editor_mcp/inkscape.rs`, `src/editor_mcp/glaxnimate.rs` | Editable SVG and animation operations, native result checks and export semantics |
+| `src/editor_mcp/inkscape.rs`, `src/editor_mcp/axe_core.rs` | SVG geometry/exports and rendered local accessibility evidence |
+| `src/editor_mcp/hyperframes.rs`, `src/editor_mcp/motion_canvas.rs`, `runtime/packages/` | Scoped web/drawn compositions, actual upstream playback and verified media publication |
+| `src/editor_mcp/penpot.rs`, `src/packages/services.rs` | Typed editable design documents, real browser editors/plugins and owned local service lifecycle |
 | `src/editor_mcp/svg.rs`, `src/editor_mcp/files.rs` | Supported vector/document validation, project-relative paths and staged artifact publication |
 | `src/packages/mod.rs` | Package registry, selection, configuration and launch profiles |
 | `src/packages/store.rs` | Verified downloads, immutable generations and integrity receipts |
+| `src/packages/embedded.rs` | Bounded first-party adapter files, generation identity and collision-free staging |
 | `src/packages/archive.rs` | Bounded extraction and archive path validation |
 | `src/packages/dmg.rs` | Private read-only DMG mounts, bounded application copying, internal links and copied-bundle signature checks |
+| `src/podman.rs` | Registered Podman client, private VM identity, explicit lifecycle and owned-worker recovery |
+| `src/packages/container.rs`, `src/podman_api.rs` | Pinned OCI recipes, bounded worker admission, fixed Unix API execution and single-artifact retrieval |
 | `src/tools.rs` | Explicitly registered executables and CLI-only invocation |
 | `src/dev.rs` | Build/check/package operations and performance measurement |
 | `src/release.rs` | Verification and assembly of native release manifests |
@@ -46,8 +51,9 @@ over immutable creation time and ID; checkpoints cannot shift page membership.
 Task mutations use
 expected revisions and idempotency keys. An identical retry returns its recorded
 result; reusing a key for another intention fails. The catalog is parsed once
-and shared immutably. Each document digest is computed on its first read or role
-plan and reused thereafter; unrelated documents add no hashing work to startup.
+and shared immutably. Startup computes aggregate identities for all embedded
+payloads once, including their notices. Individual document digests are computed
+on first read or role plan and reused thereafter. These are distinct costs.
 Search ranks positive metadata separately
 from description-only matches; exact IDs remain directly addressable. Catalog
 validation resolves complete profiles for both hosts, including invocation and
@@ -65,8 +71,8 @@ Each selected package receives a separate `mirket-package-ID` client entry
 running `mirket package serve ID`. Server bridges expose permitted upstream
 tools, filtering both discovery and invocation and managing child-process
 cancellation and shutdown. Upstream sampling, elicitation, roots requests,
-resources and prompts are not forwarded. Editor packages have no upstream MCP
-server: Mirket implements their tool schemas and calls the native executable
+resources and prompts are not forwarded. Editor and engine packages do not forward
+an upstream MCP server: Mirket implements their tool schemas and calls the runtime
 with fixed operation-specific arguments.
 
 Package launch uses a controlled environment and explicit working directory.
@@ -75,82 +81,55 @@ directory chosen by its client. This is not a task-root registration or an
 operating-system sandbox. Tools still have the process's actual permissions,
 and cancellation cannot undo effects already performed.
 
-Profile policies are enforced before forwarding calls. DBHub SQL is prepared
-against the selected SQLite file through a read-only native connection and
-authorizer; writes, `PRAGMA`, `ATTACH`, extension loading and requests over
-64 statements are refused. Its upstream configuration also enables read-only
-queries and a 200-row cap. Safe-Docx rejects cloud document IDs and validates
-explicit project-scoped output destinations and overwrite permission. Both clean
-and tracked destinations must be explicit for its default dual-output save.
-Semiotic exposes six developer tools and limits rendering to static SVG.
+The owned adapter dispatches task-oriented Inkscape, axe-core, HyperFrames,
+Motion Canvas and Penpot tools. Inkscape validates self-contained SVG
+before native geometry inspection and exports. The browser adapters use pinned
+Node/Chromium and fixed local runners; media exporters use shared FFmpeg/FFprobe.
+Editable project inputs remain distinct from rendered output. Each saved result
+is reopened or independently inspected before publication.
 
-MarkItDown uses a private CPython runtime and pinned wheels for local text,
-Office and PDF conversion. The launch excludes user-site and `.pth` startup
-hooks, working-directory imports, project `.env` loading and plugins. Its single
-tool accepts only bounded local files inside the selected project. Python and
-MarkItDown definitions cover four macOS/Linux ARM64/x64 targets; Windows is
-unavailable. These argument and environment policies do not isolate process
-permissions or create a network sandbox.
+Requests are limited to 128 KiB. Project-relative visible file paths reject
+traversal and symlinks; output parents must exist. Existing destinations require
+explicit overwrite intent, with optional revision hashes and a final snapshot
+check. A private job workspace holds ephemeral browser state outside synchronized
+project folders. Generated artifacts are bounded to 32 MiB. One job runs per
+server; deadlines are 30 seconds for Inkscape, 60 for axe-core and 90 for
+media/Penpot. Cancellation terminates the child process group and discards
+unpublished staging. It cannot retract an artifact already published or a remote
+Penpot edit already persisted. These controls do not create an OS sandbox.
 
-The editor adapter provides three Inkscape tools for editable static SVG,
-inspection and exports, and five Glaxnimate tools for creation, inspection, frame
-rendering, animated SVG export and retiming. Static SVG and native animation
-documents are validated before opening the application. The animation profile
-supports one 60 fps composition with solid-color vector shapes and linear
-translation/opacity tracks, preserving once/freeze behavior unless looping is
-explicit. This is an offscreen file workflow, not a desktop GUI-control surface.
+`podman` owns the native registered client, private control directories and dedicated
+VM connection. `packages::container` builds pinned Linux OCI images from the same
+immutable package generations and stores the image identity in their receipt.
+`podman_api` uses the private native Unix socket for bounded attached execution and
+output retrieval; the socket is never mounted into workloads. Image IDs, recipe
+labels, machine shares and connection identity are verified before launch.
 
-Each editor request uses project-relative visible paths, a private staging
-directory and private HOME/profile/temp directories. Existing outputs require
-explicit overwrite intent; the destination snapshot is rechecked before atomic
-publication. Exports and retimed documents preserve their input sources. Requests
-are limited to 128 KiB, file sources to 2 MiB and generated artifacts to 32 MiB.
-Each native process has a 30-second deadline; one job runs per server at a time.
-Cancellation reaps the process group and discards unpublished staging, but cannot
-retract an already published artifact. Native output is checked beyond the exit
-status. These controls do not create an operating-system sandbox or remove the
-editor's host permissions.
+Motion Canvas and HyperFrames use bounded session workers with read-only root,
+non-root UID, dropped capabilities, private temporary storage, resource limits and
+no network. Each receives only validated job inputs through a read-only staging
+mount. Rendered output stays in bounded guest temporary storage; a single validated
+regular artifact is retrieved before the existing project publisher runs. Queueing,
+startup, staging, rendering and retrieval share the job deadline. Cancellation
+removes the immutable owned worker ID and discards unpublished output. The VM is
+started explicitly, never per call. See [Podman](podman.md) for platform limits.
 
-Editor client startup has a separate 90-second budget in Mirket CLI checks and
-managed Codex entries; Codex tool calls receive 120 seconds. Claude entries use a
-120000 ms per-server tool timeout, while its global host startup environment is
-preserved. These outer budgets leave room for integrity verification and several
-native steps without extending the 30-second native process deadline. The
-[installation reference](installation.md#editor-connection-budgets) links the
-host-specific settings and their different units.
+Penpot adds five digest-pinned Linux ARM64 services. Explicit setup pulls images
+through the registered Podman client. `package start` creates only labeled per-home
+containers, one internal network and private VM volumes; it never pulls. Only the
+frontend is exposed on loopback. Services use their reviewed non-root users,
+read-only roots, bounded private temporary storage and resource limits. Readiness
+requires real backend JSON, not a running process. Failed start removes new
+containers, restores prior running state and retains durable data. `package stop`
+removes owned containers/network and preserves designs. Private credentials stay
+in the selected home. The fixed plugin runs in an active native headless browser;
+arbitrary Plugin API scripts are not exposed through Mirket tools.
 
-Content hashes establish bytes and detect stale evidence. They do not prove that
-an agent applied the guidance, that a check actually ran or that a reviewer is
-human. Callers must use the project's real verification tools and report what
-they observed. Local state is user-owned and is not an attestation service.
-
-Installation stages all changes, checks ownership/conflicts and preserves
-unrelated configuration. Updates run a verified new executable to apply its own
-embedded payload and saved setup choices, including selected packages and their
-settings. The update and setup locks coordinate writers; failed setup must leave
-the installed runtime recoverable.
-
-Package definitions pin source identity, platform artifacts, runtime dependencies,
-SHA-256 values, extraction bounds, entrypoints and notices. Setup downloads and
-extracts these artifacts, including required private runtimes, without running
-lifecycle hooks or package managers.
-It publishes a new generation atomically and never overwrites an existing
-generation in place. Launch and doctor compare its files with a local receipt;
-they do not prove upstream safety or resist an owner who replaces both files
-and receipt. Package removal changes selection and client entries while retaining
-cached downloads, generations and data.
-
-The macOS ARM64 editor artifacts contain their native runtime closure inside
-signed app bundles. DMG extraction copies the selected bundle from a private
-read-only mount, rejecting escaping or invalid links and preserving valid
-relative links within the app. A system code-signature check must pass on the
-copied bundle before the generation is published. Mirket neither strips metadata
-nor re-signs applications. File-provider-managed directories can add metadata
-that makes a copied signature invalid; this is a failed installation, not a
-reason to bypass signature verification. Original notices and reviewed source
-inventories accompany each installed bundle. Their documented native
-corresponding-source gaps remain relevant to any future binary redistribution;
-Mirket's current releases do not contain the editor binaries.
+Managed Codex connections have a 90-second startup and 120-second tool budget.
+Claude entries have a 120000 ms tool timeout; unrelated host settings are preserved.
+These outer budgets allow integrity checks without extending job deadlines.
+Runtime readiness, actual invocation, artifact correctness and human acceptance
+are separate facts. See [packages](packages.md) for target-specific contracts.
 
 ## Extension boundary
 

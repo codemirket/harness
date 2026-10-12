@@ -101,6 +101,16 @@ pub fn list(paths: &Paths) -> Result<Value> {
     Ok(serde_json::to_value(load(paths)?)?)
 }
 
+/// Resolve only an explicitly selected executable whose bytes still match.
+pub(crate) fn verified(paths: &Paths, name: &str) -> Result<PathBuf> {
+    let tools = load(paths)?;
+    let tool = tools.get(name).with_context(|| format!("register the prerequisite: mirket tool register {name} --executable /absolute/path/to/{name}"))?;
+    if executable_digest(&tool.executable)? != tool.sha256 {
+        bail!("registered {name} executable changed; inspect and register the approved binary");
+    }
+    Ok(tool.executable.clone())
+}
+
 pub fn doctor(paths: &Paths) -> Result<Value> {
     let checks: Vec<_> = load(paths)?.into_iter().map(|(name,tool)| {
         match executable_digest(&tool.executable) {

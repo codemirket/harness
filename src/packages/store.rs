@@ -20,6 +20,8 @@ pub(super) struct Receipt {
     target: String,
     definition: String,
     pub files: BTreeMap<String, EntryIdentity>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub container: Option<super::container::ImageIdentity>,
 }
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -35,12 +37,12 @@ pub(super) struct LinkIdentity {
 #[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct FileIdentity {
-    sha256: String,
+    pub sha256: String,
     bytes: u64,
     executable: bool,
 }
 
-fn file_identity(path: &Path, max: u64) -> Result<FileIdentity> {
+pub(super) fn file_identity(path: &Path, max: u64) -> Result<FileIdentity> {
     util::reject_symlink_components(path)?;
     let before = fs::symlink_metadata(path)?;
     if !before.is_file() || before.len() > max {
@@ -129,12 +131,19 @@ fn application_roots(root: &Path, package: &super::Package, target: &str) -> Res
 }
 
 pub(super) fn verify(paths: &Paths, registry: &Registry, id: &str) -> Result<Receipt> {
-    let root = registry.root(paths, id)?;
+    verify_target(paths, registry, id, crate::update::target_triple()?)
+}
+pub(super) fn verify_target(
+    paths: &Paths,
+    registry: &Registry,
+    id: &str,
+    target: &str,
+) -> Result<Receipt> {
+    let root = registry.root_for(paths, id, target)?;
     let bytes = util::read_bounded(&root.join(archive::RECEIPT), 16 * 1024 * 1024)
         .with_context(|| format!("package {id} is missing or incomplete; run mirket setup"))?;
     let receipt: Receipt = serde_json::from_slice(&bytes).context("invalid package receipt")?;
     let package = registry.get(id)?;
-    let target = crate::update::target_triple()?;
     if receipt.schema_version != 1
         || receipt.id != id
         || receipt.version != package.version
@@ -150,14 +159,29 @@ pub(super) fn verify(paths: &Paths, registry: &Registry, id: &str) -> Result<Rec
     if receipt.files != inventory(&root, &application_roots(&root, package, target)?)? {
         bail!("package {id} content has drifted; preserve or reconcile it before setup or launch");
     }
+    if let Some(image) = &receipt.container {
+        super::container::verify(paths, image)?;
+    }
+    if package.container.is_some() && target.contains("linux") && receipt.container.is_none() {
+        bail!("container image receipt is missing");
+    }
     Ok(receipt)
 }
 
+#[cfg(test)]
 pub(super) fn install(paths: &Paths, registry: &Registry, id: &str) -> Result<()> {
-    let root = registry.root(paths, id)?;
+    install_target(paths, registry, id, crate::update::target_triple()?)
+}
+pub(super) fn install_target(
+    paths: &Paths,
+    registry: &Registry,
+    id: &str,
+    target: &str,
+) -> Result<()> {
+    let root = registry.root_for(paths, id, target)?;
     util::reject_symlink_components(&root)?;
     if root.exists() {
-        verify(paths, registry, id)?;
+        verify_target(paths, registry, id, target)?;
         return Ok(());
     }
     let parent = root.parent().context("package store parent")?;
@@ -166,7 +190,6 @@ pub(super) fn install(paths: &Paths, registry: &Registry, id: &str) -> Result<()
         .prefix(".prepare-")
         .tempdir_in(parent)?;
     let package = registry.get(id)?;
-    let target = crate::update::target_triple()?;
     let platform = package
         .platforms
         .get(target)
@@ -188,6 +211,7 @@ pub(super) fn install(paths: &Paths, registry: &Registry, id: &str) -> Result<()
         archive::extract(artifact, &download, staging.path())
             .with_context(|| format!("extract pinned artifact for {id}"))?;
     }
+    super::embedded::stage(staging.path(), &package.embedded)?;
     for name in &package.notices {
         let path = staging.path().join("licenses").join(name);
         if path.exists() {
@@ -209,6 +233,17 @@ pub(super) fn install(paths: &Paths, registry: &Registry, id: &str) -> Result<()
             staging.path(),
             &application_roots(staging.path(), package, target)?,
         )?,
+        container: if package.container.is_some() && target.contains("linux") {
+            Some(super::container::build(
+                paths,
+                registry,
+                id,
+                target,
+                staging.path(),
+            )?)
+        } else {
+            None
+        },
     };
     util::atomic_write(
         &staging.path().join(archive::RECEIPT),
@@ -220,11 +255,11 @@ pub(super) fn install(paths: &Paths, registry: &Registry, id: &str) -> Result<()
         bail!("package generation appeared during preparation");
     }
     fs::rename(staging.path(), &root).context("publish prepared package generation")?;
-    verify(paths, registry, id)?;
+    verify_target(paths, registry, id, target)?;
     Ok(())
 }
 
-fn download(
+pub(super) fn download(
     paths: &Paths,
     artifact: &super::Artifact,
     client: &reqwest::blocking::Client,
@@ -276,6 +311,47 @@ fn download(
 mod tests {
     use super::*;
     #[test]
+    fn embedded_payload_is_receipted_and_drift_blocks_reinstallation() {
+        let home = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let paths = Paths::new(home.path().into()).unwrap();
+        let mut registry = Registry::embedded().unwrap();
+        let mut package = registry.get("playwright").unwrap().clone();
+        package.dependencies.clear();
+        package.notices.clear();
+        package.common.clear();
+        package.embedded = vec![super::super::Member {
+            path: "README.md".into(),
+            destination: "mirket/payload.txt".into(),
+            executable: false,
+        }];
+        package.platforms = BTreeMap::from([(
+            crate::update::target_triple().unwrap().into(),
+            super::super::Platform {
+                artifacts: vec![],
+                executable: "mirket/payload.txt".into(),
+            },
+        )]);
+        registry.packages.insert("playwright".into(), package);
+        install(&paths, &registry, "playwright").unwrap();
+        let root = registry.root(&paths, "playwright").unwrap();
+        let payload = root.join("mirket/payload.txt");
+        let receipt = verify(&paths, &registry, "playwright").unwrap();
+        assert_eq!(receipt.files.len(), 1);
+        assert_eq!(
+            fs::read(&payload).unwrap(),
+            include_bytes!("../../runtime/packages/README.md")
+        );
+        fs::write(&payload, b"changed owned runner").unwrap();
+        assert!(
+            install(&paths, &registry, "playwright")
+                .unwrap_err()
+                .to_string()
+                .contains("drifted")
+        );
+        assert_eq!(fs::read(payload).unwrap(), b"changed owned runner");
+    }
+
+    #[test]
     fn corrupted_cached_archive_prevents_publication_and_cleans_staging() {
         let home = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
         let paths = Paths::new(home.path().into()).unwrap();
@@ -308,7 +384,7 @@ mod tests {
         )
         .unwrap();
         let mut registry = Registry::embedded().unwrap();
-        let mut package = registry.get("jscpd").unwrap().clone();
+        let mut package = registry.get("playwright").unwrap().clone();
         package.dependencies.clear();
         package.notices.clear();
         package.common = artifacts.clone();
@@ -319,9 +395,9 @@ mod tests {
                 executable: "file-0".into(),
             },
         )]);
-        registry.packages.insert("jscpd".into(), package);
-        let generation = registry.root(&paths, "jscpd").unwrap();
-        let error = install(&paths, &registry, "jscpd").unwrap_err();
+        registry.packages.insert("playwright".into(), package);
+        let generation = registry.root(&paths, "playwright").unwrap();
+        let error = install(&paths, &registry, "playwright").unwrap_err();
         assert!(error.to_string().contains("differs from its pin"));
         assert!(!generation.exists());
         assert_eq!(
@@ -329,13 +405,13 @@ mod tests {
             0
         );
         fs::write(cache.join(&artifacts[1].sha256), other).unwrap();
-        install(&paths, &registry, "jscpd").unwrap();
-        let receipt = verify(&paths, &registry, "jscpd").unwrap();
+        install(&paths, &registry, "playwright").unwrap();
+        let receipt = verify(&paths, &registry, "playwright").unwrap();
         assert_eq!(receipt.files.len(), 2);
         assert_eq!(fs::read(generation.join("file-0")).unwrap(), good);
         fs::write(generation.join("file-0"), b"user-modified content").unwrap();
         assert!(
-            install(&paths, &registry, "jscpd")
+            install(&paths, &registry, "playwright")
                 .unwrap_err()
                 .to_string()
                 .contains("drifted")

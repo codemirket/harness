@@ -1,0 +1,14 @@
+{
+  "name": "Field notes — editorial outdoor concept",
+  "nodes": [
+    {"key":"poster","kind":"board","x":0,"y":0,"width":900,"height":560,"fills":[{"fillColor":"#102b32","fillOpacity":1}]},
+    {"key":"sun","kind":"ellipse","parent":"poster","x":654,"y":68,"width":154,"height":154,"fills":[{"fillColor":"#eccb65","fillOpacity":1}]},
+    {"key":"mountain-far","kind":"path","parent":"poster","x":512,"y":260,"width":340,"height":180,"path":"M0 100 C80 10 120 30 170 100 C250 10 310 0 340 85 L340 180 L0 180 Z","fills":[{"fillColor":"#2c625f","fillOpacity":1}]},
+    {"key":"mountain-near","kind":"path","parent":"poster","x":512,"y":350,"width":340,"height":135,"path":"M0 100 C90 50 120 0 180 70 C230 100 280 30 340 80 L340 135 L0 135 Z","fills":[{"fillColor":"#698d73","fillOpacity":1}]},
+    {"key":"heading","kind":"text","parent":"poster","x":60,"y":108,"width":480,"height":220,"text":"A quieter kind\nof adventure.","font_size":54,"font_weight":700,"fills":[{"fillColor":"#f3eacf","fillOpacity":1}]},
+    {"key":"eyebrow","kind":"text","parent":"poster","x":62,"y":48,"width":500,"height":30,"text":"FIELD NOTES  /  VOL. 01","font_size":18,"font_weight":400,"fills":[{"fillColor":"#d0bd83","fillOpacity":1}]},
+    {"key":"description","kind":"text","parent":"poster","x":62,"y":325,"width":400,"height":65,"text":"Unhurried trails. Open skies.\nLeave room for a little wonder.","font_size":22,"font_weight":400,"fills":[{"fillColor":"#d0bd83","fillOpacity":1}]},
+    {"key":"button","kind":"rectangle","parent":"poster","x":60,"y":430,"width":260,"height":60,"corner_radius":30,"fills":[{"fillColor":"#f3eacf","fillOpacity":1}]},
+    {"key":"button-label","kind":"text","parent":"poster","x":92,"y":444,"width":210,"height":38,"text":"EXPLORE THE JOURNAL  →","font_size":18,"font_weight":600,"fills":[{"fillColor":"#102b32","fillOpacity":1}]}
+  ]
+}

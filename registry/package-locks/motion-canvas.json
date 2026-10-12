@@ -1,0 +1,679 @@
+{
+  "schema_version": 1,
+  "package": "motion-canvas",
+  "kind": "engine",
+  "version": "3.17.2",
+  "source_commit": "e735a995aa738ca682feb4204a39ee7db7b5d279",
+  "source_lock_url": "https://raw.githubusercontent.com/motion-canvas/motion-canvas/e735a995aa738ca682feb4204a39ee7db7b5d279/package-lock.json",
+  "source_lock_sha256": "03ac7f139b8b254e21097d0cc7427d02879cd3f2f9768d55932c929db1942a57",
+  "platforms": [
+    "aarch64-unknown-linux-gnu",
+    "x86_64-unknown-linux-gnu"
+  ],
+  "runtime_dependencies": [
+    "nodejs",
+    "chromium",
+    "ffmpeg"
+  ],
+  "production_modules": [
+    {
+      "name": "@motion-canvas/core",
+      "version": "3.17.2",
+      "lock_path": "packages/core",
+      "destination": "node_modules/@motion-canvas/core",
+      "artifact_sha256": "58961f10e8e7f74bf50915b1ccc20b4660b8ec14be7399e4d4cbf24042d5393a",
+      "integrity": "sha512-9M4NxNVR9LLxZ+ykTznMcbMlKjbe2NkmDIlFDl2uOyVkK5wFiRwF7k13a1I/n3BVxJJoKPt9UOQF/wn3LrBXJA==",
+      "declared_dependencies": {
+        "@types/chroma-js": "2.4.4",
+        "chroma-js": "2.4.2"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@motion-canvas__core/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "dev": "tspc -p tsconfig.build.json -w",
+        "test": "vitest",
+        "build": "tspc -p tsconfig.build.json",
+        "bundle": "rollup -c rollup.config.mjs"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@types/chroma-js",
+      "version": "2.4.4",
+      "lock_path": "node_modules/@types/chroma-js",
+      "destination": "node_modules/@types/chroma-js",
+      "artifact_sha256": "09125f0c61b33aa5e9fac5aa44b0810836424bf7547d63d60bdb3f0e404bac3d",
+      "integrity": "sha512-/DTccpHTaKomqussrn+ciEvfW4k6NAHzNzs/sts1TCqg333qNxOhy8TNIoQCmbGG3Tl8KdEhkGAssb1n3mTXiQ==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@types__chroma-js/LICENSE"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "chroma-js",
+      "version": "2.4.2",
+      "lock_path": "node_modules/chroma-js",
+      "destination": "node_modules/chroma-js",
+      "artifact_sha256": "0b504fa47b398d32fe1389e38b317955f9e8ff16d506063896c68f9c61657286",
+      "integrity": "sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==",
+      "declared_dependencies": {},
+      "license": "(BSD-3-Clause AND Apache-2.0)",
+      "license_files": [
+        "motion-canvas/chroma-js/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "docs": "cd docs && make",
+        "lint": "eslint index.js index-light.js src",
+        "test": "vows --dot-matrix test/*.js",
+        "build": "rollup -c && cross-env DEV=1 rollup -c ",
+        "docs-preview": "cd docs && make && make preview",
+        "prepublishOnly": "npm run build && npm test"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@motion-canvas/2d",
+      "version": "3.17.2",
+      "lock_path": "packages/2d",
+      "destination": "node_modules/@motion-canvas/2d",
+      "artifact_sha256": "63e3e44ce9db24fb49603a2375ba6ba635157fdf7a40f1631b0f4250fb6db6ec",
+      "integrity": "sha512-Q2DMYSmJMTN8vvLcpofHEMuYEjx60z4hjlwbWJnWx3xnb7DU5suovJ47qM2sk46al/RDXJIz6rfALTr33brKaw==",
+      "declared_dependencies": {
+        "@codemirror/language": "^6.10.1",
+        "@lezer/common": "^1.2.1",
+        "@lezer/highlight": "^1.2.0",
+        "@motion-canvas/core": "^3.17.2",
+        "code-fns": "^0.8.2",
+        "mathjax-full": "^3.2.2",
+        "parse-svg-path": "^0.1.2"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@motion-canvas__2d/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "dev": "tspc -p src/lib -w",
+        "test": "vitest",
+        "build": "npm run build-lib && npm run build-editor",
+        "bundle": "rollup -c rollup.config.mjs",
+        "build-lib": "tspc -p src/lib/tsconfig.build.json",
+        "build-editor": "rollup -c rollup.editor.mjs"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@codemirror/language",
+      "version": "6.10.1",
+      "lock_path": "node_modules/@codemirror/language",
+      "destination": "node_modules/@codemirror/language",
+      "artifact_sha256": "dbe5ae72dd1a0b3d3b884f0971107890c86248b07e2b55dd9c49c1899f7883f5",
+      "integrity": "sha512-5GrXzrhq6k+gL5fjkAwt90nYDmjlzTIJV8THnxNFtNKWotMIlzzN+CpqxqwXOECnUdOndmSeWntVrVcv5axWRQ==",
+      "declared_dependencies": {
+        "@codemirror/state": "^6.0.0",
+        "@codemirror/view": "^6.23.0",
+        "@lezer/common": "^1.1.0",
+        "@lezer/highlight": "^1.0.0",
+        "@lezer/lr": "^1.0.0",
+        "style-mod": "^4.0.0"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@codemirror__language/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "cm-runtests",
+        "prepare": "cm-buildhelper src/index.ts"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@codemirror/state",
+      "version": "6.4.0",
+      "lock_path": "node_modules/@codemirror/state",
+      "destination": "node_modules/@codemirror/state",
+      "artifact_sha256": "b49addf20bd9d3c6941b1be47f725395bcb034aa6eabd3568b2b14dc63aef86a",
+      "integrity": "sha512-hm8XshYj5Fo30Bb922QX9hXB/bxOAVH+qaqHBzw5TKa72vOeslyGwd4X8M0c1dJ9JqxlaMceOQ8RsL9tC7gU0A==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@codemirror__state/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "cm-runtests",
+        "prepare": "cm-buildhelper src/index.ts"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@codemirror/view",
+      "version": "6.23.1",
+      "lock_path": "node_modules/@codemirror/view",
+      "destination": "node_modules/@codemirror/view",
+      "artifact_sha256": "127cdad0998322c75ce77efbeb70a61ddecb9f33f53575d235911c2c2a7aa688",
+      "integrity": "sha512-J2Xnn5lFYT1ZN/5ewEoMBCmLlL71lZ3mBdb7cUEuHhX2ESoSrNEucpsDXpX22EuTGm9LOgC9v4Z0wx+Ez8QmGA==",
+      "declared_dependencies": {
+        "@codemirror/state": "^6.4.0",
+        "style-mod": "^4.1.0",
+        "w3c-keyname": "^2.2.4"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@codemirror__view/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "cm-runtests",
+        "prepare": "cm-buildhelper src/index.ts"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "style-mod",
+      "version": "4.1.0",
+      "lock_path": "node_modules/style-mod",
+      "destination": "node_modules/style-mod",
+      "artifact_sha256": "7893420a4ecfe5bac9915926015cc499a00fa1e378cbf41e201217ddf7f1a4b0",
+      "integrity": "sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/style-mod/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "npm run build && mocha test/test-*.js",
+        "build": "mkdir -p dist; buble --no modules src/style-mod.js | sed -e 's/export var StyleModule/var StyleModule = exports.StyleModule/' > dist/style-mod.cjs",
+        "prepare": "npm run build && npm run build-readme",
+        "build-readme": "builddocs --name style-mod --main src/README.md --format markdown src/*.js > README.md"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "w3c-keyname",
+      "version": "2.2.6",
+      "lock_path": "node_modules/w3c-keyname",
+      "destination": "node_modules/w3c-keyname",
+      "artifact_sha256": "9ee0f84e59ec81978a20c19dd736abddbad2cfddcb64f4bb2b7221eb1289f98f",
+      "integrity": "sha512-f+fciywl1SJEniZHD6H+kUO8gOnwIr7f4ijKA6+ZvJFjeGi1r4PDLl53Ayud9O/rk64RqgoQine0feoeOU0kXg==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/w3c-keyname/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "build": "rollup -c",
+        "watch": "rollup -c -w",
+        "prepare": "npm run build"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@lezer/common",
+      "version": "1.2.1",
+      "lock_path": "node_modules/@lezer/common",
+      "destination": "node_modules/@lezer/common",
+      "artifact_sha256": "dac196dfdf4e1e4e664e666eec89c9918c2512385c183e2ad3a0abf1b1b97923",
+      "integrity": "sha512-yemX0ZD2xS/73llMZIK6KplkjIjf2EvAHcinDi/TfJ9hS25G0388+ClHt6/3but0oOxinTcQHJLDXh6w1crzFQ==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@lezer__common/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "mocha",
+        "watch": "node build.js --watch",
+        "prepare": "node build.js"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@lezer/highlight",
+      "version": "1.2.0",
+      "lock_path": "node_modules/@lezer/highlight",
+      "destination": "node_modules/@lezer/highlight",
+      "artifact_sha256": "4765136d0b728736890cda77eb1c0820f58f870a4a72dd95fe99bedd913ac2e3",
+      "integrity": "sha512-WrS5Mw51sGrpqjlh3d4/fOwpEV2Hd3YOkp9DBt4k8XZQcoTHZFB7sx030A6OcahF4J1nDQAa3jXlTVVYH50IFA==",
+      "declared_dependencies": {
+        "@lezer/common": "^1.0.0"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@lezer__highlight/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "watch": "node build.js --watch",
+        "prepare": "node build.js"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@lezer/lr",
+      "version": "1.4.0",
+      "lock_path": "node_modules/@lezer/lr",
+      "destination": "node_modules/@lezer/lr",
+      "artifact_sha256": "69d2ab0cfd4d0e2d486c4f9834199a1ae49ff457caf06ec7e7742d12274c542c",
+      "integrity": "sha512-Wst46p51km8gH0ZUmeNrtpRYmdlRHUpN1DQd3GFAyKANi8WVz8c2jHYTf1CVScFaCjQw1iO3ZZdqGDxQPRErTg==",
+      "declared_dependencies": {
+        "@lezer/common": "^1.0.0"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@lezer__lr/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "echo 'Tests are in @lezer/generator'",
+        "watch": "node build.js --watch",
+        "prepare": "node build.js; tsc src/constants.ts -d --outDir dist"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "code-fns",
+      "version": "0.8.2",
+      "lock_path": "packages/2d/node_modules/code-fns",
+      "destination": "node_modules/@motion-canvas/2d/node_modules/code-fns",
+      "artifact_sha256": "0c47985c6d21f93e73860fc933f99bc7d5b5dd9e91ab4dd9b14e01cf788a4d04",
+      "integrity": "sha512-3VVeq3cnWxWiWKFLsVo+XWsOXBSW2gAx2uv0ViETLNmNuygEPHlCeDAv/Zy7xXqPgXtgLZyvIJZmx+ojTgOIGA==",
+      "declared_dependencies": {
+        "@wooorm/starry-night": "^1.2.0"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/code-fns/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "dev": "vite",
+        "lint": "eslint ./src/",
+        "test": "vitest run --silent",
+        "build": "rm -rf lib && npm run babel:esm && npm run babel:cjs && npm run types",
+        "types": "tsc",
+        "prepare": "husky install",
+        "preview": "vite preview",
+        "coverage": "vitest run --coverage",
+        "prettier": "prettier --write .",
+        "babel:cjs": "babel src --config-file ./babel.cjs.config.json --extensions '.ts' --out-dir 'lib/cjs'",
+        "babel:esm": "babel src --config-file ./babel.esm.config.json --extensions '.ts' --out-dir 'lib/esm'",
+        "test:watch": "vitest --ui",
+        "prettier:check": "prettier --check ."
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@wooorm/starry-night",
+      "version": "1.5.0",
+      "lock_path": "node_modules/@wooorm/starry-night",
+      "destination": "node_modules/@wooorm/starry-night",
+      "artifact_sha256": "dda6d4721899e8b28e638c371b2b7f2c8d8747ab7d1bd8b180394962abbd01d8",
+      "integrity": "sha512-YEkNgM8IxKwzRQgTp1nyiraB5rc4LiLpnMTrJvX5+SVs7zgVqkTx6QAZgZFqrZrqq/UCWVYBzE9+zZfxpLPTYQ==",
+      "declared_dependencies": {
+        "@types/hast": "^2.0.0",
+        "import-meta-resolve": "^2.0.0",
+        "vscode-oniguruma": "^1.0.0",
+        "vscode-textmate": "^7.0.0"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@wooorm__starry-night/license",
+        "motion-canvas/@wooorm__starry-night/notice"
+      ],
+      "scripts_not_executed": {
+        "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepack": "npm run build && npm run format",
+        "generate": "npm run generate-build && npm run generate-list",
+        "test-api": "node --conditions development test.js",
+        "#generate-css": "node --conditions development script/css.js",
+        "generate-list": "node --conditions development script/list.js",
+        "test-coverage": "c8 --check-coverage --100 --reporter lcov npm run test-api",
+        "generate-build": "node --conditions development script/build.js",
+        "generate-crawl": "gem install github-linguist -i gems"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "@types/hast",
+      "version": "2.3.4",
+      "lock_path": "node_modules/@types/hast",
+      "destination": "node_modules/@types/hast",
+      "artifact_sha256": "75e1aeda55a1a4802680b399e28ee913f1fe66478872dc68f53ad6ef801154f0",
+      "integrity": "sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==",
+      "declared_dependencies": {
+        "@types/unist": "*"
+      },
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@types__hast/LICENSE"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "@types/unist",
+      "version": "2.0.6",
+      "lock_path": "node_modules/@types/unist",
+      "destination": "node_modules/@types/unist",
+      "artifact_sha256": "a9bb101790c53102f32be4b541f6c229bda6af44d4752c78375c4c765d3120c0",
+      "integrity": "sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/@types__unist/LICENSE"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "import-meta-resolve",
+      "version": "2.2.1",
+      "lock_path": "node_modules/import-meta-resolve",
+      "destination": "node_modules/import-meta-resolve",
+      "artifact_sha256": "2390f151bdfb1a4476c4fecf159bf7981a21db0aa5089276b0af623732756a4a",
+      "integrity": "sha512-C6lLL7EJPY44kBvA80gq4uMsVFw5x3oSKfuMl1cuZ2RkI5+UJqQXgn+6hlUew0y4ig7Ypt4CObAAIzU53Nfpuw==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/import-meta-resolve/license"
+      ],
+      "scripts_not_executed": {
+        "test": "npm run generate && npm run build && npm run format && npm run test-coverage",
+        "build": "tsc --build --clean && tsc --build && type-coverage",
+        "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+        "prepack": "npm run generate && npm run build && npm run format",
+        "generate": "node --conditions development script.js",
+        "test-api": "node --experimental-import-meta-resolve test/baseline.js && node test/index.js",
+        "test-coverage": "c8 --check-coverage --branches 75 --functions 75 --lines 75 --statements 75 --reporter lcov npm run test-api"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "vscode-oniguruma",
+      "version": "1.7.0",
+      "lock_path": "node_modules/vscode-oniguruma",
+      "destination": "node_modules/vscode-oniguruma",
+      "artifact_sha256": "830c8de8fd475455d8c161ca3c1f5f3c935fad8327ee548dec38c8985097657f",
+      "integrity": "sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/vscode-oniguruma/LICENSE.txt"
+      ],
+      "scripts_not_executed": {
+        "test": "mocha --ui=tdd ./out/test/index.test.js",
+        "package": "npm run build-tsc && webpack && node ./scripts/cp ./out/onig.wasm ./release/onig.wasm",
+        "build-tsc": "tsc -p tsconfig.json",
+        "watch-tsc": "tsc -w -p tsconfig.json",
+        "build-onig": "cd deps/oniguruma && autoreconf -vfi && emconfigure ./configure && make clean && emmake make",
+        "build-wasm": "./scripts/build.sh",
+        "prepublishOnly": "npm run package"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "vscode-textmate",
+      "version": "7.0.4",
+      "lock_path": "node_modules/@wooorm/starry-night/node_modules/vscode-textmate",
+      "destination": "node_modules/@wooorm/starry-night/node_modules/vscode-textmate",
+      "artifact_sha256": "883511ca9ffe6ad871163f017b4534a134d08416e96f2c9e5e3667464619bcd8",
+      "integrity": "sha512-9hJp0xL7HW1Q5OgGe03NACo7yiCTMEk3WU/rtKXUbncLtdg6rVVNJnHwD88UhbIYU2KoxY0Dih0x+kIsmUKn2A==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/vscode-textmate/LICENSE.md"
+      ],
+      "scripts_not_executed": {
+        "test": "mocha --ui=tdd ./out/tests/all.test.js",
+        "watch": "tsc --watch",
+        "compile": "tsc",
+        "inspect": "node out/tests/inspect.js",
+        "version": "npm run compile && npm run test && node scripts/release.js",
+        "benchmark": "node benchmark/benchmark.js",
+        "tmconvert": "node scripts/tmconvert.js",
+        "postversion": "git push && git push --tags",
+        "prepublishOnly": "tsc && webpack --progress && node scripts/release.js"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "mathjax-full",
+      "version": "3.2.2",
+      "lock_path": "node_modules/mathjax-full",
+      "destination": "node_modules/mathjax-full",
+      "artifact_sha256": "d8f080d2e4bdfb75284aac34d5eff155002eca47798b1d4e4bde31453e653f87",
+      "integrity": "sha512-+LfG9Fik+OuI8SLwsiR02IVdjcnRCy5MufYLi0C3TdMT56L/pjB0alMVGgoWJF8pN9Rc7FESycZB9BMNWIid5w==",
+      "declared_dependencies": {
+        "esm": "^3.2.25",
+        "mhchemparser": "^4.1.0",
+        "mj-context-menu": "^0.6.1",
+        "speech-rule-engine": "^4.0.6"
+      },
+      "license": "Apache-2.0",
+      "license_files": [
+        "motion-canvas/mathjax-full/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "clean": "npm run --silent clean:js && npm run --silent clean:es5 && npm run --silent clean:lib",
+        "compile": "npx tsc",
+        "clean:js": "npx rimraf js",
+        "copy:mj2": "npx copyfiles -u 1 'ts/input/asciimath/mathjax2/**/*' js",
+        "clean:es5": "npx rimraf es5",
+        "clean:lib": "npx rimraf 'components/src/**/lib'",
+        "copy:mml3": "npx copyfiles -u 1 'ts/input/mathml/mml3/mml3.sef.json' js",
+        "precompile": "npm run --silent clean:js",
+        "postcompile": "npm run --silent copy:mj2 && npm run --silent copy:mml3",
+        "make-mml3-xslt": "cd ts/input/mathml/mml3 && npx xslt3 -t -xsl:mml3.xsl -export:mml3.sef.json -nogo",
+        "make-components": "cd components && node bin/makeAll src | grep --line-buffered 'Building\\|Webpacking\\|Copying\\|npx'",
+        "premake-mml3-xslt": "cd ts/input/mathml/mml3 && grep '^\\s*\\(<\\|or\\|xmlns\\|excl\\|\">\\)' mml3.ts > mml3.xsl",
+        "postmake-mml3-xslt": "npx rimraf ts/input/mathml/mml3/mml3.xsl",
+        "premake-components": "npm run --silent clean:es5 && npm run --silent clean:lib"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "esm",
+      "version": "3.2.25",
+      "lock_path": "node_modules/esm",
+      "destination": "node_modules/esm",
+      "artifact_sha256": "eb4dd4462e283b2623e6e95c5f7478b7b8c73055a2feee49f2ddd08c99c8458a",
+      "integrity": "sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/esm/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "mhchemparser",
+      "version": "4.1.1",
+      "lock_path": "node_modules/mhchemparser",
+      "destination": "node_modules/mhchemparser",
+      "artifact_sha256": "d4e417c405ba3bfea4fbee1ee06e2cb17563f285546fe121ac2b95025f7007c6",
+      "integrity": "sha512-R75CUN6O6e1t8bgailrF1qPq+HhVeFTM3XQ0uzI+mXTybmphy3b6h4NbLOYhemViQ3lUs+6CKRkC3Ws1TlYREA==",
+      "declared_dependencies": {},
+      "license": "Apache-2.0",
+      "license_files": [
+        "motion-canvas/mhchemparser/LICENSE.txt"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "mj-context-menu",
+      "version": "0.6.1",
+      "lock_path": "node_modules/mj-context-menu",
+      "destination": "node_modules/mj-context-menu",
+      "artifact_sha256": "60cad298c944909f8c424e69dadca8a028d0aa4e8606eebfae37bc82eea8af6d",
+      "integrity": "sha512-7NO5s6n10TIV96d4g2uDpG7ZDpIhMh0QNfGdJw/W47JswFcosz457wqz/b5sAKvl12sxINGFCn80NZHKwxQEXA==",
+      "declared_dependencies": {},
+      "license": "Apache-2.0",
+      "license_files": [
+        "motion-canvas/mj-context-menu/APACHE-2.0.txt",
+        "motion-canvas/mj-context-menu/PACKAGE-LICENSE-METADATA.json"
+      ],
+      "scripts_not_executed": {
+        "build": "tsc; ./node_modules/.bin/webpack",
+        "prepare": "npx rimraf js; npx rimraf dist; ./node_modules/.bin/tsc; ./node_modules/.bin/webpack"
+      },
+      "retained_license_source": {
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "note": "Published archive and pinned repository omit a standalone license file; exact published license/maintainer metadata and canonical full Apache text are retained."
+      }
+    },
+    {
+      "name": "speech-rule-engine",
+      "version": "4.0.7",
+      "lock_path": "node_modules/speech-rule-engine",
+      "destination": "node_modules/speech-rule-engine",
+      "artifact_sha256": "400d15452e66401f5ff0b5a00b32d9a749cfc44a3ec0a1acf8d3e25e9f08a690",
+      "integrity": "sha512-sJrL3/wHzNwJRLBdf6CjJWIlxC04iYKkyXvYSVsWVOiC2DSkHmxsqOhEeMsBA9XK+CHuNcsdkbFDnoUfAsmp9g==",
+      "declared_dependencies": {
+        "commander": "9.2.0",
+        "wicked-good-xpath": "1.3.0",
+        "xmldom-sre": "0.1.31"
+      },
+      "license": "Apache-2.0",
+      "license_files": [
+        "motion-canvas/speech-rule-engine/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "docs": "npx typedoc --entryPointStrategy ts/",
+        "lint": "eslint ts/ --ext .ts,.tsx",
+        "test": "cd sre-tests; export SRE_JSON_PATH=../lib/mathmaps; npm run test",
+        "build": "make all",
+        "format": "prettier --check ts/",
+        "compile": "npx tsc",
+        "pretest": "git submodule update --remote --merge; npm run compile; cd sre-tests; ln -s .. speech-rule-engine; npm install",
+        "lint-fix": "eslint ts/ --ext .ts,.tsx --fix",
+        "actionTest": "cd sre-tests; export SRE_JSON_PATH=../lib/mathmaps; node --expose-gc ./node_modules/.bin/jest ",
+        "format-fix": "prettier --write ts/",
+        "prepublish": "make clean; make publish; npx tsc; npx webpack"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "commander",
+      "version": "9.2.0",
+      "lock_path": "node_modules/speech-rule-engine/node_modules/commander",
+      "destination": "node_modules/speech-rule-engine/node_modules/commander",
+      "artifact_sha256": "6a4e7d8b81c79a781bd037ee9649251d0b5b0e876f66686f9d92fe1c36824f4f",
+      "integrity": "sha512-e2i4wANQiSXgnrBlIatyHtP1odfUp0BbV5Y5nEGbxtIrStkEOAAzCUirvLBNXHLr7kwLvJl6V+4V3XV9x7Wd9w==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/commander/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "lint": "npm run lint:javascript && npm run lint:typescript",
+        "test": "jest && npm run test-typings",
+        "test-all": "npm run test && npm run lint && npm run typescript-checkJS && npm run test-esm",
+        "test-esm": "node --experimental-modules ./tests/esm-imports-test.mjs",
+        "test-typings": "tsd",
+        "lint:javascript": "eslint index.js esm.mjs \"lib/*.js\" \"tests/**/*.js\"",
+        "lint:typescript": "eslint typings/*.ts tests/*.ts",
+        "typescript-checkJS": "tsc --allowJS --checkJS index.js lib/*.js --noEmit"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "wicked-good-xpath",
+      "version": "1.3.0",
+      "lock_path": "node_modules/wicked-good-xpath",
+      "destination": "node_modules/wicked-good-xpath",
+      "artifact_sha256": "6dfd720a0f86ffcc8ad205e26ec9a45ae8c713ebd2f5e9cf99e9b02541995481",
+      "integrity": "sha512-Gd9+TUn5nXdwj/hFsPVx5cuHHiF5Bwuc30jZ4+ronF1qHK5O7HD0sgmXWSEgwKquT3ClLoKPVbO6qGwVwLzvAw==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/wicked-good-xpath/LICENSE"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "xmldom-sre",
+      "version": "0.1.31",
+      "lock_path": "node_modules/xmldom-sre",
+      "destination": "node_modules/xmldom-sre",
+      "artifact_sha256": "d0d5f6562b2e18a96635d1f97b824c7f4853efed5942aa2bd1a8d6c89a2c132d",
+      "integrity": "sha512-f9s+fUkX04BxQf+7mMWAp5zk61pciie+fFLC9hX9UVvCeJQfNHRHXpeo5MPcR0EUf57PYLdt+ZO4f3Ipk2oZUw==",
+      "declared_dependencies": {},
+      "license": "(LGPL-2.0 or MIT)",
+      "license_files": [
+        "motion-canvas/xmldom-sre/LICENSE"
+      ],
+      "scripts_not_executed": {
+        "test": "proof platform win32 && proof test */*/*.t.js || t/test"
+      },
+      "retained_license_source": null
+    },
+    {
+      "name": "parse-svg-path",
+      "version": "0.1.2",
+      "lock_path": "node_modules/parse-svg-path",
+      "destination": "node_modules/parse-svg-path",
+      "artifact_sha256": "b553ffbc960891b8cc9444cd669802e98d6704193eb3dc08b446b2c9b0b9b824",
+      "integrity": "sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "motion-canvas/parse-svg-path/License"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": null
+    },
+    {
+      "name": "@esbuild/linux-arm64",
+      "version": "0.18.20",
+      "lock_path": "node_modules/@esbuild/linux-arm64",
+      "destination": "node_modules/@esbuild/linux-arm64",
+      "artifact_sha256": "78da44c3847c3d894adc2f5edf3d20ea507c88e8ed5abb6d20ecdcbaadb8e4da",
+      "integrity": "sha512-2YbscF+UL7SQAVIpnWvYwM+3LskyDmPhe31pE7/aoTMFKKzIc9lLbyGUpmmb8a8AixOL61sQ/mFh3jEjHYFvdA==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "container-runtime/ESBUILD-LICENSE.md"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": {
+        "url": "https://raw.githubusercontent.com/evanw/esbuild/v0.18.20/LICENSE.md",
+        "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+      }
+    },
+    {
+      "name": "@esbuild/linux-x64",
+      "version": "0.18.20",
+      "lock_path": "node_modules/@esbuild/linux-x64",
+      "destination": "node_modules/@esbuild/linux-x64",
+      "artifact_sha256": "d755469b986aa73c7db75cb7714d6ea009016fe4a923a50945aeb9117eb176a2",
+      "integrity": "sha512-UYqiqemphJcNsFEskc73jQ7B9jgwjWrSayxawS6UVFZGWrAAtkzjxSqnoclCXxWtfwLdzU+vTpcNYhpn43uP1w==",
+      "declared_dependencies": {},
+      "license": "MIT",
+      "license_files": [
+        "container-runtime/ESBUILD-LICENSE.md"
+      ],
+      "scripts_not_executed": {},
+      "retained_license_source": {
+        "url": "https://raw.githubusercontent.com/evanw/esbuild/v0.18.20/LICENSE.md",
+        "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+      }
+    }
+  ],
+  "playwright_reused_lock": "registry/package-locks/playwright.package-lock.json",
+  "method": "Exact published 3.17.2 npm artifacts plus complete declared production closure resolved from the stable source package-lock. Direct integrity-checked archives; lifecycle hooks, package managers, upstream installers and project scripts are never executed. esbuild is the directly invoked pinned Linux ARM64/x64 binary, without the JS API package or its install helper. The Podman controller readiness is declared separately in the package registry. No Vite, editor UI or official FFmpeg exporter is installed.",
+  "font": {
+    "name": "InterVariable",
+    "version": "4.1",
+    "source": "https://raw.githubusercontent.com/rsms/inter/v4.1/docs/font-files/InterVariable.woff2",
+    "artifact_sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3",
+    "license_source": "https://raw.githubusercontent.com/rsms/inter/v4.1/LICENSE.txt",
+    "license_sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+  }
+}

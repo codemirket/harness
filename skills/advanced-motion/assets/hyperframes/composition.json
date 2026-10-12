@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "entry": "scene.html",
+  "assets": [
+    "scene.css",
+    "scene.js"
+  ],
+  "width": 960,
+  "height": 540,
+  "fps": 30,
+  "frames": 180
+}

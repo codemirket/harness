@@ -12,7 +12,7 @@ do not authorize spending, account access, deployment, outreach or model changes
 | Screen composition or visual refinement | Frontend Designer; Frontend Engineer supports actual framework and state behavior. |
 | Backend, database, mobile or desktop behavior | The matching Engineer or Database Admin role; use the real platform runtime. |
 | Editable graphics or illustrations | Graphic Designer or Illustrator for medium and composition; read `svg-creation` for vector production or use available native image tools for bitmap work. |
-| Motion | Motion Designer for UI interactions; read `page-transitions`, `advanced-motion` or `svg-animation` for the artifact being produced. Video requires a real video workflow. |
+| Motion | Motion Designer starts with ordinary UI interactions; choose `advanced-motion` for art-directed website scenes, color/gradients and procedural Canvas, `svg-animation` for editable vector choreography, or `page-transitions` for navigation. The explicit `motion-studio` profile includes two contrasting browser examples. For a video deliverable, the optional HyperFrames and Motion Canvas packages supply frame inspection, seek verification and local video export through `advanced-motion` guidance. |
 | Regressions and release assessment | QA Engineer for system and user-journey checks; QA Engineer for Design adds interface-specific acceptance. |
 | Trust boundaries and agent tools | Security Engineer; MCP Engineer owns protocol, transport and client/tool behavior when that boundary is affected. |
 | Ingestion, replay and published datasets | Data Engineer; Data Analyst owns interpretation and Database Admin owns engine mechanics. |

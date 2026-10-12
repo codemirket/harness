@@ -185,14 +185,9 @@ pub async fn export(
     workspace: &Path,
     control: &Control<'_>,
 ) -> Result<EditorResult> {
-    if args.source == args.output {
-        bail!("export output must be distinct from the editable source");
-    }
-    let source_path = files::scoped(&spec.cwd, &args.source, &["svg"])?;
-    let output_path = files::scoped(&spec.cwd, &args.output, &[args.format.extension()])?;
-    if output_path.exists() && output_path.canonicalize()? == source_path.canonicalize()? {
-        bail!("export output resolves to the editable source");
-    }
+    files::scoped(&spec.cwd, &args.source, &["svg"])?;
+    files::scoped(&spec.cwd, &args.output, &[args.format.extension()])?;
+    files::distinct_output(&spec.cwd, &args.output, [&args.source[..]])?;
     let bytes = files::read(&spec.cwd, &args.source, &["svg"], files::MAX_SVG_BYTES)?;
     let inspection = svg::inspect(&bytes, false)?;
     let destination = Destination::new(
@@ -319,4 +314,61 @@ pub async fn export(
         pixel_dimensions: dimensions,
         ..Default::default()
     })
+}
+
+#[cfg(all(test, unix))]
+mod tests {
+    use super::*;
+    use std::{collections::BTreeMap, fs, time::Duration};
+
+    #[tokio::test]
+    async fn export_refuses_case_and_file_aliases_before_launch_or_publication() {
+        let temporary = tempfile::tempdir().unwrap();
+        let root = temporary.path().canonicalize().unwrap();
+        let workspace = tempfile::tempdir().unwrap();
+        let original = br#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80"><rect id="mark" width="100" height="80"/></svg>"#;
+        fs::write(root.join("source.svg"), original).unwrap();
+        fs::hard_link(root.join("source.svg"), root.join("alias.svg")).unwrap();
+        let spec = LaunchSpec {
+            container: None,
+            command: root.join("must-not-launch"),
+            args: Vec::new(),
+            env: BTreeMap::new(),
+            cwd: root.clone(),
+            allowed_tools: None,
+            denied_tools: Default::default(),
+            input_policy: "none".into(),
+            startup_timeout: Duration::from_secs(1),
+        };
+        let (_stop, shutdown) = tokio::sync::watch::channel(false);
+        let control = Control {
+            request: None,
+            shutdown,
+            timeout: Duration::from_secs(1),
+        };
+        for output in ["Source.svg", "alias.svg"] {
+            let result = export(
+                &spec,
+                Export {
+                    source: "source.svg".into(),
+                    output: output.into(),
+                    format: Format::Svg,
+                    width: None,
+                    object_id: None,
+                    overwrite: true,
+                    expected_sha256: None,
+                },
+                workspace.path(),
+                &control,
+            )
+            .await;
+            let error = result.err().expect("source alias must fail").to_string();
+            assert!(error.contains("editable input"), "{error}");
+            assert_eq!(fs::read(root.join("source.svg")).unwrap(), original);
+            assert!(
+                !workspace.path().join("input.svg").exists(),
+                "editor must not be invoked for a source alias"
+            );
+        }
+    }
 }

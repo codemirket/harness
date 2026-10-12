@@ -12,6 +12,11 @@ dialogs and control transitions stay with `motion-design`. Use `page-transitions
 for navigation and `advanced-motion` for a larger DOM timeline or scroll sequence;
 this workflow still owns vector geometry, path effects and morph craft.
 
+When the illustration shares a page sequence, choose one owner for its clock and
+each animated property. Keep the editable static SVG meaningful by itself; the
+page's CSS/controller is a separate integration artifact. Text, navigation and
+calls to action normally remain semantic DOM rather than pixels or vector outlines.
+
 ## Establish the motion contract
 
 Inspect the asset, semantic groups, placement, support targets and existing
@@ -36,19 +41,14 @@ Verify target support for morphing, motion paths and exporter behavior against
 current official documentation and a small render. Use a workable transform,
 crossfade or path construction when a requested technique is unavailable.
 
-When Mirket's `glaxnimate` package is selected, inspect its MCP schemas with
-`mirket package probe glaxnimate --schemas --project /absolute/project`.
-`animation_create` imports a static SVG and typed translation/opacity keyframes
-on named groups into an editable `.rawr`; `animation_inspect`, `animation_frame`,
-`animation_retime` and `animation_export` support verification and refinement.
-This headless profile is solid-color shape geometry with linear motion, one
-composition and a bounded duration. Text, gradients, clips, dashed strokes,
-path morphing and arbitrary editor scripts are excluded. Preserve the static SVG,
-editable `.rawr` and exported SVG as separate artifacts. Playback is once/freeze
-unless looping is explicitly requested. The exported SMIL has no media-query
-controller: provide and test a static alternative in a reduced-motion-aware host
-such as the reference's `<picture>` example. Do not promise reduced motion when
-the raw animated SVG is opened directly.
+For website-integrated SVG, retain editable SVG plus CSS/WAAPI or the project's
+controller. For a fixed-frame export, use `hyperframes` with the
+`advanced-motion` local-video reference; inline the SVG into its HTML composition
+and give the finite timeline ownership of vector properties. `motion-canvas`
+serves generator-driven drawn scenes with path, gradient and synchronized sequence
+operations; its saved scene is editable JSON/code, not an animated SVG export.
+Inspect the selected package's real tool schemas and preview limits before use.
+Neither engine replaces browser/reduced-motion QA of the actual embedding.
 
 ## Choreograph and build
 

@@ -27,6 +27,18 @@ result. No easing name or CSS property proves smooth performance.
 
 ## Controls and immediate feedback
 
+**Hover and focus.** Give the same action a coherent pointer and keyboard treatment;
+keep a persistent, visible `:focus-visible` indicator rather than making focus wait
+for an animation. Use `(hover: hover)` when a flourish depends on a hover-capable
+pointer; touch must still expose the action. A decorative overlay should not steal
+pointer events. Move a child visual, if needed, rather than moving the hit target
+out from under the pointer. Inspect enter → leave → enter and focus during hover.
+
+For animated foreground/background colors, inspect their simultaneous intermediate
+values, including selected and focused states. Legible endpoints can pass through
+an unreadable combination. A stable text surface or a smaller accent change may
+serve the control better than a sweeping gradient.
+
 **Button press.** Keep geometry stable and focus visible. A small color change,
 shadow change or subtle press displacement can distinguish pointer-down from hover.
 Choose the effect that fits the existing control. On release or pointer cancellation,

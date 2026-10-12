@@ -8,6 +8,8 @@ pub mod mcp;
 pub mod package_mcp;
 pub mod packages;
 pub mod paths;
+pub mod podman;
+mod podman_api;
 pub mod project;
 pub mod release;
 mod rust_notices;

@@ -12,50 +12,39 @@
       "summary": "Mirket-owned local tools for editable SVG, object inspection and PNG, plain SVG and PDF export.",
       "license": "GPL-3.0-or-later; bundled components retain their own licenses",
       "source": "https://gitlab.com/inkscape/inkscape/-/tree/dcaf3e7d9e6724cd18d6bd2b4f3d4f12ab691871",
-      "notices": ["inkscape/README.md", "inkscape/COPYING", "inkscape/GPL-3.0.txt", "inkscape/AGPL-3.0.txt", "inkscape/GHOSTSCRIPT-LICENSE.txt", "inkscape/BUNDLED-NOTICES.txt", "inkscape/SOURCE-INVENTORY.json"],
+      "notices": [
+        "inkscape/README.md",
+        "inkscape/COPYING",
+        "inkscape/GPL-3.0.txt",
+        "inkscape/AGPL-3.0.txt",
+        "inkscape/GHOSTSCRIPT-LICENSE.txt",
+        "inkscape/BUNDLED-NOTICES.txt",
+        "inkscape/SOURCE-INVENTORY.json"
+      ],
       "platforms": {
         "aarch64-apple-darwin": {
           "executable": "Inkscape.app/Contents/MacOS/inkscape",
-          "artifacts": [{
-            "url": "https://media.inkscape.org/dl/resources/file/Inkscape-1.4.4_arm64.dmg",
-            "sha256": "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
-            "format": "dmg-app",
-            "max_download_bytes": 167772160,
-            "max_unpacked_bytes": 805306368,
-            "strip_prefix": "Inkscape.app",
-            "destination": "Inkscape.app"
-          }]
+          "artifacts": [
+            {
+              "url": "https://media.inkscape.org/dl/resources/file/Inkscape-1.4.4_arm64.dmg",
+              "sha256": "eacca94ab01e59467cdd5452a2867c3734450f9a4cfb3346956cc9b07f34f3f1",
+              "format": "dmg-app",
+              "max_download_bytes": 167772160,
+              "max_unpacked_bytes": 805306368,
+              "strip_prefix": "Inkscape.app",
+              "destination": "Inkscape.app"
+            }
+          ]
         }
       },
-      "tools": { "allowed": ["svg_save", "svg_inspect", "svg_export"], "input_policy": "none" }
-    },
-    {
-      "id": "glaxnimate",
-      "name": "Glaxnimate vector animation editor",
-      "version": "0.6.0-git-d2da67a",
-      "kind": "editor",
-      "adapter": "glaxnimate",
-      "status": "ready",
-      "reason": "Signed macOS ARM64 application with a Mirket-owned shapes-only headless animation profile; downloaded directly from the official upstream.",
-      "summary": "Mirket-owned local tools for editable vector animation, sampled frames and animated SVG export.",
-      "license": "GPL-3.0-or-later; bundled components retain their own licenses",
-      "source": "https://invent.kde.org/graphics/glaxnimate/-/tree/d2da67a9c839abf441bd0d1f2048d1af114ee75c",
-      "notices": ["glaxnimate/README.md", "glaxnimate/GPL-3.0.txt", "glaxnimate/SOURCE-NOTICES.txt", "glaxnimate/BUNDLED-NOTICES.txt", "glaxnimate/SOURCE-INVENTORY.json"],
-      "platforms": {
-        "aarch64-apple-darwin": {
-          "executable": "glaxnimate.app/Contents/MacOS/glaxnimate",
-          "artifacts": [{
-            "url": "https://download.kde.org/stable/glaxnimate/0.6.0/macOS/glaxnimate-0.6.0-arm64.dmg",
-            "sha256": "5f768da0e37acb94a5f3841a19715f99e121646fd983ffa00a4b675bfea9bd75",
-            "format": "dmg-app",
-            "max_download_bytes": 146800640,
-            "max_unpacked_bytes": 805306368,
-            "strip_prefix": "glaxnimate.app",
-            "destination": "glaxnimate.app"
-          }]
-        }
-      },
-      "tools": { "allowed": ["animation_create", "animation_inspect", "animation_frame", "animation_export", "animation_retime"], "input_policy": "none" }
+      "tools": {
+        "allowed": [
+          "svg_save",
+          "svg_inspect",
+          "svg_export"
+        ],
+        "input_policy": "none"
+      }
     }
   ]
 }
