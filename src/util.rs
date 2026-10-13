@@ -78,6 +78,11 @@ pub fn ensure_directory(path: &Path) -> Result<()> {
 }
 
 pub fn atomic_write(path: &Path, data: &[u8]) -> Result<()> {
+    atomic_write_with_mode(path, data, None)
+}
+
+/// Apply an explicit mode before publication, avoiding an observable post-rename chmod window.
+pub fn atomic_write_with_mode(path: &Path, data: &[u8], mode: Option<u32>) -> Result<()> {
     reject_symlink_components(path)?;
     let parent = path.parent().context("file must have a parent")?;
     ensure_directory(parent)?;
@@ -85,6 +90,14 @@ pub fn atomic_write(path: &Path, data: &[u8]) -> Result<()> {
     if let Ok(metadata) = fs::metadata(path) {
         file.as_file().set_permissions(metadata.permissions())?;
     }
+    #[cfg(unix)]
+    if let Some(mode) = mode {
+        use std::os::unix::fs::PermissionsExt;
+        file.as_file()
+            .set_permissions(fs::Permissions::from_mode(mode))?;
+    }
+    #[cfg(not(unix))]
+    let _ = mode;
     file.write_all(data)?;
     file.as_file().sync_all()?;
     file.persist(path)

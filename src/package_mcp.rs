@@ -404,31 +404,7 @@ struct ManagedChild {
 }
 
 #[cfg(unix)]
-fn signal_group(group: u32, signal: &'static str) -> Result<()> {
-    // Only the process group created by Command::process_group(0) is targeted.
-    // Both signal choices and the system utility are fixed by this module.
-    let mut utility = std::process::Command::new("/bin/kill")
-        .env_clear()
-        .args([signal, "--", &format!("-{group}")])
-        .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn()
-        .context("cannot signal the owned package process group")?;
-    let deadline = std::time::Instant::now() + Duration::from_secs(1);
-    loop {
-        if utility.try_wait()?.is_some() {
-            // A nonzero status also occurs when the complete group already exited.
-            return Ok(());
-        }
-        if std::time::Instant::now() >= deadline {
-            let _ = utility.kill();
-            let _ = utility.wait();
-            bail!("package process-group signal utility exceeded its deadline");
-        }
-        std::thread::sleep(Duration::from_millis(5));
-    }
-}
+use crate::process::signal_group;
 
 impl ManagedChild {
     fn spawn(spec: &LaunchSpec) -> Result<Self> {
@@ -645,30 +621,7 @@ impl Session {
     }
 }
 
-pub(crate) type ShutdownSignal = Pin<Box<dyn std::future::Future<Output = Result<()>> + Send>>;
-
-pub(crate) fn shutdown_signal() -> Result<ShutdownSignal> {
-    #[cfg(unix)]
-    {
-        let mut terminate =
-            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
-                .context("cannot listen for process termination")?;
-        Ok(Box::pin(async move {
-            tokio::select! {
-                _ = terminate.recv() => Ok(()),
-                result = tokio::signal::ctrl_c() => result.context("cannot observe process interrupt"),
-            }
-        }))
-    }
-    #[cfg(not(unix))]
-    {
-        Ok(Box::pin(async {
-            tokio::signal::ctrl_c()
-                .await
-                .context("cannot observe process interrupt")
-        }))
-    }
-}
+pub(crate) use crate::process::{ShutdownSignal, shutdown_signal};
 
 async fn start_session(spec: LaunchSpec, shutdown: &mut ShutdownSignal) -> Result<Session> {
     Session::start(spec, shutdown).await

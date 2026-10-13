@@ -205,8 +205,18 @@ fn generated_cli_arguments_create_replayable_tasks_and_bind_the_saved_roster() {
         "team-start".into(),
     ]);
     let task = ok(home.path(), &args);
-    assert_eq!(task["objective"], objective);
-    assert_eq!(task["skills"], plan["task_start"]["skills"]);
+    assert_eq!(
+        ok(
+            home.path(),
+            &[
+                "task".into(),
+                "status".into(),
+                task["id"].as_str().unwrap().into()
+            ]
+        )["objective"],
+        objective
+    );
+    assert_eq!(task["result"]["skills"], plan["task_start"]["skills"]);
     assert_eq!(ok(home.path(), &args), task);
     assert!(
         task.get("team_plan").is_none(),
@@ -235,7 +245,7 @@ fn generated_cli_arguments_create_replayable_tasks_and_bind_the_saved_roster() {
     let recovered = ok(home.path(), &["task".into(), "status".into(), id.clone()]);
     assert_eq!(recovered["evidence"][0]["path"], "roster.json");
     // Every selected body, including coordination, must be delivered.
-    for skill in task["skills"].as_array().unwrap() {
+    for skill in task["result"]["skills"].as_array().unwrap() {
         let skill = skill.as_str().unwrap();
         let result = ok(
             home.path(),

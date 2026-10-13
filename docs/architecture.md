@@ -45,12 +45,17 @@ payload cache, registered tools and SQLite task database. Package download
 caches, prepared generations and mutable data live under `~/.mirket/packages`.
 `--home` changes the
 user-home boundary for all harness/client installation paths. Each project's
-`.mirket` directory contains its own selection and copy receipts.
+`.mirket` directory contains its own selection, copy receipts and durable sync
+journal. Sync recovers interrupted directory publications before new work, checks
+all recovery destinations for drift and preserves conflicts. Doctor reports owned
+journals and unknown historical temporary recovery trees. Unknown remnants are
+never swept automatically.
 
 SQLite transactions are short; WAL permits concurrent reads. Opening an existing
-validated schema-2 task database performs no schema write, so CLI readers can
-continue while another writer holds a transaction. A valid schema-1 database
-migrates transactionally to schema 2 by adding evidence contract records; earlier
+validated schema-3 task database performs no schema write, so CLI readers can
+continue while another writer holds a transaction. Valid schema-1/2 databases
+migrate transactionally to schema 3, retaining records and retry replies while
+updating the task-list index (and adding contracts for schema 1); earlier
 runtimes refuse the new version. Unknown or malformed layouts fail closed. Task lists use project-bound cursors
 over immutable creation time and ID; checkpoints cannot shift page membership.
 Task status identifies omitted checkpoints; task-bound history cursors recover
@@ -63,9 +68,12 @@ explicit file record; a typed record cannot be downgraded by omitting its type.
 See [task evidence](task-evidence.md) for formats, limits and compatibility.
 Task mutations use
 expected revisions and idempotency keys. An identical retry returns its recorded
-result; reusing a key for another intention fails. The catalog is parsed once
+result; reusing a key for another intention fails. New successful writes return
+versioned compact receipts; explicit status/history calls retrieve full state.
+Legacy recorded replies remain unchanged for exact retries. The catalog is parsed once
 and shared immutably. Startup computes aggregate identities for all embedded
-payloads once, including their notices. Individual document digests are computed
+payloads once, including their applicable source notices. Unrelated notice sections do not
+change a skill payload; all runtime notices still ship with distributions. Individual document digests are computed
 on first read or role plan and reused thereafter. These are distinct costs.
 Search ranks positive metadata separately
 from description-only matches; exact IDs remain directly addressable. Catalog
@@ -147,7 +155,10 @@ are separate facts. See [packages](packages.md) for target-specific contracts.
 ## Extension boundary
 
 `mirket tool` registers explicit local executable paths and hashes. Invocation
-uses argv directly, inherits the caller's permissions and observes a timeout.
+uses argv directly and inherits the caller's permissions. Foreground invocations
+own their Unix process group or Windows job; timeout, cancellation and launcher
+exit clean up owned descendants. Deliberate Unix session/group escapes are outside
+this ownership contract. It is not an OS sandbox or rollback of completed effects.
 It does not turn arbitrary executables into MCP tools or resolve packages.
 
 `mirket package` supplies reviewed server and runtime definitions through the

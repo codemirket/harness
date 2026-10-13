@@ -22,7 +22,7 @@ static SKILLS: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/skills");
 const CATALOG: &str = include_str!("../registry/catalog.json");
 const CAPABILITIES: &str = include_str!("../registry/capabilities.json");
 const HARNESS: &str = include_str!("../registry/harness.json");
-const NOTICES: &[u8] = include_bytes!("../docs/third-party-notices.md");
+const NOTICES: &str = include_str!("../docs/third-party-notices.md");
 const INSTRUCTIONS: &[u8] = include_bytes!("../instructions/AGENTS.md");
 pub const MAX_FILE: usize = 8 * 1024 * 1024;
 pub const MAX_PAYLOAD: usize = 32 * 1024 * 1024;
@@ -182,6 +182,74 @@ struct SearchDocument {
     names: Vec<String>,
 }
 
+/// Select complete notice sections from explicit, validated provenance. The full
+/// notice bundle still accompanies runtime distributions independently.
+fn skill_notices(
+    skill: &Skill,
+    sources: &BTreeMap<String, Source>,
+    notices: &str,
+) -> Result<Vec<u8>> {
+    let mut sections = BTreeMap::new();
+    for section in notices.split("\n## ").skip(1) {
+        let heading = section.lines().next().context("empty notice heading")?;
+        ensure!(
+            sections.insert(heading, section.trim_end()).is_none(),
+            "duplicate notice heading: {heading}"
+        );
+    }
+    let ids: Vec<String> = skill
+        .metadata
+        .get("informed_by")
+        .map(|value| serde_json::from_value(value.clone()))
+        .transpose()?
+        .unwrap_or_default();
+    let mut selected = BTreeSet::new();
+    let mut output = String::from(
+        "# Applicable source notices\n\nMirket authored guidance; upstream notices apply only to their respective materials.\nRuntime and optional-package licenses accompany those distributions separately.\n",
+    );
+    for id in ids {
+        ensure!(
+            selected.insert(id.clone()),
+            "duplicate provenance source for {}: {id}",
+            skill.id
+        );
+        let source = sources
+            .get(&id)
+            .with_context(|| format!("unknown provenance source for {}: {id}", skill.id))?;
+        let section = source
+            .metadata
+            .get("notice_section")
+            .and_then(Value::as_str);
+        let exemption = source
+            .metadata
+            .get("notice_exemption")
+            .and_then(Value::as_str);
+        ensure!(
+            section.is_some() != exemption.is_some(),
+            "source {id} needs exactly one notice section or explicit exemption"
+        );
+        if let Some(heading) = section {
+            let body = sections
+                .get(heading)
+                .with_context(|| format!("missing notice section for {id}: {heading}"))?;
+            ensure!(
+                body.contains(&source.commit),
+                "notice section does not identify pinned source {id}"
+            );
+            output.push_str("\n## ");
+            output.push_str(body);
+            output.push('\n');
+        } else if let Some(reason) = exemption {
+            ensure!(!reason.trim().is_empty(), "empty notice exemption for {id}");
+            output.push_str(&format!(
+                "\n## {}\n\nSource: https://github.com/{}/tree/{}\n\n{}\n",
+                source.repository, source.repository, source.commit, reason
+            ));
+        }
+    }
+    Ok(output.into_bytes())
+}
+
 #[derive(Clone)]
 pub struct Catalog(Arc<CatalogInner>);
 
@@ -255,8 +323,11 @@ impl Catalog {
                     .with_context(|| format!("missing embedded skill {}", skill.id))?;
                 let mut files = BTreeMap::new();
                 collect_embedded(dir, prefix, &mut files)?;
-                // The notices accompany authored guidance and remain available offline.
-                files.insert(".upstream-licenses/NOTICE.md".into(), NOTICES.to_vec());
+                // Preserve applicable offline notices without coupling unrelated skill identities.
+                files.insert(
+                    ".upstream-licenses/NOTICE.md".into(),
+                    skill_notices(skill, &data.sources, NOTICES)?,
+                );
                 ensure!(
                     skill_name(files.get("SKILL.md").context("missing SKILL.md")?)? == skill.name,
                     "skill invocation differs from catalog: {}",
@@ -1341,6 +1412,80 @@ pub fn read_payload_directory(path: &Path, excluded: &[&str]) -> Result<BTreeMap
 mod tests {
     use super::*;
     use std::io::Write;
+
+    #[test]
+    fn notices_follow_applicable_provenance_without_unrelated_payload_churn() {
+        let data: CatalogData = serde_json::from_str(CATALOG).unwrap();
+        let backend = data
+            .skills
+            .iter()
+            .find(|s| s.id == "backend-engineering")
+            .unwrap();
+        let motion = data
+            .skills
+            .iter()
+            .find(|s| s.id == "advanced-motion")
+            .unwrap();
+        let changed = NOTICES.replace(
+            "Copyright (c) 2025 LottieFiles",
+            "Copyright (c) 2025–2026 LottieFiles",
+        );
+        assert_ne!(changed, NOTICES);
+        assert_eq!(
+            skill_notices(backend, &data.sources, NOTICES).unwrap(),
+            skill_notices(backend, &data.sources, &changed).unwrap()
+        );
+        let before = skill_notices(motion, &data.sources, NOTICES).unwrap();
+        let after = skill_notices(motion, &data.sources, &changed).unwrap();
+        assert_ne!(before, after);
+        let catalog = Catalog::embedded().unwrap();
+        let mut payload = catalog.payload("advanced-motion").unwrap();
+        let original = payload.sha256.clone();
+        payload
+            .files
+            .insert(".upstream-licenses/NOTICE.md".into(), after);
+        assert_ne!(payload_hash(&payload.files), original);
+        let body = payload.files.get_mut("SKILL.md").unwrap();
+        body.extend_from_slice(b"\nChanged meaningful guidance.\n");
+        assert_ne!(payload_hash(&payload.files), original);
+        let notice = String::from_utf8(before).unwrap();
+        assert!(notice.contains("Copyright (c) 2025 LottieFiles"));
+        assert!(notice.contains("Permission is hereby granted, free of charge"));
+        assert!(!notice.contains("Wondel.ai"));
+    }
+
+    #[test]
+    fn embedded_provenance_cannot_silently_omit_required_notices() {
+        let mut data: CatalogData = serde_json::from_str(CATALOG).unwrap();
+        let motion = data
+            .skills
+            .iter()
+            .find(|s| s.id == "advanced-motion")
+            .unwrap()
+            .clone();
+        assert!(
+            skill_notices(
+                &motion,
+                &data.sources,
+                &NOTICES.replace("## LottieFiles/motion-design-skill", "## missing")
+            )
+            .is_err()
+        );
+        data.sources
+            .get_mut("lottiefiles-motion")
+            .unwrap()
+            .metadata
+            .remove("notice_section");
+        assert!(skill_notices(&motion, &data.sources, NOTICES).is_err());
+        for skill in data
+            .skills
+            .iter()
+            .filter(|s| s.delivery == "embedded" && s.id != "advanced-motion")
+        {
+            // Every current authored owner is checked by Catalog::load as well.
+            assert!(skill_notices(skill, &data.sources, NOTICES).is_ok());
+        }
+    }
 
     #[test]
     fn capability_composes_only_explicit_leads() {

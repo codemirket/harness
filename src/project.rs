@@ -13,6 +13,8 @@ use crate::{
     util::{atomic_write, ensure_directory, read_bounded, reject_symlink_components},
 };
 
+mod recovery;
+
 const CONFIG: &str = ".mirket/project.json";
 const RECEIPT: &str = ".mirket-skill.json";
 
@@ -27,7 +29,7 @@ pub struct ProjectConfig {
     pub target_skills: BTreeMap<String, Vec<String>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Receipt {
     schema_version: u32,
@@ -498,15 +500,6 @@ struct PreparedJob {
     payload: Payload,
 }
 
-struct Published {
-    path: PathBuf,
-    skill: String,
-    digest: Option<String>,
-    executable_files: BTreeSet<String>,
-    backup: Option<PathBuf>,
-    staging: tempfile::TempDir,
-}
-
 pub fn sync(catalog: &Catalog, project: &Path, cache: &Path) -> Result<Value> {
     sync_with_options(catalog, project, cache, false)
 }
@@ -519,6 +512,7 @@ pub fn sync_with_options(
 ) -> Result<Value> {
     let (root, _) = load(catalog, project)?;
     let _lock = ProjectLock::acquire(&root)?;
+    recovery::recover(&root)?;
     let (_, config) = load(catalog, &root)?;
     let unselected = unselected(catalog, &root, &config)?;
     if prune {
@@ -569,147 +563,44 @@ pub fn sync_with_options(
                 .clone(),
         });
     }
-    let mut published: Vec<Published> = Vec::new();
-    let publication = (|| -> Result<()> {
-        if prune {
-            for copy in &unselected {
-                let receipt = inspect_receipt(&copy.path)?;
-                ensure!(
-                    Some(&receipt.sha256) == copy.digest.as_ref(),
-                    "unselected skill changed during synchronization"
-                );
-                let staging =
-                    tempfile::tempdir_in(copy.path.parent().context("skill has no parent")?)?;
-                let backup = staging.path().join("before");
-                fs::rename(&copy.path, &backup)?;
-                results
-                    .push(json!({"skill":receipt.skill,"target":copy.target,"status":"removed"}));
-                published.push(Published {
-                    path: copy.path.clone(),
-                    skill: receipt.skill,
-                    digest: None,
-                    executable_files: receipt.executable_files,
-                    backup: Some(backup),
-                    staging,
-                });
-            }
-        }
-        for job in ready {
-            let skill = catalog.skill(&job.skill)?;
+    let mut publications = Vec::new();
+    if prune {
+        for copy in &unselected {
+            let receipt = inspect_receipt(&copy.path)?;
             ensure!(
-                state(&job.path, skill)? == job.expected_before,
-                "skill changed during synchronization"
+                Some(&receipt.sha256) == copy.digest.as_ref(),
+                "unselected skill changed during synchronization"
             );
-            let parent = job.path.parent().context("skill has no parent")?;
-            ensure_directory(parent)?;
-            let staging = tempfile::tempdir_in(parent)?;
-            let next = staging.path().join("next");
-            ensure_directory(&next)?;
-            for (relative, bytes) in &job.payload.files {
-                let path = next.join(relative);
-                atomic_write(&path, bytes)?;
-                set_executable(&path, job.payload.executables.contains(relative))?;
-            }
-            let receipt = Receipt {
-                schema_version: 1,
-                skill: job.skill.clone(),
-                sha256: job.payload.sha256.clone(),
-                executable_files: job.payload.executables.clone(),
-            };
-            atomic_write(&next.join(RECEIPT), &serde_json::to_vec_pretty(&receipt)?)?;
-            ensure!(
-                state(&next, skill)?
-                    == InstalledState::Managed(job.payload.sha256, job.payload.executables),
-                "staged skill validation failed"
-            );
-            // Recheck immediately before publication, after all potentially slow staging work.
-            ensure!(
-                state(&job.path, skill)? == job.expected_before,
-                "skill changed during synchronization"
-            );
-            let backup = if job.path.exists() {
-                let backup = staging.path().join("before");
-                fs::rename(&job.path, &backup)?;
-                Some(backup)
-            } else {
-                None
-            };
-            if let Err(error) = fs::rename(&next, &job.path) {
-                if let Some(backup) = &backup
-                    && let Err(restore) = fs::rename(backup, &job.path)
-                {
-                    let kept = staging.keep();
-                    bail!(
-                        "publish failed: {error}; restore failed: {restore}; original retained in {}",
-                        kept.display()
-                    );
-                }
-                return Err(error.into());
-            }
-            results.push(json!({"skill":job.skill,"target":job.target,"status":"installed"}));
-            published.push(Published {
-                path: job.path,
-                skill: job.skill,
-                digest: Some(receipt.sha256),
-                executable_files: receipt.executable_files,
-                backup,
-                staging,
+            results.push(json!({"skill":receipt.skill,"target":copy.target,"status":"removed"}));
+            publications.push(recovery::Publication {
+                path: copy.path.clone(),
+                before: Some(receipt),
+                payload: None,
             });
         }
-        Ok(())
-    })();
-    if let Err(error) = publication {
-        let mut rollback_errors = Vec::new();
-        for publication in published.into_iter().rev() {
-            let matches = match &publication.digest {
-                Some(digest) => inspect_receipt(&publication.path).is_ok_and(|receipt| {
-                    receipt.sha256 == *digest
-                        && receipt.skill == publication.skill
-                        && receipt.executable_files == publication.executable_files
-                }),
-                None => fs::symlink_metadata(&publication.path)
-                    .is_err_and(|error| error.kind() == std::io::ErrorKind::NotFound),
-            };
-            if !matches {
-                let kept = publication.staging.keep();
-                rollback_errors.push(format!(
-                    "published skill changed; preserved {} and recovery files in {}",
-                    publication.path.display(),
-                    kept.display()
-                ));
-                continue;
-            }
-            if publication.digest.is_some()
-                && let Err(error) = fs::remove_dir_all(&publication.path)
-            {
-                let kept = publication.staging.keep();
-                rollback_errors.push(format!(
-                    "remove published skill: {error}; recovery files retained in {}",
-                    kept.display()
-                ));
-                continue;
-            }
-            if let Some(backup) = &publication.backup
-                && let Err(error) = fs::rename(backup, &publication.path)
-            {
-                let kept = publication.staging.keep();
-                rollback_errors.push(format!(
-                    "restore {}: {error}; retained {}",
-                    publication.path.display(),
-                    kept.display()
-                ));
-            }
-        }
-        if !rollback_errors.is_empty() {
-            bail!(
-                "sync failed: {error:#}; rollback issues: {}",
-                rollback_errors.join("; ")
-            );
-        }
-        return Err(error);
     }
+    for job in ready {
+        let skill = catalog.skill(&job.skill)?;
+        ensure!(
+            state(&job.path, skill)? == job.expected_before,
+            "skill changed during synchronization"
+        );
+        let before = if job.path.exists() {
+            Some(inspect_receipt(&job.path)?)
+        } else {
+            None
+        };
+        results.push(json!({"skill":job.skill,"target":job.target,"status":"installed"}));
+        publications.push(recovery::Publication {
+            path: job.path,
+            before,
+            payload: Some((job.skill, job.payload)),
+        });
+    }
+    recovery::publish(&root, publications)?;
     Ok(
         json!({"ok":true,"status":"synced","project":root,"skills":results,"unselected":if prune {Vec::<Unselected>::new()} else {unselected},
+        "recovery_remnants": recovery::remnants(&root)?,
         "runtime_status":"not_checked","activation_status":"not_observed"}),
     )
 }
@@ -730,6 +621,9 @@ pub fn doctor(catalog: &Catalog, project: &Path) -> Result<Value> {
         issue["status"] = json!("unselected");
         issue["next"] = json!("Inspect the managed copy, then run mirket project sync --prune.");
         issues.push(issue);
+    }
+    for remnant in recovery::remnants(&canonical_project(project)?)? {
+        issues.push(json!({"status":"recovery_remnant","path":remnant,"next":"Run project sync for the owned journal; preserve and inspect unknown historical remnants manually."}));
     }
     result["ok"] = json!(issues.is_empty());
     result["status"] = json!(if issues.is_empty() {

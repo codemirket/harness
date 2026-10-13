@@ -12,67 +12,78 @@
       "repository": "coreyhaines31/marketingskills",
       "commit": "dda3841f0b294e01e93b1541486beefbfab0915e",
       "license_summary": "MIT",
-      "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+      "url": "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e",
+      "notice_section": "coreyhaines31/marketingskills"
     },
     "ui-ux-pro-max": {
       "repository": "nextlevelbuilder/ui-ux-pro-max-skill",
       "commit": "477bcb28c9812b385cb51a4605ddf30d7b2266e2",
       "license_summary": "MIT",
-      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/477bcb28c9812b385cb51a4605ddf30d7b2266e2"
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/477bcb28c9812b385cb51a4605ddf30d7b2266e2",
+      "notice_section": "nextlevelbuilder/ui-ux-pro-max-skill"
     },
     "hallmark": {
       "repository": "Nutlope/hallmark",
       "commit": "13ac0ec7e148655948100b6396439e481361d690",
       "license_summary": "MIT",
-      "url": "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690"
+      "url": "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690",
+      "notice_section": "Nutlope/hallmark"
     },
     "taste": {
       "repository": "Leonxlnx/taste-skill",
       "commit": "ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
       "license_summary": "MIT",
-      "url": "https://github.com/Leonxlnx/taste-skill/tree/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b"
+      "url": "https://github.com/Leonxlnx/taste-skill/tree/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
+      "notice_section": "Leonxlnx/taste-skill"
     },
     "anthropic": {
       "repository": "anthropics/skills",
       "commit": "683bc88e56f3e09ba94f7055977f3d3aa499f202",
       "license_summary": "Per-skill; office document implementations have restrictive source-available licenses",
-      "url": "https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202"
+      "url": "https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202",
+      "notice_exemption": "Conceptual inspiration only; no upstream implementation or assets are redistributed in authored skills. See docs/source-review.md."
     },
     "superpowers": {
       "repository": "obra/superpowers",
       "commit": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
       "license_summary": "MIT",
-      "url": "https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+      "url": "https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "notice_section": "obra/superpowers"
     },
     "matt": {
       "repository": "mattpocock/skills",
       "commit": "4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
       "license_summary": "MIT (PR skill also copied third-party material; attribution retained)",
-      "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+      "url": "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d",
+      "notice_section": "mattpocock/skills"
     },
     "ecc": {
       "repository": "affaan-m/ECC",
       "commit": "ef648e01899ba3e8dc6371642deaaf64b4477775",
       "license_summary": "MIT",
-      "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+      "url": "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775",
+      "notice_section": "affaan-m/ECC"
     },
     "caveman": {
       "repository": "JuliusBrussee/caveman",
       "commit": "99aafe151a1be72be783e662858e8a0955add59f",
       "license_summary": "Apache-2.0 with retained notices",
-      "url": "https://github.com/JuliusBrussee/caveman/tree/99aafe151a1be72be783e662858e8a0955add59f"
+      "url": "https://github.com/JuliusBrussee/caveman/tree/99aafe151a1be72be783e662858e8a0955add59f",
+      "notice_exemption": "Conceptual inspiration only; no upstream implementation or assets are redistributed in authored skills. See docs/source-review.md."
     },
     "archify": {
       "repository": "tt-a1i/archify",
       "commit": "73aaa0696e8f72c232ea710e6fa94fd953f3e773",
       "license_summary": "MIT; separate asset licenses",
-      "url": "https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773"
+      "url": "https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773",
+      "notice_exemption": "Conceptual inspiration only; no upstream implementation or assets are redistributed in authored skills. See docs/source-review.md."
     },
     "emil": {
       "repository": "emilkowalski/skills",
       "commit": "e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
       "license_summary": "MIT",
-      "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+      "url": "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d",
+      "notice_section": "emilkowalski/skills"
     },
     "gstack": {
       "repository": "garrytan/gstack",
@@ -212,7 +223,8 @@
         "skills/improve-ui/references/plan-template.md",
         "skills/fixing-motion-performance/SKILL.md"
       ],
-      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import.",
+      "notice_section": "ibelick/ui-skills"
     },
     "lottiefiles-motion": {
       "repository": "LottieFiles/motion-design-skill",
@@ -228,7 +240,8 @@
         "skills/motion-design/reference/timing-easing-tables.md",
         "skills/motion-design/patterns/multi-element.md"
       ],
-      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import.",
+      "notice_section": "LottieFiles/motion-design-skill"
     },
     "kyle-motion": {
       "repository": "kylezantos/design-motion-principles",
@@ -243,7 +256,8 @@
         "skills/design-motion-principles/references/performance.md",
         "skills/design-motion-principles/workflows/audit.md"
       ],
-      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import.",
+      "notice_section": "kylezantos/design-motion-principles"
     },
     "owl-concepts": {
       "repository": "Owl-Listener/designer-skills",
@@ -254,7 +268,8 @@
         "prototyping-testing/skills/parallel-concepts/SKILL.md",
         "prototyping-testing/skills/concept-selection/SKILL.md"
       ],
-      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import.",
+      "notice_section": "Owl-Listener/designer-skills"
     },
     "libraries-craft": {
       "repository": "Jakubantalik/Libraries.dev",
@@ -275,7 +290,8 @@
         "skills/libraries-dev/references/07-img-fx.md",
         "packages/metal-fx/src/engine/renderer/loop.ts"
       ],
-      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import.",
+      "notice_section": "Jakubantalik/Libraries.dev"
     },
     "mengto-inspiration": {
       "repository": "MengTo/Skills",
@@ -288,7 +304,8 @@
         "agent-skills/codex/video-to-superprompt/SKILL.md",
         "agent-skills/codex/audit-reference-originality/SKILL.md"
       ],
-      "scope": "Reference discovery, evidence coverage and transfer methods only; no imported demos, media, runtimes, capture helpers, publishing workflow or similarity scores."
+      "scope": "Reference discovery, evidence coverage and transfer methods only; no imported demos, media, runtimes, capture helpers, publishing workflow or similarity scores.",
+      "notice_section": "Meng To — selected reference-study methods"
     },
     "wondel-discovery-positioning": {
       "repository": "wondelai/skills",
@@ -301,7 +318,8 @@
         "obviously-awesome/SKILL.md",
         "obviously-awesome/references/value-mapping.md"
       ],
-      "scope": "Selected discovery and positioning methods in existing owners; no book text, wholesale framework packs, prescribed cadence, sample counts, scores or claims of validated demand."
+      "scope": "Selected discovery and positioning methods in existing owners; no book text, wholesale framework packs, prescribed cadence, sample counts, scores or claims of validated demand.",
+      "notice_section": "Wondel.ai — selected discovery and positioning methods"
     },
     "scroll-craft": {
       "repository": "nateherkai/scroll-craft",
@@ -323,7 +341,8 @@
         "plugins/nateherk-design/skills/scroll-craft/scripts/encode.sh",
         "plugins/nateherk-design/skills/scroll-craft/scripts/doctor.mjs"
       ],
-      "scope": "Connected image-layer construction, corrected scroll-media readiness and scene-relative verification, and optional structural reference comparison in existing owners. No runtime, workspace manager, provider integration, author example assets, novelty quotas or sample-grid gaming imported."
+      "scope": "Connected image-layer construction, corrected scroll-media readiness and scene-relative verification, and optional structural reference comparison in existing owners. No runtime, workspace manager, provider integration, author example assets, novelty quotas or sample-grid gaming imported.",
+      "notice_section": "Nate Herk — selected scroll-craft techniques"
     }
   },
   "skills": [

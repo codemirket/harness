@@ -117,7 +117,10 @@ fn unregister_removes_only_selected_coordination_records_and_preserves_project_f
         fs::read_to_string(other_root.join("keep.txt")).unwrap(),
         "keep unchanged"
     );
-    assert_eq!(f.state.status(id(&other)).unwrap(), other);
+    assert_eq!(
+        f.state.status(id(&other)).unwrap()["revision"],
+        other["revision"]
+    );
     assert_eq!(f.state.project_id(&other_root).unwrap(), other_id);
     assert_eq!(
         f.state
@@ -141,6 +144,7 @@ fn unregister_removes_only_selected_coordination_records_and_preserves_project_f
     );
     let fresh = f.begin("start");
     assert_eq!(fresh["revision"], 1);
+    let fresh = f.state.status(id(&fresh)).unwrap();
     assert!(fresh["skill_deliveries"].as_array().unwrap().is_empty());
     assert!(fresh["evidence"].as_array().unwrap().is_empty());
     assert!(fresh["recent_checkpoints"].as_array().unwrap().is_empty());
@@ -244,8 +248,8 @@ fn durable_completion_requires_delivered_guidance_and_current_artifacts() {
     assert_eq!(complete["status"], "complete");
     assert_eq!(complete["revision"], 6);
     assert_eq!(
-        State::open(&f.paths).unwrap().status(id(&task)).unwrap(),
-        complete
+        State::open(&f.paths).unwrap().status(id(&task)).unwrap()["revision"],
+        complete["revision"]
     );
     fs::remove_file(f.project.join("result.txt")).unwrap();
     assert_eq!(
@@ -433,7 +437,10 @@ fn runtime_state_read_open_does_not_need_the_writer_lock() {
     let writer = rusqlite::Connection::open(f.paths.database()).unwrap();
     writer.execute_batch("BEGIN IMMEDIATE").unwrap();
     let reader = State::open(&f.paths).expect("a valid WAL state must open without a writer lock");
-    assert_eq!(reader.status(id(&task)).unwrap(), task);
+    assert_eq!(
+        reader.status(id(&task)).unwrap()["revision"],
+        task["revision"]
+    );
     writer.execute_batch("ROLLBACK").unwrap();
 }
 
@@ -600,7 +607,7 @@ fn runtime_state_concurrent_initializers_share_one_valid_schema() {
         database
             .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
             .unwrap(),
-        2
+        3
     );
 }
 
@@ -641,6 +648,7 @@ fn runtime_state_cli_task_start_scopes_verification_criteria() {
     let defaults: Value = serde_json::from_slice(&defaults.stdout).unwrap();
     let catalog = Catalog::embedded().unwrap();
     let capability = catalog.capability("Accessibility Engineer").unwrap();
+    let defaults = f.state.status(id(&defaults)).unwrap();
     assert_eq!(defaults["acceptance"], capability.acceptance.join("; "));
     assert_eq!(defaults["failure_probe"], capability.failure_probe);
 
@@ -977,7 +985,7 @@ fn state_validates_input_and_skill_identity_for_every_caller() {
 fn serialized_response_budget_rolls_back_writes_before_they_become_unreadable() {
     let f = Fixture::new();
     let task = f.begin("start");
-    let mut previous = task.clone();
+    let mut previous = f.state.status(id(&task)).unwrap();
     let mut rejected = false;
     for index in 0..8 {
         let revision = previous["revision"].as_i64().unwrap();
@@ -987,7 +995,7 @@ fn serialized_response_budget_rolls_back_writes_before_they_become_unreadable() 
             &"\u{1}".repeat(2048),
             &format!("note-{index}"),
         ) {
-            Ok(value) => previous = value,
+            Ok(_) => previous = f.state.status(id(&task)).unwrap(),
             Err(error) => {
                 assert!(error.to_string().contains("serialized budget"));
                 assert_eq!(f.state.status(id(&task)).unwrap(), previous);
@@ -1336,4 +1344,110 @@ fn pinned_upstream_fetch_uses_cli_and_rejects_modified_cache() {
     let rejected = fetch();
     assert!(!rejected.status.success());
     assert_eq!(fs::read_to_string(body).unwrap(), "unreviewed cache change");
+}
+
+#[tokio::test]
+async fn compact_mcp_mutations_replay_exactly_and_recover_full_history() {
+    let call = |name: &'static str, args: Value| {
+        CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
+    };
+    let f = Fixture::new();
+    let server = MirketServer::new(&f.paths, Catalog::embedded().unwrap()).unwrap();
+    let (server_transport, client_transport) = tokio::io::duplex(8192);
+    let handle = tokio::spawn(async move {
+        server
+            .serve(server_transport)
+            .await
+            .unwrap()
+            .waiting()
+            .await
+            .unwrap()
+    });
+    let client = ().serve(client_transport).await.unwrap();
+    let task = f.begin("compact-workload");
+    assert_eq!(task["receipt_version"], 1);
+    assert_eq!(task["result"]["skills"], json!(["engineering-judgment"]));
+    let mut receipt_bytes = 0;
+    let mut snapshot_bytes = 0;
+    for index in 0..40 {
+        let note = format!("decision {index}: {}", "context ".repeat(100));
+        let args = json!({"task_id":id(&task),"revision":index+1,"note":note,"key":format!("compact-{index}")});
+        let response = client
+            .call_tool(call("task_checkpoint", args.clone()))
+            .await
+            .unwrap();
+        assert_eq!(response.is_error, Some(false));
+        let receipt = response.structured_content.unwrap();
+        assert_eq!(receipt["receipt_version"], 1);
+        assert_eq!(receipt["revision"], index + 2);
+        assert_eq!(receipt["operation"], "checkpoint");
+        assert!(receipt.get("recent_checkpoints").is_none());
+        assert_eq!(
+            receipt["result"]["note_sha256"],
+            mirket::util::sha256(note.as_bytes())
+        );
+        let replay = client
+            .call_tool(call("task_checkpoint", args))
+            .await
+            .unwrap();
+        assert_eq!(replay.structured_content.unwrap(), receipt);
+        receipt_bytes += serde_json::to_vec(&receipt).unwrap().len();
+        snapshot_bytes += serde_json::to_vec(&f.state.status(id(&task)).unwrap())
+            .unwrap()
+            .len();
+    }
+    assert!(
+        receipt_bytes * 5 < snapshot_bytes,
+        "receipts {receipt_bytes}, snapshots {snapshot_bytes}"
+    );
+    let status = client
+        .call_tool(call("task_status", json!({"task_id":id(&task)})))
+        .await
+        .unwrap()
+        .structured_content
+        .unwrap();
+    assert_eq!(status["checkpoint_count"], 40);
+    assert_eq!(status["recent_checkpoints"].as_array().unwrap().len(), 8);
+    let mut cursor: Option<String> = None;
+    let mut notes = Vec::new();
+    loop {
+        let mut args = json!({"task_id":id(&task),"limit":20});
+        if let Some(value) = cursor {
+            args["cursor"] = json!(value);
+        }
+        let page = client
+            .call_tool(call("task_history", args))
+            .await
+            .unwrap()
+            .structured_content
+            .unwrap();
+        notes.extend(
+            page["checkpoints"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|value| value["note"].as_str().unwrap().to_owned()),
+        );
+        cursor = page["next_cursor"].as_str().map(str::to_owned);
+        if cursor.is_none() {
+            break;
+        }
+    }
+    assert_eq!(notes.len(), 40);
+    assert!(notes[0].starts_with("decision 39:"));
+    assert!(notes[39].starts_with("decision 0:"));
+    let conn = rusqlite::Connection::open(f.paths.database()).unwrap();
+    let persisted_bytes: i64 = conn
+        .query_row(
+            "SELECT sum(length(response)) FROM operations WHERE scope=?1",
+            [id(&task)],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        persisted_bytes as usize, receipt_bytes,
+        "only compact receipts are retained for this ASCII workload"
+    );
+    client.cancel().await.unwrap();
+    handle.await.unwrap();
 }

@@ -10,6 +10,7 @@ pub mod packages;
 pub mod paths;
 pub mod podman;
 mod podman_api;
+mod process;
 pub mod project;
 pub mod release;
 pub mod role_eval;

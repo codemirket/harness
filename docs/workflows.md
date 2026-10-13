@@ -55,6 +55,10 @@ mirket task list --project /absolute/project
 mirket task status TASK_ID
 ```
 
+New task writes return compact `receipt_version: 1` replies with task ID, revision,
+status and an operation-specific `result` (start includes `result.skills`). Use
+`task status` for complete task criteria, evidence and recent history. Exact
+retries of old keys can still return their originally recorded full snapshot.
 Use the returned task ID and current revision in subsequent operations. Each
 operation needs a unique idempotency key; repeat exactly the same key and input
 after an uncertain response. A different intention gets a different key.

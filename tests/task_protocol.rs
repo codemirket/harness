@@ -111,7 +111,7 @@ async fn cli_and_mcp_recover_history_and_reject_stale_contracts() {
     let response = client.call_tool(call("task_evidence", json!({"task_id":id,"revision":task["revision"],"path":"receipt.json","kind":"acceptance","summary":"Input bound protocol fixture","contract":"verification","key":"record"}))).await.unwrap();
     assert_eq!(response.is_error, Some(false));
     assert_eq!(
-        response.structured_content.unwrap()["evidence"][0]["contract"],
+        response.structured_content.unwrap()["result"]["contract"],
         "verification"
     );
     fs::write(project.join("input.txt"), "changed").unwrap();

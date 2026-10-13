@@ -143,28 +143,179 @@ pub async fn run(
         bail!("tool executable changed; inspect it before registering it again");
     }
     let cwd = crate::paths::canonical_project(cwd)?;
-    let mut child = tokio::process::Command::new(&tool.executable)
+    let mut command = tokio::process::Command::new(&tool.executable);
+    command
         .args(args)
         .current_dir(cwd)
         .stdin(Stdio::inherit())
         .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit())
-        .kill_on_drop(true)
-        .spawn()?;
-    let result = tokio::time::timeout(Duration::from_secs(timeout), child.wait()).await;
-    match result {
-        Ok(status) => Ok(status?.code().unwrap_or(1)),
-        Err(_) => {
-            child.kill().await?;
-            let _ = child.wait().await;
-            bail!("tool exceeded {timeout} seconds; direct child terminated");
-        }
-    }
+        .stderr(Stdio::inherit());
+    let shutdown = crate::process::shutdown_signal()?;
+    run_owned(&mut command, Duration::from_secs(timeout), shutdown, true).await
+}
+
+async fn run_owned(
+    command: &mut tokio::process::Command,
+    timeout: Duration,
+    cancelled: impl std::future::Future<Output = Result<()>>,
+    inherit_terminal: bool,
+) -> Result<i32> {
+    let mut owned = crate::process::OwnedChild::spawn(command, inherit_terminal)?;
+    let result = tokio::select! {
+        status = owned.child.wait() => status.map(|s| s.code().unwrap_or(1)).map_err(anyhow::Error::from),
+        _ = tokio::time::sleep(timeout) => Err(anyhow::anyhow!("tool exceeded {} seconds; owned processes terminated", timeout.as_secs_f64())),
+        signal = cancelled => signal.and_then(|_| Err(anyhow::anyhow!("tool cancelled; owned processes terminated"))),
+    };
+    owned.finish().await?;
+    result
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    // Native test executable avoids shell/platform quoting and exercises the same
+    // owned child mechanics on Windows, macOS and Linux without dependencies.
+    #[test]
+    fn process_fixture() {
+        let Ok(mode) = std::env::var("MIRKET_TEST_TOOL_MODE") else {
+            return;
+        };
+        let root = PathBuf::from(std::env::var_os("MIRKET_TEST_TOOL_ROOT").unwrap());
+        if mode == "leaf" {
+            std::fs::write(root.join("ready"), b"ready").unwrap();
+            std::thread::sleep(Duration::from_secs(3));
+            std::fs::write(root.join("late"), b"late side effect").unwrap();
+            return;
+        }
+        if mode == "normal" {
+            std::process::exit(7);
+        }
+        let mut leaf = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", "tools::tests::process_fixture", "--nocapture"])
+            .env("MIRKET_TEST_TOOL_MODE", "leaf")
+            .spawn()
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(5);
+        while !root.join("ready").exists() {
+            assert!(std::time::Instant::now() < deadline, "leaf did not start");
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        if mode == "success" {
+            std::process::exit(7);
+        }
+        let _ = leaf.wait().unwrap();
+    }
+
+    fn fixture(root: &Path, mode: &str) -> tokio::process::Command {
+        let mut command = tokio::process::Command::new(std::env::current_exe().unwrap());
+        command
+            .args(["--exact", "tools::tests::process_fixture", "--nocapture"])
+            .env("MIRKET_TEST_TOOL_MODE", mode)
+            .env("MIRKET_TEST_TOOL_ROOT", root)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+        command
+    }
+    async fn ready(root: &Path) {
+        tokio::time::timeout(Duration::from_secs(5), async {
+            while !root.join("ready").exists() {
+                tokio::time::sleep(Duration::from_millis(10)).await;
+            }
+        })
+        .await
+        .expect("owned descendant must start before cancellation");
+    }
+    async fn no_late_effect(root: &Path) {
+        assert!(
+            root.join("ready").exists(),
+            "probe must actually launch the descendant"
+        );
+        tokio::time::sleep(Duration::from_millis(3300)).await;
+        assert!(
+            !root.join("late").exists(),
+            "descendant wrote after ownership ended"
+        );
+    }
+
+    #[tokio::test]
+    async fn owned_tool_preserves_normal_exit_status() {
+        let root = tempfile::tempdir().unwrap();
+        let result = run_owned(
+            &mut fixture(root.path(), "normal"),
+            Duration::from_secs(10),
+            std::future::pending(),
+            false,
+        )
+        .await
+        .unwrap();
+        assert_eq!(result, 7);
+    }
+    #[tokio::test]
+    async fn owned_tool_cleans_descendants_after_launcher_success() {
+        let root = tempfile::tempdir().unwrap();
+        let result = run_owned(
+            &mut fixture(root.path(), "success"),
+            Duration::from_secs(10),
+            std::future::pending(),
+            false,
+        )
+        .await
+        .unwrap();
+        assert_eq!(result, 7);
+        no_late_effect(root.path()).await;
+    }
+    #[tokio::test]
+    async fn owned_tool_timeout_stops_late_descendant_writes() {
+        let root = tempfile::tempdir().unwrap();
+        let error = run_owned(
+            &mut fixture(root.path(), "wait"),
+            Duration::from_secs(2),
+            std::future::pending(),
+            false,
+        )
+        .await
+        .unwrap_err();
+        assert!(error.to_string().contains("exceeded"));
+        no_late_effect(root.path()).await;
+    }
+    #[tokio::test]
+    async fn owned_tool_cancellation_stops_late_descendant_writes() {
+        let root = tempfile::tempdir().unwrap();
+        let cancel = async {
+            ready(root.path()).await;
+            Ok(())
+        };
+        let error = run_owned(
+            &mut fixture(root.path(), "wait"),
+            Duration::from_secs(10),
+            cancel,
+            false,
+        )
+        .await
+        .unwrap_err();
+        assert!(error.to_string().contains("cancelled"));
+        no_late_effect(root.path()).await;
+    }
+    #[tokio::test]
+    async fn owned_tool_dropped_future_stops_late_descendant_writes() {
+        let root = tempfile::tempdir().unwrap();
+        let mut command = fixture(root.path(), "wait");
+        let task = tokio::spawn(async move {
+            run_owned(
+                &mut command,
+                Duration::from_secs(10),
+                std::future::pending(),
+                false,
+            )
+            .await
+        });
+        ready(root.path()).await;
+        task.abort();
+        assert!(task.await.unwrap_err().is_cancelled());
+        no_late_effect(root.path()).await;
+    }
+
     #[test]
     fn registration_never_executes_and_changed_bytes_fail() {
         let dir = tempfile::tempdir().unwrap();

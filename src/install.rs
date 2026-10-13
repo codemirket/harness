@@ -918,7 +918,8 @@ fn write_snapshot(path: &Path, bytes: Option<&[u8]>, mode: Option<u32>) -> Resul
             atomic_write(path, bytes)?;
         }
         #[cfg(not(windows))]
-        atomic_write(path, bytes)?;
+        crate::util::atomic_write_with_mode(path, bytes, mode)?;
+        #[cfg(windows)]
         set_mode(path, mode)?;
     } else if path.exists() {
         reject_symlink_components(path)?;
@@ -1051,21 +1052,25 @@ fn recover_setup(paths: &Paths) -> Result<()> {
         let path = paths.home.join(&file.path);
         let current = read_optional(&path, MAX_FILE)?;
         let digest = current.as_ref().map(|bytes| sha256(bytes));
-        if digest != file.before && digest != file.after {
+        let mode = file_mode(&path)?;
+        let is_before = digest == file.before && mode == file.before_mode;
+        let is_after = digest == file.after && mode == file.after_mode;
+        if !is_before && !is_after {
             bail!(
-                "interrupted setup conflicts with a user change at {}; change preserved",
+                "interrupted setup conflicts with a user change or ambiguous legacy partial chmod at {}; bytes and permissions preserved",
                 path.display()
             );
         }
-        let changed = digest == file.after;
-        snapshots.push((path, before, file.before_mode, changed, digest));
+        let changed = !is_before;
+        snapshots.push((path, before, file.before_mode, changed, digest, mode));
     }
-    for (path, before, mode, changed, expected) in snapshots.into_iter().rev() {
+    for (path, before, mode, changed, expected, expected_mode) in snapshots.into_iter().rev() {
         if changed {
             if read_optional(&path, MAX_FILE)?
                 .as_ref()
                 .map(|bytes| sha256(bytes))
                 != expected
+                || file_mode(&path)? != expected_mode
             {
                 bail!("file changed during setup recovery: {}", path.display());
             }
@@ -1451,6 +1456,67 @@ mod recovery_tests {
         assert_eq!(fs::read(instruction).unwrap(), b"a subsequent user edit");
         assert!(transaction_path(&paths).exists());
     }
+    #[cfg(unix)]
+    #[test]
+    fn recovery_preserves_permission_only_changes_and_ambiguous_legacy_chmod() {
+        for (before_mode, after_mode, user_mode, bytes) in [
+            (0o644, 0o644, 0o600, b"after".as_slice()),
+            (0o600, 0o600, 0o640, b"after".as_slice()),
+            (0o644, 0o644, 0o600, b"before".as_slice()),
+            // Legacy atomic_write preserved the old mode before chmod. This
+            // state cannot be distinguished from a user restoring that mode.
+            (0o600, 0o644, 0o600, b"after".as_slice()),
+            (0o644, 0o755, 0o644, b"after".as_slice()),
+        ] {
+            let temporary = tempfile::tempdir().unwrap();
+            let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+            paths.ensure().unwrap();
+            let path = paths.home.join(".codex/AGENTS.md");
+            write_snapshot(&path, Some(b"before"), Some(before_mode)).unwrap();
+            let changes = vec![Change {
+                path: path.clone(),
+                before: Some(b"before".to_vec()),
+                after: Some(b"after".to_vec()),
+                before_mode: Some(before_mode),
+                after_mode: Some(after_mode),
+            }];
+            prepare_journal(&paths, &changes).unwrap();
+            write_snapshot(&path, Some(bytes), Some(user_mode)).unwrap();
+            let error = recover_setup(&paths).unwrap_err().to_string();
+            assert!(error.contains("permissions preserved"), "{error}");
+            assert_eq!(fs::read(&path).unwrap(), bytes);
+            assert_eq!(file_mode(&path).unwrap(), Some(user_mode));
+            assert!(transaction_path(&paths).exists());
+        }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn recovery_accepts_atomic_mode_transition_and_restores_deleted_files() {
+        for after in [Some(b"after".to_vec()), None] {
+            let temporary = tempfile::tempdir().unwrap();
+            let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+            paths.ensure().unwrap();
+            let path = paths.home.join(".codex/AGENTS.md");
+            write_snapshot(&path, Some(b"before"), Some(0o644)).unwrap();
+            let mode = after.as_ref().map(|_| 0o600);
+            let changes = vec![Change {
+                path: path.clone(),
+                before: Some(b"before".to_vec()),
+                after: after.clone(),
+                before_mode: Some(0o644),
+                after_mode: mode,
+            }];
+            prepare_journal(&paths, &changes).unwrap();
+            write_snapshot(&path, after.as_deref(), mode).unwrap();
+            assert_eq!(file_mode(&path).unwrap(), mode);
+            recover_setup(&paths).unwrap();
+            assert_eq!(fs::read(&path).unwrap(), b"before");
+            assert_eq!(file_mode(&path).unwrap(), Some(0o644));
+            assert!(!transaction_path(&paths).exists());
+        }
+    }
+
     #[test]
     fn recovery_keeps_the_chosen_executable_bytes_for_setup() {
         let temporary = tempfile::tempdir().unwrap();

@@ -160,13 +160,33 @@ the sum of bytes validated across contracts at 64 MiB (shared files count again
 across contracts). Contribution rosters contain
 1–13 roles. These limits bound work and output; they do not create a sandbox.
 
-Opening a valid schema-1 task database migrates it transactionally to schema 2
-by adding the contract records. Existing tasks, evidence, checkpoints and
-idempotency replies are retained. Unknown or malformed schemas are rejected.
-Opening an existing schema-2 database only validates it; it does not rewrite the
-schema. Older Mirket runtimes that support only schema 1 refuse schema 2 at startup.
-Restart already-running Mirket MCP connections during cutover; replacing the
-executable does not change their cached behavior. Do not
-use an old runtime against an upgraded live home; retain a pre-upgrade backup if
-a downgrade is required. A disposable `--home` isolates development checks from
-live task state.
+Opening a valid schema-1 or schema-2 task database migrates it transactionally to
+schema 3. Schema 1 gains the contract table; both older versions replace the
+outdated task-list index with creation-time/ID ordering. Existing projects, tasks,
+evidence, checkpoints, deliveries, contracts and idempotency replies are retained.
+Opening schema 3 validates it without rewriting it. Unknown or malformed schemas
+are rejected. Older runtimes refuse schema 3; restart existing MCP connections
+at cutover and keep a consistent pre-upgrade SQLite backup. A binary rollback
+alone cannot downgrade the database. `--home` isolates development checks.
+
+## Compact mutation replies
+
+New successful task writes return `receipt_version: 1`, `operation`, `id`,
+`project_id`, `revision`, `status`, `updated` and an operation-specific `result`.
+For example, start returns selected `result.skills`; checkpoint returns the note's
+revision, digest and byte count without repeating recent history. Record the
+returned revision for the next mutation. Retrieve full criteria, deliveries,
+evidence and recent notes with task status; retrieve older notes with history.
+The CLI skill-read command pairs its compact `receipt` with the requested document.
+MCP skill delivery likewise returns content plus its delivery receipt.
+
+Exact idempotent retries preserve the original reply bytes, including old full
+snapshots recorded before 3.3.0. Consumers must tolerate those legacy replies
+when retrying old keys. A new key uses the versioned receipt. Snapshot size limits
+still apply to the underlying task, and history and evidence checks are unchanged.
+
+Applicable source notices remain part of complete skill payload integrity.
+The 3.3.0 change from shared to scoped notices requires one fresh delivery of
+selected guidance for older active tasks. Unrelated future notice changes do not
+invalidate an unchanged owner's payload. Do not bypass a meaningful body or
+reference change merely because a previous delivery succeeded.

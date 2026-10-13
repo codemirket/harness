@@ -26,6 +26,12 @@ const CONTRACT_SCHEMA: (&str, &str) = (
     FOREIGN KEY(task_id,path,kind) REFERENCES evidence(task_id,path,kind) ON DELETE CASCADE
 ) STRICT",
 );
+const PAGING_INDEX: (&str, &str) = (
+    "tasks_project_created",
+    "CREATE INDEX tasks_project_created ON tasks(project_id,created DESC,id DESC)",
+);
+const TASKS_FIRST_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 ORDER BY created DESC,id DESC LIMIT ?2";
+const TASKS_CURSOR_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 AND (created,id)<(?2,?3) ORDER BY created DESC,id DESC LIMIT ?4";
 const SCHEMA: &[(&str, &str)] = &[
     ("projects", "CREATE TABLE projects (
         id TEXT PRIMARY KEY, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL,
@@ -100,8 +106,12 @@ fn identity(path: &Path) -> Result<String> {
 
 fn validate_schema(conn: &Connection, version: i64) -> Result<()> {
     let mut schema = SCHEMA.to_vec();
-    if version == 2 {
+    if version >= 2 {
         schema.push(CONTRACT_SCHEMA);
+    }
+    if version >= 3 {
+        schema.retain(|(name, _)| *name != "tasks_project");
+        schema.push(PAGING_INDEX);
     }
     let mut statement = conn.prepare(
         "SELECT name,sql FROM sqlite_schema WHERE sql IS NOT NULL AND name NOT GLOB 'sqlite_*'",
@@ -195,7 +205,7 @@ impl State {
         let mut conn = state.connection()?;
         let read = conn.transaction()?;
         let version: i64 = read.pragma_query_value(None, "user_version", |row| row.get(0))?;
-        if !(0..=2).contains(&version) {
+        if !(0..=3).contains(&version) {
             bail!("unsupported Mirket state format: {version}");
         }
         #[cfg(unix)]
@@ -203,8 +213,8 @@ impl State {
             use std::os::unix::fs::PermissionsExt;
             fs::set_permissions(&state.database, fs::Permissions::from_mode(0o600))?;
         }
-        if version == 2 {
-            validate_schema(&read, 2)?;
+        if version == 3 {
+            validate_schema(&read, 3)?;
             let journal: String =
                 read.pragma_query_value(None, "journal_mode", |row| row.get(0))?;
             if journal != "wal" {
@@ -213,8 +223,8 @@ impl State {
             read.commit()?;
             return Ok(state);
         }
-        if version == 1 {
-            validate_schema(&read, 1)?;
+        if version > 0 {
+            validate_schema(&read, version)?;
         } else {
             empty_schema(&read)?;
         }
@@ -252,7 +262,15 @@ impl State {
                 tx.pragma_update(None, "user_version", 2)?;
             }
             2 => validate_schema(&tx, 2)?,
+            3 => validate_schema(&tx, 3)?,
             _ => bail!("unsupported Mirket state format: {version}"),
+        }
+        // Replace the obsolete updated-order index atomically with the cursor
+        // ordering. No task, evidence, checkpoint or exact replay is rewritten.
+        if version < 3 {
+            tx.execute_batch("DROP INDEX tasks_project")?;
+            tx.execute_batch(PAGING_INDEX.1)?;
+            tx.pragma_update(None, "user_version", 3)?;
         }
         tx.commit()?;
         Ok(state)
@@ -400,12 +418,29 @@ impl State {
         let position = cursor
             .map(|value| task_position(project_id, value))
             .transpose()?;
-        let mut query = conn.prepare("SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 AND (?2 IS NULL OR (created,id)<(?2,?3)) ORDER BY created DESC,id DESC LIMIT ?4")?;
-        let mut tasks = query.query_map(params![project_id,position.as_ref().map(|p|p.0),position.as_ref().map(|p|p.1.as_str()),limit+1], |row| {
+        // Separate statements let SQLite seek directly to a cursor boundary;
+        // an optional-position OR predicate otherwise scans the project prefix.
+        let mut query = conn.prepare(if position.is_some() {
+            TASKS_CURSOR_PAGE
+        } else {
+            TASKS_FIRST_PAGE
+        })?;
+        let read_task = |row: &rusqlite::Row<'_>| -> rusqlite::Result<Value> {
             let objective: String = row.get(1)?;
             let preview: String = objective.chars().take(256).collect();
-            Ok(json!({"id":row.get::<_,String>(0)?,"objective_preview":preview,"status":row.get::<_,String>(2)?,"revision":row.get::<_,i64>(3)?,"updated":row.get::<_,i64>(4)?,"created":row.get::<_,i64>(5)?}))
-        })?.collect::<rusqlite::Result<Vec<_>>>()?;
+            Ok(
+                json!({"id":row.get::<_,String>(0)?,"objective_preview":preview,"status":row.get::<_,String>(2)?,"revision":row.get::<_,i64>(3)?,"updated":row.get::<_,i64>(4)?,"created":row.get::<_,i64>(5)?}),
+            )
+        };
+        let mut tasks = if let Some((created, id)) = &position {
+            query
+                .query_map(params![project_id, created, id, limit + 1], read_task)?
+                .collect::<rusqlite::Result<Vec<_>>>()?
+        } else {
+            query
+                .query_map(params![project_id, limit + 1], read_task)?
+                .collect::<rusqlite::Result<Vec<_>>>()?
+        };
         let next_cursor = if tasks.len() > limit {
             tasks.truncate(limit);
             let last = tasks.last().context("missing task page boundary")?;
@@ -613,19 +648,67 @@ impl State {
             }
             return Ok(serde_json::from_str(&response)?);
         }
-        let value = operation(&tx)?;
-        let response = serde_json::to_string(&value)?;
-        if response.len() > MAX_SNAPSHOT_BYTES {
+        let snapshot = operation(&tx)?;
+        // Compact output must not make committed state unreadable by status.
+        if serde_json::to_vec(&snapshot)?.len() > MAX_SNAPSHOT_BYTES {
             bail!(
                 "task record would exceed its 60 KiB serialized budget; shorten checkpoint or evidence text, or start a focused follow-up task"
             );
         }
+        let value = Self::mutation_receipt(&snapshot, arguments)?;
+        let response = serde_json::to_string(&value)?;
         tx.execute(
             "INSERT INTO operations(scope,key,fingerprint,response) VALUES(?1,?2,?3,?4)",
             params![scope, key, fingerprint, response],
         )?;
         tx.commit()?;
         Ok(value)
+    }
+
+    /// Versioned success envelope. Stored older replies intentionally bypass this
+    /// conversion: retrying the same key must return the original exact value.
+    fn mutation_receipt(snapshot: &Value, arguments: &Value) -> Result<Value> {
+        let operation = arguments[0]
+            .as_str()
+            .context("missing mutation operation")?;
+        let result = match operation {
+            "begin" => json!({"skills": snapshot["skills"]}),
+            "checkpoint" | "reopen" => {
+                let checkpoint = &snapshot["recent_checkpoints"][0];
+                let note = checkpoint["note"].as_str().context("missing checkpoint")?;
+                json!({"checkpoint_revision":checkpoint["revision"],
+                    "note_sha256":util::sha256(note.as_bytes()),"note_bytes":note.len()})
+            }
+            "skill" => snapshot["skill_deliveries"]
+                .as_array()
+                .context("missing deliveries")?
+                .iter()
+                .find(|entry| entry["skill_id"] == arguments[2])
+                .context("missing recorded delivery")?
+                .clone(),
+            "evidence" => {
+                let mut entry = snapshot["evidence"]
+                    .as_array()
+                    .context("missing evidence")?
+                    .iter()
+                    .find(|entry| entry["path"] == arguments[2] && entry["kind"] == arguments[3])
+                    .context("missing recorded evidence")?
+                    .clone();
+                entry
+                    .as_object_mut()
+                    .context("invalid evidence")?
+                    .remove("summary");
+                entry
+            }
+            "complete" => {
+                json!({"evidence_count": snapshot["evidence"].as_array().context("missing evidence")?.len()})
+            }
+            _ => bail!("unknown task mutation operation"),
+        };
+        Ok(json!({"receipt_version":1,"operation":operation,
+            "id":snapshot["id"],"project_id":snapshot["project_id"],
+            "revision":snapshot["revision"],"status":snapshot["status"],
+            "updated":snapshot["updated"],"result":result}))
     }
 
     fn expect(conn: &Connection, task_id: &str, revision: i64, status: &str) -> Result<Value> {
@@ -947,5 +1030,46 @@ impl State {
             )?;
             Self::advance(tx, task_id)
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn task_paging_queries_use_ordered_index_and_cursor_range() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
+        let state = State::open(&paths).unwrap();
+        let conn = state.connection().unwrap();
+        for (sql, cursor) in [(TASKS_FIRST_PAGE, false), (TASKS_CURSOR_PAGE, true)] {
+            let mut statement = conn.prepare(&format!("EXPLAIN QUERY PLAN {sql}")).unwrap();
+            let values: Vec<rusqlite::types::Value> = if cursor {
+                vec![
+                    "p_example".to_owned().into(),
+                    10.into(),
+                    "t_example".to_owned().into(),
+                    21.into(),
+                ]
+            } else {
+                vec!["p_example".to_owned().into(), 21.into()]
+            };
+            let plan = statement
+                .query_map(rusqlite::params_from_iter(values), |row| {
+                    row.get::<_, String>(3)
+                })
+                .unwrap()
+                .collect::<rusqlite::Result<Vec<_>>>()
+                .unwrap()
+                .join("\n");
+            // Diagnostic assertions against this repository's locked SQLite,
+            // not parsing a query plan as part of the application API.
+            assert!(plan.contains("tasks_project_created"), "{plan}");
+            assert!(!plan.contains("TEMP B-TREE"), "{plan}");
+            if cursor {
+                assert!(plan.contains("created") && plan.contains('<'), "{plan}");
+            }
+        }
     }
 }

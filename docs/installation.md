@@ -129,24 +129,35 @@ without installing. The repository must have a published release with
 `mirket-release.json` and its listed executables; an absent release is an explicit
 error and does not change the installation.
 
-### Updating task state to 3.2.0
+### Updating task state to 3.3.0
 
 Before updating an installation with existing tasks, quiesce Mirket task-state
 writers and retain a consistent SQLite backup of `~/.mirket/state.db`. SQLite's
 backup API includes committed WAL data; copying only an active database file is
 not a complete backup. Rehearse recovery in a disposable home.
 
-The first 3.2.0 task-state or MCP open migrates a valid schema-1 database to
-schema 2 transactionally. Projects, tasks, deliveries, evidence, checkpoints and
-idempotency replies retain their values. Verify the migrated records and database
-integrity before resuming writers. New contract records occupy an added table.
+The first 3.3.0 task-state or MCP open migrates a valid schema-1 or schema-2
+database transactionally to schema 3. Projects, tasks, deliveries, evidence,
+checkpoints, contracts and previously recorded idempotency replies retain their
+values. The migration replaces the task-list index to match creation-time/ID
+pagination; schema-1 upgrades also add the evidence-contract table. Verify the
+migrated records and database integrity before resuming writers.
+
+New task mutations return versioned compact receipts. Use task status/history
+for full state and recovery. Exact retries of pre-upgrade operations return their
+original recorded reply, which can be a full snapshot. See [task evidence](task-evidence.md).
+
+Embedded skill notices are now scoped to each owner's declared sources. This
+one-time change invalidates older aggregate delivery hashes: resume an active
+task with status, then reread its selected guidance with the current revision
+and a fresh key before completion. Task/evidence/history records are retained.
+Future unrelated notice updates no longer invalidate that owner's payload.
 
 Restart existing Mirket MCP connections during cutover. Replacing the executable
-does not replace an already-running process: 3.1.0 rejects schema 2 at startup,
-but a process opened before migration retains its older behavior. New host
-sessions use the updated connection. A binary-only downgrade cannot read schema 2;
-preserve any newer state and reconcile post-backup writes before restoring an old
-backup. See [task evidence](task-evidence.md) for the contract and history formats.
+does not replace an already-running process. Older runtimes refuse schema 3;
+a binary-only downgrade cannot read the new database. Preserve newer state and
+reconcile post-backup writes before restoring an old backup. New host sessions
+use the updated connection.
 
 For a separately obtained, trusted local release executable:
 

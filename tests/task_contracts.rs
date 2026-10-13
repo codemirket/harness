@@ -274,11 +274,11 @@ fn read_only_validation_changes_neither_revision_nor_evidence() {
 }
 
 fn restore_v1_schema(f: &Fixture) {
-    // v2 adds only this separate table. Dropping it from a fixture with no typed
-    // evidence reproduces the exact v1 layout while retaining genuine records.
+    // Restore the exact legacy index and remove the v2 contract table.
+    // Fixtures have no typed evidence; all genuine task records are retained.
     let database = Connection::open(f.paths.database()).unwrap();
     database
-        .execute_batch("DROP TABLE contracts; PRAGMA user_version=1;")
+        .execute_batch("DROP TABLE contracts; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=1;")
         .unwrap();
 }
 
@@ -337,7 +337,7 @@ fn v1_migration_preserves_task_history_evidence_and_idempotent_replies() {
         database
             .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
             .unwrap(),
-        2
+        3
     );
     assert_eq!(
         database
@@ -593,5 +593,165 @@ fn contribution_attempts_cannot_regress_or_change_worker_without_a_new_attempt()
     assert_eq!(
         f.state.status(task_id).unwrap()["evidence"][0]["sha256"],
         expected_hash
+    );
+}
+
+#[test]
+fn v1_and_v2_migration_preserve_legacy_full_replies_and_all_records() {
+    for version in [1, 2] {
+        let f = Fixture::new();
+        f.state
+            .evidence(
+                &f.task_id,
+                1,
+                "result.txt",
+                "acceptance",
+                "Original proof",
+                "old-evidence",
+            )
+            .unwrap();
+        let legacy_reply = f.state.status(&f.task_id).unwrap();
+        f.state
+            .checkpoint(&f.task_id, 2, "Keep this requirement", "old-checkpoint")
+            .unwrap();
+        let expected = f.state.status(&f.task_id).unwrap();
+        let expected_history = f.state.task_history(&f.task_id, None, 20).unwrap();
+        let conn = Connection::open(f.paths.database()).unwrap();
+        let legacy_bytes = serde_json::to_string(&legacy_reply).unwrap();
+        // Previous versions stored the whole snapshot after each successful
+        // operation. Its fingerprint remains the same across this upgrade.
+        conn.execute(
+            "UPDATE operations SET response=?1 WHERE scope=?2 AND key='old-evidence'",
+            rusqlite::params![legacy_bytes, f.task_id],
+        )
+        .unwrap();
+        conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated);").unwrap();
+        if version == 1 {
+            conn.execute_batch("DROP TABLE contracts;").unwrap();
+        }
+        conn.pragma_update(None, "user_version", version).unwrap();
+        let operations = || {
+            conn.prepare("SELECT scope,key,fingerprint,response FROM operations ORDER BY scope,key")
+                .unwrap()
+                .query_map([], |row| {
+                    Ok((
+                        row.get::<_, String>(0)?,
+                        row.get::<_, String>(1)?,
+                        row.get::<_, String>(2)?,
+                        row.get::<_, String>(3)?,
+                    ))
+                })
+                .unwrap()
+                .collect::<rusqlite::Result<Vec<_>>>()
+                .unwrap()
+        };
+        let before_operations = operations();
+        let state = State::open(&f.paths).unwrap();
+        assert_eq!(state.status(&f.task_id).unwrap(), expected);
+        assert_eq!(
+            state.task_history(&f.task_id, None, 20).unwrap(),
+            expected_history
+        );
+        assert_eq!(
+            operations(),
+            before_operations,
+            "v{version} must preserve exact persisted responses"
+        );
+        fs::remove_file(f.project.join("result.txt")).unwrap();
+        assert_eq!(
+            state
+                .evidence(
+                    &f.task_id,
+                    1,
+                    "result.txt",
+                    "acceptance",
+                    "Original proof",
+                    "old-evidence"
+                )
+                .unwrap(),
+            legacy_reply
+        );
+        assert!(
+            state
+                .evidence(
+                    &f.task_id,
+                    1,
+                    "result.txt",
+                    "acceptance",
+                    "Changed arguments",
+                    "old-evidence"
+                )
+                .is_err()
+        );
+        assert_eq!(
+            state
+                .checkpoint(&f.task_id, 3, "New work after upgrade", "new-checkpoint")
+                .unwrap()["receipt_version"],
+            1
+        );
+        assert_eq!(
+            conn.pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
+                .unwrap(),
+            3
+        );
+        State::open(&f.paths).unwrap();
+    }
+}
+
+#[test]
+fn malformed_v2_index_is_not_silently_replaced() {
+    let f = Fixture::new();
+    let conn = Connection::open(f.paths.database()).unwrap();
+    conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,revision); PRAGMA user_version=2;").unwrap();
+    assert!(State::open(&f.paths).is_err());
+    assert_eq!(
+        conn.pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
+            .unwrap(),
+        2
+    );
+    let sql: String = conn
+        .query_row(
+            "SELECT sql FROM sqlite_schema WHERE name='tasks_project'",
+            [],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert!(sql.contains("revision"));
+}
+
+#[test]
+fn v2_migration_retains_contract_bindings_and_delivery_receipts() {
+    let f = Fixture::new();
+    f.ready("passed");
+    let expected = f.state.status(&f.task_id).unwrap();
+    let conn = Connection::open(f.paths.database()).unwrap();
+    let contracts = || {
+        conn.prepare("SELECT task_id,path,kind,contract,roster,attempts FROM contracts ORDER BY task_id,path,kind").unwrap()
+        .query_map([], |row| Ok((row.get::<_,String>(0)?, row.get::<_,String>(1)?, row.get::<_,String>(2)?, row.get::<_,String>(3)?, row.get::<_,Option<String>>(4)?, row.get::<_,Option<String>>(5)?)))
+        .unwrap().collect::<rusqlite::Result<Vec<_>>>().unwrap()
+    };
+    let before = contracts();
+    conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=2;").unwrap();
+    let migrated = State::open(&f.paths).unwrap();
+    assert_eq!(migrated.status(&f.task_id).unwrap(), expected);
+    assert_eq!(contracts(), before);
+    migrated
+        .validate_contract(
+            &f.task_id,
+            "verification.json",
+            ContractKind::Verification,
+            true,
+        )
+        .unwrap();
+    f.write("input.txt", "changed input");
+    assert!(
+        migrated
+            .validate_contract(
+                &f.task_id,
+                "verification.json",
+                ContractKind::Verification,
+                true
+            )
+            .is_err()
     );
 }

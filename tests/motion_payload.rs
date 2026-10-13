@@ -267,12 +267,13 @@ fn design_craft_references_and_specimens_survive_embedded_and_both_host_delivery
             assert_eq!(read["content"].as_str().unwrap().as_bytes(), bytes);
             assert_eq!(read["sha256"], sha256(&bytes));
         }
-        assert_eq!(
-            payload.files[".upstream-licenses/NOTICE.md"],
-            fs::read(Path::new(env!("CARGO_MANIFEST_DIR")).join("docs/third-party-notices.md"))
-                .unwrap(),
-            "offline provenance must accompany {skill}"
-        );
+        let notice = std::str::from_utf8(&payload.files[".upstream-licenses/NOTICE.md"]).unwrap();
+        assert!(notice.starts_with("# Applicable source notices"));
+        if skill == "advanced-motion" {
+            assert!(notice.contains("Copyright (c) 2025 LottieFiles"));
+            assert!(notice.contains("Copyright (c) 2026 Nate Herk"));
+            assert!(!notice.contains("Wondel.ai"));
+        }
         for target in ["codex", "claude"] {
             let base = if skill == "interface-design" {
                 &installed.paths.home

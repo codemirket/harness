@@ -35,8 +35,13 @@ do not belong in shipped runtime assets.
 
 These are adaptations within existing owners, not installable upstream packs.
 The exact revisions and inspected paths are in `registry/catalog.json` under the
-source IDs below; full MIT notices accompany every embedded skill through
-`.upstream-licenses/NOTICE.md`. The source repositories' root licenses do not
+source IDs below; complete applicable notices accompany each embedded skill through
+`.upstream-licenses/NOTICE.md`. The catalog's `informed_by` sources select explicit
+`notice_section` headings from the shared notice document. Concept-only sources
+with no redistributed material retain an explicit `notice_exemption` and pinned
+source identity. Missing selections fail catalog validation; unrelated notice
+sections do not affect a skill's payload. The full notice bundle still accompanies
+native runtime distributions. The source repositories' root licenses do not
 license unrelated remote entries, linked repositories or paid Studio content.
 
 | Source ID | Existing owner and retained method | Adaptation boundary |
