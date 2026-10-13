@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "id": "role-workflow-v1",
+  "checker": {
+    "path": "src/role_eval.rs",
+    "sha256": "513ad15a438438b6153c95dd253347d4f35887a82e7f01978e10a850c0c11473"
+  },
+  "configurations": [
+    {
+      "id": "pilot-template",
+      "file": {
+        "path": "evals/role-workflow/configurations/pilot-template.json",
+        "sha256": "79308390050b0140488cd75de6f8eca23b56d2efcd1176516b2f1e4e7f99ffd7"
+      }
+    }
+  ],
+  "trials_per_case": 1,
+  "development": [
+    "ambiguous-selection",
+    "explicit-skill",
+    "trivial-direct",
+    "timeout-disagreement",
+    "unsupported-research",
+    "interrupted-specialist"
+  ],
+  "held_out": [
+    "inventory-recovery",
+    "interrupted-audit"
+  ],
+  "cases": [
+    {
+      "id": "ambiguous-selection",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/ambiguous-selection.md",
+        "sha256": "b1edbef7df48fe7038e594730145dd0e1cba865ffed1b66722b0e4b90ff4dabd"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/ambiguous-selection.json",
+        "sha256": "906e162a791f0264b5fa5e7b8516396104106056b5d7009559ac5c50be545507"
+      },
+      "criteria": [
+        "names_unknowns",
+        "justifies_complementary_roles",
+        "defines_first_evidence"
+      ]
+    },
+    {
+      "id": "explicit-skill",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/explicit-skill.md",
+        "sha256": "b9aa2d19c4a95310a44721b8f0bd860c3c44540e39954f8ce2dd07ced9bebf2d"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/explicit-skill.json",
+        "sha256": "eeb01277ca186d0f6564ec52fe705260c3f41280283175f3d63e6ac47729bf1a"
+      },
+      "criteria": [
+        "retrieved_requested_skill",
+        "finds_data_and_redirect_risks",
+        "gives_discriminating_checks"
+      ]
+    },
+    {
+      "id": "trivial-direct",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/trivial-direct.md",
+        "sha256": "320e1e20c5f7d502e03be3afe3b6c42277d92b67577256ec7b0786acee8acb1e"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/trivial-direct.json",
+        "sha256": "ac42adbb645e1027f4f159b4913967f618a7ef09eb7f85d7ea55f1be95d841f3"
+      },
+      "criteria": [
+        "correct_sentence",
+        "scope_preserved",
+        "no_unneeded_team"
+      ]
+    },
+    {
+      "id": "timeout-disagreement",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/timeout-disagreement.md",
+        "sha256": "07ab13651b7bb595053ebc68eb6c26e65a4e350a820670cd30e3129e5d341385"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/timeout-disagreement.json",
+        "sha256": "7471bab13248981ad1d375c662d62e8b48d7ebfd10e80cb87d09129306e78817"
+      },
+      "criteria": [
+        "recognizes_uncertain_commit",
+        "specifies_idempotency_and_recovery",
+        "tests_late_and_duplicate_results"
+      ]
+    },
+    {
+      "id": "unsupported-research",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/unsupported-research.md",
+        "sha256": "3a7b56a2fb71599d8df22b46eb9fd144bd789b16cb23ade85e8f8bcea0d56486"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/unsupported-research.json",
+        "sha256": "dfa37ff409dd7a7370f32f6c81ce965edc9e83e7f6703cb7f95912798740d8b2"
+      },
+      "criteria": [
+        "rejects_unmeasured_gain",
+        "separates_prompts_from_enforcement",
+        "rejects_duplicate_guarantee"
+      ]
+    },
+    {
+      "id": "interrupted-specialist",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/interrupted-specialist.md",
+        "sha256": "d7c143bc06b5270b74760711d804bf8bae3e63f91a743a69f9084f414daaf33f"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/interrupted-specialist.json",
+        "sha256": "148db06fcd7e504c1f9131db98434afb525b27c34f4b06caf02f5f256190cb1e"
+      },
+      "criteria": [
+        "preserves_missing_workers",
+        "rejects_stale_attempt",
+        "states_next_verification"
+      ]
+    },
+    {
+      "id": "inventory-recovery",
+      "split": "held_out",
+      "input": {
+        "path": "evals/role-workflow/inputs/inventory-recovery.md",
+        "sha256": "4e1e84fecafe384cca4013267a524580130a64019d5541d1a461e58534fa10a7"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/inventory-recovery.json",
+        "sha256": "0239abc169697cbf33ea6867528123b96410dcfac3a2c79ae0acf5497acb07b3"
+      },
+      "criteria": [
+        "checks_original_authority",
+        "handles_uncertain_effect",
+        "validates_request_identity"
+      ]
+    },
+    {
+      "id": "interrupted-audit",
+      "split": "held_out",
+      "input": {
+        "path": "evals/role-workflow/inputs/interrupted-audit.md",
+        "sha256": "1e03dddf4cde6d35f874b52c88c6b74af8166f1a37b14c98bf7911dd5c2ea070"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/interrupted-audit.json",
+        "sha256": "5241dc4ea983d81243264770e67882c373efe91aa23eab787772f9d91fd037d1"
+      },
+      "criteria": [
+        "does_not_claim_launch_ready",
+        "rejects_old_build_evidence",
+        "accounts_for_waiver"
+      ]
+    }
+  ]
+}

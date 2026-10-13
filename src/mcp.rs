@@ -1,5 +1,9 @@
 //! Stdio MCP access to Mirket's coordination API. Execution belongs to the host.
-use crate::{catalog::Catalog, paths::Paths, state::State};
+use crate::{
+    catalog::Catalog,
+    paths::Paths,
+    state::{State, contracts::ContractKind},
+};
 use anyhow::{Context, Result, bail};
 use rmcp::{
     ErrorData, RoleServer, ServerHandler, ServiceExt,
@@ -30,7 +34,7 @@ use tokio::{
 
 pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
-const GUIDE: &str = "Mirket coordinates professional expertise, host-run teams, task state and verification evidence. For substantive cross-disciplinary work inspect team_facets, interpret the user outcome and affected sources, then call team_plan with a lead and task-specific reasons for applicable facets. Save the returned roster, dispatch its professionals with actual host subagents and integrate their evidence. For focused work use capability_plan or catalog_search. Planning and skill receipts do not establish independent execution. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
+const GUIDE: &str = "Mirket coordinates professional expertise, host-run teams, task state and verification evidence. For substantive cross-disciplinary work inspect team_facets, interpret the user outcome and affected sources, then call team_plan with a lead and task-specific reasons for applicable facets. Save the returned roster, dispatch its professionals with actual host subagents and integrate their evidence. For focused work use capability_plan or catalog_search. Planning and skill receipts do not establish independent execution. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status and follow task_history cursors for older checkpoints. For structured coverage and input bindings use task_validate, then task_evidence with an explicit contract; task_finish revalidates declared inputs and successful coverage. Caller identities are not authenticated. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
 
 #[derive(Clone)]
 pub struct MirketServer {
@@ -188,6 +192,28 @@ struct Task {
 
 #[derive(Deserialize, schemars::JsonSchema)]
 #[serde(deny_unknown_fields)]
+struct History {
+    task_id: String,
+    cursor: Option<String>,
+    #[serde(default = "history_limit")]
+    limit: usize,
+}
+fn history_limit() -> usize {
+    10
+}
+
+#[derive(Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
+struct Validate {
+    task_id: String,
+    path: String,
+    contract: ContractKind,
+    #[serde(default)]
+    completion: bool,
+}
+
+#[derive(Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
 struct Checkpoint {
     task_id: String,
     revision: i64,
@@ -203,6 +229,8 @@ struct Evidence {
     /// Existing regular file under the task's registered root. Absolute, parent and symlink paths are rejected.
     path: String,
     kind: EvidenceKind,
+    /// Opt-in structured receipt. Completion rechecks bindings and successful coverage.
+    contract: Option<ContractKind>,
     /// What the host observed, the command or artifact checked, and its result. This is caller testimony.
     summary: String,
     key: String,
@@ -371,6 +399,28 @@ impl MirketServer {
     }
 
     #[tool(
+        description = "Retrieve all retained task checkpoints in revision-descending pages of 1..20 items. Follow next_cursor to recover older constraints; task_status contains only the recent eight.",
+        annotations(read_only_hint = true, open_world_hint = false)
+    )]
+    async fn task_history(&self, Parameters(args): Parameters<History>) -> CallToolResult {
+        self.run(move |state, _| {
+            state.task_history(&args.task_id, args.cursor.as_deref(), args.limit)
+        })
+        .await
+    }
+
+    #[tool(
+        description = "Validate an explicit verification or contributions JSON contract without recording it. Checks current declared file bindings; completion mode also requires passed results and accepted or reasoned waived coverage. Never executes checks or authenticates worker testimony.",
+        annotations(read_only_hint = true, open_world_hint = false)
+    )]
+    async fn task_validate(&self, Parameters(args): Parameters<Validate>) -> CallToolResult {
+        self.run(move |state, _| {
+            state.validate_contract(&args.task_id, &args.path, args.contract, args.completion)
+        })
+        .await
+    }
+
+    #[tool(
         description = "Record decisions, constraints, evidence and the next action for an active task. Use the current revision and a stable idempotency key.",
         annotations(
             read_only_hint = false,
@@ -397,7 +447,7 @@ impl MirketServer {
     )]
     async fn task_evidence(&self, Parameters(args): Parameters<Evidence>) -> CallToolResult {
         self.run(move |state, _| {
-            state.evidence(
+            state.evidence_with_contract(
                 &args.task_id,
                 args.revision,
                 &args.path,
@@ -407,6 +457,7 @@ impl MirketServer {
                 },
                 &args.summary,
                 &args.key,
+                args.contract,
             )
         })
         .await
@@ -630,6 +681,8 @@ pub async fn protocol_probe(
             "project_list",
             "task_start",
             "task_status",
+            "task_history",
+            "task_validate",
             "task_checkpoint",
             "task_evidence",
             "task_finish",

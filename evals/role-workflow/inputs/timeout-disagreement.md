@@ -1,0 +1,1 @@
+Frontend proposes retrying POST /charge after a 5-second timeout. Backend says the original charge may still commit after 20 seconds. Both use the same checkout ID but the server currently ignores it. Resolve the disagreement; specify user state, API semantics, and failure checks. You may propose changes but have no production authorization.

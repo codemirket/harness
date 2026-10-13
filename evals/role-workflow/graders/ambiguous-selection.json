@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "names_unknowns",
+    "justifies_complementary_roles",
+    "defines_first_evidence"
+  ],
+  "assertions": {
+    "names_unknowns": "Identifies missing timing/provider/context evidence without assuming a root cause.",
+    "justifies_complementary_roles": "Selects relevant frontend/backend and conditional risk or QA support with distinct contributions; avoids assigning every role.",
+    "defines_first_evidence": "Defines an observable first diagnostic and meaningful completion criteria."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

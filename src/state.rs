@@ -1,6 +1,8 @@
 //! Durable coordination records. These records describe work; the host executes it.
+pub mod contracts;
 use crate::{catalog::Catalog, paths::Paths, util};
 use anyhow::{Context, Result, bail};
+use contracts::ContractKind;
 use rusqlite::{Connection, OptionalExtension, Transaction, TransactionBehavior, params};
 use serde_json::{Value, json};
 use std::{
@@ -14,6 +16,16 @@ const MAX_SKILLS: usize = 16;
 const MAX_EVIDENCE: i64 = 16;
 const MAX_CHECKPOINTS: i64 = 256;
 const MAX_SNAPSHOT_BYTES: usize = 60 * 1024;
+const CONTRACT_SCHEMA: (&str, &str) = (
+    "contracts",
+    "CREATE TABLE contracts (
+    task_id TEXT NOT NULL, path TEXT NOT NULL, kind TEXT NOT NULL,
+    contract TEXT NOT NULL CHECK(contract IN ('verification','contributions')),
+    roster TEXT, attempts TEXT,
+    PRIMARY KEY(task_id,path,kind),
+    FOREIGN KEY(task_id,path,kind) REFERENCES evidence(task_id,path,kind) ON DELETE CASCADE
+) STRICT",
+);
 const SCHEMA: &[(&str, &str)] = &[
     ("projects", "CREATE TABLE projects (
         id TEXT PRIMARY KEY, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL,
@@ -86,7 +98,11 @@ fn identity(path: &Path) -> Result<String> {
     }
 }
 
-fn validate_schema(conn: &Connection) -> Result<()> {
+fn validate_schema(conn: &Connection, version: i64) -> Result<()> {
+    let mut schema = SCHEMA.to_vec();
+    if version == 2 {
+        schema.push(CONTRACT_SCHEMA);
+    }
     let mut statement = conn.prepare(
         "SELECT name,sql FROM sqlite_schema WHERE sql IS NOT NULL AND name NOT GLOB 'sqlite_*'",
     )?;
@@ -95,7 +111,7 @@ fn validate_schema(conn: &Connection) -> Result<()> {
     while let Some(row) = rows.next()? {
         let name: String = row.get(0)?;
         let sql: String = row.get(1)?;
-        let expected = SCHEMA
+        let expected = schema
             .iter()
             .find(|(candidate, _)| *candidate == name)
             .with_context(|| format!("incompatible Mirket state schema object: {name}"))?
@@ -107,7 +123,7 @@ fn validate_schema(conn: &Connection) -> Result<()> {
         }
         count += 1;
     }
-    if count != SCHEMA.len() {
+    if count != schema.len() {
         bail!("incomplete Mirket state schema");
     }
     Ok(())
@@ -153,6 +169,23 @@ fn task_position(project_id: &str, cursor: &str) -> Result<(i64, String)> {
     Ok((timestamp, task.into()))
 }
 
+fn history_position(task_id: &str, cursor: &str) -> Result<i64> {
+    bounded(cursor, "history cursor", 128)?;
+    let mut parts = cursor.split(':');
+    let (Some("history1"), Some(task), Some(revision), None) =
+        (parts.next(), parts.next(), parts.next(), parts.next())
+    else {
+        bail!("invalid history cursor; use next_cursor from task history");
+    };
+    let position: i64 = revision
+        .parse()
+        .context("invalid history cursor revision")?;
+    if task != task_id || position < 1 || position.to_string() != revision {
+        bail!("invalid or cross-task history cursor");
+    }
+    Ok(position)
+}
+
 impl State {
     pub fn open(paths: &Paths) -> Result<Self> {
         paths.ensure()?;
@@ -162,7 +195,7 @@ impl State {
         let mut conn = state.connection()?;
         let read = conn.transaction()?;
         let version: i64 = read.pragma_query_value(None, "user_version", |row| row.get(0))?;
-        if version != 0 && version != 1 {
+        if !(0..=2).contains(&version) {
             bail!("unsupported Mirket state format: {version}");
         }
         #[cfg(unix)]
@@ -170,8 +203,8 @@ impl State {
             use std::os::unix::fs::PermissionsExt;
             fs::set_permissions(&state.database, fs::Permissions::from_mode(0o600))?;
         }
-        if version == 1 {
-            validate_schema(&read)?;
+        if version == 2 {
+            validate_schema(&read, 2)?;
             let journal: String =
                 read.pragma_query_value(None, "journal_mode", |row| row.get(0))?;
             if journal != "wal" {
@@ -180,7 +213,11 @@ impl State {
             read.commit()?;
             return Ok(state);
         }
-        empty_schema(&read)?;
+        if version == 1 {
+            validate_schema(&read, 1)?;
+        } else {
+            empty_schema(&read)?;
+        }
         read.commit()?;
 
         // WAL mode cannot be changed inside a transaction. Concurrent first
@@ -206,9 +243,15 @@ impl State {
                 for (_, sql) in SCHEMA {
                     tx.execute_batch(sql)?;
                 }
-                tx.pragma_update(None, "user_version", 1)?;
+                tx.execute_batch(CONTRACT_SCHEMA.1)?;
+                tx.pragma_update(None, "user_version", 2)?;
             }
-            1 => validate_schema(&tx)?,
+            1 => {
+                validate_schema(&tx, 1)?;
+                tx.execute_batch(CONTRACT_SCHEMA.1)?;
+                tx.pragma_update(None, "user_version", 2)?;
+            }
+            2 => validate_schema(&tx, 2)?,
             _ => bail!("unsupported Mirket state format: {version}"),
         }
         tx.commit()?;
@@ -448,6 +491,57 @@ impl State {
         Self::snapshot(&tx, task_id)
     }
 
+    /// Read immutable checkpoints newest first. A cursor resumes strictly before
+    /// the last returned revision, so later appends do not shift older pages.
+    pub fn task_history(&self, task_id: &str, cursor: Option<&str>, limit: usize) -> Result<Value> {
+        bounded(task_id, "task id", 64)?;
+        if !(1..=20).contains(&limit) {
+            bail!("history page size must be 1..=20");
+        }
+        let position = cursor
+            .map(|value| history_position(task_id, value))
+            .transpose()?;
+        let mut conn = self.connection()?;
+        let tx = conn.transaction()?;
+        let project: String = tx
+            .query_row(
+                "SELECT project_id FROM tasks WHERE id=?1",
+                [task_id],
+                |row| row.get(0),
+            )
+            .optional()?
+            .context("task does not exist")?;
+        Self::root(&tx, &project)?;
+        let mut query = tx.prepare("SELECT revision,note,created FROM checkpoints WHERE task_id=?1 AND (?2 IS NULL OR revision<?2) ORDER BY revision DESC LIMIT ?3")?;
+        let rows = query.query_map(params![task_id,position,limit+1], |row| {
+            Ok(json!({"revision":row.get::<_,i64>(0)?,"note":row.get::<_,String>(1)?,"created":row.get::<_,i64>(2)?}))
+        })?.collect::<rusqlite::Result<Vec<_>>>()?;
+        let mut checkpoints = Vec::new();
+        // Reserve response envelope/cursor space, including JSON escaping.
+        let mut remaining = MAX_SNAPSHOT_BYTES - 1024;
+        let mut more = false;
+        for checkpoint in rows {
+            let bytes = serde_json::to_vec(&checkpoint)?.len() + 1;
+            if checkpoints.len() == limit || bytes > remaining {
+                more = true;
+                break;
+            }
+            remaining -= bytes;
+            checkpoints.push(checkpoint);
+        }
+        let next_cursor = if more {
+            let revision = checkpoints
+                .last()
+                .context("checkpoint exceeds history page budget")?["revision"]
+                .as_i64()
+                .context("invalid checkpoint revision")?;
+            Some(format!("history1:{task_id}:{revision}"))
+        } else {
+            None
+        };
+        Ok(json!({"task_id":task_id,"checkpoints":checkpoints,"next_cursor":next_cursor}))
+    }
+
     fn snapshot(conn: &Connection, task_id: &str) -> Result<Value> {
         let mut value = conn.query_row("SELECT id,project_id,objective,skills,acceptance,failure_probe,status,revision,created,updated FROM tasks WHERE id=?1", [task_id], |row| {
             Ok(json!({"id":row.get::<_,String>(0)?,"project_id":row.get::<_,String>(1)?,"objective":row.get::<_,String>(2)?,
@@ -460,8 +554,35 @@ impl State {
         value["skill_deliveries"] = Value::Array(query.query_map([task_id], |row| Ok(json!({"skill_id":row.get::<_,String>(0)?,"content_sha256":row.get::<_,String>(1)?,"payload_sha256":row.get::<_,String>(2)?,"delivered":row.get::<_,i64>(3)?})))?.collect::<rusqlite::Result<Vec<_>>>()?);
         let mut query = conn.prepare("SELECT path,kind,summary,sha256,size,recorded FROM evidence WHERE task_id=?1 ORDER BY kind,path")?;
         value["evidence"] = Value::Array(query.query_map([task_id], |row| Ok(json!({"path":row.get::<_,String>(0)?,"kind":row.get::<_,String>(1)?,"summary":row.get::<_,String>(2)?,"sha256":row.get::<_,String>(3)?,"bytes":row.get::<_,i64>(4)?,"recorded":row.get::<_,i64>(5)?})))?.collect::<rusqlite::Result<Vec<_>>>()?);
+        let mut query =
+            conn.prepare("SELECT path,kind,contract FROM contracts WHERE task_id=?1")?;
+        let rows = query.query_map([task_id], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+            ))
+        })?;
+        for row in rows {
+            let (path, kind, contract) = row?;
+            for entry in value["evidence"]
+                .as_array_mut()
+                .context("invalid evidence")?
+            {
+                if entry["path"] == path && entry["kind"] == kind {
+                    entry["contract"] = json!(contract);
+                }
+            }
+        }
         let mut query = conn.prepare("SELECT revision,note,created FROM checkpoints WHERE task_id=?1 ORDER BY revision DESC LIMIT 8")?;
         value["recent_checkpoints"] = Value::Array(query.query_map([task_id], |row| Ok(json!({"revision":row.get::<_,i64>(0)?,"note":row.get::<_,String>(1)?,"created":row.get::<_,i64>(2)?})))?.collect::<rusqlite::Result<Vec<_>>>()?);
+        let count: i64 = conn.query_row(
+            "SELECT count(*) FROM checkpoints WHERE task_id=?1",
+            [task_id],
+            |row| row.get(0),
+        )?;
+        value["checkpoint_count"] = json!(count);
+        value["history_has_more"] = json!(count > 8);
         value["authority"] = json!(
             "Mirket records delivered guidance and file identities. The host executes work. Acceptance and failure-probe summaries are caller attestations; hashes do not establish semantic correctness."
         );
@@ -613,12 +734,59 @@ impl State {
         summary: &str,
         key: &str,
     ) -> Result<Value> {
+        self.evidence_with_contract(task_id, revision, relative_path, kind, summary, key, None)
+    }
+
+    /// Validate an explicitly selected contract without recording or executing it.
+    pub fn validate_contract(
+        &self,
+        task_id: &str,
+        path: &str,
+        kind: ContractKind,
+        completion: bool,
+    ) -> Result<Value> {
+        let conn = self.connection()?;
+        let task = Self::snapshot(&conn, task_id)?;
+        let root = Self::root(
+            &conn,
+            task["project_id"].as_str().context("invalid project id")?,
+        )?;
+        let (hash, _) = Self::file_evidence(&root, path)?;
+        let bytes = Self::contract_bytes(&root, path, &hash)?;
+        contracts::validate(&root, &task, kind, &bytes, completion)
+    }
+
+    fn contract_bytes(root: &Path, path: &str, expected: &str) -> Result<Vec<u8>> {
+        // Called only after file_evidence checked the project boundary and regular-file limit.
+        util::reject_symlink_components(&root.join(path))?;
+        let bytes = util::read_bounded(&root.join(path), 128 * 1024)?;
+        let (current, _) = Self::file_evidence(root, path)?;
+        if util::sha256(&bytes) != expected || current != expected {
+            bail!("contract changed while reading: {path}");
+        }
+        Ok(bytes)
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn evidence_with_contract(
+        &self,
+        task_id: &str,
+        revision: i64,
+        relative_path: &str,
+        kind: &str,
+        summary: &str,
+        key: &str,
+        contract: Option<ContractKind>,
+    ) -> Result<Value> {
         if !matches!(kind, "acceptance" | "failure_probe") {
             bail!("evidence kind must be acceptance or failure_probe");
         }
         bounded(summary, "evidence summary", 1024)?;
         bounded(task_id, "task id", 64)?;
-        let arguments = json!(["evidence", revision, relative_path, kind, summary]);
+        let arguments = match contract {
+            None => json!(["evidence", revision, relative_path, kind, summary]),
+            Some(contract) => json!(["evidence", revision, relative_path, kind, summary, contract]),
+        };
         if let Some(reply) = self.replay(task_id, key, &arguments)? {
             return Ok(reply);
         }
@@ -629,13 +797,56 @@ impl State {
             task["project_id"].as_str().context("invalid project id")?,
         )?;
         let (hash, size) = Self::file_evidence(&root, relative_path)?;
+        let mut attempts = None;
+        let roster = if let Some(contract) = contract {
+            let bytes = Self::contract_bytes(&root, relative_path, &hash)?;
+            contracts::validate(&root, &task, contract, &bytes, false)?;
+            if contract == ContractKind::Contributions {
+                let value: Value = serde_json::from_slice(&bytes)?;
+                let mut generations = serde_json::Map::new();
+                for assignment in value["assignments"]
+                    .as_array()
+                    .context("invalid assignments")?
+                {
+                    generations.insert(assignment["role"].as_str().context("invalid role")?.into(), json!({"attempt":assignment["attempt"],"host_agent_id":assignment["host_agent_id"]}));
+                }
+                attempts = Some(serde_json::to_string(&generations)?);
+                Some(serde_json::to_string(&value["roster"])?)
+            } else {
+                None
+            }
+        } else {
+            None
+        };
         // File I/O completes before taking SQLite's writer lock.
         self.mutate(task_id,key,&arguments,|tx| {
             Self::expect(tx,task_id,revision,"active")?;
+            let previous: Option<(String, Option<String>, Option<String>)> = tx.query_row(
+                "SELECT contract,roster,attempts FROM contracts WHERE task_id=?1 AND path=?2 AND kind=?3",
+                params![task_id,relative_path,kind], |row| Ok((row.get(0)?,row.get(1)?,row.get(2)?))).optional()?;
+            if let Some((previous, original_roster, previous_attempts)) = previous {
+                if contract.map(|kind| kind.as_str()) != Some(previous.as_str()) { bail!("cannot remove or change a recorded evidence contract"); }
+                if original_roster != roster { bail!("contributions must retain their originally recorded roster binding"); }
+                if let Some(previous_attempts) = previous_attempts {
+                    let old: serde_json::Map<String, Value> = serde_json::from_str(&previous_attempts)?;
+                    let new: Value = serde_json::from_str(attempts.as_deref().context("missing contribution attempts")?)?;
+                    for (role, prior) in old {
+                        let before = prior["attempt"].as_u64().context("invalid persisted attempt")?;
+                        let after = new[&role]["attempt"].as_u64().context("missing contribution attempt")?;
+                        if after < before { bail!("stale contribution attempt for {role}"); }
+                        if after == before && !prior["host_agent_id"].is_null() && prior["host_agent_id"] != new[&role]["host_agent_id"] {
+                            bail!("changing host_agent_id requires a new attempt for {role}");
+                        }
+                    }
+                }
+            }
             let count: i64 = tx.query_row("SELECT count(*) FROM evidence WHERE task_id=?1",[task_id],|row|row.get(0))?;
             let exists: bool = tx.query_row("SELECT EXISTS(SELECT 1 FROM evidence WHERE task_id=?1 AND path=?2 AND kind=?3)",params![task_id,relative_path,kind],|row|row.get(0))?;
             if count >= MAX_EVIDENCE && !exists { bail!("task evidence limit reached ({MAX_EVIDENCE})"); }
             tx.execute("INSERT INTO evidence(task_id,path,kind,summary,sha256,size,recorded) VALUES(?1,?2,?3,?4,?5,?6,?7) ON CONFLICT(task_id,path,kind) DO UPDATE SET summary=excluded.summary,sha256=excluded.sha256,size=excluded.size,recorded=excluded.recorded",params![task_id,relative_path,kind,summary,hash,size,now()])?;
+            if let Some(contract) = contract {
+                tx.execute("INSERT INTO contracts(task_id,path,kind,contract,roster,attempts) VALUES(?1,?2,?3,?4,?5,?6) ON CONFLICT(task_id,path,kind) DO UPDATE SET attempts=excluded.attempts", params![task_id,relative_path,kind,contract.as_str(),roster,attempts])?;
+            }
             Self::advance(tx,task_id)
         })
     }
@@ -671,11 +882,22 @@ impl State {
                 bail!("missing {kind} evidence");
             }
         }
+        let mut contract_bytes = 0u64;
         for entry in evidence {
             let relative = entry["path"].as_str().context("invalid evidence path")?;
             let (hash, size) = Self::file_evidence(&root, relative)?;
             if entry["sha256"] != hash || entry["bytes"].as_u64() != Some(size) {
                 bail!("evidence is stale: {relative}");
+            }
+            if let Some(kind) = entry["contract"].as_str() {
+                let bytes = Self::contract_bytes(&root, relative, &hash)?;
+                let result = contracts::validate(&root, &task, kind.parse()?, &bytes, true)?;
+                contract_bytes += result["bound_bytes"]
+                    .as_u64()
+                    .context("invalid contract byte count")?;
+                if contract_bytes > 64 * 1024 * 1024 {
+                    bail!("task contracts exceed 64 MiB cumulative binding budget; split the task");
+                }
             }
         }
         self.mutate(task_id, key, &arguments, |tx| {

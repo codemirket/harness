@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "correct_sentence",
+    "scope_preserved",
+    "no_unneeded_team"
+  ],
+  "assertions": {
+    "correct_sentence": "Output is \u201cThe roles are available.\u201d",
+    "scope_preserved": "Does not invent additional edits or implementation tasks.",
+    "no_unneeded_team": "Host trace shows no specialist dispatch or substantive team setup."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

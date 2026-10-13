@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "recognizes_uncertain_commit",
+    "specifies_idempotency_and_recovery",
+    "tests_late_and_duplicate_results"
+  ],
+  "assertions": {
+    "recognizes_uncertain_commit": "Recognizes timeout does not prove charge failure; no blind automatic retry.",
+    "specifies_idempotency_and_recovery": "Specifies stable idempotency keys, server-side deduplication and a pending/status reconciliation UX.",
+    "tests_late_and_duplicate_results": "Checks duplicate, concurrent, delayed and mismatched requests or explains their bounds."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

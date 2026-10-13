@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "retrieved_requested_skill",
+    "finds_data_and_redirect_risks",
+    "gives_discriminating_checks"
+  ],
+  "assertions": {
+    "retrieved_requested_skill": "Host trace shows reading security-judgment, not merely naming it.",
+    "finds_data_and_redirect_risks": "Addresses account enumeration, reset-token logging, and untrusted redirect destinations.",
+    "gives_discriminating_checks": "Gives concrete negative probes and boundaries for authorized implementation."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

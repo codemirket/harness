@@ -1,0 +1,1 @@
+An inventory reservation request times out, a warehouse worker may still commit it, and a restarted chat has only a summary claiming “safe to retry.” A later response has the same request ID but a different item quantity. Design the recovery and evidence needed before marking the work complete.

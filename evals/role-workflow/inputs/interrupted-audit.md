@@ -1,0 +1,1 @@
+A launch checklist has Design completed, QA attempt 3 running, and Security waived by an agent without a recorded reason. The prior QA attempt 2 passed on an older build. Write a launch recommendation and the minimal next actions using only this evidence.

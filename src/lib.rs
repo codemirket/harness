@@ -12,6 +12,7 @@ pub mod podman;
 mod podman_api;
 pub mod project;
 pub mod release;
+pub mod role_eval;
 mod rust_notices;
 pub mod state;
 pub mod tools;

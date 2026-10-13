@@ -39,7 +39,21 @@ Use one coordinator for shared Mirket task mutations and revision numbers. Read
 each selected body through task-bound delivery and provide it to its worker; keep
 the roster, actual host agent IDs, ownership, dependency status and contribution
 paths in the existing task record. Attach the roster and meaningful contribution
-evidence before completion. Mirket validates delivery and artifact consistency;
+evidence before completion. For machine-checked coverage, save the original team
+roster and a version 1 contributions receipt, then use `task_validate` and
+`task_evidence` with `contract: "contributions"` (CLI: `--contract contributions`).
+Include each original role exactly once, actual host worker ID, attempt and matching
+result attempt, declared input/evidence file identities, dependencies, validation,
+unverified paths and integrator disposition. Keep failed, interrupted or unknown
+assignments visible; re-dispatch increments the attempt and requires current
+results. Completion requires accepted completed/reused work or an explicit reasoned
+waiver. Recorded running status does not establish a live worker. Bind verification
+receipts to explicit input, checker and result files with `contract: "verification"`;
+completion rechecks those identities and requires a passed outcome. These opt-in
+contracts do not authenticate worker IDs, grade testimony or infer undeclared inputs.
+Read [task evidence](references/task-evidence.md) for the exact JSON shapes,
+status rules, limits and recovery commands before writing a structured receipt.
+Mirket validates delivery and artifact consistency;
 the host observes execution and assesses each professional's work.
 
 Use the selected host's subagents as the normal delegation path when available.

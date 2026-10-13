@@ -175,6 +175,10 @@ mirket benchmark --iterations 200
 mirket dev dist --project . --output /absolute/new-dist
 ```
 
+[Task evidence](docs/task-evidence.md) documents checkpoint recovery and structured
+verification/contribution receipts. The [role workflow suite](evals/role-workflow/README.md)
+provides eight scenarios and validates saved host trial reports.
+
 The [architecture guide](docs/architecture.md) explains responsibilities,
 [contribution guide](CONTRIBUTING.md) covers isolated checks, and
 [source review](docs/source-review.md) describes catalog admission.

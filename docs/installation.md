@@ -129,6 +129,25 @@ without installing. The repository must have a published release with
 `mirket-release.json` and its listed executables; an absent release is an explicit
 error and does not change the installation.
 
+### Updating task state to 3.2.0
+
+Before updating an installation with existing tasks, quiesce Mirket task-state
+writers and retain a consistent SQLite backup of `~/.mirket/state.db`. SQLite's
+backup API includes committed WAL data; copying only an active database file is
+not a complete backup. Rehearse recovery in a disposable home.
+
+The first 3.2.0 task-state or MCP open migrates a valid schema-1 database to
+schema 2 transactionally. Projects, tasks, deliveries, evidence, checkpoints and
+idempotency replies retain their values. Verify the migrated records and database
+integrity before resuming writers. New contract records occupy an added table.
+
+Restart existing Mirket MCP connections during cutover. Replacing the executable
+does not replace an already-running process: 3.1.0 rejects schema 2 at startup,
+but a process opened before migration retains its older behavior. New host
+sessions use the updated connection. A binary-only downgrade cannot read schema 2;
+preserve any newer state and reconcile post-backup writes before restoring an old
+backup. See [task evidence](task-evidence.md) for the contract and history formats.
+
 For a separately obtained, trusted local release executable:
 
 ```sh

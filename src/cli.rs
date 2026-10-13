@@ -4,7 +4,7 @@ use crate::{
     packages,
     paths::Paths,
     project,
-    state::State,
+    state::{State, contracts::ContractKind},
 };
 use anyhow::{Context, Result, bail};
 use clap::{Args, Parser, Subcommand, ValueEnum};
@@ -325,6 +325,23 @@ enum TaskCommand {
     Status {
         task: String,
     },
+    /// Retrieve retained checkpoints, newest revision first.
+    History {
+        task: String,
+        #[arg(long)]
+        cursor: Option<String>,
+        #[arg(long, default_value_t = 10)]
+        limit: usize,
+    },
+    /// Preview a structured evidence contract without recording it.
+    Validate {
+        task: String,
+        path: String,
+        #[arg(long)]
+        contract: ContractKind,
+        #[arg(long)]
+        completion: bool,
+    },
     Checkpoint {
         #[command(flatten)]
         mutation: Mutation,
@@ -342,6 +359,8 @@ enum TaskCommand {
         path: String,
         #[arg(long, value_enum)]
         kind: EvidenceKind,
+        #[arg(long)]
+        contract: Option<ContractKind>,
         #[arg(long)]
         summary: String,
     },
@@ -456,6 +475,11 @@ enum CraftCommand {
 }
 #[derive(Subcommand)]
 enum DevCommand {
+    /// Inspect role fixtures or validate host-recorded trial results; never launches models.
+    RoleEval {
+        #[command(subcommand)]
+        command: RoleEvalCommand,
+    },
     /// Resolve approved workspace dependency changes while preserving other locked versions.
     Lock {
         #[arg(long, default_value = ".")]
@@ -504,6 +528,24 @@ enum DevCommand {
         inputs: Vec<PathBuf>,
         #[arg(long)]
         output: PathBuf,
+    },
+}
+
+#[derive(Subcommand)]
+enum RoleEvalCommand {
+    Suite {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        #[arg(long, default_value = "evals/role-workflow/suite.json")]
+        suite: PathBuf,
+    },
+    Check {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        #[arg(long, default_value = "evals/role-workflow/suite.json")]
+        suite: PathBuf,
+        #[arg(long)]
+        report: PathBuf,
     },
 }
 
@@ -1132,6 +1174,17 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     )?
                 }
                 TaskCommand::Status { task } => state.status(&task)?,
+                TaskCommand::History {
+                    task,
+                    cursor,
+                    limit,
+                } => state.task_history(&task, cursor.as_deref(), limit)?,
+                TaskCommand::Validate {
+                    task,
+                    path,
+                    contract,
+                    completion,
+                } => state.validate_contract(&task, &path, contract, completion)?,
                 TaskCommand::Checkpoint { mutation, note } => {
                     state.checkpoint(&mutation.task, mutation.revision, &note, &mutation.key)?
                 }
@@ -1150,8 +1203,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     mutation,
                     path,
                     kind,
+                    contract,
                     summary,
-                } => state.evidence(
+                } => state.evidence_with_contract(
                     &mutation.task,
                     mutation.revision,
                     &path,
@@ -1161,6 +1215,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     },
                     &summary,
                     &mutation.key,
+                    contract,
                 )?,
                 TaskCommand::Complete { mutation } => {
                     state.complete(&mutation.task, mutation.revision, &mutation.key)?
@@ -1268,6 +1323,16 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 },
         } => crate::craft::contrast(&foreground, &background)?,
         Command::Dev { command } => match command {
+            DevCommand::RoleEval { command } => match command {
+                RoleEvalCommand::Suite { project, suite } => {
+                    crate::role_eval::suite(&project, &suite)?
+                }
+                RoleEvalCommand::Check {
+                    project,
+                    suite,
+                    report,
+                } => crate::role_eval::check(&project, &suite, &report)?,
+            },
             DevCommand::Lock { project } => crate::dev::lock(&project)?,
             DevCommand::Fmt { project } => crate::dev::format(&project)?,
             DevCommand::Check { project } => crate::dev::check(&project)?,

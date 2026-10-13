@@ -1,0 +1,1 @@
+Use the security-judgment skill to review this proposed reset endpoint: POST /reset accepts {email, redirect_url}; response reveals whether email exists, and reset tokens are logged before emailing a link to redirect_url. Deliver prioritized findings and practical verification. Read the requested skill using available host tools; do not send emails or execute external actions.

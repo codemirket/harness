@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "status": "template_not_run",
+  "host": null,
+  "model": null,
+  "model_settings": {},
+  "tools": [],
+  "authority": "Disposable read-only fixture review; no external actions",
+  "budget": null,
+  "harness_revision": null,
+  "guidance_hashes": {},
+  "note": "Copy and fill actual fixed configuration before a host-observed run. This file records no execution."
+}

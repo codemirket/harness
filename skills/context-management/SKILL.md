@@ -54,6 +54,10 @@ policy, permanent memory, or instructions for unrelated work.
 ## Resume and finish
 
 On resume, read the handoff and inspect current state before repeating work.
+For Mirket tasks, status contains only the latest eight checkpoints. If
+`history_has_more` is true, use `task_history` (CLI: `mirket task history TASK`)
+and follow `next_cursor` until the relevant earlier constraints are recovered.
+A short status response does not mean older checkpoints were deleted.
 Revalidate facts whose inputs changed. Do not rerun completed searches simply
 because the transcript was compacted, or claim old tests validate new edits.
 

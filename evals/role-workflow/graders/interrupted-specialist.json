@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "preserves_missing_workers",
+    "rejects_stale_attempt",
+    "states_next_verification"
+  ],
+  "assertions": {
+    "preserves_missing_workers": "Marks Security interrupted/unknown and Backend unreported; does not silently drop selected roles.",
+    "rejects_stale_attempt": "Does not accept attempt-1 late result as proof for attempt 2.",
+    "states_next_verification": "Keeps completion blocked or explicitly qualified and names concrete follow-up verification."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

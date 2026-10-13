@@ -26,9 +26,11 @@ concrete disable and recovery conditions.
 ## Working method
 
 For changes to this personal harness, use
-[the development exercise workflow](references/harness-development.md). It provides
-prepared workspaces, bounded local checks and separate output review; it does not
-launch a model or establish production quality. Use project-owned datasets and
+[the development exercise workflow](references/harness-development.md). It describes
+host-run experiments, saved evidence and independent output review. Mirket
+development commands inspect the repository's role-workflow fixtures and validate
+versioned reports; they do not prepare workspaces, launch models, grade semantic
+quality or establish production quality. Use project-owned datasets and
 tools when evaluating a product's AI feature.
 
 Define the user task, allowed actions, data boundaries, success criteria, failure

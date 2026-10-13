@@ -600,7 +600,7 @@ fn runtime_state_concurrent_initializers_share_one_valid_schema() {
         database
             .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
             .unwrap(),
-        1
+        2
     );
 }
 
@@ -1053,7 +1053,7 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     });
     let client = ().serve(client_transport).await.unwrap();
     let tools = client.list_all_tools().await.unwrap();
-    assert_eq!(tools.len(), 12);
+    assert_eq!(tools.len(), 14);
     assert!(
         !tools
             .iter()

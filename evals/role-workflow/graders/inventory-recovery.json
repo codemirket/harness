@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "checks_original_authority",
+    "handles_uncertain_effect",
+    "validates_request_identity"
+  ],
+  "assertions": {
+    "checks_original_authority": "Retrieves original constraints/source evidence rather than treating summary as new authority.",
+    "handles_uncertain_effect": "Reconciles uncertain reservation effect before retrying.",
+    "validates_request_identity": "Checks identity/payload mismatch and preserves unresolved or failed verification."
+  },
+  "grading": "Independent host inspection of saved output and relevant trace; not model self-report."
+}

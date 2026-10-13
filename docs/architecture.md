@@ -15,6 +15,8 @@ and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
 | `src/install.rs` | Client configuration, setup transaction and device doctor |
 | `src/update.rs` | Release selection, candidate verification and setup replay |
 | `src/state.rs` | Registered roots, durable tasks, revisions, idempotency and artifact evidence |
+| `src/state/contracts.rs` | Strict opt-in verification and specialist coverage contracts with explicit input bindings |
+| `src/role_eval.rs`, `evals/role-workflow/` | Versioned role fixtures, pinned host trial reports and deterministic aggregation |
 | `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
 | `src/package_mcp.rs` | Filtered browser package tools, process lifecycle and request limits |
 | `src/editor_mcp/mod.rs`, `src/editor_mcp/process.rs` | Typed editor MCP tools, native startup checks, private jobs, cancellation and bounded process output |
@@ -46,9 +48,19 @@ user-home boundary for all harness/client installation paths. Each project's
 `.mirket` directory contains its own selection and copy receipts.
 
 SQLite transactions are short; WAL permits concurrent reads. Opening an existing
-validated task database performs no schema write, so CLI readers can continue
-while another writer holds a transaction. Task lists use project-bound cursors
+validated schema-2 task database performs no schema write, so CLI readers can
+continue while another writer holds a transaction. A valid schema-1 database
+migrates transactionally to schema 2 by adding evidence contract records; earlier
+runtimes refuse the new version. Unknown or malformed layouts fail closed. Task lists use project-bound cursors
 over immutable creation time and ID; checkpoints cannot shift page membership.
+Task status identifies omitted checkpoints; task-bound history cursors recover
+older notes in bounded revision-descending pages without shifts from new appends.
+Opt-in verification contracts bind explicit inputs, checker and result files;
+contribution contracts bind the planned roster and account for each specialist
+assignment. Registration checks structure and identities, and completion repeats
+those checks with terminal outcome requirements. Ordinary evidence remains an
+explicit file record; a typed record cannot be downgraded by omitting its type.
+See [task evidence](task-evidence.md) for formats, limits and compatibility.
 Task mutations use
 expected revisions and idempotency keys. An identical retry returns its recorded
 result; reusing a key for another intention fails. The catalog is parsed once

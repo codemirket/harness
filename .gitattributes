@@ -1,3 +1,7 @@
 # Pinned upstream copies and their inventories retain their original bytes.
 docs/licenses/** -text
 registry/package-locks/** -text
+
+# The role suite pins exact fixture and checker bytes across native CI targets.
+src/role_eval.rs text eol=lf
+evals/role-workflow/** text eol=lf

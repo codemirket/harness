@@ -1,0 +1,1 @@
+A shop owner says: “Checkout feels unreliable; make it trustworthy.” Available evidence: payment confirmation sometimes arrives after the browser times out; no stack or provider is specified. Deliver a short investigation/team assignment plan with justified boundaries and first checks. Do not change production.
