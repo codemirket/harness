@@ -102,6 +102,12 @@ and meaningful IDs. Avoid generated path soup for simple shapes. A component's
 public size/color/label API should follow project conventions; do not create a
 configuration framework for one asset.
 
+For a character, preserve silhouette, face landmarks and named pose groups as
+separate editable decisions. Keep face geometry in the head's coordinate system;
+put static placement outside animated transforms. `graphic-design` owns the
+character and status-family construction method and its compact educational
+specimen; `svg-animation` owns the resulting vector choreography.
+
 Definitions are document-wide when SVG is inline. Generate an instance prefix
 with the project's SSR-safe ID mechanism, propagate it to `url(#...)`, `href` and
 ARIA references, and keep IDs stable across hydration. Scope CSS to the asset.

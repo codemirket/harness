@@ -26,8 +26,9 @@ or interview cycle when the evidence already resolves the task. An implementatio
 request with settled scope does not need to reopen product strategy.
 
 For competing requests, uncertain demand or a feature crossing multiple owners,
-read [decision to delivery](references/decision-to-delivery.md). It includes a
-worked example of turning a vocal customer's request into a bounded release.
+read [decision to delivery](references/decision-to-delivery.md). It includes an
+optional discovery evidence map and a worked example of turning a vocal
+customer's request into a bounded release.
 
 ## Establish the problem and authority
 

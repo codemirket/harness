@@ -40,6 +40,45 @@ layer can still cost memory and painting. For a loop, compare both color and rat
 of change at the seam. Prefer a finite atmosphere change when continuous motion
 adds no meaning; prolonged autoplay needs an appropriate pause/stop treatment.
 
+## Expressive materials behind semantic controls
+
+When the brief calls for a liquid or lit surface, keep the artwork in a separate
+noninteractive layer behind actual DOM buttons, links and status text. Hide a
+decorative SVG from assistive technology, give it `pointer-events: none`, and
+keep readable labels and focus rings outside any blur, alpha threshold or
+displacement filter. The ordinary control must remain visible and usable before
+the effect initializes and when it fails. Do not hide an essential action until
+the first rendered frame or a reveal completes.
+
+A small liquid silhouette can be constructed from overlapping SVG shapes, a
+bounded Gaussian blur and an alpha contrast threshold; composite color into that
+silhouette separately from the content. Inspect the merged edge, clipping and
+contrast in the actual integration. A filter's intermediate raster area can be
+large even when its paths are simple; measure before claiming acceleration or
+low cost. An ordinary solid background is a valid fallback.
+
+Scope definition IDs and material values per instance. A shared renderer may
+share its clock or cached immutable geometry, but that does not establish
+independent theme/preset state. Render two instances with different settings,
+change one while the other remains mounted, and check both. If the implementation
+has global material state, respect that limitation or choose an instance-safe
+technique; silently letting the last update change every surface is not a theme
+system. Recompute affected surface geometry on layout changes rather than polling
+unchanged bounds indefinitely. Preserve the lifecycle rules below.
+
+For character construction and optical-size status families, use `graphic-design`
+and its character/status reference; `svg-creation` owns editable vector geometry.
+Choose an expressive material because it serves that composition. The existence
+of metal, glow, goo or avatar effects does not justify adding them to a control.
+
+This layering pattern is informed by public MIT
+[Libraries.dev Gooey](https://github.com/Jakubantalik/Libraries.dev/blob/a27566557b4def79bcdcedc71858c0fb28020b6d/packages/liquid-gooey/src/Gooey.tsx)
+and its `filter.tsx`; the shared-state failure probe follows
+[`metal-fx`'s renderer](https://github.com/Jakubantalik/Libraries.dev/blob/a27566557b4def79bcdcedc71858c0fb28020b6d/packages/metal-fx/src/engine/renderer/loop.ts).
+No package or paid Studio content is required. Package-specific reduced-motion
+behavior varies; inspect initial and live changes in the implementation instead
+of assuming one package's handling applies to another.
+
 ## Canvas 2D: a drawn layer, not the whole interface
 
 Use Canvas when procedural or dense drawing is its real advantage. Keep primary

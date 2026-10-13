@@ -23,6 +23,45 @@ Source counts should preserve their unit: reports, distinct accounts, users and
 events answer different questions. Look for counterexamples and costs imposed on
 other users. Do not contact people or publish a roadmap merely to complete a plan.
 
+## Map unresolved discovery to its evidence
+
+When the choice still depends on uncertain customer needs or competing solutions,
+connect **outcome → evidenced opportunity → alternatives → assumptions → tests
+and results** in the existing issue, table or diagram. This is optional reasoning
+support, not another required artifact, interview cadence or approval step. Keep
+accepted scope visible; do not manufacture an opportunity tree to rationalize a
+predetermined solution or reopen a settled implementation request.
+
+- **Outcome:** name the actor, context and observable change, with a baseline or
+  an explicit measurement gap. A shipped feature is not itself a user outcome.
+- **Opportunity:** describe a difficulty, need or desired progress in that actor's
+  terms. Attach dated source locators, represented population and counterevidence.
+  An interview quote supports that account; a feature request does not establish
+  prevalence or prove the requested solution is necessary.
+- **Alternatives:** link plausible approaches to the same opportunity, including
+  repairing existing behavior or retaining it where credible. Keep important
+  costs and accepted constraints visible. An alternative can serve several needs;
+  a strict tree is unnecessary when a small linked table is clearer.
+- **Assumptions:** state what could make each approach fail. Distinguish desire or
+  adoption, usability, technical feasibility and business viability as useful
+  prompts, without requiring a quota in every category. Record current support,
+  contradiction and consequence if wrong; repeated citations of one source are
+  not independent evidence.
+- **Test and result:** choose a proportionate observation or experiment that can
+  change the choice. Before running it, state what it can establish, relevant
+  population, comparison and the result that would change the decision. Retain
+  actual results, source artifacts, limits and supported next action. Mark an
+  unrun test as proposed and an ambiguous result as inconclusive.
+
+Select the next test using consequence, uncertainty, available evidence, exposure
+and cost. A reversible working slice can itself be a useful test. Do not ban
+building before every assumption is tested or assign universal durations and
+thresholds. Use `customer-research` for new customer evidence and
+`experiment-design` when the decision needs a causal comparison. Clicks can
+indicate interest under the observed conditions; they do not demonstrate adoption,
+and checkout initiation is not payment. One successful prototype task cannot prove
+demand, sustained use or viable operating cost.
+
 ## Worked example: the request is broader than the evidence
 
 All names and numbers here are illustrative. A team requests a bulk importer after
@@ -50,6 +89,25 @@ show the proposed changes, and commit one confirmed import with a recoverable
 status. Defer new file formats and scheduled synchronization unless evidence or
 prior commitments justify them. A prototype that does not commit data may resolve
 preview usability while the duplicate policy is still open.
+
+### A compact discovery map for that decision
+
+Continue the fictional case above. The following locators and results are teaching
+examples, not real customer evidence. In a real task, replace them with retrievable
+sources and dates; do not carry these findings into a product plan as facts.
+
+| Link | Evidence, uncertainty and decision |
+| --- | --- |
+| Outcome → opportunity | Operators should recover an interrupted supported-format import without duplicate records. Fictional ticket register `IMP-01…10`, reviewed October 1, separates eight duplicate reports from two format requests; replay `R-04` reproduces a duplicate after a lost response. This supports recovery work, not broad format demand. |
+| Opportunity → alternatives | A: repair retry identity and status recovery; B: add preview and commit as well; C: build a general importer. All retain the supported format and chosen duplicate policy. A costs less scope but may leave ambiguous row validation; B adds a user step; C carries parser and maintenance work unsupported by the duplicate reports. |
+| Alternative → feasibility assumption | A assumes one intended import can be identified across a lost response. Before probe `P-01`, define failure as any duplicate persisted row after retrying the same intended operation. Its fictional before/after record comparison finds no duplicates for the tested supported fixture after the repair. This supports that recovery path, not every concurrency case. |
+| Alternative → usability assumption | B assumes a preview resolves row confusion that recovery alone cannot. In fictional task observation `U-02`, an operator recovers status but cannot explain a rejected row. Keep this counterexample to A's sufficiency. It supports clearer row feedback; it does not yet distinguish inline validation from a separate preview. |
+| Result → next decision | Retain the demonstrated recovery repair. Compare inline row feedback with preview only if that unresolved interaction warrants it. Defer the general importer; the two format requests remain recorded and could revive format work with supported obligations or broader evidence. |
+
+This map can narrow the original preview proposal: recovery and row feedback may
+meet the outcome without an extra confirmation screen. A passing technical probe
+does not erase the usability counterexample, and the observation does not establish
+how common that problem is. Keep this distinction when handing off the slice.
 
 ## Turn the slice into observable acceptance
 
@@ -95,3 +153,15 @@ uncertainty instead of reporting a precise score as certainty.
 
 End with the supported decision, open decisions and owner, next slice, acceptance
 evidence and follow-up trigger. Do not mark the outcome achieved at code completion.
+
+## Technique provenance
+
+The optional discovery map adapts
+[continuous-discovery](https://github.com/wondelai/skills/blob/c172996495bed0fcd26896a9416b2093fd7073f0/continuous-discovery/SKILL.md)
+and [assumption-mapping](https://github.com/wondelai/skills/blob/c172996495bed0fcd26896a9416b2093fd7073f0/continuous-discovery/references/assumption-mapping.md)
+from Wondelai at `c172996495bed0fcd26896a9416b2093fd7073f0` (MIT,
+©2025 Wondel.ai sp. z o.o.; notice accompanies installed guidance). The upstream
+synthesis attributes discovery methods to Teresa Torres. This adaptation does not
+reproduce the underlying book or establish its empirical claims. Fixed cadence,
+scores, assumption counts and illustrative demand thresholds are omitted. The
+import case and its probes are original fictional teaching material.

@@ -71,6 +71,12 @@ Compare substitutes and the current workaround as well as direct competitors.
 Distinguish interview statements, stated willingness to pay and actual buying
 behavior. Do not make a convenient research sample representative by assertion.
 
+For an unsettled positioning decision, use
+[positioning evidence](references/positioning-evidence.md) to connect actual
+alternatives, comparative strengths, customer value, segment fit and category
+expectations. Hand its supported claims and limits to `marketing-writing`;
+preserve an accepted position during routine copy work.
+
 ## Deliver
 
 Lead with the supported opportunity or constraint and what would change the

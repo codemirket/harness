@@ -24,6 +24,11 @@ For fidelity work compare the reference at matching beats and normal speed.
 Inspect the actual intermediate shapes, not only endpoint screenshots. Label an
 approximation when the source geometry or timing is unavailable.
 
+For an unsettled expressive brief, retrieve `advanced-motion`
+`references/art-direction-and-medium.md` for traits, apparent weight and a motion
+score. Apply that vocabulary to the asset’s named groups and resting silhouette;
+this reference owns the vector mechanics. Do not add a second scene controller.
+
 ## Select the delivery mechanism
 
 | Context | Useful starting point | Boundary to verify |

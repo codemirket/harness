@@ -199,6 +199,131 @@
         "LICENSE"
       ],
       "url": "https://github.com/zubair-trabzada/geo-seo-claude/tree/989cae01e8ebbc42a9ec798eb9e7cb423f5ec89c"
+    },
+    "ibelick-ui": {
+      "repository": "ibelick/ui-skills",
+      "commit": "9a0cb1e610e3a1a4f0f2723bf2e7680ac1b89cf5",
+      "license_summary": "MIT (selected public repository material only)",
+      "url": "https://github.com/ibelick/ui-skills/tree/9a0cb1e610e3a1a4f0f2723bf2e7680ac1b89cf5",
+      "reviewed_paths": [
+        "skills/component-canvas/SKILL.md",
+        "skills/create-design-md/SKILL.md",
+        "skills/improve-ui/SKILL.md",
+        "skills/improve-ui/references/plan-template.md",
+        "skills/fixing-motion-performance/SKILL.md"
+      ],
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+    },
+    "lottiefiles-motion": {
+      "repository": "LottieFiles/motion-design-skill",
+      "commit": "f9a8a041b85185ee4881b3471d3415e939aac772",
+      "license_summary": "MIT (selected public repository material only)",
+      "url": "https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772",
+      "reviewed_paths": [
+        "skills/motion-design/director/motion-personality.md",
+        "skills/motion-design/director/emotion-mapping.md",
+        "skills/motion-design/director/disney-principles.md",
+        "skills/motion-design/director/choreography.md",
+        "skills/motion-design/director/narrative-structure.md",
+        "skills/motion-design/reference/timing-easing-tables.md",
+        "skills/motion-design/patterns/multi-element.md"
+      ],
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+    },
+    "kyle-motion": {
+      "repository": "kylezantos/design-motion-principles",
+      "commit": "4a9ca879f24a361f4dca4174fe2da0f67b5ddee3",
+      "license_summary": "MIT (selected public repository material only)",
+      "url": "https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3",
+      "reviewed_paths": [
+        "skills/design-motion-principles/SKILL.md",
+        "skills/design-motion-principles/references/anti-checklist.md",
+        "skills/design-motion-principles/references/report-template.html",
+        "skills/design-motion-principles/references/motion-cookbook.md",
+        "skills/design-motion-principles/references/performance.md",
+        "skills/design-motion-principles/workflows/audit.md"
+      ],
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+    },
+    "owl-concepts": {
+      "repository": "Owl-Listener/designer-skills",
+      "commit": "9a6930cf84a822eb458624bd11c61aac5bbdf224",
+      "license_summary": "MIT (selected public repository material only)",
+      "url": "https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224",
+      "reviewed_paths": [
+        "prototyping-testing/skills/parallel-concepts/SKILL.md",
+        "prototyping-testing/skills/concept-selection/SKILL.md"
+      ],
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+    },
+    "libraries-craft": {
+      "repository": "Jakubantalik/Libraries.dev",
+      "commit": "a27566557b4def79bcdcedc71858c0fb28020b6d",
+      "license_summary": "MIT (selected public repository material only)",
+      "url": "https://github.com/Jakubantalik/Libraries.dev/tree/a27566557b4def79bcdcedc71858c0fb28020b6d",
+      "reviewed_paths": [
+        "packages/bot-avatars/src/draw.ts",
+        "packages/bot-avatars/src/engine.ts",
+        "packages/bot-avatars/src/shapes.ts",
+        "packages/bot-avatars/src/BotAvatar.tsx",
+        "packages/thinking-orbs/src/ThinkingOrb.tsx",
+        "packages/thinking-orbs/src/theme.ts",
+        "packages/thinking-orbs/src/presets.ts",
+        "packages/liquid-gooey/src/Gooey.tsx",
+        "packages/liquid-gooey/src/filter.tsx",
+        "skills/libraries-dev/references/06-metal-fx.md",
+        "skills/libraries-dev/references/07-img-fx.md",
+        "packages/metal-fx/src/engine/renderer/loop.ts"
+      ],
+      "scope": "Selective technique adaptation in existing skills; no upstream package, external registry, sibling repository or paid content import."
+    },
+    "mengto-inspiration": {
+      "repository": "MengTo/Skills",
+      "commit": "83a47fee32f0b6349bff1fede99257a5ef03dc93",
+      "license_summary": "MIT (selected repository guidance; third-party works and assets retain separate rights)",
+      "url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
+      "reviewed_paths": [
+        "agent-skills/codex/daily-ui-inspiration-capture/SKILL.md",
+        "agent-skills/codex/html-to-interaction-prompts/SKILL.md",
+        "agent-skills/codex/video-to-superprompt/SKILL.md",
+        "agent-skills/codex/audit-reference-originality/SKILL.md"
+      ],
+      "scope": "Reference discovery, evidence coverage and transfer methods only; no imported demos, media, runtimes, capture helpers, publishing workflow or similarity scores."
+    },
+    "wondel-discovery-positioning": {
+      "repository": "wondelai/skills",
+      "commit": "c172996495bed0fcd26896a9416b2093fd7073f0",
+      "license_summary": "MIT (selected repository guidance; third-party works and assets retain separate rights)",
+      "url": "https://github.com/wondelai/skills/tree/c172996495bed0fcd26896a9416b2093fd7073f0",
+      "reviewed_paths": [
+        "continuous-discovery/SKILL.md",
+        "continuous-discovery/references/assumption-mapping.md",
+        "obviously-awesome/SKILL.md",
+        "obviously-awesome/references/value-mapping.md"
+      ],
+      "scope": "Selected discovery and positioning methods in existing owners; no book text, wholesale framework packs, prescribed cadence, sample counts, scores or claims of validated demand."
+    },
+    "scroll-craft": {
+      "repository": "nateherkai/scroll-craft",
+      "commit": "75d81f74e83692add18cd7a8a8e078b8a887a579",
+      "license_summary": "MIT (selected repository techniques; external client assets and service outputs retain separate rights)",
+      "url": "https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579",
+      "reviewed_paths": [
+        "plugins/nateherk-design/skills/scroll-craft/SKILL.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/hero-depth.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/approved-collection.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/uniqueness.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/feel.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/assets.md",
+        "plugins/nateherk-design/skills/scroll-craft/references/verify.md",
+        "plugins/nateherk-design/skills/scroll-craft/engine/scrollcraft.js",
+        "plugins/nateherk-design/skills/scroll-craft/engine/scrollcraft.css",
+        "plugins/nateherk-design/skills/scroll-craft/scripts/shoot.mjs",
+        "plugins/nateherk-design/skills/scroll-craft/scripts/worldflight-assert.mjs",
+        "plugins/nateherk-design/skills/scroll-craft/scripts/encode.sh",
+        "plugins/nateherk-design/skills/scroll-craft/scripts/doctor.mjs"
+      ],
+      "scope": "Connected image-layer construction, corrected scroll-media readiness and scene-relative verification, and optional structural reference comparison in existing owners. No runtime, workspace manager, provider integration, author example assets, novelty quotas or sample-grid gaming imported."
     }
   },
   "skills": [
@@ -264,7 +389,9 @@
         "hallmark",
         "taste",
         "emil",
-        "anthropic"
+        "anthropic",
+        "ibelick-ui",
+        "owl-concepts"
       ],
       "dependencies": [
         "Running app and browser with viewport, interaction and screenshot inspection; use existing tokens/components. Optional Penpot supports editable design documents, not application behavior.",
@@ -283,7 +410,13 @@
         "anti-generic",
         "design-critique",
         "rendered-quality",
-        "ai-slop"
+        "ai-slop",
+        "design-evidence",
+        "component-workbench",
+        "concept-selection"
+      ],
+      "license_files": [
+        "docs/third-party-notices.md"
       ]
     },
     {
@@ -444,7 +577,9 @@
       ],
       "informed_by": [
         "emil",
-        "taste"
+        "taste",
+        "ibelick-ui",
+        "kyle-motion"
       ],
       "dependencies": [
         "Actual browser/device with controllable input, playback and motion preference; existing CSS/WAAPI or project animation library. Frame/video work selects the advanced-motion runtime route.",
@@ -458,7 +593,8 @@
         "interaction",
         "accessibility",
         "interaction-recipes",
-        "animator"
+        "animator",
+        "motion-audit"
       ]
     },
     {
@@ -13147,7 +13283,9 @@
       "description": "Art-direct, implement and review expressive website motion, coordinated sequences, animated color and gradients, scroll scenes, procedural Canvas graphics and local web-composition video exports. Use for a substantial visual scene or choreography beyond ordinary controls; SVG art and navigation transitions retain their own specialist workflows.",
       "delivery": "embedded",
       "path": "skills/advanced-motion",
-      "license_files": [],
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
       "agents": [
         "codex",
         "claude"
@@ -13184,7 +13322,15 @@
         "mp4",
         "frame-rendering",
         "hyperframes",
-        "motion-canvas"
+        "motion-canvas",
+        "scroll-media",
+        "video-scrubbing",
+        "layer-compositing"
+      ],
+      "informed_by": [
+        "lottiefiles-motion",
+        "libraries-craft",
+        "scroll-craft"
       ]
     },
     {
@@ -13195,7 +13341,9 @@
       "description": "Turn product evidence, feature requests and roadmap choices into explicit outcomes, scope, delivery slices and measurable acceptance. Use for product prioritization, requirements or launch decisions; skip routine implementation with settled requirements.",
       "delivery": "embedded",
       "path": "skills/product-management",
-      "license_files": [],
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
       "agents": [
         "codex",
         "claude"
@@ -13214,7 +13362,13 @@
         "requirements",
         "prioritization",
         "roadmap",
-        "acceptance"
+        "acceptance",
+        "discovery-evidence",
+        "opportunity-map",
+        "assumption-testing"
+      ],
+      "informed_by": [
+        "wondel-discovery-positioning"
       ]
     },
     {
@@ -13511,7 +13665,9 @@
       "description": "Research market size, customer segments, competitors, demand and routes to market for a business decision. Use for market analyst work and evidence-based TAM, SAM and SOM estimates. Use marketing-writing for copy alone and financial-analysis for the operating forecast.",
       "delivery": "embedded",
       "path": "skills/market-analysis",
-      "license_files": [],
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
       "agents": [
         "codex",
         "claude"
@@ -13529,7 +13685,13 @@
         "sam",
         "som",
         "competitor",
-        "demand"
+        "demand",
+        "positioning",
+        "competitive-alternatives",
+        "value-mapping"
+      ],
+      "informed_by": [
+        "wondel-discovery-positioning"
       ]
     },
     {
@@ -13624,7 +13786,9 @@
       "description": "Create and refine visual identities, illustrations, posters, campaign graphics, diagrams and coherent asset families. Use for graphic composition, typography, visual storytelling and production exports for screen or print. Pair with interface-design for working UI and the available native document or media skill for its file format.",
       "delivery": "embedded",
       "path": "skills/graphic-design",
-      "license_files": [],
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
       "agents": [
         "codex",
         "claude"
@@ -13648,7 +13812,13 @@
         "design-document",
         "auto-layout",
         "components",
-        "penpot"
+        "penpot",
+        "procedural-character",
+        "status-illustration"
+      ],
+      "informed_by": [
+        "libraries-craft",
+        "scroll-craft"
       ]
     },
     {
@@ -13795,6 +13965,44 @@
       ],
       "caveats": [
         "Source inspection, execution, measured outcomes and human acceptance remain distinct evidence."
+      ]
+    },
+    {
+      "id": "design-inspiration",
+      "name": "design-inspiration",
+      "scope": "project",
+      "category": "design",
+      "description": "Find, qualify and study design references, then translate observed strengths into a source-backed direction for the current brief. Use when reference discovery or selection is needed for interfaces, graphics or motion; existing craft skills own implementation and verification.",
+      "delivery": "embedded",
+      "path": "skills/design-inspiration",
+      "license_files": [
+        "docs/third-party-notices.md"
+      ],
+      "agents": [
+        "codex",
+        "claude"
+      ],
+      "informed_by": [
+        "mengto-inspiration",
+        "scroll-craft"
+      ],
+      "dependencies": [
+        "Available search/browser tools or supplied source images, videos and documents; inspect actual examples with the existing host tools.",
+        "No bundled exemplar registry, capture runtime or third-party assets. Missing access stays explicit."
+      ],
+      "caveats": [
+        "Reference selection does not implement the artifact, establish asset rights, prove performance or constitute human visual acceptance.",
+        "No default scheduling, source copying, publishing or dependency installation."
+      ],
+      "tags": [
+        "design",
+        "inspiration",
+        "design-inspiration",
+        "reference-study",
+        "visual-references",
+        "moodboard",
+        "reference-discovery",
+        "art-direction"
       ]
     }
   ],
@@ -14158,6 +14366,7 @@
     "design-prototyping": {
       "description": "Compare visual directions, preserve design evidence, and prototype login/FAQ flows.",
       "skills": [
+        "design-inspiration",
         "emil-prototype",
         "open-design-reference-design-contract",
         "open-design-login-flow",

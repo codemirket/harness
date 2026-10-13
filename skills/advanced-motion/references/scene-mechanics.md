@@ -188,6 +188,11 @@ hijacking, artificial page length or pinning merely to demonstrate the technique
 See [scroll/view timelines and ranges](https://www.w3.org/TR/scroll-animations-1/)
 and [Chrome's implementation guide](https://developer.chrome.com/docs/css-ui/scroll-driven-animations).
 
+For media driven by scroll, read [scroll media and scene verification](scroll-media-and-verification.md)
+for seek/frame-readiness distinctions, final-encode tradeoffs and scene-relative
+entry/pin/exit inspection. It also contrasts natural-flow passage with zero pinned
+travel; a nonzero arithmetic denominator does not establish a meaningful range.
+
 ## Recompute deliberately; review in real time
 
 Cache geometry until its inputs change. Observe the relevant container size, not

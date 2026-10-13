@@ -41,6 +41,13 @@ Identify the person, their immediate task and the important action. Inspect the
 existing screen, components, tokens, content and target devices. Preserve the
 project's system unless the requested change includes a new direction.
 
+When documenting that system or alleging design drift, use
+[design evidence](references/design-evidence.md) to distinguish governing intent
+from observed patterns and trace the source that actually reaches the screen.
+For unsettled structural choices, use [concept exploration](references/concept-exploration.md)
+to compare meaningful alternatives at matching fidelity. Preserve a chosen
+direction; routine refinements need neither exercise.
+
 For a revision, name the visible problem and retain a comparable baseline before
 editing. Identify approved constraints such as labels, brand assets, information
 order and data behavior. Change the responsible layout or component rule, then
@@ -55,6 +62,10 @@ library might borrow Primer's predictable actions and Carbon's visible filter
 state while keeping its own palette. Apple HIG is platform guidance, not a reason
 to imitate macOS in every website. User references take priority over a fashionable
 style. Read only the relevant component/pattern guidance.
+
+For explicit inspiration or when useful references are still missing, select
+`design-inspiration` for discovery and evidence curation. Continue interpretation
+and implementation here; a supplied accepted reference needs no new search.
 
 Use actual copy and believable data shapes. Label fictional sample content. Keep
 claims and customer evidence supplied or verified. If the direction is uncertain
@@ -111,7 +122,8 @@ assets and broken behavior. A screenshot capture or passing build is not visual
 acceptance.
 
 Use [browser evidence](references/workbench.md) for reproducible scenarios,
-motion frames and inspection criteria. Keep diagnostic tools
+motion frames and optional controlled comparisons of existing components. Reuse
+the project's preview infrastructure when it covers the needed states. Keep diagnostic tools
 outside the product interface. For large changes, obtain an independent review of
 the rendered result when a reviewer is available. Ask for located defects and
 specific repairs, separating functional defects from preferences. Otherwise do a

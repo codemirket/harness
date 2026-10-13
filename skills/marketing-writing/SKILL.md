@@ -48,6 +48,15 @@ draft is not a completed launch, email program, pricing analysis or channel plan
 4. For a revision, identify what must stay: meaning, commitments, brand voice,
    terminology, and any approved legal or product claims.
 
+When a positioning brief exists, carry its audience, actual alternatives,
+supported value, source locators, conditions and excluded claims into the copy.
+If the position itself is unresolved, use `market-analysis` and its
+`references/positioning-evidence.md` via
+`mirket catalog read market-analysis --path references/positioning-evidence.md`.
+Keep research with that owner; routine
+copy refinement preserves the accepted position. A convincing value chain does
+not authorize upgrading a proposed benefit into a measured customer result.
+
 ## Build the message
 
 - Begin with the useful outcome or information the reader came for.

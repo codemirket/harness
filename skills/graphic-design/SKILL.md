@@ -76,6 +76,12 @@ or weight, and the resting pose. A restrained editorial illustration and an
 energetic graphic campaign need different rhythm as well as different colors.
 Keep important copy and the message understandable without playback.
 
+For a procedural character or status-illustration family, read
+[character and status craft](references/character-and-status-craft.md). It develops
+silhouette, face landmarks, material, pose and optical-size variants, with a small
+editable specimen. Use it when the brief calls for illustrated identity or state;
+an available effect is not a reason to add a mascot.
+
 ## Choose the production route
 
 Read [production and proof](references/production-and-proof.md) for tool selection,

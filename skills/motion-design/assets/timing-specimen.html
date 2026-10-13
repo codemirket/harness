@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Finite motion timing specimen</title>
+<style>
+  :root { color-scheme: light dark; font: 100%/1.5 system-ui, sans-serif; }
+  body { max-width: 42rem; margin: 2rem auto; padding: 1rem; }
+  [data-motion-specimen] { border: 1px solid currentColor; padding: 1.25rem; }
+  [data-stage] { padding: 1rem; border: 1px solid GrayText; margin-block: 1rem; }
+  [data-marker] { width: 3rem; height: .25rem; background: currentColor; }
+  [data-controls] { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  [data-controls][hidden] { display: none; }
+  button, select { font: inherit; padding: .4rem .65rem; }
+  :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+  [aria-disabled="true"] { opacity: .6; }
+</style>
+<h1>Motion time and replay time</h1>
+<p>An illustrative decorative response, not a working tab implementation or an
+application fix. The content is present before, during and after playback.</p>
+<section data-motion-specimen aria-label="Finite timing specimen">
+  <h2>180ms at normal speed</h2>
+  <p data-timing>Motion: 180ms. Rest: until manual replay.</p>
+  <div data-stage>
+    <div data-marker aria-hidden="true"></div>
+    <h3>Activity selected</h3>
+    <p>Selection and useful information do not wait for the marker to settle.</p>
+  </div>
+  <div data-controls hidden>
+    <button type="button" data-replay>Replay</button>
+    <button type="button" data-pause aria-disabled="true">Pause</button>
+    <label>Playback
+      <select data-rate>
+        <option value="1">Normal · 1×</option>
+        <option value="0.25">Slow inspection · 0.25×</option>
+      </select>
+    </label>
+  </div>
+  <p data-status role="status">Static resting state.</p>
+  <noscript>Static view: playback controls require JavaScript.</noscript>
+</section>
+<p>Pause/resume preserves the current specimen frame. Replay deliberately restarts
+this isolated illustration; it is not a retargeting recipe for an application
+control. Reduced motion shows the resting state, including when changed live.</p>
+<script>
+// Original Mirket example, MIT; see LICENSE.txt. No upstream template code.
+function attachMotionSpecimen(root) {
+  const marker = root.querySelector('[data-marker]');
+  const controls = root.querySelector('[data-controls]');
+  const replayButton = root.querySelector('[data-replay]');
+  const pauseButton = root.querySelector('[data-pause]');
+  const rateInput = root.querySelector('[data-rate]');
+  const timing = root.querySelector('[data-timing]');
+  const status = root.querySelector('[data-status]');
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  const duration = 180;
+  let animation;
+  let disposed = false;
+  const label = () => {
+    const rate = Number(rateInput.value);
+    timing.textContent = rate === 1
+      ? `Motion: ${duration}ms at 1×. Rest: until manual replay.`
+      : `Slow inspection: ${duration}ms motion at ${rate}× = ${duration / rate}ms unpaused wall time. Rest: until manual replay.`;
+  };
+  const stop = (message) => {
+    if (animation) {
+      animation.onfinish = null;
+      animation.cancel();
+      animation = undefined;
+    }
+    pauseButton.textContent = 'Pause';
+    pauseButton.setAttribute('aria-disabled', 'true');
+    status.textContent = message;
+  };
+  const replay = () => {
+    if (disposed) return;
+    stop('Static resting state.');
+    if (preference.matches) {
+      status.textContent = 'Reduced motion: resting state, no animation.';
+      return;
+    }
+    if (document.hidden) return;
+    const next = marker.animate([
+      { opacity: .4, transform: 'translateX(7px)' },
+      { opacity: 1, transform: 'translateX(0px)' }
+    ], { duration, easing: 'ease-out', fill: 'none' });
+    animation = next;
+    next.playbackRate = Number(rateInput.value);
+    pauseButton.setAttribute('aria-disabled', 'false');
+    status.textContent = 'Playing decorative marker.';
+    next.onfinish = () => {
+      if (animation !== next || disposed) return;
+      stop('Settled. Rest continues until replay.');
+    };
+  };
+  const pause = () => {
+    if (!animation || disposed) return;
+    animation.pause();
+    pauseButton.textContent = 'Resume';
+    status.textContent = 'Paused at current frame.';
+  };
+  const resume = () => {
+    if (!animation || disposed || preference.matches || document.hidden) return;
+    animation.play();
+    pauseButton.textContent = 'Pause';
+    status.textContent = 'Playing decorative marker.';
+  };
+  const toggle = () => { if (animation?.playState === 'paused') resume(); else pause(); };
+  const changed = () => {
+    if (preference.matches) stop('Reduced motion: resting state, no animation.');
+    else status.textContent = 'Motion available. Replay explicitly to start.';
+  };
+  const rateChanged = () => { stop('Playback speed changed. Replay explicitly to start.'); label(); };
+  const hidden = () => { if (document.hidden) stop('Backgrounded. Replay explicitly to start.'); };
+  const pageHidden = () => stop('Page left. Replay explicitly to start.');
+  const dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    stop('Disposed: static resting state.');
+    preference.removeEventListener('change', changed);
+    replayButton.removeEventListener('click', replay);
+    pauseButton.removeEventListener('click', toggle);
+    rateInput.removeEventListener('change', rateChanged);
+    document.removeEventListener('visibilitychange', hidden);
+    window.removeEventListener('pagehide', pageHidden);
+    controls.hidden = true;
+  };
+  label();
+  if (typeof marker.animate !== 'function') {
+    status.textContent = 'Static view: Web Animations unavailable.';
+    return Object.freeze({ dispose });
+  }
+  preference.addEventListener('change', changed);
+  replayButton.addEventListener('click', replay);
+  pauseButton.addEventListener('click', toggle);
+  rateInput.addEventListener('change', rateChanged);
+  document.addEventListener('visibilitychange', hidden);
+  window.addEventListener('pagehide', pageHidden);
+  controls.hidden = false;
+  if (preference.matches) changed();
+  // The consuming component calls dispose() before removing this root.
+  return Object.freeze({ replay, pause, resume, dispose });
+}
+for (const root of document.querySelectorAll('[data-motion-specimen]')) {
+  root.motionSpecimen = attachMotionSpecimen(root);
+}
+</script>
+</html>

@@ -35,6 +35,27 @@ where it could be mistaken for a real claim. Reference imagery can guide
 composition without copying distinctive assets. Preserve required attribution.
 Do not imply that an unaffiliated brand endorses the product.
 
+## Prepare image layers for a connected scene
+
+For independently moving artwork, agree with `advanced-motion` on the layer/contact
+contract before cutting or generating assets. Deliver a clean background plate
+with the extracted subject removed and the revealed area reconstructed. Otherwise
+movement can uncover a duplicate subject or an empty patch. Export actual alpha
+cutouts and inspect fine edges against light and dark backgrounds; checkerboard
+pixels, matte halos and color spill are image content, not working transparency.
+
+Preserve compatible perspective, lighting and apparent material across layers.
+Keep a common registration frame or record each export's bounds, crop offsets and
+contact landmarks so the scene owner can align a subject with its support. Retain
+editable originals separately from optimized delivery images. Provide a complete
+static composition/poster for the intended crop, including the narrow variant when
+it needs different art direction. Preview the separated layers together before
+handoff; asset extraction alone does not establish correct motion or browser loading.
+
+Adapted from [scroll-craft hero-depth](https://github.com/nateherkai/scroll-craft/blob/75d81f74e83692add18cd7a8a8e078b8a887a579/plugins/nateherk-design/skills/scroll-craft/references/hero-depth.md),
+MIT. No referenced client assets or generation service are included. Scene timing,
+load readiness and transformed contact verification stay with `advanced-motion`.
+
 ## Resolve color and physical size
 
 For ordinary screen delivery, use an appropriate web color space such as sRGB

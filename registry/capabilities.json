@@ -78,7 +78,8 @@
       "lead": "brand-guidelines",
       "support": [
         "interface-design",
-        "marketing-writing"
+        "marketing-writing",
+        "design-inspiration"
       ],
       "deliverable": "An editable brand guide with semantic tokens, voice examples, asset rules and real specimens.",
       "failure_probe": "Apply the rules to a dense screen and a small/dark asset; expose conflicting tokens or illegible marks.",
@@ -113,7 +114,8 @@
       "lead": "interface-design",
       "support": [
         "frontend-engineering",
-        "brand-guidelines"
+        "brand-guidelines",
+        "design-inspiration"
       ],
       "deliverable": "Rendered new or revised pages with purposeful composition, real content, responsive states and working interactions; revisions preserve approved constraints and include comparable before/after evidence.",
       "failure_probe": "Stress long real labels and narrow width. For revisions compare identical states: visual polish must not silently change labels, approved identity or data behavior.",
@@ -1045,7 +1047,8 @@
       "support": [
         "brand-guidelines",
         "svg-creation",
-        "interface-design"
+        "interface-design",
+        "design-inspiration"
       ],
       "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
       "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",

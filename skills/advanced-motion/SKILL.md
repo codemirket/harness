@@ -18,9 +18,14 @@ A new visual direction, framework, model or external design service is not impli
 Read only the reference needed for the current decision:
 
 - [Art direction and medium](references/art-direction-and-medium.md) turns a brief
-  into a visual concept, motion language and DOM/SVG/Canvas/WebGL/video choice.
+  into concrete motion traits, apparent weight, a short score and a
+  DOM/SVG/Canvas/WebGL/video choice; it includes connected image layers,
+  contrasting briefs and timing math.
 - [Scene mechanics](references/scene-mechanics.md) covers coordinated clocks,
   interrupted FLIP, transform/3D topology, scroll ranges and responsive rebuilding.
+- [Scroll media and verification](references/scroll-media-and-verification.md)
+  handles asynchronous media readiness, delivered encodes and scene-relative
+  inspection when scroll drives video or image sequences.
 - [Animated surfaces and procedural graphics](references/surface-and-procedural-craft.md)
   covers gradients, color, Canvas lifecycle and frame-based export boundaries.
 - [Rendered examples](references/rendered-examples.md) provides two contrasting,

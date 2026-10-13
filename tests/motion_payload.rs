@@ -237,6 +237,64 @@ fn motion_payload_installed_cli_preserves_both_target_assets_and_refuses_drift()
     assert!(!copies["codex"].exists());
 }
 
+#[test]
+fn design_craft_references_and_specimens_survive_embedded_and_both_host_delivery() {
+    let installed = Installed::new();
+    let root = installed.project.to_str().unwrap();
+    installed.run(&["project", "init", "--project", root, "--target", "all"]);
+    let skills = [
+        "interface-design",
+        "motion-design",
+        "advanced-motion",
+        "page-transitions",
+        "graphic-design",
+        "svg-creation",
+        "svg-animation",
+    ];
+    let catalog = Catalog::embedded().unwrap();
+    for skill in skills.iter().filter(|skill| **skill != "interface-design") {
+        installed.run(&["project", "add", "--project", root, "--skill", skill]);
+    }
+    installed.run(&["project", "sync", "--project", root]);
+    for skill in skills {
+        let payload = catalog.payload(skill).unwrap();
+        let source = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("skills")
+            .join(skill);
+        for (path, bytes) in read_payload_directory(&source, &[]).unwrap() {
+            assert_eq!(payload.files[&path], bytes, "embedded {skill}/{path}");
+            let read = installed.run(&["catalog", "read", skill, "--path", &path]);
+            assert_eq!(read["content"].as_str().unwrap().as_bytes(), bytes);
+            assert_eq!(read["sha256"], sha256(&bytes));
+        }
+        assert_eq!(
+            payload.files[".upstream-licenses/NOTICE.md"],
+            fs::read(Path::new(env!("CARGO_MANIFEST_DIR")).join("docs/third-party-notices.md"))
+                .unwrap(),
+            "offline provenance must accompany {skill}"
+        );
+        for target in ["codex", "claude"] {
+            let base = if skill == "interface-design" {
+                &installed.paths.home
+            } else {
+                &installed.project
+            };
+            let copy = base
+                .join(project::target_skills_dir(target).unwrap())
+                .join(skill);
+            assert_eq!(
+                read_payload_directory(&copy, &[RECEIPT]).unwrap(),
+                payload.files,
+                "complete {target} {skill} payload"
+            );
+        }
+    }
+    assert_eq!(
+        installed.run(&["project", "doctor", "--project", root])["ok"],
+        true
+    );
+}
+
 #[tokio::test]
 async fn motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources() {
     let installed = Installed::new();

@@ -50,6 +50,11 @@ worked examples show how to choose motion from actual state transitions. Reuse
 the project's tokens and components; the suggested values are tuning starting
 points, not required defaults.
 
+For a review spanning several interactions, use the optional
+[contextual motion audit](references/motion-audit.md) to locate findings and compare
+actual playback. Its finite timing specimen separates animation time from replay;
+a report or specimen does not replace fixing and testing the application.
+
 1. Identify what changes, what the motion communicates, how often users encounter
    it, and whether it delays an action. Sometimes the best change removes motion.
 2. Inspect the current tokens, animation APIs, and component lifecycle. Select

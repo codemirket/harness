@@ -237,9 +237,13 @@ async function failureProbe(browser) {
 }
 (async () => {
   await fs.mkdir(output,{recursive:true});
-  const browser = await chromium.launch({headless:true});
+  const browser = await chromium.launch({headless:true,
+    ...(process.env.MIRKET_BROWSER_EXECUTABLE ? {executablePath:process.env.MIRKET_BROWSER_EXECUTABLE} : {})});
   result.browser = browser.version(); result.platform = `${process.platform}/${process.arch}`;
   try {
+    if (selection === 'craft') {
+      await require('./browser_design_craft.cjs')({browser,base,output,result,snapshot});
+    }
     for (const scene of ['solstice','signal']) {
       for (const viewport of [{width:1440,height:1000},{width:390,height:844}]) {
         for (const reduced of [false,true]) {
