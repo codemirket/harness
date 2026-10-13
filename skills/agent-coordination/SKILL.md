@@ -1,9 +1,46 @@
 ---
 name: agent-coordination
-description: Plan and run parallel agent work with bounded ownership, dependency tracking, integration, and evidence. Use for substantial decomposable work or explicit collaboration.
+description: Coordinate distinct professional agents with task-scoped assignments, independent judgments, dependencies, evidence-based disagreement resolution and integrated verification. Use for substantial multidisciplinary work or explicit collaboration.
 ---
 
 # Agent coordination
+
+## Work as distinct professionals
+
+For substantive work crossing disciplines, derive the affected boundaries from
+the user outcome and sources, then use Mirket's `team_facets` and `team_plan`.
+The returned roster supplies complementary professional perspectives and methods.
+Choose applicable boundaries with task-specific reasons; do not fill every role
+or assume adjacent roles are needed merely because they share a skill tag.
+
+Dispatch each selected specialist to a separate host agent when its assignment
+can be performed independently. The coordinator may own the lead role. Queue
+assignments within actual concurrency limits; dependencies determine when an
+implementer or reviewer can use another's artifact. With unavailable independent
+agents, state that limit and distinguish sequential perspectives from independent
+professional contributions. Never invent a worker, credential or review.
+
+Give the specialist its professional profile and relevant skill body, the actual
+objective, raw source material, owned paths, allowed effects, dependencies and
+observable return requirements. Ask it to apply its own method, consider credible
+alternatives and identify evidence that would change its conclusion. For a fresh
+review, withhold the author's recommendation until the reviewer has formed an
+initial view when the task permits; retain necessary requirements and context.
+
+Each professional returns an artifact or recommendation, source-linked evidence,
+tradeoffs, uncertainty, checks, and a handoff to affected peers. It should challenge
+unsupported assumptions in its domain and state when it has no supported objection.
+Do not manufacture conflict or force agreement. The integrator resolves disputes
+against the user's constraints and observed evidence, records consequential dissent,
+and verifies the combined result. Reopen affected work when a peer exposes a real
+defect. A majority vote, role title or plausible narrative does not prove quality.
+
+Use one coordinator for shared Mirket task mutations and revision numbers. Read
+each selected body through task-bound delivery and provide it to its worker; keep
+the roster, actual host agent IDs, ownership, dependency status and contribution
+paths in the existing task record. Attach the roster and meaningful contribution
+evidence before completion. Mirket validates delivery and artifact consistency;
+the host observes execution and assesses each professional's work.
 
 Use the selected host's subagents as the normal delegation path when available.
 Verify actual tools, concurrent slots, filesystem sharing and messaging permissions;

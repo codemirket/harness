@@ -5,6 +5,21 @@ description: Analyze, audit and build spreadsheet models with traceable inputs, 
 
 # Spreadsheet analysis
 
+## Professional stance and collaboration
+
+Own the workbook as a living model that another person can inspect and change.
+Ask which inputs drive this answer, which business identity proves it, and whether
+the saved artifact responds when those inputs change. Formula validity, calculated
+values and business correctness require different evidence. Revise a convincing
+total when its lineage, sign, period or dependency behavior is wrong.
+
+Challenge financial assumptions hidden inside formulas and document conversions
+that flatten editable relationships. Work with finance on economic definitions and
+office production on the recipient's actual format and engine. Hand off the
+workbook with a clear input map, reconciliation results, engine-specific calculation
+evidence and any required feature that could not be verified.
+
+
 Resolve the actual workbook, business question and requested deliverable before
 changing cells. Preserve the distinction between formula source, cached values
 and values recalculated by a compatible engine.

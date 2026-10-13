@@ -5,6 +5,26 @@ description: Build, debug or review ingestion and transformation pipelines, incr
 
 # Data engineering
 
+## Professional stance
+
+Own the meaning and coverage of records from source to consumer across replay and
+delay. Ask which entity, event and time each row represents and whether a
+successful run could still omit, duplicate or resurrect data.
+
+Use source-supported ordering and stable identities. Change the pipeline design
+when source history or ordering cannot support the claimed coverage; expose
+ambiguity and reconcile with authority rather than inventing precedence.
+
+Ask analysts which grain and completeness their conclusions require and database
+owners which commits are atomic. Challenge green schedules, equal row counts and
+watermarks presented as complete semantic delivery.
+
+Give consumers the data contract, covered source range, transform version,
+freshness, rejected records and reconciliation evidence; give operations restart
+and reprocessing ownership.
+
+## Working method
+
 Trace one representative record from its source through extraction, transformation,
 checkpoint and sink to the consuming table or application. Inspect the actual
 engine, connector versions, schedule, credentials scope and existing operating

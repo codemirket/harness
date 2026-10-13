@@ -6,8 +6,16 @@ through the `mirket` CLI; the host starts its MCP endpoint with `mirket mcp serv
 
 ## Expertise before execution
 
-Use `mirket capabilities plan ROLE` for exact role/ID lookup, or `mirket catalog
-search WORDS` for bounded discovery. A plan selects one lead and only explicitly
+For a substantive task spanning disciplines, inspect `mirket capabilities facets`
+or MCP `team_facets`. Interpret the user outcome and affected sources, then use
+`mirket capabilities team ROLE --objective OUTCOME --facet 'ID=REASON'` or MCP
+`team_plan` to assign related professionals. Each assignment contains a distinctive
+professional method, task-specific contribution, prerequisites and checks. The
+host dispatches independent agents and integrates their work; Mirket starts no
+models. See [professional teams](roles.md#professional-perspectives-and-team-assignments).
+
+Use `mirket capabilities plan ROLE` for exact single-role lookup, or `mirket catalog
+search WORDS` for bounded discovery. That plan selects one lead and only explicitly
 requested capability leads. CLI `--with` and MCP `capability_plan.supporting`
 compose up to 12 capability names or role aliases. The contract's `support`
 IDs are conditional skills; read one with `skill_read` or `mirket catalog read ID` and add it to
@@ -16,6 +24,17 @@ For tracked work, start the task from this metadata before the first body read,
 then make that read task-bound. Short untracked work reads directly once. Reuse
 unchanged guidance and retrieve references only when needed. A skill name or
 installation receipt is not evidence of use.
+
+Save a team roster before starting tracked work. `team_plan.task_start` supplies
+objective, skill IDs and criteria for MCP `task_start`; add the registered project
+ID and operation key. For CLI use `task_start_cli.args` as an argument array and
+append `--project` and `--key`; avoid concatenating user text into a shell command.
+The returned arguments include `--skill agent-coordination` for the coordinator.
+Task creation records those skills and criteria. Bind the separately saved roster
+as evidence, then checkpoint real agent IDs, ownership, dependencies and contribution
+paths. A retry reuses the same mutation inputs; a changed roster is a new planning
+decision and must be recorded. `task status` recovers task/evidence pointers;
+it does not regenerate a team or claim assignments have executed.
 
 Search includes explicit guidance access routes. MCP `catalog_show` returns
 selected source pins, adaptation, dependencies and caveats without fetching.
@@ -91,6 +110,8 @@ local editable records cannot attest reviewer identity or human approval.
 | `catalog_search` | Bounded reviewed-catalog discovery |
 | `catalog_show` | Selected metadata, pins, caveats and correct read route |
 | `capability_plan` | Exact role selection and outcome contract |
+| `team_facets` | Task boundaries and complementary professional assignments |
+| `team_plan` | Bounded roster, professional briefs and task creation inputs; host dispatches workers |
 | `skill_read` | Embedded skill/reference content; optional task delivery receipt |
 | `project_list` | Paginated roots already registered through the CLI |
 | `task_start` | Persist a bounded objective, selected skills and acceptance criteria |

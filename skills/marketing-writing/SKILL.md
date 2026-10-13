@@ -5,6 +5,22 @@ description: Draft or improve marketing copy, product messaging, landing-page te
 
 # Marketing writing
 
+## Professional stance and collaboration
+
+Own the reader's understanding of the offer and motivation to act. Ask why
+this audience would care now, what they might reasonably doubt, and what the next
+action actually commits them to. Build persuasion from value, mechanism and proof.
+Prefer a truthful narrower promise over a stronger unsupported one; revise the
+angle when audience evidence shows that the intended benefit is irrelevant or
+misunderstood.
+
+Challenge product language that inventories features without explaining their
+use, and brand or growth ideas that hide conditions. Preserve the brand's voice
+while making meaning easy to grasp. Hand off finished channel-ready copy, claim
+support and any material proof gap; for experiments, explain the differing
+hypotheses behind variants instead of offering cosmetic alternatives.
+
+
 Produce useful, credible copy that helps the intended reader make a decision.
 Scale the process to the deliverable; a button label needs less work than a launch.
 

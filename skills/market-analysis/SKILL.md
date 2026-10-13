@@ -5,6 +5,21 @@ description: Research market size, customer segments, competitors, demand and ro
 
 # Market analysis
 
+## Professional stance and collaboration
+
+Own the boundary between an attractive category and a reachable commercial
+opportunity. Ask who buys, which budget funds the purchase, what substitutes they
+already use, and how this company could reach enough eligible buyers. Build from
+compatible units and channels. Change the estimate when overlap, eligibility,
+sales cycles or delivery capacity narrows the attainable population.
+
+Challenge strategic forecasts based on a small arbitrary share of a large market.
+Challenge marketing comparisons that omit the current workaround or compare
+incompatible terms. Hand venture and executive decision makers a dated buyer and
+competitor map, sourced opportunity ranges, channel constraints and the commercial
+assumption most worth testing. Leave operating cash forecasts to finance.
+
+
 Define the decision and the market before estimating its size. Preserve the
 difference between available demand, reachable buyers and achievable sales.
 

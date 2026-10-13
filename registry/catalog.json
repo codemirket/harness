@@ -207,7 +207,7 @@
       "name": "skill-catalog",
       "scope": "global",
       "category": "catalog",
-      "description": "Select and read the specialist workflow before substantive engineering, design, research, business, finance, translation or document work. Covers cash-flow and budget analysis, localization, product and marketing decisions, data and spreadsheets, software and operations. Use for capability discovery and project registration; skip trivial edits, single-sentence translations and unchanged selections already read for the current task.",
+      "description": "Select specialist guidance and compose professional teams from task boundaries; inspect role methods, assign complementary expertise and register needed project skills.",
       "delivery": "embedded",
       "path": "skills/skill-catalog",
       "informed_by": [
@@ -267,7 +267,8 @@
         "anthropic"
       ],
       "dependencies": [
-        "Existing task tools; no bundled runtime dependencies."
+        "Running app and browser with viewport, interaction and screenshot inspection; use existing tokens/components. Optional Penpot supports editable design documents, not application behavior.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Installed by platform setup; use only when its trigger matches."
@@ -298,7 +299,8 @@
         "ecc"
       ],
       "dependencies": [
-        "Existing task tools; no bundled runtime dependencies."
+        "Approved offer and customer evidence plus the actual channel preview/editor; analytics access only for measured outcome claims.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Installed by platform setup; use only when its trigger matches."
@@ -327,7 +329,8 @@
         "anthropic"
       ],
       "dependencies": [
-        "Existing task tools; no bundled runtime dependencies."
+        "Owning source/API and executable documentation examples; project Markdown renderer or available native document workflow for the requested format.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Installed by platform setup; use only when its trigger matches."
@@ -383,7 +386,8 @@
         "superpowers"
       ],
       "dependencies": [
-        "Use the project’s existing tools and conventions."
+        "Project test runner and representative fixtures; actual browser or native runtime for journeys, stable screenshot conditions for visual comparison and assistive technology for relevant claims.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original focused guidance; select for a demonstrated project need."
@@ -415,7 +419,8 @@
         "archify"
       ],
       "dependencies": [
-        "Use the project’s existing tools and conventions."
+        "Repository search, source/history and runnable affected consumer checks; validate derived dependency graphs against source before using them.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original focused guidance; select for a demonstrated project need."
@@ -442,7 +447,8 @@
         "taste"
       ],
       "dependencies": [
-        "Use the project’s existing tools and conventions."
+        "Actual browser/device with controllable input, playback and motion preference; existing CSS/WAAPI or project animation library. Frame/video work selects the advanced-motion runtime route.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original focused guidance; select for a demonstrated project need."
@@ -530,7 +536,8 @@
         "marketing"
       ],
       "dependencies": [
-        "Use the project’s existing tools and conventions."
+        "Unit-level assignment/exposure and outcome data plus the existing analysis runtime or experiment platform; a calculator must support the actual randomization and stopping design.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original focused guidance; select for a demonstrated project need."
@@ -586,7 +593,8 @@
         "marketing"
       ],
       "dependencies": [
-        "Use the project’s existing tools and conventions."
+        "Authorized recordings, transcripts, notes or observed sessions with stable evidence locators; use the existing research repository or analysis table.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original focused guidance; select for a demonstrated project need."
@@ -9732,7 +9740,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Available search/retrieval and primary-source access; document extraction/OCR for supplied scans and a reproducible query/screening ledger when systematic coverage is requested.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9774,7 +9783,7 @@
       "name": "agent-coordination",
       "scope": "global",
       "category": "collaboration",
-      "description": "Plan and run parallel agent work with bounded ownership, dependency tracking, integration, and evidence. Use for substantial decomposable work or explicit collaboration.",
+      "description": "Coordinate distinct professional agents with task-scoped assignments, independent judgments, dependencies, evidence-based disagreement resolution and integrated verification.",
       "delivery": "embedded",
       "path": "skills/agent-coordination",
       "license_files": [
@@ -9828,7 +9837,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Named OS/framework SDK and build tools, development runtime and packaged application; IPC/process diagnostics and signing tools only for the requested delivery scope.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9850,7 +9860,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Existing CI/build system, immutable artifact store and target deployment CLI/API; actual health/business signals and a representative recovery environment.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9876,7 +9887,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Actual database versions, migration runner/history and engine client; isolated representative data, concurrent writers and backup/restore tools for relevant recovery checks.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9898,7 +9910,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Prefer available native document/presentation/spreadsheet tools; otherwise an approved authoring library, renderer and fonts. Formula results require a calculation engine.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9945,7 +9958,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Installed protocol SDK and a real client/transport harness; authorized tool fixtures, process diagnostics and native host registration only when requested.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9969,7 +9983,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "User-selected model/provider, executable application adapter, representative evaluation data and trace/cost instrumentation; authorized retrieval stores and tools where the feature uses them.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -9993,7 +10008,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Existing framework/build/test toolchain and real browser; controllable network/request timing, session state and server rendering runtime where affected.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -10017,7 +10033,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use existing host tools and the project toolchain; additional runtimes are separate from registration."
+        "Client for the actual database engine/version, representative schema/data and EXPLAIN/locking diagnostics; isolated concurrency and restore fixtures when required.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow. Verify version-specific behavior in the target environment."
@@ -10042,7 +10059,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use available host tools and current project conventions."
+        "Authorized target and principal/resource fixtures, relevant source and request/runtime probes; use existing configured scanners only for claims they can substantiate.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original personal guidance; choose the sections relevant to the task."
@@ -10066,7 +10084,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use available host tools and current project conventions."
+        "Current requirements, dependencies and project/task record; use Mirket task state for registered substantial work and the existing issue system when authorized.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original personal guidance; choose the sections relevant to the task."
@@ -10089,7 +10108,8 @@
         "docs/third-party-notices.md"
       ],
       "dependencies": [
-        "Use available host tools and current project conventions."
+        "URL retrieval or browser/crawler plus current provider documentation; Search Console, logs and analytics only when actually accessible.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original personal guidance; choose the sections relevant to the task."
@@ -13181,7 +13201,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available project tools and source evidence; no additional runtime is required for registration."
+        "Current product constraints, user evidence and metric definitions; existing product/task records and authorized research or analytics access.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow; source quality and actual task verification determine the result."
@@ -13210,7 +13231,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available project tools and source evidence; no additional runtime is required for registration."
+        "Authorized source data with schema and grain; executable SQL, notebook, script or native spreadsheet calculation environment suitable for reproducible analysis.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Original portable workflow; source quality and actual task verification determine the result."
@@ -13239,7 +13261,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Actual service framework/runtime, isolated datastore and controlled downstream dependencies; request, worker and transaction diagnostics for affected contracts.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13266,7 +13289,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Current topology and measured traffic/capacity data; actual metrics/traces plus bounded load, fault and recovery tools for the named runtime.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13293,7 +13317,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Existing infrastructure-as-code/provider CLI and exact account/environment context; state/plan inspection and isolated validation before authorized apply.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13320,7 +13345,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "User-selected project toolchain and versioned generator if needed; inspect generation scripts and use a staging directory before integration.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13347,7 +13373,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Profiler and load/query tools for the actual runtime; controlled comparable data/workloads with correctness checks and resource measurements.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13374,7 +13401,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Approved source assets/tokens or a proposed direction, usable fonts and image/vector/layout tools; actual specimen renderer at required sizes and backgrounds.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13402,7 +13430,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Named native or mobile-web platform with preview/simulator and actual app; physical device for touch, gestures, system keyboard and hardware-dependent claims.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13430,7 +13459,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use the existing project toolchain; registration installs no runtime or dependencies."
+        "Current operating, customer and financial evidence; reproducible calculations for allocation and scenario decisions using existing analysis tools.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the worked reference and verify the actual result; authored guidance does not establish task quality or production readiness."
@@ -13458,7 +13488,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Authorized financial inputs with accounting basis, period, units and currency; calculator/script or spreadsheet calculation engine plus current jurisdiction sources where needed.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13486,7 +13517,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Current primary market sources with dates, geographies and definitions; authorized customer data and reproducible market-sizing calculations.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13514,7 +13546,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Customer/problem evidence, resource budget and unit-economics calculation; research or experiment tools matched to the chosen test and authorized contact/spend.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13541,7 +13574,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Source text, target locale and glossary plus format-aware diff/parser checks; actual UI/document renderer for layout and bidirectional-text claims.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13568,7 +13602,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Available native workbook/live-session tool or file authoring library; actual calculation engine and renderer with support for the workbook features being preserved.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13595,7 +13630,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Available native image generation/editing for bitmap work; svg-creation plus browser or optional Inkscape for vectors; optional Penpot for supported editable design documents. Verify chosen runtime before production.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13629,7 +13665,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Current architecture and owner/dependency information; existing delivery records and runnable consumer/integration checks for the chosen sequence.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13656,7 +13693,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Actual platform SDK/build tools, simulator/emulator and application runtime; devices, signing and service fixtures only for the requested native behavior.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13683,7 +13721,8 @@
         "claude"
       ],
       "dependencies": [
-        "Use available host or project tools; registration installs no runtime, account or dependencies."
+        "Actual OS/network/service diagnostics with authorized target access; DNS, TLS and application-path probes plus recovery tools for consequential changes.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
@@ -13719,7 +13758,8 @@
         "lineage"
       ],
       "dependencies": [
-        "Use the actual project runtime and authorized fixtures; the skill supplies methods, not native tools or external permissions."
+        "Actual source/sink clients, transformation engine and orchestrator; isolated representative data with checkpoints, lineage and freshness observations.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Source inspection, execution, measured outcomes and human acceptance remain distinct evidence."
@@ -13750,7 +13790,8 @@
         "accessible"
       ],
       "dependencies": [
-        "Use the actual project runtime and authorized fixtures; the skill supplies methods, not native tools or external permissions."
+        "Real browser/native app and keyboard inspection; available accessibility tree/scanner such as optional axe-core, plus actual assistive technology for claims requiring it.",
+        "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
         "Source inspection, execution, measured outcomes and human acceptance remain distinct evidence."

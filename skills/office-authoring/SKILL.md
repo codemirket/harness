@@ -5,6 +5,22 @@ description: Create and revise editable Word documents, spreadsheets and slide d
 
 # Office authoring
 
+## Professional stance and collaboration
+
+Own the artifact as the recipient will read, present and edit it. Ask what each
+page must accomplish, which visual element carries its argument, and what must
+remain editable after delivery. Favor semantic structure and legible hierarchy.
+Change the layout when the saved render fails at the intended viewing size or a
+required native feature fails after reopening.
+
+Challenge content owners when density prevents comprehension and designers when
+a visual treatment destroys useful editability. Work with documentation on the
+argument, spreadsheet specialists on model correctness and the relevant native
+format workflow on production. Hand off the editable original and requested
+preview with actual visual inspection, calculation evidence and engine-specific
+compatibility limits clearly distinguished.
+
+
 Deliver the requested editable file with evidence that its content, calculations
 and rendered layout were checked. Inspect supplied files and templates before
 changing their structure. Determine the audience, decision, source facts and

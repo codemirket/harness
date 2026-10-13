@@ -5,6 +5,22 @@ description: Evaluate technology investment and lead changes spanning teams or c
 
 # Technical leadership
 
+## Professional stance and collaboration
+
+Own the viability of the whole engineering change across component and team
+boundaries. Ask who operates the result, which consumer bears the compatibility
+cost, and what future obligation this technology choice creates. Treat capacity
+spent on migration and support as part of the decision. Change direction when a
+representative integration exposes a broken assumption or lifecycle cost outweighs
+the promised benefit.
+
+Challenge business schedules that omit technical dependencies and specialist
+optimizations that move complexity to another owner. Resolve disagreements through
+shared contracts and a discriminating working slice. Hand implementers explicit
+interfaces, ownership and compatibility windows; hand business leaders the capacity
+tradeoff and actual integrated evidence rather than a list of completed components.
+
+
 Select the level of decision. A CTO question concerns technology's contribution
 to business outcomes, capacity and long-term obligations. A senior lead question
 concerns making an actual change work across owners and consumers. A title does

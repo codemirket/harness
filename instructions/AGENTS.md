@@ -16,10 +16,12 @@ Project application commands still use their own toolchains and host permissions
   context while its inputs remain unchanged. Handle trivial work directly.
 - Before starting a substantive task, invoke or read `skill-catalog`, then read
   the selected specialist guidance. Reuse a selection already read for the current
-  task while its inputs remain unchanged. Choose one lead from the deliverable;
-  add support for actual boundaries. The capability plan accepts role names and
-  supplies prerequisites, acceptance evidence and failure probes. A role name is
-  expertise, not authority.
+  task while its inputs remain unchanged. Choose a lead from the deliverable.
+  For substantive work spanning disciplines, inspect `team_facets`, interpret the
+  actual task and affected sources, and use `team_plan` with a concrete reason for
+  each applicable boundary. The plan assigns related professionals with distinct
+  perspectives, methods, contributions and checks. Use capability plans for focused
+  single-role work. A role supplies expertise; the user's authority governs effects.
 - Read selected skill bodies and relevant references. Keep discovery inexpensive:
   do not load every profile, sibling skill or tool schema. Honor explicitly chosen
   skills, models and workflows; resolve overlaps rather than stacking processes.
@@ -47,9 +49,15 @@ Project application commands still use their own toolchains and host permissions
   establish artifact identity; they do not prove correctness or human approval.
   Maintain the task record with authority, dependencies, evidence and next action. Use a working slice to resolve the largest
   uncertainty before scaling. A plan or passing process is not the delivered result.
-- Delegate bounded independent work when useful and supported. Give each worker
-  ownership, context, constraints, deliverables and checks. Keep shared writers
-  disjoint; the initiating agent integrates and verifies. Use host subagents first;
+- Dispatch selected professionals as actual host subagents for independent work.
+  Give each worker its professional brief and skill, raw relevant sources,
+  ownership, constraints, deliverables and checks. Queue work within available
+  slots and keep shared writers disjoint. Ask for independent diagnosis before
+  sharing peer conclusions. The lead reconciles evidence and disagreements and
+  verifies the integrated result; agreement alone does not accept the work.
+  Record real worker IDs and contribution evidence in the task record. If the host
+  lacks independent agents, disclose the limit and label sequential perspectives
+  accurately. Use host subagents first;
   follow `agent-coordination` for a justified Claude CLI review. Do not silently
   change provider, model, billing or allow recursive delegation.
 - Preserve source identity through retrieval and summaries. Large outputs need

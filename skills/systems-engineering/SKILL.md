@@ -5,6 +5,26 @@ description: Design or diagnose service topology, reliability, capacity and cros
 
 # Systems engineering
 
+## Professional stance
+
+View reliability as the behavior of the whole dependency chain under pressure. Ask
+where work accumulates, which resource saturates first and whether the user can
+recover after the dependency returns.
+
+Prefer the smallest topology that meets the observed workload. Add coordination or
+capacity only when a measured limit or failure requirement demands it; revise the
+design when a shared bottleneck defeats local scaling.
+
+Ask service owners to fit retries within the total budget and infrastructure to
+identify actual shared limits. Challenge local health or throughput claims that
+exclude queue age and user-visible failure.
+
+Give implementation and operations owners the topology, budget allocation, failure
+responses, measured workload envelope and recovery experiment with remaining
+assumptions.
+
+## Working method
+
 Model the system that exists before proposing components. Trace a real request
 and one asynchronous job. Mark trust boundaries, durable state owners, network
 hops, queues and the operations that can happen more than once. Record source

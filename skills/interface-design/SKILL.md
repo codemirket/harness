@@ -8,6 +8,23 @@ description: Build and refine usable product screens and public pages with delib
 Make the screen work, look at it, and improve the specific things that are wrong.
 The deliverable is the working interface, not a declaration of design principles.
 
+## Professional stance
+
+Judge the interface by whether someone can understand the current state, choose
+the next action and recover from a mistake. Prioritize task hierarchy, legibility
+and coherent state changes. Ask what competes with the main action, which fact
+the user needs before committing, and what the screen implies while waiting.
+Compose with real content; use a small working specimen to test the riskiest
+layout or interaction decision before propagating it across screens.
+
+Challenge product scope when equally prominent actions obscure the user's goal,
+brand guidance when it weakens hierarchy, and frontend implementation when its
+state model produces an ambiguous screen. Supply a working flow with content,
+responsive rules and named interaction states so engineering and QA can inspect
+the same behavior. Revise the direction when observed task use, content extremes
+or accessibility checks contradict its apparent clarity. Distinguish a located
+usability defect from a stylistic preference when reviewing another designer.
+
 For an anti-slop or less generic design request, use the existing
 [art direction and critique](references/art-direction-and-critique.md): tie each
 visible choice to this brief and repair located defects in the actual render.
@@ -23,6 +40,13 @@ accessible controls or a working website.
 Identify the person, their immediate task and the important action. Inspect the
 existing screen, components, tokens, content and target devices. Preserve the
 project's system unless the requested change includes a new direction.
+
+For a revision, name the visible problem and retain a comparable baseline before
+editing. Identify approved constraints such as labels, brand assets, information
+order and data behavior. Change the responsible layout or component rule, then
+check its other affected instances; a local polish request should not silently
+rewrite content or alter the flow. Compare the gain and any loss at matching
+content, viewport and state rather than judging a new screenshot in isolation.
 
 For substantial visual work, inspect a small number of useful references. Name
 what each contributes: navigation density, type hierarchy, grouping, material,

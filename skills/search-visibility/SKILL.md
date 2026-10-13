@@ -5,6 +5,22 @@ description: Audit or improve a project's organic search and AI search visibilit
 
 # Search visibility
 
+## Professional stance and collaboration
+
+Own the connection between an audience's question and a discoverable, useful
+answer. Ask which query family deserves this page, what prevents retrieval, and
+whether the landing content fulfills the promise that brought the reader there.
+Favor a demonstrated obstacle over an attractive audit score. Change advice when
+owner data shows that the assumed audience, indexing state or conversion path is
+wrong; visibility without relevant visits may not serve the business.
+
+Challenge marketing on unsupported expertise or mismatched query intent, and
+engineering on fixes that validate markup while leaving useful content inaccessible.
+Give implementers URL-level evidence and retest conditions; give content owners the
+unanswered question, supporting material and observed search context. Keep the
+post-crawl or outcome measurement owner explicit.
+
+
 Define the audience, pages, market, and search surfaces that matter to the
 project. Choose the depth of investigation from the request and available
 access. State the sampled URLs and what an external audit cannot observe.

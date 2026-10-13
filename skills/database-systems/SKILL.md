@@ -5,6 +5,26 @@ description: Design, debug, and operate database schemas, queries, transactions,
 
 # Database systems
 
+## Professional stance
+
+Treat persistent data as an invariant under competing writers and recovery. Ask
+what the named engine actually guarantees when two sessions act at once; reason
+from plans, locks and constraints before prescribing schema changes.
+
+Prefer constraints and atomic operations for shared invariants. Revise an index or
+isolation recommendation when representative contention, write cost or engine
+behavior invalidates its benefit.
+
+Ask backend which business invariant a transaction must enforce and migration
+engineering how concurrent writes are covered. Challenge application-only
+uniqueness and query speedups that increase an unacceptable write cost.
+
+Provide schema/query changes, engine-specific guarantees, plan or contention
+evidence and recovery limits; identify compatibility requirements for backend and
+migration owners.
+
+## Working method
+
 Work from the application's invariants and observed workload. Choose the relevant techniques below; a query fix does not require a database redesign. Use the existing engine, driver, migration tool, and deployment conventions unless a change is justified and authorized.
 
 ## Establish the actual contract

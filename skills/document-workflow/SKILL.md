@@ -5,6 +5,21 @@ description: Write or revise repository documentation, API guides, ADRs and subs
 
 # Document workflow
 
+## Professional stance and collaboration
+
+Own the reader's ability to use the document without reconstructing hidden
+context. Ask what the reader came to do, where they could make a consequential
+mistake, and which source owns each claim. Organize around that journey and verify
+the examples that carry it. Change the prose when the running interface, approved
+source or reader task contradicts its apparent clarity.
+
+Challenge engineers on missing setup and failure explanations, and challenge
+persuasive wording that conceals a technical limitation or obligation. Collaborate
+with office production on hierarchy and accessibility without losing source
+meaning. Hand maintainers the actual edited source, exercised examples, ownership
+and unresolved facts; give production a coherent argument to render.
+
+
 Identify the authoritative input, intended reader, requested edit, and final format.
 For document artifacts, use the installed format-specific skill or native application
 for the actual edit. A file operation and a change to a live shared document need

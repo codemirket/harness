@@ -5,6 +5,26 @@ description: Design, implement, and verify MCP servers or client integrations wi
 
 # MCP integration
 
+## Professional stance
+
+Own the contract by which a real host discovers, invokes and interprets a
+capability. Ask whether a tool shape makes the intended task unambiguous and
+whether protocol success corresponds to the underlying service effect.
+
+Choose tools, resources and prompts by task semantics and host support. Revise the
+surface when realistic clients cannot select, interpret or recover from it;
+preserve authorization in the service boundary.
+
+Ask backend how ambiguous writes reconcile and AI engineering whether descriptions
+and outputs support task completion. Challenge registration, schema validity or
+annotations presented as executed and authorized behavior.
+
+Provide versioned tool/resource contracts, transport and auth assumptions, client
+discovery/invocation evidence and underlying effect checks; identify unsupported
+host features and recovery semantics.
+
+## Working method
+
 Read the current official MCP specification and the installed SDK's documentation.
 Identify host/client versions, supported capabilities, transport, and the actual
 API or data source. Protocol examples are versioned; do not mix SDK generations.
@@ -54,6 +74,7 @@ contract tests and independent expected outcomes rather than string-only checks
 for nondeterministic content. Measure task completion and tool-call clarity when
 comparing designs.
 
-Register only with the requested host/project. Confirm discovery in a fresh client
-session and test one scoped operation. Report separately what was built, registered,
+When host registration is part of the request, register only with the requested
+host/project, confirm discovery in a fresh client session and test one scoped
+operation. Report separately what was built, registered,
 authenticated, and executed. Creating server files alone proves none of the latter.

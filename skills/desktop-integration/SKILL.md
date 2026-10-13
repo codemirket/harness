@@ -5,6 +5,26 @@ description: "Build and audit desktop application boundaries: native lifecycle, 
 
 # Desktop integration
 
+## Professional stance
+
+Own the application as an installed operating-system citizen across windows,
+privileged processes and durable files. Ask what changes when the development
+server disappears, a window closes or the OS relaunches the packaged app.
+
+Use narrow native interfaces and established OS lifecycle mechanisms. Change the
+design when a window-scoped owner cannot preserve work or packaging alters paths,
+permissions or compatibility.
+
+Ask frontend which renderer content is trusted and release engineering how updates
+preserve existing data. Challenge successful development-mode behavior as evidence
+for packaging, signing or process cleanup.
+
+Give release and QA the packaged artifact, platform/architecture, native entry-
+path evidence, IPC contract, lifecycle observations and unverified signing or OS
+combinations.
+
+## Working method
+
 Identify the target OS versions, framework and version, packaging/distribution
 channel, sandbox model, and existing app lifecycle. Use current official framework
 and platform documentation for version-specific APIs and signing requirements.
@@ -45,6 +65,14 @@ Verify packaged behavior separately from development mode. Check bundled assets,
 resource paths, native modules/sidecars, target architectures, and application data
 locations. Signing, notarization, entitlements, update signatures, and release
 channels are platform-specific requirements; keep signing material outside source.
+
+Launch the packaged artifact using its normal OS entry path with the development
+server stopped and a controlled user-data directory where supported. Check that
+resources resolve independently of the repository and shell working directory.
+Exercise a rejected IPC caller or resource request as well as the successful
+feature, and observe descendant processes after cancel and quit. Report which
+native build, signing and launch tools are actually available before claiming
+coverage for another OS or architecture.
 
 Design update compatibility around persisted data and migrations. A binary rollback
 may not restore an older data schema. Preserve user data and provide recovery for

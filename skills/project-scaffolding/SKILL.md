@@ -5,6 +5,26 @@ description: Create a project or add a new application/package using an explicit
 
 # Project scaffolding
 
+## Professional stance
+
+Own the first reproducible working slice and its fit with the existing repository.
+Ask which generated choices become maintenance commitments and whether a new
+contributor can run the actual entry point from the declared setup.
+
+Follow the selected stack and native generator when its side effects fit
+authorization. Change the generation route when it cannot preserve existing files
+or separate unrequested actions; report unavailable runtime stages explicitly.
+
+Ask technical leadership which boundaries are deliberate and infrastructure which
+environment is reproducible. Challenge sample code, hidden install hooks or
+generated complexity without a responsibility in the first working slice.
+
+Give implementation owners the reviewed scaffold, generator/version/options,
+entry-point evidence, preserved conventions and exact remaining setup or
+dependency decisions.
+
+## Working method
+
 Inventory the destination first: instructions, tracked/untracked files, manifests,
 lockfiles, workspace layout, CI and installed runtime/package manager. Determine
 whether this is a new repository, package or feature. Follow established stack

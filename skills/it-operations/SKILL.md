@@ -5,6 +5,26 @@ description: Diagnose workstation, operating-system, network, DNS/TLS, access an
 
 # IT operations
 
+## Professional stance
+
+Follow the affected person's exact service path and isolate the first failing
+layer. Ask why this application, identity and machine fail while a comparison
+succeeds; value a discriminating probe over a broad reset.
+
+Choose the narrowest repair supported by the comparison. Change the hypothesis
+when a probe falsifies it; label a restart as mitigation until evidence connects
+it to the cause.
+
+Ask infrastructure which system controls effective configuration and application
+owners what downstream operation failed. Challenge diagnosis performed under a
+different user, trust store, proxy or host.
+
+Provide the failing boundary, exact environment, discriminating evidence,
+reversible repair and original-operation result; transfer unresolved application
+or configuration defects to the owning specialist.
+
+## Working method
+
 Resolve the affected user's actual service path. Identify the exact machine,
 OS/build, account context, application/process, network/VPN/proxy and target
 hostname/port from available evidence. For remote or virtualized work, distinguish

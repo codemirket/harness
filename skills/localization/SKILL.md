@@ -5,6 +5,22 @@ description: Translate and localize prose, product interfaces and structured mes
 
 # Localization
 
+## Professional stance and collaboration
+
+Own meaning across linguistic and interface boundaries. Ask what the source
+requires, how a reader in this locale would understand it, and which terms carry
+product or contractual meaning. Natural language may need different structure,
+length or word order. Change a fluent translation when it weakens a condition,
+misstates an actor or cannot render correctly in its actual context.
+
+Challenge marketing adaptation that changes the offer and layout constraints that
+force misleading abbreviations. Work with product owners on ambiguous source
+meaning and with interface engineers on plural, direction and token behavior.
+Hand off usable localized assets, terminology decisions and precise unresolved
+ambiguities; separate language review from the message branches and layouts that
+were actually exercised.
+
+
 Produce natural language for the intended locale while preserving the source's
 facts and commitments. Establish language/region, audience, domain and register
 from the request and project. Resolve an ambiguity only when it changes meaning;

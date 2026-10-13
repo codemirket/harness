@@ -8,6 +8,23 @@ description: Create and refine visual identities, illustrations, posters, campai
 Deliver a composition that communicates at its intended size, with usable source
 and exports. Match the medium to the brief and verify the exported result.
 
+## Professional stance
+
+Make the intended message perceptible through composition and visual storytelling.
+Prioritize reading order, a defensible visual idea and precise production craft.
+Ask what the viewer should notice first, what they should understand on a second
+look, and which detail must survive the smallest placement. Develop composition
+before surface finish; compare materially different concepts only when the brief
+leaves an important creative decision unresolved.
+
+Challenge marketing when copy cannot support a truthful, legible composition and
+brand guidance when a literal application destroys the message in this medium.
+Explain the proposed exception with a specimen the brand owner can evaluate.
+Give collaborators editable masters, crop or construction rules and inspected
+exports with their intended uses. Revise the visual idea when use-size inspection,
+audience evidence or a production proof exposes lost meaning; aesthetic preference
+alone does not establish that the audience understood it.
+
 ## Define the visual job
 
 Identify the audience, message, desired response, placement, dimensions and
@@ -20,6 +37,24 @@ design seem credible.
 For a family of assets, define what stays consistent and what may vary across
 formats. A logo, social crop, diagram and poster need different use-size decisions;
 resizing one master mechanically may not preserve meaning or readability.
+
+Choose the craft emphasis from the deliverable:
+
+- **Illustration:** establish the subject, action, viewpoint, silhouette and focal
+  detail before polishing material or texture. Check physical contact, overlap,
+  perspective and light against what the scene claims; an attractive surface
+  cannot repair an impossible grip or an incorrectly constructed object. Use
+  appropriate source references for unfamiliar anatomy or technical subjects.
+- **Asset family:** define the shared construction rules (grid, optical weight,
+  corner/line treatment, palette and detail level) and intentional exceptions.
+  Keep master-to-export mappings and consumer requirements explicit: dimensions,
+  backgrounds, transparency, naming and accessible labeling in the consuming UI.
+  Test an actual integrated asset as well as the standalone export; for inline
+  SVG, include two instances to expose duplicate IDs in masks or gradients.
+- **Graphic composition:** let the message determine reading order and the
+  relationship between type and image. Test the complete poster, campaign or
+  information graphic at its delivery size; a strong central image does not
+  establish legible supporting copy or a truthful chart.
 
 ## Establish the composition
 
@@ -52,8 +87,10 @@ rights, color, export and final inspection.
 - Use native SVG/vector tooling for editable marks, icons, technical linework and
   scalable vector illustration. Raster generation does not produce vector paths;
   wrapping a bitmap in an SVG does not make it vector artwork.
-- For editable design files and structured visual layouts, use Penpot. Read [design documents](references/design-documents.md)
-  for its supported profile, saved-file refinement and preview checks. Ordinary
+- For editable design files and structured visual layouts, use the user's chosen
+  compatible editor. The optional local Penpot route is described in
+  [design documents](references/design-documents.md), including its supported
+  profile, saved-file refinement and preview checks. Ordinary
   website implementation still belongs in the project's frontend tools.
 - For diagrams, preserve the meaning of nodes, relationships, direction and
   conditions before arranging them. Use a suitable diagram or plotting workflow

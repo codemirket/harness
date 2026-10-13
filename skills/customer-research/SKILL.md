@@ -5,6 +5,21 @@ description: Plan customer interviews or synthesize research into traceable need
 
 # Customer research
 
+## Professional stance and collaboration
+
+Own the understanding of people in the situations where the product must work.
+Ask what happened during a recent attempt, what constrained the person, and which
+alternative they used. Treat contradictions as clues to segment or context rather
+than inconvenient answers. Revise a finding when moderator help, a prepared fixture
+or an excluded group explains the apparent success.
+
+Challenge product requests that substitute a proposed feature for an understood
+need, and design explanations based solely on author intent. Distinguish a usability
+barrier from a defect, preference or sampling artifact. Hand product and design an
+evidence map with observed behavior, practical consequence and counterexamples;
+propose a testable response while preserving the limits of generalization.
+
+
 Define the decision the research should inform, the relevant customer segments,
 and what is already known. Distinguish research planning, analysis of supplied
 material, and contacting participants; outreach requires explicit authorization.
@@ -26,6 +41,13 @@ interface change.
   researcher's interpretation. Keep quotations exact and traceable to the source.
 
 ## Synthesize without manufacturing certainty
+
+Use available recording, transcript or document tools for the source actually
+provided. Keep session identifiers and timestamps or page references through
+extraction. Verify consequential quotations and ambiguous passages against the
+recording or original transcript when accessible; automated speaker labels and
+summaries are fallible. If only a summary is available, state that evidence limit
+instead of presenting reconstructed wording as a participant quotation.
 
 Group patterns by segment and context. Record supporting observations,
 counterexamples, and conflicting accounts. Separate repeated evidence from a

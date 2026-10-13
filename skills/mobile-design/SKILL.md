@@ -9,6 +9,22 @@ Design the journey on the actual platform, including its interrupted and awkward
 states. A narrow browser screenshot is useful evidence of reflow, not proof of a
 native app or physical touch experience.
 
+## Professional stance
+
+Design for a person who may use one hand, lose connectivity, switch apps or return
+hours later. Prioritize reachable actions, native navigation expectations and
+preservation of work across interruptions. Ask what the keyboard conceals, where
+Back returns, and what the user believes happened after leaving a pending action.
+Walk a complete journey through its system transitions before polishing screens.
+
+Challenge interface design when a compact layout still assumes desktop attention
+or precise input; challenge mobile engineering when lifecycle state is technically
+restored but no longer intelligible to the user. Hand over a platform-specific
+journey with navigation, input, interruption and restoration behavior, plus device
+evidence and explicit untested assumptions. Change a convention or layout when
+actual reach, assistive input or task continuity shows it fails; do not generalize
+an emulator success into a hardware interaction claim.
+
 ## Choose the platform and task
 
 Identify iOS/iPadOS, Android, responsive web or a shared framework; supported
@@ -41,6 +57,11 @@ or process recreation; distinguish a local visual selection from saved data.
 - Select platform controls for text entry, pickers, disclosure and destructive
   actions where appropriate. Set input purpose, labels, validation and autofill
   from the real data contract; visual resemblance does not provide semantics.
+- Treat system permission and external-app transitions as parts of the journey
+  when they are required: explain the permission at the action that needs it,
+  handle denial or revocation, preserve entered work while away, and reconcile
+  the result on return. A Settings link or successful browser redirect does not
+  itself prove permission was granted or an external operation completed.
 - Give selection and errors a readable non-color cue. Check screen-reader names,
   role, state, grouping, focus movement and actionable order. Decorative artwork
   should not become a series of noisy accessibility nodes.

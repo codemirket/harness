@@ -30,7 +30,7 @@ use tokio::{
 
 pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
-const GUIDE: &str = "Mirket coordinates expertise, task state and verification evidence. Use capability_plan or catalog_search to select metadata for one lead and conditional support. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
+const GUIDE: &str = "Mirket coordinates professional expertise, host-run teams, task state and verification evidence. For substantive cross-disciplinary work inspect team_facets, interpret the user outcome and affected sources, then call team_plan with a lead and task-specific reasons for applicable facets. Save the returned roster, dispatch its professionals with actual host subagents and integrate their evidence. For focused work use capability_plan or catalog_search. Planning and skill receipts do not establish independent execution. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All mutations require an idempotency key and expected revision. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
 
 #[derive(Clone)]
 pub struct MirketServer {
@@ -112,6 +112,23 @@ struct Plan {
     capability: String,
     /// Up to 12 supporting capability names or role aliases, such as Security Engineer.
     /// Optional skill IDs belong in skill_read, not here. Omit unrelated expertise.
+    #[serde(default)]
+    #[schemars(length(max = 12))]
+    supporting: Vec<String>,
+}
+
+#[derive(Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
+struct TeamPlan {
+    /// The actual user outcome, at most 4096 bytes. The host interprets its scope.
+    objective: String,
+    /// Lead capability name or role alias owning the integrated outcome.
+    primary: String,
+    /// Applicable task boundaries from team_facets, each with a concrete reason.
+    #[serde(default)]
+    #[schemars(length(max = 8))]
+    facets: Vec<crate::catalog::FacetSelection>,
+    /// Additional explicitly chosen capability names; aliases are deduplicated.
     #[serde(default)]
     #[schemars(length(max = 12))]
     supporting: Vec<String>,
@@ -254,6 +271,30 @@ impl MirketServer {
                 bail!("capability selection exceeds its limit");
             }
             catalog.capability_plan(&args.capability, &args.supporting)
+        })
+        .await
+    }
+
+    #[tool(
+        description = "Inspect task boundaries and their complementary professional assignments. Interpret the actual request and sources, then select only applicable facets with concrete reasons in team_plan.",
+        annotations(read_only_hint = true, open_world_hint = false)
+    )]
+    async fn team_facets(&self) -> CallToolResult {
+        self.run(move |_, catalog| Ok(catalog.team_facets())).await
+    }
+
+    #[tool(
+        description = "Build a task-scoped professional team from a lead role and justified task facets. Returns distinct perspectives, methods, assignment briefs, checks and task_start inputs. The host dispatches actual independent agents; this tool does not run models or grant permissions.",
+        annotations(read_only_hint = true, open_world_hint = false)
+    )]
+    async fn team_plan(&self, Parameters(args): Parameters<TeamPlan>) -> CallToolResult {
+        self.run(move |_, catalog| {
+            catalog.team_plan(
+                &args.objective,
+                &args.primary,
+                &args.facets,
+                &args.supporting,
+            )
         })
         .await
     }
@@ -583,6 +624,8 @@ pub async fn protocol_probe(
             "catalog_search",
             "catalog_show",
             "capability_plan",
+            "team_facets",
+            "team_plan",
             "skill_read",
             "project_list",
             "task_start",

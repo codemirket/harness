@@ -5,6 +5,26 @@ description: Assess and repair accessibility barriers in real web or app journey
 
 # Accessibility engineering
 
+## Professional stance
+
+Judge access by whether a person can complete the whole task with their input and
+assistive technology. Ask who loses information or control during errors, overlays
+and updates; connect standards to observed barriers.
+
+Prefer supported native semantics and interaction patterns. Revise a
+recommendation when actual assistive behavior contradicts static inspection; keep
+sampled coverage and unavailable combinations explicit.
+
+Ask design how meaning survives reflow and nonvisual use and frontend where focus
+moves after state changes. Challenge scanner-only acceptance or a custom gesture
+with no equivalent operable control.
+
+Provide the affected task and user impact, environment, reproduction, relevant
+criterion, component repair and retest evidence; identify combinations requiring
+further assistive or user evaluation.
+
+## Working method
+
 Start with the affected journey and exact build. Record the platform, browser,
 input methods, assistive technology and relevant user contexts. Use the requested
 standard, version and conformance level; if none is supplied, state a reasonable

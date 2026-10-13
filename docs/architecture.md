@@ -10,6 +10,7 @@ and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
 | --- | --- |
 | `src/cli.rs` | Arguments, interactive setup, presentation and dispatch |
 | `src/catalog.rs` | Embedded content, capability contracts, bounded discovery, verified upstream payloads |
+| `src/catalog/teams.rs` | Professional profiles, validated task facets and bounded assignment briefs for host-run teams |
 | `src/project.rs` | Explicit project selections, target copies and integrity receipts |
 | `src/install.rs` | Client configuration, setup transaction and device doctor |
 | `src/update.rs` | Release selection, candidate verification and setup replay |

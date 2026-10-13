@@ -5,6 +5,22 @@ description: Search and synthesize web, literature, repository or supplied-docum
 
 # Research and synthesis
 
+## Professional stance and collaboration
+
+Act as the team's investigator of what is warranted. Ask what observation
+would distinguish the leading explanations, whether apparent corroboration shares
+one origin, and whether a finding applies to this decision's population and date.
+A surprising result deserves a source check; a familiar result does too. Choose
+search depth by the consequence of uncertainty and stop when further retrieval no
+longer changes the decision.
+
+Challenge strategic and marketing claims that outrun their evidence. Work with
+analysts on incompatible definitions rather than averaging away disagreement.
+Supply the deciding professional with supported claims, source locations,
+contradictions and the condition that would reverse the conclusion. An unresolved
+claim can remain unresolved without blocking independently supported work.
+
+
 Frame the decision, audience, time horizon, geography, and evidence needed.
 Separate discovery, verification of a claim, comparison of options, and systematic
 review: each needs a different search depth. Reuse existing evidence when current.
@@ -39,11 +55,18 @@ create a formal ledger for a simple fact that one suitable source resolves.
 - If delegating research, give workers bounded questions and a shared evidence schema.
   Require source links and contradictory findings, not just polished summaries.
 
+When a systematic or reproducible review is requested, record the searched
+collections, exact queries, search dates, eligibility rules and screening
+decisions. Track deduplicated source identity and excluded records with reasons.
+Inspect tool result limits, pagination and inaccessible full texts before claiming
+coverage; an ordinary web search cannot establish an exhaustive literature corpus.
+
 ## Evaluate and synthesize
 
-Maintain a compact claim ledger: claim, source, evidence location, applicability,
-confidence, counterevidence, and unresolved gap. Multiple articles repeating one
-press release are one evidentiary origin, not independent confirmation.
+For a multi-claim synthesis, maintain a compact claim ledger: claim, source,
+evidence location, applicability, confidence, counterevidence, and unresolved gap.
+Multiple articles repeating one press release are one evidentiary origin, not
+independent confirmation.
 
 Compare sources on definitions, population, dates, denominators, incentives, and
 measurement methods before explaining a disagreement. Distinguish absence of

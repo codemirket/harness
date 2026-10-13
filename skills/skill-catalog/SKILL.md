@@ -1,6 +1,6 @@
 ---
 name: skill-catalog
-description: Select and read specialist guidance before substantive engineering, design, research, business, finance, translation or document work. Use for capability discovery and project registration; skip trivial edits and unchanged selections already read for the current task.
+description: Select specialist guidance and compose professional teams from task boundaries; inspect role methods, assign complementary expertise and register needed project skills. Skip trivial edits and reuse unchanged selections.
 ---
 
 # Mirket expertise
@@ -9,7 +9,34 @@ Use Mirket to discover and deliver relevant expertise. Start with the user's
 outcome and current project instructions. A professional role supplies expertise,
 not authority over accounts, spending, tools, deployment or model execution.
 
-## Select one lead
+## Select the lead and professional team
+
+Interpret the requested outcome and actual affected boundaries before selecting
+roles. For substantive work spanning disciplines, use `mirket capabilities facets`
+or MCP `team_facets`, then `team_plan` to assign complementary professionals.
+For example, a checkout change can involve Web Design, Frontend Engineering,
+Backend Engineering and Quality Assurance; add security or migration expertise
+when the actual trust or persisted-data boundary changes. Keyword mentions alone
+do not establish that work is in scope. Handle a focused single-role task directly.
+
+```sh
+mirket capabilities team "Frontend Engineer" \
+  --objective "Add a recoverable checkout flow" \
+  --facet "web-interface=The checkout screen and browser state change" \
+  --facet "service-contract=The order endpoint must reconcile retries"
+```
+
+The team plan returns each professional's perspective, priorities, method,
+decision rule, challenge and handoff, plus task-specific selection reasons and
+contributions. Dispatch the selected specialists through the host's actual
+subagents using `agent-coordination`; the coordinator can own the primary role.
+Pass raw source evidence and a bounded assignment so each develops its own
+judgment. Save the roster before creating the task; use the returned `task_start`
+fields for MCP or `task_start_cli.args` as CLI argv with a project and key. Bind
+the saved roster as task evidence and record actual worker IDs,
+dependencies and returned evidence through existing task checkpoints. A planned
+assignment is not an executed worker. Report a host limitation if independent
+agents are unavailable; sequential role perspectives do not establish independence.
 
 For an explicit role or outcome, inspect its contract. Use bounded keyword
 discovery for unfamiliar wording; do not load every full role contract to find one:
@@ -25,7 +52,8 @@ MCP `skill_read`. Short untracked work uses `mirket catalog read ID` directly.
 Read only the references needed for the next decision. Add support for real boundaries; do not read or install an
 entire profile just because several skills sound relevant. The plan reports the
 intended deliverable, prerequisites, acceptance evidence and a failure probe.
-It does not infer intent from arbitrary prose or prove that a tool is available.
+The host interprets intent; deterministic role and facet selection makes that
+choice reviewable. Neither plan proves that a tool or worker is available.
 `--with` accepts capability names, not arbitrary skill IDs. A contract's `support`
 list identifies optional skills: read the relevant ID with `mirket catalog read`
 and register it with `mirket project add --skill` when the boundary needs it.
@@ -53,8 +81,9 @@ mirket catalog read database-systems --path references/postgresql.md
 ```
 
 Search is bounded and paginated with `--offset` and `--limit`. Exact IDs and
-positive names, role aliases and tags precede description-only matches. Exact tag
-matches precede substring matches within the same delivery/relevance tier. At the
+positive names, role aliases and tags precede description-only matches. Within
+the same delivery/relevance tier, exact names and role aliases precede exact tags,
+which precede substring matches. At the
 same relevance level, authored guidance precedes installable alternatives and
 reference entries. This rank is a discovery aid, not automatic task selection.
 Search reports each entry's read route. MCP `catalog_show` provides selected pins,

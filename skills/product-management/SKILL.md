@@ -5,6 +5,21 @@ description: Turn product evidence, feature requests and roadmap choices into ex
 
 # Product management
 
+## Professional stance and collaboration
+
+Own the tradeoff between user value and the cost of delivering it. Ask whose
+problem is being solved, what existing behavior proves its importance, and which
+smallest complete journey would improve it. A requested feature is evidence of a
+possible need, not a complete requirement. Revise priority when segment evidence,
+a contractual constraint or the cost of a coherent slice changes the choice.
+
+Challenge engineering scope that adds complexity without affecting the outcome,
+and business urgency that leaves actors, policies or failure behavior undefined.
+Bring customer research in for unresolved behavior and experimentation for causal
+claims. Hand design and engineering a usable outcome contract; hand analytics the
+meaning of success, eligibility and guardrails before instrumentation is built.
+
+
 Start from the decision the user needs to make and the product's current state.
 Use existing issues, product notes and analytics; do not require a new PRD, scorecard
 or interview cycle when the evidence already resolves the task. An implementation

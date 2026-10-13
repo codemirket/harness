@@ -194,11 +194,23 @@ enum CatalogCommand {
 #[derive(Subcommand)]
 enum CapabilityCommand {
     List,
+    /// Inspect task boundaries that can select a professional team.
+    Facets,
     Show {
         name: String,
     },
     Plan {
         name: String,
+        #[arg(long = "with")]
+        supporting: Vec<String>,
+    },
+    /// Assign specialists from task boundaries; the host dispatches agents.
+    Team {
+        name: String,
+        #[arg(long)]
+        objective: String,
+        #[arg(long = "facet")]
+        facets: Vec<crate::catalog::FacetSelection>,
         #[arg(long = "with")]
         supporting: Vec<String>,
     },
@@ -298,6 +310,9 @@ enum TaskCommand {
         capability: String,
         #[arg(long = "with")]
         supporting: Vec<String>,
+        /// Additional selected skill IDs, such as agent-coordination for a team.
+        #[arg(long = "skill")]
+        extra_skills: Vec<String>,
         /// Use task-specific acceptance criteria, paired with --failure-probe.
         #[arg(long, requires = "failure_probe")]
         acceptance: Option<String>,
@@ -986,10 +1001,17 @@ fn dispatch(cli: Cli) -> Result<i32> {
         },
         Command::Capabilities { command } => match command {
             CapabilityCommand::List => serde_json::to_value(catalog.capabilities())?,
+            CapabilityCommand::Facets => catalog.team_facets(),
             CapabilityCommand::Show { name } => serde_json::to_value(catalog.capability(&name)?)?,
             CapabilityCommand::Plan { name, supporting } => {
                 catalog.capability_plan(&name, &supporting)?
             }
+            CapabilityCommand::Team {
+                name,
+                objective,
+                facets,
+                supporting,
+            } => catalog.team_plan(&objective, &name, &facets, &supporting)?,
         },
         Command::Project { command } => match command {
             ProjectCommand::Init { project, target } => {
@@ -1078,6 +1100,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     objective,
                     capability,
                     supporting,
+                    extra_skills,
                     acceptance,
                     failure_probe,
                     key,
@@ -1090,6 +1113,11 @@ fn dispatch(cli: Cli) -> Result<i32> {
                         let lead = catalog.capability(role)?.lead.clone();
                         if !skills.contains(&lead) {
                             skills.push(lead);
+                        }
+                    }
+                    for skill in extra_skills {
+                        if !skills.contains(&skill) {
+                            skills.push(skill);
                         }
                     }
                     let acceptance = acceptance.unwrap_or_else(|| primary.acceptance.join("; "));

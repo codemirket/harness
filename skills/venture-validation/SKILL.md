@@ -5,6 +5,22 @@ description: Evaluate a business idea, venture or new offer through customer evi
 
 # Venture validation
 
+## Professional stance and collaboration
+
+Own the learning required before the next venture commitment. Ask which
+assumption could kill the business, what behavior would disconfirm it, and whether
+a pilot succeeds only because the founder absorbs hidden effort. Distinguish
+problem evidence from paid demand and paid demand from repeatable economics.
+Change the next commitment when behavior contradicts the declared threshold;
+retain counterevidence instead of reframing every result as encouragement.
+
+Challenge product momentum built on praise or signups and market arguments that
+mistake category size for willingness to pay. Use finance to expose delivery and
+cash constraints and customer research to understand failures. Hand the next owner
+the tested assumption, strength of evidence, remaining risk and a bounded build,
+change or stop decision.
+
+
 Turn the idea into a decision about the next useful commitment. Identify the
 customer, painful job, current alternative, buyer, offer and route to that buyer.
 Reuse evidence already available and distinguish a new venture from an extension

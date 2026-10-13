@@ -1,8 +1,11 @@
 # Editable local design documents
 
-Use Penpot for UI design files, structured layouts and a design handoff that can
-be reopened in the self-hosted editor. Inkscape owns SVG illustration;
-website implementation stays with the project's frontend/browser workflow.
+Use this reference when the chosen route is Mirket's optional local Penpot
+package for UI design files, structured layouts and handoff. Preserve the user's
+chosen editor and requested portable format when another available workflow
+supports them; a local service handle alone does not fulfill a portable-file
+request. Inkscape supports SVG illustration; website implementation stays with
+the project's frontend/browser workflow.
 
 Inspect `mirket package status` and `mirket package probe PACKAGE --schemas
 --project /absolute/project` before promising a deliverable. Selection installs

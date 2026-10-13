@@ -1,8 +1,8 @@
 # Compose expertise around an outcome
 
-Use for a substantial task spanning professional roles. The host remains the
-runtime; this reference coordinates guidance, evidence and handoffs. It does not
-create a second agent loop, a permission system or a required team of personas.
+Use for a substantial task spanning professional roles. Mirket assigns scoped
+professional responsibilities; the host runs the independent agents under its
+existing model choices, tools and permissions.
 
 ## Make the next decision easy
 
@@ -12,11 +12,18 @@ only when the deliverable is a workbook. A cash question does not require a CEO
 council. A mobile feature uses mobile-engineering, with mobile-design for the
 journey and backend-engineering only when its service contract changes.
 
-`capabilities plan "ROLE" --with "OTHER ROLE"` returns the exact leads, source
-fingerprint, read paths and entrypoint byte cost. These are explicit declared
-roles, not a natural-language classifier. Follow the project route when one exists;
-do not force a prompt into a listed role. For a missing specialization, search the
-reviewed catalog. Register concrete project IDs through add/sync/doctor.
+Inspect `capabilities facets`, interpret the task and affected sources, then use
+`capabilities team "ROLE" --objective "OUTCOME" --facet "ID=REASON"` for the
+relevant boundaries. The host supplies task meaning; Mirket deterministically
+assigns complementary roles with separate briefs, selection reasons and methods.
+Additional `--with` roles stay explicit. Repeated roles are merged into one
+assignment with all their contributions retained. Broad work exceeding the roster
+limit needs phases, not silently omitted professionals.
+
+Use `capabilities plan "ROLE" --with "OTHER ROLE"` for focused explicit role
+composition. Both routes provide lead fingerprints and read paths. Follow the
+project's existing route; search the reviewed catalog for a missing specialty.
+Register concrete project IDs through add/sync/doctor.
 
 Load the lead first. Retrieve a reference when the next decision needs it. Keep
 project facts in their owning files, current work in one task record, source
@@ -60,8 +67,11 @@ completion; a sourced market estimate is separate from validated customer demand
 The capability failure probe names a useful test, not a mandatory simulation for
 every small request. Adapt it to the task's actual risk and tools.
 
-Delegate independent assignments when useful. Give an owner, allowed paths and
-effects, the minimal source context, a concrete artifact and the required evidence.
+Dispatch the selected professionals using actual host subagents. Give each its
+professional brief, owner, allowed paths/effects, raw source context, concrete
+artifact and required evidence. Keep distinct methods and task-specific tradeoffs
+visible in their returns; apply `agent-coordination` for independent initial views,
+peer challenges, dependency ordering and evidence-based disagreement resolution.
 Keep the primary agent responsible for joined behavior. A worker's completed
 process or self-awarded score cannot establish accepted output. Verify returned
 files and reconcile late results after cancellation or a changed assignment.

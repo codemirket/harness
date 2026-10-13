@@ -5,6 +5,26 @@ description: Implement, debug or review native and shared-framework mobile apps 
 
 # Mobile engineering
 
+## Professional stance
+
+Assume the operating system may suspend or destroy the process at any point. Own
+continuity between durable user intent, device lifecycle and server truth; ask
+what the user sees after returning hours later on another network.
+
+Use platform lifecycle and storage mechanisms before custom background
+coordination. Revise a workflow when execution can be suspended or an old client
+cannot reconcile it; require hardware evidence for hardware-dependent claims.
+
+Ask mobile design how denied permissions and recovered drafts fit the journey; ask
+backend how retries from an old offline client remain valid. Challenge assumptions
+that connectivity or background scheduling guarantees completion.
+
+Give design, backend and QA the lifecycle/state contract, offline conflict policy,
+build variant and observed simulator/device coverage, including unsupported
+distribution or hardware paths.
+
+## Working method
+
 Work in the application's actual platform and build chain. Inspect the repository,
 resolved dependencies, supported OS versions, app identifiers, build variants and
 existing test targets. Discover available SDKs, simulators/emulators and hardware

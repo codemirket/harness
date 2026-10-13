@@ -15,6 +15,9 @@ use crate::util::{
     atomic_write, ensure_directory, read_bounded, reject_symlink_components, sha256,
 };
 
+mod teams;
+pub use teams::{FacetSelection, ProfessionalProfile, TeamFacet};
+
 static SKILLS: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/skills");
 const CATALOG: &str = include_str!("../registry/catalog.json");
 const CAPABILITIES: &str = include_str!("../registry/capabilities.json");
@@ -105,6 +108,7 @@ pub struct Capability {
     pub acceptance: Vec<String>,
     pub failure_probe: String,
     pub prerequisites: String,
+    pub professional: ProfessionalProfile,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -166,6 +170,7 @@ struct CatalogInner {
     search: Vec<SearchDocument>,
     globals: Vec<String>,
     capabilities: Vec<Capability>,
+    team_facets: Vec<TeamFacet>,
     capability_names: HashMap<String, usize>,
     payloads: HashMap<String, Payload>,
     document_digests: HashMap<String, BTreeMap<String, OnceLock<String>>>,
@@ -205,6 +210,7 @@ impl Catalog {
         );
         let capabilities: Vec<Capability> =
             serde_json::from_value(contracts["capabilities"].clone())?;
+        let team_facets: Vec<TeamFacet> = serde_json::from_value(contracts["team_facets"].clone())?;
         let mut by_id = HashMap::new();
         let mut payloads = HashMap::new();
         let mut document_digests = HashMap::new();
@@ -312,6 +318,7 @@ impl Catalog {
         let mut capability_names = HashMap::new();
         for (i, capability) in capabilities.iter().enumerate() {
             validate_id(&capability.id)?;
+            capability.professional.validate(&capability.id)?;
             for id in std::iter::once(&capability.lead).chain(&capability.support) {
                 ensure!(
                     payloads.contains_key(id),
@@ -345,12 +352,14 @@ impl Catalog {
                 }
             }
         }
+        teams::validate_facets(&team_facets, &capabilities)?;
         Ok(CatalogInner {
             data,
             by_id,
             search,
             globals,
             capabilities,
+            team_facets,
             capability_names,
             payloads,
             document_digests,
@@ -460,6 +469,7 @@ impl Catalog {
                         skill.id == phrase,
                         positive,
                         delivery,
+                        name_match == 3,
                         exact_tags,
                         name_match,
                     ),
@@ -589,6 +599,7 @@ impl Catalog {
             json!({"primary":primary.id,"contracts":contracts,"read_sequence":reads,
             "project_skills":project_skills,"runtime_status":"not_checked",
             "activation_status":"not_observed",
+            "team_route":"For substantive cross-disciplinary work inspect team_facets and call team_plan with task-specific reasons. The host dispatches independent professionals and integrates their evidence.",
             "authority":"Expertise does not grant execution permissions or professional authority.",
             "support_policy":"Contract support IDs are optional skills: read one with skill_read or mirket catalog read ID and register it with mirket project add --skill ID only when needed. MCP supporting and CLI --with compose up to 12 capability names or role aliases from mirket capabilities list, not optional skill IDs.",
             "next_steps":["For substantial work start a task from selected metadata, then make the first selected lead read task-bound; short untracked work reads directly once. Reuse unchanged guidance and retrieve references only when needed.",
@@ -1341,6 +1352,35 @@ mod tests {
         assert_eq!(plan["read_sequence"].as_array().unwrap().len(), 2);
         assert!(catalog.capability("some made-up CFO title").is_err());
         assert!(catalog.check().is_ok());
+    }
+
+    #[test]
+    fn professional_catalog_rejects_incomplete_profiles_and_invalid_team_assignments() {
+        for change in 0..5 {
+            let mut contracts: Value = serde_json::from_str(CAPABILITIES).unwrap();
+            match change {
+                0 => {
+                    contracts["capabilities"][0]["professional"]["perspective"] = json!("");
+                }
+                1 => {
+                    contracts["capabilities"][0]["professional"]["method"] = json!(["Inspect"]);
+                }
+                2 => {
+                    contracts["team_facets"][0]["assignments"][0]["role"] =
+                        json!("unknown-professional");
+                }
+                3 => {
+                    contracts["team_facets"][0]["assignments"][0]["mode"] = json!("executed");
+                }
+                _ => {
+                    contracts["team_facets"][1]["id"] = contracts["team_facets"][0]["id"].clone();
+                }
+            }
+            assert!(
+                Catalog::load_sources(CATALOG, &contracts.to_string(), HARNESS).is_err(),
+                "mutation {change}"
+            );
+        }
     }
 
     #[test]

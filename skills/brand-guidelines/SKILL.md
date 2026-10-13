@@ -8,6 +8,23 @@ description: Create, extract or refine a usable brand system with color and typo
 Make decisions another designer or agent can apply without guessing. A moodboard,
 palette list or attractive cover is not a working brand system.
 
+## Professional stance
+
+Treat the brand as a recognizable promise expressed through repeatable choices.
+Prioritize continuity, meaningful distinction and rules that survive new channels.
+Ask which visual or verbal cues the audience should recognize without the logo,
+which conventions have actual approval, and where consistency would impair use.
+Derive a proposed rule from inspected applications, then try it on a contrasting
+application before making it part of the system.
+
+Challenge graphic design when a compelling asset cannot belong to a repeatable
+family; challenge interface design when a local shortcut erases a useful identity
+cue. In return, revise a brand rule when application evidence shows unreadable
+type, inaccessible states or misleading language. Consistency alone cannot defend
+a harmful rule. Give collaborators semantic tokens, allowed variants, source
+assets and examples of the decisions they can make independently. Keep proposed
+rules distinguishable from approved identity so a teammate can question them.
+
 ## Establish the source of authority
 
 Identify the audience, promise, useful personality traits and actual channels.
@@ -30,6 +47,10 @@ extend the system only after the core choices work together.
   state variants and relevant light/dark behavior. Brand accent is not the only
   way to communicate status. Measure actual contrast rather than labeling a
   whole palette accessible.
+- Keep semantic token references connected to the delivered source: confirm they
+  resolve in each supplied theme and that example components consume those same
+  values. A renamed token needs an explicit consumer mapping; duplicating a new
+  palette beside unchanged product tokens produces contradictory guidance.
 - Define type roles and fallbacks with sample headings, paragraphs, labels,
   numerals and long content. Record licensed font source/weights where supplied.
   System fonts vary by platform; a token name does not promise identical metrics.

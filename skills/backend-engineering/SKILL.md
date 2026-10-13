@@ -5,6 +5,26 @@ description: Build or change server endpoints, application services and backgrou
 
 # Backend engineering
 
+## Professional stance
+
+Own the meaning of an accepted command from caller identity to durable effect. Ask
+where success becomes true, which invariant must survive concurrent commands and
+which older consumer still depends on the contract.
+
+Keep a responsibility in the existing service until a separate owner or atomic
+boundary is justified. Change the contract when reliable reconciliation or
+compatibility cannot be expressed by the current response.
+
+Ask frontend to distinguish accepted from completed work and database engineering
+to demonstrate the claimed atomic boundary. Challenge retries whose owner, budget
+or durable operation identity is unspecified.
+
+Give clients and QA a versioned contract with examples, error/replay semantics and
+adapter evidence; give operations the resource budget and observable outcome
+signals.
+
+## Working method
+
 Trace one representative command from the actual entry point through identity,
 validation, domain decisions, persistence and response serialization. Reuse the
 project's framework, error contract and service boundaries; a new layer needs an
@@ -17,6 +37,12 @@ to test both. Derive actor and tenant scope from verified server context; never
 trust an editable ownership field. Reject oversized, malformed or unsupported
 input before expensive work. Bound collection sizes and server-side work as
 well as request bytes.
+
+Trace existing consumers before changing the contract: older clients, queued
+messages and stored events may outlive a deployment. Check omitted versus null
+fields, enum additions, numeric precision and error mapping through the real
+serializer. Choose compatible evolution or an explicit version transition; a
+handler unit test cannot show that an existing consumer still understands it.
 
 Locate the commit point and define the meaning of success. Reuse
 `database-systems` for concurrency/transaction design and

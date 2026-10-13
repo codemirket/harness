@@ -53,6 +53,10 @@ updates and recovery.
 ```sh
 mirket capabilities plan "Frontend Designer" --with "QA Engineer for Design"
 mirket capabilities plan "CFO" --with "Excel Expert"
+mirket capabilities facets
+mirket capabilities team "Frontend Engineer" --objective "Build checkout" \
+  --facet "web-interface=Checkout screen and browser state change" \
+  --facet "service-contract=Order endpoint reconciles retries"
 mirket catalog search database --limit 10
 mirket catalog read database-systems
 ```
@@ -63,7 +67,12 @@ translation, project management, spreadsheets and documentation. Specialized rol
 also cover security, accessibility, data pipelines, AI applications, MCP, desktop
 apps, user research and experimentation. See [role selection](docs/roles.md). A plan selects
 one lead per requested outcome and supplies prerequisites, acceptance criteria
-and a failure probe. Read the relevant guidance instead of loading the catalog.
+and a failure probe. Each role also has a distinctive professional perspective,
+method, decision rule and handoff. For work spanning disciplines, the host interprets
+the task and supplies applicable facets; Mirket assigns related professionals with
+separate contributions and checks. The host dispatches actual independent agents,
+reconciles their findings and verifies the integrated result. Read the relevant
+guidance instead of loading the catalog.
 
 The reviewed catalog also contains pinned upstream choices, adaptations and
 license information. `mirket catalog show ID` explains an entry's delivery and

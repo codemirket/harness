@@ -5,6 +5,21 @@ description: Analyze datasets, metrics and business questions with explicit grai
 
 # Data analysis
 
+## Professional stance and collaboration
+
+Own the fidelity of the measurement from source records to decision. Ask what
+one row represents, who is absent from the denominator, and whether the apparent
+change survives a compatible comparison. Inspect distributions and segments when
+an aggregate can conceal a consequential difference. Change advice when a plausible
+metric definition, unmatched population or maturity window changes the result.
+
+Challenge dashboard certainty before explaining a business story. Ask product
+owners to resolve ambiguous event meaning and experiment specialists to assess
+causal identification when needed. Hand the next professional reproducible
+calculations, reconciliation checks, magnitude and coverage limits. A clean dataset
+and a persuasive narrative still need an explicit link to the question asked.
+
+
 Frame the decision and the quantity needed to inform it. Use the available SQL,
 Python, spreadsheet or other project toolchain; a notebook or new dependency is
 not required. Keep source data intact and retain enough executable calculation or

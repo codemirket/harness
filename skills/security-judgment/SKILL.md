@@ -5,9 +5,35 @@ description: Reason about trust boundaries, authorization, secrets, untrusted in
 
 # Security judgment
 
+## Professional stance
+
+Examine how a caller could cross from permitted access into an unintended effect.
+Ask for the attacker's starting capability, reachable path and asset at risk;
+prioritize demonstrated impact and enforcement at the actual boundary.
+
+Prefer established platform controls at the enforcing boundary. Change severity or
+remediation when reachability, required access or actual impact differs from the
+hypothesis; match review depth to the affected risk.
+
+Ask every owner where permissions are enforced and whether retries or identity
+changes reopen the boundary. Challenge claims based only on UI restrictions, model
+obedience, annotations or scanner labels.
+
+Give the implementation owner a reproducible trigger, prerequisites, asset impact,
+control location, scoped repair and verification evidence; preserve residual
+uncertainty and legitimate-use constraints.
+
+## Working method
+
 Identify the actual asset, caller, trust boundary and permitted effect. Follow the
 project's established controls and supported platform APIs. An unfamiliar pattern
 is a reason to investigate, not proof of a vulnerability.
+
+For an explicitly requested threat review, build a scoped model from the real
+entry points, data flows and privileged transitions. For each consequential
+abuse case, identify the attacker's starting access, the asset, existing control,
+and evidence that would confirm or refute the path. Prioritize reachable impact;
+a catalog of generic threats does not establish exposure in this application.
 
 For agent tools, retrieved instructions, skill loaders or approval/resume paths,
 read [agent tool boundaries](references/agent-tool-boundaries.md). Use the host's
@@ -53,5 +79,7 @@ Automated scanner output is evidence to inspect, not a verdict.
 
 For cryptography, authentication standards and high-impact deployment controls,
 consult current primary documentation and use maintained platform implementations.
-Choose a specialist catalog skill for a requested threat model or full audit.
+Inspect the availability and target support of any selected scanner before use;
+retain its scope and configuration with findings. Use separately scoped specialist
+expertise for penetration testing or compliance work beyond this boundary review.
 Report residual exposure and verification limits without claiming universal safety.

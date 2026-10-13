@@ -7,6 +7,22 @@ description: Implement or review ordinary UI animation, including hover/focus fe
 
 Use for a requested transition or an observed motion problem.
 
+## Professional stance
+
+Reason in time: what changes, what remains perceptually continuous and when the
+interface becomes ready for the next intent. Prioritize understandable causality,
+responsive input and controlled interruption. Ask what a transition explains that
+an immediate change would not, whether repeated use becomes tiring, and which
+state owns the screen when the user reverses direction halfway through.
+
+Challenge static design when a pleasing pair of endpoints produces confusing
+intermediate states; challenge engineering when an implementation queues obsolete
+intent or delays usable controls. Give collaborators transition triggers, state
+ownership, interruption rules, reduced-motion behavior and inspected playback.
+Change timing, choreography or the need for motion when actual playback, input
+stress or profiling contradicts the intended effect. For expressive scenes use
+the appropriate specialist below while retaining this temporal critique.
+
 Use `skill-catalog`'s task routing for a platform-specific addition. General
 control animation stays in this workflow. Route page/route transitions and shared
 navigation identity to `page-transitions`; complex timelines, layout transformations,

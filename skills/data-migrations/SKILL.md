@@ -5,9 +5,36 @@ description: Plan and verify database or persisted-data migrations with concurre
 
 # Data migrations
 
+## Professional stance
+
+Own preservation of meaning while representations and consumers change. Ask which
+writers remain active during every phase, which records fall behind a cursor and
+exactly when recovery stops being a simple rollback.
+
+Prefer compatible staged change when online readers and writers must coexist.
+Change the plan when source coverage, conflict policy or recovery cannot preserve
+required values; delay destructive contraction until consumers are verified.
+
+Ask database engineering for lock and transaction guarantees and release
+engineering for actual version overlap. Challenge equal counts or sums as proof of
+correct transformed entities and cursors as proof of complete source coverage.
+
+Give release and application owners ordered scripts, phase prerequisites,
+transformation version, reconciliation queries/results, restart state and the
+point where rollback requires data repair.
+
+## Working method
+
 Identify the engine/version, schema, volume, traffic pattern, writers/readers,
 replicas, availability budget, and failure impact. Read current engine-specific
 DDL/locking behavior; a familiar statement can take different locks by version.
+
+Locate the project's migration runner, migration history and checksum/locking
+rules. Verify the actual driver, transaction mode and isolated target before
+running scripts; an installed database shell may differ from the application's
+driver. Use the existing runner and rehearse with the same transaction boundaries
+as deployment. Changing an already applied migration can invalidate history;
+prefer a new corrective migration under the project's convention.
 
 ## Design for mixed versions
 
@@ -28,10 +55,21 @@ Make retries idempotent and record progress only when the corresponding writes
 commit. Bound transaction size and monitor lock time, replication lag, storage,
 write amplification, and user-visible latency.
 
+Define the source coverage boundary separately from the resume cursor. Concurrent
+inserts or key changes behind an advancing cursor can be missed even when every
+batch succeeds. Use the source's supported snapshot/change-capture contract or a
+final reconciliation that covers those writes. Persist cursor and migration
+version together so a changed transformation cannot silently resume old progress.
+
 Choose conflict resolution for records changed during the backfill. Consider
 change capture, version predicates, reconciliation passes, or temporary write
 coordination based on the required invariant and actual engine capabilities.
 A row count alone does not prove semantic equality.
+
+For example, replacing balances 10 and 20 with 15 and 15 preserves both count and
+sum while corrupting both entities. Reconcile the transformed values by stable
+identity or another independently justified invariant. Sampled checks establish
+only sampled coverage; record any excluded rows and the reason.
 
 ## Verify and recover
 

@@ -5,6 +5,21 @@ description: Plan and resume substantial work with dependent steps, uncertain sc
 
 # Work planning
 
+## Professional stance and collaboration
+
+Own the credibility of the route to completion. Ask what must be true before
+work can start, which unknown could invalidate the schedule, and who proves that
+the pieces work together. Keep later uncertain work coarse and make the next step
+executable. Change the sequence when evidence changes its dependencies; preserve
+the user's outcome instead of preserving an obsolete plan.
+
+Challenge estimates that omit integration, recovery or review. Resolve contention
+between specialists by making the shared contract and blocked dependency visible.
+Hand off ready inputs, ownership, acceptance evidence and the next decision; avoid
+making the recipient reconstruct the task from a transcript. Planning is successful
+when authorized work advances and its state remains trustworthy.
+
+
 Choose planning effort from the cost of losing track, not the number of tool
 calls. Use the project's existing task record or the host's plan when it is
 sufficient. Do not create parallel records for the same work.

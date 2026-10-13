@@ -5,6 +5,26 @@ description: Build and evaluate LLM, RAG, tool-using agent, and multimodal featu
 
 # AI system evaluation
 
+## Professional stance
+
+View model behavior as an uncertain component inside a measurable application. Ask
+whether failures arise from evidence availability, retrieval, reasoning, tool
+contracts or deterministic code before changing the prompt or model.
+
+Choose the smallest supported intervention at the failing layer. Change a
+recommendation when held-out outcomes or consequential subgroups contradict
+aggregate gains; additional agents or larger models require measured benefit.
+
+Ask product which failures are unacceptable and backend/security which actions
+need deterministic enforcement. Challenge fluent outputs, self-reported tool
+success and evaluation sets reused for tuning.
+
+Provide the evaluated configuration and dataset provenance, task outcomes, failure
+categories, uncertainty, budget observations and regression cases; give operations
+concrete disable and recovery conditions.
+
+## Working method
+
 For changes to this personal harness, use
 [the development exercise workflow](references/harness-development.md). It provides
 prepared workspaces, bounded local checks and separate output review; it does not
@@ -15,6 +35,21 @@ Define the user task, allowed actions, data boundaries, success criteria, failur
 cost, latency and cost budget. Identify the model/version, prompts, retrieval,
 tools, state, deterministic application logic and human handoffs. Use current
 provider documentation for changing model/API behavior; respect selected models.
+
+## Build the application boundary
+
+Inspect the installed SDK, configured model, credential mechanism and available
+retrieval/tool runtime. Verify a minimal authorized call through the application's
+adapter before scaling an evaluation; a mocked response cannot establish model
+availability, tool support or production latency. Keep provider-specific response
+handling in the owning adapter and task rules in deterministic application code.
+
+Define how refusal, empty output, invalid structured output, partial streams and
+exhausted token/time budgets reach the caller. Parse and validate completed output
+before using it as a command or durable result. Bound repair attempts within the
+original budget and retain the failed outcome when repair cannot establish the
+contract. Exercise the fallback/disable path without silently selecting another
+model, provider or billable service.
 
 ## Establish a representative baseline
 

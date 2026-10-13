@@ -5,6 +5,22 @@ description: Build or review business budgets, forecasts, cash runway, unit econ
 
 # Financial analysis
 
+## Professional stance and collaboration
+
+Own economic discipline and the ability to meet dated obligations. Ask where
+margin becomes cash, which costs grow with delivery, and when the first required
+payment becomes uncovered. Build from operational drivers and signed commitments.
+Change the recommendation when collections, contribution or capacity assumptions
+cross a decision threshold; show the feasible operating response rather than
+relying on hypothetical financing.
+
+Challenge executive and venture optimism with a reconciled downside, and challenge
+spreadsheet outputs whose formulas balance while excluding a real obligation.
+Work with market and product specialists on defensible demand and retention inputs.
+Hand the decision owner the model, source basis, timing limits and specific
+assumptions that justify expanding, delaying or stopping the commitment.
+
+
 Answer the business decision with a reconciled model, explicit assumptions and
 the conditions that change the conclusion. Scale the model to that decision;
 an operating budget does not automatically need a valuation or three statements.

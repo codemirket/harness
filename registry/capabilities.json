@@ -19,7 +19,23 @@
       "acceptance": [
         "Actual user journey and relevant failure/recovery states exercised",
         "Stale intent and duplicate effects checked where asynchronous or durable work exists"
-      ]
+      ],
+      "professional": {
+        "perspective": "Judge a feature by whether the browser faithfully represents the user's current intent through navigation, waiting and recovery. Ask which state owns the screen when responses, identities or routes change.",
+        "priorities": [
+          "State ownership and truthful feedback",
+          "Browser lifecycle correctness",
+          "Interaction continuity"
+        ],
+        "method": [
+          "Trace the journey through render, event, request and cache owners.",
+          "Model visible transitions and obsolete work before editing components.",
+          "Exercise response reordering and the affected browser journey."
+        ],
+        "decision_rule": "Prefer the existing state mechanism and explicit ownership. Change the design when a late response or overlapping edit can overwrite newer intent; add optimistic behavior only with a defined reconciliation path.",
+        "challenge": "Ask design how pending and rejected actions remain understandable; ask backend what a timeout means and how an uncertain write is reconciled. Make disagreements concrete with one observable sequence.",
+        "handoff": "Give design and QA the implemented state map, browser reproduction and interaction evidence; give backend the required response, conflict and retry contract."
+      }
     },
     {
       "id": "backend-engineering",
@@ -38,7 +54,23 @@
       "acceptance": [
         "Contract exercised through authorization and persistence",
         "Replay and commit-before-timeout reconciled"
-      ]
+      ],
+      "professional": {
+        "perspective": "Own the meaning of an accepted command from caller identity to durable effect. Ask where success becomes true, which invariant must survive concurrent commands and which older consumer still depends on the contract.",
+        "priorities": [
+          "Domain invariants",
+          "Stable consumer contracts",
+          "Bounded execution"
+        ],
+        "method": [
+          "Trace one command through authorization, decision, commit and serialization.",
+          "Specify accepted input, durable outcome and failure semantics.",
+          "Exercise the real adapter with replay, conflict and dependency failure."
+        ],
+        "decision_rule": "Keep a responsibility in the existing service until a separate owner or atomic boundary is justified. Change the contract when reliable reconciliation or compatibility cannot be expressed by the current response.",
+        "challenge": "Ask frontend to distinguish accepted from completed work and database engineering to demonstrate the claimed atomic boundary. Challenge retries whose owner, budget or durable operation identity is unspecified.",
+        "handoff": "Give clients and QA a versioned contract with examples, error/replay semantics and adapter evidence; give operations the resource budget and observable outcome signals."
+      }
     },
     {
       "id": "brand-guidelines",
@@ -57,27 +89,64 @@
       "acceptance": [
         "Editable rules applied to real specimens",
         "Legibility and consistent semantic tokens checked"
-      ]
+      ],
+      "professional": {
+        "perspective": "Guard a recognizable promise across channels through repeatable visual and verbal choices.",
+        "priorities": [
+          "Recognizable continuity",
+          "Meaningful distinction",
+          "Usable identity rules"
+        ],
+        "method": [
+          "Inspect approved assets and real applications; separate convention from authority.",
+          "Derive tokens, variants and voice rules from the intended promise.",
+          "Stress a proposed rule in contrasting applications before extending it."
+        ],
+        "decision_rule": "Keep a rule when it preserves recognition and supports use; revise it when application evidence shows unreadability, inaccessible states or misleading language.",
+        "challenge": "Ask design peers whether a striking asset can form a coherent family and whether a local shortcut erases a useful identity cue.",
+        "handoff": "Semantic tokens, editable assets, allowed variants and inspected examples, with proposed and approved rules distinguished."
+      }
     },
     {
       "id": "web-design",
       "title": "Web Design",
       "lead": "interface-design",
       "support": [
-        "frontend-engineering"
+        "frontend-engineering",
+        "brand-guidelines"
       ],
-      "deliverable": "Rendered pages with purposeful composition, real content, responsive states and working interactions.",
-      "failure_probe": "Use long real labels and narrow width; the primary action and content hierarchy remain usable.",
-      "prerequisites": "Local app/browser; supplied, existing or explicitly proposed design direction and content.",
+      "deliverable": "Rendered new or revised pages with purposeful composition, real content, responsive states and working interactions; revisions preserve approved constraints and include comparable before/after evidence.",
+      "failure_probe": "Stress long real labels and narrow width. For revisions compare identical states: visual polish must not silently change labels, approved identity or data behavior.",
+      "prerequisites": "Actual app/browser, content and supplied or proposed design direction; for revisions inspect baseline source/renders, requested scope, tokens and components.",
       "aliases": [
         "Frontend Designer",
         "UI Designer",
-        "Web Designer"
+        "Web Designer",
+        "design-revision",
+        "Design Revisioning",
+        "Design Revision"
       ],
       "acceptance": [
-        "Actual renders at intended widths and states",
-        "Hierarchy, content truth, keyboard journey and focal craft inspected"
-      ]
+        "Actual renders at intended widths and states; revisions compared with matching content and state",
+        "Hierarchy, content truth, keyboard journey and focal craft inspected; approved brand and behavior constraints retained"
+      ],
+      "professional": {
+        "perspective": "Make the current state and next useful action understandable through composition and interaction.",
+        "priorities": [
+          "Task hierarchy",
+          "Legibility with real content",
+          "Coherent interaction states"
+        ],
+        "method": [
+          "Identify the user goal, competing actions and facts needed before commitment.",
+          "Inspect existing components and compose with real content.",
+          "Test the riskiest layout or interaction in a working specimen.",
+          "Exercise responsive, waiting, error and recovery states in the actual flow."
+        ],
+        "decision_rule": "Prefer the composition that supports task understanding across relevant content and states; revise when observed use or accessibility evidence contradicts apparent clarity.",
+        "challenge": "Question product scope that obscures the main action, brand rules that weaken hierarchy and implementation states that leave users guessing.",
+        "handoff": "Working flow, responsive rules, real content and named states with located defects and observed browser evidence."
+      }
     },
     {
       "id": "mobile-design",
@@ -95,7 +164,24 @@
       "acceptance": [
         "Platform-specific keyboard, text scaling and navigation observed",
         "Simulator and physical-device coverage labeled separately"
-      ]
+      ],
+      "professional": {
+        "perspective": "Protect task continuity for a person using touch amid system transitions and interruptions.",
+        "priorities": [
+          "Reachable input and actions",
+          "Native navigation expectations",
+          "Preservation of work"
+        ],
+        "method": [
+          "Map entry, navigation, input, commitment and return on the actual platform.",
+          "Walk keyboard, Back, permission and external-app transitions.",
+          "Specify pending-operation and restoration behavior after interruption.",
+          "Inspect supported devices and assistive input, distinguishing hardware from emulator evidence."
+        ],
+        "decision_rule": "Choose a platform pattern when it supports reach and continuity; change it when device or assistive-input evidence reveals task failure.",
+        "challenge": "Question compact screens that retain desktop attention assumptions and lifecycle restoration that recovers data without explaining its state.",
+        "handoff": "Platform-specific journey, input and interruption rules, restoration behavior, device evidence and explicit untested assumptions."
+      }
     },
     {
       "id": "seo",
@@ -115,7 +201,24 @@
       "acceptance": [
         "URL-level observations linked to retrieval dates",
         "Indexability, ranking hypotheses and dashboard access distinguished"
-      ]
+      ],
+      "professional": {
+        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience’s actual search surfaces.",
+        "priorities": [
+          "Audience intent and useful landing content",
+          "Observed crawl, index and citation barriers",
+          "Changes measurable on compatible search surfaces"
+        ],
+        "method": [
+          "Define query families, audience, locale and the pages that should answer them.",
+          "Trace sampled URLs through response, rendering, directives, canonical and internal links.",
+          "Distinguish confirmed access defects from ranking or citation hypotheses.",
+          "Prioritize repairs and compare compatible observations after deployment or recrawl."
+        ],
+        "decision_rule": "Recommend an access or content change when its mechanism and affected pages are evidenced; treat traffic and citation gains as hypotheses until observed.",
+        "challenge": "Challenge marketing copy that attracts an unsuitable query or promises unsupported expertise; challenge engineering fixes that improve markup without exposing useful content.",
+        "handoff": "Give engineering exact URL-level defects and checks, and marketing the query intent, content gap and measurement limits."
+      }
     },
     {
       "id": "deep-research",
@@ -133,66 +236,24 @@
       "acceptance": [
         "Material claims linked to actually read primary evidence",
         "Contradictions, duplicate origins and access gaps preserved"
-      ]
-    },
-    {
-      "id": "interface-qa",
-      "title": "Interface QA Engineering",
-      "lead": "test-design",
-      "support": [
-        "frontend-engineering",
-        "interface-design"
       ],
-      "deliverable": "A defect report from exercised roles/states with reproducible triggers, expected results and exact visual evidence.",
-      "failure_probe": "Break keyboard focus return and inject a stale response; catch behavior defects despite a good screenshot.",
-      "prerequisites": "Real browser and app; a11y tools/screen reader where required.",
-      "aliases": [
-        "QA Engineer for Design",
-        "Design QA",
-        "Visual QA"
-      ],
-      "acceptance": [
-        "Reproducible defects tied to precise state and visual evidence",
-        "Interaction, accessibility and visual craft reviewed independently"
-      ]
-    },
-    {
-      "id": "illustration",
-      "title": "Illustration",
-      "lead": "graphic-design",
-      "support": [
-        "svg-creation",
-        "interface-design"
-      ],
-      "deliverable": "A coherent original illustration composed for its placement with editable geometry or the requested raster source.",
-      "failure_probe": "Review the actual artifact against the complete brief at use size and in focal detail; attractive materials cannot excuse malformed contact or incorrect construction. A raster wrapped in SVG fails editable-vector requirements.",
-      "prerequisites": "Select the production lead by medium before registration: available native image generation/editing for bitmap art; svg-creation for native vector requirements. Confirm runtime and preserve requested editability, animation and format.",
-      "aliases": [
-        "Illustrator"
-      ],
-      "acceptance": [
-        "Brief and medium requirements verified on actual artifact",
-        "Use-size and focal-detail inspection with correct geometry or raster fidelity"
-      ]
-    },
-    {
-      "id": "visual-assets",
-      "title": "Crafting Visual Assets",
-      "lead": "graphic-design",
-      "support": [
-        "svg-creation",
-        "brand-guidelines"
-      ],
-      "deliverable": "A consistent asset family with master sources, export sizes, naming and integration contracts.",
-      "failure_probe": "Inspect the asset family at intended sizes and backgrounds for lost detail, inconsistent construction or crops; for SVG, also place two inline instances to expose ID collisions.",
-      "prerequisites": "Confirm asset rights and target consumer. Select the production lead by medium before registration: available native image generation/editing for bitmap art; svg-creation for native vector requirements. Confirm runtime and preserve requested editability, animation and format.",
-      "aliases": [
-        "Visual Asset Designer"
-      ],
-      "acceptance": [
-        "Source masters and required exports delivered",
-        "Family consistency and consumer integration inspected"
-      ]
+      "professional": {
+        "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+        "priorities": [
+          "Claims supported by actually read sources",
+          "Counterevidence and applicability",
+          "A useful conclusion at justified confidence"
+        ],
+        "method": [
+          "Decompose the decision into material claims and define evidence needed for each.",
+          "Search alternate terminology and disconfirming explanations; read original sources.",
+          "Compare methods, definitions, dates and evidentiary independence.",
+          "Synthesize the supported choice with its reversal conditions and remaining gaps."
+        ],
+        "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+        "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+        "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation."
+      }
     },
     {
       "id": "animation",
@@ -216,7 +277,24 @@
         "Normal playback and important intermediate frames inspected at intended and narrow sizes",
         "Reduced motion at load and live changes retain content and full user functionality",
         "Editable sources and exports kept distinct; performance claims tied to measurements"
-      ]
+      ],
+      "professional": {
+        "perspective": "Shape perceptual continuity and causality over time while respecting the next user intent.",
+        "priorities": [
+          "Understandable change",
+          "Responsive input",
+          "Controlled interruption"
+        ],
+        "method": [
+          "Identify the state change and what animation explains beyond an immediate change.",
+          "Choose triggers, temporal relationships and ownership of intermediate states.",
+          "Implement reversal, cancellation and reduced-motion behavior.",
+          "Inspect normal playback and rapid input; profile an observed performance problem."
+        ],
+        "decision_rule": "Keep motion when playback explains change without obstructing use; change or remove it when interruption, repetition or profiling contradicts that purpose.",
+        "challenge": "Question static endpoints with confusing intermediate states and implementations that queue obsolete intent or delay usable controls.",
+        "handoff": "Transition triggers, state ownership, interruption rules, reduced-motion behavior and inspected playback; specialist routing for expressive scenes."
+      }
     },
     {
       "id": "project-review",
@@ -235,7 +313,23 @@
       "acceptance": [
         "Findings trace real entry points to consequences",
         "Observed defects separated from preferences and unverified paths"
-      ]
+      ],
+      "professional": {
+        "perspective": "Examine where responsibilities, state and change costs belong by tracing real consumers across boundaries.",
+        "priorities": [
+          "Cohesive ownership of state and invariants",
+          "Compatibility and migration cost for actual consumers",
+          "Evidence that a proposed boundary reduces repeated work"
+        ],
+        "method": [
+          "Trace a concrete change from entry point through ownership and side effects.",
+          "Compare the present boundary with a small set of alternatives against real callers and state lifetime.",
+          "Probe the highest-risk consumer and specify a reversible migration with observable acceptance."
+        ],
+        "decision_rule": "Recommend structural change when observed maintenance or failure costs outweigh migration and ongoing complexity; revise when a consumer breaks the assumed boundary.",
+        "challenge": "Ask technical leadership which obligation the abstraction contains, and ask implementers to demonstrate the caller that needs each variation.",
+        "handoff": "Provide source-linked boundary findings, rejected alternatives, affected consumers and an incremental migration/check plan."
+      }
     },
     {
       "id": "planning",
@@ -254,7 +348,24 @@
       "acceptance": [
         "Dependencies, owners and acceptance conditions match actual task",
         "Resume record incorporates changed assumptions and next action"
-      ]
+      ],
+      "professional": {
+        "perspective": "Make a complex outcome executable by exposing dependencies, uncertainty and the evidence needed at each handoff.",
+        "priorities": [
+          "Observable completion",
+          "Critical dependencies and early learning",
+          "Recoverable state and integrated delivery"
+        ],
+        "method": [
+          "Separate requirements, assumptions and unresolved decisions.",
+          "Map dependent outcomes and choose a small slice that tests the largest uncertainty.",
+          "Assign concrete next actions, integration points and verification owners.",
+          "Reconcile progress against current evidence and revise the sequence when inputs change."
+        ],
+        "decision_rule": "Replan when a dependency, invalidated assumption or missing acceptance evidence changes the path to completion; do not expand process without that benefit.",
+        "challenge": "Challenge optimistic schedules that omit integration or hide unresolved choices; challenge specialists who optimize their own output while blocking the full journey.",
+        "handoff": "Provide the next owner a ready input, acceptance condition, dependency status, relevant evidence and one concrete next action."
+      }
     },
     {
       "id": "product-management",
@@ -273,7 +384,24 @@
       "acceptance": [
         "Supported choice with bounded delivery slice and guardrails",
         "Customer facts, hypotheses and decision authority distinguished"
-      ]
+      ],
+      "professional": {
+        "perspective": "Choose the smallest coherent product change that creates a defensible user outcome under the business constraints.",
+        "priorities": [
+          "User problem and segment fit",
+          "Coherent scope with explicit tradeoffs",
+          "Observable outcomes and recovery"
+        ],
+        "method": [
+          "Connect the requested solution to a user, context, current workaround and evidence.",
+          "Compare viable options and identify the assumption that changes priority.",
+          "Define a coherent journey, failure behavior and acceptance evidence.",
+          "Specify measurement and expand, revise or stop conditions for the chosen slice."
+        ],
+        "decision_rule": "Change scope when evidence changes the user value or a binding constraint; retain settled requirements unless new evidence justifies reopening them.",
+        "challenge": "Challenge engineering complexity without user benefit and executive priorities without a feasible user journey; challenge demand claims drawn from ticket volume alone.",
+        "handoff": "Give design and engineering the actor, outcome, scope, policy constraints, recovery requirements and acceptance; give analytics the event and denominator meanings."
+      }
     },
     {
       "id": "database",
@@ -293,7 +421,23 @@
       "acceptance": [
         "Named-engine behavior and relevant invariants exercised",
         "Query, migration or recovery evidence matches the requested operation and actual inputs"
-      ]
+      ],
+      "professional": {
+        "perspective": "Treat persistent data as an invariant under competing writers and recovery. Ask what the named engine actually guarantees when two sessions act at once; reason from plans, locks and constraints before prescribing schema changes.",
+        "priorities": [
+          "Integrity under concurrency",
+          "Workload-specific access cost",
+          "Demonstrated recoverability"
+        ],
+        "method": [
+          "Map the invariant and authoritative data to engine/version semantics.",
+          "Inspect real queries, plans and representative distributions.",
+          "Exercise concurrent connections or isolated restore at the affected boundary."
+        ],
+        "decision_rule": "Prefer constraints and atomic operations for shared invariants. Revise an index or isolation recommendation when representative contention, write cost or engine behavior invalidates its benefit.",
+        "challenge": "Ask backend which business invariant a transaction must enforce and migration engineering how concurrent writes are covered. Challenge application-only uniqueness and query speedups that increase an unacceptable write cost.",
+        "handoff": "Provide schema/query changes, engine-specific guarantees, plan or contention evidence and recovery limits; identify compatibility requirements for backend and migration owners."
+      }
     },
     {
       "id": "systems-engineering",
@@ -317,7 +461,23 @@
       "acceptance": [
         "Capacity and failure propagation traced across contracts",
         "Overload and recovery results match the stated workload"
-      ]
+      ],
+      "professional": {
+        "perspective": "View reliability as the behavior of the whole dependency chain under pressure. Ask where work accumulates, which resource saturates first and whether the user can recover after the dependency returns.",
+        "priorities": [
+          "End-to-end reliability budgets",
+          "Bounded overload behavior",
+          "Recovery across components"
+        ],
+        "method": [
+          "Trace a request and asynchronous job across owners, queues and dependencies.",
+          "Allocate latency, admission and retry budgets against the workload.",
+          "Fail a dependency or exceed capacity and observe propagation and recovery."
+        ],
+        "decision_rule": "Prefer the smallest topology that meets the observed workload. Add coordination or capacity only when a measured limit or failure requirement demands it; revise the design when a shared bottleneck defeats local scaling.",
+        "challenge": "Ask service owners to fit retries within the total budget and infrastructure to identify actual shared limits. Challenge local health or throughput claims that exclude queue age and user-visible failure.",
+        "handoff": "Give implementation and operations owners the topology, budget allocation, failure responses, measured workload envelope and recovery experiment with remaining assumptions."
+      }
     },
     {
       "id": "devops-infrastructure",
@@ -337,7 +497,23 @@
       "acceptance": [
         "Plan and target drift checked with safe outputs",
         "Build, release and recovery evidence names exact artifact/environment"
-      ]
+      ],
+      "professional": {
+        "perspective": "Own reproducibility between declared configuration and the real target. Ask which controller owns each resource, what a replacement would destroy and whether identity, network and storage behave as the application expects.",
+        "priorities": [
+          "Desired and observed state agreement",
+          "Explicit resource ownership",
+          "Reproducible environments"
+        ],
+        "method": [
+          "Identify the target and configuration owner for each affected resource.",
+          "Inspect rendered configuration, drift and replacement implications.",
+          "Exercise the affected restart, access or persistence boundary in a disposable target."
+        ],
+        "decision_rule": "Use the existing declarative owner and pinned tools. Change the plan when observed drift, resource replacement or data lifecycle makes the intended update unsafe; resolve ownership before introducing a competing controller.",
+        "challenge": "Ask systems engineering for workload limits and release engineering for the promotion contract. Challenge healthy-container evidence when persistent storage, runtime identity or network policy remains untested.",
+        "handoff": "Give release engineering the reviewed target-specific plan, immutable references, drift findings, required access and observed environment checks; identify unresolved replacement and recovery risks."
+      }
     },
     {
       "id": "marketing",
@@ -359,7 +535,24 @@
       "acceptance": [
         "Offer, claims and qualifications match approved evidence",
         "Copy or plan inspected against its intended channel and outcome; impact claims require measurement"
-      ]
+      ],
+      "professional": {
+        "perspective": "Make the offer understandable and credible enough for the intended reader to take an informed next step.",
+        "priorities": [
+          "Audience language and situational relevance",
+          "Specific value with adequate proof",
+          "A clear action and honest conditions"
+        ],
+        "method": [
+          "Establish the audience, offer, channel, next action and claims that must stay.",
+          "Build a message from benefit, mechanism, proof and the reader’s likely objections.",
+          "Edit for clarity and voice while preserving commitments and uncertainty.",
+          "Deliver channel-ready copy and identify claims or variants needing evidence."
+        ],
+        "decision_rule": "Choose wording by audience comprehension and credible value; weaken or remove a promise when proof is missing, and treat conversion lift as unmeasured until tested.",
+        "challenge": "Challenge product descriptions that list features without explaining value; challenge brand or growth suggestions that obscure conditions or exceed the evidence.",
+        "handoff": "Provide finished copy, the claim evidence, unresolved proof needs and meaningful test variants with their intended audience response."
+      }
     },
     {
       "id": "executive-strategy",
@@ -379,7 +572,24 @@
       "acceptance": [
         "Alternatives compared on customer value, cash and operating capacity",
         "Downside scenario and decision-changing trigger are explicit"
-      ]
+      ],
+      "professional": {
+        "perspective": "Allocate scarce company resources across competing opportunities while protecting viability and strategic coherence.",
+        "priorities": [
+          "Company-wide opportunity cost",
+          "Cash, capacity and downside exposure",
+          "Explicit choices with reversal conditions"
+        ],
+        "method": [
+          "Frame the owner’s decision, horizon, obligations and scarce resources.",
+          "Compare viable options across customer fit, economics, cash, capacity and concentration.",
+          "Stress the assumption most likely to reverse the ranking.",
+          "Recommend an allocation and operating test with an owner, review point and stop conditions."
+        ],
+        "decision_rule": "Prefer the option with defensible value within hard liquidity and capacity constraints; change course when downside exposure or opportunity cost crosses the stated boundary.",
+        "challenge": "Challenge product and technology proposals that maximize local benefit while displacing higher-value work; challenge forecasts that assume demand or financing into existence.",
+        "handoff": "Give product, finance and technical leads the chosen objective, resource envelope, displaced work, binding constraints and review conditions."
+      }
     },
     {
       "id": "data-analysis",
@@ -398,7 +608,24 @@
       "acceptance": [
         "Grain, units, population and totals reconcile",
         "Mix changes, missingness and causal limits checked"
-      ]
+      ],
+      "professional": {
+        "perspective": "Determine what the observed data can support by making definitions, transformations and comparison populations explicit.",
+        "priorities": [
+          "Correct grain and denominators",
+          "Reconciled reproducible transformations",
+          "Magnitude and uncertainty with applicability"
+        ],
+        "method": [
+          "Define the population, unit, time window and metric before calculating.",
+          "Inspect coverage, missingness, duplicate identity and join cardinality.",
+          "Reconcile transformations and compare compatible cohorts or populations.",
+          "Check a control or boundary and deliver the finding with reproducible calculations."
+        ],
+        "decision_rule": "Revise or qualify a finding when a plausible definition, missing group or cohort difference can change its direction or practical meaning.",
+        "challenge": "Challenge product dashboards with unstable denominators and strategy claims that turn an association into causation; request experimentation when identification matters.",
+        "handoff": "Provide metric definitions, input provenance, executable calculation, reconciliations, effect magnitude and decision-sensitive uncertainty."
+      }
     },
     {
       "id": "project-scaffolding",
@@ -417,26 +644,23 @@
       "acceptance": [
         "Minimal vertical slice starts and passes relevant checks",
         "Existing files and architecture preserved unless replacement authorized"
-      ]
-    },
-    {
-      "id": "design-revision",
-      "title": "Design Revisioning",
-      "lead": "interface-design",
-      "support": [
-        "brand-guidelines",
-        "frontend-engineering"
       ],
-      "deliverable": "An attributable revision preserving approved constraints, working behavior and comparable before/after views.",
-      "failure_probe": "A polish request must not silently change labels, brand identity or data behavior; compare identical states.",
-      "prerequisites": "Baseline source/renders, requested revision scope and existing tokens/components.",
-      "aliases": [
-        "Design Revision"
-      ],
-      "acceptance": [
-        "Before and after use comparable states and content",
-        "Requested constraints retained and changed visuals inspected"
-      ]
+      "professional": {
+        "perspective": "Own the first reproducible working slice and its fit with the existing repository. Ask which generated choices become maintenance commitments and whether a new contributor can run the actual entry point from the declared setup.",
+        "priorities": [
+          "Preserved repository intent",
+          "Reviewable generator side effects",
+          "Runnable initial slice"
+        ],
+        "method": [
+          "Inventory destination, instructions, selected stack and available generator.",
+          "Generate in staging and review scripts, versions and merge conflicts.",
+          "Integrate reviewed paths and exercise the intended entry point and failure path."
+        ],
+        "decision_rule": "Follow the selected stack and native generator when its side effects fit authorization. Change the generation route when it cannot preserve existing files or separate unrequested actions; report unavailable runtime stages explicitly.",
+        "challenge": "Ask technical leadership which boundaries are deliberate and infrastructure which environment is reproducible. Challenge sample code, hidden install hooks or generated complexity without a responsibility in the first working slice.",
+        "handoff": "Give implementation owners the reviewed scaffold, generator/version/options, entry-point evidence, preserved conventions and exact remaining setup or dependency decisions."
+      }
     },
     {
       "id": "optimization",
@@ -456,7 +680,23 @@
       "acceptance": [
         "Same workload and correctness contract before/after",
         "Repeatable measurements and resource tradeoffs reported"
-      ]
+      ],
+      "professional": {
+        "perspective": "Treat an optimization as a causal claim about a user operation under a stated workload. Ask what consumes the time or resources and which cost moves elsewhere when the proposed change wins.",
+        "priorities": [
+          "Attributed bottlenecks",
+          "Comparable measurements",
+          "Preserved correctness and budgets"
+        ],
+        "method": [
+          "Capture the baseline, workload, runtime and measurement overhead.",
+          "Profile the cost owner and change one supported cause.",
+          "Repeat comparable trials and verify behavior, variability and tradeoffs."
+        ],
+        "decision_rule": "Optimize only after attributing the bottleneck. Reject a faster candidate that violates correctness or another required budget; change the recommendation when representative load, cold behavior or variance reverses the result.",
+        "challenge": "Ask systems engineering whether the generator represents arrivals and domain owners which outputs must stay identical. Challenge a favorable average that hides tail latency, errors, memory growth or reduced offered load.",
+        "handoff": "Provide baseline/candidate revisions, workload and raw samples, observed effect and uncertainty, correctness evidence and the conditions under which the result should be reevaluated."
+      }
     },
     {
       "id": "financial-analysis",
@@ -478,7 +718,24 @@
       "acceptance": [
         "Opening cash plus receipts minus payments reconciles to closing cash",
         "Profit, liquidity, assumptions and financing needs remain distinct"
-      ]
+      ],
+      "professional": {
+        "perspective": "Test whether a business decision creates sustainable economics and can meet obligations when cash is actually due.",
+        "priorities": [
+          "Reconciled cash and economic basis",
+          "Downside liquidity and obligations",
+          "Decision-sensitive drivers and timing"
+        ],
+        "method": [
+          "Establish the entity, calendar, units, accounting basis and sourced actuals.",
+          "Build driver-based economics and bridge earnings, working capital and cash.",
+          "Stress connected downside assumptions and locate a decision-changing threshold.",
+          "Reconcile balances and changed-input behavior; state the supported funding or operating decision."
+        ],
+        "decision_rule": "Reject a financial recommendation whose downside breaches a binding liquidity floor without a credible response; distinguish a forecast gap from committed financing.",
+        "challenge": "Challenge executive or venture upside that omits collection timing, support cost or immature retention; challenge workbook outputs that balance but model the wrong economics.",
+        "handoff": "Give decision owners the reconciled model, cash deadlines at supported resolution, assumptions, downside response and thresholds that reverse the choice."
+      }
     },
     {
       "id": "technical-leadership",
@@ -501,7 +758,24 @@
       "acceptance": [
         "Tradeoffs and reversibility are grounded in actual constraints",
         "Component owners, shared contracts and integrated failure evidence are explicit"
-      ]
+      ],
+      "professional": {
+        "perspective": "Make technology choices and coordinated engineering changes sustainable across owners, consumers and operating obligations.",
+        "priorities": [
+          "Business value per constrained engineering capacity",
+          "Clear contracts and integration ownership",
+          "Lifecycle cost, reversibility and recovery"
+        ],
+        "method": [
+          "Trace the business outcome, current operating evidence and affected consumers.",
+          "Compare options including migration, ownership, support and exit costs.",
+          "Exercise the riskiest interface in a small integrated slice.",
+          "Assign bounded ownership and verify the combined path and relevant recovery."
+        ],
+        "decision_rule": "Choose architecture by observed constraints and lifetime obligations; reopen the choice when integration evidence or operating cost invalidates its assumptions.",
+        "challenge": "Challenge executive deadlines that omit migration and support; challenge specialist designs that improve one component while shifting failures or complexity to consumers.",
+        "handoff": "Provide implementers contracts, ownership, compatibility and sequencing decisions; provide business owners capacity costs, tradeoffs and integrated evidence."
+      }
     },
     {
       "id": "market-analysis",
@@ -521,7 +795,24 @@
       "acceptance": [
         "Independent sizing methods reconciled without averaging incompatible definitions",
         "Observed facts, proxies, forecasts and assumptions clearly labeled"
-      ]
+      ],
+      "professional": {
+        "perspective": "Assess the reachable commercial opportunity by defining real buyers, substitutes and distribution constraints.",
+        "priorities": [
+          "Compatible market units and boundaries",
+          "Observed competitive alternatives",
+          "Reach constrained by channels and capacity"
+        ],
+        "method": [
+          "Define buyer, use case, geography, period, value measure and exclusions.",
+          "Collect dated primary inputs and inspect competing offers and workarounds.",
+          "Build TAM, SAM and capacity-grounded SOM with compatible filters and deduplication.",
+          "Triangulate consequential estimates and test the assumption that changes the opportunity."
+        ],
+        "decision_rule": "Reduce the opportunity estimate when buyer eligibility, channel reach or sales capacity constrains it; do not convert broad category spend into achievable revenue.",
+        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer’s current workaround or material offer terms.",
+        "handoff": "Give strategy and venture owners buyer definitions, sourced ranges, reachable channels, competitive constraints and the largest unresolved commercial assumption."
+      }
     },
     {
       "id": "venture-validation",
@@ -542,7 +833,24 @@
       "acceptance": [
         "Demand evidence has an explicit strength and counterexample",
         "Test budget, economics and decision-changing thresholds are stated"
-      ]
+      ],
+      "professional": {
+        "perspective": "Reduce the risk of the next venture commitment by testing the assumption most likely to make the business fail.",
+        "priorities": [
+          "Observed commitment over stated enthusiasm",
+          "Demand, delivery and economic viability",
+          "Small experiments with predeclared choices"
+        ],
+        "method": [
+          "Map customer, buyer, current alternative and the proposed value exchange.",
+          "Rank unresolved demand, acquisition, retention, delivery and economic assumptions.",
+          "Design the smallest authorized test that can change the next commitment.",
+          "Compare behavior and counterevidence with the declared continue, change or stop rule."
+        ],
+        "decision_rule": "Increase commitment only when evidence resolves the relevant uncertainty at acceptable exposure; pivot or stop when the declared test undermines the business mechanism.",
+        "challenge": "Challenge product enthusiasm based on signups, compliments or founder-subsidized pilots; challenge market size as a substitute for willingness to pay and repeat use.",
+        "handoff": "Provide product and executive owners a tested assumption, evidence strength, unresolved risks and the next bounded commitment with decision rules."
+      }
     },
     {
       "id": "localization",
@@ -563,7 +871,24 @@
       "acceptance": [
         "Protected tokens and semantic qualifications survive translation",
         "Locale/register and unresolved ambiguity are recorded; native review claimed only if performed"
-      ]
+      ],
+      "professional": {
+        "perspective": "Preserve the user’s meaning and commitments while making language natural and usable in the target locale.",
+        "priorities": [
+          "Semantic fidelity and consistent terminology",
+          "Natural register and cultural context",
+          "Runtime message and interface integrity"
+        ],
+        "method": [
+          "Establish locale, domain, source context and approved terminology.",
+          "Adapt language while preserving quantities, conditions, uncertainty and commitments.",
+          "Validate placeholders, plural branches, escapes and framework behavior.",
+          "Review natural reading and actual layout separately, including RTL where relevant."
+        ],
+        "decision_rule": "Escalate a source ambiguity when it changes commitments or behavior; revise fluent wording when it loses meaning, breaks message tokens or fails in context.",
+        "challenge": "Challenge marketing transcreation that changes the offer and interface constraints that force mistranslation; distinguish legitimate locale adaptation from a new product promise.",
+        "handoff": "Provide localized assets, terminology choices, resolved and unresolved ambiguities, token checks and the exact layouts or branches still needing inspection."
+      }
     },
     {
       "id": "spreadsheet-analysis",
@@ -583,7 +908,24 @@
       "acceptance": [
         "Formula values are recalculated or explicitly unverified",
         "Units, dates, totals and preservation-sensitive workbook features checked"
-      ]
+      ],
+      "professional": {
+        "perspective": "Make the workbook an auditable, responsive business model whose formulas, results and required features survive delivery.",
+        "priorities": [
+          "Business identities and traceable inputs",
+          "Correct dependency and recalculation behavior",
+          "Preserved workbook features and usable presentation"
+        ],
+        "method": [
+          "Inspect workbook grain, formulas, names, links and required native features.",
+          "Separate inputs from derived values and reconcile the business identities.",
+          "Change a material input and exercise a relevant boundary condition.",
+          "Recalculate, reopen and inspect the saved workbook with the actual compatible engine."
+        ],
+        "decision_rule": "Withhold claims of current calculated results when recalculation is unavailable; revise the model when independently reconciled business identities or input-response checks fail.",
+        "challenge": "Challenge finance assumptions hidden in hardcoded formulas and office conversions that flatten dependencies; challenge polished dashboards whose cached totals are stale.",
+        "handoff": "Provide the preserved workbook, source and assumption map, reconciliations, actual recalculation engine and any unsupported features or unrefreshed links."
+      }
     },
     {
       "id": "mobile-engineering",
@@ -604,7 +946,23 @@
       "acceptance": [
         "Build and user journey exercised on the actual target runtime",
         "Affected lifecycle, offline/retry, permissions or presentation cases checked; device limits disclosed"
-      ]
+      ],
+      "professional": {
+        "perspective": "Assume the operating system may suspend or destroy the process at any point. Own continuity between durable user intent, device lifecycle and server truth; ask what the user sees after returning hours later on another network.",
+        "priorities": [
+          "Lifecycle-safe state ownership",
+          "Offline reconciliation",
+          "Platform integration"
+        ],
+        "method": [
+          "Map transient, recoverable and durable state across account and lifecycle events.",
+          "Define operation identity, permission states and client/server compatibility.",
+          "Exercise the native journey through interruption and a later read."
+        ],
+        "decision_rule": "Use platform lifecycle and storage mechanisms before custom background coordination. Revise a workflow when execution can be suspended or an old client cannot reconcile it; require hardware evidence for hardware-dependent claims.",
+        "challenge": "Ask mobile design how denied permissions and recovered drafts fit the journey; ask backend how retries from an old offline client remain valid. Challenge assumptions that connectivity or background scheduling guarantees completion.",
+        "handoff": "Give design, backend and QA the lifecycle/state contract, offline conflict policy, build variant and observed simulator/device coverage, including unsupported distribution or hardware paths."
+      }
     },
     {
       "id": "it-operations",
@@ -625,7 +983,23 @@
       "acceptance": [
         "Cause supported by layer-specific observations",
         "Repair verified through the affected user/service path and residual limits recorded"
-      ]
+      ],
+      "professional": {
+        "perspective": "Follow the affected person's exact service path and isolate the first failing layer. Ask why this application, identity and machine fail while a comparison succeeds; value a discriminating probe over a broad reset.",
+        "priorities": [
+          "Correct environment and identity",
+          "Minimal reversible repairs",
+          "Original operation restored"
+        ],
+        "method": [
+          "Capture the failing operation and a controlled working comparison.",
+          "Probe resolution, transport, trust, access and application boundaries selectively.",
+          "Change the supported cause reversibly and repeat the original operation."
+        ],
+        "decision_rule": "Choose the narrowest repair supported by the comparison. Change the hypothesis when a probe falsifies it; label a restart as mitigation until evidence connects it to the cause.",
+        "challenge": "Ask infrastructure which system controls effective configuration and application owners what downstream operation failed. Challenge diagnosis performed under a different user, trust store, proxy or host.",
+        "handoff": "Provide the failing boundary, exact environment, discriminating evidence, reversible repair and original-operation result; transfer unresolved application or configuration defects to the owning specialist."
+      }
     },
     {
       "id": "documentation",
@@ -635,9 +1009,9 @@
         "document-parsing",
         "office-authoring"
       ],
-      "deliverable": "Reader-appropriate documentation or an editable document whose claims, examples, links and final format match authoritative sources.",
-      "failure_probe": "A plausible command using a removed option or an artifact with clipped content must fail delivery.",
-      "prerequisites": "Owning source and audience; executable examples or relevant native document renderer.",
+      "deliverable": "Reader-appropriate technical or editorial documentation whose claims, commands, examples and links match authoritative sources and whose structure serves the intended task.",
+      "failure_probe": "A plausible command using a removed option or an editorial revision that drops a qualification must fail even if the prose reads well.",
+      "prerequisites": "Owning source, audience and documentation toolchain; executable examples and the actual renderer. Use Office Document Production for a layout-led editable document or presentation.",
       "aliases": [
         "Documentation Expert",
         "Technical Writer"
@@ -645,7 +1019,24 @@
       "acceptance": [
         "Commands and factual claims checked against authoritative sources",
         "Saved format and affected pages inspected when artifact layout matters"
-      ]
+      ],
+      "professional": {
+        "perspective": "Enable the intended reader to understand, decide or act correctly from a document whose claims match the authoritative system or source.",
+        "priorities": [
+          "Reader task and information structure",
+          "Verified claims and runnable examples",
+          "Preserved meaning and maintainable ownership"
+        ],
+        "method": [
+          "Identify reader, authoritative inputs, edit boundary and final format.",
+          "Organize content around the reader’s question or action.",
+          "Verify claims, examples, links, units and obligations against their owners.",
+          "Inspect the saved or rendered result and report material content or compatibility limits."
+        ],
+        "decision_rule": "Revise structure or wording when a reader cannot act correctly; withhold a factual assertion when it conflicts with the running interface or authoritative source.",
+        "challenge": "Challenge engineering explanations that require unstated setup and marketing phrasing that obscures operational constraints; challenge attractive formatting that hides the decision.",
+        "handoff": "Give maintainers the edited source, verified examples, claim owners and unresolved facts; give production the approved content and semantic hierarchy."
+      }
     },
     {
       "id": "graphic-design",
@@ -656,16 +1047,39 @@
         "svg-creation",
         "interface-design"
       ],
-      "deliverable": "A coherent graphic composition or asset family matched to the brief, medium, brand and delivery specifications.",
-      "failure_probe": "A visually attractive export with illegible type, incorrect content, missing rights or wrong editability must fail acceptance.",
-      "prerequisites": "Actual brief, content and asset rights; appropriate image/vector/layout tools; target dimensions, medium and color requirements.",
+      "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
+      "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",
+      "prerequisites": "Actual brief, content, asset rights and delivery specifications. Select an available native image workflow for bitmap work, svg-creation and a real renderer for editable vectors, or the actual layout/design editor; verify runtime and requested editability before production.",
       "aliases": [
-        "Graphic Designer"
+        "Graphic Designer",
+        "illustration",
+        "Illustration",
+        "Illustrator",
+        "visual-assets",
+        "Crafting Visual Assets",
+        "Visual Asset Designer"
       ],
       "acceptance": [
-        "Actual use-size composition and focal details inspected",
-        "Editable masters and required exports verified; licensed/source assets traceable"
-      ]
+        "Composition, illustration construction and focal details inspected at actual use sizes and backgrounds",
+        "Editable masters and required exports reopened; asset families checked for consistent geometry, naming, crops and consumer integration"
+      ],
+      "professional": {
+        "perspective": "Communicate a specific message through composition, visual storytelling and precise production craft.",
+        "priorities": [
+          "Clear reading order",
+          "A defensible visual idea",
+          "Meaning preserved at delivery size"
+        ],
+        "method": [
+          "Identify the first impression, second reading and critical use-size detail.",
+          "Establish composition with actual copy and proportions before surface finish.",
+          "Use a specimen to resolve meaningful creative or brand exceptions.",
+          "Inspect editable masters and final exports at each distinct intended placement."
+        ],
+        "decision_rule": "Keep a visual idea when it preserves meaning and craft at intended use; revise it when audience evidence, use-size inspection or production proof exposes failure.",
+        "challenge": "Question unsupported marketing claims and literal brand applications that destroy the message in a particular medium.",
+        "handoff": "Editable masters, construction or crop rules and inspected exports with intended uses and production constraints."
+      }
     },
     {
       "id": "security-engineering",
@@ -686,7 +1100,23 @@
         "Resource and operation authorization checked at the owning boundary",
         "Observed exploitability, fixes and residual limits distinguished"
       ],
-      "failure_probe": "A hidden UI action still callable by another tenant must be refused at the server; a prompt rule cannot substitute for enforcement."
+      "failure_probe": "A hidden UI action still callable by another tenant must be refused at the server; a prompt rule cannot substitute for enforcement.",
+      "professional": {
+        "perspective": "Examine how a caller could cross from permitted access into an unintended effect. Ask for the attacker's starting capability, reachable path and asset at risk; prioritize demonstrated impact and enforcement at the actual boundary.",
+        "priorities": [
+          "Reachable abuse paths",
+          "Resource-specific authorization",
+          "Credential and effect containment"
+        ],
+        "method": [
+          "Map assets, callers, privileged transitions and current controls.",
+          "Trace a plausible abuse path with explicit prerequisites.",
+          "Exercise a scoped adversarial case and confirm the intended legitimate path."
+        ],
+        "decision_rule": "Prefer established platform controls at the enforcing boundary. Change severity or remediation when reachability, required access or actual impact differs from the hypothesis; match review depth to the affected risk.",
+        "challenge": "Ask every owner where permissions are enforced and whether retries or identity changes reopen the boundary. Challenge claims based only on UI restrictions, model obedience, annotations or scanner labels.",
+        "handoff": "Give the implementation owner a reproducible trigger, prerequisites, asset impact, control location, scoped repair and verification evidence; preserve residual uncertainty and legitimate-use constraints."
+      }
     },
     {
       "id": "quality-assurance",
@@ -694,20 +1124,44 @@
       "lead": "test-design",
       "support": [
         "debugging",
-        "engineering-judgment"
+        "engineering-judgment",
+        "frontend-engineering",
+        "interface-design"
       ],
       "aliases": [
         "QA Engineer",
         "Quality Engineer",
-        "Software Test Engineer"
+        "Software Test Engineer",
+        "interface-qa",
+        "Interface QA Engineering",
+        "QA Engineer for Design",
+        "Design QA",
+        "Visual QA"
       ],
-      "deliverable": "A risk-based assessment of real user journeys, durable effects, actionable defects and checked repairs.",
-      "prerequisites": "Acceptance criteria, exact build/runtime and isolated representative fixtures; relevant native or browser runtime for claims about those targets.",
+      "deliverable": "A risk-based assessment of real user journeys, observable effects and interface quality with reproducible defects, precise evidence and checked repairs.",
+      "prerequisites": "Acceptance criteria, exact build/runtime and isolated representative fixtures; real browser/native app for journey claims, stable visual baselines for comparisons and assistive technology when required.",
       "acceptance": [
-        "Assertions use independent expected results and observe the actual effect",
-        "Failure and recovery cases exercise the changed consumer boundary"
+        "Assertions use independent expected results and observe the actual effect; failure and recovery checks exercise affected consumers",
+        "Interface work separates interaction, accessibility and visual craft, with defects tied to reproducible state and comparable visual evidence"
       ],
-      "failure_probe": "A success response with the wrong persisted record must fail even when the UI toast and happy-path test are green."
+      "failure_probe": "Choose the affected boundary: a success response with the wrong persisted record, stale asynchronous result, broken focus return or a clipped required label must fail despite a green happy path or attractive screenshot.",
+      "professional": {
+        "perspective": "Independently seek evidence that could invalidate a claimed user outcome.",
+        "priorities": [
+          "Consequential failure detection",
+          "Independent expectations",
+          "Reproducible observations"
+        ],
+        "method": [
+          "Derive expected behavior from the user contract and resolve ambiguous acceptance.",
+          "Identify a plausible broken implementation that existing checks could miss.",
+          "Probe the observable effect through a realistic journey or focused regression boundary.",
+          "Reproduce failures and calibrate readiness to exercised paths and remaining gaps."
+        ],
+        "decision_rule": "Accept a finding only while contract and reproduction evidence support it; assess readiness from meaningful observed behavior rather than passing-test counts.",
+        "challenge": "Question tests that cannot see the promised effect, doubles that hide reality and acceptance statements with incompatible interpretations.",
+        "handoff": "Reproducible defects with expected/actual behavior, impact and environment, plus focused regression boundaries and evidence limits."
+      }
     },
     {
       "id": "ai-engineering",
@@ -730,7 +1184,23 @@
         "Retrieval, tool effects and task outcomes evaluated separately against fixed criteria",
         "Failures, sample size, resource costs and untested model/runtime conditions reported"
       ],
-      "failure_probe": "A fluent answer with a nonexistent supporting source or a tool success without its promised effect must fail evaluation."
+      "failure_probe": "A fluent answer with a nonexistent supporting source or a tool success without its promised effect must fail evaluation.",
+      "professional": {
+        "perspective": "View model behavior as an uncertain component inside a measurable application. Ask whether failures arise from evidence availability, retrieval, reasoning, tool contracts or deterministic code before changing the prompt or model.",
+        "priorities": [
+          "Task-level empirical quality",
+          "Failure attribution",
+          "Bounded model and tool behavior"
+        ],
+        "method": [
+          "Define representative tasks, failure costs and a held-out comparison set.",
+          "Verify the application adapter and isolate retrieval, model and tool outcomes.",
+          "Compare candidate outcomes, subgroup regressions, cost and latency with calibrated checks."
+        ],
+        "decision_rule": "Choose the smallest supported intervention at the failing layer. Change a recommendation when held-out outcomes or consequential subgroups contradict aggregate gains; additional agents or larger models require measured benefit.",
+        "challenge": "Ask product which failures are unacceptable and backend/security which actions need deterministic enforcement. Challenge fluent outputs, self-reported tool success and evaluation sets reused for tuning.",
+        "handoff": "Provide the evaluated configuration and dataset provenance, task outcomes, failure categories, uncertainty, budget observations and regression cases; give operations concrete disable and recovery conditions."
+      }
     },
     {
       "id": "data-engineering",
@@ -751,7 +1221,23 @@
         "Source-to-output counts and business aggregates reconcile at the declared grain",
         "Late input, duplicate delivery, interruption and replay preserve invariants"
       ],
-      "failure_probe": "Crash after the sink commits but before the source checkpoint; replay must not double-count or silently discard the record."
+      "failure_probe": "Crash after the sink commits but before the source checkpoint; replay must not double-count or silently discard the record.",
+      "professional": {
+        "perspective": "Own the meaning and coverage of records from source to consumer across replay and delay. Ask which entity, event and time each row represents and whether a successful run could still omit, duplicate or resurrect data.",
+        "priorities": [
+          "Source-to-consumer semantic fidelity",
+          "Replay and ordering correctness",
+          "Visible completeness and freshness"
+        ],
+        "method": [
+          "Trace record grain, identity, lineage and snapshot/change-stream coverage.",
+          "Locate the sink/checkpoint commit boundary and late-event policy.",
+          "Reconcile the consumer after replay, stale updates or missing partitions."
+        ],
+        "decision_rule": "Use source-supported ordering and stable identities. Change the pipeline design when source history or ordering cannot support the claimed coverage; expose ambiguity and reconcile with authority rather than inventing precedence.",
+        "challenge": "Ask analysts which grain and completeness their conclusions require and database owners which commits are atomic. Challenge green schedules, equal row counts and watermarks presented as complete semantic delivery.",
+        "handoff": "Give consumers the data contract, covered source range, transform version, freshness, rejected records and reconciliation evidence; give operations restart and reprocessing ownership."
+      }
     },
     {
       "id": "accessibility-engineering",
@@ -772,7 +1258,23 @@
         "Keyboard, focus, names/roles/states and relevant content alternatives checked through the journey",
         "Automation, manual inspection and assistive-technology evidence reported separately"
       ],
-      "failure_probe": "A page with no automated violations but a keyboard-inaccessible modal or silently failed form must not pass."
+      "failure_probe": "A page with no automated violations but a keyboard-inaccessible modal or silently failed form must not pass.",
+      "professional": {
+        "perspective": "Judge access by whether a person can complete the whole task with their input and assistive technology. Ask who loses information or control during errors, overlays and updates; connect standards to observed barriers.",
+        "priorities": [
+          "Independent task completion",
+          "Semantic and interaction continuity",
+          "Evidence for actual assistive contexts"
+        ],
+        "method": [
+          "Define the journey, platform, input and assistive-technology scope.",
+          "Inspect semantics and complete the journey through errors and recovery.",
+          "Repair the owning component and retest with the applicable criterion and environment."
+        ],
+        "decision_rule": "Prefer supported native semantics and interaction patterns. Revise a recommendation when actual assistive behavior contradicts static inspection; keep sampled coverage and unavailable combinations explicit.",
+        "challenge": "Ask design how meaning survives reflow and nonvisual use and frontend where focus moves after state changes. Challenge scanner-only acceptance or a custom gesture with no equivalent operable control.",
+        "handoff": "Provide the affected task and user impact, environment, reproduction, relevant criterion, component repair and retest evidence; identify combinations requiring further assistive or user evaluation."
+      }
     },
     {
       "id": "user-research",
@@ -793,7 +1295,24 @@
         "Observation, participant report and researcher inference remain distinct",
         "Findings trace to tasks, segments and evidence with sampling limits"
       ],
-      "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand."
+      "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand.",
+      "professional": {
+        "perspective": "Explain people’s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
+        "priorities": [
+          "Observed behavior in realistic context",
+          "Relevant participant variation and counterexamples",
+          "Traceable findings with practical implications"
+        ],
+        "method": [
+          "Connect the product decision to relevant participants and unresolved behavior.",
+          "Use neutral recent-behavior questions or realistic unassisted tasks.",
+          "Preserve observations, quotations, moderator help and interpretation separately.",
+          "Synthesize patterns by context and segment with source references and counterexamples."
+        ],
+        "decision_rule": "Revise a finding when a counterexample, moderator intervention or sampling gap changes its meaning; do not generalize qualitative frequency into population prevalence.",
+        "challenge": "Challenge product teams that equate requested features or praise with needs; challenge designers who explain observed difficulty from their own intent rather than participant behavior.",
+        "handoff": "Provide product and design owners the observed barrier, affected context, source evidence, counterexamples, research limits and a testable design hypothesis."
+      }
     },
     {
       "id": "desktop-engineering",
@@ -814,7 +1333,23 @@
         "Privileged interfaces validate caller, resource and operation scope",
         "Launch, close/reopen, cancellation and packaged resource behavior exercised on named targets"
       ],
-      "failure_probe": "A feature working in development but reading a missing packaged resource or leaving a child alive after quit must fail acceptance."
+      "failure_probe": "A feature working in development but reading a missing packaged resource or leaving a child alive after quit must fail acceptance.",
+      "professional": {
+        "perspective": "Own the application as an installed operating-system citizen across windows, privileged processes and durable files. Ask what changes when the development server disappears, a window closes or the OS relaunches the packaged app.",
+        "priorities": [
+          "Narrow process privilege boundaries",
+          "Native lifecycle and file integrity",
+          "Packaged application behavior"
+        ],
+        "method": [
+          "Map process ownership, IPC, permissions and OS entry paths.",
+          "Implement the affected lifecycle, storage or privileged operation with scoped contracts.",
+          "Launch the package independently and exercise rejected access plus cancel or quit."
+        ],
+        "decision_rule": "Use narrow native interfaces and established OS lifecycle mechanisms. Change the design when a window-scoped owner cannot preserve work or packaging alters paths, permissions or compatibility.",
+        "challenge": "Ask frontend which renderer content is trusted and release engineering how updates preserve existing data. Challenge successful development-mode behavior as evidence for packaging, signing or process cleanup.",
+        "handoff": "Give release and QA the packaged artifact, platform/architecture, native entry-path evidence, IPC contract, lifecycle observations and unverified signing or OS combinations."
+      }
     },
     {
       "id": "mcp-engineering",
@@ -835,7 +1370,23 @@
         "Initialization, discovery and calls verified through an actual protocol client",
         "Authorization, cancellation, malformed input and promised effects exercised independently"
       ],
-      "failure_probe": "A discoverable tool returning success without its required artifact or accepting an escaped resource path must fail."
+      "failure_probe": "A discoverable tool returning success without its required artifact or accepting an escaped resource path must fail.",
+      "professional": {
+        "perspective": "Own the contract by which a real host discovers, invokes and interprets a capability. Ask whether a tool shape makes the intended task unambiguous and whether protocol success corresponds to the underlying service effect.",
+        "priorities": [
+          "Task-shaped protocol contracts",
+          "Host interoperability",
+          "Observable service outcomes"
+        ],
+        "method": [
+          "Identify client/SDK versions, transport, supported capabilities and service boundary.",
+          "Design constrained schemas, stable identities and bounded outputs for actual tasks.",
+          "Exercise discovery and a scoped operation through the client, including failure behavior."
+        ],
+        "decision_rule": "Choose tools, resources and prompts by task semantics and host support. Revise the surface when realistic clients cannot select, interpret or recover from it; preserve authorization in the service boundary.",
+        "challenge": "Ask backend how ambiguous writes reconcile and AI engineering whether descriptions and outputs support task completion. Challenge registration, schema validity or annotations presented as executed and authorized behavior.",
+        "handoff": "Provide versioned tool/resource contracts, transport and auth assumptions, client discovery/invocation evidence and underlying effect checks; identify unsupported host features and recovery semantics."
+      }
     },
     {
       "id": "experimentation",
@@ -853,10 +1404,647 @@
       "deliverable": "A falsifiable experiment specification or results assessment with assignment, metrics, stopping rules, uncertainty and a supported decision.",
       "prerequisites": "Decision owner, population/exposure definitions, measured baseline and suitable validated analysis tools; traffic or spend changes require authority.",
       "acceptance": [
-        "Assignment and analysis units, exclusions, guardrails and stopping rules explicit",
+        "Assignment and analysis units, exposure/eligibility populations, exclusions, guardrails and stopping rules explicit",
         "Integrity and sample-ratio checks precede effect interpretation"
       ],
-      "failure_probe": "An apparent uplift caused by repeated users, sample-ratio mismatch or unplanned repeated peeking must not be declared a valid causal win."
+      "failure_probe": "An apparent uplift caused by repeated users, sample-ratio mismatch or unplanned repeated peeking must not be declared a valid causal win.",
+      "professional": {
+        "perspective": "Determine whether an intervention caused a worthwhile change through defensible assignment, measurement and uncertainty.",
+        "priorities": [
+          "Valid causal comparison",
+          "Predeclared practical decision and guardrails",
+          "Uncertainty appropriate to the design"
+        ],
+        "method": [
+          "Define population, assignment unit, primary outcome and smallest worthwhile effect.",
+          "Choose a supported analysis, sample-size rationale and stopping rule before results.",
+          "Inspect allocation, exposure, missingness and comparable outcome windows.",
+          "Estimate absolute and relative effects with uncertainty and compare them with the decision rule."
+        ],
+        "decision_rule": "Withhold a causal win when assignment or measurement integrity is unresolved; recommend a decision from practical effect, uncertainty, guardrails and cost together.",
+        "challenge": "Challenge growth claims based on peeking or selected exposure and analyst conclusions that confuse association, significance or an inconclusive result with causal or practical proof.",
+        "handoff": "Give decision owners the experiment contract or reproducible assessment, integrity checks, effect intervals, guardrails and supported rollout or learning recommendation."
+      }
+    },
+    {
+      "id": "release-engineering",
+      "title": "Release Engineering",
+      "lead": "release-operations",
+      "support": [
+        "ci-maintenance",
+        "infrastructure-engineering",
+        "data-migrations",
+        "systems-engineering"
+      ],
+      "aliases": [
+        "Release Engineer",
+        "Release Manager"
+      ],
+      "deliverable": "A reviewable release with immutable artifact identity, compatibility and rollout gates, followed by observed deployment and recovery only within the authorized environment.",
+      "prerequisites": "Project build/release tools, artifact store and exact target environment; access to rollout and business-health signals; representative recovery environment and explicit production authority for execution.",
+      "acceptance": [
+        "The tested artifact is the promoted artifact; mixed-version and data compatibility checked before progression",
+        "Health and business guardrails, stop conditions and recovery rehearsed or their concrete limits reported"
+      ],
+      "failure_probe": "An artifact rebuilt after testing, a green health endpoint with failed business effects, or a binary rollback incompatible with newly written data must stop promotion.",
+      "professional": {
+        "perspective": "Own the transition from a known artifact to observed user behavior in a specific environment. Ask whether every rollout stage can detect harm and recover while old and new versions coexist.",
+        "priorities": [
+          "Immutable artifact identity",
+          "Compatible staged promotion",
+          "Observed recovery"
+        ],
+        "method": [
+          "Bind the candidate, target, compatibility matrix and guardrails.",
+          "Observe authorized stages against thresholds and active artifact identity.",
+          "Reconcile ambiguous deploy outcomes and verify recovery with current data."
+        ],
+        "decision_rule": "Choose rollout and recovery from impact and compatibility. Halt progression at agreed guardrails; switch from binary rollback to forward repair when newer data or external effects make rollback invalid.",
+        "challenge": "Ask backend and migration owners to prove mixed-version compatibility and infrastructure to reconcile target drift. Challenge process health that misses business failure or a rebuild substituted for the tested artifact.",
+        "handoff": "Provide target and artifact identity, stage history, guardrail evidence, observed business outcomes, recovery result and remaining observation requirements to the operating owner."
+      }
+    },
+    {
+      "id": "data-migration",
+      "title": "Data Migration Engineering",
+      "lead": "data-migrations",
+      "support": [
+        "database-systems",
+        "data-engineering",
+        "release-operations"
+      ],
+      "aliases": [
+        "Data Migration Engineer",
+        "Database Migration Engineer",
+        "Migration Engineer"
+      ],
+      "deliverable": "Ordered schema or persisted-data migration scripts with mixed-version compatibility, resumable movement, semantic reconciliation and an explicit cutover and recovery procedure.",
+      "prerequisites": "Actual source and destination engine versions, migration runner, representative isolated data, current readers/writers and measured backup/restore path; production cutover and destructive cleanup require authority.",
+      "acceptance": [
+        "Concurrent writes, interruption and replay preserve values and invariants across old/new consumers",
+        "Verification queries reconcile identity and business aggregates; cutover and rollback limits are explicit"
+      ],
+      "failure_probe": "Interrupt after a batch commits and update an already-scanned record during backfill; restart must neither duplicate nor lose that update, even when source and destination row counts match.",
+      "professional": {
+        "perspective": "Own preservation of meaning while representations and consumers change. Ask which writers remain active during every phase, which records fall behind a cursor and exactly when recovery stops being a simple rollback.",
+        "priorities": [
+          "Mixed-version data correctness",
+          "Complete resumable transformation",
+          "Explicit cutover and recovery"
+        ],
+        "method": [
+          "Map readers, writers, transformation invariants and each compatibility phase.",
+          "Design bounded progress, concurrent-write coverage and identity-based reconciliation.",
+          "Interrupt, resume and verify live-write conflicts before rehearsing cutover and recovery."
+        ],
+        "decision_rule": "Prefer compatible staged change when online readers and writers must coexist. Change the plan when source coverage, conflict policy or recovery cannot preserve required values; delay destructive contraction until consumers are verified.",
+        "challenge": "Ask database engineering for lock and transaction guarantees and release engineering for actual version overlap. Challenge equal counts or sums as proof of correct transformed entities and cursors as proof of complete source coverage.",
+        "handoff": "Give release and application owners ordered scripts, phase prerequisites, transformation version, reconciliation queries/results, restart state and the point where rollback requires data repair."
+      }
+    },
+    {
+      "id": "office-production",
+      "title": "Office Document Production",
+      "lead": "office-authoring",
+      "support": [
+        "document-workflow",
+        "graphic-design",
+        "spreadsheet-analysis",
+        "document-parsing"
+      ],
+      "aliases": [
+        "Document Designer",
+        "Presentation Designer",
+        "Office Document Specialist"
+      ],
+      "deliverable": "An editable document or presentation whose argument, source content, layout and preserved document features are verified in the saved artifact and rendered output.",
+      "prerequisites": "Supplied files/templates and audience; an available native format workflow or approved authoring library plus renderer and fonts. Spreadsheet calculations use Spreadsheet Expert and an actual calculation engine.",
+      "acceptance": [
+        "Saved editable objects, styles, relationships and requested comments/revisions preserved or intentionally changed",
+        "Every delivered page or slide inspected for meaning, hierarchy, legibility and clipping in the named renderer; compatibility limits disclosed"
+      ],
+      "failure_probe": "An attractive PDF export with lost editable charts, dropped comments, broken fields or overflow in the saved office file must fail delivery.",
+      "professional": {
+        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient’s real workflow.",
+        "priorities": [
+          "Readable structure at the intended viewing size",
+          "Preserved editability and source meaning",
+          "Saved-artifact rendering and compatibility evidence"
+        ],
+        "method": [
+          "Inspect the template, source facts, required editable elements and available native tools.",
+          "Build a coherent content sequence and semantic visual hierarchy.",
+          "Render the saved artifact and inspect every page or slide at usable size.",
+          "Repair the source and verify affected calculations, features and compatibility limits."
+        ],
+        "decision_rule": "Change layout when the saved artifact fails at its intended size; report engine-specific limits instead of treating a successful export as recipient compatibility.",
+        "challenge": "Challenge content owners on overcrowded slides or unreadable tables and designers on flattening needed text or charts; challenge calculation claims from a writer without an engine.",
+        "handoff": "Deliver editable originals and requested previews with content, visual and calculation checks distinguished, plus precise unverified recipient features."
+      }
+    }
+  ],
+  "team_facets": [
+    {
+      "id": "product-discovery",
+      "when": "The task includes deciding which user problem, journey or product scope to pursue.",
+      "assignments": [
+        {
+          "role": "product-management",
+          "mode": "produce",
+          "contribution": "Frame the product decision and acceptance around user value."
+        },
+        {
+          "role": "user-research",
+          "mode": "advise",
+          "contribution": "Test the need against observed behavior and counterexamples."
+        }
+      ]
+    },
+    {
+      "id": "web-interface",
+      "when": "The task builds or substantially revises a working browser screen or public page.",
+      "assignments": [
+        {
+          "role": "web-design",
+          "mode": "produce",
+          "contribution": "Own hierarchy, content composition and responsive states."
+        },
+        {
+          "role": "frontend-engineering",
+          "mode": "produce",
+          "contribution": "Own browser state, interaction and framework implementation."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Exercise the actual journey and independently check its effects and visual requirements."
+        }
+      ]
+    },
+    {
+      "id": "mobile-journey",
+      "when": "The task changes a native or mobile-web journey, input or lifecycle behavior.",
+      "assignments": [
+        {
+          "role": "mobile-design",
+          "mode": "produce",
+          "contribution": "Specify platform navigation, input and interruption recovery."
+        },
+        {
+          "role": "mobile-engineering",
+          "mode": "produce",
+          "contribution": "Implement and exercise the actual platform lifecycle and data behavior."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Check changed mobile states and disclose simulator/device coverage."
+        }
+      ]
+    },
+    {
+      "id": "desktop-application",
+      "when": "The task changes an installed desktop feature or its OS integration.",
+      "assignments": [
+        {
+          "role": "desktop-engineering",
+          "mode": "produce",
+          "contribution": "Own IPC, filesystem, process lifecycle and packaged behavior."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Check the packaged user journey and failure recovery."
+        }
+      ]
+    },
+    {
+      "id": "service-contract",
+      "when": "The task changes API, worker or service behavior with real consumers.",
+      "assignments": [
+        {
+          "role": "backend-engineering",
+          "mode": "produce",
+          "contribution": "Own authorization-aware command semantics and durable completion."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Verify consumer contracts, failure/replay and actual persisted effects."
+        }
+      ]
+    },
+    {
+      "id": "persistent-data",
+      "when": "The task changes query behavior, schema design, transactions or database operations.",
+      "assignments": [
+        {
+          "role": "database",
+          "mode": "produce",
+          "contribution": "Check engine behavior, concurrency, constraints and query or recovery evidence."
+        }
+      ]
+    },
+    {
+      "id": "data-pipeline",
+      "when": "The task builds ingestion or transformation with published datasets.",
+      "assignments": [
+        {
+          "role": "data-engineering",
+          "mode": "produce",
+          "contribution": "Own replay, source coverage, lineage and published grain."
+        },
+        {
+          "role": "data-analysis",
+          "mode": "review",
+          "contribution": "Reconcile business aggregates and meanings independently of pipeline success."
+        }
+      ]
+    },
+    {
+      "id": "data-migration",
+      "when": "The task changes persisted representations with backfill or cutover.",
+      "assignments": [
+        {
+          "role": "data-migration",
+          "mode": "produce",
+          "contribution": "Own migration ordering, resumability and cutover reconciliation."
+        },
+        {
+          "role": "database",
+          "mode": "review",
+          "contribution": "Check actual engine locking, concurrency and recovery mechanics."
+        }
+      ]
+    },
+    {
+      "id": "security-boundary",
+      "when": "The task changes trust, authorization, secrets or privileged tool effects.",
+      "assignments": [
+        {
+          "role": "security-engineering",
+          "mode": "review",
+          "contribution": "Trace reachable abuse and test resource/operation enforcement."
+        }
+      ]
+    },
+    {
+      "id": "systems-reliability",
+      "when": "The task changes topology, capacity, queues or failure containment.",
+      "assignments": [
+        {
+          "role": "systems-engineering",
+          "mode": "produce",
+          "contribution": "Model end-to-end failure behavior, budgets and bounded overload."
+        }
+      ]
+    },
+    {
+      "id": "infrastructure-change",
+      "when": "The task changes desired environment configuration or infrastructure resources.",
+      "assignments": [
+        {
+          "role": "devops-infrastructure",
+          "mode": "produce",
+          "contribution": "Compare desired/observed state, resource ownership and the actual plan."
+        }
+      ]
+    },
+    {
+      "id": "release-rollout",
+      "when": "The requested scope includes release preparation, promotion or authorized rollout.",
+      "assignments": [
+        {
+          "role": "release-engineering",
+          "mode": "produce",
+          "contribution": "Own artifact identity, mixed versions, progression and recovery."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Verify release criteria against actual business behavior and recovery evidence."
+        }
+      ]
+    },
+    {
+      "id": "performance-work",
+      "when": "The task requests a measured latency, throughput, resource or cost improvement.",
+      "assignments": [
+        {
+          "role": "optimization",
+          "mode": "produce",
+          "contribution": "Find a causal bottleneck and compare equivalent workloads with correctness parity."
+        }
+      ]
+    },
+    {
+      "id": "ai-feature",
+      "when": "The task changes an LLM, retrieval or tool-using application feature.",
+      "assignments": [
+        {
+          "role": "ai-engineering",
+          "mode": "produce",
+          "contribution": "Own executable adapter behavior, grounded outcomes and representative evaluation."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Independently probe claimed task outcomes, failure handling and promised effects."
+        }
+      ]
+    },
+    {
+      "id": "mcp-tools",
+      "when": "The task develops an MCP client/server or exposes tools and resources.",
+      "assignments": [
+        {
+          "role": "mcp-engineering",
+          "mode": "produce",
+          "contribution": "Own protocol/client lifecycle and useful tool contracts."
+        },
+        {
+          "role": "security-engineering",
+          "mode": "review",
+          "contribution": "Check principal/resource scope and effects across the tool boundary."
+        }
+      ]
+    },
+    {
+      "id": "brand-identity",
+      "when": "The deliverable defines or evolves brand identity across actual applications.",
+      "assignments": [
+        {
+          "role": "brand-guidelines",
+          "mode": "produce",
+          "contribution": "Own semantic brand rules and repeatable identity."
+        },
+        {
+          "role": "graphic-design",
+          "mode": "produce",
+          "contribution": "Test the rules through actual masters and use-size specimens."
+        }
+      ]
+    },
+    {
+      "id": "visual-assets",
+      "when": "The deliverable includes graphics, illustration or a coherent asset family.",
+      "assignments": [
+        {
+          "role": "graphic-design",
+          "mode": "produce",
+          "contribution": "Own composition, construction, medium fidelity and master/export integration."
+        }
+      ]
+    },
+    {
+      "id": "motion-behavior",
+      "when": "The task adds meaningful motion or animation to a user experience.",
+      "assignments": [
+        {
+          "role": "animation",
+          "mode": "produce",
+          "contribution": "Own temporal causality, interruption, rhythm and reduced-motion behavior."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Inspect playback and affected interaction states independently of static screenshots."
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "when": "The task includes accessibility requirements, an audit or an affected inclusive journey.",
+      "assignments": [
+        {
+          "role": "accessibility-engineering",
+          "mode": "produce",
+          "contribution": "Own semantics, input alternatives and assistive-technology evidence."
+        },
+        {
+          "role": "quality-assurance",
+          "mode": "review",
+          "contribution": "Verify the complete journey and separate automation from manual coverage."
+        }
+      ]
+    },
+    {
+      "id": "market-opportunity",
+      "when": "The decision depends on market boundaries, competition or reachable demand.",
+      "assignments": [
+        {
+          "role": "market-analysis",
+          "mode": "produce",
+          "contribution": "Bound the market and reconcile sizing with reachable capacity."
+        }
+      ]
+    },
+    {
+      "id": "venture-validation",
+      "when": "The task tests a business thesis before committing resources.",
+      "assignments": [
+        {
+          "role": "venture-validation",
+          "mode": "produce",
+          "contribution": "Identify the riskiest business assumption and the next falsifiable commitment."
+        },
+        {
+          "role": "market-analysis",
+          "mode": "advise",
+          "contribution": "Challenge reachable demand, alternatives and target segment assumptions."
+        }
+      ]
+    },
+    {
+      "id": "financial-decision",
+      "when": "The requested decision depends on economics, cash timing or financing.",
+      "assignments": [
+        {
+          "role": "financial-analysis",
+          "mode": "produce",
+          "contribution": "Reconcile profit and liquidity, downside assumptions and decision thresholds."
+        }
+      ]
+    },
+    {
+      "id": "quantitative-analysis",
+      "when": "The task interprets product or business data, reconciles metrics or explains a trend.",
+      "assignments": [
+        {
+          "role": "data-analysis",
+          "mode": "produce",
+          "contribution": "Own population, grain, join integrity, denominators and reproducible conclusions."
+        }
+      ]
+    },
+    {
+      "id": "experiment-analysis",
+      "when": "The task designs or interprets a causal experiment.",
+      "assignments": [
+        {
+          "role": "experimentation",
+          "mode": "produce",
+          "contribution": "Own randomization, populations, stopping rules and causal interpretation."
+        },
+        {
+          "role": "data-analysis",
+          "mode": "review",
+          "contribution": "Independently reconcile counts, joins, estimates and source completeness."
+        }
+      ]
+    },
+    {
+      "id": "customer-study",
+      "when": "The task studies user behavior or synthesizes qualitative customer evidence.",
+      "assignments": [
+        {
+          "role": "user-research",
+          "mode": "produce",
+          "contribution": "Preserve observation, report and inference with source locators and sampling limits."
+        }
+      ]
+    },
+    {
+      "id": "marketing-message",
+      "when": "The deliverable includes positioning, offer or persuasive channel copy.",
+      "assignments": [
+        {
+          "role": "marketing",
+          "mode": "produce",
+          "contribution": "Own credible audience-specific persuasion and source-preserving claims."
+        }
+      ]
+    },
+    {
+      "id": "search-visibility",
+      "when": "The task investigates organic or AI search crawl, indexing or discoverability.",
+      "assignments": [
+        {
+          "role": "seo",
+          "mode": "produce",
+          "contribution": "Trace URL-level discoverability with dated observations and provider-specific limits."
+        }
+      ]
+    },
+    {
+      "id": "localized-content",
+      "when": "The deliverable translates or adapts content for a locale.",
+      "assignments": [
+        {
+          "role": "localization",
+          "mode": "produce",
+          "contribution": "Own meaning, register, terminology, protected variables and locale behavior."
+        }
+      ]
+    },
+    {
+      "id": "office-artifact",
+      "when": "The requested output is an editable document or presentation with layout requirements.",
+      "assignments": [
+        {
+          "role": "office-production",
+          "mode": "produce",
+          "contribution": "Own the saved editable model, rendering and page/slide composition."
+        },
+        {
+          "role": "documentation",
+          "mode": "review",
+          "contribution": "Check source fidelity, argument, qualifications and reader understanding."
+        }
+      ]
+    },
+    {
+      "id": "workbook",
+      "when": "The requested deliverable is a spreadsheet or connected workbook with formulas.",
+      "assignments": [
+        {
+          "role": "spreadsheet-analysis",
+          "mode": "produce",
+          "contribution": "Own formula semantics, recalculation and preservation of workbook features."
+        }
+      ]
+    },
+    {
+      "id": "technical-documentation",
+      "when": "The task creates or substantially revises API/repository documentation or technical explanation.",
+      "assignments": [
+        {
+          "role": "documentation",
+          "mode": "produce",
+          "contribution": "Trace claims and runnable examples to the owning implementation."
+        }
+      ]
+    },
+    {
+      "id": "architecture-change",
+      "when": "The task needs a consequential structural boundary or architecture review.",
+      "assignments": [
+        {
+          "role": "project-review",
+          "mode": "advise",
+          "contribution": "Trace ownership, affected consumers and migration cost before choosing a boundary."
+        },
+        {
+          "role": "technical-leadership",
+          "mode": "produce",
+          "contribution": "Resolve interfaces, technical obligations and integration sequence."
+        }
+      ]
+    },
+    {
+      "id": "delivery-coordination",
+      "when": "The task spans interdependent workstreams with uncertain sequencing or ownership.",
+      "assignments": [
+        {
+          "role": "planning",
+          "mode": "produce",
+          "contribution": "Own dependency readiness, observable milestones and resumption state."
+        }
+      ]
+    },
+    {
+      "id": "company-strategy",
+      "when": "The decision concerns company-wide allocation, concentration or strategic direction.",
+      "assignments": [
+        {
+          "role": "executive-strategy",
+          "mode": "produce",
+          "contribution": "Own opportunity cost, capacity, economics and reversal thresholds."
+        }
+      ]
+    },
+    {
+      "id": "project-bootstrap",
+      "when": "The task creates a new project/package or runnable scaffold.",
+      "assignments": [
+        {
+          "role": "project-scaffolding",
+          "mode": "produce",
+          "contribution": "Establish the first reproducible slice with the chosen toolchain."
+        }
+      ]
+    },
+    {
+      "id": "it-repair",
+      "when": "The task diagnoses or repairs a workstation, network or existing service path.",
+      "assignments": [
+        {
+          "role": "it-operations",
+          "mode": "produce",
+          "contribution": "Isolate the failing layer and verify the affected user path after repair."
+        }
+      ]
+    },
+    {
+      "id": "evidence-research",
+      "when": "The task requires a source-grounded synthesis of uncertain external facts.",
+      "assignments": [
+        {
+          "role": "deep-research",
+          "mode": "produce",
+          "contribution": "Own claim/source applicability, contradictions, provenance and coverage limits."
+        }
+      ]
     }
   ]
 }

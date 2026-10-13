@@ -17,6 +17,9 @@ fn role_entrypoints_select_production_guidance_without_loading_optional_support(
         ("MCP Engineer", "mcp-integration"),
         ("Experimentation Analyst", "experiment-design"),
         ("Site Reliability Engineer", "systems-engineering"),
+        ("Release Engineer", "release-operations"),
+        ("Data Migration Engineer", "data-migrations"),
+        ("Presentation Designer", "office-authoring"),
     ] {
         let plan = catalog.capability_plan(role, &[]).unwrap();
         let reads = plan["read_sequence"].as_array().unwrap();
@@ -27,6 +30,95 @@ fn role_entrypoints_select_production_guidance_without_loading_optional_support(
     }
     assert!(catalog.capability("a legal certification expert").is_err());
     assert!(catalog.capability("some made-up CFO title").is_err());
+}
+
+#[test]
+fn consolidated_roles_preserve_legacy_names_and_compose_once() {
+    let catalog = Catalog::embedded().unwrap();
+    for (canonical, legacy) in [
+        (
+            "graphic-design",
+            vec![
+                "illustration",
+                "Illustration",
+                "Illustrator",
+                "visual-assets",
+                "Crafting Visual Assets",
+                "Visual Asset Designer",
+            ],
+        ),
+        (
+            "web-design",
+            vec!["design-revision", "Design Revisioning", "Design Revision"],
+        ),
+        (
+            "quality-assurance",
+            vec![
+                "interface-qa",
+                "Interface QA Engineering",
+                "QA Engineer for Design",
+                "Design QA",
+                "Visual QA",
+            ],
+        ),
+    ] {
+        let expected = catalog.capability(canonical).unwrap();
+        for name in &legacy {
+            let plan = catalog.capability_plan(name, &[]).unwrap();
+            assert_eq!(plan["primary"], canonical, "{name}");
+            assert_eq!(plan["read_sequence"][0]["id"], expected.lead, "{name}");
+            let search = catalog.search(name, 0, 1).unwrap();
+            assert_eq!(search["items"][0]["id"], expected.lead, "{name}");
+        }
+        let supporting = legacy
+            .iter()
+            .map(|name| (*name).to_owned())
+            .collect::<Vec<_>>();
+        let plan = catalog.capability_plan(canonical, &supporting).unwrap();
+        assert_eq!(plan["contracts"].as_array().unwrap().len(), 1);
+        assert_eq!(plan["read_sequence"].as_array().unwrap().len(), 1);
+    }
+}
+
+#[test]
+fn legacy_and_new_role_selections_install_and_remove_the_canonical_lead() {
+    let catalog = Catalog::embedded().unwrap();
+    let project_dir = tempfile::tempdir().unwrap();
+    let root = project_dir.path().canonicalize().unwrap();
+    project::init(&catalog, &root, &["codex".into(), "claude".into()]).unwrap();
+    project::add(
+        &catalog,
+        &root,
+        &[],
+        &[],
+        &[
+            "illustration".into(),
+            "visual-assets".into(),
+            "Data Migration Engineer".into(),
+        ],
+        None,
+    )
+    .unwrap();
+    project::sync(&catalog, &root, &root.join("cache")).unwrap();
+    for host in ["codex", "claude"] {
+        let skills = root.join(project::target_skills_dir(host).unwrap());
+        for lead in ["graphic-design", "data-migrations"] {
+            assert_eq!(
+                std::fs::read_to_string(skills.join(lead).join("SKILL.md")).unwrap(),
+                catalog.read(lead, "SKILL.md", 64 * 1024).unwrap().content
+            );
+        }
+        assert!(!skills.join("illustration").exists());
+        assert!(!skills.join("visual-assets").exists());
+    }
+    project::remove(&catalog, &root, &[], &[], &["visual-assets".into()], None).unwrap();
+    project::sync_with_options(&catalog, &root, &root.join("cache"), true).unwrap();
+    assert_eq!(project::doctor(&catalog, &root).unwrap()["ok"], true);
+    for host in ["codex", "claude"] {
+        let skills = root.join(project::target_skills_dir(host).unwrap());
+        assert!(!skills.join("graphic-design").exists());
+        assert!(skills.join("data-migrations/SKILL.md").exists());
+    }
 }
 
 #[test]

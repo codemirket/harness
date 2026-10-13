@@ -1053,7 +1053,7 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     });
     let client = ().serve(client_transport).await.unwrap();
     let tools = client.list_all_tools().await.unwrap();
-    assert_eq!(tools.len(), 10);
+    assert_eq!(tools.len(), 12);
     assert!(
         !tools
             .iter()
@@ -1062,6 +1062,43 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     let call = |name: &'static str, args: Value| {
         CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
     };
+    let facets = client
+        .call_tool(call("team_facets", json!({})))
+        .await
+        .unwrap();
+    assert_eq!(facets.is_error, Some(false));
+    assert!(
+        facets.structured_content.unwrap()["facets"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|f| f["id"] == "web-interface")
+    );
+    let team = client.call_tool(call("team_plan", json!({
+        "objective":"Build a recoverable checkout", "primary":"Frontend Engineer",
+        "facets":[{"id":"web-interface","reason":"New screen and state behavior"},{"id":"service-contract","reason":"Order retry contract changes"}]
+    }))).await.unwrap();
+    assert_eq!(team.is_error, Some(false));
+    let team = team.structured_content.unwrap();
+    assert_eq!(team["assignments"].as_array().unwrap().len(), 4);
+    assert_eq!(team["execution"]["status"], "not_dispatched");
+    assert!(
+        team["task_start"]["skills"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|s| s == "agent-coordination")
+    );
+    let invalid_team = client
+        .call_tool(call(
+            "team_plan",
+            json!({
+                "objective":"x","primary":"CFO","facets":[{"id":"workbook","reason":""}]
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(invalid_team.is_error, Some(true));
     let described = client
         .call_tool(call("catalog_show", json!({"skill_id":"ecc-rust-testing"})))
         .await
