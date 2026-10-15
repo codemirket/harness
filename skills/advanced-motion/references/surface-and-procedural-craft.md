@@ -66,8 +66,8 @@ technique; silently letting the last update change every surface is not a theme
 system. Recompute affected surface geometry on layout changes rather than polling
 unchanged bounds indefinitely. Preserve the lifecycle rules below.
 
-For character construction and optical-size status families, use `graphic-design`
-and its character/status reference; `svg-creation` owns editable vector geometry.
+For character construction and optical-size status families, use `graphic-design`;
+`svg-creation` owns editable vector geometry.
 Choose an expressive material because it serves that composition. The existence
 of metal, glow, goo or avatar effects does not justify adding them to a control.
 

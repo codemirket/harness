@@ -117,21 +117,36 @@ recordings and frames against the brief; the assertions do not accept aesthetics
 prove native back/forward-cache behavior, or benchmark a physical mobile device.
 Keep generated evidence outside shipped source and stop the preview server.
 
-For the optional timing and procedural-character specimens, install
-`motion-design` and `graphic-design` in that disposable project and serve its
-installed `.agents/skills` directory (or the Claude equivalent). The same probe
+For the optional timing specimen, install `motion-design` in that disposable
+project and serve its installed `.agents/skills` directory (or the Claude
+equivalent). The same probe
 accepts this skills-root URL with the `craft` selection:
 
 ```sh
 node tests/browser_motion.cjs http://127.0.0.1:8765/ /absolute/evidence/craft craft
 ```
 
-It exercises labelled timing, keyboard playback controls, independent character
-instances, rapid retargeting, cleanup and initial/live reduced motion. Set
+It exercises labelled timing, keyboard playback controls, rapid replay, cleanup
+and initial/live reduced motion. Set
 `MIRKET_BROWSER_EXECUTABLE` to an already available compatible Chromium executable
 if Playwright's default is unavailable. No download is performed. Use normal
 playback and the saved frames for inspection; a timing assertion or visible static
 fallback is not a performance or human visual-acceptance result.
+
+The original animated-diagram study lives in `svg-animation/assets/relay-diagram`.
+Install `svg-animation` in the disposable project, serve its installed skill
+directory with an existing local server, and point the focused browser probe at
+the diagram directory:
+
+```sh
+node tests/browser_diagram_reference.cjs http://127.0.0.1:8765/svg-animation/assets/relay-diagram/ /absolute/evidence/relay
+```
+
+The probe records wide/narrow normal playback, checks replay and reduced-motion
+interruption, and saves the deliberately awkward comparison. Inspect its video
+and frames against the case-study rationale. The optional agent-comparison
+protocol is in `evals/visual-reference/README.md`; a browser pass alone is not
+evidence that the reference improved an agent's design work.
 
 ## Add a local MCP package
 

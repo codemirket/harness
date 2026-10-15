@@ -72,10 +72,16 @@ video. Preserve SVG artwork separately when a vector handoff is also needed.
 ## Judge the saved result
 
 Inspect initial, overlap, focal, settled and loop-seam frames where applicable.
+For an exact-frame export with `frames` total frames, inspect the actual final
+frame at zero-based index `frames - 1`; a frame at `frames` is outside the video.
+If a seamless loop was requested, play the saved loop through several repeats at
+normal speed and inspect the cut from that final frame back to frame zero.
 Forward/reverse sample checks establish bounded seeking consistency, not every
 frame's quality or runtime smoothness. Watch the saved video at normal speed;
 repair pacing, copy fit, clipping, seams and hierarchy in editable source, then
-rerender the affected evidence. A hash or correct frame count cannot judge taste.
+rerender the affected evidence. For a revision, name the time, element, observed
+effect and intended correction; preserve agreed copy, brand and export settings
+unless the brief changes. A hash or correct frame count cannot judge taste.
 
 Jobs have a 90-second deadline and 32-MiB output cap. Shorten/simplify work that
 exceeds it. Existing outputs need explicit overwrite intent; use a known revision

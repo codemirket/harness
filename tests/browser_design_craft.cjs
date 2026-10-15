@@ -5,7 +5,6 @@ const path = require('node:path');
 
 module.exports = async function craft({browser, base, output, result, snapshot}) {
   const timing = `${base}motion-design/assets/timing-specimen.html`;
-  const character = `${base}graphic-design/assets/procedural-character/`;
   for (const width of [1000, 390]) {
     const context = await browser.newContext({viewport:{width,height:900}, reducedMotion:'no-preference',
       recordVideo:{dir:path.join(output,'video'),size:{width,height:900}}});
@@ -65,52 +64,7 @@ module.exports = async function craft({browser, base, output, result, snapshot})
       });
       assert.equal(await page.evaluate(() => document.getAnimations().length),0);
       row.checks.push('actual180ms, labeled720ms slow mode, keyboard pause/resume/focus, live reduction, rapid replay and explicit removal cleanup');
-
-      await page.goto(character);
-      await page.waitForFunction(() => document.querySelector('#warm').visible === true);
-      const coolBefore = await page.locator('#cool').evaluate(n => ({state:n.dataset.pose,
-        fill:n.querySelector('linearGradient stop').getAttribute('stop-color')}));
-      await page.locator('#warm button[data-pose=working]').focus();
-      await page.keyboard.press('Enter');
-      assert.match(await page.locator('#warm [role=status]').textContent(),/^Working/);
-      // Sample an intermediate pose during natural playback; capture timestamps
-      // bound the observation rather than promising an exact animation time.
-      await page.waitForTimeout(70);
-      row.frames.push(await snapshot(page,`character-${width}-working`));
-      await page.evaluate(() => {
-        const n = document.querySelector('#warm'); n.select('rest'); n.select('working'); n.select('rest');
-        n.querySelector('linearGradient stop').setAttribute('stop-color','#edc377');
-      });
-      await page.waitForTimeout(300);
-      assert.match(await page.locator('#warm [role=status]').textContent(),/^Rest/);
-      assert.deepEqual(await page.locator('#cool').evaluate(n => ({state:n.dataset.pose,
-        fill:n.querySelector('linearGradient stop').getAttribute('stop-color')})),coolBefore);
-      await page.evaluate(() => document.querySelector('#warm').select('working'));
-      await page.emulateMedia({reducedMotion:'reduce'});
-      await page.waitForFunction(() => document.getAnimations().length === 0);
-      await page.evaluate(() => { document.querySelector('#warm').select('ready'); document.querySelector('#cool').select('rest'); });
-      assert.equal(await page.evaluate(() => document.getAnimations().length),0);
-      row.frames.push(await snapshot(page,`character-${width}-reduced`,true));
-      await page.emulateMedia({reducedMotion:'no-preference'});
-      const removal = await page.evaluate(() => {
-        const n = document.querySelector('#warm');n.select('working'); n.remove();
-        const cleared = n.motion.size === 0 && n.abort.signal.aborted;
-        document.querySelector('.studies').prepend(n);
-        return cleared && n.dataset.pose === 'working';
-      });
-      assert.ok(removal);
-      await page.evaluate(() => {
-        document.querySelector('#warm').select('rest');
-        document.querySelector('main').style.paddingBottom = '1600px';
-        scrollTo(0,document.body.scrollHeight);
-      });
-      await page.waitForFunction(() => document.querySelector('#warm').visible === false);
-      assert.equal(await page.evaluate(() => document.getAnimations().length),0);
-      await page.setViewportSize({width:width===390?420:900,height:900});
-      await page.evaluate(() => scrollTo(0,0));
-      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
       assert.deepEqual(errors,[]);
-      row.checks.push('two independent materials/statuses, rapid reversal/latest state, live reduction, disconnected cleanup/reconnect, offscreen stop, responsive bounds');
       result.scenarios.push(row);
     } finally { await context.close(); }
   }
@@ -121,12 +75,9 @@ module.exports = async function craft({browser, base, output, result, snapshot})
       await page.goto(timing);
       assert.ok(await page.getByRole('heading',{name:'Activity selected'}).isVisible());
       if (mode==='reduced') { await page.locator('[data-replay]').click(); assert.equal(await page.evaluate(() => document.getAnimations().length),0); }
-      await page.goto(character);
-      assert.equal(await page.locator('.character').count(),2);
-      assert.equal(await page.locator('[role=status]').count(),2);
-      if (mode==='reduced') { await page.locator('#warm button[data-pose=working]').click(); assert.equal(await page.evaluate(() => document.getAnimations().length),0); }
-      else assert.equal(await page.locator('button:disabled').count(),6);
-      result.scenarios.push({tag:`craft-${mode}`,checks:['readable static content and semantic status'],frames:[await snapshot(page,`character-${mode}`,true)]});
+      else assert.ok(await page.locator('[data-controls]').isHidden());
+      assert.ok(await page.locator('[role=status]').isVisible());
+      result.scenarios.push({tag:`craft-${mode}`,checks:['readable static content and semantic status'],frames:[await snapshot(page,`timing-${mode}`,true)]});
     } finally { await context.close(); }
   }
 };

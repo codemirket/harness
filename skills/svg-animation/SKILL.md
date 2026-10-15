@@ -17,6 +17,21 @@ each animated property. Keep the editable static SVG meaningful by itself; the
 page's CSS/controller is a separate integration artifact. Text, navigation and
 calls to action normally remain semantic DOM rather than pixels or vector outlines.
 
+For a substantive animated diagram, inspect the original [relay diagram study](references/animated-diagram-study.md)
+and its deliberately awkward comparison before building. Transfer its approach
+to semantic clarity and paced handoffs only when the current brief calls for it;
+adapt the visual language to the project's brand. This study is not a required
+template for icons, logos or ordinary vector reveals.
+
+For an explanatory website hero, name the factual relationship before choosing
+an effect: which source acts, what travels or changes, how the destination
+responds, and what remains when movement stops. Sketch those beats against the
+actual copy and placement, then render one representative handoff in the page.
+Where several routes converge, choose simultaneous or ordered arrivals according
+to the message; a small stagger does not by itself make an order perceptible.
+Use the study's [many-to-one transfer notes](references/animated-diagram-study.md#many-to-one-website-heroes)
+when that topology matches the task.
+
 ## Establish the motion contract
 
 Inspect the asset, semantic groups, placement, support targets and existing
@@ -81,6 +96,10 @@ settled state and loop seam when relevant. Refine jerks, origin drift, clipped
 travel, noisy overlap and poorly paced rests. A beautiful final frame does not
 prove the sequence. Deterministic seeking is useful for capture, but it does not
 measure smoothness or real-time performance.
+For an explanatory diagram, ask a reviewer to identify the route progression
+and arrival from playback without reading the implementation. If the routes
+compete or the destination does not visibly acknowledge the arrival, revise the
+beat spacing, focal contrast or response and inspect the same placement again.
 
 Exercise the actual trigger, replay, pause/resume and relevant rapid repeat,
 reversal, cancellation/unmount. Check reduced motion at load and after a live

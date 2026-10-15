@@ -50,7 +50,9 @@ license unrelated remote entries, linked repositories or paid Studio content.
 | `owl-concepts` | `interface-design`: different interaction concepts at matched fidelity with criteria established before comparison | Apply only to an unsettled decision. Preserve accepted direction; a hybrid is a new hypothesis. Broad collection, sibling repositories and unsupported numerical UX rules are excluded. |
 | `lottiefiles-motion` | `advanced-motion`: expressive traits, weight, anticipation, supporting response and rest; `svg-animation` routes to that vocabulary | Examples are brief-dependent choices. No mandatory layers, industry stereotypes, delayed controls or implied Lottie authoring/export support. |
 | `kyle-motion` | `motion-design`: contextual cross-component inventory and optional source-located motion specimens | Attribute Kyle's synthesis, not endorsement by named designers. Actual duration, playback rate and replay/rest are separate; missing animation and repetition counts are not automatic defects. |
-| `libraries-craft` | `graphic-design`: character construction and optical status families; `advanced-motion`: decorative materials behind semantic controls | Small authored specimens instead of renderer imports. Public package APIs do not grant paid asset rights. Editable SVG, Canvas output, 3D masters and reveal effects remain distinct. |
+| `libraries-craft` | `advanced-motion`: decorative materials behind semantic controls | Adapt the layering and instance-state methods without importing renderers. Public package APIs do not grant paid asset rights. Canvas output and editable SVG remain distinct. |
+| `diagram-design` | `svg-animation`: choose the diagram's semantic pattern before animation and inspect a complete static composition, handoff, destination response and rest | Conceptual transfer only. Keep the existing manual upstream entry for its full package; no upstream code, assets, brand style or verification scripts are embedded. Test the resulting motion in the actual page rather than treating a reference as acceptance. |
+| `front-end-checklist` | `test-design` interface QA: select affected public-page metadata, routes, media, fallback, locale and measured performance checks | MIT source pinned in the catalog. Use its categories as discovery, not all 386 rules or fixed size/time thresholds as universal gates. No checklist text, scripts, generated skills or hosted MCP are bundled. |
 
 Ordinary feedback, navigation continuity, browser scenes, SVG construction and
 SVG choreography retain their separate skill owners. The new references do not
@@ -59,6 +61,35 @@ requirements. Inspect timed specimens at normal speed and relevant intermediate
 frames; verify essential static content and the actual consumer. Structural
 checks and successful demonstrations do not establish improved agent output or
 human acceptance of a design.
+
+## Motion briefs, Codex guidance and public-page checks
+
+The [Kingy motion-graphics guide](https://kingy.ai/blog/astra-codex-motion-graphics-guide-prompts/)
+is a practical source for exact copy and brand inputs, one motif with a job across
+beats, readable holds, timestamped revision and inspection of the actual exported
+last frame. Its author says the example briefs were not validated as a complete
+set of rendered videos. `svg-animation` and `advanced-motion` already own most of
+the method; their focused references retain the motif and final-frame checks.
+The article's eight-second timing, brand palette, renderer commands and model
+selection are examples, not Mirket defaults. Export correctness and website
+playback quality require separate inspection.
+
+The official [Codex best-practices guide](https://learn.chatgpt.com/guides/best-practices)
+supports Mirket's existing task framing: goal, relevant context, constraints and
+observable completion; practical `AGENTS.md`; small job-scoped skills; testing
+and review. It does not establish that another global instruction layer would
+improve this harness. Its current Codex model, configuration and scheduling
+advice is host-specific and is not copied into the shared Codex/Claude payload.
+Improve a rule after observed repeated friction or a focused evaluation, rather
+than expanding the default prompt from general advice.
+
+The pinned [Front-End Checklist](https://github.com/thedaviddias/Front-End-Checklist/tree/e8d14d049010e2ce25afcd5e8609dfcbbe63e47e)
+is a category navigator for the conditional public-page check in `test-design`.
+Its broken-link, metadata, media-dimension and layout-shift topics can expose a
+polished page with a broken action or unstable hero. The project's indexing,
+browser, device and performance contracts decide which checks apply. No universal
+loading threshold, automatic dependency installation, full checklist run or
+hosted MCP integration follows from this conceptual adaptation.
 
 ## Layered scenes and scroll media
 

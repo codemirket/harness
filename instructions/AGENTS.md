@@ -76,6 +76,11 @@ Project application commands still use their own toolchains and host permissions
 - Verify the saved artifact or actual user journey. For visual work, inspect intended
   sizes, states and focal detail, then repair defects and reinspect. Use the relevant
   craft reference. Rendering proves visibility; it does not prove visual acceptance.
+- For substantial diagrams, illustrations or motion, inspect a relevant visual
+  reference or the project's existing visual system before building. State which
+  relationship transfers to the brief, preserve source and reuse rights, and
+  judge the rendered result against the actual content. A reference is evidence
+  for a design choice, not a template or proof of quality.
 - For research, connect claims to actually read sources, dates and applicability.
   For numbers, reconcile grain, units, assumptions and calculations. For documents,
   verify examples and final format. For systems, observe real effects and recovery.

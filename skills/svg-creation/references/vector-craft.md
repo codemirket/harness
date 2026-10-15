@@ -105,8 +105,8 @@ configuration framework for one asset.
 For a character, preserve silhouette, face landmarks and named pose groups as
 separate editable decisions. Keep face geometry in the head's coordinate system;
 put static placement outside animated transforms. `graphic-design` owns the
-character and status-family construction method and its compact educational
-specimen; `svg-animation` owns the resulting vector choreography.
+illustration composition and asset-family decisions; `svg-animation` owns the
+resulting vector choreography.
 
 Definitions are document-wide when SVG is inline. Generate an instance prefix
 with the project's SSR-safe ID mechanism, propagate it to `url(#...)`, `href` and

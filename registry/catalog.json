@@ -101,7 +101,15 @@
       "repository": "cathrynlavery/diagram-design",
       "commit": "3996c1607503ec4bcdb60b018568359d20f71d15",
       "license_summary": "MIT; bundled icon notices",
-      "url": "https://github.com/cathrynlavery/diagram-design/tree/3996c1607503ec4bcdb60b018568359d20f71d15"
+      "url": "https://github.com/cathrynlavery/diagram-design/tree/3996c1607503ec4bcdb60b018568359d20f71d15",
+      "notice_exemption": "Conceptual diagram and motion planning only; no upstream implementation or assets are redistributed in the authored svg-animation skill. See docs/source-review.md."
+    },
+    "front-end-checklist": {
+      "repository": "thedaviddias/Front-End-Checklist",
+      "commit": "e8d14d049010e2ce25afcd5e8609dfcbbe63e47e",
+      "license_summary": "MIT",
+      "url": "https://github.com/thedaviddias/Front-End-Checklist/tree/e8d14d049010e2ce25afcd5e8609dfcbbe63e47e",
+      "notice_exemption": "Conceptual selection of applicable public-page QA categories only; no upstream checklist text, rules, scripts or assets are redistributed. See docs/source-review.md."
     },
     "open-design": {
       "repository": "nexu-io/open-design",
@@ -277,13 +285,6 @@
       "license_summary": "MIT (selected public repository material only)",
       "url": "https://github.com/Jakubantalik/Libraries.dev/tree/a27566557b4def79bcdcedc71858c0fb28020b6d",
       "reviewed_paths": [
-        "packages/bot-avatars/src/draw.ts",
-        "packages/bot-avatars/src/engine.ts",
-        "packages/bot-avatars/src/shapes.ts",
-        "packages/bot-avatars/src/BotAvatar.tsx",
-        "packages/thinking-orbs/src/ThinkingOrb.tsx",
-        "packages/thinking-orbs/src/theme.ts",
-        "packages/thinking-orbs/src/presets.ts",
         "packages/liquid-gooey/src/Gooey.tsx",
         "packages/liquid-gooey/src/filter.tsx",
         "skills/libraries-dev/references/06-metal-fx.md",
@@ -535,7 +536,8 @@
       ],
       "informed_by": [
         "matt",
-        "superpowers"
+        "superpowers",
+        "front-end-checklist"
       ],
       "dependencies": [
         "Project test runner and representative fixtures; actual browser or native runtime for journeys, stable screenshot conditions for visual comparison and assistive technology for relevant claims.",
@@ -625,6 +627,9 @@
       "delivery": "embedded",
       "path": "skills/svg-animation",
       "license_files": [],
+      "informed_by": [
+        "diagram-design"
+      ],
       "agents": [
         "codex",
         "claude"
@@ -642,6 +647,8 @@
         "path-drawing",
         "morph",
         "logo-reveal",
+        "animated-diagram",
+        "diagram-motion",
         "svg-animation"
       ]
     },
@@ -13831,12 +13838,9 @@
         "design-document",
         "auto-layout",
         "components",
-        "penpot",
-        "procedural-character",
-        "status-illustration"
+        "penpot"
       ],
       "informed_by": [
-        "libraries-craft",
         "scroll-craft"
       ]
     },
