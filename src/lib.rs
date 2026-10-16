@@ -16,6 +16,7 @@ pub mod release;
 pub mod role_eval;
 mod rust_notices;
 pub mod state;
+mod target;
 pub mod tools;
 pub mod update;
 pub mod util;

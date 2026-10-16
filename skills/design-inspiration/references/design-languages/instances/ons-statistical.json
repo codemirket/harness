@@ -1,0 +1,56 @@
+{
+  "id": "ons-statistical",
+  "title": "Statistical restraint",
+  "language": "Comparable panels retain uncertainty in the main claim",
+  "domain": "data",
+  "aliases": [
+    "ONS",
+    "Office for National Statistics"
+  ],
+  "tags": [
+    "statistics",
+    "uncertainty",
+    "statistical uncertainty",
+    "small multiples",
+    "confidence intervals",
+    "data"
+  ],
+  "summary": "Stable axes, direct annotations and conclusions that preserve uncertainty.",
+  "use_when": "Public estimates, statistical reports and comparisons where uncertainty changes interpretation.",
+  "avoid_when": "Using official-looking chart styling to imply certainty or validate unverified data.",
+  "card": "references/design-languages/ons-statistical.md",
+  "example": "assets/design-languages/ons-statistical/index.html",
+  "sources": [
+    {
+      "title": "ONS small multiple charts",
+      "url": "https://service-manual.ons.gov.uk/data-visualisation/chart-types/small-multiple-charts",
+      "edition": "Service manual page inspected 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "OGL v3 except stated exceptions; identity and third-party material are not cleared. Source link only.",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "sha256": "b9d11e3b7e97c0bc131d3097aac8e4bcbb9c95e7f35c4d3d2ae2ee12fb3c23ae",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "ONS showing uncertainty",
+      "url": "https://service-manual.ons.gov.uk/data-visualisation/guidance/showing-uncertainty-in-charts",
+      "edition": "Service manual page inspected 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "OGL v3 except stated exceptions; original fictional data used in the lesson. Source link only.",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "sha256": "21649c583490f90899ef5389e1f0005eb9b9fba4d7f1f568f903d116bccf361f",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "ONS annotations",
+      "url": "https://service-manual.ons.gov.uk/data-visualisation/guidance/annotations",
+      "edition": "Service manual page inspected 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "OGL v3 with exceptions; no copied charts or brand assets.",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "sha256": "aaadd85bf2f11d2f5c610cdac03088db9547dd1d980fcbeea7e21c58542bddf6",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

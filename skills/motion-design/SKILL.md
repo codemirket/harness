@@ -5,6 +5,14 @@ description: Implement or review ordinary UI animation, including hover/focus fe
 
 # Motion design
 
+For an optional language study, catalog-search a motion purpose or consult
+`design-inspiration` at `references/design-languages/index.md`. Material shape,
+Fluent spatial continuity, Apple control layers and Duolingo character
+performance teach different relationships. The index explains their source scope
+and optional contrast exercises; other references can inform the task. Preserve platform
+scope, state truth, interruption and reduced-motion behavior; source visibility
+does not license third-party assets or establish native implementation fidelity.
+
 Use for a requested transition or an observed motion problem.
 
 ## Professional stance

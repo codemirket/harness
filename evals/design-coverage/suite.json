@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "design-coverage-transfer-v1",
+  "checker": {
+    "path": "src/role_eval.rs",
+    "sha256": "513ad15a438438b6153c95dd253347d4f35887a82e7f01978e10a850c0c11473"
+  },
+  "configurations": [
+    {
+      "id": "baseline",
+      "file": {
+        "path": "evals/design-coverage/configurations/baseline-template.json",
+        "sha256": "1551643ae97ebcf41e0376e314c7b249a01afac625200a8eb88c122b11380d94"
+      }
+    },
+    {
+      "id": "assisted",
+      "file": {
+        "path": "evals/design-coverage/configurations/assisted-template.json",
+        "sha256": "8fce546d0f74358bc388381a2e430edd92cbda69944cead20b8a05ebf8950e0a"
+      }
+    }
+  ],
+  "trials_per_case": 1,
+  "development": [
+    "development-checker"
+  ],
+  "held_out": [
+    "field-library",
+    "cue-review",
+    "native-handover"
+  ],
+  "cases": [
+    {
+      "id": "development-checker",
+      "split": "development",
+      "input": {
+        "path": "evals/design-coverage/inputs/development-checker.md",
+        "sha256": "8dd6d2039da4aa8ba9ce8560c39bee79c9fc6d79d5e85e59159acf7051389812"
+      },
+      "rubric": {
+        "path": "evals/design-coverage/graders/development-checker.json",
+        "sha256": "6700822a74f6c2ce6cdca6389397fb6836e60f54135a061d831b8e3161c51445"
+      },
+      "criteria": [
+        "observable_save_effect",
+        "keyboard_access",
+        "responsive_craft"
+      ]
+    },
+    {
+      "id": "field-library",
+      "split": "held_out",
+      "input": {
+        "path": "evals/design-coverage/inputs/field-library.md",
+        "sha256": "fc249558d5bb20800f456e454b4e51734e070de9fca3413c8e84ff67e17cc1d8"
+      },
+      "rubric": {
+        "path": "evals/design-coverage/graders/field-library.json",
+        "sha256": "f5f70b716b09fb940ac3c3ef2b461c1294a175d30561b1a4991031a2d29aba57"
+      },
+      "criteria": [
+        "truthful_totals",
+        "selection_scope",
+        "failure_retry_effect",
+        "keyboard_access",
+        "responsive_craft",
+        "context_grounded_transfer"
+      ]
+    },
+    {
+      "id": "cue-review",
+      "split": "held_out",
+      "input": {
+        "path": "evals/design-coverage/inputs/cue-review.md",
+        "sha256": "df6ce07039678ec01e7695b53d6f586426e1f9bdc9608fe19cc07759db321d17"
+      },
+      "rubric": {
+        "path": "evals/design-coverage/graders/cue-review.json",
+        "sha256": "b630ab043fc7c4a607fb9cde0d587d4b8d076f84ae6c48202a888caba8893808"
+      },
+      "criteria": [
+        "filter_truth",
+        "inspector_identity",
+        "conflict_and_save_effect",
+        "keyboard_access",
+        "responsive_craft",
+        "context_grounded_transfer"
+      ]
+    },
+    {
+      "id": "native-handover",
+      "split": "held_out",
+      "input": {
+        "path": "evals/design-coverage/inputs/native-handover.md",
+        "sha256": "e3f8471f7af638fa35498447351deac2deee52a103d247cbb434e8d03cfcd02e"
+      },
+      "rubric": {
+        "path": "evals/design-coverage/graders/native-handover.json",
+        "sha256": "e7f7d08a3255be8cde5e869631a65c5eeea767c5ee1e44ce0278e53c98dc78ff"
+      },
+      "criteria": [
+        "gap_declaration",
+        "scoped_native_plan",
+        "offline_conflict_contract",
+        "bidi_semantics",
+        "truthful_verification",
+        "context_grounded_transfer"
+      ]
+    }
+  ]
+}

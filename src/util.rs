@@ -125,6 +125,22 @@ pub fn read_bounded(path: &Path, max_bytes: u64) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 
+pub(crate) fn set_executable_mode(path: &Path, executable: bool) -> Result<()> {
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::set_permissions(
+            path,
+            fs::Permissions::from_mode(if executable { 0o755 } else { 0o644 }),
+        )?;
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = (path, executable);
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

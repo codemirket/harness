@@ -76,6 +76,15 @@ or weight, and the resting pose. A restrained editorial illustration and an
 energetic graphic campaign need different rhythm as well as different colors.
 Keep important copy and the message understandable without playback.
 
+When references would clarify a construction method or conceptual relationship,
+the `design-inspiration` library's `references/design-languages/index.md` or catalog
+search by purpose can help. Its original graphic lessons distinguish hybrid
+explanation,
+generative identity, subject-derived identity, human scenes and dimensional
+symbols. The index explains source/rights records and optional contrast exercises;
+other references and methods remain available. An identity case study is not a
+reusable brand asset pack, and a sample's geometry does not replace this brief's subject.
+
 ## Choose the production route
 
 Read [production and proof](references/production-and-proof.md) for tool selection,

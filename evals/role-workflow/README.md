@@ -52,4 +52,8 @@ retained in counts. Costs are totaled only when every cost is known.
 solely for checker regression tests. It is not a model run or role-quality result.
 The suite pins the checker source bytes and checks against the compiled checker;
 source edits require intentional suite re-pinning and a freshly compiled binary.
+Confirmation suites may use an empty `development` array and only fresh held-out
+cases. The held-out set must remain nonempty, every case must belong to its stated
+split, and every planned arm/repeat cell must still be recorded. A confirmation
+does not need invented development runs to satisfy the record format.
 No providers, model dispatch, automatic graders or new dependencies are included.

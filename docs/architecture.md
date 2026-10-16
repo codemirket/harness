@@ -11,8 +11,12 @@ and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
 | `src/cli.rs` | Arguments, interactive setup, presentation and dispatch |
 | `src/catalog.rs` | Embedded content, capability contracts, bounded discovery, verified upstream payloads |
 | `src/catalog/teams.rs` | Professional profiles, validated task facets and bounded assignment briefs for host-run teams |
+| `src/catalog/design_references.rs` | Validated design-language records and bounded instance discovery within the existing embedded skill |
+| `src/catalog/design_references/coverage.rs` | Explicit scoped design coverage and conservative gap lookup through existing catalog search |
+| `src/catalog/design_references/selection.rs` | Bounded provisional lexical candidates after an empty reference query; separate from ordinary matches and scoped coverage |
 | `src/project.rs` | Explicit project selections, target copies and integrity receipts |
 | `src/install.rs` | Client configuration, setup transaction and device doctor |
+| `src/target.rs` | Shared host identity and path layout for setup, project sync/recovery and catalog selection |
 | `src/update.rs` | Release selection, candidate verification and setup replay |
 | `src/state.rs` | Registered roots, durable tasks, revisions, idempotency and artifact evidence |
 | `src/state/contracts.rs` | Strict opt-in verification and specialist coverage contracts with explicit input bindings |
@@ -70,8 +74,8 @@ Task mutations use
 expected revisions and idempotency keys. An identical retry returns its recorded
 result; reusing a key for another intention fails. New successful writes return
 versioned compact receipts; explicit status/history calls retrieve full state.
-Legacy recorded replies remain unchanged for exact retries. The catalog is parsed once
-and shared immutably. Startup computes aggregate identities for all embedded
+Legacy recorded replies remain unchanged for exact retries. Commands initialize the catalog only when they need it; each process parses it
+once and shares it immutably. Notice sections are parsed once for all skills. Startup computes aggregate identities for all embedded
 payloads once, including their applicable source notices. Unrelated notice sections do not
 change a skill payload; all runtime notices still ship with distributions. Individual document digests are computed
 on first read or role plan and reused thereafter. These are distinct costs.
@@ -79,6 +83,35 @@ Search ranks positive metadata separately
 from description-only matches; exact IDs remain directly addressable. Catalog
 validation resolves complete profiles for both hosts, including invocation and
 dependency conflicts. Retrieval and downloads have explicit size limits.
+
+The optional `design-inspiration` payload contains original language
+and interaction lessons with standalone contrastive examples. A bounded schema 2
+index locates one canonical typed source record per instance; those records bind
+URLs, editions, capture identities, rights limits and exact local resources.
+Catalog search matches all query terms within one instance and returns at most
+five summaries on the owning skill result; source bodies are never searched,
+fetched or executed. Show links the complete index and manifest. Catalog loading
+validates routes, bounded readable files, source/rights records and original
+example license scope. Normal project sync delivers these files to both hosts;
+there is no parallel installer, tool or state store. Structural validity and a
+source digest do not establish visual quality, legal clearance or a measured
+model capability improvement. Optional structured design context on the same
+catalog search validates exact registry axis IDs and matches one scoped cell to
+the complete request. It reports represented/partial/unrepresented inventory,
+per-candidate gaps and `current_task_validated:false`. Source-only native guidance
+cannot satisfy worked-example coverage. It neither pools unrelated cells nor
+launches retrieval, a browser or a model. The existing role-eval checker binds
+the paired transfer pilot; actual host execution and independent artifact grading
+remain outside catalog bookkeeping.
+
+Reference routing supplies optional discovery, not a design policy engine. The
+host/model judges fit, can compare several sources for one question, seek sources
+outside the inventory or use no reference. Contrast exercises teach relationships;
+they are not required production steps. Team planning and durable tracking are
+available when useful for independent work, coordination or resumption; a
+sufficient host/project workflow needs no duplicate record. Choosing a typed task
+contract still enables its exact binding and completion checks. User/project
+requirements, source rights and host permissions remain authoritative.
 
 ## Trust and execution
 

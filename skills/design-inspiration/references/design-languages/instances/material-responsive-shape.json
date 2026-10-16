@@ -1,0 +1,46 @@
+{
+  "id": "material-responsive-shape",
+  "title": "Material 3 Expressive: responsive shape",
+  "language": "Responsive expressive geometry",
+  "domain": "motion",
+  "aliases": [
+    "Material motion",
+    "expressive shape",
+    "spatial spring"
+  ],
+  "tags": [
+    "state",
+    "shape",
+    "spring",
+    "controls",
+    "effects"
+  ],
+  "summary": "Teach a responsive spatial control while keeping effect changes and calibrated measurements truthful.",
+  "use_when": "A tactile consumer control or a deliberate focal interaction benefits from a bounded geometric response.",
+  "avoid_when": "Deformation would alter a measured value, or repeated spring movement would distract from precision work.",
+  "card": "references/design-languages/material-responsive-shape.md",
+  "example": "assets/design-languages/material-responsive-shape/index.html",
+  "sources": [
+    {
+      "title": "Material Design 3 — Motion: How it works",
+      "url": "https://m3.material.io/styles/motion/overview/how-it-works",
+      "edition": "May 2025 Expressive motion update; live guideline checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only design reference. No guideline video, Google mark, screenshot or upstream code redistributed; no blanket media reuse license established. Original teaching implementation only.",
+      "license_url": null,
+      "sha256": "e2d6013ebefdc8238d535d987b5a2501228f9800360826db854c0b6a2a4faee0",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Material Design 3 — Shape principles",
+      "url": "https://m3.material.io/styles/shape/overview-principles",
+      "edition": "Live Material 3 guideline checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only guideline and named specimens. No shape video or branded artwork bundled; access does not establish media reuse permission.",
+      "license_url": null,
+      "sha256": "05084d1d2a0d1090db30fab8c033daa1eec52fa1891a6a052271d4de58b9b0f2",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

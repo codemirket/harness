@@ -1,0 +1,46 @@
+{
+  "id": "fluent-spatial",
+  "title": "Fluent 2: spatial continuity",
+  "language": "Spatial continuity and surface roles",
+  "domain": "motion",
+  "aliases": [
+    "Fluent motion",
+    "container transform",
+    "Fluent hierarchy"
+  ],
+  "tags": [
+    "continuity",
+    "container",
+    "hierarchy",
+    "workspace",
+    "surfaces"
+  ],
+  "summary": "Teach when a container keeps its identity through resizing and why peer destinations need a different temporal relationship.",
+  "use_when": "A workspace, document inspector or responsive pane needs to preserve object identity and real hierarchy.",
+  "avoid_when": "Depth or travel would invent a relationship between peer destinations or distract from a flat comparison.",
+  "card": "references/design-languages/fluent-spatial.md",
+  "example": "assets/design-languages/fluent-spatial/index.html",
+  "sources": [
+    {
+      "title": "Fluent 2 — Motion",
+      "url": "https://fluent2.microsoft.design/motion",
+      "edition": "Live Fluent 2 guideline checked 2026-10-15; unversioned page",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only official motion specimens. No Microsoft videos, marks or assets bundled; no design-site media license established.",
+      "license_url": null,
+      "sha256": "9079846c7a7a4f5cfa41a39f8b17143ae45ecfb2fce6fbf193f194f896de4c2a",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Fluent 2 — Material",
+      "url": "https://fluent2.microsoft.design/material",
+      "edition": "Live Fluent 2 guideline checked 2026-10-15; unversioned page",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only surface-role reference. Fluent UI repository code licensing does not clear the design-site images, fonts, icons or videos; none are reused here.",
+      "license_url": null,
+      "sha256": "91b7cb9a9e99b8b65f094c9d98e8105bb004a4c82e61c9cff5db1c73e56bdd60",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

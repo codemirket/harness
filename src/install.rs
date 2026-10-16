@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
     collections::{BTreeMap, BTreeSet},
-    fmt, fs, io,
+    fs, io,
     path::{Path, PathBuf},
 };
 use toml_edit::{DocumentMut, Item, Table};
@@ -17,40 +17,7 @@ const MAX_FILE: u64 = 256 * 1024 * 1024;
 const MAX_SETTINGS: u64 = 16 * 1024 * 1024;
 const ABSENT_SETUP_TOKEN: &str = "absent";
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
-#[serde(rename_all = "lowercase")]
-pub enum Target {
-    Codex,
-    Claude,
-}
-impl fmt::Display for Target {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(match self {
-            Self::Codex => "codex",
-            Self::Claude => "claude",
-        })
-    }
-}
-impl Target {
-    fn instructions(self) -> &'static str {
-        match self {
-            Self::Codex => ".codex/AGENTS.md",
-            Self::Claude => ".claude/CLAUDE.md",
-        }
-    }
-    fn skills(self) -> &'static str {
-        match self {
-            Self::Codex => ".agents/skills",
-            Self::Claude => ".claude/skills",
-        }
-    }
-    fn config(self) -> &'static str {
-        match self {
-            Self::Codex => ".codex/config.toml",
-            Self::Claude => ".claude.json",
-        }
-    }
-}
+pub use crate::target::Target;
 
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 pub struct SetupOptions {
@@ -1239,10 +1206,7 @@ fn check(name: &str, valid: bool, message: &str) -> DoctorCheck {
     }
 }
 fn find_client(target: Target, paths: &Paths) -> Option<PathBuf> {
-    let name = match target {
-        Target::Codex => "codex",
-        Target::Claude => "claude",
-    };
+    let name = target.as_str();
     let mut candidates = Vec::new();
     if let Some(search) = std::env::var_os("PATH") {
         for parent in std::env::split_paths(&search) {

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" data-design-language="aria-alternative-input">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Field School · arrange a learning route</title>
+<style>
+:root{color-scheme:light;--ink:#1c3932;--muted:#4c625a;--paper:#f7f5ed;--line:#c5cbbf;--accent:#1f5745;--warm:#8a3d25}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,sans-serif}button{font:inherit;min-height:44px;padding:.55rem .8rem;border:1px solid #8a9e92;background:#fffefa;color:var(--ink);border-radius:.35rem;cursor:pointer}button:hover{background:#e6ede2}button:focus-visible,a:focus-visible{outline:3px solid #a05228;outline-offset:4px}button[aria-disabled=true]{color:#52645b;background:#eeeee6}button:disabled{cursor:default}a{color:var(--accent);text-underline-offset:.2em}svg{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}.skip{position:absolute;left:1rem;top:-10rem;z-index:2;background:white;padding:.7rem}.skip:focus{top:1rem}.masthead{max-width:1120px;margin:auto;padding:1.5rem 1.5rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--line)}.wordmark{margin:0;letter-spacing:.12em;font-size:.9rem;font-weight:750;text-transform:uppercase}.masthead .small{font-size:.85rem;color:var(--muted);margin:0}main{max-width:1120px;margin:0 auto;padding:2.8rem 1.5rem 2rem;overflow-wrap:anywhere}.intro{display:grid;grid-template-columns:minmax(0,1fr) 16rem;gap:3rem;align-items:end}.eyebrow{margin:0;color:var(--warm);font-size:.85rem;font-weight:650}.intro h1{font:500 clamp(2.4rem,5vw,4rem)/1.07 Georgia,serif;letter-spacing:-.025em;max-width:12ch;margin:.7rem 0 1.2rem}.intro .lede{max-width:42rem;margin:0;color:var(--muted);font-size:1.05rem}.route-facts{padding:1.2rem 0;border-block:2px solid var(--ink);margin:0;display:flex;flex-direction:column;gap:.7rem}.route-facts>div{display:flex;justify-content:space-between;gap:.7rem}.route-facts dt{color:var(--muted)}.route-facts dd{margin:0;font-variant-numeric:tabular-nums;font-weight:650}.queue-section{margin-top:2.2rem}.queue-head{display:flex;gap:1.2rem;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}.queue-head h2{font-size:1rem;font-weight:650;margin:0}.queue-head p{margin:.2rem 0 0;font-size:.9rem;color:var(--muted)}.queue-actions{display:flex;gap:.5rem;flex-wrap:wrap}.queue{list-style:none;padding:0;margin:0;border-top:1px solid var(--ink)}.queue li{display:grid;grid-template-columns:minmax(2.7rem,max-content) minmax(0,1fr) auto;gap:1.2rem;align-items:center;padding:1.2rem .2rem;border-bottom:1px solid var(--line);position:relative}.position{font:500 1.65rem/1 Georgia,serif;color:var(--muted);font-variant-numeric:tabular-nums}.queue h3{font-size:1.1rem;line-height:1.4;font-weight:650;margin:0}.queue .description{font-size:.9rem;color:var(--muted);margin:.25rem 0 0}.meta{font-size:.8rem;color:var(--warm);margin:.5rem 0 0;font-variant-numeric:tabular-nums}.row-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}.row-actions button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-width:5.2rem}.lock{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--muted);padding:.7rem .2rem}.queue li[data-id=orientation]{background:#eeeee4}.status{margin:1rem 0 0;padding:.85rem 1rem;background:#e5ebdf;border-left:3px solid var(--accent);min-height:3.2rem}.status[data-rejected=true]{background:#f6e7da;border-color:var(--warm)}.current-order{margin:1rem 0 0;color:var(--muted);font-size:.85rem}.current-order strong{color:var(--ink)}.footnote{margin:1rem 0 0;color:var(--muted);font-size:.85rem}.study-note{max-width:1072px;margin:1rem auto 3rem;padding:1.2rem 1.4rem;background:#e9e6da;border-radius:.3rem;font-size:.9rem;color:#3a4c42}.study-note h2{margin:0 0 .4rem;font-size:1rem}.study-note p{margin:.5rem 0}.study-note code{overflow-wrap:anywhere}
+@media(max-width:720px){main{padding:2rem 1rem}.masthead{padding:1rem}.intro{grid-template-columns:minmax(0,1fr);gap:1.4rem}.intro h1{font-size:2.7rem}.route-facts{flex-direction:row;flex-wrap:wrap;justify-content:space-between}.route-facts>div{gap:1rem}.queue li{grid-template-columns:minmax(2rem,max-content) minmax(0,1fr);gap:.5rem .7rem;padding:1rem .2rem}.row-actions{grid-column:2;justify-content:flex-start;margin-top:.5rem}.lock{grid-column:2;padding:0}.row-actions button{min-width:5.8rem}.queue-actions{width:100%}.queue-head{gap:.7rem}.study-note{margin:0 .6rem 2rem;padding:1rem}.status{padding:.8rem}.position{align-self:start;margin-top:.2rem}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#route-title">Skip to learning route</a>
+<header class="masthead"><p class="wordmark">Field School</p><p class="small">Saturday workshop · fictional local planner</p></header>
+<main id="route-planner">
+ <div class="intro">
+  <div><p class="eyebrow">A morning outside</p><h1 id="route-title" tabindex="-1">Build your learning route.</h1><p class="lede">Arrange the three field sessions in the order your group will visit them. Orientation stays first so everyone starts with the safety briefing.</p></div>
+  <dl class="route-facts"><div><dt>Sessions</dt><dd>4</dd></div><div><dt>Total time</dt><dd>42 min</dd></div><div><dt>Place</dt><dd>Orchard loop</dd></div></dl>
+ </div>
+ <section class="queue-section" aria-labelledby="queue-title">
+  <div class="queue-head"><div><h2 id="queue-title">Visit order</h2><p id="move-help">Use Up or Down for a session. No dragging is required.</p></div><div class="queue-actions"><button id="undo" type="button" disabled aria-disabled="true">Undo last move</button><button id="reset" type="button" disabled>Reset route</button></div></div>
+  <ol id="queue" class="queue" aria-describedby="move-help">
+   <li data-id="orientation"><span class="position" aria-hidden="true">01</span><div><h3 id="title-orientation">Meet &amp; orient</h3><p class="description">Safety, access needs and the route ahead.</p><p class="meta">8 min</p></div><span class="lock"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="10" width="12" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Required first</span></li>
+   <li data-id="soil"><span class="position" aria-hidden="true">02</span><div><h3 id="title-soil">Read the soil</h3><p class="description">Compare a handful from two planting beds.</p><p class="meta">12 min</p></div><div class="row-actions"><button id="up-soil" type="button" data-move="up" aria-label="Move Read the soil up" aria-disabled="true" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>Up</button><button id="down-soil" type="button" data-move="down" aria-label="Move Read the soil down" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>Down</button></div></li>
+   <li data-id="habitat"><span class="position" aria-hidden="true">03</span><div><h3 id="title-habitat">Find a habitat</h3><p class="description">Look for shelter, food and small signs of life.</p><p class="meta">10 min</p></div><div class="row-actions"><button id="up-habitat" type="button" data-move="up" aria-label="Move Find a habitat up" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>Up</button><button id="down-habitat" type="button" data-move="down" aria-label="Move Find a habitat down" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>Down</button></div></li>
+   <li data-id="water"><span class="position" aria-hidden="true">04</span><div><h3 id="title-water">Follow the water</h3><p class="description">Trace where rain is held, used and released.</p><p class="meta">12 min</p></div><div class="row-actions"><button id="up-water" type="button" data-move="up" aria-label="Move Follow the water up" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></svg>Up</button><button id="down-water" type="button" data-move="down" aria-label="Move Follow the water down" aria-disabled="true" disabled><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>Down</button></div></li>
+  </ol>
+  <p class="status" id="move-status" role="status" aria-atomic="true">Route ready. Orientation is fixed in position 1 of 4.</p>
+  <p class="footnote">Changes stay in this page and reset on refresh. The order shown above is the actual local route; nothing is booked or sent.</p>
+  <noscript><p>The full initial route is readable above. Reordering, undo and reset require JavaScript.</p></noscript>
+ </section>
+</main>
+<aside class="study-note" aria-labelledby="lesson-title">
+ <h2 id="lesson-title">Equivalent input needs equivalent identity</h2>
+ <p class="current-order"><strong>Teaching probe — current stable ID order:</strong> <span id="order-proof">orientation → soil → habitat → water</span></p>
+ <p>Session IDs belong to the document model, independently of their current positions. The organizer sees names and durations; this teaching probe exposes IDs so the real effect can be checked.</p>
+ <p id="variant-note">Purposeful version: every native button can be clicked, tapped or activated with a keyboard. After a move, focus follows the same named session and the status describes its actual position.</p>
+ <p>Focus “Move Find a habitat up” and press Enter twice. The first move puts <code>habitat</code> in position 2. The second is rejected because orientation stays first; focus remains on that same button. Press Tab then Enter to move that session down. Inspect the actual stable ID order, then undo.</p>
+ <p>There is no drag implementation or custom listbox here. Native buttons solve this finite ordering task. Status semantics and keyboard behavior were checked separately; no screen-reader session or conformance audit was performed.</p>
+ <p>Open <a href="?variant=misleading">the polished wrong version</a> to expose commands tied to an initial array position, then <a href="?">return to the purposeful version</a>. References: <a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html">WCAG 2.2 Understanding dragging movements</a> and <a href="https://www.w3.org/WAI/ARIA/apg/patterns/listbox/examples/listbox-rearrangeable/">APG rearrangeable listbox example</a>. Original code and composition; no APG code copied.</p>
+</aside>
+<script>
+(()=>{
+ const $=id=>document.getElementById(id), queue=$('queue'),status=$('move-status');
+ const initial=['orientation','soil','habitat','water'],rows=new Map([...queue.children].map(row=>[row.dataset.id,row]));
+ const names=Object.fromEntries(initial.map(id=>[id,$('title-'+id).textContent]));
+ const history=[];let order=[...initial];
+ const misleading=new URLSearchParams(location.search).get('variant')==='misleading';
+ if(misleading)$('variant-note').textContent='Polished wrong version: commands retain their initial array index. After a reorder, the same button can move another session, and focus returns to the old row position. The tidy confirmation is not proof of the real effect.';
+ function announce(text,rejected=false){status.textContent=text;status.dataset.rejected=String(rejected)}
+ function render(){
+  order.forEach((id,index)=>{const row=rows.get(id);row.querySelector('.position').textContent=String(index+1).padStart(2,'0');row.dataset.position=String(index+1);queue.append(row);if(id!=='orientation'){row.querySelector('[data-move=up]').setAttribute('aria-disabled',String(index<=1));row.querySelector('[data-move=down]').setAttribute('aria-disabled',String(index===order.length-1))}});
+  $('order-proof').textContent=order.join(' → ');$('route-planner').dataset.order=order.join(',');$('undo').setAttribute('aria-disabled',String(!history.length));
+ }
+ function move(requestedId,delta,button,originalIndex){
+  const id=misleading?order[originalIndex]:requestedId,index=order.indexOf(id),next=index+delta;
+  if(index===0||next<1||next>=order.length){announce(next<1?'Cannot move '+names[requestedId]+' up. Orientation must stay first.':'Cannot move '+names[requestedId]+' down. This is the final position.',true);button.focus();return}
+  history.push({before:[...order],id});[order[index],order[next]]=[order[next],order[index]];render();
+  if(misleading){const oldRow=rows.get(order[originalIndex]);const oldButton=oldRow.querySelector('[data-move="'+(delta<0?'up':'down')+'"]');if(oldButton)oldButton.focus()}else button.focus();
+  announce(names[requestedId]+' moved '+(delta<0?'up':'down')+' to position '+(next+1)+' of '+order.length+'.');
+ }
+ rows.forEach((row,id)=>row.querySelectorAll('[data-move]').forEach(button=>{button.disabled=false;const originalIndex=initial.indexOf(id);button.addEventListener('click',()=>move(id,button.dataset.move==='up'?-1:1,button,originalIndex))}));
+ $('undo').disabled=false;$('reset').disabled=false;
+ $('undo').addEventListener('click',()=>{if(!history.length){announce('There is no move to undo.',true);return}const change=history.pop();order=[...change.before];render();announce('Undid the move of '+names[change.id]+'. Its position is now '+(order.indexOf(change.id)+1)+' of '+order.length+'.')});
+ $('reset').addEventListener('click',()=>{order=[...initial];history.length=0;render();announce('Route reset. Orientation, Read the soil, Find a habitat, Follow the water.')});
+ render();
+})();
+</script>
+</body>
+</html>

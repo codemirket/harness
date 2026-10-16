@@ -1,0 +1,48 @@
+{
+  "id": "spectrum-bidirectional",
+  "title": "Spectrum: direction-aware relationships and invariant identity",
+  "language": "Selective mirroring and mixed-script isolation",
+  "domain": "interface",
+  "aliases": [
+    "Spectrum bidirectionality",
+    "RTL interface",
+    "Arabic layout",
+    "mixed-script identity"
+  ],
+  "tags": [
+    "bidirectional",
+    "rtl",
+    "mixed-script",
+    "localization",
+    "logical-layout",
+    "content-identity"
+  ],
+  "summary": "A direction-aware support workspace separates reading flow from invariant symbols, Latin identifiers and note language; its wrong variant mirrors everything.",
+  "use_when": "A web working slice needs direction-aware layout and mixed-script record identity. A draft must survive interface direction changes without changing content language.",
+  "avoid_when": "Do not infer fluent Arabic localization, screen-reader support or native runtime coverage. Does not cover full international search, date or number formatting.",
+  "sources": [
+    {
+      "title": "Spectrum Bi-directionality",
+      "url": "https://spectrum.adobe.com/page/bi-directionality/",
+      "edition": "Live Spectrum documentation; no immutable release claimed",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Adobe media reuse rights not established. No marks, screenshots, icons, fonts, code or artwork bundled.",
+      "license_url": null,
+      "sha256": null,
+      "capture_note": "Unavailable: byte capture 2026-10-15: HTTP Error 502: Bad Gateway. Readable guideline text or rendered inspection, if available, is separately scoped in the lesson."
+    },
+    {
+      "title": "W3C Inline markup and bidirectional text in HTML",
+      "url": "https://www.w3.org/International/articles/inline-bidi-markup/",
+      "edition": "Current W3C Internationalization article; no immutable release claimed",
+      "checked_on": "2026-10-15",
+      "rights": "W3C document rights apply to the source. Link-only; original implementation and prose, with no source media, passages or code bundled.",
+      "license_url": "https://www.w3.org/copyright/document-license-2023/",
+      "sha256": "423a0605b5bd13c6bc0407cb2e736d95741ad4bb1d19e95308f18a03e09c96a7",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "card": "references/design-languages/spectrum-bidirectional.md",
+  "example": "assets/design-languages/spectrum-bidirectional/index.html",
+  "original_example": true
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic_observer_and_judge_controls",
+  "synthetic": true,
+  "model_executions": 0,
+  "license": "MIT",
+  "provenance": "Original HTML/CSS/JavaScript and inline SVG authored for the evaluation. No remote assets or copied brand work. Standalone fixtures have no dependency on prior private task files.",
+  "design_relationship": "Selection rows are visually grouped next to a consequence summary. Prior local inspection informed this relationship only; no source content, assets or typography were copied. Inspection identity is retained in private QA evidence.",
+  "controls": [
+    {
+      "id": "C101",
+      "composition": "strong",
+      "relation": "composition_positive",
+      "artifact": "C101/index.html",
+      "sha256": "4987781fc7dd73c73bf881348c81e592c05fe40af24806d1fe31eb349a2d1901",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C102",
+      "composition": "weak",
+      "relation": "composition_negative",
+      "artifact": "C102/index.html",
+      "sha256": "81f10b589ff828c5ea07019306e703ac658ec9d871c60281ce39f9c459c381fa",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C103",
+      "composition": "strong",
+      "falseState": true,
+      "relation": "polished_false_state",
+      "artifact": "C103/index.html",
+      "sha256": "6d6ebe3c7f851d00dc14d99892781389ea7ba4ffea7efe1f9e03d56b58d37992",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C104",
+      "duplicateOf": "C101",
+      "relation": "identical_duplicate",
+      "artifact": "C104/index.html",
+      "sha256": "4987781fc7dd73c73bf881348c81e592c05fe40af24806d1fe31eb349a2d1901",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C105",
+      "composition": "strong",
+      "order": [
+        "clay",
+        "print",
+        "paper"
+      ],
+      "relation": "content_order_perturbation",
+      "artifact": "C105/index.html",
+      "sha256": "eca7e0fd042550592c56b7554ad87e76174538ef43ef58bb40460bf470966025",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C106",
+      "family": "service-desk",
+      "composition": "strong",
+      "relation": "composition_positive",
+      "artifact": "C106/index.html",
+      "sha256": "78647f284561a3b47585bec225ad06a5be1727a056eb438f6ff3d954ea339263",
+      "synthetic": true,
+      "model_executions": 0
+    },
+    {
+      "id": "C107",
+      "family": "service-desk",
+      "composition": "weak",
+      "relation": "composition_negative",
+      "artifact": "C107/index.html",
+      "sha256": "bd813081b562deb82ff8cecc9dcd40d328bd05b742bc9ef650883a8cbec69419",
+      "synthetic": true,
+      "model_executions": 0
+    }
+  ]
+}

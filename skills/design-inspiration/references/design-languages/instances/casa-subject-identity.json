@@ -1,0 +1,44 @@
+{
+  "id": "casa-subject-identity",
+  "title": "Casa da Música identity — variation derived from a subject",
+  "language": "Subject-derived variable identity",
+  "aliases": [
+    "subject-derived identity",
+    "variable identity"
+  ],
+  "tags": [
+    "identity",
+    "concept",
+    "projection",
+    "cultural-programme"
+  ],
+  "summary": "Derive a variable visual family from a meaningful subject and preserve its defining relationships across views.",
+  "use_when": "A cultural programme or institution has a defensible subject that can generate meaningful variation.",
+  "avoid_when": "Variation would be arbitrary, or stable fast functional decoding is more important than expressive identity.",
+  "sources": [
+    {
+      "title": "Stefan Sagmeister: Casa Da Musica",
+      "url": "https://sagmeister.com/work/casa-da-musica/",
+      "edition": "2007 identity case study, checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only studio reference. Download availability is not an open license; no building silhouette, logo generator or output is included.",
+      "license_url": null,
+      "sha256": "cd6e1da7f6941273b71d9544b3414729a35acc81294e9cdddcfefa4360daec30",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "MoMA: Casa da Música Logo Generator",
+      "url": "https://www.moma.org/collection/works/145254",
+      "edition": "Object 377.2011, software dated 2007; prior source read 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Museum record identifies copyrighted work and reproduction channels. No image or software reuse is admitted.",
+      "license_url": null,
+      "sha256": null,
+      "capture_note": "Unavailable: byte capture failed 2026-10-15 (HTTP Error 403: Forbidden). Retain the reviewed source link and stated inspection coverage; no immutable byte pin is claimed."
+    }
+  ],
+  "domain": "graphic",
+  "card": "references/design-languages/casa-subject-identity.md",
+  "example": "assets/design-languages/casa-subject-identity/index.html",
+  "original_example": true
+}

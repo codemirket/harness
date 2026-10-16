@@ -37,6 +37,13 @@ Reuse the project's tokens and APIs. Examples demonstrate choices, not a require
 palette, timing system or architecture. A form-spacing repair or ordinary button
 hover does not need this scene workflow.
 
+When references would help explain or review a visual language, catalog search
+or `design-inspiration`'s `references/design-languages/index.md` offers one route. Its
+original concept/contrast studies distinguish spatial continuity, control
+material, character acting and subject-led explanation. Other references or
+sufficient existing evidence can serve the scene. Use relationships that help,
+preserving source/platform/rights limits and actual production/lifecycle checks.
+
 ## Establish the scene contract
 
 Inspect the actual DOM/component tree, current effects, installed versions,

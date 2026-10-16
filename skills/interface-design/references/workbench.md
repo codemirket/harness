@@ -80,8 +80,16 @@ search, overlapping dialog buttons, lost focus or unreadable labels. Repair the
 cause and inspect the affected states again. Do not change screenshot baselines
 solely to silence a failure.
 
-For substantial tracked work, attach actual captures and behavioral output with
-Mirket's task evidence tools. File presence and hashes identify an artifact;
+For suspected occlusion or missing focus, inspect actual viewport pixels with
+the scroll position, focused element and relevant bounds before and after
+capture. A scrolled full-page screenshot can paint offscreen fixed content
+inside its document image. If the two capture formats disagree, retain both
+and diagnose the capture before changing the interface. Inspect the element
+that draws the focus indicator, including a containing label or control group;
+an input's computed outline alone cannot establish missing visible focus.
+
+For tracked work, retain useful captures and behavioral output in the chosen
+task record. Mirket's task evidence tools are one option. File presence and hashes identify an artifact;
 they cannot establish that someone reviewed it or that a design is good.
 
 ## Place illustrations in context
@@ -96,8 +104,9 @@ Retain editable paths, shapes and text for a vector deliverable. A bitmap inside
 an SVG wrapper is not editable vector artwork. Render the actual master through
 an available browser or registered renderer and inspect fine details.
 
-Use one relevant visual reference for the surface's purpose. These sources can
-inform particular choices; they are not a combined brand recipe:
+When references help, these sources illustrate possible starting points alongside
+the project's own system and other sources. Select and reconcile useful ideas
+against the surface's purpose:
 
 - [Primer dialogs](https://primer.style/product/components/dialog/) for actions
   and focus return.

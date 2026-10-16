@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "synthetic-report-identity-and-review",
+  "scenarios": [{
+    "id": "filter-open-and-owned-review",
+    "viewport": {"width": 390, "height": 844},
+    "steps": [
+      {"id":"initial-count","action":"expect_text","target":{"selector":"#visible-count"},"equals":"3"},
+      {"id":"attention-filter","action":"select","target":{"selector":"#severity"},"value":"attention"},
+      {"id":"filtered-count","action":"expect_text","target":{"selector":"#visible-count"},"equals":"2"},
+      {"id":"open-a08","action":"click","target":{"selector":"[data-open=A08]"}},
+      {"id":"identity","action":"expect_text","target":{"selector":"#detail-id"},"equals":"A08"},
+      {"id":"matching-title","action":"expect_text","target":{"selector":"#detail-title"},"equals":"North entry light"},
+      {"id":"review","action":"click","target":{"role":"button","name":"Mark reviewed locally"}},
+      {"id":"owner-id","action":"expect_storage","key":"service-review","json_path":["id"],"equals":"A08"},
+      {"id":"owner-effect","action":"expect_storage","key":"service-review","json_path":["reviewed"],"equals":true},
+      {"id":"duplicate","action":"click","target":{"role":"button","name":"Mark reviewed locally"}},
+      {"id":"read-owner","action":"click","target":{"role":"button","name":"Read stored review"}},
+      {"id":"one-review","action":"expect_text","target":{"selector":"#reviewed-count"},"equals":"1"},
+      {"id":"reload","action":"reload"},
+      {"id":"same-identity","action":"expect_text","target":{"selector":"#detail-id"},"equals":"A08"},
+      {"id":"persisted-review","action":"expect_text","target":{"selector":"#stored-review"},"equals":"Report A08 is reviewed locally."},
+      {"id":"review-focus","action":"focus","target":{"selector":"#review"}},
+      {"id":"focus-capture","action":"capture"},
+      {"id":"keyboard-review","action":"press","key":"Enter"},
+      {"id":"still-one","action":"expect_text","target":{"selector":"#reviewed-count"},"equals":"1"}
+    ]
+  }]
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" data-design-language="spectrum-bidirectional">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lattice · a direction-aware support request</title>
+<style>
+:root{color-scheme:light;--ink:#252332;--muted:#5e5a6b;--line:#dcd9e5;--accent:#5632b8;--surface:#f6f4fa;--ok:#23613f;--error:#992c25}*{box-sizing:border-box}body{margin:0;background:#efedf3;color:var(--ink);font:1rem/1.6 system-ui,sans-serif}button,select,textarea{font:inherit}button,select{min-height:44px}button,a,select,textarea{touch-action:manipulation}button{border:1px solid #aaa2bc;background:white;color:var(--ink);padding:.55rem 1rem;border-radius:.4rem;cursor:pointer}button:hover{background:#f0ebfa}button:disabled,select:disabled{cursor:default}a{color:var(--accent);text-underline-offset:.18em}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #80531d;outline-offset:4px}svg{width:1.3em;height:1.3em;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.skip{position:absolute;top:-10rem;left:1rem;padding:.6rem 1rem;background:white;z-index:3}.skip:focus{top:1rem}.study-header{max-width:1180px;margin:0 auto;padding:1.6rem 1.4rem 1rem;display:flex;gap:1rem;justify-content:space-between;align-items:baseline;flex-wrap:wrap}.study-header p{margin:0}.study-header .small{font-size:.85rem;color:var(--muted)}main{max-width:1140px;margin:0 auto;background:white;border:1px solid var(--line);border-radius:.8rem;overflow-wrap:anywhere}.app-bar{padding:1.2rem 1.5rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}.brand{font-size:1.2rem;font-weight:750;letter-spacing:-.03em}.brand span{color:var(--muted);font-size:.8rem;font-weight:450;letter-spacing:0;display:block}.locale-control{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}.locale-control select{border:1px solid #aaa2bc;border-radius:.4rem;background:white;color:var(--ink);padding:.45rem 2rem .45rem .7rem;max-width:100%}.workspace{display:grid;grid-template-columns:14rem minmax(0,1fr)}.case-context{background:var(--surface);border-inline-end:1px solid var(--line);padding:1.5rem}.section-label{font-size:.8rem;font-weight:650;color:var(--muted);margin:0 0 .4rem}.summary-link{display:inline-flex;gap:.55rem;align-items:center;font-weight:650;max-width:100%}.case-context dl{margin:2rem 0 0}.case-context dt{color:var(--muted);font-size:.85rem;margin-block-start:1.2rem}.case-context dd{margin:0;font-weight:600}.case-context .badge{margin-top:1.5rem;display:flex;align-items:center;gap:.5rem;color:var(--ok);font-size:.9rem}.case-context svg{width:1.15em;height:1.15em}.request{padding:2rem 2.4rem 2.5rem;min-width:0}.eyebrow{margin:0;color:var(--muted);font-size:.85rem}.request h1{font-size:clamp(1.7rem,4vw,2.2rem);line-height:1.3;letter-spacing:-.02em;margin:.45rem 0 1.5rem}.customer{padding-block:1.2rem;border-block:1px solid var(--line);display:flex;gap:1rem;align-items:center;flex-wrap:wrap}.avatar{background:#e7defb;width:2.8rem;height:2.8rem;display:grid;place-items:center;font-weight:650;color:#4e2a96;border-radius:50%;flex:none}.customer p{margin:0}.customer a{font-size:.9rem}.message{margin-block:1.8rem;font-size:1.05rem}.message p{margin:.7rem 0}.message .time{font-size:.85rem;color:var(--muted);display:flex;align-items:center;gap:.5rem}.message strong{font-weight:650}.atomic{display:inline-block;font-variant-numeric:tabular-nums}.note-form{margin-top:1.8rem}.note-form label{display:block;font-weight:650;margin-bottom:.35rem}.hint{color:var(--muted);font-size:.85rem;margin:.3rem 0 .65rem}textarea{resize:vertical;width:100%;min-height:8rem;padding:.8rem;border:1px solid #aaa2bc;border-radius:.4rem;background:#fff;color:var(--ink);line-height:1.65}textarea[aria-invalid=true]{border:2px solid var(--error)}.primary{background:var(--accent);border-color:var(--accent);color:white;font-weight:650;margin-top:.7rem}.primary:hover{background:#432493}.error{color:var(--error);font-weight:600}.error[hidden]{display:none}.saved-note{margin-block-start:1.5rem;padding:1rem;background:#f2f8f3;border-inline-start:3px solid var(--ok)}.saved-note h2{margin:0;font-size:1rem}.saved-note p{margin:.5rem 0 0;white-space:pre-wrap}.saved-note[hidden]{display:none}.status{margin:1rem 0 0;color:var(--muted);font-size:.9rem;min-height:1.5em}.study-note{max-width:1080px;margin:1.5rem auto 3rem;padding:1.3rem 1.4rem;color:#413c4c;background:#e6e1ef;border-radius:.6rem;font-size:.9rem}.study-note h2{font-size:1rem;margin:0 0 .4rem}.study-note p{margin:.4rem 0}.study-note code{overflow-wrap:anywhere}.study-note ul{padding-left:1.3rem}.study-note li{margin:.4rem 0}[dir=rtl] .flow-icon{transform:scaleX(-1)}.misleading [dir=rtl] svg,.misleading [dir=rtl] .atomic{transform:scaleX(-1)}.misleading [dir=rtl] .flow-icon{transform:scaleX(-1)}
+@media(max-width:650px){.study-header{padding:1rem}.app-bar{padding:1rem}.workspace{grid-template-columns:minmax(0,1fr)}.case-context{border-inline-end:0;border-bottom:1px solid var(--line);padding:1rem}.case-context dl{display:flex;gap:.8rem 1.5rem;flex-wrap:wrap;margin-top:.7rem}.case-context dl>div{min-width:0}.case-context dt{margin:0}.case-context .badge{margin:.8rem 0 0}.request{padding:1.5rem 1rem 2rem}.request h1{margin-bottom:1rem}.study-note{margin:1rem .6rem 2rem}.locale-control{width:100%;justify-content:space-between}.locale-control select{max-width:100%}.note-form .primary{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#case-title">Skip to request</a>
+<header class="study-header"><p><strong>Interface study 26</strong> · Direction &amp; identity</p><p class="small">Fictional local support workspace</p></header>
+<main id="support-workspace" dir="rtl" lang="ar">
+ <div class="app-bar">
+  <div class="brand" lang="en" dir="ltr">Lattice<span>Customer care</span></div>
+  <div class="locale-control" lang="en" dir="ltr"><label for="locale">Preview language</label><select id="locale" disabled><option value="ar" selected>Arabic preview</option><option value="en">English</option></select></div>
+ </div>
+ <div class="workspace">
+  <section class="case-context" aria-labelledby="context-title">
+   <h2 id="context-title" class="section-label" data-copy="case">الطلب</h2>
+   <a class="summary-link" href="#case-title"><svg class="flow-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></svg><span data-copy="summary">ملخص الطلب</span></a>
+   <dl>
+    <div><dt data-copy="reference">رقم المرجع</dt><dd><bdi class="atomic" id="case-reference" dir="ltr">SUP-2047</bdi></dd></div>
+    <div><dt data-copy="product">المنتج</dt><dd><bdi dir="ltr" lang="en">Lens Kit 2</bdi></dd></div>
+    <div><dt data-copy="owner">المسؤول</dt><dd><bdi dir="auto" lang="ar">سارة أحمد</bdi></dd></div>
+   </dl>
+   <p class="badge"><svg id="verified-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg><span data-copy="verified">تم التحقق من البريد</span></p>
+  </section>
+  <article class="request">
+   <p class="eyebrow" data-copy="inbox">صندوق الوارد / توصيل</p>
+   <h1 id="case-title" tabindex="-1" data-copy="title">سؤال عن التوصيل</h1>
+   <div class="customer"><div class="avatar" aria-hidden="true">LH</div><div><p><strong><bdi dir="auto" lang="ar" id="customer-name">ليلى حسن</bdi></strong></p><a href="mailto:layla@example.test"><bdi class="atomic" dir="ltr" lang="en">layla@example.test</bdi></a></div></div>
+   <section class="message" aria-labelledby="message-title">
+    <h2 id="message-title" class="section-label" data-copy="message">رسالة العميل</h2>
+    <p id="customer-message"><span lang="ar" dir="rtl">هل يمكن توصيل</span> <bdi dir="ltr" lang="en">Lens Kit 2</bdi> <span lang="ar" dir="rtl">يوم الخميس؟ رقم الطلب</span> <bdi class="atomic" dir="ltr">SUP-2047</bdi><span lang="ar" dir="rtl">.</span></p>
+    <p class="time"><svg id="clock-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l4 2"/></svg><span data-copy="received">تم الاستلام</span> <bdi dir="ltr">09:40</bdi></p>
+   </section>
+   <form class="note-form" id="note-form" novalidate>
+    <label for="note" data-copy="note">ملاحظة داخلية</label>
+    <p class="hint" id="note-hint" data-copy="hint">تُحفظ في هذه الصفحة فقط، ولا تُرسل إلى العميل.</p>
+    <div class="locale-control"><label for="note-language" data-copy="noteLanguage">لغة الملاحظة</label><select id="note-language" disabled><option value="en" selected lang="en">English</option><option value="ar" lang="ar">العربية</option></select></div>
+    <textarea id="note" name="note" dir="auto" lang="en" aria-describedby="note-hint note-error" required>Please confirm Thursday delivery for SUP-2047.</textarea>
+    <p id="note-error" class="error" hidden></p>
+    <button class="primary" id="save-note" type="submit" disabled data-copy="save">حفظ الملاحظة محليًا</button>
+   </form>
+   <section class="saved-note" id="saved-note" hidden aria-labelledby="saved-title"><h2 id="saved-title" data-copy="saved">الملاحظة المحفوظة محليًا</h2><p><bdi id="saved-text" dir="auto"></bdi></p></section>
+   <p id="note-status" class="status" role="status" aria-atomic="true" data-copy="initial">لم يتم حفظ ملاحظة بعد.</p>
+   <noscript><p lang="en" dir="ltr">The case remains readable. Language switching and local note saving require JavaScript.</p></noscript>
+  </article>
+ </div>
+</main>
+<aside class="study-note" aria-labelledby="lesson-title">
+ <h2 id="lesson-title">Why the direction changes selectively</h2>
+ <p id="variant-note">Purposeful version: layout and the summary arrow follow the reading direction. The clock, checkmark, email and case reference retain their meaning and orientation.</p>
+ <p>Switch to English and back. The same case, customer, note draft and saved note stay attached to <code>SUP-2047</code>. Clear the note and save to inspect rejection, then correct it. Mixed names use <code>bdi</code>; known Latin identifiers use <code>dir="ltr"</code>.</p>
+ <p>This is a limited Arabic layout preview, not reviewed Arabic localization. No screen reader or native device was tested. Open <a href="?variant=misleading">the polished wrong version</a> to inspect universal mirroring, then <a href="?">return to the purposeful version</a>.</p>
+ <p>Original study; reference relationships from <a href="https://spectrum.adobe.com/page/bi-directionality/">Spectrum bi-directionality</a> and <a href="https://www.w3.org/International/articles/inline-bidi-markup/">W3C inline bidi markup</a>. No upstream assets or code are included.</p>
+</aside>
+<script>
+(()=>{
+ const $=id=>document.getElementById(id), main=$('support-workspace'), locale=$('locale'), note=$('note'), error=$('note-error'), status=$('note-status');
+ const misleading=new URLSearchParams(location.search).get('variant')==='misleading';
+ document.documentElement.classList.toggle('misleading',misleading);
+ if(misleading)$('variant-note').textContent='Polished wrong version: one universal mirroring rule reverses the clock, checkmark, email and identifier as well as the directional arrow. The surface still looks orderly; its exceptions have been erased.';
+ const copy={ar:{case:'الطلب',summary:'ملخص الطلب',reference:'رقم المرجع',product:'المنتج',owner:'المسؤول',verified:'تم التحقق من البريد',inbox:'صندوق الوارد / توصيل',title:'سؤال عن التوصيل',message:'رسالة العميل',received:'تم الاستلام',note:'ملاحظة داخلية',noteLanguage:'لغة الملاحظة',hint:'تُحفظ في هذه الصفحة فقط، ولا تُرسل إلى العميل.',save:'حفظ الملاحظة محليًا',saved:'الملاحظة المحفوظة محليًا',initial:'لم يتم حفظ ملاحظة بعد.',error:'أدخل ملاحظة قبل الحفظ.',savedStatus:'تم تحديث الملاحظة المحفوظة في هذه الصفحة فقط.'},en:{case:'Request',summary:'Request summary',reference:'Reference',product:'Product',owner:'Owner',verified:'Email verified',inbox:'Inbox / Delivery',title:'A delivery question',message:'Customer message',received:'Received',note:'Internal note',noteLanguage:'Note language',hint:'Stored in this page only. Nothing is sent to the customer.',save:'Save local note',saved:'Locally saved note',initial:'No note has been saved yet.',error:'Enter a note before saving.',savedStatus:'The locally saved note now contains your text. Nothing was sent.'}};
+ let saved=false;
+ function updateLocale(){
+  const language=locale.value, dict=copy[language];
+  main.lang=language;main.dir=language==='ar'?'rtl':'ltr';
+  main.querySelectorAll('[data-copy]').forEach(el=>{if(el!==status)el.textContent=dict[el.dataset.copy]});
+  status.textContent=saved?dict.savedStatus:dict.initial;
+  if(!error.hidden)error.textContent=dict.error;
+ }
+ locale.disabled=false;$('save-note').disabled=false;$('note-language').disabled=false;
+ $('note-language').addEventListener('change',()=>{note.lang=$('note-language').value});
+ locale.addEventListener('change',updateLocale);
+ note.addEventListener('input',()=>{if(note.value.trim()){error.hidden=true;note.removeAttribute('aria-invalid')}});
+ $('note-form').addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!note.value.trim()){error.hidden=false;error.textContent=copy[locale.value].error;note.setAttribute('aria-invalid','true');status.textContent=copy[locale.value].error;note.focus();return}
+  error.hidden=true;note.removeAttribute('aria-invalid');$('saved-text').textContent=note.value;$('saved-text').lang=$('note-language').value;$('saved-note').hidden=false;saved=true;status.textContent=copy[locale.value].savedStatus;
+ });
+})();
+</script>
+</body>
+</html>

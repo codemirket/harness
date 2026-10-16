@@ -1,0 +1,44 @@
+{
+  "id": "mit-generative-identity",
+  "title": "MIT Media Lab identity — variation inside a shared construction",
+  "language": "Constrained generative identity",
+  "aliases": [
+    "generative identity",
+    "identity lattice"
+  ],
+  "tags": [
+    "identity",
+    "systems",
+    "family",
+    "constraint"
+  ],
+  "summary": "Build related but distinct entity marks from a bounded construction and preserve their assignment across applications.",
+  "use_when": "A federation, collection or programme needs peer identities with visible kinship and stable names.",
+  "avoid_when": "An unfamiliar urgent action must be decoded from an abstract mark alone.",
+  "sources": [
+    {
+      "title": "Pentagram: MIT Media Lab",
+      "url": "https://www.pentagram.com/work/mit-media-lab",
+      "edition": "2014 identity case study; read 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only case study and protected identity. No monogram, research glyph, typography or media is included.",
+      "license_url": null,
+      "sha256": "5a1aed35e1b19bf75b82b6ed4cbb595a98a2053d55fd1ed048bfb1793a39567a",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "MIT Media Lab Brand Portal",
+      "url": "https://www.media.mit.edu/posts/MLBrandPortal/",
+      "edition": "2026-08-24 portal, checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Portal imagery includes Pentagram/MIT copyright. No logo adoption or font redistribution grant is inferred from individual image notices.",
+      "license_url": null,
+      "sha256": "4973c28f777592dcb0929b4b7d6c2cdcb10fc42ee7c7b7dbbaa9b970fc27bea2",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "domain": "graphic",
+  "card": "references/design-languages/mit-generative-identity.md",
+  "example": "assets/design-languages/mit-generative-identity/index.html",
+  "original_example": true
+}

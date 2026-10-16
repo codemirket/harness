@@ -1,0 +1,14 @@
+{
+  "criteria": ["truthful_totals", "selection_scope", "failure_retry_effect", "keyboard_access", "responsive_craft", "context_grounded_transfer"],
+  "split": "held_out",
+  "assertions": {
+    "truthful_totals": "At initial Reed/2 days, independent expected fee/deposit/due are 52/40/92. At Reed/3 days they are 78/40/118. These numbers must agree with visible summary, not only data attributes. Invalid duration blocks a save and has understandable feedback. Deposit is clearly refundable and separate.",
+    "selection_scope": "Stone cannot be reserved. Select Moss, then enable All-weather only: Moss is absent from available choices, selection is cleared, summary attributes are empty, and Reserve cannot save until a visible eligible kit is selected. A hidden checked choice or a summary retaining Moss fails.",
+    "failure_retry_effect": "From a valid selection the first attempt reports failure and retains choices while actual count stays 0. Retry reports a local save and actual count becomes 1. Repeating reservation or retry without a new distinct reservation leaves count at 1. Inspect the saved artifact's state owner as well as the displayed counter; a counter unrelated to reservation state fails.",
+    "keyboard_access": "Native named inputs and buttons support choosing a kit, filtering and submitting/retrying with keyboard; focus is visible. Failure/success status is programmatically exposed. Automated scans, manual keyboard observation and unavailable assistive technology are stated separately.",
+    "responsive_craft": "Fresh visual inspection at 1280×900 and 390×844 confirms purposeful task hierarchy, readable comparison facts and clear relationship among kit, duration, fee, deposit and commitment. Required content is not clipped, visually hidden to pass overflow, or displaced behind overlays. The waiting/failure/saved states remain understandable. No brand popularity or screenshot count substitutes for judgment.",
+    "context_grounded_transfer": "The output and decision explain a useful relationship from actually read context, adapt it to equipment suitability and loan facts, and preserve original labels and identity. If context lacks an exact example, an explicit bounded gap plus justified content-based choices can pass. Naming a famous system or asserting coverage without application cannot. Check host-observed source-read evidence separately from worker self-report."
+  },
+  "human_acceptance": "not_collected",
+  "grading_order": "Freeze and inspect the unrepaired output before lesson tuning or worker repair."
+}

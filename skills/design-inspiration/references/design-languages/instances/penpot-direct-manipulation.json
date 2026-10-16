@@ -1,0 +1,39 @@
+{
+  "id": "penpot-direct-manipulation",
+  "title": "Penpot: direct manipulation with edit ownership",
+  "language": "Identity-preserving direct manipulation",
+  "domain": "interface",
+  "aliases": [
+    "Penpot",
+    "canvas editor",
+    "creative workspace",
+    "object selection",
+    "undo redo"
+  ],
+  "tags": [
+    "creative-tools",
+    "direct-manipulation",
+    "selection",
+    "history",
+    "stable-identity",
+    "keyboard-alternative"
+  ],
+  "summary": "Coordinate a finite canvas, layer identity, exact properties and recoverable edits without redirecting history to the current selection.",
+  "use_when": "A bounded creative workspace needs pointer placement, an equivalent keyboard path and undo that retains edited-object ownership.",
+  "avoid_when": "A complete vector editor, multiplayer conflict resolution, persistent file versions or canvas-only access is required.",
+  "card": "references/design-languages/penpot-direct-manipulation.md",
+  "example": "assets/design-languages/penpot-direct-manipulation/index.html",
+  "sources": [
+    {
+      "title": "Penpot Help: Workspace basics",
+      "url": "https://help.penpot.app/user-guide/designing/workspace-basics/",
+      "edition": "Live documentation checked 2026-10-15; viewport and actions/history illustrations rendered in Chrome; no immutable release claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Help-page copyright/open-source wording establishes no blanket media reuse license. Exclude marks, screenshots, icons, fonts, UI artwork and upstream code.",
+      "license_url": null,
+      "sha256": "8f3703d2e2e952009ad34a7b7ee6ccafa0be2660332b3f405796ac3465806762",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

@@ -188,7 +188,7 @@ fn copy_application(source: &Path, destination: &Path, maximum_bytes: u64) -> Re
                     };
                     #[cfg(not(unix))]
                     let executable = false;
-                    archive::set_mode(&output, executable)?;
+                    util::set_executable_mode(&output, executable)?;
                     self.files += 1;
                 } else {
                     bail!("application contains a special file");

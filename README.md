@@ -78,6 +78,26 @@ The reviewed catalog also contains pinned upstream choices, adaptations and
 license information. `mirket catalog show ID` explains an entry's delivery and
 requirements. Fetching or installing guidance never executes its upstream helpers.
 
+Design work can also use built-in language and interaction lessons with source/rights
+records, original runnable examples, misleading contrasts and transfer exercises.
+Search by source or purpose, for example `mirket catalog search "Porsche"` or
+`mirket catalog search "statistical uncertainty"`. Results give exact lesson and
+example routes under the optional `design-inspiration` skill. See the
+[language index](skills/design-inspiration/references/design-languages/index.md).
+The existing craft owners implement and verify the result; external brand assets
+remain link-only. The library supports inspiration, understanding, comparison and
+review. It does not prescribe an aesthetic, reference count or production recipe.
+Use project and outside references, combine useful perspectives or proceed without
+a reference when existing evidence suffices; explicit user constraints still govern.
+
+Optional structured search describes the library by family, platform,
+interactions and access constraints without combining unrelated examples:
+`mirket catalog search --family commerce --platform web --interaction cart-checkout --constraint keyboard`.
+The result exposes partial and unrepresented combinations. A worked web example,
+source-only native guidance and validation of the actual task remain distinct.
+See the [coverage guide](skills/design-inspiration/references/design-languages/coverage.md)
+and [transfer evaluation](evals/design-coverage/README.md).
+
 ## Adopt a project
 
 ```sh

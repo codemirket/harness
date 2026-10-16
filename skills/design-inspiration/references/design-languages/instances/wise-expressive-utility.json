@@ -1,0 +1,47 @@
+{
+  "title": "Wise: expressive numerical utility",
+  "language": "Bold consumer utility",
+  "aliases": [
+    "Wise",
+    "consumer calculator",
+    "expressive utility",
+    "transparent pricing"
+  ],
+  "tags": [
+    "consumer",
+    "calculator",
+    "cost",
+    "numerical-hierarchy",
+    "disclosure"
+  ],
+  "summary": "Pair confident display scale with a dominant transaction amount and adjacent, reconciled costs and terms.",
+  "use_when": "A practical consumer calculator or pricing decision needs both a memorable public voice and explicit economics.",
+  "avoid_when": "A quiet reading environment or a many-column operator comparison needs lower expressive emphasis.",
+  "sources": [
+    {
+      "title": "Wise Design: Brand",
+      "url": "https://wise.design/brand",
+      "edition": "Public Brand direction checked 2026-10-15; component Docs is not treated as publicly verified.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only brand/reference. No reusable asset or component-code grant established; Wise identity, fonts, imagery and code excluded.",
+      "license_url": "https://wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3/wise-intellectual-property",
+      "sha256": "7b29b65ed7003f9bc11f6dfec351068ba74f4a7875cd8daa497d70d2fddeb347",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Wise: UK product homepage",
+      "url": "https://wise.com/gb/",
+      "edition": "Live UK product page checked 2026-10-15; product/offer values are time and region dependent and are not copied.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only product reference. Wise intellectual-property page describes owned content/branding and a limited customer-use license; no general reusable grant is inferred.",
+      "license_url": "https://wise.com/help/articles/79CxCv9Qj1r7mDPJuIwUA3/wise-intellectual-property",
+      "sha256": "129fe36171c22ec81806674c04ff48685291704936c8c834942453f23ce024ce",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "wise-expressive-utility",
+  "domain": "interface",
+  "card": "references/design-languages/wise-expressive-utility.md",
+  "example": "assets/design-languages/wise-expressive-utility/index.html",
+  "original_example": true
+}

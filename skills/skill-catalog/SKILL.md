@@ -12,8 +12,8 @@ not authority over accounts, spending, tools, deployment or model execution.
 ## Select the lead and professional team
 
 Interpret the requested outcome and actual affected boundaries before selecting
-roles. For substantive work spanning disciplines, use `mirket capabilities facets`
-or MCP `team_facets`, then `team_plan` to assign complementary professionals.
+expertise. When independent professional assignments would help,
+`mirket capabilities facets` or MCP `team_facets` and `team_plan` can compose briefs.
 For example, a checkout change can involve Web Design, Frontend Engineering,
 Backend Engineering and Quality Assurance; add security or migration expertise
 when the actual trust or persisted-data boundary changes. Keyword mentions alone
@@ -26,17 +26,12 @@ mirket capabilities team "Frontend Engineer" \
   --facet "service-contract=The order endpoint must reconcile retries"
 ```
 
-The team plan returns each professional's perspective, priorities, method,
-decision rule, challenge and handoff, plus task-specific selection reasons and
-contributions. Dispatch the selected specialists through the host's actual
-subagents using `agent-coordination`; the coordinator can own the primary role.
-Pass raw source evidence and a bounded assignment so each develops its own
-judgment. Save the roster before creating the task; use the returned `task_start`
-fields for MCP or `task_start_cli.args` as CLI argv with a project and key. Bind
-the saved roster as task evidence and record actual worker IDs,
-dependencies and returned evidence through existing task checkpoints. A planned
-assignment is not an executed worker. Report a host limitation if independent
-agents are unavailable; sequential role perspectives do not establish independence.
+The team plan returns professional perspectives, methods, handoffs and
+contributions with task-specific selection reasons. Use `agent-coordination` for
+actual independent assignments and integration; the coordinator can own the lead.
+A planned assignment is not an executed worker. If tracking the team through
+Mirket, save the roster before task creation, use the returned `task_start` fields
+or `task_start_cli.args`, and bind the roster and contributions to that task.
 
 For an explicit role or outcome, inspect its contract. Use bounded keyword
 discovery for unfamiliar wording; do not load every full role contract to find one:
@@ -46,12 +41,11 @@ mirket catalog search accessibility --limit 3
 mirket capabilities plan "CFO" --with "Excel Expert"
 ```
 
-Use the lead ID returned by the plan. For substantial work, start the task before
-the first body read and deliver that body with `mirket task read` or task-bound
-MCP `skill_read`. Short untracked work uses `mirket catalog read ID` directly.
-Read only the references needed for the next decision. Add support for real boundaries; do not read or install an
-entire profile just because several skills sound relevant. The plan reports the
-intended deliverable, prerequisites, acceptance evidence and a failure probe.
+Use the lead ID returned by the plan and its read route for selected guidance.
+Read the material needed for the next decision. Add support for real boundaries;
+do not read or install an entire profile because several skills sound relevant.
+The plan reports the intended deliverable, prerequisites, acceptance evidence
+and a failure probe.
 The host interprets intent; deterministic role and facet selection makes that
 choice reviewable. Neither plan proves that a tool or worker is available.
 `--with` accepts capability names, not arbitrary skill IDs. A contract's `support`
@@ -60,11 +54,10 @@ and register it with `mirket project add --skill` when the boundary needs it.
 Use listed role names for capability plans; do not invent a role from a skill's
 name. An explicitly chosen skill such as `svg-animation` is read directly by ID.
 
-When Mirket MCP is available, discover metadata, start a task when warranted,
-then make the first skill read task-bound. Resources provide immutable embedded
-content. Tool delivery is observable; actual application must be assessed from
-the work and resulting evidence. Keep one source authoritative when installed
-skills overlap. Honor explicitly requested skills, models and workflows.
+Resources provide immutable embedded content. Tool delivery is observable;
+actual application must be assessed from the work and resulting evidence. Keep
+one source authoritative when installed skills overlap. Honor explicitly requested
+skills, models and workflows.
 
 For an unfamiliar task, consult [task routing](references/task-routing.md) and
 the affected [delivery standards](references/delivery-standards.md). Cross-role
@@ -129,7 +122,9 @@ invocation syntax; use the name and path actually discovered by that client.
 
 ## Work toward inspectable evidence
 
-For substantial work, start a task through Mirket MCP or the CLI:
+Use Mirket task tracking when durable coordination, resumption or a user/project
+request warrants it. A sufficient existing host or project record needs no parallel
+record. To start a Mirket task through MCP or the CLI:
 
 ```sh
 mirket task start --project /absolute/project --capability "Backend Engineer" \
@@ -137,12 +132,10 @@ mirket task start --project /absolute/project --capability "Backend Engineer" \
 mirket task status TASK_ID
 ```
 
-Read each selected lead using the task skill tool or `mirket task read`. Make the
-first read task-bound when tracking was known from the start. Reuse unchanged
-guidance thereafter. If work became substantial after an untracked read, one
-task-bound delivery read is required; a checkpoint does not require another read.
-Keep the current revision from each response, and use an idempotency key for each intended
-mutation. A retry uses the same key and identical input. A changed intention uses
+For a Mirket task, record selected guidance delivery using the task skill tool or
+`mirket task read`; reuse unchanged guidance in the work. Keep the current revision
+from each response, and use an idempotency key for each intended mutation.
+A retry uses the same key and identical input. A changed intention uses
 a new key. Checkpoint meaningful decisions and blockers; do not record every tool
 call as ceremony.
 

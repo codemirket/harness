@@ -15,6 +15,8 @@ use crate::util::{
     atomic_write, ensure_directory, read_bounded, reject_symlink_components, sha256,
 };
 
+mod design_references;
+pub use design_references::DesignContext;
 mod teams;
 pub use teams::{FacetSelection, ProfessionalProfile, TeamFacet};
 
@@ -124,7 +126,7 @@ fn guidance_access(skill: &Skill) -> Value {
         "body_readable":skill.delivery == "embedded",
         "metadata":"catalog_show or mirket catalog show ID",
         "read_route":match skill.delivery.as_str() {
-            "embedded" => "skill_read or mirket catalog read ID; task-bound first read for tracked work",
+            "embedded" => "skill_read or mirket catalog read ID; record task-bound delivery when using Mirket tracking",
             "upstream" => "Inspect pinned source, adaptation and caveats first. Explicitly select with mirket project add --skill ID, then project sync and doctor; read the installed host skill. skill_read does not fetch upstream guidance.",
             _ => "Reference only: inspect its source manually under host permissions; not installable or readable via skill_read."
         }
@@ -174,6 +176,7 @@ struct CatalogInner {
     capability_names: HashMap<String, usize>,
     payloads: HashMap<String, Payload>,
     document_digests: HashMap<String, BTreeMap<String, OnceLock<String>>>,
+    design_references: Option<design_references::Library>,
 }
 
 struct SearchDocument {
@@ -184,11 +187,7 @@ struct SearchDocument {
 
 /// Select complete notice sections from explicit, validated provenance. The full
 /// notice bundle still accompanies runtime distributions independently.
-fn skill_notices(
-    skill: &Skill,
-    sources: &BTreeMap<String, Source>,
-    notices: &str,
-) -> Result<Vec<u8>> {
+fn notice_sections(notices: &str) -> Result<BTreeMap<&str, &str>> {
     let mut sections = BTreeMap::new();
     for section in notices.split("\n## ").skip(1) {
         let heading = section.lines().next().context("empty notice heading")?;
@@ -197,6 +196,14 @@ fn skill_notices(
             "duplicate notice heading: {heading}"
         );
     }
+    Ok(sections)
+}
+
+fn skill_notices(
+    skill: &Skill,
+    sources: &BTreeMap<String, Source>,
+    sections: &BTreeMap<&str, &str>,
+) -> Result<Vec<u8>> {
     let ids: Vec<String> = skill
         .metadata
         .get("informed_by")
@@ -279,6 +286,7 @@ impl Catalog {
         let capabilities: Vec<Capability> =
             serde_json::from_value(contracts["capabilities"].clone())?;
         let team_facets: Vec<TeamFacet> = serde_json::from_value(contracts["team_facets"].clone())?;
+        let notices = notice_sections(NOTICES)?;
         let mut by_id = HashMap::new();
         let mut payloads = HashMap::new();
         let mut document_digests = HashMap::new();
@@ -326,7 +334,7 @@ impl Catalog {
                 // Preserve applicable offline notices without coupling unrelated skill identities.
                 files.insert(
                     ".upstream-licenses/NOTICE.md".into(),
-                    skill_notices(skill, &data.sources, NOTICES)?,
+                    skill_notices(skill, &data.sources, &notices)?,
                 );
                 ensure!(
                     skill_name(files.get("SKILL.md").context("missing SKILL.md")?)? == skill.name,
@@ -424,6 +432,10 @@ impl Catalog {
             }
         }
         teams::validate_facets(&team_facets, &capabilities)?;
+        let design_references = payloads
+            .get(design_references::OWNER)
+            .map(design_references::Library::load)
+            .transpose()?;
         Ok(CatalogInner {
             data,
             by_id,
@@ -434,6 +446,7 @@ impl Catalog {
             capability_names,
             payloads,
             document_digests,
+            design_references,
         })
     }
 
@@ -472,7 +485,7 @@ impl Catalog {
             .source
             .as_ref()
             .and_then(|id| self.0.data.sources.get(id));
-        let result = json!({
+        let mut result = json!({
             "id":skill.id,"name":skill.name,"description":skill.description,
             "scope":skill.scope,"delivery":skill.delivery,"path":skill.path,
             "category":skill.category,"tags":skill.tags,"agents":skill.agents,
@@ -488,11 +501,28 @@ impl Catalog {
             "url":skill.metadata.get("url"),"license":skill.metadata.get("license"),
             "guidance_access":guidance_access(skill)
         });
+        self.attach_reference_discovery(id, &mut result);
         ensure!(
             serde_json::to_vec(&result)?.len() <= 32 * 1024,
             "selected metadata exceeds 32 KiB; inspect mirket catalog show {id} through the host CLI"
         );
         Ok(result)
+    }
+
+    /// Preserve the CLI's full entry metadata while exposing the same reference
+    /// discovery routes as the bounded MCP describe response.
+    pub fn show(&self, id: &str) -> Result<Value> {
+        let mut result = serde_json::to_value(self.skill(id)?)?;
+        self.attach_reference_discovery(id, &mut result);
+        Ok(result)
+    }
+
+    fn attach_reference_discovery(&self, id: &str, result: &mut Value) {
+        if id == design_references::OWNER
+            && let Some(library) = &self.0.design_references
+        {
+            result["reference_library"] = library.discovery();
+        }
     }
 
     pub fn search(&self, query: &str, offset: usize, limit: usize) -> Result<Value> {
@@ -506,10 +536,18 @@ impl Catalog {
             .enumerate()
             .filter_map(|(i, skill)| {
                 let document = &self.0.search[i];
-                if !terms.iter().all(|term| document.text.contains(term)) {
+                let references = self
+                    .0
+                    .design_references
+                    .as_ref()
+                    .filter(|_| skill.id == design_references::OWNER)
+                    .map(|library| library.matching(&terms))
+                    .unwrap_or_default();
+                if !terms.iter().all(|term| document.text.contains(term)) && references.is_empty() {
                     return None;
                 }
-                let positive = terms.iter().all(|term| document.positive.contains(term));
+                let positive = terms.iter().all(|term| document.positive.contains(term))
+                    || !references.is_empty();
                 let delivery = match skill.delivery.as_str() {
                     "embedded" => 2,
                     "upstream" => 1,
@@ -537,7 +575,8 @@ impl Catalog {
                     .count();
                 Some((
                     (
-                        skill.id == phrase,
+                        skill.id == phrase
+                            || references.iter().any(|instance| instance.exact(&phrase)),
                         positive,
                         delivery,
                         name_match == 3,
@@ -545,10 +584,11 @@ impl Catalog {
                         name_match,
                     ),
                     skill,
+                    references,
                 ))
             })
             .collect();
-        matches.sort_unstable_by(|(a_rank, a), (b_rank, b)| {
+        matches.sort_unstable_by(|(a_rank, a, _), (b_rank, b, _)| {
             b_rank.cmp(a_rank).then_with(|| a.id.cmp(&b.id))
         });
         ensure!(offset <= matches.len(), "offset exceeds result count");
@@ -556,17 +596,57 @@ impl Catalog {
             .iter()
             .skip(offset)
             .take(limit)
-            .map(|(_, skill)| {
-                json!({
+            .map(|(_, skill, references)| {
+                let mut item = json!({
                     "id": skill.id, "name": skill.name, "description": skill.description,
                     "scope": skill.scope, "delivery": skill.delivery, "category": skill.category,
                     "installable": skill.delivery == "embedded" || skill.delivery == "upstream",
                     "guidance_access": guidance_access(skill)
-                })
+                });
+                if skill.id == design_references::OWNER
+                    && let Some(library) = &self.0.design_references
+                {
+                    item["reference_library"] = library.discovery();
+                    item["reference_matches"] = design_references::Library::summaries(references);
+                }
+                item
             })
             .collect();
         Ok(json!({"items":page,"total":matches.len(),"offset":offset,
             "next_offset": (offset + limit < matches.len()).then_some(offset + limit)}))
+    }
+
+    /// Structured design requirements supplement keyword discovery. Coverage is
+    /// an inventory lookup, not a claim that the host validated the current task.
+    pub fn search_with_design_context(
+        &self,
+        query: &str,
+        offset: usize,
+        limit: usize,
+        context: Option<&DesignContext>,
+    ) -> Result<Value> {
+        let coverage = context
+            .map(|context| {
+                self.0
+                    .design_references
+                    .as_ref()
+                    .context("design reference library is unavailable")?
+                    .coverage_for(context)
+            })
+            .transpose()?;
+        let mut result = self.search(query, offset, limit)?;
+        if let Some(library) = &self.0.design_references {
+            let terms: Vec<_> = query.split_whitespace().map(str::to_lowercase).collect();
+            if library.matching(&terms).is_empty()
+                && let Some(candidates) = library.partial_candidates(query)?
+            {
+                result["design_reference_candidates"] = candidates;
+            }
+        }
+        if let Some(coverage) = coverage {
+            result["design_coverage"] = coverage;
+        }
+        Ok(result)
     }
 
     pub fn payload(&self, id: &str) -> Result<Payload> {
@@ -670,11 +750,11 @@ impl Catalog {
             json!({"primary":primary.id,"contracts":contracts,"read_sequence":reads,
             "project_skills":project_skills,"runtime_status":"not_checked",
             "activation_status":"not_observed",
-            "team_route":"For substantive cross-disciplinary work inspect team_facets and call team_plan with task-specific reasons. The host dispatches independent professionals and integrates their evidence.",
+            "team_route":"When independent professional assignments would help, team_facets and team_plan can compose briefs with task-specific reasons. The host chooses useful assignments, dispatches actual independent workers and integrates their evidence.",
             "authority":"Expertise does not grant execution permissions or professional authority.",
             "support_policy":"Contract support IDs are optional skills: read one with skill_read or mirket catalog read ID and register it with mirket project add --skill ID only when needed. MCP supporting and CLI --with compose up to 12 capability names or role aliases from mirket capabilities list, not optional skill IDs.",
-            "next_steps":["For substantial work start a task from selected metadata, then make the first selected lead read task-bound; short untracked work reads directly once. Reuse unchanged guidance and retrieve references only when needed.",
-                "Register missing project leads with mirket project add, then sync and doctor.",
+            "next_steps":["Read useful selected guidance and reuse unchanged reads. Choose durable tracking when coordination, resumption or user/project requirements warrant it; keep sufficient existing workflows authoritative. Mirket task completion requires selected guidance delivery and current evidence.",
+                "If choosing to install missing project expertise, use mirket project add, then sync and doctor.",
                 "Inspect available tools and actual task inputs.",
                 "Deliver the task and record observable acceptance and failure-probe evidence."]}),
         )
@@ -686,10 +766,7 @@ impl Catalog {
         ids: &[String],
         target: &str,
     ) -> Result<Vec<&Skill>> {
-        ensure!(
-            matches!(target, "codex" | "claude"),
-            "unknown target: {target}"
-        );
+        crate::target::Target::parse(target)?;
         let mut selected = Vec::new();
         let mut visiting = BTreeSet::new();
         let mut seen = BTreeSet::new();
@@ -803,7 +880,9 @@ impl Catalog {
         Ok(
             json!({"ok":true,"status":"valid","skills":self.skills().len(),"embedded":self.0.payloads.len(),
             "capabilities":self.capabilities().len(),"profiles":self.profiles().len(),
-            "global_skills":self.global_skills().len(),"runtime_status":"not_checked"}),
+            "global_skills":self.global_skills().len(),
+            "design_reference_instances":self.0.design_references.as_ref().map_or(0, |library| library.len()),
+            "runtime_status":"not_checked"}),
         )
     }
 
@@ -1431,12 +1510,14 @@ mod tests {
             "Copyright (c) 2025–2026 LottieFiles",
         );
         assert_ne!(changed, NOTICES);
+        let sections = notice_sections(NOTICES).unwrap();
+        let changed_sections = notice_sections(&changed).unwrap();
         assert_eq!(
-            skill_notices(backend, &data.sources, NOTICES).unwrap(),
-            skill_notices(backend, &data.sources, &changed).unwrap()
+            skill_notices(backend, &data.sources, &sections).unwrap(),
+            skill_notices(backend, &data.sources, &changed_sections).unwrap()
         );
-        let before = skill_notices(motion, &data.sources, NOTICES).unwrap();
-        let after = skill_notices(motion, &data.sources, &changed).unwrap();
+        let before = skill_notices(motion, &data.sources, &sections).unwrap();
+        let after = skill_notices(motion, &data.sources, &changed_sections).unwrap();
         assert_ne!(before, after);
         let catalog = Catalog::embedded().unwrap();
         let mut payload = catalog.payload("advanced-motion").unwrap();
@@ -1463,27 +1544,24 @@ mod tests {
             .find(|s| s.id == "advanced-motion")
             .unwrap()
             .clone();
+        let sections = notice_sections(NOTICES).unwrap();
+        let missing = NOTICES.replace("## LottieFiles/motion-design-skill", "## missing");
         assert!(
-            skill_notices(
-                &motion,
-                &data.sources,
-                &NOTICES.replace("## LottieFiles/motion-design-skill", "## missing")
-            )
-            .is_err()
+            skill_notices(&motion, &data.sources, &notice_sections(&missing).unwrap()).is_err()
         );
         data.sources
             .get_mut("lottiefiles-motion")
             .unwrap()
             .metadata
             .remove("notice_section");
-        assert!(skill_notices(&motion, &data.sources, NOTICES).is_err());
+        assert!(skill_notices(&motion, &data.sources, &sections).is_err());
         for skill in data
             .skills
             .iter()
             .filter(|s| s.delivery == "embedded" && s.id != "advanced-motion")
         {
             // Every current authored owner is checked by Catalog::load as well.
-            assert!(skill_notices(skill, &data.sources, NOTICES).is_ok());
+            assert!(skill_notices(skill, &data.sources, &sections).is_ok());
         }
     }
 

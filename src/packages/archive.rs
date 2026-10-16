@@ -180,7 +180,7 @@ impl<'a> Extractor<'a> {
             bail!("archive member size differs from header");
         }
         file.flush()?;
-        set_mode(&output, executable)?;
+        util::set_executable_mode(&output, executable)?;
         self.found.insert(path.into());
         Ok(())
     }
@@ -269,22 +269,6 @@ pub(super) fn extract(artifact: &Artifact, input: &Path, root: &Path) -> Result<
     }
     if extraction.outputs.is_empty() {
         bail!("archive produced no files");
-    }
-    Ok(())
-}
-
-pub(super) fn set_mode(path: &Path, executable: bool) -> Result<()> {
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        fs::set_permissions(
-            path,
-            fs::Permissions::from_mode(if executable { 0o755 } else { 0o644 }),
-        )?;
-    }
-    #[cfg(not(unix))]
-    {
-        let _ = (path, executable);
     }
     Ok(())
 }

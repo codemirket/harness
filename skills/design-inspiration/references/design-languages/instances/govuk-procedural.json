@@ -1,0 +1,56 @@
+{
+  "title": "GOV.UK: reviewable civic procedure",
+  "language": "Civic procedural clarity",
+  "aliases": [
+    "GOV.UK",
+    "GOVUK",
+    "civic transactions",
+    "check answers"
+  ],
+  "tags": [
+    "procedure",
+    "review",
+    "correction",
+    "task-status"
+  ],
+  "summary": "Make consequential, infrequent-user work explicit through reviewable facts, contextual correction and meaningful task status.",
+  "use_when": "An infrequent visitor needs to inspect and correct a small set of facts before completing a resumable transaction.",
+  "avoid_when": "The primary job is immersive brand storytelling or simultaneous comparison of many data records.",
+  "sources": [
+    {
+      "title": "GOV.UK Design System: Check answers",
+      "url": "https://design-system.service.gov.uk/patterns/check-answers/",
+      "edition": "Live documentation checked 2026-10-15; no immutable version claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Documentation footer states OGL v3 except where otherwise stated; government identity, GDS Transport and excluded assets are not admitted.",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "sha256": "9847ea43867b9d44253518fa42e1a677c9e19c3882003ab1230822d08add46bb",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "GOV.UK Design System: Complete multiple tasks",
+      "url": "https://design-system.service.gov.uk/patterns/complete-multiple-tasks/",
+      "edition": "Live documentation checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference; OGL documentation scope is distinct from MIT Frontend software and government-brand/font rights.",
+      "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "sha256": "1b14aedc74ea8b6c70688a0f4e87e6e2f76432ab4a02c8a346fa70d5eea732cc",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "GOV.UK Design System: Typeface",
+      "url": "https://design-system.service.gov.uk/styles/typeface/",
+      "edition": "Live typeface guidance checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Official guidance directs use of an alternative typeface outside service.gov.uk. No GDS Transport font is included.",
+      "license_url": "https://design-system.service.gov.uk/styles/typeface/",
+      "sha256": "af44e54f0466666e8322a274396033bcfa7e6344c7fcfa240aeea472c3592e1e",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "govuk-procedural",
+  "domain": "interface",
+  "card": "references/design-languages/govuk-procedural.md",
+  "example": "assets/design-languages/govuk-procedural/index.html",
+  "original_example": true
+}

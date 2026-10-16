@@ -1,0 +1,121 @@
+{
+  "schema_version": 2,
+  "owner": "design-inspiration",
+  "index": "references/design-languages/index.md",
+  "license": {
+    "spdx": "MIT",
+    "path": "assets/design-languages/LICENSE.txt",
+    "scope": "Original Mirket lessons, example code and artwork only; external references and brand assets remain link-only."
+  },
+  "instances": [
+    {
+      "id": "govuk-procedural",
+      "record": "references/design-languages/instances/govuk-procedural.json"
+    },
+    {
+      "id": "carbon-operations",
+      "record": "references/design-languages/instances/carbon-operations.json"
+    },
+    {
+      "id": "vanilla-publishing",
+      "record": "references/design-languages/instances/vanilla-publishing.json"
+    },
+    {
+      "id": "porsche-restraint",
+      "record": "references/design-languages/instances/porsche-restraint.json"
+    },
+    {
+      "id": "guardian-editorial",
+      "record": "references/design-languages/instances/guardian-editorial.json"
+    },
+    {
+      "id": "wise-expressive-utility",
+      "record": "references/design-languages/instances/wise-expressive-utility.json"
+    },
+    {
+      "id": "geist-code",
+      "record": "references/design-languages/instances/geist-code.json"
+    },
+    {
+      "id": "material-responsive-shape",
+      "record": "references/design-languages/instances/material-responsive-shape.json"
+    },
+    {
+      "id": "fluent-spatial",
+      "record": "references/design-languages/instances/fluent-spatial.json"
+    },
+    {
+      "id": "apple-liquid-glass",
+      "record": "references/design-languages/instances/apple-liquid-glass.json"
+    },
+    {
+      "id": "duolingo-performance",
+      "record": "references/design-languages/instances/duolingo-performance.json"
+    },
+    {
+      "id": "ibm-hybrid-illustration",
+      "record": "references/design-languages/instances/ibm-hybrid-illustration.json"
+    },
+    {
+      "id": "mit-generative-identity",
+      "record": "references/design-languages/instances/mit-generative-identity.json"
+    },
+    {
+      "id": "casa-subject-identity",
+      "record": "references/design-languages/instances/casa-subject-identity.json"
+    },
+    {
+      "id": "peeps-humanist",
+      "record": "references/design-languages/instances/peeps-humanist.json"
+    },
+    {
+      "id": "fluent-dimensional-symbols",
+      "record": "references/design-languages/instances/fluent-dimensional-symbols.json"
+    },
+    {
+      "id": "pudding-subject-story",
+      "record": "references/design-languages/instances/pudding-subject-story.json"
+    },
+    {
+      "id": "ons-statistical",
+      "record": "references/design-languages/instances/ons-statistical.json"
+    },
+    {
+      "id": "ft-relationship-notation",
+      "record": "references/design-languages/instances/ft-relationship-notation.json"
+    },
+    {
+      "id": "saleor-commerce",
+      "record": "references/design-languages/instances/saleor-commerce.json"
+    },
+    {
+      "id": "atlassian-collaboration",
+      "record": "references/design-languages/instances/atlassian-collaboration.json"
+    },
+    {
+      "id": "fiori-complex-workspace",
+      "record": "references/design-languages/instances/fiori-complex-workspace.json"
+    },
+    {
+      "id": "penpot-direct-manipulation",
+      "record": "references/design-languages/instances/penpot-direct-manipulation.json"
+    },
+    {
+      "id": "vega-linked-analysis",
+      "record": "references/design-languages/instances/vega-linked-analysis.json"
+    },
+    {
+      "id": "android-adaptive-continuity",
+      "record": "references/design-languages/instances/android-adaptive-continuity.json"
+    },
+    {
+      "id": "spectrum-bidirectional",
+      "record": "references/design-languages/instances/spectrum-bidirectional.json"
+    },
+    {
+      "id": "aria-alternative-input",
+      "record": "references/design-languages/instances/aria-alternative-input.json"
+    }
+  ],
+  "coverage": "references/design-languages/coverage.json"
+}

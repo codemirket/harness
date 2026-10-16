@@ -1,0 +1,68 @@
+{
+  "id": "atlassian-collaboration",
+  "title": "Atlassian: access-aware collaboration",
+  "language": "Access-aware collaboration",
+  "domain": "interface",
+  "aliases": [
+    "Atlassian",
+    "Confluence",
+    "collaboration",
+    "sharing and comments"
+  ],
+  "tags": [
+    "collaboration",
+    "sharing",
+    "permissions",
+    "comments",
+    "draft-preservation",
+    "role-rejection"
+  ],
+  "summary": "Keep draft content, comment audience, actual access and presence distinct through rejection and recovery.",
+  "use_when": "People discuss a shared document while draft state, comment visibility and permission changes must remain explicit.",
+  "avoid_when": "Presence or a mention is being used as authorization, or the product needs a real access-control implementation rather than a local teaching flow.",
+  "card": "references/design-languages/atlassian-collaboration.md",
+  "example": "assets/design-languages/atlassian-collaboration/index.html",
+  "sources": [
+    {
+      "title": "Atlassian Design System: Comment examples",
+      "url": "https://atlassian.design/components/comment/examples",
+      "edition": "Live component examples inspected 2026-10-15, including author/content hierarchy and documented saving/restricted variants; no immutable release claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. ADS terms last updated 2025-03-13 are restricted; no ADS code, assets, fonts, tokens or identity are copied or redistributed.",
+      "license_url": "https://atlassian.design/license",
+      "sha256": "f9e37e2f04d9b496e606db8e0629f3063e7551657e7a2a99ffc4b70f425ab77e",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Confluence Cloud: Change who can find content and what they can do",
+      "url": "https://support.atlassian.com/confluence-cloud/docs/add-or-remove-page-restrictions/",
+      "edition": "Live support guidance read and rendered 2026-10-15; general access and named view/edit restrictions observed in documentation, not an authenticated Confluence session.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only product documentation. No support screenshots or product UI assets are redistributed; ADS or software licenses do not clear the whole support website.",
+      "license_url": "https://atlassian.design/license",
+      "sha256": "12088620ab6929cd85eb3e0b4ba80182b7546ccb5558aeafa53cce30b0af451e",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Confluence Cloud: Share Confluence content",
+      "url": "https://support.atlassian.com/confluence-cloud/docs/share-confluence-content/",
+      "edition": "Live support guidance read 2026-10-15; sharing links is distinguished from granting access. No notifications sent and no product sharing action exercised.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation reference; no copy, component source or media redistributed.",
+      "license_url": "https://atlassian.design/license",
+      "sha256": "815cf06b2b179189f50f898df12c1df139413f2084553ed246478649aa427d76",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Confluence Cloud: Create, update, and manage written content",
+      "url": "https://support.atlassian.com/confluence-cloud/docs/create-edit-and-publish-a-page/",
+      "edition": "Live support guidance read 2026-10-15; page drafts and close-draft preservation distinguished from live docs. Product autosave was not tested.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation reference. No autosave, collaboration protocol or durable persistence is imported into the original specimen.",
+      "license_url": "https://atlassian.design/license",
+      "sha256": "7043fbb8a475e5651211994fda82aa0e97d6f8296eba937c791aaaa1d3a87b99",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

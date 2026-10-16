@@ -441,7 +441,7 @@ mod tests {
         let file = temp.path().join("one");
         fs::write(&file, b"one").unwrap();
         let expected = inventory(temp.path(), &[]).unwrap();
-        archive::set_mode(&file, true).unwrap();
+        util::set_executable_mode(&file, true).unwrap();
         assert_ne!(expected, inventory(temp.path(), &[]).unwrap());
         std::os::unix::fs::symlink(&file, temp.path().join("link")).unwrap();
         assert!(inventory(temp.path(), &[]).is_err());

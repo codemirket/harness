@@ -133,7 +133,7 @@ fn stage_from(root: &Path, members: &[Member], payload: &Dir<'_>) -> Result<()> 
             .open(&path)?;
         file.write_all(content(payload, &member.path)?)?;
         file.sync_all()?;
-        archive::set_mode(&path, member.executable)?;
+        util::set_executable_mode(&path, member.executable)?;
     }
     Ok(())
 }

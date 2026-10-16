@@ -34,7 +34,9 @@ use tokio::{
 
 pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
-const GUIDE: &str = "Mirket coordinates professional expertise, host-run teams, task state and verification evidence. For substantive cross-disciplinary work inspect team_facets, interpret the user outcome and affected sources, then call team_plan with a lead and task-specific reasons for applicable facets. Save the returned roster, dispatch its professionals with actual host subagents and integrate their evidence. For focused work use capability_plan or catalog_search. Planning and skill receipts do not establish independent execution. For substantial work use project_list, task_start, then the first skill_read with task_id/revision/key to deliver selected guidance once before substantive execution. For short untracked work read selected guidance directly once. Retrieve references only when needed; reuse unchanged reads. catalog_show provides selected source pins, dependencies, adaptation, caveats and the correct read route; skill_read and resources return embedded guidance only, never fetch upstream skills. Checkpoint meaningful progress, record actual acceptance and failure-probe artifact paths, then task_finish. Run commands with the host's tools and permissions. Mirket never launches a shell or a model. Evidence hashes establish identity at verification time; caller summaries and skill delivery receipts do not prove semantic correctness or agent cognition. Register a missing root through `mirket project register --project PATH` under host permissions. All task mutations require an idempotency key and expected revision (task_start begins revision 1). Successful new mutations return compact receipt_version 1 envelopes with id, project_id, revision, status, updated, operation and result; retrieve task_status for the full task. Exact retries retain their originally stored reply, including legacy full snapshots. After interruption read task_status and follow task_history cursors for older checkpoints. For structured coverage and input bindings use task_validate, then task_evidence with an explicit contract; task_finish revalidates declared inputs and successful coverage. Caller identities are not authenticated. After interruption read task_status; retry an uncertain operation with the same key and same arguments. A cancelled or timed-out request can finish a short database transaction; do not assume it was rolled back. Request bodies are limited to 128 KiB, structured results to 64 KiB, task snapshots to 60 KiB before commit, and four blocking operations may run concurrently.";
+const GUIDE: &str = "Mirket supplies professional guidance, optional team briefs, embedded references and durable task evidence. Use catalog_search/catalog_show to discover useful expertise; skill_read and resources return embedded material, never fetch upstream skills. The catalog is not exhaustive: the host/model can seek other sources, combine methods or use none. User/project requirements, source rights and host permissions govern. team_facets/team_plan help when independent assignments are useful; plans and read receipts do not establish execution. Keep sufficient existing workflows authoritative.
+
+Use task tracking when coordination, resumption or user/project requirements warrant it. For a Mirket task, deliver selected guidance, checkpoint meaningful decisions and retain acceptance/failure-probe artifacts. Mutations require the expected revision and an idempotency key; after interruption inspect task_status/history and retry an uncertain operation with the same key and arguments. A cancelled request may still commit. Optional typed contracts validate declared bindings and coverage at completion; hashes establish identity, not correctness or authenticated worker testimony. Operation descriptions specify limits and receipt semantics. Mirket never launches a shell or model; execution belongs to host tools and permissions.";
 
 #[derive(Clone)]
 pub struct MirketServer {
@@ -94,6 +96,9 @@ struct Search {
     /// Number of results, from 1 to 20.
     #[serde(default = "page_size")]
     limit: usize,
+    /// Optional exact family/platform/interaction/constraint IDs from the design
+    /// coverage registry. Reports scoped gaps; never validates the current task.
+    design_context: Option<crate::catalog::DesignContext>,
 }
 fn page_size() -> usize {
     10
@@ -261,7 +266,7 @@ enum FinishAction {
 #[tool_router]
 impl MirketServer {
     #[tool(
-        description = "Find reviewed skills by keyword with bounded pagination and explicit guidance access routes. Use catalog_show for a selected entry's pins and caveats; skill_read only returns embedded bodies.",
+        description = "Find reviewed skills by keyword with bounded pagination and guidance routes. Optional design_context checks the complete requested design combination against scoped reference coverage, exposing gaps without claiming task validation. Read the design-inspiration coverage registry for exact axis IDs. Use catalog_show for pins and caveats.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn catalog_search(&self, Parameters(args): Parameters<Search>) -> CallToolResult {
@@ -270,7 +275,12 @@ impl MirketServer {
             {
                 bail!("query, offset or page size exceeds its limit");
             }
-            catalog.search(&args.query, args.offset, args.limit)
+            catalog.search_with_design_context(
+                &args.query,
+                args.offset,
+                args.limit,
+                args.design_context.as_ref(),
+            )
         })
         .await
     }

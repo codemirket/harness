@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "template_not_run",
+  "host": "Codex Desktop host subagent",
+  "model": "inherited same host model; exact model/version not exposed",
+  "model_settings": {"reasoning_effort": null, "seed": null, "temperature": null, "override": false},
+  "tools": ["local shell and file tools", "saved image inspection", "existing local Playwright and Chrome"],
+  "authority": "Local isolated trial artifacts only; no external services, downloads, installations, delegation, commits or task mutations",
+  "budget": {"development_wall_minutes": 4, "development_tool_calls": 12, "held_out_wall_minutes": 10, "held_out_tool_calls": 24, "trials_per_case": 1},
+  "harness_revision": "Filled with actual source binding at freeze",
+  "guidance_hashes": {},
+  "condition": "twenty-seven original references with structured gap-aware coverage plus identical ordinary interface guidance",
+  "unknown_measurements": ["exact backend model version", "reasoning effort", "seed", "temperature", "token usage", "cost", "model latency"]
+}

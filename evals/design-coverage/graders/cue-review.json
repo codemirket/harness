@@ -1,0 +1,14 @@
+{
+  "criteria": ["filter_truth", "inspector_identity", "conflict_and_save_effect", "keyboard_access", "responsive_craft", "context_grounded_transfer"],
+  "split": "held_out",
+  "assertions": {
+    "filter_truth": "Initial visible count/duration are 6/712. Max 90 produces only C01/C02 and 2/117. Max 40 produces no cues and 0/0, a useful empty explanation and usable Clear filter; clear restores all six. Comparison visuals and visible list agree. Independent values come from raw task data, not worker calculations.",
+    "inspector_identity": "Open C03 and enter a distinctive unsaved draft. Filter to max 90: inspector no longer claims C03 or silently substitutes another cue; why it closed is visible. Clear, reopen C03 and observe the exact draft preserved for C03. A draft copied to another cue fails.",
+    "conflict_and_save_effect": "Open C01 and edit to Warm amber at second bell. Loading the colleague revision preserves that exact draft, exposes Keep blackout until second bell. as remote text, and exposes conflict. Explicitly Keep my draft then Save locally yields the local text and save count 1. Repeating without a new edit keeps count 1. Inspect state ownership so merely painting expected counters/messages cannot pass.",
+    "keyboard_access": "Filters, visible cue open controls, note editing, conflict resolution and save are keyboard operable with visible focus and accessible names; a chart, if present, is not the only route. State/conflict feedback is programmatically exposed. Automated, manual and untested assistive coverage remain separate.",
+    "responsive_craft": "Fresh visual inspection at 1280×900 and 390×844 finds a focused creative workspace, readable duration comparison, clear filter scope and inspector identity, legible draft/remote distinction and reachable actions. Required facts and editor content survive reflow and conflict. Decorative polish cannot compensate for misleading scope or clipped required content.",
+    "context_grounded_transfer": "The artifact and decision apply useful read relationships to rehearsal filtering and draft ownership with original content and identity; they identify actual gaps rather than claiming real collaboration. Read evidence is checked separately. A reference name or generic principle without a visible task-specific consequence fails."
+  },
+  "human_acceptance": "not_collected",
+  "grading_order": "Freeze and inspect the unrepaired output before lesson tuning or worker repair."
+}

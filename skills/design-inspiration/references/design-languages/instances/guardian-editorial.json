@@ -1,0 +1,57 @@
+{
+  "title": "Guardian Source: editorial reading modes",
+  "language": "Editorial typographic contrast",
+  "aliases": [
+    "Guardian",
+    "Source typography",
+    "editorial typography",
+    "publication"
+  ],
+  "tags": [
+    "editorial",
+    "headlines",
+    "reading",
+    "metadata",
+    "story-hierarchy"
+  ],
+  "summary": "Give headlines, sustained reading and interface metadata distinct typographic roles and editorial weight.",
+  "use_when": "A publication, report or knowledge collection needs both content discovery and sustained reading.",
+  "avoid_when": "A small control-dense tool has no editorial hierarchy and several type roles would add noise.",
+  "sources": [
+    {
+      "title": "Guardian Source: Typography stories in csnx",
+      "url": "https://raw.githubusercontent.com/guardian/csnx/main/libs/@guardian/source/src/foundations/typography/stories/typography.mdx",
+      "edition": "Mutable csnx main documentation checked 2026-10-15; current Source location, not archived guardian/source.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only source reference. CSNX software is Apache-2.0; Guardian font files and news/media have separate rights. No source code is copied.",
+      "license_url": "https://raw.githubusercontent.com/guardian/csnx/main/LICENSE",
+      "sha256": "855f28e2c2dee8910f4eb3934d1c2f765ea3f712ac9f7f136d9f817eab5be7f1",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "The Guardian: International front",
+      "url": "https://www.theguardian.com/international",
+      "edition": "Live International front inspected at 1280×900 on 2026-10-15; content is time dependent.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only editorial reference. No news copy, photographs, marks, page code or font files are reused; no general reuse grant is established for this page.",
+      "license_url": null,
+      "sha256": "2dc73ec5fbd081e566c748fd0426886893b494677c61bf568b27090e25de7200",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Guardian fonts: Usage restrictions",
+      "url": "https://github.com/guardian/fonts",
+      "edition": "Official repository statement checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Official repository limits these fonts and CDN fonts to Guardian websites and apps. The original specimen uses Georgia and system sans instead.",
+      "license_url": "https://github.com/guardian/fonts",
+      "sha256": "ea0d6d2f797c1a3088c44ad3589fed697a2ac501959ef240766ea9561b3d9ec6",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "guardian-editorial",
+  "domain": "interface",
+  "card": "references/design-languages/guardian-editorial.md",
+  "example": "assets/design-languages/guardian-editorial/index.html",
+  "original_example": true
+}

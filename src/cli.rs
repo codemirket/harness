@@ -173,6 +173,18 @@ enum CatalogCommand {
         offset: usize,
         #[arg(long, default_value_t = 20)]
         limit: usize,
+        /// Exact design family ID from design-inspiration's coverage registry.
+        #[arg(long)]
+        family: Option<String>,
+        /// Exact design platform ID; a web example does not establish native coverage.
+        #[arg(long)]
+        platform: Option<String>,
+        /// Required interaction ID; repeat for the complete requested combination.
+        #[arg(long = "interaction")]
+        interactions: Vec<String>,
+        /// Required access/context constraint ID; repeat as needed.
+        #[arg(long = "constraint")]
+        constraints: Vec<String>,
     },
     Show {
         id: String,
@@ -933,19 +945,19 @@ fn dispatch(cli: Cli) -> Result<i32> {
         }
         return Ok(0);
     }
-    let catalog = Catalog::embedded()?;
+    let catalog = Catalog::embedded;
     let value = match cli.command {
         Command::Info => {
             json!({"name":"mirket","version":env!("CARGO_PKG_VERSION"),"target":env!("MIRKET_TARGET")})
         }
-        Command::Setup(args) => return setup(&paths, &catalog, args, cli.json),
+        Command::Setup(args) => return setup(&paths, &catalog()?, args, cli.json),
         Command::Doctor { project } => {
-            let report = install::doctor(&paths, &catalog)?;
+            let report = install::doctor(&paths, &catalog()?)?;
             let tools = crate::tools::doctor(&paths)?;
             let package_checks = &report.packages;
             let project_report = project
                 .as_ref()
-                .map(|p| project::doctor(&catalog, p))
+                .map(|p| project::doctor(&catalog()?, p))
                 .transpose()?;
             let protocol = if report.ok {
                 match runtime()?.block_on(crate::mcp::protocol_probe(
@@ -1020,45 +1032,63 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 query,
                 offset,
                 limit,
-            } => catalog.search(&query, offset, limit)?,
-            CatalogCommand::Show { id } => serde_json::to_value(catalog.skill(&id)?)?,
+                family,
+                platform,
+                interactions,
+                constraints,
+            } => {
+                let context = (family.is_some()
+                    || platform.is_some()
+                    || !interactions.is_empty()
+                    || !constraints.is_empty())
+                .then_some(crate::catalog::DesignContext {
+                    family,
+                    platform,
+                    interactions,
+                    constraints,
+                });
+                catalog()?.search_with_design_context(&query, offset, limit, context.as_ref())?
+            }
+            CatalogCommand::Show { id } => catalog()?.show(&id)?,
             CatalogCommand::Read {
                 id,
                 path,
                 max_bytes,
             } => {
-                let document = catalog.read(&id, &path, max_bytes)?;
+                let document = catalog()?.read(&id, &path, max_bytes)?;
                 if !cli.json {
                     print!("{}", document.content);
                     return Ok(0);
                 }
                 serde_json::to_value(document)?
             }
-            CatalogCommand::Profiles => serde_json::to_value(catalog.profiles())?,
+            CatalogCommand::Profiles => serde_json::to_value(catalog()?.profiles())?,
             CatalogCommand::Fetch { id } => {
-                let payload = catalog.prepare(&id, &paths.cache())?;
+                let payload = catalog()?.prepare(&id, &paths.cache())?;
                 json!({"id":id,"sha256":payload.sha256,"files":payload.files.len(),"executed":false})
             }
-            CatalogCommand::Check => catalog.check()?,
+            CatalogCommand::Check => catalog()?.check()?,
         },
         Command::Capabilities { command } => match command {
-            CapabilityCommand::List => serde_json::to_value(catalog.capabilities())?,
-            CapabilityCommand::Facets => catalog.team_facets(),
-            CapabilityCommand::Show { name } => serde_json::to_value(catalog.capability(&name)?)?,
+            CapabilityCommand::List => serde_json::to_value(catalog()?.capabilities())?,
+            CapabilityCommand::Facets => catalog()?.team_facets(),
+            CapabilityCommand::Show { name } => {
+                serde_json::to_value(catalog()?.capability(&name)?)?
+            }
             CapabilityCommand::Plan { name, supporting } => {
-                catalog.capability_plan(&name, &supporting)?
+                catalog()?.capability_plan(&name, &supporting)?
             }
             CapabilityCommand::Team {
                 name,
                 objective,
                 facets,
                 supporting,
-            } => catalog.team_plan(&objective, &name, &facets, &supporting)?,
+            } => catalog()?.team_plan(&objective, &name, &facets, &supporting)?,
         },
         Command::Project { command } => match command {
             ProjectCommand::Init { project, target } => {
                 let result = project::init(
-                    &catalog,
+                    &catalog()?,
                     &project,
                     &target
                         .targets()
@@ -1081,9 +1111,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     TargetChoice::Claude => Some("claude"),
                     TargetChoice::All => None,
                 });
-                project::add(&catalog, &project, &profile, &skill, &capability, target)?
+                project::add(&catalog()?, &project, &profile, &skill, &capability, target)?
             }
-            ProjectCommand::Plan(args) => project::plan(&catalog, &args.project)?,
+            ProjectCommand::Plan(args) => project::plan(&catalog()?, &args.project)?,
             ProjectCommand::Remove {
                 project,
                 profile,
@@ -1091,7 +1121,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 capability,
                 target,
             } => project::remove(
-                &catalog,
+                &catalog()?,
                 &project,
                 &profile,
                 &skill,
@@ -1103,7 +1133,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }),
             )?,
             ProjectCommand::Configure { project, target } => project::set_targets(
-                &catalog,
+                &catalog()?,
                 &project,
                 &target
                     .targets()
@@ -1112,9 +1142,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     .collect::<Vec<_>>(),
             )?,
             ProjectCommand::Sync { project, prune } => {
-                project::sync_with_options(&catalog, &project, &paths.cache(), prune)?
+                project::sync_with_options(&catalog()?, &project, &paths.cache(), prune)?
             }
-            ProjectCommand::Doctor(args) => project::doctor(&catalog, &args.project)?,
+            ProjectCommand::Doctor(args) => project::doctor(&catalog()?, &args.project)?,
             ProjectCommand::Register(args) => {
                 State::open(&paths)?.register_project(&args.project)?
             }
@@ -1149,6 +1179,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 } => {
                     let project = crate::paths::canonical_project(&project)?;
                     let project_id = state.project_id(&project)?;
+                    let catalog = catalog()?;
                     let primary = catalog.capability(&capability)?;
                     let mut skills = vec![primary.lead.clone()];
                     for role in &supporting {
@@ -1189,7 +1220,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     state.checkpoint(&mutation.task, mutation.revision, &note, &mutation.key)?
                 }
                 TaskCommand::Read { mutation, skill } => {
-                    let document = catalog.read(&skill, "SKILL.md", 65536)?;
+                    let document = catalog()?.read(&skill, "SKILL.md", 65536)?;
                     let receipt = state.record_skill(
                         &mutation.task,
                         mutation.revision,
@@ -1271,7 +1302,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }
                 serde_json::to_value(install::setup_checked(
                     &paths,
-                    &catalog,
+                    &catalog()?,
                     &options,
                     Some(&token),
                 )?)?
@@ -1286,7 +1317,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 options.packages.retain(|id| !ids.contains(id));
                 serde_json::to_value(install::setup_checked(
                     &paths,
-                    &catalog,
+                    &catalog()?,
                     &options,
                     Some(&token),
                 )?)?
@@ -1357,7 +1388,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
             DevCommand::Dist { project, output } => crate::dev::dist(&project, &output)?,
             DevCommand::Manifest { inputs, output } => crate::release::manifest(&inputs, &output)?,
         },
-        Command::Benchmark { iterations } => crate::dev::benchmark(&catalog, iterations)?,
+        Command::Benchmark { iterations } => crate::dev::benchmark(&catalog()?, iterations)?,
         Command::Mcp { .. } => unreachable!(),
     };
     let failed = value.get("ok") == Some(&Value::Bool(false));

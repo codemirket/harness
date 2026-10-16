@@ -9,19 +9,14 @@ Use the sections relevant to the decision at hand. Follow the project's
 architecture, tests, and vocabulary. Scale the work to the consequences of
 being wrong; this skill adds no required approval stages or agent roles.
 
-For substantial work, use `skill-catalog`'s task routing to select the relevant
-stack or boundary specialist and read it before implementation. Reuse the
-project's selected workflow. UI composition uses `interface-design`; browser
-data flow uses `frontend-engineering`; repository/API documentation may use
-`documentation-and-adrs`. Apply only the affected workflow, not every installed
-engineering suite.
+Reuse the project's selected workflow. Consult `skill-catalog` when additional
+stack or boundary expertise would clarify a consequential decision.
 
-Read [boundary decisions](references/boundary-decisions.md) when changing a public
-contract, state ownership, or a failure path with effects outside the caller.
-For service/API integration work, read
-[service integration](references/service-integration.md); use the project's
-connector and contract workflow for implementation. These examples supplement
-the actual provider contract; they do not replace it.
+[Boundary decisions](references/boundary-decisions.md) can help with public
+contracts, state ownership or failures with effects outside the caller.
+[Service integration](references/service-integration.md) covers provider behavior;
+use it when those decisions need attention. These examples supplement the actual
+provider contract; they do not replace it.
 
 ## Understand the behavior
 

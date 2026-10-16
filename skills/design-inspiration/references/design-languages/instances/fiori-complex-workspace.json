@@ -1,0 +1,49 @@
+{
+  "id": "fiori-complex-workspace",
+  "title": "Fiori: complex object continuity",
+  "language": "Complex object continuity",
+  "domain": "interface",
+  "aliases": [
+    "Fiori",
+    "SAP Fiori",
+    "master detail",
+    "parent item workflow"
+  ],
+  "tags": [
+    "workspace",
+    "master-detail",
+    "hierarchy",
+    "drafts",
+    "interruption",
+    "parent-save",
+    "validation-recovery"
+  ],
+  "summary": "Keep parent and child identity stable while separating item Apply from parent Save, preserving drafts through interruption and linked correction.",
+  "use_when": "An operator moves between parent objects and their items, with distinct draft and commit boundaries that must survive interruption.",
+  "avoid_when": "The layout is only a dashboard, unrelated side tools surround one object, or a single short form does not need a parent/item workflow.",
+  "card": "references/design-languages/fiori-complex-workspace.md",
+  "example": "assets/design-languages/fiori-complex-workspace/index.html",
+  "sources": [
+    {
+      "title": "SAP Fiori v1.151: Complex Objects — Global Flow",
+      "url": "https://www.sap.com/design-system/fiori-design-web/v1-151/foundations/best-practices/global-patterns/object-handling/manage-objects-with-the-global-flow",
+      "edition": "Versioned v1.151 guideline text read 2026-10-15. It distinguishes item Apply from main-object Save and describes grouped error recovery; Chrome access to guideline and images was edge-denied, so no fresh guideline pixels or product flow test claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation reference. SAP website content and media are protected; no screenshots, brand assets, fonts, code or SAP UI5 runtime are included in the specimen.",
+      "license_url": "https://www.sap.com/about/legal/copyright.html",
+      "sha256": null,
+      "capture_note": "Unavailable: byte capture 2026-10-15: HTTP Error 403: Forbidden. Readable guideline text or rendered inspection, if available, is separately scoped in the lesson."
+    },
+    {
+      "title": "OpenUI5 SDK: Flexible Column Layout with Event Bus",
+      "url": "https://sdk.openui5.org/#/entity/sap.f.FlexibleColumnLayout/sample/sap.f.sample.FlexibleColumnLayoutSimple",
+      "edition": "Live official SDK sample inspected 2026-10-15 in Chrome 155: list → mid column → end column exercised and captured at 1360×900. Mutable SDK route; no immutable sample/runtime version claimed. This demonstrates navigation layout, not parent save semantics.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. OpenUI5 repository software is Apache-2.0; SAP identity, themes, website media and separate assets are not admitted by that fact. No upstream code or media redistributed.",
+      "license_url": "https://github.com/SAP/openui5/blob/master/LICENSE.txt",
+      "sha256": "6904e69f72e79f2336649325aee6a2cf50107b150def617a7480d2981700db40",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

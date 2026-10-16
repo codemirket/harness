@@ -116,6 +116,37 @@ are evidence for technique review, not installed checks or proof of quality.
 
 ## Reference discovery, product discovery and positioning
 
+The authored design-language library under
+`skills/design-inspiration/references/design-languages/` adds twenty-seven selected
+instances across interface, motion, graphic and analytical explanation. The
+adjacent schema 2 `library.json` is the authoritative small index; each
+`instances/ID.json` is the canonical source record: exact URL, edition, check date,
+response digest or retrieval gap, rights scope and license link where established.
+Captured website bytes can be a mutable
+HTML shell and do not establish a full visual/behavioral inspection. Source
+records explicitly distinguish those limits.
+
+All third-party references remain link-only. Mirket ships original commentary,
+fictional content and standalone code/vector specimens, plus intentionally
+misleading variants and transfer exercises. The bundled MIT license covers that
+authored work. Framework software licenses do not clear brand marks, proprietary
+fonts, photography, character art, editorial content or all current web pages.
+In particular Porsche assets, Guardian fonts, Apple materials/assets, Wise brand
+media, Duolingo characters and FT editorial/poster material are not imported.
+No reference website, helper, full component library or production dependency is
+installed. Future asset admission must identify exact files/revisions and their
+applicable notices rather than inheriting a site's general open-source label.
+
+The extension uses Saleor, Atlassian, SAP Fiori, Penpot, Vega, Android, Spectrum
+and W3C input/access patterns as link-only references. Inspect each record's
+specific edition and rights: the current Saleor storefront and Atlassian design
+material do not become permissively licensed assets through this library.
+The directional and alternative-input specimens teach cross-cutting patterns;
+they do not establish language acceptance or assistive-technology compatibility.
+`coverage.json` explicitly scopes each claim by family/platform/interaction/access
+constraint and distinguishes worked browser examples from source-only native
+guidance. No current-task validation follows from a matching cell.
+
 `design-inspiration` owns finding and qualifying inspectable examples and a
 source-linked transfer brief. Existing design owners retain interpretation,
 production and artifact verification. It is a project skill and optional design

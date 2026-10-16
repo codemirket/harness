@@ -1,0 +1,48 @@
+{
+  "id": "saleor-commerce",
+  "title": "Saleor: reconciled commerce",
+  "language": "Reconciled commerce",
+  "domain": "interface",
+  "aliases": [
+    "Saleor",
+    "Paper storefront",
+    "commerce",
+    "storefront checkout"
+  ],
+  "tags": [
+    "commerce",
+    "variants",
+    "quantity",
+    "cost-reconciliation",
+    "checkout-review",
+    "recovery"
+  ],
+  "summary": "Carry selected variants and quantities into an inspectable cost breakdown and a recoverable checkout review.",
+  "use_when": "A buyer must choose a product configuration and inspect the complete amount before a recoverable checkout commitment.",
+  "avoid_when": "The primary task is marketing discovery alone, or a real payment, tax or inventory contract is required from this local specimen.",
+  "card": "references/design-languages/saleor-commerce.md",
+  "example": "assets/design-languages/saleor-commerce/index.html",
+  "sources": [
+    {
+      "title": "Saleor Paper: live Plimsolls product",
+      "url": "https://storefront.saleor.io/en/default/products/blue-plimsolls",
+      "edition": "Live public demo inspected 2026-10-15 at 1360×1000; variant controls, price and option-dependent add action observed. No order placed; deployment revision is not claimed to equal the repository pin.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only inspection. Demo product media, brand identity and fonts are excluded; no assets or code copied.",
+      "license_url": "https://github.com/saleor/storefront/blob/dcf6f9c9852932843ce09a15144d139e7e2933fd/LICENSE",
+      "sha256": "5b86410b1abc448c783131a464c76b8d648e008d85427e7db03a84333190ba0f",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Saleor Paper: checkout order summary source",
+      "url": "https://github.com/saleor/storefront/blob/dcf6f9c9852932843ce09a15144d139e7e2933fd/src/checkout/views/saleor-checkout/order-summary.tsx",
+      "edition": "Repository commit dcf6f9c9852932843ce09a15144d139e7e2933fd, committed 2026-10-14; order-summary.tsx, flow.ts and information-step.tsx read 2026-10-15. Source-only checkout evidence, not an exercised payment or server flow.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. This commit uses FSL-1.1-ALv2, with a conditional future Apache-2.0 license after two years; do not label the current software BSD or Apache. No upstream source redistributed.",
+      "license_url": "https://github.com/saleor/storefront/blob/dcf6f9c9852932843ce09a15144d139e7e2933fd/LICENSE",
+      "sha256": "74df707604054a4820d3706597e8443c91c6ce406c2061e89eca7ac625007f9c",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

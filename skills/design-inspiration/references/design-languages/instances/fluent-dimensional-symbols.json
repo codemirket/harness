@@ -1,0 +1,44 @@
+{
+  "id": "fluent-dimensional-symbols",
+  "title": "Fluent Emoji — material changes, semantic form persists",
+  "language": "Dimensional pictorial symbols",
+  "aliases": [
+    "dimensional symbols",
+    "Fluent Emoji"
+  ],
+  "tags": [
+    "illustration",
+    "symbol-family",
+    "material",
+    "renditions"
+  ],
+  "summary": "Use layered light and material to enrich an original semantic symbol while retaining its meaning across flat and one-colour renditions.",
+  "use_when": "A labelled reaction or occasional completion message benefits from a small expressive symbol.",
+  "avoid_when": "A symbol would become the sole status source, imply an unverified outcome or obstruct recovery.",
+  "sources": [
+    {
+      "title": "Microsoft Fluent Emoji: Party popper rendition family",
+      "url": "https://github.com/microsoft/fluentui-emoji/tree/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/Party%20popper",
+      "edition": "Repository commit 1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+      "checked_on": "2026-10-15",
+      "rights": "MIT for actual repository members, retaining notice. No asset copied here. A 3D PNG rendition is not a mesh; marketing assets and excluded characters are outside this scope.",
+      "license_url": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/LICENSE",
+      "sha256": "f0c656b06d086a3c63e53999397c7bde0b7eaafffe3ba526f6dbace2b134c0f1",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Microsoft Design: Bringing new emoji to Windows 11",
+      "url": "https://microsoft.design/articles/bringing-new-emoji-to-windows-11/",
+      "edition": "Tracy Jones, 2024-02-13; checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Article and its diagrams are link-only. The repository MIT grant does not clear the article, Segoe UI font or unrelated marketing media.",
+      "license_url": null,
+      "sha256": "468d7def6284252e6acbbc5268f59aca4248faf3c0f2a373555d14e73f3b7226",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "domain": "graphic",
+  "card": "references/design-languages/fluent-dimensional-symbols.md",
+  "example": "assets/design-languages/fluent-dimensional-symbols/index.html",
+  "original_example": true
+}

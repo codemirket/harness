@@ -1,0 +1,23 @@
+{
+  "schema_version":1,
+  "kind":"synthetic_craft_calibration_judgment",
+  "judge_id":"actual-host-worker-id",
+  "packet_id":"judge-a",
+  "locked_at":"ISO-8601 timestamp after render-only scores",
+  "synthetic_controls":true,
+  "human_acceptance":"not_collected",
+  "ratings":[{
+    "pair_id":"P02",
+    "artifact_label":"L17",
+    "presentation_position":1,
+    "dimensions":[
+      {"id":"hierarchy_content","score":null,"observations":[{"image":"L17/default-1280.viewport.png","region":"Specific visible region","claim":"Located visual fact and its task consequence"},{"image":"L17/default-390.fullpage.png","region":"Another specific visible region","claim":"Second located observation"}]},
+      {"id":"composition_typography","score":null,"observations":[]},
+      {"id":"identity_specificity","score":null,"observations":[]},
+      {"id":"responsive_state_composure","score":null,"observations":[]},
+      {"id":"economy_coherence","score":null,"observations":[]}
+    ]
+  }],
+  "post_lock_notes":"No source, observed assertion outcomes, control key or peer ratings read before lock. Mark actual exceptions explicitly.",
+  "limits":[]
+}

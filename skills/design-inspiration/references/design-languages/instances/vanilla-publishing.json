@@ -1,0 +1,47 @@
+{
+  "title": "Vanilla: paced technical publishing",
+  "language": "Warm technical publishing",
+  "aliases": [
+    "Vanilla",
+    "Canonical",
+    "technical brochure",
+    "page rhythm"
+  ],
+  "tags": [
+    "publishing",
+    "technical-prose",
+    "grid",
+    "responsibility",
+    "strips"
+  ],
+  "summary": "Use repeated alignment lines, asymmetric heading/body splits and paced surface changes to explain technical responsibility.",
+  "use_when": "A technical service or open-source product needs substantial prose, clear ownership and a coherent explanatory sequence.",
+  "avoid_when": "An operator needs many concurrent controls or a campaign depends on theatrical media rather than reading.",
+  "sources": [
+    {
+      "title": "Vanilla Framework: Brochure site layouts",
+      "url": "https://vanillaframework.io/docs/layouts/brochure",
+      "edition": "Vanilla 4.59.0 identified in prior source evidence; live page checked 2026-10-15 and marked work in progress.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Framework LGPLv3 is not a blanket license for Canonical/Ubuntu marks, fonts, photography or website media; no framework code is included.",
+      "license_url": "https://raw.githubusercontent.com/canonical/vanilla-framework/main/LICENSE",
+      "sha256": "284c1f29875e89c118139a73a5aa464ad7d6172b05ee2c5ce4624f2066b04b9f",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Vanilla Framework: Strip",
+      "url": "https://vanillaframework.io/docs/patterns/strip",
+      "edition": "Live documentation checked 2026-10-15; paper/light/dark themes and deprecated variants distinguished.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. No Canonical assets, Ubuntu fonts or source files are copied.",
+      "license_url": "https://raw.githubusercontent.com/canonical/vanilla-framework/main/LICENSE",
+      "sha256": "a821f52f6846152ce91436b03b6267db4b94d8483164001ab61163a6dd27dc5d",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "vanilla-publishing",
+  "domain": "interface",
+  "card": "references/design-languages/vanilla-publishing.md",
+  "example": "assets/design-languages/vanilla-publishing/index.html",
+  "original_example": true
+}

@@ -1,0 +1,14 @@
+{
+  "criteria": ["gap_declaration", "scoped_native_plan", "offline_conflict_contract", "bidi_semantics", "truthful_verification", "context_grounded_transfer"],
+  "split": "held_out",
+  "assertions": {
+    "gap_declaration": "States that the native+Arabic/RTL+offline+shared-editing combination is not validated by the available browser examples. The decision.json agrees with the actual absent SDK/device/service and claims no native execution or real collaboration. Explicitly identifies uncovered native, RTL/assistive, offline and multi-device evidence rather than treating partial similarity as coverage.",
+    "scoped_native_plan": "Gives a concrete task/screen/state direction and a small next native verification slice with required runtime/device and observable acceptance. Optional HTML is called a browser working slice. Does useful planning without inventing SDK/API results or ending at 'tools unavailable'.",
+    "offline_conflict_contract": "The revision-4 two-device sequence preserves both divergent note edits, exposes a conflict and gives a user resolution path. Distinguishes queued/syncing/synced/failed/conflicted truthfully. Defines record/operation identity, retry deduplication and reconciliation of a lost acknowledgement; a timeout is not assumed to mean no write. A last-write-wins promise that silently loses the other note fails.",
+    "bidi_semantics": "Mixed Arabic and LTR identifiers remain intentional, reading order follows semantics, directional mirroring is selective, and map/geographic meaning is not mechanically reversed. Names an Arabic/native/assistive review procedure and avoids claiming it happened. A blanket CSS direction:rtl or 'mirror everything' recommendation fails.",
+    "truthful_verification": "Every claimed observed check has a real artifact/procedure/result/limit, and implemented_artifacts resolve within the output scope. No native/AT/sync test is fabricated. Unavailable tests are unverified, not infrastructure failure of this planning task. The work remains a useful scoped deliverable even when no HTML is produced.",
+    "context_grounded_transfer": "Selects useful available relationships while distinguishing their observed medium/state from the unrepresented combination. Proposed adaptations are grounded in the raw workflow and name the evidence needed to close remaining gaps. No source name, coverage label or hash is treated as proof of competence."
+  },
+  "human_acceptance": "not_collected",
+  "grading_order": "Freeze and inspect the unrepaired output before lesson tuning or worker repair."
+}

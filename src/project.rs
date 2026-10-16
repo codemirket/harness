@@ -10,7 +10,10 @@ use std::{
 use crate::{
     catalog::{Catalog, Payload, Skill, payload_hash, read_payload_directory, safe_path},
     paths::canonical_project,
-    util::{atomic_write, ensure_directory, read_bounded, reject_symlink_components},
+    util::{
+        atomic_write, ensure_directory, read_bounded, reject_symlink_components,
+        set_executable_mode as set_executable,
+    },
 };
 
 mod recovery;
@@ -52,11 +55,7 @@ impl ProjectLock {
 }
 
 pub fn target_skills_dir(target: &str) -> Result<&'static str> {
-    match target {
-        "codex" => Ok(".agents/skills"),
-        "claude" => Ok(".claude/skills"),
-        _ => bail!("unknown target: {target}"),
-    }
+    Ok(crate::target::Target::parse(target)?.skills())
 }
 
 pub fn load(catalog: &Catalog, project: &Path) -> Result<(PathBuf, ProjectConfig)> {
@@ -635,22 +634,6 @@ pub fn doctor(catalog: &Catalog, project: &Path) -> Result<Value> {
     result["runtime_status"] = json!("not_checked");
     result["activation_status"] = json!("not_observed");
     Ok(result)
-}
-
-fn set_executable(path: &Path, executable: bool) -> Result<()> {
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        fs::set_permissions(
-            path,
-            fs::Permissions::from_mode(if executable { 0o755 } else { 0o644 }),
-        )?;
-    }
-    #[cfg(not(unix))]
-    {
-        let _ = (path, executable);
-    }
-    Ok(())
 }
 
 fn check_executables(

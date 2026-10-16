@@ -1,7 +1,5 @@
 {
   "schema_version": 1,
-  "name": "mirket",
-  "version": "2.0.0",
   "global_skills": [
     "skill-catalog",
     "engineering-judgment",
@@ -17,10 +15,5 @@
     "ai-system-evaluation",
     "security-judgment",
     "work-planning"
-  ],
-  "project_defaults": {
-    "profiles": [
-      "project-foundation"
-    ]
-  }
+  ]
 }

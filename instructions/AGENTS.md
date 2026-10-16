@@ -5,6 +5,13 @@ project's instructions govern the work. This harness supplies reusable expertise
 the host owns model execution, tools, permissions and session lifecycle.
 Codex Desktop and Claude Desktop Code are the installation targets.
 
+Use expertise and references to improve understanding, discover alternatives and
+judge the result. The built-in catalog is a starting point, not an exhaustive set
+of approaches. Proactively seek relevant sources beyond it when useful, reason
+from the actual task, and choose, adapt or combine methods. Use a reference when
+it helps; a task may need none. Explicit user/project requirements, source and reuse rights,
+and host permissions still govern.
+
 Run harness operations through `mirket`. Use `mirket setup` for environment setup,
 `mirket doctor` for installation checks and `mirket update` for runtime updates.
 Project application commands still use their own toolchains and host permissions.
@@ -14,19 +21,17 @@ Project application commands still use their own toolchains and host permissions
 - At project entry inspect the task, project instructions, relevant source owners,
   `.mirket/project.json` if present, current changes and available tools. Reuse verified
   context while its inputs remain unchanged. Handle trivial work directly.
-- Before starting a substantive task, invoke or read `skill-catalog`, then read
-  the selected specialist guidance. Reuse a selection already read for the current
-  task while its inputs remain unchanged. Choose a lead from the deliverable.
-  For substantive work spanning disciplines, inspect `team_facets`, interpret the
-  actual task and affected sources, and use `team_plan` with a concrete reason for
-  each applicable boundary. The plan assigns related professionals with distinct
-  perspectives, methods, contributions and checks. Use capability plans for focused
-  single-role work. A role supplies expertise; the user's authority governs effects.
+- Select relevant expertise from the deliverable and affected boundaries. Use
+  `skill-catalog` to discover guidance that helps the next decision; reuse verified
+  selections while their inputs remain unchanged. When independent professional
+  work would help, `team_facets` and `team_plan` can compose assignments with
+  concrete reasons. Capability plans can describe focused roles. A role supplies
+  expertise; the user's authority governs effects.
 - Read selected skill bodies and relevant references. Keep discovery inexpensive:
   do not load every profile, sibling skill or tool schema. Honor explicitly chosen
   skills, models and workflows; resolve overlaps rather than stacking processes.
-- Register missing project expertise with the harness's `mirket project add`, then sync
-  and doctor. Capability names select concrete leads; optional support stays
+- When selecting project expertise for installation, use `mirket project add`,
+  then sync and doctor. Capability names select concrete leads; optional support stays
   conditional. Start setup with `project-foundation` and the shared globals;
   use `portable-foundation` explicitly when those globals are absent.
 - Prefer available native tools or the project's established CLI. Registration,
@@ -43,20 +48,21 @@ Project application commands still use their own toolchains and host permissions
 - Find the owning implementation and trace its affected consumers. Diagnose causes;
   do not patch symptoms, assume unusual patterns are mistakes or invent project
   conventions. Choose the smallest complete design with clear responsibilities.
-- For substantial work, use Mirket task state through its MCP tools or `mirket task`
-  when the project is registered. Read the selected skill, checkpoint meaningful
-  decisions and attach current acceptance and failure-probe artifacts. File hashes
-  establish artifact identity; they do not prove correctness or human approval.
-  Maintain the task record with authority, dependencies, evidence and next action. Use a working slice to resolve the largest
-  uncertainty before scaling. A plan or passing process is not the delivered result.
-- Dispatch selected professionals as actual host subagents for independent work.
+- Use durable task state when coordination, resumption or a user/project request
+  warrants it. Keep a sufficient host or project workflow authoritative. When using
+  Mirket task state, record selected guidance delivery, meaningful decisions and
+  required acceptance and failure-probe artifacts. File hashes establish artifact
+  identity; they do not prove correctness or human approval. Retain authority,
+  dependencies, evidence and next action in the chosen record. A working slice can
+  resolve consequential uncertainty before scaling; a plan is not the result.
+- Dispatch useful independent assignments as actual host subagents.
   Give each worker its professional brief and skill, raw relevant sources,
   ownership, constraints, deliverables and checks. Queue work within available
   slots and keep shared writers disjoint. Ask for independent diagnosis before
   sharing peer conclusions. The lead reconciles evidence and disagreements and
   verifies the integrated result; agreement alone does not accept the work.
-  Record real worker IDs and contribution evidence in the task record. If the host
-  lacks independent agents, disclose the limit and label sequential perspectives
+  Record real worker IDs and contribution evidence in the chosen task record.
+  If the host lacks independent agents, disclose the limit and label sequential perspectives
   accurately. Use host subagents first;
   follow `agent-coordination` for a justified Claude CLI review. Do not silently
   change provider, model, billing or allow recursive delegation.
@@ -74,10 +80,10 @@ Project application commands still use their own toolchains and host permissions
   never lower tests, thresholds or release requirements to make output pass.
   Exercise a discriminating failure case where it can expose a convincing fake.
 - Verify the saved artifact or actual user journey. For visual work, inspect intended
-  sizes, states and focal detail, then repair defects and reinspect. Use the relevant
-  craft reference. Rendering proves visibility; it does not prove visual acceptance.
-- For substantial diagrams, illustrations or motion, inspect a relevant visual
-  reference or the project's existing visual system before building. State which
+  sizes, states and focal detail, then repair defects and reinspect. Judge the
+  result against the brief and useful craft evidence. Rendering proves visibility;
+  it does not prove visual acceptance.
+- When a visual reference informs diagrams, illustrations or motion, state which
   relationship transfers to the brief, preserve source and reuse rights, and
   judge the rendered result against the actual content. A reference is evidence
   for a design choice, not a template or proof of quality.

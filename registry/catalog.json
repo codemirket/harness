@@ -14011,10 +14011,10 @@
       ],
       "dependencies": [
         "Available search/browser tools or supplied source images, videos and documents; inspect actual examples with the existing host tools.",
-        "No bundled exemplar registry, capture runtime or third-party assets. Missing access stays explicit."
+        "Twenty-seven authored language/pattern lessons and contrastive examples are embedded with bounded per-instance provenance. Structured catalog context exposes family/platform/interaction/access gaps without pooling unrelated cells. Sources remain link-only; no capture runtime or third-party assets."
       ],
       "caveats": [
-        "Reference selection does not implement the artifact, establish asset rights, prove performance or constitute human visual acceptance.",
+        "Reference selection and inventory coverage do not implement or validate the current task, establish asset rights, prove performance or constitute human visual acceptance. Web analogues and source-only native guidance do not establish native/device competence.",
         "No default scheduling, source copying, publishing or dependency installation."
       ],
       "tags": [
@@ -14025,6 +14025,9 @@
         "visual-references",
         "moodboard",
         "reference-discovery",
+        "design-language",
+        "worked-examples",
+        "design-coverage",
         "art-direction"
       ]
     }

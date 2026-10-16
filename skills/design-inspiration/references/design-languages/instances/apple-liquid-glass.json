@@ -1,0 +1,46 @@
+{
+  "id": "apple-liquid-glass",
+  "title": "Apple Liquid Glass: content and control layers",
+  "language": "Adaptive native control layer",
+  "domain": "motion",
+  "aliases": [
+    "Liquid Glass",
+    "Apple material",
+    "native control layer"
+  ],
+  "tags": [
+    "platform",
+    "layer",
+    "transient",
+    "legibility",
+    "controls"
+  ],
+  "summary": "Study how a transient control layer relates to stable reading content, with explicit limits on a web teaching approximation.",
+  "use_when": "An actual Apple-platform app needs native navigation and controls above content; use this web study only to reason about the relationship.",
+  "avoid_when": "Glass is being added as generic decoration, reading content becomes transient, or CSS blur is being presented as native Liquid Glass.",
+  "card": "references/design-languages/apple-liquid-glass.md",
+  "example": "assets/design-languages/apple-liquid-glass/index.html",
+  "sources": [
+    {
+      "title": "Apple WWDC25 — Meet Liquid Glass",
+      "url": "https://developer.apple.com/videos/play/wwdc2025/219/",
+      "edition": "WWDC25 session 219, 2025; Dynamics, Adaptivity and Principles chapters; checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only Apple presentation. No video, Apple UI artwork, SF Symbols, fonts or proprietary material implementation bundled; no redistribution license established.",
+      "license_url": null,
+      "sha256": "934a885d2e916dc1031a52c05a9faae6421a5ed015339a379c2b98a25b34b374",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Apple Human Interface Guidelines — Materials",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/materials",
+      "edition": "Live HIG link checked 2026-10-15; full body unavailable to the prior text reader",
+      "checked_on": "2026-10-15",
+      "rights": "Reference link only. No Apple asset pack or source code admitted. A website link is not a right to redistribute native UI resources.",
+      "license_url": null,
+      "sha256": "d5d19243c91992d4b6d31dfd784b8dfcc846097ea7c25602ac70147768ce64f8",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

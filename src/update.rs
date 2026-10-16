@@ -1,5 +1,5 @@
 use crate::{
-    install::{OperationLock, Target, read_state, read_state_snapshot},
+    install::{OperationLock, read_state, read_state_snapshot},
     paths::Paths,
     util::{atomic_write, read_bounded, reject_symlink_components, sha256},
 };
@@ -204,10 +204,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     let target = if state.options.targets.len() == 2 {
         "all"
     } else {
-        match state.options.targets[0] {
-            Target::Codex => "codex",
-            Target::Claude => "claude",
-        }
+        state.options.targets[0].as_str()
     };
     let mut command = Command::new(&staged);
     command.env("MIRKET_DIRECT", "1");

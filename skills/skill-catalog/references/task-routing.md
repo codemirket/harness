@@ -1,29 +1,23 @@
 # Route the task to a capability
 
-Use the row that matches the requested outcome, then inspect the chosen entry
-with `mirket catalog show <id>`. All harness operations run through `mirket`. IDs register catalog entries; invocation names identify the
-installed skill. Profiles are reusable installation groups, not instructions to
+Use matching rows as discovery starting points and inspect useful entries with
+`mirket catalog show <id>`. All harness operations run through `mirket`.
+IDs register catalog entries; invocation names identify the installed skill.
+Profiles are reusable installation groups, not instructions to
 load every member for every task. Existing project instructions and explicit
 user choices remain authoritative.
 
-Choose one lead from the requested result: visual polish uses `interface-design`,
-server construction uses `backend-engineering`, other behavior or connector changes
-use `engineering-judgment`, technical writing uses the
-project's documentation method with `document-workflow` as fallback, ordinary control
-motion uses `motion-design`, navigation motion uses `page-transitions`, substantial art-directed browser scenes and in-page
-choreography use `advanced-motion`, bitmap artwork uses the available native image
-workflow, vector artwork uses `svg-creation`, SVG choreography uses
-`svg-animation`, factual research uses `research-and-synthesis`, product decisions
-use `product-management`, and quantitative investigation uses `data-analysis`. Add supporting
-skills only for affected boundaries. For example, polishing a Nuxt form does not
-select React recipes; adding validation to that form needs its frontend behavior
-workflow as support. Read the chosen body and relevant reference before editing.
+Choose expertise from the requested result and actual boundaries. The rows below
+suggest useful owners and evidence; they do not require a separate workflow for
+every named concern. For example, polishing a Nuxt form does not select React
+recipes; a browser-state change may benefit from the existing frontend workflow.
+Read selected guidance when it helps apply the method to this task.
 
-| Requested outcome | Primary workflow and catalog additions | Selection boundary |
+| Requested outcome | Candidate expertise and catalog additions | Selection boundary |
 | --- | --- | --- |
 | Build a new application screen or public page | Global `interface-design`, selecting its application or public-page composition reference; `frontend-engineering` for the actual stack, state and browser boundary. Use a supplied approved reference when fidelity is requested. | Derive composition from the user task and real content. Application forms/tables and public/editorial narratives have different needs. Reuse existing brand/components; a new screen does not imply a new design system, framework or variant picker. |
 | Improve an existing interface's hierarchy, composition or visual polish | Global `interface-design`; consider `taste-redesign-skill` (invocation `redesign-existing-projects`) for a requested redesign. The `design-redesign` profile also supplies content, mobile and motion checks. Search `redesign` or `ui-design`. | Preserve the actual brand, tokens, content and behavior. `frontend-web`, `break-ui` and accessibility checks alone do not provide art direction. Read the redesign adaptation before using aesthetic prescriptions. |
-| Find and study design inspiration or relevant examples | Project `design-inspiration` discovers and qualifies source-linked references; the existing interface, graphic or motion owner interprets and implements the chosen direction. | Use for reference discovery or an unresolved creative choice. Preserve user references and approved decisions; ordinary UI repairs do not need a new search, moodboard or style workflow. |
+| Find and study design inspiration or relevant examples | Project `design-inspiration` helps qualify source-linked references; catalog search offers routes into design-language lessons. Optional `design_context` describes only this inventory. Existing craft owners implement and verify. | The language index explains discovery and optional learning exercises. Use project, primary or other relevant sources as useful, including several perspectives on one question. Preserve user references, approved decisions, source rights and actual platform/access limits. |
 | Explore alternative UI directions | Global `interface-design`; `emil-prototype` (invocation `prototype`) when the user requests exploration; `open-design-reference-design-contract` (invocation `reference-design-contract`) for an explicit durable visual handoff. | `prototype` preserves explicit invocation semantics. Do not trigger a multi-variant picker on every UI fix or create competing design documents. The `design-prototyping` profile contains several separate recipes; select those needed. |
 | Fix UI overflow, extreme content or mobile platform behavior | `emil-break-ui` (invocation `break-ui`) for realistic content stress; `emil-mobile-native` (invocation `mobile-native`) for viewport, touch and safe-area problems. | These diagnose concrete failures. They do not establish visual quality. Use existing fixtures/review tools; diagnostic controls stay outside production. |
 | Implement or debug application behavior | Global `engineering-judgment`; authored `debugging`, `test-design` and `architecture-review` as needed. Add `frontend-engineering` for browser rendering, forms and data flow; choose a matching backend/platform profile from actual dependencies. | Reuse the project's selected implementation workflow. React/Next, Vue/Nuxt and SvelteKit guidance are different branches; do not select React recipes for a Nuxt application. A mechanical edit needs no specialist registration. |
@@ -58,8 +52,9 @@ when the protocol boundary is affected.
 
 ## Additional focused leads
 
-Use these authored routes where the named boundary is the task. Keep the existing
-stack implementation skill as support; do not combine competing lead workflows.
+These authored routes can help when the named boundary is the task. Keep
+responsibilities clear where methods overlap and retain a sufficient existing
+implementation workflow.
 
 | Task | Lead | Evidence that matters |
 | --- | --- | --- |
@@ -94,11 +89,11 @@ constructed as SVG just because it will appear on a website. Exact diagrams and
 existing vector systems favor native geometry. Preserve explicit editability,
 animation and format requirements; neither workflow supplies the other's runtime.
 
-For a substantial task, state the selected workflow and its purpose briefly.
-Read its installed `SKILL.md`, applicable integration note and relevant references;
-the catalog description alone does not apply the workflow. If a needed reviewed
-entry is absent, register through `mirket project add`, then sync and doctor, within
-existing authorization. Do not edit installed copies or hand-edit the lock.
+When adopting a workflow, explain its purpose when that helps the handoff and
+read the guidance needed to apply it; a catalog description alone does not prove
+application. If choosing a missing reviewed project entry, register through
+`mirket project add`, then sync and doctor, within existing authorization.
+Do not edit installed copies or hand-edit the lock.
 
 Never follow an upstream sibling name blindly. Confirm it is installed and
 reviewed; otherwise use the applicable route above or discover a suitable entry.

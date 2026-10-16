@@ -1,0 +1,34 @@
+{
+  "id": "peeps-humanist",
+  "title": "Open Peeps — modular people must preserve the scene",
+  "language": "Modular humanist drawing",
+  "aliases": [
+    "modular human drawing",
+    "Open Peeps"
+  ],
+  "tags": [
+    "illustration",
+    "people",
+    "gesture",
+    "contact"
+  ],
+  "summary": "Treat interchangeable character parts as constrained scene components whose gaze, pose and contact must preserve the intended action.",
+  "use_when": "A persona, welcome or storyboard needs a human scene with a readable shared action.",
+  "avoid_when": "The available pose cannot represent the required anatomy, technical action or cultural detail faithfully.",
+  "sources": [
+    {
+      "title": "Pablo Stanley: Open Peeps",
+      "url": "https://www.openpeeps.com/",
+      "edition": "Living library page and current official hero image, checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Creator declares the offered illustration library CC0. No source assets are included here; the grant is not inferred for unrelated site, partner or hosted-service assets.",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.en",
+      "sha256": "dd4b8aa0b9e373f87794abfb649e82032ba4f4676ec4f33405c4812e031a6bdc",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "domain": "graphic",
+  "card": "references/design-languages/peeps-humanist.md",
+  "example": "assets/design-languages/peeps-humanist/index.html",
+  "original_example": true
+}

@@ -1,0 +1,36 @@
+{
+  "id": "pudding-subject-story",
+  "title": "Subject-led explanation",
+  "language": "Subject generates type, diagram, interaction and sequence",
+  "domain": "data",
+  "aliases": [
+    "The Pudding",
+    "Pudding",
+    "onion essay"
+  ],
+  "tags": [
+    "narrative",
+    "explanation",
+    "visual essay",
+    "concept",
+    "subject-led"
+  ],
+  "summary": "A single subject generates the visual and interactive explanation.",
+  "use_when": "Teaching a mechanism through a visual essay and local exploration.",
+  "avoid_when": "Repeated operational tasks where narrative exploration delays the goal.",
+  "card": "references/design-languages/pudding-subject-story.md",
+  "example": "assets/design-languages/pudding-subject-story/index.html",
+  "sources": [
+    {
+      "title": "The Pudding: Dicing an Onion, the Mathematically Optimal Way",
+      "url": "https://pudding.cool/2025/08/onions/",
+      "edition": "2025 essay; opening and vertical-cut section inspected",
+      "checked_on": "2026-10-15",
+      "rights": "Article, images, lettering, data and prose remain link-only; no general asset reuse license established.",
+      "license_url": null,
+      "sha256": "6f36d60adf6523084690e1c0747303d67ff5a34f765f5cd2f0dd7910986d5ef2",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

@@ -247,6 +247,54 @@ fn planned_repeats_and_comparison_arms_require_every_cell() {
 }
 
 #[test]
+fn held_out_only_confirmation_retains_every_assignment_and_split_check() {
+    let (mut suite, hash, report) = fixture();
+    suite.cases.truncate(4);
+    suite.development.clear();
+    suite.held_out = suite.cases.iter().map(|case| case.id.clone()).collect();
+    for case in &mut suite.cases {
+        case.split = "held_out".into();
+    }
+    let mut candidate = suite.configurations[0].clone();
+    candidate.id = "candidate".into();
+    suite.configurations.push(candidate);
+    suite.trials_per_case = 2;
+    let mut confirmation = report.clone();
+    confirmation.trials.clear();
+    for trial in report.trials.into_iter().take(4) {
+        for config in &suite.configurations {
+            for repeat in 1..=2 {
+                let mut cell = trial.clone();
+                cell.configuration = config.id.clone();
+                cell.trial = repeat;
+                confirmation.trials.push(cell);
+            }
+        }
+    }
+    let checked = role_eval::validate(&suite, &hash, &confirmation).unwrap();
+    let groups = checked["aggregates"].as_array().unwrap();
+    assert_eq!(groups.len(), 2);
+    for group in groups {
+        assert_eq!(group["split"], "held_out");
+        assert_eq!(group["trials"], 8);
+    }
+    let mut missing = confirmation.clone();
+    missing.trials.pop();
+    assert!(role_eval::validate(&suite, &hash, &missing).is_err());
+    let mut duplicate = confirmation.clone();
+    duplicate.trials[1] = duplicate.trials[0].clone();
+    assert!(role_eval::validate(&suite, &hash, &duplicate).is_err());
+    let mut bad_split = suite.clone();
+    bad_split.cases[0].split = "development".into();
+    assert!(role_eval::validate(&bad_split, &hash, &confirmation).is_err());
+    let mut unassigned = suite.clone();
+    unassigned.held_out.pop();
+    assert!(role_eval::validate(&unassigned, &hash, &confirmation).is_err());
+    suite.held_out.clear();
+    assert!(role_eval::validate(&suite, &hash, &confirmation).is_err());
+}
+
+#[test]
 fn oversized_infrastructure_evidence_and_unfilled_host_configuration_reject() {
     let (suite, hash, mut report) = fixture();
     let temp = tempfile::tempdir().unwrap();

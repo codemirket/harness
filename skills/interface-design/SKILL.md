@@ -55,9 +55,10 @@ check its other affected instances; a local polish request should not silently
 rewrite content or alter the flow. Compare the gain and any loss at matching
 content, viewport and state rather than judging a new screenshot in isolation.
 
-For substantial visual work, inspect a small number of useful references. Name
-what each contributes: navigation density, type hierarchy, grouping, material,
-interaction, or an asset treatment. Do not blend whole design systems. A product
+Use references when they clarify a design decision or help judge the result.
+Identify what they contribute: navigation density, type hierarchy, grouping,
+material, interaction, or an asset treatment. Reconcile influences with the
+governing system and actual behavior. A product
 library might borrow Primer's predictable actions and Carbon's visible filter
 state while keeping its own palette. Apple HIG is platform guidance, not a reason
 to imitate macOS in every website. User references take priority over a fashionable
@@ -66,6 +67,16 @@ style. Read only the relevant component/pattern guidance.
 For explicit inspiration or when useful references are still missing, select
 `design-inspiration` for discovery and evidence curation. Continue interpretation
 and implementation here; a supplied accepted reference needs no new search.
+For optional built-in teaching instances, catalog-search a source or purpose. The
+`design-inspiration` index at `references/design-languages/index.md` distinguishes
+procedural, operational,
+publishing, editorial, expressive, commerce, collaboration, creative-workspace,
+analytical, adaptive and access patterns. Its index explains source rights,
+optional contrast exercises and the inventory-only `design_context` lookup.
+Project, native and other primary references remain useful beyond that inventory;
+existing evidence and reasoning may suffice without another reference. Source-only
+native references and web examples cannot validate native behavior. Judge any
+adaptation against the actual content, tokens and state ownership.
 
 Use actual copy and believable data shapes. Label fictional sample content. Keep
 claims and customer evidence supplied or verified. If the direction is uncertain

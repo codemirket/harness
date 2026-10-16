@@ -1,0 +1,38 @@
+{
+  "id": "ft-relationship-notation",
+  "title": "Relationship before notation",
+  "language": "Deviation, distribution and flow choose different visual forms",
+  "domain": "data",
+  "aliases": [
+    "FT",
+    "Financial Times",
+    "Visual Vocabulary"
+  ],
+  "tags": [
+    "data",
+    "charts",
+    "chart selection",
+    "encoding",
+    "deviation",
+    "distribution",
+    "flow"
+  ],
+  "summary": "Choose notation from the analytical relationship while preserving grain and units.",
+  "use_when": "Analytical explanation, chart selection and reviewing what an encoding implies.",
+  "avoid_when": "Treating a familiar chart silhouette as an answer before the question and data grain.",
+  "card": "references/design-languages/ft-relationship-notation.md",
+  "example": "assets/design-languages/ft-relationship-notation/index.html",
+  "sources": [
+    {
+      "title": "FT Visual Vocabulary README",
+      "url": "https://raw.githubusercontent.com/Financial-Times/chart-doctor/main/visual-vocabulary/README.md",
+      "edition": "Repository document inspected 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Root README MIT applies to software and explicitly excludes FT content; poster, branding and fonts are not cleared.",
+      "license_url": "https://raw.githubusercontent.com/Financial-Times/chart-doctor/main/README.md",
+      "sha256": "6edca5a8b221904c0d7e58e2aa00e006019dfdf6a4f37aa991c1d5462d29ac76",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

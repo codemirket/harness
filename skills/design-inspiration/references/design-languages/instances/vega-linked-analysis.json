@@ -1,0 +1,60 @@
+{
+  "id": "vega-linked-analysis",
+  "title": "Vega-Lite: one selection, linked analytical views",
+  "language": "Shared-query analytical interaction",
+  "domain": "data",
+  "aliases": [
+    "Vega-Lite",
+    "Vega",
+    "linked views",
+    "brush selection",
+    "cross filtering"
+  ],
+  "tags": [
+    "data-exploration",
+    "linked-selection",
+    "brush",
+    "filter",
+    "denominator",
+    "empty-state",
+    "keyboard-alternative"
+  ],
+  "summary": "Make a brush and setting filter drive the same points, linked sums, record table and explicit selected-versus-all population.",
+  "use_when": "A bounded analytical exploration needs coordinated views with fixed scales, truthful sums and a visible empty/reset path.",
+  "avoid_when": "The brief needs a production data engine, unknown denominator, causal inference or a merely ornamental dashboard.",
+  "card": "references/design-languages/vega-linked-analysis.md",
+  "example": "assets/design-languages/vega-linked-analysis/index.html",
+  "sources": [
+    {
+      "title": "Vega-Lite: Selection parameters",
+      "url": "https://vega.github.io/vega-lite/docs/selection.html",
+      "edition": "Current live selection-parameter documentation checked 2026-10-15; no immutable source pin claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation reference; no blanket documentation-media license established. Do not infer dataset or media rights from a software license; exclude marks, upstream code, screenshots and data.",
+      "license_url": null,
+      "sha256": "aaec7a02f39b9d73e82f24229c6c04ff90288efcb9d02f451f9827782b8de07a",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Vega-Lite: Rectangular brush",
+      "url": "https://vega.github.io/vega-lite/examples/interactive_brush.html",
+      "edition": "Live example declares Vega-Lite v6 schema; checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only example; upstream specification and cars dataset are not copied. No blanket media/data reuse right established.",
+      "license_url": null,
+      "sha256": "3163d4dc7bead0cfd4079a5604197d945bfd104db9a48b921474af247c342d26",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "Vega-Lite: Interactive dashboard with cross highlight",
+      "url": "https://vega.github.io/vega-lite/examples/interactive_concat_layer.html",
+      "edition": "Live example declares Vega-Lite v6 schema; rendered linked matrix/category-bar view inspected in Chrome 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only example; upstream specification, movie data, marks, screenshots and fonts excluded. No blanket documentation-media/data license established.",
+      "license_url": null,
+      "sha256": "7dfc691dbc74c12b826dfe504237618e68b7cdd8018b576d8c2aeb28a876d943",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

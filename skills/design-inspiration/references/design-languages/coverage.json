@@ -1,0 +1,737 @@
+{
+  "schema_version": 1,
+  "axes": {
+    "families": [
+      {
+        "id": "procedural-services",
+        "meaning": "Consequential procedures, applications and validation"
+      },
+      {
+        "id": "enterprise-operations",
+        "meaning": "Dense operational records, status and scoped actions"
+      },
+      {
+        "id": "publishing-editorial",
+        "meaning": "Reading, editorial hierarchy and structured publication"
+      },
+      {
+        "id": "consumer-utility",
+        "meaning": "Transparent everyday tasks and product choices"
+      },
+      {
+        "id": "developer-tools",
+        "meaning": "Code, technical artifacts and developer actions"
+      },
+      {
+        "id": "commerce",
+        "meaning": "Variants, cart, costs and checkout recovery"
+      },
+      {
+        "id": "collaboration",
+        "meaning": "Sharing, permissions, comments and draft ownership"
+      },
+      {
+        "id": "creative-tools",
+        "meaning": "Direct manipulation, object identity and editing history"
+      },
+      {
+        "id": "complex-workspaces",
+        "meaning": "Hierarchy, multiple objects and staged persistence"
+      },
+      {
+        "id": "analytical-tools",
+        "meaning": "Statistical comparison, linked views and exploration"
+      },
+      {
+        "id": "learning-explanation",
+        "meaning": "Explanatory sequences and learning feedback"
+      },
+      {
+        "id": "visual-communication",
+        "meaning": "Illustration, identity, symbols and composition"
+      },
+      {
+        "id": "device-specialist",
+        "meaning": "Kiosk, television, wearable, spatial and embedded tasks"
+      },
+      {
+        "id": "accessible-interaction",
+        "meaning": "Access/input patterns that transfer across product families"
+      }
+    ],
+    "platforms": [
+      {
+        "id": "web",
+        "meaning": "Browser implementation; desktop and narrow layouts must still be checked"
+      },
+      {
+        "id": "graphic",
+        "meaning": "Original graphic or vector specimen displayed in a browser"
+      },
+      {
+        "id": "native-mobile",
+        "meaning": "Native mobile runtime and platform navigation/input"
+      },
+      {
+        "id": "native-desktop",
+        "meaning": "Native desktop runtime, windows, menus and platform input"
+      },
+      {
+        "id": "kiosk",
+        "meaning": "Shared or unattended terminal with physical/context constraints"
+      },
+      {
+        "id": "tv",
+        "meaning": "Distance viewing, remote input and television focus navigation"
+      },
+      {
+        "id": "wearable",
+        "meaning": "Watch or other body-worn device"
+      },
+      {
+        "id": "spatial",
+        "meaning": "Spatial or immersive device, input and positioning"
+      },
+      {
+        "id": "embedded",
+        "meaning": "Dedicated embedded interface and hardware state"
+      }
+    ],
+    "interactions": [
+      {
+        "id": "forms-validation",
+        "meaning": "Form submission, located errors and retained values"
+      },
+      {
+        "id": "dense-table",
+        "meaning": "Scanning and selecting operational records"
+      },
+      {
+        "id": "bulk-actions",
+        "meaning": "Actions with explicit multi-record scope"
+      },
+      {
+        "id": "document-navigation",
+        "meaning": "Structured reading and content navigation"
+      },
+      {
+        "id": "product-comparison",
+        "meaning": "Comparable product facts and selection"
+      },
+      {
+        "id": "search-filter",
+        "meaning": "Filtering a visible collection"
+      },
+      {
+        "id": "code-copy",
+        "meaning": "Copying a technical artifact with truthful feedback"
+      },
+      {
+        "id": "state-feedback",
+        "meaning": "Feedback attached to an actual state transition"
+      },
+      {
+        "id": "pane-navigation",
+        "meaning": "Navigation across related panes"
+      },
+      {
+        "id": "selection-continuity",
+        "meaning": "Stable selected identity through layout changes"
+      },
+      {
+        "id": "performance-feedback",
+        "meaning": "A finite expressive performance for a real event"
+      },
+      {
+        "id": "process-explanation",
+        "meaning": "Explaining steps and causal relationships"
+      },
+      {
+        "id": "identity-generation",
+        "meaning": "Deriving identity variations from an explicit rule"
+      },
+      {
+        "id": "scene-construction",
+        "meaning": "Constructing a coherent scene from subject relationships"
+      },
+      {
+        "id": "symbol-comparison",
+        "meaning": "Maintaining symbol meaning across renditions"
+      },
+      {
+        "id": "narrative-disclosure",
+        "meaning": "Revealing an explanation in meaningful stages"
+      },
+      {
+        "id": "uncertainty-comparison",
+        "meaning": "Comparing estimates without hiding uncertainty"
+      },
+      {
+        "id": "relationship-selection",
+        "meaning": "Choosing chart notation from an analytical relationship"
+      },
+      {
+        "id": "variant-selection",
+        "meaning": "Choosing an available product variant"
+      },
+      {
+        "id": "cart-checkout",
+        "meaning": "Updating a cart and recovering a checkout attempt"
+      },
+      {
+        "id": "cost-reconciliation",
+        "meaning": "Reconciling quantity, subtotal, delivery and total"
+      },
+      {
+        "id": "share-permissions",
+        "meaning": "Inspecting and changing explicitly scoped access"
+      },
+      {
+        "id": "comment-draft",
+        "meaning": "Retaining and submitting a scoped discussion draft"
+      },
+      {
+        "id": "hierarchy-editing",
+        "meaning": "Editing related parent and child objects"
+      },
+      {
+        "id": "staged-save",
+        "meaning": "Distinguishing local Apply from main-object Save"
+      },
+      {
+        "id": "direct-manipulation",
+        "meaning": "Editing an identified object through canvas and alternatives"
+      },
+      {
+        "id": "undo-redo",
+        "meaning": "Reversing and reapplying an actual identified edit"
+      },
+      {
+        "id": "linked-filter",
+        "meaning": "Linked analytical selection with truthful scales and denominator"
+      },
+      {
+        "id": "adaptive-navigation",
+        "meaning": "Adapting navigation to available panes and back policy"
+      },
+      {
+        "id": "bidi-switch",
+        "meaning": "Switching direction while preserving mixed-script meaning"
+      },
+      {
+        "id": "keyboard-reorder",
+        "meaning": "Reordering identified items through non-drag controls"
+      },
+      {
+        "id": "focus-recovery",
+        "meaning": "Maintaining meaningful focus after an operation or rejection"
+      },
+      {
+        "id": "offline-sync",
+        "meaning": "Durable offline operations and reconciliation after reconnect"
+      },
+      {
+        "id": "concurrent-editing",
+        "meaning": "Multiple real writers, conflict resolution and ownership"
+      },
+      {
+        "id": "remote-navigation",
+        "meaning": "Remote-control focus, selection and back navigation"
+      },
+      {
+        "id": "device-sensors",
+        "meaning": "Interaction coupled to actual device or sensor state"
+      },
+      {
+        "id": "spatial-input",
+        "meaning": "Spatial positioning, selection and alternative input"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "keyboard",
+        "meaning": "Worked keyboard path and visible focus; not an assistive-technology claim"
+      },
+      {
+        "id": "reflow",
+        "meaning": "Worked narrow layout and text enlargement; actual target sizes still need inspection"
+      },
+      {
+        "id": "rtl",
+        "meaning": "Worked right-to-left direction and meaningful ordering"
+      },
+      {
+        "id": "mixed-script",
+        "meaning": "Worked isolation and display of different script directions"
+      },
+      {
+        "id": "reduced-motion",
+        "meaning": "A worked reduced-motion response or stable composition"
+      },
+      {
+        "id": "screen-reader",
+        "meaning": "Actual assistive-technology journey; semantic markup/axe alone is insufficient"
+      },
+      {
+        "id": "forced-colors",
+        "meaning": "Actual forced-colors rendering and non-color state distinction"
+      },
+      {
+        "id": "touch",
+        "meaning": "Actual touch target, gesture and device behavior"
+      },
+      {
+        "id": "low-vision",
+        "meaning": "Actual applicable magnification/contrast journey beyond a scanner"
+      },
+      {
+        "id": "low-bandwidth",
+        "meaning": "Actual constrained-network behavior and recovery"
+      },
+      {
+        "id": "localization",
+        "meaning": "Human-reviewed language, locale formats and culturally appropriate content"
+      },
+      {
+        "id": "privacy",
+        "meaning": "Verified handling of sensitive content, visibility and disclosure boundaries"
+      },
+      {
+        "id": "safety-critical",
+        "meaning": "Domain-specific consequential failure and safe recovery evidence"
+      },
+      {
+        "id": "long-running",
+        "meaning": "Long-running task progress, interruption and resumable recovery"
+      }
+    ]
+  },
+  "cells": [
+    {
+      "instance": "govuk-procedural",
+      "family": "procedural-services",
+      "platform": "web",
+      "interactions": [
+        "forms-validation"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Error summary, located validation and retained application values.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "carbon-operations",
+      "family": "enterprise-operations",
+      "platform": "web",
+      "interactions": [
+        "dense-table",
+        "bulk-actions"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Operational selection with explicit action scope.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "vanilla-publishing",
+      "family": "publishing-editorial",
+      "platform": "web",
+      "interactions": [
+        "document-navigation"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Technical publication with readable hierarchy.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "porsche-restraint",
+      "family": "consumer-utility",
+      "platform": "web",
+      "interactions": [
+        "product-comparison"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Product composition around a small set of real facts.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "guardian-editorial",
+      "family": "publishing-editorial",
+      "platform": "web",
+      "interactions": [
+        "document-navigation"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Editorial hierarchy across multiple reading speeds.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "wise-expressive-utility",
+      "family": "consumer-utility",
+      "platform": "web",
+      "interactions": [
+        "cost-reconciliation"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Expressive utility with legible fees and totals.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "geist-code",
+      "family": "developer-tools",
+      "platform": "web",
+      "interactions": [
+        "code-copy"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Readable code artifact and truthful copy feedback.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "material-responsive-shape",
+      "family": "consumer-utility",
+      "platform": "web",
+      "interactions": [
+        "state-feedback"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow",
+        "reduced-motion"
+      ],
+      "level": "worked-example",
+      "scope": "Web shape response attached to a real event.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "fluent-spatial",
+      "family": "complex-workspaces",
+      "platform": "web",
+      "interactions": [
+        "pane-navigation",
+        "selection-continuity"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow",
+        "reduced-motion"
+      ],
+      "level": "worked-example",
+      "scope": "Web pane transformation preserves subject identity.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "apple-liquid-glass",
+      "family": "consumer-utility",
+      "platform": "web",
+      "interactions": [
+        "state-feedback"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow",
+        "reduced-motion"
+      ],
+      "level": "worked-example",
+      "scope": "Web layer analogue keeps transient controls above stable content.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "duolingo-performance",
+      "family": "learning-explanation",
+      "platform": "web",
+      "interactions": [
+        "performance-feedback"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow",
+        "reduced-motion"
+      ],
+      "level": "worked-example",
+      "scope": "Finite feedback performance followed by a stable resting state.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "ibm-hybrid-illustration",
+      "family": "visual-communication",
+      "platform": "graphic",
+      "interactions": [
+        "process-explanation"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Original process illustration connects scene and UI fragments.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "mit-generative-identity",
+      "family": "visual-communication",
+      "platform": "graphic",
+      "interactions": [
+        "identity-generation"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Identity family generated from a documented visual rule.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "casa-subject-identity",
+      "family": "visual-communication",
+      "platform": "graphic",
+      "interactions": [
+        "identity-generation"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Subject-derived identity across original poster variations.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "peeps-humanist",
+      "family": "visual-communication",
+      "platform": "graphic",
+      "interactions": [
+        "scene-construction"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Original human scene with coherent contact and shared construction.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "fluent-dimensional-symbols",
+      "family": "visual-communication",
+      "platform": "graphic",
+      "interactions": [
+        "symbol-comparison"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Original symbol comparison across flat and dimensional renditions.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "pudding-subject-story",
+      "family": "learning-explanation",
+      "platform": "web",
+      "interactions": [
+        "narrative-disclosure"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "The subject determines explanatory structure and disclosure.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "ons-statistical",
+      "family": "analytical-tools",
+      "platform": "web",
+      "interactions": [
+        "uncertainty-comparison"
+      ],
+      "constraints": [
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Statistical estimates keep uncertainty and comparison visible.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "ft-relationship-notation",
+      "family": "analytical-tools",
+      "platform": "web",
+      "interactions": [
+        "relationship-selection"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Chart notation selected from a stated analytical relationship.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "saleor-commerce",
+      "family": "commerce",
+      "platform": "web",
+      "interactions": [
+        "variant-selection",
+        "cart-checkout",
+        "cost-reconciliation"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Product variants, quantity, reconcilable total and recoverable local checkout.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "atlassian-collaboration",
+      "family": "collaboration",
+      "platform": "web",
+      "interactions": [
+        "share-permissions",
+        "comment-draft",
+        "focus-recovery"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Scoped local permission changes and discussion draft recovery.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "fiori-complex-workspace",
+      "family": "complex-workspaces",
+      "platform": "web",
+      "interactions": [
+        "hierarchy-editing",
+        "staged-save",
+        "selection-continuity"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Parent/child identity with local Apply distinct from main Save.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "penpot-direct-manipulation",
+      "family": "creative-tools",
+      "platform": "web",
+      "interactions": [
+        "direct-manipulation",
+        "undo-redo"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Stable object editing with pointer, numeric controls and inverse history.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "vega-linked-analysis",
+      "family": "analytical-tools",
+      "platform": "web",
+      "interactions": [
+        "linked-filter"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Brush/form linked filtering with fixed shared scale and explicit denominator.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "android-adaptive-continuity",
+      "family": "complex-workspaces",
+      "platform": "web",
+      "interactions": [
+        "adaptive-navigation",
+        "selection-continuity"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Web list/detail analogue retains selected object and draft across width/back changes.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "spectrum-bidirectional",
+      "family": "accessible-interaction",
+      "platform": "web",
+      "interactions": [
+        "bidi-switch"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow",
+        "rtl",
+        "mixed-script"
+      ],
+      "level": "worked-example",
+      "scope": "Original direction-switching specimen with mixed-script isolation and content order.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "aria-alternative-input",
+      "family": "accessible-interaction",
+      "platform": "web",
+      "interactions": [
+        "keyboard-reorder",
+        "focus-recovery"
+      ],
+      "constraints": [
+        "keyboard",
+        "reflow"
+      ],
+      "level": "worked-example",
+      "scope": "Alternative input and meaningful focus through item reorder/rejection.",
+      "limits": "Original browser teaching specimen. Coverage is an inventory claim, not current-task validation. No native device, real multi-user service, offline sync, human language acceptance or assistive-technology compatibility is established."
+    },
+    {
+      "instance": "android-adaptive-continuity",
+      "family": "complex-workspaces",
+      "platform": "native-mobile",
+      "interactions": [
+        "adaptive-navigation",
+        "selection-continuity"
+      ],
+      "constraints": [],
+      "level": "source-only",
+      "scope": "Official Android adaptive list/detail source guidance; the shipped implementation is a web analogue.",
+      "limits": "No native runtime, gesture/back stack, device input, RTL or offline synchronization was exercised. Read current platform guidance and verify on actual target devices."
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-practice="recovery-feedback">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rook Press — a recoverable batch request</title>
+<style>
+:root{color-scheme:light;--ink:#202c35;--paper:#f9f7f1;--line:#b6bdbe;--blue:#27556c;--error:#9c3025;--quiet:#4e5a61}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1120px;margin:auto;padding:28px 40px 56px}header{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding-bottom:20px;border-bottom:2px solid var(--ink)}.wordmark{font-weight:800;letter-spacing:-.04em;font-size:1.6rem}.edition,.eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.edition{color:var(--quiet)}.layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;margin-top:48px}h1,h2,h3,p{margin:0 0 16px}h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(2.5rem,5vw,4.3rem);line-height:1.04;letter-spacing:-.035em;max-width:9ch}h2{font-size:1.35rem;line-height:1.25}h3{font-size:1.1rem}.intro{font-size:1.12rem;max-width:35ch}.facts{margin:28px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}.facts li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}.facts small{display:block;color:var(--quiet)}.note{font-size:.88rem;color:var(--quiet);margin-top:22px;max-width:40ch}.request{border-top:4px solid var(--blue);padding-top:20px}.stage{color:var(--blue);margin-bottom:8px}.summary{padding:18px 0;border-block:1px solid var(--line);margin:20px 0}.summary-title{font-weight:700;overflow-wrap:anywhere}.composition{margin-bottom:12px;color:var(--quiet)}.unit-total{display:flex;align-items:baseline;gap:10px}.unit-total strong{font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums}.unit-total span{color:var(--quiet)}.error{border-left:4px solid var(--error);padding:10px 14px;color:var(--error);font-weight:650;background:#f5e8e2;margin-bottom:20px}.field{margin:0 0 20px}.quantity-row{display:grid;grid-template-columns:1fr 104px;gap:16px;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--line)}label{font-weight:650;display:block}label small{display:block;font-size:.85rem;font-weight:400;color:var(--quiet)}input{font:inherit;color:inherit;background:#fffefa;border:1px solid #77858d;padding:10px 12px;min-width:0;width:100%;border-radius:0}input[type=number]{font-variant-numeric:tabular-nums}input[aria-invalid=true]{border-color:var(--error)}button{font:inherit;cursor:pointer;padding:12px 18px;border:1px solid var(--blue);background:var(--blue);color:white;font-weight:650;min-height:46px}.secondary{background:transparent;color:var(--blue)}button:focus-visible,input:focus-visible,a:focus-visible,#review:focus-visible{outline:3px solid #b64c16;outline-offset:4px}button:hover{filter:brightness(.93)}.field-help{font-size:.82rem;color:var(--quiet);margin:7px 0 0}.review-copy{margin:0 0 22px}.review-list{margin:20px 0}.review-list div{display:grid;grid-template-columns:1fr auto;gap:16px;border-bottom:1px solid var(--line);padding:9px 0}.review-list dt,.review-list dd{margin:0}.local-note{font-size:.82rem;color:var(--quiet);margin-top:16px}.teaching{background:#e8edef;border-top:1px solid var(--line);padding:26px 40px}.teaching-inner{max-width:1040px;margin:auto}.teaching p{max-width:78ch;font-size:.88rem}.teaching a{color:var(--blue)}.links{display:flex;gap:12px 24px;flex-wrap:wrap;margin-top:16px;font-size:.88rem}[hidden]{display:none!important}@media(max-width:700px){main{padding:20px 22px 40px}header{gap:16px;align-items:start}.edition{max-width:18ch;text-align:right;font-size:.65rem}.layout{grid-template-columns:1fr;gap:36px;margin-top:30px}h1{max-width:11ch}.intro{max-width:36ch}.facts{margin-top:20px}.request{padding-top:18px}.teaching{padding:24px 22px}.quantity-row{grid-template-columns:1fr 90px;gap:12px}.unit-total{flex-wrap:wrap;gap:5px 10px}button{width:100%}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main>
+<header><div class="wordmark">rook / press</div><div class="edition">Fictional community print room</div></header>
+<div class="layout">
+<section aria-labelledby="page-title">
+<p class="eyebrow">Tuesday morning · small batches</p>
+<h1 id="page-title">Make room<br>for a small run.</h1>
+<p class="intro">Plan a mixed batch for the proofing table. Change the quantities, check the space, then review the same draft.</p>
+<ul class="facts" aria-label="Batch rules">
+<li><div>Pocket notebook<small>One item uses one batch unit.</small></div><strong>1 unit</strong></li>
+<li><div>Foldout map<small>One item uses two batch units.</small></div><strong>2 units</strong></li>
+<li><div>Tuesday capacity<small>At least one item; whole quantities only.</small></div><strong>8 units</strong></li>
+</ul>
+<p class="note">This is an invented capacity model, not a print quote or production promise. Nothing on this page sends a request.</p>
+</section>
+<section class="request" aria-labelledby="request-title">
+<p id="stage" class="eyebrow stage">Your draft</p>
+<h2 id="request-title">Tuesday morning batch</h2>
+<div class="summary" aria-live="polite" aria-atomic="true">
+<p class="summary-title" id="summary-label">Canal clean-up packs</p>
+<p class="composition" id="composition">2 pocket notebooks + 1 foldout map</p>
+<div class="unit-total"><strong id="used-units">4 units</strong><span id="summary-context">of 8 available · 3 items</span></div>
+</div>
+<p id="request-error" class="error" role="alert" hidden></p>
+<form id="request-form" novalidate hidden>
+<div class="field quantity-row"><label for="notebooks">Pocket notebooks<small id="notebook-rule">1 batch unit each</small></label><input id="notebooks" name="notebooks" type="number" inputmode="numeric" min="0" max="8" step="1" value="2" aria-describedby="notebook-rule request-error"></div>
+<div class="field quantity-row"><label for="maps">Foldout maps<small id="map-rule">2 batch units each</small></label><input id="maps" name="maps" type="number" inputmode="numeric" min="0" max="4" step="1" value="1" aria-describedby="map-rule request-error"></div>
+<div class="field"><label for="job-label">Label for your batch</label><input id="job-label" name="label" type="text" value="Canal clean-up packs" maxlength="80" aria-describedby="label-help"><p class="field-help" id="label-help">A local label to recognise your draft. It stays here when you change quantities.</p></div>
+<button type="submit">Review this batch</button>
+<p class="local-note">Local practice only. No request is sent or capacity reserved.</p>
+</form>
+<section id="review" aria-labelledby="review-title" tabindex="-1" hidden>
+<h3 id="review-title">Check the current draft</h3>
+<p class="review-copy">The quantities and label above are the ones being reviewed. Tuesday morning still has an eight-unit limit.</p>
+<dl class="review-list"><div><dt>Pocket notebooks</dt><dd id="review-notebooks">2</dd></div><div><dt>Foldout maps</dt><dd id="review-maps">1</dd></div></dl>
+<button id="return-edit" type="button" class="secondary">Return to edit</button>
+<p class="local-note">Review is a local preview. Nothing has been submitted.</p>
+</section>
+<noscript><p>The default draft above uses four of eight units: two notebooks and one map, labelled “Canal clean-up packs”. JavaScript is needed to edit and review this local practice.</p></noscript>
+</section>
+</div>
+</main>
+<aside class="teaching" aria-label="Practice notes">
+<div class="teaching-inner"><h2>Practice: feedback belongs to the current draft</h2>
+<p>Compare the summary and any error after correcting a rejected draft, then review and return to edit. A successful next step alone cannot establish that recovery is clear. Both versions allow a valid draft to reach review; one retains obsolete feedback.</p>
+<div class="links"><a href="index.html">Purposeful practice</a><a href="?variant=misleading">Misleading practice</a><a href="../../../references/design-languages/recovery-feedback.md">Read the reasoning and probe</a><a href="../LICENSE.txt">Original material · MIT</a></div>
+</div>
+</aside>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),misleading=new URLSearchParams(location.search).get('variant')==='misleading';
+const quantities=[$('notebooks'),$('maps')];let attempted=false;
+function current(){const q=quantities.map(input=>input.value.trim()===''?NaN:Number(input.value));return {q,units:q[0]+2*q[1],items:q[0]+q[1]};}
+function problem(d){if(!d.q.every((n,i)=>Number.isInteger(n)&&n>=0&&n<=(i===0?8:4)))return 'Use whole quantities: 0–8 notebooks and 0–4 foldout maps.';if(d.items<1)return 'Add at least one item to this batch.';if(d.units>8)return `This draft uses ${d.units} units; Tuesday morning has 8. Reduce a quantity before reviewing.`;return '';}
+function feedback(message){$('request-error').textContent=message;$('request-error').hidden=!message;quantities.forEach(input=>{if(message)input.setAttribute('aria-invalid','true');else input.removeAttribute('aria-invalid');});}
+function render(){const d=current(),numeric=d.q.every(n=>Number.isInteger(n)&&n>=0);$('summary-label').textContent=$('job-label').value.trim()||'Untitled batch';$('composition').textContent=numeric?`${d.q[0]} pocket notebook${d.q[0]===1?'':'s'} + ${d.q[1]} foldout map${d.q[1]===1?'':'s'}`:'Check the quantities below.';$('used-units').textContent=numeric?`${d.units} unit${d.units===1?'':'s'}`:'—';$('summary-context').textContent=numeric?`of 8 available · ${d.items} item${d.items===1?'':'s'}`:'Tuesday morning · 8 units available';if(attempted&&!misleading)feedback(problem(d));}
+quantities.forEach(input=>input.addEventListener('input',render));$('job-label').addEventListener('input',render);
+$('request-form').addEventListener('submit',event=>{event.preventDefault();attempted=true;const d=current(),message=problem(d);if(message){feedback(message);const invalid=quantities.find(input=>!input.validity.valid);(invalid||quantities[0]).focus();return;}if(!misleading)feedback('');$('review-notebooks').textContent=String(d.q[0]);$('review-maps').textContent=String(d.q[1]);$('request-form').hidden=true;$('review').hidden=false;$('stage').textContent='Review your draft';$('review').focus();});
+$('return-edit').addEventListener('click',()=>{$('review').hidden=true;$('request-form').hidden=false;$('stage').textContent='Your draft';render();$('notebooks').focus();});
+$('request-form').hidden=false;render();
+})();
+</script>
+</body>
+</html>

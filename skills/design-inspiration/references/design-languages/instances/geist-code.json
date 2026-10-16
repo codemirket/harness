@@ -1,0 +1,57 @@
+{
+  "title": "Geist: code provenance and emphasis",
+  "language": "Typographic developer information",
+  "aliases": [
+    "Geist",
+    "Vercel Geist",
+    "developer docs",
+    "code block"
+  ],
+  "tags": [
+    "developer",
+    "code",
+    "diff",
+    "provenance",
+    "typography"
+  ],
+  "summary": "Separate prose, identifiers and source with sans/mono roles, explicit filenames and selective line emphasis.",
+  "use_when": "A developer must understand a code or configuration change, its file context and its resulting behavior.",
+  "avoid_when": "Literary reading, warm lifestyle identity or an infrequent-user form has no code artifact to inspect.",
+  "sources": [
+    {
+      "title": "Vercel Geist: Typography",
+      "url": "https://vercel.com/geist/typography",
+      "edition": "Live official documentation checked 2026-10-15; no component version pin claimed.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation. No blanket website/component reuse license established; no font, component source or mark included.",
+      "license_url": null,
+      "sha256": "ffdcf72501bf0a2d7a058a90c040f5770741de82f2e55d9870ec6e25b62962ed",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Vercel Geist: Code Block",
+      "url": "https://vercel.com/geist/code-block",
+      "edition": "Live official documentation and visible code specimen inspected at 1280×900 on 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation/reference. No upstream component code, icon, media or site asset copied.",
+      "license_url": null,
+      "sha256": "ae6092098e61b604a12f1030b68b56542222f199914671657c4b998b91560c78",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Geist Font: Independent font license",
+      "url": "https://github.com/vercel/geist-font/blob/main/LICENSE.txt",
+      "edition": "Official font repository license checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "SIL OFL applies to that font family, independently of component/site/media rights. No Geist font files are admitted; system mono/sans are used.",
+      "license_url": "https://github.com/vercel/geist-font/blob/main/LICENSE.txt",
+      "sha256": "4c15363b555fd29747ec6b3ae5f4cb52b3fb0d0e9332bdb96be71705777bfc6f",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "geist-code",
+  "domain": "interface",
+  "card": "references/design-languages/geist-code.md",
+  "example": "assets/design-languages/geist-code/index.html",
+  "original_example": true
+}

@@ -117,6 +117,58 @@ recordings and frames against the brief; the assertions do not accept aesthetics
 prove native back/forward-cache behavior, or benchmark a physical mobile device.
 Keep generated evidence outside shipped source and stop the preview server.
 
+The design-language and interaction lessons use the existing `design-inspiration`
+delivery. After selecting/syncing it in a disposable project, serve its installed
+skill directory and run the optional rendered probe (serving the skill root also
+keeps example-to-card links usable):
+
+```sh
+node tests/browser_design_languages.cjs http://127.0.0.1:8765/assets/design-languages/ \
+  /absolute/evidence/design-languages \
+  /absolute/installed/design-inspiration/references/design-languages/library.json
+```
+
+Use an already available Playwright/Chromium; `MIRKET_BROWSER_EXECUTABLE` can
+select its executable. `MIRKET_AXE_SCRIPT` optionally names an existing
+`axe.min.js`; the probe installs nothing. An optional final comma-separated ID
+list selects affected instances. The script checks actual wide/narrow rendering,
+no-script readability, enlarged-text reflow, resource independence and access
+scan findings, and captures the plausible misleading versions. Inspect every
+changed composition, focal detail and interaction against its lesson; these
+checks do not establish conceptual quality, native material parity or a measured
+improvement in a model. Keep source/licensing exceptions explicit in the typed
+canonical per-instance record. Keep `library.json` a bounded index; do not
+duplicate complete records into it. Scope coverage cells to one actual example
+and platform; source guidance alone is not a worked native example. Exercise a
+request whose native/RTL/offline requirements occur only in separate cells and
+confirm it cannot become represented. `tests/design_language_payload.rs` covers individual routing, bounded
+reads, both-host delivery and actual installed MCP exchanges without a browser.
+
+`evals/design-coverage/README.md` defines the paired transfer pilot through the
+existing `mirket dev role-eval` contracts. Freeze briefs/configuration/rubrics
+before actual host trials, retain every planned result and grade saved artifacts
+independently. Protocol validation does not execute or grade a model. Keep local
+trial artifacts and private task history outside shipped source. No gain or
+universal-coverage claim follows from fixture validation or a small pilot.
+
+`evals/design-quality/README.md` defines the harder follow-up: separate continuous
+craft ratings, functional/access guards, two calibrated render-first judges and
+repeated trials on independently sealed briefs. Keep source, output, judge and
+analysis identities explicit. The public controls are synthetic collector/judge
+calibration material, not model executions. A reported practical gain must meet
+every frozen threshold; retain inconclusive waves, regressions and judgment
+limits. Local run history and sealed evaluation contexts belong outside shipped
+source. `design_reference_candidates` is a provisional no-match recovery path;
+test that it cannot alter ordinary keyword results or certify missing coverage.
+
+Run `tests/browser_design_language_motion.cjs` against the same assets URL and an
+evidence directory for the four motion lessons. It exercises actual geometry,
+truthful/misleading state contrasts, rapid reversal, live reduced motion and
+preference restoration, finite rest, narrow reflow and no-script content. An
+optional final ID selects one lesson. `MIRKET_MOTION_FRAMES=0` skips PNG captures;
+`MIRKET_MOTION_VIDEO=1` records ordinary wide playback. Inspect the saved beats;
+the probe does not claim native platform rendering or real-device performance.
+
 For the optional timing specimen, install `motion-design` in that disposable
 project and serve its installed `.agents/skills` directory (or the Claude
 equivalent). The same probe

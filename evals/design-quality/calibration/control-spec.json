@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "predeclared_synthetic_calibration_relations",
+  "synthetic": true,
+  "model_executions": 0,
+  "license": "MIT",
+  "rubric": "../craft-rubric.json",
+  "thresholds": {"positive_minus_negative_minimum":10,"identical_pair_maximum_absolute_difference":5},
+  "families": [
+    {
+      "id":"workshop-register",
+      "positive":"C101",
+      "negative":"C102",
+      "brief":"For a local workshop visitor, show the three Saturday sessions, make time, availability and per-person cost comparable, keep the selected session and pay-at-studio total understandable, and allow an optional note to be saved only in this browser. All task facts must remain readable at 1280, 390 and 320 CSS pixels.",
+      "located_anchors":[
+        {"view":"default-1280.viewport.png","region":"Middle-left workshop rows and adjacent booking panel","relationship":"C101 aligns time, availability and cost in the same columns and puts the selected title next to the total. C102 stacks facts with repeated rules and gives supporting facts equal emphasis. Compare scan effort for session and price; do not reward empty space itself."},
+        {"view":"default-1280.viewport.png","region":"Page title, section headings, booking price and save action","relationship":"C101 has distinct levels for purpose, session title, supporting facts, total and save. C102 flattens these levels while enlarging the eyebrow and surrounding secondary text with repeated boxes. The requirement is useful priority, not a preferred font or palette."},
+        {"view":"default-390.fullpage.png","region":"Session list to booking-note and saved-state transitions","relationship":"C101 preserves label/value proximity and uses section spacing to express the sequence. C102 uses similar large gaps within and between groups and requires more vertical search. Both remain functional; long page height alone is not a defect."},
+        {"view":"scenario-separate-storage-read-and-reload-final.fullpage.png","region":"Selected Paper & binding, stored note and one-record summary","relationship":"Both must show the same selected identity and actual stored note. Judge visible composition of the state separately from whether it was truly persisted."}
+      ]
+    },
+    {
+      "id":"service-desk",
+      "positive":"C106",
+      "negative":"C107",
+      "brief":"For facilities staff, show three active reports, make the two needing attention easy to find, support a severity filter, keep selected report identity and details clear, and allow one reviewed report to be stored locally. The weekly chart represents literal report counts 1,3,2,3,3. No service dispatch or team synchronization is available. Keep facts readable at 1280, 390 and 320 CSS pixels.",
+      "located_anchors":[
+        {"view":"default-1280.viewport.png","region":"Summary strip: need attention, reviewed locally, weekly reports","relationship":"C106 prioritizes the counts and pairs each with a compact label and qualifier. C107 makes labels, values and explanations similar in emphasis and spreads them with equal large gaps. This tests hierarchy across a different dark operational language."},
+        {"view":"default-1280.viewport.png","region":"Active reports table and selected Boiler pressure details","relationship":"C106 aligns report, status and logged time in stable columns, marks the selected row, and aligns it with its detail panel. C107 breaks column comparisons into repeated bordered vertical blocks and centers heterogeneous text. Evaluate actual identity/comparison work, not a preference for tables over cards."},
+        {"view":"default-390.fullpage.png","region":"Active reports list followed by selected report action","relationship":"C106 keeps labels and values compact and preserves the selection/detail relationship through a single-column composition. C107 multiplies weakly distinguished boxes and equal intervals. Neither should lose content or change the review's identity."},
+        {"view":"scenario-filter-open-and-owned-review-final.fullpage.png","region":"Selected A08 identity and stored local review","relationship":"Both must display the same report identity and one stored review after reload. The check prevents a composition judgment from substituting for an owned-state observation."}
+      ]
+    }
+  ],
+  "metamorphic_controls": [
+    {"id":"identical","first":"C101","second":"C104","expected":"Identical HTML bytes and default viewport pixels; composite ratings must be within five points despite different labels and presentation position."},
+    {"id":"content-order","first":"C101","second":"C105","expected":"Session source order changes from print/paper/clay to clay/print/paper while selected print identity and save semantics remain stable. Compare task facts and identity, not which session occupies row one. Ratings may differ for a located visible reason; report that difference descriptively."},
+    {"id":"polished-false-state","first":"C101","second":"C103","expected":"The polished initial view and post-save success/counter claim look the same. C103 stores no owned record; separate read and reload contradict its claim. Do not penalize an unseen code defect in render-only craft scoring; identify it during functional inspection."}
+  ],
+  "rules":[
+    "These original controls measure whether a fallible judge/observer can detect known contrasts; they are not model trials and do not enter the treatment estimate.",
+    "No target score for an individual control is prescribed. Only the frozen pair relations and thresholds apply.",
+    "Each dimension needs at least two located visual observations. Preserve uncertainty and reasons; a validator cannot establish that a judgment is visually correct.",
+    "Within-family content, state logic, type family and palette are identical. The two families use different visual languages. A consistent style preference is not the expected contrast.",
+    "Record label, placement and order consistency before revealing the key. Do not change anchors or thresholds after seeing judgments.",
+    "A calibration failure is evidence about the judge or control discriminability. Preserve it; do not rescore old work to manufacture a quality win."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "duolingo-performance",
+  "title": "Duolingo case studies: character response",
+  "language": "Character-led finite response",
+  "domain": "motion",
+  "aliases": [
+    "character performance",
+    "finite celebration",
+    "Duolingo motion"
+  ],
+  "tags": [
+    "character",
+    "event",
+    "feedback",
+    "acting",
+    "rest"
+  ],
+  "summary": "Teach an original character response tied to a factual event, with anticipation, action, follow-through and a clear rest.",
+  "use_when": "A meaningful learning achievement or companion interaction has a defensible character concept and a bounded moment to respond.",
+  "avoid_when": "Every routine action would perform, an urgent failure needs immediate correction, or the character contradicts the actual outcome.",
+  "card": "references/design-languages/duolingo-performance.md",
+  "example": "assets/design-languages/duolingo-performance/index.html",
+  "sources": [
+    {
+      "title": "Duolingo — You’re on fire! Or, how we brought the streak milestone to life",
+      "url": "https://blog.duolingo.com/streak-milestone-design-animation/",
+      "edition": "January 21, 2022 historical design case study; checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "All rights reserved official blog. Duo, Phoenix Duo, GIFs and brand artwork remain link-only. Original cast and motion only; no traced assets or upstream code.",
+      "license_url": null,
+      "sha256": "5186ba1cdc04e5a74b6599df0edeb6cc628aee6eee276cce62a319b3f024e23e",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Duolingo — Building character",
+      "url": "https://blog.duolingo.com/building-character/",
+      "edition": "Historical cast-design case study, unversioned article as served 2026-10-15; not a current app specification",
+      "checked_on": "2026-10-15",
+      "rights": "All rights reserved official blog. Junior and all other protected characters, GIFs and illustrations are excluded from the payload.",
+      "license_url": null,
+      "sha256": "0ad771002a86b8910e3614acb4e8c08177ea8c16289878892e7ebc27a62de3cb",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

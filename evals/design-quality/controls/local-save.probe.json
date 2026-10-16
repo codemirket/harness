@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "synthetic-owned-local-save",
+  "scenarios": [{
+    "id": "separate-storage-read-and-reload",
+    "viewport": {"width": 390, "height": 844},
+    "steps": [
+      {"id":"initial-count","action":"expect_text","target":{"selector":"#saved-count"},"equals":"0"},
+      {"id":"initial-storage","action":"expect_storage","key":"workshop-booking","equals":null},
+      {"id":"choose-paper","action":"check","target":{"selector":"input[value=paper]"}},
+      {"id":"independent-note","action":"fill","target":{"label":"Booking note"},"value":"Bring the large stencil."},
+      {"id":"save-once","action":"click","target":{"role":"button","name":"Save booking locally"}},
+      {"id":"claimed-success","action":"expect_text","target":{"selector":"#status"},"contains":"Saved locally"},
+      {"id":"claimed-count","action":"expect_text","target":{"selector":"#saved-count"},"equals":"1"},
+      {"id":"post-save-claim","action":"capture"},
+      {"id":"owned-session","action":"expect_storage","key":"workshop-booking","json_path":["session"],"equals":"paper"},
+      {"id":"owned-note","action":"expect_storage","key":"workshop-booking","json_path":["note"],"equals":"Bring the large stencil."},
+      {"id":"duplicate-save","action":"click","target":{"role":"button","name":"Save booking locally"}},
+      {"id":"read-owner","action":"click","target":{"role":"button","name":"Read stored booking"}},
+      {"id":"owned-count","action":"expect_text","target":{"selector":"#saved-count"},"equals":"1"},
+      {"id":"reload","action":"reload"},
+      {"id":"persisted-session","action":"expect_text","target":{"selector":"#saved-session"},"equals":"Paper & binding"},
+      {"id":"persisted-note","action":"expect_text","target":{"selector":"#saved-note"},"equals":"Bring the large stencil."},
+      {"id":"persisted-input","action":"expect_value","target":{"label":"Booking note"},"equals":"Bring the large stencil."},
+      {"id":"final-owner-count","action":"expect_text","target":{"selector":"#saved-count"},"equals":"1"},
+      {"id":"keyboard-focus-save","action":"focus","target":{"selector":"#save"}},
+      {"id":"focused-save","action":"expect_active","target":{"selector":"#save"}},
+      {"id":"focus-pixels","action":"capture"},
+      {"id":"keyboard-save","action":"press","key":"Enter"},
+      {"id":"still-one-record","action":"expect_text","target":{"selector":"#saved-count"},"equals":"1"}
+    ]
+  }]
+}

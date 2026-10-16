@@ -24,10 +24,9 @@ Choose planning effort from the cost of losing track, not the number of tool
 calls. Use the project's existing task record or the host's plan when it is
 sufficient. Do not create parallel records for the same work.
 
-For substantial work with interdependent outcomes or subjective acceptance, read
-[delivery review](references/delivery-review.md). It connects the completion
-conditions to a working slice, independent inspection and evidence-based repair;
-routine edits need no additional review process.
+[Delivery review](references/delivery-review.md) can help with interdependent
+outcomes or subjective acceptance. It connects completion conditions to a working
+slice, useful independent inspection and evidence-based repair.
 
 ## Establish a useful plan
 
@@ -91,6 +90,6 @@ Record the useful verification and any genuine limitation, then deliver the
 result. Retain or archive the task note according to project conventions;
 do not delete user records or extend the task solely to keep a plan active.
 
-For visual delivery and substantial cross-boundary delivery, use
-[artifact review](references/artifact-review.md) to inspect the actual result,
-judge the relevant craft and resolve defects independently of the author's claims.
+[Artifact review](references/artifact-review.md) offers format-specific methods
+for inspecting the actual result, judging craft and resolving defects independently
+of the author's claims when that review would help.

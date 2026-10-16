@@ -1,0 +1,11 @@
+{
+  "criteria": ["observable_save_effect", "keyboard_access", "responsive_craft"],
+  "split": "development",
+  "purpose": "Real compact host task for plumbing calibration; excluded from held-out quality claims.",
+  "assertions": {
+    "observable_save_effect": "Independent browser observation starts with count 0, activates Save, observes Saved locally plus count 1, activates again and observes count remains 1. A success message alone fails.",
+    "keyboard_access": "Save is reachable by Tab, has an accessible name and visible focus, and Enter produces the promised local effect.",
+    "responsive_craft": "At 1280 and 390 px, real content and the required action remain legible and unclipped. A fresh reviewer judges that hierarchy makes the current state and next action clear. Screenshot existence alone does not pass."
+  },
+  "human_acceptance": "not_collected"
+}

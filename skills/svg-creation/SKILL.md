@@ -27,6 +27,14 @@ logo or icon work. Use its relevant construction and critique sections. For
 animated artwork, let `svg-animation` lead motion and use this skill for geometry.
 For a whole screen, `interface-design` leads placement and hierarchy.
 
+When references would help explain a construction language, `design-inspiration` provides
+`references/design-languages/index.md` and exact catalog matches for hybrid
+illustration, generative/subject identities, human scenes and dimensional
+symbols. Its index explains optional specimens and contrasts. Construct from this
+brief's subject and existing system, drawing on useful sources beyond the library
+as needed. Source assets remain
+link-only; an example's coherent geometry is not a license to copy an identity.
+
 ## Construct deliberately
 
 1. Block out the silhouette, major masses and negative space. Render at the

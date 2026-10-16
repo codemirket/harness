@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "anchored_continuous_craft_rubric",
+  "scale": [0, 100],
+  "human_acceptance": "not_collected",
+  "dimensions": [
+    {"id": "hierarchy_content", "weight": 0.25, "question": "Does visual hierarchy reveal the actual task, facts and relationships with readable density and useful emphasis?"},
+    {"id": "composition_typography", "weight": 0.25, "question": "Do type, spacing, alignment, proportion and visual rhythm form a deliberate, legible composition at the intended sizes?"},
+    {"id": "identity_specificity", "weight": 0.20, "question": "Does the visual idea arise from this subject and audience, with distinctive but coherent treatment and concrete content rather than generic decoration?"},
+    {"id": "responsive_state_composure", "weight": 0.20, "question": "Does the composition remain understandable and polished across narrow layouts and the rendered interaction states, including selected, error and saved states?"},
+    {"id": "economy_coherence", "weight": 0.10, "question": "Do details support the same purpose, with controlled consistency, purposeful contrast and few distracting or unearned elements?"}
+  ],
+  "anchors": {
+    "0": "The intended relationship cannot be understood; visual treatment actively obscures content or is effectively absent.",
+    "25": "Substantial confusion or unfinished craft: weak hierarchy, strained typography/proportions, generic or incoherent treatment, or major state/layout breakdowns.",
+    "50": "Usable and plausible but ordinary or uneven: core content can be read, yet composition, identity, rhythm or important states reveal obvious unresolved choices.",
+    "75": "Strong considered work: hierarchy and subject-specific idea are clear, details mostly cohere, responsive states remain composed; identifiable refinements still matter.",
+    "100": "Exceptional execution for this brief and budget: content and form are mutually clarifying, distinct and resolved across intended states, with no material craft defect visible. This anchor is possible but rare and is not perfection or human acceptance."
+  },
+  "scoring_rules": [
+    "Use continuous values including intermediate scores; do not turn anchors into a five-bucket pass system.",
+    "Judge fit to the given audience, content and task. Dense, restrained, expressive, editorial, systematic or playful work can score equally well.",
+    "No automatic bonus for whitespace, large type, gradients, animation, fashionable style, reference names or novelty.",
+    "Keep functional correctness and access guardrails separate. A visible defect may affect a craft dimension only through its actual visible consequence; do not double-count an unseen code defect as weak visual craft.",
+    "Locate two or more specific visual observations for each dimension. Mark unavailable views unknown; do not invent evidence.",
+    "Lock render-only scores before reading source, decision, receipts, observed guidance use, arm names or another judge's ratings.",
+    "Give a post-score arm guess and confidence to assess imperfect blinding; do not change locked scores after the guess."
+  ]
+}

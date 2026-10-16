@@ -1,0 +1,56 @@
+{
+  "title": "Porsche: restrained industrial presentation",
+  "language": "Restrained industrial product presentation",
+  "aliases": [
+    "Porsche Design System",
+    "restrained product",
+    "industrial premium"
+  ],
+  "tags": [
+    "product",
+    "media-hierarchy",
+    "restraint",
+    "dimensions",
+    "durable-goods"
+  ],
+  "summary": "Concentrate product media, space and a small number of controls around one physical decision.",
+  "use_when": "A durable object or premium service needs a concentrated explanation and one clear next decision.",
+  "avoid_when": "A control-dense administrative task or a character-led community experience needs many equally available actions.",
+  "sources": [
+    {
+      "title": "Porsche Design System: v4 Landing Page template",
+      "url": "https://designsystem.porsche.com/v4/templates/landing-page/",
+      "edition": "v4 documentation; version selector showed v4.8.0 and an earlier-release banner in prior inspection. No latest-version claim.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only visual reference. Apache-2.0 source code is separate from the restrictive Porsche Design System Assets License Agreement. No Porsche media, fonts, icons or marks are included.",
+      "license_url": "https://raw.githubusercontent.com/porsche-design-system/porsche-design-system/main/LICENSE.md",
+      "sha256": "87f600726ebebd28a3fca8b409dd8f54ff7f204238b5a703d2007ddcd7943d52",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Porsche Design System: v4 Landing Page full example",
+      "url": "https://designsystem.porsche.com/v4/examples/templates/landing-page/index.html",
+      "edition": "v4 full example inspected at 1280×900 on 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only template/media reference; no template code, video, imagery or brand assets are copied.",
+      "license_url": "https://raw.githubusercontent.com/porsche-design-system/porsche-design-system/main/LICENSE.md",
+      "sha256": "7ffa2d65cfa6c08db7a128e810f0fe8d6cfe1c7d8a8d7adbca66de342cc14232",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Porsche Design System: v4 Typography",
+      "url": "https://designsystem.porsche.com/v4/must-know/typography/",
+      "edition": "v4 typography guidance checked 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Porsche Next and other Porsche-specific assets are excluded. The original study uses system sans fonts.",
+      "license_url": "https://raw.githubusercontent.com/porsche-design-system/porsche-design-system/main/LICENSE.md",
+      "sha256": "1728ac19d0747660b9f5b5d6d2778ecdcccdb12cd5e1317f03e140dbf5004fad",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "porsche-restraint",
+  "domain": "interface",
+  "card": "references/design-languages/porsche-restraint.md",
+  "example": "assets/design-languages/porsche-restraint/index.html",
+  "original_example": true
+}

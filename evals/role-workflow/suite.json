@@ -3,7 +3,7 @@
   "id": "role-workflow-v1",
   "checker": {
     "path": "src/role_eval.rs",
-    "sha256": "513ad15a438438b6153c95dd253347d4f35887a82e7f01978e10a850c0c11473"
+    "sha256": "0dbb5be9a86bb7c9f7de3611ebe9441863a999895480a16e515fc97de2071b45"
   },
   "configurations": [
     {

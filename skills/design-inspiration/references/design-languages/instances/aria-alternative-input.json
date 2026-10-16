@@ -1,0 +1,48 @@
+{
+  "id": "aria-alternative-input",
+  "title": "W3C access patterns: equivalent input with stable focus",
+  "language": "Native input alternatives and identity-preserving recovery",
+  "domain": "interface",
+  "aliases": [
+    "ARIA alternative input",
+    "Accessible reorder",
+    "Non-dragging input",
+    "Stable focus recovery"
+  ],
+  "tags": [
+    "keyboard",
+    "single-pointer",
+    "reorder",
+    "focus-recovery",
+    "native-buttons",
+    "stable-identity"
+  ],
+  "summary": "A finite learning queue uses native up/down buttons, stable IDs, explicit boundary rejection and actual undo; its wrong variant commands stale array slots.",
+  "use_when": "A finite web ordering task needs click and keyboard alternatives to dragging. Focus and recovery must follow the named item through reordering.",
+  "avoid_when": "Does not supply a full drag implementation or custom ARIA listbox. Do not infer screen-reader, switch, speech, native-platform support or conformance.",
+  "sources": [
+    {
+      "title": "WCAG 2.2 Understanding SC 2.5.7: Dragging Movements",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+      "edition": "WCAG 2.2 current informative Understanding support page",
+      "checked_on": "2026-10-15",
+      "rights": "W3C document rights apply to source. Link-only; no documentation passages, media or code bundled. Example avoids dragging entirely.",
+      "license_url": "https://www.w3.org/copyright/document-license-2023/",
+      "sha256": "c3905630a35b6e8246aba32c1769f3ff82b217d464d41e4b1b2a34b9df5771c6",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    },
+    {
+      "title": "APG Example Listboxes with Rearrangeable Options",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/examples/listbox-rearrangeable/",
+      "edition": "Live ARIA Authoring Practices Guide; no immutable release claimed",
+      "checked_on": "2026-10-15",
+      "rights": "Source footer links W3C software/document license. Link-only; no APG code, widget, screenshot or mark copied. Original example uses native HTML buttons.",
+      "license_url": "https://www.w3.org/copyright/software-license-2023/",
+      "sha256": "06412ff60e731be594e61d35a493e9b71ed829ebf7f8527e158e986622d9f33c",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "card": "references/design-languages/aria-alternative-input.md",
+  "example": "assets/design-languages/aria-alternative-input/index.html",
+  "original_example": true
+}

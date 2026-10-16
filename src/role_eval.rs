@@ -142,7 +142,11 @@ fn validate_suite(suite: &Suite) -> Result<()> {
             && (1..=8).contains(&suite.configurations.len()),
         "suite exceeds bounded trial/case/configuration limits"
     );
-    let dev = nonempty_unique(&suite.development, "development cases")?;
+    let dev = if suite.development.is_empty() {
+        BTreeSet::new()
+    } else {
+        nonempty_unique(&suite.development, "development cases")?
+    };
     let held = nonempty_unique(&suite.held_out, "held-out cases")?;
     ensure!(dev.is_disjoint(&held), "development/held-out split overlap");
     let ids = nonempty_unique(

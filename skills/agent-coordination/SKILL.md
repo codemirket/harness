@@ -7,15 +7,15 @@ description: Coordinate distinct professional agents with task-scoped assignment
 
 ## Work as distinct professionals
 
-For substantive work crossing disciplines, derive the affected boundaries from
-the user outcome and sources, then use Mirket's `team_facets` and `team_plan`.
-The returned roster supplies complementary professional perspectives and methods.
-Choose applicable boundaries with task-specific reasons; do not fill every role
-or assume adjacent roles are needed merely because they share a skill tag.
+Use independent assignments when their separate judgment or work would help,
+or when the user/project requests them. Derive boundaries from the outcome and
+sources. Mirket's `team_facets` and `team_plan` can compose complementary briefs;
+choose applicable boundaries with task-specific reasons rather than filling roles
+because they share a skill tag.
 
-Dispatch each selected specialist to a separate host agent when its assignment
-can be performed independently. The coordinator may own the lead role. Queue
-assignments within actual concurrency limits; dependencies determine when an
+Dispatch selected independent assignments to actual host agents. The coordinator
+may own the lead role. Queue assignments within actual concurrency limits;
+dependencies determine when an
 implementer or reviewer can use another's artifact. With unavailable independent
 agents, state that limit and distinguish sequential perspectives from independent
 professional contributions. Never invent a worker, credential or review.
@@ -35,12 +35,13 @@ against the user's constraints and observed evidence, records consequential diss
 and verifies the combined result. Reopen affected work when a peer exposes a real
 defect. A majority vote, role title or plausible narrative does not prove quality.
 
-Use one coordinator for shared Mirket task mutations and revision numbers. Read
-each selected body through task-bound delivery and provide it to its worker; keep
-the roster, actual host agent IDs, ownership, dependency status and contribution
-paths in the existing task record. Attach the roster and meaningful contribution
-evidence before completion. For machine-checked coverage, save the original team
-roster and a version 1 contributions receipt, then use `task_validate` and
+Keep the roster, actual host agent IDs, ownership, dependencies and contribution
+paths in the chosen record. When using Mirket task tracking, use one coordinator
+for its mutations and revision numbers, record selected guidance delivery and
+attach the roster and meaningful contribution evidence before completion.
+
+For deliberately selected machine-checked coverage, save the original team roster
+and a version 1 contributions receipt, then use `task_validate` and
 `task_evidence` with `contract: "contributions"` (CLI: `--contract contributions`).
 Include each original role exactly once, actual host worker ID, attempt and matching
 result attempt, declared input/evidence file identities, dependencies, validation,

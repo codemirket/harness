@@ -1,0 +1,40 @@
+{
+  "id": "android-adaptive-continuity",
+  "title": "Android adaptive: keep the selected content through layout change",
+  "language": "Adaptive content-identity continuity",
+  "domain": "interface",
+  "aliases": [
+    "Android adaptive",
+    "list detail",
+    "list-detail",
+    "adaptive navigation",
+    "selection continuity"
+  ],
+  "tags": [
+    "adaptive-layout",
+    "list-detail",
+    "navigation",
+    "state-restoration",
+    "draft-ownership",
+    "native-reference",
+    "web-analogue"
+  ],
+  "summary": "Teach selected-content and draft ownership across one/two-pane layouts with an explicit web analogue and native Android runtime gaps.",
+  "use_when": "A list-detail brief needs a reference for selection continuity and interrupted work; native implementation is owned and verified separately.",
+  "avoid_when": "The request expects native Android coverage, Compose code, Predictive Back, process restoration, fold posture or device validation from a web specimen.",
+  "card": "references/design-languages/android-adaptive-continuity.md",
+  "example": "assets/design-languages/android-adaptive-continuity/index.html",
+  "sources": [
+    {
+      "title": "Android Developers: Build a list-detail layout",
+      "url": "https://developer.android.com/develop/ui/compose/layouts/adaptive/list-detail",
+      "edition": "Last updated 2026-10-01; checked 2026-10-15. Wide and narrow figures rendered and visually inspected in Chrome.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only guidance. Site policies state documentation generally CC BY 4.0 and code Apache 2.0 with exceptions; brand features and some media excluded. No Android assets, Roboto, screenshots or Compose code copied. No native runtime coverage implied.",
+      "license_url": "https://developers.google.com/terms/site-policies",
+      "sha256": "3fbba953ed0b880f55680f06500c1b9698d3d06ceb7d828eda62b8382b0a7e43",
+      "capture_note": "HTTP response body captured 2026-10-15 for identity only; a mutable document or JavaScript shell may differ from rendered source inspection. Not an interaction or rights audit."
+    }
+  ],
+  "original_example": true
+}

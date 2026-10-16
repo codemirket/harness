@@ -1,0 +1,54 @@
+{
+  "id": "ibm-hybrid-illustration",
+  "title": "IBM hybrid illustration — controlled fidelity explains a relationship",
+  "language": "Engineered conceptual illustration",
+  "aliases": [
+    "hybrid UI illustration",
+    "controlled fidelity"
+  ],
+  "tags": [
+    "illustration",
+    "abstraction",
+    "technical-explanation",
+    "conditional-flow"
+  ],
+  "summary": "Use original UI fragments and controlled detail to make a causal or conditional relationship perceptible.",
+  "use_when": "A technical overview needs to preserve a workflow decision while suppressing irrelevant interface detail.",
+  "avoid_when": "The audience needs an exact product demonstration, anatomical realism or unqualified proof of success.",
+  "sources": [
+    {
+      "title": "IBM Design Language: Hybrid UI style design",
+      "url": "https://www.ibm.com/design/language/illustration/hybrid-ui-style/design/",
+      "edition": "Living guidance, checked 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only study. No scene, kit, font or brand asset is admitted; no open grant for the selected illustration established.",
+      "license_url": null,
+      "sha256": "1311d595627f46d40c6015c54f2cfa582e9b36059a8e0dc82e2baec80221140d",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Official Hybrid UI source and named assistant illustration",
+      "url": "https://github.com/carbon-design-system/design-language-website/blob/master/src/pages/illustration/hybrid-ui-style/design.mdx",
+      "edition": "Unpinned official source read 2026-10-15; named example_assistant.svg",
+      "checked_on": "2026-10-15",
+      "rights": "Source content is used for inspection and citation only. Separate Carbon or icon code licenses do not clear these IBM scenes.",
+      "license_url": null,
+      "sha256": "24c993cb23e4053a2423ee9c8a670df13f620e3b6dd465551ae098767870e213",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "IBM line style construction",
+      "url": "https://www.ibm.com/design/language/illustration/line-style/design/",
+      "edition": "Living guidance, checked in research 2026-10-15",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only; line style is a separate construction reference, not an asset license.",
+      "license_url": null,
+      "sha256": "0cadb687c289b7f24953028d6f2ff43b1d3548097e5b985d812a7466db6689f1",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "domain": "graphic",
+  "card": "references/design-languages/ibm-hybrid-illustration.md",
+  "example": "assets/design-languages/ibm-hybrid-illustration/index.html",
+  "original_example": true
+}

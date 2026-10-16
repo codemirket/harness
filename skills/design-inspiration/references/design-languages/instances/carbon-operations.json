@@ -1,0 +1,47 @@
+{
+  "title": "Carbon: visible technical operations",
+  "language": "Dense technical operations",
+  "aliases": [
+    "Carbon",
+    "IBM Carbon",
+    "operations console",
+    "data tables"
+  ],
+  "tags": [
+    "operations",
+    "inventory",
+    "filters",
+    "selection",
+    "batch-actions"
+  ],
+  "summary": "Make operational scope legible with aligned records, a stable toolbar, visible filters and explicit batch selection.",
+  "use_when": "An operator must find, compare and act on many structured records while preserving filter and selection scope.",
+  "avoid_when": "A single simple decision or a brand narrative needs more explanation than simultaneous record comparison.",
+  "sources": [
+    {
+      "title": "Carbon Design System: Data table guidelines",
+      "url": "https://www.carbondesignsystem.com/building-blocks/core/components/data-table/guidelines",
+      "edition": "Current redirected documentation; page marked updated 2026-09-30, inspected 2026-10-15.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only documentation/reference. Repository software is Apache-2.0; this does not clear all website media, IBM branding or fonts. No Carbon code is copied.",
+      "license_url": "https://raw.githubusercontent.com/carbon-design-system/carbon/main/LICENSE",
+      "sha256": "6307ffe0d45bc5a0c749271cc1245fc79db81c3627c769986baa556e3dd378d5",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    },
+    {
+      "title": "Carbon Design System: Filtering",
+      "url": "https://www.carbondesignsystem.com/building-blocks/core/patterns/filtering",
+      "edition": "Current redirected documentation; source evidence marked updated 2026-08-11.",
+      "checked_on": "2026-10-15",
+      "rights": "Link-only reference. Software license and website/media rights remain separate.",
+      "license_url": "https://raw.githubusercontent.com/carbon-design-system/carbon/main/LICENSE",
+      "sha256": "977d7b0bf4ec34488e04968a8fc0ca97badb49f866860b2e84636e3d26ad6f47",
+      "capture_note": "HTTP body 2026-10-15; mutable page/JS shell possible. No interaction or rights audit."
+    }
+  ],
+  "id": "carbon-operations",
+  "domain": "interface",
+  "card": "references/design-languages/carbon-operations.md",
+  "example": "assets/design-languages/carbon-operations/index.html",
+  "original_example": true
+}
