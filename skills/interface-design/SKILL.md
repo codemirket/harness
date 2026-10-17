@@ -31,8 +31,8 @@ visible choice to this brief and repair located defects in the actual render.
 Do not replace the product's identity with a checklist of fashionable effects.
 
 When the requested deliverable is an editable design document, use
-`graphic-design` and its design-document reference with the optional headless
-Penpot tools (shared design files). A static design export does not implement responsive behavior,
+`graphic-design` and its design-document reference with the official Penpot
+MCP/plugin through the `design` package. A static design export does not implement responsive behavior,
 accessible controls or a working website.
 
 ## Before composing
@@ -40,6 +40,9 @@ accessible controls or a working website.
 Identify the person, their immediate task and the important action. Inspect the
 existing screen, components, tokens, content and target devices. Preserve the
 project's system unless the requested change includes a new direction.
+When tokens change, compile `design/tokens.json` through Style Dictionary to the
+CSS, JavaScript, TypeScript, Typst and Penpot outputs before rendering dependent
+screens or exports.
 
 When documenting that system or alleging design drift, use
 [design evidence](references/design-evidence.md) to distinguish governing intent
@@ -99,7 +102,7 @@ the reference does not require another planning document.
 - Implement real state transitions: filters change results; save controls change
   saved state; dialogs open, close and restore focus. Include empty/error/loading
   states when the real data contract needs them, not as decorative screenshots.
-- Choose assets deliberately. Use source SVG for editable icons, marks, diagrams
+- Choose assets deliberately. Use source SVG for editable icons and marks, Kroki for diagrams,
   and vector illustration; use supplied/licensed/generated raster when the work
   needs photography or painterly imagery. Inspect the asset in its composition.
 - Let content wrap and reflow intentionally. Test long labels, narrow containers,
@@ -126,7 +129,8 @@ playback as well as intermediate frames. Performance claims require measurement;
 
 ## Inspect and critique
 
-Run the real screen and exercise the changed task. Compare matching content,
+Run the real screen and exercise the changed task through Browserless. Inspect
+the full DOM and capture 2x screenshots. Compare matching content,
 viewport, theme and state with the baseline/reference. Inspect desktop and narrow
 layouts, then repair observed clipping, weak hierarchy, unreadable text, missing
 assets and broken behavior. A screenshot capture or passing build is not visual
@@ -136,11 +140,14 @@ Use [browser evidence](references/workbench.md) for reproducible scenarios,
 motion frames and optional controlled comparisons of existing components. Reuse
 the project's preview infrastructure when it covers the needed states. Keep diagnostic tools
 outside the product interface. For large changes, obtain an independent review of
-the rendered result when a reviewer is available. Ask for located defects and
-specific repairs, separating functional defects from preferences. Otherwise do a
-fresh inspection and state that independent review was unavailable.
+the rendered result when the task's uncertainty, impact or visual judgment
+warrants it and an appropriate reviewer is available. Ask for located defects
+and specific repairs, separating functional defects from preferences. When
+review is warranted but unavailable, do a fresh inspection and state that
+independent review was unavailable; otherwise a fresh inspection is sufficient.
 
-Show the actual result and relevant captures. State what was exercised and what
+Use Odiff for matched baseline/result pixels, then inspect the diff rather than
+accepting a numeric score as quality. Show the actual result and relevant captures. State what was exercised and what
 remains unverified. Human approval of visual direction and feel is its own result;
 record accepted, revise, or not reviewed. Do not turn automated checks into it.
 

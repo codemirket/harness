@@ -1,96 +1,81 @@
 # Compose expertise around an outcome
 
-Use for a substantial task spanning professional roles. Mirket assigns scoped
-professional responsibilities; the host runs the independent agents under its
-existing model choices, tools and permissions.
+Use this reference for substantive multidisciplinary work or explicit
+collaboration. Routine, single-role work is direct. A plan is read-only and
+starts no agents; delegate only when useful independent work would materially
+help or the user/project explicitly requests it.
 
 ## Make the next decision easy
 
-Select a lead from the deliverable, then add expertise for concrete boundaries.
-A CFO request for a forecast uses financial-analysis, with spreadsheet-analysis
-only when the deliverable is a workbook. A cash question does not require a CEO
-council. A mobile feature uses mobile-engineering, with mobile-design for the
-journey and backend-engineering only when its service contract changes.
+Select one lead from the deliverable, then add support for concrete affected
+boundaries. Inspect `capabilities facets` and use
+`capabilities team "ROLE" --objective "OUTCOME" --facet "ID=REASON"` when
+separate professional assignments would improve the result. Use
+`capabilities plan "ROLE" --with "OTHER ROLE"` for focused composition. Keep
+repeated roles merged and phase work that exceeds the roster limit; do not load
+every role or support skill because its name appears in the request.
 
-Inspect `capabilities facets`, interpret the task and affected sources, then use
-`capabilities team "ROLE" --objective "OUTCOME" --facet "ID=REASON"` for the
-relevant boundaries. The host supplies task meaning; Mirket deterministically
-assigns complementary roles with separate briefs, selection reasons and methods.
-Additional `--with` roles stay explicit. Repeated roles are merged into one
-assignment with all their contributions retained. Broad work exceeding the roster
-limit needs phases, not silently omitted professionals.
-
-Use `capabilities plan "ROLE" --with "OTHER ROLE"` for focused explicit role
-composition. Both routes provide lead fingerprints and read paths. Follow the
-project's existing route; search the reviewed catalog for a missing specialty.
-Register concrete project IDs through add/sync/doctor.
-
-Load the lead first. Retrieve a reference when the next decision needs it. Keep
-project facts in their owning files, current work in one task record, source
-captures in retrievable evidence, and reusable craft in reviewed skills. State
-which source wins when sources conflict; more context does not resolve a conflict.
+Load the lead first and retrieve references only when the next decision needs
+them. Keep project facts in their owning files and use one existing task record
+when continuity, recovery or coordination needs durable state.
 
 ## Establish the execution boundary
 
 | Need | First useful route | Evidence required before relying on it |
 | --- | --- | --- |
-| Code and systems | Existing repository, language runtime, tests and diagnostics | A relevant command or consumer behavior on the actual version |
+| Code and systems | Existing repository, runtime, tests and diagnostics | A relevant command or consumer behavior on the actual version |
 | Browser and design | Host browser/desktop tool, then established project automation | App state, interaction and actual rendered artifact |
-| Graphics and motion | Native image tool for bitmap, editable vector tools for geometry, actual animation/video engine | Medium fidelity, output format, use-size and frame inspection |
+| Graphics and motion | Native image/vector tools and the actual animation/video engine | Medium, output format, use-size and frame inspection |
 | Excel and office files | Native format tool; live Excel adapter only for a connected workbook | Correct target, saved formulas, recalculation and rendered result |
-| Public research | Search followed by source retrieval; official docs MCP for its domain | Actually read source, version/date and claim support |
+| Public research | Search followed by source retrieval; official docs for its domain | Actually read source, version/date and claim support |
 | Private systems | Existing scoped connector or CLI | Actual account/resource access and authority for the effect |
 
-If a required tool is missing, continue independent work and identify the specific
-gap. A declared dependency, plugin name or MCP configuration is not an available
-tool. Installing a second runtime is justified only by an unmet outcome and its
-reviewed costs, data flows and permissions. Do not route through a new daemon
-when existing native tools suffice.
+If a tool is missing, continue independent work and identify the specific gap.
+A declared dependency, plugin or MCP configuration is not an available tool.
+Add a runtime or daemon only for a demonstrated unmet outcome after reviewing
+costs, data flows and permissions. Choose the least costly route that observes
+the required result; tool count and repeated captures are not quality.
 
-Choose a tool for a concrete missing effect or observation: editable geometry,
-rendered behavior, real calculation, source retrieval or measured performance.
-Use the least costly available route that can establish that result; add a more
-capable tool when the first route cannot. Independent calls may run together,
-but dependent effects need ordering. Reuse evidence while its inputs are unchanged.
-Tool counts, a larger stack and repeated captures without inspection are not quality.
+When a native or project tool is absent and the gap blocks the requested result,
+use one shared fallback route: inspect the package with `mirket package list` and
+`mirket package show ID`, then use `mirket package status` or `mirket package
+probe ID` when those checks apply. For an executable,
+inspect `mirket tool list` and `mirket tool doctor`; register or run it only when
+the actual gap remains and the host or project toolchain cannot supply the
+needed effect. Registration is optional pinning, not a prerequisite for an
+already available tool. Preserve the user's provider, model, authority and
+bounded host controls.
 
 ## Work with a verification loop
 
-Keep four task facts in the existing record when the task warrants persistence:
-the intended result, allowed effects, current evidence and next discriminating
-check. Plan detail should follow uncertainty. Implement a useful slice, observe
-the consumer, repair the cause and expand once that boundary works.
+When tracking is warranted, keep the intended result, allowed effects, current
+evidence and next discriminating check in the existing record. Implement a
+useful slice, observe the consumer, repair the cause and expand once that
+boundary works. A failure probe names a useful test; it is not a mandatory
+simulation for every small request.
 
-Choose independent checks for consequential claims. A workbook save is separate
-from formula recalculation; a successful API response is separate from durable
-completion; a sourced market estimate is separate from validated customer demand.
-The capability failure probe names a useful test, not a mandatory simulation for
-every small request. Adapt it to the task's actual risk and tools.
+For delegated work, dispatch actual host agents with a professional brief,
+owned paths/effects, raw source context, dependencies, concrete artifact and
+required evidence. Keep shared writers disjoint. The lead integrates returns,
+resolves disagreement against the user's constraints and verifies joined
+behavior. A worker's process or score does not establish acceptance; inspect
+returned files and reconcile uncertain external writes before replay.
 
-Dispatch the selected professionals using actual host subagents. Give each its
-professional brief, owner, allowed paths/effects, raw source context, concrete
-artifact and required evidence. Keep distinct methods and task-specific tradeoffs
-visible in their returns; apply `agent-coordination` for independent initial views,
-peer challenges, dependency ordering and evidence-based disagreement resolution.
-Keep the primary agent responsible for joined behavior. A worker's completed
-process or self-awarded score cannot establish accepted output. Verify returned
-files and reconcile late results after cancellation or a changed assignment.
+If a delegated team is tracked, save the read-only roster before task creation,
+use its `task_start` or `task_start_cli.args` inputs, and bind real worker IDs
+and contribution paths to the existing task record. The coordinator owns shared
+revision updates; a plan, skill receipt or artifact hash does not prove that a
+worker ran or that its reasoning and output were accepted.
 
-Stop repeating an approach when it produces no new evidence. Diagnose the failed
-assumption, narrow the experiment or request the missing decision. An interrupted
-external write may already have happened: inspect its outcome before replay.
-Durable chat history, resumable execution and idempotent effects are different
-mechanisms. A task note supports resumption but does not implement exactly-once
-execution.
+Stop when retries produce no new evidence: diagnose the failed assumption,
+narrow the experiment or request the missing decision. A task note supports
+resumption but does not implement exactly-once execution.
 
 ## Close the claim at the right level
 
-Report source inspection, registration, runtime readiness, observed task behavior
-and owner acceptance separately. Keep evidence linked to the relevant bytes and
-environment; an unchanged revision does not cover uncommitted edits. Recheck only
-the evidence affected by a change, plus required project gates.
-
-Capture a reusable improvement only when a concrete failure supports it: identify
-the trigger, change the responsible workflow/tool/fixture, and keep a regression
-that rejects the former failure. Historical usage, a model summary or a vendor
-benchmark alone is insufficient to promote new policy or automatic memory.
+Report source inspection, registration, runtime readiness, observed behavior and
+owner acceptance separately. Keep evidence tied to exact bytes and environment;
+an unchanged revision does not cover uncommitted edits. Recheck changed evidence
+and required project gates. Capture a reusable workflow improvement only after a
+concrete failure identifies its trigger and a regression rejects the former
+failure.

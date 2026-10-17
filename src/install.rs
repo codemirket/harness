@@ -157,9 +157,15 @@ pub(crate) fn read_state(paths: &Paths) -> Result<Option<InstallState>> {
     Ok(read_state_snapshot(paths)?.map(|(state, _)| state))
 }
 
+struct ReceiptSnapshot {
+    state: InstallState,
+    bytes: Vec<u8>,
+    mode: Option<u32>,
+    token: String,
+}
+
 pub(crate) struct RemovedReplayChoices {
     pub microsoft_learn: bool,
-    pub packages: Vec<String>,
     pub targets: Vec<Target>,
 }
 
@@ -182,26 +188,36 @@ pub(crate) fn removed_replay_choices(
     let receipt: Value = serde_json::from_slice(&bytes)?;
     Ok(RemovedReplayChoices {
         microsoft_learn: receipt["options"]["microsoft_learn"].as_bool() == Some(true),
-        packages: receipt["options"]
-            .get("packages")
-            .map(|values| serde_json::from_value(values.clone()))
-            .transpose()?
-            .unwrap_or_default(),
         targets: state.options.targets,
     })
 }
 
 pub(crate) fn read_state_snapshot(paths: &Paths) -> Result<Option<(InstallState, String)>> {
-    let Some(bytes) = read_optional(&paths.settings(), MAX_SETTINGS)? else {
+    Ok(read_receipt_snapshot(paths)?.map(|snapshot| (snapshot.state, snapshot.token)))
+}
+
+fn read_receipt_snapshot(paths: &Paths) -> Result<Option<ReceiptSnapshot>> {
+    let receipt_path = paths.settings();
+    let Some(bytes) = read_optional(&receipt_path, MAX_SETTINGS)? else {
         return Ok(None);
     };
-    let mut state: InstallState =
-        serde_json::from_slice(&bytes).context("invalid mirket setup receipt")?;
+    let mode = file_mode(&receipt_path)?;
+    let state = parse_receipt(&bytes)?;
+    Ok(Some(ReceiptSnapshot {
+        state,
+        token: sha256(&bytes),
+        bytes,
+        mode,
+    }))
+}
+
+fn parse_receipt(bytes: &[u8]) -> Result<InstallState> {
+    let state: InstallState =
+        serde_json::from_slice(bytes).context("invalid mirket setup receipt")?;
     if state.format != 1 {
         bail!("unsupported mirket setup receipt format");
     }
     validate_options(&state.options)?;
-    crate::packages::normalize_saved_selection(&mut state.options);
     crate::update::parse_version(&state.version)?;
     if state.files.len() > 20_000 {
         bail!("setup receipt contains too many files");
@@ -222,7 +238,7 @@ pub(crate) fn read_state_snapshot(paths: &Paths) -> Result<Option<(InstallState,
             bail!("invalid server ownership in setup receipt");
         }
     }
-    Ok(Some((state, sha256(&bytes))))
+    Ok(state)
 }
 
 /// Resolve an installed newer runtime for the small executable bootstrap. The
@@ -300,8 +316,9 @@ fn setup_from_binary_checked(
     recover_setup(paths)?;
     check_setup_generation(paths, expected_state, "update or configuration")?;
     cleanup_retired_runtime(paths)?;
-    let (changes, report) = prepare(paths, catalog, options, &binary)?;
-    crate::packages::prepare(paths, &options.packages)?;
+    let registry = crate::packages::Registry::embedded()?;
+    let (changes, report) = prepare(paths, catalog, options, &binary, &registry)?;
+    crate::packages::prepare_with_registry(paths, &options.packages, &registry)?;
     check_setup_generation(paths, expected_state, "package preparation")?;
     apply_changes(paths, &changes)?;
     Ok(report)
@@ -309,7 +326,8 @@ fn setup_from_binary_checked(
 
 pub fn plan(paths: &Paths, catalog: &Catalog, options: &SetupOptions) -> Result<SetupReport> {
     let binary = read_bounded(&std::env::current_exe()?, MAX_FILE)?;
-    let (_, report) = prepare(paths, catalog, options, &binary)?;
+    let registry = crate::packages::Registry::embedded()?;
+    let (_, report) = prepare(paths, catalog, options, &binary, &registry)?;
     Ok(report)
 }
 
@@ -403,11 +421,11 @@ fn read_optional(path: &Path, max: u64) -> Result<Option<Vec<u8>>> {
 fn add_change(
     changes: &mut Vec<Change>,
     path: PathBuf,
+    before: Option<Vec<u8>>,
+    before_mode: Option<u32>,
     after: Option<Vec<u8>>,
     executable: Option<bool>,
-) -> Result<()> {
-    let before = read_optional(&path, MAX_FILE)?;
-    let before_mode = file_mode(&path)?;
+) {
     let after_mode = if cfg!(unix) {
         Some(match (executable, before_mode) {
             (None, mode) => mode.unwrap_or(0o600),
@@ -428,7 +446,6 @@ fn add_change(
             after_mode,
         });
     }
-    Ok(())
 }
 fn assert_owned(
     path: &Path,
@@ -460,11 +477,13 @@ fn prepare(
     catalog: &Catalog,
     options: &SetupOptions,
     binary: &[u8],
+    registry: &crate::packages::Registry,
 ) -> Result<(Vec<Change>, SetupReport)> {
     validate_options(options)?;
-    crate::packages::Registry::embedded()?.validate_selection(&options.packages)?;
+    registry.validate_selection(&options.packages)?;
     reject_symlink_components(&paths.root)?;
-    let prior = read_state(paths)?;
+    let receipt_snapshot = read_receipt_snapshot(paths)?;
+    let prior = receipt_snapshot.as_ref().map(|snapshot| &snapshot.state);
     if let Some(state) = &prior
         && crate::update::parse_version(&state.version)?
             > crate::update::parse_version(env!("CARGO_PKG_VERSION"))?
@@ -547,17 +566,22 @@ fn prepare(
             new_files.get(&relative),
         )?;
         match desired.get(&relative) {
-            Some((bytes, exec)) => {
-                add_change(&mut changes, path, Some(bytes.clone()), Some(*exec))?
-            }
-            None if actual.is_some() => add_change(&mut changes, path, None, None)?,
+            Some((bytes, exec)) => add_change(
+                &mut changes,
+                path,
+                actual,
+                mode,
+                Some(bytes.clone()),
+                Some(*exec),
+            ),
+            None if actual.is_some() => add_change(&mut changes, path, actual, mode, None, None),
             None => {}
         }
     }
     let mut new_servers = BTreeMap::new();
     for target in [Target::Codex, Target::Claude] {
         let wanted = if options.targets.contains(&target) {
-            desired_servers(paths, target, options)?
+            desired_servers(registry, paths, target, options)?
         } else {
             BTreeMap::new()
         };
@@ -571,8 +595,9 @@ fn prepare(
         }
         let path = paths.home.join(target.config());
         let current = read_optional(&path, MAX_SETTINGS)?;
+        let current_mode = file_mode(&path)?;
         let bytes = merge_config(target, current.as_deref(), &old, &wanted)?;
-        add_change(&mut changes, path, Some(bytes), None)?;
+        add_change(&mut changes, path, current, current_mode, Some(bytes), None);
         if !wanted.is_empty() {
             new_servers.insert(target, wanted);
         }
@@ -586,7 +611,18 @@ fn prepare(
     };
     let mut receipt_bytes = serde_json::to_vec_pretty(&receipt)?;
     receipt_bytes.push(b'\n');
-    add_change(&mut changes, paths.settings(), Some(receipt_bytes), None)?;
+    let receipt_path = paths.settings();
+    let (receipt_before, receipt_mode) = receipt_snapshot
+        .map(|snapshot| (Some(snapshot.bytes), snapshot.mode))
+        .unwrap_or((None, None));
+    add_change(
+        &mut changes,
+        receipt_path,
+        receipt_before,
+        receipt_mode,
+        Some(receipt_bytes),
+        None,
+    );
     let report = SetupReport {
         version: receipt.version,
         targets: options.targets.clone(),
@@ -638,11 +674,11 @@ fn existing_files(root: &Path) -> Result<Vec<PathBuf>> {
 }
 
 fn desired_servers(
+    registry: &crate::packages::Registry,
     paths: &Paths,
     target: Target,
     options: &SetupOptions,
 ) -> Result<BTreeMap<String, Value>> {
-    let packages = crate::packages::Registry::embedded()?;
     let args = json!(["--home", paths.home, "mcp", "serve"]);
     let mut servers = BTreeMap::new();
     let mirket = match target {
@@ -656,7 +692,8 @@ fn desired_servers(
             Target::Codex => json!({"command":paths.binary(),"args":args}),
             Target::Claude => json!({"type":"stdio","command":paths.binary(),"args":args}),
         };
-        if packages.get(id)?.adapter.is_some() {
+        registry.get(id)?;
+        {
             match target {
                 Target::Codex => {
                     value["startup_timeout_sec"] = json!(90);
@@ -695,9 +732,7 @@ fn preserve_removed_server(
         // A customized entry is left intact and omitted from the new receipt.
         return previous != Some(&installed) || current != previous;
     }
-    name.strip_prefix("mirket-package-")
-        .is_some_and(crate::packages::is_retired_id)
-        && current != previous
+    false
 }
 fn validate_server_change(
     name: &str,
@@ -909,6 +944,7 @@ struct JournalFile {
     before_mode: Option<u32>,
     after_mode: Option<u32>,
 }
+const SETUP_COMMITTED: &[u8] = b"mirket setup committed\n";
 fn transaction_path(paths: &Paths) -> PathBuf {
     paths.root.join(".setup-transaction")
 }
@@ -945,48 +981,15 @@ fn prepare_journal(paths: &Paths, changes: &[Change]) -> Result<()> {
     }
     result
 }
-fn recover_setup(paths: &Paths) -> Result<()> {
-    let directory = transaction_path(paths);
-    reject_symlink_components(&directory)?;
-    if !directory.exists() {
-        return Ok(());
-    }
-    if let Some(marker) = read_optional(&directory.join("committed"), 32)? {
-        if marker != b"mirket setup committed\n" {
-            bail!("invalid setup transaction commit marker");
-        }
-        fs::remove_dir_all(&directory)?;
-        return Ok(());
-    }
-    let Some(bytes) = read_optional(&directory.join("journal.json"), MAX_SETTINGS)? else {
-        // No destination can have been written before the complete journal exists.
-        for entry in fs::read_dir(&directory)? {
-            let entry = entry?;
-            let name = entry.file_name();
-            let name = name.to_string_lossy();
-            let before_image = name.strip_prefix("before-").is_some_and(|index| {
-                !index.is_empty() && index.bytes().all(|byte| byte.is_ascii_digit())
-            });
-            let atomic_temporary = name.strip_prefix(".tmp").is_some_and(|suffix| {
-                !suffix.is_empty() && suffix.bytes().all(|byte| byte.is_ascii_alphanumeric())
-            });
-            if !entry.file_type()?.is_file() || !(before_image || atomic_temporary) {
-                bail!(
-                    "incomplete setup journal contains an unexpected file; preserve it before setup"
-                );
-            }
-        }
-        fs::remove_dir_all(&directory)?;
-        return Ok(());
-    };
+
+fn validate_journal(bytes: &[u8]) -> Result<Journal> {
     let journal: Journal =
-        serde_json::from_slice(&bytes).context("invalid setup recovery journal")?;
+        serde_json::from_slice(bytes).context("invalid setup recovery journal")?;
     if journal.format != 1 || journal.files.len() > 20_000 {
         bail!("invalid setup recovery journal format or size");
     }
-    let mut snapshots = Vec::new();
     let mut seen = BTreeSet::new();
-    for (index, file) in journal.files.iter().enumerate() {
+    for file in &journal.files {
         safe_relative(Path::new(&file.path))?;
         if !seen.insert(&file.path) {
             bail!("setup recovery journal repeats a destination");
@@ -1012,6 +1015,155 @@ fn recover_setup(paths: &Paths) -> Result<()> {
         {
             bail!("invalid setup recovery file mode");
         }
+    }
+    Ok(journal)
+}
+
+// Validate the transaction directory before cleanup or rollback. Once setup
+// has committed, before-images may have been removed by a partially completed
+// cleanup, but any retained image still has to match its journal entry.
+fn validate_transaction_contents(
+    directory: &Path,
+    journal: &Journal,
+    committed: bool,
+) -> Result<BTreeSet<String>> {
+    let mut allowed = BTreeSet::from(["journal.json".to_owned()]);
+    if committed {
+        allowed.insert("committed".to_owned());
+    }
+    for (index, file) in journal.files.iter().enumerate() {
+        if file.before.is_some() {
+            let name = format!("before-{index}");
+            allowed.insert(name.clone());
+            let image = directory.join(&name);
+            let bytes = read_optional(&image, MAX_FILE)?;
+            if let Some(bytes) = bytes {
+                if sha256(&bytes) != file.before.as_deref().unwrap() {
+                    bail!("setup recovery image was modified");
+                }
+            } else if !committed {
+                bail!("setup recovery image is missing");
+            }
+        }
+    }
+    let mut present = BTreeSet::new();
+    for entry in fs::read_dir(directory)? {
+        let entry = entry?;
+        let name = entry.file_name().to_string_lossy().into_owned();
+        if !allowed.contains(&name) {
+            bail!("setup recovery contains an unexpected file; preserve it before setup");
+        }
+        if !entry.file_type()?.is_file() {
+            bail!("setup recovery contains an unexpected non-file entry; preserve it");
+        }
+        // Read every retained file before any cleanup. This also rejects a
+        // symlink or an oversized transaction artifact rather than deleting it.
+        read_bounded(
+            &entry.path(),
+            if name == "journal.json" {
+                MAX_SETTINGS
+            } else {
+                MAX_FILE
+            },
+        )?;
+        present.insert(name);
+    }
+    Ok(present)
+}
+
+fn validate_preparation_contents(directory: &Path) -> Result<BTreeSet<String>> {
+    let mut present = BTreeSet::new();
+    for entry in fs::read_dir(directory)? {
+        let entry = entry?;
+        let name = entry.file_name().to_string_lossy().into_owned();
+        let before_image = name.strip_prefix("before-").is_some_and(|index| {
+            !index.is_empty() && index.bytes().all(|byte| byte.is_ascii_digit())
+        });
+        let atomic_temporary = name.strip_prefix(".tmp").is_some_and(|suffix| {
+            !suffix.is_empty() && suffix.bytes().all(|byte| byte.is_ascii_alphanumeric())
+        });
+        if !entry.file_type()?.is_file() || !(before_image || atomic_temporary) {
+            bail!("incomplete setup journal contains an unexpected file; preserve it before setup");
+        }
+        read_bounded(&entry.path(), MAX_FILE)?;
+        present.insert(name);
+    }
+    Ok(present)
+}
+
+fn cleanup_order(files: &BTreeSet<String>, committed: bool) -> Vec<&String> {
+    let mut ordered = Vec::new();
+    if !committed {
+        // Rollback has already restored destinations before cleanup begins.
+        // Remove the journal first so a crash cannot leave a rollback journal
+        // with missing before-images after destinations have been restored.
+        ordered.extend(files.iter().filter(|name| *name == "journal.json"));
+    }
+    ordered.extend(files.iter().filter(|name| name.starts_with("before-")));
+    if committed {
+        ordered.extend(files.iter().filter(|name| *name == "journal.json"));
+    }
+    ordered.extend(files.iter().filter(|name| *name == "committed"));
+    ordered.extend(files.iter().filter(|name| {
+        !name.starts_with("before-") && *name != "journal.json" && *name != "committed"
+    }));
+    ordered
+}
+
+fn cleanup_transaction(directory: &Path, files: &BTreeSet<String>, committed: bool) -> Result<()> {
+    // Remove only entries validated before cleanup. A late or unknown entry
+    // makes remove_dir fail and remains available for inspection.
+    // Keep the commit marker until every before-image and the journal are gone:
+    // a restart must never mistake a committed transaction for an interrupted
+    // rollback merely because cleanup stopped between two unlink operations.
+    for name in cleanup_order(files, committed) {
+        let path = directory.join(name);
+        match fs::symlink_metadata(&path) {
+            Ok(metadata) if metadata.is_file() => fs::remove_file(path)?,
+            Ok(_) => bail!("setup recovery entry changed during cleanup; preserve it"),
+            Err(error) if error.kind() == io::ErrorKind::NotFound => {}
+            Err(error) => return Err(error.into()),
+        }
+    }
+    fs::remove_dir(directory)?;
+    Ok(())
+}
+
+fn recover_setup(paths: &Paths) -> Result<()> {
+    let directory = transaction_path(paths);
+    reject_symlink_components(&directory)?;
+    if !directory.exists() {
+        return Ok(());
+    }
+    if let Some(marker) = read_optional(&directory.join("committed"), 32)? {
+        if marker != SETUP_COMMITTED {
+            bail!("invalid setup transaction commit marker");
+        }
+        if let Some(bytes) = read_optional(&directory.join("journal.json"), MAX_SETTINGS)? {
+            let journal = validate_journal(&bytes)?;
+            let files = validate_transaction_contents(&directory, &journal, true)?;
+            cleanup_transaction(&directory, &files, true)?;
+        } else {
+            // Cleanup may have removed the journal first. A marker-only
+            // directory is the sole unambiguous remainder in that state.
+            let entries: Vec<_> = fs::read_dir(&directory)?.collect::<io::Result<Vec<_>>>()?;
+            if entries.len() != 1 || entries[0].file_name() != "committed" {
+                bail!("committed setup cleanup contains unexpected files; preserve them");
+            }
+            cleanup_transaction(&directory, &BTreeSet::from(["committed".to_owned()]), true)?;
+        }
+        return Ok(());
+    }
+    let Some(bytes) = read_optional(&directory.join("journal.json"), MAX_SETTINGS)? else {
+        // No destination can have been written before the complete journal exists.
+        let files = validate_preparation_contents(&directory)?;
+        cleanup_transaction(&directory, &files, false)?;
+        return Ok(());
+    };
+    let journal = validate_journal(&bytes)?;
+    let files = validate_transaction_contents(&directory, &journal, false)?;
+    let mut snapshots = Vec::new();
+    for (index, file) in journal.files.iter().enumerate() {
         let before = read_optional(&directory.join(format!("before-{index}")), MAX_FILE)?;
         if before.as_ref().map(|bytes| sha256(bytes)) != file.before {
             bail!("setup recovery image was modified");
@@ -1044,7 +1196,7 @@ fn recover_setup(paths: &Paths) -> Result<()> {
             write_snapshot(&path, before.as_deref(), mode)?;
         }
     }
-    fs::remove_dir_all(directory)?;
+    cleanup_transaction(&directory, &files, false)?;
     Ok(())
 }
 fn apply_changes(paths: &Paths, changes: &[Change]) -> Result<()> {
@@ -1089,8 +1241,7 @@ fn apply_changes(paths: &Paths, changes: &[Change]) -> Result<()> {
         recover_setup(paths).context("restore setup after commit marker failure")?;
         return Err(error.context("setup commit failed; completed writes were restored"));
     }
-    fs::remove_dir_all(transaction_path(paths))
-        .context("setup completed but recovery journal cleanup failed")?;
+    recover_setup(paths).context("setup completed but recovery journal cleanup failed")?;
     Ok(())
 }
 
@@ -1167,8 +1318,10 @@ pub fn doctor(paths: &Paths, catalog: &Catalog) -> Result<DoctorReport> {
         file_errors.join("; ")
     };
     checks.push(check("managed files", file_errors.is_empty(), &file_detail));
-    let current = read_bounded(&paths.binary(), MAX_FILE)
-        .and_then(|binary| prepare(paths, catalog, &state.options, &binary));
+    let current = read_bounded(&paths.binary(), MAX_FILE).and_then(|binary| {
+        let registry = crate::packages::Registry::embedded()?;
+        prepare(paths, catalog, &state.options, &binary, &registry)
+    });
     match current {
         Ok((changes, _)) => {
             let payload_changed = !changes.is_empty();
@@ -1286,22 +1439,80 @@ fn cleanup_retired_runtime(paths: &Paths) -> Result<()> {
 mod recovery_tests {
     use super::*;
 
+    fn add_change(
+        changes: &mut Vec<Change>,
+        path: PathBuf,
+        after: Option<Vec<u8>>,
+        executable: Option<bool>,
+    ) -> Result<()> {
+        let before = read_optional(&path, MAX_FILE).unwrap();
+        let before_mode = file_mode(&path).unwrap();
+        super::add_change(changes, path, before, before_mode, after, executable);
+        Ok(())
+    }
+
+    fn assert_edit_rejected(paths: &Paths, change: Change, path: &Path, edited: &[u8]) {
+        let error = apply_changes(paths, std::slice::from_ref(&change))
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("before setup activation"), "{error}");
+        assert_eq!(fs::read(path).unwrap(), edited);
+        assert!(!transaction_path(paths).exists());
+    }
+
     #[test]
-    fn editor_timeout_settings_round_trip_and_preserve_other_servers() {
+    fn prepare_keeps_the_validated_receipt_snapshot_for_activation() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let receipt = InstallState {
+            format: 1,
+            version: env!("CARGO_PKG_VERSION").into(),
+            options: SetupOptions::default(),
+            files: BTreeMap::new(),
+            servers: BTreeMap::new(),
+        };
+        let mut receipt_bytes = serde_json::to_vec_pretty(&receipt).unwrap();
+        receipt_bytes.push(b'\n');
+        atomic_write(&paths.settings(), &receipt_bytes).unwrap();
+        let receipt_mode = file_mode(&paths.settings()).unwrap();
+        let catalog = Catalog::embedded().unwrap();
+        let registry = crate::packages::Registry::embedded().unwrap();
+
+        let (changes, _) = prepare(
+            &paths,
+            &catalog,
+            &SetupOptions::default(),
+            b"runtime",
+            &registry,
+        )
+        .unwrap();
+        let change = changes
+            .iter()
+            .find(|change| change.path == paths.settings())
+            .expect("setup receipt must be part of the activation changes");
+        assert_eq!(change.before.as_deref(), Some(receipt_bytes.as_slice()));
+        assert_eq!(change.before_mode, receipt_mode);
+    }
+
+    #[test]
+    fn design_timeout_settings_round_trip_and_preserve_other_servers() {
         let temporary = tempfile::tempdir().unwrap();
         let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
         let options = SetupOptions {
-            packages: vec!["inkscape".into(), "axe-core".into()],
+            packages: vec!["design".into()],
             ..SetupOptions::default()
         };
         for (target, original) in [
             (Target::Codex, b"# personal setting\nmodel = 'mine'\n[mcp_servers.personal]\ncommand = 'own-server'\n".as_slice()),
             (Target::Claude, br#"{"theme":"dark","mcpServers":{"personal":{"command":"own-server"}}}"#.as_slice()),
         ] {
-            let wanted = desired_servers(&paths, target, &options).unwrap();
+            let registry = crate::packages::Registry::embedded().unwrap();
+            let wanted = desired_servers(&registry, &paths, target, &options).unwrap();
             let merged = merge_config(target, Some(original), &BTreeMap::new(), &wanted).unwrap();
             assert_eq!(merge_config(target, Some(&merged), &wanted, &wanted).unwrap(), merged);
-            for id in ["inkscape", "axe-core"] {
+            {
+                let id = "design";
                 let name = format!("mirket-package-{id}");
                 match target {
                     Target::Codex => {
@@ -1357,6 +1568,102 @@ mod recovery_tests {
         assert_eq!(fs::read(first).unwrap(), b"first before");
         assert_eq!(fs::read(later).unwrap(), b"concurrent user edit");
         assert!(!transaction_path(&paths).exists());
+    }
+
+    #[test]
+    fn edit_after_inspection_blocks_skill_and_client_config_activation() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let skill = paths.home.join(".codex/skills/review/SKILL.md");
+        let codex = paths.home.join(".codex/config.toml");
+        let claude = paths.home.join(".claude/settings.json");
+        fs::create_dir_all(skill.parent().unwrap()).unwrap();
+        atomic_write(&skill, b"skill before").unwrap();
+        atomic_write(&codex, b"model = 'mine'\n").unwrap();
+        atomic_write(&claude, br#"{"theme":"dark"}"#).unwrap();
+        let mut changes = Vec::new();
+
+        let skill_before = read_optional(&skill, MAX_FILE).unwrap();
+        let skill_mode = file_mode(&skill).unwrap();
+        let owned_skill = ManagedFile {
+            sha256: sha256(skill_before.as_ref().unwrap()),
+            executable: false,
+        };
+        assert_owned(
+            &skill,
+            skill_before.as_deref(),
+            skill_mode,
+            Some(&owned_skill),
+            Some(&owned_skill),
+        )
+        .unwrap();
+        atomic_write(&skill, b"user edit after inspection").unwrap();
+
+        super::add_change(
+            &mut changes,
+            skill.clone(),
+            skill_before,
+            skill_mode,
+            Some(b"installed skill".to_vec()),
+            Some(false),
+        );
+        let change = changes.pop().unwrap();
+        assert_edit_rejected(&paths, change, &skill, b"user edit after inspection");
+
+        let registry = crate::packages::Registry::embedded().unwrap();
+        let options = SetupOptions {
+            targets: vec![Target::Codex, Target::Claude],
+            ..SetupOptions::default()
+        };
+        let wanted_codex = desired_servers(&registry, &paths, Target::Codex, &options).unwrap();
+        let wanted_claude = desired_servers(&registry, &paths, Target::Claude, &options).unwrap();
+        let codex_before = read_optional(&codex, MAX_SETTINGS).unwrap();
+        let codex_mode = file_mode(&codex).unwrap();
+        let codex_after = merge_config(
+            Target::Codex,
+            codex_before.as_deref(),
+            &BTreeMap::new(),
+            &wanted_codex,
+        )
+        .unwrap();
+        atomic_write(&codex, b"user codex edit after inspection").unwrap();
+        super::add_change(
+            &mut changes,
+            codex.clone(),
+            codex_before,
+            codex_mode,
+            Some(codex_after),
+            None,
+        );
+        let change = changes.pop().unwrap();
+        assert_edit_rejected(&paths, change, &codex, b"user codex edit after inspection");
+
+        let claude_before = read_optional(&claude, MAX_SETTINGS).unwrap();
+        let claude_mode = file_mode(&claude).unwrap();
+        let claude_after = merge_config(
+            Target::Claude,
+            claude_before.as_deref(),
+            &BTreeMap::new(),
+            &wanted_claude,
+        )
+        .unwrap();
+        atomic_write(&claude, br#"{"theme":"user edit after inspection"}"#).unwrap();
+        super::add_change(
+            &mut changes,
+            claude.clone(),
+            claude_before,
+            claude_mode,
+            Some(claude_after),
+            None,
+        );
+        let change = changes.pop().unwrap();
+        assert_edit_rejected(
+            &paths,
+            change,
+            &claude,
+            br#"{"theme":"user edit after inspection"}"#,
+        );
     }
     #[test]
     fn interrupted_setup_restores_before_images_and_is_repeatable() {
@@ -1538,5 +1845,166 @@ mod recovery_tests {
         recover_setup(&paths).unwrap();
         assert_eq!(fs::read(instruction).unwrap(), b"committed");
         assert!(!transaction_path(&paths).exists());
+    }
+
+    #[test]
+    fn committed_setup_preserves_user_edits_and_rejects_unknown_transaction_files() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let instruction = paths.home.join(".codex/AGENTS.md");
+        write_snapshot(&instruction, Some(b"before"), Some(0o600)).unwrap();
+        let mut changes = Vec::new();
+        add_change(
+            &mut changes,
+            instruction.clone(),
+            Some(b"after".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        prepare_journal(&paths, &changes).unwrap();
+        write_snapshot(&instruction, Some(b"after"), Some(0o600)).unwrap();
+        atomic_write(&transaction_path(&paths).join("committed"), SETUP_COMMITTED).unwrap();
+
+        atomic_write(&transaction_path(&paths).join("user-note"), b"preserve me").unwrap();
+        let error = recover_setup(&paths).unwrap_err().to_string();
+        assert!(error.contains("unexpected file"), "{error}");
+        assert_eq!(
+            fs::read(transaction_path(&paths).join("user-note")).unwrap(),
+            b"preserve me"
+        );
+
+        fs::remove_file(transaction_path(&paths).join("user-note")).unwrap();
+        write_snapshot(&instruction, Some(b"user edit after commit"), Some(0o600)).unwrap();
+        recover_setup(&paths).unwrap();
+        assert_eq!(fs::read(instruction).unwrap(), b"user edit after commit");
+        assert!(!transaction_path(&paths).exists());
+    }
+
+    #[test]
+    fn committed_cleanup_keeps_marker_until_journal_is_removed() {
+        let names = BTreeSet::from([
+            "before-0".to_owned(),
+            "journal.json".to_owned(),
+            "committed".to_owned(),
+        ]);
+        let order = cleanup_order(&names, true)
+            .into_iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
+        assert_eq!(order, ["before-0", "journal.json", "committed"]);
+    }
+
+    #[test]
+    fn rollback_cleanup_removes_journal_before_before_images() {
+        let names = BTreeSet::from(["before-0".to_owned(), "journal.json".to_owned()]);
+        let order = cleanup_order(&names, false)
+            .into_iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
+        assert_eq!(order, ["journal.json", "before-0"]);
+    }
+
+    #[test]
+    fn rollback_cleanup_preserves_late_unknown_entries() {
+        let temporary = tempfile::tempdir().unwrap();
+        let directory = temporary
+            .path()
+            .canonicalize()
+            .unwrap()
+            .join(".setup-transaction");
+        fs::create_dir(&directory).unwrap();
+        atomic_write(&directory.join("journal.json"), b"journal").unwrap();
+        atomic_write(&directory.join("before-0"), b"before").unwrap();
+
+        // The late entry was not in the validated set. Cleanup removes only
+        // the entries that were validated before it appeared, then leaves the
+        // directory (and the late evidence) available for inspection.
+        let files = BTreeSet::from(["journal.json".to_owned(), "before-0".to_owned()]);
+        atomic_write(&directory.join("late-note"), b"preserve me").unwrap();
+        assert!(cleanup_transaction(&directory, &files, false).is_err());
+        assert_eq!(
+            fs::read(directory.join("late-note")).unwrap(),
+            b"preserve me"
+        );
+        assert!(directory.exists());
+    }
+
+    #[test]
+    fn recovery_accepts_rollback_cleanup_after_journal_was_removed() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let instruction = paths.home.join(".codex/AGENTS.md");
+        write_snapshot(&instruction, Some(b"before"), Some(0o600)).unwrap();
+        let mut changes = Vec::new();
+        add_change(
+            &mut changes,
+            instruction.clone(),
+            Some(b"after".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        prepare_journal(&paths, &changes).unwrap();
+
+        // Simulate the state after rollback restored the destination and the
+        // journal unlink completed, but before before-image cleanup did.
+        fs::remove_file(transaction_path(&paths).join("journal.json")).unwrap();
+        recover_setup(&paths).unwrap();
+        assert_eq!(fs::read(&instruction).unwrap(), b"before");
+        assert!(!transaction_path(&paths).exists());
+    }
+
+    #[test]
+    fn committed_recovery_accepts_marker_only_partial_cleanup_without_rollback() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let instruction = paths.home.join(".codex/AGENTS.md");
+        let mut changes = Vec::new();
+        add_change(
+            &mut changes,
+            instruction.clone(),
+            Some(b"committed".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        prepare_journal(&paths, &changes).unwrap();
+        write_snapshot(&instruction, Some(b"committed"), Some(0o600)).unwrap();
+        atomic_write(&transaction_path(&paths).join("committed"), SETUP_COMMITTED).unwrap();
+        fs::remove_file(transaction_path(&paths).join("journal.json")).unwrap();
+
+        recover_setup(&paths).unwrap();
+        assert_eq!(fs::read(instruction).unwrap(), b"committed");
+        assert!(!transaction_path(&paths).exists());
+    }
+
+    #[test]
+    fn rollback_rejects_unknown_transaction_files_before_restoring_anything() {
+        let temporary = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temporary.path().canonicalize().unwrap()).unwrap();
+        paths.ensure().unwrap();
+        let instruction = paths.home.join(".codex/AGENTS.md");
+        write_snapshot(&instruction, Some(b"before"), Some(0o600)).unwrap();
+        let mut changes = Vec::new();
+        add_change(
+            &mut changes,
+            instruction.clone(),
+            Some(b"after".to_vec()),
+            Some(false),
+        )
+        .unwrap();
+        prepare_journal(&paths, &changes).unwrap();
+        write_snapshot(&instruction, Some(b"after"), Some(0o600)).unwrap();
+        atomic_write(&transaction_path(&paths).join("user-note"), b"preserve me").unwrap();
+
+        let error = recover_setup(&paths).unwrap_err().to_string();
+        assert!(error.contains("unexpected file"), "{error}");
+        assert_eq!(fs::read(&instruction).unwrap(), b"after");
+        assert_eq!(
+            fs::read(transaction_path(&paths).join("user-note")).unwrap(),
+            b"preserve me"
+        );
+        assert!(transaction_path(&paths).exists());
     }
 }

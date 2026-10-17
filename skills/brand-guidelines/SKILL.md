@@ -51,6 +51,9 @@ extend the system only after the core choices work together.
   resolve in each supplied theme and that example components consume those same
   values. A renamed token needs an explicit consumer mapping; duplicating a new
   palette beside unchanged product tokens produces contradictory guidance.
+- Compile the canonical `design/tokens.json` through Style Dictionary before any
+  dependent render. Check its CSS, JavaScript, TypeScript, Typst and Penpot outputs
+  for the intended semantic values and type roles.
 - Define type roles and fallbacks with sample headings, paragraphs, labels,
   numerals and long content. Record licensed font source/weights where supplied.
   System fonts vary by platform; a token name does not promise identical metrics.

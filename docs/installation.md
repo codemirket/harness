@@ -17,56 +17,36 @@ choices without prompting. A fresh unattended setup selects no optional packages
 
 ```sh
 mirket setup --target all --yes
-mirket setup --target all --package playwright --yes
 mirket setup --dry-run --target all
 mirket doctor
 ```
 
 Repeated `--package` flags replace the saved package selection. With no package
 flags, setup reuses saved choices. `--no-packages` clears the selection. Package
-installation retrieves pinned artifacts and required runtimes without executing
-package managers or lifecycle hooks. See [local MCP packages](packages.md) for
+preparation uses pinned sources and declared build steps. Serving does not
+resolve dependencies or run package installers. See [local MCP packages](packages.md) for
 configuration, platform support and invocation checks.
 
 Package runtimes are private dependencies and do not replace system runtimes.
-Native applications and operating-system prerequisites remain explicit.
-
-Inkscape's complete signed application bundle supplies its native libraries.
-The SVG profile covers macOS ARM64, with a declared minimum macOS 11.3; live text
-needs available fonts. Headless browser design/QA and media profiles reuse private
-Node/Chromium and shared FFmpeg/FFprobe, initially verified on macOS ARM64.
-No package manager, upstream installer or first-render download runs while serving.
+The design stack is one `design` package. After setting up the selected Podman
+environment, install, start and inspect it:
 
 ```sh
-mirket package install inkscape axe-core hyperframes motion-canvas
-mirket package probe inkscape --schemas --project /absolute/project
+mirket package install design
+mirket package start design
+mirket package status
+mirket package probe design --schemas
 ```
 
-Container renderers and Penpot require the approved native Podman client selected
-through `mirket tool register podman --executable /absolute/path/to/podman`.
-Initialize and start the dedicated environment with `mirket environment init` and
-`mirket environment start`. These are explicit operations; MCP calls never start
-a VM or install host software. See [execution environment](podman.md).
-Install `penpot`, then `mirket package start penpot` before probing its tools.
-The service has a loopback frontend, durable volumes and private credentials;
-its design operations run in an active headless Chromium session.
-Use `mirket package stop penpot` to stop owned containers while retaining designs.
-
-Use an existing writable project directory. Editor artifact arguments are
-project-relative paths; sources and exports are distinct, and overwriting an
-existing output requires explicit intent. Each editor process uses a private
-profile and a 30-second deadline. These application controls do not replace host
-permissions or create an operating-system sandbox.
-
-Editor installation downloads the official signed DMG, mounts it read-only,
-copies the selected app and verifies the copied signature before publishing the
-package generation. Valid relative links inside the bundle are preserved. A
-file-provider-managed location, including some Documents folders, can attach
-metadata that invalidates the copied signature. Mirket refuses that installation
-without stripping metadata or re-signing the app. For a disposable `--home`, use a
-normal local directory outside those managed folders. The default home normally
-stores the packages under `~/.mirket`; `--home` redirects client configuration as
-well as package storage, so it is not merely a cache-location option.
+`package start` and `package status` report a fixed host workspace under the
+selected Mirket home and the assigned loopback host ports. Service port numbers
+in the design topology are internal; use the reported host ports for host access.
+Direct design tool paths are relative to its `/workspace`
+mount. The official Penpot `export_shape` and `import_image` `filePath` arguments
+require absolute `/workspace/...` paths. Design calls do not use `--project` or
+a configurable port. See
+[packages](packages.md) and the [execution environment](podman.md) for service
+topology. Tool calls retain the host's permissions.
 
 OpenAI Docs is configured by setup. This documentation integration does not
 log in or invoke tools during setup.
@@ -85,28 +65,6 @@ actual host discovery and useful tool invocation need a native session.
 The targets use the hosts' shared configuration: [Codex MCP](https://developers.openai.com/codex/mcp)
 and [Claude Desktop Code configuration](https://code.claude.com/docs/en/desktop#shared-configuration).
 
-### Editor connection budgets
-
-For the two editor server entries, setup writes Codex
-`startup_timeout_sec = 90` and `tool_timeout_sec = 120`. These are per-server
-seconds fields in the [official Codex MCP configuration](https://developers.openai.com/codex/mcp#other-configuration-options)
-and [configuration schema](https://developers.openai.com/codex/config-schema.json).
-The startup budget includes package integrity checks and application startup;
-the tool budget permits operations with several native steps, such as PDF export
-and validation. Each individual native editor process still has a 30-second
-deadline. Mirket's CLI editor connection also allows 90 seconds for startup.
-
-Claude editor entries use `timeout: 120000`, the per-server tool deadline in
-milliseconds documented by [Claude Code MCP](https://code.claude.com/docs/en/mcp).
-Its separate host startup timer is `MCP_TIMEOUT`, documented with a 30000 ms
-default in the [environment reference](https://code.claude.com/docs/en/env-vars).
-The per-server tool field does not change that startup timer. Mirket preserves
-the host's global environment; a variable supplied only to the server child
-cannot configure the parent host's timer. Desktop's
-[environment configuration](https://code.claude.com/docs/en/desktop#environment-configuration)
-also differs from arbitrary shell exports. These settings describe supported
-connection budgets, not evidence of native-client activation.
-
 ## Standalone target installers
 
 `setup/codex.rs`, `setup/claude.rs` and `setup/all.rs` compile to standalone
@@ -121,6 +79,11 @@ OS and architecture. Native testing coverage is recorded by CI and the release
 checks; a cross-platform source file is not proof of native behavior.
 
 ## Update
+
+When replacing a saved package selection, first run the new release binary's
+`mirket setup --target all --package design --yes` with its private Podman
+environment running. Setup reconciles the owned bindings and saves the new
+selection. An update reuses saved selections; it does not choose replacements.
 
 `mirket update` retrieves the official GitHub release manifest, selects this
 binary's target, checks the SHA-256 digest and version, then launches the verified

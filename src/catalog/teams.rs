@@ -218,8 +218,7 @@ impl Catalog {
             roles.len() <= 13,
             "team exceeds 13 roles; split the objective into bounded phases instead of dropping specialists"
         );
-        let selected: Vec<_> = roles.iter().skip(1).map(|role| role.id.clone()).collect();
-        let plan = self.capability_plan(&primary.id, &selected)?;
+        let (reads, project_skills) = self.guidance_plan(&roles)?;
         let assignments: Vec<_> = roles
             .iter()
             .map(|role| {
@@ -265,8 +264,8 @@ impl Catalog {
         ]);
         let result = json!({
             "objective":objective,"primary":primary.id,"facets":facets,
-            "assignments":assignments,"read_sequence":plan["read_sequence"],
-            "project_skills":plan["project_skills"],
+            "assignments":assignments,"read_sequence":reads,
+            "project_skills":project_skills,
             "coordination_read":{"id":"agent-coordination","path":"SKILL.md"},
             "task_start":{"objective":objective,"skills":skills,"acceptance":acceptance,"failure_probe":failure_probe},
             "task_start_cli":{"args":cli_args,"required":"If choosing Mirket task tracking, pass these as argv with --project PATH and --key KEY. Save the roster before starting, then bind it as task evidence and record assignments in checkpoints. A sufficient host or project record needs no parallel task."},

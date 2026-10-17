@@ -1,9 +1,9 @@
 # Select expertise by the result
 
-Use `mirket capabilities list` for the current roles and exact aliases, then
-`mirket capabilities plan ROLE` to inspect the lead, prerequisites, acceptance
-evidence and a discriminating failure probe. Role names select expertise. They
-do not authorize spending, account access, deployment, outreach or model changes.
+Use `mirket capabilities list` for current roles and aliases, then
+`mirket capabilities plan ROLE` to inspect a lead's prerequisites and evidence.
+Routine work needs no role plan. A role supplies expertise; it does not
+authorize spending, account access, deployment, outreach or model changes.
 
 ## Professional perspectives and team assignments
 
@@ -13,8 +13,12 @@ These describe how the professional reaches and revises a judgment. The selected
 skill supplies the detailed craft and runtime workflow. They express professional
 practice without inventing credentials, human experience or stylistic mannerisms.
 
-For substantive work spanning disciplines, the host interprets the request and
-affected sources, then asks Mirket to assign the related professionals:
+For substantive work spanning disciplines, use the [skill-catalog task
+execution reference](../skills/skill-catalog/references/task-execution.md) and
+ask Mirket to assign professionals only when separate independent work would
+materially help or the user/project explicitly requests collaboration. Cross-
+discipline scope alone does not require a team; when that gate is met, assign
+only professionals whose boundaries are affected:
 
 ```sh
 mirket capabilities facets
@@ -25,31 +29,14 @@ mirket capabilities team "Frontend Engineer" \
   --facet "security-boundary=Orders must be scoped to the authenticated customer"
 ```
 
-This selects Frontend Engineering as integrator, with Web Design, Quality
-Assurance, Backend Engineering and Application and Agent Security. Repeated roles
-receive one assignment retaining each contribution. Each facet needs a concrete
-task-specific reason; mentioning a database or a brand in passing is insufficient.
-Use `--with ROLE` for additional explicitly chosen expertise. Up to eight facets
-and thirteen distinct roles can form a plan; broader work needs bounded phases.
-Facets select only their listed roles and never recursively expand support lists.
-
-The host dispatches these assignments through its actual subagent tools. Give each
-professional the relevant skill, raw evidence, owned paths, dependencies, permitted
-effects and return requirements. Ask for its own initial diagnosis, alternatives
-and evidence before sharing peer conclusions when practical. Queue within host
-capacity; implementation dependencies determine when work can begin. The lead
-integrates the contributions and resolves disagreements against the user's
-constraints and observations, retaining unresolved dissent. Consensus alone is
-insufficient to accept a product.
-
-The plan is read-only and starts no agents. Save it before task creation, use its
-`task_start` MCP fields or `task_start_cli.args`, bind the roster as task evidence,
-and track real worker IDs and contribution paths in the existing task checkpoints.
-The coordinator owns shared revision updates. Independent execution must be
-observed through the host; skill delivery and artifact hashes cannot authenticate
-a worker or judge its reasoning. If subagents are unavailable, disclose the limit
-and label sequential professional perspectives accurately. Existing single-role
-plans and direct handling of trivial work remain available.
+This plan selects Frontend Engineering as integrator, with other roles only where
+the facets justify them. Each facet needs a concrete reason; `--with ROLE` is
+explicit support. Up to eight facets and thirteen distinct roles form a plan;
+broader work needs bounded phases. The plan is read-only and starts no agents.
+The host dispatches useful independent assignments with bounded ownership, and
+the lead integrates and verifies them. If no independent host agents exist,
+label sequential professional perspectives accurately. Use one existing task
+record when durable continuity or coordination requires it.
 
 ## Choose one lead
 
@@ -57,8 +44,8 @@ plans and direct handling of trivial work remain available.
 | --- | --- |
 | Screen composition or visual refinement | Frontend Designer; Frontend Engineer supports actual framework and state behavior. |
 | Backend, database, mobile or desktop behavior | The matching Engineer or Database Admin role; use the real platform runtime. |
-| Editable graphics or illustrations | Graphic Designer or Illustrator for medium and composition; read `svg-creation` for vector production or use available native image tools for bitmap work. |
-| Motion | Motion Designer starts with ordinary UI interactions; choose `advanced-motion` for art-directed website scenes, color/gradients and procedural Canvas, `svg-animation` for editable vector choreography, or `page-transitions` for navigation. The explicit `motion-studio` profile includes two contrasting browser examples. For a video deliverable, the optional HyperFrames and Motion Canvas packages supply frame inspection, seek verification and local video export through `advanced-motion` guidance. |
+| Editable graphics or illustrations | Graphic Designer or Illustrator for medium and composition; use `svg-creation` with SVGO for vectors, ComfyUI graphs for generated bitmaps and imgproxy for raster preparation. |
+| Motion | Motion Designer starts with ordinary UI interactions; choose `advanced-motion` for art-directed website scenes, color/gradients and procedural Canvas, `svg-animation` for editable vector choreography, or `page-transitions` for navigation. The explicit `motion-studio` profile includes two contrasting browser examples. For video, run HyperFrames lint, snapshot and render, then inspect frames and playback. |
 | Regressions and release assessment | QA Engineer for system and user-journey checks; the same role's interface mode adds visual baselines, interaction and accessibility evidence. |
 | Trust boundaries and agent tools | Security Engineer; MCP Engineer owns protocol, transport and client/tool behavior when that boundary is affected. |
 | Ingestion, replay and published datasets | Data Engineer; Data Analyst owns interpretation and Database Admin owns engine mechanics. |
@@ -119,10 +106,12 @@ optional skill IDs. Use `mirket catalog read ID` for the relevant body and
 needed. Profiles group project installations; they are not a request to load
 every member or activate competing provider workflows.
 
-The ordinary project foundation relies on shared global skills. The explicit
-`portable-foundation` profile installs shared guidance into the selected project
-targets for hosts without a global setup. Choose it deliberately to avoid two
-copies of the same invocation across project and global installations.
+`project init` records target hosts without selecting project skills. Add the
+`project-foundation` profile explicitly for an engineering or release boundary.
+The explicit `portable-foundation` profile installs shared guidance into the
+selected project targets for hosts without a global setup. Choose it deliberately
+to avoid two copies of the same invocation across project and global
+installations.
 
 ## Verify availability and outcome separately
 
@@ -133,12 +122,14 @@ Every role lead's dependency metadata names its required runtime or evidence rou
 These requirements are descriptive: they neither install a tool nor guarantee it
 can run. Native host tools and the project's existing runtime take precedence;
 optional Mirket packages are selected only when they fit the requested deliverable.
-For example, graphic work may use native image tools, SVG and a browser, Inkscape,
-or a compatible design editor; no single package is required for every graphic.
-Exact IDs remain directly searchable. Other searches favor positive role/name/tag
-matches and available authored guidance over exclusion prose or manual references.
-Within that tier, an exact role/name match precedes a tag match, which precedes
-a partial name match.
+For example, graphic work routes through the single `design` package: Satori plus
+resvg for static composition, Kroki for diagrams, official Penpot MCP for editable
+files and Browserless plus Odiff for inspection. Select the tool from the output.
+Exact IDs remain directly searchable. Search ranks query relevance first:
+positive role/name/tag matches precede description-only matches;
+within that relevance tier, exact role/name matches precede exact tags and
+partial names. Delivery is a final tie-breaker only; catalog search does not
+inspect whether an entry is installed in a home, project or host.
 
 `project doctor` checks installed copies. `doctor` checks device installation and
 the configured protocol. Neither proves that an agent selected the skill or that

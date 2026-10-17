@@ -64,16 +64,25 @@ impl Engine {
             }
         }
         let helper = binary.parent().context("Podman helper directory")?;
+        let helpers = helper_directories(&binary)?;
         let conf = format!(
-            "[engine]\nhelper_binaries_dir = [{}]\n",
-            serde_json::to_string(&helper.to_string_lossy())?
+            "[engine]\nhelper_binaries_dir = {}\n",
+            serde_json::to_string(&helpers)?
         );
         let config = root.join("containers.conf");
         if config.exists() {
+            let prior = format!(
+                "[engine]\nhelper_binaries_dir = [{}]\n",
+                serde_json::to_string(&helper.to_string_lossy())?
+            );
+            let saved = util::read_bounded(&config, 4096)?;
             ensure!(
-                util::read_bounded(&config, 4096)? == conf.as_bytes(),
+                saved == conf.as_bytes() || saved == prior.as_bytes(),
                 "Mirket Podman helper configuration has drifted"
             );
+            if saved != conf.as_bytes() {
+                util::atomic_write(&config, conf.as_bytes())?;
+            }
         } else {
             util::atomic_write(&config, conf.as_bytes())?;
         }
@@ -142,6 +151,15 @@ impl Engine {
     pub fn run(&self, args: &[String], timeout: Duration) -> Result<String> {
         capture(self.command(args), timeout)
     }
+    pub(crate) fn container_logs(&self, name: &str) -> Result<String> {
+        let args = ["container", "logs", "--tail", "50", name].map(str::to_owned);
+        let (stdout, stderr) = capture_output(self.command(&args), Duration::from_secs(10))?;
+        Ok(format!(
+            "{}{}",
+            String::from_utf8_lossy(&stdout),
+            String::from_utf8_lossy(&stderr)
+        ))
+    }
     pub async fn run_async(&self, args: &[String]) -> Result<String> {
         use tokio::io::AsyncReadExt;
         // A long-lived MCP session can outlive its private connection metadata.
@@ -178,25 +196,13 @@ impl Engine {
         ensure!(
             status.success(),
             "Podman failed ({status}): {}",
-            String::from_utf8_lossy(&stderr)
-                .chars()
-                .take(2048)
-                .collect::<String>()
+            failure_diagnostics(&stdout, &stderr)
         );
         guard.0 = None;
         String::from_utf8(stdout).context("Podman returned non UTF-8 metadata")
     }
-    pub(crate) fn api_socket(&self) -> Result<PathBuf> {
-        self.validate_machine()?;
-        ensure!(
-            cfg!(target_os = "macos"),
-            "native Unix API controller is verified on macOS only"
-        );
-        Ok(PathBuf::from(&self.env["TMPDIR"])
-            .join("podman")
-            .join(format!("{}-api.sock", self.connection)))
-    }
     pub fn ready(&self) -> Result<Value> {
+        ensure_controller_supported()?;
         self.validate_machine()?;
         let value: Value = serde_json::from_str(&self.run(&["info".into(), "--format=json".into()], Duration::from_secs(8))
             .context("Mirket Podman environment is absent or stopped; run mirket environment init, then mirket environment start")?)?;
@@ -328,10 +334,7 @@ impl Engine {
         }
     }
     pub fn init(&self, image: &std::path::Path) -> Result<Value> {
-        ensure!(
-            cfg!(all(target_os = "macos", target_arch = "aarch64")),
-            "Managed VM initialization is verified on macOS ARM64 only; other platforms remain held"
-        );
+        ensure_controller_supported()?;
         util::reject_symlink_components(image)?;
         // An approved, exact upstream boot artifact; no caller-selected ignition or helper.
         ensure!(
@@ -358,6 +361,7 @@ impl Engine {
         Ok(json!({"initialized":self.connection,"shared":self.staging,"started":false}))
     }
     pub fn start(&self) -> Result<Value> {
+        ensure_controller_supported()?;
         self.validate_machine()?;
         self.raw(
             &["machine".into(), "start".into(), self.connection.clone()],
@@ -367,6 +371,7 @@ impl Engine {
         Ok(self.status())
     }
     pub fn stop(&self) -> Result<Value> {
+        ensure_controller_supported()?;
         self.validate_machine()?;
         // A valid loopback URL can still belong to a different VM. Read its
         // actual device identity before the native client sends a stop request.
@@ -504,110 +509,53 @@ impl Engine {
         );
         Ok(())
     }
-    /// Reconcile a remote create that completed after its native caller stopped.
-    /// Active workers still own their input directory and are never selected.
-    pub fn recover(&self) -> Result<Value> {
-        self.ready()?;
-        let deadline = Instant::now() + Duration::from_secs(20);
-        let ids = self.run(
-            &[
-                "container".into(),
-                "ls".into(),
-                "--all".into(),
-                "--filter".into(),
-                format!("label=org.mirket.execution-owner={}", self.owner()),
-                "--filter".into(),
-                "label=org.mirket.execution-kind=offline-render".into(),
-                "--format={{.ID}}".into(),
-                "--no-trunc".into(),
-            ],
-            Duration::from_secs(5),
-        )?;
-        ensure!(
-            ids.lines().count() <= 128,
-            "too many owned workers; inspect environment before recovery"
-        );
-        let mut removed = Vec::new();
-        for id in ids.lines() {
-            ensure!(
-                Instant::now() < deadline,
-                "worker recovery deadline exceeded; retry mirket environment recover"
-            );
-            ensure!(
-                id.len() == 64 && id.bytes().all(|b| b.is_ascii_hexdigit()),
-                "invalid recovery container ID"
-            );
-            let inspected: Value = serde_json::from_str(&self.run(
-                &["container".into(), "inspect".into(), id.into()],
-                Duration::from_secs(3),
-            )?)?;
-            let value = &inspected[0];
-            ensure!(
-                value["Id"] == id,
-                "recovery inspect returned another immutable container ID"
-            );
-            if orphaned_worker(value, &self.staging, &self.owner())? {
-                self.run(
-                    &["rm".into(), "--force".into(), "--ignore".into(), id.into()],
-                    Duration::from_secs(3),
-                )?;
-                removed.push(id.to_owned());
-            }
-        }
-        Ok(
-            json!({"recovered":removed,"active_workers_preserved":true,"service_data_preserved":true}),
-        )
-    }
 }
 
-fn orphaned_worker(value: &Value, staging: &std::path::Path, owner: &str) -> Result<bool> {
-    if value["Config"]["Labels"]["org.mirket.execution-owner"] != owner
-        || value["Config"]["Labels"]["org.mirket.execution-kind"] != "offline-render"
-        || value["Config"]["User"] != "1000:1000"
-        || value["HostConfig"]["ReadonlyRootfs"] != true
-        || value["HostConfig"]["NetworkMode"] != "none"
-    {
-        return Ok(false);
+fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
+    let bin = binary.parent().context("Podman helper directory")?;
+    let mut directories = vec![bin.to_owned()];
+    // Homebrew splits the machine helpers from its canonical bin/podman-remote.
+    // Stay within that selected installation; never consult a global PATH/config.
+    if bin.file_name().is_some_and(|name| name == "bin") {
+        let libexec = bin
+            .parent()
+            .context("Podman installation prefix")?
+            .join("libexec/podman");
+        if libexec.is_dir() {
+            util::reject_symlink_components(&libexec)?;
+            let mut complete = true;
+            for name in ["gvproxy", "vfkit"] {
+                let path = libexec.join(name);
+                util::reject_symlink_components(&path)?;
+                complete &= path.is_file();
+                #[cfg(unix)]
+                if path.is_file() {
+                    use std::os::unix::fs::PermissionsExt;
+                    complete &= std::fs::metadata(&path)?.permissions().mode() & 0o111 != 0;
+                }
+            }
+            if complete {
+                directories.push(libexec);
+            }
+        }
     }
-    let mounts = value["Mounts"]
-        .as_array()
-        .context("worker mounts missing")?;
-    let inputs = mounts
-        .iter()
-        .filter(|m| m["Destination"] == "/input")
-        .collect::<Vec<_>>();
-    if inputs.len() != 1 || inputs[0]["Type"] != "bind" || inputs[0]["RW"] != false {
-        return Ok(false);
-    }
-    let source = PathBuf::from(
-        inputs[0]["Source"]
-            .as_str()
-            .context("worker input source")?,
+    Ok(directories)
+}
+
+fn controller_supported(os: &str, arch: &str) -> bool {
+    os == "macos" && arch == "aarch64"
+}
+
+pub(crate) fn ensure_controller_supported() -> Result<()> {
+    ensure_controller_supported_for(std::env::consts::OS, std::env::consts::ARCH)
+}
+
+fn ensure_controller_supported_for(os: &str, arch: &str) -> Result<()> {
+    ensure!(
+        controller_supported(os, arch),
+        "managed Podman execution is verified on macOS ARM64 only; other platforms remain held"
     );
-    util::reject_symlink_components(&source)?;
-    let Ok(relative) = source.strip_prefix(staging) else {
-        return Ok(false);
-    };
-    let parts = relative.components().collect::<Vec<_>>();
-    if parts.len() != 2
-        || parts[1].as_os_str() != "input"
-        || !parts[0]
-            .as_os_str()
-            .to_string_lossy()
-            .starts_with("worker-")
-    {
-        return Ok(false);
-    }
-    let token = parts[0].as_os_str().to_string_lossy();
-    let expected_name = format!("{owner}-{token}");
-    if value["Name"]
-        .as_str()
-        .map(|name| name.trim_start_matches('/'))
-        != Some(expected_name.as_str())
-    {
-        return Ok(false);
-    }
-    Ok(!source.exists() && !source.parent().context("worker directory")?.exists())
+    Ok(())
 }
 
 struct CaptureGuard {
@@ -648,7 +596,19 @@ impl Drop for CaptureGuard {
 }
 
 /// Metadata is bounded and diagnostics never enter an MCP stdout stream.
-fn capture(mut command: Command, timeout: Duration) -> Result<String> {
+fn failure_diagnostics(stdout: &[u8], stderr: &[u8]) -> String {
+    let tail = |bytes: &[u8]| {
+        String::from_utf8_lossy(&bytes[bytes.len().saturating_sub(8192)..]).into_owned()
+    };
+    format!("stderr:\n{}\nstdout:\n{}", tail(stderr), tail(stdout))
+}
+
+fn capture(command: Command, timeout: Duration) -> Result<String> {
+    let (stdout, _) = capture_output(command, timeout)?;
+    String::from_utf8(stdout).context("Podman returned non UTF-8 metadata")
+}
+
+fn capture_output(mut command: Command, timeout: Duration) -> Result<(Vec<u8>, Vec<u8>)> {
     command
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
@@ -726,39 +686,112 @@ fn capture(mut command: Command, timeout: Duration) -> Result<String> {
             stderr = Some(bytes);
         }
     }
+    let stdout = stdout.unwrap_or_default();
+    let stderr = stderr.unwrap_or_default();
     ensure!(
         status.success(),
         "Podman failed ({status}): {}",
-        String::from_utf8_lossy(&stderr.unwrap_or_default())
-            .chars()
-            .take(2048)
-            .collect::<String>()
+        failure_diagnostics(&stdout, &stderr)
     );
-    let text = String::from_utf8(stdout.unwrap_or_default())
-        .context("Podman returned non UTF-8 metadata")?;
     guard.armed = false;
-    Ok(text)
+    Ok((stdout, stderr))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(unix)]
     #[test]
-    fn orphan_recovery_preserves_active_jobs_and_unrelated_data() {
-        let dir = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
-        let stage = dir.path().join("staging");
-        std::fs::create_dir(&stage).unwrap();
-        let input = stage.join("worker-ABC123/input");
-        std::fs::create_dir_all(&input).unwrap();
-        let mut value = json!({"Name":"mirket-fixture-worker-ABC123","Config":{"User":"1000:1000","Labels":{"org.mirket.execution-owner":"mirket-fixture","org.mirket.execution-kind":"offline-render"}},"HostConfig":{"ReadonlyRootfs":true,"NetworkMode":"none"},"Mounts":[{"Destination":"/input","Source":input,"Type":"bind","RW":false}]});
-        assert!(!orphaned_worker(&value, &stage, "mirket-fixture").unwrap());
-        std::fs::remove_dir_all(input.parent().unwrap()).unwrap();
-        assert!(orphaned_worker(&value, &stage, "mirket-fixture").unwrap());
-        value["Name"] = json!("unrelated-app");
-        assert!(!orphaned_worker(&value, &stage, "mirket-fixture").unwrap());
-        value["Name"] = json!("mirket-fixture-worker-ABC123");
-        value["Mounts"][0]["Source"] = json!(dir.path().join("outside/input"));
-        assert!(!orphaned_worker(&value, &stage, "mirket-fixture").unwrap());
-        assert!(dir.path().exists());
+    fn failed_build_retains_underlying_stdout_diagnostics() {
+        let mut command = Command::new("/bin/sh");
+        command.args([
+            "-c",
+            "printf 'Certificate issuer is unknown\\n'; printf 'Build step failed\\n' >&2; exit 100",
+        ]);
+        let error = capture(command, Duration::from_secs(5))
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("Certificate issuer is unknown"));
+        assert!(error.contains("Build step failed"));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn successful_log_command_preserves_both_container_streams() {
+        let mut command = Command::new("/bin/sh");
+        command.args([
+            "-c",
+            "printf 'service output'; printf 'startup failure' >&2",
+        ]);
+        let (stdout, stderr) = capture_output(command, Duration::from_secs(5)).unwrap();
+        assert_eq!(stdout, b"service output");
+        assert_eq!(stderr, b"startup failure");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn selected_installation_helpers_migrate_only_the_exact_legacy_config() {
+        use std::os::unix::fs::{PermissionsExt, symlink};
+        let temporary = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let paths = Paths::new(temporary.path().to_owned()).unwrap();
+        let bin = temporary.path().join("installation/bin");
+        std::fs::create_dir_all(&bin).unwrap();
+        let binary = bin.join("podman-remote");
+        std::fs::write(&binary, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&binary, std::fs::Permissions::from_mode(0o700)).unwrap();
+        crate::tools::register(&paths, "podman", &binary).unwrap();
+        let before = Engine::resolve(&paths).unwrap();
+        let config = PathBuf::from(&before.env["CONTAINERS_CONF"]);
+        assert_eq!(
+            helper_directories(&binary).unwrap(),
+            std::slice::from_ref(&bin)
+        );
+
+        let libexec = temporary.path().join("installation/libexec/podman");
+        std::fs::create_dir_all(&libexec).unwrap();
+        for name in ["gvproxy", "vfkit"] {
+            let helper = libexec.join(name);
+            std::fs::write(&helper, b"fixture, never executed").unwrap();
+            std::fs::set_permissions(helper, std::fs::Permissions::from_mode(0o700)).unwrap();
+        }
+        Engine::resolve(&paths).unwrap();
+        assert_eq!(
+            helper_directories(&binary).unwrap(),
+            [bin.clone(), libexec.clone()]
+        );
+        let expected = format!(
+            "[engine]\nhelper_binaries_dir = {}\n",
+            serde_json::to_string(&[bin, libexec.clone()]).unwrap()
+        );
+        assert_eq!(std::fs::read_to_string(&config).unwrap(), expected);
+        std::fs::write(&config, format!("{expected}# unexpected change\n")).unwrap();
+        assert!(
+            Engine::resolve(&paths)
+                .unwrap_err()
+                .to_string()
+                .contains("has drifted")
+        );
+
+        std::fs::remove_file(libexec.join("gvproxy")).unwrap();
+        symlink(&binary, libexec.join("gvproxy")).unwrap();
+        assert!(helper_directories(&binary).is_err());
+        if cfg!(target_os = "macos") {
+            std::fs::remove_dir_all(PathBuf::from(&before.env["HOME"]).parent().unwrap()).unwrap();
+        }
+    }
+
+    #[test]
+    fn managed_controller_support_is_platform_explicit() {
+        assert!(controller_supported("macos", "aarch64"));
+        for (os, arch) in [
+            ("macos", "x86_64"),
+            ("linux", "aarch64"),
+            ("linux", "x86_64"),
+            ("windows", "aarch64"),
+        ] {
+            assert!(!controller_supported(os, arch), "{os} {arch}");
+            assert!(ensure_controller_supported_for(os, arch).is_err());
+        }
     }
 }

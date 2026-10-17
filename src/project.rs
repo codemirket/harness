@@ -8,7 +8,9 @@ use std::{
 };
 
 use crate::{
-    catalog::{Catalog, Payload, Skill, payload_hash, read_payload_directory, safe_path},
+    catalog::{
+        Catalog, Payload, Skill, payload_hash, read_payload_directory, safe_path, skill_field,
+    },
     paths::canonical_project,
     util::{
         atomic_write, ensure_directory, read_bounded, reject_symlink_components,
@@ -124,7 +126,7 @@ pub fn init(catalog: &Catalog, project: &Path, targets: &[String]) -> Result<Val
         } else {
             targets.into()
         },
-        profiles: vec!["project-foundation".into()],
+        profiles: vec![],
         skills: vec![],
         target_skills: BTreeMap::new(),
     };
@@ -150,9 +152,11 @@ pub fn add(
     let mut config = load(catalog, &root)?.1;
     let mut ids = skills.to_vec();
     for name in capabilities {
-        ids.push(catalog.capability(name)?.lead.clone());
+        let lead = catalog.capability(name)?.lead.clone();
+        if !catalog.global_skills().contains(&lead) {
+            ids.push(lead);
+        }
     }
-    ids.retain(|id| !catalog.global_skills().contains(id));
     if let Some(target) = target {
         ensure!(
             config.targets.iter().any(|candidate| candidate == target),
@@ -432,15 +436,11 @@ fn check_name_collision(root: &Path, target: &str, skill: &Skill) -> Result<()> 
             continue;
         }
         let bytes = read_bounded(&body, 256 * 1024)?;
-        let text = std::str::from_utf8(&bytes).context("existing skill is not UTF-8")?;
-        let name = text
-            .lines()
-            .skip(1)
-            .take_while(|line| *line != "---")
-            .find_map(|line| line.strip_prefix("name:"))
-            .map(|s| s.trim().trim_matches(['\'', '"']));
+        let Ok(name) = skill_field(&bytes, "name") else {
+            continue;
+        };
         ensure!(
-            name != Some(&skill.name),
+            name != skill.name,
             "skill invocation already exists in {}",
             entry.path().display()
         );
@@ -673,12 +673,135 @@ fn check_executables(
 mod tests {
     use super::*;
 
+    fn add_foundation(catalog: &Catalog, project: &Path) {
+        add(
+            catalog,
+            project,
+            &["project-foundation".into()],
+            &[],
+            &[],
+            None,
+        )
+        .unwrap();
+    }
+
+    #[test]
+    fn init_starts_empty_and_explicit_foundation_is_retained() {
+        let catalog = Catalog::embedded().unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        let result = init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        assert_eq!(result["config"]["profiles"], json!([]));
+        assert_eq!(plan(&catalog, temp.path()).unwrap()["jobs"], json!([]));
+
+        add_foundation(&catalog, temp.path());
+        let (_, config) = load(&catalog, temp.path()).unwrap();
+        assert_eq!(config.profiles, vec!["project-foundation".to_string()]);
+    }
+
+    #[test]
+    fn adding_without_selection_keeps_existing_profile_configuration() {
+        let catalog = Catalog::embedded().unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
+        add(&catalog, temp.path(), &[], &[], &[], None).unwrap();
+        let (_, config) = load(&catalog, temp.path()).unwrap();
+        assert_eq!(config.profiles, vec!["project-foundation".to_string()]);
+    }
+
+    #[test]
+    fn explicit_global_skill_is_scoped_to_target_and_removed_explicitly() {
+        let catalog = Catalog::embedded().unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let cache = root.join("cache");
+        let global = catalog.global_skills().first().unwrap().clone();
+        init(&catalog, &root, &["codex".into(), "claude".into()]).unwrap();
+        add(
+            &catalog,
+            &root,
+            &[],
+            std::slice::from_ref(&global),
+            &[],
+            Some("codex"),
+        )
+        .unwrap();
+        let (_, config) = load(&catalog, &root).unwrap();
+        assert!(
+            config
+                .target_skills
+                .get("codex")
+                .is_some_and(|ids| ids.contains(&global))
+        );
+        assert!(
+            !config
+                .target_skills
+                .get("claude")
+                .is_some_and(|ids| ids.contains(&global))
+        );
+        sync(&catalog, &root, &cache).unwrap();
+        let skill = catalog.skill(&global).unwrap();
+        assert!(
+            destination(&root, "codex", skill)
+                .unwrap()
+                .join("SKILL.md")
+                .is_file()
+        );
+        assert!(!destination(&root, "claude", skill).unwrap().exists());
+
+        remove(
+            &catalog,
+            &root,
+            &[],
+            std::slice::from_ref(&global),
+            &[],
+            Some("codex"),
+        )
+        .unwrap();
+        sync_with_options(&catalog, &root, &cache, true).unwrap();
+        assert!(!destination(&root, "codex", skill).unwrap().exists());
+        assert!(!destination(&root, "claude", skill).unwrap().exists());
+    }
+
+    #[test]
+    fn capability_with_global_lead_does_not_implicitly_select_global_skill() {
+        let catalog = Catalog::embedded().unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let cache = root.join("cache");
+        let capability = catalog
+            .capabilities()
+            .iter()
+            .find(|capability| catalog.global_skills().contains(&capability.lead))
+            .unwrap();
+        let lead = capability.lead.clone();
+        init(&catalog, &root, &["codex".into()]).unwrap();
+        add(
+            &catalog,
+            &root,
+            &[],
+            &[],
+            std::slice::from_ref(&capability.id),
+            None,
+        )
+        .unwrap();
+        let (_, config) = load(&catalog, &root).unwrap();
+        assert!(!config.skills.contains(&lead));
+        sync(&catalog, &root, &cache).unwrap();
+        assert!(
+            !destination(&root, "codex", catalog.skill(&lead).unwrap())
+                .unwrap()
+                .exists()
+        );
+    }
+
     #[test]
     fn foundation_and_capabilities_install_exact_target_membership() {
         let catalog = Catalog::embedded().unwrap();
         let temp = tempfile::tempdir().unwrap();
         let cache = temp.path().join("cache");
         init(&catalog, temp.path(), &["codex".into(), "claude".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         add(
             &catalog,
             temp.path(),
@@ -710,6 +833,7 @@ mod tests {
             let project = tempfile::tempdir().unwrap();
             let root = project.path().canonicalize().unwrap();
             init(&catalog, &root, &["codex".into(), "claude".into()]).unwrap();
+            add_foundation(&catalog, &root);
             add(
                 &catalog,
                 &root,
@@ -767,6 +891,7 @@ mod tests {
         let catalog = Catalog::embedded().unwrap();
         let temp = tempfile::tempdir().unwrap();
         init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         sync(&catalog, temp.path(), &temp.path().join("cache")).unwrap();
         let body = temp.path().join(".agents/skills/debugging/SKILL.md");
         fs::write(&body, "my change").unwrap();
@@ -822,6 +947,7 @@ mod tests {
         let temp = tempfile::tempdir().unwrap();
         let cache = temp.path().join("cache");
         init(&catalog, temp.path(), &["codex".into(), "claude".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         add(
             &catalog,
             temp.path(),
@@ -909,6 +1035,7 @@ mod tests {
         let catalog = Catalog::embedded().unwrap();
         let temp = tempfile::tempdir().unwrap();
         init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         let report = remove(&catalog, temp.path(), &[], &["debugging".into()], &[], None).unwrap();
         assert_eq!(
             report["retained_by_selection"]["codex"],
@@ -934,6 +1061,7 @@ mod tests {
         let temp = tempfile::tempdir().unwrap();
         let cache = temp.path().join("cache");
         init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         sync(&catalog, temp.path(), &cache).unwrap();
         let root = temp.path().join(".agents/skills/debugging");
         fs::set_permissions(root.join("SKILL.md"), fs::Permissions::from_mode(0o755)).unwrap();
@@ -962,6 +1090,7 @@ mod tests {
         let temp = tempfile::tempdir().unwrap();
         let external = tempfile::tempdir().unwrap();
         init(&catalog, temp.path(), &["codex".into()]).unwrap();
+        add_foundation(&catalog, temp.path());
         symlink(external.path(), temp.path().join(".agents")).unwrap();
         assert!(sync(&catalog, temp.path(), &temp.path().join("cache")).is_err());
         assert_eq!(fs::read_dir(external.path()).unwrap().count(), 0);
@@ -973,5 +1102,74 @@ mod tests {
         )
         .unwrap();
         assert!(sync(&catalog, temp.path(), &temp.path().join("cache")).is_err());
+    }
+
+    #[test]
+    fn collision_scan_is_permissive_for_external_skill_bodies_and_atomic_on_conflict() {
+        let catalog = Catalog::embedded().unwrap();
+        let temporary = tempfile::tempdir().unwrap();
+        let root = temporary.path().canonicalize().unwrap();
+        let skills = root.join(".agents/skills");
+        fs::create_dir_all(&skills).unwrap();
+        init(&catalog, &root, &["codex".into()]).unwrap();
+        for (directory, contents) in [
+            (
+                "body-only",
+                b"# External body\nname: debugging\n---\n".as_slice(),
+            ),
+            ("missing-header", b"name: debugging\n---\n".as_slice()),
+            ("unclosed-header", b"---\nname: debugging\n".as_slice()),
+            ("non-utf8", &[0xff, 0xfe, 0x00][..]),
+        ] {
+            let directory = skills.join(directory);
+            fs::create_dir_all(&directory).unwrap();
+            fs::write(directory.join("SKILL.md"), contents).unwrap();
+        }
+        add(
+            &catalog,
+            &root,
+            &[],
+            &["debugging".into(), "performance-engineering".into()],
+            &[],
+            None,
+        )
+        .unwrap();
+        let ready = plan(&catalog, &root).unwrap();
+        assert_eq!(ready["status"], "ready");
+        assert_eq!(ready["conflicts"], 0);
+        sync(&catalog, &root, &root.join("cache")).unwrap();
+        assert!(skills.join("debugging/SKILL.md").is_file());
+        assert!(skills.join("performance-engineering/SKILL.md").is_file());
+
+        let conflict = skills.join("recognized-conflict");
+        fs::create_dir_all(&conflict).unwrap();
+        fs::write(
+            conflict.join("SKILL.md"),
+            b"---\nname: \"database-systems\"\n---\nExternal copy\n",
+        )
+        .unwrap();
+        add(
+            &catalog,
+            &root,
+            &[],
+            &["database-systems".into(), "test-design".into()],
+            &[],
+            None,
+        )
+        .unwrap();
+        let conflict_plan = plan(&catalog, &root).unwrap();
+        assert_eq!(conflict_plan["status"], "conflicts");
+        assert_eq!(conflict_plan["conflicts"], 1);
+        assert!(
+            conflict_plan["jobs"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|job| job["status"] == "conflict")
+        );
+        assert!(sync(&catalog, &root, &root.join("cache")).is_err());
+        assert!(!skills.join("database-systems").exists());
+        assert!(!skills.join("test-design").exists());
+        assert!(skills.join("debugging/SKILL.md").is_file());
     }
 }

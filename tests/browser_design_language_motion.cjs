@@ -1,13 +1,13 @@
 /* Behavioral acceptance for the four original design-language motion studies.
- * Use an ALREADY AVAILABLE Playwright and browser; never installs either.
+ * Use an managed Browserless and installed playwright-core client; never installs either.
  *
  * node tests/browser_design_language_motion.cjs LOOPBACK_BASE OUTPUT_DIR [ID]
  * BASE serves design-inspiration/assets/design-languages/ and ends with /.
- * MIRKET_BROWSER_EXECUTABLE selects an existing browser executable.
- * MIRKET_MOTION_FRAMES=0 skips PNGs; MIRKET_MOTION_VIDEO=1 records wide normal
+ * BROWSERLESS_WS selects the managed Browserless WebSocket endpoint; the helper uses native Playwright.
+ * CAPTURE_FRAMES=0 skips PNGs; CAPTURE_VIDEO=1 records wide normal
  * purposeful runs. Neither screenshots nor a passing probe are visual approval.
  */
-const { chromium } = require('playwright');
+const { connect } = require('./browserless.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -27,8 +27,8 @@ if (!base || (!/^http:\/\/(127\.0\.0\.1|localhost):\d+\/[^?#]*$/.test(base) || !
 if (!outputArgument) throw new Error('Provide an output directory for the JSON result and optional media.');
 if (selection && !languages.includes(selection)) throw new Error(`Unknown motion study: ${selection}`);
 const output = path.resolve(outputArgument);
-const captureFrames = process.env.MIRKET_MOTION_FRAMES !== '0';
-const captureVideo = process.env.MIRKET_MOTION_VIDEO === '1';
+const captureFrames = process.env.CAPTURE_FRAMES !== '0';
+const captureVideo = process.env.CAPTURE_VIDEO === '1';
 const result = {
   scope: 'Local Chromium, original web teaching studies. Ordinary playback is not sought or accelerated. Geometry, meaning and state are asserted; captured frames still require visual inspection. No native material parity, real device or assistive-technology claim.',
   scenarios: []
@@ -340,10 +340,7 @@ async function fallback(browser, id) {
 
 (async () => {
   await fs.mkdir(output, { recursive: true });
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.MIRKET_BROWSER_EXECUTABLE ? { executablePath: process.env.MIRKET_BROWSER_EXECUTABLE } : {})
-  });
+  const browser = await connect();
   result.browser = browser.version();
   result.platform = `${process.platform}/${process.arch}`;
   try {

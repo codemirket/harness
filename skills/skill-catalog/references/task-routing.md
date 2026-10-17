@@ -1,21 +1,19 @@
 # Route the task to a capability
 
-Use matching rows as discovery starting points and inspect useful entries with
-`mirket catalog show <id>`. All harness operations run through `mirket`.
-IDs register catalog entries; invocation names identify the installed skill.
-Profiles are reusable installation groups, not instructions to
-load every member for every task. Existing project instructions and explicit
-user choices remain authoritative.
+Use this matrix when the task boundary or owner is unclear. Routine work is
+direct; the rows suggest a lead and useful evidence without adding a workflow
+for every named concern. Existing project instructions and explicit user
+choices remain authoritative. Select one lead and add support only for affected
+boundaries; read selected guidance when the next decision needs it.
 
-Choose expertise from the requested result and actual boundaries. The rows below
-suggest useful owners and evidence; they do not require a separate workflow for
-every named concern. For example, polishing a Nuxt form does not select React
-recipes; a browser-state change may benefit from the existing frontend workflow.
-Read selected guidance when it helps apply the method to this task.
+Use `mirket catalog show <id>` to inspect an entry. All harness operations run
+through `mirket`; IDs identify catalog entries and invocation names identify
+installed skills. Profiles group installations and do not require loading every
+member.
 
 | Requested outcome | Candidate expertise and catalog additions | Selection boundary |
 | --- | --- | --- |
-| Build a new application screen or public page | Global `interface-design`, selecting its application or public-page composition reference; `frontend-engineering` for the actual stack, state and browser boundary. Use a supplied approved reference when fidelity is requested. | Derive composition from the user task and real content. Application forms/tables and public/editorial narratives have different needs. Reuse existing brand/components; a new screen does not imply a new design system, framework or variant picker. |
+| Build a new application screen or public page | Global `interface-design`, selecting its application or public-page composition reference; `frontend-engineering` for the actual stack, state and browser boundary. Use a supplied approved reference when fidelity is requested. | Derive composition from real content. Compile Style Dictionary tokens before render. Inspect the full DOM, responsive states and 2x screenshots with Browserless; use Odiff for comparable pixel QA. |
 | Improve an existing interface's hierarchy, composition or visual polish | Global `interface-design`; consider `taste-redesign-skill` (invocation `redesign-existing-projects`) for a requested redesign. The `design-redesign` profile also supplies content, mobile and motion checks. Search `redesign` or `ui-design`. | Preserve the actual brand, tokens, content and behavior. `frontend-web`, `break-ui` and accessibility checks alone do not provide art direction. Read the redesign adaptation before using aesthetic prescriptions. |
 | Find and study design inspiration or relevant examples | Project `design-inspiration` helps qualify source-linked references; catalog search offers routes into design-language lessons. Optional `design_context` describes only this inventory. Existing craft owners implement and verify. | The language index explains discovery and optional learning exercises. Use project, primary or other relevant sources as useful, including several perspectives on one question. Preserve user references, approved decisions, source rights and actual platform/access limits. |
 | Explore alternative UI directions | Global `interface-design`; `emil-prototype` (invocation `prototype`) when the user requests exploration; `open-design-reference-design-contract` (invocation `reference-design-contract`) for an explicit durable visual handoff. | `prototype` preserves explicit invocation semantics. Do not trigger a multi-variant picker on every UI fix or create competing design documents. The `design-prototyping` profile contains several separate recipes; select those needed. |
@@ -28,19 +26,22 @@ Read selected guidance when it helps apply the method to this task.
 | Add or repair a service/API connector | Global `engineering-judgment` with its service-integration reference; `ecc-api-connector` (invocation `api-connector-builder`) for the existing connector pattern. Add `ecc-contract-first` (invocation `contract-first`) when independent consumers/providers need a shared schema. | Match provider versions and project architecture. Verify auth, mapping, pagination and affected failure/replay behavior. Contract work does not imply a new generator. Controlled tests and live provider evidence are separate. |
 | Build or connect an MCP server/client | `mcp-integration` for protocol, transport, discovery, client lifecycle and server-side authorization; use the API connector route for an underlying external service when relevant. | Protocol registration alone does not prove authentication or successful client tasks. Use current official MCP/SDK docs and actually exercise the affected client boundary. |
 | Write repository documentation, API docs or an ADR | The project's documentation method or `addy-documentation-and-adrs` (invocation `documentation-and-adrs`); global `document-workflow` supplies a technical-writing reference for source/example verification. | Follow existing owners, templates and examples. Execute affected commands/examples and verify defaults/errors against implementation. Office-authoring and PDF skills do not substitute for technical documentation. Do not create an ADR for a routine edit. |
-| Create or revise DOCX, spreadsheet, slide or PDF artifacts | The available native format skill, supported by `document-workflow`, `office-authoring` and `document-parsing` when relevant. The `documents` profile provides portable authoring/extraction and `openai-pdf` (invocation `pdf`). | Check the actual editor, renderer and calculation engine. A file skill does not control a live Excel session. Save, render and inspect the requested deliverable. |
+| Create paged documents or decks | `office-authoring` and the design package's Typst route, with `document-workflow` for facts and structure. | Compile design tokens before Typst; save source, render and inspect every page. Native file editing and spreadsheet calculations are separate format-specific tasks. |
 | Implement or review ordinary interface animation | `motion-design` for controls, disclosure, enter/exit and interaction feedback. `emil-animation-vocabulary` (invocation `animation-vocabulary`) is for naming an effect. Search `motion` or `animation`. | General animation does not imply page navigation, a complex timeline, video production or a new library. Exercise interruption, exit/cleanup and reduced motion; inspect actual frames. Native/mobile stacks need their own platform skill. |
 | Add page/route transitions or shared-element navigation | `page-transitions` and its navigation-craft reference; the project's frontend workflow supports actual router/data behavior. Add `vercel-react-view-transitions` only for matching React work and compatible installed versions. | Preserve history, deep links, focus, scroll, loading and request ownership. A skipped visual capture must not replay the application commit. Feature-detect native support and verify immediate/reduced-motion navigation. |
 | Create an expressive website sequence, animated color/gradient, scroll scene, procedural Canvas graphic or complex choreography | `advanced-motion`: start with art-direction-and-medium, then the mechanics or surface reference actually needed. `interface-design` supports page hierarchy; `graphic-design` supports an asset family. The explicit `motion-studio` profile also supplies control, navigation and SVG specialists plus two editable examples. Search `art-direction`, `animated-gradient`, `canvas`, `choreography` or `scroll-animation`. | Choose a focal action and restraint from the brief; a form fix or ordinary hover does not need this route. DOM/CSS for text and controls, SVG for editable geometry, Canvas for dense drawn fields, WebGL only for justified depth/GPU work. Video requests need an actual frame-based renderer. These are choices, not mandatory dependencies or a list of effects to add. |
-| Export an editable web composition as a video or fixed frame | `advanced-motion` with its `local-video` reference and the optional `hyperframes` or `motion-canvas` package; `graphic-design` or `svg-animation` supports the actual artwork. Search `hyperframes`, `motion-canvas`, `video-export` or `mp4`. | Inspect the selected runtime and supported platform. Keep editable source distinct from PNG/MP4; verify sampled forward/reverse seeking, decoded dimensions/frame count and normal playback. Video export is not a reason to install an engine for ordinary UI motion. |
-| Create or refine vector illustrations, icons, logos or editable SVG artwork | `svg-creation` and its vector-craft reference; the `svg-studio` profile also provides SVG motion. Search `svg`, `vector` or `illustration`. | Compose and refine native geometry, curves, silhouette and optical balance. Preserve supplied brand assets; an embedded raster or a valid XML file does not establish vector craft. Render at actual sizes/backgrounds and verify repeated inline instances. |
+| Export an editable web composition as a video or fixed frame | `advanced-motion` with its `local-video` reference and HyperFrames in the design package; `graphic-design` or `svg-animation` supports the artwork. | Compile tokens first; run HyperFrames lint, snapshot and render in order. Keep source distinct from PNG/MP4 and inspect frames and normal playback. |
+| Create or refine vector illustrations, icons, logos or editable SVG artwork | `svg-creation` and its vector-craft reference; the `svg-studio` profile also provides SVG motion. Search `svg`, `vector` or `illustration`. | Compose native geometry and preserve supplied brand assets. Run SVGO on every generated or imported SVG; inspect the optimized source and actual render at use sizes, including repeated inline instances. |
 | Animate SVG artwork, draw paths, reveal a logo, morph shapes or choreograph vector scenes | `svg-animation` and its SVG motion-craft reference; `svg-creation` supports artwork. Use `motion-design` for surrounding controls, `page-transitions` for navigation or `advanced-motion` for a larger DOM sequence. | Choose actual embedding before API: image-mode SVG cannot run scripts. Inspect playback/intermediate frames, reduced motion at load and live changes, replay/pause and relevant disposal. Existing libraries are optional; do not add GSAP, a video renderer or an MCP by default. |
 | Research facts or uncertain framework behavior | Global `research-and-synthesis`; optionally `addy-source-driven-development` (invocation `source-driven-development`) for installed-version technical research. `google-retrieving-developer-knowledge` is specifically for official Google platforms when its tools are available. | Use current sources appropriate to the claim. Search research is distinct from SEO and local code lookup. Use `rg` and the actual repository for local code search. |
 | Plan or resume substantial delivery work | `work-planning` and its delivery-review reference; `context-management` for durable state and bounded retrieval. | Preserve requirements, dependencies, decisions and verification state in the existing task record. Product prioritization uses `product-management`; routine edits need no planning ceremony. |
 | Decide what to build, prioritize scope or write acceptance conditions | `product-management`; `customer-research` for user evidence, `data-analysis` for metrics and `experiment-design` for a causal test. The `product-discovery` profile also offers explicitly chosen premise-challenging methods. | Distinguish observed needs from proposed solutions. Deliver a decision and useful slice, not mandatory interviews, a scoring ceremony or an invented roadmap. Existing owners and accepted requirements govern delivery. |
 | Analyze business/product data, reconcile metrics or explain a trend | `data-analysis`; use `database-systems` for query mechanics, the native spreadsheet skill for workbook work, or `openai-jupyter-notebook` (invocation `jupyter-notebook`) when a notebook is useful. The `data-analytics` profile adds optional tools/report formats. | Define grain, population, units and denominator before interpretation. Reconcile joins and missingness, check cohort mix and reproduce calculations. A chart/report template does not establish analytical validity; observational association does not prove causality. |
 | Write or refine messaging, campaign copy or public-facing prose | Global `marketing-writing` and its editorial-preservation reference for substantial revision. `marketing-product-context` (invocation `product-marketing`) supports positioning; select focused `marketing-*` profiles for research, launch, pricing or growth. | Preserve facts, qualifiers, voice and commitments. No invented proof, universal banned-word list or unmeasured conversion promise. Drafting and publishing/spending are distinct actions. |
-| Create bitmap illustrations, visual concepts or image variants | The available native image-generation skill/tool; global `interface-design` for use in a page and `svg-creation` for editable vector requirements. | Establish purpose, composition, palette, crop and delivery size. Inspect the asset in context; generation is not acceptance. A raster wrapped in SVG does not satisfy editable-vector work, and a vector workflow does not generate photography. |
+| Create bitmap illustrations, visual concepts or image variants | `graphic-design` with ComfyUI graph submission in the design package; `interface-design` supports page placement. | Establish purpose, composition, palette, crop and delivery size. Use imgproxy for raster preprocessing; inspect full output and actual placement. A raster wrapped in SVG does not satisfy editable-vector work. |
+| Render a flow, C4, sequence, Vega-Lite or Excalidraw diagram | `graphic-design` for factual composition and the design package's Kroki route for rendering. | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered diagram at use size. SVG hand placement is not the production diagram route. |
+| Produce a static card, social graphic or image with exact text | `graphic-design`; use Satori plus resvg in the design package. | Compile tokens first and use supported Flexbox layout with supplied TTF, OTF or WOFF fonts. Inspect the saved raster and text at intended sizes; use imgproxy for raster inputs and Odiff for comparable pixels. |
+| Create or revise an editable design file | `graphic-design` and the official Penpot MCP/plugin through the design package. | Inspect object identity, saved geometry and exported preview. Penpot's native file and plugin state require their real workspace and permissions; static exports are separate artifacts. |
 | Audit organic or AI search discoverability | `search-visibility` or the matching profile. | Use observed crawl, indexing, content and citation evidence. Do not route ordinary web research or a private app's internal search bug to SEO/GEO. |
 
 For cross-file repository retrieval or code-graph impact analysis, use
@@ -76,39 +77,26 @@ implementation workflow.
 | Model, reconcile or audit a spreadsheet | `spreadsheet-analysis` with the available native spreadsheet skill | Inspect formulas, ranges and units; independently reconcile totals, recalculate with the actual engine and inspect the saved workbook. Live Excel and file workflows have different tools. |
 | Implement a native or cross-platform mobile app | `mobile-engineering`; matching stack only when present | Exercise lifecycle, navigation, offline/retry behavior and the affected device/platform path. A web preview cannot verify native behavior. |
 | Diagnose a workstation, network or account-access problem | `it-operations` | Isolate the failing layer with reversible probes, preserve access and verify recovery from the affected consumer. Protect credentials and scope remote changes. |
-| Direct graphic composition or mixed-medium artwork | `graphic-design` | Choose medium from purpose, compose at delivery size and inspect focal detail, hierarchy and export. Native image tools or SVG specialists supply the relevant production method. |
+| Direct graphic composition or mixed-medium artwork | `graphic-design` | Choose medium from purpose, compile tokens before rendering and inspect focal detail, hierarchy and export through the matching design package tool. |
 
 Design revision uses `interface-design` with a preserved baseline and identical
 comparison states; `brand-guidelines` supports identity constraints. Interface QA
 uses `test-design` and its interface-QA reference for asynchronous behavior,
 keyboard/focus and durable results. Illustration routes by requested format:
-`svg-creation` for editable vectors, the available native image-generation skill
-for bitmap work. When the medium is unspecified, choose from the intended result
-and available tools before registration: complex organic illustration need not be
-constructed as SVG just because it will appear on a website. Exact diagrams and
-existing vector systems favor native geometry. Preserve explicit editability,
-animation and format requirements; neither workflow supplies the other's runtime.
+`svg-creation` with SVGO for editable vectors, ComfyUI for bitmap generation and
+Kroki for diagrams. When the medium is unspecified, choose from the intended
+result: complex organic illustration need not be constructed as SVG merely
+because it appears on a website. Preserve editability, animation and format
+requirements; neither workflow supplies the other's output.
 
-When adopting a workflow, explain its purpose when that helps the handoff and
-read the guidance needed to apply it; a catalog description alone does not prove
-application. If choosing a missing reviewed project entry, register through
-`mirket project add`, then sync and doctor, within existing authorization.
-Do not edit installed copies or hand-edit the lock.
-
-Never follow an upstream sibling name blindly. Confirm it is installed and
-reviewed; otherwise use the applicable route above or discover a suitable entry.
-`manual`, `indexed-only` and advertisement entries are review candidates, not
-active capabilities. In particular the fuller Emil, Impeccable, UI UX Pro Max
-and Remotion integrations have separate review/runtime requirements. Report a
-material missing capability instead of treating a catalog listing as installation.
-
-Registration, selection, application and outcome are separate evidence levels.
-`mirket project doctor` verifies installed copies; `mirket doctor` checks installation
-and registered tools. Neither accepts the delivered result.
-A fresh-session skill read demonstrates selection.
-An observed task result demonstrates application; UI improvement additionally
-needs comparable rendered evidence and judgment against the user's visual goal.
-For substantial work, select completion criteria from
-[delivery standards](delivery-standards.md). The harness's development evaluation
-workflow is available through Mirket task tracking; use it to assess output separately
-from discovery and installation, following the `ai-system-evaluation` guidance.
+Adopt a workflow only when its purpose and boundary fit the handoff. A catalog
+description or installation receipt does not prove application. For a missing
+reviewed project entry, use `mirket project add`, sync and doctor within existing
+authorization; do not edit installed copies or hand-edit the lock. Confirm
+upstream entries are reviewed and installed before use, and preserve their
+source and license requirements. Reference/manual entries and advertisement-only
+wrappers are review candidates, not active capabilities; inspect their actual
+source, runtime and license before relying on them. Registration, selection, application and
+outcome remain separate evidence levels; verify the result through the actual
+consumer and use [delivery standards](delivery-standards.md) for substantial
+work.

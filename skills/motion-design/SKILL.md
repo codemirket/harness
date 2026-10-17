@@ -49,7 +49,7 @@ Vector illustration motion, logo reveals, path drawing and morphs use catalog
 This workflow still owns the surrounding interface transitions. Use a vector
 specialist for the actual need rather than routing every animated icon to a new
 library or video renderer. When the requested deliverable is an encoded film,
-use `advanced-motion`'s local-video reference and verify the selected HyperFrames or Motion Canvas runtime.
+use `advanced-motion`'s local-video reference and verify the selected rendering runtime.
 
 For implementation or critique, read the matching sections of
 [interaction recipes](references/interaction-recipes.md): controls and feedback,
@@ -79,8 +79,9 @@ and `skills/review-animations/SKILL.md`, MIT at commit
 e8a175de22ae1e49370fc144c1f3bb9aeedf988d. These recipes intentionally do not carry
 upstream fixed timing tables, blanket easing bans, or mandatory sibling invocation.
 
-For repeatable evidence use available browser tools or an approved registered
-renderer through `mirket tool run`. Capture timed frames after input, include
+For repeatable evidence use available browser tools or the project's renderer. If
+neither supplies the needed capture, follow the [shared missing-tool route](../skill-catalog/references/task-execution.md#establish-the-execution-boundary).
+Capture timed frames after input, include
 normal/reduced motion and an explicit resulting-state assertion.
 The frame offsets start at capture; inspect reversal live and profile when needed.
 A static screenshot comparison that disables animations cannot verify motion.

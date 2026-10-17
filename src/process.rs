@@ -6,6 +6,27 @@ use anyhow::{Context, Result};
 use std::process::Stdio;
 use std::{pin::Pin, time::Duration};
 
+/// Normal runtime drop waits for blocking work; cancellation must not block
+/// an async worker or abandon the owned child in a detached async task.
+pub(crate) fn reap_on_drop(cleanup: impl FnOnce() + Send + 'static) {
+    // A runtime may cancel a queued blocking task before it starts during
+    // shutdown. The closure's guard still runs cleanup in that case.
+    struct Reap<F: FnOnce()>(Option<F>);
+    impl<F: FnOnce()> Drop for Reap<F> {
+        fn drop(&mut self) {
+            if let Some(cleanup) = self.0.take() {
+                cleanup();
+            }
+        }
+    }
+    let cleanup = Reap(Some(cleanup));
+    if let Ok(runtime) = tokio::runtime::Handle::try_current() {
+        runtime.spawn_blocking(move || drop(cleanup));
+    } else {
+        drop(cleanup);
+    }
+}
+
 #[cfg(unix)]
 pub(crate) fn signal_group(group: u32, signal: &'static str) -> Result<()> {
     group_signal_status(group, signal).map(|_| ())
@@ -181,5 +202,37 @@ impl Drop for OwnedChild {
             }
             std::thread::sleep(Duration::from_millis(20));
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn queued_reaper_runs_even_when_runtime_cancels_its_blocking_task() {
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .max_blocking_threads(1)
+            .build()
+            .unwrap();
+        let (started, ready) = std::sync::mpsc::channel();
+        let (release, blocked) = std::sync::mpsc::channel();
+        runtime.spawn_blocking(move || {
+            started.send(()).unwrap();
+            blocked.recv().unwrap();
+        });
+        ready.recv_timeout(Duration::from_secs(3)).unwrap();
+        let (cleaned, observed) = std::sync::mpsc::channel();
+        runtime.block_on(async {
+            reap_on_drop(move || {
+                let _ = cleaned.send(());
+            });
+        });
+        // The only blocking worker is occupied, so this reaper cannot start
+        // before shutdown marks queued blocking tasks for cancellation.
+        runtime.shutdown_background();
+        release.send(()).unwrap();
+        observed.recv_timeout(Duration::from_secs(3)).unwrap();
     }
 }

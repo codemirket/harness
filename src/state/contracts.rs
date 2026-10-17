@@ -1,5 +1,5 @@
 //! Opt-in evidence formats. File identities and caller declarations are not approval or authentication.
-use super::{State, bounded};
+use super::{MAX_CONTRACT_BYTES, MAX_EVIDENCE_BYTES, State, bounded};
 use crate::{catalog::Catalog, util};
 use anyhow::{Context, Result, bail, ensure};
 use rmcp::schemars::{self, JsonSchema};
@@ -11,7 +11,6 @@ use std::{
     path::Path,
 };
 
-const MAX_CONTRACT_BYTES: usize = 128 * 1024;
 const MAX_BINDINGS: usize = 64;
 const MAX_HASH_BYTES: u64 = 64 * 1024 * 1024;
 
@@ -136,6 +135,21 @@ struct Files {
 
 impl Files {
     fn check(&mut self, root: &Path, binding: &Binding) -> Result<()> {
+        self.check_with_limit(root, binding, MAX_EVIDENCE_BYTES)
+            .map(|_| ())
+    }
+
+    fn check_with_bytes(&mut self, root: &Path, binding: &Binding) -> Result<Vec<u8>> {
+        self.check_with_limit(root, binding, MAX_CONTRACT_BYTES)?
+            .context("binding was already checked before its bytes were requested")
+    }
+
+    fn check_with_limit(
+        &mut self,
+        root: &Path,
+        binding: &Binding,
+        max_bytes: u64,
+    ) -> Result<Option<Vec<u8>>> {
         self.bindings += 1;
         ensure!(
             self.bindings <= MAX_BINDINGS,
@@ -156,7 +170,7 @@ impl Files {
                 "conflicting digests for binding {}",
                 binding.path
             );
-            return Ok(());
+            return Ok(None);
         }
         util::safe_relative(Path::new(&binding.path))?;
         let path = root.join(&binding.path);
@@ -168,15 +182,17 @@ impl Files {
             binding.path
         );
         ensure!(
-            metadata.len() <= 16 * 1024 * 1024,
-            "binding exceeds 16 MiB: {}",
+            metadata.len() <= max_bytes,
+            "binding exceeds {max_bytes} bytes: {}",
             binding.path
         );
         ensure!(
             self.bytes + metadata.len() <= MAX_HASH_BYTES,
             "contract exceeds 64 MiB of unique bound files"
         );
-        let (hash, size) = State::file_evidence(root, &binding.path)?;
+        let checked = State::file_evidence(root, &binding.path, max_bytes)?;
+        let hash = checked.sha256;
+        let size = checked.size;
         ensure!(
             size == metadata.len(),
             "binding changed while validating: {}",
@@ -189,7 +205,7 @@ impl Files {
         );
         self.bytes += size;
         self.checked.insert(binding.path.clone(), (hash, size));
-        Ok(())
+        Ok(Some(checked.bytes))
     }
 
     fn list(&mut self, root: &Path, bindings: &[Binding], name: &str) -> Result<()> {
@@ -231,7 +247,7 @@ pub fn validate(
     completion: bool,
 ) -> Result<Value> {
     ensure!(
-        bytes.len() <= MAX_CONTRACT_BYTES,
+        bytes.len() as u64 <= MAX_CONTRACT_BYTES,
         "contract exceeds 128 KiB"
     );
     let mut files = Files::default();
@@ -276,22 +292,7 @@ pub fn validate(
                 (1..=13).contains(&contract.assignments.len()),
                 "contributions require 1..=13 assignments"
             );
-            files.check(root, &contract.roster)?;
-            ensure!(
-                files.checked[&contract.roster.path].1 <= MAX_CONTRACT_BYTES as u64,
-                "roster exceeds 128 KiB"
-            );
-            let roster_bytes =
-                util::read_bounded(&root.join(&contract.roster.path), MAX_CONTRACT_BYTES as u64)?;
-            ensure!(
-                util::sha256(&roster_bytes) == contract.roster.sha256,
-                "roster changed while reading"
-            );
-            let (after_hash, _) = State::file_evidence(root, &contract.roster.path)?;
-            ensure!(
-                after_hash == contract.roster.sha256,
-                "roster changed while reading"
-            );
+            let roster_bytes = files.check_with_bytes(root, &contract.roster)?;
             let roster: Value =
                 serde_json::from_slice(&roster_bytes).context("invalid roster JSON")?;
             let objective = task["objective"]
@@ -607,11 +608,36 @@ mod tests {
                 &f.root,
                 &f.task,
                 ContractKind::Verification,
-                &vec![b' '; MAX_CONTRACT_BYTES + 1],
+                &vec![b' '; (MAX_CONTRACT_BYTES + 1) as usize],
                 false
             )
             .is_err()
         );
+    }
+
+    #[test]
+    fn contributions_roster_uses_the_shared_contract_read_limit() {
+        let f = Fixture::new();
+        let roster_path = f.root.join("roster.json");
+        let mut exact = fs::read(&roster_path).unwrap();
+        exact.resize(MAX_CONTRACT_BYTES as usize, b' ');
+        fs::write(&roster_path, &exact).unwrap();
+        let mut contract = f.contributions();
+        contract["roster"] = f.binding("roster.json");
+        assert!(
+            f.validate(&contract, ContractKind::Contributions, false)
+                .is_ok()
+        );
+
+        exact.push(b' ');
+        fs::write(&roster_path, &exact).unwrap();
+        contract["roster"] = f.binding("roster.json");
+        let error = f
+            .validate(&contract, ContractKind::Contributions, false)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("binding exceeds"), "{error}");
+        assert!(error.contains(&MAX_CONTRACT_BYTES.to_string()), "{error}");
     }
 
     #[test]

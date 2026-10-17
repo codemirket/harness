@@ -10,11 +10,12 @@ expected finding format. For example: inspect a named retry implementation and
 its tests for a reproducible duplicate write; return the triggering input and
 file/line evidence without editing, executing or contacting external services.
 
-Prefer the host's provider integration when available. A separate CLI must be
-explicitly approved and registered through `mirket tool register`; invocation
-runs through `mirket tool run` with a bounded timeout. Inspect that CLI's current
-help and documented controls before selecting arguments. Registration pins the
-executable bytes; it does not restrict its filesystem access or create a sandbox.
+Prefer the host's provider integration when available. If a separate CLI is the
+only route to the needed review, use the [shared missing-tool route](../../skill-catalog/references/task-execution.md#establish-the-execution-boundary)
+to inspect it and its documented controls. Optional registration can pin the
+executable when that improves reproducibility; invocation remains subject to the
+host's bounded controls. Preserve the user's provider, model, billing route,
+authority and permissions.
 
 Keep the selected provider, model, billing route, authentication and permissions
 unchanged. Do not extract credentials, bypass host approvals or retry quota errors

@@ -24,14 +24,10 @@ const RECEIPT: &str = ".mirket-skill.json";
 fn example_sources() -> BTreeMap<String, Vec<u8>> {
     let source = Path::new(env!("CARGO_MANIFEST_DIR")).join("skills/advanced-motion/assets");
     let mut files = BTreeMap::new();
-    for example in ["solstice", "signal", "hyperframes"] {
+    for example in ["solstice", "signal"] {
         let local = read_payload_directory(&source.join(example), &[]).unwrap();
         assert!(
-            local.contains_key(if example == "hyperframes" {
-                "scene.html"
-            } else {
-                "index.html"
-            }),
+            local.contains_key("index.html"),
             "{example} has no entry page"
         );
         files.extend(
@@ -112,9 +108,7 @@ fn motion_payload_embeds_complete_sources_with_bounded_text_reads() {
         .files
         .iter()
         .filter(|(path, _)| {
-            path.starts_with("assets/solstice/")
-                || path.starts_with("assets/signal/")
-                || path.starts_with("assets/hyperframes/")
+            path.starts_with("assets/solstice/") || path.starts_with("assets/signal/")
         })
         .map(|(path, bytes)| (path.clone(), bytes.clone()))
         .collect();

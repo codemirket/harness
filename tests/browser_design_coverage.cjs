@@ -1,13 +1,12 @@
 /* Optional independent effect checks for the eight scoped coverage lessons.
- * Uses an ALREADY AVAILABLE Playwright package and browser; never installs or
+ * Uses an managed Browserless package and browser; never installs or
  * downloads anything. Serve assets/design-languages on a loopback URL first.
- * NODE_PATH=/existing/node_modules MIRKET_BROWSER_EXECUTABLE=/existing/chrome \
+ * NODE_PATH=/existing/node_modules BROWSERLESS_WS=ws://127.0.0.1:3000 \
  *   node tests/browser_design_coverage.cjs BASE_URL OUTPUT_DIR [ID,...]
- * MIRKET_AXE_SCRIPT optionally names an already available axe.min.js.
  * Captures require human/agent inspection; these checks do not certify native
  * runtime behavior, assistive technology, authorization or human acceptance. */
 'use strict';
-const {chromium} = require('playwright');
+const { connect } = require('./browserless.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -19,7 +18,6 @@ const focal = {'saleor-commerce':'.summary','atlassian-collaboration':'.composer
 assert.ok(ids.length&&ids.every(id=>focal[id]),'Select known coverage lesson IDs.');
 const baseURL = new URL(base || 'about:blank');
 if (baseURL.protocol !== 'http:' || !['127.0.0.1','localhost'].includes(baseURL.hostname) || !baseURL.port || baseURL.username || baseURL.password || baseURL.search || baseURL.hash || !baseURL.pathname.endsWith('/')) throw new Error('BASE_URL must be a loopback URL with an explicit port and trailing /.');
-if (!process.env.MIRKET_BROWSER_EXECUTABLE) throw new Error('Set MIRKET_BROWSER_EXECUTABLE to an already available browser.');
 const report = {scope:'Independent browser effects and render captures. No native, screen-reader, production-service or human-acceptance claim.',base,browser:null,results:[],failures:[]};
 const text = (p,s) => p.locator(s).innerText();
 const value = (p,s) => p.locator(s).inputValue();
@@ -108,7 +106,7 @@ const journeys = {
 };
 
 async function open(browser,id,variant,viewport,javaScriptEnabled=true) {
-  const context=await browser.newContext({viewport,javaScriptEnabled,reducedMotion:'reduce',deviceScaleFactor:1});const p=await context.newPage();p.setDefaultTimeout(7000);
+  const context=await browser.newContext({viewport,javaScriptEnabled,reducedMotion:'reduce',deviceScaleFactor:2});const p=await context.newPage();p.setDefaultTimeout(7000);
   const errors=[],external=[];p.on('pageerror',e=>errors.push(String(e)));await p.route('**/*',r=>{if(new URL(r.request().url()).origin===baseURL.origin)return r.continue();external.push(r.request().url());return r.abort();});
   const response=await p.goto(`${base}${id}/${variant?'?variant=misleading':''}`,{waitUntil:'load'});assert.equal(response.status(),200,'local specimen route');const html_sha256=crypto.createHash('sha256').update(await response.body()).digest('hex');await p.locator('main').waitFor();return {context,p,errors,external,html_sha256};
 }
@@ -120,7 +118,6 @@ async function execute(browser,id) {
       row.html_sha256=c.html_sha256;
       assert.equal(await attr(c.p,'html','data-design-language'),id);assert.ok((await text(c.p,'main')).length>80,'essential specimen content');
       if(mode==='text2')await enlargeText(c.p);row.geometry=await geometry(c.p);row.screenshot=await capture(c.p,tag);
-      if(mode==='wide'&&process.env.MIRKET_AXE_SCRIPT){await c.p.addScriptTag({path:process.env.MIRKET_AXE_SCRIPT});row.axe=await c.p.evaluate(async()=>{const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','best-practice']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)})),incomplete:r.incomplete.map(v=>({id:v.id,nodes:v.nodes.length}))};});assert.deepEqual(row.axe.violations,[],'automated accessibility subset');}
       if(mode==='wide'||mode==='misleading') {assert.ok(journeys[id],`No effect journey for ${id}`);await journeys[id](c.p,row,mode==='misleading');}
       if(mode==='misleading')row.effect_screenshot=await capture(c.p,`${tag}-effect`);
       if(mode==='text2'){const first=c.p.locator('main button:visible:not([disabled]), main input:visible, main select:visible, main a[href]:visible').first();if(await first.count()){await first.focus();await c.p.keyboard.press('Tab');row.focus=await c.p.evaluate(()=>({id:document.activeElement?.id,tag:document.activeElement?.tagName,outline:getComputedStyle(document.activeElement).outlineStyle}));assert.equal(row.focus.outline,'solid','visible keyboard focus');row.focal=`${tag}-focus.png`;await c.p.screenshot({path:path.join(output,row.focal),fullPage:false});}}
@@ -130,4 +127,4 @@ async function execute(browser,id) {
     finally {if(c)await c.context.close();}
   }
 }
-(async()=>{await fs.mkdir(output,{recursive:true});const browser=await chromium.launch({headless:true,executablePath:process.env.MIRKET_BROWSER_EXECUTABLE});report.browser=browser.version();try{for(const id of ids)await execute(browser,id);}finally{await browser.close();await fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');}console.log(JSON.stringify({browser:report.browser,results:report.results.length,failures:report.failures,report:path.join(output,'report.json')},null,2));if(report.failures.length)process.exitCode=1;})().catch(e=>{console.error(e);process.exitCode=1;});
+(async()=>{await fs.mkdir(output,{recursive:true});const browser=await connect();report.browser=browser.version();try{for(const id of ids)await execute(browser,id);}finally{await browser.close();await fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');}console.log(JSON.stringify({browser:report.browser,results:report.results.length,failures:report.failures,report:path.join(output,'report.json')},null,2));if(report.failures.length)process.exitCode=1;})().catch(e=>{console.error(e);process.exitCode=1;});

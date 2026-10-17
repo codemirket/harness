@@ -1,201 +1,118 @@
-# Local MCP, editor and animation packages
+# Design package
 
-Mirket installs reviewed local MCP servers and editor applications through the
-CLI. Server packages expose a filtered upstream MCP interface; editor and engine
-packages use Mirket-owned Rust MCP adapters around the local runtime. Each
-selection pins its runtime, dependency archives, launch arguments and notices.
-Package installation downloads those exact artifacts; it does not run `npm`,
-`npx`, `pip`, upstream installers or package lifecycle hooks.
+Mirket exposes the design stack as one local MCP package, `design`. Its tools
+share one read/write workspace. The host directory is the selected Mirket home's
+`.mirket/execution/podman/staging/design/workspace`; every design container sees
+that directory as `/workspace`. `package start` and `package status` report the
+host workspace path and assigned loopback host ports. Direct tool file arguments are relative to `/workspace`, so a
+single source or output path names the same file across the stack. The official
+Penpot `export_shape` and `import_image` `filePath` arguments require absolute
+`/workspace/...` paths in their upstream contract; they still refer to the same
+shared files. Design calls
+do not take `--project` or a configurable port.
 
-The shipped profiles require no paid API. General browser navigation can use
-the network when invoked; offline render jobs have no network. Native application
-and browser prerequisites remain separate from package installation.
+## Install and inspect
 
-## Select packages
-
-Inspect the catalog before choosing a package:
+For an existing installation, replace the saved package selection explicitly
+with the new release binary after starting its private Podman environment:
 
 ```sh
-mirket package list
-mirket package show playwright
+mirket setup --target all --package design --yes
 ```
 
-Interactive `mirket setup` asks which packages to select. A fresh
-`mirket setup --yes` selects none; subsequent setup and updates preserve saved
-choices. Repeated `--package` flags replace the complete selection:
+This reconciles the owned client bindings and saves `design` for later updates.
+`package install` adds to an existing selection; it does not replace one.
+Use the following commands for a fresh installation or an installation already
+selecting `design`:
 
 ```sh
-mirket setup --target all --package playwright --yes
-mirket package install motion-canvas
+mirket package install design
+mirket package start design
 mirket package status
-mirket doctor --json
+mirket package probe design --schemas
 ```
 
-`package install` adds to the saved selection and reapplies setup for the saved
-clients. Required runtimes are selected automatically. After configuration
-changes, start a new Codex Desktop or Claude Desktop Code session.
+Run `mirket package call design TOOL --arguments 'JSON_OBJECT'` using a tool name
+and argument schema returned by `probe`. Inspect the selected package with
+`mirket package show design`; package installation, service readiness, a tool
+response and a correct artifact are separate results. The design services are
+local and require the selected Podman environment. Startup does not infer a
+project root or mount a caller's project directory; put authorized inputs in the
+reported shared workspace before invoking a tool.
 
-| Package | Profile | Requirements and limits |
+For example, place `design/tokens.json` and `fonts/Inter-Regular.ttf` in the
+reported workspace, and create the `artifacts` directory there. Then compile
+the canonical tokens and render a static composition:
+
+```sh
+mirket package call design tokens_compile --arguments '{"source":"design/tokens.json"}'
+mirket package call design static_render --arguments '{"tree":{"type":"div","props":{"style":{"display":"flex","backgroundColor":"#fff","width":"100%","height":"100%"}},"children":"Hello"},"fonts":[{"path":"fonts/Inter-Regular.ttf","name":"Inter"}],"width":640,"height":360,"output":"artifacts/hello.png"}'
+```
+
+The output path is relative to the same workspace. Use `probe design --schemas`
+for the other direct tools and the official Penpot names forwarded by the
+running server.
+
+Stop the service with `mirket package stop design`. The explicit `--purge-data`
+option removes owned service volumes and account state. It leaves the shared
+workspace, including user files and models, intact. Stop and remove are different
+operations; a stopped service can retain its workspace and persisted design files.
+
+## Route work by output
+
+| Need | Tool domain | Required evidence |
 | --- | --- | --- |
-| `playwright` | Isolated headless browser QA | Pinned Node and Chrome Headless Shell. Browser sandbox enabled; server-side arbitrary-code and browser-install tools excluded. No native Windows ARM64 browser package. Linux needs compatible system libraries and sandbox support. |
-| `inkscape` | Editable static SVG, geometry inspection and PNG/plain SVG/PDF export | Inkscape 1.4.4 and its native bundled runtime. macOS ARM64, minimum macOS 11.3. Self-contained vector profile; live text needs available fonts. |
+| Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and Penpot token outputs in sync with that source. |
+| Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF or WOFF fonts. Inspect the saved output at its actual use size. |
+| Live web page and interaction | Browserless | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
+| Editable design file | Official Penpot MCP and plugin | Use the upstream `penpot/penpot` `develop/mcp` server and its forwarded tool schemas, with the plugin's persistent WebSocket. Inspect saved object identities and exports. |
+| Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
+| Fixed frame or video | HyperFrames | Run lint, snapshot, then render. Inspect representative frames and normal playback; keep editable source separate from exports. |
+| Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
+| Raster input preparation | imgproxy | Inspect dimensions, crop, color and transparency before downstream composition. |
+| Generated or imported SVG | SVGO | Optimize every SVG, then compare structure and appearance with the required semantic IDs intact. Optimization is not sanitization. |
+| Generated bitmap image | ComfyUI | Submit a graph and inspect its actual output and usage context. Track models/assets and rights supplied to that graph. |
+| Comparable pixel QA | Odiff | Compare matched dimensions, content and state; inspect the diff and explain material changes. A low difference score is not aesthetic approval. |
 
-The catalog's `ready` status means a pinned package definition is available for
-installation on a listed target. It does not establish native-client activation,
-SDK readiness or successful use on that machine. `package show ID` gives the
-exact version, platform artifacts and tool policy.
+Native Penpot SVG exports embed validated fonts from the owned Penpot frontend
+before SVG validation and optimization, so saved files retain their typography
+without a server connection. CLI scratch directories use private directories on
+the shared workspace disk and are removed after completion or cancellation.
 
-## Creative and accessibility packages
+Penpot's MCP is the official upstream implementation. Inside the private design
+network its MCP endpoint is `/mcp` on port 4401, the plugin manifest is served
+on port 4400, and its WebSocket is on port 4402. Host access to published
+services uses the assigned loopback ports reported by `package start` and
+`package status`; the internal WebSocket port is not separately published.
+Mirket forwards the official MCP tool names and schemas
+without custom design-object wrappers. Penpot writes can persist independently of
+a static export, so inspect the saved file and its preview separately.
 
-| Package | Purpose | Initial runtime boundary |
-| --- | --- | --- |
-| `axe-core` | Rendered accessibility audits with typed state interactions and saved JSON evidence | axe-core 4.14.0, Node and Chromium. Local project HTTP server only. Automated findings plus incomplete/manual-review results; no conformance certificate. |
-| `hyperframes` | Editable HTML/CSS/SVG/Canvas films, sampled frames and encoded media | HyperFrames 0.8.149 in offline Podman, Node 24.21, Chromium 155, Linux FFmpeg/FFprobe 9.0.2. Actual producer/player, explicit local assets and finite timeline. See [profile](hyperframes.md). |
-| `motion-canvas` | Generator-driven drawn sequences, paths, gradients, text and choreography | Motion Canvas 3.17.2 in offline Podman, fixed local build and browser runtime. Editable typed scene source plus PNG/video exports. See [profile](motion-canvas.md). |
-| `penpot` | Self-hosted editable design files and browser-backed typed creation/refinement/export | Penpot 2.18.3, five pinned Linux ARM64 OCI images, PostgreSQL 15.14 and Valkey 8.1.3, a dedicated Podman environment and active native headless Chromium. See [profile](penpot.md). |
+The source order is deliberate: token compilation precedes dependent rendering;
+raster inputs pass through imgproxy before composition; generated and imported
+SVG passes through SVGO; HyperFrames runs lint, snapshot and render; Browserless
+checks web behavior and 2x appearance; Odiff checks comparable pixels. A tool
+response or file hash identifies an output, but the user journey and visual result
+need their own inspection.
 
-These owned adapters initially cover macOS ARM64 only. Use `package show` for
-exact artifact pins and platform prerequisites. The CLI and client launchers stay
-native; reviewed OCI jobs have enforced container boundaries. Native browser and
-application exceptions execute under host permissions. See [Podman](podman.md).
+ComfyUI model checkpoints belong in the reported host workspace's `models/`
+directory, mounted as `/workspace/models` in the design containers. The package
+bundles no checkpoint. Mirket runs ComfyUI as an API-only graph service through
+`comfyui_submit`; it does not provide a standalone ComfyUI browser interface.
+A model-backed graph requires a separately supplied model
+whose identity, license and memory needs have been verified. `--purge-data` leaves
+these user-owned model files in the workspace.
 
-```sh
-mirket package install axe-core hyperframes motion-canvas
-mirket package probe axe-core --schemas --project /absolute/project
-mirket package call axe-core accessibility_audit --project /absolute/project --arguments '{"url":"http://127.0.0.1:3000/","output":"audit.json","width":390}'
-```
+## Updates and recovery
 
-Axe audits a specific rendered state. Typed click/fill/press actions can expose a
-dialog or menu. External requests and missing content are errors; read violations
-and incomplete results, then test keyboard, screen-reader and motion behavior as
-needed. A zero-violation report is not whole-product accessibility approval.
+`mirket update` reapplies saved package selections from the new release. A fresh
+unattended setup selects no optional package. `package status` checks the selected
+generation and service state; `doctor` checks installation and configured tools.
+Unexpected file or service drift needs inspection before reconciliation. Keep
+credentials, downloaded models and private design files out of repository source.
 
-HyperFrames and Motion Canvas use actual upstream rendering engines through
-fixed Mirket runners. Inspect their schemas; capture important intermediate frames,
-reverse-seek samples and saved normal-speed playback. Preserve editable source
-separately from exports. Limits and supported formats are stated in each profile.
-Missing assets, inconsistent seeking or unusable outputs are errors. System fonts
-can affect pixel results. Browser-native website QA remains a separate task.
-
-Penpot requires an explicitly selected Podman client and dedicated running ARM64 environment:
-
-```sh
-mirket tool register podman --executable /absolute/path/to/podman
-mirket environment init
-mirket environment start
-mirket package install penpot
-mirket package start penpot
-mirket package probe penpot --schemas --project /absolute/project
-mirket package status
-mirket package stop penpot
-```
-
-Explicit installation pulls only pinned manifests; start/serve never downloads.
-Services are named and labeled per selected home, use one internal network, and
-expose only the frontend on loopback. Start verifies a real backend JSON response;
-failed start removes new containers and restores prior running state, retaining
-durable data. Stop preserves
-private Podman VM volumes and private account/credential state. Package removal changes
-selection and host entries, not durable design data; stop services explicitly.
-The fixed plugin works in an active headless browser without a manual GUI. Its
-accepted content permissions, persistence and export checks are part of readiness.
-Use `mirket package stop penpot --purge-data` only to permanently delete this
-home's owned design volumes, accounts and service state, such as after a disposable
-test. The CLI checks ownership of all resources before deleting them.
-
-## Create vector graphics and animation
-
-Inkscape runs through its native command line with the complete signed application
-bundle. The profile covers macOS ARM64, with a declared minimum macOS 11.3. Live
-text needs available fonts; operation without a logged-in macOS session remains
-unverified. No unrestricted editor actions or bundled interpreter scripts are tools.
-
-```sh
-mirket package install inkscape
-mirket package probe inkscape --schemas --project /absolute/project
-```
-
-All source and output paths in editor arguments are relative to that selected
-project. Parent directories must already exist. Absolute paths, hidden path
-components, parent traversal and symlinks are refused. Existing output files
-require `overwrite: true`; an optional `expected_sha256` checks the current
-destination revision before replacement. A detected concurrent destination
-change stops publication. Results identify the editable source separately from
-an exported artifact and include saved artifact paths and hashes.
-
-### Static SVG with Inkscape
-
-| Tool | Purpose and principal arguments |
-| --- | --- |
-| `svg_save` | Create or refine editable SVG from `path` and inline `svg` markup; preserves the supplied source after validation and a native geometry check. |
-| `svg_inspect` | Inspect `path`: canvas, viewBox, object IDs, declared font families and native bounding boxes. |
-| `svg_export` | Export `source` to a distinct `output` with `format: "png"`, `"svg"` or `"pdf"`; optional `object_id` selects one drawable object. PNG `width` is 1–2048 pixels, default 1024. |
-
-The static profile supports shapes, paths, gradients, clipping and text with an
-explicit SVG `viewBox`. Scripts, CSS stylesheets, images, filters, linked
-resources and active animation are outside this profile. Available fonts affect
-live text; inspect the exported appearance. Plain SVG and PDF 1.5 are delivery
-artifacts. PDF export reopens the generated file with the bundled PDF importer
-and checks a rendered PNG before publishing; this verifies a usable renderer
-result, not print-production requirements.
-
-Create an editable source containing a named group, inspect it, then render a
-separate preview:
-
-```sh
-mirket package call inkscape svg_save --arguments '{"path":"mark.svg","svg":"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"640\" height=\"240\" viewBox=\"0 0 640 240\"><g id=\"box\"><rect x=\"20\" y=\"60\" width=\"80\" height=\"80\" fill=\"#e04040\"/></g></svg>"}' --project /absolute/project
-mirket package call inkscape svg_inspect --arguments '{"path":"mark.svg"}' --project /absolute/project
-mirket package call inkscape svg_export --arguments '{"source":"mark.svg","output":"mark-preview.png","format":"png","width":640}' --project /absolute/project
-```
-
-For vector choreography, retain SVG geometry and integrate it into the actual
-page with CSS/WAAPI or a selected HyperFrames composition. Motion Canvas produces
-editable drawn scene documents; it does not promise an animated SVG export.
-See the [SVG animation guidance](../skills/svg-animation/SKILL.md) and the
-[local video workflow](../skills/advanced-motion/references/local-video.md).
-
-## Update, remove and recover
-
-```sh
-mirket update
-mirket package remove motion-canvas
-mirket setup --no-packages --yes
-```
-
-Updates use the new Mirket release's embedded package definitions and reapply the
-saved selections and settings. Upstream releases are not resolved at runtime.
-Package removal removes that selection, its settings and its managed client
-entries. `--no-packages` clears all package selections. Download caches, prepared
-generations and package data remain on disk; removal does not purge them.
-
-Artifacts are downloaded over HTTPS, checked against curated SHA-256 values and
-extracted with size and path validation. Setup prepares a new generation before
-changing client registrations. Published generations are never overwritten in
-place. Failed setup preserves the previous active configuration.
-
-Editor DMGs are downloaded from the official upstream distributors and mounted
-read-only. Mirket copies only the selected application, retaining valid relative
-links inside its bundle, and checks the copied app with macOS code-signature
-verification before publishing the generation. It does not run a DMG installer,
-strip signing metadata or re-sign applications. File-provider-managed locations,
-including some Documents folders, can add metadata that invalidates this check;
-installation then fails without publishing the app. Use a normal local directory
-for a disposable `--home`, outside those managed folders. Signature verification
-does not establish notarization, upstream safety or visual correctness.
-
-Mirket releases contain editor adapters and package metadata, not these editor
-binaries. Direct upstream installation and redistribution by Mirket are different
-delivery paths. The retained notices identify known licenses and exact source
-pins, but do not assert complete native component/source coverage. Rehosting an
-editor binary or supplying a shared binary cache requires completing that review
-and the applicable corresponding-source obligations; see the
-[editor license scope](third-party-notices.md#editor-application-distribution).
-
-If `doctor` or launch reports drift, inspect and preserve the changed files before
-reconciling them. Do not edit receipts to suppress a mismatch. A receipt is local,
-user-owned state: matching hashes establish consistency, not a security
-attestation or proof that the upstream code is safe.
-
-Source pins and dependency locks are in `registry/packages-*.json` and
-`registry/package-locks/`. [Package notices](third-party-notices.md#runtime-packages)
-are embedded and retained with the installed payloads.
+Source and image pins are in [the design stack registry](../registry/design-stack.json).
+Dependency locks are in [the tool runtime](../runtime/design/tools/package-lock.json),
+[ComfyUI runtime](../runtime/design/comfyui/requirements.lock) and pinned Penpot
+source. [Runtime notices](third-party-notices.md#runtime-packages) record the
+shipped license provenance.

@@ -1,6 +1,6 @@
 ---
 name: office-authoring
-description: Create and revise editable Word documents, spreadsheets and slide decks; render the saved artifacts, inspect every page and verify calculations. Use a capable native format skill when available, with explicitly approved local tools when native capabilities are unavailable.
+description: Create and revise editable Word documents, spreadsheets and slide decks; render the saved artifacts, inspect every page and verify calculations. Use the available native format workflow or established local authoring tools.
 ---
 
 # Office authoring
@@ -27,8 +27,12 @@ changing their structure. Determine the audience, decision, source facts and
 required editable elements from the request; ask only for consequential missing
 information.
 
-Use the host's native document, presentation or spreadsheet workflow when its
-actual tools are available. Otherwise identify the required approved authoring and rendering tools.
+For paged documents and decks in Mirket's design stack, compile tokens first and
+use Typst through the `design` package, then inspect every rendered page.
+For an existing native document or spreadsheet file, use its actual format
+workflow and calculation engine.
+If the required capability is absent, follow the [shared missing-tool route](../skill-catalog/references/task-execution.md#establish-the-execution-boundary)
+before selecting an optional executable.
 A registered skill is not an installed authoring library, renderer or calculation
 engine. Read [production workflow](references/production.md) for executable
 commands, tool configuration, design review and compatibility limits.
@@ -46,14 +50,10 @@ review the argument as a sequence before decorating individual pages. For
 spreadsheets, distinguish input cells from derived formulas, preserve numeric
 and date types, and test changed-input behavior as well as known totals.
 
-## Select executable tools
-
-Use `mirket tool list` and `mirket tool doctor` to inspect registered local tools.
-A needed executable can be explicitly registered with `mirket tool register NAME
---executable /absolute/tool` and invoked through `mirket tool run NAME -- ...`.
-Read its actual documentation and verify the available version. Registration pins
-its bytes; it does not install libraries, calculate formulas or provide a sandbox.
-Prefer native host document tools when they supply the required workflow.
+Choose tools by the needed edit, render or calculation, and verify their available
+versions. Optional executable pinning is described in
+[skill-catalog](../skill-catalog/SKILL.md); it is not a prerequisite for using
+an existing host or project tool.
 
 ## Review the actual deliverable
 

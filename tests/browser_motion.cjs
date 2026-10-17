@@ -1,8 +1,8 @@
-/* Optional rendered acceptance probe. Uses an ALREADY AVAILABLE Playwright;
+/* Optional rendered acceptance probe. Uses an managed Browserless;
  * never installs a browser or package. Serve an installed advanced-motion/assets
  * directory first. Usage: node tests/browser_motion.cjs BASE_URL OUTPUT_DIRECTORY
  * This captures evidence for visual review; a pass is not aesthetic acceptance. */
-const { chromium } = require('playwright');
+const { connect } = require('./browserless.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -64,7 +64,7 @@ async function probeInstrumentation(context) {
 }
 async function runScene(browser, scene, viewport, reduced) {
   const tag = `${scene}-${viewport.width}-${reduced ? 'reduced' : 'normal'}`;
-  const context = await browser.newContext({viewport, deviceScaleFactor:1, reducedMotion:reduced ? 'reduce' : 'no-preference', recordVideo:{dir:path.join(output,'video'),size:viewport}});
+  const context = await browser.newContext({viewport, deviceScaleFactor:2, reducedMotion:reduced ? 'reduce' : 'no-preference', recordVideo:{dir:path.join(output,'video'),size:viewport}});
   await probeInstrumentation(context);
   const page = await context.newPage();
   const errors = [];
@@ -237,8 +237,7 @@ async function failureProbe(browser) {
 }
 (async () => {
   await fs.mkdir(output,{recursive:true});
-  const browser = await chromium.launch({headless:true,
-    ...(process.env.MIRKET_BROWSER_EXECUTABLE ? {executablePath:process.env.MIRKET_BROWSER_EXECUTABLE} : {})});
+  const browser = await connect();
   result.browser = browser.version(); result.platform = `${process.platform}/${process.arch}`;
   try {
     if (selection === 'craft') {

@@ -17,20 +17,11 @@ each animated property. Keep the editable static SVG meaningful by itself; the
 page's CSS/controller is a separate integration artifact. Text, navigation and
 calls to action normally remain semantic DOM rather than pixels or vector outlines.
 
-For a substantive animated diagram, inspect the original [relay diagram study](references/animated-diagram-study.md)
-and its deliberately awkward comparison before building. Transfer its approach
-to semantic clarity and paced handoffs only when the current brief calls for it;
-adapt the visual language to the project's brand. This study is not a required
-template for icons, logos or ordinary vector reveals.
-
-For an explanatory website hero, name the factual relationship before choosing
-an effect: which source acts, what travels or changes, how the destination
-responds, and what remains when movement stops. Sketch those beats against the
-actual copy and placement, then render one representative handoff in the page.
-Where several routes converge, choose simultaneous or ordered arrivals according
-to the message; a small stagger does not by itself make an order perceptible.
-Use the study's [many-to-one transfer notes](references/animated-diagram-study.md#many-to-one-website-heroes)
-when that topology matches the task.
+For a diagram, produce its semantic structure and layout through Kroki before
+adding any motion. The animation layer may emphasize a
+factual handoff, but it must preserve the complete static meaning and labels.
+For icons, logos and decorative vector sequences, follow the asset's own geometry
+and the actual page context.
 
 ## Establish the motion contract
 
@@ -49,21 +40,19 @@ Choose delivery context before API:
 - Inline SVG/component: CSS or Web Animations can handle many sequences and
   interactive playback. Reuse the project's installed motion library when it
   resolves an actual requirement. No new library is implied by this skill.
-- Video/export: retain editable vector source and use the requested existing
-  exporter. A browser animation does not establish video or editor compatibility.
+- Video/export in Mirket: retain editable vector source and use HyperFrames
+  lint, snapshot and render. A browser animation does not establish video or
+  editor compatibility.
 
 Verify target support for morphing, motion paths and exporter behavior against
 current official documentation and a small render. Use a workable transform,
 crossfade or path construction when a requested technique is unavailable.
 
 For website-integrated SVG, retain editable SVG plus CSS/WAAPI or the project's
-controller. For a fixed-frame export, use `hyperframes` with the
-`advanced-motion` local-video reference; inline the SVG into its HTML composition
-and give the finite timeline ownership of vector properties. `motion-canvas`
-serves generator-driven drawn scenes with path, gradient and synchronized sequence
-operations; its saved scene is editable JSON/code, not an animated SVG export.
-Inspect the selected package's real tool schemas and preview limits before use.
-Neither engine replaces browser/reduced-motion QA of the actual embedding.
+controller. For a fixed-frame video export in Mirket, use HyperFrames lint,
+snapshot and render, and give the finite timeline ownership of vector properties. Inspect real tool schemas
+and preview limits before use. An export does not replace browser/reduced-motion
+QA of the actual embedding.
 
 ## Choreograph and build
 

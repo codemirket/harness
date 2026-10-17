@@ -7,12 +7,12 @@ requirements from the destination or provider before a costly final export.
 
 | Need | Suitable route | Evidence to inspect |
 | --- | --- | --- |
-| Photography, texture, painterly illustration | Supplied/licensed raster or the available imagegen workflow | Focal details, crop, resolution and artifact-free edges |
-| Logo, icon, scalable flat illustration | Editable vector source and native SVG/vector tools | Real paths/text, silhouette, small-size detail and clean export |
-| System or process explanation | Semantic diagram source, SVG or suitable diagram tool | Every relationship, label, branch and direction against the source |
-| Quantitative chart | Data-backed plotting or spreadsheet workflow | Data, scale, units, labels and visual interpretation |
-| Presentation, report or campaign layout | Native editable format, with linked or embedded assets as appropriate | Final pages/slides at delivery size and exported output |
-| Animation or video | Existing motion tool and deterministic timeline | Playback, key frames, timing, captions and final encoded artifact |
+| Photography, texture, painterly illustration | Supplied/licensed raster or ComfyUI graph; imgproxy for raster preparation | Focal details, crop, resolution and artifact-free edges |
+| Logo, icon, scalable flat illustration | Editable vector source then SVGO | Real paths/text, silhouette, small-size detail and clean export |
+| System, flow, C4 or sequence explanation | Semantic diagram source rendered with Kroki | Every relationship, label, branch and direction against the source |
+| Quantitative chart | Source-backed Vega-Lite through Kroki, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |
+| Paged presentation or report | Typst with compiled tokens and linked or embedded assets | Every final page/slide at delivery size and exported output |
+| Animation or video | HyperFrames lint, snapshot and render | Playback, key frames, timing, captions and final encoded artifact |
 
 Start from the requested medium and editability. Use a simpler available route
 when it meets the need. Never promise vector editability from a raster image or

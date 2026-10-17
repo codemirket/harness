@@ -26,69 +26,26 @@ below. Publish each native distribution's notice file alongside its executables.
 
 ## Runtime packages
 
-Optional MCP and editor packages retain their own licenses and dependency notices.
-The package registry pins the downloaded artifacts; setup preserves archive notices
-and copies the curated notice files into each installed generation. These
-licenses apply to their respective components, independently of Mirket's license.
+The single `design` package contains individually licensed upstream tools.
+[The design stack manifest](../registry/design-stack.json) records the 11 tool
+domains, source locations, pinned service images and source builds. Style
+Dictionary, Satori/resvg, Browserless, official Penpot MCP, Kroki, HyperFrames,
+Typst, imgproxy, SVGO, ComfyUI and Odiff keep their own terms. Packaged dependency
+and source notices accompany the selected runtime; this page does not assign one
+blanket license to the stack.
 
-| Component | Upstream license | Retained notices and provenance |
-| --- | --- | --- |
-| Node.js 24.21.0 | MIT and bundled dependency licenses | [Complete upstream license file](licenses/packages/optional/NODE-LICENSE.txt) |
-| Chrome Headless Shell 155.0.8059.12 | BSD-3-Clause and bundled dependency licenses | Platform-specific `LICENSE.headless_shell` retained in each browser archive; [source and packaging notes](licenses/packages/optional/CHROMIUM-NOTICES.md) |
-| Playwright MCP 0.0.83 | Apache-2.0 | [Server and dependency notices](licenses/packages/optional/playwright-NOTICES.txt) |
-| Inkscape 1.4.4 | GPL-3.0-or-later application; bundled Ghostscript is AGPL-3.0-or-later; other components retain their own licenses | [License scope](licenses/packages/inkscape/README.md), [bundled notices](licenses/packages/inkscape/BUNDLED-NOTICES.txt), [source inventory](licenses/packages/inkscape/SOURCE-INVENTORY.json), [artifact lock](../registry/package-locks/inkscape.json) |
+The tool container uses its checked-in [npm lock](../runtime/design/tools/package-lock.json).
+The pinned Penpot source archive contains its pnpm lock. The container profile
+adds its private `penpot-mcp` hostname to the plugin preview's allowed hosts.
+The API-only ComfyUI
+image uses the checked-in [hash-locked wheel closure](../runtime/design/comfyui/requirements.lock)
+derived from its pinned source; frontend, workflow-template and embedded-doc
+wheel families are excluded from that image. Check the licenses and notices of
+the dependencies actually present in each prepared image before distribution.
 
-Additional creative and accessibility packages retain their complete reviewed
-closure notices under `docs/licenses/packages/`: axe-core (MPL-2.0), HyperFrames
-(Apache-2.0 with dependency terms), Motion Canvas (MIT with dependency terms),
-Penpot (MPL-2.0 and OCI component
-notices), and platform-specific FFmpeg/FFprobe builds. The Linux build additionally enables nonfree components and requires the reviewed glibc closure; those local images must not be redistributed. Exact npm archive and
-OCI manifest digests are in their package definitions and locks.
-
-Exact source revisions, archive identities and selected targets are recorded in
-[`packages-optional.json`](../registry/packages-optional.json),
-[`packages-engines.json`](../registry/packages-engines.json),
-[`packages-motion-canvas.json`](../registry/packages-motion-canvas.json),
-[`packages-hyperframes.json`](../registry/packages-hyperframes.json),
-[`packages-axe-core.json`](../registry/packages-axe-core.json),
-[`packages-penpot.json`](../registry/packages-penpot.json) and
-[`packages-editors.json`](../registry/packages-editors.json). The
-[`package-locks`](../registry/package-locks/) directory records dependency
-resolution and notice inventories for the selected profiles. No omitted dependency
-is installed implicitly.
-
-Native provenance records distinguish source dependency inventories from the
-components linked into each platform binary and retain unresolved notice gaps.
-The recorded hashes establish artifact identity; Mirket does not independently
-reproduce upstream binaries. See [local MCP packages](packages.md) for the
-selected profiles and runtime prerequisites.
-
-### Editor application distribution
-
-Mirket releases contain Rust editor adapters, pinned package definitions and
-notices. Installation downloads the unmodified signed Inkscape
-application from their official upstream distributors; Mirket does not rehost
-the editor binaries. All application contents and original notices are retained.
-The adapters exchange ordinary vector, animation and image files with separate
-application processes and do not link against their libraries.
-
-The retained inventories record exact artifact identities and application source
-pins, available bundled notices and the source/build evidence that was reviewed.
-They do not establish complete native component notice coverage, independently
-reproduced builds or a maintained corresponding-source service. Inkscape's
-inventory includes pinned packaging recipes but not a verified archived source
-closure for every bundled library, Ghostscript resource and customized Python
-component.
-
-Private local use and conveying binary copies to others have different license
-obligations. Before Mirket supplies these binaries through a release, mirror or
-shared cache, complete the component review and provide the corresponding source,
-build/install scripts, notices and recipient rights required by the applicable
-licenses. A link to the main application repository alone is insufficient for a
-bundle with additional components. A separate process is not a blanket licensing
-exception. The package-specific license scope documents link the relevant
-upstream and FSF guidance; the current download path is not a redistribution
-compliance certification.
+The recorded digests establish artifact identity. They do not independently
+reproduce upstream binaries or establish artifact quality. See [packages](packages.md)
+for the runtime contract and required output checks.
 
 ## mattpocock/skills
 

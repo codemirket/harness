@@ -119,7 +119,7 @@
       ],
       "deliverable": "Rendered new or revised pages with purposeful composition, real content, responsive states and working interactions; revisions preserve approved constraints and include comparable before/after evidence.",
       "failure_probe": "Stress long real labels and narrow width. For revisions compare identical states: visual polish must not silently change labels, approved identity or data behavior.",
-      "prerequisites": "Actual app/browser, content and supplied or proposed design direction; for revisions inspect baseline source/renders, requested scope, tokens and components.",
+      "prerequisites": "Actual app/browser, content and supplied or proposed design direction; for revisions inspect baseline source/renders, requested scope, tokens and components. Use the design package's Style Dictionary compilation before render, Browserless full DOM and 2x screenshots, and Odiff for pixel comparison.",
       "aliases": [
         "Frontend Designer",
         "UI Designer",
@@ -270,7 +270,7 @@
       ],
       "deliverable": "Purposeful motion matched to the brief and brand, with an editable implementation, readable static composition and interruption-safe behavior.",
       "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. A screenshot or successful build alone cannot accept motion.",
-      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or an available frame-based workflow for requested video. Use the existing host model and project tools; verify actual browser/renderer readiness.",
+      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or HyperFrames lint, snapshot and render for requested video. Use the existing host model; verify Browserless and renderer readiness.",
       "aliases": [
         "Motion Designer"
       ],
@@ -1052,7 +1052,7 @@
       ],
       "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
       "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",
-      "prerequisites": "Actual brief, content, asset rights and delivery specifications. Select an available native image workflow for bitmap work, svg-creation and a real renderer for editable vectors, or the actual layout/design editor; verify runtime and requested editability before production.",
+      "prerequisites": "Actual brief, content, asset rights and delivery specifications. The design package uses ComfyUI graphs for bitmap generation, imgproxy for raster preprocessing, SVGO for generated/imported SVG, Kroki for diagrams, Satori plus resvg for static composition, and official Penpot MCP/plugin for editable design files. Compile tokens before rendering and verify the requested editability.",
       "aliases": [
         "Graphic Designer",
         "illustration",
@@ -1521,7 +1521,7 @@
         "Office Document Specialist"
       ],
       "deliverable": "An editable document or presentation whose argument, source content, layout and preserved document features are verified in the saved artifact and rendered output.",
-      "prerequisites": "Supplied files/templates and audience; an available native format workflow or approved authoring library plus renderer and fonts. Spreadsheet calculations use Spreadsheet Expert and an actual calculation engine.",
+      "prerequisites": "Supplied files/templates and audience; use Typst for paged documents and decks in the design package and inspect every page. Existing native file-editing tasks use their format-specific workflow. Spreadsheet calculations require Spreadsheet Expert and an actual calculation engine.",
       "acceptance": [
         "Saved editable objects, styles, relationships and requested comments/revisions preserved or intentionally changed",
         "Every delivered page or slide inspected for meaning, hierarchy, legibility and clipping in the named renderer; compatibility limits disclosed"

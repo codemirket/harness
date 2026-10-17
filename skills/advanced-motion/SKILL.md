@@ -30,8 +30,8 @@ Read only the reference needed for the current decision:
   covers gradients, color, Canvas lifecycle and frame-based export boundaries.
 - [Rendered examples](references/rendered-examples.md) provides two contrasting,
   editable browser compositions and a reproduction/critique path.
-- [Local video export](references/local-video.md) selects HyperFrames for web
-  compositions or Motion Canvas for drawn scenes, with inspected local exports.
+- [Local video export](references/local-video.md) covers source, frame inspection
+  and encoded output through the selected rendering workflow.
 
 Reuse the project's tokens and APIs. Examples demonstrate choices, not a required
 palette, timing system or architecture. A form-spacing repair or ordinary button

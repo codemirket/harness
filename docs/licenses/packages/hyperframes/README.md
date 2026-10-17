@@ -1,7 +1,0 @@
-# HyperFrames local producer notices
-
-Mirket pins the published HyperFrames 0.8.149 package and its producer/browser runtime, plus exact local external dependencies. `SOURCE-INVENTORY.json` records the source commit, upstream lock hash, every reviewed archive hash and publisher integrity, nested runtime mappings, license metadata and retained notice hashes. Package archives are extracted directly. No lifecycle scripts, package-manager install, upstream helper or browser download runs.
-
-The published producer bundle physically includes additional code and font bytes. Their exact versions derive from source bundle labels and the source lock, with upstream notices retained even where no separate module is installed. HyperFrames owns its project packages under Apache-2.0. The minified browser runtime is identity-checked against its published manifest. GSAP 3.15.0 retains its own standard no-charge terms; the official terms retrieved 2026-10-12 are stored separately. Fonts retain their OFL/Apache notices. The esbuild native binary package declares MIT and uses the same-version esbuild license. Optional Canvas and full Puppeteer are omitted; Puppeteer-core uses Mirket's separately pinned Chromium without runtime downloads.
-
-Node, Chromium, FFmpeg and FFprobe are shared runtime packages with their own source and notices. This directory does not replace those notices. The adapter's first-party source is governed by the Mirket repository license. Local execution and a successful render do not constitute legal advice, visual acceptance or an OS sandbox.

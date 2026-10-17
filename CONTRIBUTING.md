@@ -22,18 +22,10 @@ executable is running. CI installs its bootstrap into a separate temporary prefi
 `mirket dev fmt` formats the Rust sources. `mirket dev check` runs formatting,
 Clippy with warnings denied, and all Rust test targets. Use
 `mirket dev build --release` to build the CLI and standalone target installers.
-When changing owned JavaScript report or export verification, exercise the exact
-production helpers with the existing selected Node runtime:
-
-```sh
-node tests/axe_report.cjs
-node tests/hyperframes_verification.mjs
-node tests/hyperframes_verification.mjs --ffmpeg /absolute/verified/ffmpeg
-```
-
-The last command adds real MP4/WebM decoder probes. Core Rust checks do not
-silently install or require an optional package runtime. Helper probes do not
-replace an affected full browser/producer invocation or visual inspection.
+When changing owned JavaScript report or export verification, exercise the
+affected helpers with the selected runtime. Core Rust checks do not silently
+install optional package runtimes. Helper probes do not replace a full browser
+or renderer invocation and visual inspection.
 
 The locked dependency graph and pinned toolchain are authoritative. After a
 production dependency change has been approved under [AGENTS.md](AGENTS.md),
@@ -101,8 +93,8 @@ project installation, then exercise the intended task where tools are available.
 A skill's presence or an agent repeating its name is not evidence of quality.
 
 The embedded browser-motion examples also have an optional rendered acceptance
-probe in `tests/browser_motion.cjs`. Use an already available Playwright and
-Chromium installation; the probe never downloads either. Serve the **installed**
+probe in `tests/browser_motion.cjs`. Connect to the running Browserless CDP
+endpoint through `BROWSERLESS_WS`; the probe never downloads a browser. Serve the **installed**
 `advanced-motion/assets` directory with an existing local server, then run:
 
 ```sh
@@ -128,9 +120,8 @@ node tests/browser_design_languages.cjs http://127.0.0.1:8765/assets/design-lang
   /absolute/installed/design-inspiration/references/design-languages/library.json
 ```
 
-Use an already available Playwright/Chromium; `MIRKET_BROWSER_EXECUTABLE` can
-select its executable. `MIRKET_AXE_SCRIPT` optionally names an existing
-`axe.min.js`; the probe installs nothing. An optional final comma-separated ID
+Connect to the running Browserless CDP endpoint through `BROWSERLESS_WS`. The
+probe installs nothing. An optional final comma-separated ID
 list selects affected instances. The script checks actual wide/narrow rendering,
 no-script readability, enlarged-text reflow, resource independence and access
 scan findings, and captures the plausible misleading versions. Inspect every
@@ -165,8 +156,7 @@ Run `tests/browser_design_language_motion.cjs` against the same assets URL and a
 evidence directory for the four motion lessons. It exercises actual geometry,
 truthful/misleading state contrasts, rapid reversal, live reduced motion and
 preference restoration, finite rest, narrow reflow and no-script content. An
-optional final ID selects one lesson. `MIRKET_MOTION_FRAMES=0` skips PNG captures;
-`MIRKET_MOTION_VIDEO=1` records ordinary wide playback. Inspect the saved beats;
+optional final ID selects one lesson. Inspect the saved beats;
 the probe does not claim native platform rendering or real-device performance.
 
 For the optional timing specimen, install `motion-design` in that disposable
@@ -179,35 +169,20 @@ node tests/browser_motion.cjs http://127.0.0.1:8765/ /absolute/evidence/craft cr
 ```
 
 It exercises labelled timing, keyboard playback controls, rapid replay, cleanup
-and initial/live reduced motion. Set
-`MIRKET_BROWSER_EXECUTABLE` to an already available compatible Chromium executable
-if Playwright's default is unavailable. No download is performed. Use normal
+and initial/live reduced motion through the running Browserless CDP endpoint.
+Use normal
 playback and the saved frames for inspection; a timing assertion or visible static
 fallback is not a performance or human visual-acceptance result.
 
-The original animated-diagram study lives in `svg-animation/assets/relay-diagram`.
-Install `svg-animation` in the disposable project, serve its installed skill
-directory with an existing local server, and point the focused browser probe at
-the diagram directory:
-
-```sh
-node tests/browser_diagram_reference.cjs http://127.0.0.1:8765/svg-animation/assets/relay-diagram/ /absolute/evidence/relay
-```
-
-The probe records wide/narrow normal playback, checks replay and reduced-motion
-interruption, and saves the deliberately awkward comparison. Inspect its video
-and frames against the case-study rationale. The optional agent-comparison
-protocol is in `evals/visual-reference/README.md`; a browser pass alone is not
-evidence that the reference improved an agent's design work.
-
 ## Add a local MCP package
 
-Use the existing package registry and setup flow. Every installable definition
+Use the single `design` package registry and setup flow. Its definition
 needs exact source and version pins, supported targets, complete runtime and
 dependency closure, artifact digests, extraction bounds, launch arguments and
 retained license notices. Keep dependency resolution locks and reviewed notices
-with the definition. Installation must not run upstream helpers, lifecycle hooks,
-`npm`, `npx` or `pip`. Ask before adding a production dependency as required by
+with the definition. The pinned official Penpot MCP source is built with pnpm
+in the prepared image; package serving must not resolve dependencies or run
+upstream installers. Ask before adding a production dependency as required by
 [AGENTS.md](AGENTS.md).
 
 Review the actual entrypoint, optional native modules, runtime downloads, network
@@ -216,13 +191,14 @@ still works; hold an incomplete profile instead of presenting it as available.
 New selections must remain explicit, and setup/update must preserve saved choices
 and unrelated client settings.
 
-Use an isolated home and project for real package checks:
+Use an isolated home for real package checks:
 
 ```sh
 mirket --home /absolute/test-home setup --target all --yes
-mirket --home /absolute/test-home package install playwright
+mirket --home /absolute/test-home package install design
+mirket --home /absolute/test-home package start design
 mirket --home /absolute/test-home package status
-mirket --home /absolute/test-home package probe playwright --project /absolute/test-project
+mirket --home /absolute/test-home package probe design --schemas
 ```
 
 Then use `mirket package call` with a meaningful fixture and a discriminating
@@ -243,7 +219,9 @@ required packages in an explicit disposable home:
 
 ```sh
 mirket --home /absolute/test-home setup --target all --yes
-mirket --home /absolute/test-home package install playwright
+mirket --home /absolute/test-home package install design
+mirket --home /absolute/test-home package start design
+mirket --home /absolute/test-home package status
 ```
 
 The home must contain a file named `.mirket-package-test-home` with exactly
@@ -251,21 +229,13 @@ The home must contain a file named `.mirket-package-test-home` with exactly
 the disposable installation. The suites refuse an absent or different marker;
 an environment variable pointing to a real user home is not sufficient consent.
 
-On supported macOS or Linux targets, run the suites explicitly:
-
-```sh
-MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_live --project . --ignored
-MIRKET_PACKAGE_TEST_HOME=/absolute/test-home mirket dev test packages_lifecycle_live --project . --ignored
-```
-
-For the macOS ARM64 creative profiles, install the chosen packages in that marked
-disposable home, then run their opt-in suites through `mirket dev test`:
-`packages_hyperframes_live`, `packages_motion_canvas_live`,
-`packages_penpot_live` and `packages_axe_core_live`. Use an existing absolute
-`MIRKET_PACKAGE_TEST_HOME`; renderer/design suites document evidence-directory
-variables in their source. Container engines and Penpot need explicit Podman registration, an initialized
-and started disposable Mirket environment, and the selected package profile. Stop it afterward. Inspect real frames,
-saved documents and playback separately; byte consistency cannot accept art direction.
+On the supported target, run the design package's current live suite against the
+marked disposable home. Exercise each direct tool domain and the forwarded
+official Penpot MCP with meaningful output and a discriminating failure case.
+Confirm token compilation before rendering, HyperFrames lint→snapshot→render,
+SVGO for generated and imported SVG, Browserless full DOM and 2x screenshots,
+and Odiff for comparable pixels. Inspect real artifacts separately; byte
+consistency cannot accept art direction.
 
 The browser suite changes a real local page and checks denied operations. The
 lifecycle suite verifies removal, reinstallation, update repair, drift refusal
@@ -273,24 +243,8 @@ and preservation of unrelated client settings. These checks do not establish
 native client activation or visual acceptance. Retain useful evidence outside
 shipped source and remove the separately provisioned test home afterward.
 
-For the editor profile on macOS ARM64, use a local disposable home outside
-file-provider folders. Install the signed application, create the same explicit
-test-home marker, then run:
-
-```sh
-mirket --home /absolute/test-home package install inkscape
-MIRKET_PACKAGE_TEST_HOME=/absolute/test-home MIRKET_PACKAGE_TEST_OUTPUT=/absolute/evidence mirket dev test packages_editors_live --project . --ignored
-```
-
-The editor suite exercises all three tools against the native application, distinct
-editable/exported artifacts, malformed or unsupported input, source preservation,
-overwrite refusal, saved-choice update replay and managed-copy drift. Its SVG
-fixture is durable test source; generated PNG, PDF and browser
-evidence belong outside shipped source. Inspect the saved illustration at intended
-and small sizes and actual browser playback. Neither byte
-checks nor differing frame hashes establish visual acceptance. Normal gates also
-cover fake-success outputs, transport disconnects, deadlines, request cancellation,
-descendant cleanup and archive failures.
+Normal gates also cover fake-success outputs, transport disconnects, deadlines,
+request cancellation, descendant cleanup and archive failures.
 
 ## Build release packages
 

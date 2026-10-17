@@ -7,7 +7,6 @@ use std::{
 
 fn fixture_spec(root: &Path) -> LaunchSpec {
     LaunchSpec {
-        container: None,
         startup_timeout: std::time::Duration::from_secs(30),
         command: env!("CARGO_BIN_EXE_mirket").into(),
         args: vec![
@@ -20,7 +19,6 @@ fn fixture_spec(root: &Path) -> LaunchSpec {
         cwd: root.to_path_buf(),
         allowed_tools: Some(BTreeSet::from(["catalog_search".into()])),
         denied_tools: BTreeSet::new(),
-        input_policy: "none".into(),
     }
 }
 
@@ -58,18 +56,9 @@ async fn package_mcp_real_child_initializes_filters_and_executes_a_useful_call()
 }
 
 #[tokio::test]
-async fn package_mcp_unknown_policy_and_relative_command_fail_before_spawn() {
+async fn package_mcp_relative_command_fails_before_spawn() {
     let home = tempfile::tempdir().unwrap();
     let mut spec = fixture_spec(home.path());
-    spec.input_policy = "typo".into();
-    assert!(
-        probe(spec.clone())
-            .await
-            .unwrap_err()
-            .to_string()
-            .contains("unknown package input policy")
-    );
-    spec.input_policy = "none".into();
     spec.command = "mirket".into();
     assert!(
         probe(spec)
@@ -97,7 +86,11 @@ async fn package_mcp_unknown_policy_and_relative_command_fail_before_spawn() {
 #[cfg(unix)]
 mod unix {
     use super::*;
-    use std::{fs, time::Duration};
+    use std::{
+        fs,
+        os::unix::fs::PermissionsExt,
+        time::{Duration, Instant},
+    };
 
     async fn assert_reaped(pid: &str) {
         tokio::time::timeout(Duration::from_secs(3), async {
@@ -132,8 +125,18 @@ mod unix {
         .unwrap()
     }
 
+    fn unresponsive_spec(root: &Path) -> LaunchSpec {
+        let mut spec = fixture_spec(root);
+        spec.command = "/bin/sh".into();
+        spec.args = vec![
+            "-c".into(),
+            "trap '' TERM\necho $$ > child.pid\nwhile :; do /bin/sleep 1; done".into(),
+        ];
+        spec
+    }
+
     async fn graceful_native_fixture(root: &Path) -> (LaunchSpec, tokio::process::Child) {
-        // The native job deliberately has a different group, just as editor_mcp
+        // The native job deliberately has a different group, as a renderer
         // jobs do. Killing only the immediate MCP group cannot stop this job.
         let native = tokio::process::Command::new("/bin/sleep")
             .arg("60")
@@ -172,6 +175,50 @@ mod unix {
     }
 
     #[tokio::test]
+    async fn package_mcp_real_stdio_startup_deadline_covers_tools_list() {
+        let home = tempfile::tempdir().unwrap();
+        let command = home.path().join("hanging-package");
+        let script = concat!(
+            "#!/bin/sh\n",
+            "set -eu\n",
+            "while IFS= read -r line; do\n",
+            "    method=$(printf '%s\\n' \"$line\" | /usr/bin/sed -n '",
+            "s/.*\"method\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p')\n",
+            "    id=$(printf '%s\\n' \"$line\" | /usr/bin/sed -n '",
+            "s/.*\"id\"[[:space:]]*:[[:space:]]*\\([0-9][0-9]*\\).*/\\1/p')\n",
+            "    if [ \"$method\" = initialize ]; then\n",
+            "        printf '{\"jsonrpc\":\"2.0\",\"id\":%s,\"result\":{\"protocolVersion\":\"2025-11-25\",\"capabilities\":{\"tools\":{}},\"serverInfo\":{\"name\":\"fixture\",\"version\":\"1\"}}}\\n' \"$id\"\n",
+            "    elif [ \"$method\" = tools/list ]; then\n",
+            "        : > \"$MARKER\"\n",
+            "        while IFS= read -r ignored; do :; done\n",
+            "        exit 0\n",
+            "    fi\n",
+            "done\n",
+        );
+        fs::write(&command, script).unwrap();
+        fs::set_permissions(&command, fs::Permissions::from_mode(0o700)).unwrap();
+        let marker = home.path().join("tools-list-seen");
+        let mut spec = fixture_spec(home.path());
+        spec.command = command;
+        spec.args.clear();
+        spec.startup_timeout = Duration::from_millis(500);
+        spec.env
+            .insert("MARKER".into(), marker.to_string_lossy().into_owned());
+        let started = Instant::now();
+        let error = tokio::time::timeout(Duration::from_secs(2), probe(spec))
+            .await
+            .expect("hanging discovery must stay within the outer test bound")
+            .unwrap_err();
+        assert!(marker.exists(), "the real child must receive tools/list");
+        assert!(format!("{error:#}").contains("startup deadline exceeded"));
+        assert!(
+            started.elapsed() < Duration::from_millis(1500),
+            "startup discovery exceeded its configured deadline: {:?}",
+            started.elapsed()
+        );
+    }
+
+    #[tokio::test]
     async fn package_mcp_aborted_startup_allows_parent_to_clean_its_native_job() {
         let home = tempfile::tempdir().unwrap();
         let (spec, mut native) = graceful_native_fixture(home.path()).await;
@@ -179,10 +226,19 @@ mod unix {
         let parent = await_parent_pid(home.path()).await;
         task.abort();
         assert!(task.await.unwrap_err().is_cancelled());
-        assert_eq!(
-            fs::read(home.path().join("native-cleaned")).unwrap(),
-            b"cleaned"
-        );
+        tokio::time::timeout(Duration::from_secs(3), async {
+            loop {
+                if fs::read(home.path().join("native-cleaned"))
+                    .map(|bytes| bytes == b"cleaned")
+                    .unwrap_or(false)
+                {
+                    break;
+                }
+                tokio::time::sleep(Duration::from_millis(20)).await;
+            }
+        })
+        .await
+        .expect("the blocking reaper must eventually signal the package parent");
         assert_reaped(parent.trim()).await;
         tokio::time::timeout(Duration::from_secs(3), native.wait())
             .await
@@ -206,5 +262,74 @@ mod unix {
         for name in ["child.pid", "descendant.pid"] {
             assert_reaped(fs::read_to_string(home.path().join(name)).unwrap().trim()).await;
         }
+    }
+
+    #[test]
+    fn package_mcp_aborted_reaper_does_not_block_executor_progress() {
+        let home = tempfile::tempdir().unwrap();
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        let (parent, abort_elapsed) = runtime.block_on(async {
+            let task = tokio::spawn(probe(unresponsive_spec(home.path())));
+            let parent = await_parent_pid(home.path()).await;
+            task.abort();
+            let started = Instant::now();
+            assert!(task.await.unwrap_err().is_cancelled());
+            (parent, started.elapsed())
+        });
+
+        // ManagedChild::Drop waits for TERM/KILL cleanup on a blocking worker.
+        // A synchronous Drop would prevent this timer from being polled until
+        // the entire five-second grace interval had elapsed.
+        assert!(
+            abort_elapsed < Duration::from_secs(1),
+            "aborting package startup blocked the executor for {:?}",
+            abort_elapsed
+        );
+        runtime.block_on(async {
+            tokio::time::timeout(
+                Duration::from_millis(250),
+                tokio::time::sleep(Duration::from_millis(20)),
+            )
+            .await
+            .expect("aborting package startup must leave the executor responsive");
+        });
+        drop(runtime);
+        let status = std::process::Command::new("/bin/kill")
+            .args(["-0", parent.trim()])
+            .output()
+            .unwrap();
+        assert!(!status.status.success());
+    }
+
+    #[test]
+    fn package_mcp_runtime_shutdown_waits_for_aborted_reaper() {
+        let home = tempfile::tempdir().unwrap();
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap();
+        let parent = runtime.block_on(async {
+            let task = tokio::spawn(probe(unresponsive_spec(home.path())));
+            let parent = await_parent_pid(home.path()).await;
+            task.abort();
+            assert!(task.await.unwrap_err().is_cancelled());
+            parent
+        });
+
+        // Runtime::drop must retain ownership of the blocking reaper until it
+        // has finished. If the join handle were detached from shutdown, the
+        // child would still be alive at this point.
+        drop(runtime);
+        let status = std::process::Command::new("/bin/kill")
+            .args(["-0", parent.trim()])
+            .output()
+            .unwrap();
+        assert!(
+            !status.status.success(),
+            "runtime shutdown returned before the package child was reaped"
+        );
     }
 }

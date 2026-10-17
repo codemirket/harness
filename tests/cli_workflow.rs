@@ -24,6 +24,55 @@ fn ok(home: &Path, args: &[&str]) -> Value {
         .unwrap_or_else(|e| panic!("{e}: {}", String::from_utf8_lossy(&output.stdout)))
 }
 
+#[cfg(unix)]
+#[test]
+fn newer_runtime_handoff_preserves_the_entry_pid_arguments_and_exit_status() {
+    use std::{fs, os::unix::fs::PermissionsExt};
+
+    let temporary = tempfile::tempdir().unwrap();
+    let home = temporary.path().canonicalize().unwrap();
+    let managed = home.join(".mirket/bin/mirket");
+    fs::create_dir_all(managed.parent().unwrap()).unwrap();
+    let script = b"#!/bin/sh\nprintf '%s\\n' \"$$\" \"$MIRKET_DIRECT\" \"$@\"\nexit 23\n";
+    fs::write(&managed, script).unwrap();
+    fs::set_permissions(&managed, fs::Permissions::from_mode(0o755)).unwrap();
+    let next_major = env!("CARGO_PKG_VERSION_MAJOR").parse::<u64>().unwrap() + 1;
+    let receipt = json!({
+        "format":1,"version":format!("{next_major}.0.0"),
+        "options":{"targets":["codex"]},
+        "files":{".mirket/bin/mirket":{"sha256":mirket::util::sha256(script),"executable":true}},
+        "servers":{}
+    });
+    fs::write(
+        home.join(".mirket/setup.json"),
+        serde_json::to_vec(&receipt).unwrap(),
+    )
+    .unwrap();
+    let child = Command::new(env!("CARGO_BIN_EXE_mirket"))
+        .env_remove("MIRKET_DIRECT")
+        .arg("--home")
+        .arg(&home)
+        .arg("info")
+        .stdout(std::process::Stdio::piped())
+        .spawn()
+        .unwrap();
+    let entry_pid = child.id();
+    let output = child.wait_with_output().unwrap();
+    assert_eq!(output.status.code(), Some(23));
+    let stdout = String::from_utf8(output.stdout).unwrap();
+    let lines: Vec<_> = stdout.lines().collect();
+    assert_eq!(
+        lines,
+        [
+            entry_pid.to_string(),
+            "1".into(),
+            "--home".into(),
+            home.to_str().unwrap().into(),
+            "info".into()
+        ]
+    );
+}
+
 #[test]
 fn cli_tracks_selected_skills_and_rejects_changed_evidence() {
     let home = tempfile::tempdir().unwrap();

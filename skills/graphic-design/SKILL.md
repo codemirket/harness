@@ -90,23 +90,21 @@ reusable brand asset pack, and a sample's geometry does not replace this brief's
 Read [production and proof](references/production-and-proof.md) for tool selection,
 rights, color, export and final inspection.
 
-- Use the available imagegen skill/tool for generated or edited raster imagery.
-  Inspect generated details and integrate the result deliberately. Keep exact
-  business text in an editable layout where the medium supports it.
-- Use native SVG/vector tooling for editable marks, icons, technical linework and
-  scalable vector illustration. Raster generation does not produce vector paths;
+- Use ComfyUI graphs in the `design` package for generated raster imagery and
+  imgproxy for crop/resize preprocessing. Inspect generated details and integrate
+  the result deliberately. Keep exact business text in an editable layout.
+- Use SVG geometry for editable marks, icons and scalable vector illustration.
+  Run generated and imported SVG through SVGO before delivery. Raster generation does not produce vector paths;
   wrapping a bitmap in an SVG does not make it vector artwork.
-- For editable design files and structured visual layouts, use the user's chosen
-  compatible editor. The optional local Penpot route is described in
-  [design documents](references/design-documents.md), including its supported
-  profile, saved-file refinement and preview checks. Ordinary
-  website implementation still belongs in the project's frontend tools.
-- For diagrams, preserve the meaning of nodes, relationships, direction and
-  conditions before arranging them. Use a suitable diagram or plotting workflow
-  when it improves semantic accuracy and maintainability.
-- Use the capable native document, slide, spreadsheet or motion skill when that
-  format is the requested deliverable. A flattened image is not an editable deck,
-  workbook or document.
+- For editable design files and structured visual layouts, use the official
+  Penpot MCP/plugin. [Design documents](references/design-documents.md) describes
+  saved-file refinement and preview checks. Website implementation belongs in
+  the project's frontend tools.
+- For flows, C4, sequence, Vega-Lite and Excalidraw diagrams, preserve nodes,
+  relationships, direction and conditions in source and render through Kroki.
+- Use Satori plus resvg for static text/image compositions using supported
+  Flexbox and supplied TTF, OTF or WOFF fonts. Use Typst for paged documents and
+  decks. A flattened image is not an editable deck, workbook or document.
 - For artwork inside an expressive website, use `advanced-motion` for the shared
   scene and its medium-selection reference; `svg-animation` owns editable vector
   choreography. `interface-design` owns page hierarchy and usable controls.
@@ -115,6 +113,8 @@ rights, color, export and final inspection.
 Use tools already available. A missing renderer, font, editor or print profile is
 a specific limitation to resolve; skill selection does not install or authorize
 dependencies, accounts, paid services or external publication.
+Compile Style Dictionary tokens before every dependent render; compare matching
+pixel outputs with Odiff and inspect material differences.
 
 ## Finish the actual deliverable
 

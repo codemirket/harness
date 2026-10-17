@@ -1,10 +1,9 @@
 # Browser evidence you can act on
 
-Start the project's app through its established commands. Prefer the host's
-available browser automation tools. If a separate browser CLI is needed, inspect
-and explicitly register the approved executable with `mirket tool register`,
-then invoke it with `mirket tool run`. Registering a skill supplies no browser,
-dependency, authentication or remote publishing permission.
+Start the project's app through its established commands. Use Browserless through
+the `design` package for full DOM, interaction and 2x screenshot evidence. If it
+is unavailable, identify the missing runtime step before claiming browser
+evidence. A skill supplies no browser, authentication or publishing permission.
 
 ## Exercise real interactions
 
@@ -102,7 +101,7 @@ Check crop, text contrast, seams, transparency and unwanted lettering.
 
 Retain editable paths, shapes and text for a vector deliverable. A bitmap inside
 an SVG wrapper is not editable vector artwork. Render the actual master through
-an available browser or registered renderer and inspect fine details.
+an available browser or renderer and inspect fine details.
 
 When references help, these sources illustrate possible starting points alongside
 the project's own system and other sources. Select and reconcile useful ideas

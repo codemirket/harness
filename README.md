@@ -68,11 +68,13 @@ also cover security, accessibility, data pipelines, AI applications, MCP, deskto
 apps, user research and experimentation. See [role selection](docs/roles.md). A plan selects
 one lead per requested outcome and supplies prerequisites, acceptance criteria
 and a failure probe. Each role also has a distinctive professional perspective,
-method, decision rule and handoff. For work spanning disciplines, the host interprets
-the task and supplies applicable facets; Mirket assigns related professionals with
-separate contributions and checks. The host dispatches actual independent agents,
-reconciles their findings and verifies the integrated result. Read the relevant
-guidance instead of loading the catalog.
+method, decision rule and handoff. For work spanning disciplines, use a team only
+when separate independent work would materially help or the user/project
+explicitly requests collaboration; cross-discipline scope alone does not require
+one. The host interprets the task and supplies applicable facets, then Mirket
+assigns related professionals with separate contributions and checks. The host
+dispatches actual independent agents, reconciles their findings and verifies the
+integrated result. Read the relevant guidance instead of loading the catalog.
 
 The reviewed catalog also contains pinned upstream choices, adaptations and
 license information. `mirket catalog show ID` explains an entry's delivery and
@@ -102,6 +104,7 @@ and [transfer evaluation](evals/design-coverage/README.md).
 
 ```sh
 mirket project init --project /absolute/project --target all
+mirket project add --project /absolute/project --profile project-foundation
 mirket project add --project /absolute/project --capability "Backend Engineer"
 mirket project plan --project /absolute/project
 mirket project sync --project /absolute/project
@@ -112,10 +115,11 @@ Use `mirket project remove` to remove an explicit selection, `mirket project
 configure --target codex|claude|all` to choose clients, and `mirket project sync
 --prune` to remove unselected managed copies after integrity checks.
 
-Project selection lives in `.mirket/project.json`. The foundation supplies
-architecture, debugging, testing and release workflows; add specialties justified
-by the project. When the selected hosts have no shared installation, explicitly
-choose the `portable-foundation` profile to copy shared guidance into the project.
+Project selection lives in `.mirket/project.json`. `project init` records target
+hosts without selecting project skills. Add `project-foundation` explicitly for
+an engineering or release boundary, then add specialties justified by the
+project. When the selected hosts have no shared installation, explicitly choose
+the `portable-foundation` profile to copy shared guidance into the project.
 Target membership is explicit and installed copies have integrity
 receipts. Project instructions and the user's choices remain authoritative.
 
@@ -142,17 +146,29 @@ See [workflow and MCP](docs/workflows.md) for the CLI equivalents and boundaries
 
 Select reviewed packages through the same CLI:
 
+For an existing installation whose saved package selection needs replacement,
+run the new binary's `mirket setup --target all --package design --yes` after
+starting the [private Podman environment](docs/podman.md). This replaces the
+selection and reconciles owned client bindings. The commands below add the
+package to a fresh installation or reuse the current design selection.
+
 ```sh
 mirket package list
-mirket package install playwright
-mirket package probe playwright --project /absolute/project
+mirket package install design
+mirket package start design
+mirket package status
+mirket package probe design --schemas
 ```
 
-Packages cover browser QA, accessibility audits, editable SVG artwork, drawn-scene
-animation, web-composition video export and self-hosted design documents. Each profile pins its
-artifacts, runtimes and notices, including
-private Node runtimes where needed. Setup downloads verified archives
-without running package managers or lifecycle hooks. On a fresh home,
+The single `design` package covers Style Dictionary tokens, Satori plus resvg,
+Browserless, official Penpot MCP, Kroki, HyperFrames, Typst, imgproxy, SVGO,
+ComfyUI and Odiff. The services share a fixed writable workspace reported by
+`package start` and `package status`. Direct design tools use paths relative to
+its `/workspace` mount; the official Penpot `export_shape` and `import_image`
+`filePath` arguments use absolute `/workspace/...` paths as required by their
+upstream schemas. Start and status also report assigned loopback host ports;
+the service port numbers in the design topology are internal to its private
+network. On a fresh home,
 `setup --yes` selects no optional packages; saved choices are reused by setup and
 update.
 
@@ -162,12 +178,9 @@ where needed. `package status` checks files, `package probe` checks MCP discover
 and a real task establishes useful output. See [local MCP packages](docs/packages.md)
 for output policies, platform limits and runtime prerequisites.
 
-For editable HTML/CSS/SVG/Canvas films, select `hyperframes`. Use `motion-canvas`
-for generator-driven drawn scenes, `inkscape` for SVG artwork and `penpot` for
-self-hosted editable design files. `axe-core` audits real local browser states.
-The creative/browser profiles initially cover macOS ARM64. Penpot needs an
-explicitly registered running Mirket Podman environment. See [packages](docs/packages.md)
-and the [motion workflow](docs/animation-engines.md).
+See [packages](docs/packages.md) for routing, ports, lifecycle and runtime
+requirements. Compile design tokens before rendering; inspect actual artifacts,
+Browserless DOM and 2x screenshots, and comparable Odiff output.
 
 ## Register other executables
 

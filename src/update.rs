@@ -1,6 +1,7 @@
 use crate::{
     install::{OperationLock, read_state, read_state_snapshot},
     paths::Paths,
+    process::OwnedChild,
     util::{atomic_write, read_bounded, reject_symlink_components, sha256},
 };
 use anyhow::{Context, Result, bail};
@@ -9,10 +10,10 @@ use serde::{Deserialize, Serialize};
 use std::{
     io::{Read, Seek, SeekFrom, Write},
     path::{Component, Path, PathBuf},
-    process::{Command, Stdio},
-    thread,
+    process::Stdio,
     time::{Duration, Instant},
 };
+use tokio::process::Command;
 
 const MAX_BINARY: u64 = 256 * 1024 * 1024;
 const MANIFEST_URL: &str =
@@ -478,34 +479,50 @@ fn make_executable(path: &Path) -> Result<()> {
     Ok(())
 }
 fn run_bounded(command: &mut Command, timeout: Duration) -> Result<Vec<u8>> {
-    let mut output = tempfile::tempfile()?;
-    let mut error = tempfile::tempfile()?;
-    let mut child = command
+    let output = tempfile::tempfile()?;
+    let error = tempfile::tempfile()?;
+    command
         .stdin(Stdio::null())
         .stdout(output.try_clone()?)
-        .stderr(error.try_clone()?)
-        .spawn()
-        .context("start verified mirket executable")?;
+        .stderr(error.try_clone()?);
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .context("create update child runtime")?
+        .block_on(run_bounded_async(command, timeout, output, error))
+}
+
+async fn run_bounded_async(
+    command: &mut Command,
+    timeout: Duration,
+    mut output: std::fs::File,
+    mut error: std::fs::File,
+) -> Result<Vec<u8>> {
+    let mut owned =
+        OwnedChild::spawn(command, false).context("start verified mirket executable")?;
     let started = Instant::now();
-    let status = loop {
-        if let Some(status) = child.try_wait()? {
-            break status;
+    let outcome = loop {
+        if let Some(status) = owned.child.try_wait()? {
+            break Ok(status);
         }
         if started.elapsed() >= timeout {
-            child.kill()?;
-            child.wait()?;
-            bail!(
+            break Err(anyhow::anyhow!(
                 "mirket child operation exceeded {} seconds",
                 timeout.as_secs()
-            );
+            ));
         }
         if output.metadata()?.len() > 1024 * 1024 || error.metadata()?.len() > 1024 * 1024 {
-            child.kill()?;
-            child.wait()?;
-            bail!("mirket child operation exceeded its output limit");
+            break Err(anyhow::anyhow!(
+                "mirket child operation exceeded its output limit"
+            ));
         }
-        thread::sleep(Duration::from_millis(25));
+        tokio::time::sleep(Duration::from_millis(25)).await;
     };
+    owned
+        .finish()
+        .await
+        .context("clean up verified mirket process group")?;
+    let status = outcome?;
     if output.metadata()?.len() > 1024 * 1024 || error.metadata()?.len() > 1024 * 1024 {
         bail!("mirket child operation exceeded its output limit");
     }
@@ -524,6 +541,75 @@ fn run_bounded(command: &mut Command, timeout: Duration) -> Result<Vec<u8>> {
 #[cfg(test)]
 mod entrypoint_tests {
     use super::*;
+
+    #[cfg(unix)]
+    fn assert_descendant_gone_after_launcher_exit(exit_code: i32) {
+        let temporary = tempfile::tempdir().unwrap();
+        let pid_file = temporary.path().join("descendant.pid");
+        let mut command = Command::new("/bin/sh");
+        command
+            .arg("-c")
+            .arg(format!(
+                "sleep 30 & echo $! > \"$MIRKET_TEST_DESCENDANT_PID\"; exit {exit_code}"
+            ))
+            .env("MIRKET_TEST_DESCENDANT_PID", &pid_file);
+        let result = run_bounded(&mut command, Duration::from_secs(10));
+        if exit_code == 0 {
+            assert!(result.is_ok(), "{result:?}");
+        } else {
+            let error = result.unwrap_err();
+            assert!(error.to_string().contains("child exited"), "{error}");
+        }
+        let pid = std::fs::read_to_string(&pid_file).unwrap();
+        let pid = pid.trim();
+        let deadline = std::time::Instant::now() + Duration::from_secs(3);
+        while std::time::Instant::now() < deadline {
+            let alive = std::process::Command::new("/bin/kill")
+                .args(["-0", pid])
+                .status()
+                .is_ok_and(|status| status.success());
+            if !alive {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(25));
+        }
+        panic!("update launcher descendant {pid} survived owned cleanup");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn bounded_update_kills_descendants_after_launcher_exit() {
+        assert_descendant_gone_after_launcher_exit(0);
+        assert_descendant_gone_after_launcher_exit(1);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn bounded_update_kills_descendants_after_timeout() {
+        let temporary = tempfile::tempdir().unwrap();
+        let pid_file = temporary.path().join("descendant.pid");
+        let mut command = Command::new("/bin/sh");
+        command
+            .arg("-c")
+            .arg("sleep 30 & echo $! > \"$MIRKET_TEST_DESCENDANT_PID\"; wait")
+            .env("MIRKET_TEST_DESCENDANT_PID", &pid_file);
+        let error = run_bounded(&mut command, Duration::from_secs(1)).unwrap_err();
+        assert!(error.to_string().contains("exceeded 1 seconds"), "{error}");
+        let pid = std::fs::read_to_string(&pid_file).unwrap();
+        let pid = pid.trim();
+        let deadline = std::time::Instant::now() + Duration::from_secs(3);
+        while std::time::Instant::now() < deadline {
+            let alive = std::process::Command::new("/bin/kill")
+                .args(["-0", pid])
+                .status()
+                .is_ok_and(|status| status.success());
+            if !alive {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(25));
+        }
+        panic!("update timeout descendant {pid} survived owned cleanup");
+    }
 
     #[test]
     fn entrypoint_update_late_failure_reports_partial_success_without_overwrite() {

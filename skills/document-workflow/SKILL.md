@@ -25,11 +25,12 @@ For document artifacts, use the installed format-specific skill or native applic
 for the actual edit. A file operation and a change to a live shared document need
 different tooling; choose from capabilities actually available in this session.
 
-For repository documentation, API guides or ADRs, use `skill-catalog`'s task
-routing to find the technical documentation workflow and preserve the project's
-owning documents. For DOCX, PDF, spreadsheet and slide artifacts, select the
-available format-specific skill; portable office guidance is a fallback when
-native capabilities are absent. These routes serve different deliverables.
+For repository documentation, API guides or ADRs, work in the project's owning
+documents. Consult `skill-catalog`'s task routing only when the
+owner or deliverable boundary is unclear or an additional capability is needed.
+For DOCX, PDF, spreadsheet and slide artifacts, select the available
+format-specific skill; portable office guidance is a fallback when native
+capabilities are absent. These routes serve different deliverables.
 
 For substantial repository/API documentation, read
 [technical documentation](references/technical-documentation.md) to trace claims
@@ -69,7 +70,9 @@ broken hierarchy. Broaden the inspection when a template or global style changes
 Report the delivered file or live document, the meaningful changes, and the
 checks actually completed. Distinguish a successful save from a verified result.
 
-For repository Markdown, use the project's checker or an approved registered tool
-through `mirket tool run`. Check local links, heading structure and fences, then
+For repository Markdown, use the project's checker or an available host tool. If
+that capability is absent, follow the [shared missing-tool route](../skill-catalog/references/task-execution.md#establish-the-execution-boundary)
+before selecting an optional executable.
+Check local links, heading structure and fences, then
 inspect the actual renderer and exercise changed examples. Structural checks do
 not establish prose quality or technical correctness.

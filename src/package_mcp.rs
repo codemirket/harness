@@ -2,6 +2,7 @@
 //!
 //! Package installation and host permissions remain outside this boundary. Tool
 //! restrictions are enforced here, but they are not an operating-system sandbox.
+use crate::mcp::BoundedLines;
 use anyhow::{Context, Result, bail};
 use rmcp::{
     ErrorData, Peer, RoleClient, RoleServer, ServerHandler, ServiceExt,
@@ -18,14 +19,11 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     io::{self, Write},
     path::PathBuf,
-    pin::Pin,
     process::Stdio,
     sync::Arc,
-    task::{Context as TaskContext, Poll},
-    time::Duration,
+    time::{Duration, Instant},
 };
 use tokio::{
-    io::{AsyncRead, ReadBuf},
     process::Child,
     sync::{RwLock, Semaphore},
 };
@@ -48,7 +46,6 @@ const INSTRUCTIONS: &str = "These tools run an explicitly installed local packag
 /// An executable and environment already resolved and verified by the package manager.
 #[derive(Clone, Debug)]
 pub struct LaunchSpec {
-    pub container: Option<crate::packages::container::Runtime>,
     pub command: PathBuf,
     pub args: Vec<String>,
     /// Complete child environment. Nothing is implicitly inherited.
@@ -57,39 +54,13 @@ pub struct LaunchSpec {
     pub cwd: PathBuf,
     pub allowed_tools: Option<BTreeSet<String>>,
     pub denied_tools: BTreeSet<String>,
-    /// An explicit package input policy; unknown values fail closed.
-    pub input_policy: String,
     /// Initialization budget, including any verification performed by the child.
     /// Must be greater than zero and no more than 120 seconds.
     pub startup_timeout: Duration,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-enum InputPolicy {
-    None,
-    Browser,
-}
-
-impl InputPolicy {
-    fn parse(value: &str) -> Result<Self> {
-        match value {
-            "none" => Ok(Self::None),
-            "browser" => Ok(Self::Browser),
-            _ => bail!("unknown package input policy"),
-        }
-    }
-
-    fn permits(self, name: &str) -> bool {
-        match self {
-            Self::Browser => name != "browser_run_code_unsafe",
-            Self::None => true,
-        }
-    }
-}
-
 impl LaunchSpec {
-    fn validate(&self) -> Result<InputPolicy> {
-        let policy = InputPolicy::parse(&self.input_policy)?;
+    fn validate(&self) -> Result<()> {
         if self.startup_timeout.is_zero() || self.startup_timeout > Duration::from_secs(120) {
             bail!("package startup timeout must be greater than zero and at most 120 seconds");
         }
@@ -107,7 +78,7 @@ impl LaunchSpec {
         {
             validate_tool_name(name)?;
         }
-        Ok(policy)
+        Ok(())
     }
 }
 
@@ -121,58 +92,6 @@ fn validate_tool_name(name: &str) -> Result<()> {
         bail!("invalid package tool name");
     }
     Ok(())
-}
-
-/// Bounds newline-delimited input before the SDK accumulates or decodes a frame.
-struct LimitedLines<R> {
-    inner: R,
-    length: usize,
-    maximum: usize,
-    failed: bool,
-}
-
-impl<R> LimitedLines<R> {
-    fn new(inner: R, maximum: usize) -> Self {
-        Self {
-            inner,
-            length: 0,
-            maximum,
-            failed: false,
-        }
-    }
-}
-
-impl<R: AsyncRead + Unpin> AsyncRead for LimitedLines<R> {
-    fn poll_read(
-        self: Pin<&mut Self>,
-        cx: &mut TaskContext<'_>,
-        buffer: &mut ReadBuf<'_>,
-    ) -> Poll<io::Result<()>> {
-        let this = self.get_mut();
-        let limit_error = || io::Error::new(io::ErrorKind::InvalidData, "MCP frame limit exceeded");
-        if this.failed {
-            return Poll::Ready(Err(limit_error()));
-        }
-        let start = buffer.filled().len();
-        match Pin::new(&mut this.inner).poll_read(cx, buffer) {
-            Poll::Ready(Ok(())) => {
-                for byte in &buffer.filled()[start..] {
-                    if *byte == b'\n' {
-                        this.length = 0;
-                    } else {
-                        this.length += 1;
-                    }
-                    if this.length > this.maximum {
-                        this.failed = true;
-                        buffer.set_filled(start);
-                        return Poll::Ready(Err(limit_error()));
-                    }
-                }
-                Poll::Ready(Ok(()))
-            }
-            other => other,
-        }
-    }
 }
 
 struct ByteBudget(usize);
@@ -201,16 +120,24 @@ fn short_error(error: &impl std::fmt::Display) -> String {
     error.to_string().chars().take(1024).collect()
 }
 
+fn deadline_budget(deadline: Option<Instant>, cap: Duration) -> Duration {
+    deadline
+        .map(|deadline| deadline.saturating_duration_since(Instant::now()).min(cap))
+        .unwrap_or(cap)
+}
+
 /// Uses one SDK request without fulfilling upstream input rounds or task lifecycles.
 async fn upstream_request(
     peer: &Peer<RoleClient>,
     request: ClientRequest,
     context: Option<&RequestContext<RoleServer>>,
     timeout: Duration,
+    cancellation_timeout: Duration,
 ) -> Result<ServerResult> {
     if context.is_some_and(|context| context.ct.is_cancelled()) {
         bail!("host cancelled the package request before invocation");
     }
+    let deadline = Instant::now() + timeout;
     let mut handle = tokio::time::timeout(
         timeout,
         peer.send_cancellable_request(request, PeerRequestOptions::no_options()),
@@ -223,13 +150,14 @@ async fn upstream_request(
             None => std::future::pending().await,
         }
     };
+    let response_timeout = deadline.saturating_duration_since(Instant::now());
     let reason = tokio::select! {
         response = &mut handle.rx => return response.context("package transport closed")?.map_err(Into::into),
         _ = cancel => "host cancelled the package request; effects may already have occurred",
-        _ = tokio::time::sleep(timeout) => "package request deadline exceeded; effects may already have occurred",
+        _ = tokio::time::sleep(response_timeout) => "package request deadline exceeded; effects may already have occurred",
     };
     let _ =
-        tokio::time::timeout(CANCELLATION_TIMEOUT, handle.cancel(Some(reason.to_owned()))).await;
+        tokio::time::timeout(cancellation_timeout, handle.cancel(Some(reason.to_owned()))).await;
     bail!("{reason}")
 }
 
@@ -237,30 +165,33 @@ async fn upstream_request(
 struct PackageBridge {
     peer: Peer<RoleClient>,
     spec: Arc<LaunchSpec>,
-    policy: InputPolicy,
     tools: Arc<RwLock<BTreeMap<String, Tool>>>,
     workers: Arc<Semaphore>,
     request_timeout: Duration,
 }
 
 impl PackageBridge {
-    async fn new(peer: Peer<RoleClient>, spec: LaunchSpec) -> Result<Self> {
-        let policy = spec.validate()?;
+    async fn new_with_deadline(
+        peer: Peer<RoleClient>,
+        spec: LaunchSpec,
+        startup_deadline: Option<Instant>,
+    ) -> Result<Self> {
+        spec.validate()?;
         let bridge = Self {
             peer,
             spec: Arc::new(spec),
-            policy,
             tools: Default::default(),
             workers: Arc::new(Semaphore::new(4)),
             request_timeout: REQUEST_TIMEOUT,
         };
-        bridge.discover(None).await?;
+        bridge
+            .discover_with_deadline(None, startup_deadline)
+            .await?;
         Ok(bridge)
     }
 
     fn permits(&self, name: &str) -> bool {
-        self.policy.permits(name)
-            && !self.spec.denied_tools.contains(name)
+        !self.spec.denied_tools.contains(name)
             && self
                 .spec
                 .allowed_tools
@@ -269,6 +200,14 @@ impl PackageBridge {
     }
 
     async fn discover(&self, context: Option<&RequestContext<RoleServer>>) -> Result<Vec<Tool>> {
+        self.discover_with_deadline(context, None).await
+    }
+
+    async fn discover_with_deadline(
+        &self,
+        context: Option<&RequestContext<RoleServer>>,
+        startup_deadline: Option<Instant>,
+    ) -> Result<Vec<Tool>> {
         let operation = async {
             let mut cursor = None;
             let mut seen_cursors = BTreeSet::new();
@@ -278,9 +217,32 @@ impl PackageBridge {
                 let request = ClientRequest::ListToolsRequest(ListToolsRequest::with_param(
                     PaginatedRequestParams::default().with_cursor(cursor),
                 ));
-                let ServerResult::ListToolsResult(page) =
-                    upstream_request(&self.peer, request, context, DISCOVERY_TIMEOUT).await?
-                else {
+                let request_timeout = deadline_budget(startup_deadline, DISCOVERY_TIMEOUT);
+                // The startup budget is an absolute deadline. Waiting for an
+                // additional cancellation acknowledgment here would spend the
+                // same budget twice; Session cleanup closes the client after
+                // discovery fails.
+                let cancellation_timeout = startup_deadline
+                    .map(|_| Duration::ZERO)
+                    .unwrap_or(CANCELLATION_TIMEOUT);
+                let response = match upstream_request(
+                    &self.peer,
+                    request,
+                    context,
+                    request_timeout,
+                    cancellation_timeout,
+                )
+                .await
+                {
+                    Ok(response) => response,
+                    Err(error)
+                        if startup_deadline.is_some_and(|deadline| Instant::now() >= deadline) =>
+                    {
+                        return Err(error.context("package MCP startup deadline exceeded"));
+                    }
+                    Err(error) => return Err(error),
+                };
+                let ServerResult::ListToolsResult(page) = response else {
                     bail!("package returned an unexpected discovery response");
                 };
                 within_limit(&page, MAX_DISCOVERY_BYTES)?;
@@ -312,9 +274,18 @@ impl PackageBridge {
             }
             bail!("package discovery exceeds the page limit")
         };
-        tokio::time::timeout(DISCOVERY_TIMEOUT, operation)
-            .await
-            .context("package discovery deadline exceeded")?
+        let timeout = deadline_budget(startup_deadline, DISCOVERY_TIMEOUT);
+        let result = match tokio::time::timeout(timeout, operation).await {
+            Ok(result) => result,
+            Err(_) if startup_deadline.is_some_and(|deadline| Instant::now() >= deadline) => {
+                bail!("package MCP startup deadline exceeded")
+            }
+            Err(_) => bail!("package discovery deadline exceeded"),
+        };
+        if startup_deadline.is_some_and(|deadline| Instant::now() >= deadline) {
+            bail!("package MCP startup deadline exceeded");
+        }
+        result
     }
 
     async fn invoke(
@@ -338,6 +309,7 @@ impl PackageBridge {
             ClientRequest::CallToolRequest(CallToolRequest::new(request)),
             context,
             self.request_timeout,
+            CANCELLATION_TIMEOUT,
         )
         .await?;
         let ServerResult::CallToolResult(result) = response else {
@@ -478,13 +450,13 @@ impl ManagedChild {
             tokio::time::timeout(SHUTDOWN_TIMEOUT, self.wait()).await,
             Ok(Ok(_))
         ) {
-            let forced = self.force();
+            self.force()?;
             #[cfg(unix)]
             {
                 self.group = None;
             }
             self.child.take();
-            forced
+            Ok(())
         } else {
             self.close().await
         }
@@ -506,50 +478,67 @@ impl ManagedChild {
                 .context("cannot reap the package child"),
         };
         reaped?;
+        graceful?;
+        forced?;
         #[cfg(unix)]
         {
             self.group = None;
         }
         self.child.take();
-        graceful?;
-        forced?;
         Ok(())
+    }
+}
+
+/// Reap an owned package child after its request future is aborted. This runs
+/// on Tokio's blocking pool when a runtime is available; dropping the child
+/// directly would otherwise synchronously occupy an async worker for up to
+/// eight seconds while waiting for TERM/KILL cleanup.
+fn reap_blocking(mut child: Child, #[cfg(unix)] group: Option<u32>) {
+    #[cfg(unix)]
+    if let Some(group) = group {
+        let _ = signal_group(group, "-TERM");
+    }
+    let graceful_deadline = std::time::Instant::now() + TERMINATION_GRACE;
+    let mut reaped = false;
+    while std::time::Instant::now() < graceful_deadline {
+        match child.try_wait() {
+            Ok(Some(_)) => {
+                reaped = true;
+                break;
+            }
+            Err(_) => break,
+            Ok(None) => std::thread::sleep(Duration::from_millis(10)),
+        }
+    }
+    #[cfg(unix)]
+    if let Some(group) = group {
+        let _ = signal_group(group, "-KILL");
+    }
+    let _ = child.start_kill();
+    let force_deadline = std::time::Instant::now() + SHUTDOWN_TIMEOUT;
+    while !reaped && std::time::Instant::now() < force_deadline {
+        match child.try_wait() {
+            Ok(Some(_)) => reaped = true,
+            Err(_) => break,
+            Ok(None) => std::thread::sleep(Duration::from_millis(10)),
+        }
+    }
+    if !reaped {
+        eprintln!("mirket package: child cleanup did not confirm process exit");
     }
 }
 
 impl Drop for ManagedChild {
     fn drop(&mut self) {
-        if self.child.is_none() {
+        let Some(child) = self.child.take() else {
             return;
-        }
-        // A cancelled future has no async epilogue. Keep the child owned during a
-        // bounded synchronous grace period instead of delegating cleanup to a task
-        // that could itself disappear when the caller's runtime stops.
-        let _ = self.terminate();
-        let graceful_deadline = std::time::Instant::now() + TERMINATION_GRACE;
-        let mut reaped = false;
-        while std::time::Instant::now() < graceful_deadline {
-            match self.child().try_wait() {
-                Ok(Some(_)) => {
-                    reaped = true;
-                    break;
-                }
-                Err(_) => break,
-                Ok(None) => std::thread::sleep(Duration::from_millis(10)),
-            }
-        }
-        let _ = self.force();
-        let force_deadline = std::time::Instant::now() + SHUTDOWN_TIMEOUT;
-        while !reaped && std::time::Instant::now() < force_deadline {
-            match self.child().try_wait() {
-                Ok(Some(_)) => reaped = true,
-                Err(_) => break,
-                Ok(None) => std::thread::sleep(Duration::from_millis(10)),
-            }
-        }
-        if !reaped {
-            eprintln!("mirket package: child cleanup did not confirm process exit");
-        }
+        };
+        #[cfg(unix)]
+        let group = self.group.take();
+        #[cfg(unix)]
+        crate::process::reap_on_drop(move || reap_blocking(child, group));
+        #[cfg(not(unix))]
+        crate::process::reap_on_drop(move || reap_blocking(child));
     }
 }
 
@@ -563,6 +552,7 @@ impl Session {
     async fn start(mut spec: LaunchSpec, shutdown: &mut ShutdownSignal) -> Result<Self> {
         spec.validate()?;
         spec.cwd = spec.cwd.canonicalize()?;
+        let startup_deadline = Instant::now() + spec.startup_timeout;
         let mut child = ManagedChild::spawn(&spec)?;
         let input = child
             .child()
@@ -575,8 +565,8 @@ impl Session {
             .take()
             .context("package stdin is unavailable")?;
         let initialized = tokio::select! {
-            result = tokio::time::timeout(spec.startup_timeout,
-                ().serve((LimitedLines::new(input, MAX_RESPONSE_BYTES), output))) => {
+            result = tokio::time::timeout(deadline_budget(Some(startup_deadline), spec.startup_timeout),
+                ().serve((BoundedLines::with_limit(input, MAX_RESPONSE_BYTES), output))) => {
                 result.context("package MCP startup deadline exceeded")
                     .and_then(|result| result.context("package MCP initialization failed"))
             }
@@ -593,7 +583,7 @@ impl Session {
             }
         };
         let bridge = tokio::select! {
-            result = PackageBridge::new(client.peer().clone(), spec) => result,
+            result = PackageBridge::new_with_deadline(client.peer().clone(), spec, Some(startup_deadline)) => result,
             result = &mut *shutdown => result.and_then(|_| Err(anyhow::anyhow!("package startup interrupted"))),
         };
         match bridge {
@@ -641,7 +631,7 @@ pub async fn serve(spec: LaunchSpec) -> Result<()> {
     let host_session = async {
         let server = bridge
             .serve((
-                LimitedLines::new(tokio::io::stdin(), MAX_REQUEST_BYTES),
+                BoundedLines::with_limit(tokio::io::stdin(), MAX_REQUEST_BYTES),
                 tokio::io::stdout(),
             ))
             .await
@@ -652,15 +642,25 @@ pub async fn serve(spec: LaunchSpec) -> Result<()> {
             .map(|_| ())
             .context("host MCP service failed")
     };
-    let outcome = tokio::select! {
-        result = host_session => result,
-        result = client.waiting() => result.context("package MCP service failed")
-            .and_then(|_| Err(anyhow::anyhow!("package MCP transport closed"))),
-        result = child.wait() => result.context("cannot observe package child exit")
-            .and_then(|_| Err(anyhow::anyhow!("package child exited"))),
-        result = &mut shutdown => result,
+    let mut upstream_waiting = Box::pin(client.waiting());
+    let (outcome, upstream_done) = tokio::select! {
+        result = host_session => (result, false),
+        result = &mut upstream_waiting => (
+            result.context("package MCP service failed")
+                .and_then(|_| Err(anyhow::anyhow!("package MCP transport closed"))),
+            true,
+        ),
+        result = child.wait() => (
+            result.context("cannot observe package child exit")
+                .and_then(|_| Err(anyhow::anyhow!("package child exited"))),
+            false,
+        ),
+        result = &mut shutdown => (result, false),
     };
     upstream_cancel.cancel();
+    if !upstream_done {
+        let _ = tokio::time::timeout(SHUTDOWN_TIMEOUT, &mut upstream_waiting).await;
+    }
     child.close_after_transport().await?;
     outcome
 }
@@ -677,7 +677,6 @@ pub async fn probe_with_schemas(spec: LaunchSpec, include_schemas: bool) -> Resu
     let names: Vec<String> = session.bridge.tools.read().await.keys().cloned().collect();
     let mut value = json!({"ok":true,"transport":"stdio","tools":names,
         "request_limit_bytes":MAX_REQUEST_BYTES,"response_limit_bytes":MAX_RESPONSE_BYTES,
-        "input_policy":session.bridge.spec.input_policy,
         "evidence":"Initialization and filtered discovery only; no tool task was executed."});
     if include_schemas {
         value["schemas"] = serde_json::to_value(
@@ -727,6 +726,7 @@ mod tests {
         cancelled: Arc<AtomicUsize>,
         changed: Arc<AtomicBool>,
         repeating_cursor: bool,
+        discovery_delay: Option<Duration>,
     }
 
     fn definition(name: &str) -> Tool {
@@ -752,6 +752,11 @@ mod tests {
             _context: RequestContext<RoleServer>,
         ) -> Result<ListToolsResult, ErrorData> {
             let cursor = request.and_then(|p| p.cursor);
+            if cursor.is_none()
+                && let Some(delay) = self.discovery_delay
+            {
+                tokio::time::sleep(delay).await;
+            }
             let mut result = if cursor.is_none() {
                 ListToolsResult::with_all_items(vec![definition("echo"), definition("denied")])
             } else {
@@ -759,7 +764,7 @@ mod tests {
                     definition("wait"),
                     definition("oversized"),
                     definition("requires_input"),
-                    definition("browser_run_code_unsafe"),
+                    definition("explicitly_blocked"),
                 ];
                 if self.changed.load(Ordering::SeqCst) {
                     tools.push(definition("new_tool"));
@@ -799,17 +804,15 @@ mod tests {
         }
     }
 
-    fn spec(root: &Path, policy: &str) -> LaunchSpec {
+    fn spec(root: &Path) -> LaunchSpec {
         LaunchSpec {
-            container: None,
             startup_timeout: Duration::from_secs(30),
             command: std::env::current_exe().unwrap(),
             args: vec![],
             env: BTreeMap::new(),
             cwd: root.to_path_buf(),
             allowed_tools: None,
-            denied_tools: BTreeSet::from(["denied".into()]),
-            input_policy: policy.into(),
+            denied_tools: BTreeSet::from(["denied".into(), "explicitly_blocked".into()]),
         }
     }
 
@@ -822,7 +825,7 @@ mod tests {
     }
 
     impl Fixture {
-        async fn new(policy: &str) -> Self {
+        async fn new() -> Self {
             let root = tempfile::tempdir().unwrap();
             let state = FixtureServer::default();
             let (a, b) = tokio::io::duplex(16 * 1024);
@@ -834,15 +837,15 @@ mod tests {
             let (input, output) = tokio::io::split(b);
             let client = ()
                 .serve_with_lifecycle(
-                    (LimitedLines::new(input, MAX_RESPONSE_BYTES), output),
+                    (BoundedLines::with_limit(input, MAX_RESPONSE_BYTES), output),
                     ClientLifecycleMode::Discover {
                         preferred_versions: vec![ProtocolVersion::V_2026_07_28],
                     },
                 )
                 .await
                 .unwrap();
-            let launch = spec(&root.path().canonicalize().unwrap(), policy);
-            let bridge = PackageBridge::new(client.peer().clone(), launch)
+            let launch = spec(&root.path().canonicalize().unwrap());
+            let bridge = PackageBridge::new_with_deadline(client.peer().clone(), launch, None)
                 .await
                 .unwrap();
             Self {
@@ -862,7 +865,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_sdk_discovery_and_direct_calls_apply_the_same_filter() {
-        let fixture = Fixture::new("browser").await;
+        let fixture = Fixture::new().await;
         let (a, b) = tokio::io::duplex(16 * 1024);
         let server = tokio::spawn(fixture.bridge.clone().serve(a));
         let client = ().serve(b).await.unwrap();
@@ -872,12 +875,12 @@ mod tests {
         assert!(
             !tools
                 .iter()
-                .any(|tool| tool.name == "denied" || tool.name == "browser_run_code_unsafe")
+                .any(|tool| tool.name == "denied" || tool.name == "explicitly_blocked")
         );
         let echo = tools.iter().find(|tool| tool.name == "echo").unwrap();
         assert_eq!(echo.input_schema, definition("echo").input_schema);
         assert_eq!(echo.annotations, definition("echo").annotations);
-        for denied in ["denied", "browser_run_code_unsafe", "not_discovered"] {
+        for denied in ["denied", "explicitly_blocked", "not_discovered"] {
             let result = client
                 .call_tool(CallToolRequestParams::new(denied))
                 .await
@@ -916,7 +919,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_dynamic_discovery_is_filtered_and_not_stale() {
-        let fixture = Fixture::new("none").await;
+        let fixture = Fixture::new().await;
         assert!(!fixture.bridge.tools.read().await.contains_key("new_tool"));
         fixture.state.changed.store(true, Ordering::SeqCst);
         let tools = fixture.bridge.discover(None).await.unwrap();
@@ -947,7 +950,7 @@ mod tests {
         let client = ().serve(b).await.unwrap();
         let server = server.await.unwrap().unwrap();
         assert!(
-            PackageBridge::new(client.peer().clone(), spec(root.path(), "none"))
+            PackageBridge::new_with_deadline(client.peer().clone(), spec(root.path()), None)
                 .await
                 .err()
                 .unwrap()
@@ -960,7 +963,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_timeout_sends_cancellation_to_the_upstream_sdk() {
-        let mut fixture = Fixture::new("none").await;
+        let mut fixture = Fixture::new().await;
         fixture.bridge.request_timeout = Duration::from_millis(30);
         let error = fixture
             .bridge
@@ -979,8 +982,49 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn package_mcp_startup_deadline_covers_initial_discovery() {
+        let root = tempfile::tempdir().unwrap();
+        let state = FixtureServer {
+            discovery_delay: Some(Duration::from_millis(300)),
+            ..Default::default()
+        };
+        let (a, b) = tokio::io::duplex(16 * 1024);
+        let upstream = state.clone();
+        let server =
+            tokio::spawn(async move { upstream.serve(a).await.unwrap().waiting().await.unwrap() });
+        let (input, output) = tokio::io::split(b);
+        let client = ()
+            .serve_with_lifecycle(
+                (BoundedLines::with_limit(input, MAX_RESPONSE_BYTES), output),
+                ClientLifecycleMode::Discover {
+                    preferred_versions: vec![ProtocolVersion::V_2026_07_28],
+                },
+            )
+            .await
+            .unwrap();
+        let deadline = Instant::now() + Duration::from_millis(50);
+        let started = Instant::now();
+        let error = PackageBridge::new_with_deadline(
+            client.peer().clone(),
+            spec(&root.path().canonicalize().unwrap()),
+            Some(deadline),
+        )
+        .await
+        .err()
+        .expect("delayed discovery must exceed the startup deadline");
+        assert!(
+            started.elapsed() < Duration::from_millis(250),
+            "initial discovery exceeded the configured startup budget: {:?}",
+            started.elapsed()
+        );
+        assert!(error.to_string().contains("startup deadline"));
+        client.cancel().await.unwrap();
+        server.await.unwrap();
+    }
+
+    #[tokio::test]
     async fn package_mcp_host_cancellation_reaches_upstream_without_new_authority() {
-        let fixture = Fixture::new("none").await;
+        let fixture = Fixture::new().await;
         let (a, b) = tokio::io::duplex(16 * 1024);
         let server = tokio::spawn(fixture.bridge.clone().serve(a));
         let client = ().serve(b).await.unwrap();
@@ -1013,7 +1057,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_oversized_result_terminates_upstream_framing() {
-        let fixture = Fixture::new("none").await;
+        let fixture = Fixture::new().await;
         let error = fixture
             .bridge
             .invoke(CallToolRequestParams::new("oversized"), None)
@@ -1026,7 +1070,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_request_size_limit_prevents_invocation() {
-        let fixture = Fixture::new("none").await;
+        let fixture = Fixture::new().await;
         let request = CallToolRequestParams::new("echo").with_arguments(
             json!({"value":"x".repeat(MAX_REQUEST_BYTES)})
                 .as_object()
@@ -1040,7 +1084,7 @@ mod tests {
 
     #[tokio::test]
     async fn package_mcp_does_not_fulfill_or_retry_upstream_input_rounds() {
-        let fixture = Fixture::new("none").await;
+        let fixture = Fixture::new().await;
         let result = fixture
             .bridge
             .invoke(CallToolRequestParams::new("requires_input"), None)
@@ -1061,15 +1105,34 @@ mod tests {
     #[tokio::test]
     async fn package_mcp_frame_limit_counts_partial_reads_and_resets_on_newlines() {
         use tokio::io::AsyncReadExt;
+        let source = std::io::Cursor::new(b"1234\n".to_vec());
+        let mut bounded = BoundedLines::with_limit(source, 4);
+        let mut result = Vec::new();
+        bounded.read_to_end(&mut result).await.unwrap();
+        assert_eq!(result, b"1234\n");
+
         let source = std::io::Cursor::new(b"1234\n5678\n".to_vec());
-        let mut bounded = LimitedLines::new(source, 4);
+        let mut bounded = BoundedLines::with_limit(source, 4);
         let mut result = Vec::new();
         bounded.read_to_end(&mut result).await.unwrap();
         assert_eq!(result, b"1234\n5678\n");
+
         let source = std::io::Cursor::new(b"12345".to_vec());
-        let mut bounded = LimitedLines::new(source, 4);
+        let mut bounded = BoundedLines::with_limit(source, 4);
         let mut first = [0; 3];
         bounded.read_exact(&mut first).await.unwrap();
-        assert!(bounded.read_to_end(&mut Vec::new()).await.is_err());
+        let mut rejected = Vec::new();
+        let error = bounded.read_to_end(&mut rejected).await.unwrap_err();
+        assert_eq!(error.kind(), std::io::ErrorKind::InvalidData);
+        assert!(rejected.is_empty(), "rejected frame bytes must not leak");
+        assert_eq!(
+            bounded
+                .read_to_end(&mut Vec::new())
+                .await
+                .unwrap_err()
+                .kind(),
+            std::io::ErrorKind::InvalidData,
+            "a failed frame reader remains terminal"
+        );
     }
 }

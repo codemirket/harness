@@ -135,15 +135,9 @@ pub async fn run(
     if args.len() > 256 || args.iter().map(String::len).sum::<usize>() > 65536 {
         bail!("too many tool arguments");
     }
-    let tools = load(paths)?;
-    let tool = tools
-        .get(name)
-        .context("tool is not registered; use mirket tool register")?;
-    if executable_digest(&tool.executable)? != tool.sha256 {
-        bail!("tool executable changed; inspect it before registering it again");
-    }
+    let executable = verified(paths, name)?;
     let cwd = crate::paths::canonical_project(cwd)?;
-    let mut command = tokio::process::Command::new(&tool.executable);
+    let mut command = tokio::process::Command::new(executable);
     command
         .args(args)
         .current_dir(cwd)
@@ -335,5 +329,46 @@ mod tests {
         remove(&paths, "renderer").unwrap();
         assert_eq!(list(&paths).unwrap(), json!({}));
         assert!(register(&paths, "../escape", &executable).is_err());
+    }
+
+    #[tokio::test]
+    async fn run_rechecks_registration_before_spawning() {
+        let dir = tempfile::tempdir().unwrap();
+        let home = dir.path().join("home");
+        std::fs::create_dir(&home).unwrap();
+        let paths = Paths::new(home).unwrap();
+        let executable = dir.path().join("tool");
+        std::fs::copy(std::env::current_exe().unwrap(), &executable).unwrap();
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            std::fs::set_permissions(&executable, std::fs::Permissions::from_mode(0o700)).unwrap();
+        }
+        register(&paths, "fixture", &executable).unwrap();
+
+        let args = vec![
+            "--exact".to_owned(),
+            "tools::tests::process_fixture".to_owned(),
+            "--nocapture".to_owned(),
+        ];
+        assert_eq!(
+            run(&paths, "fixture", dir.path(), &args, 10).await.unwrap(),
+            0
+        );
+
+        std::fs::write(&executable, b"changed after registration").unwrap();
+        let error = run(&paths, "fixture", dir.path(), &args, 10)
+            .await
+            .unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("registered fixture executable changed")
+        );
+
+        let error = run(&paths, "missing", dir.path(), &args, 10)
+            .await
+            .unwrap_err();
+        assert!(error.to_string().contains("register the prerequisite"));
     }
 }

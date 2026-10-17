@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "design",
+  "name": "Local design toolstack",
+  "version": "2026-10-17",
+  "source": "https://github.com/penpot/penpot/tree/472ba8dde58b66651adef116f7d0095a948654d9/mcp",
+  "license": "Each tool carries its own upstream license; Browserless is SSPL-1.0 OR Browserless Commercial License. See per-tool metadata and packaged notices.",
+  "workspace": "/workspace",
+  "tools": [
+    {"id":"style-dictionary","name":"Style Dictionary","execution":"tools-container","version":"5.7.0","license":"Apache-2.0","source":"https://github.com/style-dictionary/style-dictionary"},
+    {"id":"satori","name":"Satori and resvg","execution":"tools-container","version":"0.62.0 + 2.6.2","license":"MPL-2.0","source":"https://github.com/vercel/satori","renderer_source":"https://github.com/yisibl/resvg-js"},
+    {"id":"browserless","name":"Browserless Chromium","execution":"service","port":3000,"license":"SSPL-1.0 OR Browserless Commercial License","source":"https://github.com/browserless/browserless"},
+    {"id":"penpot","name":"Official Penpot MCP","execution":"service","port":4401,"version":"2.17.0","license":"MPL-2.0","source":"https://github.com/penpot/penpot/tree/472ba8dde58b66651adef116f7d0095a948654d9/mcp"},
+    {"id":"kroki","name":"Kroki","execution":"service","port":8000,"version":"0.32.0","license":"MIT","source":"https://github.com/yuzutech/kroki"},
+    {"id":"hyperframes","name":"HyperFrames","execution":"tools-container","version":"0.8.149","license":"Apache-2.0","source":"https://github.com/heygen-com/hyperframes"},
+    {"id":"typst","name":"Typst","execution":"tools-container","version":"0.15.1","license":"Apache-2.0","source":"https://github.com/typst/typst"},
+    {"id":"imgproxy","name":"imgproxy","execution":"service","port":8080,"version":"4.0.12","license":"Apache-2.0","source":"https://github.com/imgproxy/imgproxy"},
+    {"id":"svgo","name":"SVGO","execution":"tools-container","version":"4.1.0","license":"MIT","source":"https://github.com/svg/svgo"},
+    {"id":"comfyui","name":"ComfyUI","execution":"service","port":8188,"version":"0.36.0","license":"GPL-3.0","source":"https://github.com/comfyanonymous/ComfyUI/tree/ee71d5c4993f29086b27fde1629a945ae48425bf","resolved_source":"https://github.com/Comfy-Org/ComfyUI/tree/ee71d5c4993f29086b27fde1629a945ae48425bf"},
+    {"id":"odiff","name":"Odiff","execution":"tools-container","version":"4.5.0","license":"MIT","source":"https://github.com/dmtrKovalenko/odiff"}
+  ],
+  "images": {
+    "penpot-postgres":"docker.io/library/postgres@sha256:2338e3d79f75746cee7784825b6df3707a479ac8f24a36b9832aa4f16da4e81a",
+    "penpot-valkey":"docker.io/valkey/valkey@sha256:0e28101f7e5acb939f4e5152b09760b49ba61f278fbf10f6f1d9c45fbbd3f3c7",
+    "penpot-backend":"docker.io/penpotapp/backend@sha256:d5b8d69c00a9c4735c10b3612f7e3c18806f879367fa7be7f621058769cb551e",
+    "penpot-exporter":"docker.io/penpotapp/exporter@sha256:64d6474cad7464b082394e7aab0aa410c4709a1c5d308a3a64677a4af3d80e93",
+    "penpot-frontend":"docker.io/penpotapp/frontend@sha256:4b755d7b8dc666184cea086b25dffe3273e09df782e72b8e4eb3388624f9b28b",
+    "browserless":"ghcr.io/browserless/chromium@sha256:ed422888ecd6a09841855cb91d2e3177ee7617e168ef8742513888e726ccd5df",
+    "kroki":"docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
+    "kroki-excalidraw":"docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
+    "imgproxy":"ghcr.io/imgproxy/imgproxy@sha256:4e896b25600aaee9a7d3a34f5cf09fdd40cc59327e856494f1867c2934018913",
+    "node-build":"docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd",
+    "python-build":"docker.io/library/python@sha256:16bf2b5c59a08523519d3c8589deca849285dee1d62a3653e124c3dba340f15e"
+  },
+  "builds": {
+    "penpot-mcp":{"commit":"472ba8dde58b66651adef116f7d0095a948654d9","version":"2.17.0","source_archive":"https://codeload.github.com/penpot/penpot/tar.gz/472ba8dde58b66651adef116f7d0095a948654d9","sha256":"33a1819a60b3fbd4ec1b85979e5a7e5fa6dcfe6af84c8847d7ae21c853591059"},
+    "comfyui":{"commit":"ee71d5c4993f29086b27fde1629a945ae48425bf","version":"0.36.0","source_archive":"https://codeload.github.com/Comfy-Org/ComfyUI/tar.gz/ee71d5c4993f29086b27fde1629a945ae48425bf","sha256":"d0c5af04bc8823aa98104ddb0110ce2690083f19486a68ed55b56c37e6309187"},
+    "tools":{"source":"runtime/design/tools","base":"node-build"}
+  }
+}

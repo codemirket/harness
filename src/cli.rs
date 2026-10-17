@@ -133,8 +133,6 @@ enum EnvironmentCommand {
     Start,
     Stop,
     Status,
-    /// Remove proven orphaned render workers; preserve active jobs and service data.
-    Recover,
 }
 impl TargetChoice {
     fn targets(self) -> Vec<Target> {
@@ -142,6 +140,14 @@ impl TargetChoice {
             Self::Codex => vec![Target::Codex],
             Self::Claude => vec![Target::Claude],
             Self::All => vec![Target::Codex, Target::Claude],
+        }
+    }
+
+    fn optional_target(self) -> Option<&'static str> {
+        match self {
+            Self::Codex => Some("codex"),
+            Self::Claude => Some("claude"),
+            Self::All => None,
         }
     }
 }
@@ -431,11 +437,7 @@ enum PackageCommand {
     /// Verify the content of selected packages without starting their processes.
     Status,
     /// Start a reviewed local service profile; never downloads images.
-    Start {
-        id: String,
-        #[arg(long)]
-        port: Option<u16>,
-    },
+    Start { id: String },
     /// Stop owned services; retain designs unless --purge-data is explicitly supplied.
     Stop {
         id: String,
@@ -454,16 +456,10 @@ enum PackageCommand {
         ids: Vec<String>,
     },
     /// Serve an installed package through the filtered local MCP bridge.
-    Serve {
-        id: String,
-        #[arg(long, default_value = ".")]
-        project: PathBuf,
-    },
+    Serve { id: String },
     /// Check actual package startup and filtered MCP tool discovery.
     Probe {
         id: String,
-        #[arg(long, default_value = ".")]
-        project: PathBuf,
         /// Include filtered tool schemas and annotations for choosing call arguments.
         #[arg(long)]
         schemas: bool,
@@ -474,8 +470,6 @@ enum PackageCommand {
         tool: String,
         #[arg(long, default_value = "{}")]
         arguments: String,
-        #[arg(long, default_value = ".")]
-        project: PathBuf,
     },
 }
 #[derive(Subcommand)]
@@ -600,11 +594,19 @@ pub fn entry(installer_target: Option<&str>) {
         if let Ok(paths) = Paths::discover(home)
             && let Ok(Some(binary)) = install::newer_runtime(&paths)
         {
-            match std::process::Command::new(binary)
-                .args(args.iter().skip(1))
-                .env("MIRKET_DIRECT", "1")
-                .status()
-            {
+            let mut command = std::process::Command::new(binary);
+            command.args(args.iter().skip(1)).env("MIRKET_DIRECT", "1");
+            // Keep the host-owned PID and stdio lifecycle when a Unix bootstrap
+            // hands off. A waiting wrapper can leave the runtime orphaned when
+            // the host terminates only that entry process.
+            #[cfg(unix)]
+            let status: std::io::Result<std::process::ExitStatus> = {
+                use std::os::unix::process::CommandExt;
+                Err(command.exec())
+            };
+            #[cfg(not(unix))]
+            let status = command.status();
+            match status {
                 Ok(status) => std::process::exit(status.code().unwrap_or(1)),
                 Err(error) => {
                     eprintln!("mirket: could not start the installed runtime: {error}");
@@ -660,8 +662,6 @@ fn reconcile_update_replay_args(
     }
     let mut reconciled = Vec::with_capacity(args.len());
     let mut removed_documentation = 0usize;
-    let mut removed_packages = Vec::new();
-    let mut passed_packages = Vec::new();
     let mut index = 0;
     while index < args.len() {
         let argument = args[index].to_str().unwrap_or("");
@@ -670,23 +670,10 @@ fn reconcile_update_replay_args(
             index += 1;
             continue;
         }
-        let (package, count) = if argument == "--package" {
-            (args.get(index + 1).and_then(|arg| arg.to_str()), 2)
-        } else {
-            (argument.strip_prefix("--package="), 1)
-        };
-        if let Some(id) = package {
-            passed_packages.push(id.to_owned());
-            if packages::is_retired_id(id) {
-                removed_packages.push(id.to_owned());
-                index += count;
-                continue;
-            }
-        }
         reconciled.push(args[index].clone());
         index += 1;
     }
-    if removed_documentation == 0 && removed_packages.is_empty() {
+    if removed_documentation == 0 {
         return Ok(args);
     }
     let parsed =
@@ -711,9 +698,6 @@ fn reconcile_update_replay_args(
     }
     if removed_documentation != 0 && !saved.microsoft_learn {
         bail!("retired documentation argument does not match the saved receipt");
-    }
-    if !removed_packages.is_empty() && passed_packages != saved.packages {
-        bail!("retired package arguments do not match the saved receipt");
     }
     Ok(reconciled)
 }
@@ -806,7 +790,7 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
         }
         if args.packages.is_empty() && !args.no_packages {
             println!(
-                "\nOptional local MCP packages download pinned artifacts during setup. Use mirket package list to review available packages."
+                "\nThe optional design stack builds pinned runtimes during setup. Use mirket package list to review its eleven tools."
             );
             let default = if options.packages.is_empty() {
                 "none".to_owned()
@@ -934,15 +918,11 @@ fn dispatch(cli: Cli) -> Result<i32> {
         return runtime()?.block_on(crate::tools::run(&paths, &name, &cwd, &args, timeout));
     }
     if let Command::Package {
-        command: PackageCommand::Serve { id, project },
+        command: PackageCommand::Serve { id },
     } = cli.command
     {
-        let launch = packages::launch(&paths, &id, &project)?;
-        if let Some(editor) = packages::Registry::embedded()?.get(&id)?.adapter {
-            runtime()?.block_on(crate::editor_mcp::serve(editor, launch))?;
-        } else {
-            runtime()?.block_on(crate::package_mcp::serve(launch))?;
-        }
+        let launch = packages::launch(&paths, &id)?;
+        runtime()?.block_on(crate::package_mcp::serve(launch))?;
         return Ok(0);
     }
     let catalog = Catalog::embedded;
@@ -1106,11 +1086,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 capability,
                 target,
             } => {
-                let target = target.and_then(|t| match t {
-                    TargetChoice::Codex => Some("codex"),
-                    TargetChoice::Claude => Some("claude"),
-                    TargetChoice::All => None,
-                });
+                let target = target.and_then(TargetChoice::optional_target);
                 project::add(&catalog()?, &project, &profile, &skill, &capability, target)?
             }
             ProjectCommand::Plan(args) => project::plan(&catalog()?, &args.project)?,
@@ -1126,11 +1102,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 &profile,
                 &skill,
                 &capability,
-                target.and_then(|t| match t {
-                    TargetChoice::Codex => Some("codex"),
-                    TargetChoice::Claude => Some("claude"),
-                    TargetChoice::All => None,
-                }),
+                target.and_then(TargetChoice::optional_target),
             )?,
             ProjectCommand::Configure { project, target } => project::set_targets(
                 &catalog()?,
@@ -1266,6 +1238,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
             ToolCommand::Run { .. } => unreachable!(),
         },
         Command::Environment { command } => {
+            if !matches!(&command, EnvironmentCommand::Status) {
+                crate::podman::ensure_controller_supported()?;
+            }
             let engine = crate::podman::Engine::resolve(&paths)?;
             match command {
                 EnvironmentCommand::Init { image } => engine.init(&match image {
@@ -1275,7 +1250,6 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 EnvironmentCommand::Start => engine.start()?,
                 EnvironmentCommand::Stop => engine.stop()?,
                 EnvironmentCommand::Status => engine.status(),
-                EnvironmentCommand::Recover => engine.recover()?,
             }
         }
         Command::Package { command } => match command {
@@ -1289,7 +1263,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     .unwrap_or_default();
                 packages::doctor(&paths, &selected)?
             }
-            PackageCommand::Start { id, port } => packages::service_start(&paths, &id, port)?,
+            PackageCommand::Start { id } => packages::service_start(&paths, &id)?,
             PackageCommand::Stop { id, purge_data } => {
                 packages::service_stop(&paths, &id, purge_data)?
             }
@@ -1322,22 +1296,17 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     Some(&token),
                 )?)?
             }
-            PackageCommand::Probe {
-                id,
-                project,
-                schemas,
-            } => {
-                let launch = packages::client_launch(&paths, &id, &project)?;
+            PackageCommand::Probe { id, schemas } => {
+                let launch = packages::launch(&paths, &id)?;
                 runtime()?.block_on(crate::package_mcp::probe_with_schemas(launch, schemas))?
             }
             PackageCommand::Call {
                 id,
                 tool,
                 arguments,
-                project,
             } => {
                 let arguments = package_arguments(&arguments)?;
-                let launch = packages::client_launch(&paths, &id, &project)?;
+                let launch = packages::launch(&paths, &id)?;
                 let result =
                     runtime()?.block_on(crate::package_mcp::call(launch, tool, arguments))?;
                 let failed = result.is_error == Some(true);
@@ -1441,19 +1410,19 @@ mod tests {
         Cli::command().debug_assert();
     }
     #[test]
+    fn optional_target_mapping_preserves_all_target_semantics() {
+        assert_eq!(TargetChoice::Codex.optional_target(), Some("codex"));
+        assert_eq!(TargetChoice::Claude.optional_target(), Some("claude"));
+        assert_eq!(TargetChoice::All.optional_target(), None);
+    }
+    #[test]
     fn setup_and_update_contracts() {
         assert!(Cli::try_parse_from(["mirket", "setup", "--yes", "--target", "all"]).is_ok());
         assert!(Cli::try_parse_from(["mirket", "setup", "--target", "other"]).is_err());
         assert!(Cli::try_parse_from(["mirket", "update", "--sha256", "bad"]).is_err());
         assert!(
-            Cli::try_parse_from([
-                "mirket",
-                "setup",
-                "--package",
-                "playwright",
-                "--no-packages"
-            ])
-            .is_err()
+            Cli::try_parse_from(["mirket", "setup", "--package", "design", "--no-packages"])
+                .is_err()
         );
         assert!(Cli::try_parse_from(["mirket", "package", "install"]).is_err());
         assert!(Cli::try_parse_from(["mirket", "package", "configure"]).is_err());
@@ -1472,21 +1441,21 @@ mod tests {
         let empty = setup_options(&args(&["mirket", "setup", "--yes"]), None);
         assert!(empty.packages.is_empty());
         let mut saved = SetupOptions {
-            packages: vec!["playwright".into(), "inkscape".into()],
+            packages: vec!["design".into()],
             ..SetupOptions::default()
         };
         saved
             .package_settings
-            .insert("playwright".into(), json!({"fixture":"saved-selection"}));
+            .insert("design".into(), json!({"fixture":"saved-selection"}));
         let retained = setup_options(&args(&["mirket", "setup", "--yes"]), Some(&saved));
         assert_eq!(retained.packages, saved.packages);
         assert_eq!(retained.package_settings, saved.package_settings);
         let replaced = setup_options(
-            &args(&["mirket", "setup", "--yes", "--package", "inkscape"]),
+            &args(&["mirket", "setup", "--yes", "--package", "design"]),
             Some(&saved),
         );
-        assert_eq!(replaced.packages, ["inkscape"]);
-        assert!(replaced.package_settings.is_empty());
+        assert_eq!(replaced.packages, ["design"]);
+        assert_eq!(replaced.package_settings, saved.package_settings);
         let removed = setup_options(
             &args(&["mirket", "setup", "--yes", "--no-packages"]),
             Some(&saved),

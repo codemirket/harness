@@ -12,6 +12,10 @@ owners. A token file with a matching name does not establish that it governs thi
 application. Check actual consumers and computed values at the affected viewport
 and theme; exclude unused exports, legacy styles and proposed migrations unless
 they reach this surface or explicitly govern its intended replacement.
+For a changed canonical `design/tokens.json`, compile Style Dictionary's CSS,
+JavaScript, TypeScript, Typst and Penpot outputs before inspecting dependent
+renders. Compare the source digest with the emitted generation and trace the
+specific output actually consumed by this surface.
 
 Keep a compact evidence chain for claims worth carrying forward:
 

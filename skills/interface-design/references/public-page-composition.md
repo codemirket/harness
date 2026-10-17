@@ -81,7 +81,8 @@ choose appropriate sizes and loading behavior through the project's existing
 media pipeline. Verify rights and hosting requirements before production use.
 
 Purposeful custom artwork can explain a workflow or reinforce a subject. Use the
-project's existing vector/icon system for simple diagrams and symbols. A bitmap,
+project's existing vector/icon system for simple symbols; render diagrams through
+Kroki. A bitmap,
 video or elaborate effect earns its cost through communication, not novelty alone.
 
 ## Navigation, actions and copy

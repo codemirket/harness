@@ -597,13 +597,29 @@ fn skill_resource_mime(path: &str) -> &'static str {
 pub struct BoundedLines<R> {
     inner: R,
     bytes: usize,
+    maximum: usize,
     failed: bool,
 }
+
+fn frame_limit_error(maximum: usize) -> io::Error {
+    io::Error::new(
+        io::ErrorKind::InvalidData,
+        format!("MCP frame exceeds {maximum} bytes"),
+    )
+}
+
 impl<R> BoundedLines<R> {
     pub fn new(inner: R) -> Self {
+        Self::with_limit(inner, MAX_FRAME_BYTES)
+    }
+
+    /// Construct a frame limiter for a boundary with a caller-specific limit.
+    /// The default constructor preserves the coordination MCP contract.
+    pub(crate) fn with_limit(inner: R, maximum: usize) -> Self {
         Self {
             inner,
             bytes: 0,
+            maximum,
             failed: false,
         }
     }
@@ -616,10 +632,7 @@ impl<R: AsyncRead + Unpin> AsyncRead for BoundedLines<R> {
     ) -> Poll<io::Result<()>> {
         let this = self.get_mut();
         if this.failed {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::InvalidData,
-                "MCP frame exceeds 128 KiB",
-            )));
+            return Poll::Ready(Err(frame_limit_error(this.maximum)));
         }
         let start = buffer.filled().len();
         match Pin::new(&mut this.inner).poll_read(cx, buffer) {
@@ -630,13 +643,10 @@ impl<R: AsyncRead + Unpin> AsyncRead for BoundedLines<R> {
                     } else {
                         this.bytes += 1;
                     }
-                    if this.bytes > MAX_FRAME_BYTES {
+                    if this.bytes > this.maximum {
                         this.failed = true;
                         buffer.set_filled(start);
-                        return Poll::Ready(Err(io::Error::new(
-                            io::ErrorKind::InvalidData,
-                            "MCP frame exceeds 128 KiB",
-                        )));
+                        return Poll::Ready(Err(frame_limit_error(this.maximum)));
                     }
                 }
                 Poll::Ready(Ok(()))

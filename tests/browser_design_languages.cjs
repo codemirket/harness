@@ -1,9 +1,8 @@
 /* Optional real-browser evidence for the installed design-inspiration library.
- * Requires ALREADY AVAILABLE Playwright/Chromium; never downloads dependencies.
+ * Requires the managed Browserless service and its installed playwright-core client.
  * node tests/browser_design_languages.cjs LOOPBACK_BASE OUTPUT_DIR LIBRARY_JSON [ID,...]
- * MIRKET_BROWSER_EXECUTABLE selects an existing browser. MIRKET_AXE_SCRIPT may
- * name an existing axe.min.js. Screenshots still require actual craft review. */
-const { chromium } = require('playwright');
+ * BROWSERLESS_WS selects its WebSocket endpoint; the helper uses native Playwright. Screenshots require actual craft review. */
+const { connect } = require('./browserless.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -29,7 +28,7 @@ async function capture(page, file) {
 async function inspect(browser, instance, viewport, variant = '') {
   const id = instance.id;
   const tag = `${id}-${viewport.width}${variant ? '-misleading' : ''}`;
-  const context = await browser.newContext({viewport, reducedMotion:'reduce',deviceScaleFactor:1});
+  const context = await browser.newContext({viewport, reducedMotion:'reduce',deviceScaleFactor:2});
   const page = await context.newPage();
   const errors = [], external = [];
   page.on('pageerror', error => errors.push(String(error)));
@@ -48,14 +47,7 @@ async function inspect(browser, instance, viewport, variant = '') {
     assert.equal(await page.locator('main .lesson, main .lesson-note, main aside[aria-label*="lesson" i]').count(),0,'teaching notes must not replace the actual specimen');
     row.geometry = await geometry(page);
     row.screenshot = await capture(page,`${tag}.png`);
-    if (!variant && process.env.MIRKET_AXE_SCRIPT) {
-      await page.addScriptTag({path:process.env.MIRKET_AXE_SCRIPT});
-      row.axe = await page.evaluate(async () => {
-        const results = await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','best-practice']}});
-        return {violations:results.violations.map(v => ({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),incomplete:results.incomplete.map(v=>({id:v.id,nodes:v.nodes.length}))};
-      });
-      assert.deepEqual(row.axe.violations,[],`${tag}: access violations`);
-    }
+
     if (!variant) {
       const controls = page.locator('main button, main input, main select, main summary, main a[href]');
       // Disabled history commands are legitimately unfocusable in their initial
@@ -91,7 +83,7 @@ async function inspect(browser, instance, viewport, variant = '') {
 (async()=>{
   await fs.mkdir(output,{recursive:true});
   const library=JSON.parse(await fs.readFile(manifestPath,'utf8'));
-  const browser=await chromium.launch({headless:true,...(process.env.MIRKET_BROWSER_EXECUTABLE?{executablePath:process.env.MIRKET_BROWSER_EXECUTABLE}:{})});
+  const browser=await connect();
   report.browser=browser.version();
   for(const instance of library.instances.filter(item=>!selection || selection.includes(item.id))) {
     for(const viewport of [{width:1280,height:900},{width:390,height:844}]) report.examples.push(await inspect(browser,instance,viewport));

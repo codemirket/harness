@@ -56,18 +56,13 @@ Use code-native geometry or an available vector editor. A raster image wrapped
 in SVG is not a vector-art deliverable. If image generation supplies a mood or
 composition reference, construct the final editable geometry separately and
 disclose the reference; do not call automatic tracing professional refinement.
-Use existing tools first. Additional editors, libraries, fonts and optimizers
-need the user's authorization under the project's rules.
+The `design` package supplies the SVG optimizer. Preserve the editable master;
+run both generated and imported SVG through SVGO before integration. Optimization
+does not sanitize untrusted SVG.
 
-When Mirket's `inkscape` package is selected, discover its current schemas with
-`mirket package probe inkscape --schemas --project /absolute/project` or the
-host's MCP tools. Use `svg_save` for editable source, `svg_inspect` for dimensions,
-IDs and rendered bounds, and `svg_export` for a distinct PNG, plain SVG or PDF.
-The adapter accepts self-contained vectors in existing project directories;
-scripts, linked images, filters and stylesheet elements are excluded. Choose
-another authorized workflow when the asset needs unsupported features. Existing
-outputs need explicit overwrite intent; use the returned digest as the revision
-precondition when refining. Keep semantic source groups and inspect saved exports.
+Use the selected vector workflow's actual schemas and preserve an editable master.
+Inspect dimensions, IDs, references and rendered bounds, then reopen the final
+export. Keep semantic source groups and inspect saved exports at intended sizes.
 
 ## Make the asset usable
 
@@ -79,7 +74,7 @@ precondition when refining. Keep semantic source groups and inspect saved export
   artwork should be hidden from assistive technology. Interactive SVG needs the
   project's semantic controls and keyboard behavior.
 - Keep source groups and a readable master when an optimized output is requested.
-  Use an already available optimizer only after rendering a before/after comparison;
+  Use SVGO after rendering a before/after comparison;
   preserve IDs, text, precision and groups needed by consumers or motion.
 - Decide editable text versus outlined lettering from the delivery requirements
   and available licensed fonts. Preserve editable source when outlining; never
@@ -90,8 +85,10 @@ precondition when refining. Keep semantic source groups and inspect saved export
 
 ## Verify and deliver
 
-Use an available XML/SVG validator or explicitly approved renderer through
-`mirket tool run`. Check namespace, finite viewBox dimensions, IDs and references,
+Use an available XML/SVG validator or the project's renderer. If neither is
+available, follow the [shared missing-tool route](../skill-catalog/references/task-execution.md#establish-the-execution-boundary).
+Check namespace,
+finite viewBox dimensions, IDs and references,
 font dependencies, external resources and active content. Structural validation
 is not sanitization or visual acceptance.
 
@@ -101,6 +98,6 @@ label/decorative treatment, dependencies and animation handoff groups. Report
 observed quality, the inspected sizes/context and material gaps. A browser preview
 does not establish print/editor fidelity or compatibility on untested devices.
 
-For repeatable multi-size light/dark renders, use an available browser or
-explicitly registered renderer through `mirket tool run`. Inspect the actual
-output and source; structural checks leave visual acceptance to the reviewer.
+For repeatable multi-size light/dark renders, use an available browser or renderer.
+Inspect the actual output and source; structural checks leave visual acceptance
+to the reviewer.

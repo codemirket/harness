@@ -3,8 +3,14 @@
 Mirket has one command surface and one Rust implementation of each operation.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
-methods. Optional package bridges launch pinned local servers separately; editor
-and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
+methods. The optional `design` package launches its pinned local tools and the
+official Penpot MCP through one reviewed package contract.
+
+Embedded skill descriptions come from each `SKILL.md` frontmatter, so host
+triggers and catalog discovery use the same source. The registry owns selection,
+dependencies and provenance; upstream and reference entries retain their reviewed
+descriptions there. CLI and MCP selected metadata both expose the source pin and
+guidance read route.
 
 | Source | Responsibility |
 | --- | --- |
@@ -22,19 +28,12 @@ and engine packages use Mirket-owned MCP adapters around pinned local runtimes.
 | `src/state/contracts.rs` | Strict opt-in verification and specialist coverage contracts with explicit input bindings |
 | `src/role_eval.rs`, `evals/role-workflow/` | Versioned role fixtures, pinned host trial reports and deterministic aggregation |
 | `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
-| `src/package_mcp.rs` | Filtered browser package tools, process lifecycle and request limits |
-| `src/editor_mcp/mod.rs`, `src/editor_mcp/process.rs` | Typed editor MCP tools, native startup checks, private jobs, cancellation and bounded process output |
-| `src/editor_mcp/inkscape.rs`, `src/editor_mcp/axe_core.rs` | SVG geometry/exports and rendered local accessibility evidence |
-| `src/editor_mcp/hyperframes.rs`, `src/editor_mcp/motion_canvas.rs`, `runtime/packages/` | Scoped web/drawn compositions, actual upstream playback and verified media publication |
-| `src/editor_mcp/penpot.rs`, `src/packages/services.rs` | Typed editable design documents, real browser editors/plugins and owned local service lifecycle |
-| `src/editor_mcp/svg.rs`, `src/editor_mcp/files.rs` | Supported vector/document validation, project-relative paths and staged artifact publication |
-| `src/packages/mod.rs` | Package registry, selection, configuration and launch profiles |
-| `src/packages/store.rs` | Verified downloads, immutable generations and integrity receipts |
-| `src/packages/embedded.rs` | Bounded first-party adapter files, generation identity and collision-free staging |
-| `src/packages/archive.rs` | Bounded extraction and archive path validation |
-| `src/packages/dmg.rs` | Private read-only DMG mounts, bounded application copying, internal links and copied-bundle signature checks |
-| `src/podman.rs` | Registered Podman client, private VM identity, explicit lifecycle and owned-worker recovery |
-| `src/packages/container.rs`, `src/podman_api.rs` | Pinned OCI recipes, bounded worker admission, fixed Unix API execution and single-artifact retrieval |
+| `src/package_mcp.rs` | Design package MCP session lifecycle and bounded requests |
+| `src/packages/mod.rs` | The single package selection, configuration and metadata |
+| `src/packages/machine.rs` | Fixed design VM image and shared-workspace preparation |
+| `src/packages/services.rs` | Design service start, status, stop and owned data lifecycle |
+| `runtime/design/tools/` | Direct design tool schemas and calls inside the shared workspace |
+| `src/podman.rs` | Registered Podman client, private VM identity and explicit lifecycle |
 | `src/tools.rs` | Explicitly registered executables and CLI-only invocation |
 | `src/dev.rs` | Build/check/package operations and performance measurement |
 | `src/release.rs` | Verification and assembly of native release manifests |
@@ -54,6 +53,12 @@ journal. Sync recovers interrupted directory publications before new work, check
 all recovery destinations for drift and preserves conflicts. Doctor reports owned
 journals and unknown historical temporary recovery trees. Unknown remnants are
 never swept automatically.
+Setup recovery validates its journal and retained files before rollback or
+cleanup, preserving unexpected entries. Rollback cleanup removes the journal
+before its before-images; committed cleanup keeps the commit marker until last.
+Update candidate checks and setup replay own their process groups/jobs. On Unix,
+the entrypoint replaces itself with a verified newer managed runtime so host
+termination continues to target the runtime PID.
 
 SQLite transactions are short; WAL permits concurrent reads. Opening an existing
 validated schema-3 task database performs no schema write, so CLI readers can
@@ -121,67 +126,20 @@ command. Skill resources come from the embedded catalog. Evidence reads stay
 inside registered project roots and reject symlink traversal. Host permissions
 remain the real execution boundary.
 
-Each selected package receives a separate `mirket-package-ID` client entry
-running `mirket package serve ID`. Server bridges expose permitted upstream
-tools, filtering both discovery and invocation and managing child-process
-cancellation and shutdown. Upstream sampling, elicitation, roots requests,
-resources and prompts are not forwarded. Editor and engine packages do not forward
-an upstream MCP server: Mirket implements their tool schemas and calls the runtime
-with fixed operation-specific arguments.
+The single design package receives a client entry running `mirket package serve
+design`. Its direct tool schemas use paths relative to one fixed `/workspace`
+mount, backed by the selected home's
+`.mirket/execution/podman/staging/design/workspace`. It forwards the official
+Penpot MCP tool schemas and calls without adapting them into another design-object
+API. `package start` and `package status` report the host workspace path.
+Cancellation cannot undo effects already performed. See [packages](packages.md).
 
-Package launch uses a controlled environment and explicit working directory.
-The CLI's `--project` selects that directory; a configured host server uses the
-directory chosen by its client. This is not a task-root registration or an
-operating-system sandbox. Tools still have the process's actual permissions,
-and cancellation cannot undo effects already performed.
+`podman` owns the native registered client, private control directories and
+dedicated VM connection. The design package prepares its pinned tool and service
+images and mounts the same workspace read/write in each container. The private
+Podman control socket is not part of that shared workspace. Service identity,
+image pins and workspace sharing must be checked during startup and status.
 
-The owned adapter dispatches task-oriented Inkscape, axe-core, HyperFrames,
-Motion Canvas and Penpot tools. Inkscape validates self-contained SVG
-before native geometry inspection and exports. The browser adapters use pinned
-Node/Chromium and fixed local runners; media exporters use shared FFmpeg/FFprobe.
-Editable project inputs remain distinct from rendered output. Each saved result
-is reopened or independently inspected before publication.
-
-Requests are limited to 128 KiB. Project-relative visible file paths reject
-traversal and symlinks; output parents must exist. Existing destinations require
-explicit overwrite intent, with optional revision hashes and a final snapshot
-check. A private job workspace holds ephemeral browser state outside synchronized
-project folders. Generated artifacts are bounded to 32 MiB. One job runs per
-server; deadlines are 30 seconds for Inkscape, 60 for axe-core and 90 for
-media/Penpot. Cancellation terminates the child process group and discards
-unpublished staging. It cannot retract an artifact already published or a remote
-Penpot edit already persisted. These controls do not create an OS sandbox.
-
-`podman` owns the native registered client, private control directories and dedicated
-VM connection. `packages::container` builds pinned Linux OCI images from the same
-immutable package generations and stores the image identity in their receipt.
-`podman_api` uses the private native Unix socket for bounded attached execution and
-output retrieval; the socket is never mounted into workloads. Image IDs, recipe
-labels, machine shares and connection identity are verified before launch.
-
-Motion Canvas and HyperFrames use bounded session workers with read-only root,
-non-root UID, dropped capabilities, private temporary storage, resource limits and
-no network. Each receives only validated job inputs through a read-only staging
-mount. Rendered output stays in bounded guest temporary storage; a single validated
-regular artifact is retrieved before the existing project publisher runs. Queueing,
-startup, staging, rendering and retrieval share the job deadline. Cancellation
-removes the immutable owned worker ID and discards unpublished output. The VM is
-started explicitly, never per call. See [Podman](podman.md) for platform limits.
-
-Penpot adds five digest-pinned Linux ARM64 services. Explicit setup pulls images
-through the registered Podman client. `package start` creates only labeled per-home
-containers, one internal network and private VM volumes; it never pulls. Only the
-frontend is exposed on loopback. Services use their reviewed non-root users,
-read-only roots, bounded private temporary storage and resource limits. Readiness
-requires real backend JSON, not a running process. Failed start removes new
-containers, restores prior running state and retains durable data. `package stop`
-removes owned containers/network and preserves designs. Private credentials stay
-in the selected home. The fixed plugin runs in an active native headless browser;
-arbitrary Plugin API scripts are not exposed through Mirket tools.
-
-Managed Codex connections have a 90-second startup and 120-second tool budget.
-Claude entries have a 120000 ms tool timeout; unrelated host settings are preserved.
-These outer budgets allow integrity checks without extending job deadlines.
 Runtime readiness, actual invocation, artifact correctness and human acceptance
 are separate facts. See [packages](packages.md) for target-specific contracts.
 
@@ -196,7 +154,8 @@ It does not turn arbitrary executables into MCP tools or resolve packages.
 
 `mirket package` supplies reviewed server and runtime definitions through the
 same setup, doctor and update flow. Optional packages are explicit selections;
-a fresh unattended setup chooses none. No `npm`, `npx` or `pip` resolution occurs
-at runtime. Additional server profiles require pinned artifacts, complete
+a fresh unattended setup chooses none. Official Penpot MCP source is built with
+pinned pnpm dependencies during package preparation; serving performs no package
+resolution. Additional server profiles require pinned artifacts, complete
 notices, an appropriate tool policy and relevant invocation tests. See
 [local MCP packages](packages.md) for supported profiles and prerequisites.

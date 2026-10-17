@@ -361,6 +361,15 @@ mod tests {
         let root = temporary.path().canonicalize().unwrap();
         let catalog = Catalog::embedded().unwrap();
         init(&catalog, &root, &["codex".into()]).unwrap();
+        add(
+            &catalog,
+            &root,
+            &["project-foundation".into()],
+            &[],
+            &[],
+            None,
+        )
+        .unwrap();
         sync(&catalog, &root, &root.join("cache")).unwrap();
         (temporary, catalog, root)
     }

@@ -6,45 +6,36 @@ through the `mirket` CLI; the host starts its MCP endpoint with `mirket mcp serv
 
 ## Expertise before execution
 
-For a substantive task spanning disciplines, inspect `mirket capabilities facets`
-or MCP `team_facets`. Interpret the user outcome and affected sources, then use
-`mirket capabilities team ROLE --objective OUTCOME --facet 'ID=REASON'` or MCP
-`team_plan` to assign related professionals. Each assignment contains a distinctive
-professional method, task-specific contribution, prerequisites and checks. The
-host dispatches independent agents and integrates their work; Mirket starts no
-models. See [professional teams](roles.md#professional-perspectives-and-team-assignments).
+Routine work is direct. For substantive multidisciplinary work or explicit
+collaboration, use [professional roles](roles.md) and the
+[task-execution reference](../skills/skill-catalog/references/task-execution.md):
+select one lead and add only affected support. `team_facets`/`team_plan` are
+read-only; the host dispatches independent agents only when useful and Mirket
+starts no models. `capabilities plan ROLE` handles focused lookup and
+`catalog search WORDS` handles bounded discovery. `--with` and
+`capability_plan.supporting` compose explicit capability names; contract
+`support` IDs are conditional skills to read and add only when needed.
 
-Use `mirket capabilities plan ROLE` for exact single-role lookup, or `mirket catalog
-search WORDS` for bounded discovery. That plan selects one lead and only explicitly
-requested capability leads. CLI `--with` and MCP `capability_plan.supporting`
-compose up to 12 capability names or role aliases. The contract's `support`
-IDs are conditional skills; read one with `skill_read` or `mirket catalog read ID` and add it to
-the project with `mirket project add --skill ID` only when needed.
-For tracked work, start the task from this metadata before the first body read,
-then make that read task-bound. Short untracked work reads directly once. Reuse
-unchanged guidance and retrieve references only when needed. A skill name or
-installation receipt is not evidence of use.
-
-Save a team roster before starting tracked work. `team_plan.task_start` supplies
-objective, skill IDs and criteria for MCP `task_start`; add the registered project
-ID and operation key. For CLI use `task_start_cli.args` as an argument array and
-append `--project` and `--key`; avoid concatenating user text into a shell command.
-The returned arguments include `--skill agent-coordination` for the coordinator.
-Task creation records those skills and criteria. Bind the separately saved roster
-as evidence, then checkpoint real agent IDs, ownership, dependencies and contribution
-paths. A retry reuses the same mutation inputs; a changed roster is a new planning
-decision and must be recorded. `task status` recovers task/evidence pointers;
-it does not regenerate a team or claim assignments have executed.
-
-Search includes explicit guidance access routes. MCP `catalog_show` returns
-selected source pins, adaptation, dependencies and caveats without fetching.
-`skill_read` reads embedded content only. Explicitly selected upstream guidance
-is read from its installed host path after project sync and doctor; reference
-entries require manual source inspection under host permissions.
+Use durable tracking only when continuity, recovery, coordination or explicit
+user/project tracking requires it. Reuse a sufficient existing host/project
+record and do not create a parallel tracker. For tracked work, task-bound skill
+delivery, revisions and idempotency keys are evidence; a skill name or
+installation receipt is not. `catalog_show` returns pins, adaptations and
+caveats; `skill_read` reads embedded content. After explicit upstream selection,
+project sync and doctor, read upstream guidance from its installed host path;
+reference entries are read manually from their pinned source under host
+permissions.
 
 ## Track a concrete outcome
 
-Register a project explicitly, then start a capability-scoped task:
+`project init` records target hosts without selecting project skills. Add
+`project-foundation` explicitly for an engineering or release boundary, then add
+specialties justified by the project. When hosts have no shared installation,
+choose the explicit `portable-foundation` profile to copy shared guidance into
+the project.
+
+When durable tracking is warranted, register the project if needed, then start a
+capability-scoped task:
 
 ```sh
 mirket project register --project /absolute/project

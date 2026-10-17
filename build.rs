@@ -8,7 +8,8 @@ fn main() {
         "registry",
         "instructions",
         "docs/third-party-notices.md",
-        "docs/licenses/packages",
+        "docs/licenses",
+        "runtime/design",
     ] {
         println!("cargo:rerun-if-changed={path}");
     }

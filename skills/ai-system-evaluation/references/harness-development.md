@@ -19,11 +19,13 @@ where the resulting artifact follows or violates that guidance.
 
 ## Capture the work
 
-Register an isolated project through `mirket project register`, start a task for
-the intended capability and read its selected guidance. Use MCP tools or
+Use sufficient host or project tracking for the evaluation's continuity and
+recovery needs. Mirket is optional; when the chosen workflow uses it, register
+an isolated project, start a task for the intended capability and read its
+selected guidance. Preserve any explicit task contract, and use MCP tools or
 `mirket task` to checkpoint meaningful decisions, attach current acceptance and
-failure-probe artifacts, and record completion when the actual checks pass.
-Keep the CLI's state checks separate from the application's own verification.
+failure-probe artifacts, and record completion when the actual checks pass. Keep
+the CLI's state checks separate from the application's own verification.
 
 The task store validates registered roots, selected skill delivery, revisions and
 artifact hashes. It does not execute arbitrary checks, attest reviewer identity,

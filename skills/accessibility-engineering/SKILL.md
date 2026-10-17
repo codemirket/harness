@@ -62,14 +62,12 @@ Map standards-based findings to the chosen criterion. For example, the normative
 for names and roles, focus, status messages and complete processes. Passing one
 screen in a checkout does not establish conformance of the checkout process.
 
-When the optional `axe-core` package is installed, inspect its schema with
-`mirket package probe axe-core --schemas --project /absolute/project`. Run
-`accessibility_audit` against the local project server and save its JSON evidence.
-Typed actions expose the exact menu/dialog/form state to inspect. Audit important
-states at intended and narrow sizes; read both violations and incomplete results.
-External resources blocked by this local profile are errors to resolve before
-claiming page coverage. No-violation output does not establish keyboard usability,
-screen-reader behavior, motion accessibility or conformance.
+Use Browserless through the `design` package for full DOM, 2x screenshots and
+accessibility evidence for important states at intended and narrow sizes.
+Exercise actions that expose the exact
+menu, dialog or form state to inspect. Read reported violations and incomplete
+results where a scanner is available. A clean scanner report does not establish
+keyboard usability, screen-reader behavior, motion accessibility or conformance.
 
 ## Make the evidence discriminate
 

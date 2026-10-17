@@ -12,6 +12,7 @@ use std::{
 };
 
 const MAX_EVIDENCE_BYTES: u64 = 16 * 1024 * 1024;
+const MAX_CONTRACT_BYTES: u64 = 128 * 1024;
 const MAX_SKILLS: usize = 16;
 const MAX_EVIDENCE: i64 = 16;
 const MAX_CHECKPOINTS: i64 = 256;
@@ -32,6 +33,13 @@ const PAGING_INDEX: (&str, &str) = (
 );
 const TASKS_FIRST_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 ORDER BY created DESC,id DESC LIMIT ?2";
 const TASKS_CURSOR_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 AND (created,id)<(?2,?3) ORDER BY created DESC,id DESC LIMIT ?4";
+
+struct CheckedEvidence {
+    bytes: Vec<u8>,
+    sha256: String,
+    size: u64,
+}
+
 const SCHEMA: &[(&str, &str)] = &[
     ("projects", "CREATE TABLE projects (
         id TEXT PRIMARY KEY, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL,
@@ -358,13 +366,19 @@ impl State {
             "project_files":"unchanged"}))
     }
 
+    fn project_rows(conn: &Connection, limit: usize, offset: usize) -> Result<Vec<Value>> {
+        let mut query =
+            conn.prepare("SELECT id,root FROM projects ORDER BY root LIMIT ?1 OFFSET ?2")?;
+        Ok(query
+            .query_map(params![limit, offset], |row| {
+                Ok(json!({"id":row.get::<_,String>(0)?,"root":row.get::<_,String>(1)?}))
+            })?
+            .collect::<rusqlite::Result<Vec<_>>>()?)
+    }
+
     pub fn projects(&self) -> Result<Value> {
         let conn = self.connection()?;
-        let mut query = conn.prepare("SELECT id,root FROM projects ORDER BY root LIMIT 129")?;
-        let rows = query.query_map([], |row| {
-            Ok(json!({"id":row.get::<_,String>(0)?,"root":row.get::<_,String>(1)?}))
-        })?;
-        let mut values = rows.collect::<rusqlite::Result<Vec<_>>>()?;
+        let mut values = Self::project_rows(&conn, 129, 0)?;
         let truncated = values.len() > 128;
         values.truncate(128);
         Ok(json!({"projects":values,"truncated":truncated}))
@@ -393,13 +407,7 @@ impl State {
             bail!("project page size must be 1..=10 and offset at most 1000000");
         }
         let conn = self.connection()?;
-        let mut query =
-            conn.prepare("SELECT id,root FROM projects ORDER BY root LIMIT ?1 OFFSET ?2")?;
-        let mut projects = query
-            .query_map(params![limit + 1, offset], |row| {
-                Ok(json!({"id":row.get::<_,String>(0)?,"root":row.get::<_,String>(1)?}))
-            })?
-            .collect::<rusqlite::Result<Vec<_>>>()?;
+        let mut projects = Self::project_rows(&conn, limit + 1, offset)?;
         let next_offset = if projects.len() > limit {
             Some(offset + limit)
         } else {
@@ -783,7 +791,7 @@ impl State {
         })
     }
 
-    fn file_evidence(root: &Path, relative: &str) -> Result<(String, u64)> {
+    fn file_evidence(root: &Path, relative: &str, max_bytes: u64) -> Result<CheckedEvidence> {
         bounded(relative, "evidence path", 512)?;
         util::safe_relative(Path::new(relative))?;
         let path = root.join(relative);
@@ -792,11 +800,11 @@ impl State {
             bail!("evidence escaped the registered project");
         }
         let before = fs::metadata(&path)?;
-        if !before.is_file() || before.len() > MAX_EVIDENCE_BYTES {
-            bail!("evidence must be a regular file no larger than 16 MiB");
+        if !before.is_file() || before.len() > max_bytes {
+            bail!("evidence must be a regular file no larger than {max_bytes} bytes");
         }
         let before_identity = identity(&path)?;
-        let bytes = util::read_bounded(&path, MAX_EVIDENCE_BYTES)?;
+        let bytes = util::read_bounded(&path, max_bytes)?;
         let after = fs::metadata(&path)?;
         util::reject_symlink_components(&path)?;
         if before_identity != identity(&path)?
@@ -805,7 +813,11 @@ impl State {
         {
             bail!("evidence changed while reading; retry after the writer finishes");
         }
-        Ok((util::sha256(&bytes), bytes.len() as u64))
+        Ok(CheckedEvidence {
+            sha256: util::sha256(&bytes),
+            size: bytes.len() as u64,
+            bytes,
+        })
     }
 
     pub fn evidence(
@@ -834,20 +846,8 @@ impl State {
             &conn,
             task["project_id"].as_str().context("invalid project id")?,
         )?;
-        let (hash, _) = Self::file_evidence(&root, path)?;
-        let bytes = Self::contract_bytes(&root, path, &hash)?;
-        contracts::validate(&root, &task, kind, &bytes, completion)
-    }
-
-    fn contract_bytes(root: &Path, path: &str, expected: &str) -> Result<Vec<u8>> {
-        // Called only after file_evidence checked the project boundary and regular-file limit.
-        util::reject_symlink_components(&root.join(path))?;
-        let bytes = util::read_bounded(&root.join(path), 128 * 1024)?;
-        let (current, _) = Self::file_evidence(root, path)?;
-        if util::sha256(&bytes) != expected || current != expected {
-            bail!("contract changed while reading: {path}");
-        }
-        Ok(bytes)
+        let checked = Self::file_evidence(&root, path, MAX_CONTRACT_BYTES)?;
+        contracts::validate(&root, &task, kind, &checked.bytes, completion)
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -879,13 +879,20 @@ impl State {
             &conn,
             task["project_id"].as_str().context("invalid project id")?,
         )?;
-        let (hash, size) = Self::file_evidence(&root, relative_path)?;
+        let max_bytes = if contract.is_some() {
+            MAX_CONTRACT_BYTES
+        } else {
+            MAX_EVIDENCE_BYTES
+        };
+        let checked = Self::file_evidence(&root, relative_path, max_bytes)?;
+        let hash = checked.sha256;
+        let size = checked.size;
         let mut attempts = None;
         let roster = if let Some(contract) = contract {
-            let bytes = Self::contract_bytes(&root, relative_path, &hash)?;
-            contracts::validate(&root, &task, contract, &bytes, false)?;
+            let bytes = &checked.bytes;
+            contracts::validate(&root, &task, contract, bytes, false)?;
             if contract == ContractKind::Contributions {
-                let value: Value = serde_json::from_slice(&bytes)?;
+                let value: Value = serde_json::from_slice(bytes)?;
                 let mut generations = serde_json::Map::new();
                 for assignment in value["assignments"]
                     .as_array()
@@ -968,13 +975,18 @@ impl State {
         let mut contract_bytes = 0u64;
         for entry in evidence {
             let relative = entry["path"].as_str().context("invalid evidence path")?;
-            let (hash, size) = Self::file_evidence(&root, relative)?;
-            if entry["sha256"] != hash || entry["bytes"].as_u64() != Some(size) {
+            let max_bytes = if entry["contract"].is_string() {
+                MAX_CONTRACT_BYTES
+            } else {
+                MAX_EVIDENCE_BYTES
+            };
+            let checked = Self::file_evidence(&root, relative, max_bytes)?;
+            if entry["sha256"] != checked.sha256 || entry["bytes"].as_u64() != Some(checked.size) {
                 bail!("evidence is stale: {relative}");
             }
             if let Some(kind) = entry["contract"].as_str() {
-                let bytes = Self::contract_bytes(&root, relative, &hash)?;
-                let result = contracts::validate(&root, &task, kind.parse()?, &bytes, true)?;
+                let result =
+                    contracts::validate(&root, &task, kind.parse()?, &checked.bytes, true)?;
                 contract_bytes += result["bound_bytes"]
                     .as_u64()
                     .context("invalid contract byte count")?;
@@ -1071,5 +1083,50 @@ mod tests {
                 assert!(plan.contains("created") && plan.contains('<'), "{plan}");
             }
         }
+    }
+
+    #[test]
+    fn checked_evidence_returns_the_validated_bytes_and_applies_the_requested_limit() {
+        let temporary = tempfile::tempdir().unwrap();
+        let root = temporary.path().canonicalize().unwrap();
+        let path = root.join("evidence.json");
+        let contents = br#"{"ok":true}"#;
+        fs::write(&path, contents).unwrap();
+
+        let checked = State::file_evidence(&root, "evidence.json", 128).unwrap();
+        assert_eq!(checked.bytes, contents);
+        assert_eq!(checked.size, contents.len() as u64);
+        assert_eq!(checked.sha256, util::sha256(contents));
+        let error = State::file_evidence(&root, "evidence.json", 4)
+            .err()
+            .expect("the requested evidence limit must reject the file")
+            .to_string();
+        assert!(error.contains("4 bytes"), "{error}");
+    }
+
+    #[test]
+    fn legacy_and_paged_project_listings_share_rows_and_keep_their_envelopes() {
+        let home = tempfile::tempdir().unwrap();
+        let root = home.path().canonicalize().unwrap();
+        let paths = Paths::new(root.clone()).unwrap();
+        let state = State::open(&paths).unwrap();
+        for index in 0..129 {
+            let project = root.join(format!("project-{index:03}"));
+            fs::create_dir(&project).unwrap();
+            state.register_project(&project).unwrap();
+        }
+
+        let legacy = state.projects().unwrap();
+        assert_eq!(legacy["projects"].as_array().unwrap().len(), 128);
+        assert_eq!(legacy["truncated"], true);
+
+        let first = state.projects_page(0, 10).unwrap();
+        assert_eq!(first["projects"].as_array().unwrap().len(), 10);
+        assert_eq!(first["next_offset"], 10);
+        assert_eq!(first["projects"][0], legacy["projects"][0]);
+
+        let second = state.projects_page(10, 10).unwrap();
+        assert_eq!(second["projects"].as_array().unwrap().len(), 10);
+        assert_eq!(second["projects"][0], legacy["projects"][10]);
     }
 }
