@@ -13,8 +13,9 @@ sources. Mirket's `team_facets` and `team_plan` can compose complementary briefs
 choose applicable boundaries with task-specific reasons rather than filling roles
 because they share a skill tag.
 
-Dispatch selected independent assignments to actual host agents. The coordinator
-may own the lead role. Queue assignments within actual concurrency limits;
+Dispatch selected independent assignments through Mirket's routed spawner
+(`mirket agent spawn --request FILE` or `spawn_subagent`). The coordinator may
+own the lead role. Queue assignments within actual concurrency limits;
 dependencies determine when an
 implementer or reviewer can use another's artifact. With unavailable independent
 agents, state that limit and distinguish sequential perspectives from independent
@@ -35,7 +36,7 @@ against the user's constraints and observed evidence, records consequential diss
 and verifies the combined result. Reopen affected work when a peer exposes a real
 defect. A majority vote, role title or plausible narrative does not prove quality.
 
-Keep the roster, actual host agent IDs, ownership, dependencies and contribution
+Keep the roster, actual routed worker IDs, ownership, dependencies and contribution
 paths in the chosen record. When using Mirket task tracking, use one coordinator
 for its mutations and revision numbers, record selected guidance delivery and
 attach the roster and meaningful contribution evidence before completion.
@@ -43,7 +44,7 @@ attach the roster and meaningful contribution evidence before completion.
 For deliberately selected machine-checked coverage, save the original team roster
 and a version 1 contributions receipt, then use `task_validate` and
 `task_evidence` with `contract: "contributions"` (CLI: `--contract contributions`).
-Include each original role exactly once, actual host worker ID, attempt and matching
+Include each original role exactly once, actual worker ID, attempt and matching
 result attempt, declared input/evidence file identities, dependencies, validation,
 unverified paths and integrator disposition. Keep failed, interrupted or unknown
 assignments visible; re-dispatch increments the attempt and requires current
@@ -54,23 +55,25 @@ completion rechecks those identities and requires a passed outcome. These opt-in
 contracts do not authenticate worker IDs, grade testimony or infer undeclared inputs.
 Read [task evidence](references/task-evidence.md) for the exact JSON shapes,
 status rules, limits and recovery commands before writing a structured receipt.
-Mirket validates delivery and artifact consistency;
-the host observes execution and assesses each professional's work.
+Mirket validates delivery and artifact consistency; the coordinator observes
+execution and assesses each professional's work.
 
-Use the selected host's subagents as the normal delegation path when available.
-Verify actual tools, concurrent slots, filesystem sharing and messaging permissions;
-do not invent APIs or assume a model name. Parallelism helps independent work;
+Use Mirket's [model routing](references/model-routing.md) to inspect available
+targets and route each assignment before spawning. Verify actual tools,
+concurrent slots, filesystem sharing and messaging permissions; do not invent
+APIs or assume a model name. Native host subagents are outside this routing
+boundary. Parallelism helps independent work;
 shared sequential state can make it slower or unsafe.
 
-Use Claude Code selectively when a fresh perspective can resolve a material
-uncertainty: a bounded design critique, independent code review, or synthesis of
-supplied evidence. Explain the question it will resolve. Do not duplicate every
-assignment across providers, infer quality from brand, or promise lower cost.
-Honor an explicit user choice. If native agents or Claude are unavailable, continue
-locally where practical and report the missing capability rather than changing
-providers or authentication silently.
+Select a provider through the routed model registry, task and assigned-tool
+floor. Use a fresh independent perspective when it resolves a material
+uncertainty, such as a bounded design critique or code review. Do not duplicate
+every assignment across providers, infer quality from brand, or promise lower
+cost. Honor an explicit user choice. If no discovered model satisfies the floor,
+continue locally where practical and report the missing capability rather than
+changing providers or authentication silently.
 
-For a Claude opinion, read [the CLI delegation contract](references/claude-code.md).
+For a Claude candidate, read [the native adapter contract](references/claude-code.md).
 The primary agent supplies a compact assignment and relevant constraints, checks
 the returned evidence, and owns all edits and integration. A subordinate worker
 returns its findings and does not start another provider, register skills, or
@@ -101,7 +104,7 @@ integration or critical-path work rather than polling workers continuously.
 - Route a material discovery to affected workers with the evidence and implication.
   Interrupt obsolete assignments; do not let two agents solve the same abandoned
   problem merely to keep them busy.
-- Wait for concrete events with host-supported waits. Repeated unchanged polls and
+- Wait for concrete routed worker events. Repeated unchanged polls and
   large full-history reads add cost without new information.
 - Preserve user steering across all workers. The primary agent owns scope decisions,
   user communication, conflict resolution, and final verification.

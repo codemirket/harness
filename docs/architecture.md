@@ -28,6 +28,7 @@ guidance read route.
 | `src/state/contracts.rs` | Strict opt-in verification and specialist coverage contracts with explicit input bindings |
 | `src/role_eval.rs`, `evals/role-workflow/` | Versioned role fixtures, pinned host trial reports and deterministic aggregation |
 | `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
+| `src/router/` | Dynamic target/model discovery, capability policy, isolated inference and owned tool dispatch |
 | `src/package_mcp.rs` | Design package MCP session lifecycle and bounded requests |
 | `src/packages/mod.rs` | The single package selection, configuration and metadata |
 | `src/packages/machine.rs` | Fixed design VM image and shared-workspace preparation |
@@ -122,7 +123,10 @@ requirements, source rights and host permissions remain authoritative.
 
 Only explicit CLI project registration admits a canonical root to task tracking.
 The coordination MCP server cannot register a filesystem root or execute a
-command. Skill resources come from the embedded catalog. Evidence reads stay
+shell command. Its `spawn_subagent` tool executes schema-bound inference and
+explicitly assigned file/design tools through the [capability router](../skills/agent-coordination/references/model-routing.md).
+Discovery runs at MCP initialization and uses a bounded TTL cache; raw model IDs
+are accepted only from target metadata. Skill resources come from the embedded catalog. Evidence reads stay
 inside registered project roots and reject symlink traversal. Host permissions
 remain the real execution boundary.
 

@@ -12,6 +12,7 @@ mod process;
 pub mod project;
 pub mod release;
 pub mod role_eval;
+pub mod router;
 mod rust_notices;
 pub mod state;
 mod target;

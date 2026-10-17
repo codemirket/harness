@@ -1,28 +1,36 @@
-# Bounded external reviews
+# Claude Code as a Mirket routed worker
 
-Use the current host's subagents first. An external Claude Code review is useful
-when a specific independent perspective can resolve a consequential uncertainty
-and the user's provider/model choices permit it. The initiating agent retains
-implementation and integration ownership. Do not delegate recursively.
+Use Claude only when the task warrants an independent assignment and the current
+authenticated model registry exposes an eligible Claude target. Route through
+`mirket models route --request FILE` before `mirket agent spawn --request FILE`,
+or use the equivalent `route_task` and `spawn_subagent` MCP tools. The same
+`SpawnRequest` states the objective, task intent, complexity, project, assigned
+tools and any verification or vision needs. Do not name a model in that request.
+[Model routing](model-routing.md) describes the request and failure
+behavior.
 
-Supply the question, allowed paths, relevant instructions, observed evidence and
-expected finding format. For example: inspect a named retry implementation and
-its tests for a reproducible duplicate write; return the triggering input and
-file/line evidence without editing, executing or contacting external services.
+Mirket discovers Claude's current selectable model menu through the local
+authenticated CLI. It selects a resolved model identity and a supported effort
+from the task and tool floor; the source contains no published model-ID list.
+The native Claude process receives no general-purpose built-in or ambient MCP
+tools; its only reported tool is the CLI's synthetic `StructuredOutput` schema
+mechanism. It returns one strict JSON action, and Mirket alone checks and
+dispatches an assigned tool.
+A role brief, prompt or tool name cannot grant an effect. The host's permissions
+still govern the underlying tool and filesystem operations.
 
-Prefer the host's provider integration when available. If a separate CLI is the
-only route to the needed review, use the [shared missing-tool route](../../skill-catalog/references/task-execution.md#establish-the-execution-boundary)
-to inspect it and its documented controls. Optional registration can pin the
-executable when that improves reproducibility; invocation remains subject to the
-host's bounded controls. Preserve the user's provider, model, billing route,
-authority and permissions.
+Give the worker a bounded question, relevant instructions and source material,
+owned paths, allowed effects, dependencies and expected finding format. For a
+review, ask for a concrete trigger and file/line evidence; for production, ask
+for saved artifacts and checks. Preserve the user's provider, billing route and
+authorization. Do not extract credentials, switch accounts to retry a quota
+error, or delegate recursively. If discovery, capability evidence, exact model
+identity or tool isolation cannot be verified, stop that candidate and report
+the gap; do not silently lower the task floor.
 
-Keep the selected provider, model, billing route, authentication and permissions
-unchanged. Do not extract credentials, bypass host approvals or retry quota errors
-through a different account. Restrict the review using actual host/provider
-controls; an instruction saying “read-only” is not enforcement. Avoid passing
-secrets or unrelated files in the prompt. Missing access is an explicit limit.
-
-Verify each returned finding against the actual source and behavior. A finished
-process or confident verdict is not acceptance. Record actionable evidence and
-uncertainty, then apply only changes warranted by the user's task.
+The coordinator checks the returned evidence and owns integration. A completed
+process or confident verdict is not acceptance. Inspect changed files and
+effects before reusing an uncertain result or retrying a mutation. Claude's
+[CLI reference](https://code.claude.com/docs/en/cli-reference) describes the
+native tool and structured-output switches; Mirket's adapter verifies the
+observed process contract for each routed action.

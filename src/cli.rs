@@ -34,6 +34,16 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Inspect dynamically discovered inference targets and capability routing.
+    Models {
+        #[command(subcommand)]
+        command: ModelCommand,
+    },
+    /// Execute a schema-bound worker through Mirket's capability router.
+    Agent {
+        #[command(subcommand)]
+        command: AgentCommand,
+    },
     /// Report this executable's release version and compilation target.
     Info,
     /// Interactively set up Codex Desktop, Claude Desktop Code, or both.
@@ -113,6 +123,31 @@ enum Command {
         #[arg(long, default_value_t = 200)]
         iterations: usize,
     },
+}
+
+#[derive(Subcommand)]
+enum ModelCommand {
+    List,
+    Refresh,
+    Route {
+        #[arg(long)]
+        request: PathBuf,
+    },
+}
+#[derive(Subcommand)]
+enum AgentCommand {
+    Spawn {
+        #[arg(long)]
+        request: PathBuf,
+    },
+}
+
+fn spawn_request(path: &std::path::Path) -> Result<crate::router::SpawnRequest> {
+    let path = path
+        .canonicalize()
+        .context("routed request file must exist")?;
+    serde_json::from_slice(&crate::util::read_bounded(&path, 128 * 1024)?)
+        .context("invalid routed task request")
 }
 
 #[derive(Clone, Copy, ValueEnum)]
@@ -445,7 +480,7 @@ enum PackageCommand {
         #[arg(long)]
         purge_data: bool,
     },
-    /// Add selected packages through the saved environment setup.
+    /// Install the design stack, replacing the saved package selection.
     Install {
         #[arg(required = true, num_args = 1..)]
         ids: Vec<String>,
@@ -886,6 +921,34 @@ fn saved_package_options(paths: &Paths) -> Result<(SetupOptions, String)> {
 
 fn dispatch(cli: Cli) -> Result<i32> {
     let paths = Paths::discover(cli.home)?;
+    if let Command::Models { command } = cli.command {
+        let rt = runtime()?;
+        let value = match command {
+            ModelCommand::List => serde_json::to_value(
+                rt.block_on(crate::router::discovery::discover(&paths, false))?,
+            )?,
+            ModelCommand::Refresh => serde_json::to_value(
+                rt.block_on(crate::router::discovery::discover(&paths, true))?,
+            )?,
+            ModelCommand::Route { request } => rt.block_on(crate::router::execution::plan(
+                &paths,
+                &spawn_request(&request)?,
+            ))?,
+        };
+        emit(&value)?;
+        return Ok(0);
+    }
+    if let Command::Agent {
+        command: AgentCommand::Spawn { request },
+    } = cli.command
+    {
+        let value = runtime()?.block_on(crate::router::execution::spawn(
+            &paths,
+            spawn_request(&request)?,
+        ))?;
+        emit(&value)?;
+        return Ok(0);
+    }
     if let Command::Mcp {
         command: McpCommand::Serve,
     } = cli.command
@@ -1243,10 +1306,13 @@ fn dispatch(cli: Cli) -> Result<i32> {
             }
             let engine = crate::podman::Engine::resolve(&paths)?;
             match command {
-                EnvironmentCommand::Init { image } => engine.init(&match image {
-                    Some(path) => path,
-                    None => packages::machine_image(&paths)?,
-                })?,
+                EnvironmentCommand::Init { image } => {
+                    engine.ensure_machine_helpers()?;
+                    engine.init(&match image {
+                        Some(path) => path,
+                        None => packages::machine_image(&paths)?,
+                    })?
+                }
                 EnvironmentCommand::Start => engine.start()?,
                 EnvironmentCommand::Stop => engine.stop()?,
                 EnvironmentCommand::Status => engine.status(),
@@ -1269,11 +1335,10 @@ fn dispatch(cli: Cli) -> Result<i32> {
             }
             PackageCommand::Install { ids } => {
                 let (mut options, token) = saved_package_options(&paths)?;
-                for id in ids {
-                    if !options.packages.contains(&id) {
-                        options.packages.push(id);
-                    }
-                }
+                options.packages = ids;
+                options
+                    .package_settings
+                    .retain(|id, _| options.packages.contains(id));
                 serde_json::to_value(install::setup_checked(
                     &paths,
                     &catalog()?,
@@ -1358,7 +1423,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
             DevCommand::Manifest { inputs, output } => crate::release::manifest(&inputs, &output)?,
         },
         Command::Benchmark { iterations } => crate::dev::benchmark(&catalog()?, iterations)?,
-        Command::Mcp { .. } => unreachable!(),
+        Command::Mcp { .. } | Command::Models { .. } | Command::Agent { .. } => unreachable!(),
     };
     let failed = value.get("ok") == Some(&Value::Bool(false));
     emit(&value)?;

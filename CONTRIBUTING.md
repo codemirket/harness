@@ -93,7 +93,7 @@ project installation, then exercise the intended task where tools are available.
 A skill's presence or an agent repeating its name is not evidence of quality.
 
 The embedded browser-motion examples also have an optional rendered acceptance
-probe in `tests/browser_motion.cjs`. Connect to the running Browserless CDP
+probe in `tests/browser_motion.cjs`. Connect to the running Browserless WebSocket
 endpoint through `BROWSERLESS_WS`; the probe never downloads a browser. Serve the **installed**
 `advanced-motion/assets` directory with an existing local server, then run:
 
@@ -120,7 +120,7 @@ node tests/browser_design_languages.cjs http://127.0.0.1:8765/assets/design-lang
   /absolute/installed/design-inspiration/references/design-languages/library.json
 ```
 
-Connect to the running Browserless CDP endpoint through `BROWSERLESS_WS`. The
+Connect to the running Browserless WebSocket endpoint through `BROWSERLESS_WS`. The
 probe installs nothing. An optional final comma-separated ID
 list selects affected instances. The script checks actual wide/narrow rendering,
 no-script readability, enlarged-text reflow, resource independence and access
@@ -169,7 +169,7 @@ node tests/browser_motion.cjs http://127.0.0.1:8765/ /absolute/evidence/craft cr
 ```
 
 It exercises labelled timing, keyboard playback controls, rapid replay, cleanup
-and initial/live reduced motion through the running Browserless CDP endpoint.
+and initial/live reduced motion through the running Browserless WebSocket endpoint.
 Use normal
 playback and the saved frames for inspection; a timing assertion or visible static
 fallback is not a performance or human visual-acceptance result.
@@ -210,41 +210,41 @@ temporary packages and fixtures out of shipped source and clean task-owned
 scratch when finished. The [package guide](docs/packages.md) defines the product
 workflow and current limitations.
 
-## Exercise installed packages
+## Exercise the design stack
 
-The live package suites are ignored by normal checks. They start the actual
-`mirket package serve` processes through an MCP client and use disposable
-fixtures. Run them only on a supported native target after installing the
-required packages in an explicit disposable home:
+The standard Rust gate covers the controller and package bridge. It does not
+launch the twelve design services or run the JavaScript tool suite. With the
+locked tool dependencies available under Node 22, run `npm test` in
+`runtime/design/tools` for the owned JavaScript tests. Provision dependencies
+only as an explicit development step; package serving never installs them.
+
+For live acceptance, use an existing disposable home, register the approved
+Podman executable there, initialize/start its private environment, then run:
 
 ```sh
-mirket --home /absolute/test-home setup --target all --yes
-mirket --home /absolute/test-home package install design
+mirket --home /absolute/test-home setup --target all --package design --yes
 mirket --home /absolute/test-home package start design
 mirket --home /absolute/test-home package status
+mirket --home /absolute/test-home package probe design --schemas
 ```
 
-The home must contain a file named `.mirket-package-test-home` with exactly
-`disposable package test home` followed by a newline. Create that marker only in
-the disposable installation. The suites refuse an absent or different marker;
-an environment variable pointing to a real user home is not sufficient consent.
+Place bounded fixtures in the reported shared workspace. Invoke the actual
+MCP tools with `package call` or a native SDK client: compile tokens, render a
+Satori card, capture a full-DOM page at 2x, create/edit/export a Penpot file,
+render Kroki diagrams, complete HyperFrames lint→snapshot→render, compile a
+multi-page Typst PDF, transform a raster with imgproxy, optimize SVG, submit a
+ComfyUI workflow, and compare equal and changed pixels with Odiff. Neural
+synthesis needs separately supplied, pinned/licensed models; an empty-image
+graph only establishes queue and output handling.
 
-On the supported target, run the design package's current live suite against the
-marked disposable home. Exercise each direct tool domain and the forwarded
-official Penpot MCP with meaningful output and a discriminating failure case.
-Confirm token compilation before rendering, HyperFrames lint→snapshot→render,
-SVGO for generated and imported SVG, Browserless full DOM and 2x screenshots,
-and Odiff for comparable pixels. Inspect real artifacts separately; byte
-consistency cannot accept art direction.
-
-The browser suite changes a real local page and checks denied operations. The
-lifecycle suite verifies removal, reinstallation, update repair, drift refusal
-and preservation of unrelated client settings. These checks do not establish
-native client activation or visual acceptance. Retain useful evidence outside
-shipped source and remove the separately provisioned test home afterward.
-
-Normal gates also cover fake-success outputs, transport disconnects, deadlines,
-request cancellation, descendant cleanup and archive failures.
+Inspect saved outputs and persisted identities. Exercise a meaningful rejected
+input, deadline and transport disconnect; confirm child cleanup, no partial
+publication and preserved service health. Retain useful evidence outside source.
+There is no checked-in ignored end-to-end suite or marker-file authorization
+shortcut for these service journeys; selecting a real user home is not a test
+fixture. Stop/purge only the exact disposable profile and remove its private VM
+and task-owned files after verifying preservation. Report native platforms and
+paths that were not exercised.
 
 ## Build release packages
 

@@ -1,4 +1,4 @@
-use mirket::package_mcp::{LaunchSpec, call, probe, probe_with_schemas};
+use mirket::package_mcp::{DEFAULT_REQUEST_TIMEOUT, LaunchSpec, call, probe, probe_with_schemas};
 use serde_json::json;
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -8,6 +8,8 @@ use std::{
 fn fixture_spec(root: &Path) -> LaunchSpec {
     LaunchSpec {
         startup_timeout: std::time::Duration::from_secs(30),
+        request_timeout: DEFAULT_REQUEST_TIMEOUT,
+        tool_timeouts: BTreeMap::new(),
         command: env!("CARGO_BIN_EXE_mirket").into(),
         args: vec![
             "--home".into(),

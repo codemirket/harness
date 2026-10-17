@@ -244,3 +244,84 @@ fn standalone_installer_installs_the_complete_cli() {
     assert!(home.path().join(".codex/AGENTS.md").is_file());
     assert!(!home.path().join(".claude/CLAUDE.md").exists());
 }
+
+#[test]
+fn package_install_replaces_retired_selection_before_preparation_without_partial_setup() {
+    let temporary = tempfile::tempdir().unwrap();
+    let home = temporary.path();
+    ok(home, &["setup", "--yes", "--target", "codex", "--json"]);
+    let receipt_path = home.join(".mirket/setup.json");
+    let mut receipt: Value =
+        serde_json::from_slice(&std::fs::read(&receipt_path).unwrap()).unwrap();
+    receipt["options"]["packages"] = json!(["retired-package"]);
+    receipt["options"]["package_settings"] =
+        json!({"retired-package":{"private":"preserve until success"}});
+    let before_receipt = serde_json::to_vec(&receipt).unwrap();
+    std::fs::write(&receipt_path, &before_receipt).unwrap();
+    let config_path = home.join(".codex/config.toml");
+    let before_config = std::fs::read(&config_path).unwrap();
+
+    let result = invoke(home, &["package", "install", "design"]);
+    assert!(!result.status.success());
+    let error = String::from_utf8_lossy(&result.stderr);
+    assert!(
+        error.contains("register the prerequisite") || error.contains("supported only"),
+        "selection must reach runtime preparation instead of appending a retired ID: {error}"
+    );
+    assert!(!error.contains("select the design stack once"));
+    assert_eq!(std::fs::read(receipt_path).unwrap(), before_receipt);
+    assert_eq!(std::fs::read(config_path).unwrap(), before_config);
+    assert!(
+        !home
+            .join(".mirket/packages/data/design/state.json")
+            .exists()
+    );
+}
+
+#[cfg(all(target_os = "macos", target_arch = "aarch64"))]
+#[test]
+fn environment_init_checks_helpers_before_downloading_or_invoking_podman() {
+    use std::{fs, os::unix::fs::PermissionsExt};
+    let temporary = tempfile::tempdir().unwrap();
+    let home = temporary.path().canonicalize().unwrap();
+    let bin = home.join("client/bin");
+    fs::create_dir_all(&bin).unwrap();
+    let client = bin.join("podman-remote");
+    // Exit 99 identifies an accidental invocation; this fixture is never a VM.
+    fs::write(
+        &client,
+        b"#!/bin/sh\necho client-was-invoked >&2\nexit 99\n",
+    )
+    .unwrap();
+    fs::set_permissions(&client, fs::Permissions::from_mode(0o700)).unwrap();
+    ok(
+        &home,
+        &[
+            "tool",
+            "register",
+            "podman",
+            "--executable",
+            client.to_str().unwrap(),
+        ],
+    );
+    for args in [
+        vec!["environment", "init"],
+        vec!["environment", "init", "--image", "/missing-fixture-image"],
+        vec!["environment", "start"],
+    ] {
+        let result = invoke(&home, &args);
+        assert!(!result.status.success());
+        let error = String::from_utf8_lossy(&result.stderr);
+        assert!(error.contains("lacks executable gvproxy"), "{error}");
+        assert!(!error.contains("client-was-invoked"));
+        assert!(!home.join(".mirket/cache/podman").exists());
+        assert!(
+            !home
+                .join(".mirket/execution/podman/data/containers/podman/machine")
+                .exists()
+        );
+    }
+    let paths = mirket::paths::Paths::new(home).unwrap();
+    let engine = mirket::podman::Engine::resolve(&paths).unwrap();
+    fs::remove_dir_all(Path::new(&engine.env["HOME"]).parent().unwrap()).unwrap();
+}

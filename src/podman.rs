@@ -335,6 +335,7 @@ impl Engine {
     }
     pub fn init(&self, image: &std::path::Path) -> Result<Value> {
         ensure_controller_supported()?;
+        self.ensure_machine_helpers()?;
         util::reject_symlink_components(image)?;
         // An approved, exact upstream boot artifact; no caller-selected ignition or helper.
         ensure!(
@@ -362,6 +363,7 @@ impl Engine {
     }
     pub fn start(&self) -> Result<Value> {
         ensure_controller_supported()?;
+        self.ensure_machine_helpers()?;
         self.validate_machine()?;
         self.raw(
             &["machine".into(), "start".into(), self.connection.clone()],
@@ -369,6 +371,10 @@ impl Engine {
         )?;
         self.ready()?;
         Ok(self.status())
+    }
+    /// Require both AppleHV helpers before downloading an image or mutating a VM.
+    pub(crate) fn ensure_machine_helpers(&self) -> Result<()> {
+        ensure_machine_helpers(&self.binary)
     }
     pub fn stop(&self) -> Result<Value> {
         ensure_controller_supported()?;
@@ -523,23 +529,75 @@ fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
             .join("libexec/podman");
         if libexec.is_dir() {
             util::reject_symlink_components(&libexec)?;
-            let mut complete = true;
+            let mut available = false;
             for name in ["gvproxy", "vfkit"] {
                 let path = libexec.join(name);
                 util::reject_symlink_components(&path)?;
-                complete &= path.is_file();
+                let mut valid = path.is_file();
                 #[cfg(unix)]
                 if path.is_file() {
                     use std::os::unix::fs::PermissionsExt;
-                    complete &= std::fs::metadata(&path)?.permissions().mode() & 0o111 != 0;
+                    valid &= std::fs::metadata(&path)?.permissions().mode() & 0o111 != 0;
                 }
+                available |= valid;
             }
-            if complete {
+            if available {
                 directories.push(libexec);
             }
         }
     }
     Ok(directories)
+}
+
+fn ensure_machine_helpers(binary: &std::path::Path) -> Result<()> {
+    util::reject_symlink_components(binary)?;
+    ensure!(
+        binary.is_file(),
+        "selected Podman client is not a regular file"
+    );
+    #[cfg(unix)]
+    let selected_uid = {
+        use std::os::unix::fs::MetadataExt;
+        std::fs::metadata(binary)?.uid()
+    };
+    let directories = helper_directories(binary)?;
+    for name in ["gvproxy", "vfkit"] {
+        let mut found = false;
+        for directory in &directories {
+            let path = directory.join(name);
+            util::reject_symlink_components(&path)?;
+            let metadata = match std::fs::metadata(&path) {
+                Ok(metadata) => metadata,
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
+                Err(error) => {
+                    return Err(error).with_context(|| format!("inspect Podman helper {name}"));
+                }
+            };
+            ensure!(
+                metadata.is_file(),
+                "Podman helper {name} is not a regular file"
+            );
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::{MetadataExt, PermissionsExt};
+                ensure!(
+                    metadata.uid() == selected_uid,
+                    "Podman helper {name} has different ownership from the selected client"
+                );
+                ensure!(
+                    metadata.permissions().mode() & 0o111 != 0,
+                    "Podman helper {name} is not executable"
+                );
+            }
+            found = true;
+            break;
+        }
+        ensure!(
+            found,
+            "selected Podman installation lacks executable {name}; install its native machine helpers before environment init or start"
+        );
+    }
+    Ok(())
 }
 
 fn controller_supported(os: &str, arch: &str) -> bool {
@@ -747,6 +805,24 @@ mod tests {
             helper_directories(&binary).unwrap(),
             std::slice::from_ref(&bin)
         );
+        assert!(
+            before
+                .ensure_machine_helpers()
+                .unwrap_err()
+                .to_string()
+                .contains("gvproxy")
+        );
+        if cfg!(target_os = "macos") {
+            // A missing helper wins over image validation or a machine command.
+            assert!(
+                before
+                    .init(temporary.path().join("absent-image").as_path())
+                    .unwrap_err()
+                    .to_string()
+                    .contains("gvproxy")
+            );
+            assert!(before.start().unwrap_err().to_string().contains("gvproxy"));
+        }
 
         let libexec = temporary.path().join("installation/libexec/podman");
         std::fs::create_dir_all(&libexec).unwrap();
@@ -779,6 +855,67 @@ mod tests {
         if cfg!(target_os = "macos") {
             std::fs::remove_dir_all(PathBuf::from(&before.env["HOME"]).parent().unwrap()).unwrap();
         }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn machine_helpers_accept_colocated_and_split_installations_but_not_partial_pairs() {
+        use std::os::unix::fs::{PermissionsExt, symlink};
+        let temporary = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let bin = temporary.path().join("installation/bin");
+        let libexec = temporary.path().join("installation/libexec/podman");
+        std::fs::create_dir_all(&bin).unwrap();
+        let binary = bin.join("podman-remote");
+        std::fs::write(&binary, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&binary, std::fs::Permissions::from_mode(0o700)).unwrap();
+
+        assert!(
+            ensure_machine_helpers(&binary)
+                .unwrap_err()
+                .to_string()
+                .contains("gvproxy")
+        );
+        let gvproxy = bin.join("gvproxy");
+        std::fs::write(&gvproxy, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&gvproxy, std::fs::Permissions::from_mode(0o700)).unwrap();
+        assert!(
+            ensure_machine_helpers(&binary)
+                .unwrap_err()
+                .to_string()
+                .contains("vfkit")
+        );
+        let vfkit = bin.join("vfkit");
+        std::fs::write(&vfkit, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&vfkit, std::fs::Permissions::from_mode(0o600)).unwrap();
+        assert!(
+            ensure_machine_helpers(&binary)
+                .unwrap_err()
+                .to_string()
+                .contains("not executable")
+        );
+        std::fs::set_permissions(&vfkit, std::fs::Permissions::from_mode(0o700)).unwrap();
+        ensure_machine_helpers(&binary).unwrap();
+
+        std::fs::create_dir_all(&libexec).unwrap();
+        std::fs::remove_file(&gvproxy).unwrap();
+        let libexec_gvproxy = libexec.join("gvproxy");
+        std::fs::write(&libexec_gvproxy, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&libexec_gvproxy, std::fs::Permissions::from_mode(0o700)).unwrap();
+        assert_eq!(
+            helper_directories(&binary).unwrap(),
+            [bin.clone(), libexec.clone()]
+        );
+        ensure_machine_helpers(&binary).unwrap(); // one helper in each selected directory
+
+        std::fs::remove_file(&vfkit).unwrap();
+        let libexec_vfkit = libexec.join("vfkit");
+        std::fs::write(&libexec_vfkit, b"fixture, never executed").unwrap();
+        std::fs::set_permissions(&libexec_vfkit, std::fs::Permissions::from_mode(0o700)).unwrap();
+        ensure_machine_helpers(&binary).unwrap(); // both helpers in the exact libexec sibling
+
+        std::fs::remove_file(&libexec_gvproxy).unwrap();
+        symlink(&binary, &libexec_gvproxy).unwrap();
+        assert!(ensure_machine_helpers(&binary).is_err());
     }
 
     #[test]

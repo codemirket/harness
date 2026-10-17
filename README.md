@@ -138,8 +138,10 @@ current acceptance/failure-probe artifacts.
 
 These checks establish workflow and artifact consistency. They cannot prove
 semantic correctness, reviewer identity or human approval. The coordination
-server cannot select a host model, expand host permissions, spawn agents or
-execute shell commands. The host retains execution, tools and session lifecycle.
+server exposes a [Mirket-owned routed spawner](skills/agent-coordination/references/model-routing.md). It discovers
+authenticated targets dynamically, enforces task/tool capability floors and high
+reasoning effort, and verifies assigned artifacts before completion. Independent
+host spawners remain outside that boundary. Host permissions govern effects.
 See [workflow and MCP](docs/workflows.md) for the CLI equivalents and boundaries.
 
 ## Add local MCP capabilities
@@ -149,8 +151,8 @@ Select reviewed packages through the same CLI:
 For an existing installation whose saved package selection needs replacement,
 run the new binary's `mirket setup --target all --package design --yes` after
 starting the [private Podman environment](docs/podman.md). This replaces the
-selection and reconciles owned client bindings. The commands below add the
-package to a fresh installation or reuse the current design selection.
+selection and reconciles owned client bindings. `package install design` also
+selects this single stack explicitly, replacing any saved package selection.
 
 ```sh
 mirket package list

@@ -9,7 +9,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender} = await import('../operations.mjs');
+const {svgOptimize, staticRender, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 const {penpotTokenRecords, synchronizePenpotTokens} = await import('../penpot-tokens.mjs');
 const {exportPenpotShape} = await import('../penpot-export.mjs');
@@ -69,6 +69,21 @@ test('Browserless HTML receives canonical CSS before head scripts run', () => {
   assert.throws(() => injectTokenStylesheet('<script>window.initial = "too early"</script><html><head></head></html>', css), /before the canonical token stylesheet/);
 });
 
+test('full-page QA uses Chromium content size to enforce a physical-pixel budget', () => {
+  assert.deepEqual(browserInspectCaptureOptions, {width: 800, height: 600, full_page: true});
+  const plan = screenshotPixelPlan({width: 800, height: 600, fullPage: true, cssContentSize: {width: 800, height: 734}});
+  assert.deepEqual(plan, {pixelWidth: 1600, pixelHeight: 1468, clipWidth: 800, clipHeight: 734});
+  assert.deepEqual(fullPageCaptureParams(plan), {format: 'png', fromSurface: true, captureBeyondViewport: true,
+    clip: {x: 0, y: 0, width: 800, height: 734, scale: 2}});
+  verifyScreenshotPixels(1600, 1468, plan);
+  assert.throws(() => verifyScreenshotPixels(1600, 1200, plan), /dimensions differ/);
+  assert.throws(() => screenshotPixelPlan({width: 800, height: 600, fullPage: true, cssContentSize: {width: 800, height: 6000}}), /16 Mi pixel budget/);
+  assert.throws(() => screenshotPixelPlan({width: 800, height: 600, fullPage: true, cssContentSize: {width: NaN, height: 734}}), /content metrics are invalid/);
+  const viewport = screenshotPixelPlan({width: 800, height: 600, fullPage: false});
+  assert.throws(() => verifyScreenshotPixels(1600, 1199, viewport), /dimensions differ/);
+  assert.throws(() => verifyScreenshotPixels(4000, 5000, plan), /16 Mi pixel budget/);
+});
+
 test('HyperFrames inspects every keyframe before a failed QA gate can render', async () => {
   const snapshots = ['frame-00.png', 'frame-01.png', 'frame-02.png'].map(name => ({artifact: {path: name}}));
   const seen = [];
@@ -82,6 +97,47 @@ test('HyperFrames inspects every keyframe before a failed QA gate can render', a
   assert.equal(qa.status, 'failed');
   assert.equal(qa.keyframes.length, 3);
   assert.deepEqual(qa.keyframes.map(item => item.source), snapshots.map(item => item.artifact.path));
+});
+
+test('HyperFrames lint requires a valid zero-error verdict before snapshots', () => {
+  const good = {ok: true, errorCount: 0, warningCount: 0, findings: [], filesScanned: 1};
+  assert.deepEqual(parseHyperframesLint(JSON.stringify(good)), good);
+  assert.throws(() => parseHyperframesLint('warning before {"ok":true,"errorCount":0}'), /invalid JSON/);
+  assert.throws(() => parseHyperframesLint('{"ok":true}'), /invalid verdict/);
+  assert.throws(() => parseHyperframesLint('{"ok":true,"errorCount":"0"}'), /invalid verdict/);
+  assert.throws(() => parseHyperframesLint('{"ok":false,"errorCount":0}'), /reported errors/);
+  assert.throws(() => parseHyperframesLint('{"ok":true,"errorCount":1}'), /reported errors/);
+});
+
+test('oversized sparse assets are rejected before HyperFrames or Typst launches', async () => {
+  const motion = path.join(workspace, 'oversized-motion');
+  const paged = path.join(workspace, 'oversized-paged');
+  await fs.mkdir(motion);
+  await fs.mkdir(paged);
+  await fs.writeFile(path.join(motion, 'index.html'), '<html><head></head><body>test</body></html>');
+  await fs.writeFile(path.join(paged, 'document.typ'), '= Test\n');
+  for (const folder of [motion, paged]) {
+    const handle = await fs.open(path.join(folder, 'oversized.bin'), 'wx');
+    try { await handle.truncate(64 * 1024 * 1024 + 1); }
+    finally { await handle.close(); }
+  }
+  await assert.rejects(readBoundedProjectAsset(path.join(motion, 'oversized.bin'), 64 * 1024 * 1024, 'Composition'), /Composition exceeds 64 MiB/);
+  await assert.rejects(hyperframesRender({project: 'oversized-motion', output: 'oversized.mp4'}), /Composition exceeds 64 MiB/);
+  await assert.rejects(typstCompile({source: 'oversized-paged/document.typ', output: 'oversized.pdf'}), /Typst project exceeds 64 MiB/);
+  await assert.rejects(fs.stat(path.join(workspace, 'oversized.mp4')), {code: 'ENOENT'});
+  await assert.rejects(fs.stat(path.join(workspace, 'oversized.pdf')), {code: 'ENOENT'});
+});
+
+test('Typst cannot read an unprepared absolute workspace asset', async t => {
+  try { await fs.access('/usr/local/bin/typst'); } catch { t.skip('Typst runtime unavailable'); return; }
+  await fs.writeFile(path.join(workspace, 'outside-typst-stage.txt'), 'outside');
+  await fs.mkdir(path.join(workspace, 'bounded-paged'));
+  await fs.writeFile(path.join(workspace, 'bounded-paged/document.typ'), '#read("/outside-typst-stage.txt")\n');
+  await assert.rejects(typstCompile({source: 'bounded-paged/document.typ', output: 'bounded.pdf'}), error => {
+    assert.match(error.message, /outside-typst-stage\.txt/);
+    return true;
+  });
+  await assert.rejects(fs.stat(path.join(workspace, 'bounded.pdf')), {code: 'ENOENT'});
 });
 
 test('ComfyUI refuses mixed bitmap and 3D graph before prompt POST', async () => {
@@ -238,7 +294,9 @@ test('child scratch refuses a symlinked workspace staging directory', {skip: pro
 });
 
 test('Satori resolves a canonical token into its SVG output', async t => {
-  const fontSource = '/System/Library/Fonts/Supplemental/Arial.ttf';
+  const fontSource = process.platform === 'linux'
+    ? '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+    : '/System/Library/Fonts/Supplemental/Arial.ttf';
   try { await fs.access(fontSource); } catch { t.skip('Host font fixture unavailable'); return; }
   await fs.copyFile(fontSource, path.join(workspace, 'font.ttf'));
   const result = await staticRender({

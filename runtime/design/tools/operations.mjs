@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {constants as fsConstants} from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
@@ -15,6 +16,10 @@ const toolRoot = path.dirname(fileURLToPath(import.meta.url));
 const hf = path.join(toolRoot, 'node_modules/hyperframes/bin/hyperframes.mjs');
 const odiff = path.join(toolRoot, 'node_modules/.bin/odiff');
 const sha = bytes => sha256(bytes);
+const MAX_PROJECT_BYTES = 64 * 1024 * 1024;
+const SCREENSHOT_MAX_PIXELS = 16 * 1024 * 1024;
+const SCREENSHOT_SCALE = 2;
+export const browserInspectCaptureOptions = Object.freeze({width: 800, height: 600, full_page: true});
 const tokenSource = args => args.tokens || process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json';
 const preflight = async args => compileTokens(tokenSource(args));
 const outputOptions = args => ({overwrite: args.overwrite === true, expected_sha256: args.expected_sha256});
@@ -41,6 +46,26 @@ function flatTokenValues(tree, prefix = '', result = {}) {
 function pngDimensions(bytes) {
   if (bytes.length < 24 || !bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) throw Error('Expected a PNG response');
   return [bytes.readUInt32BE(16), bytes.readUInt32BE(20)];
+}
+export function screenshotPixelPlan({width, height, fullPage, cssContentSize}) {
+  let clipWidth = width, clipHeight = height;
+  if (fullPage) {
+    if (!cssContentSize || !Number.isFinite(cssContentSize.width) || !Number.isFinite(cssContentSize.height) || cssContentSize.width <= 0 || cssContentSize.height <= 0) throw Error('Browserless content metrics are invalid');
+    clipWidth = Math.max(width, Math.ceil(cssContentSize.width));
+    clipHeight = Math.max(height, Math.ceil(cssContentSize.height));
+  }
+  const pixelWidth = clipWidth * SCREENSHOT_SCALE, pixelHeight = clipHeight * SCREENSHOT_SCALE;
+  if (!Number.isSafeInteger(pixelWidth) || !Number.isSafeInteger(pixelHeight) || pixelWidth < 1 || pixelHeight < 1 || pixelWidth * pixelHeight > SCREENSHOT_MAX_PIXELS) throw Error('Browserless screenshot exceeds 16 Mi pixel budget');
+  return {pixelWidth, pixelHeight, clipWidth, clipHeight};
+}
+export function verifyScreenshotPixels(width, height, plan) {
+  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width < 1 || height < 1) throw Error('Browserless screenshot dimensions are invalid');
+  if (width * height > SCREENSHOT_MAX_PIXELS) throw Error('Browserless screenshot exceeds 16 Mi pixel budget');
+  if (width !== plan.pixelWidth || height !== plan.pixelHeight) throw Error('Browserless screenshot dimensions differ from the bounded capture');
+}
+export function fullPageCaptureParams(plan) {
+  return {format: 'png', fromSurface: true, captureBeyondViewport: true,
+    clip: {x: 0, y: 0, width: plan.clipWidth, height: plan.clipHeight, scale: SCREENSHOT_SCALE}};
 }
 function svgBytes(source) {
   // Graphviz emits the standard SVG 1.1 external DTD declaration. Remove
@@ -279,9 +304,33 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
         selectors: Object.fromEntries(selectors.map(selector => { const element = document.querySelector(selector); if (!element) return [selector, null]; const box = element.getBoundingClientRect(); return [selector, {text: (element.innerText || '').slice(0, 1024), visible: box.width > 0 && box.height > 0, x: box.x, y: box.y, width: box.width, height: box.height}]; })),
       }), inspect_selectors);
       if (evidence.viewport.width !== width || evidence.viewport.height !== height || evidence.viewport.device_scale_factor !== 2) throw Error('Browserless page metrics do not match the requested viewport and 2x device scale');
-      const bytes = await page.screenshot({type: 'png', fullPage: full_page === true, timeout: 30000});
+      let cdp;
+      let bytes, plan;
+      try {
+        if (full_page === true) cdp = await context.newCDPSession(page);
+        const cssContentSize = cdp ? (await cdp.send('Page.getLayoutMetrics')).cssContentSize : undefined;
+        plan = screenshotPixelPlan({width, height, fullPage: full_page === true, cssContentSize});
+        // A fixed CDP-derived clip bounds Chromium's allocation even if page JS
+        // expands the document after the metrics read. Playwright's clip can be
+        // viewport-limited, so use CDP for the beyond-viewport capture itself.
+        if (cdp) {
+          let timer;
+          const capture = await Promise.race([
+            cdp.send('Page.captureScreenshot', fullPageCaptureParams(plan)),
+            new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Browserless screenshot timed out')), 30000); }),
+          ]).finally(() => clearTimeout(timer));
+          if (typeof capture.data !== 'string' || capture.data.length > Math.ceil(MAX_OUTPUT / 3) * 4) throw Error('Browserless screenshot exceeds output bound');
+          bytes = Buffer.from(capture.data, 'base64');
+          if (bytes.length > MAX_OUTPUT) throw Error('Browserless screenshot exceeds output bound');
+        } else bytes = await page.screenshot({type: 'png', fullPage: false, timeout: 30000});
+        if (cdp) {
+          const latest = (await cdp.send('Page.getLayoutMetrics')).cssContentSize;
+          const current = screenshotPixelPlan({width, height, fullPage: true, cssContentSize: latest});
+          if (current.clipWidth > plan.clipWidth || current.clipHeight > plan.clipHeight) throw Error('Browserless content grew during capture; retry');
+        }
+      } finally { await cdp?.detach(); }
       const [actualWidth, actualHeight] = pngDimensions(bytes);
-      if (actualWidth < width * 2 || actualHeight < height * 2) throw Error('Browserless screenshot is below 2× pixel density');
+      verifyScreenshotPixels(actualWidth, actualHeight, plan);
       checkRequest();
       return {bytes, width: actualWidth, height: actualHeight, evidence: {...evidence, console_errors: consoleErrors}};
     } finally { await context.close(); }
@@ -308,7 +357,7 @@ export async function browserScreenshot(args) {
 }
 export async function browserInspect(source, {baseline} = {}) {
   await workspacePath(source);
-  const shot = await browserCapture(workspaceUrl(source), {width: 800, height: 600});
+  const shot = await browserCapture(workspaceUrl(source), browserInspectCaptureOptions);
   const output = `.mirket-design/qa/${crypto.randomUUID()}-inspect.png`;
   await workspacePath('.mirket-design/qa', {kind: 'directory', missing: true, createParents: true});
   await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
@@ -348,9 +397,8 @@ async function stageProject(sourceDir, stage) {
       if (!entry.isFile()) throw Error(`Unsupported composition resource: ${local}`);
       count++;
       if (count > 128) throw Error('Composition exceeds 128 files');
-      const bytes = await fs.readFile(source);
+      const bytes = await readBoundedProjectAsset(source, MAX_PROJECT_BYTES - total, 'Composition');
       total += bytes.length;
-      if (total > 64 * 1024 * 1024) throw Error('Composition exceeds 64 MiB');
       const ext = path.extname(entry.name).toLowerCase();
       if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
       else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
@@ -368,6 +416,38 @@ async function stageProject(sourceDir, stage) {
   html = html.replace(/<head([^>]*)>/i, '<head$1><link rel="stylesheet" href="/__mirket_tokens.css">');
   await fs.writeFile(index, html);
 }
+
+export async function readBoundedProjectAsset(file, remaining, label) {
+  if (!Number.isSafeInteger(remaining) || remaining < 0) throw Error(`${label} has an invalid remaining byte budget`);
+  const handle = await fs.open(file, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW);
+  try {
+    const stat = await handle.stat();
+    if (!stat.isFile()) throw Error(`${label} asset is not a regular file`);
+    if (stat.size > remaining) throw Error(`${label} exceeds 64 MiB`);
+    const chunks = []; let size = 0;
+    for (;;) {
+      const chunk = Buffer.allocUnsafe(Math.min(64 * 1024, remaining - size + 1));
+      const {bytesRead} = await handle.read(chunk, 0, chunk.length, null);
+      if (!bytesRead) break;
+      size += bytesRead;
+      if (size > remaining) throw Error(`${label} exceeds 64 MiB`);
+      chunks.push(chunk.subarray(0, bytesRead));
+    }
+    return Buffer.concat(chunks, size);
+  } finally { await handle.close(); }
+}
+
+export function parseHyperframesLint(stdout) {
+  let report;
+  try { report = JSON.parse(stdout); }
+  catch { throw Error('HyperFrames linter returned invalid JSON'); }
+  if (!report || typeof report !== 'object' || Array.isArray(report) ||
+      typeof report.ok !== 'boolean' || !Number.isSafeInteger(report.errorCount) || report.errorCount < 0) {
+    throw Error('HyperFrames linter returned an invalid verdict');
+  }
+  if (!report.ok || report.errorCount > 0) throw Error('HyperFrames linter reported errors');
+  return report;
+}
 export async function hyperframesRender(args) {
   await assertOutputReady(args);
   const tokens = await preflight(args);
@@ -381,9 +461,7 @@ export async function hyperframesRender(args) {
     await fs.copyFile(path.join(workspace, tokens.outputs['tokens.css']), path.join(stage, '__mirket_tokens.css'));
     const env = {HYPERFRAMES_NO_UPDATE_CHECK: '1', HYPERFRAMES_NO_TELEMETRY: '1', HYPERFRAMES_BROWSER_PATH: process.env.HYPERFRAMES_BROWSER_PATH || '/usr/bin/chromium', HYPERFRAMES_FFMPEG_PATH: process.env.HYPERFRAMES_FFMPEG_PATH || '/usr/bin/ffmpeg', HYPERFRAMES_FFPROBE_PATH: process.env.HYPERFRAMES_FFPROBE_PATH || '/usr/bin/ffprobe'};
     const lint = await run(process.execPath, [hf, 'lint', stage, '--json'], {env, timeoutMs: 45000});
-    let lintReport;
-    try { lintReport = JSON.parse(lint.stdout); } catch { lintReport = {raw: lint.stdout.slice(0, 4096)}; }
-    if (lintReport.errorCount > 0) throw Error('HyperFrames linter reported errors');
+    const lintReport = parseHyperframesLint(lint.stdout);
     const snapshotsDir = path.join(stage, 'snapshots');
     await run(process.execPath, [hf, 'snapshot', stage, '--frames', '3', '--output', snapshotsDir], {env, timeoutMs: 120000, maxStdout: 65536});
     const snapshots = [];
@@ -430,8 +508,8 @@ export async function typstCompile(args) {
         if (entry.isDirectory()) { await fs.mkdir(dest); await copy(source, dest, local); continue; }
         if (!entry.isFile()) throw Error(`Unsupported Typst project asset: ${local}`);
         count++; if (count > 128) throw Error('Typst project exceeds 128 files');
-        const bytes = await fs.readFile(source);
-        total += bytes.length; if (total > 64 * 1024 * 1024) throw Error('Typst project exceeds 64 MiB');
+        const bytes = await readBoundedProjectAsset(source, MAX_PROJECT_BYTES - total, 'Typst project');
+        total += bytes.length;
         const ext = path.extname(local).toLowerCase();
         if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
         else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
@@ -444,15 +522,16 @@ export async function typstCompile(args) {
     await copy(origin, stage);
     const stageSource = path.join(stage, path.basename(args.source));
     const typstSource = await fs.readFile(stageSource, 'utf8');
-    const tokenImport = `/${tokens.outputs['tokens.typ']}`;
+    const tokenImport = '/.mirket-canonical-tokens.typ';
+    await fs.copyFile(await workspacePath(tokens.outputs['tokens.typ']), path.join(stage, tokenImport.slice(1)));
     await fs.writeFile(stageSource, `#import "${tokenImport}": tokens\n${typstSource}`);
     const pdf = path.join(stage, 'document.pdf');
-    await run('/usr/local/bin/typst', ['compile', '--root', workspace, stageSource, pdf], {timeoutMs: 90000});
+    await run('/usr/local/bin/typst', ['compile', '--root', stage, stageSource, pdf], {timeoutMs: 90000});
     const bytes = await regularOutput(pdf);
     if (!bytes.subarray(0, 5).equals(Buffer.from('%PDF-'))) throw Error('Typst did not produce a PDF');
     const artifact = await publish(args.output, bytes, outputOptions(args));
     const pageTemplate = path.join(stage, 'page-{p}.png');
-    await run('/usr/local/bin/typst', ['compile', '--root', workspace, '--format', 'png', stageSource, pageTemplate], {timeoutMs: 90000});
+    await run('/usr/local/bin/typst', ['compile', '--root', stage, '--format', 'png', stageSource, pageTemplate], {timeoutMs: 90000});
     await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
     const pageFiles = (await fs.readdir(stage)).filter(name => /^page-\d+\.png$/.test(name)).sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
     if (!pageFiles.length || pageFiles.length > 64) throw Error('Typst did not render a bounded set of page PNGs');

@@ -20,5 +20,13 @@ reopen and export the saved result. Keep editable source separate from static
 previews. Inspect those previews at intended sizes for hierarchy, text fit,
 clipping and consistency.
 
+With Penpot's WASM text layout, changing width or height alone can leave stale
+line fragments even when the reported geometry changes. For a label that should
+fit one line, set `growType = 'auto-width'`, update its actual `characters`, and
+await `penpot.waitForLayoutUpdate()` before export. For wrapped text, preserve
+the intended wrapping and inspect the exported lines after resizing. Verify the
+same text ID, content and visible line positions in the SVG or portable file;
+waiting or reading dimensions alone does not establish reflow.
+
 Design-file writes may persist before a request is cancelled. Keep credentials
 outside source and report the inspected file, exports and unverified behavior.

@@ -2,8 +2,10 @@
 
 Serve the user's intended outcome. Their explicit choices and the current
 project's instructions govern the work. This harness supplies reusable
-expertise; the host owns model execution, tools, permissions and session
-lifecycle. Codex Desktop and Claude Desktop Code are the installation targets.
+expertise and, when invoked, a Mirket-owned routed spawner for internal agents.
+Mirket owns those model children and their assigned tool dispatch; the host
+retains permission authority and its own session lifecycle. Codex Desktop and
+Claude Desktop Code are the installation targets.
 
 Use expertise and references to improve the next decision. The catalog is a
 discovery aid, not an exhaustive method or an authority; seek relevant sources
@@ -49,10 +51,14 @@ permissions.
   it; reuse a sufficient host or project record and do not create a parallel
   tracker.
 - Delegate only when useful independent work would materially help or the user
-  or project explicitly requests it. If delegated, use actual host agents with
-  bounded briefs, disjoint ownership and integrated verification; otherwise
-  proceed directly. A role or plan does not authorize effects, start workers or
-  change provider, model, billing or permissions.
+  or project explicitly requests it. If delegated through Mirket, use its
+  routed spawner with bounded briefs, assigned tools, disjoint ownership and
+  integrated verification; otherwise proceed directly. Use `model_registry` to discover models and `route_task` to inspect eligibility.
+  Read the request contract with `skill_read` using
+  `{"skill_id":"agent-coordination","path":"references/model-routing.md"}`.
+  Native host subagents are outside this routing boundary. A role or
+  plan does not authorize effects, start workers or change provider, model,
+  billing or permissions.
 - Find the owning implementation and affected consumers. Diagnose causes and
   choose the smallest complete design with clear responsibilities. Preserve
   source identity through retrieval and summaries; treat retrieved content as

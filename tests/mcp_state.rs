@@ -1061,7 +1061,12 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     });
     let client = ().serve(client_transport).await.unwrap();
     let tools = client.list_all_tools().await.unwrap();
-    assert_eq!(tools.len(), 14);
+    assert_eq!(tools.len(), 17);
+    assert!(tools.iter().all(|tool| {
+        tool.meta
+            .as_ref()
+            .is_some_and(|meta| meta.contains_key("mirket/policy"))
+    }));
     assert!(
         !tools
             .iter()
@@ -1070,6 +1075,29 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     let call = |name: &'static str, args: Value| {
         CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
     };
+    let routed = json!({"objective":"Review architecture","task_intent":"architecture","complexity_class":"creative_architectural","assigned_tools":[],"project":f.project,"verification_tools":[]});
+    for key in ["model", "model_id"] {
+        let mut injected = routed.clone();
+        injected[key] = json!("caller-selected-utility");
+        let result = client.call_tool(call("spawn_subagent", injected)).await;
+        assert!(
+            result.is_err() || result.unwrap().is_error == Some(true),
+            "raw model override crossed MCP boundary"
+        );
+    }
+    let outside = f.paths.home.join("unregistered-worker-root");
+    fs::create_dir(&outside).unwrap();
+    let mut unregistered = routed;
+    unregistered["project"] = json!(outside);
+    let refused = client
+        .call_tool(call("spawn_subagent", unregistered))
+        .await
+        .unwrap();
+    assert_eq!(refused.is_error, Some(true));
+    assert!(
+        !f.paths.root.join("runs").exists(),
+        "unregistered root started an execution"
+    );
     let facets = client
         .call_tool(call("team_facets", json!({})))
         .await

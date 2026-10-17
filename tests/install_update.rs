@@ -402,8 +402,16 @@ fn host_settings_reformat_and_unrelated_edits_remain_healthy_and_unchanged() {
     .into_bytes();
     fixture.write(".claude.json", &claude_bytes);
 
+    let codex_current: toml_edit::DocumentMut =
+        std::str::from_utf8(&fixture.read(".codex/config.toml"))
+            .unwrap()
+            .parse()
+            .unwrap();
+    let timeout = codex_current["mcp_servers"]["mirket"]["tool_timeout_sec"]
+        .as_integer()
+        .unwrap();
     let codex_bytes = format!(
-        "# Settings serialized by the client\nmodel = 'client-selected-model'\n\n[mcp_servers]\npersonal = {{ command = 'personal-tool' }}\nopenai-docs = {{ url = 'https://developers.openai.com/mcp' }}\nmirket = {{ args = ['--home', {}, 'mcp', 'serve'], command = {} }}\n",
+        "# Settings serialized by the client\nmodel = 'client-selected-model'\n\n[mcp_servers]\npersonal = {{ command = 'personal-tool' }}\nopenai-docs = {{ url = 'https://developers.openai.com/mcp' }}\nmirket = {{ args = ['--home', {}, 'mcp', 'serve'], command = {}, tool_timeout_sec = {timeout} }}\n",
         serde_json::to_string(&fixture.paths.home).unwrap(),
         serde_json::to_string(&fixture.paths.binary()).unwrap(),
     )

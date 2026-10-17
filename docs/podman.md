@@ -29,16 +29,18 @@ environment is an actionable readiness error.
 
 For an existing installation with a package selection to replace, use the new
 release binary's `mirket setup --target all --package design --yes` after
-`environment start`, in place of `package install design`. Setup replaces the
-saved selection and reconciles the owned client bindings before later updates.
+`environment start`, or run `package install design`. Both explicitly replace the
+saved selection and reconcile the owned client bindings before later updates.
 
 The registered client is digest checked. Private XDG configuration, storage,
 connection and helper paths avoid selecting an unrelated engine. Short owned
 runtime directories under `/private/tmp/mirket-<identity>` accommodate macOS Unix
 socket limits. No workload receives that socket. `environment stop` preserves
 the VM's images and durable service volumes.
-Machine helpers use the selected client's directory or its adjacent
-`libexec/podman` directory when both executable `gvproxy` and `vfkit` are present.
+Machine helpers use the selected client's directory and its exact adjacent
+`libexec/podman` directory. Initialization and startup require executable
+`gvproxy` and `vfkit` there before downloading a boot image or issuing VM
+commands; a client-only installation fails with the missing helper's name.
 This supports Homebrew's split installation layout without consulting global
 Podman configuration. The client digest does not independently pin helper bytes;
 those remain part of the approved host installation. Existing exact Mirket

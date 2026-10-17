@@ -9,6 +9,15 @@ import Ajv from 'ajv';
 import {withRequest, checkRequest, redactSecrets} from './request.mjs';
 import {synchronizePenpotTokens} from './penpot-tokens.mjs';
 import {exportPenpotShape, importPenpotImage} from './penpot-export.mjs';
+import {readFileSync} from 'node:fs';
+import {shutdownChildren} from './paths.mjs';
+
+const toolPolicies = JSON.parse(readFileSync(new URL('./tool-policy.json', import.meta.url), 'utf8'));
+function withPolicy(tool) {
+  const policy = toolPolicies[tool.name];
+  if (!policy) throw Error(`Design tool lacks a capability floor: ${tool.name}`);
+  return {...tool, _meta: {...tool._meta, 'mirket/policy': policy}};
+}
 
 const file = {type: 'string', description: 'Workspace-relative file path'};
 const output = {type: 'string', description: 'Workspace-relative output path; parent directory must exist'};
@@ -54,13 +63,26 @@ async function exclusive(fn, signal) {
 }
 
 let penpot;
+let penpotOpening;
+let penpotPromise;
+let closing = false;
 async function penpotClient() {
+  if (closing) throw Error('Design tools session is closing');
   if (penpot) return penpot;
-  const client = new Client({name: 'mirket-design-penpot-forwarder', version: '1.0.0'});
-  const transport = new StreamableHTTPClientTransport(new URL(process.env.MIRKET_PENPOT_MCP_URL || 'http://penpot-mcp:4401/mcp'));
-  await client.connect(transport);
-  penpot = client;
-  return client;
+  if (!penpotPromise) {
+    const client = new Client({name: 'mirket-design-penpot-forwarder', version: '1.0.0'});
+    const transport = new StreamableHTTPClientTransport(new URL(process.env.MIRKET_PENPOT_MCP_URL || 'http://penpot-mcp:4401/mcp'));
+    penpotOpening = client;
+    penpotPromise = client.connect(transport).then(() => {
+      if (closing) throw Error('Design tools session closed during Penpot connection');
+      penpot = client;
+      return client;
+    }).catch(async error => {
+      await client.close().catch(() => {});
+      throw error;
+    }).finally(() => { penpotOpening = undefined; penpotPromise = undefined; });
+  }
+  return penpotPromise;
 }
 async function upstreamTools() {
   const client = await penpotClient();
@@ -68,13 +90,34 @@ async function upstreamTools() {
   return result.tools || [];
 }
 const server = new Server({name: 'mirket-design-tools', version: '1.0.0'}, {capabilities: {tools: {listChanged: false}}});
+function shutdown() {
+  if (closing) return;
+  closing = true;
+  void (async () => {
+    // SDK v1.32.1 does not close its stdio transport when stdin reaches EOF.
+    // A bounded exit also releases a remote podman-exec process if an upstream
+    // HTTP close stalls after its caller has gone away.
+    const deadline = setTimeout(() => process.exit(1), 6000);
+    try {
+      await Promise.allSettled([shutdownChildren(), penpot?.close(), penpotOpening?.close(), server.close(), serial]);
+    } finally {
+      clearTimeout(deadline);
+      process.exit(0);
+    }
+  })();
+}
+for (const event of ['end', 'close']) process.stdin.once(event, () => { void shutdown(); });
+for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void shutdown(); });
+server.onclose = () => { void shutdown(); };
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   const remote = await upstreamTools();
   const names = new Set(definitions.map(tool => tool.name));
   for (const tool of remote) if (names.has(tool.name)) throw Error(`Penpot tool name collides with a direct design tool: ${tool.name}`);
-  return {tools: [...definitions, ...remote]};
+  return {tools: [...definitions, ...remote].map(withPolicy)};
 });
-server.setRequestHandler(CallToolRequestSchema, async (request, extra) => exclusive(async () => {
+server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
+  const signal = extra.signal;
+  return exclusive(async () => {
   const name = request.params.name;
   const args = request.params.arguments || {};
   try {
@@ -88,13 +131,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => exclus
     if (!available.some(tool => tool.name === name)) throw Error(`Unknown design tool: ${name}`);
     if (['execute_code', 'export_shape', 'import_image'].includes(name)) {
       const compiled = await compileTokens(process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json');
-      await synchronizePenpotTokens(await penpotClient(), compiled, args.sessionId, extra.signal);
+      await synchronizePenpotTokens(await penpotClient(), compiled, args.sessionId, signal);
     }
-    if (name === 'export_shape') return await exportPenpotShape(await penpotClient(), args, extra.signal);
-    if (name === 'import_image') return await importPenpotImage(await penpotClient(), args, extra.signal);
-    return await (await penpotClient()).callTool({name, arguments: args}, undefined, {signal: extra.signal});
+    if (name === 'export_shape') return await exportPenpotShape(await penpotClient(), args, signal);
+    if (name === 'import_image') return await importPenpotImage(await penpotClient(), args, signal);
+    return await (await penpotClient()).callTool({name, arguments: args}, undefined, {signal});
   } catch (error) {
     return {isError: true, content: [{type: 'text', text: redactSecrets(error.stack || error.message || error)}]};
   }
-}, extra.signal));
+  }, signal);
+});
 await server.connect(new StdioServerTransport());

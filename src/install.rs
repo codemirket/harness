@@ -682,8 +682,10 @@ fn desired_servers(
     let args = json!(["--home", paths.home, "mcp", "serve"]);
     let mut servers = BTreeMap::new();
     let mirket = match target {
-        Target::Codex => json!({"command": paths.binary(), "args": args}),
-        Target::Claude => json!({"type": "stdio", "command": paths.binary(), "args": args}),
+        Target::Codex => json!({"command": paths.binary(), "args": args, "tool_timeout_sec": 7200}),
+        Target::Claude => {
+            json!({"type": "stdio", "command": paths.binary(), "args": args, "timeout": 7_200_000})
+        }
     };
     servers.insert("mirket".into(), mirket);
     for id in &options.packages {
@@ -692,15 +694,15 @@ fn desired_servers(
             Target::Codex => json!({"command":paths.binary(),"args":args}),
             Target::Claude => json!({"type":"stdio","command":paths.binary(),"args":args}),
         };
-        registry.get(id)?;
+        let request_timeout = registry.request_timeout(id)?;
         {
             match target {
                 Target::Codex => {
                     value["startup_timeout_sec"] = json!(90);
-                    value["tool_timeout_sec"] = json!(120);
+                    value["tool_timeout_sec"] = json!(request_timeout.as_secs());
                 }
                 Target::Claude => {
-                    value["timeout"] = json!(120_000);
+                    value["timeout"] = json!(request_timeout.as_millis() as u64);
                 }
             }
         }
@@ -1521,14 +1523,14 @@ mod recovery_tests {
                         assert_eq!(document["mcp_servers"]["personal"]["command"].as_str(), Some("own-server"));
                         assert_eq!(toml_to_json(&document["mcp_servers"][&name]).unwrap(), wanted[&name]);
                         assert_eq!(document["mcp_servers"][&name]["startup_timeout_sec"].as_integer(), Some(90));
-                        assert_eq!(document["mcp_servers"][&name]["tool_timeout_sec"].as_integer(), Some(120));
+                        assert_eq!(document["mcp_servers"][&name]["tool_timeout_sec"].as_integer(), Some(registry.request_timeout(id).unwrap().as_secs() as i64));
                     }
                     Target::Claude => {
                         let document: Value = serde_json::from_slice(&merged).unwrap();
                         assert_eq!(document["theme"], "dark");
                         assert_eq!(document["mcpServers"]["personal"]["command"], "own-server");
                         assert_eq!(document["mcpServers"][&name], wanted[&name]);
-                        assert_eq!(document["mcpServers"][&name]["timeout"], 120_000);
+                        assert_eq!(document["mcpServers"][&name]["timeout"], registry.request_timeout(id).unwrap().as_millis() as u64);
                     }
                 }
             }

@@ -48,20 +48,31 @@ function killTracked(tracked) {
   }
 }
 let shuttingDown = false;
+let childrenShutdown;
+export function shutdownChildren() {
+  if (childrenShutdown) return childrenShutdown;
+  childrenShutdown = (async () => {
+    cancelAllRequests();
+    const children = [...activeChildren];
+    for (const record of children) record.stop('Design runtime terminating');
+    let deadline;
+    try {
+      await Promise.race([
+        Promise.allSettled(children.map(record => record.done)),
+        new Promise(resolve => { deadline = setTimeout(resolve, CHILD_GRACE_MS + 1000); }),
+      ]);
+    } finally { clearTimeout(deadline); }
+    for (const record of activeChildren) record.hardKill();
+  })();
+  return childrenShutdown;
+}
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, async () => {
   if (shuttingDown) return;
   shuttingDown = true;
-  cancelAllRequests();
-  const children = [...activeChildren];
-  for (const record of children) record.stop('Design runtime terminating');
-  await Promise.race([
-    Promise.allSettled(children.map(record => record.done)),
-    new Promise(resolve => setTimeout(resolve, CHILD_GRACE_MS + 1000)),
-  ]);
-  for (const record of activeChildren) record.hardKill();
+  await shutdownChildren();
   process.exit(128 + (signal === 'SIGTERM' ? 15 : 2));
 });
-process.stdin?.on('end', () => { cancelAllRequests(); for (const record of activeChildren) record.stop('Design MCP input closed'); });
+process.stdin?.on('end', () => { void shutdownChildren(); });
 
 export function sha256(bytes) { return crypto.createHash('sha256').update(bytes).digest('hex'); }
 export function assertRelative(name) {

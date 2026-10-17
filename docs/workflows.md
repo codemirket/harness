@@ -10,8 +10,8 @@ Routine work is direct. For substantive multidisciplinary work or explicit
 collaboration, use [professional roles](roles.md) and the
 [task-execution reference](../skills/skill-catalog/references/task-execution.md):
 select one lead and add only affected support. `team_facets`/`team_plan` are
-read-only; the host dispatches independent agents only when useful and Mirket
-starts no models. `capabilities plan ROLE` handles focused lookup and
+read-only; dispatch useful independent assignments through the
+[Mirket-owned routed spawner](../skills/agent-coordination/references/model-routing.md). `capabilities plan ROLE` handles focused lookup and
 `catalog search WORDS` handles bounded discovery. `--with` and
 `capability_plan.supporting` compose explicit capability names; contract
 `support` IDs are conditional skills to read and add only when needed.
@@ -106,7 +106,10 @@ local editable records cannot attest reviewer identity or human approval.
 | `catalog_show` | Selected metadata, pins, caveats and correct read route |
 | `capability_plan` | Exact role selection and outcome contract |
 | `team_facets` | Task boundaries and complementary professional assignments |
-| `team_plan` | Bounded roster, professional briefs and task creation inputs; host dispatches workers |
+| `model_registry` | Dynamic target/model capabilities with TTL refresh; no inference |
+| `route_task` | Task/tool capability floors and eligible models; no inference |
+| `spawn_subagent` | Mirket-owned model and tool execution with verification gates |
+| `team_plan` | Bounded roster, professional briefs and task creation inputs; spawn_subagent dispatches Mirket workers |
 | `skill_read` | Embedded skill/reference content; optional task delivery receipt |
 | `project_list` | Paginated roots already registered through the CLI |
 | `task_start` | Persist a bounded objective, selected skills and acceptance criteria |

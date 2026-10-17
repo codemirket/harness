@@ -187,5 +187,5 @@ For experiments, pass `--home` with an existing disposable absolute directory.
 It redirects the managed runtime and both clients' installation files. Use a
 separate project root for task evidence. Remove the disposable directories when
 finished; do not run test setup against your actual home by accident.
-The [contribution guide](../CONTRIBUTING.md#exercise-installed-packages) describes
-the explicit disposable-home marker and opt-in live package tests.
+The [contribution guide](../CONTRIBUTING.md#exercise-the-design-stack) describes
+disposable live acceptance and the separate JavaScript tool tests.

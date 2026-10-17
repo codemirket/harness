@@ -1,0 +1,19 @@
+{
+  "tools": {
+    "tokens_compile": 120000,
+    "static_render": 600000,
+    "browser_screenshot": 240000,
+    "kroki_render": 240000,
+    "hyperframes_render": 900000,
+    "typst_compile": 5400000,
+    "imgproxy_transform": 120000,
+    "svg_optimize": 120000,
+    "comfyui_submit": 480000,
+    "odiff_compare": 120000,
+    "penpot_api_info": 120000,
+    "high_level_overview": 120000,
+    "execute_code": 240000,
+    "export_shape": 240000,
+    "import_image": 240000
+  }
+}

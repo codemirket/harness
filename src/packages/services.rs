@@ -53,6 +53,35 @@ const REMOTE: [&str; 10] = [
 ];
 const BUILD_TIMEOUT: Duration = Duration::from_secs(1800);
 
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ToolBudgets {
+    tools: BTreeMap<String, u64>,
+}
+
+pub(super) fn tool_budgets() -> Result<(Duration, BTreeMap<String, Duration>)> {
+    let budgets: ToolBudgets =
+        serde_json::from_str(include_str!("../../runtime/design/tools/tool-budgets.json"))?;
+    let policy: BTreeMap<String, Value> =
+        serde_json::from_str(include_str!("../../runtime/design/tools/tool-policy.json"))?;
+    ensure!(
+        budgets.tools.keys().eq(policy.keys()),
+        "design tool budgets do not cover the owned policy exactly"
+    );
+    let mut tools = BTreeMap::new();
+    let mut maximum = Duration::ZERO;
+    for (name, millis) in budgets.tools {
+        ensure!(
+            millis > 0 && millis <= 2 * 60 * 60 * 1000,
+            "invalid design tool budget: {name}"
+        );
+        let duration = Duration::from_millis(millis);
+        maximum = maximum.max(duration);
+        tools.insert(name, duration);
+    }
+    Ok((maximum, tools))
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Receipt {
@@ -567,6 +596,14 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
             (
                 "tools/server.mjs",
                 include_bytes!("../../runtime/design/tools/server.mjs"),
+            ),
+            (
+                "tools/tool-policy.json",
+                include_bytes!("../../runtime/design/tools/tool-policy.json"),
+            ),
+            (
+                "tools/tool-budgets.json",
+                include_bytes!("../../runtime/design/tools/tool-budgets.json"),
             ),
             (
                 "tools/paths.mjs",
@@ -1763,6 +1800,7 @@ pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
         "node".into(),
         "/opt/design/server.mjs".into(),
     ]);
+    let (request_timeout, tool_timeouts) = tool_budgets()?;
     Ok(LaunchSpec {
         command: engine.binary,
         args,
@@ -1771,12 +1809,23 @@ pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
         allowed_tools: None,
         denied_tools: BTreeSet::new(),
         startup_timeout: Duration::from_secs(120),
+        request_timeout,
+        tool_timeouts,
     })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn design_tool_budgets_cover_policy_and_outlast_long_jobs() {
+        let (host, tools) = tool_budgets().unwrap();
+        assert_eq!(host, tools.values().copied().max().unwrap());
+        assert!(tools["hyperframes_render"] > Duration::from_secs(120));
+        assert!(tools["comfyui_submit"] > Duration::from_secs(180));
+        assert!(tools["typst_compile"] > tools["hyperframes_render"]);
+    }
 
     #[test]
     fn readiness_rejects_an_unbounded_body_without_buffering_it() {
@@ -1908,6 +1957,8 @@ mod tests {
             "Dockerfile",
             "tools/package.json",
             "tools/package-lock.json",
+            "tools/tool-policy.json",
+            "tools/tool-budgets.json",
             "tools/NOTICE.md",
             "penpot-session.mjs",
         ] {

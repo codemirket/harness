@@ -21,9 +21,10 @@ mirket setup --target all --package design --yes
 ```
 
 This reconciles the owned client bindings and saves `design` for later updates.
-`package install` adds to an existing selection; it does not replace one.
-Use the following commands for a fresh installation or an installation already
-selecting `design`:
+`package install design` also explicitly replaces the saved package selection
+with this single stack and removes settings for deselected packages. Both paths
+preserve unrelated client configuration. Use these commands to install or repair
+the stack:
 
 ```sh
 mirket package install design
@@ -78,6 +79,16 @@ Native Penpot SVG exports embed validated fonts from the owned Penpot frontend
 before SVG validation and optimization, so saved files retain their typography
 without a server connection. CLI scratch directories use private directories on
 the shared workspace disk and are removed after completion or cancellation.
+HyperFrames and Typst staging reject project assets above the 64 MiB total
+before loading them into memory. Typst compiles from the prepared project tree;
+absolute imports cannot read other workspace files. Its compiled token file is
+copied into that tree before compilation.
+
+The owned [tool budgets](../runtime/design/tools/tool-budgets.json) set each
+design call's bridge deadline. They allow long renders, including 15 minutes
+for HyperFrames, eight minutes for ComfyUI and up to 90 minutes for a 64-page
+Typst job with per-page inspection. The host MCP request ceiling is the largest
+of these budgets; cancellation can still end an individual call earlier.
 
 Penpot's MCP is the official upstream implementation. Inside the private design
 network its MCP endpoint is `/mcp` on port 4401, the plugin manifest is served
@@ -94,6 +105,11 @@ SVG passes through SVGO; HyperFrames runs lint, snapshot and render; Browserless
 checks web behavior and 2x appearance; Odiff checks comparable pixels. A tool
 response or file hash identifies an output, but the user journey and visual result
 need their own inspection.
+
+Standalone artifact QA captures the full measured page at 2x. Browserless checks
+Chromium content metrics before capture and limits screenshots to 16 Mi pixels;
+oversized or growing pages fail the capture instead of silently clipping it.
+Ordinary viewport screenshots retain their requested dimensions.
 
 ComfyUI model checkpoints belong in the reported host workspace's `models/`
 directory, mounted as `/workspace/models` in the design containers. The package
@@ -116,3 +132,5 @@ Dependency locks are in [the tool runtime](../runtime/design/tools/package-lock.
 [ComfyUI runtime](../runtime/design/comfyui/requirements.lock) and pinned Penpot
 source. [Runtime notices](third-party-notices.md#runtime-packages) record the
 shipped license provenance.
+
+Host MCP timeouts derive from the longest design tool budget plus a cleanup margin. The owned routed-spawner binding allows two hours for multi-turn work; individual inference turns and design phases retain their own bounded deadlines. Existing desktop MCP sessions must reconnect to load changed bindings.

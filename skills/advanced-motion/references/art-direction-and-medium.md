@@ -121,9 +121,9 @@ tools before promising the delivery path.
 
 For vector work, read `svg-animation` and `svg-creation` for geometry/embedding.
 For a real route change, read `page-transitions`; scroll narration does not require
-a router. For video, select the applicable catalog/native video workflow and verify
-the actual exporter. An editor adapter's supported subset is not the browser's SVG
-feature set; inspect its schemas before sending an asset.
+a router. For video in Mirket, use HyperFrames lint, snapshot and render, then
+inspect the encoded output. Verify its supported SVG features against the actual
+tool schema and rendered frames.
 
 ## Plan connected layers before preparing assets
 
@@ -217,8 +217,8 @@ Expressive vocabulary selectively adapts LottieFiles
 MIT © 2025 LottieFiles: motion personality, emotion mapping, animation principles,
 choreography and narrative structure. Mirket's examples and conditional choices
 replace universal tables, required layers, unsupported GPU capacity claims and
-industry/color defaults. This source does not supply Lottie authoring, export or
-renderer verification; those require their actual separate tools and output checks.
+industry/color defaults. The attribution supplies motion vocabulary. Mirket video
+production uses HyperFrames lint, snapshot and render with output inspection.
 
 The spring distinction is checked against the linear model in
 [MIT's Quantifying Uncertainty lectures](https://www.ocw.mit.edu/courses/12-s990-quantifying-uncertainty-fall-2012/8bf391b4f96b87e03cf8328d669ef5e2_MIT12_S990F12_lec2-3.pdf)

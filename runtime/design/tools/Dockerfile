@@ -32,14 +32,17 @@ RUN set -eux; \
     typst --version
 
 COPY tools/*.mjs ./
+COPY tools/tool-policy.json ./tool-policy.json
+COPY tools/tool-budgets.json ./tool-budgets.json
 COPY tools/NOTICE.md ./NOTICE.md
 COPY penpot-session.mjs ./penpot-session.mjs
 RUN mkdir -p /workspace \
-    && chmod 0644 /opt/design/*.mjs /opt/design/NOTICE.md /opt/design/package.json /opt/design/package-lock.json \
+    && chmod 0644 /opt/design/*.mjs /opt/design/NOTICE.md /opt/design/package.json /opt/design/package-lock.json /opt/design/tool-policy.json /opt/design/tool-budgets.json \
     && chown node:node /workspace /opt/design
 USER node
 RUN node --check /opt/design/workspace-server.mjs \
-    && node --check /opt/design/penpot-session.mjs
+    && node --check /opt/design/penpot-session.mjs \
+    && node -e 'const policy = JSON.parse(require("node:fs").readFileSync("/opt/design/tool-policy.json", "utf8")); if (!Object.keys(policy).length) throw Error("Design tool policy is empty")'
 WORKDIR /workspace
 ENV HYPERFRAMES_NO_UPDATE_CHECK=1 \
     HYPERFRAMES_NO_TELEMETRY=1 \

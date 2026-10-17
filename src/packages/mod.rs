@@ -29,6 +29,11 @@ pub struct Registry {
 }
 
 impl Registry {
+    pub(crate) fn request_timeout(&self, id: &str) -> Result<std::time::Duration> {
+        self.get(id)?;
+        // Let the bridge return its own bounded error and finish cleanup first.
+        Ok(services::tool_budgets()?.0 + std::time::Duration::from_secs(30))
+    }
     pub fn embedded() -> Result<Self> {
         let design = services::definition()?;
         ensure!(

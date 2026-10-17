@@ -1,4 +1,4 @@
-//! Stdio MCP access to Mirket's coordination API. Execution belongs to the host.
+//! Stdio MCP coordination and the Mirket-owned capability-routed spawner.
 use crate::{
     catalog::Catalog,
     paths::Paths,
@@ -36,10 +36,11 @@ pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
 const GUIDE: &str = "Mirket supplies professional guidance, optional team briefs, embedded references and durable task evidence. Use catalog_search/catalog_show to discover useful expertise; skill_read and resources return embedded material, never fetch upstream skills. The catalog is not exhaustive: the host/model can seek other sources, combine methods or use none. User/project requirements, source rights and host permissions govern. team_facets/team_plan help when independent assignments are useful; plans and read receipts do not establish execution. Keep sufficient existing workflows authoritative.
 
-Use task tracking when coordination, resumption or user/project requirements warrant it. For a Mirket task, deliver selected guidance, checkpoint meaningful decisions and retain acceptance/failure-probe artifacts. Mutations require the expected revision and an idempotency key; after interruption inspect task_status/history and retry an uncertain operation with the same key and arguments. A cancelled request may still commit. Optional typed contracts validate declared bindings and coverage at completion; hashes establish identity, not correctness or authenticated worker testimony. Operation descriptions specify limits and receipt semantics. Mirket never launches a shell or model; execution belongs to host tools and permissions.";
+Use task tracking when coordination, resumption or user/project requirements warrant it. For a Mirket task, deliver selected guidance, checkpoint meaningful decisions and retain acceptance/failure-probe artifacts. Mutations require the expected revision and an idempotency key; after interruption inspect task_status/history and retry an uncertain operation with the same key and arguments. A cancelled request may still commit. Optional typed contracts validate declared bindings and coverage at completion; hashes establish identity, not correctness or authenticated worker testimony. Operation descriptions specify limits and receipt semantics. Use spawn_subagent for Mirket-owned workers: it enforces dynamically discovered model capabilities, task/tool tier floors, generous effort and upward-only failover. route_task previews eligibility; model_registry reports discovery evidence. Independent native host spawners remain outside this boundary. Host permissions still govern effects; Mirket exposes no arbitrary shell through MCP.";
 
 #[derive(Clone)]
 pub struct MirketServer {
+    paths: Paths,
     state: State,
     catalog: Catalog,
     workers: Arc<Semaphore>,
@@ -48,10 +49,17 @@ pub struct MirketServer {
 impl MirketServer {
     pub fn new(paths: &Paths, catalog: Catalog) -> Result<Self> {
         Ok(Self {
+            paths: paths.clone(),
             state: State::open(paths)?,
             catalog,
             workers: Arc::new(Semaphore::new(4)),
         })
+    }
+
+    fn registered_worker_project(&self, path: &std::path::Path) -> Result<std::path::PathBuf> {
+        let canonical = crate::paths::canonical_project(path)?;
+        self.state.project_id(&canonical)?;
+        Ok(canonical)
     }
 
     async fn run(
@@ -81,9 +89,33 @@ impl MirketServer {
     }
 }
 
+#[derive(Deserialize, schemars::JsonSchema)]
+#[serde(deny_unknown_fields)]
+struct ModelQuery {
+    #[serde(default)]
+    refresh: bool,
+    #[serde(default)]
+    offset: usize,
+    #[serde(default = "page_size")]
+    limit: usize,
+}
+
 fn failure(message: &str) -> CallToolResult {
     let message: String = message.chars().take(2048).collect();
     CallToolResult::structured_error(json!({"error":message}))
+}
+
+fn coordination_policy(mut tool: rmcp::model::Tool) -> rmcp::model::Tool {
+    let min_tier = if tool.name == "spawn_subagent" {
+        "T2_SYNTHESIS"
+    } else {
+        "T1_DETERMINISTIC"
+    };
+    tool.meta.get_or_insert_with(Default::default).insert(
+        "mirket/policy".into(),
+        json!({"min_tier":min_tier,"requires_vision":false}),
+    );
+    tool
 }
 
 #[derive(Deserialize, schemars::JsonSchema)]
@@ -266,6 +298,75 @@ enum FinishAction {
 #[tool_router]
 impl MirketServer {
     #[tool(
+        description = "List live dynamically discovered models and their verified/unknown capabilities. Refresh bypasses the TTL cache; this does not execute inference.",
+        annotations(read_only_hint = true, open_world_hint = true)
+    )]
+    async fn model_registry(&self, Parameters(args): Parameters<ModelQuery>) -> CallToolResult {
+        if args.limit == 0 || args.limit > 20 {
+            return failure("limit must be 1..=20");
+        }
+        match crate::router::discovery::discover(&self.paths, args.refresh).await {
+            Ok(registry) => CallToolResult::structured(
+                json!({"models":registry.models.iter().skip(args.offset).take(args.limit).collect::<Vec<_>>(),"total":registry.models.len(),"targets":registry.targets,"refreshed_at":registry.refreshed_at}),
+            ),
+            Err(error) => failure(&format!("{error:#}")),
+        }
+    }
+
+    #[tool(
+        description = "Resolve task complexity, owned tool floors, modalities and generous inference effort. Returns eligible dynamic models without spawning a worker. Raw model IDs and caller-provided tool policies are rejected.",
+        annotations(read_only_hint = true, open_world_hint = true)
+    )]
+    async fn route_task(
+        &self,
+        Parameters(args): Parameters<crate::router::SpawnRequest>,
+    ) -> CallToolResult {
+        match crate::router::execution::plan(&self.paths, &args).await {
+            Ok(value) => CallToolResult::structured(value),
+            Err(error) => failure(&format!("{error:#}")),
+        }
+    }
+
+    #[tool(
+        description = "Spawn a Mirket-owned worker through dynamic capability routing. Declare task intent, complexity, assigned tool names and project. Enforces tier/vision floors, high reasoning, upward-only failover and post-mutation verification. May write assigned project/design artifacts; no arbitrary shell or native nested agents. Independent host spawners remain outside this boundary.",
+        annotations(read_only_hint = false, open_world_hint = true)
+    )]
+    async fn spawn_subagent(
+        &self,
+        Parameters(mut args): Parameters<crate::router::SpawnRequest>,
+    ) -> CallToolResult {
+        let Ok(project) = self.registered_worker_project(&args.project) else {
+            return failure(
+                "MCP workers require a CLI-registered project root; register it with mirket project register before dispatch",
+            );
+        };
+        args.project = project;
+        let Ok(_permit) = self.workers.clone().try_acquire_owned() else {
+            return failure(
+                "Mirket worker capacity is occupied; inspect existing runs before retrying",
+            );
+        };
+        match crate::router::execution::spawn(&self.paths, args).await {
+            Ok(mut value) => {
+                if value["result"]
+                    .as_str()
+                    .is_some_and(|text| text.len() > 32 * 1024)
+                {
+                    let preview = value["result"]
+                        .as_str()
+                        .unwrap()
+                        .chars()
+                        .take(4096)
+                        .collect::<String>();
+                    value["result"] = json!({"preview":preview,"full_result":"Read the saved trace file for the complete result"});
+                }
+                CallToolResult::structured(value)
+            }
+            Err(error) => failure(&format!("{error:#}")),
+        }
+    }
+
+    #[tool(
         description = "Find reviewed skills by keyword with bounded pagination and guidance routes. Optional design_context checks the complete requested design combination against scoped reference coverage, exposing gaps without claiming task validation. Read the design-inspiration coverage registry for exact axis IDs. Use catalog_show for pins and caveats.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
@@ -322,7 +423,7 @@ impl MirketServer {
     }
 
     #[tool(
-        description = "Build a task-scoped professional team from a lead role and justified task facets. Returns distinct perspectives, methods, assignment briefs, checks and task_start inputs. The host dispatches actual independent agents; this tool does not run models or grant permissions.",
+        description = "Build a task-scoped professional team from a lead role and justified task facets. Returns distinct perspectives, methods, assignment briefs, checks and task_start inputs. Dispatch Mirket workers with spawn_subagent; this planning tool does not run models or grant permissions.",
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn team_plan(&self, Parameters(args): Parameters<TeamPlan>) -> CallToolResult {
@@ -503,6 +604,26 @@ impl MirketServer {
 
 #[tool_handler]
 impl ServerHandler for MirketServer {
+    async fn list_tools(
+        &self,
+        _request: Option<PaginatedRequestParams>,
+        _context: RequestContext<RoleServer>,
+    ) -> Result<rmcp::model::ListToolsResult, ErrorData> {
+        let tools = Self::tool_router()
+            .list_all()
+            .into_iter()
+            .map(coordination_policy)
+            .collect();
+        Ok(rmcp::model::ListToolsResult::with_all_items(tools))
+    }
+
+    fn get_tool(&self, name: &str) -> Option<rmcp::model::Tool> {
+        Self::tool_router()
+            .get(name)
+            .cloned()
+            .map(coordination_policy)
+    }
+
     fn get_info(&self) -> ServerConfig {
         ServerConfig::new(
             ServerCapabilities::builder()
@@ -657,10 +778,15 @@ impl<R: AsyncRead + Unpin> AsyncRead for BoundedLines<R> {
 }
 
 pub async fn serve(paths: Paths, catalog: Catalog) -> Result<()> {
+    let discovery_paths = paths.clone();
+    let discovery = tokio::spawn(async move {
+        let _ = crate::router::discovery::discover(&discovery_paths, false).await;
+    });
     let service = MirketServer::new(&paths, catalog)?
         .serve((BoundedLines::new(tokio::io::stdin()), tokio::io::stdout()))
         .await?;
     service.waiting().await?;
+    discovery.abort();
     Ok(())
 }
 
@@ -692,6 +818,9 @@ pub async fn protocol_probe(
         let tools = client.list_all_tools().await?;
         let names: Vec<String> = tools.iter().map(|tool| tool.name.to_string()).collect();
         let expected = [
+            "model_registry",
+            "route_task",
+            "spawn_subagent",
             "catalog_search",
             "catalog_show",
             "capability_plan",
@@ -847,4 +976,30 @@ pub async fn protocol_probe(
     let value = outcome.context("MCP probe deadline exceeded")??;
     cleanup.context("MCP probe cleanup deadline exceeded")??;
     Ok(value)
+}
+
+#[cfg(all(test, unix))]
+mod router_boundary_tests {
+    use super::*;
+    use std::os::unix::fs::symlink;
+
+    #[test]
+    fn registered_worker_keeps_the_resolved_root_after_original_symlink_changes() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
+        let registered = paths.home.join("registered");
+        let unrelated = paths.home.join("unregistered");
+        let alias = paths.home.join("alias");
+        std::fs::create_dir(&registered).unwrap();
+        std::fs::create_dir(&unrelated).unwrap();
+        let server = MirketServer::new(&paths, Catalog::embedded().unwrap()).unwrap();
+        server.state.register_project(&registered).unwrap();
+        symlink(&registered, &alias).unwrap();
+        let resolved = server.registered_worker_project(&alias).unwrap();
+        std::fs::remove_file(&alias).unwrap();
+        symlink(&unrelated, &alias).unwrap();
+        assert_eq!(resolved, registered);
+        assert!(server.registered_worker_project(&alias).is_err());
+        assert!(server.state.project_id(&resolved).is_ok());
+    }
 }
