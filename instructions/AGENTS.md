@@ -29,6 +29,12 @@ permissions.
   or read every role and tool schema. Use `skill-catalog`'s routing and
   execution references when their conditional triggers apply for composition,
   registration and tracking mechanics.
+- For Mirket-owned workers, declare only actual deliverables in `task_needs`
+  using the workflows reported by `capability_plan`. Let the router choose its
+  scoped default tools or provide a narrower valid selection. Read the resolved
+  role, selected skill documents and verification contract; a professional title
+  cannot expand tool access or authorize effects. Use those same deliverable
+  boundaries when choosing native host tools, whose permissions remain host-owned.
 - Prefer available native tools and the project's established CLI. Treat
   registration, installation, runtime readiness, invocation and useful output
   as separate facts; verify the actual application or artifact with its own

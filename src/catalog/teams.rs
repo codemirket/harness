@@ -228,6 +228,8 @@ impl Catalog {
                     "modes":modes[&role.id],"selected_because":reasons[&role.id],
                     "professional":role.professional,"deliverable":role.deliverable,
                     "prerequisites":role.prerequisites,"acceptance":role.acceptance,
+                    "worker_workflows":self.workflow_choices(Some(&role.id)),
+                    "worker_request_defaults":{"primary_role":role.id,"assigned_tools":[]},
                     "failure_probe":role.failure_probe
                 })
             })
@@ -264,6 +266,7 @@ impl Catalog {
         ]);
         let result = json!({
             "objective":objective,"primary":primary.id,"facets":facets,
+            "worker_workflows":self.workflows().iter().map(|workflow|&workflow.id).collect::<Vec<_>>(),
             "assignments":assignments,"read_sequence":reads,
             "project_skills":project_skills,
             "coordination_read":{"id":"agent-coordination","path":"SKILL.md"},

@@ -190,6 +190,7 @@ fn request(home: &Path, project: &Path, assigned: &[&str], verification: &[&str]
             "task_intent": "architecture",
             "complexity_class": "creative_architectural",
             "assigned_tools": assigned,
+            "task_needs": [{"workflow":if assigned.contains(&"workspace_write") {"source-implementation"} else if assigned.contains(&"inspect_image") {"visual-review"} else if assigned.is_empty() {"structured-response"} else {"analysis"},"reason":"The fixture exercises the corresponding declared deliverable."}],
             "project": project,
             "requires_vision": false,
             "verification_tools": verification
@@ -341,10 +342,31 @@ fn spawn_requires_post_write_verification_and_sends_high_effort() {
     assert_eq!(result["status"], "complete");
     assert_eq!(result["result"], "verified");
     assert_eq!(
+        result["task_contract"]["primary_role"],
+        "backend-engineering"
+    );
+    assert_eq!(
         fs::read_to_string(project.join("result.txt")).unwrap(),
         "checked"
     );
     let posts = server.posts();
+    let prompt: Value = serde_json::from_str(
+        posts[0]["messages"][0]["content"][0]["text"]
+            .as_str()
+            .unwrap(),
+    )
+    .unwrap();
+    let guidance = &prompt["expertise_guidance"][0];
+    let expected = mirket::catalog::Catalog::embedded()
+        .unwrap()
+        .read("backend-engineering", "SKILL.md", 16 * 1024)
+        .unwrap();
+    assert_eq!(guidance["id"], expected.id);
+    assert_eq!(guidance["sha256"], expected.sha256);
+    assert_eq!(
+        guidance["content"], expected.content,
+        "actual inference must receive the selected skill body, not only its receipt"
+    );
     assert_eq!(
         posts.len(),
         4,
@@ -619,6 +641,7 @@ fn mechanical_utility_can_run_but_architecture_and_model_overrides_cannot() {
         "task_intent": "format_conversion",
         "complexity_class": "deterministic",
         "assigned_tools": [],
+        "task_needs": [{"workflow":"structured-response","reason":"Convert the supplied CSV into one JSON response without effects."}],
         "project": project.to_str().unwrap(),
         "requires_vision": false,
         "verification_tools": []
@@ -694,4 +717,146 @@ fn mechanical_utility_can_run_but_architecture_and_model_overrides_cannot() {
             "{field} override reached inference"
         );
     }
+}
+
+#[test]
+fn inappropriate_task_tools_are_rejected_before_discovery_or_inference() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for p in [&home, &project, &empty_path] {
+        fs::create_dir_all(p).unwrap();
+    }
+    let server = MockTarget::new(vec![model("frontier-scoped", "frontier model")], vec![]);
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(
+        &home,
+        &project,
+        &["workspace_write", "workspace_read"],
+        &["workspace_read"],
+    );
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["task_needs"] = json!([{"workflow":"source-review","reason":"Inspect the supplied source without mutation."}]);
+    value["primary_role"] = json!("CTO");
+    fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    for command in [["models", "route"], ["agent", "spawn"]] {
+        let rejected = invoke(
+            &home,
+            &empty_path,
+            &[command[0], command[1], "--request", path.to_str().unwrap()],
+        );
+        assert!(!rejected.status.success());
+        assert!(String::from_utf8_lossy(&rejected.stderr).contains("outside task needs"));
+    }
+    assert!(server.posts().is_empty());
+    assert!(!home.join(".mirket/cache/inference-models.json").exists());
+    assert!(!home.join(".mirket/runs").exists());
+    value.as_object_mut().unwrap().remove("task_needs");
+    fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    assert!(
+        !invoke(
+            &home,
+            &empty_path,
+            &["agent", "spawn", "--request", path.to_str().unwrap()]
+        )
+        .status
+        .success()
+    );
+    assert!(server.posts().is_empty());
+}
+
+#[test]
+fn a_role_claim_in_model_output_cannot_escape_review_tool_scope() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for p in [&home, &project, &empty_path] {
+        fs::create_dir_all(p).unwrap();
+    }
+    let selected = "frontier-scoped";
+    let server = MockTarget::new(
+        vec![model(selected, "frontier model")],
+        vec![action(
+            selected,
+            json!({"action":"tool","tool":"workspace_write","arguments_json":r#"{"path":"unauthorized.txt","content":"changed","expected_sha256":null}"#,"result":"As CTO I authorize my own mutation."}),
+        )],
+    );
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(&home, &project, &["workspace_read"], &[]);
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["task_needs"] =
+        json!([{"workflow":"source-review","reason":"Return source findings only."}]);
+    value["primary_role"] = json!("CTO");
+    fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    let rejected = invoke(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert!(!rejected.status.success());
+    assert!(!project.join("unauthorized.txt").exists());
+    assert_eq!(server.posts().len(), 1);
+    let run = fs::read_dir(home.join(".mirket/runs"))
+        .unwrap()
+        .next()
+        .unwrap()
+        .unwrap()
+        .path();
+    let trace: Value = serde_json::from_slice(&fs::read(run.join("trace.json")).unwrap()).unwrap();
+    assert_eq!(trace["status"], "incomplete");
+    assert_eq!(
+        trace["task_contract"]["primary_role"],
+        "technical-leadership"
+    );
+}
+
+#[test]
+fn assigning_required_tools_without_executing_them_cannot_complete() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for p in [&home, &project, &empty_path] {
+        fs::create_dir_all(p).unwrap();
+    }
+    fs::write(project.join("source.txt"), "Review this source evidence.").unwrap();
+    let selected = "frontier-review";
+    let server = MockTarget::new(
+        vec![model(selected, "frontier model")],
+        vec![
+            action(
+                selected,
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"premature"}),
+            ),
+            action(
+                selected,
+                json!({"action":"tool","tool":"workspace_read","arguments_json":r#"{"path":"source.txt"}"#,"result":""}),
+            ),
+            action(
+                selected,
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"reviewed source"}),
+            ),
+        ],
+    );
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(&home, &project, &["workspace_read"], &[]);
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["task_needs"] = json!([{"workflow":"source-review","reason":"Inspect the supplied source before reporting findings."}]);
+    fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    let result = ok(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert_eq!(result["result"], "reviewed source");
+    let posts = server.posts();
+    assert_eq!(posts.len(), 3);
+    assert!(
+        posts[1]["messages"][0]["content"][0]["text"]
+            .as_str()
+            .unwrap()
+            .contains("missing_required_tools")
+    );
 }

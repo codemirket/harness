@@ -4,8 +4,11 @@ Use Claude only when the task warrants an independent assignment and the current
 authenticated model registry exposes an eligible Claude target. Route through
 `mirket models route --request FILE` before `mirket agent spawn --request FILE`,
 or use the equivalent `route_task` and `spawn_subagent` MCP tools. The same
-`SpawnRequest` states the objective, task intent, complexity, project, assigned
-tools and any verification or vision needs. Do not name a model in that request.
+`SpawnRequest` states the objective, task intent, complexity, project and concrete
+`task_needs`. The owned workflows select role/task guidance and scoped tools;
+`assigned_tools: []` uses their defaults. An explicit subset cannot widen scope or
+omit required production/verification. Optional role, support-skill and reference
+choices never grant effects. Do not name a model in that request.
 [Model routing](model-routing.md) describes the request and failure
 behavior.
 

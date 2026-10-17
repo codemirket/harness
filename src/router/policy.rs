@@ -101,7 +101,7 @@ pub enum DeterministicOperation {
     SortLines,
 }
 
-/// The caller owns tool assignment. `verification_tools` names a subset of it.
+/// Task needs constrain owned role, guidance and tool selection before execution.
 /// No model identifier is accepted at this boundary.
 #[derive(Clone, Debug, Deserialize, JsonSchema, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -114,6 +114,13 @@ pub struct SpawnRequest {
     #[serde(default)]
     pub deterministic_input: Option<String>,
     pub assigned_tools: Vec<String>,
+    pub task_needs: Vec<super::TaskNeed>,
+    #[serde(default)]
+    pub primary_role: Option<String>,
+    #[serde(default)]
+    pub supporting_skills: Vec<String>,
+    #[serde(default)]
+    pub skill_references: Vec<super::SkillReference>,
     pub project: PathBuf,
     #[serde(default)]
     pub requires_vision: bool,
@@ -663,6 +670,10 @@ mod tests {
             deterministic_operation: None,
             deterministic_input: None,
             assigned_tools: vec![],
+            task_needs: vec![],
+            primary_role: None,
+            supporting_skills: vec![],
+            skill_references: vec![],
             project: PathBuf::from("/project"),
             requires_vision: false,
             requested_tier: None,

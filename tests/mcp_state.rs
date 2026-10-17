@@ -1075,7 +1075,7 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     let call = |name: &'static str, args: Value| {
         CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone())
     };
-    let routed = json!({"objective":"Review architecture","task_intent":"architecture","complexity_class":"creative_architectural","assigned_tools":[],"project":f.project,"verification_tools":[]});
+    let routed = json!({"objective":"Review architecture","task_intent":"architecture","complexity_class":"creative_architectural","task_needs":[{"workflow":"source-review","reason":"Inspect source architecture without changing it."}],"assigned_tools":[],"project":f.project,"verification_tools":[]});
     for key in ["model", "model_id"] {
         let mut injected = routed.clone();
         injected[key] = json!("caller-selected-utility");

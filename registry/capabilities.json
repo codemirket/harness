@@ -2049,5 +2049,481 @@
         }
       ]
     }
+  ],
+  "workflows": [
+    {
+      "id": "analysis",
+      "when": "Read, research or synthesize supplied project evidence without changing source.",
+      "role": "deep-research",
+      "tools": [
+        "workspace_read",
+        "workspace_list"
+      ],
+      "required_tools": [],
+      "verification_tools": [],
+      "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool.",
+      "min_tier": "T2_SYNTHESIS",
+      "alternative_roles": [
+        "frontend-engineering",
+        "backend-engineering",
+        "brand-guidelines",
+        "web-design",
+        "mobile-design",
+        "seo",
+        "animation",
+        "project-review",
+        "planning",
+        "product-management",
+        "database",
+        "systems-engineering",
+        "devops-infrastructure",
+        "marketing",
+        "executive-strategy",
+        "data-analysis",
+        "project-scaffolding",
+        "optimization",
+        "financial-analysis",
+        "technical-leadership",
+        "market-analysis",
+        "venture-validation",
+        "localization",
+        "spreadsheet-analysis",
+        "mobile-engineering",
+        "it-operations",
+        "documentation",
+        "graphic-design",
+        "security-engineering",
+        "quality-assurance",
+        "ai-engineering",
+        "data-engineering",
+        "accessibility-engineering",
+        "user-research",
+        "desktop-engineering",
+        "mcp-engineering",
+        "experimentation",
+        "release-engineering",
+        "data-migration",
+        "office-production"
+      ]
+    },
+    {
+      "id": "structured-response",
+      "when": "One schema-bound mechanical conversion with no filesystem effects.",
+      "role": "data-analysis",
+      "tools": [],
+      "required_tools": [],
+      "verification_tools": [],
+      "rule": "Use the declared deterministic operation and input as data. A compound or ambiguous objective must resolve upward; no tools are available in this workflow.",
+      "min_tier": "T1_DETERMINISTIC",
+      "alternative_roles": [
+        "frontend-engineering",
+        "backend-engineering",
+        "brand-guidelines",
+        "web-design",
+        "mobile-design",
+        "seo",
+        "deep-research",
+        "animation",
+        "project-review",
+        "planning",
+        "product-management",
+        "database",
+        "systems-engineering",
+        "devops-infrastructure",
+        "marketing",
+        "executive-strategy",
+        "project-scaffolding",
+        "optimization",
+        "financial-analysis",
+        "technical-leadership",
+        "market-analysis",
+        "venture-validation",
+        "localization",
+        "spreadsheet-analysis",
+        "mobile-engineering",
+        "it-operations",
+        "documentation",
+        "graphic-design",
+        "security-engineering",
+        "quality-assurance",
+        "ai-engineering",
+        "data-engineering",
+        "accessibility-engineering",
+        "user-research",
+        "desktop-engineering",
+        "mcp-engineering",
+        "experimentation",
+        "release-engineering",
+        "data-migration",
+        "office-production"
+      ]
+    },
+    {
+      "id": "source-implementation",
+      "when": "Implement source changes with exact artifact readback.",
+      "role": "backend-engineering",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write"
+      ],
+      "required_tools": [
+        "workspace_write",
+        "workspace_read"
+      ],
+      "verification_tools": [
+        "workspace_read"
+      ],
+      "rule": "Write only assigned project files. Read back each changed artifact; no shell, dependency installation, commit, deployment or external effects are granted.",
+      "min_tier": "T2_SYNTHESIS",
+      "alternative_roles": [
+        "frontend-engineering",
+        "mobile-engineering",
+        "desktop-engineering",
+        "data-engineering",
+        "ai-engineering",
+        "mcp-engineering",
+        "systems-engineering",
+        "database",
+        "optimization",
+        "data-migration",
+        "devops-infrastructure",
+        "release-engineering",
+        "project-scaffolding"
+      ]
+    },
+    {
+      "id": "source-review",
+      "when": "Review source, architecture or security and return findings without editing files.",
+      "role": "project-review",
+      "tools": [
+        "workspace_read",
+        "workspace_list"
+      ],
+      "required_tools": [
+        "workspace_read"
+      ],
+      "verification_tools": [],
+      "rule": "Return evidence-linked findings. Source mutation and design rendering are unavailable; add a separately justified deliverable if actual production is required.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "frontend-engineering",
+        "backend-engineering",
+        "mobile-engineering",
+        "desktop-engineering",
+        "data-engineering",
+        "ai-engineering",
+        "mcp-engineering",
+        "systems-engineering",
+        "database",
+        "optimization",
+        "data-migration",
+        "devops-infrastructure",
+        "release-engineering",
+        "project-scaffolding",
+        "technical-leadership",
+        "security-engineering",
+        "quality-assurance",
+        "accessibility-engineering"
+      ]
+    },
+    {
+      "id": "visual-review",
+      "when": "Inspect existing screenshots or capture existing UI and compare pixels.",
+      "role": "quality-assurance",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/browser_screenshot",
+        "design/odiff_compare",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Inspect actual pixels. Captures and diff artifacts are permitted; source and canvas mutation tools are absent.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "web-design",
+        "mobile-design",
+        "graphic-design",
+        "accessibility-engineering"
+      ]
+    },
+    {
+      "id": "web-interface",
+      "when": "Author HTML/CSS screens or graphics requiring full DOM features such as Grid, filters or Canvas.",
+      "role": "web-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/browser_screenshot",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "workspace_write",
+        "workspace_read",
+        "design/browser_screenshot",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "workspace_read",
+        "inspect_image"
+      ],
+      "rule": "Use Browserless for Grid, filters, Canvas/WebGL and live DOM. Inspect at verified 2x scale; a static-card renderer cannot replace DOM verification.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "mobile-design",
+        "frontend-engineering",
+        "accessibility-engineering",
+        "desktop-engineering"
+      ]
+    },
+    {
+      "id": "editable-interface",
+      "when": "Produce or export a layered editable Penpot canvas through its official connected plugin.",
+      "role": "web-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/high_level_overview",
+        "design/penpot_api_info",
+        "design/execute_code",
+        "design/export_shape",
+        "design/import_image",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/high_level_overview",
+        "design/execute_code",
+        "design/export_shape",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use the official Penpot plugin connection. Opaque canvas edits require target-linked exported evidence and external inspection; never substitute a flat screenshot for an editable design.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "mobile-design",
+        "graphic-design",
+        "brand-guidelines"
+      ]
+    },
+    {
+      "id": "static-graphic",
+      "when": "Produce a Flexbox static card, badge, social graphic or data card.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/static_render",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/static_render",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Compile canonical tokens and use Satori/resvg with supported fonts and Flexbox. Choose web-interface instead when the same graphic requires full DOM features; compose both only for distinct deliverables.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "brand-guidelines"
+      ]
+    },
+    {
+      "id": "diagram",
+      "when": "Produce flow, sequence, C4, Vega-Lite or Excalidraw diagram layouts.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/kroki_render",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/kroki_render",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use Kroki declarative layouts and the built-in SVGO/Browserless QA. Never replace graph layout with hand-positioned SVG coordinates.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "systems-engineering",
+        "technical-leadership",
+        "documentation",
+        "data-analysis"
+      ]
+    },
+    {
+      "id": "motion",
+      "when": "Produce deterministic HTML/CSS/SVG/GSAP motion and encoded video.",
+      "role": "animation",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/hyperframes_render",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/hyperframes_render",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use HyperFrames lint, snapshot and render in order. Inspect saved keyframes; a successful encoder alone cannot establish composition quality.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": []
+    },
+    {
+      "id": "paged-media",
+      "when": "Produce multi-page PDFs, print reports, invoices or presentation decks.",
+      "role": "office-production",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/typst_compile",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/typst_compile",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use Typst for paged output. Inspect every saved page; Browserless is QA support rather than an alternative PDF authoring pipeline.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "documentation"
+      ]
+    },
+    {
+      "id": "raster-generation",
+      "when": "Synthesize a bespoke illustration, texture or inpainting workflow.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/comfyui_submit",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/comfyui_submit",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use a headless ComfyUI workflow graph and inspect the generated image. Model readiness and a queued job do not establish useful output.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": []
+    },
+    {
+      "id": "raster-processing",
+      "when": "Resize, crop, convert or compress an existing raster.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/imgproxy_transform",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/imgproxy_transform",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use imgproxy before compositing. Inspect output dimensions and focal crop; generation and general-purpose code execution are unavailable.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "frontend-engineering",
+        "office-production"
+      ]
+    },
+    {
+      "id": "vector-optimization",
+      "when": "Optimize an existing SVG and verify its rendered appearance.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/svg_optimize",
+        "design/browser_screenshot",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/svg_optimize",
+        "design/browser_screenshot",
+        "inspect_image",
+        "workspace_read"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Use SVGO for SVG hygiene and Browserless for its rendered comparison. Do not treat an optimized path or hash as visual equivalence.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "frontend-engineering",
+        "office-production"
+      ]
+    },
+    {
+      "id": "pixel-comparison",
+      "when": "Mechanically compare existing rendered screenshots or frames.",
+      "role": "quality-assurance",
+      "tools": [
+        "design/odiff_compare"
+      ],
+      "required_tools": [
+        "design/odiff_compare"
+      ],
+      "verification_tools": [
+        "design/odiff_compare"
+      ],
+      "rule": "Use Odiff against comparable pixels. A mismatch is a failed verification gate; add visual-review when interpretation or refinement is required.",
+      "min_tier": "T1_DETERMINISTIC",
+      "alternative_roles": []
+    },
+    {
+      "id": "design-tokens",
+      "when": "Compile canonical DTCG design tokens into the five supported target formats.",
+      "role": "brand-guidelines",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/tokens_compile"
+      ],
+      "required_tools": [
+        "design/tokens_compile",
+        "workspace_read"
+      ],
+      "verification_tools": [
+        "workspace_read"
+      ],
+      "rule": "Style Dictionary is the token source of truth. Read back all generated formats before rendering; a role cannot override canonical token routing.",
+      "min_tier": "T1_DETERMINISTIC",
+      "alternative_roles": [
+        "frontend-engineering",
+        "web-design",
+        "graphic-design"
+      ]
+    }
   ]
 }

@@ -17,6 +17,7 @@ guidance read route.
 | `src/cli.rs` | Arguments, interactive setup, presentation and dispatch |
 | `src/catalog.rs` | Embedded content, capability contracts, bounded discovery, verified upstream payloads |
 | `src/catalog/teams.rs` | Professional profiles, validated task facets and bounded assignment briefs for host-run teams |
+| `src/catalog/workflows.rs` | Validated task workflows binding default expertise, owned tool choices, required invocation and verification |
 | `src/catalog/design_references.rs` | Validated design-language records and bounded instance discovery within the existing embedded skill |
 | `src/catalog/design_references/coverage.rs` | Explicit scoped design coverage and conservative gap lookup through existing catalog search |
 | `src/catalog/design_references/selection.rs` | Bounded provisional lexical candidates after an empty reference query; separate from ordinary matches and scoped coverage |
@@ -29,6 +30,7 @@ guidance read route.
 | `src/role_eval.rs`, `evals/role-workflow/` | Versioned role fixtures, pinned host trial reports and deterministic aggregation |
 | `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
 | `src/router/` | Dynamic target/model discovery, capability policy, isolated inference and owned tool dispatch |
+| `src/router/assignment.rs` | Shared task-needs resolver, bounded role/skill delivery, workflow floors and non-expanding dispatch scope |
 | `src/package_mcp.rs` | Design package MCP session lifecycle and bounded requests |
 | `src/packages/mod.rs` | The single package selection, configuration and metadata |
 | `src/packages/machine.rs` | Fixed design VM image and shared-workspace preparation |
@@ -129,6 +131,18 @@ Discovery runs at MCP initialization and uses a bounded TTL cache; raw model IDs
 are accepted only from target metadata. Skill resources come from the embedded catalog. Evidence reads stay
 inside registered project roots and reject symlink traversal. Host permissions
 remain the real execution boundary.
+
+Owned worker requests must declare bounded task needs from the catalog's task
+workflows. The shared assignment resolver selects default specialist roles,
+loads their exact embedded skill bodies and selected references, and derives a
+small tool set with mandatory invocation and verification. An explicit role can
+add its professional perspective without removing task-specialist guidance or
+expanding tools. Explicit tool selections can narrow the owned scope, never add
+unrelated tools or omit required producers. The same contract drives preview,
+inference context, intelligence floors, dispatch checks, completion and traces.
+Workflow IDs and reasons are a structured host interpretation of the task, not
+proof of semantic fit or authorization. Mirket cannot intercept direct native
+host tools or infer human approval from role text.
 
 The single design package receives a client entry running `mirket package serve
 design`. Its direct tool schemas use paths relative to one fixed `/workspace`

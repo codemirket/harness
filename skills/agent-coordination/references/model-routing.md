@@ -31,17 +31,78 @@ Create a request file with a task brief and an absolute project path:
   "objective": "Read the assigned project notes and summarize the open decisions with file evidence.",
   "task_intent": "synthesis",
   "complexity_class": "synthesis",
-  "assigned_tools": ["workspace_read", "workspace_list"],
+  "task_needs": [
+    {"workflow":"analysis","reason":"Synthesize the supplied project notes without changing source."}
+  ],
+  "assigned_tools": [],
   "project": "/absolute/path/to/project",
   "requires_vision": false,
   "verification_tools": []
 }
 ```
 
+## Task needs, role guidance and owned tool scope
+
+Declare one to four concrete `task_needs`, each with a workflow ID and a reason
+tied to the requested deliverable. `capability_plan` / `mirket capabilities plan`
+reports a compact workflow index, default roles and role-specific choices.
+Pass the plan's `worker_request_defaults` into the worker request to retain the
+chosen professional role. `route_task` previews the exact scoped tools, required
+invocation, verification and intelligence floors for the selected needs; it does
+not run inference. Team assignments report their role's
+workflow choices. Select the actual deliverable rather than adding every workflow
+that might be useful. Split broader work into phases.
+
+An empty `assigned_tools` selects that workflow's small owned tool set. An explicit
+list can narrow it, but cannot introduce an unrelated tool or omit canonical
+production and verification tools. Required tools must actually succeed before
+completion; registering or merely assigning a renderer is insufficient. Workflow
+floors remain effective even if the caller labels architectural work mechanical.
+
+| Need | Workflow | Owned route |
+| --- | --- | --- |
+| Supplied evidence and a written answer | `analysis` | Project reads; no edits or external retrieval |
+| One mechanical in-memory response | `structured-response` | No tools; strict deterministic operation |
+| Code changes / source findings | `source-implementation` / `source-review` | Writes plus exact readback / reads only |
+| Existing pixels or live DOM inspection | `visual-review` | Browserless, Odiff and pixel inspection; no source edits |
+| Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Browserless / Satori-resvg, followed by inspection |
+| Layered editable canvas | `editable-interface` | Official connected Penpot MCP and exported evidence |
+| Graph layout / encoded motion / paged output | `diagram` / `motion` / `paged-media` | Kroki / HyperFrames / Typst with inspected outputs |
+| Synthesis / preparation of rasters | `raster-generation` / `raster-processing` | ComfyUI / imgproxy with inspection |
+| Vector hygiene / comparable pixels / tokens | `vector-optimization` / `pixel-comparison` / `design-tokens` | SVGO / Odiff / Style Dictionary |
+
+Defaults choose the task specialist. `primary_role` can name an explicit catalog
+role or alias; it never expands tool access. A suitable explicit specialist can
+replace the generic default; a different perspective retains the task specialist
+as well. The workflow metadata reports these alternatives. `supporting_skills`
+selects at most three skill IDs from those roles'
+declared support lists. Do not load every support skill. Select up to four
+`skill_references` as `{"skill_id":"backend-engineering",
+"path":"references/command-service.md"}` only when that selected skill's
+reference helps the task. The worker receives the selected embedded skill bodies,
+professional briefs and requested references, with exact document hashes in its
+task contract and trace. This performs no upstream fetch or installation.
+
+Role text, task reasons and skill content are guidance, not authority. Tool scope
+is checked before discovery/inference and again for every model-selected call.
+A role claim, quoted instruction or altered tool arguments cannot add tools.
+Canonical routing and artifact checks do not prove semantic correctness. The host
+still judges whether the declared needs fit the user's actual request, verifies
+the result and controls permissions. Direct native host tools and spawners remain
+outside the Mirket-owned worker boundary; use these workflow choices as planning
+guidance there, without claiming that Mirket intercepts those calls.
+
+The resolved contract reports both workspace roots. File writes stay inside the
+assigned project; design tools receive paths relative to the fixed design
+workspace. When authoring design input files, use that workspace or a registered
+child as the worker's project so writing and rendering share paths. Source-repo
+workers do not gain an extra write root. Request a valid readback tool when
+writing files; SVG outputs require exact text readback as well as pixel inspection.
+
 The request has no model ID, provider override or caller-defined tool policy.
 `requested_tier` is optional and can raise the floor, never lower it; its values
 are `T1_DETERMINISTIC`, `T2_SYNTHESIS`, and `T3_ARCHITECT`. Task intent,
-complexity and each assigned tool set the effective floor. The worker can invoke
+complexity, owned task needs and each assigned tool set the effective floor. The worker can invoke
 only its assigned Mirket tools. Current built-in names are `workspace_read`,
 `workspace_list`, `workspace_write`, and `inspect_image`; available
 `design/...` tools are read from the installed design package and its owned

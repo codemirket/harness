@@ -7,9 +7,26 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
     collections::BTreeMap,
+    collections::BTreeSet,
     io::Read,
     path::{Path, PathBuf},
 };
+
+/// Static owned identities only; discovery never starts a package or model here.
+pub(crate) fn known_names() -> Result<BTreeSet<String>> {
+    let policies: BTreeMap<String, Value> =
+        serde_json::from_str(include_str!("../../runtime/design/tools/tool-policy.json"))?;
+    Ok([
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "inspect_image",
+    ]
+    .into_iter()
+    .map(str::to_owned)
+    .chain(policies.keys().map(|name| format!("design/{name}")))
+    .collect())
+}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ArtifactRef {

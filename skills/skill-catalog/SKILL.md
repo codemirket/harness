@@ -19,6 +19,15 @@ parallel tracker. Compose a team only when useful independent work would
 materially help or the user/project explicitly requests it. A team plan is
 read-only and starts no agents.
 
+For a Mirket-owned worker, use `capability_plan`'s task workflows to declare only
+the actual deliverables as `task_needs` with concrete reasons. The router selects
+task-specialist guidance and scoped tools, loads the selected embedded bodies,
+and enforces canonical production and verification. A role override never expands
+tools. Select support skills and reference files only when they help the task;
+see [the worker request contract](../agent-coordination/references/model-routing.md).
+For native host tools, use these workflow choices as planning guidance under the
+host's permissions; Mirket does not intercept native tool calls.
+
 Select a lead from the deliverable and add support only for concrete affected
 boundaries. An explicitly chosen skill ID can be read directly without a role
 plan. Use `mirket capabilities facets` and `capabilities team` for

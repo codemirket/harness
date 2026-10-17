@@ -167,3 +167,34 @@ fn every_role_delivers_its_exact_lead_offline_to_both_project_targets() {
         }
     }
 }
+
+#[test]
+fn role_plans_keep_workflow_discovery_compact_and_bind_the_selected_role() {
+    let catalog = Catalog::embedded().unwrap();
+    let plan = catalog.capability_plan("Frontend Engineer", &[]).unwrap();
+    assert_eq!(
+        plan["worker_request_defaults"]["primary_role"],
+        "frontend-engineering"
+    );
+    assert_eq!(
+        plan["worker_request_defaults"]["assigned_tools"],
+        serde_json::json!([])
+    );
+    let index = plan["worker_workflows"].as_array().unwrap();
+    assert_eq!(index.len(), catalog.workflows().len());
+    assert!(
+        index.iter().all(|row| row["id"].is_string()
+            && row["when"].is_string()
+            && row.get("tools").is_none()
+            && row.get("alternative_roles").is_none()),
+        "discovery should not deliver every unrelated tool/role policy"
+    );
+    assert!(
+        plan["role_workflows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|row| row["id"] == "source-implementation"
+                && row["explicit_role_can_replace_default"] == true)
+    );
+}

@@ -19,6 +19,8 @@ mod design_references;
 pub use design_references::DesignContext;
 mod teams;
 pub use teams::{FacetSelection, ProfessionalProfile, TeamFacet};
+mod workflows;
+pub use workflows::Workflow;
 
 static SKILLS: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/skills");
 const CATALOG: &str = include_str!("../registry/catalog.json");
@@ -175,6 +177,7 @@ struct CatalogInner {
     globals: Vec<String>,
     capabilities: Vec<Capability>,
     team_facets: Vec<TeamFacet>,
+    workflows: Vec<Workflow>,
     capability_names: HashMap<String, usize>,
     payloads: HashMap<String, Payload>,
     document_digests: HashMap<String, BTreeMap<String, OnceLock<String>>>,
@@ -288,6 +291,7 @@ impl Catalog {
         let capabilities: Vec<Capability> =
             serde_json::from_value(contracts["capabilities"].clone())?;
         let team_facets: Vec<TeamFacet> = serde_json::from_value(contracts["team_facets"].clone())?;
+        let workflows: Vec<Workflow> = serde_json::from_value(contracts["workflows"].clone())?;
         let notices = notice_sections(NOTICES)?;
         let mut by_id = HashMap::new();
         let mut payloads = HashMap::new();
@@ -443,6 +447,7 @@ impl Catalog {
             }
         }
         teams::validate_facets(&team_facets, &capabilities)?;
+        workflows::validate(&workflows, &capabilities)?;
         let design_references = payloads
             .get(design_references::OWNER)
             .map(design_references::Library::load)
@@ -454,6 +459,7 @@ impl Catalog {
             globals,
             capabilities,
             team_facets,
+            workflows,
             capability_names,
             payloads,
             document_digests,
@@ -773,6 +779,10 @@ impl Catalog {
         let (reads, project_skills) = self.guidance_plan(&contracts)?;
         Ok(
             json!({"primary":primary.id,"contracts":contracts,"read_sequence":reads,
+            "worker_workflows":self.workflow_choices(None),
+            "role_workflows":self.workflow_choices(Some(&primary.id)),
+            "worker_request_defaults":{"primary_role":primary.id,"assigned_tools":[]},
+            "worker_routing":"Declare bounded task_needs with workflow IDs and concrete reasons. The owned router loads the selected role and task-specialist skills, selects scoped default tools when assigned_tools is empty, and rejects tools outside those needs. A role never grants permissions or expands a workflow's tools.",
             "project_skills":project_skills,"runtime_status":"not_checked",
             "activation_status":"not_observed",
             "team_route":"When independent professional assignments would help, team_facets and team_plan can compose briefs with task-specific reasons. The host chooses useful assignments, dispatches actual independent workers and integrates their evidence.",
