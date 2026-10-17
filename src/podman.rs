@@ -533,12 +533,12 @@ fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
             for name in ["gvproxy", "vfkit"] {
                 let path = libexec.join(name);
                 util::reject_symlink_components(&path)?;
-                let mut valid = path.is_file();
+                let valid = path.is_file();
                 #[cfg(unix)]
-                if path.is_file() {
+                let valid = valid && {
                     use std::os::unix::fs::PermissionsExt;
-                    valid &= std::fs::metadata(&path)?.permissions().mode() & 0o111 != 0;
-                }
+                    std::fs::metadata(&path)?.permissions().mode() & 0o111 != 0
+                };
                 available |= valid;
             }
             if available {
