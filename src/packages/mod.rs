@@ -10,17 +10,16 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const TOOLS: [&str; 11] = [
+const TOOLS: [&str; 10] = [
     "style-dictionary",
     "satori",
-    "browserless",
+    "playwright",
     "penpot",
     "kroki",
     "hyperframes",
     "typst",
-    "imgproxy",
+    "sharp",
     "svgo",
-    "comfyui",
     "odiff",
 ];
 
@@ -42,14 +41,14 @@ impl Registry {
         );
         let tools = design["tools"]
             .as_array()
-            .context("design registry requires its eleven tools")?;
+            .context("design registry requires its ten tools")?;
         let ids = tools
             .iter()
             .map(|tool| tool["id"].as_str().context("design tool ID missing"))
             .collect::<Result<BTreeSet<_>>>()?;
         ensure!(
             tools.len() == TOOLS.len() && ids == TOOLS.into_iter().collect(),
-            "design registry differs from the canonical eleven-tool stack"
+            "design registry differs from the canonical ten-tool stack"
         );
         Ok(Self { design })
     }
@@ -145,9 +144,9 @@ pub async fn launch(paths: &Paths, id: &str) -> Result<LaunchSpec> {
     .context("design launch validation worker failed")?
 }
 
-pub fn service_start(paths: &Paths, id: &str) -> Result<Value> {
+pub fn service_start(paths: &Paths, id: &str, groups: &[String]) -> Result<Value> {
     selected(paths, id)?;
-    services::start(paths)
+    services::start(paths, groups)
 }
 
 pub fn service_stop(paths: &Paths, id: &str, purge_data: bool) -> Result<Value> {
@@ -167,7 +166,7 @@ mod tests {
                 .as_array()
                 .unwrap()
                 .len(),
-            11
+            10
         );
         assert!(registry.get("invented-package").is_err());
         assert!(registry.validate_selection(&[]).is_ok());
@@ -188,7 +187,7 @@ mod tests {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
         assert!(launch(&paths, "design").await.is_err());
-        assert!(service_start(&paths, "design").is_err());
+        assert!(service_start(&paths, "design", &[]).is_err());
         assert!(!paths.root.exists());
     }
 }

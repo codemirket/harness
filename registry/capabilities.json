@@ -119,7 +119,7 @@
       ],
       "deliverable": "Rendered new or revised pages with purposeful composition, real content, responsive states and working interactions; revisions preserve approved constraints and include comparable before/after evidence.",
       "failure_probe": "Stress long real labels and narrow width. For revisions compare identical states: visual polish must not silently change labels, approved identity or data behavior.",
-      "prerequisites": "Actual app/browser, content and supplied or proposed design direction; for revisions inspect baseline source/renders, requested scope, tokens and components. Use the design package's Style Dictionary compilation before render, Browserless full DOM and 2x screenshots, and Odiff for pixel comparison.",
+      "prerequisites": "Actual app/browser, content and supplied or proposed design direction; for revisions inspect baseline source/renders, requested scope, tokens and components. Use the design package's Style Dictionary compilation before render, Playwright full DOM and 2x screenshots, and Odiff for pixel comparison.",
       "aliases": [
         "Frontend Designer",
         "UI Designer",
@@ -205,7 +205,7 @@
         "Indexability, ranking hypotheses and dashboard access distinguished"
       ],
       "professional": {
-        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience’s actual search surfaces.",
+        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience\u2019s actual search surfaces.",
         "priorities": [
           "Audience intent and useful landing content",
           "Observed crawl, index and citation barriers",
@@ -270,7 +270,7 @@
       ],
       "deliverable": "Purposeful motion matched to the brief and brand, with an editable implementation, readable static composition and interruption-safe behavior.",
       "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. A screenshot or successful build alone cannot accept motion.",
-      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or HyperFrames lint, snapshot and render for requested video. Use the existing host model; verify Browserless and renderer readiness.",
+      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or HyperFrames lint, snapshot and render for requested video. Use the existing host model; verify Playwright and renderer readiness.",
       "aliases": [
         "Motion Designer"
       ],
@@ -547,7 +547,7 @@
         ],
         "method": [
           "Establish the audience, offer, channel, next action and claims that must stay.",
-          "Build a message from benefit, mechanism, proof and the reader’s likely objections.",
+          "Build a message from benefit, mechanism, proof and the reader\u2019s likely objections.",
           "Edit for clarity and voice while preserving commitments and uncertainty.",
           "Deliver channel-ready copy and identify claims or variants needing evidence."
         ],
@@ -583,7 +583,7 @@
           "Explicit choices with reversal conditions"
         ],
         "method": [
-          "Frame the owner’s decision, horizon, obligations and scarce resources.",
+          "Frame the owner\u2019s decision, horizon, obligations and scarce resources.",
           "Compare viable options across customer fit, economics, cash, capacity and concentration.",
           "Stress the assumption most likely to reverse the ranking.",
           "Recommend an allocation and operating test with an owner, review point and stop conditions."
@@ -812,7 +812,7 @@
           "Triangulate consequential estimates and test the assumption that changes the opportunity."
         ],
         "decision_rule": "Reduce the opportunity estimate when buyer eligibility, channel reach or sales capacity constrains it; do not convert broad category spend into achievable revenue.",
-        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer’s current workaround or material offer terms.",
+        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer\u2019s current workaround or material offer terms.",
         "handoff": "Give strategy and venture owners buyer definitions, sourced ranges, reachable channels, competitive constraints and the largest unresolved commercial assumption."
       }
     },
@@ -875,7 +875,7 @@
         "Locale/register and unresolved ambiguity are recorded; native review claimed only if performed"
       ],
       "professional": {
-        "perspective": "Preserve the user’s meaning and commitments while making language natural and usable in the target locale.",
+        "perspective": "Preserve the user\u2019s meaning and commitments while making language natural and usable in the target locale.",
         "priorities": [
           "Semantic fidelity and consistent terminology",
           "Natural register and cultural context",
@@ -1031,7 +1031,7 @@
         ],
         "method": [
           "Identify reader, authoritative inputs, edit boundary and final format.",
-          "Organize content around the reader’s question or action.",
+          "Organize content around the reader\u2019s question or action.",
           "Verify claims, examples, links, units and obligations against their owners.",
           "Inspect the saved or rendered result and report material content or compatibility limits."
         ],
@@ -1052,7 +1052,7 @@
       ],
       "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
       "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",
-      "prerequisites": "Actual brief, content, asset rights and delivery specifications. The design package uses ComfyUI graphs for bitmap generation, imgproxy for raster preprocessing, SVGO for generated/imported SVG, Kroki for diagrams, Satori plus resvg for static composition, and official Penpot MCP/plugin for editable design files. Compile tokens before rendering and verify the requested editability.",
+      "prerequisites": "Actual brief, content, asset rights and delivery specifications. The design package uses authored SVG scenes with resvg previews, Sharp for raster preprocessing, SVGO for generated/imported SVG, Kroki for diagrams, Satori plus resvg for static composition, and official Penpot MCP/plugin for editable design files. Compile tokens before rendering and verify the requested editability.",
       "aliases": [
         "Graphic Designer",
         "illustration",
@@ -1300,7 +1300,7 @@
       ],
       "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand.",
       "professional": {
-        "perspective": "Explain people’s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
+        "perspective": "Explain people\u2019s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
         "priorities": [
           "Observed behavior in realistic context",
           "Relevant participant variation and counterexamples",
@@ -1528,7 +1528,7 @@
       ],
       "failure_probe": "An attractive PDF export with lost editable charts, dropped comments, broken fields or overflow in the saved office file must fail delivery.",
       "professional": {
-        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient’s real workflow.",
+        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient\u2019s real workflow.",
         "priorities": [
           "Readable structure at the intended viewing size",
           "Preserved editability and source meaning",
@@ -2274,7 +2274,7 @@
         "workspace_read",
         "inspect_image"
       ],
-      "rule": "Use Browserless for Grid, filters, Canvas/WebGL and live DOM. Inspect at verified 2x scale; a static-card renderer cannot replace DOM verification.",
+      "rule": "Use Playwright for Grid, filters, Canvas/WebGL and live DOM. Inspect at verified 2x scale; a static-card renderer cannot replace DOM verification.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "mobile-design",
@@ -2356,7 +2356,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use Kroki declarative layouts and the built-in SVGO/Browserless QA. Never replace graph layout with hand-positioned SVG coordinates.",
+      "rule": "Use Kroki declarative layouts and the built-in SVGO/Playwright QA. Never replace graph layout with hand-positioned SVG coordinates.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "systems-engineering",
@@ -2367,7 +2367,7 @@
     },
     {
       "id": "motion",
-      "when": "Produce deterministic HTML/CSS/SVG/GSAP motion and encoded video.",
+      "when": "Produce finite encoded video from an authored HTML/CSS/SVG timeline.",
       "role": "animation",
       "tools": [
         "workspace_read",
@@ -2388,6 +2388,33 @@
       "alternative_roles": []
     },
     {
+      "id": "interactive-motion",
+      "when": "Author and verify interactive UI animations, navigation transitions, animated SVG or browser scene choreography.",
+      "role": "animation",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/browser_screenshot",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "workspace_write",
+        "workspace_read",
+        "design/browser_screenshot",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "workspace_read",
+        "inspect_image"
+      ],
+      "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. Inspect saved states; do not claim playback smoothness from a seek. Use motion/HyperFrames only for encoded video.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "frontend-engineering"
+      ]
+    },
+    {
       "id": "paged-media",
       "when": "Produce multi-page PDFs, print reports, invoices or presentation decks.",
       "role": "office-production",
@@ -2405,31 +2432,32 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use Typst for paged output. Inspect every saved page; Browserless is QA support rather than an alternative PDF authoring pipeline.",
+      "rule": "Use Typst for paged output. Inspect every saved page; Playwright is QA support rather than an alternative PDF authoring pipeline.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "documentation"
       ]
     },
     {
-      "id": "raster-generation",
-      "when": "Synthesize a bespoke illustration, texture or inpainting workflow.",
+      "id": "vector-art",
+      "when": "Create editable SVG illustrations, icons and vector scene compositions.",
       "role": "graphic-design",
       "tools": [
         "workspace_read",
         "workspace_list",
         "workspace_write",
-        "design/comfyui_submit",
+        "design/vector_render",
         "inspect_image"
       ],
       "required_tools": [
-        "design/comfyui_submit",
-        "inspect_image"
+        "design/vector_render",
+        "inspect_image",
+        "workspace_read"
       ],
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use a headless ComfyUI workflow graph and inspect the generated image. Model readiness and a queued job do not establish useful output.",
+      "rule": "Author meaningful SVG geometry and semantic groups; compile tokens, render with vector_render, read back the SVG and inspect its native preview. Use SVG creation guidance for craft; use motion and web-interface for animated scenes.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": []
     },
@@ -2440,17 +2468,17 @@
       "tools": [
         "workspace_read",
         "workspace_list",
-        "design/imgproxy_transform",
+        "design/raster_transform",
         "inspect_image"
       ],
       "required_tools": [
-        "design/imgproxy_transform",
+        "design/raster_transform",
         "inspect_image"
       ],
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use imgproxy before compositing. Inspect output dimensions and focal crop; generation and general-purpose code execution are unavailable.",
+      "rule": "Use Sharp before compositing. Inspect output dimensions and focal crop; generation and general-purpose code execution are unavailable.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "frontend-engineering",
@@ -2477,7 +2505,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use SVGO for SVG hygiene and Browserless for its rendered comparison. Do not treat an optimized path or hash as visual equivalence.",
+      "rule": "Use SVGO for SVG hygiene and Playwright for its rendered comparison. Do not treat an optimized path or hash as visual equivalence.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "frontend-engineering",

@@ -15,43 +15,125 @@ use std::{
 const REGISTRY: &str = include_str!("../../registry/design-stack.json");
 const OWNER_LABEL: &str = "org.mirket.design-owner";
 const BUILD_LABEL: &str = "org.mirket.design-build";
-const ALIASES: [&str; 12] = [
+const ALIASES: [&str; 10] = [
     "penpot-postgres",
     "penpot-valkey",
     "penpot-backend",
     "penpot-exporter",
     "penpot-mcp",
     "penpot-frontend",
-    "browserless",
     "kroki-excalidraw",
     "kroki",
-    "imgproxy",
-    "comfyui",
     "design-tools",
+    "penpot-session",
 ];
 const VOLUMES: [&str; 3] = ["db", "cache", "assets"];
-const PUBLISHED: [(&str, &str, u16); 7] = [
-    ("browserless", "browserless", 3000),
+const PUBLISHED: [(&str, &str, u16); 4] = [
     ("penpot_frontend", "penpot-frontend", 8080),
     ("penpot_mcp", "penpot-mcp", 4401),
     ("penpot_plugin", "penpot-mcp", 4400),
     ("kroki", "kroki", 8000),
-    ("imgproxy", "imgproxy", 8080),
-    ("comfyui", "comfyui", 8188),
 ];
-const REMOTE: [&str; 10] = [
+const REMOTE: [&str; 8] = [
     "penpot-postgres",
     "penpot-valkey",
     "penpot-backend",
     "penpot-exporter",
     "penpot-frontend",
-    "browserless",
     "kroki-excalidraw",
     "kroki",
-    "imgproxy",
     "node-build",
 ];
 const BUILD_TIMEOUT: Duration = Duration::from_secs(1800);
+
+fn selected_groups(groups: &[String]) -> Result<BTreeSet<String>> {
+    let mut selected = BTreeSet::from(["core".to_owned()]);
+    for group in groups {
+        if group == "all" {
+            selected.extend(["diagrams".into(), "penpot".into()]);
+        } else {
+            selected.insert(group.clone());
+        }
+    }
+    validate_groups(&selected)?;
+    Ok(selected)
+}
+fn validate_groups(groups: &BTreeSet<String>) -> Result<()> {
+    ensure!(
+        groups.contains("core")
+            && groups
+                .iter()
+                .all(|v| ["core", "diagrams", "penpot"].contains(&v.as_str())),
+        "invalid design service groups"
+    );
+    Ok(())
+}
+fn enabled(state: &State, alias: &str) -> bool {
+    group_enabled(&state.groups, alias)
+}
+fn group_enabled(groups: &BTreeSet<String>, alias: &str) -> bool {
+    alias == "design-tools"
+        || groups.contains(if alias.starts_with("penpot-") {
+            "penpot"
+        } else {
+            "diagrams"
+        })
+}
+
+// One-way data migration, only after the old release has removed its containers.
+// Preserve account identity and named volumes; never adapt an old live process.
+fn migrate_stopped_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<()> {
+    if !state_path(paths).exists() {
+        return Ok(());
+    }
+    let mut value: Value = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
+    if value["schema_version"] != 1 {
+        return Ok(());
+    }
+    ensure!(
+        value["owner"] == owner(paths) && value["engine_owner"] == engine.owner(),
+        "design state belongs to another environment"
+    );
+    let names = run(
+        engine,
+        vec![
+            "container".into(),
+            "ls".into(),
+            "--all".into(),
+            "--filter".into(),
+            format!("label={OWNER_LABEL}={}", owner(paths)),
+            "--format".into(),
+            "{{.Names}}".into(),
+        ],
+        Duration::from_secs(30),
+    )?;
+    ensure!(
+        names.trim().is_empty(),
+        "stop the prior design generation with its installed release before migration"
+    );
+    let object = value.as_object_mut().context("invalid design state")?;
+    for key in ["browserless_token", "imgproxy_key", "imgproxy_salt"] {
+        object.remove(key);
+    }
+    object.insert("schema_version".into(), json!(2));
+    object.insert("groups".into(), json!(["core"]));
+    let ports = object
+        .get_mut("published_ports")
+        .and_then(Value::as_object_mut)
+        .context("missing design ports")?;
+    ports.retain(|key, _| PUBLISHED.iter().any(|(expected, _, _)| key == expected));
+    let state: State = serde_json::from_value(value.clone())?;
+    validate_state(paths, engine, &state)?;
+    // This topology cutover does not migrate database formats or application data.
+    // Refuse an unrelated image upgrade before any retained volume is opened.
+    for alias in ["penpot-postgres", "penpot-backend"] {
+        ensure!(
+            state.images.get(alias) == installed.images.get(alias),
+            "prior {alias} image differs; a separately verified data upgrade is required"
+        );
+    }
+    save_private(&state_path(paths), &serde_json::to_vec_pretty(&value)?)
+}
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -99,14 +181,12 @@ struct State {
     engine_owner: String,
     registry_sha256: String,
     images: BTreeMap<String, String>,
-    browserless_token: String,
     published_ports: BTreeMap<String, u16>,
+    groups: BTreeSet<String>,
     database_password: String,
     service_secret: String,
     penpot_email: String,
     penpot_password: String,
-    imgproxy_key: String,
-    imgproxy_salt: String,
 }
 
 #[derive(Debug)]
@@ -143,7 +223,7 @@ fn owner(paths: &Paths) -> String {
 }
 fn registry_hash() -> String {
     let mut bytes = REGISTRY.as_bytes().to_vec();
-    for kind in ["penpot-mcp", "comfyui", "design-tools"] {
+    for kind in ["penpot-mcp", "design-tools"] {
         bytes.extend_from_slice(recipe_id(&build_files(kind)).as_bytes());
     }
     util::sha256(&bytes)
@@ -169,23 +249,22 @@ pub(super) fn definition() -> Result<Value> {
     let expected: BTreeSet<_> = [
         "style-dictionary",
         "satori",
-        "browserless",
+        "playwright",
+        "sharp",
         "penpot",
         "kroki",
         "hyperframes",
         "typst",
-        "imgproxy",
         "svgo",
-        "comfyui",
         "odiff",
     ]
     .into_iter()
     .collect();
     ensure!(
-        actual == expected && value["tools"].as_array().unwrap().len() == 11,
-        "design registry requires exactly eleven domains"
+        actual == expected && value["tools"].as_array().unwrap().len() == 10,
+        "design registry requires the ten supported design domains"
     );
-    for alias in REMOTE.iter().chain(["python-build"].iter()) {
+    for alias in REMOTE.iter() {
         let image = value["images"][alias]
             .as_str()
             .context("missing reviewed image")?;
@@ -409,9 +488,40 @@ fn rootless_keep_id_policy(host: &Value, user: u64) -> bool {
         && host["IDMappings"]["UidMap"] == host["IDMappings"]["GidMap"]
         && rootless_keep_id_map(&host["IDMappings"]["UidMap"], user)
 }
+fn service_command(alias: &str) -> Option<Vec<&'static str>> {
+    match alias {
+        "design-tools" => Some(vec!["node", "/opt/design/workspace-server.mjs"]),
+        "penpot-mcp" => Some(vec!["node", "/opt/serve.mjs"]),
+        "penpot-session" => Some(vec!["node", "/opt/design/penpot-session.mjs"]),
+        // The upstream entrypoint materializes nginx.conf before invoking this command.
+        // Its defaults size workers/connections for a public server, not a local canvas.
+        "penpot-frontend" => Some(vec![
+            "/bin/bash",
+            "-ec",
+            "sed -i 's/^worker_processes auto;/worker_processes 1;/; s/worker_connections 65535;/worker_connections 1024;/' /etc/nginx/nginx.conf; grep -q '^worker_processes 1;' /etc/nginx/nginx.conf; grep -q 'worker_connections 1024;' /etc/nginx/nginx.conf; exec nginx -g 'daemon off;'",
+        ]),
+        "penpot-valkey" => Some(vec![
+            "valkey-server",
+            "--save",
+            "60",
+            "1",
+            "--appendonly",
+            "yes",
+            "--dir",
+            "/data",
+        ]),
+        _ => None,
+    }
+}
 fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) -> Result<()> {
     let config = &value["Config"];
     let host = &value["HostConfig"];
+    if let Some(command) = service_command(alias) {
+        ensure!(
+            config["Cmd"] == json!(command),
+            "container command drift: {alias}"
+        );
+    }
     let n = name(&state.owner, alias);
     ensure!(
         config["Labels"][OWNER_LABEL] == state.owner
@@ -466,7 +576,7 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
         "container lifecycle/port policy drift: {alias}"
     );
     ensure!(
-        if alias == "design-tools" {
+        if ["design-tools", "penpot-session"].contains(&alias) {
             host["Init"] == true
         } else {
             host["Init"].is_null() || host["Init"] == false
@@ -547,19 +657,17 @@ fn valid_secret(value: &str) -> bool {
 }
 fn saved_state_any(paths: &Paths, engine: &Engine) -> Result<State> {
     let state: State = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
+    validate_state(paths, engine, &state)?;
+    Ok(state)
+}
+fn validate_state(paths: &Paths, engine: &Engine, state: &State) -> Result<()> {
     ensure!(
-        state.schema_version == 1
+        state.schema_version == 2
             && state.owner == owner(paths)
             && state.engine_owner == engine.owner(),
         "design state belongs to another environment"
     );
-    for value in [
-        &state.browserless_token,
-        &state.database_password,
-        &state.service_secret,
-        &state.imgproxy_key,
-        &state.imgproxy_salt,
-    ] {
+    for value in [&state.database_password, &state.service_secret] {
         ensure!(valid_secret(value), "invalid private design secret");
     }
     ensure!(
@@ -570,7 +678,8 @@ fn saved_state_any(paths: &Paths, engine: &Engine) -> Result<State> {
         "invalid private Penpot password"
     );
     validate_published_ports(&state.published_ports)?;
-    Ok(state)
+    validate_groups(&state.groups)?;
+    Ok(())
 }
 fn saved_state(paths: &Paths, engine: &Engine) -> Result<State> {
     let state = saved_state_any(paths, engine)?;
@@ -611,25 +720,33 @@ fn build_recipe(registry: &Value, kind: &str) -> Result<String> {
 }
 fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
-        "penpot-mcp" => vec![(
-            "Dockerfile",
-            include_bytes!("../../runtime/design/penpot-mcp/Dockerfile"),
-        )],
-        "comfyui" => vec![
+        "penpot-mcp" => vec![
+            (
+                "production.mjs",
+                include_bytes!("../../runtime/design/penpot-mcp/production.mjs"),
+            ),
             (
                 "Dockerfile",
-                include_bytes!("../../runtime/design/comfyui/Dockerfile"),
+                include_bytes!("../../runtime/design/penpot-mcp/Dockerfile"),
             ),
             (
-                "requirements.lock",
-                include_bytes!("../../runtime/design/comfyui/requirements.lock"),
-            ),
-            (
-                "exclude-3d.py",
-                include_bytes!("../../runtime/design/comfyui/exclude-3d.py"),
+                "serve.mjs",
+                include_bytes!("../../runtime/design/penpot-mcp/serve.mjs"),
             ),
         ],
         "design-tools" => vec![
+            (
+                "tools/vector-worker.mjs",
+                include_bytes!("../../runtime/design/tools/vector-worker.mjs"),
+            ),
+            (
+                "tools/raster-worker.mjs",
+                include_bytes!("../../runtime/design/tools/raster-worker.mjs"),
+            ),
+            (
+                "tools/chromium-launcher",
+                include_bytes!("../../runtime/design/tools/chromium-launcher"),
+            ),
             (
                 "Dockerfile",
                 include_bytes!("../../runtime/design/tools/Dockerfile"),
@@ -704,11 +821,7 @@ fn archive(paths: &Paths, registry: &Value, kind: &str, stage: &Path) -> Result<
         .as_str()
         .context("source archive URL")?;
     let hash = info["sha256"].as_str().context("source archive hash")?;
-    let path = stage.join(if kind == "comfyui" {
-        "comfyui-source.tar.gz"
-    } else {
-        "penpot-source.tar.gz"
-    });
+    let path = stage.join("penpot-source.tar.gz");
     if path.exists() && util::sha256(&util::read_bounded(&path, 256 * 1024 * 1024)?) == hash {
         return Ok(());
     }
@@ -780,6 +893,42 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
     Ok(id)
 }
 
+// Refuse an active generation change before setup replaces the executable that
+// can stop it. Same-generation reinstallation remains idempotent.
+fn preflight_installed_generation(paths: &Paths, engine: &Engine) -> Result<()> {
+    if !state_path(paths).exists() {
+        return Ok(());
+    }
+    let names = run(
+        engine,
+        vec![
+            "container".into(),
+            "ls".into(),
+            "--all".into(),
+            "--filter".into(),
+            format!("label={OWNER_LABEL}={}", owner(paths)),
+            "--format".into(),
+            "{{.Names}}".into(),
+        ],
+        Duration::from_secs(30),
+    )?;
+    if names.trim().is_empty() {
+        return Ok(());
+    }
+    let instruction = "stop design with the currently installed release before changing its runtime generation; installation was not changed";
+    let state = saved_state(paths, engine).context(instruction)?;
+    let work = workspace(paths)?;
+    for container in names.lines().filter(|line| !line.is_empty()) {
+        let alias = ALIASES
+            .into_iter()
+            .find(|alias| name(&state.owner, alias) == container)
+            .context(instruction)?;
+        let value = existing(engine, "container", container, &state.owner)?.context(instruction)?;
+        validate_container(&value, &state, alias, &work).context(instruction)?;
+    }
+    Ok(())
+}
+
 pub(super) fn prepare(paths: &Paths) -> Result<()> {
     let registry = definition()?;
     let engine = engine(paths)?;
@@ -787,8 +936,9 @@ pub(super) fn prepare(paths: &Paths) -> Result<()> {
     let dir = root(paths);
     util::ensure_directory(&dir)?;
     let _lock = util::FileLock::acquire(&dir.join("operation.lock"))?;
+    preflight_installed_generation(paths, &engine)?;
     let mut images = BTreeMap::new();
-    for alias in REMOTE.iter().chain(["python-build"].iter()) {
+    for alias in REMOTE.iter() {
         let reference = registry["images"][alias]
             .as_str()
             .context("missing image")?;
@@ -810,12 +960,13 @@ pub(super) fn prepare(paths: &Paths) -> Result<()> {
         };
         images.insert((*alias).to_owned(), id);
     }
-    for alias in ["penpot-mcp", "comfyui", "design-tools"] {
+    for alias in ["penpot-mcp", "design-tools"] {
         images.insert(
             alias.into(),
             prepare_build(paths, &engine, &registry, alias)?,
         );
     }
+    images.insert("penpot-session".into(), images["design-tools"].clone());
     let receipt = Receipt {
         schema_version: 1,
         owner: owner(paths),
@@ -868,7 +1019,7 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
     let references = ALIASES
         .iter()
         .map(|alias| {
-            if ["penpot-mcp", "comfyui", "design-tools"].contains(alias) {
+            if ["penpot-mcp", "design-tools", "penpot-session"].contains(alias) {
                 value
                     .images
                     .get(*alias)
@@ -892,9 +1043,17 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
             inspected_image_id(inspection, image)? == *expected,
             "design image drift: {alias}"
         );
-        if ["penpot-mcp", "comfyui", "design-tools"].contains(alias) {
+        if ["penpot-mcp", "design-tools", "penpot-session"].contains(alias) {
             ensure!(
-                inspection["Labels"][BUILD_LABEL] == build_recipe(&registry, alias)?,
+                inspection["Labels"][BUILD_LABEL]
+                    == build_recipe(
+                        &registry,
+                        if *alias == "penpot-session" {
+                            "design-tools"
+                        } else {
+                            alias
+                        }
+                    )?,
                 "design build recipe drift: {alias}"
             );
         }
@@ -931,20 +1090,18 @@ fn new_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<Stat
         return Ok(prior);
     }
     let state = State {
-        schema_version: 1,
+        schema_version: 2,
         owner: owner(paths),
         engine_owner: engine.owner(),
         registry_sha256: registry_hash(),
         images: installed.images.clone(),
-        browserless_token: secret(32)?,
         published_ports: allocate_published_ports()?,
+        groups: BTreeSet::from(["core".into()]),
         database_password: secret(32)?,
         service_secret: secret(32)?,
         penpot_email: format!("design-{}@mirket.invalid", &owner(paths)[14..]),
         // Penpot requires lowercase, uppercase, a digit and a special character.
         penpot_password: format!("{}Aa1!", secret(32)?),
-        imgproxy_key: secret(32)?,
-        imgproxy_salt: secret(32)?,
     };
     save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)?;
     Ok(state)
@@ -1003,40 +1160,19 @@ fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
             put("PENPOT_MCP_URI", "http://penpot-mcp:4401".into());
             put("PENPOT_MCP_URI_WS", "http://penpot-mcp:4402".into());
         }
-        "browserless" => {
-            put("TOKEN", state.browserless_token.clone());
-            // The pinned Browserless queue treats -1 as an immediate timer.
-            // Zero disables that timer; callers own and close their sessions.
-            put("TIMEOUT", "0".into());
-            put("DEBUG", "browserless*:error".into());
-            put("CONCURRENT", "2".into());
-            put("QUEUED", "10".into());
-            put("HOME", "/tmp".into());
-            put("XDG_CACHE_HOME", "/tmp/.cache".into());
-        }
         "kroki" => {
             put("KROKI_EXCALIDRAW_HOST", "kroki-excalidraw".into());
             put("KROKI_EXCALIDRAW_PORT", "8004".into());
         }
-        "imgproxy" => {
-            put("IMGPROXY_BIND", "0.0.0.0:8080".into());
-            put("IMGPROXY_LOCAL_FILESYSTEM_ROOT", "/workspace".into());
-            put("IMGPROXY_ALLOWED_SOURCES", "local://".into());
-            put("IMGPROXY_WORKERS", "1".into());
-            put("IMGPROXY_REQUESTS_QUEUE_SIZE", "16".into());
-            put("IMGPROXY_MAX_SRC_RESOLUTION", "17".into());
-            put("IMGPROXY_MAX_SRC_FILE_SIZE", "33554432".into());
-            put("IMGPROXY_MAX_RESULT_DIMENSION", "4096".into());
-            put("IMGPROXY_MAX_ANIMATION_FRAMES", "1".into());
-            put("IMGPROXY_KEY", state.imgproxy_key.clone());
-            put("IMGPROXY_SALT", state.imgproxy_salt.clone());
-        }
         "design-tools" => {
-            put("MIRKET_BROWSERLESS_TOKEN", state.browserless_token.clone());
+            put(
+                "MIRKET_DESIGN_GROUPS",
+                state.groups.iter().cloned().collect::<Vec<_>>().join(","),
+            );
+        }
+        "penpot-session" => {
             put("MIRKET_PENPOT_EMAIL", state.penpot_email.clone());
             put("MIRKET_PENPOT_PASSWORD", state.penpot_password.clone());
-            put("MIRKET_IMGPROXY_KEY", state.imgproxy_key.clone());
-            put("MIRKET_IMGPROXY_SALT", state.imgproxy_salt.clone());
         }
         _ => {}
     }
@@ -1044,7 +1180,7 @@ fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
 }
 fn uid(alias: &str) -> u32 {
     match alias {
-        "penpot-postgres" | "penpot-valkey" | "browserless" | "imgproxy" => 999,
+        "penpot-postgres" | "penpot-valkey" => 999,
         "penpot-backend" | "penpot-exporter" | "penpot-frontend" | "kroki" | "kroki-excalidraw" => {
             1001
         }
@@ -1053,15 +1189,31 @@ fn uid(alias: &str) -> u32 {
 }
 fn limits(alias: &str) -> (&'static str, &'static str, &'static str) {
     match alias {
-        "penpot-backend" | "penpot-exporter" => ("1400m", "1.5", "256"),
-        "browserless" => ("2000m", "1.5", "512"),
+        "penpot-backend" => ("1280m", "1.5", "256"),
+        "penpot-exporter" => ("768m", "1.5", "256"),
+        "penpot-session" => ("1400m", "1.5", "256"),
+        "penpot-postgres" => ("256m", "1", "128"),
+        "penpot-valkey" => ("64m", "1", "128"),
         // Multiple desktop MCP connections share this renderer container.
         // Leave headroom for a real render alongside their retained sessions.
-        "design-tools" => ("3072m", "2", "512"),
-        "comfyui" => ("3200m", "2", "256"),
-        "kroki" => ("600m", "1", "128"),
+        "design-tools" => ("2048m", "2", "512"),
+        "kroki" => ("512m", "1", "128"),
         _ => ("350m", "1", "128"),
     }
+}
+fn validate_group_memory(groups: &BTreeSet<String>, available_bytes: u64) -> Result<()> {
+    let mut required_mib = 512_u64; // VM kernel and service-manager headroom.
+    for alias in ALIASES
+        .into_iter()
+        .filter(|alias| group_enabled(groups, alias))
+    {
+        required_mib += limits(alias).0.trim_end_matches('m').parse::<u64>()?;
+    }
+    ensure!(
+        available_bytes >= required_mib * 1024 * 1024,
+        "selected design groups require at least {required_mib} MiB of usable VM RAM including 512 MiB OS headroom; select fewer groups or resize the stopped environment with mirket environment resize"
+    );
+    Ok(())
 }
 fn validate_published_ports(ports: &BTreeMap<String, u16>) -> Result<()> {
     ensure!(
@@ -1176,11 +1328,12 @@ fn reserve_start_ports(
     ports: &mut BTreeMap<String, u16>,
     present: &BTreeSet<&str>,
     running: &BTreeSet<&str>,
+    active: &BTreeSet<&str>,
 ) -> Result<(BTreeMap<String, TcpListener>, bool)> {
     let mut reservations = BTreeMap::new();
     let mut changed = false;
     for (key, alias, internal) in PUBLISHED {
-        if running.contains(alias) {
+        if !active.contains(alias) || running.contains(alias) {
             continue;
         }
         let mapping = format!("127.0.0.1:{}:{internal}", ports[key]);
@@ -1283,7 +1436,7 @@ fn create_container(
         "--volume".into(),
         format!("{}:/workspace:rw", work.display()),
     ];
-    if alias == "design-tools" {
+    if ["design-tools", "penpot-session"].contains(&alias) {
         args.push("--init".into());
     }
     if alias == "penpot-frontend" {
@@ -1308,17 +1461,8 @@ fn create_container(
     let env_path = env_file(paths, state, alias)?;
     args.extend(["--env-file".into(), env_path.to_string_lossy().into_owned()]);
     args.push(image.clone());
-    if alias == "penpot-valkey" {
-        args.extend([
-            "valkey-server".into(),
-            "--save".into(),
-            "60".into(),
-            "1".into(),
-            "--appendonly".into(),
-            "yes".into(),
-            "--dir".into(),
-            "/data".into(),
-        ]);
+    if let Some(command) = service_command(alias) {
+        args.extend(command.into_iter().map(str::to_owned));
     }
     effects.push(StartEffect::CreatedContainer {
         alias: alias.to_owned(),
@@ -1347,13 +1491,6 @@ fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
         .redirect(reqwest::redirect::Policy::none())
         .build()?;
     let (url, require_json) = match alias {
-        "browserless" => (
-            format!(
-                "http://127.0.0.1:{}/pressure?token={}",
-                state.published_ports["browserless"], state.browserless_token
-            ),
-            true,
-        ),
         "penpot-mcp" => (
             format!(
                 "http://127.0.0.1:{}/manifest.json",
@@ -1371,20 +1508,6 @@ fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
         "kroki" => (
             format!("http://127.0.0.1:{}/health", state.published_ports["kroki"]),
             false,
-        ),
-        "imgproxy" => (
-            format!(
-                "http://127.0.0.1:{}/health",
-                state.published_ports["imgproxy"]
-            ),
-            false,
-        ),
-        "comfyui" => (
-            format!(
-                "http://127.0.0.1:{}/system_stats",
-                state.published_ports["comfyui"]
-            ),
-            true,
         ),
         _ => return Ok(()),
     };
@@ -1412,15 +1535,6 @@ fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
     }
     if require_json {
         let value = readiness_json(response, alias)?;
-        if alias == "browserless" {
-            ensure!(
-                value["pressure"]["isAvailable"].is_boolean()
-                    && value["pressure"]["maxConcurrent"]
-                        .as_u64()
-                        .is_some_and(|count| count > 0),
-                "Browserless pressure response shape drift"
-            );
-        }
         if alias == "penpot-frontend" {
             ensure!(
                 value["id"] == "00000000-0000-0000-0000-000000000000"
@@ -1434,12 +1548,6 @@ fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
                 "official Penpot plugin manifest identity drift"
             );
         }
-        if alias == "comfyui" {
-            ensure!(
-                value["system"].is_object() || value["devices"].is_array(),
-                "ComfyUI system_stats shape drift"
-            );
-        }
     }
     Ok(())
 }
@@ -1448,7 +1556,7 @@ fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
     let cmd = match alias {
         "penpot-postgres" => Some(vec!["pg_isready", "-U", "penpot", "-d", "penpot"]),
         "penpot-valkey" => Some(vec!["valkey-cli", "ping"]),
-        "design-tools" => Some(vec![
+        "design-tools" | "penpot-session" => Some(vec![
             "node",
             "-e",
             "fetch('http://127.0.0.1:9002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
@@ -1473,13 +1581,10 @@ fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
 fn startup_diagnostic(state: &State, value: &str) -> String {
     let mut redacted = value.to_owned();
     for secret in [
-        &state.browserless_token,
         &state.database_password,
         &state.service_secret,
         &state.penpot_email,
         &state.penpot_password,
-        &state.imgproxy_key,
-        &state.imgproxy_salt,
     ] {
         if !secret.is_empty() {
             redacted = redacted.replace(secret, "[redacted]");
@@ -1498,8 +1603,12 @@ fn startup_logs(engine: &Engine, state: &State, name: &str) -> String {
     )
 }
 fn await_ready(engine: &Engine, state: &State, alias: &str) -> Result<()> {
-    let deadline =
-        Instant::now() + Duration::from_secs(if alias == "design-tools" { 180 } else { 90 });
+    let deadline = Instant::now()
+        + Duration::from_secs(if ["design-tools", "penpot-session"].contains(&alias) {
+            180
+        } else {
+            90
+        });
     let name = name(&state.owner, alias);
     loop {
         let problem = match probe_container(engine, state, alias) {
@@ -1591,14 +1700,40 @@ fn rollback(engine: &Engine, effects: &[StartEffect], state: &State, work: &Path
     }
     failures
 }
-pub(super) fn start(paths: &Paths) -> Result<Value> {
+pub(super) fn start(paths: &Paths, groups: &[String]) -> Result<Value> {
     let engine = engine(paths)?;
     let installed = receipt(paths, &engine)?;
     let work = ensure_workspace(paths)?;
     let dir = root(paths);
     util::ensure_directory(&dir)?;
     let _lock = util::FileLock::acquire(&dir.join("operation.lock"))?;
+    migrate_stopped_state(paths, &engine, &installed)?;
     let mut state = new_state(paths, &engine, &installed)?;
+    let requested = if groups.is_empty() {
+        state.groups.clone()
+    } else {
+        selected_groups(groups)?
+    };
+    let usable_memory = engine.ready()?["host"]["memTotal"]
+        .as_u64()
+        .context("Podman did not report usable VM memory")?;
+    validate_group_memory(&requested, usable_memory)?;
+    if requested != state.groups {
+        for alias in ALIASES {
+            ensure!(
+                existing(
+                    &engine,
+                    "container",
+                    &name(&state.owner, alias),
+                    &state.owner
+                )?
+                .is_none(),
+                "stop the design stack before changing enabled groups"
+            );
+        }
+        state.groups = requested;
+        save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)?;
+    }
     ensure!(
         state.images == installed.images,
         "design state image receipt drift"
@@ -1635,15 +1770,27 @@ pub(super) fn start(paths: &Paths) -> Result<Value> {
             }
         }
     }
-    let (mut reservations, ports_changed) =
-        reserve_start_ports(&mut state.published_ports, &present_owned, &running_owned)?;
+    let active = ALIASES
+        .into_iter()
+        .filter(|alias| enabled(&state, alias))
+        .collect();
+    let (mut reservations, ports_changed) = reserve_start_ports(
+        &mut state.published_ports,
+        &present_owned,
+        &running_owned,
+        &active,
+    )?;
     if ports_changed {
         save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)?;
     }
     let mut effects = Vec::new();
     let result = (|| -> Result<()> {
         ensure_resources(&engine, &state, &mut effects)?;
-        for alias in ALIASES {
+        for alias in ALIASES
+            .into_iter()
+            .filter(|alias| enabled(&state, alias))
+            .collect::<Vec<_>>()
+        {
             release_service_ports(&mut reservations, alias);
             if let Err(error) = create_container(paths, &engine, &state, alias, &work, &mut effects)
             {
@@ -1724,33 +1871,22 @@ fn status_with(engine: &Engine, state: &State, work: &Path) -> Result<Value> {
         } else {
             (false, false)
         };
-        entries.push(json!({"service":alias,"container":n,"present":present,"running":live,"published_ports":published_mappings(state, alias)}));
+        entries.push(json!({"service":alias,"container":n,"present":present,"running":live,"enabled":enabled(state, alias),"published_ports":published_mappings(state, alias)}));
     }
-    let ready = entries.iter().all(|v| v["running"] == true)
-        && [
-            "browserless",
-            "penpot-mcp",
-            "penpot-frontend",
-            "kroki",
-            "imgproxy",
-            "comfyui",
-            "design-tools",
-        ]
+    let core_ready = entries
         .iter()
-        .all(|alias| {
-            // Container identity and running state were checked in the batch.
-            // The workspace listener is private; its application probe needs exec.
-            if *alias == "design-tools" {
-                probe_container(engine, state, alias).is_ok()
-            } else {
-                engine
-                    .remaining_budget(Duration::from_secs(3))
-                    .and_then(|budget| http_ready(alias, state, budget))
-                    .is_ok()
-            }
-        });
+        .any(|v| v["service"] == "design-tools" && v["running"] == true)
+        && probe_container(engine, state, "design-tools").is_ok();
+    let ready = entries
+        .iter()
+        .filter(|v| v["enabled"] == true)
+        .all(|v| v["running"] == true)
+        && ALIASES
+            .iter()
+            .filter(|alias| enabled(state, alias))
+            .all(|alias| probe_container(engine, state, alias).is_ok());
     Ok(
-        json!({"package":"design","ready":ready,"workspace":work,"services":entries,"network":name(&state.owner,"network"),"published_ports":state.published_ports}),
+        json!({"package":"design","ready":ready,"core_ready":core_ready,"groups":state.groups,"workspace":work,"services":entries,"network":name(&state.owner,"network"),"published_ports":state.published_ports}),
     )
 }
 pub(super) fn status(paths: &Paths) -> Result<Value> {
@@ -1865,9 +2001,7 @@ pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
         }
         fs::remove_file(state_path(paths))?;
     }
-    Ok(
-        json!({"package":"design","stopped":true,"purged_data":purge_data,"workspace":workspace(paths)?}),
-    )
+    Ok(json!({"package":"design","stopped":true,"purged_data":purge_data,"workspace":work}))
 }
 pub(super) fn launch(paths: &Paths, deadline: Instant) -> Result<LaunchSpec> {
     let engine = Engine::resolve(paths)?.with_deadline(deadline);
@@ -1883,11 +2017,19 @@ pub(super) fn launch(paths: &Paths, deadline: Instant) -> Result<LaunchSpec> {
         "design state image receipt drift"
     );
     let work = workspace(paths)?;
-    let status = status_with(&engine, &state, &work)?;
+    let core = existing(
+        &engine,
+        "container",
+        &name(&state.owner, "design-tools"),
+        &state.owner,
+    )?
+    .context("design core is absent; run mirket package start design")?;
+    validate_container(&core, &state, "design-tools", &work)?;
     ensure!(
-        status["ready"] == true,
-        "design stack is not ready; run mirket package start design"
+        running(&core),
+        "design core is stopped; run mirket package start design"
     );
+    probe_container(&engine, &state, "design-tools")?;
     let mut args = Vec::new();
     if cfg!(target_os = "macos") || cfg!(windows) {
         args.extend(["--connection".into(), engine.connection.clone()]);
@@ -1919,6 +2061,31 @@ pub(super) fn launch(paths: &Paths, deadline: Instant) -> Result<LaunchSpec> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn groups_require_explicit_heavy_capabilities() {
+        assert_eq!(
+            selected_groups(&[]).unwrap(),
+            BTreeSet::from(["core".into()])
+        );
+        assert_eq!(
+            selected_groups(&["diagrams".into()]).unwrap(),
+            BTreeSet::from(["core".into(), "diagrams".into()])
+        );
+        assert_eq!(selected_groups(&["all".into()]).unwrap().len(), 3);
+        assert!(selected_groups(&["invented".into()]).is_err());
+        assert!(validate_groups(&BTreeSet::from(["penpot".into()])).is_err());
+    }
+
+    #[test]
+    fn selected_service_caps_leave_os_headroom_before_starting() {
+        let core = selected_groups(&[]).unwrap();
+        let all = selected_groups(&["all".into()]).unwrap();
+        assert!(validate_group_memory(&core, 6144 * 1024 * 1024).is_ok());
+        assert!(validate_group_memory(&all, 7900 * 1024 * 1024).is_ok());
+        assert!(validate_group_memory(&all, 7680 * 1024 * 1024).is_err());
+        assert!(validate_group_memory(&core, 2559 * 1024 * 1024).is_err());
+    }
 
     #[test]
     fn batch_inspection_checks_every_identity_and_owner() {
@@ -1986,7 +2153,6 @@ mod tests {
         let (host, tools) = tool_budgets().unwrap();
         assert_eq!(host, tools.values().copied().max().unwrap());
         assert!(tools["hyperframes_render"] > Duration::from_secs(120));
-        assert!(tools["comfyui_submit"] > Duration::from_secs(180));
         assert!(tools["typst_compile"] > tools["hyperframes_render"]);
     }
 
@@ -2008,10 +2174,10 @@ mod tests {
     fn occupied_host_port_is_reported_before_startup_effects() {
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
         let mapping = format!("{}:3000", listener.local_addr().unwrap());
-        let error = preflight_host_port("browserless", &mapping).unwrap_err();
-        assert!(format!("{error:#}").contains("browserless requires free host address"));
+        let error = preflight_host_port("kroki", &mapping).unwrap_err();
+        assert!(format!("{error:#}").contains("kroki requires free host address"));
         drop(listener);
-        preflight_host_port("browserless", &mapping).unwrap();
+        preflight_host_port("kroki", &mapping).unwrap();
     }
 
     #[test]
@@ -2019,32 +2185,48 @@ mod tests {
         let occupied = TcpListener::bind("127.0.0.1:0").unwrap();
         let port = occupied.local_addr().unwrap().port();
         let mut ports = allocate_published_ports().unwrap();
-        ports.insert("browserless".into(), port);
+        ports.insert("kroki".into(), port);
         validate_published_ports(&ports).unwrap();
         let before = ports.clone();
+        let (inactive, changed) = reserve_start_ports(
+            &mut ports,
+            &BTreeSet::from(["kroki"]),
+            &BTreeSet::new(),
+            &BTreeSet::from(["design-tools"]),
+        )
+        .unwrap();
+        assert!(inactive.is_empty());
+        assert!(!changed);
+        assert_eq!(ports, before);
         assert!(
             reserve_start_ports(
                 &mut ports,
-                &BTreeSet::from(["browserless"]),
-                &BTreeSet::new()
+                &BTreeSet::from(["kroki"]),
+                &BTreeSet::new(),
+                &ALIASES.into_iter().collect()
             )
             .is_err()
         );
         assert_eq!(ports, before);
-        let (mut reservations, changed) =
-            reserve_start_ports(&mut ports, &BTreeSet::new(), &BTreeSet::new()).unwrap();
+        let (mut reservations, changed) = reserve_start_ports(
+            &mut ports,
+            &BTreeSet::new(),
+            &BTreeSet::new(),
+            &ALIASES.into_iter().collect(),
+        )
+        .unwrap();
         assert!(changed);
-        assert_ne!(ports["browserless"], port);
+        assert_ne!(ports["kroki"], port);
         for (key, value) in before {
-            if key != "browserless" {
+            if key != "kroki" {
                 assert_eq!(ports[&key], value);
             }
         }
         assert_eq!(reservations.len(), PUBLISHED.len());
         validate_published_ports(&ports).unwrap();
-        assert!(TcpListener::bind(("127.0.0.1", ports["browserless"])).is_err());
-        release_service_ports(&mut reservations, "browserless");
-        let claimed = TcpListener::bind(("127.0.0.1", ports["browserless"])).unwrap();
+        assert!(TcpListener::bind(("127.0.0.1", ports["kroki"])).is_err());
+        release_service_ports(&mut reservations, "kroki");
+        let claimed = TcpListener::bind(("127.0.0.1", ports["kroki"])).unwrap();
         assert!(TcpListener::bind(("127.0.0.1", ports["penpot_plugin"])).is_err());
         drop(claimed);
     }
@@ -2127,22 +2309,5 @@ mod tests {
         ] {
             assert!(staged.contains(required), "missing build input: {required}");
         }
-    }
-
-    #[test]
-    fn comfy_build_closure_covers_reviewed_source_patch() {
-        let authored: BTreeSet<String> = fs::read_dir(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/runtime/design/comfyui"
-        ))
-        .unwrap()
-        .map(|entry| entry.unwrap().file_name().to_string_lossy().into_owned())
-        .collect();
-        let staged: BTreeSet<String> = build_files("comfyui")
-            .iter()
-            .map(|(name, _)| (*name).to_owned())
-            .collect();
-        assert_eq!(authored, staged);
-        assert!(staged.contains("exclude-3d.py"));
     }
 }

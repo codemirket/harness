@@ -64,11 +64,11 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Supplied evidence and a written answer | `analysis` | Project reads; no edits or external retrieval |
 | One mechanical in-memory response | `structured-response` | No tools; strict deterministic operation |
 | Code changes / source findings | `source-implementation` / `source-review` | Writes plus exact readback / reads only |
-| Existing pixels or live DOM inspection | `visual-review` | Browserless, Odiff and pixel inspection; no source edits |
-| Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Browserless / Satori-resvg, followed by inspection |
+| Existing pixels or live DOM inspection | `visual-review` | Playwright, Odiff and pixel inspection; no source edits |
+| Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Playwright / Satori-resvg, followed by inspection |
 | Layered editable canvas | `editable-interface` | Official connected Penpot MCP and exported evidence |
 | Graph layout / encoded motion / paged output | `diagram` / `motion` / `paged-media` | Kroki / HyperFrames / Typst with inspected outputs |
-| Synthesis / preparation of rasters | `raster-generation` / `raster-processing` | ComfyUI / imgproxy with inspection |
+| Editable vector art / raster preparation | `vector-art` / `raster-processing` | SVG/resvg previews / Sharp with inspection |
 | Vector hygiene / comparable pixels / tokens | `vector-optimization` / `pixel-comparison` / `design-tokens` | SVGO / Odiff / Style Dictionary |
 
 Defaults choose the task specialist. `primary_role` can name an explicit catalog

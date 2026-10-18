@@ -27,25 +27,17 @@ below. Publish each native distribution's notice file alongside its executables.
 ## Runtime packages
 
 The single `design` package contains individually licensed upstream tools.
-[The design stack manifest](../registry/design-stack.json) records the 11 tool
-domains, source locations, pinned service images and source builds. Style
-Dictionary, Satori/resvg, Browserless, official Penpot MCP, Kroki, HyperFrames,
-Typst, imgproxy, SVGO, ComfyUI and Odiff keep their own terms. Packaged dependency
-and source notices accompany the selected runtime; this page does not assign one
-blanket license to the stack.
+[The design stack manifest](../registry/design-stack.json) records ten tool
+ domains, source locations, pinned service images and source builds. Style
+Dictionary, Satori/resvg, Playwright, official Penpot MCP, Kroki, HyperFrames,
+Typst, Sharp, SVGO and Odiff keep their own terms. Dependency and source notices
+accompany the selected runtime; Mirket's license does not replace upstream terms.
 
-The tool container uses its checked-in [npm lock](../runtime/design/tools/package-lock.json).
-The pinned Penpot source archive contains its pnpm lock. The container profile
-adds its private `penpot-mcp` hostname to the plugin preview's allowed hosts.
-The API-only ComfyUI
-image uses the checked-in [hash-locked wheel closure](../runtime/design/comfyui/requirements.lock)
-derived from its pinned source; frontend, workflow-template and embedded-doc
-wheel families are excluded from that image. Check the licenses and notices of
-the dependencies actually present in each prepared image before distribution.
-
-The recorded digests establish artifact identity. They do not independently
-reproduce upstream binaries or establish artifact quality. See [packages](packages.md)
-for the runtime contract and required output checks.
+The pinned Penpot source contains its pnpm lock. Production includes the official
+compiled MCP server, its production dependencies and static plugin distribution.
+Playwright and Sharp are Apache-2.0; Chromium, libvips, codecs, fonts and diagram
+engines retain their individual notices. No model checkpoint or local neural
+inference runtime is distributed by the design package.
 
 ## mattpocock/skills
 

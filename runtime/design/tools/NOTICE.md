@@ -7,10 +7,12 @@ The fixed production dependency versions and transitive package integrity hashes
 | @modelcontextprotocol/sdk | 1.32.1 | MIT |
 | @resvg/resvg-js | 2.6.2 | MPL-2.0 |
 | ajv | 8.17.1 | MIT |
+| css-tree | 3.2.1 | MIT |
 | hyperframes | 0.8.149 | Apache-2.0 |
 | odiff-bin | 4.5.0 | MIT |
 | playwright-core | 1.64.1 | Apache-2.0 |
 | satori | 0.62.0 | MPL-2.0 |
+| sharp | 0.35.5 | Apache-2.0 |
 | saxes | 6.0.0 | ISC |
 | style-dictionary | 5.7.0 | Apache-2.0 |
 | svgo | 4.1.0 | MIT |

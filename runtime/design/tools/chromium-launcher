@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /opt/design/runtime-guard run /usr/bin/chromium "$@"

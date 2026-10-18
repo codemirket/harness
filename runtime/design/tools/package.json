@@ -19,6 +19,8 @@
     "satori": "0.62.0",
     "saxes": "6.0.0",
     "style-dictionary": "5.7.0",
-    "svgo": "4.1.0"
+    "svgo": "4.1.0",
+    "sharp": "0.35.5",
+    "css-tree": "3.2.1"
   }
 }

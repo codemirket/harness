@@ -44,7 +44,7 @@ record when durable continuity or coordination requires it.
 | --- | --- |
 | Screen composition or visual refinement | Frontend Designer; Frontend Engineer supports actual framework and state behavior. |
 | Backend, database, mobile or desktop behavior | The matching Engineer or Database Admin role; use the real platform runtime. |
-| Editable graphics or illustrations | Graphic Designer or Illustrator for medium and composition; use `svg-creation` with SVGO for vectors, ComfyUI graphs for generated bitmaps and imgproxy for raster preparation. |
+| Editable graphics or illustrations | Graphic Designer or Illustrator for medium and composition; use `svg-creation` with SVGO for vectors, Sharp for raster preparation. |
 | Motion | Motion Designer starts with ordinary UI interactions; choose `advanced-motion` for art-directed website scenes, color/gradients and procedural Canvas, `svg-animation` for editable vector choreography, or `page-transitions` for navigation. The explicit `motion-studio` profile includes two contrasting browser examples. For video, run HyperFrames lint, snapshot and render, then inspect frames and playback. |
 | Regressions and release assessment | QA Engineer for system and user-journey checks; the same role's interface mode adds visual baselines, interaction and accessibility evidence. |
 | Trust boundaries and agent tools | Security Engineer; MCP Engineer owns protocol, transport and client/tool behavior when that boundary is affected. |
@@ -124,7 +124,7 @@ can run. Native host tools and the project's existing runtime take precedence;
 optional Mirket packages are selected only when they fit the requested deliverable.
 For example, graphic work routes through the single `design` package: Satori plus
 resvg for static composition, Kroki for diagrams, official Penpot MCP for editable
-files and Browserless plus Odiff for inspection. Select the tool from the output.
+files and Playwright plus Odiff for inspection. Select the tool from the output.
 Exact IDs remain directly searchable. Search ranks query relevance first:
 positive role/name/tag matches precede description-only matches;
 within that relevance tier, exact role/name matches precede exact tags and

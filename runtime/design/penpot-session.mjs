@@ -1,29 +1,37 @@
-// Keep the official Penpot MCP plugin connected in a real Browserless tab.
-// This process is supervised by workspace-server.mjs and writes diagnostics to stderr only.
+// Keep the official Penpot MCP plugin connected in a real Playwright tab.
+// This separately supervised service writes diagnostics to stderr only.
 import { chromium } from 'playwright-core';
 import fs from 'node:fs/promises';
+import http from 'node:http';
+let ready = false;
+const health = http.createServer((req, res) => { res.writeHead(req.url === '/health' && ready ? 200 : 503); res.end(JSON.stringify({penpot_session: ready})); }).listen(9002, '0.0.0.0');
 
 const frontend = 'http://penpot-frontend:8080';
 const manifest = 'http://penpot-mcp:4400/manifest.json';
-const browserless = new URL('ws://browserless:3000');
-browserless.searchParams.set('token', process.env.MIRKET_BROWSERLESS_TOKEN || '');
-// The plugin requires Web Crypto on both its frame and ancestor origin.
-// These HTTP origins are confined to the owned, private design network.
-browserless.searchParams.set('launch', JSON.stringify({args: [
-  `--unsafely-treat-insecure-origin-as-secure=${frontend},${new URL(manifest).origin}`,
-]}));
 const email = process.env.MIRKET_PENPOT_EMAIL;
 const password = process.env.MIRKET_PENPOT_PASSWORD;
 const savedFile = '/workspace/.mirket/penpot-session.json';
-if (!email || !password || !process.env.MIRKET_BROWSERLESS_TOKEN) {
-  throw Error('Missing private Penpot account or Browserless token');
+if (!email || !password) {
+  throw Error('Missing private Penpot account');
 }
 
 let browser;
 let closed = false;
-for (const signal of ['SIGINT', 'SIGTERM']) {
-  process.once(signal, () => { closed = true; void browser?.close().finally(() => process.exit(0)); });
+let shutdownPromise;
+function shutdown(code) {
+  if (shutdownPromise) return shutdownPromise;
+  closed = true;
+  ready = false;
+  const deadline = setTimeout(() => process.exit(code), 3000);
+  shutdownPromise = (async () => {
+    health.close();
+    try { await browser?.close(); } catch {}
+    clearTimeout(deadline);
+    process.exit(code);
+  })();
+  return shutdownPromise;
 }
+for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void shutdown(0); });
 
 async function rpc(context, name, data) {
   const url = `${frontend}/api/main/methods/${name}`;
@@ -91,7 +99,8 @@ async function waitForPluginFrame(page) {
 }
 
 async function main() {
-  browser = await chromium.connectOverCDP(browserless.href, { timeout: 30000 });
+  browser = await chromium.launch({executablePath: '/opt/design/chromium-launcher', headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage', `--unsafely-treat-insecure-origin-as-secure=${frontend},${new URL(manifest).origin}`], env: {PATH: process.env.PATH, HOME: '/tmp', TMPDIR: '/tmp', LANG: 'C.UTF-8'}, timeout: 30000});
+  if (closed) { await browser.close(); return; }
   const context = await browser.newContext({ viewport: null, serviceWorkers: 'block' });
   const profile = await account(context);
   const fileId = await designFile(context, profile);
@@ -115,8 +124,10 @@ async function main() {
     const detail = (await frame.locator('#status-text').innerText()).trim().slice(0, 500);
     throw Error(`Official Penpot MCP plugin failed: ${detail}`);
   }
-  // Set the canvas viewport after Browserless initializes the plugin iframe.
+  // Set the canvas viewport after Playwright initializes the plugin iframe.
   await page.setViewportSize({ width: 1600, height: 1000 });
+  if (closed) return;
+  ready = true;
   process.stderr.write(JSON.stringify({ ready: true, service: 'penpot-session', file_id: fileId, origin: frontend }) + '\n');
   while (!closed) {
     if (page.isClosed() || !(await frame.locator('#connection-status[data-status="connected"]').count().catch(() => 0))) {
@@ -128,10 +139,9 @@ async function main() {
 
 main().catch(async error => {
   let message = String(error?.message ?? error);
-  for (const secret of [process.env.MIRKET_BROWSERLESS_TOKEN, password]) {
+  for (const secret of [email, password]) {
     if (secret) message = message.replaceAll(secret, '[redacted]');
   }
   process.stderr.write(`penpot-session: ${message.slice(0, 2000)}\n`);
-  try { await browser?.close(); } catch {}
-  process.exitCode = 1;
+  await shutdown(1);
 });

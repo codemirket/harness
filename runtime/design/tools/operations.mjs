@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {optimize} from 'svgo';
 import {SaxesParser} from 'saxes';
+import {parse as parseCss, walk as walkCss} from 'css-tree';
 import {compileTokens} from './tokens.mjs';
 import {workspace, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, MAX_OUTPUT} from './paths.mjs';
 import {checkRequest, requestSignal, combinedSignal, redactSecrets} from './request.mjs';
@@ -52,20 +53,22 @@ function pngDimensions(bytes) {
 export function screenshotPixelPlan({width, height, fullPage, cssContentSize}) {
   let clipWidth = width, clipHeight = height;
   if (fullPage) {
-    if (!cssContentSize || !Number.isFinite(cssContentSize.width) || !Number.isFinite(cssContentSize.height) || cssContentSize.width <= 0 || cssContentSize.height <= 0) throw Error('Browserless content metrics are invalid');
+    if (!cssContentSize || !Number.isFinite(cssContentSize.width) || !Number.isFinite(cssContentSize.height) || cssContentSize.width <= 0 || cssContentSize.height <= 0) throw Error('Playwright content metrics are invalid');
     clipWidth = Math.max(width, Math.ceil(cssContentSize.width));
     clipHeight = Math.max(height, Math.ceil(cssContentSize.height));
   }
   const pixelWidth = clipWidth * SCREENSHOT_SCALE, pixelHeight = clipHeight * SCREENSHOT_SCALE;
-  if (!Number.isSafeInteger(pixelWidth) || !Number.isSafeInteger(pixelHeight) || pixelWidth < 1 || pixelHeight < 1 || pixelWidth * pixelHeight > SCREENSHOT_MAX_PIXELS) throw Error('Browserless screenshot exceeds 16 Mi pixel budget');
+  if (!Number.isSafeInteger(pixelWidth) || !Number.isSafeInteger(pixelHeight) || pixelWidth < 1 || pixelHeight < 1 || pixelWidth * pixelHeight > SCREENSHOT_MAX_PIXELS) throw Error('Playwright screenshot exceeds 16 Mi pixel budget');
   return {pixelWidth, pixelHeight, clipWidth, clipHeight};
 }
 export function verifyScreenshotPixels(width, height, plan) {
-  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width < 1 || height < 1) throw Error('Browserless screenshot dimensions are invalid');
-  if (width * height > SCREENSHOT_MAX_PIXELS) throw Error('Browserless screenshot exceeds 16 Mi pixel budget');
-  if (width !== plan.pixelWidth || height !== plan.pixelHeight) throw Error('Browserless screenshot dimensions differ from the bounded capture');
+  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width < 1 || height < 1) throw Error('Playwright screenshot dimensions are invalid');
+  if (width * height > SCREENSHOT_MAX_PIXELS) throw Error('Playwright screenshot exceeds 16 Mi pixel budget');
+  if (width !== plan.pixelWidth || height !== plan.pixelHeight) throw Error('Playwright screenshot dimensions differ from the bounded capture');
 }
 export function fullPageCaptureParams(plan) {
+  // CDP clip scaling is independent of the context DPR in pinned Chromium.
+  // The live adapter test verifies 400x500 CSS pixels become 800x1000 pixels.
   return {format: 'png', fromSurface: true, captureBeyondViewport: true,
     clip: {x: 0, y: 0, width: plan.clipWidth, height: plan.clipHeight, scale: SCREENSHOT_SCALE}};
 }
@@ -74,29 +77,38 @@ function svgBytes(source) {
   // exactly that header without resolving it; reject every other DTD or entity.
   source = source.replace(/^(\uFEFF?\s*(?:<\?xml\b[^>]*\?>\s*)?)<!DOCTYPE\s+svg\s+PUBLIC\s+"-\/\/W3C\/\/DTD SVG 1\.1\/\/EN"\s+"http:\/\/www\.w3\.org\/Graphics\/SVG\/1\.1\/DTD\/svg11\.dtd"\s*>/, '$1');
   if (/<!\s*(?:DOCTYPE|ENTITY)/i.test(source)) throw Error('SVG DTD and entity declarations are refused');
-  const parser = new SaxesParser({xmlns: true});
-  let styleDepth = 0;
   const safeResource = value => /^#[^\s]+$/.test(value) || /^data:(?:font\/(?:woff2?|ttf|otf)|image\/(?:png|jpeg|gif|webp|avif));base64,[a-zA-Z0-9+/=]+$/.test(value);
-  const inspectCss = value => {
-    if (/@import|\\/.test(value)) throw Error('SVG external or escaped CSS resources are refused');
-    for (const match of value.matchAll(/url\(\s*(['"]?)(.*?)\1\s*\)/gi)) {
-      if (!safeResource(match[2].trim())) throw Error('SVG external style resource is refused');
-    }
+  const inspectCss = (value, context = 'stylesheet') => {
+    if (/\\/.test(value)) throw Error('SVG external or escaped CSS resources are refused');
+    const ast = parseCss(value, {context, onParseError(error) { throw error; }});
+    walkCss(ast, node => {
+      if (node.type === 'Raw' || (node.type === 'Atrule' && node.name.toLowerCase() === 'import')) throw Error('SVG external or unparsed CSS resources are refused');
+      if (node.type === 'Url' && !safeResource(node.value.trim())) throw Error('SVG external style resource is refused');
+    });
   };
-  parser.on('opentag', tag => {
-    if (['script', 'foreignObject', 'animate', 'animateMotion', 'animateTransform', 'set'].includes(tag.local)) throw Error(`Unsafe SVG element: ${tag.local}`);
-    if (tag.local === 'style') styleDepth++;
-    for (const attr of Object.values(tag.attributes)) {
-      if (attr.local.toLowerCase().startsWith('on')) throw Error('SVG event handlers are refused');
-      if (['href', 'src'].includes(attr.local.toLowerCase()) && !safeResource(attr.value)) throw Error('SVG external resources are refused');
-      if (/(?:url\s*\(|@import)/i.test(attr.value)) inspectCss(attr.value);
-    }
-  });
-  parser.on('closetag', tag => { if (tag.local === 'style') styleDepth--; });
-  parser.on('text', value => { if (styleDepth) inspectCss(value); });
-  parser.write(source).close();
-  const result = optimize(source, {multipass: true, plugins: ['preset-default', 'removeDimensions']});
+  const validate = xml => {
+    const parser = new SaxesParser({xmlns: true});
+    const styles = [];
+    parser.on('opentag', tag => {
+      if (['script', 'foreignObject', 'animate', 'animateMotion', 'animateTransform', 'set'].includes(tag.local)) throw Error(`Unsafe SVG element: ${tag.local}`);
+      if (tag.local === 'style') styles.push('');
+      for (const attr of Object.values(tag.attributes)) {
+        if (attr.local.toLowerCase().startsWith('on')) throw Error('SVG event handlers are refused');
+        if (['href', 'src'].includes(attr.local.toLowerCase()) && !safeResource(attr.value)) throw Error('SVG external resources are refused');
+        if (attr.local === 'style') inspectCss(attr.value, 'declarationList');
+        else if (/(?:url\s*\(|@import|\\)/i.test(attr.value)) inspectCss(attr.value, 'value');
+      }
+    });
+    parser.on('closetag', tag => { if (tag.local === 'style') inspectCss(styles.pop()); });
+    const content = value => { if (styles.length) styles[styles.length - 1] += value; };
+    parser.on('text', content);
+    parser.on('cdata', content);
+    parser.write(xml).close();
+  };
+  validate(source);
+  const result = optimize(source, {multipass: true, plugins: [{name: 'preset-default', params: {overrides: {cleanupIds: false, collapseGroups: false}}}, 'removeDimensions']});
   if (result.error || !result.data?.includes('<svg')) throw Error(`SVGO rejected SVG: ${result.error || 'missing root'}`);
+  validate(result.data);
   return Buffer.from(result.data);
 }
 export {svgBytes as optimizeSvgBytes};
@@ -116,45 +128,36 @@ async function fetchBytes(url, {method = 'GET', body, headers = {}, max = MAX_OU
   if (!data.length || data.length > max) throw Error('Service response is empty or exceeds output bound');
   return {bytes: data, content_type: response.headers.get('content-type') || ''};
 }
-function signImgproxy(pathAfterSignature) {
-  const key = process.env.MIRKET_IMGPROXY_KEY, salt = process.env.MIRKET_IMGPROXY_SALT;
-  if (!key || !salt || !/^(?:[0-9a-f]{2})+$/i.test(key) || !/^(?:[0-9a-f]{2})+$/i.test(salt)) throw Error('imgproxy signing key and salt are required');
-  return crypto.createHmac('sha256', Buffer.from(key, 'hex')).update(Buffer.from(salt, 'hex')).update(pathAfterSignature).digest('base64url');
-}
-export async function imgproxyBytes(args, max = MAX_OUTPUT) {
-  assertRelative(args.source);
-  await workspacePath(args.source);
+export async function rasterBytes(args, max = MAX_OUTPUT) {
   const width = Number(args.width), height = Number(args.height);
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 4096 || height > 4096) throw Error('imgproxy dimensions must be integers in 1..4096');
-  const mode = args.mode || 'fit';
-  if (!['fit', 'fill', 'force'].includes(mode)) throw Error('Unsupported imgproxy resize mode');
-  const format = args.format || 'png';
-  if (!['png', 'jpeg', 'webp', 'avif'].includes(format)) throw Error('Unsupported imgproxy output format');
-  const encoded = args.source.split('/').map(encodeURIComponent).join('/');
-  const suffix = format === 'jpeg' ? 'jpg' : format;
-  const gravity = args.gravity || 'sm';
-  if (!['sm', 'ce', 'no', 'ea', 'so', 'we'].includes(gravity)) throw Error('Unsupported imgproxy gravity');
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 4096 || height > 4096) throw Error('Raster dimensions must be integers in 1..4096');
+  const mode = args.mode || 'fit', format = args.format || 'png', gravity = args.gravity || 'sm';
+  if (!['fit', 'fill', 'force'].includes(mode)) throw Error('Unsupported raster resize mode');
+  if (!['png', 'jpeg', 'webp', 'avif'].includes(format)) throw Error('Unsupported raster output format');
+  if (!['sm', 'ce', 'no', 'ea', 'so', 'we'].includes(gravity)) throw Error('Unsupported raster gravity');
+  if (args.enlarge !== undefined && typeof args.enlarge !== 'boolean') throw Error('Raster enlarge must be boolean');
+  const enlarge = args.enlarge === true;
   const quality = args.quality == null ? 82 : Number(args.quality);
-  if (!Number.isInteger(quality) || quality < 1 || quality > 100) throw Error('imgproxy quality must be in 1..100');
-  const remainder = `/rs:${mode}:${width}:${height}/g:${gravity}/q:${quality}/plain/local:///${encoded}@${suffix}`;
-  const signature = signImgproxy(remainder);
-  const result = await fetchBytes(`http://imgproxy:8080/${signature}${remainder}`, {max});
-  if (format === 'png') {
-    const [w, h] = pngDimensions(result.bytes);
-    if (w > width || h > height || w < 1 || h < 1) throw Error('imgproxy output dimensions are outside requested bounds');
-  }
-  return result.bytes;
+  if (!Number.isInteger(quality) || quality < 1 || quality > 100) throw Error('Raster quality must be in 1..100');
+  // Snapshot before native decoding; never give a worker an arbitrary workspace path.
+  const bytes = await readFile(args.source, 32 * 1024 * 1024);
+  const temp = await temporaryDirectory('raster');
+  try {
+    const input = path.join(temp, 'input'), output = path.join(temp, 'output');
+    await fs.writeFile(input, bytes, {mode: 0o600});
+    await run(process.execPath, ['--max-old-space-size=192', path.join(toolRoot, 'raster-worker.mjs'), input, output, JSON.stringify({width, height, mode, format, gravity, quality, enlarge})], {timeoutMs: 90000});
+    return await regularOutput(output, max);
+  } finally { await fs.rm(temp, {recursive: true, force: true}); }
 }
-export async function imgproxyTransform(args) {
+export async function rasterTransform(args) {
   await assertOutputReady(args);
-  const tokens = await preflight(args);
-  const bytes = await imgproxyBytes(args);
+  const bytes = await rasterBytes(args);
   const saved = await publish(args.output, bytes, outputOptions(args));
-  return {tokens, artifact: saved, service: 'imgproxy'};
+  return {artifact: saved, service: 'sharp'};
 }
 
 const allowedTags = new Set(['div', 'span', 'p', 'h1', 'h2', 'h3', 'img', 'strong', 'em']);
-export async function prepareSatoriTree(tree, tokenValues, imageLoader = imgproxyBytes) {
+export async function prepareSatoriTree(tree, tokenValues, imageLoader = rasterBytes) {
   let nodes = 0, images = 0, pixels = 0, retained = 0;
   const cache = new Map();
   function validate(node, depth = 0) {
@@ -238,15 +241,43 @@ export async function staticRender(args) {
 }
 export async function svgOptimize(args) {
   await assertOutputReady(args);
-  const tokens = await preflight(args);
   const source = await readFile(args.source, 8 * 1024 * 1024);
   const bytes = svgBytes(source.toString('utf8'));
   const artifact = await publish(args.output, bytes, outputOptions(args));
-  return {tokens, artifact, engine: 'svgo'};
+  return {artifact, engine: 'svgo'};
+}
+export async function vectorRender(args) {
+  await assertOutputReady(args);
+  if (!args.output.endsWith('.svg')) throw Error('Vector artwork output must be an editable SVG');
+  const width = args.width ?? 1024, height = args.height ?? 1024;
+  if (![width, height].every(v => Number.isInteger(v) && v >= 16 && v <= 4096)) throw Error('Vector preview bounds must be in 16..4096');
+  if (!Array.isArray(args.fonts || []) || (args.fonts || []).length > 8) throw Error('At most eight vector fonts are supported');
+  const bytes = svgBytes((await readFile(args.source, 2 * 1024 * 1024)).toString('utf8'));
+  const temp = await temporaryDirectory('vector');
+  try {
+    const input = path.join(temp, 'source.svg'), png = path.join(temp, 'preview.png'), fonts = [];
+    await fs.writeFile(input, bytes);
+    let fontBytes = 0;
+    for (const source of args.fonts || []) {
+      if (!/\.(ttf|otf|woff)$/i.test(source)) throw Error('Vector fonts must be TTF, OTF or WOFF');
+      const data = await readFile(source, 8 * 1024 * 1024);
+      fontBytes += data.length;
+      if (fontBytes > 16 * 1024 * 1024) throw Error('Vector fonts exceed aggregate byte budget');
+      const target = path.join(temp, `font-${fonts.length}${path.extname(source)}`);
+      await fs.writeFile(target, data); fonts.push(target);
+    }
+    await run(process.execPath, ['--max-old-space-size=192', path.join(toolRoot, 'vector-worker.mjs'), input, png, JSON.stringify({width, height, fonts})], {timeoutMs: 60000});
+    const previewBytes = await regularOutput(png);
+    pngDimensions(previewBytes);
+    await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
+    const preview = await publish(`.mirket-design/qa/${crypto.randomUUID()}-vector.png`, previewBytes);
+    const artifact = await publish(args.output, bytes, outputOptions(args));
+    const qa = await inspectSaved(preview.path, args.baseline);
+    return {artifact, preview, qa, engine: 'svgo+resvg-js'};
+  } finally { await fs.rm(temp, {recursive: true, force: true}); }
 }
 export async function krokiRender(args) {
   await assertOutputReady(args);
-  const tokens = await preflight(args);
   const type = args.diagram_type;
   if (!['plantuml', 'c4plantuml', 'vegalite', 'excalidraw', 'd2', 'graphviz'].includes(type)) throw Error('Unsupported Kroki diagram type');
   const format = args.format || 'svg';
@@ -257,7 +288,7 @@ export async function krokiRender(args) {
   if (format === 'png') pngDimensions(bytes);
   const artifact = await publish(args.output, bytes, outputOptions(args));
   const qa = await inspectSaved(args.output, args.baseline);
-  return {tokens, artifact, qa, service: 'kroki', svg_optimized: format === 'svg'};
+  return {artifact, qa, service: 'kroki', svg_optimized: format === 'svg'};
 }
 
 export async function odiffCompare(args) {
@@ -303,9 +334,9 @@ async function tokenDocument(url, stylesheetUrl) {
   return injectTokenStylesheet(html, stylesheetUrl);
 }
 export async function withBrowserCaptureSession(connect, endpoint, connectOptions, operation, {signal = requestSignal(), timeoutMs = 120000} = {}) {
-  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) throw Error('Browserless capture deadline is invalid');
+  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) throw Error('Playwright capture deadline is invalid');
   const deadline = new AbortController();
-  const timer = setTimeout(() => deadline.abort(Error('Browserless capture operation timed out')), timeoutMs);
+  const timer = setTimeout(() => deadline.abort(Error('Playwright capture operation timed out')), timeoutMs);
   const operationSignal = signal ? AbortSignal.any([signal, deadline.signal]) : deadline.signal;
   let browser, closing;
   const closeBrowser = () => {
@@ -314,11 +345,11 @@ export async function withBrowserCaptureSession(connect, endpoint, connectOption
     return closing;
   };
   try {
-    if (operationSignal.aborted) throw operationSignal.reason || Error('Browserless capture operation cancelled');
+    if (operationSignal.aborted) throw operationSignal.reason || Error('Playwright capture operation cancelled');
     browser = await connect(endpoint, connectOptions);
     let rejectAbort;
     const aborted = new Promise((_, reject) => { rejectAbort = reject; });
-    const abortReason = () => operationSignal.reason instanceof Error ? operationSignal.reason : Error('Browserless capture operation cancelled');
+    const abortReason = () => operationSignal.reason instanceof Error ? operationSignal.reason : Error('Playwright capture operation cancelled');
     const onAbort = () => {
       void closeBrowser();
       rejectAbort(abortReason());
@@ -345,19 +376,43 @@ export async function withBrowserCaptureSession(connect, endpoint, connectOption
   }
 }
 
-async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], tokensCss} = {}) {
+export function validateBrowserActions(actions, time, reducedMotion) {
+  if (!Array.isArray(actions) || actions.length > 8) throw Error('At most eight browser actions are allowed');
+  for (const action of actions) {
+    if (!action || !['click', 'hover', 'focus', 'press'].includes(action.kind) || typeof action.selector !== 'string' || !action.selector.length || action.selector.length > 256) throw Error('Invalid browser action');
+    if (action.kind === 'press' && !['Enter', 'Space', 'Tab', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(action.key)) throw Error('Unsupported browser key');
+    if (action.kind !== 'press' && action.key != null) throw Error('Only press actions accept a key');
+  }
+  if (time != null && (!Number.isInteger(time) || time < 0 || time > 60000)) throw Error('Animation inspection time must be in 0..60000 ms');
+  if (!['reduce', 'no-preference'].includes(reducedMotion)) throw Error('Invalid reduced motion preference');
+}
+async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], tokensCss, actions = [], animation_time_ms, reduced_motion = 'no-preference'} = {}) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 64 || height < 64 || width > 1920 || height > 1920) throw Error('Browser viewport out of range');
-  const token = process.env.MIRKET_BROWSERLESS_TOKEN;
-  if (!token) throw Error('Browserless token is required');
-  // The native Playwright endpoint keeps context viewport and DPR authoritative.
-  // Browserless's separate Puppeteer initializer on its CDP route can otherwise
-  // replace them with 800x600/DPR1 before a document's first script runs.
-  const endpoint = new URL('ws://browserless:3000/chromium/playwright');
-  endpoint.searchParams.set('token', token);
+  validateBrowserActions(actions, animation_time_ms, reduced_motion);
+  if ((actions.length || animation_time_ms != null) && new URL(url).host !== 'design-tools:9002') throw Error('Interactive QA is limited to owned workspace pages');
   const {chromium} = await import('playwright-core');
-  return withBrowserCaptureSession(chromium.connect.bind(chromium), endpoint.toString(), {timeout: 15000}, async browser => {
-    const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true});
+  const scratch = await temporaryDirectory('browser');
+  let ownedServer;
+  try {
+  return await withBrowserCaptureSession(async (_, options) => {
+    ownedServer = await chromium.launchServer({...options, host: '127.0.0.1', port: 0});
+    return chromium.connect(ownedServer.wsEndpoint(), {timeout: 15000});
+  }, null, {
+    executablePath: path.join(toolRoot, 'chromium-launcher'), headless: true,
+    args: ['--no-sandbox', '--disable-dev-shm-usage', `--unsafely-treat-insecure-origin-as-secure=${new URL(url).origin}`],
+    env: {PATH: process.env.PATH, HOME: scratch, TMPDIR: scratch, LANG: 'C.UTF-8'}, timeout: 15000,
+  }, async browser => {
+    const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true, acceptDownloads: false, serviceWorkers: 'block', reducedMotion: reduced_motion, permissions: []});
     try {
+      const origin = new URL(url).origin;
+      // Fulfilled HTML lacks a peer address. Grant local-network access only
+      // to this owned origin so Chromium can load its workspace stylesheet/assets.
+      await context.grantPermissions(['local-network-access'], {origin});
+      await context.route('**/*', route => {
+        const target = new URL(route.request().url());
+        return target.origin === origin || ['data:', 'blob:'].includes(target.protocol) ? route.continue() : route.abort('blockedbyclient');
+      });
+      await context.routeWebSocket('**/*', ws => ws.close());
       const page = await context.newPage();
       const consoleErrors = [];
       page.on('pageerror', error => { if (consoleErrors.length < 20) consoleErrors.push(String(error).slice(0, 500)); });
@@ -374,18 +429,35 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       }
       await page.goto(url, {waitUntil: 'networkidle', timeout: 30000});
       if (wait_for) await page.locator(wait_for).waitFor({state: 'visible', timeout: 10000});
+      for (const action of actions) {
+        checkRequest();
+        const target = page.locator(action.selector);
+        if (action.kind === 'press') await target.press(action.key, {timeout: 5000});
+        else await target[action.kind]({timeout: 5000});
+      }
+      if (animation_time_ms != null) {
+        await page.evaluate(async time => {
+          if (typeof window.__mirketSeek === 'function') await window.__mirketSeek(time);
+          for (const animation of document.getAnimations()) { animation.pause(); animation.currentTime = time; }
+        }, animation_time_ms);
+      }
+
       if (!Array.isArray(inspect_selectors) || inspect_selectors.length > 16 || inspect_selectors.some(item => typeof item !== 'string' || item.length > 256)) throw Error('Inspect selectors are invalid');
       const evidence = await page.evaluate(selectors => ({
         title: document.title.slice(0, 256),
+        active_element: {tag: document.activeElement?.tagName || null, id: document.activeElement?.id?.slice(0, 256) || null},
         text: (document.body?.innerText || '').slice(0, 8192),
         viewport: {width: innerWidth, height: innerHeight, device_scale_factor: devicePixelRatio},
         scroll_width: document.documentElement.scrollWidth,
         client_width: document.documentElement.clientWidth,
         scroll_height: document.documentElement.scrollHeight,
         client_height: document.documentElement.clientHeight,
-        selectors: Object.fromEntries(selectors.map(selector => { const element = document.querySelector(selector); if (!element) return [selector, null]; const box = element.getBoundingClientRect(); return [selector, {text: (element.innerText || '').slice(0, 1024), visible: box.width > 0 && box.height > 0, x: box.x, y: box.y, width: box.width, height: box.height}]; })),
+        selectors: Object.fromEntries(selectors.map(selector => { const element = document.querySelector(selector); if (!element) return [selector, null]; const box = element.getBoundingClientRect(); const style = getComputedStyle(element); return [selector, {opacity: style.opacity, transform: style.transform, expanded: element.getAttribute('aria-expanded'), hidden: element.hidden, ... {text: (element.innerText || '').slice(0, 1024), visible: box.width > 0 && box.height > 0, x: box.x, y: box.y, width: box.width, height: box.height}}]; })),
       }), inspect_selectors);
-      if (evidence.viewport.width !== width || evidence.viewport.height !== height || evidence.viewport.device_scale_factor !== 2) throw Error('Browserless page metrics do not match the requested viewport and 2x device scale');
+      evidence.actions = actions;
+      evidence.animation_time_ms = animation_time_ms ?? null;
+      evidence.reduced_motion = reduced_motion;
+      if (evidence.viewport.width !== width || evidence.viewport.height !== height || evidence.viewport.device_scale_factor !== 2) throw Error('Playwright page metrics do not match the requested viewport and 2x device scale');
       let cdp;
       let bytes, plan;
       try {
@@ -399,16 +471,16 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
           let timer;
           const capture = await Promise.race([
             cdp.send('Page.captureScreenshot', fullPageCaptureParams(plan)),
-            new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Browserless screenshot timed out')), 30000); }),
+            new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Playwright screenshot timed out')), 30000); }),
           ]).finally(() => clearTimeout(timer));
-          if (typeof capture.data !== 'string' || capture.data.length > Math.ceil(MAX_OUTPUT / 3) * 4) throw Error('Browserless screenshot exceeds output bound');
+          if (typeof capture.data !== 'string' || capture.data.length > Math.ceil(MAX_OUTPUT / 3) * 4) throw Error('Playwright screenshot exceeds output bound');
           bytes = Buffer.from(capture.data, 'base64');
-          if (bytes.length > MAX_OUTPUT) throw Error('Browserless screenshot exceeds output bound');
+          if (bytes.length > MAX_OUTPUT) throw Error('Playwright screenshot exceeds output bound');
         } else bytes = await page.screenshot({type: 'png', fullPage: false, timeout: 30000});
         if (cdp) {
           const latest = (await cdp.send('Page.getLayoutMetrics')).cssContentSize;
           const current = screenshotPixelPlan({width, height, fullPage: true, cssContentSize: latest});
-          if (current.clipWidth > plan.clipWidth || current.clipHeight > plan.clipHeight) throw Error('Browserless content grew during capture; retry');
+          if (current.clipWidth > plan.clipWidth || current.clipHeight > plan.clipHeight) throw Error('Playwright content grew during capture; retry');
         }
       } finally { await cdp?.detach(); }
       const [actualWidth, actualHeight] = pngDimensions(bytes);
@@ -417,6 +489,19 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       return {bytes, width: actualWidth, height: actualHeight, evidence: {...evidence, console_errors: consoleErrors}};
     } finally { await context.close(); }
   });
+  } finally {
+    if (ownedServer) {
+      // Retain admission until the local process owner has reaped its tree.
+      const child = ownedServer.process();
+      const exited = child.exitCode !== null || child.signalCode !== null ? Promise.resolve() : new Promise(resolve => child.once('exit', resolve));
+      let timer;
+      try {
+        await Promise.race([ownedServer.close(), new Promise(resolve => { timer = setTimeout(() => { child.kill('SIGTERM'); resolve(); }, 2000); })]);
+        await exited;
+      } finally { clearTimeout(timer); }
+    }
+    await fs.rm(scratch, {recursive: true, force: true});
+  }
 }
 function workspaceUrl(source) {
   assertRelative(source);
@@ -429,17 +514,23 @@ export async function browserScreenshot(args) {
   if (args.source) { await workspacePath(args.source); url = workspaceUrl(args.source); }
   else {
     const candidate = new URL(args.url);
-    if (candidate.protocol !== 'http:' || !['design-tools:9002', 'penpot-frontend:8080'].includes(candidate.host)) throw Error('Browserless URL must be an owned local workspace or Penpot page');
+    if (candidate.protocol !== 'http:' || !['design-tools:9002', 'penpot-frontend:8080'].includes(candidate.host)) throw Error('Playwright URL must be an owned local workspace or Penpot page');
     url = candidate.toString();
   }
   const shot = await browserCapture(url, {...args, tokensCss: tokens.outputs['tokens.css']});
   const artifact = await publish(args.output, shot.bytes, outputOptions(args));
   const diff = args.baseline ? await odiffCompare({baseline: args.baseline, candidate: args.output}) : null;
-  return {tokens, artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: diff ? {status: diff.match ? 'match' : 'changed_pixels', odiff: diff} : {status: 'captured', inspected_pixels: true}};
+  return {tokens, artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: diff ? {status: diff.match ? 'match' : 'changed_pixels', odiff: diff} : {status: 'captured', requires_visual_inspection: true}};
 }
 export async function browserInspect(source, {baseline} = {}) {
   await workspacePath(source);
-  if (path.extname(source).toLowerCase() === '.png') pngDimensions(await readFile(source));
+  if (path.extname(source).toLowerCase() === '.png') {
+    const bytes = await readFile(source, MAX_OUTPUT);
+    const [width, height] = pngDimensions(bytes);
+    const artifact = {path: source, sha256: sha(bytes), bytes: bytes.length};
+    const diff = baseline ? await odiffCompare({baseline, candidate: source}) : null;
+    return {status: diff ? diff.match ? 'match' : 'changed_pixels' : 'ready_for_inspection', screenshot: artifact, width, height, scale: 1, evidence: {native_pixels: true}, odiff: diff};
+  }
   const shot = await browserCapture(workspaceUrl(source), browserInspectCaptureOptions);
   const output = `.mirket-design/qa/${crypto.randomUUID()}-inspect.png`;
   await workspacePath('.mirket-design/qa', {kind: 'directory', missing: true, createParents: true});
@@ -512,7 +603,7 @@ async function stageProject(sourceDir, stage) {
     else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
       const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
       const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-      const processed = await imgproxyBytes({source: `${sourceDir}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format});
+      const processed = await rasterBytes({source: `${sourceDir}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format});
       await fs.writeFile(dest, processed);
     } else await fs.writeFile(dest, bytes);
   }});
@@ -566,9 +657,15 @@ export function imageBatchBudget() {
     return dimensions;
   };
 }
+export function hyperframesSnapshotArgs(times) {
+  if (times == null) return ['--frames', '3'];
+  if (!Array.isArray(times) || times.length < 1 || times.length > 8 || times.some(t => !Number.isFinite(t) || t < 0 || t > 3600) || new Set(times).size !== times.length) throw Error('Choose 1..8 unique snapshot times in 0..3600 seconds');
+  return ['--at', [...times].sort((a,b) => a-b).join(','), '--no-end'];
+}
 export async function hyperframesRender(args) {
   await assertOutputReady(args);
   const tokens = await preflight(args);
+  const snapshotArgs = hyperframesSnapshotArgs(args.snapshot_times);
   const sourceDir = args.project;
   await workspacePath(sourceDir, {kind: 'directory'});
   const format = args.format || 'mp4';
@@ -581,7 +678,7 @@ export async function hyperframesRender(args) {
     const lint = await run(process.execPath, [hf, 'lint', stage, '--json'], {env, timeoutMs: 45000});
     const lintReport = parseHyperframesLint(lint.stdout);
     const snapshotsDir = path.join(stage, 'snapshots');
-    await run(process.execPath, [hf, 'snapshot', stage, '--frames', '3', '--output', snapshotsDir], {env, timeoutMs: 120000, maxStdout: 65536});
+    await run(process.execPath, [hf, 'snapshot', stage, ...snapshotArgs, '--describe', 'false', '--output', snapshotsDir], {env, timeoutMs: 120000, maxStdout: 65536});
     const snapshots = [], acceptImage = imageBatchBudget();
     const snapshotRoot = `.mirket-design/qa/${crypto.randomUUID()}-hyperframes`;
     await fs.mkdir(path.join(workspace, snapshotRoot), {recursive: true});
@@ -592,6 +689,7 @@ export async function hyperframesRender(args) {
       const artifact = await publish(`${snapshotRoot}/${name}`, bytes);
       snapshots.push({artifact, dimensions});
     }
+    if (args.snapshot_times && snapshots.length !== args.snapshot_times.length) throw Error('HyperFrames did not return every requested snapshot');
     const qa = await inspectHyperframesKeyframes(snapshots, args.baseline);
     if (qa.status === 'failed' || qa.status === 'changed_pixels') {
       return {tokens, artifact: null, lint: lintReport, snapshots, qa, phases: ['lint', 'snapshot'], render_skipped: 'keyframe_qa', engine: 'hyperframes-cli'};
@@ -602,6 +700,7 @@ export async function hyperframesRender(args) {
     const probe = await run(process.env.HYPERFRAMES_FFPROBE_PATH || '/usr/bin/ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', renderFile], {timeoutMs: 30000});
     const media = JSON.parse(probe.stdout);
     if (!media.streams?.some(stream => stream.codec_type === 'video' && stream.width > 0 && stream.height > 0) || !(Number(media.format?.duration) > 0)) throw Error('HyperFrames CLI produced unusable video metadata');
+    if (args.snapshot_times?.some(time => time > Number(media.format.duration))) throw Error('Snapshot time exceeds the encoded duration');
     const artifact = await publish(args.output, bytes, outputOptions(args));
     return {tokens, artifact, lint: lintReport, snapshots, media: {duration: Number(media.format.duration), video: media.streams.filter(stream => stream.codec_type === 'video').map(stream => ({codec: stream.codec_name, width: stream.width, height: stream.height}))}, qa, phases: ['lint', 'snapshot', 'render'], engine: 'hyperframes-cli'};
   } finally { await fs.rm(stage, {recursive: true, force: true}); }
@@ -622,7 +721,7 @@ export async function typstCompile(args) {
       else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
         const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
         const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-        await fs.writeFile(dest, await imgproxyBytes({source: parent === '.' ? local : `${parent}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format}));
+        await fs.writeFile(dest, await rasterBytes({source: parent === '.' ? local : `${parent}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format}));
       } else await fs.writeFile(dest, bytes);
     }});
     const stageSource = path.join(stage, path.basename(args.source));
@@ -651,77 +750,4 @@ export async function typstCompile(args) {
     const qa = {status: checks.some(item => item.status === 'failed') ? 'failed' : checks.some(item => item.status === 'changed_pixels') ? 'changed_pixels' : 'captured', pages: checks};
     return {tokens, artifact, pages, qa, engine: 'typst'};
   } finally { await fs.rm(stage, {recursive: true, force: true}); }
-}
-
-const forbiddenComfyType = /3[\s_-]*d|cad|mesh|splat|voxel|point[\s_-]*cloud|modeling|geometry|glb|gltf/i;
-function comfyNodeMetadata(classType, info) {
-  if (!info || typeof info !== 'object' || Array.isArray(info) ||
-      typeof info.category !== 'string' || !Array.isArray(info.output) ||
-      !info.output.every(type => typeof type === 'string') ||
-      !info.input || typeof info.input !== 'object' || Array.isArray(info.input)) {
-    throw Error(`ComfyUI class ${classType} has missing or malformed live metadata`);
-  }
-  if (info.name != null && info.name !== classType) throw Error(`ComfyUI class ${classType} has mismatched live metadata`);
-  const signals = [classType, info.category, info.display_name, info.python_module, ...info.output];
-  for (const group of Object.values(info.input)) {
-    if (!group || typeof group !== 'object' || Array.isArray(group)) throw Error(`ComfyUI class ${classType} has malformed input metadata`);
-    for (const spec of Object.values(group)) {
-      if (typeof spec === 'string') signals.push(spec);
-      else if (Array.isArray(spec) && typeof spec[0] === 'string') signals.push(spec[0]);
-    }
-  }
-  if (signals.some(value => typeof value === 'string' && (forbiddenComfyType.test(value) || /^(?:OBJ|PLY|STL|FILE3D)$/i.test(value)))) {
-    throw Error(`ComfyUI class ${classType} is a 3D/CAD/modeling node and is refused by the bitmap workflow route`);
-  }
-}
-export async function submitComfyGraph(workflow, objectInfo, postPrompt) {
-  if (!workflow || typeof workflow !== 'object' || Array.isArray(workflow) || !Object.keys(workflow).length || Object.keys(workflow).length > 128) {
-    throw Error('ComfyUI workflow must be a nonempty API graph with at most 128 nodes');
-  }
-  if (!objectInfo || typeof objectInfo !== 'object' || Array.isArray(objectInfo)) throw Error('ComfyUI live object_info is malformed');
-  for (const [nodeId, node] of Object.entries(workflow)) {
-    if (nodeId.length > 128 || !node || typeof node !== 'object' || Array.isArray(node) ||
-        typeof node.class_type !== 'string' || !node.class_type.length || node.class_type.length > 256) {
-      throw Error(`ComfyUI graph node ${nodeId.slice(0, 128)} has no valid class_type`);
-    }
-    if (!Object.hasOwn(objectInfo, node.class_type)) throw Error(`ComfyUI graph node ${nodeId} uses unavailable class ${node.class_type}`);
-    comfyNodeMetadata(node.class_type, objectInfo[node.class_type]);
-  }
-  checkRequest();
-  return postPrompt({prompt: workflow, client_id: crypto.randomUUID()});
-}
-export async function comfyuiSubmit(args) {
-  await assertOutputReady(args);
-  const tokens = await preflight(args);
-  const workflow = await readJson(args.workflow, 1024 * 1024);
-  const liveInfo = await fetchBytes('http://comfyui:8188/object_info', {max: 16 * 1024 * 1024, timeoutMs: 20000});
-  const objectInfo = JSON.parse(liveInfo.bytes.toString('utf8'));
-  const queued = await submitComfyGraph(workflow, objectInfo, request => fetchBytes('http://comfyui:8188/prompt', {
-    method: 'POST', body: JSON.stringify(request), headers: {'Content-Type': 'application/json'}, max: 65536,
-  }));
-  const job = JSON.parse(queued.bytes.toString('utf8'));
-  if (!/^[a-z0-9-]{20,64}$/i.test(job.prompt_id || '')) throw Error('ComfyUI did not return a prompt ID');
-  try {
-  const deadline = Date.now() + 180000;
-  let result;
-  while (Date.now() < deadline) {
-    checkRequest();
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const history = await fetchBytes(`http://comfyui:8188/history/${job.prompt_id}`, {max: 1024 * 1024});
-    result = JSON.parse(history.bytes.toString('utf8'))[job.prompt_id];
-    if (result) break;
-  }
-  if (!result || result.status?.status_str !== 'success') throw Error('ComfyUI workflow did not complete successfully before deadline');
-  const first = Object.values(result.outputs || {}).flatMap(value => value.images || [])[0];
-  if (!first?.filename) throw Error('ComfyUI workflow has no saved image output');
-  const view = new URL('http://comfyui:8188/view');
-  for (const [key, value] of Object.entries({filename: first.filename, subfolder: first.subfolder || '', type: first.type || 'output'})) view.searchParams.set(key, value);
-  const image = await fetchBytes(view.toString(), {max: 32 * 1024 * 1024});
-  pngDimensions(image.bytes);
-  const artifact = await publish(args.output, image.bytes, outputOptions(args));
-  const qa = await inspectSaved(args.output, args.baseline);
-  return {tokens, artifact, qa, service: 'comfyui', prompt_id: job.prompt_id, workflow: args.workflow};
-  } catch (error) {
-    throw new Error(`ComfyUI prompt_id ${job.prompt_id} was accepted and may continue in the background: ${redactSecrets(error.message || error)}`, {cause: error});
-  }
 }

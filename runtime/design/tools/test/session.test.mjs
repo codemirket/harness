@@ -72,7 +72,7 @@ test('discovery avoids rendering imports and EOF closes the Penpot HTTP session'
     const endpoint = `http://127.0.0.1:${listener.address().port}/mcp`;
     child = spawn(process.execPath, ['--loader', loader, fileURLToPath(new URL('../server.mjs', import.meta.url))], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      env: {...process.env, MIRKET_PENPOT_MCP_URL: endpoint},
+      env: {...process.env, MIRKET_DESIGN_GROUPS: 'core,penpot', MIRKET_PENPOT_MCP_URL: endpoint},
     });
     let stdout = '';
     let stderr = '';

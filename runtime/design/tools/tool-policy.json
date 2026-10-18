@@ -1,17 +1,62 @@
 {
-  "tokens_compile": {"min_tier":"T1_DETERMINISTIC","requires_vision":false},
-  "static_render": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "browser_screenshot": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "kroki_render": {"min_tier":"T2_SYNTHESIS","requires_vision":true},
-  "hyperframes_render": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "typst_compile": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "imgproxy_transform": {"min_tier":"T1_DETERMINISTIC","requires_vision":false},
-  "svg_optimize": {"min_tier":"T1_DETERMINISTIC","requires_vision":false},
-  "comfyui_submit": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "odiff_compare": {"min_tier":"T1_DETERMINISTIC","requires_vision":false},
-  "penpot_api_info": {"min_tier":"T1_DETERMINISTIC","requires_vision":false},
-  "high_level_overview": {"min_tier":"T2_SYNTHESIS","requires_vision":false},
-  "execute_code": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "export_shape": {"min_tier":"T3_ARCHITECT","requires_vision":true},
-  "import_image": {"min_tier":"T3_ARCHITECT","requires_vision":true}
+  "tokens_compile": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
+  "static_render": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "browser_screenshot": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "kroki_render": {
+    "min_tier": "T2_SYNTHESIS",
+    "requires_vision": true
+  },
+  "hyperframes_render": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "typst_compile": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "raster_transform": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
+  "svg_optimize": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
+  "odiff_compare": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
+  "penpot_api_info": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
+  "high_level_overview": {
+    "min_tier": "T2_SYNTHESIS",
+    "requires_vision": false
+  },
+  "execute_code": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "export_shape": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "import_image": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  },
+  "vector_render": {
+    "min_tier": "T3_ARCHITECT",
+    "requires_vision": true
+  }
 }

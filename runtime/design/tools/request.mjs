@@ -15,7 +15,7 @@ export function combinedSignal(timeoutMs) {
 }
 export function redactSecrets(value) {
   let output = String(value);
-  for (const name of ['MIRKET_BROWSERLESS_TOKEN', 'MIRKET_IMGPROXY_KEY', 'MIRKET_IMGPROXY_SALT', 'MIRKET_PENPOT_PASSWORD', 'MIRKET_PENPOT_EMAIL']) {
+  for (const name of ['MIRKET_PENPOT_PASSWORD', 'MIRKET_PENPOT_EMAIL']) {
     const secret = process.env[name];
     if (secret && secret.length >= 4) output = output.split(secret).join('[redacted]');
   }

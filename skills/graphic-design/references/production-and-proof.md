@@ -7,7 +7,7 @@ requirements from the destination or provider before a costly final export.
 
 | Need | Suitable route | Evidence to inspect |
 | --- | --- | --- |
-| Photography, texture, painterly illustration | Supplied/licensed raster or ComfyUI graph; imgproxy for raster preparation | Focal details, crop, resolution and artifact-free edges |
+| Photography, texture, painterly illustration | Supplied/licensed raster; Sharp for raster preparation | Focal details, crop, resolution and artifact-free edges |
 | Logo, icon, scalable flat illustration | Editable vector source then SVGO | Real paths/text, silhouette, small-size detail and clean export |
 | System, flow, C4 or sequence explanation | Semantic diagram source rendered with Kroki | Every relationship, label, branch and direction against the source |
 | Quantitative chart | Source-backed Vega-Lite through Kroki, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |

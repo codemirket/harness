@@ -60,7 +60,8 @@ impl Assignment {
     }
 
     pub fn validate_arguments(&self, tool: &str, arguments: &Value) -> Result<()> {
-        let svg_output = tool == "design/svg_optimize"
+        let svg_output = tool == "design/vector_render"
+            || tool == "design/svg_optimize"
             || (tool == "design/static_render" && arguments["format"] == "svg")
             || (tool == "design/kroki_render" && arguments["format"] != "png")
             || (tool == "design/export_shape"
@@ -387,11 +388,11 @@ mod tests {
     fn composed_needs_union_only_selected_workflows_and_reject_malformed_scope() {
         let mut request = task("web-interface");
         request.task_needs.push(TaskNeed {
-            workflow: "raster-generation".into(),
+            workflow: "vector-art".into(),
             reason: "The UI needs a bespoke illustration.".into(),
         });
         let assignment = prepare(&mut request).unwrap();
-        assert!(assignment.authorize("design/comfyui_submit").is_ok());
+        assert!(assignment.authorize("design/vector_render").is_ok());
         assert!(assignment.authorize("design/typst_compile").is_err());
         assert!(
             assignment

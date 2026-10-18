@@ -22,7 +22,7 @@ output to `public/tokens.css` and update the source/CSS SHA-256 pair in
 or package already verified static assets.
 
 For browser QA, copy `public/` into the design workspace and exercise it through
-Browserless. Check desktop, narrow, enlarged text, keyboard interaction, the three
+Playwright. Check desktop, narrow, enlarged text, keyboard interaction, the three
 route examples, all download options, clipboard failure and JavaScript disabled.
 Capture bounded 2x viewports, rather than one giant full-page image.
 

@@ -392,7 +392,7 @@
         "owl-concepts"
       ],
       "dependencies": [
-        "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Browserless, compare pixels with Odiff, and use the official Penpot MCP/plugin for editable design files. Keep the app and its own behavior tests authoritative.",
+        "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Playwright, compare pixels with Odiff, and use the official Penpot MCP/plugin for editable design files. Keep the app and its own behavior tests authoritative.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -411,7 +411,7 @@
         "ai-slop",
         "design-evidence",
         "style-dictionary",
-        "browserless",
+        "playwright",
         "odiff",
         "penpot",
         "component-workbench",
@@ -579,7 +579,7 @@
         "kyle-motion"
       ],
       "dependencies": [
-        "Actual browser/device with controllable input, playback and motion preference; Browserless for full DOM and 2x screenshot inspection. Frame/video work uses HyperFrames lint, snapshot and render in that order.",
+        "Actual browser/device with controllable input, playback and motion preference; Playwright for full DOM and 2x screenshot inspection. Frame/video work uses HyperFrames lint, snapshot and render in that order.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -607,7 +607,7 @@
         "claude"
       ],
       "dependencies": [
-        "Use supported SVG/CSS/Web Animations or the existing project library. Optimize generated and imported SVG with SVGO; use Browserless to inspect playback and reduced motion."
+        "Use supported SVG/CSS/Web Animations or the existing project library. Optimize generated and imported SVG with SVGO; use Playwright to inspect playback and reduced motion."
       ],
       "caveats": [
         "Original portable craft guidance; render and critique the actual output. Registration does not certify visual quality or untested exporters."
@@ -635,7 +635,7 @@
         "claude"
       ],
       "dependencies": [
-        "Use the single design package's SVGO route for generated and imported SVG, then inspect saved geometry and actual Browserless or resvg rendering."
+        "Use the single design package's SVGO route for generated and imported SVG, then inspect saved geometry and actual Playwright or resvg rendering."
       ],
       "caveats": [
         "Original portable craft guidance; render and critique the actual output. Registration does not certify visual quality or untested exporters."
@@ -5173,14 +5173,14 @@
         "ui-ux-pro-max",
         "ui-ux-pro-max"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Browserless for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through ComfyUI, static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-ui-ux-pro-max",
       "source": "ui-ux-pro-max",
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "Existing application framework and approved project dependencies; Style Dictionary tokens and Browserless for Mirket design QA."
+        "Existing application framework and approved project dependencies; Style Dictionary tokens and Playwright for Mirket design QA."
       ],
       "caveats": [
         "Sibling skills referenced; do not imply standalone completeness."
@@ -5202,14 +5202,14 @@
         "ui-ux-pro-max",
         "brand"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Browserless for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through ComfyUI, static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-brand",
       "source": "ui-ux-pro-max",
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "Existing application framework and approved project dependencies; Style Dictionary tokens and Browserless for Mirket design QA."
+        "Existing application framework and approved project dependencies; Style Dictionary tokens and Playwright for Mirket design QA."
       ],
       "caveats": [
         "Sibling skills referenced; do not imply standalone completeness."
@@ -5231,14 +5231,14 @@
         "ui-ux-pro-max",
         "ui-styling"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Browserless for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through ComfyUI, static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-ui-styling",
       "source": "ui-ux-pro-max",
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "Existing application framework and approved project dependencies; Style Dictionary tokens and Browserless for Mirket design QA."
+        "Existing application framework and approved project dependencies; Style Dictionary tokens and Playwright for Mirket design QA."
       ],
       "caveats": [
         "Sibling skills referenced; do not imply standalone completeness.",
@@ -5299,7 +5299,7 @@
       "scope": "project",
       "delivery": "upstream",
       "dependencies": [
-        "Local file creation; Browserless for live HTML preview and interaction QA when the deliverable is a web page."
+        "Local file creation; Playwright for live HTML preview and interaction QA when the deliverable is a web page."
       ],
       "caveats": [
         "Research checklist has a brand-conflicting color blacklist; project tokens take precedence.",
@@ -5331,7 +5331,7 @@
       "scope": "project",
       "delivery": "upstream",
       "dependencies": [
-        "Local file creation; Browserless for live HTML preview and interaction QA when the deliverable is a web page."
+        "Local file creation; Playwright for live HTML preview and interaction QA when the deliverable is a web page."
       ],
       "caveats": [
         "Research checklist has a brand-conflicting color blacklist; project tokens take precedence.",
@@ -5356,14 +5356,14 @@
         "open-design",
         "login-flow"
       ],
-      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Browserless; use official Penpot for an editable design-file deliverable.",
+      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use official Penpot for an editable design-file deliverable.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "open-design-login-flow",
       "source": "open-design",
       "scope": "project",
       "delivery": "upstream",
       "dependencies": [
-        "Local file creation; Browserless for live HTML preview and interaction QA when the deliverable is a web page."
+        "Local file creation; Playwright for live HTML preview and interaction QA when the deliverable is a web page."
       ],
       "caveats": [
         "Research checklist has a brand-conflicting color blacklist; project tokens take precedence.",
@@ -5388,14 +5388,14 @@
         "open-design",
         "faq-page"
       ],
-      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Browserless; use official Penpot for an editable design-file deliverable.",
+      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use official Penpot for an editable design-file deliverable.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "open-design-faq-page",
       "source": "open-design",
       "scope": "project",
       "delivery": "upstream",
       "dependencies": [
-        "Local file creation; Browserless for live HTML preview and interaction QA when the deliverable is a web page."
+        "Local file creation; Playwright for live HTML preview and interaction QA when the deliverable is a web page."
       ],
       "caveats": [
         "Research checklist has a brand-conflicting color blacklist; project tokens take precedence.",
@@ -5514,7 +5514,7 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Browserless for design DOM, interaction and 2x screenshot QA."
+        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
       ],
       "caveats": [
         "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
@@ -5544,7 +5544,7 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Browserless for design DOM, interaction and 2x screenshot QA."
+        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
       ],
       "caveats": [
         "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
@@ -5574,7 +5574,7 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Browserless for design DOM, interaction and 2x screenshot QA."
+        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
       ],
       "caveats": [
         "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
@@ -5604,7 +5604,7 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Browserless for design DOM, interaction and 2x screenshot QA."
+        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
       ],
       "caveats": [
         "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
@@ -5634,7 +5634,7 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Browserless for design DOM, interaction and 2x screenshot QA."
+        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
       ],
       "caveats": [
         "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
@@ -5726,11 +5726,11 @@
       "scope": "manual",
       "delivery": "reference",
       "dependencies": [
-        "No Archify runtime in the Mirket design stack; production diagrams require design package Kroki, SVGO and Browserless inspection."
+        "No Archify runtime in the Mirket design stack; production diagrams require design package Kroki, SVGO and Playwright inspection."
       ],
       "caveats": [
         "Upstream finalize/deliver includes an update network check; do not run it as part of Mirket production.",
-        "Browserless inspection and visual review of Kroki output remain separate evidence.",
+        "Playwright inspection and visual review of Kroki output remain separate evidence.",
         "Upstream package asset licenses are separate from root MIT."
       ],
       "url": "https://github.com/tt-a1i/archify/blob/73aaa0696e8f72c232ea710e6fa94fd953f3e773/archify/SKILL.md",
@@ -8280,7 +8280,7 @@
         "playwright",
         "openai"
       ],
-      "adaptation": "This is a project-scoped, static reference selection. User and project requirements override examples, fixed output rituals and tool preferences. Use the current host's actual tools; resolve bundled files relative to this installed SKILL.md, never a hard-coded CODEX_HOME or Claude-only path. Verify API and CLI details against the project's installed version. Registration does not install dependencies, enable telemetry, authenticate services, or authorize deployment. For Mirket design production, use Browserless in the single design package for full DOM, interaction and 2x screenshot evidence; retain Playwright CLI guidance for separate non-design browser automation when the project chooses it. The Bash wrapper invokes an unpinned npx package; approve and pin a compatible CLI in the project before executing it. Native Windows requires a compatible shell or the supported Node CLI. Do not assume the wrapper is already installed globally.",
+      "adaptation": "This is a project-scoped, static reference selection. User and project requirements override examples, fixed output rituals and tool preferences. Use the current host's actual tools; resolve bundled files relative to this installed SKILL.md, never a hard-coded CODEX_HOME or Claude-only path. Verify API and CLI details against the project's installed version. Registration does not install dependencies, enable telemetry, authenticate services, or authorize deployment. For Mirket design production, use Playwright in the single design package for full DOM, interaction and 2x screenshot evidence; retain Playwright CLI guidance for separate non-design browser automation when the project chooses it. The Bash wrapper invokes an unpinned npx package; approve and pin a compatible CLI in the project before executing it. Native Windows requires a compatible shell or the supported Node CLI. Do not assume the wrapper is already installed globally.",
       "id": "openai-playwright",
       "source": "openai",
       "scope": "project",
@@ -10948,7 +10948,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Broad Claude-specific router; depends on all subskills and five agents; unsupported quantitative market and visibility claims.",
@@ -10992,7 +10992,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful bounded audit structure, but scores conflate training/search access, penalize optional llms.txt and assert uncalibrated citation likelihood.",
@@ -11036,7 +11036,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful entity-presence checklist; automatic scanner only queries Wikipedia/Wikidata and represents untested platforms as false. First-hit identity matching and causal inference need correction.",
@@ -11080,7 +11080,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful answer clarity and attributable facts; arbitrary passage length, regex score and citation likelihood labels have no validated mapping.",
@@ -11124,7 +11124,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Missing scores can be estimated; unsupported score-to-citations/traffic/revenue mapping and framing declines as opportunities compromise honest comparison.",
@@ -11168,7 +11168,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful provenance and reader-value review; mandatory lengths, heuristic AI-authorship classification and numeric E-E-A-T scoring need replacement.",
@@ -11212,7 +11212,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Incorrect training versus search bot purposes; simplistic bundled robots parser; do not automatically remove intentional training restrictions.",
@@ -11256,7 +11256,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Consumer-specific documentation navigation is useful; universal requirement and citation-boost claims are unsupported; helper fabricates contact address.",
@@ -11300,7 +11300,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Platform-specific evidence collection is useful; word-count floors, causal ranking claims and fixed platform weights are unsupported.",
@@ -11344,7 +11344,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Commercial proposal outline useful only after removing invented industry baselines, traffic/revenue projections and predetermined package recommendations.",
@@ -11388,7 +11388,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Local CRM concept useful for a separately requested workflow; home-directory PII storage, JSON mutation and score-derived judgments need project-specific adaptation.",
@@ -11432,7 +11432,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Report structure useful, but inconsistent category weights and unsupported financial/citation forecasts must be removed.",
@@ -11476,7 +11476,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Hardcoded macOS Chrome, disabled sandbox and external template dependencies; prefer available document/PDF workflow with rendering verification.",
@@ -11520,7 +11520,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful raw-HTML structured data extraction; obsolete search-box benefit, universal sameAs/speakable claims, and confusion between vocabulary and rich-result eligibility.",
@@ -11564,7 +11564,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Useful raw/rendered comparison and measured diagnostics; erroneous pagination canonical recommendation, broad SSR/crawler claims and fixed security-header prescriptions.",
@@ -11608,7 +11608,7 @@
       ],
       "dependencies": [
         "Claude Code tool names and home-relative ~/.claude/skills/geo layout; adapt routing for Codex.",
-        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Browserless and paged PDF production through Typst in the design package."
+        "Python >=3.10 with requirements.txt packages only for optional upstream analysis helpers; Mirket visual screenshots route through Playwright and paged PDF production through Typst in the design package."
       ],
       "caveats": [
         "Floating clone and overwrite of managed skills/agents, dependency installation and incomplete companion copying conflict with pinned registry ownership.",
@@ -11650,7 +11650,7 @@
         "claude"
       ],
       "dependencies": [
-        "Use supported browser APIs or the existing project animation/router integration; Browserless inspects live behavior. HyperFrames produces requested fixed frames or video through lint, snapshot and render."
+        "Use supported browser APIs or the existing project animation/router integration; Playwright inspects live behavior. HyperFrames produces requested fixed frames or video through lint, snapshot and render."
       ],
       "caveats": [
         "Original portable craft guidance; native support and framework versions need project checks. Registration does not certify visual quality or performance."
@@ -11711,7 +11711,7 @@
         "gradients",
         "video-export",
         "hyperframes",
-        "browserless",
+        "playwright",
         "mp4",
         "frame-rendering",
         "scroll-media",
@@ -12170,7 +12170,7 @@
         "claude"
       ],
       "dependencies": [
-        "The single design package routes bitmap generation to ComfyUI graphs, raster preprocessing to imgproxy, generated/imported SVG through SVGO, diagrams through Kroki, static Flexbox composition through Satori plus resvg, editable design files through the official Penpot MCP/plugin, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
+        "The single design package routes authored SVG artwork to vector_render and native resvg previews, raster preprocessing to Sharp, generated/imported SVG through SVGO, diagrams through Kroki, static Flexbox composition through Satori plus resvg, editable design files through the official Penpot MCP/plugin, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -12188,8 +12188,8 @@
         "design-document",
         "auto-layout",
         "components",
-        "comfyui",
-        "imgproxy",
+        "vector-art",
+        "Sharp",
         "svgo",
         "kroki",
         "satori",
@@ -12330,7 +12330,7 @@
         "assistive-technology",
         "accessibility-audit",
         "browser-audit",
-        "browserless",
+        "playwright",
         "accessible"
       ],
       "dependencies": [

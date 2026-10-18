@@ -1,4 +1,4 @@
-// Run with the design runtime's installed Playwright and authenticated Browserless.
+// Run with an explicitly installed Playwright module and Chromium executable.
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -6,10 +6,10 @@ const { chromium } = await import(
   process.env.MIRKET_PLAYWRIGHT_MODULE || "playwright-core"
 );
 const [url, output] = process.argv.slice(2);
-if (!url || !output || !process.env.BROWSERLESS_WS)
-  throw Error("Provide URL, evidence directory and BROWSERLESS_WS");
+if (!url || !output || !process.env.MIRKET_CHROMIUM_PATH)
+  throw Error("Provide URL, evidence directory and MIRKET_CHROMIUM_PATH");
 await fs.mkdir(output, { recursive: true });
-const browser = await chromium.connect(process.env.BROWSERLESS_WS);
+const browser = await chromium.launch({executablePath: process.env.MIRKET_CHROMIUM_PATH, headless: true});
 const report = [];
 try {
   for (const width of [1440, 768, 720, 390, 320]) {

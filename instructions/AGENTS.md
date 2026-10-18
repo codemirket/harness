@@ -41,10 +41,10 @@ permissions.
   commands.
 - For Mirket design production, use the single `design` package and its fixed
   reported workspace. Compile Style Dictionary tokens before rendering. Route
-  live UI to Browserless, editable design files to the official Penpot MCP,
+  live UI to Playwright, editable design files to the official Penpot MCP,
   diagrams to Kroki, video to HyperFrames lint→snapshot→render, paged work to
-  Typst, generated/imported SVG through SVGO, bitmap generation through ComfyUI,
-  raster preparation through imgproxy, static Flexbox graphics to Satori/resvg,
+  Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,
+  raster preparation through Sharp, static Flexbox graphics to Satori/resvg,
   and comparable pixels to Odiff. Inspect actual outputs and do not invent tool
   readiness from a package receipt.
 

@@ -167,8 +167,8 @@ mirket package probe design --schemas
 ```
 
 The single `design` package covers Style Dictionary tokens, Satori plus resvg,
-Browserless, official Penpot MCP, Kroki, HyperFrames, Typst, imgproxy, SVGO,
-ComfyUI and Odiff. The services share a fixed writable workspace reported by
+Playwright, official Penpot MCP, Kroki, HyperFrames, Typst, Sharp, SVGO,
+and Odiff. The services share a fixed writable workspace reported by
 `package start` and `package status`. Direct design tools use paths relative to
 its `/workspace` mount; the official Penpot `export_shape` and `import_image`
 `filePath` arguments use absolute `/workspace/...` paths as required by their
@@ -186,7 +186,7 @@ for output policies, platform limits and runtime prerequisites.
 
 See [packages](docs/packages.md) for routing, ports, lifecycle and runtime
 requirements. Compile design tokens before rendering; inspect actual artifacts,
-Browserless DOM and 2x screenshots, and comparable Odiff output.
+Playwright DOM and 2x screenshots, and comparable Odiff output.
 
 ## Register other executables
 

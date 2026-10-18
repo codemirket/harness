@@ -90,9 +90,10 @@ reusable brand asset pack, and a sample's geometry does not replace this brief's
 Read [production and proof](references/production-and-proof.md) for tool selection,
 rights, color, export and final inspection.
 
-- Use ComfyUI graphs in the `design` package for generated raster imagery and
-  imgproxy for crop/resize preprocessing. Inspect generated details and integrate
-  the result deliberately. Keep exact business text in an editable layout.
+- Use supplied/licensed raster imagery and Sharp for crop/resize preprocessing.
+  Use `vector-art` for authored SVG illustrations, semantic scene groups and a
+  native resvg preview; inspect that preview and read back the editable SVG.
+  Keep exact business text in an editable layout.
 - Use SVG geometry for editable marks, icons and scalable vector illustration.
   Run generated and imported SVG through SVGO before delivery. Raster generation does not produce vector paths;
   wrapping a bitmap in an SVG does not make it vector artwork.

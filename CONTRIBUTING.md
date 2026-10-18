@@ -93,8 +93,10 @@ project installation, then exercise the intended task where tools are available.
 A skill's presence or an agent repeating its name is not evidence of quality.
 
 The embedded browser-motion examples also have an optional rendered acceptance
-probe in `tests/browser_motion.cjs`. Connect to the running Browserless WebSocket
-endpoint through `BROWSERLESS_WS`; the probe never downloads a browser. Serve the **installed**
+probe in `tests/browser_motion.cjs`. Select an installed Chromium executable
+through `MIRKET_CHROMIUM_PATH` and make `playwright-core` resolvable (or set
+`MIRKET_PLAYWRIGHT_MODULE` to its absolute installed module path); the probe never
+downloads a browser. Serve the **installed**
 `advanced-motion/assets` directory with an existing local server, then run:
 
 ```sh
@@ -120,7 +122,7 @@ node tests/browser_design_languages.cjs http://127.0.0.1:8765/assets/design-lang
   /absolute/installed/design-inspiration/references/design-languages/library.json
 ```
 
-Connect to the running Browserless WebSocket endpoint through `BROWSERLESS_WS`. The
+Select an installed Chromium executable through `MIRKET_CHROMIUM_PATH`. The
 probe installs nothing. An optional final comma-separated ID
 list selects affected instances. The script checks actual wide/narrow rendering,
 no-script readability, enlarged-text reflow, resource independence and access
@@ -169,7 +171,7 @@ node tests/browser_motion.cjs http://127.0.0.1:8765/ /absolute/evidence/craft cr
 ```
 
 It exercises labelled timing, keyboard playback controls, rapid replay, cleanup
-and initial/live reduced motion through the running Browserless WebSocket endpoint.
+and initial/live reduced motion using the explicitly selected Chromium executable.
 Use normal
 playback and the saved frames for inspection; a timing assertion or visible static
 fallback is not a performance or human visual-acceptance result.
@@ -213,7 +215,7 @@ workflow and current limitations.
 ## Exercise the design stack
 
 The standard Rust gate covers the controller and package bridge. It does not
-launch the twelve design services or run the JavaScript tool suite. With the
+launch the ten design services or run the JavaScript tool suite. With the
 locked tool dependencies available under Node 22, run `npm test` in
 `runtime/design/tools` for the owned JavaScript tests. Provision dependencies
 only as an explicit development step; package serving never installs them.
@@ -232,10 +234,9 @@ Place bounded fixtures in the reported shared workspace. Invoke the actual
 MCP tools with `package call` or a native SDK client: compile tokens, render a
 Satori card, capture a full-DOM page at 2x, create/edit/export a Penpot file,
 render Kroki diagrams, complete HyperFrames lint→snapshot→render, compile a
-multi-page Typst PDF, transform a raster with imgproxy, optimize SVG, submit a
-ComfyUI workflow, and compare equal and changed pixels with Odiff. Neural
-synthesis needs separately supplied, pinned/licensed models; an empty-image
-graph only establishes queue and output handling.
+multi-page Typst PDF, transform a raster with Sharp, render editable vector art,
+and compare equal and changed pixels with Odiff. Exercise core alone and optional
+diagrams/Penpot groups, input and animation states, cancellation and memory bounds.
 
 Inspect saved outputs and persisted identities. Exercise a meaningful rejected
 input, deadline and transport disconnect; confirm child cleanup, no partial

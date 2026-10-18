@@ -36,12 +36,15 @@ mirket package start design
 ```
 
 Resizing preserves the disk and workspace and never stops a running VM implicitly.
-The design worker has a 3 GiB memory limit, a 512 process/thread limit, and loads rendering dependencies only
+The design worker has a 2 GiB memory limit, a 512 process/thread limit, and loads rendering dependencies only
 when invoked; idle discovery and cached token reads do not load the renderers.
 Image builds run one stage at a time with a 2 GiB memory/swap ceiling and 512
 process resource limit. These are separate from the running service budgets.
-These bounds leave headroom for concurrent sessions, but do not guarantee that
-arbitrary image models or unbounded simultaneous rendering fit the device.
+Startup sums the enabled service caps and requires another 512 MiB of usable VM
+RAM for the OS. Core fits the default 6 GiB VM; all groups need the 8 GiB VM.
+The local Penpot frontend uses one nginx worker and 1024 connections.
+Native render admission rejects competing jobs before loading renderers. No local
+image-generation model is installed. Input and output bounds still apply.
 `environment start` checks sharing and private connection identity before boot.
 Neither package calls nor MCP initialization starts the VM. An absent or stopped
 environment is an actionable readiness error.
@@ -92,17 +95,13 @@ reported values rather than the services' internal port numbers. If a saved
 host port is occupied while its service is absent, start assigns another free
 loopback port. An existing owned container keeps its recorded mapping.
 
-Inside the private design network, Browserless serves browser control on port
-3000, Kroki diagrams on 8000, imgproxy raster transforms on 8080 and ComfyUI
-graphs on 8188. Penpot's frontend uses internal port 8080. The official Penpot
-MCP listens on internal port 4401 at `/mcp`; its plugin manifest is on internal
-port 4400 and the persistent plugin
-WebSocket on internal port 4402. The WebSocket port is not separately published
-to the host. ComfyUI serves graph API calls without a standalone browser UI;
-model checkpoints are user supplied under `/workspace/models`. The remaining
-design tools run through
-the package's direct schemas. `environment status` confirms the private VM;
-package status and a useful tool call establish separate readiness levels.
+Core has no public browser or raster-processing service: Playwright and Sharp run
+as bounded owned processes in design-tools. The optional diagrams group uses Kroki
+on internal port 8000. The optional Penpot group uses frontend 8080, official MCP
+4401 (`/mcp`), plugin manifest 4400 and private plugin WebSocket 4402. A separate
+bounded Penpot browser session keeps that plugin connected. Only enabled groups
+start. `environment status`, package status and a useful tool call establish
+separate readiness levels.
 
 ## Platforms and provenance
 

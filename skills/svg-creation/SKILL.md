@@ -56,7 +56,11 @@ Use code-native geometry or an available vector editor. A raster image wrapped
 in SVG is not a vector-art deliverable. If image generation supplies a mood or
 composition reference, construct the final editable geometry separately and
 disclose the reference; do not call automatic tracing professional refinement.
-The `design` package supplies the SVG optimizer. Preserve the editable master;
+The `design` package supplies `vector_render`: it preserves semantic IDs/groups,
+optimizes SVG and produces a bounded native resvg preview. Use the `vector-art`
+workflow for authored illustrations; read back the saved SVG and inspect its
+preview at relevant sizes. Supply licensed font files for editable text.
+The package also supplies the SVG optimizer. Preserve the editable master;
 run both generated and imported SVG through SVGO before integration. Optimization
 does not sanitize untrusted SVG.
 

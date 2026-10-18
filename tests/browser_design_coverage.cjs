@@ -1,12 +1,12 @@
 /* Optional independent effect checks for the eight scoped coverage lessons.
- * Uses an managed Browserless package and browser; never installs or
+ * Uses an managed Playwright package and browser; never installs or
  * downloads anything. Serve assets/design-languages on a loopback URL first.
- * NODE_PATH=/existing/node_modules BROWSERLESS_WS=ws://127.0.0.1:3000 \
+ * NODE_PATH=/existing/node_modules MIRKET_CHROMIUM_PATH=/absolute/path/to/chromium \
  *   node tests/browser_design_coverage.cjs BASE_URL OUTPUT_DIR [ID,...]
  * Captures require human/agent inspection; these checks do not certify native
  * runtime behavior, assistive technology, authorization or human acceptance. */
 'use strict';
-const { connect } = require('./browserless.cjs');
+const { connect } = require('./browser.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');

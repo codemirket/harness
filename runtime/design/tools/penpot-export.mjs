@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {workspace, workspacePath, readFile, publish, assertRelative, MAX_OUTPUT} from './paths.mjs';
-import {optimizeSvgBytes, imgproxyBytes} from './operations.mjs';
+import {optimizeSvgBytes, rasterBytes} from './operations.mjs';
 import {checkRequest, combinedSignal} from './request.mjs';
 
 // Native Penpot SVG exports keep font-face URLs on their own frontend. Embed
@@ -102,7 +102,7 @@ export async function importPenpotImage(client, args, signal) {
   const relative = requestedWorkspacePath(args.filePath);
   if (!/\.(?:png|jpe?g|gif|webp)$/i.test(relative)) throw Error('Penpot import_image supports PNG, JPEG, GIF or WebP raster inputs');
   await workspacePath(relative);
-  const bytes = await imgproxyBytes({source: relative, width: 4096, height: 4096, mode: 'fit', format: 'png'});
+  const bytes = await rasterBytes({source: relative, width: 4096, height: 4096, mode: 'fit', format: 'png'});
   await workspacePath('.mirket-design/penpot', {kind: 'directory', missing: true, createParents: true});
   await fs.mkdir(path.join(workspace, '.mirket-design/penpot'), {recursive: true});
   const stageRelative = `.mirket-design/penpot/${crypto.randomUUID()}.png`;

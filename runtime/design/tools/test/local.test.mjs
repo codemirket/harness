@@ -9,7 +9,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, inspectHyperframesKeyframes, optimizeSvgBytes, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 const {penpotTokenRecords, synchronizePenpotTokens} = await import('../penpot-tokens.mjs');
 const {exportPenpotShape} = await import('../penpot-export.mjs');
@@ -77,7 +77,7 @@ test('Style Dictionary composite shadow values retain object and array structure
   assert.doesNotMatch(typst, /\[object Object\]/);
 });
 
-test('Browserless HTML receives canonical CSS before head scripts run', () => {
+test('Playwright HTML receives canonical CSS before head scripts run', () => {
   const css = 'http://design-tools:9002/files/.mirket-design/tokens/abc/tokens.css';
   const document = '<!doctype html><html><head><script>window.initial = getComputedStyle(document.documentElement).getPropertyValue("--color-accent")</script></head><body>Probe</body></html>';
   const injected = injectTokenStylesheet(document, css);
@@ -159,23 +159,6 @@ test('Typst cannot read an unprepared absolute workspace asset', async t => {
   await assert.rejects(fs.stat(path.join(workspace, 'bounded.pdf')), {code: 'ENOENT'});
 });
 
-test('ComfyUI refuses mixed bitmap and 3D graph before prompt POST', async () => {
-  const bitmap = {name: 'SaveImage', category: 'image', input: {required: {images: ['IMAGE']}}, output: [], output_node: true};
-  const mesh = {name: 'MeshGenerator', category: 'advanced/modeling', input: {required: {source: ['IMAGE']}}, output: ['MESH']};
-  const info = {SaveImage: bitmap, MeshGenerator: mesh};
-  let posted = 0;
-  const post = async () => { posted++; return {accepted: true}; };
-  const mixed = {'1': {class_type: 'SaveImage', inputs: {}}, '2': {class_type: 'MeshGenerator', inputs: {}}};
-  await assert.rejects(submitComfyGraph(mixed, info, post), /3D\/CAD\/modeling node/);
-  assert.equal(posted, 0);
-  await assert.rejects(submitComfyGraph({'1': {class_type: 'MissingNode', inputs: {}}}, info, post), /unavailable class/);
-  assert.equal(posted, 0);
-  await assert.rejects(submitComfyGraph({'1': {class_type: 'SaveImage', inputs: {}}}, {SaveImage: {...bitmap, output: null}}, post), /malformed live metadata/);
-  assert.equal(posted, 0);
-  const accepted = await submitComfyGraph({'1': {class_type: 'SaveImage', inputs: {}}}, info, post);
-  assert.equal(accepted.accepted, true);
-  assert.equal(posted, 1);
-});
 
 test('malicious imported SVG is rejected before publication', async () => {
   await fs.writeFile(path.join(workspace, 'unsafe.svg'), '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>');
@@ -195,7 +178,7 @@ test('standard Graphviz SVG 1.1 header is stripped without resolving arbitrary D
   assert.throws(() => optimizeSvgBytes('<!DOCTYPE svg SYSTEM "file:///etc/passwd">' + body), /DTD and entity declarations are refused/);
 });
 
-test('known output conflicts stop ComfyUI and HyperFrames before external work', async () => {
+test('known output conflicts stop HyperFrames before external work', async () => {
   await fs.writeFile(path.join(workspace, 'occupied.png'), 'existing-output');
   await fs.writeFile(path.join(workspace, 'occupied.mp4'), 'existing-output');
   await fs.writeFile(path.join(workspace, 'empty.png'), '');
@@ -203,9 +186,6 @@ test('known output conflicts stop ComfyUI and HyperFrames before external work',
   let requests = 0;
   global.fetch = () => { requests++; throw Error('External service was touched'); };
   try {
-    await assert.rejects(comfyuiSubmit({workflow: 'missing.json', output: 'occupied.png'}), /Output exists; pass overwrite=true/);
-    await assert.rejects(comfyuiSubmit({workflow: 'missing.json', output: 'occupied.png', overwrite: true, expected_sha256: '0'.repeat(64)}), /Output revision mismatch/);
-    await assert.rejects(comfyuiSubmit({workflow: 'missing.json', output: 'empty.png'}), /Output exists; pass overwrite=true/);
     await assert.rejects(hyperframesRender({project: 'missing-project', output: 'occupied.mp4'}), /Output exists; pass overwrite=true/);
     assert.equal(requests, 0);
   } finally { global.fetch = originalFetch; }
@@ -275,11 +255,11 @@ test('cancellation removes a detached grandchild after its parent ignores SIGTER
 });
 
 test('renderer child receives no service credentials', async () => {
-  process.env.MIRKET_BROWSERLESS_TOKEN = 'test-secret-12345';
+  process.env.MIRKET_PENPOT_PASSWORD = 'test-secret-12345';
   try {
-    const result = await run(process.execPath, ['-e', 'process.stdout.write(String(process.env.MIRKET_BROWSERLESS_TOKEN || "absent"))']);
+    const result = await run(process.execPath, ['-e', 'process.stdout.write(String(process.env.MIRKET_PENPOT_PASSWORD || "absent"))']);
     assert.equal(result.stdout, 'absent');
-  } finally { delete process.env.MIRKET_BROWSERLESS_TOKEN; }
+  } finally { delete process.env.MIRKET_PENPOT_PASSWORD; }
 });
 
 test('renderer child uses private workspace disk scratch and removes it after exit', async () => {

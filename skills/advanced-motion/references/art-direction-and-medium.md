@@ -109,7 +109,7 @@ motion rather than claiming a parameter value guarantees a particular emotion.
 | Readable text, layout, controls, simple surfaces | Semantic HTML + CSS; Web Animations for imperative playback | Avoid redrawing text or controls in a canvas merely to synchronize them |
 | Editable illustration, crisp paths, named moving parts | SVG with static groups; CSS/WAAPI or supported declarative animation | Canvas can suit dense repeated drawing when per-object DOM/editability is unnecessary |
 | Procedural lines, dense particles, generated textures | Canvas 2D with an explicit draw function | A handful of vector shapes rarely needs a perpetual raster loop |
-| Interactive shader effects and WebGL surfaces | Inspect the existing web implementation through Browserless after a small target-device probe | CSS transforms may cover layered planes; neither medium guarantees lower cost |
+| Interactive shader effects and WebGL surfaces | Inspect the existing web implementation through Playwright after a small target-device probe | CSS transforms may cover layered planes; neither medium guarantees lower cost |
 | Encoded video or a fixed frame sequence | HyperFrames lint, snapshot and render with explicit frame rate and duration | A live page or screen recording does not establish deterministic video delivery |
 
 Combine media when their roles are clear: semantic DOM copy over a Canvas field,

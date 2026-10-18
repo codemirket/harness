@@ -116,6 +116,10 @@ async function publicationLock(name, fn) {
     return await fn();
   } finally { child.stdin.destroy(); await done; }
 }
+export async function withRenderSlot(fn) {
+  // Cross-process admission: desktop clients share one native renderer budget.
+  return publicationLock('@mirket-native-render', fn);
+}
 export async function publish(name, bytes, options = {}) {
   assertRelative(name);
   await workspacePath(name, {missing:true});

@@ -17,7 +17,7 @@ const {withRequest} = await import('../request.mjs');
 
 test.after(async () => fs.rm(workspace, {recursive: true, force: true}));
 
-test('Browserless cancellation before connect or before the operation microtask prevents work', async () => {
+test('Playwright cancellation before connect or before the operation microtask prevents work', async () => {
   const before = new AbortController();
   before.abort(Error('already cancelled'));
   await assert.rejects(withBrowserCaptureSession(async () => assert.fail('must not connect'), '', {}, async () => {}, {signal: before.signal}), /already cancelled/);
@@ -40,7 +40,7 @@ async function temporaryPair(name) {
   return {root, origin, stage};
 }
 
-test('Browserless cancellation arriving during connect closes the eventual browser before context work', async () => {
+test('Playwright cancellation arriving during connect closes the eventual browser before context work', async () => {
   const controller = new AbortController();
   let releaseConnect;
   const connected = new Promise(resolve => { releaseConnect = resolve; });
@@ -48,7 +48,7 @@ test('Browserless cancellation arriving during connect closes the eventual brows
   const browser = {close: async () => { closes++; }};
   const capture = withBrowserCaptureSession(
     async () => { await connected; return browser; },
-    'ws://browserless.invalid/chromium/playwright',
+    'owned-child',
     {timeout: 15000},
     async () => { operations++; },
     {signal: controller.signal, timeoutMs: 1000},
@@ -61,12 +61,12 @@ test('Browserless cancellation arriving during connect closes the eventual brows
   assert.ok(closes >= 1, 'the remotely connected browser was closed');
 });
 
-test('Browserless capture operation deadline rejects stalled protocol work and closes the browser', async () => {
+test('Playwright capture operation deadline rejects stalled protocol work and closes the browser', async () => {
   let closes = 0;
   const browser = {close: async () => { closes++; }};
   await assert.rejects(withBrowserCaptureSession(
     async () => browser,
-    'ws://browserless.invalid/chromium/playwright',
+    'owned-child',
     {timeout: 15000},
     async () => new Promise(() => {}),
     {timeoutMs: 20},

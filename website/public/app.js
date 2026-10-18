@@ -23,7 +23,7 @@ const routes = {
     description:
       "Layout decisions and multi-step visual reasoning require the architectural tier.",
     role: "Frontend engineering + interface design",
-    tools: "Workspace, Browserless, image inspection",
+    tools: "Workspace, Playwright, image inspection",
     check: "Render the screen and inspect its pixels",
   },
 };

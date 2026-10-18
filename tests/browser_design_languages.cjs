@@ -1,8 +1,8 @@
 /* Optional real-browser evidence for the installed design-inspiration library.
- * Requires the managed Browserless service and its installed playwright-core client.
+ * Requires the managed Playwright service and its installed playwright-core client.
  * node tests/browser_design_languages.cjs LOOPBACK_BASE OUTPUT_DIR LIBRARY_JSON [ID,...]
- * BROWSERLESS_WS selects its WebSocket endpoint; the helper uses native Playwright. Screenshots require actual craft review. */
-const { connect } = require('./browserless.cjs');
+ * MIRKET_CHROMIUM_PATH selects an installed Chromium executable; the helper uses native Playwright. Screenshots require actual craft review. */
+const { connect } = require('./browser.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');

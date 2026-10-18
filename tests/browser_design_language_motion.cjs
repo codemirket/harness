@@ -1,13 +1,13 @@
 /* Behavioral acceptance for the four original design-language motion studies.
- * Use an managed Browserless and installed playwright-core client; never installs either.
+ * Use an managed Playwright and installed playwright-core client; never installs either.
  *
  * node tests/browser_design_language_motion.cjs LOOPBACK_BASE OUTPUT_DIR [ID]
  * BASE serves design-inspiration/assets/design-languages/ and ends with /.
- * BROWSERLESS_WS selects the managed Browserless WebSocket endpoint; the helper uses native Playwright.
+ * MIRKET_CHROMIUM_PATH selects an installed Chromium executable; the helper uses native Playwright.
  * CAPTURE_FRAMES=0 skips PNGs; CAPTURE_VIDEO=1 records wide normal
  * purposeful runs. Neither screenshots nor a passing probe are visual approval.
  */
-const { connect } = require('./browserless.cjs');
+const { connect } = require('./browser.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');

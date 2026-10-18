@@ -129,7 +129,7 @@ playback as well as intermediate frames. Performance claims require measurement;
 
 ## Inspect and critique
 
-Run the real screen and exercise the changed task through Browserless. Inspect
+Run the real screen and exercise the changed task through Playwright. Inspect
 the full DOM and capture 2x screenshots. Compare matching content,
 viewport, theme and state with the baseline/reference. Inspect desktop and narrow
 layouts, then repair observed clipping, weak hierarchy, unreadable text, missing

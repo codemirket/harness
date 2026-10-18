@@ -62,7 +62,7 @@ Map standards-based findings to the chosen criterion. For example, the normative
 for names and roles, focus, status messages and complete processes. Passing one
 screen in a checkout does not establish conformance of the checkout process.
 
-Use Browserless through the `design` package for full DOM, 2x screenshots and
+Use Playwright through the `design` package for full DOM, 2x screenshots and
 accessibility evidence for important states at intended and narrow sizes.
 Exercise actions that expose the exact
 menu, dialog or form state to inspect. Read reported violations and incomplete

@@ -155,6 +155,11 @@ fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<Arti
             }
         }
     }
+    if name == "design/vector_render"
+        && let Some(item) = artifact_from_json(paths, &value["preview"])?
+    {
+        refs.push(item);
+    }
     if name == "design/tokens_compile"
         && let Some(outputs) = value["outputs"].as_object()
     {

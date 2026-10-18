@@ -477,7 +477,11 @@ enum PackageCommand {
     /// Verify the content of selected packages without starting their processes.
     Status,
     /// Start a reviewed local service profile; never downloads images.
-    Start { id: String },
+    Start {
+        id: String,
+        #[arg(long = "group", value_parser = ["core", "diagrams", "penpot", "all"])]
+        groups: Vec<String>,
+    },
     /// Stop owned services; retain designs unless --purge-data is explicitly supplied.
     Stop {
         id: String,
@@ -830,7 +834,7 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
         }
         if args.packages.is_empty() && !args.no_packages {
             println!(
-                "\nThe optional design stack builds pinned runtimes during setup. Use mirket package list to review its eleven tools."
+                "\nThe optional design stack builds pinned runtimes during setup. Use mirket package list to review its design tools."
             );
             let default = if options.packages.is_empty() {
                 "none".to_owned()
@@ -1337,7 +1341,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     .unwrap_or_default();
                 packages::doctor(&paths, &selected)?
             }
-            PackageCommand::Start { id } => packages::service_start(&paths, &id)?,
+            PackageCommand::Start { id, groups } => packages::service_start(&paths, &id, &groups)?,
             PackageCommand::Stop { id, purge_data } => {
                 packages::service_stop(&paths, &id, purge_data)?
             }

@@ -1,6 +1,6 @@
 # Browser evidence you can act on
 
-Start the project's app through its established commands. Use Browserless through
+Start the project's app through its established commands. Use Playwright through
 the `design` package for full DOM, interaction and 2x screenshot evidence. If it
 is unavailable, identify the missing runtime step before claiming browser
 evidence. A skill supplies no browser, authentication or publishing permission.

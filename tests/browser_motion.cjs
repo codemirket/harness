@@ -1,8 +1,8 @@
-/* Optional rendered acceptance probe. Uses an managed Browserless;
+/* Optional rendered acceptance probe. Uses an managed Playwright;
  * never installs a browser or package. Serve an installed advanced-motion/assets
  * directory first. Usage: node tests/browser_motion.cjs BASE_URL OUTPUT_DIRECTORY
  * This captures evidence for visual review; a pass is not aesthetic acceptance. */
-const { connect } = require('./browserless.cjs');
+const { connect } = require('./browser.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
