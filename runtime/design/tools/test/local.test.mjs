@@ -32,6 +32,16 @@ test('canonical token generation is complete, reused and detects drift', async (
   const first = await compileTokens('design/tokens.json');
   assert.deepEqual(Object.keys(first.outputs).sort(), ['penpot.tokens.json', 'tokens.css', 'tokens.js', 'tokens.ts', 'tokens.typ']);
   assert.equal((await compileTokens('design/tokens.json')).reused, true);
+  const loader = path.join(workspace, 'no-compiler-loader.mjs');
+  await fs.writeFile(loader, `export async function resolve(specifier, context, next) {
+    if (specifier === 'style-dictionary') throw Error('Cached tokens loaded the compiler');
+    return next(specifier, context);
+  }`);
+  const cached = spawnSync(process.execPath, ['--loader', loader, '--input-type=module', '-e', `
+    const {compileTokens} = await import(${JSON.stringify(new URL('../tokens.mjs', import.meta.url).href)});
+    if (!(await compileTokens('design/tokens.json')).reused) throw Error('Expected verified cache');
+  `], {encoding: 'utf8', timeout: 5000});
+  assert.equal(cached.status, 0, cached.stderr);
   await fs.writeFile(path.join(workspace, first.outputs['tokens.css']), 'drift');
   await assert.rejects(compileTokens('design/tokens.json'), /drifted/);
   await fs.writeFile(path.join(workspace, 'design/tokens.json'), JSON.stringify({color: {accent: {$type: 'color', $value: '#654321'}}}));

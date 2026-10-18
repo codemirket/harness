@@ -19,6 +19,24 @@ pub struct Engine {
     pub connection: String,
 }
 
+fn validate_memory_allocation(memory_mib: u64, host_bytes: u64) -> Result<()> {
+    ensure!(
+        memory_mib >= 6144 && memory_mib <= host_bytes / (2 * 1024 * 1024),
+        "VM memory must be at least 6144 MiB and leave at least half the host RAM available"
+    );
+    Ok(())
+}
+
+fn host_memory_bytes() -> Result<u64> {
+    let mut command = Command::new("/usr/sbin/sysctl");
+    command.args(["-n", "hw.memsize"]);
+    let (stdout, _) = capture_output(command, Duration::from_secs(5))?;
+    String::from_utf8(stdout)?
+        .trim()
+        .parse()
+        .context("cannot determine host physical memory")
+}
+
 impl Engine {
     pub fn resolve(paths: &Paths) -> Result<Self> {
         let binary = crate::tools::verified(paths, "podman")
@@ -250,6 +268,10 @@ impl Engine {
                 util::reject_symlink_components(path)?;
             }
             let vm = &value["AppleHypervisor"]["Vfkit"];
+            let memory_mib = value["Resources"]["Memory"]
+                .as_u64()
+                .context("VM memory allocation missing")?;
+            validate_memory_allocation(memory_mib, host_memory_bytes()?)?;
             let endpoint = reqwest::Url::parse(
                 vm["Endpoint"]
                     .as_str()
@@ -279,14 +301,12 @@ impl Engine {
                     && value["SSH"]["RemoteUsername"] == "core"
                     && value["ImagePath"]["Path"] == disk.to_string_lossy().as_ref()
                     && value["Resources"]["CPUs"] == 4
-                    && value["Resources"]["Memory"] == 6144
                     && value["Resources"]["DiskSize"] == 40
                     && value["Resources"]["USBs"] == json!([])
                     && value["Rosetta"] == false
                     && vm["Rosetta"] == false
                     && vm["BinaryPath"].is_null()
                     && vm["VirtualMachine"]["vcpus"] == 4
-                    && vm["VirtualMachine"]["memoryBytes"] == 6442450944u64
                     && vm["VirtualMachine"]["bootloader"]["kind"] == "efiBootloader"
                     && vm["VirtualMachine"]["bootloader"]["efiVariableStorePath"]
                         == efi.to_string_lossy().as_ref(),
@@ -336,6 +356,7 @@ impl Engine {
     pub fn init(&self, image: &std::path::Path) -> Result<Value> {
         ensure_controller_supported()?;
         self.ensure_machine_helpers()?;
+        validate_memory_allocation(6144, host_memory_bytes()?)?;
         util::reject_symlink_components(image)?;
         // An approved, exact upstream boot artifact; no caller-selected ignition or helper.
         ensure!(
@@ -371,6 +392,40 @@ impl Engine {
         )?;
         self.ready()?;
         Ok(self.status())
+    }
+    pub fn resize(&self, memory_mib: u64) -> Result<Value> {
+        ensure_controller_supported()?;
+        self.ensure_machine_helpers()?;
+        validate_memory_allocation(memory_mib, host_memory_bytes()?)?;
+        self.validate_machine()?;
+        // Podman refuses to resize a running VM. Stopping remains an explicit
+        // operation with the same disk, share and live-controller identity checks.
+        self.raw(
+            &[
+                "machine".into(),
+                "set".into(),
+                format!("--memory={memory_mib}"),
+                self.connection.clone(),
+            ],
+            Duration::from_secs(30),
+        )?;
+        self.validate_machine()?;
+        let observed = self.raw(
+            &[
+                "machine".into(),
+                "inspect".into(),
+                "--format={{.Resources.Memory}}".into(),
+                self.connection.clone(),
+            ],
+            Duration::from_secs(10),
+        )?;
+        ensure!(
+            observed.trim().parse::<u64>()? == memory_mib,
+            "Podman did not retain the requested memory allocation"
+        );
+        Ok(
+            json!({"resized":self.connection,"memory_mib":memory_mib,"started":false,"data_preserved":true}),
+        )
     }
     /// Require both AppleHV helpers before downloading an image or mutating a VM.
     pub(crate) fn ensure_machine_helpers(&self) -> Result<()> {
@@ -422,6 +477,12 @@ impl Engine {
         Ok(json!({"stopped":self.connection,"data_preserved":true}))
     }
     fn validate_control_vm(&self, actual: &Value, configured: &Value) -> Result<()> {
+        // AppleHV derives the next VM from Resources. Its serialized Vfkit
+        // template retains the creation-time memory after `machine set`.
+        let memory_bytes = configured["Resources"]["Memory"]
+            .as_u64()
+            .and_then(|mib| mib.checked_mul(1024 * 1024))
+            .context("configured VM memory missing or overflowing; no stop request sent")?;
         let private_data =
             PathBuf::from(&self.env["XDG_DATA_HOME"]).join("containers/podman/machine/applehv");
         let runtime = PathBuf::from(&self.env["TMPDIR"]).join("podman");
@@ -441,7 +502,7 @@ impl Engine {
             .count();
         ensure!(
             actual["vcpus"] == 4
-                && actual["memoryBytes"] == 6442450944u64
+                && actual["memoryBytes"] == memory_bytes
                 && actual["bootloader"]
                     == configured["AppleHypervisor"]["Vfkit"]["VirtualMachine"]["bootloader"]
                 && ignition_count <= 1
@@ -758,6 +819,17 @@ fn capture_output(mut command: Command, timeout: Duration) -> Result<(Vec<u8>, V
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn memory_allocation_preserves_host_headroom_and_rejects_overflow() {
+        let host = 16 * 1024 * 1024 * 1024;
+        assert!(validate_memory_allocation(6144, host).is_ok());
+        assert!(validate_memory_allocation(8192, host).is_ok());
+        for value in [0, 4096, 8193, u64::MAX] {
+            assert!(validate_memory_allocation(value, host).is_err());
+        }
+        assert!(validate_memory_allocation(6144, 8 * 1024 * 1024 * 1024).is_err());
+    }
 
     #[cfg(unix)]
     #[test]

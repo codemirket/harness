@@ -22,7 +22,7 @@ async function within(promise, ms, label) {
   } finally { clearTimeout(timer); }
 }
 
-test('stdio EOF closes the Penpot HTTP session and exits the design worker', {timeout: 10000}, async () => {
+test('discovery avoids rendering imports and EOF closes the Penpot HTTP session', {timeout: 10000}, async () => {
   const sessions = new Map();
   let openGets = 0;
   let sawGet;
@@ -56,11 +56,21 @@ test('stdio EOF closes the Penpot HTTP session and exits the design worker', {ti
     });
   });
   let child;
+  const fixture = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-discovery-imports-'));
+  const loader = path.join(fixture, 'loader.mjs');
+  await fs.writeFile(loader, `
+    export async function resolve(specifier, context, next) {
+      if (['style-dictionary', 'satori', '@resvg/resvg-js', 'svgo', 'playwright-core'].includes(specifier)) {
+        throw Error('Discovery loaded renderer: ' + specifier);
+      }
+      return next(specifier, context);
+    }
+  `);
   try {
     listener.listen(0, '127.0.0.1');
     await once(listener, 'listening');
     const endpoint = `http://127.0.0.1:${listener.address().port}/mcp`;
-    child = spawn(process.execPath, [fileURLToPath(new URL('../server.mjs', import.meta.url))], {
+    child = spawn(process.execPath, ['--loader', loader, fileURLToPath(new URL('../server.mjs', import.meta.url))], {
       stdio: ['pipe', 'pipe', 'pipe'],
       env: {...process.env, MIRKET_PENPOT_MCP_URL: endpoint},
     });
@@ -111,6 +121,7 @@ test('stdio EOF closes the Penpot HTTP session and exits the design worker', {ti
     await Promise.allSettled([...sessions.values()].map(session => session.server.close()));
     listener.closeAllConnections();
     if (listener.listening) await new Promise(resolve => listener.close(resolve));
+    await fs.rm(fixture, {recursive: true, force: true});
   }
 });
 

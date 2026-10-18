@@ -23,6 +23,23 @@ mirket package status
 cache. `--image /absolute/path/to/image.raw.zst` accepts only the exact same pin.
 The macOS ARM64 profile creates a rootless Apple Hypervisor VM with four CPUs,
 6 GiB memory, a 40 GiB disk and one private staging share. It does not start it.
+The VM requires at least 6 GiB and reserves at least half of physical host RAM
+for macOS and desktop applications. On a 16 GiB host running multiple design MCP
+connections, allocate 8 GiB while the owned VM is stopped:
+
+```sh
+mirket package stop design
+mirket environment stop
+mirket environment resize --memory-mib 8192
+mirket environment start
+mirket package start design
+```
+
+Resizing preserves the disk and workspace and never stops a running VM implicitly.
+The design worker has a 3 GiB memory limit, a 512 process/thread limit, and loads rendering dependencies only
+when invoked; idle discovery and cached token reads do not load the renderers.
+These bounds leave headroom for concurrent sessions, but do not guarantee that
+arbitrary image models or unbounded simultaneous rendering fit the device.
 `environment start` checks sharing and private connection identity before boot.
 Neither package calls nor MCP initialization starts the VM. An absent or stopped
 environment is an actionable readiness error.

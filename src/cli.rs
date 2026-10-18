@@ -167,6 +167,11 @@ enum EnvironmentCommand {
     },
     Start,
     Stop,
+    /// Resize the stopped, owned VM while reserving at least half the host RAM.
+    Resize {
+        #[arg(long)]
+        memory_mib: u64,
+    },
     Status,
 }
 impl TargetChoice {
@@ -1315,6 +1320,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }
                 EnvironmentCommand::Start => engine.start()?,
                 EnvironmentCommand::Stop => engine.stop()?,
+                EnvironmentCommand::Resize { memory_mib } => engine.resize(memory_mib)?,
                 EnvironmentCommand::Status => engine.status(),
             }
         }

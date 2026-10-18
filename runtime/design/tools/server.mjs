@@ -4,11 +4,9 @@ import {Client} from '@modelcontextprotocol/sdk/client/index.js';
 import {StreamableHTTPClientTransport} from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import {ListToolsRequestSchema, CallToolRequestSchema} from '@modelcontextprotocol/sdk/types.js';
 import {compileTokens} from './tokens.mjs';
-import {staticRender, browserScreenshot, krokiRender, hyperframesRender, typstCompile, imgproxyTransform, svgOptimize, comfyuiSubmit, odiffCompare} from './operations.mjs';
 import Ajv from 'ajv';
 import {withRequest, checkRequest, redactSecrets} from './request.mjs';
 import {synchronizePenpotTokens} from './penpot-tokens.mjs';
-import {exportPenpotShape, importPenpotImage} from './penpot-export.mjs';
 import {readFileSync} from 'node:fs';
 import {shutdownChildren} from './paths.mjs';
 
@@ -36,17 +34,20 @@ const definitions = [
   {name: 'comfyui_submit', description: 'Submit an API workflow graph to ComfyUI, retain its output PNG and inspect via Browserless.', inputSchema: schema(['workflow', 'output'], {...common, workflow: file, output})},
   {name: 'odiff_compare', description: 'Compare two saved images with the actual Odiff CLI; retain diff PNG when pixels differ.', inputSchema: schema(['baseline', 'candidate'], {baseline: file, candidate: file, output, overwrite, expected_sha256: common.expected_sha256})},
 ];
+// Hosts keep a worker per connection. Discovery and cached tokens must not load
+// every renderer into each idle process; import only when a tool needs it.
+const operation = name => async args => (await import('./operations.mjs'))[name](args);
 const handlers = {
   tokens_compile: args => compileTokens(args.source),
-  static_render: staticRender,
-  browser_screenshot: browserScreenshot,
-  kroki_render: krokiRender,
-  hyperframes_render: hyperframesRender,
-  typst_compile: typstCompile,
-  imgproxy_transform: imgproxyTransform,
-  svg_optimize: svgOptimize,
-  comfyui_submit: comfyuiSubmit,
-  odiff_compare: odiffCompare,
+  static_render: operation('staticRender'),
+  browser_screenshot: operation('browserScreenshot'),
+  kroki_render: operation('krokiRender'),
+  hyperframes_render: operation('hyperframesRender'),
+  typst_compile: operation('typstCompile'),
+  imgproxy_transform: operation('imgproxyTransform'),
+  svg_optimize: operation('svgOptimize'),
+  comfyui_submit: operation('comfyuiSubmit'),
+  odiff_compare: operation('odiffCompare'),
 };
 const ajv = new Ajv({allErrors: true, strict: false});
 const validators = Object.fromEntries(definitions.map(tool => [tool.name, ajv.compile(tool.inputSchema)]));
@@ -133,8 +134,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
       const compiled = await compileTokens(process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json');
       await synchronizePenpotTokens(await penpotClient(), compiled, args.sessionId, signal);
     }
-    if (name === 'export_shape') return await exportPenpotShape(await penpotClient(), args, signal);
-    if (name === 'import_image') return await importPenpotImage(await penpotClient(), args, signal);
+    if (name === 'export_shape') return await (await import('./penpot-export.mjs')).exportPenpotShape(await penpotClient(), args, signal);
+    if (name === 'import_image') return await (await import('./penpot-export.mjs')).importPenpotImage(await penpotClient(), args, signal);
     return await (await penpotClient()).callTool({name, arguments: args}, undefined, {signal});
   } catch (error) {
     return {isError: true, content: [{type: 'text', text: redactSecrets(error.stack || error.message || error)}]};

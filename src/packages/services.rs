@@ -982,7 +982,9 @@ fn limits(alias: &str) -> (&'static str, &'static str, &'static str) {
     match alias {
         "penpot-backend" | "penpot-exporter" => ("1400m", "1.5", "256"),
         "browserless" => ("2000m", "1.5", "512"),
-        "design-tools" => ("1100m", "2", "256"),
+        // Multiple desktop MCP connections share this renderer container.
+        // Leave headroom for a real render alongside their retained sessions.
+        "design-tools" => ("3072m", "2", "512"),
         "comfyui" => ("3200m", "2", "256"),
         "kroki" => ("600m", "1", "128"),
         _ => ("350m", "1", "128"),

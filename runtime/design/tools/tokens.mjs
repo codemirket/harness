@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import StyleDictionary from 'style-dictionary';
 import {workspace, workspacePath, readFile, sha256, temporaryDirectory} from './paths.mjs';
 import {checkRequest} from './request.mjs';
 
@@ -36,12 +35,18 @@ function typstValue(value) {
   }
   throw Error('Token contains a value Typst cannot represent');
 }
-for (const [name, format] of Object.entries({
-  'mirket/js': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)};\n`,
-  'mirket/ts': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)} as const;\n`,
-  'mirket/typst': ({dictionary}) => `#let tokens = ${typstValue(flat(dictionary))}\n`,
-  'mirket/penpot': ({dictionary}) => `${JSON.stringify(nested(dictionary), null, 2)}\n`,
-})) StyleDictionary.registerFormat({name, format});
+let compiler;
+function tokenCompiler() {
+  return compiler ||= import('style-dictionary').then(({default: StyleDictionary}) => {
+    for (const [name, format] of Object.entries({
+      'mirket/js': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)};\n`,
+      'mirket/ts': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)} as const;\n`,
+      'mirket/typst': ({dictionary}) => `#let tokens = ${typstValue(flat(dictionary))}\n`,
+      'mirket/penpot': ({dictionary}) => `${JSON.stringify(nested(dictionary), null, 2)}\n`,
+    })) StyleDictionary.registerFormat({name, format});
+    return StyleDictionary;
+  });
+}
 
 export async function compileTokens(source = DEFAULT_SOURCE) {
   checkRequest();
@@ -72,6 +77,7 @@ export async function compileTokens(source = DEFAULT_SOURCE) {
   if (!tokens || typeof tokens !== 'object' || Array.isArray(tokens)) throw Error('Canonical tokens must be a DTCG JSON object');
   const stage = await temporaryDirectory('tokens');
   try {
+    const StyleDictionary = await tokenCompiler();
     const sd = new StyleDictionary({
       usesDtcg: true,
       log: {verbosity: 'silent', warnings: 'error'},
