@@ -1,6 +1,8 @@
+<a href="https://harness.mirket.dev"><img src="website/public/logo.png" alt="Mirket organization logo" width="80" height="80" /></a>
+
 # Mirket
 
-**Expertise and tools for the agents you already use.**
+**Expertise and tools for Codex and Claude.**
 
 Mirket is an open-source, local harness for **Codex Desktop** and **Claude Desktop
 Code**. It adds focused professional guidance, task-scoped tools and inspectable
