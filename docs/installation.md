@@ -1,18 +1,27 @@
 # Installation and updates
 
+For guided setup, paste the [installation prompt](../website/public/install-prompt.txt)
+into your agent. The [agent execution guide](agent-installation.md) covers device
+inspection, release verification and activation. This page is the manual and
+recovery reference.
+
+## Manual installation
+
 Download the Mirket executable for the machine from the
 [latest release](https://github.com/codemirket/harness/releases/latest). Asset
 names include the OS and architecture: `aarch64` is ARM64 and `x86_64` is Intel/AMD
 64-bit. Rename the selected `mirket-TARGET` file to `mirket` (`mirket.exe` on
-Windows), make it executable on macOS or Linux with `chmod +x mirket`, add its
+Windows), verify its SHA-256 against the same release's manifest or `SHA256SUMS`
+before execution, make it executable on macOS or Linux with `chmod +x mirket`,
+add its
 directory to PATH and run `mirket setup`. Each release includes `SHA256SUMS` for
 the downloadable binaries, plus `LICENSE`, `NOTICE.md` and Rust dependency
 notices accompanying the native distributions. Source installation uses
 `cargo install --locked --path . --bin mirket`; normal use needs only the compiled
 binary.
 
-Setup prompts for Codex, Claude or both, local MCP
-and editor packages, and confirmation. `--yes` uses explicit flags or saved
+Setup prompts for Codex, Claude or both, documentation integration, optional
+packages, and confirmation. `--yes` uses explicit flags or saved
 choices without prompting. A fresh unattended setup selects no optional packages:
 
 ```sh
@@ -92,14 +101,15 @@ without installing. The repository must have a published release with
 `mirket-release.json` and its listed executables; an absent release is an explicit
 error and does not change the installation.
 
-### Updating task state to 3.3.0
+### Updating older task databases
 
 Before updating an installation with existing tasks, quiesce Mirket task-state
 writers and retain a consistent SQLite backup of `~/.mirket/state.db`. SQLite's
 backup API includes committed WAL data; copying only an active database file is
 not a complete backup. Rehearse recovery in a disposable home.
 
-The first 3.3.0 task-state or MCP open migrates a valid schema-1 or schema-2
+The current runtime's first task-state or MCP open migrates a valid schema-1 or
+schema-2
 database transactionally to schema 3. Projects, tasks, deliveries, evidence,
 checkpoints, contracts and previously recorded idempotency replies retain their
 values. The migration replaces the task-list index to match creation-time/ID

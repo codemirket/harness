@@ -20,6 +20,12 @@ assert.equal(
   "Compiled token CSS has drifted",
 );
 const html = await fs.readFile(path.join(root, "public/index.html"), "utf8");
+const prompt = (await fs.readFile(path.join(root, "public/install-prompt.txt"), "utf8")).trim();
+const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#x27;");
+assert.ok(html.includes(`>${escapeHtml(prompt)}</textarea>`), "Website installation prompt drifted");
+const readme = await fs.readFile(path.join(root, "../README.md"), "utf8");
+assert.ok(readme.includes(`<!-- installation-prompt:start -->\n\x60\x60\x60text\n${prompt}\n\x60\x60\x60\n<!-- installation-prompt:end -->`), "README installation prompt drifted");
+await fs.access(path.join(root, "../docs/agent-installation.md"));
 assert.match(html, /<html lang="en">/);
 assert.equal((html.match(/<h1\b/g) || []).length, 1);
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);

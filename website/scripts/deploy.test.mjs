@@ -17,6 +17,9 @@ test("deployment admits only exact committed artifact bytes", async () => {
       await fs.cp(path.join(source, dir), path.join(root, "website", dir), {
         recursive: true,
       });
+    await fs.copyFile(path.join(source, "../README.md"), path.join(root, "README.md"));
+    await fs.mkdir(path.join(root, "docs"));
+    await fs.copyFile(path.join(source, "../docs/agent-installation.md"), path.join(root, "docs/agent-installation.md"));
     await fs.writeFile(path.join(root, ".gitignore"), "website/dist/\n");
     for (const args of [
       ["init", "-q"],

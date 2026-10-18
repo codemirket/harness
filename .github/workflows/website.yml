@@ -1,9 +1,9 @@
 name: Harness website
 on:
   push:
-    paths: ['website/**', '.github/workflows/website.yml']
+    paths: ['website/**', 'README.md', 'docs/agent-installation.md', '.github/workflows/website.yml']
   pull_request:
-    paths: ['website/**', '.github/workflows/website.yml']
+    paths: ['website/**', 'README.md', 'docs/agent-installation.md', '.github/workflows/website.yml']
 permissions:
   contents: read
 concurrency:

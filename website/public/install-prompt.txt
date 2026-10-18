@@ -1,0 +1,5 @@
+Install Mirket for the agent environment I am using on this device. Read https://raw.githubusercontent.com/codemirket/harness/main/docs/agent-installation.md and carry out the installation, rather than only explaining it.
+
+Inspect my OS, architecture, available host and any existing Mirket setup. Use the official codemirket/harness release, verify its checksum before execution, and preserve my existing settings, credentials and project files. Use Mirket's own setup and update commands. Ask only for choices or permissions you cannot infer safely. Keep optional packages opt-in.
+
+Run the health checks, report the installed version and actual results, and explain any fresh-session step needed to activate the tools. Do not claim activation until a Mirket tool has been invoked in the host. If this chat has a project, inspect it and propose the relevant expertise without changing application code as part of installation.

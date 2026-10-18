@@ -1,9 +1,15 @@
 # Harness website
 
-The public site for this repository is https://harness.mirket.dev. Its source lives
-with the harness so product claims and documentation links can change together.
-It is a dependency-free static site, served by the existing Mirket VPS nginx.
-It has no analytics, cookies, remote fonts, form collection or application daemon.
+[harness.mirket.dev](https://harness.mirket.dev) is Mirket's public introduction
+and agent-led installation entry point. It is a dependency-free static site,
+served by the existing Mirket VPS nginx. It has no analytics, cookies, remote
+fonts, form collection or application daemon.
+
+The main action copies an installation prompt. `public/install-prompt.txt` is the
+canonical prompt; the homepage textarea and root README contain identical text,
+checked by the build. The prompt links to `docs/agent-installation.md` in the
+repository. Publish that guide before deploying a site that references it.
+Manual installation remains in `docs/installation.md`.
 
 ## Build and verify
 
@@ -12,28 +18,43 @@ Use Node 22 or later:
 ```sh
 node website/scripts/build.mjs
 node --check website/public/app.js
+node --test website/scripts/deploy.test.mjs
 ```
 
-Canonical tokens live in `design/tokens.json`; the checked-in CSS was compiled
-through Mirket's Style Dictionary tool. After editing tokens, copy the JSON into
-the reported design workspace, call `tokens_compile` on it, then copy its CSS
-output to `public/tokens.css` and update the source/CSS SHA-256 pair in
-`design/compiled.json`. Build rejects drift. No design runtime is needed to serve
-or package already verified static assets.
+The build checks static assets, local anchors, prompt consistency and canonical
+token digests. It writes a hash manifest alongside the files in `website/dist/`.
+CI runs these checks when the site, shared README or agent guide changes.
 
-For browser QA, copy `public/` into the design workspace and exercise it through
-Playwright. Check desktop, narrow, enlarged text, keyboard interaction, the three
-route examples, all download options, clipboard failure and JavaScript disabled.
-Capture bounded 2x viewports, rather than one giant full-page image.
+Canonical tokens live in `design/tokens.json`; checked-in CSS is compiled through
+Mirket's Style Dictionary tool. After editing tokens, copy the JSON into the
+reported design workspace, call `tokens_compile`, copy its CSS output to
+`public/tokens.css`, and update the SHA-256 pair in `design/compiled.json`.
+No design runtime is required to serve already compiled static assets.
+
+For visual QA, copy `public/` into the design package's reported workspace and use
+`browser_screenshot` with the token source. Inspect actual 2x desktop and narrow
+captures. For the complete interaction checks, serve the site locally and use an
+existing Playwright installation and browser (the script installs nothing):
+
+```sh
+python3 -m http.server 8767 --bind 127.0.0.1 --directory website/public
+# In another terminal, set MIRKET_PLAYWRIGHT_MODULE and MIRKET_CHROMIUM_PATH
+# to the installed module entrypoint and browser executable, then:
+node website/scripts/browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence
+```
+
+The checks cover 1440, 768, 390 and 320 CSS-pixel widths, keyboard access, prompt
+copy success and clipboard denial, native disclosure controls, enlarged text,
+console errors and JavaScript-disabled access. Inspect the saved captures as well
+as the report. Keep evidence outside shipped source.
 
 ## Deploy
 
-This follows the learning-platform site's existing static release convention,
-with a separate root `/opt/harness.mirket.dev` owned by `deploy`. The one-time
-nginx configuration is in `deploy/nginx.conf`. Its certificate is independent
-and uses the existing Certbot webroot renewal service. Preserve other vhosts.
+Deployment uses the existing `admin@mirket.dev` SSH access and performs file
+operations as `deploy`, under `/opt/harness.mirket.dev`. Nginx configuration is in
+`deploy/nginx.conf`. Preserve other vhosts and the existing certificate renewal.
 
-After committing source, build and deploy:
+After committing and publishing the source and linked documentation:
 
 ```sh
 node website/scripts/build.mjs
@@ -41,12 +62,11 @@ node website/scripts/deploy.mjs --dry-run
 node website/scripts/deploy.mjs
 ```
 
-Deployment uses the existing `admin@mirket.dev` SSH access and runs file operations
-as `deploy`. It refuses an existing release directory, verifies hashes before an
-atomic symlink switch, checks live asset bytes and real 404 responses, and restores
-the preceding release if verification fails. Failed uploads remain inactive for
-inspection. SSH credentials stay outside source. CI checks the static source;
-deployment is an explicit operator action, not an unconfigured CI promise.
+The deployer requires committed website source, refuses an existing release
+directory, checks artifact hashes, atomically switches the active symlink, and
+checks live asset bytes and real 404 responses. It restores the preceding release
+if live verification fails. Failed uploads remain inactive for inspection.
+SSH credentials stay outside source. Deployment is an explicit operator action.
 
 Rollback: under the deployment lock, create a new symlink to a verified previous
 directory in `/opt/harness.mirket.dev/releases/`, then rename it over `current`.
