@@ -17,6 +17,7 @@ pub struct Engine {
     pub env: BTreeMap<String, String>,
     pub staging: PathBuf,
     pub connection: String,
+    deadline: Option<Instant>,
 }
 
 fn validate_memory_allocation(memory_mib: u64, host_bytes: u64) -> Result<()> {
@@ -147,10 +148,25 @@ impl Engine {
             env,
             staging: root.join("staging"),
             connection,
+            deadline: None,
         })
     }
     pub fn owner(&self) -> String {
         self.connection.clone()
+    }
+    pub(crate) fn with_deadline(mut self, deadline: Instant) -> Self {
+        self.deadline = Some(deadline);
+        self
+    }
+    pub(crate) fn remaining_budget(&self, timeout: Duration) -> Result<Duration> {
+        let remaining = self.deadline.map_or(timeout, |deadline| {
+            timeout.min(deadline.saturating_duration_since(Instant::now()))
+        });
+        ensure!(
+            !remaining.is_zero(),
+            "Podman operation deadline exceeded before dispatch"
+        );
+        Ok(remaining)
     }
     pub fn command(&self, args: &[String]) -> Command {
         let mut command = Command::new(&self.binary);
@@ -164,10 +180,10 @@ impl Engine {
     pub fn raw(&self, args: &[String], timeout: Duration) -> Result<String> {
         let mut command = Command::new(&self.binary);
         command.env_clear().envs(&self.env).args(args);
-        capture(command, timeout)
+        capture(command, self.remaining_budget(timeout)?)
     }
     pub fn run(&self, args: &[String], timeout: Duration) -> Result<String> {
-        capture(self.command(args), timeout)
+        capture(self.command(args), self.remaining_budget(timeout)?)
     }
     pub(crate) fn container_logs(&self, name: &str) -> Result<String> {
         let args = ["container", "logs", "--tail", "50", name].map(str::to_owned);
@@ -819,6 +835,32 @@ fn capture_output(mut command: Command, timeout: Duration) -> Result<(Vec<u8>, V
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn expired_operation_budget_rejects_before_starting_any_command() {
+        let engine = Engine {
+            binary: PathBuf::from("/must-not-execute"),
+            env: BTreeMap::new(),
+            staging: PathBuf::new(),
+            connection: "owned".into(),
+            deadline: Some(Instant::now() - Duration::from_secs(1)),
+        };
+        assert!(
+            engine
+                .raw(&[], Duration::from_secs(30))
+                .unwrap_err()
+                .to_string()
+                .contains("deadline exceeded before dispatch")
+        );
+        let engine = engine.with_deadline(Instant::now() + Duration::from_secs(1));
+        assert!(
+            engine.remaining_budget(Duration::from_secs(30)).unwrap() <= Duration::from_secs(1)
+        );
+        assert_eq!(
+            engine.remaining_budget(Duration::from_millis(1)).unwrap(),
+            Duration::from_millis(1)
+        );
+    }
 
     #[test]
     fn memory_allocation_preserves_host_headroom_and_rejects_overflow() {

@@ -93,16 +93,19 @@ mod windows;
 /// Unix groups are cooperative ownership: descendants can deliberately escape by
 /// creating a different session/group. This is not a sandbox or effect rollback.
 pub(crate) struct OwnedChild {
-    pub(crate) child: tokio::process::Child,
+    child: Option<tokio::process::Child>,
     finished: bool,
     #[cfg(unix)]
     group: Option<u32>,
     #[cfg(unix)]
     terminal: Option<unix::Terminal>,
     #[cfg(windows)]
-    job: windows::Job,
+    job: Option<windows::Job>,
 }
 impl OwnedChild {
+    pub(crate) fn child(&mut self) -> &mut tokio::process::Child {
+        self.child.as_mut().expect("live owned child")
+    }
     pub(crate) fn spawn(
         command: &mut tokio::process::Command,
         inherit_terminal: bool,
@@ -122,15 +125,19 @@ impl OwnedChild {
             group: child.id(),
             #[cfg(unix)]
             terminal: None,
-            child,
+            child: Some(child),
             finished: false,
             #[cfg(windows)]
-            job,
+            job: Some(job),
         };
         #[cfg(windows)]
         {
             let _ = inherit_terminal;
-            owned.job.attach_and_resume(&owned.child)?;
+            owned
+                .job
+                .as_ref()
+                .expect("owned job")
+                .attach_and_resume(owned.child.as_ref().expect("owned child"))?;
         }
         #[cfg(unix)]
         if inherit_terminal {
@@ -145,15 +152,15 @@ impl OwnedChild {
             signal_group(group, "-KILL")?;
         }
         #[cfg(windows)]
-        self.job.terminate()?;
-        let _ = self.child.start_kill();
+        self.job.as_ref().expect("owned job").terminate()?;
+        let _ = self.child().start_kill();
         Ok(())
     }
     pub(crate) async fn finish(&mut self) -> Result<()> {
         // Kill remaining owned descendants even after a successful launcher exit.
         // Registered CLI jobs are foreground operations, not daemon launchers.
         self.force()?;
-        tokio::time::timeout(Duration::from_secs(3), self.child.wait())
+        tokio::time::timeout(Duration::from_secs(3), self.child().wait())
             .await
             .context("tool launcher did not exit during cleanup")??;
         tokio::time::timeout(Duration::from_secs(3), async {
@@ -165,7 +172,7 @@ impl OwnedChild {
                     false
                 };
                 #[cfg(windows)]
-                let active = self.job.active()?;
+                let active = self.job.as_ref().expect("owned job").active()?;
                 if !active {
                     return Ok::<(), anyhow::Error>(());
                 }
@@ -187,27 +194,88 @@ impl Drop for OwnedChild {
         if self.finished {
             return;
         }
-        let _ = self.force();
-        // Aborting a future skips the async epilogue. Keep ownership through a
-        // bounded synchronous reap; runtime shutdown must not abandon cleanup.
-        let deadline = std::time::Instant::now() + Duration::from_secs(3);
-        while std::time::Instant::now() < deadline {
-            let reaped = matches!(self.child.try_wait(), Ok(Some(_)));
+        let Some(mut child) = self.child.take() else {
+            return;
+        };
+        #[cfg(unix)]
+        let group = self.group.take();
+        #[cfg(unix)]
+        let terminal = self.terminal.take();
+        #[cfg(windows)]
+        let job = self.job.take().expect("owned job");
+        let _ = child.start_kill();
+        reap_on_drop(move || {
             #[cfg(unix)]
-            let active = self.group.map_or(Ok(false), unix::group_active);
-            #[cfg(windows)]
-            let active = self.job.active();
-            if reaped && matches!(active, Ok(false)) {
-                break;
+            if let Some(group) = group {
+                let _ = signal_group(group, "-KILL");
             }
-            std::thread::sleep(Duration::from_millis(20));
-        }
+            #[cfg(windows)]
+            let _ = job.terminate();
+            let _ = child.start_kill();
+            let deadline = std::time::Instant::now() + Duration::from_secs(3);
+            while std::time::Instant::now() < deadline {
+                let reaped = matches!(child.try_wait(), Ok(Some(_)));
+                #[cfg(unix)]
+                let active = group.map_or(Ok(false), unix::group_active);
+                #[cfg(windows)]
+                let active = job.active();
+                if reaped && matches!(active, Ok(false)) {
+                    break;
+                }
+                std::thread::sleep(Duration::from_millis(20));
+            }
+            #[cfg(unix)]
+            drop(terminal);
+        });
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(unix)]
+    #[test]
+    fn dropping_native_child_defers_group_reaping_off_runtime_worker() {
+        use tokio::io::AsyncBufReadExt;
+        let runtime = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .max_blocking_threads(1)
+            .build()
+            .unwrap();
+        let (started, ready) = std::sync::mpsc::channel();
+        let (release, blocked) = std::sync::mpsc::channel();
+        runtime.spawn_blocking(move || {
+            let _ = started.send(());
+            let _ = blocked.recv();
+        });
+        ready.recv_timeout(Duration::from_secs(3)).unwrap();
+        runtime.block_on(async {
+            let mut command = tokio::process::Command::new("/bin/sh");
+            command
+                .args(["-c", "sleep 30 & echo ready; wait"])
+                .stdin(Stdio::null())
+                .stdout(Stdio::piped())
+                .stderr(Stdio::null());
+            let mut child = OwnedChild::spawn(&mut command, false).unwrap();
+            let group = child.group.unwrap();
+            let mut lines = tokio::io::BufReader::new(child.child().stdout.take().unwrap()).lines();
+            assert_eq!(lines.next_line().await.unwrap().as_deref(), Some("ready"));
+            drop(child);
+            tokio::task::yield_now().await;
+            // The only blocking worker is occupied: the descendant still exists,
+            // proving Drop returned without performing the group cleanup itself.
+            assert!(unix::group_active(group).unwrap());
+            release.send(()).unwrap();
+            tokio::time::timeout(Duration::from_secs(5), async {
+                while unix::group_active(group).unwrap() {
+                    tokio::time::sleep(Duration::from_millis(10)).await;
+                }
+            })
+            .await
+            .unwrap();
+        });
+    }
 
     #[test]
     fn queued_reaper_runs_even_when_runtime_cancels_its_blocking_task() {

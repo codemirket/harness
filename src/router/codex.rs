@@ -3,7 +3,7 @@
 //! The child never receives an upstream tool call: requests are reconstructed
 //! from the router's input, and the entire bounded SSE response is validated
 //! before any response bytes are released. No credentials are copied to disk.
-use super::{execution, native};
+use super::{execution, native, responses::validate_item};
 use crate::{process::OwnedChild, util};
 use anyhow::{Context, Result, bail, ensure};
 use serde_json::{Value, json};
@@ -47,7 +47,7 @@ fn request_body(
     }
     let mut body = json!({
         "model":model,
-        "instructions":"Return the next Mirket action using the supplied JSON schema. All tool dispatch belongs to Mirket.",
+        "instructions":"Return exactly one Mirket action using the supplied JSON schema, in your final answer. Commentary and partial answers are never dispatched. Do not issue actions in commentary or expect tool results within this response; Mirket dispatches the final action and supplies its result on the next turn. All tool dispatch belongs to Mirket.",
         "input":[{"role":"user","content":content}],
         "tools":[],"tool_choice":"none","parallel_tool_calls":false,
         "store":false,"stream":true,"max_output_tokens":max,
@@ -61,26 +61,6 @@ fn request_body(
         "Codex request exceeds limit"
     );
     Ok(body)
-}
-
-fn validate_item(item: &Value) -> Result<()> {
-    match item["type"].as_str() {
-        Some("reasoning") => Ok(()),
-        Some("message") => {
-            ensure!(item["role"] == "assistant", "unexpected Codex output role");
-            for part in item["content"]
-                .as_array()
-                .context("Codex output content missing")?
-            {
-                ensure!(
-                    part["type"] == "output_text",
-                    "non-text Codex output rejected"
-                );
-            }
-            Ok(())
-        }
-        _ => bail!("Codex native tool or unknown output rejected before dispatch"),
-    }
 }
 
 /// Fail closed on new event kinds, incomplete streams, changed model identity,
@@ -163,22 +143,7 @@ fn validate_stream(bytes: &[u8], model: &str) -> Result<(Value, Vec<u8>)> {
                     response["status"] == "completed",
                     "Codex response incomplete"
                 );
-                let mut texts = Vec::new();
-                for item in response["output"]
-                    .as_array()
-                    .context("Codex output missing")?
-                {
-                    validate_item(item)?;
-                    if item["type"] == "message" {
-                        for part in item["content"].as_array().context("Codex text missing")? {
-                            texts.push(part["text"].as_str().context("Codex text missing")?);
-                        }
-                    }
-                }
-                let action: Value =
-                    serde_json::from_str(&texts.join("")).context("Codex action is not JSON")?;
-                ensure!(action.is_object(), "Codex action is not an object");
-                completed = Some(action);
+                completed = Some(super::responses::action(&response["output"])?);
             }
             _ => bail!("Codex native tool, error or unknown event rejected before dispatch"),
         }
@@ -342,7 +307,7 @@ async fn serve(
 
 enum ChildEvent {
     Progress,
-    Action(Value),
+    Message(String),
     Completed,
 }
 
@@ -350,12 +315,11 @@ fn child_event(frame: &Value) -> Result<ChildEvent> {
     match frame["type"].as_str() {
         Some("thread.started" | "turn.started") => Ok(ChildEvent::Progress),
         Some("item.completed") if frame["item"]["type"] == "agent_message" => {
-            let action = serde_json::from_str(
-                frame["item"]["text"]
-                    .as_str()
-                    .context("Codex action text missing")?,
-            )?;
-            Ok(ChildEvent::Action(action))
+            let text = frame["item"]["text"]
+                .as_str()
+                .context("Codex action text missing")?
+                .to_owned();
+            Ok(ChildEvent::Message(text))
         }
         Some("item.started" | "item.updated" | "item.completed")
             if frame["item"]["type"] == "reasoning" =>
@@ -479,11 +443,18 @@ pub(super) async fn complete(
                 let frame = native::next_json(&mut lines, deadline, &mut total).await?;
                 match child_event(&frame)? {
                     ChildEvent::Progress => {}
-                    ChildEvent::Action(value) => {
-                        ensure!(action.is_none(), "Codex returned multiple actions");
-                        action = Some(value);
+                    ChildEvent::Message(text) => {
+                        // Exec may omit phase metadata. The transport validates
+                        // every item and requires the final message to be the
+                        // sole action; compare that last message after completion.
+                        action = Some(text);
                     }
-                    ChildEvent::Completed => return action.context("Codex child omitted action"),
+                    ChildEvent::Completed => {
+                        return serde_json::from_str::<Value>(
+                            &action.context("Codex child omitted action")?,
+                        )
+                        .context("Codex child final answer is not JSON");
+                    }
                 }
             }
         };

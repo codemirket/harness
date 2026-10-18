@@ -52,12 +52,15 @@ pub(super) fn native_command(executable: &Path, home: &Path) -> Command {
 pub async fn codex_authenticated(executable: &Path, home: &Path) -> Result<()> {
     let kind = codex_account_kind(executable, home).await?;
     super::codex::upstream(&kind)?;
+    codex_execution_contract(executable, home).await
+}
+pub(super) async fn codex_execution_contract(executable: &Path, home: &Path) -> Result<()> {
     let mut command = native_command(executable, home);
     command.args(["exec", "--help"]);
     let mut owned = OwnedChild::spawn(&mut command, false)?;
-    drop(owned.child.stdin.take());
+    drop(owned.child().stdin.take());
     let stdout = owned
-        .child
+        .child()
         .stdout
         .take()
         .context("Codex help output missing")?;
@@ -169,6 +172,11 @@ pub async fn discover_codex(executable: &Path, home: &Path) -> Result<Vec<Value>
         if account["account"].is_null() {
             bail!("Codex account is not authenticated");
         }
+        super::codex::upstream(
+            account["account"]["type"]
+                .as_str()
+                .context("Codex account type missing")?,
+        )?;
         let mut models = Vec::new();
         let mut cursor: Option<String> = None;
         for page in 0..20u64 {
@@ -245,9 +253,9 @@ pub async fn claude_authenticated(executable: &Path, home: &Path) -> Result<()> 
     command.args(["auth", "status", "--json"]);
     let mut owned =
         OwnedChild::spawn(&mut command, false).context("start Claude auth check child")?;
-    drop(owned.child.stdin.take());
+    drop(owned.child().stdin.take());
     let stdout = owned
-        .child
+        .child()
         .stdout
         .take()
         .context("native auth stdout unavailable")?;
@@ -280,12 +288,12 @@ pub async fn claude_authenticated(executable: &Path, home: &Path) -> Result<()> 
 
 pub(super) fn child_pipes(owned: &mut OwnedChild) -> Result<(ChildStdin, JsonLines)> {
     let stdin = owned
-        .child
+        .child()
         .stdin
         .take()
         .context("native child stdin unavailable")?;
     let stdout = owned
-        .child
+        .child()
         .stdout
         .take()
         .context("native child stdout unavailable")?;
@@ -439,11 +447,8 @@ fn user_frame(prompt: &str, images: &[PathBuf]) -> Result<Value> {
     }
     let mut content = vec![json!({"type":"text","text":prompt})];
     for path in images {
-        let metadata = std::fs::metadata(path).context("inspect Claude image input")?;
-        if !metadata.is_file() || metadata.len() > MAX_IMAGE_BYTES as u64 {
-            bail!("Claude image input is invalid or exceeds size limit");
-        }
-        let bytes = std::fs::read(path).context("read Claude image input")?;
+        let bytes = crate::util::read_bounded(path, MAX_IMAGE_BYTES as u64)
+            .context("read bounded Claude image input")?;
         let media_type = image_media_type(&bytes).context("unsupported Claude image type")?;
         content.push(json!({"type":"image","source":{"type":"base64","media_type":media_type,"data":crate::router::execution::base64(&bytes)}}));
     }
@@ -590,6 +595,29 @@ pub async fn codex_complete(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn image_inputs_are_regular_bounded_files() {
+        let dir = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let path = dir.path().join("image.png");
+        std::fs::write(&path, b"\x89PNG\r\n\x1a\n").unwrap();
+        assert!(user_frame("inspect", std::slice::from_ref(&path)).is_ok());
+        std::fs::OpenOptions::new()
+            .write(true)
+            .open(&path)
+            .unwrap()
+            .set_len(MAX_IMAGE_BYTES as u64 + 1)
+            .unwrap();
+        assert!(user_frame("inspect", std::slice::from_ref(&path)).is_err());
+        assert!(user_frame("inspect", &[dir.path().to_path_buf()]).is_err());
+        #[cfg(unix)]
+        {
+            std::fs::write(&path, b"\x89PNG\r\n\x1a\n").unwrap();
+            let link = dir.path().join("link.png");
+            std::os::unix::fs::symlink(&path, &link).unwrap();
+            assert!(user_frame("inspect", &[link]).is_err());
+        }
+    }
 
     #[test]
     fn action_requires_current_exact_identity_and_effort_before_inference() {

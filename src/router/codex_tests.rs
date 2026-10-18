@@ -19,6 +19,43 @@ fn completion(model: &str) -> Vec<u8> {
     .into_bytes()
 }
 
+#[test]
+fn phased_messages_select_only_the_final_action() {
+    let message = |phase: Value, text: &str| json!({"type":"message","role":"assistant","phase":phase,"content":[{"type":"output_text","text":text}]});
+    let check = |output: Value| {
+        validate_stream(&format!("data: {}\n\n", json!({"type":"response.completed","response":{"model":"selected","status":"completed","output":output}})).into_bytes(), "selected")
+    };
+    let final_message = message(json!("final_answer"), &action().to_string());
+    for interim in ["I will inspect the source.", "{\"action\":\"tool\"}"] {
+        assert_eq!(
+            check(json!([
+                message(json!("commentary"), interim),
+                message(json!("partial_answer"), "Partial findings"),
+                final_message
+            ]))
+            .unwrap()
+            .0,
+            action()
+        );
+    }
+    for output in [
+        json!([final_message, final_message]),
+        json!([final_message, message(json!("commentary"), "after")]),
+        json!([message(json!("commentary"), "only commentary")]),
+        json!([message(json!("new_phase"), "unknown"), final_message]),
+        json!([message(Value::Null, "{}"), final_message]),
+        json!([
+            message(json!("commentary"), "before"),
+            message(Value::Null, "{}")
+        ]),
+        json!([message(json!("final_answer"), "{}{}")]),
+        json!([{"type":"function_call","phase":"commentary"}, final_message]),
+    ] {
+        assert!(check(output).is_err());
+    }
+    assert!(matches!(child_event(&json!({"type":"item.completed","item":{"type":"agent_message","text":"I will inspect the source."}})).unwrap(), ChildEvent::Message(_)));
+}
+
 struct Roundtrip {
     served: Result<Value>,
     native_reply: Vec<u8>,

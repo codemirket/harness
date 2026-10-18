@@ -156,7 +156,7 @@ async fn run_owned(
 ) -> Result<i32> {
     let mut owned = crate::process::OwnedChild::spawn(command, inherit_terminal)?;
     let result = tokio::select! {
-        status = owned.child.wait() => status.map(|s| s.code().unwrap_or(1)).map_err(anyhow::Error::from),
+        status = owned.child().wait() => status.map(|s| s.code().unwrap_or(1)).map_err(anyhow::Error::from),
         _ = tokio::time::sleep(timeout) => Err(anyhow::anyhow!("tool exceeded {} seconds; owned processes terminated", timeout.as_secs_f64())),
         signal = cancelled => signal.and_then(|_| Err(anyhow::anyhow!("tool cancelled; owned processes terminated"))),
     };

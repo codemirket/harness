@@ -8,6 +8,12 @@ import {checkRequest, combinedSignal} from './request.mjs';
 // Native Penpot SVG exports keep font-face URLs on their own frontend. Embed
 // those resources before the normal SVG hygiene boundary so the saved file is
 // portable without permitting arbitrary external SVG resources.
+function countOccurrences(source, needle) {
+  let count = 0, index = 0;
+  while ((index = source.indexOf(needle, index)) !== -1) { count++; index += needle.length; }
+  return count;
+}
+
 export async function embedPenpotFonts(source) {
   const resources = new Map();
   const prepared = source.replace(/@font-face\s*\{[^{}]*\}/gi, block => block.replace(/url\(\s*(['"]?)([^'"\s)]+)\1\s*\)/gi, (match, quote, address) => {
@@ -26,7 +32,7 @@ export async function embedPenpotFonts(source) {
   // Reject scripts, DTDs, and every other external resource before any request.
   optimizeSvgBytes(prepared);
   if (resources.size > 8) throw Error('Penpot SVG exceeds eight font resources');
-  let result = prepared, total = 0;
+  let result = prepared, resultBytes = Buffer.byteLength(prepared), total = 0;
   for (const [address, {marker}] of resources) {
     checkRequest();
     let bytes;
@@ -50,9 +56,16 @@ export async function embedPenpotFonts(source) {
     const mime = {'774f4646': 'font/woff', '774f4632': 'font/woff2', '4f54544f': 'font/otf', '00010000': 'font/ttf'}[signature];
     if (!mime || bytes.length < 12) throw Error('Penpot SVG font response is not a font');
     total += bytes.length;
-    result = result.replaceAll(`data:font/woff;base64,${marker}`, `data:${mime};base64,${bytes.toString('base64')}`);
+    const placeholder = `data:font/woff;base64,${marker}`;
+    const occurrences = countOccurrences(result, placeholder);
+    const replacementBytes = Buffer.byteLength(`data:${mime};base64,`) + 4 * Math.ceil(bytes.length / 3);
+    const prospectiveBytes = resultBytes + occurrences * (replacementBytes - Buffer.byteLength(placeholder));
+    if (prospectiveBytes > MAX_OUTPUT) throw Error('Penpot SVG exceeds the output bound');
+    const replacement = `data:${mime};base64,${bytes.toString('base64')}`;
+    result = result.replaceAll(placeholder, replacement);
+    resultBytes = prospectiveBytes;
   }
-  if (Buffer.byteLength(result) > MAX_OUTPUT) throw Error('Penpot SVG exceeds the output bound');
+  if (resultBytes > MAX_OUTPUT) throw Error('Penpot SVG exceeds the output bound');
   return result;
 }
 

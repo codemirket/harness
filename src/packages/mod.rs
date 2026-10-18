@@ -132,9 +132,17 @@ fn selected(paths: &Paths, id: &str) -> Result<()> {
     Ok(())
 }
 
-pub fn launch(paths: &Paths, id: &str) -> Result<LaunchSpec> {
+pub async fn launch(paths: &Paths, id: &str) -> Result<LaunchSpec> {
     selected(paths, id)?;
-    services::launch(paths)
+    let paths = paths.clone();
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(120);
+    tokio::time::timeout_at(
+        deadline.into(),
+        tokio::task::spawn_blocking(move || services::launch(&paths, deadline)),
+    )
+    .await
+    .context("design launch validation deadline exceeded")?
+    .context("design launch validation worker failed")?
 }
 
 pub fn service_start(paths: &Paths, id: &str) -> Result<Value> {
@@ -175,11 +183,11 @@ mod tests {
                 .is_err()
         );
     }
-    #[test]
-    fn unselected_stack_cannot_start_or_serve() {
+    #[tokio::test]
+    async fn unselected_stack_cannot_start_or_serve() {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
-        assert!(launch(&paths, "design").is_err());
+        assert!(launch(&paths, "design").await.is_err());
         assert!(service_start(&paths, "design").is_err());
         assert!(!paths.root.exists());
     }

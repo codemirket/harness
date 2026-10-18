@@ -122,6 +122,11 @@ fn artifact_from_json(paths: &Paths, value: &Value) -> Result<Option<ArtifactRef
 
 fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<ArtifactRef>> {
     let mut refs = Vec::new();
+    if name == "design/odiff_compare"
+        && let Some(item) = artifact_from_json(paths, &value["diff"])?
+    {
+        refs.push(item);
+    }
     // Typst and HyperFrames expose inspectable QA images for their PDF/video.
     // Their primary binary outputs are checked for stability separately.
     if !matches!(name, "design/typst_compile" | "design/hyperframes_render")
@@ -223,9 +228,9 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             "workspace_write",
             Tier::T2Synthesis,
             false,
-            "Write UTF-8 source in the assigned project. Existing files require the exact expected SHA-256.",
-            json!({"path":{"type":"string"},"content":{"type":"string"},"expected_sha256":{"type":["string","null"]}}),
-            json!(["path", "content", "expected_sha256"]),
+            "Write UTF-8 source in the assigned project. Supply exactly one of content (whole file) or edits (1–64 sequential exact replacements, each old text must match once). Existing files require the exact expected SHA-256. Read back the changed file before completion.",
+            json!({"path":{"type":"string"},"content":{"type":"string"},"edits":{"type":"array","minItems":1,"maxItems":64,"items":{"type":"object","additionalProperties":false,"properties":{"old":{"type":"string","minLength":1},"new":{"type":"string"}},"required":["old","new"]}},"expected_sha256":{"type":["string","null"]}}),
+            json!(["path", "expected_sha256"]),
         ),
         definition(
             "inspect_image",
@@ -239,9 +244,11 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
     let policies: BTreeMap<String, Value> =
         serde_json::from_str(include_str!("../../runtime/design/tools/tool-policy.json"))?;
     if names.iter().any(|n| n.starts_with("design/")) {
-        let schemas =
-            crate::package_mcp::probe_with_schemas(crate::packages::launch(paths, "design")?, true)
-                .await?;
+        let schemas = crate::package_mcp::probe_with_schemas(
+            crate::packages::launch(paths, "design").await?,
+            true,
+        )
+        .await?;
         for raw in schemas["schemas"]
             .as_array()
             .context("design package lacks schemas")?
@@ -293,8 +300,42 @@ struct FileArgs {
 #[serde(deny_unknown_fields)]
 struct WriteArgs {
     path: String,
-    content: String,
+    content: Option<String>,
+    edits: Option<Vec<TextEdit>>,
     expected_sha256: Option<String>,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct TextEdit {
+    old: String,
+    new: String,
+}
+
+fn edited_content(original: &[u8], edits: &[TextEdit]) -> Result<String> {
+    ensure!(
+        (1..=64).contains(&edits.len()),
+        "expected 1..=64 exact edits"
+    );
+    let mut result = std::str::from_utf8(original)
+        .context("edited file is not UTF-8")?
+        .to_owned();
+    for edit in edits {
+        ensure!(!edit.old.is_empty(), "edit old text must not be empty");
+        let index = result
+            .find(&edit.old)
+            .context("edit old text did not match; no file was written")?;
+        let next = index + edit.old.chars().next().expect("nonempty edit").len_utf8();
+        ensure!(
+            !result[next..].contains(&edit.old),
+            "edit old text must match exactly once; no file was written"
+        );
+        ensure!(
+            result.len() - edit.old.len() + edit.new.len() <= 1024 * 1024,
+            "edited worker file exceeds 1 MiB"
+        );
+        result = result.replacen(&edit.old, &edit.new, 1);
+    }
+    Ok(result)
 }
 
 pub struct ToolResult {
@@ -313,8 +354,19 @@ pub fn may_mutate(name: &str) -> bool {
         || (name.starts_with("design/")
             && !matches!(
                 name,
-                "design/penpot_api_info" | "design/high_level_overview" | "design/odiff_compare"
+                "design/penpot_api_info" | "design/high_level_overview"
             ))
+}
+fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
+    if name == "design/odiff_compare" {
+        return result.is_error == Some(true)
+            || result
+                .structured_content
+                .as_ref()
+                .and_then(|value| value.get("diff"))
+                .is_none_or(|diff| !diff.is_null());
+    }
+    may_mutate(name)
 }
 pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> Result<ToolResult> {
     let mut image = None;
@@ -356,29 +408,46 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
         }
         "workspace_write" => {
             let a: WriteArgs = serde_json::from_value(args)?;
-            ensure!(a.content.len() <= 1024 * 1024, "worker file exceeds 1 MiB");
+            ensure!(
+                a.content.is_some() != a.edits.is_some(),
+                "provide exactly one of content or edits"
+            );
+            ensure!(
+                a.content
+                    .as_ref()
+                    .is_none_or(|value| value.len() <= 1024 * 1024),
+                "worker file exceeds 1 MiB"
+            );
             let path = file(project, &a.path)?;
             let locks = paths.cache().join("worker-writes");
             util::ensure_directory(&locks)?;
             let _lock = util::FileLock::acquire(
                 &locks.join(util::sha256(path.to_string_lossy().as_bytes())),
             )?;
-            if path.exists() {
+            let old = if path.exists() {
                 let old = util::read_bounded(&path, 1024 * 1024)?;
                 ensure!(
                     a.expected_sha256.as_deref() == Some(util::sha256(&old).as_str()),
                     "existing file requires matching expected_sha256"
                 );
+                old
             } else {
                 ensure!(a.expected_sha256.is_none(), "expected file does not exist");
-            }
-            util::atomic_write(&path, a.content.as_bytes())?;
+                ensure!(a.edits.is_none(), "exact edits require an existing file");
+                Vec::new()
+            };
+            let content = match (a.content, a.edits) {
+                (Some(content), None) => content,
+                (None, Some(edits)) => edited_content(&old, &edits)?,
+                _ => unreachable!("validated exclusive write mode"),
+            };
+            util::atomic_write(&path, content.as_bytes())?;
             mutates = true;
             artifacts.push(ArtifactRef {
                 path,
-                sha256: util::sha256(a.content.as_bytes()),
+                sha256: util::sha256(content.as_bytes()),
             });
-            json!({"path":a.path,"sha256":util::sha256(a.content.as_bytes())})
+            json!({"path":a.path,"sha256":util::sha256(content.as_bytes())})
         }
         "inspect_image" => {
             let a: FileArgs = serde_json::from_value(args)?;
@@ -400,7 +469,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
         }
         _ if name.starts_with("design/") => {
             let result = crate::package_mcp::call(
-                crate::packages::launch(paths, "design")?,
+                crate::packages::launch(paths, "design").await?,
                 name[7..].into(),
                 args.as_object()
                     .cloned()
@@ -408,8 +477,11 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             )
             .await?;
             passed = design_check_passed(name, &result);
-            mutates = may_mutate(name);
-            if mutates && passed {
+            mutates = design_mutates(name, &result);
+            if mutates
+                && result.is_error != Some(true)
+                && (passed || name == "design/odiff_compare")
+            {
                 if name == "design/export_shape" {
                     let requested = args
                         .get("filePath")
@@ -486,6 +558,54 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn exact_edits_are_digest_bound_and_transactional() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().into()).unwrap();
+        let project = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let original = "first α line\nsecond line\n";
+        let file = project.path().join("source");
+        std::fs::write(&file, original).unwrap();
+        for args in [
+            json!({"path":"source","edits":[{"old":"first","new":"changed"}],"expected_sha256":null}),
+            json!({"path":"source","edits":[{"old":"first","new":"changed"},{"old":"absent","new":"bad"}],"expected_sha256":util::sha256(original.as_bytes())}),
+            json!({"path":"source","edits":[{"old":"line","new":"ambiguous"}],"expected_sha256":util::sha256(original.as_bytes())}),
+            json!({"path":"source","content":"wrong","edits":[{"old":"first","new":"changed"}],"expected_sha256":util::sha256(original.as_bytes())}),
+        ] {
+            assert!(
+                invoke(&paths, project.path(), "workspace_write", args)
+                    .await
+                    .is_err()
+            );
+            assert_eq!(std::fs::read_to_string(&file).unwrap(), original);
+        }
+        let result = invoke(&paths, project.path(), "workspace_write", json!({"path":"source","edits":[{"old":"α","new":"β"},{"old":"second","new":"last"}],"expected_sha256":util::sha256(original.as_bytes())})).await.unwrap();
+        assert_eq!(
+            std::fs::read_to_string(&file).unwrap(),
+            "first β line\nlast line\n"
+        );
+        assert!(result.mutates && result.artifacts.len() == 1);
+        assert!(
+            edited_content(
+                b"aaa",
+                &[TextEdit {
+                    old: "aa".into(),
+                    new: "b".into()
+                }]
+            )
+            .is_err()
+        );
+        assert!(
+            edited_content(
+                b"small",
+                &[TextEdit {
+                    old: "small".into(),
+                    new: "x".repeat(1024 * 1024 + 1)
+                }]
+            )
+            .is_err()
+        );
+    }
     #[test]
     fn odiff_mismatch_is_a_failed_gate_even_when_transport_succeeded() {
         use rmcp::model::CallToolResult;
@@ -504,6 +624,31 @@ mod tests {
         assert!(!design_check_passed(
             "design/odiff_compare",
             &CallToolResult::structured_error(json!({"match": true}))
+        ));
+    }
+
+    #[test]
+    fn odiff_published_diagnostics_are_mutations_with_artifact_receipts() {
+        use rmcp::model::CallToolResult;
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().into()).unwrap();
+        std::fs::create_dir_all(design_root(&paths)).unwrap();
+        let value = json!({"match":false,"diff":{"path":"diff.png","sha256":"a".repeat(64)}});
+        assert!(may_mutate("design/odiff_compare"));
+        assert!(design_mutates(
+            "design/odiff_compare",
+            &CallToolResult::structured(value.clone())
+        ));
+        let artifacts = design_artifacts(&paths, "design/odiff_compare", &value).unwrap();
+        assert_eq!(artifacts.len(), 1);
+        assert_eq!(artifacts[0].path, design_root(&paths).join("diff.png"));
+        assert!(!design_mutates(
+            "design/odiff_compare",
+            &CallToolResult::structured(json!({"match":true,"diff":null}))
+        ));
+        assert!(design_mutates(
+            "design/odiff_compare",
+            &CallToolResult::structured_error(json!({"match":true,"diff":null}))
         ));
     }
 

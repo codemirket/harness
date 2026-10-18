@@ -39,6 +39,27 @@ test('font embedding refuses external, normalized and malicious SVG before reque
   } finally { global.fetch = original; }
 });
 
+test('repeated references are rejected before one font can expand beyond the output bound', async t => {
+  const original = global.fetch;
+  const largeFont = Buffer.alloc(1024 * 1024);
+  largeFont.write('wOFF');
+  const stringify = Buffer.prototype.toString;
+  t.mock.method(Buffer.prototype, 'toString', function(encoding, ...args) {
+    if (encoding === 'base64' && this.length === largeFont.length) throw Error('oversized expansion encoded before checking its budget');
+    return Reflect.apply(stringify, this, [encoding, ...args]);
+  });
+  let requests = 0;
+  global.fetch = async () => { requests++; return new Response(largeFont); };
+  try {
+    const address = 'http://penpot-frontend:8080/fonts/repeated.woff';
+    const declarations = Array.from({length: 49}, () => `@font-face{font-family:probe;src:url(${address})}`).join('');
+    const repeated = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><style>${declarations}</style><text font-family="probe">x</text></svg>`;
+    assert.ok(Buffer.byteLength(repeated) < 8192);
+    await assert.rejects(embedPenpotFonts(repeated), /output bound/);
+    assert.equal(requests, 1);
+  } finally { global.fetch = original; }
+});
+
 test('font response magic and streaming size are checked without trusting headers', async () => {
   const original = global.fetch;
   try {

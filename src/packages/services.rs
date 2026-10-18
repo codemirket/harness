@@ -251,6 +251,20 @@ fn inspect(engine: &Engine, kind: &str, name: &str) -> Result<Value> {
     )?)
     .context("invalid Podman inspection")
 }
+fn inspect_many(engine: &Engine, kind: &str, names: &[String]) -> Result<Vec<Value>> {
+    if names.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut args = vec![kind.into(), "inspect".into()];
+    args.extend_from_slice(names);
+    let values: Vec<Value> = serde_json::from_str(&run(engine, args, Duration::from_secs(30))?)
+        .context("invalid Podman batch inspection")?;
+    ensure!(
+        values.len() == names.len(),
+        "incomplete Podman batch inspection"
+    );
+    Ok(values)
+}
 fn normalize_image_id(value: &str) -> Result<String> {
     let digest = value.strip_prefix("sha256:").unwrap_or(value);
     ensure!(
@@ -264,6 +278,9 @@ fn normalize_image_id(value: &str) -> Result<String> {
 }
 fn image_id(engine: &Engine, image: &str) -> Result<String> {
     let v = inspect(engine, "image", image)?;
+    inspected_image_id(&v, image)
+}
+fn inspected_image_id(v: &Value, image: &str) -> Result<String> {
     ensure!(
         v["Architecture"] == "arm64" && v["Os"] == "linux",
         "image is not native Linux ARM64: {image}"
@@ -282,6 +299,48 @@ fn image_id(engine: &Engine, image: &str) -> Result<String> {
     Ok(id)
 }
 fn existing(engine: &Engine, kind: &str, name: &str, own: &str) -> Result<Option<Value>> {
+    Ok(existing_many(engine, kind, &[name.to_owned()], own)?.remove(name))
+}
+fn owned_inspections(
+    kind: &str,
+    names: &[String],
+    values: Vec<Value>,
+    own: &str,
+) -> Result<BTreeMap<String, Value>> {
+    let mut result = BTreeMap::new();
+    for value in values {
+        let name = value[if kind == "network" { "name" } else { "Name" }]
+            .as_str()
+            .context("Podman resource name missing")?
+            .trim_start_matches('/')
+            .to_owned();
+        ensure!(names.contains(&name), "unexpected Podman resource: {name}");
+        let labels = match kind {
+            "container" => &value["Config"]["Labels"],
+            "network" => &value["labels"],
+            _ => &value["Labels"],
+        };
+        ensure!(
+            labels[OWNER_LABEL] == own,
+            "refusing unrelated Podman {kind}: {name}"
+        );
+        ensure!(
+            result.insert(name, value).is_none(),
+            "duplicate Podman resource"
+        );
+    }
+    ensure!(
+        result.len() == names.len(),
+        "incomplete Podman resource inspection"
+    );
+    Ok(result)
+}
+fn existing_many(
+    engine: &Engine,
+    kind: &str,
+    names: &[String],
+    own: &str,
+) -> Result<BTreeMap<String, Value>> {
     let listing = match kind {
         "container" => vec!["container", "ls", "--all", "--format", "{{.Names}}"],
         "network" => vec!["network", "ls", "--format", "{{.Name}}"],
@@ -291,23 +350,13 @@ fn existing(engine: &Engine, kind: &str, name: &str, own: &str) -> Result<Option
     .into_iter()
     .map(str::to_owned)
     .collect();
-    if !run(engine, listing, Duration::from_secs(30))?
-        .lines()
-        .any(|line| line == name)
-    {
-        return Ok(None);
-    }
-    let value = inspect(engine, kind, name)?;
-    let labels = match kind {
-        "container" => &value["Config"]["Labels"],
-        "network" => &value["labels"],
-        _ => &value["Labels"],
-    };
-    ensure!(
-        labels[OWNER_LABEL] == own,
-        "refusing unrelated Podman {kind}: {name}"
-    );
-    Ok(Some(value))
+    let listing = run(engine, listing, Duration::from_secs(30))?;
+    let present: Vec<_> = names
+        .iter()
+        .filter(|name| listing.lines().any(|line| line == name.as_str()))
+        .cloned()
+        .collect();
+    owned_inspections(kind, &present, inspect_many(engine, kind, &present)?, own)
 }
 fn validate_resource(kind: &str, value: &Value) -> Result<()> {
     if kind == "network" {
@@ -816,26 +865,36 @@ fn local_receipt(paths: &Paths) -> Result<Receipt> {
 fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
     let value = local_receipt(paths)?;
     let registry = definition()?;
-    for alias in ALIASES {
+    let references = ALIASES
+        .iter()
+        .map(|alias| {
+            if ["penpot-mcp", "comfyui", "design-tools"].contains(alias) {
+                value
+                    .images
+                    .get(*alias)
+                    .map(String::as_str)
+                    .context("incomplete design image receipt")
+            } else {
+                registry["images"][*alias]
+                    .as_str()
+                    .context("image reference")
+            }
+            .map(str::to_owned)
+        })
+        .collect::<Result<Vec<_>>>()?;
+    let inspected = inspect_many(engine, "image", &references)?;
+    for ((alias, image), inspection) in ALIASES.iter().zip(&references).zip(&inspected) {
         let expected = value
             .images
-            .get(alias)
+            .get(*alias)
             .context("incomplete design image receipt")?;
-        let image = if ["penpot-mcp", "comfyui", "design-tools"].contains(&alias) {
-            expected.as_str()
-        } else {
-            registry["images"][alias]
-                .as_str()
-                .context("image reference")?
-        };
         ensure!(
-            image_id(engine, image)? == *expected,
+            inspected_image_id(inspection, image)? == *expected,
             "design image drift: {alias}"
         );
-        if ["penpot-mcp", "comfyui", "design-tools"].contains(&alias) {
+        if ["penpot-mcp", "comfyui", "design-tools"].contains(alias) {
             ensure!(
-                inspect(engine, "image", image)?["Labels"][BUILD_LABEL]
-                    == build_recipe(&registry, alias)?,
+                inspection["Labels"][BUILD_LABEL] == build_recipe(&registry, alias)?,
                 "design build recipe drift: {alias}"
             );
         }
@@ -1281,10 +1340,10 @@ fn readiness_json(reader: impl Read, alias: &str) -> Result<Value> {
     );
     serde_json::from_slice(&bytes).context("invalid readiness JSON")
 }
-fn http_ready(alias: &str, state: &State) -> Result<()> {
+fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
     let client = reqwest::blocking::Client::builder()
         .no_proxy()
-        .timeout(Duration::from_secs(3))
+        .timeout(timeout)
         .redirect(reqwest::redirect::Policy::none())
         .build()?;
     let (url, require_json) = match alias {
@@ -1404,7 +1463,11 @@ fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
         let value = inspect(engine, "container", &n)?;
         ensure!(running(&value), "{alias} has exited");
     }
-    http_ready(alias, state)?;
+    http_ready(
+        alias,
+        state,
+        engine.remaining_budget(Duration::from_secs(3))?,
+    )?;
     Ok(())
 }
 fn startup_diagnostic(state: &State, value: &str) -> String {
@@ -1639,19 +1702,25 @@ fn status_with(engine: &Engine, state: &State, work: &Path) -> Result<Value> {
     )? {
         validate_resource("network", &value)?;
     }
-    for volume in VOLUMES {
-        if let Some(value) = existing(engine, "volume", &name(&state.owner, volume), &state.owner)?
-        {
-            validate_resource("volume", &value)?;
-        }
+    let volumes = VOLUMES
+        .iter()
+        .map(|alias| name(&state.owner, alias))
+        .collect::<Vec<_>>();
+    for value in existing_many(engine, "volume", &volumes, &state.owner)?.values() {
+        validate_resource("volume", value)?;
     }
+    let containers = ALIASES
+        .iter()
+        .map(|alias| name(&state.owner, alias))
+        .collect::<Vec<_>>();
+    let inspected = existing_many(engine, "container", &containers, &state.owner)?;
     let mut entries = Vec::new();
     for alias in ALIASES {
         let n = name(&state.owner, alias);
-        let value = existing(engine, "container", &n, &state.owner)?;
+        let value = inspected.get(&n);
         let (present, live) = if let Some(value) = value {
-            validate_container(&value, state, alias, work)?;
-            (true, running(&value))
+            validate_container(value, state, alias, work)?;
+            (true, running(value))
         } else {
             (false, false)
         };
@@ -1668,7 +1737,18 @@ fn status_with(engine: &Engine, state: &State, work: &Path) -> Result<Value> {
             "design-tools",
         ]
         .iter()
-        .all(|alias| probe_container(engine, state, alias).is_ok());
+        .all(|alias| {
+            // Container identity and running state were checked in the batch.
+            // The workspace listener is private; its application probe needs exec.
+            if *alias == "design-tools" {
+                probe_container(engine, state, alias).is_ok()
+            } else {
+                engine
+                    .remaining_budget(Duration::from_secs(3))
+                    .and_then(|budget| http_ready(alias, state, budget))
+                    .is_ok()
+            }
+        });
     Ok(
         json!({"package":"design","ready":ready,"workspace":work,"services":entries,"network":name(&state.owner,"network"),"published_ports":state.published_ports}),
     )
@@ -1789,8 +1869,13 @@ pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
         json!({"package":"design","stopped":true,"purged_data":purge_data,"workspace":workspace(paths)?}),
     )
 }
-pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
-    let engine = engine(paths)?;
+pub(super) fn launch(paths: &Paths, deadline: Instant) -> Result<LaunchSpec> {
+    let engine = Engine::resolve(paths)?.with_deadline(deadline);
+    let info = engine.ready()?;
+    ensure!(
+        info["host"]["arch"] == "arm64",
+        "design stack requires the verified native Linux ARM64 Podman environment"
+    );
     let installed = receipt(paths, &engine)?;
     let state = saved_state(paths, &engine)?;
     ensure!(
@@ -1817,6 +1902,7 @@ pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
         "/opt/design/server.mjs".into(),
     ]);
     let (request_timeout, tool_timeouts) = tool_budgets()?;
+    let startup_timeout = engine.remaining_budget(Duration::from_secs(120))?;
     Ok(LaunchSpec {
         command: engine.binary,
         args,
@@ -1824,7 +1910,7 @@ pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
         cwd: work,
         allowed_tools: None,
         denied_tools: BTreeSet::new(),
-        startup_timeout: Duration::from_secs(120),
+        startup_timeout,
         request_timeout,
         tool_timeouts,
     })
@@ -1833,6 +1919,67 @@ pub(super) fn launch(paths: &Paths) -> Result<LaunchSpec> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn batch_inspection_checks_every_identity_and_owner() {
+        let names = vec!["one".into(), "two".into()];
+        let item =
+            |name: &str, owner: &str| json!({"Name":name,"Config":{"Labels":{OWNER_LABEL:owner}}});
+        assert_eq!(
+            owned_inspections(
+                "container",
+                &names,
+                vec![item("/two", "ours"), item("one", "ours")],
+                "ours"
+            )
+            .unwrap()
+            .len(),
+            2
+        );
+        for values in [
+            vec![item("one", "ours")],
+            vec![item("one", "ours"), item("one", "ours")],
+            vec![item("one", "ours"), item("other", "ours")],
+            vec![item("one", "ours"), item("two", "foreign")],
+        ] {
+            assert!(owned_inspections("container", &names, values, "ours").is_err());
+        }
+        assert!(
+            owned_inspections(
+                "volume",
+                &["vol".into()],
+                vec![json!({"Name":"vol","Labels":{OWNER_LABEL:"ours"}})],
+                "ours"
+            )
+            .is_ok()
+        );
+        assert!(
+            owned_inspections(
+                "network",
+                &["net".into()],
+                vec![json!({"name":"net","labels":{OWNER_LABEL:"foreign"}})],
+                "ours"
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn batch_image_validation_keeps_architecture_and_manifest_checks() {
+        let digest = "a".repeat(64);
+        let reference = format!("registry/image@sha256:{digest}");
+        let mut image = json!({"Id":"b".repeat(64),"Architecture":"arm64","Os":"linux","RepoDigests":[reference]});
+        assert_eq!(
+            inspected_image_id(&image, &reference).unwrap(),
+            format!("sha256:{}", "b".repeat(64))
+        );
+        image["RepoDigests"] = json!([]);
+        assert!(inspected_image_id(&image, &reference).is_err());
+        image["Digest"] = json!(format!("sha256:{digest}"));
+        assert!(inspected_image_id(&image, &reference).is_ok());
+        image["Architecture"] = json!("amd64");
+        assert!(inspected_image_id(&image, &reference).is_err());
+    }
 
     #[test]
     fn design_tool_budgets_cover_policy_and_outlast_long_jobs() {

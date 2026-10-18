@@ -122,7 +122,9 @@ fn serve(
     }
     let (status, response) = if first.starts_with("GET /v1/models") {
         (200, json!({"data":models.lock().unwrap().clone()}))
-    } else if first.starts_with("POST /v1/chat/completions") {
+    } else if first.starts_with("POST /v1/chat/completions")
+        || first.starts_with("POST /v1/responses")
+    {
         let request: Value =
             serde_json::from_slice(&input[headers_end..headers_end + content_length]).unwrap();
         posts.lock().unwrap().push(request);
@@ -254,6 +256,50 @@ fn action(model: &str, action: Value) -> (u16, Value) {
             }]
         }),
     )
+}
+
+#[test]
+fn responses_dispatches_only_final_answers_after_commentary() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for dir in [&home, &project, &empty_path] {
+        fs::create_dir_all(dir).unwrap();
+    }
+    fs::write(project.join("input.txt"), "checked").unwrap();
+    let selected = "frontier-phased";
+    let response = |action: Value| {
+        (
+            200,
+            json!({"model":selected,"status":"completed","output":[
+                {"type":"message","role":"assistant","phase":"commentary","content":[{"type":"output_text","text":json!({"action":"blocked","tool":"","arguments_json":"{}","result":"interim, never dispatch"}).to_string()}]},
+                {"type":"message","role":"assistant","phase":"final_answer","content":[{"type":"output_text","text":action.to_string()}]}
+            ]}),
+        )
+    };
+    let server = MockTarget::new(
+        vec![model(selected, "frontier model")],
+        vec![
+            response(
+                json!({"action":"tool","tool":"workspace_read","arguments_json":"{\"path\":\"input.txt\"}","result":""}),
+            ),
+            response(
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"read final action only"}),
+            ),
+        ],
+    );
+    let mut configured = target("mock", &server);
+    configured["protocol"] = json!("openai_responses");
+    configure(&home, vec![configured]);
+    let request = request(&home, &project, &["workspace_read"], &["workspace_read"]);
+    let result = ok(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", request.to_str().unwrap()],
+    );
+    assert_eq!(result["result"], "read final action only");
+    assert_eq!(server.posts().len(), 2);
 }
 
 #[test]

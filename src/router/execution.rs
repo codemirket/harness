@@ -216,18 +216,15 @@ async fn complete(
             .map(|v| v["input"].clone())
             .context("model did not return the constrained action");
     }
+    if target.protocol == Protocol::OpenaiResponses {
+        return super::responses::action(&raw["output"]);
+    }
     let text = match target.protocol {
         Protocol::OpenaiChat => raw
             .pointer("/choices/0/message/content")
             .and_then(Value::as_str),
         Protocol::Ollama => raw.pointer("/message/content").and_then(Value::as_str),
-        _ => raw.get("output").and_then(Value::as_array).and_then(|a| {
-            a.iter().find_map(|v| {
-                v["content"]
-                    .as_array()
-                    .and_then(|a| a.iter().find_map(|v| v["text"].as_str()))
-            })
-        }),
+        _ => None,
     }
     .context("model did not return a complete JSON action")?;
     serde_json::from_str(text).context("model action is invalid JSON")

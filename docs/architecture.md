@@ -128,7 +128,11 @@ The coordination MCP server cannot register a filesystem root or execute a
 shell command. Its `spawn_subagent` tool executes schema-bound inference and
 explicitly assigned file/design tools through the [capability router](../skills/agent-coordination/references/model-routing.md).
 Discovery runs at MCP initialization and uses a bounded TTL cache; raw model IDs
-are accepted only from target metadata. Skill resources come from the embedded catalog. Evidence reads stay
+are accepted only from target metadata. Concurrent refreshes share work per home;
+at most two targets are probed at once, with target and refresh deadlines. The
+32-target limit includes automatically discovered targets, and both paginated
+metadata and the persisted cache have aggregate byte limits.
+Skill resources come from the embedded catalog. Evidence reads stay
 inside registered project roots and reject symlink traversal. Host permissions
 remain the real execution boundary.
 
@@ -143,6 +147,12 @@ inference context, intelligence floors, dispatch checks, completion and traces.
 Workflow IDs and reasons are a structured host interpretation of the task, not
 proof of semantic fit or authorization. Mirket cannot intercept direct native
 host tools or infer human approval from role text.
+
+Owned source writes accept either whole-file content or bounded, unique exact
+replacements. Both require the observed digest for an existing file and subsequent
+readback. Responses commentary is never dispatched as an action: the complete
+output must validate before its single final action can execute. Generated Odiff
+diagnostics are recorded as artifacts and invalidate prior mutation verification.
 
 The single design package receives a client entry running `mirket package serve
 design`. Its direct tool schemas use paths relative to one fixed `/workspace`

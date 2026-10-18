@@ -14,6 +14,9 @@ const hf = path.join(toolRoot, 'node_modules/hyperframes/bin/hyperframes.mjs');
 const odiff = path.join(toolRoot, 'node_modules/.bin/odiff');
 const sha = bytes => sha256(bytes);
 const MAX_PROJECT_BYTES = 64 * 1024 * 1024;
+const MAX_PROJECT_FILES = 128;
+const MAX_PROJECT_ENTRIES = 128;
+const MAX_PROJECT_DEPTH = 32;
 const SCREENSHOT_MAX_PIXELS = 16 * 1024 * 1024;
 const SCREENSHOT_SCALE = 2;
 export const browserInspectCaptureOptions = Object.freeze({width: 800, height: 600, full_page: true});
@@ -267,10 +270,14 @@ export async function odiffCompare(args) {
     await fs.writeFile(left, leftBytes); await fs.writeFile(right, rightBytes);
     const diff = path.join(temp, 'diff.png');
     const result = await run(odiff, [left, right, diff, '--parsable-stdout', '--fail-on-layout'], {allowedCodes: [0, 21, 22], timeoutMs: 60000});
-    let artifact;
-    if (!args.output) await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
-    try { artifact = await publish(args.output || `.mirket-design/qa/${crypto.randomUUID()}-diff.png`, await regularOutput(diff), outputOptions(args)); }
-    catch (error) { if (result.code !== 0) throw error; }
+    let artifact, bytes;
+    try { bytes = await regularOutput(diff); }
+    catch (error) { if (error.code !== 'ENOENT') throw error; }
+    // Equal pixels and dimension mismatches may have no diagnostic image.
+    if (bytes) {
+      if (!args.output) await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
+      artifact = await publish(args.output || `.mirket-design/qa/${crypto.randomUUID()}-diff.png`, bytes, outputOptions(args));
+    }
     return {match: result.code === 0, exit_code: result.code, stdout: result.stdout.slice(0, 4096), diff: artifact || null, baseline: args.baseline, candidate: args.candidate};
   } finally { await fs.rm(temp, {recursive: true, force: true}); }
 }
@@ -295,6 +302,49 @@ async function tokenDocument(url, stylesheetUrl) {
   const html = (await readFile(relative, 4 * 1024 * 1024)).toString('utf8');
   return injectTokenStylesheet(html, stylesheetUrl);
 }
+export async function withBrowserCaptureSession(connect, endpoint, connectOptions, operation, {signal = requestSignal(), timeoutMs = 120000} = {}) {
+  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) throw Error('Browserless capture deadline is invalid');
+  const deadline = new AbortController();
+  const timer = setTimeout(() => deadline.abort(Error('Browserless capture operation timed out')), timeoutMs);
+  const operationSignal = signal ? AbortSignal.any([signal, deadline.signal]) : deadline.signal;
+  let browser, closing;
+  const closeBrowser = () => {
+    if (!browser) return Promise.resolve();
+    closing ||= Promise.resolve().then(() => browser.close()).catch(() => {});
+    return closing;
+  };
+  try {
+    if (operationSignal.aborted) throw operationSignal.reason || Error('Browserless capture operation cancelled');
+    browser = await connect(endpoint, connectOptions);
+    let rejectAbort;
+    const aborted = new Promise((_, reject) => { rejectAbort = reject; });
+    const abortReason = () => operationSignal.reason instanceof Error ? operationSignal.reason : Error('Browserless capture operation cancelled');
+    const onAbort = () => {
+      void closeBrowser();
+      rejectAbort(abortReason());
+    };
+    operationSignal.addEventListener('abort', onAbort, {once: true});
+    try {
+      // connect() has its own timeout but no AbortSignal. Cancellation may have
+      // arrived while it was pending, so refuse to create a context immediately.
+      if (operationSignal.aborted) { onAbort(); return await aborted; }
+      return await Promise.race([Promise.resolve().then(() => {
+        if (operationSignal.aborted) throw abortReason();
+        return operation(browser);
+      }), aborted]);
+    } finally {
+      operationSignal.removeEventListener('abort', onAbort);
+    }
+  } finally {
+    clearTimeout(timer);
+    let closeTimer;
+    await Promise.race([
+      closeBrowser(),
+      new Promise(resolve => { closeTimer = setTimeout(resolve, 1000); }),
+    ]).finally(() => clearTimeout(closeTimer));
+  }
+}
+
 async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], tokensCss} = {}) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 64 || height < 64 || width > 1920 || height > 1920) throw Error('Browser viewport out of range');
   const token = process.env.MIRKET_BROWSERLESS_TOKEN;
@@ -305,10 +355,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
   const endpoint = new URL('ws://browserless:3000/chromium/playwright');
   endpoint.searchParams.set('token', token);
   const {chromium} = await import('playwright-core');
-  const browser = await chromium.connect(endpoint.toString(), {timeout: 15000});
-  const onAbort = () => { browser.close().catch(() => {}); };
-  requestSignal()?.addEventListener('abort', onAbort, {once: true});
-  try {
+  return withBrowserCaptureSession(chromium.connect.bind(chromium), endpoint.toString(), {timeout: 15000}, async browser => {
     const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true});
     try {
       const page = await context.newPage();
@@ -369,7 +416,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       checkRequest();
       return {bytes, width: actualWidth, height: actualHeight, evidence: {...evidence, console_errors: consoleErrors}};
     } finally { await context.close(); }
-  } finally { requestSignal()?.removeEventListener('abort', onAbort); await browser.close(); }
+  });
 }
 function workspaceUrl(source) {
   assertRelative(source);
@@ -419,33 +466,56 @@ export async function inspectHyperframesKeyframes(snapshots, baseline, inspect =
   };
 }
 
-async function stageProject(sourceDir, stage) {
-  const origin = await workspacePath(sourceDir, {kind: 'directory'});
-  let count = 0, total = 0;
-  async function copy(from, to, relative = '') {
-    for (const entry of await fs.readdir(from, {withFileTypes: true})) {
+export async function copyBoundedProjectTree(origin, stage, {label, onFile}) {
+  if (typeof label !== 'string' || !label || typeof onFile !== 'function') throw Error('Bounded project traversal options are invalid');
+  let files = 0, entries = 0, total = 0;
+  async function copy(from, to, relative = '', depth = 0) {
+    checkRequest();
+    const directory = await fs.opendir(from, {bufferSize: 1});
+    for await (const entry of directory) {
       checkRequest();
+      entries++;
+      const local = relative ? `${relative}/${entry.name}` : entry.name;
+      if (entry.isFile()) {
+        files++;
+        if (files > MAX_PROJECT_FILES) throw Error(`${label} exceeds ${MAX_PROJECT_FILES} files`);
+      }
+      if (entries > MAX_PROJECT_ENTRIES) throw Error(`${label} exceeds ${MAX_PROJECT_ENTRIES} filesystem entries`);
       if (entry.name.startsWith('.') || ['node_modules', 'renders', 'snapshots'].includes(entry.name)) continue;
       const source = path.join(from, entry.name), dest = path.join(to, entry.name);
-      const local = relative ? `${relative}/${entry.name}` : entry.name;
-      if (entry.isSymbolicLink()) throw Error(`Composition symlink refused: ${local}`);
-      if (entry.isDirectory()) { await fs.mkdir(dest); await copy(source, dest, local); continue; }
-      if (!entry.isFile()) throw Error(`Unsupported composition resource: ${local}`);
-      count++;
-      if (count > 128) throw Error('Composition exceeds 128 files');
-      const bytes = await readBoundedProjectAsset(source, MAX_PROJECT_BYTES - total, 'Composition');
+      if (entry.isSymbolicLink()) throw Error(`${label} symlink refused: ${local}`);
+      if (entry.isDirectory()) {
+        const childDepth = depth + 1;
+        if (childDepth > MAX_PROJECT_DEPTH) throw Error(`${label} exceeds directory depth ${MAX_PROJECT_DEPTH}`);
+        checkRequest();
+        await fs.mkdir(dest);
+        await copy(source, dest, local, childDepth);
+        continue;
+      }
+      if (!entry.isFile()) throw Error(`Unsupported ${label} project asset: ${local}`);
+      checkRequest();
+      const bytes = await readBoundedProjectAsset(source, MAX_PROJECT_BYTES - total, label);
       total += bytes.length;
-      const ext = path.extname(entry.name).toLowerCase();
-      if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
-      else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
-        const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
-        const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-        const processed = await imgproxyBytes({source: `${sourceDir}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format});
-        await fs.writeFile(dest, processed);
-      } else await fs.writeFile(dest, bytes);
+      checkRequest();
+      await onFile({source, dest, local, bytes});
     }
   }
   await copy(origin, stage);
+  return {files, entries, bytes: total};
+}
+
+async function stageProject(sourceDir, stage) {
+  const origin = await workspacePath(sourceDir, {kind: 'directory'});
+  await copyBoundedProjectTree(origin, stage, {label: 'Composition', onFile: async ({dest, local, bytes}) => {
+    const ext = path.extname(local).toLowerCase();
+    if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
+    else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
+      const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
+      const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
+      const processed = await imgproxyBytes({source: `${sourceDir}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format});
+      await fs.writeFile(dest, processed);
+    } else await fs.writeFile(dest, bytes);
+  }});
   const index = path.join(stage, 'index.html');
   let html = await fs.readFile(index, 'utf8');
   if (!/<head(?:\s|>)/i.test(html)) throw Error('HyperFrames project requires an HTML head');
@@ -455,15 +525,18 @@ async function stageProject(sourceDir, stage) {
 
 export async function readBoundedProjectAsset(file, remaining, label) {
   if (!Number.isSafeInteger(remaining) || remaining < 0) throw Error(`${label} has an invalid remaining byte budget`);
-  const handle = await fs.open(file, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW);
+  checkRequest();
+  const handle = await fs.open(file, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK);
   try {
     const stat = await handle.stat();
     if (!stat.isFile()) throw Error(`${label} asset is not a regular file`);
     if (stat.size > remaining) throw Error(`${label} exceeds 64 MiB`);
     const chunks = []; let size = 0;
     for (;;) {
+      checkRequest();
       const chunk = Buffer.allocUnsafe(Math.min(64 * 1024, remaining - size + 1));
       const {bytesRead} = await handle.read(chunk, 0, chunk.length, null);
+      checkRequest();
       if (!bytesRead) break;
       size += bytesRead;
       if (size > remaining) throw Error(`${label} exceeds 64 MiB`);
@@ -543,29 +616,15 @@ export async function typstCompile(args) {
   try {
     const parent = path.posix.dirname(args.source);
     const origin = parent === '.' ? workspace : await workspacePath(parent, {kind: 'directory'});
-    let count = 0, total = 0;
-    async function copy(from, to, prefix = '') {
-      for (const entry of await fs.readdir(from, {withFileTypes: true})) {
-        checkRequest();
-        if (entry.name.startsWith('.') || ['node_modules', 'renders', 'snapshots'].includes(entry.name)) continue;
-        const local = prefix ? `${prefix}/${entry.name}` : entry.name;
-        const source = path.join(from, entry.name), dest = path.join(to, entry.name);
-        if (entry.isSymbolicLink()) throw Error(`Typst asset symlink refused: ${local}`);
-        if (entry.isDirectory()) { await fs.mkdir(dest); await copy(source, dest, local); continue; }
-        if (!entry.isFile()) throw Error(`Unsupported Typst project asset: ${local}`);
-        count++; if (count > 128) throw Error('Typst project exceeds 128 files');
-        const bytes = await readBoundedProjectAsset(source, MAX_PROJECT_BYTES - total, 'Typst project');
-        total += bytes.length;
-        const ext = path.extname(local).toLowerCase();
-        if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
-        else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
-          const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
-          const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-          await fs.writeFile(dest, await imgproxyBytes({source: parent === '.' ? local : `${parent}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format}));
-        } else await fs.writeFile(dest, bytes);
-      }
-    }
-    await copy(origin, stage);
+    await copyBoundedProjectTree(origin, stage, {label: 'Typst project', onFile: async ({dest, local, bytes}) => {
+      const ext = path.extname(local).toLowerCase();
+      if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
+      else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
+        const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
+        const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
+        await fs.writeFile(dest, await imgproxyBytes({source: parent === '.' ? local : `${parent}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format}));
+      } else await fs.writeFile(dest, bytes);
+    }});
     const stageSource = path.join(stage, path.basename(args.source));
     const typstSource = await fs.readFile(stageSource, 'utf8');
     const tokenImport = '/.mirket-canonical-tokens.typ';

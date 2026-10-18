@@ -989,8 +989,10 @@ fn dispatch(cli: Cli) -> Result<i32> {
         command: PackageCommand::Serve { id },
     } = cli.command
     {
-        let launch = packages::launch(&paths, &id)?;
-        runtime()?.block_on(crate::package_mcp::serve(launch))?;
+        runtime()?.block_on(async {
+            let launch = packages::launch(&paths, &id).await?;
+            crate::package_mcp::serve(launch).await
+        })?;
         return Ok(0);
     }
     let catalog = Catalog::embedded;
@@ -1367,19 +1369,20 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     Some(&token),
                 )?)?
             }
-            PackageCommand::Probe { id, schemas } => {
-                let launch = packages::launch(&paths, &id)?;
-                runtime()?.block_on(crate::package_mcp::probe_with_schemas(launch, schemas))?
-            }
+            PackageCommand::Probe { id, schemas } => runtime()?.block_on(async {
+                let launch = packages::launch(&paths, &id).await?;
+                crate::package_mcp::probe_with_schemas(launch, schemas).await
+            })?,
             PackageCommand::Call {
                 id,
                 tool,
                 arguments,
             } => {
                 let arguments = package_arguments(&arguments)?;
-                let launch = packages::launch(&paths, &id)?;
-                let result =
-                    runtime()?.block_on(crate::package_mcp::call(launch, tool, arguments))?;
+                let result = runtime()?.block_on(async {
+                    let launch = packages::launch(&paths, &id).await?;
+                    crate::package_mcp::call(launch, tool, arguments).await
+                })?;
                 let failed = result.is_error == Some(true);
                 emit(&result)?;
                 return Ok(if failed { 1 } else { 0 });

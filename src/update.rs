@@ -502,7 +502,7 @@ async fn run_bounded_async(
         OwnedChild::spawn(command, false).context("start verified mirket executable")?;
     let started = Instant::now();
     let outcome = loop {
-        if let Some(status) = owned.child.try_wait()? {
+        if let Some(status) = owned.child().try_wait()? {
             break Ok(status);
         }
         if started.elapsed() >= timeout {

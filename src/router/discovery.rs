@@ -5,17 +5,40 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeMap, BTreeSet},
     ffi::OsString,
     fs::File,
     io::Read,
     path::{Path, PathBuf},
+    sync::{
+        Arc, Mutex, OnceLock, Weak,
+        atomic::{AtomicU64, Ordering},
+    },
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
 const REGISTRY_VERSION: u32 = 2;
 const MAX_METADATA: usize = 4 * 1024 * 1024;
-static DISCOVERY_LOCK: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
+const MAX_MODELS_BYTES: usize = MAX_METADATA - 256 * 1024;
+#[derive(Default)]
+struct DiscoveryGate {
+    lock: tokio::sync::Mutex<()>,
+    generation: AtomicU64,
+}
+fn discovery_gate(root: &Path) -> Arc<DiscoveryGate> {
+    static GATES: OnceLock<Mutex<BTreeMap<PathBuf, Weak<DiscoveryGate>>>> = OnceLock::new();
+    let mut gates = GATES
+        .get_or_init(Mutex::default)
+        .lock()
+        .unwrap_or_else(|error| error.into_inner());
+    gates.retain(|_, gate| gate.strong_count() > 0);
+    if let Some(gate) = gates.get(root).and_then(Weak::upgrade) {
+        return gate;
+    }
+    let gate = Arc::new(DiscoveryGate::default());
+    gates.insert(root.to_owned(), Arc::downgrade(&gate));
+    gate
+}
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -312,6 +335,11 @@ fn targets(paths: &Paths, config: &Config) -> Result<Vec<Target>> {
             None,
         ));
     }
+    ensure!(
+        targets.len() <= 32,
+        "at most 32 inference targets after automatic discovery (found {})",
+        targets.len()
+    );
     let mut names = BTreeSet::new();
     for target in &targets {
         ensure!(
@@ -325,7 +353,7 @@ fn targets(paths: &Paths, config: &Config) -> Result<Vec<Target>> {
                 target
                     .executable
                     .as_ref()
-                    .is_some_and(|p| p.is_absolute() && p.is_file()),
+                    .is_some_and(|p| p.is_absolute() && p.as_os_str().len() <= 4096 && p.is_file()),
                 "native target executable must be an existing absolute file"
             );
         } else {
@@ -338,7 +366,9 @@ fn targets(paths: &Paths, config: &Config) -> Result<Vec<Target>> {
         }
         if let Some(env) = &target.credential_env {
             ensure!(
-                !env.is_empty() && env.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_'),
+                !env.is_empty()
+                    && env.len() <= 256
+                    && env.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_'),
                 "invalid credential environment name"
             );
         }
@@ -347,6 +377,7 @@ fn targets(paths: &Paths, config: &Config) -> Result<Vec<Target>> {
 }
 
 pub fn validated_url(endpoint: &str) -> Result<reqwest::Url> {
+    ensure!(endpoint.len() <= 4096, "target endpoint exceeds limit");
     let url = reqwest::Url::parse(endpoint).context("invalid target endpoint")?;
     ensure!(
         url.username().is_empty()
@@ -398,7 +429,14 @@ pub fn request(
     }
     Ok(request)
 }
-pub async fn response_json(mut response: reqwest::Response) -> Result<Value> {
+pub async fn response_json(response: reqwest::Response) -> Result<Value> {
+    let mut remaining = MAX_METADATA;
+    response_json_budget(response, &mut remaining).await
+}
+async fn response_json_budget(
+    mut response: reqwest::Response,
+    remaining: &mut usize,
+) -> Result<Value> {
     let status = response.status();
     // Never expose remote error bodies: they can echo prompts or credentials.
     ensure!(
@@ -409,17 +447,18 @@ pub async fn response_json(mut response: reqwest::Response) -> Result<Value> {
     ensure!(
         response
             .content_length()
-            .is_none_or(|n| n <= MAX_METADATA as u64),
+            .is_none_or(|n| n <= (*remaining).min(MAX_METADATA) as u64),
         "target response exceeds limit"
     );
     let mut bytes = Vec::new();
     while let Some(chunk) = response.chunk().await? {
         ensure!(
-            bytes.len() + chunk.len() <= MAX_METADATA,
+            bytes.len() + chunk.len() <= (*remaining).min(MAX_METADATA),
             "target response exceeds limit"
         );
         bytes.extend_from_slice(&chunk);
     }
+    *remaining -= bytes.len();
     serde_json::from_slice(&bytes).context("target did not return JSON")
 }
 fn strings(value: Option<&Value>) -> Vec<String> {
@@ -639,6 +678,10 @@ pub fn normalize(target: &Target, raw: &Value, execution_ready: bool) -> Result<
         available: execution_ready
             && raw.get("lifecycle").and_then(Value::as_str) != Some("retired"),
     };
+    ensure!(
+        serde_json::to_vec(&model)?.len() <= 32 * 1024,
+        "retained model metadata exceeds limit"
+    );
     classify(&mut model);
     Ok(model)
 }
@@ -693,21 +736,14 @@ where
         .is_some_and(|host| matches!(host.as_str(), "localhost" | "127.0.0.1" | "::1"))
 }
 
-async fn authenticated_inference_ready(target: &Target, home: &Path) -> bool {
+async fn post_probe_inference_ready(target: &Target, home: &Path) -> bool {
     match target.protocol {
-        Protocol::Claude => {
-            let Some(executable) = target.executable.as_deref() else {
-                return false;
-            };
-            super::native::claude_authenticated(executable, home)
-                .await
-                .is_ok()
-        }
+        Protocol::Claude => true, // The successful probe already checked account access.
         Protocol::Codex => {
             let Some(executable) = target.executable.as_deref() else {
                 return false;
             };
-            super::native::codex_authenticated(executable, home)
+            super::native::codex_execution_contract(executable, home)
                 .await
                 .is_ok()
         }
@@ -736,34 +772,45 @@ where
 }
 
 async fn cached_native_auth_current(registry: &Registry, home: &Path) -> bool {
-    for status in &registry.targets {
-        match status.target.protocol {
-            Protocol::Claude => {
+    let mut pending = registry
+        .targets
+        .iter()
+        .filter(|status| matches!(status.target.protocol, Protocol::Codex | Protocol::Claude));
+    let mut jobs = tokio::task::JoinSet::new();
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(30);
+    loop {
+        while jobs.len() < 2 {
+            let Some(status) = pending.next() else {
+                break;
+            };
+            let status = status.clone();
+            let home = home.to_owned();
+            jobs.spawn(async move {
                 let Some(executable) = status.target.executable.as_deref() else {
                     return false;
                 };
-                let current = super::native::claude_authenticated(executable, home)
-                    .await
-                    .is_ok();
-                if current != status.authenticated {
-                    return false;
-                }
-            }
-            Protocol::Codex => {
-                let Some(executable) = status.target.executable.as_deref() else {
-                    return false;
+                let current = match status.target.protocol {
+                    Protocol::Claude => super::native::claude_authenticated(executable, &home)
+                        .await
+                        .is_ok(),
+                    Protocol::Codex => super::native::codex_authenticated(executable, &home)
+                        .await
+                        .is_ok(),
+                    _ => unreachable!("filtered native targets"),
                 };
-                let current = super::native::codex_authenticated(executable, home)
-                    .await
-                    .is_ok();
-                if current != status.authenticated {
-                    return false;
-                }
-            }
-            _ => {}
+                current == status.authenticated
+            });
+        }
+        if jobs.is_empty() {
+            return true;
+        }
+        if !matches!(
+            tokio::time::timeout_at(deadline, jobs.join_next()).await,
+            Ok(Some(Ok(true)))
+        ) {
+            return false;
         }
     }
-    true
 }
 
 async fn probe(target: &Target, home: &Path) -> Result<Vec<Value>> {
@@ -798,12 +845,14 @@ async fn probe(target: &Target, home: &Path) -> Result<Vec<Value>> {
             let mut result = Vec::new();
             let mut next = suffix.to_owned();
             let mut cursors = BTreeSet::new();
+            let mut remaining = MAX_METADATA;
             for page in 0..64 {
-                let raw = response_json(
+                let raw = response_json_budget(
                     request(&client, target, &next)?
                         .timeout(Duration::from_secs(15))
                         .send()
                         .await?,
+                    &mut remaining,
                 )
                 .await?;
                 let list = raw
@@ -836,7 +885,7 @@ async fn probe(target: &Target, home: &Path) -> Result<Vec<Value>> {
                         post = post.header(header, value);
                     }
                     let response = post.send().await?;
-                    let details = response_json(response).await?;
+                    let details = response_json_budget(response, &mut remaining).await?;
                     raw["capabilities"] =
                         details.get("capabilities").cloned().unwrap_or(Value::Null);
                     if let Some(info) = details.get("model_info").and_then(Value::as_object) {
@@ -853,11 +902,100 @@ async fn probe(target: &Target, home: &Path) -> Result<Vec<Value>> {
     }
 }
 
+async fn probe_one(target: Target, home: PathBuf) -> Result<(TargetStatus, Vec<Model>)> {
+    let raw = probe(&target, &home).await?;
+    let authenticated = post_probe_inference_ready(&target, &home).await;
+    let mut seen = BTreeSet::new();
+    let mut models = Vec::new();
+    let mut bytes = 0;
+    for item in raw {
+        if let Ok(model) = normalize(&target, &item, authenticated)
+            && seen.insert(model.id.clone())
+        {
+            bytes += serde_json::to_vec(&model)?.len() + 1;
+            ensure!(
+                bytes <= MAX_MODELS_BYTES,
+                "normalized model catalog exceeds byte budget"
+            );
+            models.push(model);
+        }
+    }
+    let diagnostic = (!authenticated).then(|| "Discovery only: remote inference credentials are absent or native account access is unavailable; public metadata does not establish inference access".into());
+    Ok((
+        TargetStatus {
+            target,
+            authenticated,
+            execution_ready: authenticated,
+            diagnostic,
+        },
+        models,
+    ))
+}
+
+async fn probe_targets(
+    targets: Vec<Target>,
+    home: &Path,
+    budget: Duration,
+) -> Result<(Vec<TargetStatus>, Vec<Model>)> {
+    let mut statuses: Vec<_> = targets.iter().cloned().map(|target| TargetStatus {
+        target, authenticated: false, execution_ready: false,
+        diagnostic: Some("Target probe unavailable, unauthenticated, malformed, or exceeded its deadline; no stale models are eligible".into()),
+    }).collect();
+    let mut pending = targets.into_iter().enumerate();
+    let mut jobs = tokio::task::JoinSet::new();
+    let mut models = Vec::new();
+    let mut bytes = 0;
+    let deadline = tokio::time::Instant::now() + budget;
+    loop {
+        while jobs.len() < 2 {
+            let Some((index, target)) = pending.next() else {
+                break;
+            };
+            let home = home.to_owned();
+            jobs.spawn(async move {
+                (
+                    index,
+                    tokio::time::timeout(Duration::from_secs(30), probe_one(target, home)).await,
+                )
+            });
+        }
+        if jobs.is_empty() {
+            break;
+        }
+        let joined = match tokio::time::timeout_at(deadline, jobs.join_next()).await {
+            Ok(Some(joined)) => joined?,
+            Ok(None) | Err(_) => break,
+        };
+        if let (index, Ok(Ok((status, found)))) = joined {
+            for model in found {
+                bytes += serde_json::to_vec(&model)?.len() + 1;
+                ensure!(
+                    bytes <= MAX_MODELS_BYTES,
+                    "combined model catalog exceeds byte budget"
+                );
+                models.push(model);
+            }
+            statuses[index] = status;
+        }
+    }
+    // Dropping the JoinSet cancels overdue probes and their owned children.
+    models.sort_by(|a, b| (&a.target, &a.id).cmp(&(&b.target, &b.id)));
+    Ok((statuses, models))
+}
+
 pub async fn discover(paths: &Paths, refresh: bool) -> Result<Registry> {
-    let _guard = DISCOVERY_LOCK.lock().await;
+    let gate = discovery_gate(&paths.root);
+    let generation = gate.generation.load(Ordering::Acquire);
+    let _guard = gate.lock.lock().await;
+    let refresh = refresh && generation == gate.generation.load(Ordering::Acquire);
     let config = config(paths)?;
     let targets = targets(paths, &config)?;
-    let fingerprint = cache_fingerprint(paths, &targets)?;
+    let identity_paths = paths.clone();
+    let identity_targets = targets.clone();
+    let fingerprint =
+        tokio::task::spawn_blocking(move || cache_fingerprint(&identity_paths, &identity_targets))
+            .await
+            .context("target identity worker failed")??;
     let cache = paths.cache().join("inference-models.json");
     if !refresh
         && cache.exists()
@@ -891,32 +1029,145 @@ pub async fn discover(paths: &Paths, refresh: bool) -> Result<Registry> {
         targets: vec![],
         models: vec![],
     };
-    for target in targets {
-        match tokio::time::timeout(Duration::from_secs(30),probe(&target,&paths.home)).await {
-            Ok(Ok(raw))=>{
-                let authenticated = authenticated_inference_ready(&target, &paths.home).await;
-                let execution_ready = authenticated;
-                let mut seen=BTreeSet::new();
-                for item in raw {if let Ok(model)=normalize(&target,&item,execution_ready) && seen.insert(model.id.clone()) {registry.models.push(model);}}
-                let diagnostic = if !authenticated {
-                    Some("Discovery only: remote inference credentials are absent or native account access is unavailable; public model metadata does not establish inference access".into())
-                } else {
-                    None
-                };
-                registry.targets.push(TargetStatus{target,authenticated,execution_ready,diagnostic});
-            }
-            _=>registry.targets.push(TargetStatus{target,authenticated:false,execution_ready:false,diagnostic:Some("Target probe unavailable, unauthenticated, malformed, or exceeded its deadline; no stale models are eligible".into())}),
-        }
-    }
+    let (statuses, models) = probe_targets(targets, &paths.home, Duration::from_secs(120)).await?;
+    registry.targets = statuses;
+    registry.models = models;
     util::ensure_directory(&paths.cache())?;
     let _lock = util::FileLock::acquire(&paths.cache().join("inference-models.lock"))?;
-    util::atomic_write_with_mode(&cache, &serde_json::to_vec_pretty(&registry)?, Some(0o600))?;
+    let bytes = serde_json::to_vec(&registry)?;
+    ensure!(
+        bytes.len() <= MAX_METADATA,
+        "discovered registry exceeds cache byte budget"
+    );
+    util::atomic_write_with_mode(&cache, &bytes, Some(0o600))?;
+    gate.generation.fetch_add(1, Ordering::Release);
     Ok(registry)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn model_budget_bounds_retained_metadata_without_rejecting_unused_provider_fields() {
+        let target = endpoint_target(
+            "fixture",
+            Protocol::OpenaiChat,
+            "http://127.0.0.1:1/v1".into(),
+            None,
+        );
+        assert!(
+            normalize(
+                &target,
+                &json!({"id":"published","unused_provider_data":"x".repeat(64 * 1024)}),
+                true
+            )
+            .is_ok()
+        );
+        assert!(
+            normalize(
+                &target,
+                &json!({"id":"published","description":"x".repeat(32 * 1024)}),
+                true
+            )
+            .is_err()
+        );
+    }
+    #[test]
+    fn implicit_providers_cannot_bypass_target_budget() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().to_owned()).unwrap();
+        std::fs::create_dir(home.path().join(".codex")).unwrap();
+        let providers = (0..33)
+            .map(|i| {
+                format!("[model_providers.provider{i}]\nbase_url = \"http://127.0.0.1:1/v1\"\n")
+            })
+            .collect::<String>();
+        std::fs::write(home.path().join(".codex/config.toml"), providers).unwrap();
+        assert!(
+            targets(&paths, &Config::default())
+                .unwrap_err()
+                .to_string()
+                .contains("after automatic discovery")
+        );
+    }
+
+    #[test]
+    fn discovery_coordination_is_scoped_to_the_home() {
+        let first = discovery_gate(Path::new("/one"));
+        let same = discovery_gate(Path::new("/one"));
+        let other = discovery_gate(Path::new("/two"));
+        assert!(Arc::ptr_eq(&first, &same));
+        assert!(!Arc::ptr_eq(&first, &other));
+    }
+
+    async fn catalog_server(
+        body: String,
+        barrier: Option<Arc<tokio::sync::Barrier>>,
+    ) -> (Target, tokio::task::JoinHandle<usize>) {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let target = endpoint_target(
+            &listener.local_addr().unwrap().to_string(),
+            Protocol::OpenaiChat,
+            format!("http://{}/v1", listener.local_addr().unwrap()),
+            None,
+        );
+        let task = tokio::spawn(async move {
+            let mut requests = 0;
+            while let Ok((mut stream, _)) = listener.accept().await {
+                let mut buffer = [0u8; 8192];
+                assert!(stream.read(&mut buffer).await.unwrap() > 0);
+                requests += 1;
+                if let Some(barrier) = &barrier {
+                    barrier.wait().await;
+                }
+                let header = format!(
+                    "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                    body.len()
+                );
+                if stream.write_all(header.as_bytes()).await.is_ok() {
+                    let _ = stream.write_all(body.as_bytes()).await;
+                }
+                if requests == 2 {
+                    break;
+                }
+            }
+            requests
+        });
+        (target, task)
+    }
+
+    #[tokio::test]
+    async fn paginated_catalog_has_one_streaming_byte_budget() {
+        let body = json!({"data":[{"id":"one","description":"x".repeat(MAX_METADATA / 2)}],"has_more":true,"last_id":"next"}).to_string();
+        let (target, server) = catalog_server(body, None).await;
+        let home = tempfile::tempdir().unwrap();
+        let error = probe(&target, home.path()).await.unwrap_err();
+        assert!(error.to_string().contains("exceeds limit"));
+        assert_eq!(
+            tokio::time::timeout(Duration::from_secs(5), server)
+                .await
+                .unwrap()
+                .unwrap(),
+            2
+        );
+    }
+
+    #[tokio::test]
+    async fn independent_targets_are_probed_concurrently() {
+        let barrier = Arc::new(tokio::sync::Barrier::new(2));
+        let body = json!({"data":[{"id":"discovered-model"}]}).to_string();
+        let (one, task_one) = catalog_server(body.clone(), Some(barrier.clone())).await;
+        let (two, task_two) = catalog_server(body, Some(barrier)).await;
+        let home = tempfile::tempdir().unwrap();
+        let (statuses, models) = probe_targets(vec![one, two], home.path(), Duration::from_secs(3))
+            .await
+            .unwrap();
+        task_one.abort();
+        task_two.abort();
+        assert!(statuses.iter().all(|status| status.execution_ready));
+        assert_eq!(models.len(), 2);
+    }
     #[test]
     fn unknown_capabilities_stay_unknown() {
         let target = endpoint_target(
@@ -1041,7 +1292,7 @@ mod tests {
             executable: None,
         };
         assert!(!http_inference_ready_with_env(&target, |_| None));
-        assert!(!authenticated_inference_ready(&target, Path::new("/unused")).await);
+        assert!(probe_one(target, PathBuf::from("/unused")).await.is_err());
     }
 
     #[test]
