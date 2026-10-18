@@ -69,7 +69,7 @@ const remote = (script) =>
         `sudo -n -u deploy bash -c ${quote("set -euo pipefail\n" + script)}`,
       ]);
 // Never rsync into an active or already published release.
-remote(`test ! -e '${release}'\nmkdir -p '${release}'`);
+remote(`mkdir '${release}'`);
 const rsync = [
   "-az",
   "--chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r",
