@@ -15,6 +15,10 @@ contracts discoverable through `mirket capabilities list`. The core starts witho
 service. Optional MCP packages bring pinned runtimes when required. Project SDKs
 and native applications remain explicit prerequisites.
 
+Explore [harness.mirket.dev](https://harness.mirket.dev) for the overview, toolchain
+and platform downloads. Website source and deployment instructions live in
+[website/](website/README.md).
+
 ## Install and set up
 
 Download the executable for your operating system and architecture from the

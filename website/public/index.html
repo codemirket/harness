@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mirket Harness — Give your agents a working practice.</title>
+    <meta
+      name="description"
+      content="An open-source, local harness for Codex Desktop and Claude Desktop Code. Task-shaped expertise, capability-aware routing and a connected design toolchain."
+    />
+    <meta name="theme-color" content="#f8f6f1" />
+    <meta
+      property="og:title"
+      content="Mirket Harness — Give your agents a working practice."
+    />
+    <meta
+      property="og:description"
+      content="One local harness. Focused expertise. Tools chosen for the task. Open source under MIT."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://harness.mirket.dev/" />
+    <link rel="canonical" href="https://harness.mirket.dev/" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./tokens.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header rail">
+      <a class="brand" href="/" aria-label="Mirket Harness home"
+        ><span class="brand-mark" aria-hidden="true">m.</span
+        ><span>mirket<span class="brand-product"> / harness</span></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#approach">How it works</a><a href="#toolchain">Toolchain</a
+        ><a href="https://github.com/codemirket/harness" class="source-link"
+          >GitHub <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero rail" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="status-dot" aria-hidden="true"></span> OPEN SOURCE ·
+            LOCAL FIRST
+          </p>
+          <h1 id="hero-title">
+            Give your agents<br />a working<br /><em>practice.</em>
+          </h1>
+          <p class="lede">
+            The right expertise. The right tools. A result you can inspect.
+            Mirket brings a shared working practice to Codex and Claude.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#install"
+              >Set up Mirket <span aria-hidden="true">↗</span></a
+            ><a
+              class="text-link"
+              href="https://github.com/codemirket/harness#readme"
+              >Read the docs <span aria-hidden="true">→</span></a
+            >
+          </div>
+          <p class="hero-note">
+            One Rust CLI. Runs on your machine. MIT licensed.
+          </p>
+        </div>
+        <div class="workbench" aria-label="Illustrative Mirket workflow">
+          <div class="bench-heading">
+            <span class="mono">WORKBENCH / 001</span
+            ><span class="example">EXAMPLE</span>
+          </div>
+          <div class="brief">
+            <span class="small-label">THE TASK</span>
+            <p>Build an interface.<br />Verify what actually ships.</p>
+            <span class="brief-corner" aria-hidden="true">↳</span>
+          </div>
+          <div class="bench-step">
+            <span class="step-no">01</span>
+            <div>
+              <strong>Choose the expertise</strong>
+              <p>Frontend engineering · Design QA</p>
+            </div>
+            <span class="step-symbol" aria-hidden="true">✳</span>
+          </div>
+          <div class="bench-step">
+            <span class="step-no">02</span>
+            <div>
+              <strong>Scope the tools</strong>
+              <p>Workspace · Browserless · Pixel inspection</p>
+            </div>
+            <span class="step-symbol" aria-hidden="true">⌘</span>
+          </div>
+          <div class="bench-step">
+            <span class="step-no">03</span>
+            <div>
+              <strong>Close the loop</strong>
+              <p>Render → inspect → refine</p>
+            </div>
+            <span class="step-symbol" aria-hidden="true">↻</span>
+          </div>
+          <div class="bench-terminal">
+            <span class="terminal-label">A SMALL PLACE TO START</span
+            ><code
+              ><span>$</span> mirket setup<br /><span>$</span> mirket
+              doctor</code
+            >
+            <div class="terminal-rule"></div>
+            <p>Your project. Your host. Your permissions.</p>
+          </div>
+        </div>
+      </section>
+      <div class="compatibility rail">
+        <span class="small-label">WORKS WHERE YOU WORK</span
+        ><span>Codex Desktop</span><span>Claude Desktop Code</span
+        ><span class="compat-detail"
+          >macOS ARM64 · Linux x64 · Windows x64</span
+        >
+      </div>
+
+      <section
+        class="section rail"
+        id="approach"
+        aria-labelledby="approach-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">01 / THE APPROACH</p>
+          <h2 id="approach-title">
+            Less context by default.<br />More judgment where it counts.
+          </h2>
+          <p>
+            Start with the deliverable. Bring in useful expertise, assign a
+            bounded toolset, and check the actual outcome.
+          </p>
+        </div>
+        <div class="principles">
+          <article>
+            <span class="index">01—</span>
+            <h3>Expertise on purpose.</h3>
+            <p>
+              Discover professional roles and focused skills for the work in
+              front of you. Read what helps the next decision instead of loading
+              an entire catalog.
+            </p>
+            <a
+              href="https://github.com/codemirket/harness/blob/main/docs/roles.md"
+              >Explore roles <span aria-hidden="true">↗</span></a
+            >
+          </article>
+          <article>
+            <span class="index">02—</span>
+            <h3>Tools with boundaries.</h3>
+            <p>
+              Mirket-owned workers receive tools for declared task needs. A role
+              title cannot expand access. Your host continues to control
+              permissions.
+            </p>
+            <a
+              href="https://github.com/codemirket/harness/blob/main/skills/agent-coordination/references/model-routing.md"
+              >Read the routing contract <span aria-hidden="true">↗</span></a
+            >
+          </article>
+          <article>
+            <span class="index">03—</span>
+            <h3>Evidence over ceremony.</h3>
+            <p>
+              Inspect the saved file, working screen or system effect. Use
+              durable task records when continuity helps, and keep the workflow
+              you already trust.
+            </p>
+            <a
+              href="https://github.com/codemirket/harness/blob/main/docs/task-evidence.md"
+              >See verification <span aria-hidden="true">↗</span></a
+            >
+          </article>
+        </div>
+      </section>
+
+      <section class="routing-section" aria-labelledby="routing-title">
+        <div class="rail routing-layout">
+          <div>
+            <p class="eyebrow">02 / TASK-SHAPED ROUTING</p>
+            <h2 id="routing-title">Different work.<br />Different demands.</h2>
+            <p>
+              Models are discovered from authenticated runtime targets. Task
+              complexity and tool requirements establish the capability floor.
+            </p>
+            <p class="routing-note">
+              The router governs Mirket-owned workers. Native host agents retain
+              their own execution boundary.
+            </p>
+          </div>
+          <div class="route-demo">
+            <div class="route-header">
+              <span class="small-label">EXPLORE A ROUTE</span
+              ><span class="example">ILLUSTRATIVE</span>
+            </div>
+            <div class="route-choices" role="group" aria-label="Example task">
+              <button type="button" data-route="compare" aria-pressed="false">
+                Compare pixels</button
+              ><button type="button" data-route="code" aria-pressed="false">
+                Implement code</button
+              ><button type="button" data-route="design" aria-pressed="true">
+                Design a UI
+              </button>
+            </div>
+            <div id="route-result" aria-live="polite" aria-atomic="true">
+              <div class="route-title">
+                <span id="route-tier" class="tier">T3</span>
+                <h3 id="route-name">Creative &amp; architectural</h3>
+              </div>
+              <p id="route-description">
+                Layout decisions and multi-step visual reasoning require the
+                architectural tier.
+              </p>
+              <dl>
+                <div>
+                  <dt>Expertise</dt>
+                  <dd id="route-role">
+                    Frontend engineering + interface design
+                  </dd>
+                </div>
+                <div>
+                  <dt>Tool scope</dt>
+                  <dd id="route-tools">
+                    Workspace, Browserless, image inspection
+                  </dd>
+                </div>
+                <div>
+                  <dt>Verification</dt>
+                  <dd id="route-check">
+                    Render the screen and inspect its pixels
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <p class="route-footnote">
+              A capability floor, not a fixed model list. Ambiguity resolves
+              upward.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section rail"
+        id="toolchain"
+        aria-labelledby="toolchain-title"
+      >
+        <div class="section-heading tools-heading">
+          <div>
+            <p class="eyebrow">03 / THE DESIGN WORKSPACE</p>
+            <h2 id="toolchain-title">
+              One connected toolchain.<br />From tokens to proof.
+            </h2>
+          </div>
+          <p>
+            The optional design package connects eleven purpose-built tools
+            through a shared workspace. Each has a defined job.
+          </p>
+        </div>
+        <div class="tool-table">
+          <div class="tool-row">
+            <span class="tool-number">01</span>
+            <h3>Define</h3>
+            <p>Style Dictionary</p>
+            <span>Canonical tokens → CSS, themes, Typst &amp; Penpot</span>
+          </div>
+          <div class="tool-row">
+            <span class="tool-number">02</span>
+            <h3>Compose</h3>
+            <p>Satori + resvg · Browserless · Penpot MCP</p>
+            <span>Static cards, full DOM screens &amp; editable canvases</span>
+          </div>
+          <div class="tool-row">
+            <span class="tool-number">03</span>
+            <h3>Explain</h3>
+            <p>Kroki · HyperFrames · Typst</p>
+            <span>Diagrams, motion, reports &amp; slide decks</span>
+          </div>
+          <div class="tool-row">
+            <span class="tool-number">04</span>
+            <h3>Prepare</h3>
+            <p>ComfyUI · imgproxy · SVGO</p>
+            <span>Generate rasters, process images &amp; optimize vectors</span>
+          </div>
+          <div class="tool-row">
+            <span class="tool-number">05</span>
+            <h3>Verify</h3>
+            <p>Odiff · Browserless</p>
+            <span>Compare pixels and inspect the rendered result</span>
+          </div>
+        </div>
+        <p class="tool-note">
+          The core CLI needs no background service. The optional design stack
+          uses a managed local runtime and additional memory.
+          <a
+            href="https://github.com/codemirket/harness/blob/main/docs/packages.md"
+            >Package guide ↗</a
+          >
+        </p>
+      </section>
+
+      <section
+        class="install-section rail"
+        id="install"
+        aria-labelledby="install-title"
+      >
+        <div>
+          <p class="eyebrow">04 / GET STARTED</p>
+          <h2 id="install-title">Make it part<br />of your practice.</h2>
+          <p>
+            Download the executable for your platform, place it on your PATH,
+            then choose your clients in setup.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/codemirket/harness/blob/main/docs/installation.md"
+            >Full installation guide <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="install-box">
+          <label for="platform">Your platform</label
+          ><select id="platform">
+            <option value="mac">macOS · Apple Silicon</option>
+            <option value="linux">Linux · x86-64</option>
+            <option value="windows">Windows · x86-64</option></select
+          ><a
+            id="download"
+            class="button primary"
+            href="https://github.com/codemirket/harness/releases/latest/download/mirket-aarch64-apple-darwin"
+            >Download for macOS <span aria-hidden="true">↓</span></a
+          >
+          <p id="install-hint">
+            Rename the file to mirket, make it executable, and add its directory
+            to PATH.
+          </p>
+          <div class="install-code">
+            <pre><code id="commands">mirket setup
+mirket doctor</code></pre>
+            <button type="button" id="copy" aria-label="Copy setup commands">
+              Copy
+            </button>
+          </div>
+          <span id="copy-status" role="status"></span>
+          <p class="release-note">
+            <a href="https://github.com/codemirket/harness/releases/latest"
+              >Release notes &amp; checksums ↗</a
+            >
+            <span>MIT license</span>
+          </p>
+          <noscript
+            ><p>
+              For Linux and Windows, choose an executable on the
+              <a href="https://github.com/codemirket/harness/releases/latest"
+                >releases page</a
+              >.
+            </p></noscript
+          >
+        </div>
+      </section>
+      <section class="faq rail" aria-labelledby="faq-title">
+        <h2 id="faq-title">A few useful details.</h2>
+        <div>
+          <details>
+            <summary>Does Mirket replace Codex or Claude?</summary>
+            <p>
+              No. It installs shared guidance and MCP connections into supported
+              hosts. The host retains permissions, authentication and its
+              session lifecycle.
+            </p>
+          </details>
+          <details>
+            <summary>Do I need the entire design stack?</summary>
+            <p>
+              No. The Rust CLI and expertise catalog work independently. Select
+              the design package only when you need its rendering, canvas and
+              media tools.
+            </p>
+          </details>
+          <details>
+            <summary>Does local mean inference stays on my device?</summary>
+            <p>
+              The harness and its state run locally. Model inference uses your
+              authenticated targets, which may be remote providers or a local
+              daemon. Your provider's data and billing policies still apply.
+            </p>
+          </details>
+          <details>
+            <summary>Can I use it with an existing project?</summary>
+            <p>
+              Yes. Mirket can adopt an existing project and install selected
+              expertise. Setup preserves unrelated client configuration and
+              checks managed files for drift. Your project's instructions govern
+              the work.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer rail">
+      <a class="brand" href="/"
+        >mirket<span class="brand-product"> / harness</span></a
+      >
+      <p>Open tools for considered work.</p>
+      <nav aria-label="Footer">
+        <a href="https://github.com/codemirket/harness">Source</a
+        ><a href="https://github.com/codemirket/harness/issues">Issues</a
+        ><a href="https://github.com/codemirket/harness/blob/main/LICENSE"
+          >MIT</a
+        ><a href="https://mirket.dev">Mirket LMS ↗</a>
+      </nav>
+    </footer>
+  </body>
+</html>

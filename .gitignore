@@ -1,5 +1,6 @@
 /target/
 /dist/
+/website/dist/
 /.mirket/
 .DS_Store
 *.db-shm
