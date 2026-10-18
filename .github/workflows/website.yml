@@ -6,6 +6,9 @@ on:
     paths: ['website/**', '.github/workflows/website.yml']
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   static:
     runs-on: ubuntu-latest

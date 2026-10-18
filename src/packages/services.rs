@@ -963,6 +963,12 @@ fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
             put("IMGPROXY_BIND", "0.0.0.0:8080".into());
             put("IMGPROXY_LOCAL_FILESYSTEM_ROOT", "/workspace".into());
             put("IMGPROXY_ALLOWED_SOURCES", "local://".into());
+            put("IMGPROXY_WORKERS", "1".into());
+            put("IMGPROXY_REQUESTS_QUEUE_SIZE", "16".into());
+            put("IMGPROXY_MAX_SRC_RESOLUTION", "17".into());
+            put("IMGPROXY_MAX_SRC_FILE_SIZE", "33554432".into());
+            put("IMGPROXY_MAX_RESULT_DIMENSION", "4096".into());
+            put("IMGPROXY_MAX_ANIMATION_FRAMES", "1".into());
             put("IMGPROXY_KEY", state.imgproxy_key.clone());
             put("IMGPROXY_SALT", state.imgproxy_salt.clone());
         }

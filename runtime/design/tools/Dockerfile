@@ -51,7 +51,7 @@ COPY tools/NOTICE.md ./NOTICE.md
 COPY penpot-session.mjs ./penpot-session.mjs
 RUN mkdir -p /workspace \
     && chmod 0644 /opt/design/*.mjs /opt/design/NOTICE.md /opt/design/package.json /opt/design/package-lock.json /opt/design/tool-policy.json /opt/design/tool-budgets.json \
-    && chown node:node /workspace /opt/design
+    && chown node:node /workspace
 USER node
 RUN node --check /opt/design/workspace-server.mjs \
     && node --check /opt/design/penpot-session.mjs \

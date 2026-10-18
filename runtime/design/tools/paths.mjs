@@ -103,7 +103,7 @@ async function publicationLock(name, fn) {
   const root = await workspacePath('.mirket-design/locks', {kind:'directory', missing:true, createParents:true});
   await fs.mkdir(root, {recursive:true, mode:0o700});
   const lock = path.join(root, sha256(Buffer.from(name)) + '.lock');
-  const child = spawn(guard, ['lock', lock], {stdio:['pipe','pipe','pipe']});
+  const child = spawn(guard, ['lock', lock], {stdio:['pipe','pipe','pipe'], env:{LANG:'C.UTF-8'}});
   const done = new Promise(resolve => { child.once('close', resolve); child.once('error', () => resolve(-1)); });
   try {
     await new Promise((resolve, reject) => {

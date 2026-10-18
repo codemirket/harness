@@ -9,7 +9,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 const {penpotTokenRecords, synchronizePenpotTokens} = await import('../penpot-tokens.mjs');
 const {exportPenpotShape} = await import('../penpot-export.mjs');
@@ -446,4 +446,12 @@ test('Odiff rejects compressed-image dimension bombs before native decoding', as
   const header=Buffer.alloc(24);Buffer.from([137,80,78,71,13,10,26,10]).copy(header);header.writeUInt32BE(100000,16);header.writeUInt32BE(100000,20);
   await fs.writeFile(path.join(workspace,'huge-pixels.png'),header);
   await assert.rejects(odiffCompare({baseline:'huge-pixels.png',candidate:'huge-pixels.png'}),/decoded pixel budget/);
+});
+
+
+test('page and frame QA enforce a shared decoded-pixel budget', () => {
+  const header=Buffer.alloc(24);Buffer.from([137,80,78,71,13,10,26,10]).copy(header);header.writeUInt32BE(4096,16);header.writeUInt32BE(4096,20);
+  const accept=imageBatchBudget();
+  for(let i=0;i<4;i++) assert.deepEqual(accept(header),[4096,4096]);
+  assert.throws(()=>accept(header),/aggregate/);
 });

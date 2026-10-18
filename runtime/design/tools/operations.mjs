@@ -484,6 +484,15 @@ export function parseHyperframesLint(stdout) {
   if (!report.ok || report.errorCount > 0) throw Error('HyperFrames linter reported errors');
   return report;
 }
+export function imageBatchBudget() {
+  let bytes = 0, pixels = 0, count = 0;
+  return image => {
+    const dimensions = pngDimensions(image);
+    bytes += image.length; pixels += dimensions[0] * dimensions[1]; count++;
+    if (count > 64 || bytes > 64 * 1024 * 1024 || pixels > 64 * 1024 * 1024) throw Error('Image QA batch exceeds aggregate count, byte or pixel budget');
+    return dimensions;
+  };
+}
 export async function hyperframesRender(args) {
   await assertOutputReady(args);
   const tokens = await preflight(args);
@@ -500,14 +509,15 @@ export async function hyperframesRender(args) {
     const lintReport = parseHyperframesLint(lint.stdout);
     const snapshotsDir = path.join(stage, 'snapshots');
     await run(process.execPath, [hf, 'snapshot', stage, '--frames', '3', '--output', snapshotsDir], {env, timeoutMs: 120000, maxStdout: 65536});
-    const snapshots = [];
+    const snapshots = [], acceptImage = imageBatchBudget();
     const snapshotRoot = `.mirket-design/qa/${crypto.randomUUID()}-hyperframes`;
     await fs.mkdir(path.join(workspace, snapshotRoot), {recursive: true});
     for (const name of (await fs.readdir(snapshotsDir)).sort()) {
       if (!name.endsWith('.png')) continue;
       const bytes = await regularOutput(path.join(snapshotsDir, name), 16 * 1024 * 1024);
+      const dimensions = acceptImage(bytes);
       const artifact = await publish(`${snapshotRoot}/${name}`, bytes);
-      snapshots.push({artifact, dimensions: pngDimensions(bytes)});
+      snapshots.push({artifact, dimensions});
     }
     const qa = await inspectHyperframesKeyframes(snapshots, args.baseline);
     if (qa.status === 'failed' || qa.status === 'changed_pixels') {
@@ -567,14 +577,14 @@ export async function typstCompile(args) {
     if (!bytes.subarray(0, 5).equals(Buffer.from('%PDF-'))) throw Error('Typst did not produce a PDF');
     const artifact = await publish(args.output, bytes, outputOptions(args));
     const pageTemplate = path.join(stage, 'page-{p}.png');
-    await run('/usr/local/bin/typst', ['compile', '--root', stage, '--format', 'png', stageSource, pageTemplate], {timeoutMs: 90000});
+    await run('/usr/local/bin/typst', ['compile', '--root', stage, '--format', 'png', '--pages', '1-65', stageSource, pageTemplate], {timeoutMs: 90000});
     await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
     const pageFiles = (await fs.readdir(stage)).filter(name => /^page-\d+\.png$/.test(name)).sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
     if (!pageFiles.length || pageFiles.length > 64) throw Error('Typst did not render a bounded set of page PNGs');
-    const pages = [], checks = [];
+    const pages = [], checks = [], acceptImage = imageBatchBudget();
     for (const [index, name] of pageFiles.entries()) {
       const pageBytes = await regularOutput(path.join(stage, name), 16 * 1024 * 1024);
-      pngDimensions(pageBytes);
+      acceptImage(pageBytes);
       const page = await publish(`.mirket-design/qa/${crypto.randomUUID()}-typst-${name}`, pageBytes);
       pages.push(page);
       checks.push(await inspectSaved(page.path, index === 0 ? args.baseline : undefined));

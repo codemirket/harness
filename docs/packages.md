@@ -149,6 +149,12 @@ grows during the read. Static compositions allow at most 512 nodes, 16 images,
 16 Mi aggregate requested image pixels and 12 MiB of processed raster bytes.
 Odiff compares stable PNG snapshots capped at 16 Mi decoded pixels per image;
 other image formats can first be prepared through imgproxy.
+Page/frame QA batches also cap total stored PNG bytes and decoded pixels at
+64 Mi each. Typst rasterization requests at most 65 pages and rejects a 65th
+page rather than silently accepting a partially verified document. Imgproxy
+processes one request at a time, caps source images at 17 megapixels/32 MiB,
+output dimensions at 4096 pixels and animated processing at one frame, using
+its [native resource controls](https://docs.imgproxy.net/configuration/options).
 Image preparation is sequential and identical transformations are reused within
 the request. Satori/resvg and the browser client load only when their operations
 need them.
