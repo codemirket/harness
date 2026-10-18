@@ -86,7 +86,7 @@ const checks = Object.entries(manifest.files)
   .map(([f, h]) => `${h}  ${f}`)
   .join("\n");
 remote(
-  `cd '${release}'\nprintf '%s\\n' ${quote(checks)} | sha256sum --check --status`,
+  `cd '${release}'\nchmod 755 .\nchmod 644 ${expected.map(quote).join(" ")}\nprintf '%s\\n' ${quote(checks)} | sha256sum --check --status`,
 );
 const previous = remote(
   `exec 9>'${root}/deploy.lock'\nflock -n 9\nreadlink '${root}/current' || true\nln -s '${release}' '${root}/.current-${sha}'\nmv -Tf '${root}/.current-${sha}' '${root}/current'`,
@@ -115,6 +115,10 @@ if (!dry) {
     if (new RegExp(`^${root}/releases/[a-f0-9]{40}$`).test(previous))
       remote(
         `exec 9>'${root}/deploy.lock'\nflock -n 9\nif [ "$(readlink '${root}/current')" = '${release}' ]; then ln -s '${previous}' '${root}/.rollback-${sha}'; mv -Tf '${root}/.rollback-${sha}' '${root}/current'; fi`,
+      );
+    else if (!previous)
+      remote(
+        `exec 9>'${root}/deploy.lock'\nflock -n 9\nif [ "$(readlink '${root}/current')" = '${release}' ]; then rm '${root}/current'; fi`,
       );
     throw error;
   }
