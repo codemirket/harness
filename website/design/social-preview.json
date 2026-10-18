@@ -1,0 +1,185 @@
+{
+  "width": 1280,
+  "height": 640,
+  "fonts": [
+    {
+      "path": "harness-social/Arial.ttf",
+      "name": "Arial",
+      "weight": 400
+    },
+    {
+      "path": "harness-social/Arial-Bold.ttf",
+      "name": "Arial",
+      "weight": 700
+    }
+  ],
+  "tokens": "harness-social/tokens.json",
+  "tree": {
+    "type": "div",
+    "props": {
+      "style": {
+        "width": 1280,
+        "height": 640,
+        "position": "relative",
+        "backgroundColor": {
+          "$token": "color.canvas"
+        },
+        "color": {
+          "$token": "color.ink"
+        },
+        "fontFamily": "Arial",
+        "flexDirection": "column",
+        "borderTop": "12px solid #b50d45"
+      }
+    },
+    "children": [
+      {
+        "type": "div",
+        "props": {
+          "style": {
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "position": "absolute",
+            "top": 48,
+            "left": 76,
+            "width": 1128,
+            "height": 108
+          }
+        },
+        "children": [
+          {
+            "type": "div",
+            "props": {
+              "style": {
+                "alignItems": "center",
+                "gap": 24
+              }
+            },
+            "children": [
+              {
+                "type": "img",
+                "props": {
+                  "style": {},
+                  "src": "harness-social/logo.png",
+                  "width": 108,
+                  "height": 108
+                }
+              },
+              {
+                "type": "div",
+                "props": {
+                  "style": {
+                    "fontSize": 70,
+                    "fontWeight": 700,
+                    "letterSpacing": -3
+                  }
+                },
+                "children": "mirket"
+              }
+            ]
+          },
+          {
+            "type": "div",
+            "props": {
+              "style": {
+                "fontSize": 18,
+                "letterSpacing": 2,
+                "color": {
+                  "$token": "color.accent"
+                }
+              }
+            },
+            "children": "OPEN SOURCE \u00b7 LOCAL"
+          }
+        ]
+      },
+      {
+        "type": "div",
+        "props": {
+          "style": {
+            "fontSize": 62,
+            "fontWeight": 700,
+            "letterSpacing": -2,
+            "lineHeight": 1.1,
+            "flexDirection": "column",
+            "position": "absolute",
+            "top": 210,
+            "left": 76,
+            "width": 1128
+          }
+        },
+        "children": [
+          {
+            "type": "div",
+            "props": {
+              "style": {}
+            },
+            "children": "Expertise and tools"
+          },
+          {
+            "type": "div",
+            "props": {
+              "style": {}
+            },
+            "children": "for Codex and Claude."
+          }
+        ]
+      },
+      {
+        "type": "div",
+        "props": {
+          "style": {
+            "fontSize": 26,
+            "color": {
+              "$token": "color.muted"
+            },
+            "position": "absolute",
+            "top": 360,
+            "left": 76,
+            "width": 1128
+          }
+        },
+        "children": "A local agent harness for focused, inspectable work."
+      },
+      {
+        "type": "div",
+        "props": {
+          "style": {
+            "paddingTop": 24,
+            "borderTop": "1px solid #e3d8dc",
+            "justifyContent": "space-between",
+            "fontSize": 22,
+            "color": {
+              "$token": "color.muted"
+            },
+            "position": "absolute",
+            "top": 510,
+            "left": 76,
+            "width": 1128
+          }
+        },
+        "children": [
+          {
+            "type": "div",
+            "props": {
+              "style": {}
+            },
+            "children": "codemirket / harness"
+          },
+          {
+            "type": "div",
+            "props": {
+              "style": {
+                "color": {
+                  "$token": "color.accent"
+                }
+              }
+            },
+            "children": "harness.mirket.dev"
+          }
+        ]
+      }
+    ]
+  },
+  "output": "harness-social/social-preview.png"
+}
