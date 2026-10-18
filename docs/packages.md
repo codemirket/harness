@@ -134,3 +134,28 @@ source. [Runtime notices](third-party-notices.md#runtime-packages) record the
 shipped license provenance.
 
 Host MCP timeouts derive from the longest design tool budget plus a cleanup margin. The owned routed-spawner binding allows two hours for multi-turn work; individual inference turns and design phases retain their own bounded deadlines. Existing desktop MCP sessions must reconnect to load changed bindings.
+
+### Concurrent rendering and resource bounds
+
+Design sessions share workspace files. Mirket publishers use an OS-held lock for
+one output path across processes; competing overwrites cannot both consume the
+same revision. A busy writer receives a conflict and must re-read before retrying.
+Locks release on process exit. Files written outside Mirket are not coordinated
+by these locks. Cold token generations are immutable: a concurrent compiler
+validates and reuses the winning generation instead of failing its render.
+
+Workspace and renderer reads use bounded file descriptors, including when a file
+grows during the read. Static compositions allow at most 512 nodes, 16 images,
+16 Mi aggregate requested image pixels and 12 MiB of processed raster bytes.
+Odiff compares stable PNG snapshots capped at 16 Mi decoded pixels per image;
+other image formats can first be prepared through imgproxy.
+Image preparation is sequential and identical transformations are reused within
+the request. Satori/resvg and the browser client load only when their operations
+need them.
+
+The Linux design container builds a small owned `runtime-guard` helper in an
+isolated compiler stage. Its subreaper owns detached renderer descendants and
+cleans them on success, failure or cancellation. Its flock mode serializes file
+publication. The compiler is absent from the final image; no new runtime package
+is installed for these primitives. This resource lifecycle is not a sandbox or
+an authorization mechanism.

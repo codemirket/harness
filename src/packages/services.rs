@@ -606,6 +606,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
                 include_bytes!("../../runtime/design/tools/tool-budgets.json"),
             ),
             (
+                "tools/runtime-guard.c",
+                include_bytes!("../../runtime/design/tools/runtime-guard.c"),
+            ),
+            (
                 "tools/paths.mjs",
                 include_bytes!("../../runtime/design/tools/paths.mjs"),
             ),
@@ -705,6 +709,10 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
         engine,
         vec![
             "build".into(),
+            "--jobs=1".into(),
+            "--memory=2g".into(),
+            "--memory-swap=2g".into(),
+            "--ulimit=nproc=512:512".into(),
             "--pull=never".into(),
             "--platform=linux/arm64".into(),
             "--label".into(),

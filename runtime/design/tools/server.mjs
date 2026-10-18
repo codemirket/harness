@@ -32,7 +32,7 @@ const definitions = [
   {name: 'imgproxy_transform', description: 'Preprocess a workspace raster through signed imgproxy local-source API.', inputSchema: schema(['source', 'width', 'height', 'output'], {...common, source: file, width: {type: 'integer'}, height: {type: 'integer'}, mode: {type: 'string', enum: ['fit', 'fill', 'force']}, gravity: {type: 'string', enum: ['sm', 'ce', 'no', 'ea', 'so', 'we']}, quality: {type: 'integer', minimum: 1, maximum: 100}, format: {type: 'string', enum: ['png', 'jpeg', 'webp', 'avif']}, output})},
   {name: 'svg_optimize', description: 'Optimize a generated or imported SVG with SVGO before publication.', inputSchema: schema(['source', 'output'], {...common, source: file, output})},
   {name: 'comfyui_submit', description: 'Submit an API workflow graph to ComfyUI, retain its output PNG and inspect via Browserless.', inputSchema: schema(['workflow', 'output'], {...common, workflow: file, output})},
-  {name: 'odiff_compare', description: 'Compare two saved images with the actual Odiff CLI; retain diff PNG when pixels differ.', inputSchema: schema(['baseline', 'candidate'], {baseline: file, candidate: file, output, overwrite, expected_sha256: common.expected_sha256})},
+  {name: 'odiff_compare', description: 'Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ.', inputSchema: schema(['baseline', 'candidate'], {baseline: file, candidate: file, output, overwrite, expected_sha256: common.expected_sha256})},
 ];
 // Hosts keep a worker per connection. Discovery and cached tokens must not load
 // every renderer into each idle process; import only when a tool needs it.

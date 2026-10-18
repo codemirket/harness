@@ -38,6 +38,8 @@ mirket package start design
 Resizing preserves the disk and workspace and never stops a running VM implicitly.
 The design worker has a 3 GiB memory limit, a 512 process/thread limit, and loads rendering dependencies only
 when invoked; idle discovery and cached token reads do not load the renderers.
+Image builds run one stage at a time with a 2 GiB memory/swap ceiling and 512
+process resource limit. These are separate from the running service budgets.
 These bounds leave headroom for concurrent sessions, but do not guarantee that
 arbitrary image models or unbounded simultaneous rendering fit the device.
 `environment start` checks sharing and private connection identity before boot.

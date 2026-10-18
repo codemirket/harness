@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {workspace, workspacePath, readFile, sha256, temporaryDirectory} from './paths.mjs';
+import {workspace, workspacePath, readFile, sha256, temporaryDirectory, readBoundedFile} from './paths.mjs';
 import {checkRequest} from './request.mjs';
 
 const DEFAULT_SOURCE = process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json';
@@ -55,23 +55,29 @@ export async function compileTokens(source = DEFAULT_SOURCE) {
   const root = await workspacePath('.mirket-design/tokens', {kind: 'directory', missing: true, createParents: true});
   await fs.mkdir(root, {recursive: true, mode: 0o700});
   const dest = path.join(root, digest);
-  try {
-    const stat = await fs.lstat(dest);
-    if (!stat.isDirectory() || stat.isSymbolicLink()) throw Error('Token generation path is not a real directory');
-    const manifest = JSON.parse(await fs.readFile(path.join(dest, 'manifest.json'), 'utf8'));
-    if (manifest.source_sha256 !== digest) throw Error('Existing token generation has a different source identity');
-    const outputs = {};
-    for (const name of OUTPUT_NAMES) {
-      const file = path.join(dest, name);
-      const item = await fs.lstat(file);
-      if (!item.isFile() || item.isSymbolicLink() || item.size === 0) throw Error('Existing token generation is incomplete');
-      if (sha256(await fs.readFile(file)) !== manifest.output_sha256[name]) throw Error('Existing token generation has drifted');
-      outputs[name] = path.relative(workspace, file);
+  const existing = await cachedGeneration();
+  if (existing) return existing;
+  async function cachedGeneration() {
+    try {
+      const stat = await fs.lstat(dest);
+      if (!stat.isDirectory() || stat.isSymbolicLink()) throw Error('Token generation path is not a real directory');
+      const manifest = JSON.parse((await readBoundedFile(path.join(dest, 'manifest.json'), 16384, 'Token manifest')).toString('utf8')); if (!manifest.output_sha256 || typeof manifest.output_sha256 !== 'object') throw Error('Invalid token manifest');
+      if (manifest.source_sha256 !== digest) throw Error('Existing token generation has a different source identity');
+      const outputs = {};
+      for (const name of OUTPUT_NAMES) {
+        const file = path.join(dest, name);
+        const item = await fs.lstat(file);
+        if (!item.isFile() || item.isSymbolicLink() || item.size === 0) throw Error('Existing token generation is incomplete');
+        if (sha256(await readBoundedFile(file, 4 * 1024 * 1024, 'Compiled tokens')) !== manifest.output_sha256[name]) throw Error('Existing token generation has drifted');
+        outputs[name] = path.relative(workspace, file);
+      }
+      checkRequest();
+      return {source, source_sha256: digest, outputs, reused: true};
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      if (await fs.lstat(dest).catch(() => null)) throw Error('Existing token generation is incomplete');
+      return null;
     }
-    checkRequest();
-    return {source, source_sha256: digest, outputs, reused: true};
-  } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
   }
   const tokens = JSON.parse(input.toString('utf8'));
   if (!tokens || typeof tokens !== 'object' || Array.isArray(tokens)) throw Error('Canonical tokens must be a DTCG JSON object');
@@ -96,12 +102,18 @@ export async function compileTokens(source = DEFAULT_SOURCE) {
       const file = path.join(stage, name);
       const stat = await fs.lstat(file);
       if (!stat.isFile() || !stat.size) throw Error(`Style Dictionary did not build ${name}`);
-      output_sha256[name] = sha256(await fs.readFile(file));
+      output_sha256[name] = sha256(await readBoundedFile(file, 4 * 1024 * 1024, 'Compiled tokens'));
       outputs[name] = path.relative(workspace, path.join(dest, name));
     }
     await fs.writeFile(path.join(stage, 'manifest.json'), JSON.stringify({source_sha256: digest, output_sha256}));
     checkRequest();
-    await fs.rename(stage, dest);
+    try { await fs.rename(stage, dest); }
+    catch (error) {
+      if (!['EEXIST', 'ENOTEMPTY'].includes(error.code)) throw error;
+      const winner = await cachedGeneration();
+      if (!winner) throw error;
+      return winner;
+    }
     return {source, source_sha256: digest, outputs, reused: false};
   } finally { await fs.rm(stage, {recursive: true, force: true}).catch(() => {}); }
 }

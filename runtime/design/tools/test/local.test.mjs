@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {spawnSync} from 'node:child_process';
+import {spawn, spawnSync} from 'node:child_process';
 
 const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-'));
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
-const {publish, readFile, run} = await import('../paths.mjs');
+const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, injectTokenStylesheet, submitComfyGraph, inspectHyperframesKeyframes, optimizeSvgBytes, comfyuiSubmit, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 const {penpotTokenRecords, synchronizePenpotTokens} = await import('../penpot-tokens.mjs');
 const {exportPenpotShape} = await import('../penpot-export.mjs');
@@ -45,6 +45,15 @@ test('canonical token generation is complete, reused and detects drift', async (
   await fs.writeFile(path.join(workspace, first.outputs['tokens.css']), 'drift');
   await assert.rejects(compileTokens('design/tokens.json'), /drifted/);
   await fs.writeFile(path.join(workspace, 'design/tokens.json'), JSON.stringify({color: {accent: {$type: 'color', $value: '#654321'}}}));
+});
+
+test('concurrent cold token compilation shares one complete generation', async () => {
+  await fs.mkdir(path.join(workspace, 'design'), {recursive:true});
+  await fs.writeFile(path.join(workspace, 'design/concurrent.json'), JSON.stringify({color:{race:{$type:'color',$value:'#135724'}}}));
+  const results = await Promise.allSettled(Array.from({length:4}, () => compileTokens('design/concurrent.json')));
+  assert.deepEqual(results.filter(x => x.status === 'rejected').map(x => x.reason.message), []);
+  assert.equal(new Set(results.map(x => x.value.source_sha256)).size, 1);
+  assert.equal((await compileTokens('design/concurrent.json')).reused, true);
 });
 
 test('Style Dictionary composite shadow values retain object and array structure in Typst', async () => {
@@ -361,4 +370,80 @@ test('corrupt official Penpot SVG export fails without publishing', async () => 
   }};
   await assert.rejects(exportPenpotShape(client, {shapeId: 'selection', format: 'svg', filePath: target}), /SVG|saxes|Unclosed|disallowed character/i);
   await assert.rejects(fs.stat(target), {code: 'ENOENT'});
+});
+
+
+test('concurrent overwrite publication has one revision winner', async () => {
+  await publish('overwrite-race.txt', Buffer.from('before'));
+  const options = {overwrite:true,expected_sha256:sha256(Buffer.from('before'))};
+  const outcomes = await Promise.allSettled(Array.from({length:8}, (_,i) => publish('overwrite-race.txt', Buffer.from(`after-${i}`), options)));
+  assert.equal(outcomes.filter(x => x.status === 'fulfilled').length, 1);
+  assert.equal(outcomes.filter(x => x.status === 'rejected').length, 7);
+});
+
+test('Satori rejects wide trees before fetching and serializes/deduplicates image preparation', async () => {
+  const img = n => ({type:'img',props:{src:`image-${n}.png`,width:100,height:100}});
+  let calls=0,active=0,peak=0;
+  const loader = async () => {calls++; peak=Math.max(peak,++active); await new Promise(r=>setTimeout(r,5)); active--; return Buffer.from('image');};
+  await assert.rejects(prepareSatoriTree({type:'div',children:Array.from({length:17},(_,i)=>img(i))},{},loader),/aggregate/);
+  assert.equal(calls,0);
+  await prepareSatoriTree({type:'div',children:[img(1),img(2),img(1)]},{},loader);
+  assert.equal(calls,2); assert.equal(peak,1);
+  calls=0;
+  await assert.rejects(prepareSatoriTree({type:'div',children:[img(1),img(2)]},{},async()=>{calls++;throw Error('injected image failure');}),/injected/);
+  assert.equal(calls,1); assert.equal(active,0);
+  await assert.rejects(prepareSatoriTree(img(1),{},async()=>Buffer.alloc(12*1024*1024+1)),/byte budget/);
+});
+
+test('bounded readers cap bytes even when a regular file grows after fstat', async () => {
+  const file=path.join(workspace,'growing.bin');
+  const open=fs.open;let read=0;
+  await fs.writeFile(file,'small');
+  fs.open=async (...args)=>{
+    const handle=await open(...args);
+    if(args[0]===file){
+      const stat=handle.stat.bind(handle), originalRead=handle.read.bind(handle);
+      handle.stat=async()=>{const before=await stat();await fs.writeFile(file,Buffer.alloc(1024*1024));return before;};
+      handle.read=async(...params)=>{const result=await originalRead(...params);read+=result.bytesRead;return result;};
+    }
+    return handle;
+  };
+  try {await assert.rejects(readBoundedFile(file,1024),/exceeds/); assert.equal(read,1025);}
+  finally {fs.open=open;}
+  await assert.rejects(regularOutput(file,1024),/exceeds/);
+});
+
+test('successful renderer exit reaps detached stdio-independent descendants', async () => {
+  const code=`const {spawn}=require('node:child_process');const c=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{detached:true,stdio:'ignore'});console.log(c.pid);c.unref();`;
+  const result=await run(process.execPath,['-e',code]);
+  const pid=Number(result.stdout.trim());assert.ok(pid>1);
+  assert.throws(()=>process.kill(pid,0),{code:'ESRCH'});
+});
+
+
+test('cold token compilation is safe across independent processes and missing parents', async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-token-processes-'));
+  await fs.writeFile(path.join(root,'tokens.json'), JSON.stringify({color:{accent:{$type:'color',$value:'#765432'}}}));
+  const code=`const {compileTokens}=await import(${JSON.stringify(new URL('../tokens.mjs',import.meta.url).href)});console.log(JSON.stringify(await compileTokens('tokens.json')));`;
+  try {
+    const results=await Promise.all(Array.from({length:3},()=>new Promise((resolve,reject)=>{
+      const child=spawn(process.execPath,['--input-type=module','-e',code],{env:{...process.env,MIRKET_DESIGN_WORKSPACE:root},stdio:['ignore','pipe','pipe']});let out='',err='';
+      child.stdout.on('data',c=>out+=c);child.stderr.on('data',c=>err+=c);child.once('error',reject);child.once('close',n=>n===0?resolve(JSON.parse(out)):reject(Error(err)));
+    })));
+    assert.equal(new Set(results.map(r=>r.source_sha256)).size,1);
+  } finally {await fs.rm(root,{recursive:true,force:true});}
+});
+
+test('non-rendering operations do not load Satori, resvg or browser clients', async () => {
+  const loader=path.join(workspace,'no-renderers.mjs');
+  await fs.writeFile(loader,`export async function resolve(s,c,n){if(['satori','@resvg/resvg-js','playwright-core'].includes(s))throw Error('Eager renderer '+s);return n(s,c);}`);
+  const result=spawnSync(process.execPath,['--loader',loader,'--input-type=module','-e',`const {optimizeSvgBytes}=await import(${JSON.stringify(new URL('../operations.mjs',import.meta.url).href)});optimizeSvgBytes('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><path d="M0 0h1v1z"/></svg>');`],{encoding:'utf8',timeout:5000});
+  assert.equal(result.status,0,result.stderr);
+});
+
+
+test('Odiff rejects compressed-image dimension bombs before native decoding', async () => {
+  const header=Buffer.alloc(24);Buffer.from([137,80,78,71,13,10,26,10]).copy(header);header.writeUInt32BE(100000,16);header.writeUInt32BE(100000,20);
+  await fs.writeFile(path.join(workspace,'huge-pixels.png'),header);
+  await assert.rejects(odiffCompare({baseline:'huge-pixels.png',candidate:'huge-pixels.png'}),/decoded pixel budget/);
 });

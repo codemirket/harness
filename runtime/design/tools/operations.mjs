@@ -3,10 +3,7 @@ import {constants as fsConstants} from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
-import satori from 'satori';
-import {Resvg} from '@resvg/resvg-js';
 import {optimize} from 'svgo';
-import {chromium} from 'playwright-core';
 import {SaxesParser} from 'saxes';
 import {compileTokens} from './tokens.mjs';
 import {workspace, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, MAX_OUTPUT} from './paths.mjs';
@@ -45,7 +42,9 @@ function flatTokenValues(tree, prefix = '', result = {}) {
 
 function pngDimensions(bytes) {
   if (bytes.length < 24 || !bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) throw Error('Expected a PNG response');
-  return [bytes.readUInt32BE(16), bytes.readUInt32BE(20)];
+  const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
+  if (!width || !height || width * height > SCREENSHOT_MAX_PIXELS) throw Error('PNG exceeds 16 Mi decoded pixel budget');
+  return [width, height];
 }
 export function screenshotPixelPlan({width, height, fullPage, cssContentSize}) {
   let clipWidth = width, clipHeight = height;
@@ -102,7 +101,7 @@ async function fetchBytes(url, {method = 'GET', body, headers = {}, max = MAX_OU
   checkRequest();
   const response = await fetch(url, {method, body, headers, signal: combinedSignal(timeoutMs)});
   const length = Number(response.headers.get('content-length'));
-  if (length > max) throw Error('Service response exceeds output bound');
+  if (length > max) { await response.body?.cancel(); throw Error('Service response exceeds output bound'); }
   const chunks = []; let size = 0;
   for await (const chunk of response.body) {
     size += chunk.length;
@@ -119,7 +118,7 @@ function signImgproxy(pathAfterSignature) {
   if (!key || !salt || !/^(?:[0-9a-f]{2})+$/i.test(key) || !/^(?:[0-9a-f]{2})+$/i.test(salt)) throw Error('imgproxy signing key and salt are required');
   return crypto.createHmac('sha256', Buffer.from(key, 'hex')).update(Buffer.from(salt, 'hex')).update(pathAfterSignature).digest('base64url');
 }
-export async function imgproxyBytes(args) {
+export async function imgproxyBytes(args, max = MAX_OUTPUT) {
   assertRelative(args.source);
   await workspacePath(args.source);
   const width = Number(args.width), height = Number(args.height);
@@ -136,7 +135,7 @@ export async function imgproxyBytes(args) {
   if (!Number.isInteger(quality) || quality < 1 || quality > 100) throw Error('imgproxy quality must be in 1..100');
   const remainder = `/rs:${mode}:${width}:${height}/g:${gravity}/q:${quality}/plain/local:///${encoded}@${suffix}`;
   const signature = signImgproxy(remainder);
-  const result = await fetchBytes(`http://imgproxy:8080/${signature}${remainder}`);
+  const result = await fetchBytes(`http://imgproxy:8080/${signature}${remainder}`, {max});
   if (format === 'png') {
     const [w, h] = pngDimensions(result.bytes);
     if (w > width || h > height || w < 1 || h < 1) throw Error('imgproxy output dimensions are outside requested bounds');
@@ -152,7 +151,36 @@ export async function imgproxyTransform(args) {
 }
 
 const allowedTags = new Set(['div', 'span', 'p', 'h1', 'h2', 'h3', 'img', 'strong', 'em']);
-async function satoriNode(node, tokenValues, depth = 0) {
+export async function prepareSatoriTree(tree, tokenValues, imageLoader = imgproxyBytes) {
+  let nodes = 0, images = 0, pixels = 0, retained = 0;
+  const cache = new Map();
+  function validate(node, depth = 0) {
+    if (++nodes > 512 || depth > 32) throw Error('Satori tree exceeds node or depth budget');
+    if (node?.type === 'img') {
+      const width = node.props?.width || 1024, height = node.props?.height || 1024;
+      if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 4096 || height > 4096) throw Error('Satori image dimensions are invalid');
+      pixels += width * height;
+      if (++images > 16 || pixels > 16 * 1024 * 1024) throw Error('Satori images exceed aggregate count or pixel budget');
+    }
+    if (node && typeof node === 'object') for (const child of node.children == null ? [] : Array.isArray(node.children) ? node.children : [node.children]) validate(child, depth + 1);
+  }
+  validate(tree);
+  async function image(args) {
+    checkRequest();
+    const key = JSON.stringify(args);
+    if (!cache.has(key)) {
+      const remaining = 12 * 1024 * 1024 - retained;
+      if (remaining < 1) throw Error('Satori images exceed aggregate byte budget');
+      const bytes = await imageLoader(args, remaining);
+      retained += bytes.length;
+      if (retained > 12 * 1024 * 1024) throw Error('Satori images exceed aggregate byte budget');
+      cache.set(key, `data:image/png;base64,${bytes.toString('base64')}`);
+    }
+    return cache.get(key);
+  }
+  return satoriNode(tree, tokenValues, image);
+}
+async function satoriNode(node, tokenValues, image, depth = 0) {
   if (depth > 32) throw Error('Satori tree is too deep');
   if (typeof node === 'string' || typeof node === 'number') return node;
   if (!node || typeof node !== 'object' || Array.isArray(node) || !allowedTags.has(node.type)) throw Error('Satori node type is unsupported');
@@ -170,11 +198,12 @@ async function satoriNode(node, tokenValues, depth = 0) {
   }
   if (node.type === 'img') {
     if (typeof props.src !== 'string') throw Error('Satori image source must be a workspace path');
-    const bytes = await imgproxyBytes({source: props.src, width: props.width || 1024, height: props.height || 1024, mode: 'fit', format: 'png'});
-    props.src = `data:image/png;base64,${bytes.toString('base64')}`;
+    props.src = await image({source: props.src, width: props.width || 1024, height: props.height || 1024, mode: 'fit', format: 'png'});
   }
   const children = node.children == null ? [] : Array.isArray(node.children) ? node.children : [node.children];
-  return {type: node.type, props: {...props, children: await Promise.all(children.map(child => satoriNode(child, tokenValues, depth + 1)))}};
+  const prepared = [];
+  for (const child of children) prepared.push(await satoriNode(child, tokenValues, image, depth + 1));
+  return {type: node.type, props: {...props, children: prepared}};
 }
 export async function staticRender(args) {
   await assertOutputReady(args);
@@ -192,7 +221,8 @@ export async function staticRender(args) {
     if (signature !== expected) throw Error('Satori font bytes do not match TTF, OTF or WOFF extension');
     fonts.push({name: font.name || 'Design', data, weight: font.weight || 400, style: font.style || 'normal'});
   }
-  const tree = await satoriNode(args.tree, tokenValues);
+  const tree = await prepareSatoriTree(args.tree, tokenValues);
+  const [{default: satori}, {Resvg}] = await Promise.all([import('satori'), import('@resvg/resvg-js')]);
   const svg = await satori(tree, {width, height, fonts});
   const optimized = svgBytes(svg);
   const format = args.format || 'png';
@@ -228,9 +258,13 @@ export async function krokiRender(args) {
 }
 
 export async function odiffCompare(args) {
-  const left = await workspacePath(args.baseline), right = await workspacePath(args.candidate);
+  // Decode only stable, bounded PNG screenshots; input paths can change while a CLI runs.
+  const leftBytes = await readFile(args.baseline), rightBytes = await readFile(args.candidate);
+  pngDimensions(leftBytes); pngDimensions(rightBytes);
   const temp = await temporaryDirectory('odiff');
   try {
+    const left = path.join(temp, 'left.png'), right = path.join(temp, 'right.png');
+    await fs.writeFile(left, leftBytes); await fs.writeFile(right, rightBytes);
     const diff = path.join(temp, 'diff.png');
     const result = await run(odiff, [left, right, diff, '--parsable-stdout', '--fail-on-layout'], {allowedCodes: [0, 21, 22], timeoutMs: 60000});
     let artifact;
@@ -270,6 +304,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
   // replace them with 800x600/DPR1 before a document's first script runs.
   const endpoint = new URL('ws://browserless:3000/chromium/playwright');
   endpoint.searchParams.set('token', token);
+  const {chromium} = await import('playwright-core');
   const browser = await chromium.connect(endpoint.toString(), {timeout: 15000});
   const onAbort = () => { browser.close().catch(() => {}); };
   requestSignal()?.addEventListener('abort', onAbort, {once: true});
@@ -357,6 +392,7 @@ export async function browserScreenshot(args) {
 }
 export async function browserInspect(source, {baseline} = {}) {
   await workspacePath(source);
+  if (path.extname(source).toLowerCase() === '.png') pngDimensions(await readFile(source));
   const shot = await browserCapture(workspaceUrl(source), browserInspectCaptureOptions);
   const output = `.mirket-design/qa/${crypto.randomUUID()}-inspect.png`;
   await workspacePath('.mirket-design/qa', {kind: 'directory', missing: true, createParents: true});

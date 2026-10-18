@@ -1,7 +1,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import {spawn, spawnSync} from 'node:child_process';
+import {spawn} from 'node:child_process';
+import {constants} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+const guard = fileURLToPath(new URL('./runtime-guard', import.meta.url));
 import {checkRequest, requestSignal, cancelAllRequests, redactSecrets} from './request.mjs';
 
 export const workspace = path.resolve(process.env.MIRKET_DESIGN_WORKSPACE || '/workspace');
@@ -13,40 +16,6 @@ function signalGroup(child, signal) {
   try { if (process.platform !== 'win32') process.kill(-child.pid, signal); else child.kill(signal); } catch {}
 }
 
-// Puppeteer starts Chrome in its own process group. Record only descendants
-// observed while our CLI is alive, then verify their process identity before
-// cleaning an escaped group after a failed graceful shutdown.
-function processTable() {
-  if (process.platform === 'win32') return [];
-  const result = spawnSync('/bin/ps', ['-ww', '-axo', 'pid=,ppid=,pgid=,lstart=,command='], {
-    encoding: 'utf8', timeout: 1000, maxBuffer: 16 * 1024 * 1024,
-    env: {PATH: '/usr/bin:/bin', LANG: 'C'},
-  });
-  if (result.error || result.status !== 0) return [];
-  const rows = [];
-  for (const line of result.stdout.split('\n')) {
-    const match = /^\s*(\d+)\s+(\d+)\s+(\d+)\s+([A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d\d:\d\d:\d\d\s+\d{4})\s+(.+)$/.exec(line);
-    if (match) rows.push({pid: Number(match[1]), ppid: Number(match[2]), pgid: Number(match[3]), identity: `${match[4]} ${match[5]}`});
-  }
-  return rows;
-}
-function ownedDescendants(rootPid) {
-  const rows = processTable();
-  const owned = new Set([rootPid]);
-  for (let changed = true; changed;) {
-    changed = false;
-    for (const row of rows) if (!owned.has(row.pid) && owned.has(row.ppid)) { owned.add(row.pid); changed = true; }
-  }
-  return rows.filter(row => row.pid !== rootPid && owned.has(row.pid));
-}
-function killTracked(tracked) {
-  const current = new Map(processTable().map(row => [row.pid, row]));
-  for (const row of tracked.values()) {
-    const now = current.get(row.pid);
-    if (now?.identity !== row.identity || now.pgid !== row.pgid) continue;
-    try { process.kill(row.pid, 'SIGKILL'); } catch {}
-  }
-}
 let shuttingDown = false;
 let childrenShutdown;
 export function shutdownChildren() {
@@ -93,7 +62,7 @@ export async function workspacePath(name, {kind = 'file', missing = false, creat
     try { stat = await fs.lstat(current); }
     catch (error) {
       if (error.code !== 'ENOENT') throw error;
-      if (i < parts.length - 1 && createParents) { await fs.mkdir(current); stat = await fs.lstat(current); }
+      if (i < parts.length - 1 && createParents) { await fs.mkdir(current).catch(error => { if (error.code !== 'EEXIST') throw error; }); stat = await fs.lstat(current); }
       else if (i === parts.length - 1 && missing) return current;
       else throw Error(`Missing workspace path: ${name}`);
     }
@@ -104,18 +73,55 @@ export async function workspacePath(name, {kind = 'file', missing = false, creat
   }
   return current;
 }
+export async function readBoundedFile(file, max, label = 'Input') {
+  if (!Number.isSafeInteger(max) || max < 0) throw Error('Invalid file byte budget');
+  const handle = await fs.open(file, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+  try {
+    const stat = await handle.stat();
+    if (!stat.isFile()) throw Error(`${label} is not a regular file`);
+    if (stat.size > max) throw Error(`${label} exceeds ${max} bytes`);
+    const chunks = []; let size = 0;
+    for (;;) {
+      checkRequest();
+      const buffer = Buffer.allocUnsafe(Math.min(65536, max - size + 1));
+      const {bytesRead} = await handle.read(buffer, 0, buffer.length, null);
+      if (!bytesRead) break;
+      size += bytesRead;
+      if (size > max) throw Error(`${label} exceeds ${max} bytes`);
+      chunks.push(buffer.subarray(0, bytesRead));
+    }
+    return Buffer.concat(chunks, size);
+  } finally { await handle.close(); }
+}
 export async function readFile(name, max = MAX_INPUT) {
-  const file = await workspacePath(name);
-  const stat = await fs.lstat(file);
-  if (stat.size > max) throw Error(`Input exceeds ${max} bytes: ${name}`);
-  const bytes = await fs.readFile(file);
-  if (bytes.length > max) throw Error(`Input exceeds ${max} bytes: ${name}`);
-  return bytes;
+  return readBoundedFile(await workspacePath(name), max, `Input ${name}`);
 }
 export async function readJson(name, max = MAX_INPUT) {
   return JSON.parse((await readFile(name, max)).toString('utf8'));
 }
-export async function publish(name, bytes, {overwrite = false, expected_sha256, max = MAX_OUTPUT} = {}) {
+async function publicationLock(name, fn) {
+  const root = await workspacePath('.mirket-design/locks', {kind:'directory', missing:true, createParents:true});
+  await fs.mkdir(root, {recursive:true, mode:0o700});
+  const lock = path.join(root, sha256(Buffer.from(name)) + '.lock');
+  const child = spawn(guard, ['lock', lock], {stdio:['pipe','pipe','pipe']});
+  const done = new Promise(resolve => { child.once('close', resolve); child.once('error', () => resolve(-1)); });
+  try {
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => { child.kill('SIGKILL'); reject(Error('Publication lock timed out')); }, 3000);
+      child.once('error', error => { clearTimeout(timer); reject(error); });
+      child.once('close', () => { clearTimeout(timer); reject(Error(`Output publication is busy: ${name}`)); });
+      child.stdout.once('data', data => { clearTimeout(timer); if (data.toString() === 'locked\n') resolve(); else reject(Error('Invalid publication lock response')); });
+    });
+    checkRequest();
+    return await fn();
+  } finally { child.stdin.destroy(); await done; }
+}
+export async function publish(name, bytes, options = {}) {
+  assertRelative(name);
+  await workspacePath(name, {missing:true});
+  return publicationLock(name, () => publishLocked(name, bytes, options));
+}
+async function publishLocked(name, bytes, {overwrite = false, expected_sha256, max = MAX_OUTPUT} = {}) {
   checkRequest();
   if (!Buffer.isBuffer(bytes)) bytes = Buffer.from(bytes);
   if (!bytes.length || bytes.length > max) throw Error('Output is empty or exceeds the size limit');
@@ -155,17 +161,14 @@ export async function run(executable, args, {cwd = workspace, env = {}, timeoutM
   const done = new Promise(resolveDone => { finish = resolveDone; });
   try {
     return await new Promise((resolve, reject) => {
-    const child = spawn(executable, args, {cwd, env: childEnv, stdio: ['ignore', 'pipe', 'pipe'], detached: process.platform !== 'win32'});
+    const child = spawn(guard, ['run', executable, ...args], {cwd, env: childEnv, stdio: ['ignore', 'pipe', 'pipe'], detached: process.platform !== 'win32'});
     let stdout = Buffer.alloc(0), stderr = Buffer.alloc(0), settled = false, reason = '', stopping = false, closed = false, killTimer;
-    const tracked = new Map();
-    const remember = () => { for (const row of ownedDescendants(child.pid)) tracked.set(row.pid, row); };
-    const hardKill = () => { if (closed) return; remember(); signalGroup(child, 'SIGKILL'); killTracked(tracked); };
+    const hardKill = () => { if (closed) return; signalGroup(child, 'SIGKILL'); };
     const stop = why => {
       if (closed) return;
       reason ||= why;
       if (stopping) return;
       stopping = true;
-      remember();
       signalGroup(child, 'SIGTERM');
       killTimer = setTimeout(hardKill, CHILD_GRACE_MS);
     };
@@ -180,7 +183,7 @@ export async function run(executable, args, {cwd = workspace, env = {}, timeoutM
     child.stdout.on('data', chunk => { const over = chunk.length > maxStdout - stdout.length; stdout = appendWithinLimit(stdout, chunk, maxStdout); if (over) stop('Process stdout exceeded limit'); });
     child.stderr.on('data', chunk => { const over = chunk.length > maxStderr - stderr.length; stderr = appendWithinLimit(stderr, chunk, maxStderr); if (over) stop('Process stderr exceeded limit'); });
     child.on('error', error => { cleanup(); if (!settled) { settled = true; reject(error); } });
-    child.on('close', code => { cleanup(); if (stopping) killTracked(tracked); if (settled) return; settled = true; const out = stdout.toString('utf8'), err = stderr.toString('utf8'); if (reason || !allowedCodes.includes(code)) reject(Error(redactSecrets(`${reason || `Process failed (${code})`}: ${err.slice(-4000) || out.slice(-4000)}`))); else resolve({code, stdout: redactSecrets(out), stderr: redactSecrets(err)}); });
+    child.on('close', code => { cleanup(); if (settled) return; settled = true; const out = stdout.toString('utf8'), err = stderr.toString('utf8'); if (reason || !allowedCodes.includes(code)) reject(Error(redactSecrets(`${reason || `Process failed (${code})`}: ${err.slice(-4000) || out.slice(-4000)}`))); else resolve({code, stdout: redactSecrets(out), stderr: redactSecrets(err)}); });
     });
   } finally {
     try { await fs.rm(scratch, {recursive: true, force: true, maxRetries: 3, retryDelay: 100}); }
@@ -193,7 +196,7 @@ export async function temporaryDirectory(prefix = '.mirket-stage') {
   return fs.mkdtemp(path.join(base, `${prefix}-`));
 }
 export async function regularOutput(file, max = MAX_OUTPUT) {
-  const stat = await fs.lstat(file);
-  if (!stat.isFile() || stat.isSymbolicLink() || !stat.size || stat.size > max) throw Error('Renderer did not produce a bounded regular output');
-  return fs.readFile(file);
+  const bytes = await readBoundedFile(file, max, 'Renderer output');
+  if (!bytes.length) throw Error('Renderer did not produce a bounded regular output');
+  return bytes;
 }
