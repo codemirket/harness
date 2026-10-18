@@ -11,6 +11,15 @@ checked by the build. The prompt links to `docs/agent-installation.md` in the
 repository. Publish that guide before deploying a site that references it.
 Manual installation remains in `docs/installation.md`.
 
+## Brand assets
+
+`public/logo.png` is the unmodified logo from the
+[codemirket GitHub organization](https://github.com/codemirket), retrieved from
+its organization avatar on 2026-10-18. It is used in the header, footer and
+favicon. The palette draws from its dominant opaque colors: raspberry
+`#b50d45`, near-black `#181519`, and warm white `#fcf9fa`. Supporting neutrals
+are derived from that palette; the logo itself is not recolored.
+
 ## Build and verify
 
 Use Node 22 or later:
