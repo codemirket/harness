@@ -27,14 +27,33 @@
       "commit": "13ac0ec7e148655948100b6396439e481361d690",
       "license_summary": "MIT",
       "url": "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690",
-      "notice_section": "Nutlope/hallmark"
+      "notice_section": "Nutlope/hallmark",
+      "reviewed_paths": [
+        "LICENSE",
+        "skills/hallmark/SKILL.md",
+        "skills/hallmark/references/structure.md",
+        "skills/hallmark/references/hero-enrichment.md"
+      ],
+      "scope": "Selective structural variety and subject evidence; no theme rotation quotas, required provider or self-score acceptance."
     },
     "taste": {
       "repository": "Leonxlnx/taste-skill",
-      "commit": "ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
+      "commit": "f624f37a8c650b9cc550253104925efe4c8de246",
       "license_summary": "MIT",
-      "url": "https://github.com/Leonxlnx/taste-skill/tree/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b",
-      "notice_section": "Leonxlnx/taste-skill"
+      "url": "https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246",
+      "notice_section": "Leonxlnx/taste-skill",
+      "reviewed_paths": [
+        "LICENSE",
+        "README.md",
+        "skills/taste-skill/SKILL.md",
+        "skills/taste-skill/scripts/inspect.mjs",
+        "skills/redesign-skill/SKILL.md",
+        "skills/gpt-tasteskill/SKILL.md",
+        "skills/minimalist-skill/SKILL.md",
+        "skills/brutalist-skill/SKILL.md",
+        "skills/soft-skill/SKILL.md"
+      ],
+      "scope": "Subject-specific concept and visual diagnosis only. No mandatory asset/motion counts, random themes, fake tool output, helper execution or provider installation."
     },
     "anthropic": {
       "repository": "anthropics/skills",
@@ -325,6 +344,111 @@
       ],
       "scope": "Connected image-layer construction, corrected scroll-media readiness and scene-relative verification, and optional structural reference comparison in existing owners. No runtime, workspace manager, provider integration, author example assets, novelty quotas or sample-grid gaming imported.",
       "notice_section": "Nate Herk — selected scroll-craft techniques"
+    },
+    "gsap-official": {
+      "repository": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "license_summary": "MIT",
+      "url": "https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "reviewed_paths": [
+        "README.md",
+        "LICENSE",
+        "skills/gsap-core/SKILL.md",
+        "skills/gsap-timeline/SKILL.md",
+        "skills/gsap-scrolltrigger/SKILL.md",
+        "skills/gsap-react/SKILL.md",
+        "skills/gsap-performance/SKILL.md",
+        "skills/gsap-frameworks/SKILL.md",
+        "skills/gsap-plugins/SKILL.md",
+        "skills/gsap-utils/SKILL.md",
+        "examples/vanilla/main.js",
+        "examples/react/App.jsx"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_section": "greensock/gsap-skills"
+    },
+    "diagram-design": {
+      "repository": "cathrynlavery/diagram-design",
+      "commit": "550fd66edff058bc73056c3416b76d69cfe865ba",
+      "license_summary": "MIT for selected methods; bundled third-party assets excluded",
+      "url": "https://github.com/cathrynlavery/diagram-design/tree/550fd66edff058bc73056c3416b76d69cfe865ba",
+      "reviewed_paths": [
+        "LICENSE",
+        "THIRD_PARTY_LICENSES.md",
+        "skills/diagram-design/SKILL.md",
+        "skills/diagram-design/references/semantic-patterns.md",
+        "skills/diagram-design/references/type-architecture-delta.md",
+        "skills/diagram-design/references/animation.md"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_section": "cathrynlavery/diagram-design"
+    },
+    "motion-primitives": {
+      "repository": "ibelick/motion-primitives",
+      "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda",
+      "license_summary": "README claims MIT but linked LICENSE.md is absent at reviewed revision",
+      "url": "https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda",
+      "reviewed_paths": [
+        "README.md",
+        "package.json",
+        "components/core/transition-panel.tsx",
+        "components/core/text-effect.tsx",
+        "components/core/morphing-dialog.tsx"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_exemption": "Original review observations only. No upstream component code, prose or assets redistributed; missing license text must be resolved before future source copying."
+    },
+    "canvas-ui": {
+      "repository": "DavidHDev/canvas-ui",
+      "commit": "a04a99b235299ee79a123a16ccb2e6cf9da74b6b",
+      "license_summary": "Custom MIT + Commons Clause; component redistribution restricted",
+      "url": "https://github.com/DavidHDev/canvas-ui/tree/a04a99b235299ee79a123a16ccb2e6cf9da74b6b",
+      "reviewed_paths": [
+        "README.md",
+        "LICENSE.md",
+        "src/lib/Liquid/Liquid.tsx",
+        "src/lib/Liquid/LiquidVanilla.ts"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_exemption": "Original platform and lifecycle observations only. No components, shaders, assets or source excerpts redistributed. Application-use permission is not treated as permission to bundle these components in Mirket."
+    },
+    "better-design": {
+      "repository": "marvkr/better-design",
+      "commit": "e146625f3041ef8089a2013587435fc763dc3b15",
+      "license_summary": "MIT for reviewed public material",
+      "url": "https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15",
+      "reviewed_paths": [
+        "README.md",
+        "skills/better-design/SKILL.md",
+        "LICENSE",
+        "components/linear/globals.css",
+        "components/linear/lib/motion.ts",
+        "scripts/transitions-src/modal-transition.tsx",
+        "tests/transitions/modal-transition.test.tsx"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_section": "marvkr/better-design"
+    },
+    "knowledge-work-design": {
+      "repository": "anthropics/knowledge-work-plugins",
+      "commit": "33eeda1e8fd856455b05479d13a0f85b5f803744",
+      "license_summary": "Apache-2.0 for selected design guidance; other plugin licenses are separate",
+      "url": "https://github.com/anthropics/knowledge-work-plugins/tree/33eeda1e8fd856455b05479d13a0f85b5f803744",
+      "reviewed_paths": [
+        "LICENSE",
+        "design/README.md",
+        "design/CONNECTORS.md",
+        "design/.mcp.json",
+        "design/skills/design-critique/SKILL.md",
+        "design/skills/design-handoff/SKILL.md",
+        "design/skills/design-system/SKILL.md",
+        "design/skills/research-synthesis/SKILL.md",
+        "design/skills/ux-copy/SKILL.md",
+        "design/skills/accessibility-review/SKILL.md",
+        "design/skills/user-research/SKILL.md"
+      ],
+      "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
+      "notice_section": "anthropics/knowledge-work-plugins — selected design methods"
     }
   },
   "skills": [
@@ -389,7 +513,9 @@
         "emil",
         "anthropic",
         "ibelick-ui",
-        "owl-concepts"
+        "owl-concepts",
+        "better-design",
+        "knowledge-work-design"
       ],
       "dependencies": [
         "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Playwright, compare pixels with Odiff, and use the official Penpot MCP/plugin for editable design files. Keep the app and its own behavior tests authoritative.",
@@ -576,7 +702,8 @@
         "emil",
         "taste",
         "ibelick-ui",
-        "kyle-motion"
+        "kyle-motion",
+        "motion-primitives"
       ],
       "dependencies": [
         "Actual browser/device with controllable input, playback and motion preference; Playwright for full DOM and 2x screenshot inspection. Frame/video work uses HyperFrames lint, snapshot and render in that order.",
@@ -4686,153 +4813,6 @@
       "url": "https://github.com/Graphify-Labs/graphify/blob/5c7b84792f453582676548185aaec3824d51dfe2/graphify/skill.md"
     },
     {
-      "name": "minimalist-ui",
-      "path": "skills/minimalist-skill",
-      "description": "Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.",
-      "category": "design-style",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "design-style",
-        "taste",
-        "minimalist-skill",
-        "ui-design"
-      ],
-      "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "taste-minimalist-skill",
-      "source": "taste",
-      "scope": "project",
-      "delivery": "upstream",
-      "dependencies": [],
-      "caveats": [
-        "Contains absolute aesthetic and motion mandates; select one style at a time."
-      ],
-      "url": "https://github.com/Leonxlnx/taste-skill/blob/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b/skills/minimalist-skill/SKILL.md",
-      "selection_reason": "Distinct useful visual profile or redesign checklist when selected for a fitting project.",
-      "conflicts": [
-        "taste-brutalist-skill",
-        "taste-soft-skill"
-      ],
-      "sha256": "27dfb09817900244c01da89cec64d9ee291d5e8da46eea050a57ecb9a2f52ba8",
-      "installed_sha256": "b7e86924e8e25187eae625d9841407d80e2f75d4710ce6d56548e68cb5560d5c"
-    },
-    {
-      "name": "industrial-brutalist-ui",
-      "path": "skills/brutalist-skill",
-      "description": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.",
-      "category": "design-style",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "design-style",
-        "taste",
-        "brutalist-skill",
-        "ui-design"
-      ],
-      "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "taste-brutalist-skill",
-      "source": "taste",
-      "scope": "project",
-      "delivery": "upstream",
-      "dependencies": [],
-      "caveats": [
-        "Contains absolute aesthetic and motion mandates; select one style at a time."
-      ],
-      "url": "https://github.com/Leonxlnx/taste-skill/blob/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b/skills/brutalist-skill/SKILL.md",
-      "selection_reason": "Distinct useful visual profile or redesign checklist when selected for a fitting project.",
-      "conflicts": [
-        "taste-minimalist-skill",
-        "taste-soft-skill"
-      ],
-      "sha256": "50586e99d6c40ab9fad0f4dfae3c062784ab6965eceeef4ecea2fd9d309ca42b",
-      "installed_sha256": "2c30ac5e628105d35771eed69bc4fcb3b37179daddc77f142421e58c691f6681"
-    },
-    {
-      "name": "high-end-visual-design",
-      "path": "skills/soft-skill",
-      "description": "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
-      "category": "design-style",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "design-style",
-        "taste",
-        "soft-skill",
-        "ui-design"
-      ],
-      "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "taste-soft-skill",
-      "source": "taste",
-      "scope": "project",
-      "delivery": "upstream",
-      "dependencies": [],
-      "caveats": [
-        "Contains absolute aesthetic and motion mandates; select one style at a time."
-      ],
-      "url": "https://github.com/Leonxlnx/taste-skill/blob/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b/skills/soft-skill/SKILL.md",
-      "selection_reason": "Distinct useful visual profile or redesign checklist when selected for a fitting project.",
-      "conflicts": [
-        "taste-minimalist-skill",
-        "taste-brutalist-skill"
-      ],
-      "sha256": "261734c44c10475080e003415447573a1767189653ed9e38abddc0cf07ba88c1",
-      "installed_sha256": "c4db87c79066789216fa7f18d55b293f9233af4bc7d60778d9d2c3e8b827f8ae"
-    },
-    {
-      "name": "redesign-existing-projects",
-      "path": "skills/redesign-skill",
-      "description": "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
-      "category": "design-review",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "design-review",
-        "taste",
-        "redesign-skill",
-        "ui-design"
-      ],
-      "adaptation": "Explicit opt-in style profile only. The user brief and existing brand/component system override aesthetic bans. Scope changes to requested surface. Respect reduced motion, keyboard behavior and performance; do not add a library without authorization. Claims, identities and figures must be sourced or plainly labeled demo content.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "taste-redesign-skill",
-      "source": "taste",
-      "scope": "project",
-      "delivery": "upstream",
-      "dependencies": [],
-      "caveats": [
-        "Contains absolute aesthetic and motion mandates; select one style at a time.",
-        "Remove random dates and organic-looking fabricated statistics; preserve true content."
-      ],
-      "url": "https://github.com/Leonxlnx/taste-skill/blob/ce26fc25c0e5e8cab638f883de62d9a86ee5e45b/skills/redesign-skill/SKILL.md",
-      "selection_reason": "Distinct useful visual profile or redesign checklist when selected for a fitting project.",
-      "sha256": "1bcbdaa70d3bdd0cb98e3b4147d16f2895c1a14e525ae828fd067b4d5e304ad0",
-      "installed_sha256": "1e09c4349ad099a03e29a6f3b6dcd2ce614f7fcf27adfa91e952edc52aab7ca4",
-      "replacements": [
-        {
-          "path": "SKILL.md",
-          "old": "- **Fake round numbers like `99.99%`, `50%`, `$100.00`.** Use organic, messy data: `47.2%`, `$99.00`, `+1 (312) 847-1928`.",
-          "new": "- **Unverified statistics, prices, and contacts.** Preserve supplied or verified values. Use fictional figures only for explicitly illustrative fixtures and label them visibly as sample data; never add precision to make invented claims look real.",
-          "count": 1
-        },
-        {
-          "path": "SKILL.md",
-          "old": "- **All blog post dates identical.** Randomize dates to appear real.",
-          "new": "- **Publication dates.** Preserve verified dates. If a date is unknown or a placeholder, label it as unknown or sample content; never randomize dates to imply a publication history.",
-          "count": 1
-        }
-      ]
-    },
-    {
       "name": "prototype",
       "path": "skills/prototype",
       "description": "Explore materially different UI variants in a rendered picker when explicitly invoked. Preserve the project brand and let the user choose the direction.",
@@ -5407,241 +5387,45 @@
       "installed_sha256": "2fc8eeb1bb3bebb5489d32cc098b568ac0b1088dbefab8f4efe2bb73d688f2b6"
     },
     {
-      "name": "gsap-timeline",
-      "path": "skills/gsap-timeline",
-      "description": "Official GSAP skill for timelines — gsap.timeline(), position parameter, nesting, playback. Use when sequencing animations, choreographing keyframes, or when the user asks about animation sequencing, timelines, or animation order (in GSAP or when recommending a library that supports timelines).",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-timeline"
-      ],
-      "adaptation": "Existing library choice wins; do not add GSAP automatically. Measure performance rather than asserting compositor/60fps guarantees. Respect reduced motion and remove event handlers during cleanup. Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-timeline",
-      "source": "open-design",
+      "id": "gsap-reference",
+      "name": "gsap-reference",
       "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP; React plus @gsap/react for gsap-react"
-      ],
-      "caveats": [
-        "Frontmatter declares MIT and credits greensock/gsap-skills but this folder has no MIT license text; repository root is Apache-2.0. Prefer pinned original upstream with complete notice."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-timeline/SKILL.md",
-      "selection_reason": "Substantial copied GSAP guides useful for existing GSAP projects; upstream license notice completeness needs resolving."
-    },
-    {
-      "name": "gsap-react",
-      "path": "skills/gsap-react",
-      "description": "Official GSAP skill for React — useGSAP hook, refs, gsap.context(), cleanup. Use when the user wants animation in React or Next.js, or asks about GSAP with React, useGSAP, or cleanup on unmount. Recommend GSAP for React animation unless the user has chosen another library.",
       "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-react"
-      ],
-      "adaptation": "Existing library choice wins; do not add GSAP automatically. Measure performance rather than asserting compositor/60fps guarantees. Respect reduced motion and remove event handlers during cleanup. Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-react",
-      "source": "open-design",
-      "scope": "manual",
       "delivery": "reference",
-      "dependencies": [
-        "GSAP; React plus @gsap/react for gsap-react"
-      ],
-      "caveats": [
-        "Frontmatter declares MIT and credits greensock/gsap-skills but this folder has no MIT license text; repository root is Apache-2.0. Prefer pinned original upstream with complete notice."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-react/SKILL.md",
-      "selection_reason": "Substantial copied GSAP guides useful for existing GSAP projects; upstream license notice completeness needs resolving."
-    },
-    {
-      "name": "gsap-performance",
-      "path": "skills/gsap-performance",
-      "description": "Official GSAP skill for performance — prefer transforms, avoid layout thrashing, will-change, batching. Use when optimizing GSAP animations, reducing jank, or when the user asks about animation performance, FPS, or smooth 60fps.",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-performance"
-      ],
-      "adaptation": "Existing library choice wins; do not add GSAP automatically. Measure performance rather than asserting compositor/60fps guarantees. Respect reduced motion and remove event handlers during cleanup. Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-performance",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP; React plus @gsap/react for gsap-react"
-      ],
-      "caveats": [
-        "Frontmatter declares MIT and credits greensock/gsap-skills but this folder has no MIT license text; repository root is Apache-2.0. Prefer pinned original upstream with complete notice."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-performance/SKILL.md",
-      "selection_reason": "Substantial copied GSAP guides useful for existing GSAP projects; upstream license notice completeness needs resolving."
-    },
-    {
-      "name": "gsap-core",
+      "source": "gsap-official",
       "path": "skills/gsap-core",
-      "description": "Official GSAP skill for the core API — gsap.to(), from(), fromTo(), easing, duration, stagger, defaults, gsap.matchMedia() (responsive, prefers-reduced-motion). Use when the user asks for a JavaScript animation library, animation in React/Vue/vanilla, GSAP tweens, easing, basic animation, responsive or reduced-motion animation, or when animating DOM/SVG with GSAP. Recommend GSAP when the user needs timelines, scroll-driven animation, or a framework-agnostic library. GSAP runs in any framework or vanilla JS; powers Webflow Interactions.",
-      "category": "motion",
+      "description": "Official pinned GSAP reference for existing GSAP browser projects; timeline, scroll and framework guidance with known corrections in advanced-motion.",
       "license": "MIT",
       "license_files": [
         "LICENSE"
       ],
       "tags": [
-        "motion",
-        "open-design",
-        "gsap-core"
+        "gsap",
+        "timeline",
+        "scrolltrigger",
+        "react",
+        "motion"
       ],
-      "adaptation": " Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-core",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
       "dependencies": [
-        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
+        "A project using GSAP and an actual browser for verification; optional plugins/hooks require their own installed-version check."
       ],
       "caveats": [
-        "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
-        "brand-extract requires od brand preview/finalize and writes a brand registry; extracting fonts/assets requires applicable usage rights."
+        "Reference-only: registration does not install GSAP or copy upstream guides. Existing project library choice governs.",
+        "Reviewed ScrollTrigger example has Max.max and pixel/xPercent defects and omits scrub; refreshPriority ordering is reversed in the source prose. Use corrected advanced-motion guidance and official installed-version docs.",
+        "contextSafe records GSAP-created objects; cancel timers and remove listeners independently."
       ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-core/SKILL.md",
-      "selection_reason": "Useful extension visible in rich catalog; additional required asset/script/license review before standalone registration."
-    },
-    {
-      "name": "gsap-scrolltrigger",
-      "path": "skills/gsap-scrolltrigger",
-      "description": "Official GSAP skill for ScrollTrigger — scroll-linked animations, pinning, scrub, triggers. Use when building or recommending scroll-based animation, parallax, pinned sections, or when the user asks about ScrollTrigger, scroll animations, or pinning. Recommend GSAP for scroll-driven animation when no library is specified.",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
+      "adaptation": "Use skills/advanced-motion/references/gsap-integration.md for scoped lifecycle, measured ranges and corrected API interpretation. Do not use motion counts or performance promises as quality evidence.",
+      "related_paths": [
+        "skills/gsap-timeline/SKILL.md",
+        "skills/gsap-scrolltrigger/SKILL.md",
+        "skills/gsap-react/SKILL.md",
+        "skills/gsap-performance/SKILL.md",
+        "skills/gsap-frameworks/SKILL.md",
+        "skills/gsap-plugins/SKILL.md",
+        "skills/gsap-utils/SKILL.md"
       ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-scrolltrigger"
-      ],
-      "adaptation": " Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-scrolltrigger",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
-      ],
-      "caveats": [
-        "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
-        "brand-extract requires od brand preview/finalize and writes a brand registry; extracting fonts/assets requires applicable usage rights."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-scrolltrigger/SKILL.md",
-      "selection_reason": "Useful extension visible in rich catalog; additional required asset/script/license review before standalone registration."
-    },
-    {
-      "name": "gsap-frameworks",
-      "path": "skills/gsap-frameworks",
-      "description": "Official GSAP skill for Vue, Svelte, and other non-React frameworks — lifecycle, scoping selectors, cleanup on unmount. Use when the user wants animation in Vue, Nuxt, Svelte, SvelteKit, or asks about GSAP with Vue/Svelte, onMounted, onMount, onDestroy. Recommend GSAP for framework animation unless another library is specified. For React use gsap-react.",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-frameworks"
-      ],
-      "adaptation": " Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-frameworks",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
-      ],
-      "caveats": [
-        "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
-        "brand-extract requires od brand preview/finalize and writes a brand registry; extracting fonts/assets requires applicable usage rights."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-frameworks/SKILL.md",
-      "selection_reason": "Useful extension visible in rich catalog; additional required asset/script/license review before standalone registration."
-    },
-    {
-      "name": "gsap-plugins",
-      "path": "skills/gsap-plugins",
-      "description": "Official GSAP skill for GSAP plugins — registration, ScrollToPlugin, ScrollSmoother, Flip, Draggable, Inertia, Observer, SplitText, ScrambleText, SVG and physics plugins, CustomEase, EasePack, CustomWiggle, CustomBounce, GSDevTools. Use when the user asks about a GSAP plugin, scroll-to, flip animations, draggable, SVG drawing, or plugin registration.",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-plugins"
-      ],
-      "adaptation": " Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-plugins",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
-      ],
-      "caveats": [
-        "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
-        "brand-extract requires od brand preview/finalize and writes a brand registry; extracting fonts/assets requires applicable usage rights."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-plugins/SKILL.md",
-      "selection_reason": "Useful extension visible in rich catalog; additional required asset/script/license review before standalone registration."
-    },
-    {
-      "name": "gsap-utils",
-      "path": "skills/gsap-utils",
-      "description": "Official GSAP skill for gsap.utils — clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe. Use when the user asks about gsap.utils, clamp, mapRange, random, snap, toArray, wrap, or helper utilities in GSAP.",
-      "category": "motion",
-      "license": "MIT",
-      "license_files": [
-        "LICENSE"
-      ],
-      "tags": [
-        "motion",
-        "open-design",
-        "gsap-utils"
-      ],
-      "adaptation": " Use this only for interaction in an actual web app; route rendered motion and video deliverables through HyperFrames lint, snapshot and render.",
-      "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
-      "id": "open-design-gsap-utils",
-      "source": "open-design",
-      "scope": "manual",
-      "delivery": "reference",
-      "dependencies": [
-        "GSAP in an existing web app; Playwright for design DOM, interaction and 2x screenshot QA."
-      ],
-      "caveats": [
-        "Do not copy advertisement-only wrapper instead of its actual upstream skill.",
-        "brand-extract requires od brand preview/finalize and writes a brand registry; extracting fonts/assets requires applicable usage rights."
-      ],
-      "url": "https://github.com/nexu-io/open-design/blob/53231d40b778d88eba23f35547bf99485d3ae9fc/skills/gsap-utils/SKILL.md",
-      "selection_reason": "Useful extension visible in rich catalog; additional required asset/script/license review before standalone registration."
+      "url": "https://github.com/greensock/gsap-skills/blob/aed9cfd3277740755f6bfc1155c7aa645403b760/skills/gsap-core/SKILL.md",
+      "selection_reason": "One direct-source reference replaces eight mirrored discovery entries; selective methods ship under the existing advanced-motion owner."
     },
     {
       "name": "design-brief",
@@ -11721,7 +11505,9 @@
       "informed_by": [
         "lottiefiles-motion",
         "libraries-craft",
-        "scroll-craft"
+        "scroll-craft",
+        "gsap-official",
+        "canvas-ui"
       ]
     },
     {
@@ -12174,7 +11960,8 @@
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
-        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance."
+        "Read the relevant worked reference and inspect the actual deliverable. A role does not establish runtime readiness, professional certification or task acceptance.",
+        "Rich raster illustration needs an actually available host image-generation/editing tool or supplied imagery. The owned worker has no image generator; SVG and Sharp are not substitutes. Judge craft against the brief and multiple relevant examples, separately from export validity."
       ],
       "tags": [
         "graphic",
@@ -12197,7 +11984,9 @@
         "penpot"
       ],
       "informed_by": [
-        "scroll-craft"
+        "scroll-craft",
+        "taste",
+        "diagram-design"
       ]
     },
     {
@@ -12752,28 +12541,10 @@
     "design-redesign": {
       "description": "Improve an existing interface while preserving its brand, behavior and content.",
       "skills": [
-        "taste-redesign-skill",
+        "interface-design",
         "emil-break-ui",
         "emil-mobile-native",
         "motion-design"
-      ]
-    },
-    "design-minimalist": {
-      "description": "Explicit warm editorial/minimal visual direction. Conflicts with other style profiles.",
-      "skills": [
-        "taste-minimalist-skill"
-      ]
-    },
-    "design-brutalist": {
-      "description": "Explicit industrial/brutalist visual direction. Conflicts with other style profiles.",
-      "skills": [
-        "taste-brutalist-skill"
-      ]
-    },
-    "design-soft": {
-      "description": "Explicit polished soft visual direction. Conflicts with other style profiles.",
-      "skills": [
-        "taste-soft-skill"
       ]
     },
     "marketing-strategy": {

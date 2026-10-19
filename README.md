@@ -13,6 +13,11 @@ helps it choose relevant expertise, carry out bounded work and verify what it
 produced. It is a Rust CLI and local MCP server—not a replacement chat app or
 model subscription.
 
+For visual work, Mirket follows **image-to-code**: establish a visual target,
+build editable code, then inspect the rendered result against that target.
+Quality gates bound the review and correction process. When the host has no
+usable image model, a small rendered code composition becomes the target.
+
 [Website](https://harness.mirket.dev) ·
 [Releases](https://github.com/codemirket/harness/releases/latest) ·
 [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
@@ -61,15 +66,73 @@ separate runtime requirements; a fresh unattended setup installs none of them.
 | --- | --- | --- |
 | Relevant expertise | Discoverable roles, focused skills and source references for engineering, design, research, writing and other work | Select and read useful guidance for the actual task |
 | Bounded execution | A routed spawner for Mirket-owned workers, with discovered models and tools scoped to declared task needs | Decide whether delegation helps and integrate the result |
+| Visual production | Image-to-code guidance and target/final review gates for Mirket-owned design workers | Establish the target, inspect actual renders and record specific defects |
 | Continuity | Optional project-bound task records, decisions, revisions and evidence | Keep useful state for long-running work without duplicating an existing workflow |
 | Verification | Completion checks for required delivery and current acceptance/failure-probe artifacts | Run real tests, inspect outputs and judge whether they satisfy the request |
 | Local production tools | An optional design package with a shared workspace and purpose-built renderers | Produce and inspect the actual artifact |
 
-For example, on a checkout-screen task the agent can read interface and engineering
-guidance, implement the flow, exercise keyboard and error states, and inspect the
-rendered screen. Mirket supplies the method and tools; useful results depend on
+For example, on a checkout-screen task the agent inspects a visual target, reads
+interface and engineering guidance, implements the flow, and compares actual
+renders while checking keyboard and error states. Mirket supplies the method and tools; useful results depend on
 the agent actually applying them. A task receipt or file hash does not prove
 correctness, human approval or a measured improvement in model quality.
+
+## Visual work: image to working code
+
+1. **Establish and inspect a target.** Use a supplied reference or create one full
+   composition with the host's available image model. For a focused repair, the
+   existing approved screen can be the target. Check the hierarchy, typography,
+   assets and intended use before implementation. Freeze the inspected target
+   so later output cannot silently replace it.
+2. **Build the real artifact.** Translate the target into editable components,
+   text, layout and behavior. Keep exact logos and copy in the source. An image
+   displayed as the entire interface does not satisfy image-to-code.
+3. **Render, compare and review.** Inspect current output against the frozen
+   target at matching content, viewport and state. For UI, inspect narrow and
+   wide layouts and exercise the real interactions.
+
+The final review records an outcome and specific observations for all six checks:
+
+| Quality gate | What gets inspected |
+| --- | --- |
+| Composition | Hierarchy, spacing, proportions and crop |
+| Typography | Actual fonts, size, wrapping, legibility and contrast |
+| Assets | Provenance, rights, sharpness and fit within the composition |
+| Responsive layout | Narrow/wide reflow, clipping and reachable controls |
+| Behavior | Primary actions, keyboard/focus and relevant states |
+| Motion | Requested playback, intermediate states, interruption and reduced motion |
+
+Responsive layout and behavior cannot be waived for working UI; motion cannot
+be waived for animation. Allow **one target repair**, then **an initial final
+review and at most two correction rounds**, within **ten minutes per bounded
+composition**. At the limit, preserve the output and report unresolved defects.
+Starting another worker or generating more variants does not reset the budget.
+
+### When no image model is available
+
+The agent records the missing capability, creates **one minimal HTML/CSS, SVG or
+Canvas composition**, then renders and inspects it before expanding it. That
+first inspected render becomes the frozen target; the same final quality gates
+and limits apply. This fallback requires no new image provider or model change.
+Mirket's design package supplies renderers and image processing, not an image
+generation model. Image generation, when available, belongs to the host.
+
+After setup, you can ask:
+
+> Build this interface using Mirket's image-to-code workflow. Inspect my supplied
+> target, or create one with your available image model. If no image model is
+> usable, record why and render one minimal code composition before expanding it.
+> Keep the result editable, compare actual renders with the frozen target, and
+> report the six quality checks. Respect the correction and time limits; report
+> unresolved defects instead of starting a sample campaign.
+
+**What is enforced?** Mirket-owned design workers require a declared input and
+ordered target/final reviews. The runtime checks evidence identity and freshness,
+required check outcomes, review counts and a 600-second execution deadline.
+Native host tools receive the same workflow as guidance; Mirket does not
+intercept their calls. Visual observations and fallback reasons remain agent
+judgments, so passing the gates is not an aesthetic guarantee or human approval.
+See [visual production](docs/visual-quality.md) for the full contract and scope.
 
 ## Use it in a project
 
@@ -173,6 +236,7 @@ See [installation and recovery](docs/installation.md).
 | Choose expertise | [Roles and skills](docs/roles.md) |
 | Configure projects and coordinate work | [Workflows and MCP](docs/workflows.md) |
 | Understand task evidence | [Evidence contracts](docs/task-evidence.md) |
+| Build visual work from a target | [Image-to-code and quality gates](docs/visual-quality.md) |
 | Use local production tools | [Packages](docs/packages.md) |
 | Understand the implementation | [Architecture](docs/architecture.md) |
 | Contribute code or guidance | [Contributing](CONTRIBUTING.md) · [Source review](docs/source-review.md) |

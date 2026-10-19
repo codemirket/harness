@@ -22,6 +22,11 @@ responsive rules, font identity or rights to reuse its assets.
 
 ## Compose from the information
 
+For design production, first establish the inspected target using
+[image-to-code](image-to-code.md). A supplied target governs; otherwise use the
+host image model, with direct coded composition only when no usable image model
+is available. This workflow shares its target/final gates and correction budget.
+
 Order content around the user's decision. List the essential information, its
 relationship and the next action before arranging boxes. Use these relationships
 to choose grouping, alignment, reading order, density and emphasis. A comparison,

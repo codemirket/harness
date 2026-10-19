@@ -79,6 +79,16 @@ and a JS library all competing for `transform` on the same element. Scope classe
 to the asset/component. Reused inline `defs` and ARIA references need per-instance
 IDs, including in SSR; verify two copies together.
 
+Verify the rig after optimization, not only the resting picture. A static SVG
+optimizer may remove zero-opacity parts, collapse groups or bake transforms into
+path coordinates. Preserved IDs alone do not preserve the controller's geometry
+contract. Compare required parts, local coordinates and property owners, then
+exercise a pose that exposes initially hidden parts and moves transformed groups.
+If the available optimizer cannot retain that contract, keep its optimized static
+poster separate and mount the animation from the editable semantic source. Do not
+apply the original poses to flattened geometry or silently skip missing parts.
+Give paint definitions and motion groups distinct IDs within each instance.
+
 ## Stroke drawing and filled reveals
 
 Normalize simple line art with `pathLength="1"`, numeric `stroke-dasharray="1"`

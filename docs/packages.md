@@ -170,11 +170,29 @@ Page/frame QA batches cap total stored PNG bytes and decoded pixels at
 64 Mi each. Typst requests at most 65 pages and rejects a 65th page.
 Sharp runs in an owned child with one native thread, no retained decoder cache,
 a 17-megapixel/32-MiB source bound, 4096-pixel output dimensions and one frame.
-A cross-process render slot rejects competing native jobs as busy before loading
-renderers. Clients can retry after the current job; a busy response is not a crash.
+A cross-process render slot waits up to 30 seconds for competing native jobs
+before loading renderers, within the existing tool deadline. Cancellation removes
+a waiting request without starting its operation. Direct-tool schema, read-only
+output preflight, disabled-group and admission rejections carry a tool-bound `not_started` receipt, so a routed
+worker can correct the call without claiming an artifact was produced. Handler
+failures, missing receipts and forwarded Penpot errors retain uncertain-effect
+semantics and require inspection before recovery. Output-path locks still reject
+conflicting writers; queueing render admission does not authorize overwrites.
+An overwrite requires the current `expected_sha256`; a missing or stale revision
+is recoverable before dispatch. The publisher still checks the revision again,
+and a conflict after rendering retains uncertain-effect semantics.
 Image preparation is sequential and identical transformations are reused within
 the request. Satori/resvg and the browser client load only when their operations
 need them.
+
+Assigned tools with explicitly disabled availability fail routed preflight before
+model inference. Service activation remains an explicit `mirket package` operation.
+`vector_render` and `svg_optimize` require `.svg` output paths; vector rendering
+returns a separate PNG preview path in its receipt.
+Native vector previews use the pinned image's DejaVu serif, sans-serif and
+monospace fallbacks when an authored family is unavailable. Supply licensed local
+font files through `fonts` when exact typography matters; a fallback preview does
+not establish a match to a browser's host fonts. The editable SVG retains its text.
 
 The Linux design container builds a small owned `runtime-guard` helper in an
 isolated compiler stage. Its subreaper owns detached renderer descendants and

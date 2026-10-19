@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "template_not_run",
+  "host": null,
+  "model": null,
+  "model_settings": {
+    "requested_model": "Astra",
+    "requested_effort": "high",
+    "observed_model": null,
+    "observed_effort": null
+  },
+  "tools": [],
+  "authority": "Local disposable artwork only; no publication or new account/dependency. Preserve user-selected provider/model.",
+  "budget": null,
+  "harness_revision": null,
+  "guidance_hashes": {},
+  "note": "Freeze actual tool availability, source/binary identity, reference set and authorized budget before execution. Unknown observations remain null."
+}

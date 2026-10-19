@@ -39,7 +39,7 @@ try {
       await summary.focus();await page.keyboard.press('Enter');
       assert.equal(await page.locator('details').first().getAttribute('open'),'');
       await page.keyboard.press('Enter');
-      for(const selector of ['#install','#how-it-works','.example','.compact','.faq']) {
+      for(const selector of ['#install','#how-it-works','#image-to-code','#code-fallback','#quality-gates','.compact','.faq']) {
         await page.locator(selector).first().scrollIntoViewIfNeeded();
         await page.screenshot({path:path.join(output,`${width}-${selector.replace(/[.#]/g,'')}.png`)});
       }
@@ -57,6 +57,9 @@ try {
     const page=await context.newPage();await page.goto(url);
     assert.equal(await page.locator('#install-prompt').inputValue(),expected);
     assert.ok(await page.locator('noscript').isVisible());
+    assert.equal(await page.locator('#quality-gates dt').count(),6);
+    assert.ok(await page.locator('#image-to-code').isVisible());
+    assert.ok(await page.locator('#code-fallback').isVisible());
     assert.ok(await page.locator('#copy').isHidden());
     const text=await context.request.get(new URL('install-prompt.txt',url).href);
     assert.ok(text.ok());assert.equal((await text.text()).trim(),expected);

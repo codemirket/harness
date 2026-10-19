@@ -8,7 +8,7 @@ import Ajv from 'ajv';
 import {withRequest, checkRequest, redactSecrets} from './request.mjs';
 import {synchronizePenpotTokens} from './penpot-tokens.mjs';
 import {readFileSync} from 'node:fs';
-import {shutdownChildren, withRenderSlot} from './paths.mjs';
+import {shutdownChildren, withRenderSlot, assertOutputReady} from './paths.mjs';
 
 const toolPolicies = JSON.parse(readFileSync(new URL('./tool-policy.json', import.meta.url), 'utf8'));
 function withPolicy(tool) {
@@ -19,9 +19,13 @@ function withPolicy(tool) {
 
 const file = {type: 'string', description: 'Workspace-relative file path'};
 const output = {type: 'string', description: 'Workspace-relative output path; parent directory must exist'};
-const overwrite = {type: 'boolean', default: false};
+const svgOutput = {...output, pattern: '\\.svg$', description: 'Workspace-relative editable SVG output path ending in .svg; parent directory must exist. vector_render returns its separate PNG preview path in the receipt.'};
+const overwrite = {type: 'boolean', default: false, description:'Replace an existing output only with its current expected_sha256. Omit for a new output.'};
 const common = {tokens: file, overwrite, expected_sha256: {type: 'string', pattern: '^[0-9a-f]{64}$'}, baseline: file};
-function schema(required, properties) { return {type: 'object', additionalProperties: false, required, properties}; }
+function schema(required, properties) {
+  return {type: 'object', additionalProperties: false, required, properties,
+    ...(properties.overwrite ? {allOf:[{if:{required:['overwrite'],properties:{overwrite:{const:true}}},then:{required:['expected_sha256']}}]} : {})};
+}
 const definitions = [
   {name: 'tokens_compile', description: 'Compile one canonical DTCG token JSON into CSS, JavaScript, TypeScript, Typst and Penpot outputs with Style Dictionary.', inputSchema: schema([], {source: file})},
   {name: 'static_render', description: 'Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection.', inputSchema: schema(['tree', 'fonts', 'width', 'height', 'output'], {...common, tree: {type: 'object'}, fonts: {type: 'array', items: schema(['path'], {path: file, name: {type: 'string'}, weight: {type: 'integer'}, style: {type: 'string'}})}, width: {type: 'integer'}, height: {type: 'integer'}, format: {type: 'string', enum: ['png', 'svg']}, output})},
@@ -30,8 +34,8 @@ const definitions = [
   {name: 'hyperframes_render', description: 'Run real HyperFrames CLI lint, snapshot and render in order, after canonical tokens and raster preprocessing.', inputSchema: schema(['project', 'output'], {...common, project: file, snapshot_times:{type:'array',minItems:1,maxItems:8,uniqueItems:true,items:{type:'number',minimum:0,maximum:3600}}, format: {type: 'string', enum: ['mp4', 'webm']}, output})},
   {name: 'typst_compile', description: 'Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection.', inputSchema: schema(['source', 'output'], {...common, source: file, output})},
   {name: 'raster_transform', description: 'Preprocess a workspace raster through an isolated, bounded Sharp worker.', inputSchema: schema(['source', 'width', 'height', 'output'], {...common, source: file, width: {type: 'integer'}, height: {type: 'integer'}, mode: {type: 'string', enum: ['fit', 'fill', 'force']}, gravity: {type: 'string', enum: ['sm', 'ce', 'no', 'ea', 'so', 'we']}, quality: {type: 'integer', minimum: 1, maximum: 100}, enlarge: {type:'boolean',default:false}, format: {type: 'string', enum: ['png', 'jpeg', 'webp', 'avif']}, output})},
-  {name: 'vector_render', description: 'Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Graph layouts belong to Kroki.', inputSchema: schema(['source', 'output'], {...common, source: file, output, width: {type: 'integer', minimum:16, maximum:4096}, height:{type:'integer',minimum:16,maximum:4096}, fonts:{type:'array',maxItems:8,items:file}})},
-  {name: 'svg_optimize', description: 'Optimize a generated or imported SVG with SVGO before publication.', inputSchema: schema(['source', 'output'], {...common, source: file, output})},
+  {name: 'vector_render', description: 'Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput, width: {type: 'integer', minimum:16, maximum:4096}, height:{type:'integer',minimum:16,maximum:4096}, fonts:{type:'array',maxItems:8,items:file}})},
+  {name: 'svg_optimize', description: 'Optimize a generated or imported SVG with SVGO before publication.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput})},
   {name: 'odiff_compare', description: 'Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ.', inputSchema: schema(['baseline', 'candidate'], {baseline: file, candidate: file, output, overwrite, expected_sha256: common.expected_sha256})},
 ];
 // Hosts keep a worker per connection. Discovery and cached tokens must not load
@@ -137,11 +141,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
   const args = request.params.arguments || {};
   try {
     checkRequest();
-    if (name === 'kroki_render' && !groups.has('diagrams')) throw Error('Diagrams group is disabled; explicitly stop then start design with --group diagrams');
     if (handlers[name]) {
-      if (!validators[name](args)) throw Error(`Invalid ${name} arguments: ${ajv.errorsText(validators[name].errors)}`);
-      const result = name === 'tokens_compile' ? await handlers[name](args) : await withRenderSlot(() => handlers[name](args));
-      return {content: [{type: 'text', text: JSON.stringify(result)}], structuredContent: result, isError: ['failed', 'changed_pixels'].includes(result.qa?.status)};
+      // Only this owned boundary can attest that the operation did not start.
+      // Never attach this receipt to a handler or forwarded Penpot error.
+      const rejected = (code, message) => ({isError:true, content:[{type:'text', text:message}], structuredContent:{execution:{tool:name, state:'not_started', code}, message}});
+      if (name === 'kroki_render' && !groups.has('diagrams')) return rejected('disabled_group', 'Diagrams group is disabled; explicitly stop then start design with --group diagrams');
+      if (!validators[name](args)) return rejected('invalid_arguments', `Invalid ${name} arguments: ${ajv.errorsText(validators[name].errors)}`);
+      if (typeof args.output === 'string') {
+        try { await assertOutputReady(args); }
+        catch (error) { return rejected('output_preflight', redactSecrets(String(error.message || error))); }
+      }
+      let started = false;
+      try {
+        const invoke = () => { started = true; return handlers[name](args); };
+        const result = name === 'tokens_compile' ? await invoke() : await withRenderSlot(invoke);
+        return {content: [{type: 'text', text: JSON.stringify(result)}], structuredContent: result, isError: ['failed', 'changed_pixels'].includes(result.qa?.status)};
+      } catch (error) {
+        if (!started) return rejected('render_admission', redactSecrets(String(error.message || error)));
+        throw error;
+      }
     }
     if (!groups.has('penpot')) throw Error('Penpot group is disabled; explicitly stop then start design with --group penpot');
     const available = await upstreamTools();

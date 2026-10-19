@@ -8,7 +8,8 @@ or use the equivalent `route_task` and `spawn_subagent` MCP tools. The same
 `task_needs`. The owned workflows select role/task guidance and scoped tools;
 `assigned_tools: []` uses their defaults. An explicit subset cannot widen scope or
 omit required production/verification. Optional role, support-skill and reference
-choices never grant effects. Do not name a model in that request.
+choices never grant effects. Use an exact discovered `model_selection` only for
+an explicit user model choice; otherwise let the router select an eligible model.
 [Model routing](model-routing.md) describes the request and failure
 behavior.
 

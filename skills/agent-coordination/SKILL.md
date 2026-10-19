@@ -69,7 +69,10 @@ Select a provider through the routed model registry, task and assigned-tool
 floor. Use a fresh independent perspective when it resolves a material
 uncertainty, such as a bounded design critique or code review. Do not duplicate
 every assignment across providers, infer quality from brand, or promise lower
-cost. Honor an explicit user choice. If no discovered model satisfies the floor,
+cost. Honor an explicit user choice using `model_selection` with the exact live
+target, model ID and supported effort; this narrows eligibility and prevents
+cross-model failover. Host model selection is not inherited automatically.
+If no discovered model satisfies the floor and that choice,
 continue locally where practical and report the missing capability rather than
 changing providers or authentication silently.
 

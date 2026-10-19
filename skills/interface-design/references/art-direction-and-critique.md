@@ -3,7 +3,58 @@
 Use when interpreting a reference or when the requested improvement depends on
 visual judgment. The surface-specific composition reference still supplies the
 layout craft. This reference makes direction and criticism specific enough to act
-on; it adds no mandatory artifact, style package or extra review round.
+on; it supplies craft judgment within the [image-to-code gates](image-to-code.md),
+without adding another style package or review round.
+
+## Start with something this subject actually contains
+
+For original work, identify the subject's objects, materials, actions, places,
+language and real output. Select what can carry the message visibly. Pair each
+important claim with available proof: a product state, an artifact, a supplied
+photograph, a factual diagram or an explicitly illustrative scene. If the proof
+does not exist, change the claim or establish the asset route before designing
+around an imaginary screenshot. Do not manufacture customer evidence.
+
+Turn that material into a compositional idea rather than a category skin:
+
+| Subject evidence | Possible visible idea | Weak substitution |
+| --- | --- | --- |
+| A repair workshop's annotated repair sheets and tools | An actual repaired object dominates; its annotations connect intervention to result | A generic dark software dashboard with workshop words |
+| A tool that preserves provenance through transformations | One real input travels through named operations into an inspectable output, retaining source identity | Orbiting cards and a glowing core with no demonstrated relationship |
+| A ceramic collection with distinct profiles and glaze | Silhouette, scale and directional light distinguish the objects; captions stay quiet | Decorative texture behind identical placeholder rectangles |
+
+These are examples of reasoning, not page templates. A useful test for an open
+direction is to replace its nouns with another product's: if the composition,
+imagery and behavior communicate exactly as little, the subject may be absent.
+A familiar layout can still be correct; novelty is not the objective. For close
+reproduction or an established system, the supplied direction governs.
+
+Choose structure from the reading task: compare items, inspect a specimen, follow
+a transformation, read an argument or explore a collection. Palette and type
+alone do not make two concepts structurally different. Use the existing concept
+exploration reference only while that choice is genuinely open.
+
+## Prove the focal decision before multiplying sections
+
+Build the opening with actual copy and a usable focal asset, at its intended crop
+and narrow placement. Inspect the overall silhouette and the subject's detail.
+If the asset is the promise of the page, a placeholder cannot validate the
+direction. An asset-only preview cannot validate its scale, contrast or crop
+against the headline. When expressive subject motion is requested, also play one
+representative subject action in that composition; moving surrounding decoration
+proves a different job. A static brief needs static focal proof; do not introduce
+movement to satisfy this process or override a brand's motion restrictions.
+
+Use a small, brief-specific craft target: what must be recognizable, which
+material/contact must be convincing, where attention should go, and what should
+remain still. For a paper-folding scene, this might mean readable sheet edges,
+a hinge that remains attached, and a resolved pose that frames the title. It is
+not a count of pictures or animated elements.
+
+If this proof is weak, repair the idea, asset, construction or composition before
+expanding the page. More badges, texture, hover effects and sections do not fix an
+unconvincing focal illustration. Removing all decoration is not a replacement
+for visual substance either. Keep the best existing strengths while revising.
 
 ## Translate the reference into decisions
 
@@ -46,6 +97,12 @@ relationships without replacing the established visual system.
 
 ## Turn a visual judgment into a correction
 
+Calibrate criticism to the stage. In exploration, compare communication and
+structural alternatives. In refinement, locate hierarchy, material, rhythm and
+state defects. At delivery, verify actual assets, responsive composition,
+interaction and production details. Do not spend a concept review on tiny radius
+differences or treat a promising concept as finished output.
+
 Inspect the artifact, not only its source or the builder's description. For a
 substantial design review, keep the observation, proposed remedy and inspected
 result together in existing task notes. Capture only what makes the judgment
@@ -83,3 +140,16 @@ observation are a reason to revisit the direction or missing reference, not proo
 that more variants will improve it. Report which visible problem improved, which
 tradeoff remains and which states were not inspected. Artifact inspection,
 interaction verification and the owner's preference answer different questions.
+
+## Technique provenance
+
+Subject-specific direction selectively adapts Leonxlnx/taste-skill at
+`f624f37a8c650b9cc550253104925efe4c8de246`; structural breadth retains
+Nutlope/hallmark at `13ac0ec7e148655948100b6396439e481361d690` (MIT).
+No image/motion quotas, random style selection, provider mandate or numerical
+quality certification is adopted. Stage-calibrated review adapts
+anthropics/knowledge-work-plugins, `design/skills/design-critique/SKILL.md`, at
+`33eeda1e8fd856455b05479d13a0f85b5f803744` (Apache-2.0).
+Modified by Mirket: rewritten for inspected artifacts and existing task records;
+connector actions, scoring templates and mandatory review ceremonies are omitted.
+Applicable license texts accompany the installed skill.

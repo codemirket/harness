@@ -15,14 +15,25 @@ Use `interface-design` for the page's content and hierarchy, `graphic-design` fo
 an asset family, and the project's frontend workflow for state/lifecycle integration.
 A new visual direction, framework, model or external design service is not implied.
 
+Establish an inspected static visual target before choreography: supplied imagery
+or the host image model first; direct code composition and a rendered proof when
+no usable image model is available. Preserve hierarchy and subject construction
+while adding motion. Inspect real playback and reduced motion as final gates.
+The image-to-code budget is shared with the composition: at most two correction
+rounds and ten minutes, not a fresh budget for animation. Stop incomplete with
+located defects instead of extending a sample campaign.
+
 Read only the reference needed for the current decision:
 
 - [Art direction and medium](references/art-direction-and-medium.md) turns a brief
   into concrete motion traits, apparent weight, a short score and a
-  DOM/SVG/Canvas/WebGL/video choice; it includes connected image layers,
-  contrasting briefs and timing math.
+  DOM/SVG/Canvas/WebGL/video choice, contrasting briefs and timing math.
+- [Connected layers](references/connected-layers.md) covers independently moving
+  image planes, registered contact, clean plates, readiness and responsive crops.
 - [Scene mechanics](references/scene-mechanics.md) covers coordinated clocks,
   interrupted FLIP, transform/3D topology, scroll ranges and responsive rebuilding.
+- [GSAP integration](references/gsap-integration.md) covers scoped timelines,
+  measured scroll ranges and teardown when the project actually uses GSAP.
 - [Scroll media and verification](references/scroll-media-and-verification.md)
   handles asynchronous media readiness, delivered encodes and scene-relative
   inspection when scroll drives video or image sequences.
@@ -49,12 +60,21 @@ preserving source/platform/rights limits and actual production/lifecycle checks.
 Inspect the actual DOM/component tree, current effects, installed versions,
 embedding, target browsers and renderer. Identify each animated property's owner,
 measured geometry and inputs that can invalidate it. A catalog entry is not runtime
-availability; the existing GSAP catalog entries are manual review candidates.
+availability; GSAP catalog references are optional source material, not installed
+libraries or default animation choices.
 
 Connect the scene to the brief: who should notice what, which visual relationship
 carries the brand, and what should remain still. Choose a small motion vocabulary
 that reinforces composition, typography and material; do not start with an effect
 inventory. Build and render one representative beat before extending a direction.
+
+Name the actual subject of a requested animation. When a product, character or
+illustration must move, identify its moving parts and their attachment, occlusion
+and material relationships. A static subject surrounded by animated decoration,
+or a whole-image entrance, does not demonstrate internal subject animation.
+Prepare registered layers, editable geometry, a suitable rig or generated motion
+for that requirement; preserve the accepted visual identity. Read the subject
+motion section in [scene mechanics](references/scene-mechanics.md) when needed.
 
 Define the trigger, meaningful initial/settled states, focal beats, replay/loop
 policy and response to interruption. A brief storyboard in the working task can
@@ -129,6 +149,9 @@ Review normal playback and sampled important beats, initial/settled poses and lo
 seams where applicable. Refine collisions, origin drift, clipping, unreadable overlap,
 awkward pacing and velocity jumps. Seeking helps frame inspection; it cannot certify
 real-time smoothness. Compare a supplied reference at equivalent beats and placement.
+For requested subject animation, inspect a playback crop of the subject with
+surrounding effects excluded. Its required movement must remain visible and
+coherent; a changing background or a screenshot of the resting pose is insufficient.
 Write a correction against an observed relationship, such as a bright midpoint
 competing with the heading or a delayed response breaking causality, then inspect
 the same scenario after the change. Keep capture/seek controls outside production UI.

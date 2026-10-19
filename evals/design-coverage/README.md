@@ -41,7 +41,8 @@ python3 evals/design-coverage/prepare.py --evaluation-root .mirket/my-run \
 python3 evals/design-coverage/prepare.py --evaluation-root .mirket/my-run freeze
 ```
 
-Use the same `--evaluation-root` before `seal` and `collect`. Snapshotting refuses
+The `--evaluation-root` option is required; no previous pilot is selected by
+default. Use the same root before `seal` and `collect`. Snapshotting refuses
 extended/schema-2 guidance and existing destinations; source history must still
 be verified by the caller. No snapshot is downloaded or reconstructed. Reusing
 these public held-out briefs in a later run is a regression exercise, not a fresh
@@ -51,13 +52,11 @@ an intentionally versioned protocol before dispatch.
 ## Before dispatch
 
 1. Preserve the nineteen-reference context and ordinary interface guidance before
-   edits. This task's snapshot is under ignored
-   `.mirket/implementation/design-coverage-2026-10-15/evaluation/` as
-   `baseline-design-inspiration/` and `shared-interface-design/`. The frozen
-   `baseline-source-bindings.json` binds all 52 files. Source HEAD is only a label;
-   file hashes identify this already modified checkout's actual bytes.
+   edits. Keep `baseline-design-inspiration/`, `shared-interface-design/` and
+   their `baseline-source-bindings.json` under the selected evaluation root.
+   Source HEAD is only a label; file hashes identify the snapshot's actual bytes.
 2. Finish the twenty-seven-reference source and run its relevant checks. Then run
-   `python3 evals/design-coverage/prepare.py freeze`. This copies the assisted
+   `python3 evals/design-coverage/prepare.py --evaluation-root .mirket/my-run freeze`. This copies the assisted
    context into the same ignored evaluation directory, verifies the baseline
    snapshot, fills the two actual configurations and creates a runnable copy of
    `suite.json` using the existing schema. It refuses to overwrite an existing
@@ -171,7 +170,7 @@ Save one grade JSON per neutral label under `evaluation/grades/`:
 }
 ```
 
-Run `python3 evals/design-coverage/prepare.py collect`, then validate the resulting
+Run `python3 evals/design-coverage/prepare.py --evaluation-root .mirket/my-run collect`, then validate the resulting
 normal report with `mirket dev role-eval check --project . --suite
 RUNNABLE_SUITE --report REPORT`. The collector requires all eight actual receipts;
 it cannot manufacture execution from synthetic fixtures. Score is the number of

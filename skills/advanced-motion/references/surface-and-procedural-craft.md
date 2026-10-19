@@ -117,6 +117,30 @@ resolution and resource counts from inspection/profiling. Handle context creatio
 failure, loss/restoration and disposal with a usable static composition; retain DOM
 content and controls. Do not require the scene to load for a link to work.
 
+For an HTML-derived GPU overlay, capability-check every required API, not merely
+the presence of a canvas or GPU adapter. An experimental HTML-in-canvas path may
+depend on additional browser support; a demo running behind a flag does not prove
+normal target support. Do not require users to enable a flag to reach essential
+content. Keep the underlying controls semantically and visually usable when the
+effect is unavailable, rather than drawing a second inaccessible control surface.
+
+Probe state continuity through fallback and recovery: enter text, focus a field,
+then fail initialization or lose the context. The typed value, focus contract and
+accessible name should survive the visual layer's replacement. Reparenting or
+remounting DOM to prepare a texture can violate that contract even when the
+restored screenshot looks identical. Test pointer routing through the overlay.
+
+Resolution costs grow with area: doubling effective DPR quadruples pixel count
+before additional buffers/passes. Count live targets and rebuild/dispose them
+deliberately when quality settings change. Inspect background/offscreen suspension
+and live reduced-motion handling in the actual implementation.
+
+These are original integration observations from DavidHDev/canvas-ui at
+`a04a99b235299ee79a123a16ccb2e6cf9da74b6b`, notably Liquid's wrapper and renderer.
+Its license restricts redistribution of the components themselves in bundles;
+Mirket imports no component, shader, asset or source excerpt from that repository.
+Its effects are reference material, not a bundled renderer or a support promise.
+
 When the deliverable is video, choose exact size, duration, frame rate, alpha/audio
 requirements and an available exporter before authoring. Make each output frame
 depend on explicit frame time and seeded inputs; wait for required fonts/assets.

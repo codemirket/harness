@@ -9,10 +9,45 @@ import {once} from 'node:events';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {Server} from '@modelcontextprotocol/sdk/server/index.js';
+import {Client} from '@modelcontextprotocol/sdk/client/index.js';
+import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {LATEST_PROTOCOL_VERSION, ListToolsRequestSchema} from '@modelcontextprotocol/sdk/types.js';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+test('owned schema and availability rejections attest no dispatch; handler errors do not', {timeout:15000}, async () => {
+  const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-dispatch-contract-'));
+  const client = new Client({name:'dispatch-test', version:'1.0.0'});
+  const transport = new StdioClientTransport({command:process.execPath, args:[fileURLToPath(new URL('../server.mjs', import.meta.url))], env:{...process.env, MIRKET_DESIGN_GROUPS:'core', MIRKET_DESIGN_WORKSPACE:workspace}, stderr:'pipe'});
+  try {
+    await client.connect(transport);
+    const listing = await client.listTools();
+    const vector = listing.tools.find(tool => tool.name === 'vector_render');
+    assert.equal(vector.inputSchema.properties.output.pattern, '\\.svg$');
+    assert.equal(listing.tools.find(tool => tool.name === 'kroki_render')._meta['mirket/availability'].enabled, false);
+    for (const [name,args,code] of [
+      ['vector_render',{source:'source.svg',output:'wrong.png'},'invalid_arguments'],
+      ['vector_render',{source:'source.svg',output:'valid.svg',overwrite:true},'invalid_arguments'],
+      ['kroki_render',{source:'source.dot',diagram_type:'graphviz',output:'diagram.svg'},'disabled_group'],
+    ]) {
+      const result = await client.callTool({name,arguments:args});
+      assert.equal(result.isError,true);
+      assert.deepEqual(result.structuredContent.execution,{tool:name,state:'not_started',code});
+    }
+    assert.deepEqual(await fs.readdir(workspace),[], 'rejected calls must not enter a renderer or create outputs');
+    await fs.writeFile(path.join(workspace, 'occupied.svg'), 'untouched');
+    for (const extra of [{}, {overwrite:true, expected_sha256:'0'.repeat(64)}]) {
+      const result = await client.callTool({name:'vector_render',arguments:{source:'source.svg',output:'occupied.svg',...extra}});
+      assert.equal(result.isError,true);
+      assert.deepEqual(result.structuredContent.execution,{tool:'vector_render',state:'not_started',code:'output_preflight'});
+      assert.equal(await fs.readFile(path.join(workspace, 'occupied.svg'), 'utf8'),'untouched');
+    }
+    const failed = await client.callTool({name:'vector_render',arguments:{source:'missing.svg',output:'valid.svg'}});
+    assert.equal(failed.isError,true);
+    assert.equal(failed.structuredContent?.execution,undefined, 'handler failures must retain uncertain-effect semantics');
+  } finally { await client.close(); await fs.rm(workspace,{recursive:true,force:true}); }
+});
 async function within(promise, ms, label) {
   let timer;
   try {

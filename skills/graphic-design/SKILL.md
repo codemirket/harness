@@ -8,6 +8,16 @@ description: Create and refine visual identities, illustrations, posters, campai
 Deliver a composition that communicates at its intended size, with usable source
 and exports. Match the medium to the brief and verify the exported result.
 
+Design production starts from an inspected visual target: use supplied imagery
+or an available host image model before implementation. If the host has no usable
+image model, direct code composition is permitted; render and inspect one minimal
+proof before expansion. Freeze that target and compare current output against it.
+Gate composition, typography, assets and applicable responsive, behavior and motion
+checks. Allow at most two correction rounds and ten minutes per composition;
+preserve incomplete output and name defects at the limit. Do not relaunch workers
+or generate more samples to reset the budget. The
+[image production reference](references/image-production.md) covers the host handoff.
+
 ## Professional stance
 
 Make the intended message perceptible through composition and visual storytelling.
@@ -31,6 +41,10 @@ Identify the audience, message, desired response, placement, dimensions and
 deliverables. Recover these from the request and existing brand materials. Note
 language, copy, asset rights, accessibility needs and production constraints.
 Separate required facts and supplied brand decisions from open creative choices.
+For substantial original work, use [art direction and critique](references/art-direction-and-critique.md)
+to establish the visual idea and compare results against the brief, multiple
+relevant examples and construction knowledge. A single reference is not the
+quality standard. Do not require a reference hunt for a routine brand edit.
 Do not invent endorsements, metrics, customer logos or product details to make a
 design seem credible.
 
@@ -89,8 +103,18 @@ reusable brand asset pack, and a sample's geometry does not replace this brief's
 
 Read [production and proof](references/production-and-proof.md) for tool selection,
 rights, color, export and final inspection.
+Choose the medium before choosing an available renderer. For rich raster
+illustration, photography, painterly surfaces or image editing, check the host's
+actual image-generation/editing tool and its applicable guidance. The Mirket
+owned worker has no such producer; its model's reasoning tier does not add one.
+Use [image production](references/image-production.md) for that capability check
+and a bounded handoff. Never silently replace a requested rich illustration with
+primitive SVG, a diagram, a CSS sketch or an unexecuted generation prompt.
 
 - Use supplied/licensed raster imagery and Sharp for crop/resize preprocessing.
+  Host-generated imagery can supply the image layer when the available tool and
+  permissions support the brief. Sharp processes pixels; it does not generate
+  new subjects or reconstruct an illustration.
   Use `vector-art` for authored SVG illustrations, semantic scene groups and a
   native resvg preview; inspect that preview and read back the editable SVG.
   Keep exact business text in an editable layout.
@@ -103,6 +127,8 @@ rights, color, export and final inspection.
   the project's frontend tools.
 - For flows, C4, sequence, Vega-Lite and Excalidraw diagrams, preserve nodes,
   relationships, direction and conditions in source and render through Kroki.
+  Use [diagram semantics](references/diagram-semantics.md) for policy decisions,
+  queues, provenance, lifecycles and architecture changes before styling the graph.
 - Use Satori plus resvg for static text/image compositions using supported
   Flexbox and supplied TTF, OTF or WOFF fonts. Use Typst for paged documents and
   decks. A flattened image is not an editable deck, workbook or document.
@@ -128,6 +154,14 @@ Repair defects in the editable source, export again and reinspect affected
 outputs. Check required dimensions, transparency, color handling, fonts, margins,
 links and file format. Keep only useful source, final exports and requested
 evidence; remove owned temporary renders and scratch files.
+
+Judge concept, composition, construction, coherence and placement fit separately
+from file validity. Name visible weaknesses and revise the highest-impact ones.
+For important artwork use a separate critique pass, and independent review when
+useful and authorized. Compare revised pixels with the brief and multiple
+relevant references; neither a successful render nor the creator's favorable
+self-rating establishes quality. Stop at the agreed budget with honest limits
+if remaining defects cannot be resolved.
 
 Deliver the files with a concise statement of intended use, inspected outputs,
 asset/license constraints and any unverified production step. A screen preview

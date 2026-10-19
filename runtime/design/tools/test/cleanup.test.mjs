@@ -8,6 +8,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-cleanup-'));
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {rasterTransform, svgOptimize, vectorRender, browserInspect, validateBrowserActions, hyperframesSnapshotArgs, optimizeSvgBytes} = await import('../operations.mjs');
 const {withRenderSlot} = await import('../paths.mjs');
+const {withRequest} = await import('../request.mjs');
 test.after(() => fs.rm(workspace, {recursive:true, force:true}));
 
 test('mechanical raster transforms need no tokens; all output codecs decode with bounded dimensions', async () => {
@@ -51,15 +52,54 @@ test('editable vector output retains semantic groups and yields a matching nativ
   assert.throws(() => optimizeSvgBytes('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>'),/Unsafe SVG/);
 });
 
-test('native render admission refuses competing work and releases after failures', async () => {
+test('native render admission serializes competing work and releases after failures', async () => {
   let release, entered;
+  const order = [];
   const ready = new Promise(r => {entered=r;});
-  const first = withRenderSlot(async () => { entered(); await new Promise(r => {release=r;}); });
+  const first = withRenderSlot(async () => { order.push('first'); entered(); await new Promise(r => {release=r;}); order.push('released'); });
   await ready;
-  try { await assert.rejects(withRenderSlot(() => assert.fail('second renderer started')), /busy/); }
-  finally { release(); await first; }
+  const second = withRenderSlot(async () => { order.push('second'); return 17; });
+  const timer = setTimeout(release, 100);
+  try { assert.equal(await second, 17); }
+  finally { clearTimeout(timer); release(); await first; }
+  assert.deepEqual(order, ['first', 'released', 'second']);
   await assert.rejects(withRenderSlot(async () => {throw Error('renderer failure');}),/renderer failure/);
   assert.equal(await withRenderSlot(async () => 42),42);
+});
+
+test('native vector previews retain ordinary text without caller-supplied fonts', async () => {
+  const families = ['Georgia, serif', 'serif', 'sans-serif', 'monospace'];
+  const source = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="160"><rect width="300" height="160" fill="white"/>${families.map((family, i) => `<text x="10" y="${30 + i * 40}" font-family="${family}" font-size="24" fill="black">I II III 123</text>`).join('')}</svg>`;
+  await fs.writeFile(path.join(workspace, 'text.svg'), source);
+  const result = await vectorRender({source:'text.svg', output:'text-preview.svg', width:300, height:160});
+  const {data, info} = await sharp(path.join(workspace, result.preview.path)).removeAlpha().raw().toBuffer({resolveWithObject:true});
+  for (let row = 0; row < families.length; row++) {
+    let ink = 0;
+    for (let y = row * 40; y < (row + 1) * 40; y++) {
+      for (let x = 0; x < info.width; x++) if (data[(y * info.width + x) * info.channels] < 128) ink++;
+    }
+    assert.ok(ink > 100, `${families[row]} text disappeared from the native preview`);
+  }
+  assert.match(await fs.readFile(path.join(workspace, 'text-preview.svg'), 'utf8'), /<text/);
+});
+
+test('queued render cancellation and admission deadline never start a renderer', async () => {
+  let release, entered;
+  const ready = new Promise(r => { entered = r; });
+  const first = withRenderSlot(async () => { entered(); await new Promise(r => { release = r; }); });
+  await ready;
+  let dispatched = 0;
+  try {
+    await assert.rejects(withRenderSlot(() => { dispatched++; }, {waitMs:50}), /timed out before operation started/);
+    const controller = new AbortController();
+    const waiting = withRequest(controller.signal, () => withRenderSlot(() => { dispatched++; }));
+    const timer = setTimeout(() => controller.abort(), 50);
+    try { await assert.rejects(waiting, /cancelled before operation started|abort/i); }
+    finally { clearTimeout(timer); }
+    assert.equal(dispatched, 0);
+  } finally { release(); await first; }
+  // A cancelled waiter must not later acquire and occupy the slot.
+  assert.equal(await withRenderSlot(async () => 'available', {waitMs:1000}), 'available');
 });
 
 test('browser actions and timing reject unbounded or executable instructions', () => {

@@ -182,6 +182,25 @@ pub struct Definition {
     pub input_schema: Value,
 }
 
+fn require_available(raw: &Value, assigned: &[String]) -> Result<()> {
+    let name = raw["name"].as_str().context("design tool lacks name")?;
+    if assigned
+        .iter()
+        .any(|tool| tool == &format!("design/{name}"))
+        && let Some(availability) = raw.pointer("/_meta/mirket~1availability")
+    {
+        ensure!(
+            availability["enabled"].as_bool() == Some(true),
+            "assigned tool design/{name} is unavailable (group {}); no model was dispatched. Inspect mirket package status, then explicitly stop/start the required group: {}",
+            availability["group"].as_str().unwrap_or("unknown"),
+            availability["start"]
+                .as_str()
+                .unwrap_or("inspect package configuration")
+        );
+    }
+    Ok(())
+}
+
 fn design_check_passed(name: &str, result: &rmcp::model::CallToolResult) -> bool {
     result.is_error != Some(true)
         && (name != "design/odiff_compare"
@@ -241,8 +260,8 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             "inspect_image",
             Tier::T3Architect,
             true,
-            "Inspect an existing PNG/JPEG/WebP image from the project or fixed design workspace. Image is attached to the next inference step; inspect it before completion.",
-            json!({"path":{"type":"string"}}),
+            "Inspect PNG/JPEG/WebP pixels from the project or fixed design workspace. Use purpose reference for a stable brand/reference image, comparison for a saved alternative, or artifact for current output. At most two references receive retention priority within four images/8 MiB. Retained pixels are context, not verification after a later mutation.",
+            json!({"path":{"type":"string"},"purpose":{"type":"string","enum":["artifact","reference","comparison"],"default":"artifact"}}),
             json!(["path"]),
         ),
     ];
@@ -258,6 +277,7 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             .as_array()
             .context("design package lacks schemas")?
         {
+            require_available(raw, names)?;
             let name = raw["name"].as_str().context("design tool lacks name")?;
             let policy = policies
                 .get(name)
@@ -300,6 +320,21 @@ pub fn file(project: &Path, relative: &str) -> Result<PathBuf> {
 #[serde(deny_unknown_fields)]
 struct FileArgs {
     path: String,
+}
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, Eq, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum ImagePurpose {
+    #[default]
+    Artifact,
+    Reference,
+    Comparison,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ImageArgs {
+    path: String,
+    #[serde(default)]
+    purpose: ImagePurpose,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -363,6 +398,9 @@ pub fn may_mutate(name: &str) -> bool {
             ))
 }
 fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
+    if design_rejected_before_dispatch(name, result) {
+        return false;
+    }
     if name == "design/odiff_compare" {
         return result.is_error == Some(true)
             || result
@@ -372,6 +410,44 @@ fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
                 .is_none_or(|diff| !diff.is_null());
     }
     may_mutate(name)
+}
+
+fn design_rejected_before_dispatch(name: &str, result: &rmcp::model::CallToolResult) -> bool {
+    // Only owned direct tools issue this contract. Forwarded Penpot content or
+    // an error message alone cannot attest that no mutation was dispatched.
+    let Some(native) = name.strip_prefix("design/") else {
+        return false;
+    };
+    if !matches!(
+        native,
+        "tokens_compile"
+            | "static_render"
+            | "browser_screenshot"
+            | "kroki_render"
+            | "hyperframes_render"
+            | "typst_compile"
+            | "raster_transform"
+            | "vector_render"
+            | "svg_optimize"
+            | "odiff_compare"
+    ) || result.is_error != Some(true)
+    {
+        return false;
+    }
+    result.structured_content.as_ref().is_some_and(|value| {
+        let execution = &value["execution"];
+        execution["tool"] == native
+            && execution["state"] == "not_started"
+            && matches!(
+                execution["code"].as_str(),
+                Some(
+                    "invalid_arguments"
+                        | "disabled_group"
+                        | "render_admission"
+                        | "output_preflight"
+                )
+            )
+    })
 }
 pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> Result<ToolResult> {
     let mut image = None;
@@ -455,7 +531,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             json!({"path":a.path,"sha256":util::sha256(content.as_bytes())})
         }
         "inspect_image" => {
-            let a: FileArgs = serde_json::from_value(args)?;
+            let a: ImageArgs = serde_json::from_value(args)?;
             let path = readable_file(paths, project, &a.path)?;
             let bytes = util::read_bounded(&path, 4 * 1024 * 1024)?;
             let png = bytes.starts_with(b"\x89PNG\r\n\x1a\n");
@@ -470,7 +546,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                 path: image.as_ref().unwrap().clone(),
                 sha256: util::sha256(&bytes),
             });
-            json!({"image_attached":true,"path":a.path,"sha256":util::sha256(&bytes)})
+            json!({"image_attached":true,"path":a.path,"sha256":util::sha256(&bytes),"purpose":a.purpose})
         }
         _ if name.starts_with("design/") => {
             let result = crate::package_mcp::call(
@@ -563,6 +639,61 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn disabled_assigned_design_tools_fail_preflight_without_blocking_other_work() {
+        let raw = json!({"name":"kroki_render","_meta":{"mirket/availability":{"enabled":false,"group":"diagrams","start":"mirket package start design --group diagrams"}}});
+        assert!(require_available(&raw, &["design/vector_render".into()]).is_ok());
+        let error = require_available(&raw, &["design/kroki_render".into()])
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("no model was dispatched") && error.contains("--group diagrams"));
+        let mut ready = raw.clone();
+        ready["_meta"]["mirket/availability"]["enabled"] = json!(true);
+        assert!(require_available(&ready, &["design/kroki_render".into()]).is_ok());
+    }
+
+    #[test]
+    fn only_bound_owned_predispatch_rejections_can_clear_mutation_uncertainty() {
+        use rmcp::model::CallToolResult;
+        let receipt = json!({"execution":{"tool":"vector_render","state":"not_started","code":"invalid_arguments"}});
+        assert!(!design_mutates(
+            "design/vector_render",
+            &CallToolResult::structured_error(receipt.clone())
+        ));
+        let mut conflict = receipt.clone();
+        conflict["execution"]["code"] = json!("output_preflight");
+        assert!(!design_mutates(
+            "design/vector_render",
+            &CallToolResult::structured_error(conflict)
+        ));
+        assert!(design_mutates(
+            "design/vector_render",
+            &CallToolResult::structured(receipt.clone())
+        ));
+        assert!(design_mutates(
+            "design/browser_screenshot",
+            &CallToolResult::structured_error(receipt.clone())
+        ));
+        let mut remote = receipt.clone();
+        remote["execution"]["tool"] = json!("execute_code");
+        assert!(design_mutates(
+            "design/execute_code",
+            &CallToolResult::structured_error(remote)
+        ));
+        for (key, value) in [("state", "started"), ("code", "renderer_failure")] {
+            let mut altered = receipt.clone();
+            altered["execution"][key] = json!(value);
+            assert!(design_mutates(
+                "design/vector_render",
+                &CallToolResult::structured_error(altered)
+            ));
+        }
+        assert!(design_mutates(
+            "design/vector_render",
+            &CallToolResult::structured_error(json!({"message":"operation did not start"}))
+        ));
+    }
     #[tokio::test]
     async fn exact_edits_are_digest_bound_and_transactional() {
         let home = tempfile::tempdir().unwrap();

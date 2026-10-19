@@ -148,11 +148,41 @@ Workflow IDs and reasons are a structured host interpretation of the task, not
 proof of semantic fit or authorization. Mirket cannot intercept direct native
 host tools or infer human approval from role text.
 
+An optional explicit `model_selection` narrows live discovery to one target/model
+and a supported effort. It is applied before capability probes, ranking and
+inference, preserves every task/tool floor and prevents cross-model failover.
+It does not create a provider, assert capabilities or inherit the host's choice
+implicitly. Omitted selection retains the ordinary ranking policy.
+
 Owned source writes accept either whole-file content or bounded, unique exact
 replacements. Both require the observed digest for an existing file and subsequent
 readback. Responses commentary is never dispatched as an action: the complete
 output must validate before its single final action can execute. Generated Odiff
 diagnostics are recorded as artifacts and invalidate prior mutation verification.
+
+Visual context and verification have separate lifecycles. Up to four inspected
+images (eight MiB aggregate) survive a mutation when their bytes are unchanged.
+Two reference images can receive eviction priority, but the latest inspected
+image always gets room even when large references exhaust the byte budget.
+Changed/missing pixels are removed and traced; unchanged previous output remains
+comparison context, never proof of a new source revision. Mutation still resets
+verification. External changes detected before inference fail closed.
+
+Design-production workflows require an explicit image-to-code target or a
+host-declared code fallback when no usable image model is available.
+`src/router/design_gate.rs` enforces inspected target ordering, a frozen target,
+current rendered evidence, applicable quality-check outcomes and finite review
+counts. The inference loop enforces a 600-second design execution deadline.
+No target mutation can precede the image-to-code target review; fallback can
+compose a minimal proof first. These checks enforce evidence structure, not
+semantic quality or truthful capability testimony. See [visual production](visual-quality.md).
+
+Rich raster generation/editing is currently a host-owned capability. The host
+must discover and invoke an available producer under its permissions, then pass
+saved assets into the design workflow. Mirket's isolated workers do not gain
+ambient image tools, providers or shell access. Graphic-design guidance separates
+medium selection, art direction, multi-reference critique and export verification;
+none of these mechanisms alone establishes aesthetic quality or user acceptance.
 
 The single design package receives a client entry running `mirket package serve
 design`. Its direct tool schemas use paths relative to one fixed `/workspace`
@@ -170,6 +200,13 @@ image pins and workspace sharing must be checked during startup and status.
 
 Runtime readiness, actual invocation, artifact correctness and human acceptance
 are separate facts. See [packages](packages.md) for target-specific contracts.
+
+The router checks assigned-tool availability before inference and recognizes
+tool-bound pre-dispatch rejection receipts only from owned direct design tools.
+Uncertain mutations still stop without weakening artifact verification. Inference
+transport failures may retry the same selected model at most twice per run, with
+a one-second backoff and within the existing turn bound. No tool action is replayed
+by that retry; partial, identity-mismatched or invalid model output is not accepted.
 
 ## Extension boundary
 

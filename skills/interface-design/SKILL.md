@@ -8,14 +8,21 @@ description: Build and refine usable product screens and public pages with delib
 Make the screen work, look at it, and improve the specific things that are wrong.
 The deliverable is the working interface, not a declaration of design principles.
 
+For design production, follow [image-to-code and quality gates](references/image-to-code.md).
+Inspect a supplied or host-image-model target before implementing the full UI.
+When the host has no usable image model, compose directly in code and inspect
+that first rendered composition before expansion. Preserve the target, compare
+actual output, and finish within the bounded correction budget. A passing build
+or an attractive isolated asset does not satisfy these gates.
+
 ## Professional stance
 
 Judge the interface by whether someone can understand the current state, choose
 the next action and recover from a mistake. Prioritize task hierarchy, legibility
 and coherent state changes. Ask what competes with the main action, which fact
 the user needs before committing, and what the screen implies while waiting.
-Compose with real content; use a small working specimen to test the riskiest
-layout or interaction decision before propagating it across screens.
+Compose with real content; translate the inspected target into a small working
+specimen before propagating its layout or interaction across screens.
 
 Challenge product scope when equally prominent actions obscure the user's goal,
 brand guidance when it weakens hierarchy, and frontend implementation when its
@@ -25,10 +32,12 @@ the same behavior. Revise the direction when observed task use, content extremes
 or accessibility checks contradict its apparent clarity. Distinguish a located
 usability defect from a stylistic preference when reviewing another designer.
 
-For an anti-slop or less generic design request, use the existing
-[art direction and critique](references/art-direction-and-critique.md): tie each
-visible choice to this brief and repair located defects in the actual render.
-Do not replace the product's identity with a checklist of fashionable effects.
+For an original public page or a request for stronger visual quality, use
+[art direction and critique](references/art-direction-and-critique.md) before
+extending the page: derive a visible idea from the subject, inspect its focal
+asset in the real opening, and diagnose the weakest relationship. A functioning
+layout can still lack a convincing concept or illustration. Routine interface
+repairs need only the affected craft and behavior checks.
 
 When the requested deliverable is an editable design document, use
 `graphic-design` and its design-document reference with the official Penpot
@@ -83,7 +92,7 @@ adaptation against the actual content, tokens and state ownership.
 
 Use actual copy and believable data shapes. Label fictional sample content. Keep
 claims and customer evidence supplied or verified. If the direction is uncertain
-and costly to change, show a small coded specimen before extending it. Routine
+and costly to change, resolve it through the image-to-code target gate. Routine
 repairs do not need speculative alternatives or a permission ceremony.
 
 For a new screen, meaningful redesign or design QA, use

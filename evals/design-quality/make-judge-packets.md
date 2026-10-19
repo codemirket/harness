@@ -34,7 +34,7 @@ checks that observer source matches the frozen observer, and artifact file maps
 match actual sealed receipts before and after collection.
 
 ```sh
-python3 evals/design-quality/make-judge-packets.py build --replay-manifest PATH
+python3 evals/design-quality/make-judge-packets.py --experiment-root .mirket/my-study/experiment build --replay-manifest PATH
 ```
 
 Only give judges their own `judge-packet-setup/packets/A` or `packets/B`
@@ -50,7 +50,7 @@ Each actual judge fills all sixteen score records, with two located visual
 observations per dimension, before making arm guesses. Bind that complete lock:
 
 ```sh
-python3 evals/design-quality/make-judge-packets.py lock-scores --judge A --input ACTUAL_SCORE_LOCK_INPUT
+python3 evals/design-quality/make-judge-packets.py --experiment-root .mirket/my-study/experiment lock-scores --judge A --input ACTUAL_SCORE_LOCK_INPUT
 ```
 
 This validates scores, evidence and schedule, saves a new immutable score file,
@@ -58,7 +58,7 @@ and only then releases `guess-forms/A.json`. The actual judge fills the guesses
 and confidence 0–100 in a separate file, binding the existing lock. Then:
 
 ```sh
-python3 evals/design-quality/make-judge-packets.py merge-guesses --judge A --input ACTUAL_GUESS_INPUT
+python3 evals/design-quality/make-judge-packets.py --experiment-root .mirket/my-study/experiment merge-guesses --judge A --input ACTUAL_GUESS_INPUT
 ```
 
 Repeat for B. `judgments/A.json` and `B.json` follow the exact five-dimension

@@ -50,6 +50,16 @@ permissions.
 
 ## Execute toward evidence
 
+- Design work follows image-to-code: inspect a supplied target or create one
+  with the host's image model before implementation. If the host has no usable
+  image model, compose directly in code, then render and inspect that minimal
+  composition before expanding it. Compare current output with the frozen target;
+  gate composition, typography, assets, responsive layout, behavior and requested
+  motion. Use the interface-design image-to-code reference for the contract.
+  Allow at most two correction rounds and ten minutes per bounded composition;
+  report unresolved defects at the limit. Do not relaunch or run sample campaigns
+  to reset the budget. Native host tools remain host-controlled.
+
 - Establish the outcome, constraints, owner and observable completion. Investigate
   before asking; ask only for a decision or authorization that changes the work.
 - Handle routine, single-session work directly. Use durable task state only when

@@ -64,6 +64,28 @@ current versus intended behavior, evidence, exact proposed edit or open choice,
 affected consumers and a reproducible check. Use the existing task record rather
 than imposing a report format.
 
+## Verify paired roles and real states
+
+A semantic token name does not establish a good pairing. Trace foreground and
+background together through the actual variant, theme and state. For example,
+check a secondary button's label against its resolved surface in default, hover,
+focus and disabled states that the product supports. Include opacity, composited
+backgrounds and overlays when measuring contrast; testing two isolated token
+literals may miss the rendered combination. Apply the appropriate standard and
+exceptions to the actual content, rather than treating every visual element alike.
+
+Verify the component consuming those roles. A styled modal that cannot restore
+focus, a menu whose nested Escape closes the whole dialog, or a loading button
+that loses its label is not repaired by correct color tokens. Use the project's
+semantic primitives and behavior tests; inspect the composed screen as well.
+
+For implementation handoff, describe state-specific differences where they
+matter: trigger and dismissal, content extremes, loading/failure/empty behavior,
+breakpoint changes and source of measurements. Mark unknowns explicitly. A
+screenshot can suggest an approximate spacing relationship, but cannot establish
+an exact token, hidden state, animation curve or accessibility behavior. Keep
+estimates separate from measured values and accepted requirements.
+
 ## Worked counterexample
 
 Suppose `legacy/tokens.css` defines `--action: violet`, but the app imports
@@ -88,3 +110,14 @@ Adapted selectively in original wording from ibelick/ui-skills at
 Thibeaut; notice accompanies installed guidance. Remote registry entries are
 outside this adaptation. Format mandates, implementation refusal and exclusions
 of rendered, functional or accessibility evidence are intentionally not adopted.
+
+Paired-role and component-state review also draws selectively on public
+marvkr/better-design source at `e146625f3041ef8089a2013587435fc763dc3b15`
+(MIT): Linear theme declarations and the modal transition implementation/tests.
+No hosted review engine, theme pack, brand assets or MCP connection is included.
+State-specific handoff adapts anthropics/knowledge-work-plugins at
+`33eeda1e8fd856455b05479d13a0f85b5f803744`,
+`design/skills/design-handoff/SKILL.md` (Apache-2.0).
+Modified by Mirket: source-backed measurements and existing project state
+contracts replace exhaustive templates and implied connector actions. Applicable
+license texts accompany installed guidance.

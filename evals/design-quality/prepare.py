@@ -8,15 +8,12 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'evals/design-quality'
-OWNER = ROOT / '.mirket/implementation/design-quality-2026-10-15'
-EXP = OWNER / 'experiment'
+OWNER = EXP = None  # Set only from the caller's required experiment root.
 ARMS = ['baseline', 'improved']
 
 
 def select_experiment_root(value):
     global OWNER, EXP
-    if value is None:
-        return
     parts = value.split('/')
     if not value or Path(value).is_absolute() or any(x in ('', '.', '..') for x in parts):
         raise ValueError('--experiment-root must use normal project-relative components')
@@ -285,7 +282,7 @@ def collect():
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--experiment-root', help='Normal project-relative experiment directory; its parent owns development, contexts and dev-dispatch (default: current private run)')
+    p.add_argument('--experiment-root', required=True, help='Normal project-relative experiment directory; its parent owns development, contexts and dev-dispatch')
     sub=p.add_subparsers(dest='command',required=True)
     sub.add_parser('initialize')
     f=sub.add_parser('freeze');f.add_argument('--improved-context',type=Path,required=True)

@@ -13,6 +13,9 @@ pub struct Workflow {
     pub role: String,
     /// Suitable explicit perspectives can replace this workflow's default expertise.
     pub alternative_roles: Vec<String>,
+    /// Requires the bounded image-to-code contract at the owned worker boundary.
+    #[serde(default)]
+    pub design_production: bool,
     pub min_tier: crate::router::policy::Tier,
     pub tools: Vec<String>,
     pub required_tools: Vec<String>,
@@ -100,7 +103,7 @@ impl Catalog {
         self.workflows()
             .iter()
             .filter(|workflow| role.is_none_or(|role|workflow.role == role || workflow.alternative_roles.iter().any(|candidate|candidate == role)))
-            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
+            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"design_input_required":workflow.design_production,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
             .collect()
     }
 }

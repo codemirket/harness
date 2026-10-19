@@ -176,6 +176,14 @@ Use normal
 playback and the saved frames for inspection; a timing assertion or visible static
 fallback is not a performance or human visual-acceptance result.
 
+For illustration changes, `evals/illustration-quality/README.md` supplies varied
+illustration, asset-family, diagram and composition briefs using the existing
+role-eval report contract. Its separate craft review compares concept,
+composition, construction, coherence and placement fit against the brief and
+multiple relevant examples. Templates are not observed trials; freeze actual
+producer/model settings and preserve failures before evaluating a quality claim.
+
+
 ## Add a local MCP package
 
 Use the single `design` package registry and setup flow. Its definition

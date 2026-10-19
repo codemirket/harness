@@ -99,26 +99,62 @@ export async function readFile(name, max = MAX_INPUT) {
 export async function readJson(name, max = MAX_INPUT) {
   return JSON.parse((await readFile(name, max)).toString('utf8'));
 }
-async function publicationLock(name, fn) {
+// Read-only output preflight. Publication repeats these revision checks after
+// rendering, since another process can change the file in between.
+export async function assertOutputReady(args) {
+  await workspacePath(args.output, {missing:true});
+  let before;
+  try { before = await readFile(args.output, MAX_OUTPUT); }
+  catch (error) { if (!String(error.message).startsWith('Missing workspace path:')) throw error; }
+  if (before !== undefined && args.overwrite !== true) throw Error(`Output exists; pass overwrite=true: ${args.output}`);
+  if (before !== undefined && args.expected_sha256 !== sha256(before)) throw Error(`Output revision mismatch: ${args.output}`);
+  if (before === undefined && args.expected_sha256) throw Error(`Output does not exist for expected_sha256: ${args.output}`);
+}
+async function publicationLock(name, fn, waitMs = 0) {
+  checkRequest();
   const root = await workspacePath('.mirket-design/locks', {kind:'directory', missing:true, createParents:true});
   await fs.mkdir(root, {recursive:true, mode:0o700});
   const lock = path.join(root, sha256(Buffer.from(name)) + '.lock');
-  const child = spawn(guard, ['lock', lock], {stdio:['pipe','pipe','pipe'], env:{LANG:'C.UTF-8'}});
+  const child = spawn(guard, [waitMs ? 'lock-wait' : 'lock', lock], {stdio:['pipe','pipe','pipe'], env:{LANG:'C.UTF-8'}});
   const done = new Promise(resolve => { child.once('close', resolve); child.once('error', () => resolve(-1)); });
+  let acquired = false;
   try {
     await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => { child.kill('SIGKILL'); reject(Error('Publication lock timed out')); }, 3000);
-      child.once('error', error => { clearTimeout(timer); reject(error); });
-      child.once('close', () => { clearTimeout(timer); reject(Error(`Output publication is busy: ${name}`)); });
-      child.stdout.once('data', data => { clearTimeout(timer); if (data.toString() === 'locked\n') resolve(); else reject(Error('Invalid publication lock response')); });
+      const signal = requestSignal();
+      let response = '', settled = false;
+      const finish = error => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        signal?.removeEventListener('abort', onAbort);
+        if (error) { child.kill('SIGKILL'); reject(error); }
+        else { acquired = true; resolve(); }
+      };
+      const onAbort = () => finish(Error('Publication lock cancelled before operation started'));
+      const timer = setTimeout(() => finish(Error(`Publication lock timed out before operation started: ${name}`)), waitMs || 3000);
+      signal?.addEventListener('abort', onAbort, {once:true});
+      if (signal?.aborted) onAbort();
+      child.once('error', finish);
+      child.once('close', () => finish(Error(`Output publication is busy: ${name}`)));
+      child.stdout.on('data', data => {
+        response += data.toString();
+        if (response === 'locked\n') finish();
+        else if (!'locked\n'.startsWith(response)) finish(Error('Invalid publication lock response'));
+      });
     });
     checkRequest();
     return await fn();
-  } finally { child.stdin.destroy(); await done; }
+  } finally {
+    child.stdin.destroy();
+    if (!acquired) child.kill('SIGKILL');
+    await done;
+  }
 }
-export async function withRenderSlot(fn) {
+export async function withRenderSlot(fn, {waitMs = 30000} = {}) {
   // Cross-process admission: desktop clients share one native renderer budget.
-  return publicationLock('@mirket-native-render', fn);
+  // Wait within the existing tool deadline; cancellation never dispatches fn.
+  if (!Number.isInteger(waitMs) || waitMs < 1 || waitMs > 30000) throw Error('Invalid render admission deadline');
+  return publicationLock('@mirket-native-render', fn, waitMs);
 }
 export async function publish(name, bytes, options = {}) {
   assertRelative(name);

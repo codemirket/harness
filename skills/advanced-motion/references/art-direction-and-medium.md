@@ -30,7 +30,10 @@ directions, not default aesthetics. Change hierarchy, material and rhythm when a
 second direction is requested; a palette swap alone is not a new concept.
 
 Build a static composition and one representative animated beat first. Inspect
-them in the page before extending a long sequence. Preserve an established brand
+them in the page before extending a long sequence. Judge the focal art at rest,
+the subject's isolated movement and the complete composition separately. A good
+page entrance cannot compensate for a weak drawing or an inert requested subject.
+Preserve an established brand
 unless changing it is part of the task. A complex scene is not required for an
 ordinary usability or visual-spacing repair.
 
@@ -125,58 +128,8 @@ a router. For video in Mirket, use HyperFrames lint, snapshot and render, then
 inspect the encoded output. Verify its supported SVG features against the actual
 tool schema and rendered frames.
 
-## Plan connected layers before preparing assets
-
-Use this when a scene needs independently moving image planes. A static image,
-simple DOM composition or existing footage may already satisfy the brief; depth
-does not require a fixed number of layers or a more elaborate renderer.
-
-Record only the relationships the scene needs:
-
-| Part | Motion responsibility | Contact or occlusion invariant |
-| --- | --- | --- |
-| Environment | Establish distance with restrained movement or none | A clean plate fills every area uncovered by moving foreground parts |
-| Subject and support | Carry the focal action | Feet, wheels or a product base stay attached to their intended support unless separation is the action |
-| Foreground | Reveal or frame the subject | Its travel never accidentally hides essential copy or exposes unfinished edges |
-| Copy and controls | Preserve meaning and usable actions | Semantic DOM remains readable and operable independently of decorative progress |
-
-For a simple grounded cutout, name its contact point in source coordinates and
-the corresponding point on its support. A common contact pivot and shared
-translation can keep that point aligned while the planes scale differently.
-Separate layout placement from expressive transforms and verify the **rendered**
-contact after crop, transform order and responsive changes. A shared CSS percentage
-origin is insufficient when assets have different bounds. Perspective, rotation
-or changing geometry may require another construction; do not force a flat pivot
-model onto a real 3D relationship.
-
-For example, a lamp on a plinth can grow in apparent scale as the environment
-recedes while its base remains on the plinth. The opening already shows the product
-and description; the midpoint reveals the material; the exit settles into the
-details. Inspect whether this relationship helps the brief before adding movement.
-This is an illustrative construction, not a prescribed hero or brand direction.
-
-Have `graphic-design` prepare registered layers, real alpha and the clean plate
-using its production-and-proof reference. Retain the editable/master assets and
-their contact/crop coordinates with the delivery exports. A generated checkerboard
-is not transparency, and separately generated layers may disagree in light or
-perspective even when their prompts match.
-
-Keep a complete poster or static composition until all **required** layers are
-decoded and aligned. Optional atmosphere must not block readiness. If a required
-layer fails, retain the complete fallback rather than showing half a scene or a
-duplicate subject. Reuse the lifecycle ownership in scene mechanics so late loads
-cannot reveal a replaced scene. Essential text and actions stay available throughout.
-
-At narrow sizes reconsider crop, contact coordinates, typography, stacking order
-and travel together. Inspect opening, an intermediate beat and resolved exit in
-both directions, including delayed/failed layers and geometry changes. Look for
-floating contacts, duplicated subjects, newly exposed holes, halos and occlusion
-of copy. Reduced motion uses the readable resting composition without gratuitous
-pinned space. These observations establish the inspected states, not human approval.
-
-Technique adapted from Nate Herk's [scroll-craft hero-depth guidance](https://github.com/nateherkai/scroll-craft/blob/75d81f74e83692add18cd7a8a8e078b8a887a579/plugins/nateherk-design/skills/scroll-craft/references/hero-depth.md)
-and [layer contract](https://github.com/nateherkai/scroll-craft/blob/75d81f74e83692add18cd7a8a8e078b8a887a579/plugins/nateherk-design/skills/scroll-craft/references/approved-collection.md),
-MIT; no mandatory depth, layer count, provider or author example assets retained.
+For independently moving image planes, read [connected layers](connected-layers.md)
+for registration, contact, clean plates, readiness and responsive recomposition.
 
 ## Write a short motion score
 
@@ -198,6 +151,22 @@ spatial relationship. Do not stretch page length or hide essential text to make 
 timeline easier to demonstrate.
 
 ## Critique the relationship, then revise
+
+Diagnose the cause before changing every parameter:
+
+| Observed weakness | Useful first experiment |
+| --- | --- |
+| The object feels weightless | Keep the camera and decoration still; inspect contact, acceleration and braking of the subject alone |
+| The action is hard to read | Inspect the preparation, peak and settled silhouettes; change pose, occlusion or staging before adding effects |
+| Everything feels equally important | Remove a competing motion temporarily and compare attention at normal speed |
+| Motion feels mechanical despite elaborate easing | Check path, pivot, part timing and follow-through; changing duration alone may preserve the defect |
+| The artwork is weak even when paused | Repair its construction or choose the appropriate asset medium before tuning choreography |
+
+Treat these as isolated hypotheses, then restore the scene and check the total
+effect. For an unsettled tempo, compare a restrained and a more energetic reading
+of the same action at equivalent scale. Do not change artwork, layout and timing
+simultaneously and attribute the result to easing. Preserve useful rest; movement
+counts and continuous activity are not measures of expressive quality.
 
 Watch ordinary playback before seeking. Does attention move in the intended order?
 Does the motion feel like the chosen material? Are pauses long enough to read but

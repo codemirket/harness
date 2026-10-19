@@ -1,8 +1,8 @@
 # Reuse with caller-owned evidence
 
 These helpers launch no models, install no runtime and reconstruct no history.
-Their default directory is the current private study. To use a different run,
-pass a normal project-relative experiment directory **before** the subcommand:
+They require a caller-selected directory and never default to a previous private
+study. Pass a normal project-relative experiment directory **before** the subcommand:
 
 ```sh
 python3 evals/design-quality/prepare.py --experiment-root .mirket/my-study/experiment initialize

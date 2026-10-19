@@ -10,7 +10,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'evals/design-coverage'
-TASK = ROOT / '.mirket/implementation/design-coverage-2026-10-15/evaluation'
+TASK = None  # Set only from the caller's required evaluation root.
 CASES = ['development-checker', 'field-library', 'cue-review', 'native-handover']
 ARMS = ['baseline', 'assisted']
 
@@ -279,7 +279,7 @@ def collect():
 def main():
     global TASK
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--evaluation-root', help='Caller-owned directory inside this project; default is the ignored 2026-10-15 pilot directory')
+    parser.add_argument('--evaluation-root', required=True, help='Caller-owned evaluation directory inside this project')
     sub = parser.add_subparsers(dest='command', required=True)
     snapshot = sub.add_parser('snapshot-baseline', help='Capture explicitly supplied verified historical sources; never infer a baseline from current guidance')
     snapshot.add_argument('--baseline-source', required=True)
@@ -295,11 +295,10 @@ def main():
     seal_parser.add_argument('--note', default='')
     sub.add_parser('collect', help='Collect all eight existing receipts and independent grades into role-eval schema v1')
     args = parser.parse_args()
-    if args.evaluation_root:
-        selected = Path(args.evaluation_root)
-        TASK = (selected if selected.is_absolute() else ROOT / selected).resolve()
-        if not TASK.is_relative_to(ROOT) or TASK == ROOT:
-            raise ValueError('Existing role-eval bindings require an evaluation root inside the selected project')
+    selected = Path(args.evaluation_root)
+    TASK = (selected if selected.is_absolute() else ROOT / selected).resolve()
+    if not TASK.is_relative_to(ROOT) or TASK == ROOT:
+        raise ValueError('Existing role-eval bindings require an evaluation root inside the selected project')
     if args.command == 'snapshot-baseline':
         snapshot_baseline(args.baseline_source, args.interface_source, args.provenance)
     elif args.command == 'public-suite':

@@ -4,6 +4,35 @@ Read the sections matching the scene. These worked mechanics are native examples
 adapt them to the existing API and component lifecycle. Parameters come from the
 storyboard and rendered tuning, not a universal duration table.
 
+## Animate the requested subject
+
+Choose the representation from what must change. Moving a complete photograph
+can demonstrate an entrance or camera-like framing; animating an object inside
+that photograph requires separable parts, a deformation model or a motion asset.
+Background waves, particles and text reveals do not supply that missing movement.
+For an accepted visual direction, retain its material and silhouette while making
+the required parts independently controllable.
+
+For a layered raster or vector subject, record source coordinates, moving-part
+masks, pivots, attachment points, occlusion order and what fills newly exposed
+areas. Avoid duplicated parts, baked shadows that move with the wrong layer,
+empty holes and arbitrary perspective changes. A shallow layered composition is
+not a full 3D model; use it only within its supported viewpoints. Image production
+or editing uses the host's actual image capability. Existing artwork can also
+serve as a texture in an authored browser rig without replacing its materials.
+
+Give one controller ownership of the subject's pose. A product may assemble,
+respond to a control, then rest; a character may articulate around fixed joints.
+Tie a claimed audio/data response to that real input. Distinguish a readable
+stylization from physical simulation. Keep pause, reversal, reduced motion and
+offscreen behavior coherent with the same pose state.
+
+The discriminating review is a crop of normal playback containing only the
+subject: can the requested action still be identified without background effects
+or the implementation explanation? Inspect transitions and maximum excursions
+at actual placement size, then the complete page. Retain the moving result or
+time-ordered frames as evidence; a resting screenshot alone cannot demonstrate it.
+
 ## A shared clock, with intentional overlap
 
 Describe a sequence as beats and property owners before writing effects. For a

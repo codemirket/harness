@@ -25,13 +25,17 @@ static void kill_children(void) {
   fclose(f);
 }
 int main(int argc, char **argv) {
-  if (argc == 3 && strcmp(argv[1], "lock") == 0) {
+  if (argc == 3 && (strcmp(argv[1], "lock") == 0 || strcmp(argv[1], "lock-wait") == 0)) {
+    // A queued waiter must die with its owner, even while blocked in flock
+    // before it can observe EOF on stdin. The JS caller owns its deadline.
+    pid_t owner = getppid();
+    if (owner == 1 || prctl(PR_SET_PDEATHSIG, SIGTERM) || getppid() != owner) return 125;
     // Lock files remain as stable inodes. Never unlink a flock lock: a waiter
     // could otherwise hold an inode different from a newly arriving writer.
     int fd = open(argv[2], O_CREAT | O_RDWR | O_NOFOLLOW | O_CLOEXEC, 0600);
     struct stat st;
     if (fd < 0 || fstat(fd, &st) || !S_ISREG(st.st_mode) || st.st_nlink != 1) return 125;
-    if (flock(fd, LOCK_EX | LOCK_NB)) { close(fd); return 73; }
+    if (flock(fd, LOCK_EX | (strcmp(argv[1], "lock") == 0 ? LOCK_NB : 0))) { close(fd); return 73; }
     if (write(STDOUT_FILENO, "locked\n", 7) != 7) { close(fd); return 125; }
     char byte;
     while (read(STDIN_FILENO, &byte, 1) > 0) {}

@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "id": "illustration-quality-v1",
+  "checker": {
+    "path": "src/role_eval.rs",
+    "sha256": "0dbb5be9a86bb7c9f7de3611ebe9441863a999895480a16e515fc97de2071b45"
+  },
+  "configurations": [
+    {
+      "id": "baseline",
+      "file": {
+        "path": "evals/illustration-quality/configurations/baseline-template.json",
+        "sha256": "a8f469b8c2b917eca472c75ee3d5467fbb43685b599999a18e9e52ee995de770"
+      }
+    },
+    {
+      "id": "revised",
+      "file": {
+        "path": "evals/illustration-quality/configurations/revised-template.json",
+        "sha256": "a8f469b8c2b917eca472c75ee3d5467fbb43685b599999a18e9e52ee995de770"
+      }
+    }
+  ],
+  "trials_per_case": 2,
+  "development": [
+    "repair-cafe",
+    "field-icons",
+    "quiet-signal",
+    "archive-card"
+  ],
+  "held_out": [
+    "night-garden",
+    "weather-family",
+    "water-loop",
+    "library-hero"
+  ],
+  "cases": [
+    {
+      "id": "repair-cafe",
+      "split": "development",
+      "input": {
+        "path": "evals/illustration-quality/inputs/repair-cafe.md",
+        "sha256": "f0844111dcb3573590b2f04096b2f53c53638bbea94fc12601d329e32bbe5d1a"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/repair-cafe.json",
+        "sha256": "68f16351b517ed2f751bcfb1e79074e1e285674fee1c9f1ce6dd21e2b1bfa85e"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "field-icons",
+      "split": "development",
+      "input": {
+        "path": "evals/illustration-quality/inputs/field-icons.md",
+        "sha256": "9bedd45f11821b139857a020d529dbe3ba85707401f46dc61c44fde7837b7d92"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/field-icons.json",
+        "sha256": "c013e169ed2600aa1c20dcc1c697b45220106827f60ae2a16ce203239faea1bc"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "quiet-signal",
+      "split": "development",
+      "input": {
+        "path": "evals/illustration-quality/inputs/quiet-signal.md",
+        "sha256": "526eb8807a367d6829e8bb2a75c166bbb876a2667a8f56bd4c112b3d778cd5d9"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/quiet-signal.json",
+        "sha256": "f227428e0b401374cd581039a61b7a30932e1ccc687ac76294ef463c9d557899"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "archive-card",
+      "split": "development",
+      "input": {
+        "path": "evals/illustration-quality/inputs/archive-card.md",
+        "sha256": "2ad1cce04263dabfba570e96a170598b9283f870311507a06f90af124d1024e5"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/archive-card.json",
+        "sha256": "d4b935af97a32e41e0a1ca66bf8b30fd2ff790b44d6a098503e4fd5c0443d8f3"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "night-garden",
+      "split": "held_out",
+      "input": {
+        "path": "evals/illustration-quality/inputs/night-garden.md",
+        "sha256": "89ecb3267a4528a37066bca8d18685ae950643eff3efe52eb8a58505a445837c"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/night-garden.json",
+        "sha256": "85d5d934ce15fa984ff8142e80c08323ca7543cd2bff6b3a76f74d8f61e94a74"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "weather-family",
+      "split": "held_out",
+      "input": {
+        "path": "evals/illustration-quality/inputs/weather-family.md",
+        "sha256": "04ed4b6df35c033527e9481cce01d9fdf88304877d4b82f39303030341ef43d6"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/weather-family.json",
+        "sha256": "22edf30b5c4db6de9a3702156e82ce56c045ba174fc1d3403eb45ebbabd515af"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "water-loop",
+      "split": "held_out",
+      "input": {
+        "path": "evals/illustration-quality/inputs/water-loop.md",
+        "sha256": "ddfd7cd7264dfd398f21067dc3bef734ef902f5a64b2364dfba36759e8ff3ed3"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/water-loop.json",
+        "sha256": "466c7c51e67e5cfe396cb2699d0d12a6bc39f045404cd63537a44760d330a53b"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    },
+    {
+      "id": "library-hero",
+      "split": "held_out",
+      "input": {
+        "path": "evals/illustration-quality/inputs/library-hero.md",
+        "sha256": "3f66a102c1b6986f70a4c074dac97098be5a9b792525556c0a6b05d43b6b76c0"
+      },
+      "rubric": {
+        "path": "evals/illustration-quality/graders/library-hero.json",
+        "sha256": "4c4b79db495a9f8863cd7ea5e22136bef3398d61d6951e581521d7fd190f6f09"
+      },
+      "criteria": [
+        "brief_fulfilled",
+        "construction_and_meaning",
+        "usable_exports",
+        "honest_delivery",
+        "case_specific"
+      ]
+    }
+  ]
+}

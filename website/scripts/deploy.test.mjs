@@ -19,7 +19,10 @@ test("deployment admits only exact committed artifact bytes", async () => {
       });
     await fs.copyFile(path.join(source, "../README.md"), path.join(root, "README.md"));
     await fs.mkdir(path.join(root, "docs"));
-    await fs.copyFile(path.join(source, "../docs/agent-installation.md"), path.join(root, "docs/agent-installation.md"));
+    for (const file of await fs.readdir(path.join(source, "../docs")))
+      if (file.endsWith(".md"))
+        await fs.copyFile(path.join(source, "../docs", file), path.join(root, "docs", file));
+    await fs.copyFile(path.join(source, "../LICENSE"), path.join(root, "LICENSE"));
     await fs.writeFile(path.join(root, ".gitignore"), "website/dist/\n");
     for (const args of [
       ["init", "-q"],
@@ -35,14 +38,20 @@ test("deployment admits only exact committed artifact bytes", async () => {
       ],
     ])
       assert.equal(run("git", args).status, 0);
-    assert.equal(
-      run(process.execPath, ["website/scripts/build.mjs"]).status,
-      0,
-    );
+    const build = () => run(process.execPath, ["website/scripts/build.mjs"]);
+    const built = build();
+    assert.equal(built.status, 0, built.stderr);
     const deploy = () =>
       run(process.execPath, ["website/scripts/deploy.mjs", "--dry-run"]);
     const good = deploy();
     assert.equal(good.status, 0, good.stderr);
+    const guide = path.join(root, "docs/visual-quality.md");
+    const guideBytes = await fs.readFile(guide);
+    await fs.unlink(guide);
+    const brokenLink = build();
+    assert.notEqual(brokenLink.status, 0);
+    assert.match(brokenLink.stderr, /visual-quality\.md/);
+    await fs.writeFile(guide, guideBytes);
     const extra = path.join(root, "website/dist/unmanifested.txt");
     await fs.writeFile(extra, "must never upload");
     assert.match(deploy().stderr, /Unmanifested distribution files/);

@@ -13,15 +13,13 @@ import struct
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'evals/design-quality'
-OWNER = ROOT / '.mirket/implementation/design-quality-2026-10-15'
-EXP = OWNER / 'experiment'
-SETUP = EXP / 'judge-packet-setup'
+OWNER = EXP = SETUP = None  # Set only from the caller's required experiment root.
 DIMENSIONS = ['hierarchy_content', 'composition_typography', 'identity_specificity',
               'responsive_state_composure', 'economy_coherence']
 JUDGE_IDS = {'A': '/root/quality_judge_a', 'B': '/root/quality_judge_b'}
 SEEDS = {'A': 202610151, 'B': 202610152}
 SCHEDULE_NAME = 'schedule.v3.private.json'
-SCHEDULE_FILE = SETUP / SCHEDULE_NAME
+SCHEDULE_FILE = None
 PNG_MAGIC = b'\x89PNG\r\n\x1a\n'
 
 
@@ -36,11 +34,10 @@ def select_locations(experiment_root, schedule_path):
         require(value and not Path(value).is_absolute() and all(p not in ('', '.', '..') for p in value.split('/')),
                 option + ' must use normal project-relative components')
         return owned(ROOT / value)
-    if experiment_root is not None:
-        EXP = normal_path(experiment_root, '--experiment-root')
-        require(not EXP.exists() or EXP.is_dir(), '--experiment-root must name a directory')
-        OWNER = EXP.parent
-        SETUP = EXP / 'judge-packet-setup'
+    EXP = normal_path(experiment_root, '--experiment-root')
+    require(not EXP.exists() or EXP.is_dir(), '--experiment-root must name a directory')
+    OWNER = EXP.parent
+    SETUP = EXP / 'judge-packet-setup'
     SCHEDULE_FILE = SETUP / SCHEDULE_NAME
     if schedule_path is not None:
         SCHEDULE_FILE = normal_path(schedule_path, '--schedule')
@@ -509,7 +506,7 @@ def self_test():
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--experiment-root', help='Normal project-relative experiment directory; parent owns data-audit and judges (default: current private run)')
+    parser.add_argument('--experiment-root', required=True, help='Normal project-relative experiment directory; parent owns data-audit and judges')
     parser.add_argument('--schedule', help='Normal project-relative schedule file inside the selected experiment root (default: judge-packet-setup/schedule.v3.private.json)')
     sub=parser.add_subparsers(dest='command',required=True)
     sub.add_parser('schedule'); sub.add_parser('self-test')

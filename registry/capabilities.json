@@ -269,7 +269,7 @@
         "interface-design"
       ],
       "deliverable": "Purposeful motion matched to the brief and brand, with an editable implementation, readable static composition and interruption-safe behavior.",
-      "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. A screenshot or successful build alone cannot accept motion.",
+      "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. For subject animation, inspect playback with surrounding effects excluded: the requested subject must visibly perform its action. A screenshot or successful build alone cannot accept motion.",
       "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or HyperFrames lint, snapshot and render for requested video. Use the existing host model; verify Playwright and renderer readiness.",
       "aliases": [
         "Motion Designer"
@@ -277,6 +277,7 @@
       "acceptance": [
         "Art direction and a restrained motion vocabulary demonstrated in the rendered result",
         "Normal playback and important intermediate frames inspected at intended and narrow sizes",
+        "Requested subject movement demonstrated in the subject itself, with coherent attachments and occlusion; surrounding effects alone are insufficient",
         "Reduced motion at load and live changes retain content and full user functionality",
         "Editable sources and exports kept distinct; performance claims tied to measurements"
       ],
@@ -1052,7 +1053,7 @@
       ],
       "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
       "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",
-      "prerequisites": "Actual brief, content, asset rights and delivery specifications. The design package uses authored SVG scenes with resvg previews, Sharp for raster preprocessing, SVGO for generated/imported SVG, Kroki for diagrams, Satori plus resvg for static composition, and official Penpot MCP/plugin for editable design files. Compile tokens before rendering and verify the requested editability.",
+      "prerequisites": "Actual brief, content, asset rights and placement specifications. Choose the medium before tools: host image generation/editing when available for rich raster artwork; authored SVG/resvg for editable vector art; Sharp for existing pixels; Satori/resvg for static layout; Penpot for editable design files. Owned workers have no image generator. Compile tokens for dependent renders and verify requested editability.",
       "aliases": [
         "Graphic Designer",
         "illustration",
@@ -1064,7 +1065,8 @@
       ],
       "acceptance": [
         "Composition, illustration construction and focal details inspected at actual use sizes and backgrounds",
-        "Editable masters and required exports reopened; asset families checked for consistent geometry, naming, crops and consumer integration"
+        "Editable masters and required exports reopened; asset families checked for consistent geometry, naming, crops and consumer integration",
+        "Concept, composition, construction, coherence and placement fit critiqued against the brief and multiple relevant references; material defects revised or explicitly unresolved"
       ],
       "professional": {
         "perspective": "Communicate a specific message through composition, visual storytelling and precise production craft.",
@@ -2229,7 +2231,7 @@
     },
     {
       "id": "visual-review",
-      "when": "Inspect existing screenshots or capture existing UI and compare pixels.",
+      "when": "Inspect existing artwork, screenshots or UI; critique visual quality and compare pixels.",
       "role": "quality-assurance",
       "tools": [
         "workspace_read",
@@ -2244,7 +2246,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Inspect actual pixels. Captures and diff artifacts are permitted; source and canvas mutation tools are absent.",
+      "rule": "Inspect actual pixels against the brief and multiple relevant references, never similarity to one example alone. Locate defects in concept, composition, construction, coherence and placement fit; distinguish taste from correctness. Pixel diffs do not grade appeal. Captures and diff artifacts are permitted; source and canvas mutations are absent.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "web-design",
@@ -2255,6 +2257,7 @@
     },
     {
       "id": "web-interface",
+      "design_production": true,
       "when": "Author HTML/CSS screens or graphics requiring full DOM features such as Grid, filters or Canvas.",
       "role": "web-design",
       "tools": [
@@ -2285,6 +2288,7 @@
     },
     {
       "id": "editable-interface",
+      "design_production": true,
       "when": "Produce or export a layered editable Penpot canvas through its official connected plugin.",
       "role": "web-design",
       "tools": [
@@ -2316,6 +2320,7 @@
     },
     {
       "id": "static-graphic",
+      "design_production": true,
       "when": "Produce a Flexbox static card, badge, social graphic or data card.",
       "role": "graphic-design",
       "tools": [
@@ -2332,7 +2337,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Compile canonical tokens and use Satori/resvg with supported fonts and Flexbox. Choose web-interface instead when the same graphic requires full DOM features; compose both only for distinct deliverables.",
+      "rule": "Use Satori/resvg for text/image composition with canonical tokens and supported fonts/Flexbox. Create image layers with a suitable available producer first; this renderer is not an image generator. Inspect hierarchy, crop, typography and brand fit at placement size and revise visible defects. Use web-interface for full DOM features; compose both only for distinct deliverables.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "brand-guidelines"
@@ -2340,6 +2345,7 @@
     },
     {
       "id": "diagram",
+      "design_production": true,
       "when": "Produce flow, sequence, C4, Vega-Lite or Excalidraw diagram layouts.",
       "role": "graphic-design",
       "tools": [
@@ -2367,6 +2373,7 @@
     },
     {
       "id": "motion",
+      "design_production": true,
       "when": "Produce finite encoded video from an authored HTML/CSS/SVG timeline.",
       "role": "animation",
       "tools": [
@@ -2389,6 +2396,7 @@
     },
     {
       "id": "interactive-motion",
+      "design_production": true,
       "when": "Author and verify interactive UI animations, navigation transitions, animated SVG or browser scene choreography.",
       "role": "animation",
       "tools": [
@@ -2408,7 +2416,7 @@
         "workspace_read",
         "inspect_image"
       ],
-      "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. Inspect saved states; do not claim playback smoothness from a seek. Use motion/HyperFrames only for encoded video.",
+      "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. For requested subject animation, verify its moving parts in a subject-only playback crop; background effects and whole-image entrances cannot establish internal articulation. Inspect saved states; do not claim playback smoothness from a seek. Use motion/HyperFrames only for encoded video.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "frontend-engineering"
@@ -2416,6 +2424,7 @@
     },
     {
       "id": "paged-media",
+      "design_production": true,
       "when": "Produce multi-page PDFs, print reports, invoices or presentation decks.",
       "role": "office-production",
       "tools": [
@@ -2440,6 +2449,7 @@
     },
     {
       "id": "vector-art",
+      "design_production": true,
       "when": "Create editable SVG illustrations, icons and vector scene compositions.",
       "role": "graphic-design",
       "tools": [
@@ -2457,7 +2467,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Author meaningful SVG geometry and semantic groups; compile tokens, render with vector_render, read back the SVG and inspect its native preview. Use SVG creation guidance for craft; use motion and web-interface for animated scenes.",
+      "rule": "Choose SVG for requested vector editability or suitable geometric artwork, never as a silent fallback for rich raster illustration. Author meaningful geometry and semantic groups; compile tokens, render with vector_render, read back source and inspect pixels. Critique the visual idea and construction against the brief; revise material defects. An inspected render alone is not quality acceptance.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": []
     },

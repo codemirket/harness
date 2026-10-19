@@ -134,6 +134,13 @@ fn serve(
     } else {
         panic!("unexpected mock request: {first}");
     };
+    if status == 0 {
+        // A body truncated by transport, not a completed model response with
+        // invalid JSON. No action may be dispatched from these partial bytes.
+        stream.write_all(b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: 1000\r\nConnection: close\r\n\r\n{\"partial\":").unwrap();
+        stream.flush().unwrap();
+        return;
+    }
     let bytes = serde_json::to_vec(&response).unwrap();
     let reason = if status == 200 {
         "OK"
@@ -571,6 +578,86 @@ fn inspected_pixels_survive_intervening_read_only_turns() {
     let after_readback = content(&posts[2])[1]["image_url"]["url"].as_str().unwrap();
     assert_eq!(after_inspection, after_readback);
     assert!(after_inspection.starts_with("data:image/png;base64,"));
+}
+
+#[test]
+fn pinned_transport_retry_keeps_the_model_and_never_replays_a_prior_write() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for path in [&home, &project, &empty_path] {
+        fs::create_dir_all(path).unwrap();
+    }
+    let server = MockTarget::new(
+        vec![model("frontier-pinned", "frontier model")],
+        vec![
+            action(
+                "frontier-pinned",
+                json!({"action":"tool","tool":"workspace_write","arguments_json":r#"{"path":"once.txt","content":"written once","expected_sha256":null}"#,"result":""}),
+            ),
+            (0, Value::Null),
+            action(
+                "frontier-pinned",
+                json!({"action":"tool","tool":"workspace_read","arguments_json":r#"{"path":"once.txt"}"#,"result":""}),
+            ),
+            action(
+                "frontier-pinned",
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"verified after transport recovery"}),
+            ),
+        ],
+    );
+    configure(&home, vec![target("pinned", &server)]);
+    let file = request(
+        &home,
+        &project,
+        &["workspace_write", "workspace_read"],
+        &["workspace_read"],
+    );
+    let mut value: Value = serde_json::from_slice(&fs::read(&file).unwrap()).unwrap();
+    value["model_selection"] = json!({"target":"pinned","id":"frontier-pinned","effort":"high"});
+    fs::write(&file, serde_json::to_vec(&value).unwrap()).unwrap();
+    let result = ok(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", file.to_str().unwrap()],
+    );
+    assert_eq!(result["model"]["id"], "frontier-pinned");
+    assert_eq!(
+        fs::read_to_string(project.join("once.txt")).unwrap(),
+        "written once"
+    );
+    let posts = server.posts();
+    assert_eq!(posts.len(), 4);
+    assert_eq!(
+        posts[1], posts[2],
+        "retry must use unchanged inference input, not replay the prior action"
+    );
+}
+
+#[test]
+fn pinned_transport_retries_stop_at_the_run_budget() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for path in [&home, &project, &empty_path] {
+        fs::create_dir_all(path).unwrap();
+    }
+    let server = MockTarget::new(
+        vec![model("frontier-pinned", "frontier model")],
+        vec![(0, Value::Null); 3],
+    );
+    configure(&home, vec![target("pinned", &server)]);
+    let file = request(&home, &project, &[], &[]);
+    let result = invoke(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", file.to_str().unwrap()],
+    );
+    assert!(!result.status.success());
+    assert_eq!(server.posts().len(), 3);
+    assert!(fs::read_dir(&project).unwrap().next().is_none());
 }
 
 #[test]

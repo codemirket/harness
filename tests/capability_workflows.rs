@@ -166,6 +166,21 @@ fn every_role_delivers_its_exact_lead_offline_to_both_project_targets() {
             }
         }
     }
+    // Visual production references must reach actual clients, not only the
+    // catalog. These files define medium selection and multi-reference critique.
+    for reference in ["art-direction-and-critique.md", "image-production.md"] {
+        let relative = format!("references/{reference}");
+        let document = catalog
+            .read("graphic-design", &relative, 16 * 1024)
+            .unwrap();
+        for host in ["codex", "claude"] {
+            let path = root
+                .join(project::target_skills_dir(host).unwrap())
+                .join("graphic-design")
+                .join(&relative);
+            assert_eq!(std::fs::read_to_string(path).unwrap(), document.content);
+        }
+    }
 }
 
 #[test]

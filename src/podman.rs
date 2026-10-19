@@ -194,47 +194,6 @@ impl Engine {
             String::from_utf8_lossy(&stderr)
         ))
     }
-    pub async fn run_async(&self, args: &[String]) -> Result<String> {
-        use tokio::io::AsyncReadExt;
-        // A long-lived MCP session can outlive its private connection metadata.
-        // Refuse drift before creating a replacement worker on any daemon.
-        self.validate_machine()?;
-        let mut command = tokio::process::Command::from(self.command(args));
-        command
-            .stdin(Stdio::null())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .kill_on_drop(true);
-        #[cfg(unix)]
-        command.process_group(0);
-        let mut child = command.spawn().context("start registered Podman client")?;
-        let mut guard = AsyncCaptureGuard(child.id());
-        let stdout = child.stdout.take().context("Podman stdout")?;
-        let stderr = child.stderr.take().context("Podman stderr")?;
-        async fn bounded(pipe: impl tokio::io::AsyncRead + Unpin) -> Result<Vec<u8>> {
-            let mut bytes = Vec::new();
-            pipe.take(2 * 1024 * 1024 + 1)
-                .read_to_end(&mut bytes)
-                .await?;
-            ensure!(
-                bytes.len() <= 2 * 1024 * 1024,
-                "Podman diagnostics exceed 2 MiB"
-            );
-            Ok(bytes)
-        }
-        let (status, stdout, stderr) = tokio::try_join!(
-            async { Ok::<_, anyhow::Error>(child.wait().await?) },
-            bounded(stdout),
-            bounded(stderr)
-        )?;
-        ensure!(
-            status.success(),
-            "Podman failed ({status}): {}",
-            failure_diagnostics(&stdout, &stderr)
-        );
-        guard.0 = None;
-        String::from_utf8(stdout).context("Podman returned non UTF-8 metadata")
-    }
     pub fn ready(&self) -> Result<Value> {
         ensure_controller_supported()?;
         self.validate_machine()?;
@@ -696,20 +655,6 @@ fn ensure_controller_supported_for(os: &str, arch: &str) -> Result<()> {
 struct CaptureGuard {
     child: std::process::Child,
     armed: bool,
-}
-struct AsyncCaptureGuard(Option<u32>);
-impl Drop for AsyncCaptureGuard {
-    fn drop(&mut self) {
-        #[cfg(unix)]
-        if let Some(pid) = self.0.take() {
-            let _ = Command::new("/bin/kill")
-                .env_clear()
-                .args(["-KILL", "--", &format!("-{pid}")])
-                .stdout(Stdio::null())
-                .stderr(Stdio::null())
-                .status();
-        }
-    }
 }
 impl Drop for CaptureGuard {
     fn drop(&mut self) {

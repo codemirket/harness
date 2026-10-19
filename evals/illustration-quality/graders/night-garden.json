@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "brief_fulfilled",
+    "construction_and_meaning",
+    "usable_exports",
+    "honest_delivery",
+    "case_specific"
+  ],
+  "assertions": {
+    "brief_fulfilled": "Inspect the saved output against every material subject, content and delivery requirement. A prompt or placeholder is not delivered artwork.",
+    "construction_and_meaning": "Inspect actual pixels at full and small size for malformed forms, incorrect contact, misleading symbols or technical relationships.",
+    "usable_exports": "Open actual files; verify dimensions, required editability/transparency, crops and legibility at the requested sizes.",
+    "honest_delivery": "Inspect trace and handoff: unavailable tools, unresolved defects and missing checks are explicit; no claimed user acceptance or invented provenance.",
+    "case_specific": "Both crops preserve the interaction, body construction and a coherent lantern lighting direction."
+  },
+  "grading": "Inspect actual saved pixels and source with located evidence. Binary guardrails only; use craft-review.md separately for visual quality."
+}

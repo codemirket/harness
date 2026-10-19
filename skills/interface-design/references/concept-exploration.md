@@ -5,6 +5,12 @@ can reduce its uncertainty. Preserve an accepted direction. A routine component
 repair, requested style refinement or known usability fix does not need competing
 concepts or another planning document.
 
+For visual production, resolve that choice within the
+[image-to-code contract](image-to-code.md), then freeze one target. This reference
+does not authorize a sample campaign, parallel full implementations or a new
+correction budget. Use an annotated comparison when it answers the question;
+respect the task's production limit and stop if the decision remains unresolved.
+
 ## Make alternatives informative
 
 Name the user problem and the decision to resolve. Define comparison criteria

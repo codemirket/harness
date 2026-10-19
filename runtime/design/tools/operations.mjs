@@ -7,7 +7,7 @@ import {optimize} from 'svgo';
 import {SaxesParser} from 'saxes';
 import {parse as parseCss, walk as walkCss} from 'css-tree';
 import {compileTokens} from './tokens.mjs';
-import {workspace, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, MAX_OUTPUT} from './paths.mjs';
+import {workspace, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, assertOutputReady, MAX_OUTPUT} from './paths.mjs';
 import {checkRequest, requestSignal, combinedSignal, redactSecrets} from './request.mjs';
 
 const toolRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -24,17 +24,6 @@ export const browserInspectCaptureOptions = Object.freeze({width: 800, height: 6
 const tokenSource = args => args.tokens || process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json';
 const preflight = async args => compileTokens(tokenSource(args));
 const outputOptions = args => ({overwrite: args.overwrite === true, expected_sha256: args.expected_sha256});
-// Reject known output conflicts before starting a remote or CLI job. publish()
-// still performs the authoritative check at the actual publication boundary.
-async function assertOutputReady(args) {
-  await workspacePath(args.output, {missing: true});
-  let before;
-  try { before = await readFile(args.output, MAX_OUTPUT); }
-  catch (error) { if (!String(error.message).startsWith('Missing workspace path:')) throw error; }
-  if (before !== undefined && args.overwrite !== true) throw Error(`Output exists; pass overwrite=true: ${args.output}`);
-  if (before !== undefined && args.expected_sha256 !== sha(before)) throw Error(`Output revision mismatch: ${args.output}`);
-  if (before === undefined && args.expected_sha256) throw Error(`Output does not exist for expected_sha256: ${args.output}`);
-}
 function flatTokenValues(tree, prefix = '', result = {}) {
   for (const [key, value] of Object.entries(tree)) {
     const name = prefix ? `${prefix}.${key}` : key;
@@ -315,15 +304,36 @@ export async function odiffCompare(args) {
 
 export function injectTokenStylesheet(html, stylesheetUrl) {
   const link = `<link rel="stylesheet" data-mirket-tokens href="${stylesheetUrl}">`;
-  const head = /<head\b[^>]*>/i.exec(html);
-  const root = /<html\b[^>]*>/i.exec(html);
-  const script = /<script\b/i.exec(html);
-  const insertion = head ? head.index : root ? root.index : 0;
-  if (script && script.index < insertion) throw Error('HTML executes a script before the canonical token stylesheet can load');
-  if (head) return html.replace(/<head\b[^>]*>/i, match => `${match}${link}`);
-  if (root) return html.replace(/<html\b[^>]*>/i, match => `${match}<head>${link}</head>`);
-  if (/^\s*<!doctype\b[^>]*>/i.test(html)) return html.replace(/^(\s*<!doctype\b[^>]*>)/i, match => `${match}<head>${link}</head>`);
-  return `<head>${link}</head>${html}`;
+  // Inspect only the document prologue. A later '<head>' may be text inside
+  // script/style content, an attribute, or a comment, not an insertion point.
+  let offset = 0, doctypeEnd = 0;
+  const trivia = () => {
+    for (;;) {
+      offset += /^\s*/.exec(html.slice(offset))[0].length;
+      if (html.startsWith('<!--', offset)) {
+        const end = html.indexOf('-->', offset + 4);
+        if (end < 0) throw Error('HTML prologue comment is unterminated');
+        offset = end + 3;
+      } else {
+        const declaration = /^<!doctype\b(?:[^>"']|"[^"]*"|'[^']*')*>/i.exec(html.slice(offset));
+        if (!declaration) return;
+        offset += declaration[0].length; doctypeEnd = offset;
+      }
+    }
+  };
+  const tag = name => new RegExp(`^<${name}\\b(?:[^>"']|"[^"]*"|'[^']*')*>`, 'i').exec(html.slice(offset));
+  trivia();
+  const root = tag('html');
+  const rootEnd = root ? offset + root[0].length : 0;
+  if (root) { offset = rootEnd; trivia(); }
+  const head = tag('head');
+  if (head) {
+    const insertion = offset + head[0].length;
+    return html.slice(0, insertion) + link + html.slice(insertion);
+  }
+  if (!root && tag('script')) throw Error('HTML executes a script before the canonical token stylesheet can load');
+  const insertion = rootEnd || doctypeEnd;
+  return html.slice(0, insertion) + `<head>${link}</head>` + html.slice(insertion);
 }
 async function tokenDocument(url, stylesheetUrl) {
   const target = new URL(url);
@@ -403,15 +413,25 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
     env: {PATH: process.env.PATH, HOME: scratch, TMPDIR: scratch, LANG: 'C.UTF-8'}, timeout: 15000,
   }, async browser => {
     const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true, acceptDownloads: false, serviceWorkers: 'block', reducedMotion: reduced_motion, permissions: []});
+    let routingError;
+    const routed = handler => async route => {
+      try { await handler(route); }
+      catch (error) {
+        routingError ||= error;
+        // Playwright route callbacks are event handlers. An escaping rejection
+        // would terminate the MCP process instead of failing just this capture.
+        await route.abort('failed').catch(() => {});
+      }
+    };
     try {
       const origin = new URL(url).origin;
       // Fulfilled HTML lacks a peer address. Grant local-network access only
       // to this owned origin so Chromium can load its workspace stylesheet/assets.
       await context.grantPermissions(['local-network-access'], {origin});
-      await context.route('**/*', route => {
+      await context.route('**/*', routed(route => {
         const target = new URL(route.request().url());
         return target.origin === origin || ['data:', 'blob:'].includes(target.protocol) ? route.continue() : route.abort('blockedbyclient');
-      });
+      }));
       await context.routeWebSocket('**/*', ws => ws.close());
       const page = await context.newPage();
       const consoleErrors = [];
@@ -419,13 +439,13 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       page.on('console', message => { if (message.type() === 'error' && consoleErrors.length < 20) consoleErrors.push(message.text().slice(0, 500)); });
       if (tokensCss) {
         const stylesheetUrl = workspaceUrl(tokensCss);
-        await page.route('http://design-tools:9002/files/**', async route => {
+        await page.route('http://design-tools:9002/files/**', routed(async route => {
           if (route.request().resourceType() !== 'document') { await route.continue(); return; }
           const html = await tokenDocument(route.request().url(), stylesheetUrl);
           if (html == null) { await route.continue(); return; }
           await route.fulfill({status: 200, contentType: 'text/html; charset=utf-8', body: html,
             headers: {'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self' data: blob: 'unsafe-inline'"}});
-        });
+        }));
       }
       await page.goto(url, {waitUntil: 'networkidle', timeout: 30000});
       if (wait_for) await page.locator(wait_for).waitFor({state: 'visible', timeout: 10000});
@@ -486,8 +506,10 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       const [actualWidth, actualHeight] = pngDimensions(bytes);
       verifyScreenshotPixels(actualWidth, actualHeight, plan);
       checkRequest();
+      if (routingError) throw routingError;
       return {bytes, width: actualWidth, height: actualHeight, evidence: {...evidence, console_errors: consoleErrors}};
-    } finally { await context.close(); }
+    } catch (error) { throw routingError || error; }
+    finally { await context.close(); }
   });
   } finally {
     if (ownedServer) {

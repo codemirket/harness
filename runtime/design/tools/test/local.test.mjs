@@ -85,6 +85,13 @@ test('Playwright HTML receives canonical CSS before head scripts run', () => {
   assert.ok(injected.indexOf(`href="${css}"`) < injected.indexOf('<script>'));
   assert.ok(injected.startsWith('<!doctype html><html><head>'));
   assert.match(injectTokenStylesheet('<html><body>Probe</body></html>', css), /<html><head><link[^>]+><\/head><body>/);
+  const implicit = '<!doctype html><html lang="en"><meta charset="utf-8"><script>const literal = "<head>";</script></html>';
+  const implicitResult = injectTokenStylesheet(implicit, css);
+  assert.ok(implicitResult.indexOf('data-mirket-tokens') < implicitResult.indexOf('<meta'));
+  assert.ok(implicitResult.endsWith('<script>const literal = "<head>";</script></html>'));
+  const comments = '<!doctype html><!-- <head><script>fake</script> --><html data-label="<head>"><!-- <script> --><head title=">">';
+  assert.equal(injectTokenStylesheet(comments, css), `${comments}<link rel="stylesheet" data-mirket-tokens href="${css}">`);
+  assert.throws(() => injectTokenStylesheet('<!-- unfinished', css), /unterminated/);
   assert.throws(() => injectTokenStylesheet('<script>window.initial = "too early"</script><html><head></head></html>', css), /before the canonical token stylesheet/);
 });
 

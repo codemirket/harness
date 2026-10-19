@@ -95,6 +95,11 @@ fn unique(values: &[String], label: &str) -> Result<BTreeSet<String>> {
 }
 
 pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
+    if let Some(choice) = &request.model_selection {
+        bounded(&choice.target, "model target", 128)?;
+        bounded(&choice.id, "model ID", 256)?;
+        bounded(&choice.effort, "model effort", 32)?;
+    }
     ensure!(
         (1..=4).contains(&request.task_needs.len()),
         "declare 1..=4 task_needs; split broader work into phases"
@@ -130,6 +135,14 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         required.extend(workflow.required_tools.iter().cloned());
         verification.extend(workflow.verification_tools.iter().cloned());
         workflows.push(workflow);
+    }
+    let design_production = workflows.iter().any(|workflow| workflow.design_production);
+    ensure!(
+        design_production == request.design_input.is_some(),
+        "design production requires design_input: image_to_code with a supplied/generated target image, or code_fallback with the host's reason that no image model is available; other workflows must omit it"
+    );
+    if let Some(input) = &request.design_input {
+        input.validate()?;
     }
     let primary = if let Some(name) = &request.primary_role {
         bounded(name, "primary role", 128)?;
@@ -230,10 +243,11 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         .map(|workflow| workflow.min_tier)
         .max()
         .expect("task needs are nonempty");
-    let metadata = json!({"task_needs":request.task_needs,"primary_role":primary.id,"min_tier":min_tier,
+    let metadata = json!({"task_needs":request.task_needs,"primary_role":primary.id,"min_tier":min_tier,"model_selection":request.model_selection,
         "roles":roles.iter().map(|role| json!({"id":role.id,"title":role.title,"lead_skill":role.lead,"professional":role.professional})).collect::<Vec<_>>(),
         "guidance":reads,"workflow_rules":workflows.iter().map(|workflow| json!({"id":workflow.id,"rule":workflow.rule})).collect::<Vec<_>>(),
         "tool_selection":if automatic {"automatic"} else {"explicit_scoped_subset"},"assigned_tools":request.assigned_tools,"required_tools":required,"verification_tools":request.verification_tools,
+        "design_gate":request.design_input.as_ref().map(super::design_gate::contract),
         "authority":"Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled."});
     ensure!(
         serde_json::to_vec(&metadata)?.len() <= 32 * 1024,
@@ -272,8 +286,43 @@ mod tests {
             project: PathBuf::from("/project"),
             requires_vision: false,
             requested_tier: None,
+            model_selection: None,
+            design_input: Catalog::embedded()
+                .unwrap()
+                .workflow(workflow)
+                .ok()
+                .filter(|w| w.design_production)
+                .map(|_| super::super::DesignInput::CodeFallback {
+                    reason: "Test host has no image model".into(),
+                }),
             verification_tools: vec![],
         }
+    }
+
+    #[test]
+    fn design_contract_is_required_before_discovery_and_cannot_claim_an_empty_fallback() {
+        let mut request = task("web-interface");
+        request.design_input = None;
+        assert!(
+            prepare(&mut request)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("design_input")
+        );
+        request.design_input = Some(super::super::DesignInput::CodeFallback { reason: " ".into() });
+        assert!(prepare(&mut request).is_err());
+        request.design_input = Some(super::super::DesignInput::ImageToCode {
+            image: "target.png".into(),
+        });
+        let assignment = prepare(&mut request).unwrap();
+        assert_eq!(
+            assignment.metadata["design_gate"]["input"]["mode"],
+            "image_to_code"
+        );
+        assert_eq!(assignment.metadata["design_gate"]["execution_seconds"], 600);
+        request.task_needs[0].workflow = "source-implementation".into();
+        assert!(prepare(&mut request).is_err());
     }
 
     #[test]
@@ -439,6 +488,33 @@ mod tests {
         assert_eq!(resolved.min_tier, Tier::T3Architect);
         assert_eq!(resolved.effort_profile, "high");
         assert!(resolved.downgrade_rejected);
+    }
+
+    #[test]
+    fn expressive_scene_references_fit_the_actual_worker_delivery_limit() {
+        let mut request = task("interactive-motion");
+        request.supporting_skills = vec!["advanced-motion".into()];
+        request.skill_references = [
+            "references/art-direction-and-medium.md",
+            "references/connected-layers.md",
+            "references/scene-mechanics.md",
+            "references/gsap-integration.md",
+        ]
+        .into_iter()
+        .map(|path| SkillReference {
+            skill_id: "advanced-motion".into(),
+            path: path.into(),
+        })
+        .collect();
+        let assignment = prepare(&mut request).unwrap();
+        for reference in &request.skill_references {
+            assert!(
+                assignment
+                    .guidance
+                    .iter()
+                    .any(|document| document.path == reference.path)
+            );
+        }
     }
 
     #[test]

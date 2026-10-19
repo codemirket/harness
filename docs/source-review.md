@@ -163,3 +163,14 @@ books or claiming their examples are verified results. Public reference visibili
 does not establish asset reuse rights. New examples are explicitly illustrative;
 a published source, model judgment or passing structural check does not establish
 better design, validated demand or human approval.
+
+## Ten-source visual and motion review
+
+The [2026-10-18 design-source review](design-source-review.md) records decisions
+for GSAP Skills, Diagram Design, Motion Primitives, LottieFiles, Canvas UI,
+Better Design, Taste, Hallmark, Karpathy Skills and Knowledge Work Plugins.
+It explains selected methods, concrete source defects, excluded prescriptions,
+rights boundaries and the exact existing owners. Eight mirrored GSAP entries
+are consolidated into one official pinned reference; focused authored guidance
+ships with the existing design skills. No upstream runtime or hosted service is
+installed by that review.

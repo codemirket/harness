@@ -102,7 +102,16 @@ pub enum DeterministicOperation {
 }
 
 /// Task needs constrain owned role, guidance and tool selection before execution.
-/// No model identifier is accepted at this boundary.
+/// An explicit model choice narrows discovered candidates; it cannot assert
+/// capabilities, lower floors, add providers or authorize inference.
+#[derive(Clone, Debug, Deserialize, JsonSchema, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ModelSelection {
+    pub target: String,
+    pub id: String,
+    pub effort: String,
+}
+
 #[derive(Clone, Debug, Deserialize, JsonSchema, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpawnRequest {
@@ -127,6 +136,12 @@ pub struct SpawnRequest {
     #[serde(default)]
     pub requested_tier: Option<Tier>,
     #[serde(default)]
+    pub model_selection: Option<ModelSelection>,
+    /// Required for design production: an inspected target, or a host-declared
+    /// fallback when no image model is available. Does not grant tool access.
+    #[serde(default)]
+    pub design_input: Option<super::DesignInput>,
+    #[serde(default)]
     pub verification_tools: Vec<String>,
 }
 
@@ -137,6 +152,7 @@ pub struct Resolution {
     pub requires_structured_outputs: bool,
     pub requires_tools: bool,
     pub effort_profile: String,
+    pub requested_effort: Option<String>,
     pub downgrade_rejected: bool,
     pub reasons: Vec<String>,
 }
@@ -518,6 +534,10 @@ pub fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolutio
         requires_vision,
         requires_structured_outputs,
         effort_profile: effort_profile.into(),
+        requested_effort: request
+            .model_selection
+            .as_ref()
+            .map(|choice| choice.effort.clone()),
         downgrade_rejected,
         reasons,
         requires_tools: !request.assigned_tools.is_empty(),
@@ -543,14 +563,19 @@ fn effort_rank(name: &str) -> Option<u8> {
 /// should use `rank_candidates` to distinguish those cases.
 pub fn effort_for(model: &Model, resolution: &Resolution) -> Option<String> {
     let efforts = &model.capabilities.reasoning_efforts;
-    if efforts.is_empty() {
-        return None;
-    }
     let floor = if resolution.min_tier >= Tier::T2Synthesis {
         4
     } else {
         0
     };
+    if let Some(requested) = &resolution.requested_effort {
+        return efforts
+            .iter()
+            .find(|effort| {
+                *effort == requested && effort_rank(effort).is_some_and(|rank| rank >= floor)
+            })
+            .cloned();
+    }
     efforts
         .iter()
         .filter_map(|effort| effort_rank(effort).map(|rank| (rank, effort)))
@@ -598,6 +623,8 @@ pub fn rank_candidates(models: &[Model], resolution: &Resolution) -> Vec<Model> 
                 && (resolution.min_tier < Tier::T2Synthesis
                     || (model.capabilities.tools == Some(true)
                         && model.capabilities.structured_outputs == Some(true)))
+                && (resolution.requested_effort.is_none()
+                    || effort_for(model, resolution).is_some())
                 && (model.capabilities.reasoning_efforts.is_empty()
                     || resolution.min_tier < Tier::T2Synthesis
                     || effort_for(model, resolution).is_some())
@@ -677,6 +704,8 @@ mod tests {
             project: PathBuf::from("/project"),
             requires_vision: false,
             requested_tier: None,
+            model_selection: None,
+            design_input: None,
             verification_tools: vec![],
         }
     }
@@ -855,6 +884,31 @@ mod tests {
         .unwrap();
         json["model_id"] = Value::String("provider-fixed-name".into());
         assert!(serde_json::from_value::<SpawnRequest>(json).is_err());
+    }
+
+    #[test]
+    fn explicit_effort_is_exact_supported_and_cannot_lower_the_floor() {
+        let mut task = request(
+            TaskIntent::Creativity,
+            ComplexityClass::CreativeArchitectural,
+        );
+        let mut candidate = model("Novel Frontier", "frontier model");
+        classify(&mut candidate);
+        task.model_selection = Some(ModelSelection {
+            target: candidate.target.clone(),
+            id: candidate.id.clone(),
+            effort: "high".into(),
+        });
+        let mut resolution = resolve(&task, &[]).unwrap();
+        assert_eq!(effort_for(&candidate, &resolution).as_deref(), Some("high"));
+        assert_eq!(rank_candidates(&[candidate.clone()], &resolution).len(), 1);
+        for invalid in ["low", "unknown", "ultra"] {
+            resolution.requested_effort = Some(invalid.into());
+            assert!(rank_candidates(&[candidate.clone()], &resolution).is_empty());
+        }
+        resolution.requested_effort = Some("high".into());
+        candidate.capabilities.reasoning_efforts.clear();
+        assert!(rank_candidates(&[candidate], &resolution).is_empty());
     }
 
     #[test]

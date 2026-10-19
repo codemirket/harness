@@ -376,14 +376,6 @@ impl State {
             .collect::<rusqlite::Result<Vec<_>>>()?)
     }
 
-    pub fn projects(&self) -> Result<Value> {
-        let conn = self.connection()?;
-        let mut values = Self::project_rows(&conn, 129, 0)?;
-        let truncated = values.len() > 128;
-        values.truncate(128);
-        Ok(json!({"projects":values,"truncated":truncated}))
-    }
-
     pub fn project_id(&self, path: &Path) -> Result<String> {
         let canonical = path
             .canonicalize()
@@ -1105,7 +1097,7 @@ mod tests {
     }
 
     #[test]
-    fn legacy_and_paged_project_listings_share_rows_and_keep_their_envelopes() {
+    fn project_pages_reach_every_registered_root_without_truncation() {
         let home = tempfile::tempdir().unwrap();
         let root = home.path().canonicalize().unwrap();
         let paths = Paths::new(root.clone()).unwrap();
@@ -1116,17 +1108,27 @@ mod tests {
             state.register_project(&project).unwrap();
         }
 
-        let legacy = state.projects().unwrap();
-        assert_eq!(legacy["projects"].as_array().unwrap().len(), 128);
-        assert_eq!(legacy["truncated"], true);
-
-        let first = state.projects_page(0, 10).unwrap();
-        assert_eq!(first["projects"].as_array().unwrap().len(), 10);
-        assert_eq!(first["next_offset"], 10);
-        assert_eq!(first["projects"][0], legacy["projects"][0]);
-
-        let second = state.projects_page(10, 10).unwrap();
-        assert_eq!(second["projects"].as_array().unwrap().len(), 10);
-        assert_eq!(second["projects"][0], legacy["projects"][10]);
+        let mut offset = 0;
+        let mut projects = Vec::new();
+        loop {
+            let page = state.projects_page(offset, 10).unwrap();
+            let rows = page["projects"].as_array().unwrap();
+            assert!(rows.len() <= 10);
+            projects.extend(rows.iter().cloned());
+            match page["next_offset"].as_u64() {
+                Some(next) => {
+                    assert_eq!(next as usize, offset + 10);
+                    offset = next as usize;
+                }
+                None => break,
+            }
+        }
+        assert_eq!(projects.len(), 129);
+        for (index, project) in projects.iter().enumerate() {
+            assert_eq!(
+                project["root"],
+                root.join(format!("project-{index:03}")).to_str().unwrap()
+            );
+        }
     }
 }

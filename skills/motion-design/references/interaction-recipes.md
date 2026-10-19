@@ -146,6 +146,34 @@ the same action semantics. Check gesture-specific behavior on actual hardware.
 
 ## Reduced motion and verification
 
+### Admit a visual component through its semantic contract
+
+A demo's attractive transition is a technique reference, not a complete primitive.
+Before adapting it, identify which existing control owns focus, keyboard input,
+state identity, dismissal and announcements. Keep that owner and add the visual
+treatment around it. A morphing-dialog effect must return focus to the actual
+trigger instance; a default-created ref that is never attached cannot do so.
+Exercise open → close → reopen and navigation during exit rather than inspecting
+only a successful opening.
+
+Match visual presence/layout keys to stable content identity. An array index is
+adequate only if that position really is the panel's identity; reordering data
+must not animate one item as another. Text effects need a readable complete text
+alternative and segmentation appropriate to the language. Splitting JavaScript
+strings by code unit can break emoji and combining sequences; use a supported
+grapheme-aware approach when character animation is necessary. Avoid duplicate
+spoken content from decorative copies. Inspect realistic multilingual text.
+
+Review the installed component's motion preference and lifecycle behavior; do
+not infer either from the library brand. These admission checks are independently
+authored from inspection of ibelick/motion-primitives at
+`120f64f6ca60348e251f929e9c81f11ccbe45eda` (transition-panel, text-effect and
+morphing-dialog). No component code is redistributed: the reviewed README links
+to a license file absent at that revision. Resolve applicable permission before
+future source copying.
+
+### Preserve the meaning when movement is removed
+
 Choose the reduced-motion treatment for the interaction, not an indiscriminate
 duration rule for the whole app:
 

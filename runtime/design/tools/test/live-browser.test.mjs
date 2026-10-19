@@ -24,3 +24,21 @@ test('real Chromium captures viewport and full page at exactly 2x and seeks repr
     assert.equal((await odiffCompare({baseline:`${relative}/viewport.png`, candidate:`${relative}/repeat.png`})).match,true);
   } finally { await fs.rm(root, {recursive:true,force:true}); }
 });
+
+test('HTML inspection handles literal head tags and contains route failures without killing the session', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1', timeout: 90000}, async () => {
+  const {workspace} = await import('../paths.mjs');
+  const {browserScreenshot} = await import('../operations.mjs');
+  const relative = `qa/html-routing-${crypto.randomUUID()}`;
+  const root = path.join(workspace, relative);
+  await fs.mkdir(root, {recursive:true});
+  try {
+    await fs.writeFile(path.join(root, 'invalid.html'), '<script>window.early=true</script><html><head></head><body>Invalid prologue</body></html>');
+    await assert.rejects(browserScreenshot({source:`${relative}/invalid.html`, output:`${relative}/invalid.png`, width:400, height:240}), /before the canonical token stylesheet/);
+    await assert.rejects(fs.access(path.join(root, 'invalid.png')));
+    await fs.writeFile(path.join(root, 'implicit.html'), '<!doctype html><html lang="en"><meta charset="utf-8"><title>Implicit head</title><div id="result"></div><script>const markup="<head>";document.querySelector("#result").textContent=markup+getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim()</script></html>');
+    const captured = await browserScreenshot({source:`${relative}/implicit.html`, output:`${relative}/implicit.png`, width:400, height:240, inspect_selectors:['#result']});
+    assert.ok(captured.evidence.selectors['#result'].text.startsWith('<head>'));
+    assert.ok(captured.evidence.selectors['#result'].text.length > '<head>'.length, 'tokens must load before the script');
+    assert.deepEqual(captured.evidence.console_errors, []);
+  } finally { await fs.rm(root, {recursive:true,force:true}); }
+});

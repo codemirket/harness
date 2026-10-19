@@ -7,7 +7,7 @@ requirements from the destination or provider before a costly final export.
 
 | Need | Suitable route | Evidence to inspect |
 | --- | --- | --- |
-| Photography, texture, painterly illustration | Supplied/licensed raster; Sharp for raster preparation | Focal details, crop, resolution and artifact-free edges |
+| Photography, texture, painterly illustration | Available host image generation/editing or supplied/licensed raster; Sharp for preparation | Subject construction, focal details, crop, resolution and artifact-free edges |
 | Logo, icon, scalable flat illustration | Editable vector source then SVGO | Real paths/text, silhouette, small-size detail and clean export |
 | System, flow, C4 or sequence explanation | Semantic diagram source rendered with Kroki | Every relationship, label, branch and direction against the source |
 | Quantitative chart | Source-backed Vega-Lite through Kroki, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |
@@ -15,7 +15,9 @@ requirements from the destination or provider before a costly final export.
 | Animation or video | HyperFrames lint, snapshot and render | Playback, key frames, timing, captions and final encoded artifact |
 
 Start from the requested medium and editability. Use a simpler available route
-when it meets the need. Never promise vector editability from a raster image or
+when it meets the need, without silently reducing the requested visual ambition.
+Check [image production](image-production.md) before promising generated imagery.
+Never promise vector editability from a raster image or
 pixel-perfect typesetting from an uninspected generated image. Keep essential
 text, labels and numbers editable where feasible. Keep the original source when
 converting text to outlines or flattening for an export requirement.

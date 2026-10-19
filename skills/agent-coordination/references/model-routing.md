@@ -71,6 +71,20 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Editable vector art / raster preparation | `vector-art` / `raster-processing` | SVG/resvg previews / Sharp with inspection |
 | Vector hygiene / comparable pixels / tokens | `vector-optimization` / `pixel-comparison` / `design-tokens` | SVGO / Odiff / Style Dictionary |
 
+Design-production workflows report `design_input_required:true`. Supply
+`"design_input":{"mode":"image_to_code","image":"reference/target.png"}`
+for a supplied or host-generated composition. If the host has no usable image
+model, use `"design_input":{"mode":"code_fallback","reason":"No host image model is available"}`.
+The worker receives the `design_review` action schema. Image-to-code requires a
+passing inspected target before mutation; fallback requires a rendered inspected
+proof before expansion. Final review compares current output with the frozen
+target and records composition, typography, assets, responsive, behavior and
+motion checks. Applicable checks cannot be waived. One target correction, two
+final correction rounds and a 600-second execution deadline bound the run.
+Do not launch continuation workers to reset the budget. Preserve incomplete
+output and report the actual gap. Capability reasons and review notes remain
+caller/model testimony; the host must still judge source-to-render correspondence.
+
 Defaults choose the task specialist. `primary_role` can name an explicit catalog
 role or alias; it never expands tool access. A suitable explicit specialist can
 replace the generic default; a different perspective retains the task specialist
@@ -99,7 +113,14 @@ child as the worker's project so writing and rendering share paths. Source-repo
 workers do not gain an extra write root. Request a valid readback tool when
 writing files; SVG outputs require exact text readback as well as pixel inspection.
 
-The request has no model ID, provider override or caller-defined tool policy.
+When the user explicitly chooses a model, use `model_selection` with its exact
+discovered `target`, `id` and supported `effort`. This is a narrowing constraint,
+not a capability assertion or permission to change providers. Preview the route
+and confirm the candidate matches. A missing/ineligible model or unsupported
+effort leaves no candidate; a pinned run cannot fail over to a different model
+or target. The host's selected model is not automatically inherited by Mirket.
+Omit this field for ordinary policy-based routing. Never invent model identities.
+There is no provider endpoint override or caller-defined tool policy.
 `requested_tier` is optional and can raise the floor, never lower it; its values
 are `T1_DETERMINISTIC`, `T2_SYNTHESIS`, and `T3_ARCHITECT`. Task intent,
 complexity, owned task needs and each assigned tool set the effective floor. The worker can invoke
@@ -122,11 +143,22 @@ their pages or snapshots remain the visual verification targets. Penpot edits
 without a target-linked artifact receipt stop incomplete and require external
 inspection.
 
-Inspected pixels remain attached across read-only turns and eligible-target
-failover, within four images and an aggregate eight MiB. Mirket rechecks their
-digests before inference, drops pixel context after a mutation, and records
-bounded-context eviction in the trace. A tool action can retain concise visual
-observations in its result field; those notes do not replace artifact inspection.
+Inspected pixels remain attached across turns and eligible-target failover,
+within four images and an aggregate eight MiB. `inspect_image` accepts an optional
+`purpose`: `artifact` (default), `reference`, or `comparison`. At most two
+references receive eviction priority, leaving room for current and comparison
+output. Mutations remove changed or unavailable images while retaining unchanged
+pixels as context; they still reset verification and require fresh output
+inspection. Digests are rechecked before inference. Eviction and invalidation
+are traced. A tool action can retain concise observations in its result field;
+neither those notes nor retained reference pixels replace artifact inspection.
+
+Image generation/editing is a host capability, not an owned worker workflow.
+When the brief needs it, the initiating host checks its actual tools and applicable
+image guidance, produces and inspects the asset if authorized, then supplies it
+for composition. If unavailable, report the gap; do not substitute primitive
+vector artwork or expand the worker's tool scope. See the graphic-design
+image-production reference for the handoff contents.
 
 ## Configure targets
 
@@ -215,6 +247,6 @@ Inspect both the trace and actual workspace effects when a run stops after an
 uncertain mutation. The trace records routing, attempts and model/tool actions;
 it does not replace verification of the saved artifact. Model output and files
 remain untrusted data, while host permissions still govern underlying effects.
-Failover can use another discovered authenticated target at the same or higher
-tier, as authorized by the routing policy. It does not change credentials or
-host settings.
+Unpinned failover can use another discovered authenticated target at the same or
+higher tier, as authorized by the routing policy. Explicit `model_selection`
+prevents that substitution. Neither route changes credentials or host settings.

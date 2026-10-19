@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mirket — Expertise and tools for your coding agent</title>
-  <meta name="description" content="A local, open-source harness for Codex Desktop and Claude Desktop Code. Give your agent focused expertise, scoped tools and a way to verify its work." />
+  <meta name="description" content="A local harness for Codex and Claude: focused expertise, scoped tools and image-to-code quality gates. Inspect a target, build editable code and verify the result." />
   <meta name="theme-color" content="#fcf9fa" />
   <meta property="og:title" content="Mirket — Expertise and tools for your coding agent" />
-  <meta property="og:description" content="Focused guidance, local tools and inspectable work. Install Mirket with a prompt in the agent you already use." />
+  <meta property="og:description" content="Focused expertise and image-to-code quality gates for your agent. Start from a visual target, or an inspected code composition when no image model is available." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://harness.mirket.dev/" />
   <link rel="canonical" href="https://harness.mirket.dev/" />
@@ -20,13 +20,13 @@
   <a class="skip" href="#main">Skip to content</a>
   <header class="shell header">
     <a class="brand" href="/" aria-label="Mirket home"><img class="brand-logo" src="./logo.png" width="40" height="40" alt="" /><span>mirket</span><span class="brand-kind">harness</span></a>
-    <nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="https://github.com/codemirket/harness#readme">Docs</a><a href="https://github.com/codemirket/harness">GitHub <span aria-hidden="true">↗</span></a></nav>
+    <nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#image-to-code">Image to code</a><a href="https://github.com/codemirket/harness#readme">Docs</a><a href="https://github.com/codemirket/harness">GitHub <span aria-hidden="true">↗</span></a></nav>
   </header>
   <main id="main" class="shell">
     <section class="hero" aria-labelledby="hero-title">
       <p class="eyebrow">OPEN SOURCE · RUNS LOCALLY</p>
       <h1 id="hero-title">Expertise and tools for Codex and Claude.</h1>
-      <p class="intro">Mirket gives Codex and Claude focused guidance, tools for the task, and a way to check the work. One local harness, inside your existing agent environment.</p>
+      <p class="intro">Focused guidance, scoped tools, and work you can inspect. For visual tasks, Mirket takes your agent from an inspected target to editable code, with quality gates along the way.</p>
       <div class="host-line"><span>Codex Desktop</span><span>Claude Desktop Code</span><a href="https://github.com/codemirket/harness/releases/latest">Latest release ↗</a></div>
     </section>
 
@@ -65,9 +65,35 @@ changing application code as part of installation.</textarea>
       </div>
     </section>
 
-    <aside class="example" aria-labelledby="example-title"><p class="eyebrow">IN PRACTICE · AN EXAMPLE</p><h3 id="example-title">“Build and verify a checkout screen.”</h3><p>The agent reads the relevant interface and engineering guidance, implements the flow in your project, then checks keyboard behavior, narrow layouts and failure states. The result is working code with verification evidence you can review.</p><p class="small">Mirket provides the method. The agent must still execute it and judge the result.</p></aside>
+    <section id="image-to-code" class="section" aria-labelledby="visual-title">
+      <div class="section-title"><p class="eyebrow">IMAGE TO CODE</p><h2 id="visual-title">Start with a target.<br />Finish with evidence.</h2><p>For new visual work and substantial redesign. An approved existing screen can guide a focused repair.</p><a href="https://github.com/codemirket/harness/blob/main/docs/visual-quality.md">Read the workflow ↗</a></div>
+      <div class="steps">
+        <article class="step"><span class="number">01</span><div><h3>Inspect the target first.</h3><p>Use your supplied reference, or create a full composition with the host’s available image model. Inspect the hierarchy, type and focal asset. Freeze that target before implementation.</p></div></article>
+        <article class="step"><span class="number">02</span><div><h3>Build editable code.</h3><p>Turn the target into real components, responsive layout and working controls. Keep exact copy and logos in the source. A screenshot stretched across the page is not a working interface.</p></div></article>
+        <article class="step"><span class="number">03</span><div><h3>Render and compare.</h3><p>Inspect current output against the frozen target at matching content, viewport and state. Check narrow and wide layouts and exercise the interactions. Record specific defects and corrections.</p></div></article>
+      </div>
+    </section>
 
-    <section class="section compact" aria-labelledby="design-title"><div class="section-title"><p class="eyebrow">OPTIONAL DESIGN TOOLS</p><h2 id="design-title">A workspace for<br class="wide-only" /> making and checking.</h2></div><div class="design-copy"><p>Add the design package when the work needs browser inspection, editable design files, diagrams, video, documents or image processing.</p><p class="tool-list">Playwright · Penpot · Style Dictionary · Kroki · HyperFrames · Typst · Sharp · Satori · resvg · SVGO · Odiff</p><p class="small">A separate local stack with Podman prerequisites. The core harness works without it.</p><a href="https://github.com/codemirket/harness/blob/main/docs/packages.md">Read the package guide ↗</a></div></section>
+    <aside id="code-fallback" class="example" aria-labelledby="fallback-title"><p class="eyebrow">WHEN NO IMAGE MODEL IS AVAILABLE</p><h3 id="fallback-title">Compose in code. Inspect before expanding.</h3><p>The agent records the missing capability, builds one minimal HTML/CSS, SVG or Canvas composition, then renders and inspects it. That first passing render becomes the target. The same quality gates and limits apply.</p><p class="small">No new image provider or model change is required. Mirket supplies production tools; image generation, when available, belongs to your host.</p></aside>
+
+    <section id="quality-gates" class="section" aria-labelledby="gates-title">
+      <div class="section-title"><p class="eyebrow">QUALITY GATES</p><h2 id="gates-title">Six checks.<br />A bounded review.</h2><p>Each check gets an outcome and located observations. Missing, stale or failed required evidence blocks a Mirket-owned worker from completing.</p></div>
+      <div class="design-copy">
+        <dl class="quality-checks">
+          <div><dt>Composition</dt><dd>Hierarchy, spacing, proportions and crop.</dd></div>
+          <div><dt>Typography</dt><dd>Actual fonts, wrapping, legibility and contrast.</dd></div>
+          <div><dt>Assets</dt><dd>Source rights, sharpness and fit in the composition.</dd></div>
+          <div><dt>Responsive layout</dt><dd>Narrow and wide reflow, clipping and reachable controls.</dd></div>
+          <div><dt>Behavior</dt><dd>Primary actions, keyboard focus and relevant states.</dd></div>
+          <div><dt>Motion</dt><dd>Requested playback, interruption and reduced motion.</dd></div>
+        </dl>
+        <p>Working UI must pass responsive and behavior checks. Animated work must pass motion checks.</p>
+        <p><strong>One target repair. Two correction rounds after the initial final review. Ten minutes per bounded composition.</strong> At the limit, preserve the output and report remaining defects. New workers or extra variants do not reset the budget.</p>
+        <p class="small">Mirket-owned workers enforce review order, evidence freshness and these bounds. Native host tools follow the same workflow through guidance. Agent observations remain judgments; a passing gate is not an aesthetic guarantee or human approval.</p>
+      </div>
+    </section>
+
+    <section class="section compact" aria-labelledby="design-title"><div class="section-title"><p class="eyebrow">OPTIONAL DESIGN TOOLS</p><h2 id="design-title">A workspace for<br class="wide-only" /> making and checking.</h2></div><div class="design-copy"><p>Add the design package when the work needs browser inspection, editable design files, diagrams, video, documents or image processing.</p><p class="tool-list">Playwright · Penpot · Style Dictionary · Kroki · HyperFrames · Typst · Sharp · Satori · resvg · SVGO · Odiff</p><p class="small">A separate local stack with Podman prerequisites. It includes renderers, not an image generation model. The core harness works without it.</p><a href="https://github.com/codemirket/harness/blob/main/docs/packages.md">Read the package guide ↗</a></div></section>
 
     <section class="section compact faq" aria-labelledby="details-title"><div class="section-title"><p class="eyebrow">GOOD TO KNOW</p><h2 id="details-title">Fits your environment.</h2></div><div>
       <details><summary>What changes on my device?</summary><p>Setup installs a managed Mirket executable, shared instructions, skills and local MCP connections for the hosts you select. It preserves unrelated configuration and stops on conflicting managed edits. Start a fresh host session to load the new tools.</p></details>
