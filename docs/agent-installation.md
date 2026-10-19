@@ -36,7 +36,7 @@ match. Validate that the binary URL belongs to that repository's GitHub release,
 uses HTTPS, and refers to the selected release. Never execute a downloaded file
 before verification.
 
-For the current 1.0.4 release, published binaries cover:
+For the current 1.0.5 release, published binaries cover:
 
 | Device | Manifest target |
 | --- | --- |

@@ -52,7 +52,7 @@ the result. Start a fresh host session if needed to load the new tools.
 
 **Prefer a manual install?** Download the matching executable from
 [Releases](https://github.com/codemirket/harness/releases/latest), verify its
-checksum and follow [manual installation](docs/installation.md). The 1.0.4 release
+checksum and follow [manual installation](docs/installation.md). The 1.0.5 release
 provides macOS ARM64, Linux x86-64 and Windows x86-64 binaries. Use the selected
 release's manifest for available targets.
 
