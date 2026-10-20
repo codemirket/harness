@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "implemented_with_open_security_billing_and_windows_gates",
+  "status": "implemented_with_open_security_and_billing_gates",
   "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
   "candidate": {
     "executable_sha256": "9e4d961b208fc1443678f8d481957b73265390b4cb82398b387fadf49fd8aaac",
@@ -29,8 +29,25 @@
       "native_gate": true
     },
     "windows": {
-      "status": "not_run_on_current_source",
-      "requires": "Approved commit/push to a review branch and hosted Windows runner"
+      "status": "passed_hosted_native_ci",
+      "rust": {
+        "passed": 385,
+        "failed": 0,
+        "ignored": 7
+      },
+      "packaged_journeys": true,
+      "run_id": 39469703515,
+      "commit": "bb6956245e083662c04fad975eddedbe8d7136b9"
+    },
+    "linux_x86_64": {
+      "status": "passed_hosted_native_ci",
+      "rust": {
+        "passed": 415,
+        "failed": 0,
+        "ignored": 7
+      },
+      "packaged_journeys": true,
+      "run_id": 39469703515
     }
   },
   "component_checks": {
@@ -88,8 +105,8 @@
   },
   "public_evidence": {
     "docs/harness-image-remediation-2026-10.md": {
-      "sha256": "6526df3d0a0206bb184de626fdd55a3b8f36786b6b051ea45bfc12a4e21bddbc",
-      "bytes": 10893
+      "sha256": "620ac460b4e50b45e63ec88d2d376154faa96bbdd87d945a255b5a346316f20c",
+      "bytes": 13377
     },
     "docs/harness-image-remediation/backend-runtime.json": {
       "sha256": "d55bb8429f65e23140f49e6a3c211f0a60edba6b4597eeedab179265a9ca576d",
@@ -114,6 +131,10 @@
     "docs/harness-image-remediation/native-accounting.json": {
       "sha256": "23ac4d2a999b9105c9c0aaf32f402a685fa8ecee2e8cd44b5701e955bfabc033",
       "bytes": 1774
+    },
+    "docs/harness-image-remediation/ci.json": {
+      "sha256": "ac0a7b4dcdf570f3a31680492af0beb562276f0828abba2b0967820a954a54a4",
+      "bytes": 37278
     }
   },
   "private_evidence_root": ".mirket/implementation/harness-image-remediation-2026-10-20",
@@ -123,7 +144,7 @@
     "ignored": 0
   },
   "limits": [
-    "No current Windows run, account-wide invoice, full remote-image remediation, existing-data migration or desktop activation is established.",
+    "No account-wide invoice, full remote-image remediation, existing-data migration or desktop GUI activation is established.",
     "Scanner matches are not exploitability findings; no thresholds or image exceptions were relaxed.",
     "Component checks retain their own tested executable/source identities; immutable image IDs and recipes bind unchanged runtime components."
   ],
@@ -156,5 +177,12 @@
     "docs/agent-runtime.md": "c25c030103e1ebdc4f115abf1ffd99b1ab359659b4be9e43a6c2a8f313286687"
   },
   "snapshot_scope": "Retained frozen source and test context; later evidence sealing is outside the compiled source fingerprint.",
-  "private_manifest_sha256": "e17414d1eaf7dd23bb78c04d6435659612363a4ba9f21bb166345796d54edb60"
+  "private_manifest_sha256": "e17414d1eaf7dd23bb78c04d6435659612363a4ba9f21bb166345796d54edb60",
+  "review_branch": {
+    "name": "review/harness-remediation-windows-20261020",
+    "snapshot_commit": "bb6956245e083662c04fad975eddedbe8d7136b9",
+    "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
+    "committed_bytes_verified": true,
+    "deployed": false
+  }
 }

@@ -2,9 +2,10 @@
 
 This follows the [dependency and accounting report](harness-gaps-2026-10.md).
 The candidate updates owned images, restores an inspectable final Penpot OS,
-and records vision-probe costs. It is not deployed, published or security-cleared.
-The image gate remains red. Current Windows execution still requires an approved
-revision on a Windows runner; historical Windows results are not reused.
+and records vision-probe costs. It is not deployed, released or security-cleared.
+The image gate remains red. The approved review branch now has current Windows,
+macOS and Linux CI evidence, including packaged installer and MCP journeys.
+No release or desktop deployment was performed.
 
 The [evidence manifest](harness-image-remediation/checks.json) binds the candidate,
 component tests, image identities, failure records and retained raw evidence.
@@ -15,7 +16,7 @@ component tests, image identities, failure records and retained raw evidence.
 | --- | --- | --- |
 | P1 | Owned image advisories | Frozen Debian security snapshot advanced to 20 October; Chromium patched; esbuild rebuilt with patched Go and scannable metadata; stale pip bundle removed. Remaining findings retain the failing gate. |
 | P1 | Penpot backend OS inventory | New pinned Debian runtime retains its package database. Final scan detects 228 Debian packages; application payload comparison and isolated fresh-database/restart tests pass. Existing-data migration is not approved by these tests. |
-| P1 | Windows validation | Native CI runs even when another prerequisite fails, while preserving those failing gates; manual dispatch is available. Actual current Windows execution remains pending commit/push authorization and the hosted runner. |
+| P1 | Windows validation | Native CI runs even when another prerequisite fails, while preserving those failing gates; manual dispatch is available. Current Windows x86-64 CI passed the full Rust gate and all four packaged installer/update/MCP journeys; retained receipts bind the reviewed source. |
 | P2 | Probe usage and cost | Durable pre-dispatch intents, success/failure receipts, distinct resumed probes and CLI inspection implemented. Live native fixture accounts for probe plus worker calls. Authoritative billing remains unavailable. |
 
 ## Image changes and discriminating evidence
@@ -145,12 +146,17 @@ an independent Git whitespace check stalled reading a Git object. The current
 checkout was therefore not freshly certified equal to the frozen candidate.
 The passing platform evidence binds the frozen source fingerprint, and the
 two final documentation contract tests passed after recompiling against that
-snapshot. Recheck the original checkout's readable inputs before publishing it.
+snapshot. For the review branch, a fresh isolated clone received the manifest-verified
+snapshot and final public evidence. All 689 committed files matched that prepared
+checkout byte for byte, and the 391 compiled inputs retained the same fingerprint.
+The original checkout was not used as the source for publication.
 Windows cannot be established from a cross-compile, static inspection or an older
 CI run. The workflow preserves all required checks and artifacts, adds manual
 invocation, and prevents an unrelated prerequisite failure from skipping native
-platform validation. Publication was not performed: project instructions require
-approval before committing or pushing this working tree.
+platform validation. After explicit user authorization, commit
+`bb6956245e083662c04fad975eddedbe8d7136b9` was pushed to
+`review/harness-remediation-windows-20261020`. This publishes a review snapshot,
+not a release or deployment. No native CI failure required a source fix.
 
 The next security work is an upstream-backed patch set for remaining Penpot Java
 and remote service images, with their own runtime checks and existing-data migration
@@ -158,3 +164,36 @@ plans where applicable. Keep source-image coverage gaps and unsupported binary
 inventory separate from final runtime OS coverage; do not replace either with an
 exception or a green receipt. Account-wide billing needs an authoritative provider
 billing source; inferred token prices cannot close that gap.
+
+## Hosted Windows and native CI evidence
+
+[Run 39469703515](https://github.com/codemirket/harness/actions/runs/39469703515)
+executed the approved snapshot. The [CI record](harness-image-remediation/ci.json)
+retains job identities, exact commit and source fingerprints, executable hashes,
+artifact metadata, native receipts and command-output hashes.
+
+| Hosted target | Rust passed / failed / ignored | Packaged native journeys |
+| --- | --- | --- |
+| Windows x86-64 MSVC | 385 / 0 / 7 | 4 variants; 21 commands, all successful |
+| macOS ARM64 | 416 / 0 / 7 | 4 variants; 21 commands, all successful |
+| Linux x86-64 GNU | 415 / 0 / 7 | 4 variants; 21 commands, all successful |
+
+Each native job passed formatting and Clippy with warnings denied, built the
+optimized CLI and three standalone installers, then exercised disposable setup,
+doctor, update, updated doctor and MCP. Downloaded evidence and all twelve
+packaged executable hashes were checked against their receipts. All three
+platforms report source fingerprint
+`712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc`.
+Different Rust totals reflect platform-conditional tests; seven explicit opt-in
+tests remain ignored per runner. Hosted Linux x86-64 supplements the earlier
+local Linux ARM64 evidence. These checks do not establish desktop GUI activation,
+contained service acceptance or migration of existing data.
+
+The JavaScript, source-dependency and website checks passed. The source audit
+queried 828 coordinates with no new untriaged findings and the three retained ZIP
+exceptions. The image job completed all ten remote scans and failed as required
+on untriaged advisories and incomplete coverage, including the upstream backend
+payload's absent OS inventory. Its remote-only scope explicitly excludes four
+built images; prior local immutable-image evidence remains separate. The overall
+workflow is therefore **failed**, despite all native platform jobs passing.
+No thresholds, exceptions, tests or release gates were weakened.
