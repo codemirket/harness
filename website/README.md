@@ -16,31 +16,31 @@ Documentation is published in the repository, with `docs/README.md` as its index
 desktop behavior. Publish linked guides before activating the site; do not change
 the public release label until matching binaries and their manifest are published.
 
-The page follows the reader's journey: understand the role, install and activate,
-choose project expertise, try everyday examples, understand the architecture,
-and find reference commands. Desktop section navigation becomes a wrapping
-contents list on narrow screens. CLI setup and detailed visual checks use native
-disclosures, so they remain usable without JavaScript.
+The dark landing page explains the harness through editable HTML/CSS visuals:
+a task workbench, a three-stage bug-fix example, a local architecture map,
+responsive design specimens and a checkpoint timeline. The workflow buttons
+switch between Understand, Build and Verify; without JavaScript all three
+explanations remain visible. These are illustrative explanations, not live runs
+or evidence of product performance.
 
-The visual example summarizes inspected targets, editable implementation and
-rendered comparison; `docs/visual-quality.md` owns the detailed contract. Keep claims
-aligned with `src/router/design_gate.rs`: runtime enforcement applies to
-Mirket-owned workers; native host tools follow installed guidance. Neither path
-certifies aesthetics or human approval.
+The visual system uses charcoal surfaces, warm white text and a brighter
+raspberry accent derived from the existing brand. Wide layouts pair explanations
+with their visual; narrow screens stack them. Detailed setup and verification
+material stays in native disclosures. Motion is limited to short control color
+transitions and respects reduced motion.
 
-The information structure takes cues from [Aider](https://aider.chat/)'s direct
-product explanation and [uv](https://docs.astral.sh/uv/)'s separation of getting
-started, task guides and reference (inspected 2026-10-20). No external copy or
-assets are reused. The site retains Mirket's palette, logo and system fonts.
+`docs/visual-quality.md` owns the full visual workflow. Runtime enforcement applies
+to Mirket-owned workers; native host tools follow installed guidance. Neither
+path certifies aesthetics or human approval. The original layout and explanatory
+visuals are maintained as source; no third-party page copy or imagery is reused.
 
 ## Brand assets
 
 `public/logo.png` is the unmodified logo from the
 [codemirket GitHub organization](https://github.com/codemirket), retrieved from
 its organization avatar on 2026-10-18. It is used in the header, footer and
-favicon. The palette draws from its dominant opaque colors: raspberry
-`#b50d45`, near-black `#181519`, and warm white `#fcf9fa`. Supporting neutrals
-are derived from that palette; the logo itself is not recolored.
+favicon. The dark palette adapts its raspberry accent to `#f078a0` for contrast against
+`#100f12`, with `#f3f0f4` text. The logo itself is not recolored.
 
 ## Build and verify
 
@@ -74,7 +74,7 @@ python3 -m http.server 8767 --bind 127.0.0.1 --directory website/public
 node website/scripts/browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence
 ```
 
-The checks include the release label, memory/recovery content, section navigation,
+The checks include the release label, memory/recovery content, workflow selection,
 project setup, architecture and the visual workflow disclosures.
 They cover 1440, 768, 390 and 320 CSS-pixel widths, keyboard access, prompt
 copy success and clipboard denial, native disclosure controls, enlarged text,

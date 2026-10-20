@@ -3,12 +3,12 @@
  */
 
 :root {
-  --color-canvas: #fcf9fa;
-  --color-ink: #181519;
-  --color-muted: #665a60;
-  --color-rule: #e3d8dc;
-  --color-accent: #b50d45;
-  --color-surface: #ffffff;
-  --color-wash: #f5e9ee;
-  --color-on-accent: #ffffff;
+  --color-canvas: #100f12;
+  --color-ink: #f3f0f4;
+  --color-muted: #aaa3af;
+  --color-rule: #332d38;
+  --color-accent: #f078a0;
+  --color-surface: #19161d;
+  --color-wash: #251b24;
+  --color-on-accent: #200c14;
 }

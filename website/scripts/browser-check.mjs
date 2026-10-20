@@ -32,11 +32,21 @@ try {
       await page.locator('.hero a[href="#install"]').click();
       assert.equal(new URL(page.url()).hash,'#install');
       assert.ok(await page.locator('#install').evaluate(e=>Math.abs(e.getBoundingClientRect().top-28)<2));
-      for (const link of await page.locator('.sidebar nav a').all()) {
+      for (const link of await page.locator('header nav a[href^="#"]').all()) {
         const hash=await link.getAttribute('href');
         await link.click();
         assert.equal(new URL(page.url()).hash,hash);
         assert.ok(await page.locator(hash).isVisible());
+      }
+      assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).colorScheme),'dark');
+      for (const stage of ['build','verify','scope']) {
+        const control=page.locator(`[data-stage="${stage}"]`);
+        await control.focus();await page.keyboard.press('Enter');
+        assert.equal(await control.getAttribute('aria-pressed'),'true');
+        assert.ok(await page.locator(`[data-panel="${stage}"]`).isVisible());
+        assert.equal(await page.locator('[data-panel]:visible').count(),1);
+        await page.locator('#how-it-works').scrollIntoViewIfNeeded();
+        await page.screenshot({path:path.join(output,`${width}-workflow-${stage}.png`)});
       }
       await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedText=text;}}}));
       await page.locator('#copy').focus();
@@ -74,8 +84,10 @@ try {
     assert.equal(await page.locator('#install-prompt').inputValue(),expected);
     assert.ok(await page.locator('noscript').isVisible());
     assert.equal(await page.locator('#quality-gates dt').count(),6);
-    assert.ok(await page.locator('#image-to-code').isVisible());
+    assert.equal(await page.locator('[data-panel]:visible').count(),3);
+    assert.ok(await page.locator('.workflow-controls').isHidden());
     await page.locator('#quality-gates summary').click();
+    assert.ok(await page.locator('#image-to-code').isVisible());
     assert.ok(await page.locator('#code-fallback').isVisible());
     await page.locator('#project-setup summary').click();
     assert.ok(await page.locator('#project-setup pre').isVisible());
