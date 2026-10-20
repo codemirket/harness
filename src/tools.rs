@@ -337,24 +337,41 @@ mod tests {
         let home = dir.path().join("home");
         std::fs::create_dir(&home).unwrap();
         let paths = Paths::new(home).unwrap();
-        let executable = dir.path().join("tool");
-        std::fs::copy(std::env::current_exe().unwrap(), &executable).unwrap();
-        #[cfg(unix)]
-        {
-            use std::os::unix::fs::PermissionsExt;
-            std::fs::set_permissions(&executable, std::fs::Permissions::from_mode(0o700)).unwrap();
-        }
+        // The full debug test executable can exceed the production registry's
+        // size limit. Compile a small native fixture with the test toolchain
+        // instead of coupling this behavioral probe to debug-symbol size.
+        let executable = dir
+            .path()
+            .join(format!("tool{}", std::env::consts::EXE_SUFFIX));
+        let source = dir.path().join("fixture.rs");
+        std::fs::write(
+            &source,
+            r#"fn main() { std::fs::write("invoked", b"fixture ran").unwrap(); }"#,
+        )
+        .unwrap();
+        let compiled = std::process::Command::new("rustc")
+            .arg(&source)
+            .arg("-o")
+            .arg(&executable)
+            .output()
+            .unwrap();
+        assert!(
+            compiled.status.success(),
+            "{}",
+            String::from_utf8_lossy(&compiled.stderr)
+        );
         register(&paths, "fixture", &executable).unwrap();
 
-        let args = vec![
-            "--exact".to_owned(),
-            "tools::tests::process_fixture".to_owned(),
-            "--nocapture".to_owned(),
-        ];
+        let args = vec![];
         assert_eq!(
             run(&paths, "fixture", dir.path(), &args, 10).await.unwrap(),
             0
         );
+        assert_eq!(
+            std::fs::read(dir.path().join("invoked")).unwrap(),
+            b"fixture ran"
+        );
+        std::fs::remove_file(dir.path().join("invoked")).unwrap();
 
         std::fs::write(&executable, b"changed after registration").unwrap();
         let error = run(&paths, "fixture", dir.path(), &args, 10)
@@ -365,6 +382,7 @@ mod tests {
                 .to_string()
                 .contains("registered fixture executable changed")
         );
+        assert!(!dir.path().join("invoked").exists());
 
         let error = run(&paths, "missing", dir.path(), &args, 10)
             .await

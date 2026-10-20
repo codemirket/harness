@@ -140,17 +140,17 @@ fn private_directory(path: &Path) -> Result<()> {
     }
     Ok(())
 }
-fn private_file(path: &Path) -> Result<()> {
+fn private_file(_path: &Path) -> Result<()> {
     #[cfg(unix)]
     {
         use std::os::unix::fs::PermissionsExt;
-        fs::set_permissions(path, fs::Permissions::from_mode(0o600))?;
+        fs::set_permissions(_path, fs::Permissions::from_mode(0o600))?;
     }
     Ok(())
 }
-fn sync_dir(path: &Path) -> Result<()> {
+fn sync_dir(_path: &Path) -> Result<()> {
     #[cfg(unix)]
-    fs::File::open(path)?.sync_all()?;
+    fs::File::open(_path)?.sync_all()?;
     Ok(())
 }
 
