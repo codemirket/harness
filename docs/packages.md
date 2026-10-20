@@ -1,4 +1,14 @@
-# Design package
+# Runtime packages
+
+> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+
+`design` supplies production tools. The internal `agent-runtime` package supplies
+Mem0 memory and LangGraph worker checkpoints through Mirket itself; see
+[local memory and durable workers](agent-runtime.md). To retain both, install
+`mirket package install design agent-runtime`. Commands below show design-only
+selection and replace any previously saved package selection.
+
+## Design package
 
 Mirket exposes the design stack as one local MCP package, `design`. Its tools
 share one read/write workspace. The host directory is the selected Mirket home's
@@ -70,8 +80,8 @@ operations; a stopped service can retain its workspace and persisted design file
 
 | Need | Tool domain | Required evidence |
 | --- | --- | --- |
-| Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and Penpot token outputs in sync with that source. |
-| Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF or WOFF fonts. Inspect the saved output at its actual use size. |
+| Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and Penpot outputs in sync. Cached generations bind token bytes, the compiler/format configuration and locked dependencies; source and compiler identities remain separate in the result. |
+| Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF, WOFF or WOFF2 fonts. Inspect the saved output at its actual use size. |
 | Live web page and interaction | Playwright | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
 | Editable design file | Official Penpot MCP and plugin | Use the upstream `penpot/penpot` `develop/mcp` server and its forwarded tool schemas, with the plugin's persistent WebSocket. Inspect saved object identities and exports. |
 | Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
@@ -87,9 +97,22 @@ before SVG validation and optimization, so saved files retain their typography
 without a server connection. CLI scratch directories use private directories on
 the shared workspace disk and are removed after completion or cancellation.
 HyperFrames and Typst staging reject project assets above the 64 MiB total
-before loading them into memory. Typst compiles from the prepared project tree;
+before loading them into memory. PNG, JPEG, WebP and AVIF assets are fully decoded
+for validation in an isolated worker, then staged byte-for-byte (at most 32 MiB
+and 17 million source pixels per raster). Staging preserves dimensions, encoding
+and metadata; use `raster_transform` explicitly for resizing or re-encoding.
+Multi-page animated rasters in those formats require explicit frame preparation
+or a video asset instead of silently retaining only their first frame.
+SVG optimization preserves hidden states, empty attachment groups and unused
+definitions as well as IDs; inspect the exported structure and resting pixels.
+Typst compiles from the prepared project tree;
 absolute imports cannot read other workspace files. Its compiled token file is
 copied into that tree before compilation.
+
+`static_render` accepts local TTF, OTF, WOFF and WOFF2 fonts supported by pinned
+Satori, checking their signatures. Supply exact licensed faces and inspect the
+actual glyphs and wrapping. This does not expand `vector_render`'s resvg font-file
+support or establish browser-equivalent shaping for every script and inline layout.
 
 The owned [tool budgets](../runtime/design/tools/tool-budgets.json) set each
 design call's bridge deadline. They allow long renders, including 15 minutes
@@ -205,3 +228,38 @@ Raster transforms accept PNG, JPEG, GIF, WebP and AVIF inputs; animated inputs u
 the first frame. They preserve EXIF orientation, flatten JPEG transparency onto
 white, and do not enlarge by default (`enlarge: true` opts in). Output formats are
 PNG, JPEG, WebP and AVIF. SVG sources use `vector_render` instead of a raster decoder.
+
+Direct owned design tool success responses include `structuredContent.runtime`,
+the same identity in ordinary text content, and `_meta["mirket/runtime"]`: the process-captured
+runtime digest, module/lock-file digests and Node version. Use it to compare actual
+calls after a container rebuild. The package bridge's MCP version also includes
+the compiled Mirket source identity; these identify different layers. Forwarded
+Penpot responses retain their upstream metadata and require separate editor checks.
+
+If a native Podman upgrade removes its registered executable, inspect and explicitly
+replace that registration through `mirket tool remove/register`. For the resulting
+owned helper-path mismatch, inspect `.mirket/execution/podman/containers.conf`, then
+run `mirket environment repair-helpers --expected-sha256 OBSERVED_SHA256`. This
+accepts only Mirket's exact helper-only configuration, checks the registered
+installation's helpers, and leaves VM identity, volumes and workspace unchanged.
+
+## Worker design scope
+
+Routed workers use a project subdirectory of the single design workspace. Each
+process receives that directory as its root; file tools, tokens, renderer inputs,
+outputs and browser requests use it. Absolute file writes are accepted only within
+that assigned design directory. Sibling project paths and browser requests are
+rejected, including encoded traversal. The native renderer admission lock remains
+shared across projects. Responses report the process workspace and host/project
+scope alongside loaded source identity.
+
+Host design MCP calls retain the host-owned shared workspace. Project scoping is
+an enforced tool boundary, not a separate container/kernel sandbox per project.
+Penpot objects do not share the filesystem namespace: routed workers reject these
+operations before model execution and direct the host to the official Penpot MCP.
+Host editing remains available when Penpot is enabled. Within one project, use
+separate output names and revision hashes for concurrent work.
+
+The Typst tool deadline is 25 minutes, below the 30-minute paged-work budget;
+inner compiler and page-image limits remain in force. This ceiling does not
+estimate job duration or guarantee that 64 complex pages fit the budget.

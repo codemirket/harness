@@ -1,5 +1,7 @@
 # Workflows and MCP
 
+> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+
 Mirket supplies focused expertise and consistent task state. The host chooses
 and executes actual tools under its permissions. All operations are available
 through the `mirket` CLI; the host starts its MCP endpoint with `mirket mcp serve`.
@@ -102,6 +104,7 @@ local editable records cannot attest reviewer identity or human approval.
 
 | Tool | Operation |
 | --- | --- |
+| `runtime_status` | Live MCP process, compiled source/catalog fingerprints and installed-binary match (newer desktop build) |
 | `catalog_search` | Bounded reviewed-catalog discovery |
 | `catalog_show` | Selected metadata, pins, caveats and correct read route |
 | `capability_plan` | Exact role selection and outcome contract |
@@ -118,12 +121,37 @@ local editable records cannot attest reviewer identity or human approval.
 | `task_evidence` | Bind a project-relative artifact and observed result |
 | `task_finish` | Complete or reopen a task after consistency checks |
 
+The newer desktop build also exposes these operations through the same main MCP
+connection. Memory and durable worker operations require `agent-runtime` and a
+registered project; backup and relocation remain explicit CLI operations.
+
+| Tool | Operation |
+| --- | --- |
+| `memory_read` | Read an explicit fact, list a page, or search active project facts |
+| `memory_put` | Store an explicit fact with provenance and an idempotency key; optionally supersede an observed fact |
+| `memory_forget` | Delete an observed fact and its history using its digest; traces/backups remain |
+| `workflow_status` | Inspect the latest durable worker state and recovery limits |
+| `resume_subagent` | Resume eligible checkpointed work within its original bindings and budget |
+| `workflow_forget` | Delete one inactive run's checkpoints using its observed checkpoint ID |
+| `verification_handoff` | Begin a bound host-check attempt and submit named evidence |
+| `runtime_data` | Export a cursor page or preview retention without deleting anything |
+| `runtime_data_apply` | Apply an explicitly reviewed, unchanged retention plan |
+
+Lifecycle MCP cursors are objects, not JSON strings. CLI `--cursor` takes JSON
+text. A preview/export is not a restorable backup. See [memory, recovery and typed
+contracts](agent-runtime.md) for request examples, retention and privacy boundaries.
+
 Resources expose embedded skill content. They do not provide arbitrary filesystem
 reads. Tool annotations communicate behavior; they are not permission enforcement.
 
 The stdio boundary limits request frames to 128 KiB and structured results to
-64 KiB. Four blocking operations can run concurrently; additional work receives
-a busy response. Tool deadlines are ten seconds. A short database operation may
+64 KiB. The newer desktop build separates control, execution and runtime
+admission, with four slots in each class; the contained agent runtime has its
+own cross-process limits. Ordinary state operations have a ten-second deadline;
+agent-runtime responses have a 120-second deadline and workers retain their
+assigned execution budgets. See [runtime containment](agent-runtime.md#ownership-and-containment).
+The public 1.0.5 server uses one four-operation pool; inspect its tool description
+for exceptions to the ordinary deadline. A short database operation may
 finish after cancellation or a timeout: inspect task state or retry the identical
 idempotency key before issuing another mutation.
 

@@ -36,7 +36,10 @@ match. Validate that the binary URL belongs to that repository's GitHub release,
 uses HTTPS, and refers to the selected release. Never execute a downloaded file
 before verification.
 
-For the current 1.0.5 release, published binaries cover:
+As of 2026-10-20, the latest public release is 1.0.5. The separately verified
+desktop build 1.0.11 is not a public download; do not assume its commands exist
+in 1.0.5. See [version availability](release-status.md). Resolve the selected
+release again at installation time. The 1.0.5 binaries cover:
 
 | Device | Manifest target |
 | --- | --- |
@@ -105,6 +108,16 @@ a fresh session when necessary. In a host where Mirket is available, invoke
 `catalog_search` for a relevant topic and `skill_read` for an embedded result.
 Verify that the tool returned useful content. This establishes activation in
 that host; it does not establish activation in every configured host.
+
+On a build exposing `runtime_status`, call it in the actual host and compare its
+executable, source and catalog fingerprints with `mirket info --json`. Require
+`installed_binary.matches_process` to be true after an update. A separate CLI
+process cannot prove that an existing desktop connection restarted. Invoke a
+selected design tool and inspect its saved output; newer direct responses expose
+`runtime` in ordinary structured/text content even if the host hides metadata.
+Check agent-runtime with an actual read-only `memory_read` when it is selected.
+Report each observed connection separately. Older releases without these tools
+retain the discovery/content check above; do not report newer identity checks as passed.
 
 If this chat is attached to a project, inspect its instructions, registration and
 `.mirket/project.json`. Recommend focused expertise based on its actual stack

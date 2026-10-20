@@ -20,6 +20,8 @@ try {
       page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
       await page.goto(url,{waitUntil:'networkidle'});
       assert.equal(await page.locator('h1').count(),1);
+      assert.match(await page.locator('#release-status').textContent(),/Public download: 1\.0\.5/);
+      assert.match(await page.locator('#continuity').textContent(),/not included in the current public 1\.0\.5/);
       assert.equal(await page.locator('#install-prompt').inputValue(),expected);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`Overflow at ${width}`);
       await page.keyboard.press('Tab');
@@ -39,7 +41,7 @@ try {
       await summary.focus();await page.keyboard.press('Enter');
       assert.equal(await page.locator('details').first().getAttribute('open'),'');
       await page.keyboard.press('Enter');
-      for(const selector of ['#install','#how-it-works','#image-to-code','#code-fallback','#quality-gates','.compact','.faq']) {
+      for(const selector of ['#install','#how-it-works','#continuity','#image-to-code','#code-fallback','#quality-gates','.compact','.faq']) {
         await page.locator(selector).first().scrollIntoViewIfNeeded();
         await page.screenshot({path:path.join(output,`${width}-${selector.replace(/[.#]/g,'')}.png`)});
       }

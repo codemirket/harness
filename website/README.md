@@ -11,10 +11,14 @@ checked by the build. The prompt links to `docs/agent-installation.md` in the
 repository. Publish that guide before deploying a site that references it.
 Manual installation remains in `docs/installation.md`.
 
-The image-to-code section explains the inspected target, editable implementation
-and rendered comparison. It includes the no-image-model code fallback, six final
-quality checks, one target repair, two final correction rounds and the ten-minute
-production bound. `docs/visual-quality.md` owns the detailed contract. Keep claims
+Documentation is published in the repository, with `docs/README.md` as its index.
+`docs/release-status.md` distinguishes the public download from newer verified
+desktop behavior. Publish linked guides before activating the site; do not change
+the public release label until matching binaries and their manifest are published.
+
+The medium-aware workflow section explains the inspected target, editable implementation
+and rendered comparison. It includes inspected native specimens, the legacy no-image-model fallback, six
+quality checks, one target repair and deliverable-based time/repair budgets. `docs/visual-quality.md` owns the detailed contract. Keep claims
 aligned with `src/router/design_gate.rs`: runtime enforcement applies to
 Mirket-owned workers; native host tools follow installed guidance. Neither path
 certifies aesthetics or human approval.
@@ -60,7 +64,8 @@ python3 -m http.server 8767 --bind 127.0.0.1 --directory website/public
 node website/scripts/browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence
 ```
 
-The checks cover 1440, 768, 390 and 320 CSS-pixel widths, the workflow/fallback/gate
+The checks include release availability and the memory/recovery section.
+They cover 1440, 768, 390 and 320 CSS-pixel widths, the workflow/fallback/gate
 sections, keyboard access, prompt
 copy success and clipboard denial, native disclosure controls, enlarged text,
 console errors and JavaScript-disabled access. Inspect the saved captures as well

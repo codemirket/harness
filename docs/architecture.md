@@ -1,5 +1,7 @@
 # Architecture
 
+> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+
 Mirket has one command surface and one Rust implementation of each operation.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
@@ -28,11 +30,11 @@ guidance read route.
 | `src/state.rs` | Registered roots, durable tasks, revisions, idempotency and artifact evidence |
 | `src/state/contracts.rs` | Strict opt-in verification and specialist coverage contracts with explicit input bindings |
 | `src/role_eval.rs`, `evals/role-workflow/` | Versioned role fixtures, pinned host trial reports and deterministic aggregation |
-| `src/mcp.rs` | Typed stdio protocol boundary and bounded tool/resource delivery |
+| `src/mcp.rs` | Typed stdio protocol boundary, live identity and bounded tool/resource delivery |
 | `src/router/` | Dynamic target/model discovery, capability policy, isolated inference and owned tool dispatch |
 | `src/router/assignment.rs` | Shared task-needs resolver, bounded role/skill delivery, workflow floors and non-expanding dispatch scope |
 | `src/package_mcp.rs` | Design package MCP session lifecycle and bounded requests |
-| `src/packages/mod.rs` | The single package selection, configuration and metadata |
+| `src/packages/mod.rs` | Shared package selection, configuration and metadata |
 | `src/packages/machine.rs` | Fixed design VM image and shared-workspace preparation |
 | `src/packages/services.rs` | Design service start, status, stop and owned data lifecycle |
 | `runtime/design/tools/` | Direct design tool schemas and calls inside the shared workspace |
@@ -63,12 +65,11 @@ Update candidate checks and setup replay own their process groups/jobs. On Unix,
 the entrypoint replaces itself with a verified newer managed runtime so host
 termination continues to target the runtime PID.
 
-SQLite transactions are short; WAL permits concurrent reads. Opening an existing
-validated schema-3 task database performs no schema write, so CLI readers can
-continue while another writer holds a transaction. Valid schema-1/2 databases
-migrate transactionally to schema 3, retaining records and retry replies while
-updating the task-list index (and adding contracts for schema 1); earlier
-runtimes refuse the new version. Unknown or malformed layouts fail closed. Task lists use project-bound cursors
+SQLite transactions are short; WAL permits concurrent reads. Opening a validated
+current database performs no schema write. State schema 4 retains project namespaces
+across relocation; see [database migration](installation.md#updating-older-task-databases)
+for the supported upgrade path and rollback limits. Unknown or malformed layouts
+fail closed. Task lists use project-bound cursors
 over immutable creation time and ID; checkpoints cannot shift page membership.
 Task status identifies omitted checkpoints; task-bound history cursors recover
 older notes in bounded revision-descending pages without shifts from new appends.
@@ -168,14 +169,17 @@ Changed/missing pixels are removed and traced; unchanged previous output remains
 comparison context, never proof of a new source revision. Mutation still resets
 verification. External changes detected before inference fail closed.
 
-Design-production workflows require an explicit image-to-code target or a
-host-declared code fallback when no usable image model is available.
-`src/router/design_gate.rs` enforces inspected target ordering, a frozen target,
-current rendered evidence, applicable quality-check outcomes and finite review
-counts. The inference loop enforces a 600-second design execution deadline.
-No target mutation can precede the image-to-code target review; fallback can
-compose a minimal proof first. These checks enforce evidence structure, not
-semantic quality or truthful capability testimony. See [visual production](visual-quality.md).
+Design-production workflows require an inspected image target, a native specimen
+with its medium/suitability reason, or the legacy host-declared code fallback.
+`src/router/design_gate.rs` resolves one budget from actual task workflows:
+900 seconds/two final repairs for static/vector/diagram work, 1800/three for
+interfaces/paged work, 2700/four for motion. Combined workflows use the largest
+limit. Both assignment metadata and the execution deadline use this resolver.
+The gate enforces inspected target ordering, frozen identity, current rendered
+evidence, applicable quality checks and finite review counts. Image targets must
+pass before mutation; native/fallback modes may compose a minimal rendered proof
+first. Medium suitability, proof scope and source-to-render semantics still need
+host judgment. See [visual production](visual-quality.md).
 
 Rich raster generation/editing is currently a host-owned capability. The host
 must discover and invoke an available producer under its permissions, then pass
@@ -224,3 +228,57 @@ pinned pnpm dependencies during package preparation; serving performs no package
 resolution. Additional server profiles require pinned artifacts, complete
 notices, an appropriate tool policy and relevant invocation tests. See
 [local MCP packages](packages.md) for supported profiles and prerequisites.
+
+## Live identity and source verification
+
+`mirket info` and the MCP `runtime_status` report compiled source identity,
+embedded catalog identity, the captured running-executable digest and the current
+managed executable digest. MCP initialization includes a source fingerprint suffix.
+A replaced executable cannot change an already connected process's captured identity.
+These checks observe only the calling connection; other clients must reconnect and
+call separately. Direct design success responses include the same process-captured identity in
+`structuredContent.runtime`, ordinary text content and `_meta["mirket/runtime"]`.
+Use ordinary content when a desktop host hides metadata. These identities cover
+loaded design modules and dependency locks, not forwarded Penpot service identity. Semver alone cannot identify a local build.
+
+A source worker's internal artifact verification establishes readback, not runtime
+correctness. It returns `awaiting_host_verification`, declared check names and source
+hashes in the existing run trace. The host executes its checks and submits bounded,
+project-relative evidence through `verification_handoff` / `mirket agent verify`.
+The report checks project ownership, source/evidence identity, exact check coverage,
+optimistic trace identity and idempotent retries. The host-reported `host_verified`
+status is not authenticated human acceptance or an independent grading result.
+No shell access, alternate task database or automatic command execution is added.
+
+Profile discovery starts with eight bundles; `catalog profiles --all` retains all
+specialist and alternative bundles and every saved selection. Selected competing
+whole-workflow skills require a source keyword or exact ID in ordinary search;
+this changes discovery, not installation, provenance or explicit skill access.
+
+## Memory and durable execution
+
+`src/packages/agent.rs` owns the internal OCI recipe; `src/packages/oci.rs` owns
+shared image identity checks. `src/agent_runtime.rs` owns bounded private IPC and
+checks loaded versions/source hashes. `src/memory.rs` owns typed host memory
+requests; `src/router/durable.rs` binds LangGraph to actual worker dispatch and
+host verification. `runtime/agent` implements Mem0 storage/recall and the fixed
+LangGraph state machine. It has no host tool dispatcher, provider credentials or
+arbitrary-code interface. See [the runtime contract](agent-runtime.md) and
+[version availability](release-status.md).
+
+## Durable maintenance
+
+`src/backup.rs` owns bounded, hash-bound durable archives and journaled restore;
+`src/maintenance.rs` coordinates shared operation leases and exclusive maintenance.
+State SQLite connections, contained runtime sessions, worker execution and trace
+verification hold leases through their relevant I/O and process cleanup. Idle MCP
+connections do not hold leases. Runtime control files and project/design assets
+are not backup payloads. Restore requires empty durable stores and the original
+home/runtime recipe, with no automatic evidence acceptance.
+
+State schema 4 stores each registered project's original namespace in
+`project_scopes`. Migration retains all existing IDs and path-derived namespaces.
+`project relocate` checks an actual renamed directory and atomically rebinds its
+root while retaining the namespace. Memory and assigned design workspace resolution
+use that binding. Historical worker envelopes keep their absolute paths and cannot
+silently resume against a different root. See [recovery commands](agent-runtime.md#restorable-backups-and-project-relocation).

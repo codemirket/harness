@@ -1,5 +1,7 @@
 # Installation and updates
 
+> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+
 For guided setup, paste the [installation prompt](../website/public/install-prompt.txt)
 into your agent. The [agent execution guide](agent-installation.md) covers device
 inspection, release verification and activation. This page is the manual and
@@ -71,6 +73,11 @@ that same executable with `package serve ID`.
 Mirket preserves unrelated settings, credentials, servers and permission choices.
 Start a new host session after setup. A successful doctor checks installation;
 actual host discovery and useful tool invocation need a native session.
+For builds with `runtime_status`, compare that actual-client response with
+`mirket info --json`: executable/source/catalog fingerprints must match and
+`installed_binary.matches_process` must be true. Check each desktop connection
+separately. Invoke the design or memory tool as well when that package is selected;
+main-server identity does not identify a separate package process.
 The targets use the hosts' shared configuration: [Codex MCP](https://developers.openai.com/codex/mcp)
 and [Claude Desktop Code configuration](https://code.claude.com/docs/en/desktop#shared-configuration).
 
@@ -108,13 +115,14 @@ writers and retain a consistent SQLite backup of `~/.mirket/state.db`. SQLite's
 backup API includes committed WAL data; copying only an active database file is
 not a complete backup. Rehearse recovery in a disposable home.
 
-The current runtime's first task-state or MCP open migrates a valid schema-1 or
-schema-2
-database transactionally to schema 3. Projects, tasks, deliveries, evidence,
-checkpoints, contracts and previously recorded idempotency replies retain their
-values. The migration replaces the task-list index to match creation-time/ID
-pagination; schema-1 upgrades also add the evidence-contract table. Verify the
-migrated records and database integrity before resuming writers.
+The current runtime's first task-state or MCP open migrates valid schema-1,
+schema-2 or schema-3 databases transactionally to schema 4. Projects, tasks,
+deliveries, evidence, checkpoints, contracts and recorded idempotency replies
+retain their values. Earlier migrations add evidence contracts and the
+creation-time/ID pagination index. Schema 4 adds `project_scopes`, retaining each
+project's original path-derived runtime namespace and directory identity.
+Current schema-4 opens validate without writing a new schema. Verify the migrated
+records and database integrity before resuming writers.
 
 New task mutations return versioned compact receipts. Use task status/history
 for full state and recovery. Exact retries of pre-upgrade operations return their
@@ -127,7 +135,7 @@ and a fresh key before completion. Task/evidence/history records are retained.
 Future unrelated notice updates no longer invalidate that owner's payload.
 
 Restart existing Mirket MCP connections during cutover. Replacing the executable
-does not replace an already-running process. Older runtimes refuse schema 3;
+does not replace an already-running process. Runtimes predating schema 4 refuse the new database;
 a binary-only downgrade cannot read the new database. Preserve newer state and
 reconcile post-backup writes before restoring an old backup. New host sessions
 use the updated connection.

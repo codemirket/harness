@@ -13,14 +13,20 @@ helps it choose relevant expertise, carry out bounded work and verify what it
 produced. It is a Rust CLI and local MCP server—not a replacement chat app or
 model subscription.
 
-For visual work, Mirket follows **image-to-code**: establish a visual target,
-build editable code, then inspect the rendered result against that target.
-Quality gates bound the review and correction process. When the host has no
-usable image model, a small rendered code composition becomes the target.
+For visual work, Mirket uses **medium-aware targets**: inspect a supplied image,
+a host-generated composition or a native specimen, build the editable result,
+then compare actual renders. Quality gates and deliverable-based budgets bound
+production and correction.
 
 [Website](https://harness.mirket.dev) ·
 [Releases](https://github.com/codemirket/harness/releases/latest) ·
 [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+
+**Version availability:** the public download is **1.0.5** as of 2026-10-20.
+The verified desktop build **1.0.11** adds the memory, recovery and verification
+features documented below; it has not been published as a release or source
+update. See [versions and availability](docs/release-status.md) and use the
+selected release’s commands and manifest.
 
 ## Get started with your agent
 
@@ -66,7 +72,7 @@ separate runtime requirements; a fresh unattended setup installs none of them.
 | --- | --- | --- |
 | Relevant expertise | Discoverable roles, focused skills and source references for engineering, design, research, writing and other work | Select and read useful guidance for the actual task |
 | Bounded execution | A routed spawner for Mirket-owned workers, with discovered models and tools scoped to declared task needs | Decide whether delegation helps and integrate the result |
-| Visual production | Image-to-code guidance and target/final review gates for Mirket-owned design workers | Establish the target, inspect actual renders and record specific defects |
+| Visual production | Medium-aware target/final review gates for Mirket-owned design workers | Establish the target, inspect actual renders and record specific defects |
 | Continuity | Optional project-bound task records, decisions, revisions and evidence | Keep useful state for long-running work without duplicating an existing workflow |
 | Verification | Completion checks for required delivery and current acceptance/failure-probe artifacts | Run real tests, inspect outputs and judge whether they satisfy the request |
 | Local production tools | An optional design package with a shared workspace and purpose-built renderers | Produce and inspect the actual artifact |
@@ -77,10 +83,10 @@ renders while checking keyboard and error states. Mirket supplies the method and
 the agent actually applying them. A task receipt or file hash does not prove
 correctness, human approval or a measured improvement in model quality.
 
-## Visual work: image to working code
+## Visual work: target to working artifact
 
-1. **Establish and inspect a target.** Use a supplied reference or create one full
-   composition with the host's available image model. For a focused repair, the
+1. **Establish and inspect a target.** Use a supplied reference, an inspected
+   native specimen, or a host-generated raster composition suited to the medium. For a focused repair, the
    existing approved screen can be the target. Check the hierarchy, typography,
    assets and intended use before implementation. Freeze the inspected target
    so later output cannot silently replace it.
@@ -104,14 +110,16 @@ The final review records an outcome and specific observations for all six checks
 
 Responsive layout and behavior cannot be waived for working UI; motion cannot
 be waived for animation. Allow **one target repair**, then **an initial final
-review and at most two correction rounds**, within **ten minutes per bounded
-composition**. At the limit, preserve the output and report unresolved defects.
+review with deliverable-based limits**: static/vector/diagram work gets
+**15 minutes and two repairs**, interfaces/paged work **30 minutes and three**,
+motion **45 minutes and four**. Combined work shares the largest limit. At the limit, preserve the output and report unresolved defects.
 Starting another worker or generating more variants does not reset the budget.
 
-### When no image model is available
+### Native specimens and image fallback
 
-The agent records the missing capability, creates **one minimal HTML/CSS, SVG or
-Canvas composition**, then renders and inspects it before expanding it. That
+The agent chooses a native DOM, SVG, pixel, diagram, typeset or editor specimen
+when it fits the medium, then renders and inspects it before expansion.
+The legacy code fallback also remains available when no image model is usable. That
 first inspected render becomes the frozen target; the same final quality gates
 and limits apply. This fallback requires no new image provider or model change.
 Mirket's design package supplies renderers and image processing, not an image
@@ -119,16 +127,16 @@ generation model. Image generation, when available, belongs to the host.
 
 After setup, you can ask:
 
-> Build this interface using Mirket's image-to-code workflow. Inspect my supplied
-> target, or create one with your available image model. If no image model is
-> usable, record why and render one minimal code composition before expanding it.
+> Build this interface using Mirket's medium-aware workflow. Inspect my supplied
+> target, or render one minimal native specimen with actual components and text.
+> Use image generation when the intended artwork benefits from it.
 > Keep the result editable, compare actual renders with the frozen target, and
 > report the six quality checks. Respect the correction and time limits; report
 > unresolved defects instead of starting a sample campaign.
 
 **What is enforced?** Mirket-owned design workers require a declared input and
 ordered target/final reviews. The runtime checks evidence identity and freshness,
-required check outcomes, review counts and a 600-second execution deadline.
+required check outcomes, review counts and a shared 15/30/45-minute execution deadline.
 Native host tools receive the same workflow as guidance; Mirket does not
 intercept their calls. Visual observations and fallback reasons remain agent
 judgments, so passing the gates is not an aesthetic guarantee or human approval.
@@ -200,6 +208,31 @@ readiness and invocation checks; a successful package probe is not a verified
 render. See [the package guide](docs/packages.md) and [Podman setup](docs/podman.md).
 The core expertise and coordination features work without this stack.
 
+## Memory, recovery and verification in the newer desktop build
+
+The optional `agent-runtime` uses **Mem0** for explicit project facts and
+**LangGraph** for durable worker checkpoints. It shares the main MCP connection;
+local recall needs no hosted memory account or inference credentials. Retrieval
+filters inactive facts with a bounded candidate search and reports incomplete
+recall. Retrieved text never grants permission.
+
+Host verification binds inputs before checks run and marks changed evidence stale.
+Durable-state archives preserve coordination records, memory history, checkpoints
+and traces; project source, design assets, credentials and desktop settings need
+separate backups. Relocation rebinds a renamed original directory while retaining
+its namespace. Cross-filesystem copies are not supported by that command.
+
+These features require the [verified 1.0.11 desktop build](docs/release-status.md),
+not the current public 1.0.5 download. Read [memory and durable workers](docs/agent-runtime.md),
+[verification handoffs](docs/task-evidence.md) and
+[recovery](docs/agent-runtime.md#restorable-backups-and-project-relocation).
+
+For an existing matching installation, `mirket package install design agent-runtime`
+retains both optional packages. Create a durable archive with
+`mirket backup create --output /absolute/new-backup.tar`. Restore requires the
+reported SHA-256, original home/runtime and empty durable destinations. Follow
+the recovery guide before applying restore or relocation.
+
 ## Maintain the installation
 
 ```sh
@@ -231,6 +264,9 @@ See [installation and recovery](docs/installation.md).
 
 | I want to… | Read |
 | --- | --- |
+| Check feature/version availability | [Versions and availability](docs/release-status.md) |
+| Browse all reader guides | [Documentation index](docs/README.md) |
+| Store project memory, resume workers or recover state | [Agent runtime](docs/agent-runtime.md) |
 | Install through an agent | [Agent installation](docs/agent-installation.md) |
 | Install manually, update or recover | [Installation](docs/installation.md) |
 | Choose expertise | [Roles and skills](docs/roles.md) |

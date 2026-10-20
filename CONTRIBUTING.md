@@ -186,7 +186,8 @@ producer/model settings and preserve failures before evaluating a quality claim.
 
 ## Add a local MCP package
 
-Use the single `design` package registry and setup flow. Its definition
+Use the existing package registry and setup flow (`design` for design tools,
+`agent-runtime` for memory and worker persistence). Its definition
 needs exact source and version pins, supported targets, complete runtime and
 dependency closure, artifact digests, extraction bounds, launch arguments and
 retained license notices. Keep dependency resolution locks and reviewed notices
@@ -279,3 +280,44 @@ binaries. Upload that manifest, the packaged executables, checksums and notices
 only after publication is explicitly authorized. If native notice files differ,
 publish each with its executable target in the filename rather than dropping one.
 The operating system must match the executable target.
+
+## Contained release acceptance
+
+This command is part of the [verified desktop build 1.0.11](docs/release-status.md);
+it is not available in the public 1.0.5 source or executable. Use it with its
+matching source and prepared runtime generation.
+
+Before deploying a change to desktop contracts or owned runtime code, run both
+the standard gate and the explicit contained gate with the candidate CLI outside
+Cargo output. The latter requires a dedicated or explicitly selected Linux ARM64
+Podman engine, selected `design` and `agent-runtime` packages, and matching prepared
+images. It does not start the VM, install dependencies or change package selection.
+
+```sh
+mirket dev check --project .
+mirket package prepare agent-runtime
+mirket package prepare design
+mirket package start design
+mirket dev acceptance --project . --engine-home /absolute/engine-home
+```
+
+Use `--home /absolute/engine-home` on package commands when the selected engine
+belongs to another home. Before preparing a changed design generation, stop its
+services using the currently installed CLI; retain service groups and restart
+those groups with the candidate. Never purge its data. The candidate's source
+identity must match the checkout tested by Cargo. Complete disposable setup,
+doctor and catalog checks as described above before updating the desktop.
+
+Acceptance reuses the shipped Python self-tests and Rust integration fixtures:
+typed MCP schemas and fresh executable/skill identities; actual paginated export
+and typed retention preview/apply; parallel memory/lifecycle calls; scoped design
+token compilation and SVG/PNG output; complete Mem0/LangGraph backup recovery and
+relocation. Fixtures contain synthetic data, use unique scopes, clean up their
+own files, and never register or read existing user projects. Missing prerequisites
+or stale package identities fail the gate rather than skipping checks.
+
+This gate is an automated local release check. It does not claim that either
+already-running desktop connection has reconnected, or judge aesthetic quality.
+After deployment call `runtime_status` in each actual client, inspect ordinary
+`runtime` from a direct design response, and verify loaded skill hashes. Never
+substitute an installed binary or fresh SDK session for those observations.

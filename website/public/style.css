@@ -9,7 +9,7 @@ button { cursor: pointer; }
 [hidden] { display: none !important; }
 .shell { width: min(1040px, calc(100% - 64px)); margin-inline: auto; }
 .header { display: flex; align-items: center; justify-content: space-between; padding-block: 27px; border-bottom: 1px solid var(--color-rule); gap: 24px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-size: 28px; font-weight: 750; letter-spacing: -1.4px; line-height: 1; }
+.brand { display: inline-flex; flex-wrap: wrap; max-width: 100%; align-items: center; gap: 10px; text-decoration: none; font-size: 28px; font-weight: 750; letter-spacing: -1.4px; line-height: 1; }
 .brand-logo { display: block; width: 40px; height: 40px; flex: 0 0 40px; }
 .footer .brand-logo { width: 32px; height: 32px; flex-basis: 32px; }
 .brand-kind { color: var(--color-muted); font-size: 13px; letter-spacing: 0; font-weight: 450; margin-left: 5px; }
@@ -107,3 +107,6 @@ details p { color: var(--color-muted); font-size: 14px; }
   .footer { gap: 18px; }
   .footer nav { width: 100%; margin-left: 0; }
 }
+
+.release-note { margin: 0 0 28px; padding: 16px 20px; border-left: 2px solid var(--color-accent); background: var(--color-wash); font-size: 13px; color: var(--color-muted); }
+.release-note strong { color: var(--color-ink); }

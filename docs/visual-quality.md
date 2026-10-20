@@ -1,18 +1,21 @@
 # Visual production
 
+> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+
 Mirket supplies visual guidance, scoped production tools and artifact checks.
 It does not certify aesthetic quality. A valid render, an AI review and user
 acceptance are different observations.
 
-For the current source decisions and exclusions, see the
-[ten-source design review](design-source-review.md).
+Use [version availability](release-status.md) to distinguish the published
+workflow from the newer desktop implementation described here.
 
-## Required image-to-code workflow
+## Medium-aware visual workflow
 
-For design production, inspect a supplied target or create a full composition
-with the host's available image model before implementation. When the host has
-no usable image model, direct composition in code is permitted: render and
-inspect one minimal proof before expansion. Keep text, layout and controls
+For design production, inspect a supplied target or a minimal native specimen
+suited to the deliverable. UI can start from real DOM/components, vectors from
+SVG, diagrams from their semantic source, and paged work from actual typesetting.
+Use an available host image model when raster artwork improves the result.
+Freeze the rendered target before expansion. Keep text, layout and controls
 editable; a flattened screenshot is not a working interface.
 
 This applies to new visual work, substantial redesign and expressive scenes.
@@ -56,13 +59,15 @@ rendered output at matching content, viewport and state. Use several references
 when they resolve distinct questions; one reference is not a universal quality
 standard. Do not add a mandatory reviewer or video export to ordinary UI work.
 
-### Code fallback when the host has no usable image model
+### Native specimens and compatibility fallback
 
-Record the missing capability, then compose one minimal HTML/CSS, SVG or Canvas
-proof. Render and inspect it before adding sections, variants or animation.
-The first passing render becomes the frozen target and the same final review
-applies. Do not install a provider or change models simply to avoid this fallback.
-Be explicit about media the available tools cannot produce.
+For `native_specimen`, declare `medium` (`dom`, `svg`, `pixel`, `diagram`,
+`typeset` or `design_document`) and a suitability `reason`. Build one minimal
+proof, render and inspect it before expansion. For an accepted component system,
+inspect its actual composition and states, not only a token file. The existing
+`code_fallback` mode remains available when the host has no usable image model.
+Neither path adds an image provider, changes models or substitutes geometric
+sketches for requested rich raster artwork.
 
 ### Runtime contract and limits
 
@@ -76,21 +81,36 @@ All eight design-production workflows require `design_input`: `web-interface`,
 ```
 
 ```json
+{"design_input":{"mode":"native_specimen","medium":"svg","reason":"The deliverable needs editable geometry and attachment checks."}}
+```
+
+```json
 {"design_input":{"mode":"code_fallback","reason":"This host has no usable image model; compose and inspect one minimal coded proof."}}
 ```
 
 The target image path is relative to the assigned project. The image must be
 available inside that workspace and inspected before the target review.
 
-An owned design worker requires `design_input` with `mode: image_to_code` and
-`image`, or `mode: code_fallback` and the host's availability `reason`. Before
-image-to-code mutations, the runtime requires target inspection and a passing
-`design_review` target action. Fallback must bind its target to produced, inspected
-pixels. Final review binds current rendered pixels, compares the frozen target,
-and records six explicit check outcomes. Missing, stale, failed or waived required
-checks prevent completion. Target selection allows one correction; final review
-allows two. The execution loop has a 600-second deadline. Do not relaunch workers
-to reset these limits; retain incomplete output and report remaining defects.
+Before image-to-code mutations, the runtime requires target inspection and a
+passing `design_review` target action. Native specimens and fallback must bind
+their target to produced, inspected pixels. Final review binds current rendered
+pixels, compares the frozen target, and records six explicit check outcomes.
+Missing, stale, failed or waived required checks prevent completion. Target
+selection permits one correction. Production limits are:
+
+| Deliverable workflows | Wall time | Final correction rounds |
+| --- | --- | --- |
+| Static graphic, diagram, vector art | 15 minutes | 2 |
+| Web/editable interface, paged media | 30 minutes | 3 |
+| Motion, interactive motion | 45 minutes | 4 |
+
+The initial final review precedes these correction rounds. Combined workflows
+share the largest limit; budgets do not add. Time includes inference, rendering
+and verification in the execution loop, following setup/discovery. These are
+scheduling limits, not measured performance expectations. Select only actual
+deliverables; never add workflows or relaunch workers to reset limits. Preserve
+incomplete output and report remaining defects at the limit. No extra review is
+needed after the required checks pass.
 
 These runtime gates enforce sequence, identity and bounds for declared design
 workflows. They do not authenticate a host's capability declaration, prove that a
@@ -101,7 +121,8 @@ No sample campaign is required to use or validate these structural gates.
 ### Verify activation without producing samples
 
 After updating, start a fresh host session and inspect its live Mirket tools.
-Both routing and worker request schemas must expose `design_input`.
+Both routing and worker request schemas must expose `design_input`, including
+`native_specimen` with supported media.
 `capability_plan` must mark all eight design-production workflows with
 `design_input_required: true`. Read this reference through the live connection:
 
