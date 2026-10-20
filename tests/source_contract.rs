@@ -10,24 +10,26 @@ fn files(root: &Path, out: &mut Vec<PathBuf>) {
     }
 }
 #[test]
-fn authored_guidance_has_existing_local_links_and_no_detached_helpers() {
+fn authored_guidance_has_existing_local_links() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     let mut sources = vec![
         root.join("README.md"),
         root.join("CONTRIBUTING.md"),
         root.join("AGENTS.md"),
     ];
-    for name in ["docs", "skills", "instructions", "setup"] {
+    for name in [
+        "docs",
+        "skills",
+        "instructions",
+        "setup",
+        "evals",
+        "runtime",
+        "website",
+    ] {
         files(&root.join(name), &mut sources);
     }
     let mut broken = vec![];
     for source in sources {
-        assert_ne!(
-            source.extension().and_then(|s| s.to_str()),
-            Some("py"),
-            "detached helper {}",
-            source.display()
-        );
         if source.extension().and_then(|s| s.to_str()) != Some("md") {
             continue;
         }
@@ -57,4 +59,21 @@ fn authored_guidance_has_existing_local_links_and_no_detached_helpers() {
         "broken local links:\n{}",
         broken.join("\n")
     );
+}
+
+#[test]
+fn authored_guidance_has_no_detached_helpers() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let mut sources = vec![];
+    for name in ["docs", "skills", "instructions", "setup"] {
+        files(&root.join(name), &mut sources);
+    }
+    for source in sources {
+        assert_ne!(
+            source.extension().and_then(|s| s.to_str()),
+            Some("py"),
+            "detached helper {}",
+            source.display()
+        );
+    }
 }
