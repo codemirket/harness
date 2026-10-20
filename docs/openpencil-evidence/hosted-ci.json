@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "commit": "15de6d1aa41646133392fa4538234f89d406cf7f",
+  "source_sha256": "a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a",
+  "run_url": "https://github.com/codemirket/harness/actions/runs/39490487481",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "javascript",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862031253"
+    },
+    {
+      "name": "image_dependencies",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862031923"
+    },
+    {
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862032052"
+    },
+    {
+      "name": "check (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862382684"
+    },
+    {
+      "name": "check (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862382779"
+    },
+    {
+      "name": "check (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39490487481/job/118862382818"
+    }
+  ],
+  "advisory_policy": "Image advisories report as warnings. Inventory, scan failures, identity and functional checks remain blocking.",
+  "limits": "Native Windows/Linux/macOS packaging and MCP checks do not establish Windows execution of the Linux ARM64 design container. The design image has separate isolated ARM64 evidence."
+}

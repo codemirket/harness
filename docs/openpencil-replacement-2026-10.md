@@ -91,7 +91,15 @@ the timeout's root cause was not established. The final design recipe is the
 same one that passed both 73-test runs and was scanned. Failed probes, the stopped
 optional export, and later results are preserved rather than described as passes.
 
-Hosted CI for the final policy and Certifi patch is pending. Raw evidence, test
+The [initial hosted run](openpencil-evidence/initial-hosted-ci.json) passed JavaScript
+and all three native platforms. The [final hosted run](openpencil-evidence/hosted-ci.json)
+for code commit `15de6d1aa41646133392fa4538234f89d406cf7f` passed **all six jobs**:
+JavaScript, source dependencies, image inventory/advisory reporting, and native
+Windows, Linux and macOS checks, packaging, installation and MCP validation.
+The [reviewed runtime identity](openpencil-evidence/reviewed-runtime.json) records
+source `a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a`.
+Subsequent evidence-only documentation updates do not change that runtime source.
+Raw evidence, test
 logs, exported `.fig`/PNG proof and the verified image archive are retained in
 `~/.mirket/evidence/harness-openpencil-replacement-2026-10-20/`.
 
@@ -99,7 +107,8 @@ logs, exported `.fig`/PNG proof and the verified image archive are retained in
 ## Limits and activation
 
 No production deployment, desktop reconnect or saved Penpot database conversion
-has occurred. Stop the prior generation using its installed CLI before installing
+has occurred. Validation used an isolated review checkout; the original workspace
+sync receipts and OS-offloading read limitations are retained in the private bundle. Stop the prior generation using its installed CLI before installing
 a replacement generation. Export needed legacy designs first. The migration
 retains legacy data; deleting it is a separate decision.
 

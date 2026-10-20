@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "commit": "2c24c45dbf1fa7c7a0e6a67bd6d001f3211ad45f",
+  "run_url": "https://github.com/codemirket/harness/actions/runs/39488307995",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "image_dependencies",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854431946"
+    },
+    {
+      "name": "javascript",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854432044"
+    },
+    {
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854432555"
+    },
+    {
+      "name": "check (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854802445"
+    },
+    {
+      "name": "check (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854802479"
+    },
+    {
+      "name": "check (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39488307995/job/118854802529"
+    }
+  ],
+  "note": "All native platforms and JavaScript passed. Original dependency/image gate failures are retained; final Certifi/policy follow-up has a separate receipt."
+}

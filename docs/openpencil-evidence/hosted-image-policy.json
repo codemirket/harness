@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "ok": true,
+  "scope": "pinned_remote_images",
+  "coverage_complete": false,
+  "unscanned_built_images": [
+    "agent-runtime",
+    "design-tools"
+  ],
+  "missing": [],
+  "images": {
+    "kroki": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "ubuntu": 417,
+        "jar": 75,
+        "gobinary": 43
+      },
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "image_id": "sha256:310141e18fe2c246685d4908c70919516129872583fcc31d2e018d12a0971827",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "report_sha256": "c8ec7aa82ff5fbed60d6a9d20ed819f7f872dbfb6d524b4bb84bd69eaf4928e4",
+      "target": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
+      "finding_records": 4950
+    },
+    "kroki-excalidraw": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "alpine": 196,
+        "node-pkg": 471
+      },
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.1"
+      },
+      "image_id": "sha256:b404ff303a23c929fbe81494157a0425e8ca15462e787ca97e23d164aecd1bc6",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "report_sha256": "da2c028a69873eec27bf993f08e481e4866fc25db016930be040be2abdb8b692",
+      "target": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
+      "finding_records": 132
+    },
+    "node-build": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 88,
+        "node-pkg": 198
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:cd2df7ff65c5fce1f8a18ce89e3aac24a80c1db3776d5842a4cf86bc27f300a2",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "report_sha256": "6f3b5a210c1a542fb72053a3b28df341e7303f0dcdcef8767ed2c1f60ec14de8",
+      "target": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd",
+      "finding_records": 262
+    },
+    "python-build": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 97,
+        "python-pkg": 19
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:da841a7026abc0089180121604f6d0ba4324998e2d133eccae13f22707055dc1",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "report_sha256": "38ca4b72a4c21015abae33cd0a79b6fa0483723b88e938f33e9cff52c0f2babb",
+      "target": "docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641",
+      "finding_records": 260
+    }
+  },
+  "scanner_sha256": "1f889576636db0623539cb339df7d06c40ebf39e7919489eafa1160e29808f19",
+  "scanner_unchanged": true,
+  "registry_sha256": {
+    "registry/design-stack.json": "72d86c4bdc28dc9fba4715e75267479babb41110de0e9be67e296d9eee2de653",
+    "registry/agent-runtime.json": "5f4363de38075843549f3ce1250f6e24e597575f5a2d6dcf8433a62ebb0a77e6"
+  },
+  "registries_unchanged": true,
+  "candidate_source_sha256": null,
+  "advisory_policy": "report",
+  "advisories_present": true,
+  "limits": "All findings are retained. Report policy makes advisories non-blocking, not fixed or proven safe. Missing targets/inventory and scanner or identity failures still fail. Detected-package coverage is not complete upstream dependency resolution."
+}

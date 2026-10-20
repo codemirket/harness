@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "code_commit": "15de6d1aa41646133392fa4538234f89d406cf7f",
+  "source_sha256": "a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a",
+  "local_target": "aarch64-apple-darwin",
+  "executable_sha256": "beec31b70a9a5dc3f74c0b09b7cc89dcf96ba795323c7fca008deb14a587b26a",
+  "design_recipe_unchanged_from": "2c24c45dbf1fa7c7a0e6a67bd6d001f3211ad45f",
+  "design_image": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98",
+  "live_deployment": false
+}
