@@ -353,7 +353,7 @@ impl ServerHandler for PackageBridge {
         ServerConfig::new(ServerCapabilities::builder().enable_tools().build())
             .with_server_info(Implementation::new(
                 "mirket-package",
-                env!("CARGO_PKG_VERSION"),
+                crate::identity::version(),
             ))
             .with_instructions(INSTRUCTIONS)
     }

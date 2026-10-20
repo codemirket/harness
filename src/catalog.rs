@@ -97,10 +97,16 @@ pub struct Source {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Profile {
     pub description: String,
+    #[serde(default = "specialist_profile")]
+    pub kind: String,
     pub skills: Vec<String>,
     /// Explicit portable delivery for a project whose hosts have no shared installation.
     #[serde(default)]
     pub include_globals: bool,
+}
+
+fn specialist_profile() -> String {
+    "specialist".into()
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -299,6 +305,13 @@ impl Catalog {
         let mut search = Vec::new();
         for (i, skill) in data.skills.iter_mut().enumerate() {
             validate_id(&skill.id)?;
+            if let Some(discovery) = skill.metadata.get("discovery") {
+                ensure!(
+                    discovery == "explicit-alternative",
+                    "unknown discovery policy for {}",
+                    skill.id
+                );
+            }
             ensure!(
                 by_id.insert(skill.id.clone(), i).is_none(),
                 "duplicate skill {}",
@@ -482,6 +495,28 @@ impl Catalog {
     pub fn capabilities(&self) -> &[Capability] {
         &self.0.capabilities
     }
+    /// Includes all embedded guidance, provenance and execution contracts.
+    pub fn fingerprint(&self) -> String {
+        let mut hash = Sha256::new();
+        for bytes in [
+            CATALOG.as_bytes(),
+            CAPABILITIES.as_bytes(),
+            HARNESS.as_bytes(),
+            INSTRUCTIONS,
+            NOTICES.as_bytes(),
+        ] {
+            hash.update((bytes.len() as u64).to_le_bytes());
+            hash.update(bytes);
+        }
+        let mut payloads: Vec<_> = self.0.payloads.iter().collect();
+        payloads.sort_by_key(|(id, _)| *id);
+        for (id, payload) in payloads {
+            hash.update(id.as_bytes());
+            hash.update(payload.sha256.as_bytes());
+        }
+        format!("{:x}", hash.finalize())
+    }
+
     pub fn instructions(&self) -> &'static [u8] {
         INSTRUCTIONS
     }
@@ -503,7 +538,7 @@ impl Catalog {
             "scope":skill.scope,"delivery":skill.delivery,"path":skill.path,
             "category":skill.category,"tags":skill.tags,"agents":skill.agents,
             "requires":skill.requires,"conflicts":skill.conflicts,
-            "adaptation":skill.adaptation,"source_id":skill.source,
+            "adaptation":skill.adaptation,"source_id":skill.source,"discovery":skill.metadata.get("discovery").and_then(Value::as_str).unwrap_or("default"),
             "license_files":skill.license_files,"sha256":skill.sha256,
             "installed_sha256":skill.installed_sha256,
             "dependencies":skill.metadata.get("dependencies"),
@@ -562,6 +597,19 @@ impl Catalog {
             .iter()
             .enumerate()
             .filter_map(|(i, skill)| {
+                // Alternative whole-workflow suites remain explicitly addressable.
+                // Their source name (for example "superpowers") opts into discovery.
+                let explicit_alternative = skill.metadata.get("discovery").and_then(Value::as_str)
+                    == Some("explicit-alternative");
+                if explicit_alternative
+                    && phrase != skill.id
+                    && !skill
+                        .source
+                        .as_ref()
+                        .is_some_and(|source| terms.contains(&source.to_lowercase()))
+                {
+                    return None;
+                }
                 let document = &self.0.search[i];
                 let references = if skill.id == design_references::OWNER {
                     reference_matches.clone()
@@ -626,7 +674,7 @@ impl Catalog {
                     "id": skill.id, "name": skill.name, "description": skill.description,
                     "scope": skill.scope, "delivery": skill.delivery, "category": skill.category,
                     "installable": skill.delivery == "embedded" || skill.delivery == "upstream",
-                    "guidance_access": guidance_access(skill)
+                    "guidance_access": guidance_access(skill), "discovery":skill.metadata.get("discovery").and_then(Value::as_str).unwrap_or("default")
                 });
                 if skill.id == design_references::OWNER
                     && let Some(library) = &self.0.design_references
@@ -904,6 +952,10 @@ impl Catalog {
         }
         for (name, profile) in self.profiles() {
             ensure!(!profile.skills.is_empty(), "empty profile: {name}");
+            ensure!(
+                ["starter", "specialist", "alternative"].contains(&profile.kind.as_str()),
+                "invalid profile kind: {name}"
+            );
             for id in &profile.skills {
                 self.skill(id)?;
             }

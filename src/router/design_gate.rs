@@ -10,30 +10,85 @@ use std::{
     path::{Path, PathBuf},
 };
 
-pub const EXECUTION_SECONDS: u64 = 600;
-const MAX_FINAL_REVIEWS: usize = 3; // Initial review plus two correction rounds.
+/// One shared budget for all declared deliverables, never a sum of workflow limits.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct Budget {
+    pub execution_seconds: u64,
+    pub max_correction_rounds: usize,
+}
+
+pub fn budget(workflows: &[super::TaskNeed]) -> Budget {
+    let motion = workflows
+        .iter()
+        .any(|w| matches!(w.workflow.as_str(), "motion" | "interactive-motion"));
+    let composition = workflows.iter().any(|w| {
+        matches!(
+            w.workflow.as_str(),
+            "web-interface" | "editable-interface" | "paged-media"
+        )
+    });
+    if motion {
+        Budget {
+            execution_seconds: 2700,
+            max_correction_rounds: 4,
+        }
+    } else if composition {
+        Budget {
+            execution_seconds: 1800,
+            max_correction_rounds: 3,
+        }
+    } else {
+        Budget {
+            execution_seconds: 900,
+            max_correction_rounds: 2,
+        }
+    }
+}
 
 pub async fn within_budget<T>(
     execution: impl std::future::Future<Output = Result<T>>,
     budget: std::time::Duration,
 ) -> Result<T> {
     tokio::time::timeout(budget, execution).await.unwrap_or_else(|_| {
-        Err(anyhow::anyhow!("design execution budget exhausted; preserve partial output, do not automatically relaunch"))
+        Err(anyhow::anyhow!("original execution budget exhausted; preserve partial output, do not automatically relaunch"))
     })
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, schemars::JsonSchema)]
 #[serde(tag = "mode", rename_all = "snake_case", deny_unknown_fields)]
 pub enum DesignInput {
-    ImageToCode { image: String },
-    CodeFallback { reason: String },
+    ImageToCode {
+        image: String,
+    },
+    /// Compose a minimal proof in the deliverable's native medium, then freeze its render.
+    NativeSpecimen {
+        medium: Medium,
+        reason: String,
+    },
+    /// Compatibility path for hosts without an image producer.
+    CodeFallback {
+        reason: String,
+    },
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, schemars::JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum Medium {
+    Dom,
+    Svg,
+    Pixel,
+    Diagram,
+    Typeset,
+    DesignDocument,
 }
 
 impl DesignInput {
     pub fn validate(&self) -> Result<()> {
         match self {
             Self::ImageToCode { image } => bounded(image, 1024),
-            Self::CodeFallback { reason } => bounded(reason, 600),
+            Self::CodeFallback { reason } | Self::NativeSpecimen { reason, .. } => {
+                bounded(reason, 600)
+            }
         }
     }
 }
@@ -46,14 +101,15 @@ fn bounded(text: &str, max: usize) -> Result<()> {
     Ok(())
 }
 
-pub fn contract(input: &DesignInput) -> Value {
+pub fn contract(input: &DesignInput, workflows: &[super::TaskNeed]) -> Value {
+    let budget = budget(workflows);
     json!({
-        "input":input, "execution_seconds":EXECUTION_SECONDS,
-        "max_correction_rounds":MAX_FINAL_REVIEWS-1,
+        "input":input, "execution_seconds":budget.execution_seconds,
+        "max_correction_rounds":budget.max_correction_rounds,
         "action":"design_review", "tool":"",
         "arguments_schema":schemars::schema_for!(Review),
-        "sequence":"Inspect the target then submit stage target before any mutation in image_to_code. In code_fallback compose one minimal proof, render and inspect it, then submit stage target before expansion. The target is frozen for this run. Implement real editable structure and behavior, render current output, inspect it and submit stage final with comparison and located observations for every check. At most three final reviews. Failed or stale evidence prevents completion. Do not relaunch workers to reset the budget. No image provider or shell access is added.",
-        "judgment_boundary":"Checks are worker testimony, not an automated aesthetic score or human approval. Source-to-render semantic correspondence and the truth of a fallback reason still need host judgment."
+        "sequence":"Inspect the target then submit stage target before any mutation in image_to_code. In native_specimen or code_fallback compose one minimal proof, render and inspect it, then submit stage target before expansion. The target is frozen for this run. Implement real editable structure and behavior, render current output, inspect it and submit stage final with comparison and located observations for every check. The initial final review plus max_correction_rounds repairs share execution_seconds of wall time, including renders and verification; combined workflows use the largest limit, never their sum. Failed or stale evidence prevents completion. Do not relaunch workers to reset the budget. No image provider or shell access is added.",
+        "judgment_boundary":"Checks are worker testimony, not an automated aesthetic score or human approval. Source-to-render semantic correspondence and the suitability of a native medium or truth of a fallback reason still need host judgment."
     })
 }
 
@@ -91,6 +147,7 @@ struct Review {
     checks: BTreeMap<String, Check>,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct Gate {
     input: DesignInput,
     target: Vec<ArtifactRef>,
@@ -99,6 +156,7 @@ pub struct Gate {
     final_pass: bool,
     reviews: usize,
     target_reviews: usize,
+    budget: Budget,
     interactive: bool,
     motion: bool,
 }
@@ -113,6 +171,7 @@ impl Gate {
             final_pass: false,
             reviews: 0,
             target_reviews: 0,
+            budget: budget(workflows),
             interactive: workflows
                 .iter()
                 .any(|w| matches!(w.workflow.as_str(), "web-interface" | "interactive-motion")),
@@ -129,7 +188,7 @@ impl Gate {
                 "target correction budget exhausted; report incomplete"
             );
             ensure!(
-                self.reviews < MAX_FINAL_REVIEWS,
+                self.reviews < (self.budget.max_correction_rounds + 1),
                 "design correction budget exhausted; preserve output and report incomplete"
             );
             ensure!(
@@ -232,7 +291,7 @@ impl Gate {
                 tools::current_digest(&path)? == receipt.sha256,
                 "review image changed after inspection"
             );
-            if final_stage || matches!(self.input, DesignInput::CodeFallback { .. }) {
+            if final_stage || !matches!(self.input, DesignInput::ImageToCode { .. }) {
                 ensure!(
                     self.rendered.get(&path) == Some(receipt),
                     "review must bind current rendered output, not unrelated or stale pixels"
@@ -266,7 +325,7 @@ impl Gate {
                 );
                 self.check_target()?;
                 ensure!(
-                    self.reviews < MAX_FINAL_REVIEWS,
+                    self.reviews < (self.budget.max_correction_rounds + 1),
                     "design review budget exhausted; report incomplete"
                 );
                 self.reviews += 1;
@@ -275,7 +334,7 @@ impl Gate {
         }
         Ok(
             json!({"passed":passed,"target_frozen":!self.target.is_empty(),"final_pass":self.final_pass,
-            "final_reviews_remaining":MAX_FINAL_REVIEWS-self.reviews,"judgment":"worker testimony, not human approval"}),
+            "final_reviews_remaining":(self.budget.max_correction_rounds + 1)-self.reviews,"judgment":"worker testimony, not human approval"}),
         )
     }
 
@@ -433,6 +492,108 @@ mod tests {
         gate.observe("workspace_write", &mutation());
         assert!(gate.complete().is_err());
         assert!(gate.review(&root, report("final", &output, true)).is_err());
+    }
+
+    #[test]
+    fn native_specimen_needs_a_current_render_and_cannot_change_its_target() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path().canonicalize().unwrap();
+        let target = image(&root, "native.png");
+        let output = image(&root, "final.png");
+        let input: DesignInput = serde_json::from_value(json!({
+            "mode":"native_specimen", "medium":"svg", "reason":"Editable attached vector geometry"
+        }))
+        .unwrap();
+        input.validate().unwrap();
+        let mut gate = Gate::new(input, &[]);
+        assert!(gate.before_tool("workspace_write").is_ok());
+        observe(&mut gate, &target, false);
+        assert!(gate.review(&root, report("target", &target, true)).is_err());
+        observe(&mut gate, &target, true);
+        gate.review(&root, report("target", &target, true)).unwrap();
+        gate.observe("workspace_write", &mutation());
+        assert!(gate.review(&root, report("final", &target, true)).is_err());
+        observe(&mut gate, &output, true);
+        gate.review(&root, report("final", &output, true)).unwrap();
+        gate.complete().unwrap();
+        std::fs::write(&target.path, "replacement").unwrap();
+        assert!(gate.complete().is_err());
+        assert!(gate.before_tool("workspace_write").is_err());
+    }
+
+    #[test]
+    fn native_input_requires_suitability_and_a_supported_medium() {
+        for medium in [
+            "dom",
+            "svg",
+            "pixel",
+            "diagram",
+            "typeset",
+            "design_document",
+        ] {
+            let mut value = json!({"mode":"native_specimen", "medium":medium, "reason":"Appropriate native proof"});
+            let input: DesignInput = serde_json::from_value(value.clone()).unwrap();
+            input.validate().unwrap();
+            value["reason"] = json!(" ");
+            assert!(
+                serde_json::from_value::<DesignInput>(value.clone())
+                    .unwrap()
+                    .validate()
+                    .is_err()
+            );
+            value["reason"] = json!("Ready");
+            value["execution_seconds"] = json!(999999);
+            assert!(serde_json::from_value::<DesignInput>(value).is_err());
+        }
+        assert!(
+            serde_json::from_value::<DesignInput>(
+                json!({"mode":"native_specimen", "medium":"unknown", "reason":"Ready"})
+            )
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn deliverable_budgets_are_shared_and_enforce_the_resolved_review_limit() {
+        for (names, seconds, corrections) in [
+            (vec!["vector-art", "diagram", "static-graphic"], 900, 2),
+            (vec!["web-interface"], 1800, 3),
+            (vec!["editable-interface", "paged-media"], 1800, 3),
+            (vec!["motion"], 2700, 4),
+            (
+                vec!["interactive-motion", "web-interface", "vector-art"],
+                2700,
+                4,
+            ),
+        ] {
+            let needs: Vec<_> = names
+                .iter()
+                .map(|name| super::super::TaskNeed {
+                    workflow: (*name).into(),
+                    reason: "Actual deliverable".into(),
+                })
+                .collect();
+            let input = DesignInput::NativeSpecimen {
+                medium: Medium::Dom,
+                reason: "Native composition".into(),
+            };
+            let contract = contract(&input, &needs);
+            assert_eq!(contract["execution_seconds"], seconds);
+            assert_eq!(contract["max_correction_rounds"], corrections);
+            let mut gate = Gate::new(input, &needs);
+            let dir = tempfile::tempdir().unwrap();
+            let root = dir.path().canonicalize().unwrap();
+            let target = image(&root, "target.png");
+            observe(&mut gate, &target, true);
+            gate.review(&root, report("target", &target, true)).unwrap();
+            for remaining in (0..=corrections).rev() {
+                let review = gate.review(&root, report("final", &target, false)).unwrap();
+                assert_eq!(review["final_reviews_remaining"], remaining);
+                assert_eq!(gate.before_tool("workspace_write").is_ok(), remaining > 0);
+            }
+            assert!(gate.review(&root, report("final", &target, true)).is_err());
+            assert!(gate.complete().is_err());
+        }
     }
 
     #[test]

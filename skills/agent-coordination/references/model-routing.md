@@ -73,17 +73,20 @@ floors remain effective even if the caller labels architectural work mechanical.
 
 Design-production workflows report `design_input_required:true`. Supply
 `"design_input":{"mode":"image_to_code","image":"reference/target.png"}`
-for a supplied or host-generated composition. If the host has no usable image
-model, use `"design_input":{"mode":"code_fallback","reason":"No host image model is available"}`.
-The worker receives the `design_review` action schema. Image-to-code requires a
-passing inspected target before mutation; fallback requires a rendered inspected
-proof before expansion. Final review compares current output with the frozen
-target and records composition, typography, assets, responsive, behavior and
-motion checks. Applicable checks cannot be waived. One target correction, two
-final correction rounds and a 600-second execution deadline bound the run.
-Do not launch continuation workers to reset the budget. Preserve incomplete
-output and report the actual gap. Capability reasons and review notes remain
-caller/model testimony; the host must still judge source-to-render correspondence.
+for an inspected supplied or host-generated composition. For a native proof use
+`"design_input":{"mode":"native_specimen","medium":"dom","reason":"Real components and text determine this interface"}`.
+Media are `dom`, `svg`, `pixel`, `diagram`, `typeset`, `design_document`.
+`code_fallback` with the host's capability `reason` remains supported.
+The worker receives `design_review`: image targets pass before mutation;
+native/fallback targets must be rendered and inspected before expansion. Final
+review compares current output with the frozen target and records composition,
+typography, assets, responsive, behavior and motion. Applicable checks cannot be
+waived. One target repair is allowed. Shared budgets: static/vector/diagram
+15 minutes/two final repairs, interfaces/paged work 30 minutes/three, motion
+45 minutes/four. Combined workflows use the largest limit, not a sum. These
+include inference/render/verification time, after setup and discovery. Declare
+only actual deliverables. Do not launch continuations to reset the budget;
+preserve incomplete output. Suitability reasons and review notes remain testimony.
 
 Defaults choose the task specialist. `primary_role` can name an explicit catalog
 role or alias; it never expands tool access. A suitable explicit specialist can
@@ -127,7 +130,34 @@ complexity, owned task needs and each assigned tool set the effective floor. The
 only its assigned Mirket tools. Current built-in names are `workspace_read`,
 `workspace_list`, `workspace_write`, and `inspect_image`; available
 `design/...` tools are read from the installed design package and its owned
-policy. There is no arbitrary shell tool in this worker interface. A
+policy. There is no arbitrary shell tool in this worker interface. Source implementation therefore ends
+with `status: "awaiting_host_verification"`, even when every write was read back.
+Declare `host_verification_checks` as 1–16 unique check names (default
+`["project_checks"]`); use meaningful checks from the actual project.
+The returned `run_id`, `trace_sha256` and `host_verification.artifacts` bind the
+handoff. The host executes checks under its own permissions, saves logs inside
+the project, and submits `verification_handoff` (CLI: `mirket agent verify
+--request FILE`). Omit `checks` to inspect current status. A submission contains:
+
+```json
+{
+  "project": "/absolute/project",
+  "run_id": "routed-RETURNED_ID",
+  "expected_trace_sha256": "RETURNED_TRACE_SHA256",
+  "checks": [{"name":"project_checks","status":"passed",
+    "summary":"Actual checks run and observed result",
+    "evidence":{"path":"verification/check.log","sha256":"LOG_SHA256"}}]
+}
+```
+
+All required names must be present, once each. Executed `passed`/`failed` checks
+require evidence; `not_run` records a limitation. Only all-passed reports become
+`host_verified`. Reads and retries recheck source and evidence identities; changed
+source needs a new implementation handoff, not a recycled success. Logs must be
+kept at stable paths; changing a previous log invalidates its report. Exact retries
+are idempotent. The tool records host testimony; it does not execute commands,
+authenticate a human reviewer, or prove the checks are semantically sufficient.
+ A
 `verification_tools` entry must also be assigned; completion waits for those
 checks after mutation. To request T1, declare one typed
 `deterministic_operation` and use its exact single-operation objective, for
@@ -250,3 +280,34 @@ remain untrusted data, while host permissions still govern underlying effects.
 Unpinned failover can use another discovered authenticated target at the same or
 higher tier, as authorized by the routing policy. Explicit `model_selection`
 prevents that substitution. Neither route changes credentials or host settings.
+
+## Durable execution and recovery
+
+With `agent-runtime` selected, actual owned workers use LangGraph checkpoints and
+retrieve explicit project facts from Mem0 as untrusted context. The runtime does
+not grant memory writes to workers or replace host permissions. Without the
+package, runs report ephemeral execution; a selected runtime failure never
+silently falls back.
+
+After interruption, call `workflow_status` (`mirket agent status`) with project
+and run ID. If the original work is authorized to continue, use `resume_subagent`
+(`mirket agent resume`) with the observed checkpoint ID. Resume revalidates the
+original generation, contract, provider/model, artifacts and remaining budget;
+it does not reset turns or design reviews. Pending `workspace_write` effects compare current bytes with the saved before/after
+digests; unchanged or intended bytes permit continuation without replay. Changed
+bytes and other uncertain effects remain blocked. Original readback, design and
+host checks remain required. Inspect unresolved effects rather than inferring success.
+Source completion still requires `verification_handoff`; it also synchronizes
+the same graph after validating host evidence. Memory and checkpoints are not
+proof of semantic correctness, effect success or user acceptance.
+
+
+Host verification uses input-bound attempts. Inspect `verification_handoff`, begin
+with relevant source/test/configuration/lock paths and named command identities
+before running checks, then submit logs with the returned attempt ID and trace
+revision. Use a fresh attempt after repairs; retain previous evidence. UI workflows
+also require checks against the real application through authorized host tools.
+Routed design paths belong to the reported project design workspace. Shared Penpot
+objects require the host's official MCP connection; file scope cannot authorize them.
+`memory_recall` may be `best_effort` (default), `required`, or `off`; it does not disable
+LangGraph persistence or authorize a different provider.

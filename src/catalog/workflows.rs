@@ -13,7 +13,7 @@ pub struct Workflow {
     pub role: String,
     /// Suitable explicit perspectives can replace this workflow's default expertise.
     pub alternative_roles: Vec<String>,
-    /// Requires the bounded image-to-code contract at the owned worker boundary.
+    /// Requires the bounded medium-aware visual contract at the owned worker boundary.
     #[serde(default)]
     pub design_production: bool,
     pub min_tier: crate::router::policy::Tier,

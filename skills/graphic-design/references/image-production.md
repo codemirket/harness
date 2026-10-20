@@ -21,8 +21,9 @@ shell to evade the assigned scope. A host with an authorized image tool can
 produce assets directly, then supply the resulting files for Mirket composition,
 vector work, export and inspection. No new account or dependency is implied.
 
-If the host has no usable image model, direct composition in code is permitted.
-Record the gap, build one minimal HTML/CSS/SVG/Canvas composition, render and
+Native SVG, DOM, diagrams and typeset specimens are valid target routes when
+they fit the deliverable, even if image generation is available. If a required
+image producer is unavailable, record the gap, build one minimal HTML/CSS/SVG/Canvas composition, render and
 inspect it as the frozen target before expanding. This fallback needs neither
 additional approval nor a new provider. Keep requested-medium limitations explicit;
 do not claim photographic or painterly equivalence from a geometric sketch.
@@ -50,8 +51,8 @@ iteration feedback concrete: subject contact, malformed forms, hierarchy,
 lighting continuity, crop or unwanted detail. Follow the tool's edit/reference
 contract to preserve identity across revisions. Do not invent a seed or a
 reproducibility guarantee the producer does not expose. Permit one target repair,
-then at most two implementation correction rounds within ten minutes of active
-production/verification for the composition. At the limit retain current output
+then use the shared deliverable time and correction limits from
+`mirket catalog read interface-design --path references/image-to-code.md`. At the limit retain current output
 and report unresolved gates; do not start another sample or worker.
 
 ## Integrate and verify

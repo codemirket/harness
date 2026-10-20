@@ -1,0 +1,403 @@
+{
+  "reviewed_on": "2026-10-19",
+  "scope": "Selected source and license review; no upstream helpers or demos executed; no upstream assets or code redistributed. Files are evidence locators, not an admission or installation manifest.",
+  "repositories": [
+    {
+      "repository": "DavidHDev/react-bits",
+      "commit": "e12c22192ac7b4b452c5e2feb9b586d74765d696",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "bae3d1fb884e9058d9945ced238520a7d0e41a2b04c11f294e165842596d5ce4"
+        },
+        {
+          "path": "src/content/TextAnimations/SplitText/SplitText.jsx",
+          "sha256": "f3b9433ce28aa703f4ea6c4e7a7d023aa91de3f4b21002fc99477ea095c932b1"
+        },
+        {
+          "path": "src/content/Animations/AnimatedContent/AnimatedContent.jsx",
+          "sha256": "f18acb24614948733f8351479f03a06d3052ddacfb291e4cbaccead58499bab2"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "4bdd1fa59a6b7d5954bc3b213dbc34e455c635a94bbcecf9293553797d0fad02"
+        }
+      ]
+    },
+    {
+      "repository": "Remocn/remocn",
+      "commit": "fd2d3010a8183985553f9ddeb364313d57fb36b9",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "5a064087944bbfcc3581fc3f193ce4e2699a5e675d1697ea473a465d6ef42296"
+        },
+        {
+          "path": "registry-artifacts/blur-in.json",
+          "sha256": "04c79acec5d9dd25cfe2f4cbb761fc5198cddfa94128c3a84354ead78cc6908c"
+        },
+        {
+          "path": "registry-artifacts/caption-active-pop.json",
+          "sha256": "25b7069da2f445af3b8e76ed5f925f4e886ed76949f41cde17f8bf03614dddfe"
+        },
+        {
+          "path": "registry-artifacts/canvas-presentation.json",
+          "sha256": "662a27db4db758ad3c01b4bbd42e31a2341ee311ebc43fcfb774764f01590e12"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "9045ed59114eee12264c0d551288d4ab0f77893c1fc211283410c5c24cc579c6"
+        }
+      ]
+    },
+    {
+      "repository": "YouMind-OpenLab/awesome-gpt-image-2",
+      "commit": "2bab9a94177d33b6f99725f26417ac6d9f07170d",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "bff61bab2fdc3e3a6ef849ce68da2b2a0a7bac3b63651ffaa30d82a0dc372c1e"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "cdf642acded97160b992064916cc1c7490ce5a8d8ccc70d8d6456e16976f9bd0"
+        }
+      ]
+    },
+    {
+      "repository": "animate-css/animate.css",
+      "commit": "3f8ab233dbbd9d2fe577528d2296382954be3d1a",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "a33737d50de51570797e9f5c591ad6fa3eae8dba5c1d677c5b7455a7f7965fa2"
+        },
+        {
+          "path": "source/_base.css",
+          "sha256": "1fb3bddb8c4e0e148645320f981ab6167b7dde869b28ae7b4ce93ab57a30a00a"
+        },
+        {
+          "path": "source/fading_entrances/fadeIn.css",
+          "sha256": "a336069e3913d9f58dbfec348235689732089a06d9d9db1b6b271e7be1d8b4d3"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "d7aeec796d07d91a33d5070ce9a8b8832d67cfeb390521f67c4f91fed7d80822"
+        }
+      ]
+    },
+    {
+      "repository": "aseprite/aseprite",
+      "commit": "b3e34acbae812b8a1d814c2e6285343b351c8945",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "c7c8684e06bb02ad659d19e6ba777e7418686f5c6af2a89ac5c8a4dd39f98cde"
+        },
+        {
+          "path": "EULA.txt",
+          "sha256": "d80bd3c464d02d6fa3fce2347ca0ec7435a9a3265318b67bc4d2235bfd8fcbde"
+        },
+        {
+          "path": "src/app/cli/cli_processor.cpp",
+          "sha256": "7598793af1c6bee333afd10440aff65b05b0f65096cd580c99122e1974925a81"
+        }
+      ]
+    },
+    {
+      "repository": "greensock/GSAP",
+      "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "66a79667b0538b19634b5a000a9a3debe588c98d390424e73e5d4de847270828"
+        },
+        {
+          "path": "src/gsap-core.js",
+          "sha256": "8063816e0e7c3e6c07970fb06feafb06146fd266db5d8346419176b3d496e284"
+        },
+        {
+          "path": "src/ScrollTrigger.js",
+          "sha256": "ccdc8591b7ff86370570c4d236a54ff9810b21a8c0b29f2d3b5391bb7ee44ad5"
+        }
+      ]
+    },
+    {
+      "repository": "greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "2cd27948cd1486056271d8d962918eec074e9956b594111b5f84304ec1c13914"
+        },
+        {
+          "path": "skills/gsap-react/SKILL.md",
+          "sha256": "88e2a5312b45e8cc7b3c496637ff5bc9af2ae9c925b555c8b235b34cbc989d74"
+        },
+        {
+          "path": "skills/gsap-scrolltrigger/SKILL.md",
+          "sha256": "9351b6666a4749c0740406ea363aaccb99a087ff45cc5e8b99a0f367facf3ef4"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "51b04b06556662dd817e8f4aa6d06bc7139dc73739e1319a7233cfde3e147b90"
+        }
+      ]
+    },
+    {
+      "repository": "helloianneo/ian-xiaohei-illustrations",
+      "commit": "4102eb807f03bcb6e538a16e8b31b41db8b5b954",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "49415ba981321f5793e9f0b71dc3e2da9eea22c88c77de0cf6e8cfa22e6e1524"
+        },
+        {
+          "path": "ian-xiaohei-illustrations/SKILL.md",
+          "sha256": "54ff046da98d9a0a4a3b6c3ddf5b9fb3c832bdee41baa97abeac0cc9c402d60b"
+        },
+        {
+          "path": "ian-xiaohei-illustrations/references/composition-patterns.md",
+          "sha256": "95d3d352f15ecd37a0ec6368075cf56270c5414937ff98e0e8eb51ad775caf5b"
+        },
+        {
+          "path": "ian-xiaohei-illustrations/references/qa-checklist.md",
+          "sha256": "1b8f29da36752ff2c843e4a17afb0425579d9f166232ddea91c1b42e95afc596"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "b995a6b845825b06461cbc5d7ace91d05fe0fe6d061e1c17bffc31964d2684aa"
+        },
+        {
+          "path": "NOTICE.md",
+          "sha256": "d82c597c4356a957299330c5626c8198c5ad766e22ca62fd3eb9eae1bb379d63"
+        }
+      ]
+    },
+    {
+      "repository": "jlmakes/scrollreveal",
+      "commit": "b5f4e01a655812e06b377fff497fc629c02002f3",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "5246417ed3f712845443de60da83490cc5821f8ca59cdf65bc7fa7ea40fcc6a8"
+        },
+        {
+          "path": "src/instance/defaults.js",
+          "sha256": "4b00cc350e283ca8435a7ae0d836ba5d3b125a5d8e9b0c23d7ed1fa5e4f6ab12"
+        },
+        {
+          "path": "src/instance/methods/reveal.js",
+          "sha256": "893c5ee51472ccf6aa63b14607a7f49d658b5d458324ee6a6ddc72d4350ca4a8"
+        },
+        {
+          "path": "src/instance/methods/clean.js",
+          "sha256": "6c2f134743338835734b931822a7aa8f6f9c41d4f7da712201d2ec0eae00459a"
+        }
+      ]
+    },
+    {
+      "repository": "juliangarnier/anime",
+      "commit": "01b81be1df6843ccfe0a71c0699a746bf740dd77",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "254b88321537a666b4d37aeb77dba01f630b0da0dc642fb3fec9bbb7bf9ab7fa"
+        },
+        {
+          "path": "src/scope/scope.js",
+          "sha256": "5778734814e9083edf6332b716e63e395ff7f900bb8dfc0caa69d1e4fc66343c"
+        },
+        {
+          "path": "src/svg/morphto.js",
+          "sha256": "b7a9bf04cf21f4b72794b06630e87979c60019965286d099995a184cb6fdf32d"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "3f3e835a9952cfc2a6ca836fb95b3257c981f24fa3ef51249055acb09931897b"
+        }
+      ]
+    },
+    {
+      "repository": "mojs/mojs",
+      "commit": "0a9cf9a87dd5637e6fa770755e79048489bcf817",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "2c91be1237955dd72e11478f14635207ba9618dc97e73b42cdb2a77dd17e4d92"
+        },
+        {
+          "path": "src/burst.babel.js",
+          "sha256": "b1ff0091ef77fb2f01e8513268a919c45b6cbc0c7986e43742c6d0f009cd9cdd"
+        },
+        {
+          "path": "src/tween/tweener.babel.js",
+          "sha256": "99a344909bf5cf8c2a3bb96f9dafc781713d55d546756b3945bf7121e1614ee5"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "a6f47a5b900a568269cd8fcee343662c810e4da05e4e7003102ce20215b5ebe4"
+        }
+      ]
+    },
+    {
+      "repository": "motiondivision/motion",
+      "commit": "c5fab238ab4f8d8132d1cb05d6607439b3904058",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "08915bb5254a4bc1fd47e8d7ea8fff0dcb470461f6fd6b59fb6d2f0bef0400df"
+        },
+        {
+          "path": "packages/framer-motion/src/components/AnimatePresence/index.tsx",
+          "sha256": "6b4f15943dc3b0227e4881aaa3ae16af8d8526c337159d305961d40287c01924"
+        },
+        {
+          "path": "packages/framer-motion/src/utils/reduced-motion/use-reduced-motion.ts",
+          "sha256": "6fafd2528a370844c0647f27230a0381c47ded9713f28181c0ea97ef8636aa1f"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "1bf0dc3f7727723e5a032ed12164a47cf92c05204cb1a3485f123c24e2833ed1"
+        }
+      ]
+    },
+    {
+      "repository": "radix-ui/primitives",
+      "commit": "eb3a2b7091293e27df8f9ba906632d8daa3d81a3",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "20cbda0a49f12fb8d23bc41106611cd89d8ff3c6950059b4a3092b58f357656d"
+        },
+        {
+          "path": "packages/react/dialog/src/dialog.tsx",
+          "sha256": "f12123db9af35afdc341d71f2759027ae172762cc6693d5c08e3bb059e7ee1d1"
+        },
+        {
+          "path": "packages/react/presence/src/presence.tsx",
+          "sha256": "b79984b872c17606d900fea1cbadaa7715c942bdda3453b30f4c214c1a2a96d6"
+        },
+        {
+          "path": "packages/react/focus-scope/src/focus-scope.tsx",
+          "sha256": "4f3a1e93f0886cf394f003660d937d2c4ca7a609c7cefc300da5749034a43e67"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "0e80a2d229d2fd4fc7e8636142ec5d0ff0bc031f14c15b682e2ac01dfd5b5138"
+        }
+      ]
+    },
+    {
+      "repository": "remotion-dev/remotion",
+      "commit": "7ea5ab594e0d8c5aa93640ee84b7ed32925b545e",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "867c11b80c8ba7a56b3fdaff4501cf8871529c9bb9cf50f2ee87cae9f4d6a505"
+        },
+        {
+          "path": "packages/transitions/src/TransitionSeries.tsx",
+          "sha256": "69b9d466b21da3ded8f64dca4098c8dcbd7cb1835d098a23d62689aa70d752c7"
+        },
+        {
+          "path": "packages/core/src/use-current-frame.ts",
+          "sha256": "f1382e84db564a3acb9a2f59119114dcf080f178d00e59f33d3698b7b796815c"
+        },
+        {
+          "path": "LICENSE.md",
+          "sha256": "bd65083b940f61904f6ef298aade918a7cad72a3e35bc406e36fab365844b673"
+        }
+      ]
+    },
+    {
+      "repository": "voltagent/awesome-design-md",
+      "commit": "3b605329240ce735b510037cca322f1831fdd7f8",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "3847536c93a8262b779ee04692fe0efb4bfa644ffcfb8c43565576f00a4a32e0"
+        },
+        {
+          "path": "design-md/linear.app/DESIGN.md",
+          "sha256": "30bd30e72c48a16e4bdbd010f2d1c85fab657c6fae3cc85389399aab10f9cb5f"
+        },
+        {
+          "path": "design-md/stripe/DESIGN.md",
+          "sha256": "5c8806b7dd3e0c2554ccba9d1e2a7c78e7c6e50e44fcf6ff5daea6026f8a9ed9"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "6d4bdc9a9cf30e7beb593475fdcdbf29f981ea6bd7923f202866145409f87b44"
+        }
+      ]
+    },
+    {
+      "repository": "wheresryan22/anatomy",
+      "commit": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.md",
+          "sha256": "a1bc269d3d1b75a230a2ae54cb43c63c19a0a3a067f6a7bb0baf5a7785e3de16"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "3423ada45a05033bb6e320dfc3b3ac832569969a5afb059bbfc9096c5cf0c71b"
+        },
+        {
+          "path": "references/craft.md",
+          "sha256": "38761fa9b81d66b30e50b05488501d4815830d3627f153d60f76ca783f598936"
+        },
+        {
+          "path": "references/motion.md",
+          "sha256": "dda401ca1b4661a5f0b7c1e33dac6e7e4b8c13d51ca5d9312123a5c02dab320b"
+        },
+        {
+          "path": "kit/audit.mjs",
+          "sha256": "74e605b5d549c1f31c8a1104db7560057105cf86809bf6ced00e4ac79194c8e2"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "87c078ab9d90a3044f359e6b563d4e6afea7aa060897cf4f21618687b3856796"
+        }
+      ]
+    },
+    {
+      "repository": "xixu-me/awesome-persona-distill-skills",
+      "commit": "eeaad969a384ad00aad47f1541dc4f007b859cea",
+      "inventory_truncated": false,
+      "reviewed_files": [
+        {
+          "path": "README.en.md",
+          "sha256": "a9aef627b1cab6e622eebdaff6ea6399d1ed5bf7ff66b5fe81d675945de34862"
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "e35cbf11f8916b3ba151a003c4b773c43ed72527d4c4e4928c91db1d954d8b4d"
+        }
+      ]
+    }
+  ],
+  "web_resources": [
+    {
+      "url": "https://styles.refero.design/design-md/design-md-resources",
+      "scope": "Text-only resource page; linked galleries not visually reviewed."
+    }
+  ]
+}

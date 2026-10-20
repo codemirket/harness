@@ -7,8 +7,14 @@ import {compileTokens} from './tokens.mjs';
 import Ajv from 'ajv';
 import {withRequest, checkRequest, redactSecrets} from './request.mjs';
 import {synchronizePenpotTokens} from './penpot-tokens.mjs';
-import {readFileSync} from 'node:fs';
-import {shutdownChildren, withRenderSlot, assertOutputReady} from './paths.mjs';
+import {readFileSync, readdirSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+
+// Captured once by the connected process, including every owned runtime module.
+const runtimeFiles = readdirSync(new URL('./', import.meta.url)).filter(name => name.endsWith('.mjs') || ['package-lock.json', 'tool-policy.json', 'tool-budgets.json'].includes(name)).sort();
+const runtimeHashes = Object.fromEntries(runtimeFiles.map(name => [name, createHash('sha256').update(readFileSync(new URL(name, import.meta.url))).digest('hex')]));
+const runtimeIdentity = Object.freeze({sha256:createHash('sha256').update(JSON.stringify(runtimeHashes)).digest('hex'), files:runtimeHashes, node:process.version, workspace, scope:workspacePrefix ? 'project' : 'host'});
+import {shutdownChildren, withRenderSlot, assertOutputReady, workspace, workspacePrefix} from './paths.mjs';
 
 const toolPolicies = JSON.parse(readFileSync(new URL('./tool-policy.json', import.meta.url), 'utf8'));
 function withPolicy(tool) {
@@ -102,7 +108,7 @@ async function upstreamTools({optional = false} = {}) {
     return [];
   }
 }
-const server = new Server({name: 'mirket-design-tools', version: '1.0.0'}, {capabilities: {tools: {listChanged: false}}});
+const server = new Server({name: 'mirket-design-tools', version: `1.0.0+${runtimeIdentity.sha256.slice(0,12)}`}, {capabilities: {tools: {listChanged: false}}});
 function shutdown() {
   if (closing) return;
   closing = true;
@@ -155,7 +161,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
       try {
         const invoke = () => { started = true; return handlers[name](args); };
         const result = name === 'tokens_compile' ? await invoke() : await withRenderSlot(invoke);
-        return {content: [{type: 'text', text: JSON.stringify(result)}], structuredContent: result, isError: ['failed', 'changed_pixels'].includes(result.qa?.status)};
+        // Some desktop hosts omit MCP _meta from model-visible responses.
+        // Keep the exact loaded identity in ordinary content as well.
+        const visible = {...result, runtime: runtimeIdentity};
+        return {_meta:{'mirket/runtime':runtimeIdentity}, content: [{type: 'text', text: JSON.stringify(visible)}], structuredContent: visible, isError: ['failed', 'changed_pixels'].includes(result.qa?.status)};
       } catch (error) {
         if (!started) return rejected('render_admission', redactSecrets(String(error.message || error)));
         throw error;

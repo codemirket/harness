@@ -15,15 +15,18 @@ Use `interface-design` for the page's content and hierarchy, `graphic-design` fo
 an asset family, and the project's frontend workflow for state/lifecycle integration.
 A new visual direction, framework, model or external design service is not implied.
 
-Establish an inspected static visual target before choreography: supplied imagery
-or the host image model first; direct code composition and a rendered proof when
-no usable image model is available. Preserve hierarchy and subject construction
-while adding motion. Inspect real playback and reduced motion as final gates.
-The image-to-code budget is shared with the composition: at most two correction
-rounds and ten minutes, not a fresh budget for animation. Stop incomplete with
-located defects instead of extending a sample campaign.
+Establish an inspected static target before choreography using supplied imagery,
+a host-generated composition or a native specimen suited to the medium. Preserve
+hierarchy and subject construction while adding motion. Read the shared contract
+with `mirket catalog read interface-design --path references/image-to-code.md`.
+Motion shares a 45-minute production/verification budget and at most four final
+correction rounds with its composition. Inspect real playback and reduced motion;
+preserve incomplete output and located defects at the limit.
 
 Read only the reference needed for the current decision:
+
+- [Engine selection](references/engine-selection.md) compares native motion, Motion,
+  Anime.js and GSAP with semantic ownership, live reduced motion and interruption.
 
 - [Art direction and medium](references/art-direction-and-medium.md) turns a brief
   into concrete motion traits, apparent weight, a short score and a

@@ -31,6 +31,10 @@ const PAGING_INDEX: (&str, &str) = (
     "tasks_project_created",
     "CREATE INDEX tasks_project_created ON tasks(project_id,created DESC,id DESC)",
 );
+const SCOPE_SCHEMA: (&str, &str) = (
+    "project_scopes",
+    "CREATE TABLE project_scopes (project_id TEXT PRIMARY KEY, scope TEXT NOT NULL UNIQUE, root TEXT NOT NULL UNIQUE, identity TEXT NOT NULL) STRICT",
+);
 const TASKS_FIRST_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 ORDER BY created DESC,id DESC LIMIT ?2";
 const TASKS_CURSOR_PAGE: &str = "SELECT id,objective,status,revision,updated,created FROM tasks WHERE project_id=?1 AND (created,id)<(?2,?3) ORDER BY created DESC,id DESC LIMIT ?4";
 
@@ -76,6 +80,23 @@ const SCHEMA: &[(&str, &str)] = &[
 #[derive(Clone, Debug)]
 pub struct State {
     database: PathBuf,
+    paths: Paths,
+}
+
+struct GuardedConnection {
+    connection: Connection,
+    _lease: util::FileLock,
+}
+impl std::ops::Deref for GuardedConnection {
+    type Target = Connection;
+    fn deref(&self) -> &Connection {
+        &self.connection
+    }
+}
+impl std::ops::DerefMut for GuardedConnection {
+    fn deref_mut(&mut self) -> &mut Connection {
+        &mut self.connection
+    }
 }
 
 fn bounded(value: &str, name: &str, max: usize) -> Result<()> {
@@ -120,6 +141,9 @@ fn validate_schema(conn: &Connection, version: i64) -> Result<()> {
     if version >= 3 {
         schema.retain(|(name, _)| *name != "tasks_project");
         schema.push(PAGING_INDEX);
+    }
+    if version >= 4 {
+        schema.push(SCOPE_SCHEMA);
     }
     let mut statement = conn.prepare(
         "SELECT name,sql FROM sqlite_schema WHERE sql IS NOT NULL AND name NOT GLOB 'sqlite_*'",
@@ -209,11 +233,12 @@ impl State {
         paths.ensure()?;
         let state = Self {
             database: paths.database(),
+            paths: paths.clone(),
         };
         let mut conn = state.connection()?;
         let read = conn.transaction()?;
         let version: i64 = read.pragma_query_value(None, "user_version", |row| row.get(0))?;
-        if !(0..=3).contains(&version) {
+        if !(0..=4).contains(&version) {
             bail!("unsupported Mirket state format: {version}");
         }
         #[cfg(unix)]
@@ -221,8 +246,8 @@ impl State {
             use std::os::unix::fs::PermissionsExt;
             fs::set_permissions(&state.database, fs::Permissions::from_mode(0o600))?;
         }
-        if version == 3 {
-            validate_schema(&read, 3)?;
+        if version == 4 {
+            validate_schema(&read, 4)?;
             let journal: String =
                 read.pragma_query_value(None, "journal_mode", |row| row.get(0))?;
             if journal != "wal" {
@@ -271,6 +296,7 @@ impl State {
             }
             2 => validate_schema(&tx, 2)?,
             3 => validate_schema(&tx, 3)?,
+            4 => validate_schema(&tx, 4)?,
             _ => bail!("unsupported Mirket state format: {version}"),
         }
         // Replace the obsolete updated-order index atomically with the cursor
@@ -280,11 +306,40 @@ impl State {
             tx.execute_batch(PAGING_INDEX.1)?;
             tx.pragma_update(None, "user_version", 3)?;
         }
+        if version < 4 {
+            tx.execute_batch(SCOPE_SCHEMA.1)?;
+            let projects = {
+                let mut q = tx.prepare("SELECT id,root,identity FROM projects")?;
+                q.query_map([], |r| {
+                    Ok((
+                        r.get::<_, String>(0)?,
+                        r.get::<_, String>(1)?,
+                        r.get::<_, String>(2)?,
+                    ))
+                })?
+                .collect::<rusqlite::Result<Vec<_>>>()?
+            };
+            for (id, root, identity) in projects {
+                tx.execute(
+                    "INSERT INTO project_scopes VALUES(?1,?2,?3,?4)",
+                    params![id, util::sha256(root.as_bytes()), root, identity],
+                )?;
+            }
+            tx.pragma_update(None, "user_version", 4)?;
+        }
         tx.commit()?;
         Ok(state)
     }
 
-    fn connection(&self) -> Result<Connection> {
+    fn connection(&self) -> Result<GuardedConnection> {
+        let lease = crate::maintenance::shared(&self.paths)?;
+        Ok(GuardedConnection {
+            connection: self.unleased_connection()?,
+            _lease: lease,
+        })
+    }
+
+    fn unleased_connection(&self) -> Result<Connection> {
         for path in [
             &self.database,
             &self.database.with_extension("db-wal"),
@@ -296,6 +351,27 @@ impl State {
         conn.busy_timeout(Duration::from_millis(750))?;
         conn.pragma_update(None, "foreign_keys", true)?;
         Ok(conn)
+    }
+
+    pub(crate) fn validate_backup(path: &Path) -> Result<()> {
+        let conn = Connection::open_with_flags(path, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+        let version: i64 = conn.pragma_query_value(None, "user_version", |r| r.get(0))?;
+        anyhow::ensure!(version == 4, "unsupported backup state schema");
+        validate_schema(&conn, version)?;
+        anyhow::ensure!(
+            conn.query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))? == "ok",
+            "backup SQLite integrity failure"
+        );
+        anyhow::ensure!(
+            conn.prepare("PRAGMA foreign_key_check")?
+                .query([])?
+                .next()?
+                .is_none(),
+            "backup foreign key integrity failure"
+        );
+        let missing: i64 = conn.query_row("SELECT count(*) FROM projects p LEFT JOIN project_scopes s ON s.project_id=p.id WHERE s.scope IS NULL OR s.root!=p.root OR s.identity!=p.identity OR length(s.scope)!=64 OR s.scope GLOB '*[^0-9a-f]*'", [], |r| r.get(0))?;
+        anyhow::ensure!(missing == 0, "backup project namespace integrity failure");
+        Ok(())
     }
 
     /// A CLI-only boundary: the MCP server never exposes project registration.
@@ -310,24 +386,58 @@ impl State {
         let root = root.to_str().context("project path must be UTF-8")?;
         bounded(root, "project path", 4096)?;
         let current_identity = identity(Path::new(root))?;
-        let id = format!("p_{}", &util::sha256(root.as_bytes())[..24]);
         let mut conn = self.connection()?;
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let previous: Option<String> = tx
-            .query_row("SELECT identity FROM projects WHERE id=?1", [&id], |row| {
-                row.get(0)
-            })
+        let previous: Option<(String, String)> = tx
+            .query_row(
+                "SELECT id,identity FROM projects WHERE root=?1",
+                [root],
+                |row| Ok((row.get(0)?, row.get(1)?)),
+            )
             .optional()?;
-        if let Some(previous) = previous {
+        let id = if let Some((id, previous)) = previous {
             if previous != current_identity {
                 bail!("registered project identity changed; use a distinct project directory");
             }
+            id
         } else {
+            let retained: Option<(String, String)> = tx
+                .query_row(
+                    "SELECT project_id,identity FROM project_scopes WHERE root=?1",
+                    [root],
+                    |r| Ok((r.get(0)?, r.get(1)?)),
+                )
+                .optional()?;
+            let id = if let Some((id, expected)) = retained {
+                anyhow::ensure!(
+                    expected == current_identity,
+                    "durable project identity changed; use a distinct directory"
+                );
+                id
+            } else {
+                let scope = util::sha256(root.as_bytes());
+                let occupied: bool = tx.query_row(
+                    "SELECT EXISTS(SELECT 1 FROM project_scopes WHERE scope=?1)",
+                    [&scope],
+                    |r| r.get(0),
+                )?;
+                anyhow::ensure!(
+                    !occupied,
+                    "path belongs to a relocated project's durable namespace; choose a different root"
+                );
+                let id = format!("p_{}", &scope[..24]);
+                tx.execute(
+                    "INSERT INTO project_scopes VALUES(?1,?2,?3,?4)",
+                    params![id, scope, root, current_identity],
+                )?;
+                id
+            };
             tx.execute(
                 "INSERT INTO projects(id,root,identity,created) VALUES(?1,?2,?3,?4)",
                 params![id, root, current_identity, now()],
             )?;
-        }
+            id
+        };
         tx.commit()?;
         Ok(json!({"id":id,"root":root,"registered":true}))
     }
@@ -363,7 +473,7 @@ impl State {
         tx.commit()?;
         Ok(json!({"ok":true,"project_id":project_id,"root":root,
             "deleted":{"projects":projects,"tasks":tasks,"skill_deliveries":deliveries,"evidence":evidence,"checkpoints":checkpoints,"operations":operations},
-            "project_files":"unchanged"}))
+            "project_files":"unchanged", "runtime_namespace":"retained; unregister removes MCP registration, not memory identity"}))
     }
 
     fn project_rows(conn: &Connection, limit: usize, offset: usize) -> Result<Vec<Value>> {
@@ -374,6 +484,110 @@ impl State {
                 Ok(json!({"id":row.get::<_,String>(0)?,"root":row.get::<_,String>(1)?}))
             })?
             .collect::<rusqlite::Result<Vec<_>>>()?)
+    }
+
+    /// Stable namespace for registered roots; legacy CLI-only roots retain path hashing.
+    pub fn runtime_scope(&self, path: &Path) -> Result<String> {
+        let canonical = crate::paths::canonical_project(path)?;
+        let root = canonical.to_str().context("project path must be UTF-8")?;
+        let conn = self.connection()?;
+        if let Some((scope, expected)) = conn
+            .query_row(
+                "SELECT scope,identity FROM project_scopes WHERE root=?1",
+                [root],
+                |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?)),
+            )
+            .optional()?
+        {
+            util::reject_symlink_components(&canonical)?;
+            anyhow::ensure!(
+                identity(&canonical)? == expected,
+                "durable project identity changed"
+            );
+            anyhow::ensure!(
+                scope.len() == 64 && scope.bytes().all(|b| b.is_ascii_hexdigit()),
+                "invalid durable namespace"
+            );
+            return Ok(scope);
+        }
+        let scope = util::sha256(root.as_bytes());
+        let occupied: bool = conn.query_row(
+            "SELECT EXISTS(SELECT 1 FROM project_scopes WHERE scope=?1)",
+            [&scope],
+            |r| r.get(0),
+        )?;
+        anyhow::ensure!(
+            !occupied,
+            "path belongs to a relocated project's durable namespace"
+        );
+        Ok(scope)
+    }
+
+    /// CLI-only rebinding after an actual directory rename. Never moves application files.
+    pub fn relocate(&self, id: &str, expected_root: &Path, destination: &Path) -> Result<Value> {
+        let _lease = crate::maintenance::exclusive(&self.paths)?;
+        anyhow::ensure!(
+            !self.paths.root.join("restore-pending.json").exists(),
+            "restore is incomplete"
+        );
+        util::reject_symlink_components(destination)?;
+        let destination = crate::paths::canonical_project(destination)?;
+        anyhow::ensure!(
+            expected_root.is_absolute() && destination != expected_root,
+            "distinct absolute roots required"
+        );
+        let design_root = self
+            .paths
+            .root
+            .join("execution/podman/staging/design/workspace");
+        anyhow::ensure!(
+            expected_root.starts_with(&design_root) == destination.starts_with(&design_root),
+            "relocation cannot cross the direct design workspace boundary"
+        );
+        let mut conn = self.unleased_connection()?;
+        let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+        let (root, expected, scope): (String,String,String) = tx.query_row(
+            "SELECT p.root,p.identity,s.scope FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1", [id],
+            |r| Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional()?.context("project is not registered")?;
+        // The original inode/creation identity is retained; copied replacements are not relocation.
+        anyhow::ensure!(
+            identity(&destination)? == expected,
+            "destination is not the registered directory; rename the original project, do not copy it"
+        );
+        if Path::new(&root) == destination {
+            return Ok(
+                json!({"relocated":true,"replayed":true,"id":id,"root":destination,"scope":scope}),
+            );
+        }
+        anyhow::ensure!(
+            Path::new(&root) == expected_root,
+            "registered root changed; inspect before relocation"
+        );
+        util::reject_symlink_components(expected_root)?;
+        anyhow::ensure!(
+            !expected_root.exists(),
+            "old project root still exists; rename it before relocation"
+        );
+        tx.execute(
+            "UPDATE projects SET root=?1 WHERE id=?2",
+            params![
+                destination.to_str().context("UTF-8 destination required")?,
+                id
+            ],
+        )?;
+        tx.execute(
+            "UPDATE project_scopes SET root=?1 WHERE project_id=?2",
+            params![
+                destination.to_str().context("UTF-8 destination required")?,
+                id
+            ],
+        )?;
+        tx.commit()?;
+        Ok(
+            json!({"relocated":true,"id":id,"previous_root":root,"root":destination,"scope":scope,
+            "worker_recovery":"Historical absolute bindings remain unchanged. Start a new worker at the relocated root; old checkpoints cannot dispatch there.",
+            "project_files":"not moved or rewritten"}),
+        )
     }
 
     pub fn project_id(&self, path: &Path) -> Result<String> {

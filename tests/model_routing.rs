@@ -392,8 +392,44 @@ fn spawn_requires_post_write_verification_and_sends_high_effort() {
         &empty_path,
         &["agent", "spawn", "--request", request.to_str().unwrap()],
     );
-    assert_eq!(result["status"], "complete");
+    assert_eq!(result["status"], "awaiting_host_verification");
     assert_eq!(result["result"], "verified");
+    assert_eq!(
+        result["host_verification"]["artifacts"][0]["path"],
+        "result.txt"
+    );
+    // Bind inputs before executing the actual check, then report its fresh log.
+    let report = home.join("host-report.json");
+    fs::write(&report, serde_json::to_vec(&json!({
+        "project":project,"run_id":result["run_id"],"expected_trace_sha256":result["trace_sha256"],
+        "begin":{"key":"first-host-check","inputs":["result.txt"],"commands":{"project_checks":"Rust assert result.txt equals checked"}}
+    })).unwrap()).unwrap();
+    let prepared = ok(
+        &home,
+        &empty_path,
+        &["agent", "verify", "--request", report.to_str().unwrap()],
+    );
+    assert_eq!(fs::read(project.join("result.txt")).unwrap(), b"checked");
+    let log = b"Host assertion: result.txt equals checked; passed";
+    fs::write(project.join("check.log"), log).unwrap();
+    fs::write(&report, serde_json::to_vec(&json!({
+        "project":project,"run_id":result["run_id"],"expected_trace_sha256":prepared["trace_sha256"],
+        "attempt_id":prepared["host_verification"]["active_attempt"],
+        "checks":[{"name":"project_checks","status":"passed","summary":"Compared actual output with expected bytes", "evidence":{"path":"check.log","sha256":mirket::util::sha256(log)}}]
+    })).unwrap()).unwrap();
+    let verified = ok(
+        &home,
+        &empty_path,
+        &["agent", "verify", "--request", report.to_str().unwrap()],
+    );
+    assert_eq!(verified["status"], "host_verified");
+    let replay = ok(
+        &home,
+        &empty_path,
+        &["agent", "verify", "--request", report.to_str().unwrap()],
+    );
+    assert_eq!(replay, verified);
+
     assert_eq!(
         result["task_contract"]["primary_role"],
         "backend-engineering"

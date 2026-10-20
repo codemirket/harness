@@ -75,6 +75,38 @@ pub fn check(project: &Path) -> Result<Value> {
     Ok(json!({"ok":true,"checks":["format","clippy","tests"],"source":project}))
 }
 
+/// Explicit release acceptance against already prepared, selected ARM64 packages.
+/// Reuse the same test owners; never install packages or read user project facts.
+pub fn acceptance(project: &Path, engine_home: &Path) -> Result<Value> {
+    let project = checkout(project)?;
+    let paths = crate::paths::Paths::new(engine_home.to_path_buf())?;
+    let runtime = crate::packages::agent::test(&paths)?;
+    for target in ["desktop_acceptance", "backup_runtime"] {
+        eprintln!("mirket acceptance: {target}");
+        let status = Command::new(cargo_program())
+            .args([
+                "test",
+                "--locked",
+                "--test",
+                target,
+                "--",
+                "--ignored",
+                "--test-threads=1",
+                "--nocapture",
+            ])
+            .env("MIRKET_TEST_ENGINE_HOME", &paths.home)
+            .env("MIRKET_TEST_BINARY", std::env::current_exe()?)
+            .current_dir(&project)
+            .status()?;
+        if !status.success() {
+            bail!("release acceptance failed: {target}");
+        }
+    }
+    Ok(json!({"ok":true,"source":project,"runtime":runtime,
+        "checks":["contained-runtime","desktop-contracts","parallel-runtime","design-output","backup-recovery"],
+        "limits":"Fresh MCP sessions and disposable fixtures; actual desktop activation must be checked after deployment. Standard dev check remains required."}))
+}
+
 pub fn format(project: &Path) -> Result<Value> {
     let project = checkout(project)?;
     cargo(&project, &["fmt", "--all"])?;

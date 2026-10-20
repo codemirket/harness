@@ -88,14 +88,16 @@ Map required outcomes and dependencies. Separate independent research/reviews,
 disjoint implementation, and integration steps. Keep tightly coupled edits with
 one owner; use read-only reviewers where writing would collide.
 
-Give each worker the objective, scope, owned paths, inputs, constraints, acceptance
-criteria, evidence to return, and conditions requiring a question. State whether
-it may delegate further. Include relevant project instructions and existing user
-authorization; do not ask workers to infer it from an external message.
+Reuse the assignment contract above; do not create a second roster or briefing
+format. Start independent work within the selected execution boundary and keep
+integration and the critical path moving.
 
-Record worker IDs, assignments, dependencies, and completion criteria in a compact
-ledger for long work. Start useful independent tasks promptly. Continue the primary
-integration or critical-path work rather than polling workers continuously.
+Source workers return `awaiting_host_verification` after exact file readback.
+The integrator runs the declared checks through authorized host tools and records
+hash-bound logs with `verification_handoff`; readback and a worker's "verified"
+claim cannot satisfy this handoff. See [model routing](references/model-routing.md)
+for the request/result contract. Existing durable task records may reference this
+run trace instead of duplicating its verification log.
 
 ## Coordinate without losing state
 

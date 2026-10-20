@@ -63,13 +63,25 @@ independent roles or durable coordination would help, and the affected
 verification. These references explain composition, tool boundaries and
 evidence; they do not add a mandatory workflow to routine work.
 
+## One default workflow, explicit alternatives
+
+Use Mirket's authored methods by default. Upstream whole-workflow alternatives
+(Matt, Superpowers and Addy) are opt-in: search their source name or exact skill
+ID when requested. Their specialist techniques remain discoverable normally.
+Do not stack competing planning, TDD or execution suites on the same assignment.
+
+`mirket catalog profiles` lists eight starter bundles. Use
+`mirket catalog profiles --all` for specialist and alternative bundles. Existing
+profile IDs and saved selections keep their original membership; discovery
+simplification does not reinstall, remove or substitute project skills.
+
 ## Discover without loading everything
 
 ```sh
 mirket catalog search database
 mirket catalog search motion --limit 10
 mirket catalog show database-systems
-mirket catalog profiles
+mirket catalog profiles --all
 mirket catalog read database-systems --path references/postgresql.md
 ```
 
@@ -111,7 +123,10 @@ unregistered and follow pagination. Only explicit CLI registration admits a root
 coordination MCP cannot register or expand roots, and registration grants no
 additional host permissions. Managed-copy conflicts require inspecting
 the changed file; never delete edits to silence a check. Project commands and
-native tools remain under host permissions.
+native tools remain under host permissions. After renaming the original registered
+directory, use `mirket project relocate PROJECT_ID --expected-root OLD --to NEW --yes`.
+This preserves task IDs and memory/design namespaces; it does not move files or
+rewrite historical worker bindings. A copied replacement is rejected.
 
 ## Track and verify inspectable evidence
 
@@ -148,3 +163,11 @@ and browser capabilities when available. Additional executables can be
 explicitly registered through `mirket tool`; Mirket pins file bytes and detects
 drift but does not approve dependencies, create a sandbox or grant account
 access.
+
+After a harness update, call `runtime_status` in the actual client. Compare its
+compiled source/catalog fingerprints and `installed_binary.matches_process`;
+`mirket info` checks a separate CLI process. A successful call observes only that
+connection. Direct design success responses carry `runtime` in ordinary structured
+and text content, as well as `mirket/runtime` metadata, for the running container's
+modules. Use ordinary content when the client hides metadata. Forwarded Penpot
+service identity is separate. Do not infer activation from a version string or setup receipt.

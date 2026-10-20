@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 sharp.cache(false);
 sharp.concurrency(1);
 const [input, output, json] = process.argv.slice(2);
-const {width, height, mode, format, gravity, quality, enlarge} = JSON.parse(json);
+const {operation = 'transform', width, height, mode, format, gravity, quality, enlarge} = JSON.parse(json);
 const signature = Buffer.alloc(32);
 const handle = await fs.open(input, 'r');
 try { await handle.read(signature, 0, signature.length, 0); } finally { await handle.close(); }
@@ -17,9 +17,18 @@ if (!raster) throw Error('Only PNG, JPEG, GIF, WebP and AVIF raster sources are 
 const image = sharp(input, {limitInputPixels: 17_000_000, sequentialRead: true, animated: false, failOn: 'warning'});
 const metadata = await image.metadata();
 if (!metadata.width || !metadata.height || metadata.width * metadata.height > 17_000_000) throw Error('Raster exceeds source pixel budget');
-const fit = {fit: 'inside', fill: 'cover', force: 'fill'}[mode];
-const position = {sm: sharp.strategy.attention, ce: 'centre', no: 'north', ea: 'east', so: 'south', we: 'west'}[gravity];
-const prepared = image.rotate().resize({width, height, fit, position, withoutEnlargement: !enlarge});
-if (format === 'jpeg') prepared.flatten({background: '#ffffff'});
-await prepared.toFormat(format, {quality}).toFile(output);
+if (operation === 'preserve') {
+  if ((metadata.pages || 1) > 1) throw Error('Animated composition rasters require an explicit frame sequence or video asset');
+  // metadata() alone accepts truncated bodies. Force decoding before retaining
+  // the original bytes; never turn staging into a lossy export operation.
+  await image.stats();
+  await fs.copyFile(input, output);
+} else {
+  if (operation !== 'transform') throw Error('Unsupported raster operation');
+  const fit = {fit: 'inside', fill: 'cover', force: 'fill'}[mode];
+  const position = {sm: sharp.strategy.attention, ce: 'centre', no: 'north', ea: 'east', so: 'south', we: 'west'}[gravity];
+  const prepared = image.rotate().resize({width, height, fit, position, withoutEnlargement: !enlarge});
+  if (format === 'jpeg') prepared.flatten({background: '#ffffff'});
+  await prepared.toFormat(format, {quality}).toFile(output);
+}
 if ((await fs.stat(output)).size > 64 * 1024 * 1024) throw Error('Raster exceeds output byte budget');

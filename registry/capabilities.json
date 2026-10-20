@@ -2176,7 +2176,7 @@
       "verification_tools": [
         "workspace_read"
       ],
-      "rule": "Write only assigned project files. Read back each changed artifact; no shell, dependency installation, commit, deployment or external effects are granted.",
+      "rule": "Write only assigned project files and read back each changed artifact. Return awaiting_host_verification; the host must run declared build/tests and report current evidence through verification_handoff. No shell, dependency installation, commit, deployment or external effects are granted.",
       "min_tier": "T2_SYNTHESIS",
       "alternative_roles": [
         "frontend-engineering",

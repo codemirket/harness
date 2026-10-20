@@ -2,7 +2,7 @@
 
 Start with [versions and availability](release-status.md). The latest public
 release is 1.0.5 as of 2026-10-20; guides marked for desktop build 1.0.11 describe
-newer, locally verified behavior awaiting source and binary publication.
+newer, locally verified behavior with source available and binary publication pending.
 
 | Your task | Guide |
 | --- | --- |

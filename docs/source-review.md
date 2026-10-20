@@ -174,3 +174,22 @@ rights boundaries and the exact existing owners. Eight mirrored GSAP entries
 are consolidated into one official pinned reference; focused authored guidance
 ships with the existing design skills. No upstream runtime or hosted service is
 installed by that review.
+
+## Broader design resource review
+
+The [2026-10-19 resource review](design-resource-review.md) compares eighteen
+illustration, animation, video, frontend and design-document resources with the
+current design stack. It records adoption proposals, source-level caveats and
+verified adapter fixes. Its [source ledger](design-resource-sources.json) pins
+the sampled repositories and files; it does not install or admit their runtimes.
+
+## Memory and workflow runtime adoption
+
+Reviewed Mem0 OSS 2.2.1 and LangGraph 1.2.16/SQLite checkpointer 3.1.2 on
+2026-10-19. Runtime selection is the exact hash-locked wheel closure, not a moving
+repository HEAD. Review snapshots: Mem0 `0724291bd864cf807e88ee8981c8226644e8fb42`
+and LangGraph `7b23a1084683c58a4c20f4e1290968536cc34e85`. The former supplies explicit
+local facts/hybrid retrieval; the latter replaces trace-only worker recovery.
+[Runtime containment and limits](agent-runtime.md) describe owned adapters and
+[the review](harness-review-2026-10.md) lists remaining priorities. Hosted inference,
+provider defaults, Agent Server and a second long-term store are excluded.

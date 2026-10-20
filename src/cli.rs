@@ -34,6 +34,11 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Store and retrieve explicit project memories using local Mem0.
+    Memory {
+        #[command(subcommand)]
+        command: MemoryCommand,
+    },
     /// Inspect dynamically discovered inference targets and capability routing.
     Models {
         #[command(subcommand)]
@@ -82,6 +87,11 @@ enum Command {
     Project {
         #[command(subcommand)]
         command: ProjectCommand,
+    },
+    /// Create, verify or restore private durable-state backup archives.
+    Backup {
+        #[command(subcommand)]
+        command: BackupCommand,
     },
     /// Coordinate durable work, skill delivery, and artifact evidence.
     Task {
@@ -135,7 +145,88 @@ enum ModelCommand {
     },
 }
 #[derive(Subcommand)]
+enum MemoryCommand {
+    Read {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long, conflicts_with = "id")]
+        query: Option<String>,
+        #[arg(long)]
+        id: Option<String>,
+        #[arg(long, default_value_t = 5)]
+        limit: usize,
+        #[arg(long, conflicts_with_all = ["id", "query"])]
+        cursor: Option<String>,
+    },
+    Put {
+        #[arg(long)]
+        request: PathBuf,
+    },
+    Forget {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        expected_sha256: String,
+    },
+}
+#[derive(Subcommand)]
 enum AgentCommand {
+    /// Export all facts and latest workflow snapshots to a new private JSONL file.
+    Export {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Preview a bounded retention batch; deletes nothing.
+    RetentionPlan {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        expired_before: u64,
+        #[arg(long)]
+        completed_before: u64,
+        /// JSON next_cursor returned by the previous preview.
+        #[arg(long)]
+        cursor: Option<String>,
+    },
+    /// Apply an exact reviewed retention plan; retains unresolved work and traces.
+    RetentionApply {
+        #[arg(long)]
+        request: PathBuf,
+    },
+    /// Forget one run's checkpoints; retain evidence traces.
+    Forget {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        run_id: String,
+        #[arg(long)]
+        expected_checkpoint_id: String,
+    },
+    /// Inspect a durable workflow without dispatching tools.
+    Status {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        run_id: String,
+    },
+    /// Resume a checkpoint at a safe worker boundary, preserving its budget.
+    Resume {
+        #[arg(long)]
+        project: PathBuf,
+        #[arg(long)]
+        run_id: String,
+        #[arg(long)]
+        expected_checkpoint_id: String,
+    },
+    /// Inspect or record host checks for a source worker; executes no commands.
+    Verify {
+        #[arg(long)]
+        request: PathBuf,
+    },
     Spawn {
         #[arg(long)]
         request: PathBuf,
@@ -159,6 +250,11 @@ enum TargetChoice {
 
 #[derive(Subcommand)]
 enum EnvironmentCommand {
+    /// Rebind only the owned helper paths after a registered Podman upgrade.
+    RepairHelpers {
+        #[arg(long)]
+        expected_sha256: String,
+    },
     /// Initialize a staging-only VM from the reviewed boot image.
     Init {
         /// Existing exact pinned boot image; otherwise download through the package cache.
@@ -242,7 +338,11 @@ enum CatalogCommand {
         #[arg(long, default_value_t = 65536)]
         max_bytes: usize,
     },
-    Profiles,
+    Profiles {
+        /// Include specialist and explicit alternative bundles. Existing IDs remain valid.
+        #[arg(long)]
+        all: bool,
+    },
     /// Download and verify a selected pinned payload without executing it.
     Fetch {
         id: String,
@@ -271,6 +371,27 @@ enum CapabilityCommand {
         facets: Vec<crate::catalog::FacetSelection>,
         #[arg(long = "with")]
         supporting: Vec<String>,
+    },
+}
+#[derive(Subcommand)]
+enum BackupCommand {
+    Create {
+        #[arg(long)]
+        output: PathBuf,
+    },
+    Inspect {
+        #[arg(long)]
+        archive: PathBuf,
+        #[arg(long)]
+        sha256: String,
+    },
+    Restore {
+        #[arg(long)]
+        archive: PathBuf,
+        #[arg(long)]
+        sha256: String,
+        #[arg(long, required = true)]
+        yes: bool,
     },
 }
 #[derive(Args)]
@@ -325,6 +446,16 @@ enum ProjectCommand {
     },
     Doctor(ProjectPath),
     Register(ProjectPath),
+    /// Rebind a registered project after renaming its original directory.
+    Relocate {
+        id: String,
+        #[arg(long)]
+        expected_root: PathBuf,
+        #[arg(long)]
+        to: PathBuf,
+        #[arg(long, required = true)]
+        yes: bool,
+    },
     /// Delete a project's coordination records, keeping its files and selections.
     Unregister {
         /// Registered project ID from `mirket project list`.
@@ -470,6 +601,12 @@ enum ToolCommand {
 }
 #[derive(Subcommand)]
 enum PackageCommand {
+    /// Prepare an already-selected package for verification before desktop update.
+    Prepare { id: String },
+    /// Report installed Python dependency inventory without network or private data.
+    Audit { id: String },
+    /// Run real offline dependency and containment tests using synthetic data.
+    Test { id: String },
     /// List reviewed MCP packages, readiness and packaging requirements.
     List,
     /// Inspect the pinned source, files, runtime and tool policy for a package.
@@ -489,7 +626,7 @@ enum PackageCommand {
         #[arg(long)]
         purge_data: bool,
     },
-    /// Install the design stack, replacing the saved package selection.
+    /// Install reviewed packages, replacing the saved package selection.
     Install {
         #[arg(required = true, num_args = 1..)]
         ids: Vec<String>,
@@ -542,6 +679,14 @@ enum DevCommand {
     Check {
         #[arg(long, default_value = ".")]
         project: PathBuf,
+    },
+    /// Exercise prepared ARM64 runtimes and fresh MCP sessions with disposable fixtures.
+    Acceptance {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        /// Explicit home with the registered engine and both prepared packages.
+        #[arg(long)]
+        engine_home: PathBuf,
     },
     /// Run focused tests; --ignored explicitly enables opt-in tests such as downloads.
     Test {
@@ -1001,9 +1146,139 @@ fn dispatch(cli: Cli) -> Result<i32> {
     }
     let catalog = Catalog::embedded;
     let value = match cli.command {
+        Command::Memory { command } => runtime()?.block_on(async {
+            match command {
+                MemoryCommand::Read {
+                    project,
+                    query,
+                    id,
+                    limit,
+                    cursor,
+                } => {
+                    crate::memory::read(
+                        &paths,
+                        crate::memory::Read {
+                            project,
+                            query,
+                            id,
+                            limit,
+                            cursor,
+                        },
+                    )
+                    .await
+                }
+                MemoryCommand::Put { request } => {
+                    let request = request
+                        .canonicalize()
+                        .context("memory request must exist")?;
+                    let request =
+                        serde_json::from_slice(&crate::util::read_bounded(&request, 8192)?)?;
+                    crate::memory::put(&paths, request).await
+                }
+                MemoryCommand::Forget {
+                    project,
+                    id,
+                    expected_sha256,
+                } => {
+                    crate::memory::forget(
+                        &paths,
+                        crate::memory::Forget {
+                            project,
+                            id,
+                            expected_sha256,
+                        },
+                    )
+                    .await
+                }
+            }
+        })?,
         Command::Info => {
-            json!({"name":"mirket","version":env!("CARGO_PKG_VERSION"),"target":env!("MIRKET_TARGET")})
+            let mut info = crate::identity::status(&paths, &catalog()?);
+            info["name"] = json!("mirket");
+            info["version"] = json!(env!("CARGO_PKG_VERSION"));
+            info["target"] = json!(env!("MIRKET_TARGET"));
+            info
         }
+        Command::Agent {
+            command: AgentCommand::Export { project, output },
+        } => runtime()?.block_on(crate::lifecycle::export(&paths, &project, &output))?,
+        Command::Agent {
+            command:
+                AgentCommand::RetentionPlan {
+                    project,
+                    expired_before,
+                    completed_before,
+                    cursor,
+                },
+        } => runtime()?.block_on(crate::lifecycle::inspect(
+            &paths,
+            crate::lifecycle::Inspect {
+                project,
+                action: crate::lifecycle::Action::Plan,
+                cursor: cursor.as_deref().map(serde_json::from_str).transpose()?,
+                policy: Some(crate::lifecycle::Policy {
+                    expired_before,
+                    completed_before,
+                }),
+            },
+        ))?,
+        Command::Agent {
+            command: AgentCommand::RetentionApply { request },
+        } => {
+            let request =
+                serde_json::from_slice(&crate::util::read_bounded(&request, 128 * 1024)?)?;
+            runtime()?.block_on(crate::lifecycle::apply(&paths, request))?
+        }
+        Command::Agent {
+            command: AgentCommand::Verify { request },
+        } => {
+            let request = request
+                .canonicalize()
+                .context("verification request file must exist")?;
+            let request: crate::router::handoff::Request =
+                serde_json::from_slice(&crate::util::read_bounded(&request, 128 * 1024)?)?;
+            runtime()?.block_on(crate::router::durable::handoff(&paths, &request))?
+        }
+        Command::Agent {
+            command: AgentCommand::Status { project, run_id },
+        } => runtime()?.block_on(crate::router::durable::status(
+            &paths,
+            &crate::router::durable::RunRequest {
+                project,
+                run_id,
+                expected_checkpoint_id: None,
+            },
+        ))?,
+        Command::Agent {
+            command:
+                AgentCommand::Resume {
+                    project,
+                    run_id,
+                    expected_checkpoint_id,
+                },
+        } => runtime()?.block_on(crate::router::execution::resume(
+            &paths,
+            crate::router::durable::RunRequest {
+                project,
+                run_id,
+                expected_checkpoint_id: Some(expected_checkpoint_id),
+            },
+        ))?,
+        Command::Agent {
+            command:
+                AgentCommand::Forget {
+                    project,
+                    run_id,
+                    expected_checkpoint_id,
+                },
+        } => runtime()?.block_on(crate::router::durable::forget(
+            &paths,
+            &crate::router::durable::RunRequest {
+                project,
+                run_id,
+                expected_checkpoint_id: Some(expected_checkpoint_id),
+            },
+        ))?,
         Command::Setup(args) => return setup(&paths, &catalog()?, args, cli.json),
         Command::Doctor { project } => {
             let report = install::doctor(&paths, &catalog()?)?;
@@ -1116,7 +1391,15 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }
                 serde_json::to_value(document)?
             }
-            CatalogCommand::Profiles => serde_json::to_value(catalog()?.profiles())?,
+            CatalogCommand::Profiles { all } => {
+                let catalog = catalog()?;
+                let selected: std::collections::BTreeMap<_, _> = catalog
+                    .profiles()
+                    .iter()
+                    .filter(|(_, profile)| all || profile.kind == "starter")
+                    .collect();
+                serde_json::to_value(selected)?
+            }
             CatalogCommand::Fetch { id } => {
                 let payload = catalog()?.prepare(&id, &paths.cache())?;
                 json!({"id":id,"sha256":payload.sha256,"files":payload.files.len(),"executed":false})
@@ -1139,7 +1422,22 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 supporting,
             } => catalog()?.team_plan(&objective, &name, &facets, &supporting)?,
         },
+        Command::Backup { command } => match command {
+            BackupCommand::Create { output } => crate::backup::create(&paths, &output)?,
+            BackupCommand::Inspect { archive, sha256 } => {
+                crate::backup::inspect(&paths, &archive, &sha256)?
+            }
+            BackupCommand::Restore {
+                archive, sha256, ..
+            } => crate::backup::restore(&paths, &archive, &sha256)?,
+        },
         Command::Project { command } => match command {
+            ProjectCommand::Relocate {
+                id,
+                expected_root,
+                to,
+                ..
+            } => State::open(&paths)?.relocate(&id, &expected_root, &to)?,
             ProjectCommand::Init { project, target } => {
                 let result = project::init(
                     &catalog()?,
@@ -1311,6 +1609,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
             ToolCommand::Remove { name } => crate::tools::remove(&paths, &name)?,
             ToolCommand::Run { .. } => unreachable!(),
         },
+        Command::Environment {
+            command: EnvironmentCommand::RepairHelpers { expected_sha256 },
+        } => crate::podman::repair_helpers(&paths, &expected_sha256)?,
         Command::Environment { command } => {
             if !matches!(&command, EnvironmentCommand::Status) {
                 crate::podman::ensure_controller_supported()?;
@@ -1328,9 +1629,11 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 EnvironmentCommand::Stop => engine.stop()?,
                 EnvironmentCommand::Resize { memory_mib } => engine.resize(memory_mib)?,
                 EnvironmentCommand::Status => engine.status(),
+                EnvironmentCommand::RepairHelpers { .. } => unreachable!(),
             }
         }
         Command::Package { command } => match command {
+            PackageCommand::Prepare { id } => packages::prepare_selected(&paths, &id)?,
             PackageCommand::List => packages::Registry::embedded()?.list(),
             PackageCommand::Show { id } => {
                 serde_json::to_value(packages::Registry::embedded()?.get(&id)?)?
@@ -1344,6 +1647,13 @@ fn dispatch(cli: Cli) -> Result<i32> {
             PackageCommand::Start { id, groups } => packages::service_start(&paths, &id, &groups)?,
             PackageCommand::Stop { id, purge_data } => {
                 packages::service_stop(&paths, &id, purge_data)?
+            }
+            PackageCommand::Test { id } => {
+                anyhow::ensure!(
+                    id == "agent-runtime",
+                    "package self-test is available for agent-runtime"
+                );
+                crate::packages::agent::test(&paths)?
             }
             PackageCommand::Install { ids } => {
                 let (mut options, token) = saved_package_options(&paths)?;
@@ -1373,7 +1683,17 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     Some(&token),
                 )?)?
             }
+            PackageCommand::Audit { id } => {
+                anyhow::ensure!(
+                    id == "agent-runtime",
+                    "dependency audit currently supports agent-runtime"
+                );
+                runtime()?.block_on(crate::agent_runtime::call(&paths, None, "audit", json!({})))?
+            }
             PackageCommand::Probe { id, schemas } => runtime()?.block_on(async {
+                if id == "agent-runtime" {
+                    return crate::agent_runtime::call(&paths, None, "identity", json!({})).await;
+                }
                 let launch = packages::launch(&paths, &id).await?;
                 crate::package_mcp::probe_with_schemas(launch, schemas).await
             })?,
@@ -1414,6 +1734,10 @@ fn dispatch(cli: Cli) -> Result<i32> {
             DevCommand::Lock { project } => crate::dev::lock(&project)?,
             DevCommand::Fmt { project } => crate::dev::format(&project)?,
             DevCommand::Check { project } => crate::dev::check(&project)?,
+            DevCommand::Acceptance {
+                project,
+                engine_home,
+            } => crate::dev::acceptance(&project, &engine_home)?,
             DevCommand::Test {
                 project,
                 filter,

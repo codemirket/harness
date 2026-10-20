@@ -8,6 +8,7 @@ const guard = fileURLToPath(new URL('./runtime-guard', import.meta.url));
 import {checkRequest, requestSignal, cancelAllRequests, redactSecrets} from './request.mjs';
 
 export const workspace = path.resolve(process.env.MIRKET_DESIGN_WORKSPACE || '/workspace');
+export const workspacePrefix = process.env.MIRKET_SCOPED_WORKER === '1' ? path.relative('/workspace', workspace) : '';
 export const MAX_INPUT = 32 * 1024 * 1024;
 export const MAX_OUTPUT = 64 * 1024 * 1024;
 const activeChildren = new Set();
@@ -112,7 +113,7 @@ export async function assertOutputReady(args) {
 }
 async function publicationLock(name, fn, waitMs = 0) {
   checkRequest();
-  const root = await workspacePath('.mirket-design/locks', {kind:'directory', missing:true, createParents:true});
+  const root = name === '@mirket-native-render' && workspacePrefix ? '/workspace/.mirket-design/locks' : await workspacePath('.mirket-design/locks', {kind:'directory', missing:true, createParents:true});
   await fs.mkdir(root, {recursive:true, mode:0o700});
   const lock = path.join(root, sha256(Buffer.from(name)) + '.lock');
   const child = spawn(guard, [waitMs ? 'lock-wait' : 'lock', lock], {stdio:['pipe','pipe','pipe'], env:{LANG:'C.UTF-8'}});

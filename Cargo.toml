@@ -1,6 +1,6 @@
 [package]
 name = "mirket"
-version = "1.0.5"
+version = "1.0.11"
 edition = "2024"
 rust-version = "1.99"
 description = "A local agent harness for Codex and Claude"
@@ -24,6 +24,9 @@ tar = { version = "0.4", default-features = false }
 tokio = { version = "1.47", features = ["rt-multi-thread", "macros", "sync", "time", "io-util", "io-std", "process", "signal", "net"] }
 toml_edit = "0.23"
 zip = { version = "6", default-features = false, features = ["deflate"] }
+
+[build-dependencies]
+sha2 = "0.10"
 
 [dev-dependencies]
 roxmltree = "=0.21.1"

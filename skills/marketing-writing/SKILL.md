@@ -77,6 +77,20 @@ not authorize upgrading a proposed benefit into a measured customer result.
   sources, record when they were checked, and distinguish an unlisted feature
   from one confirmed absent.
 
+## Carry claims into the visual composition
+
+For a landing page, campaign or film, pair each key claim with the actual proof
+it can show: product state, source artifact, attributable result or clearly
+illustrative scene. Give the visual owner the claim, evidence locator, conditions,
+section/shot purpose and intended action. If proof is missing, narrow the claim
+or mark the gap; a generated image cannot supply customer evidence.
+
+Derive brand voice from supplied examples and counterexamples: sentence rhythm,
+terminology, degree of formality and things the brand would not claim. A persona
+can be an explicit writing lens, never a substitute for audience research or an
+endorsement by the real person it resembles. Check the composed page or frame:
+small captions, cropping and motion can remove conditions that were clear in copy.
+
 ## Edit proportionately
 
 For a substantial revision, read [editorial preservation](references/editorial-preservation.md)

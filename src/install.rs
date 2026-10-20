@@ -689,6 +689,9 @@ fn desired_servers(
     };
     servers.insert("mirket".into(), mirket);
     for id in &options.packages {
+        if registry.get(id)?["host_connection"] == false {
+            continue;
+        }
         let args = json!(["--home", paths.home, "package", "serve", id]);
         let mut value = match target {
             Target::Codex => json!({"command":paths.binary(),"args":args}),

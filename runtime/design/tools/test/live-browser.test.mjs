@@ -42,3 +42,32 @@ test('HTML inspection handles literal head tags and contains route failures with
     assert.deepEqual(captured.evidence.console_errors, []);
   } finally { await fs.rm(root, {recursive:true,force:true}); }
 });
+
+test('scoped Chromium and file operations cannot read a sibling project', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1', timeout:90000}, async () => {
+  const {execFile} = await import('node:child_process');
+  const {promisify} = await import('node:util');
+  const {workspace} = await import('../paths.mjs');
+  const relative = `qa/scope-regression-${crypto.randomUUID()}`;
+  const root = path.join(workspace, relative);
+  await fs.mkdir(path.join(root, 'own/design'), {recursive:true});
+  await fs.mkdir(path.join(root, 'sibling'));
+  try {
+    await fs.writeFile(path.join(root, 'sibling/secret.txt'), 'SIBLING_PRIVATE_SENTINEL');
+    await fs.writeFile(path.join(root, 'own/design/tokens.json'), JSON.stringify({color:{accent:{$type:'color',$value:'#345678'}}}));
+    const sibling = `/files/${relative}/sibling/secret.txt`;
+    await fs.writeFile(path.join(root, 'own/index.html'), `<!doctype html><html><head></head><body><div id="result">pending</div><script>fetch(${JSON.stringify(sibling)}).then(r=>r.text()).then(t=>{document.querySelector('#result').textContent=t}).catch(()=>{document.querySelector('#result').textContent='blocked'}).finally(()=>{document.querySelector('#result').setAttribute('data-done','yes')})</script></body></html>`);
+    const operations = new URL('../operations.mjs', import.meta.url).href;
+    const paths = new URL('../paths.mjs', import.meta.url).href;
+    const script = `import assert from 'node:assert/strict';
+      const {browserScreenshot} = await import(${JSON.stringify(operations)});
+      const {readFile} = await import(${JSON.stringify(paths)});
+      await assert.rejects(readFile('../sibling/secret.txt'), /traversal/);
+      await assert.rejects(browserScreenshot({url:${JSON.stringify('http://design-tools:9002'+sibling)},output:'rejected.png'}), /outside the assigned/);
+      const result = await browserScreenshot({source:'index.html',output:'scoped.png',width:400,height:240,wait_for:'#result[data-done]',inspect_selectors:['#result']});
+      assert.equal(result.evidence.selectors['#result'].text,'blocked');
+      assert.equal(result.width,800); assert.equal(result.height,480);
+      console.log(JSON.stringify({scope:process.env.MIRKET_DESIGN_WORKSPACE,sibling_blocked:true,pixels:[result.width,result.height]}));`;
+    const result = await promisify(execFile)(process.execPath, ['--input-type=module','-e',script], {env:{...process.env,MIRKET_DESIGN_WORKSPACE:path.join(root,'own'),MIRKET_SCOPED_WORKER:'1'},timeout:75000,maxBuffer:1024*1024});
+    assert.ok(result.stdout.includes('"sibling_blocked":true'));
+  } finally { await fs.rm(root, {recursive:true,force:true}); }
+});

@@ -5,7 +5,7 @@
     "browser_screenshot": 240000,
     "kroki_render": 240000,
     "hyperframes_render": 900000,
-    "typst_compile": 5400000,
+    "typst_compile": 1500000,
     "raster_transform": 120000,
     "svg_optimize": 120000,
     "odiff_compare": 120000,

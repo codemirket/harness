@@ -153,3 +153,22 @@ anthropics/knowledge-work-plugins, `design/skills/design-critique/SKILL.md`, at
 Modified by Mirket: rewritten for inspected artifacts and existing task records;
 connector actions, scoring templates and mandatory review ceremonies are omitted.
 Applicable license texts accompany the installed skill.
+
+
+## Turn a design reference into maintained project rules
+
+A DESIGN.md can record the accepted system, but its presence does not validate
+implementation. Tie each consequential rule to its source and actual consumer:
+font/token/component or asset, responsive behavior, focus/loading/error states,
+motion ownership and a rendered example. Record intentional exceptions and the
+reason they fit the task. Update the rule and consumer together when evidence
+changes; do not accumulate contradictory reference styles.
+
+Use external DESIGN.md examples to study how decisions are expressed, not as
+ready-made authority for this brand. Distinguish tokens observed in a reference
+from values inferred by the author. Preserve source dates, asset/font rights and
+which viewports/states were actually inspected. Repository licensing does not
+transfer rights to the brands or fonts being described.
+
+This is independently authored guidance informed by the reviewed
+[design-md collection](https://github.com/voltagent/awesome-design-md/tree/3b605329240ce735b510037cca322f1831fdd7f8).

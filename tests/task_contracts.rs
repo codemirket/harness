@@ -278,7 +278,7 @@ fn restore_v1_schema(f: &Fixture) {
     // Fixtures have no typed evidence; all genuine task records are retained.
     let database = Connection::open(f.paths.database()).unwrap();
     database
-        .execute_batch("DROP TABLE contracts; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=1;")
+        .execute_batch("DROP TABLE contracts; DROP TABLE project_scopes; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=1;")
         .unwrap();
 }
 
@@ -337,7 +337,7 @@ fn v1_migration_preserves_task_history_evidence_and_idempotent_replies() {
         database
             .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
             .unwrap(),
-        3
+        4
     );
     assert_eq!(
         database
@@ -625,7 +625,7 @@ fn v1_and_v2_migration_preserve_legacy_full_replies_and_all_records() {
             rusqlite::params![legacy_bytes, f.task_id],
         )
         .unwrap();
-        conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated);").unwrap();
+        conn.execute_batch("DROP TABLE project_scopes; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated);").unwrap();
         if version == 1 {
             conn.execute_batch("DROP TABLE contracts;").unwrap();
         }
@@ -692,7 +692,7 @@ fn v1_and_v2_migration_preserve_legacy_full_replies_and_all_records() {
         assert_eq!(
             conn.pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
                 .unwrap(),
-            3
+            4
         );
         State::open(&f.paths).unwrap();
     }
@@ -702,7 +702,7 @@ fn v1_and_v2_migration_preserve_legacy_full_replies_and_all_records() {
 fn malformed_v2_index_is_not_silently_replaced() {
     let f = Fixture::new();
     let conn = Connection::open(f.paths.database()).unwrap();
-    conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,revision); PRAGMA user_version=2;").unwrap();
+    conn.execute_batch("DROP TABLE project_scopes; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,revision); PRAGMA user_version=2;").unwrap();
     assert!(State::open(&f.paths).is_err());
     assert_eq!(
         conn.pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
@@ -731,7 +731,7 @@ fn v2_migration_retains_contract_bindings_and_delivery_receipts() {
         .unwrap().collect::<rusqlite::Result<Vec<_>>>().unwrap()
     };
     let before = contracts();
-    conn.execute_batch("DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=2;").unwrap();
+    conn.execute_batch("DROP TABLE project_scopes; DROP INDEX tasks_project_created; CREATE INDEX tasks_project ON tasks(project_id,updated); PRAGMA user_version=2;").unwrap();
     let migrated = State::open(&f.paths).unwrap();
     assert_eq!(migrated.status(&f.task_id).unwrap(), expected);
     assert_eq!(contracts(), before);

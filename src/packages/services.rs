@@ -1,4 +1,6 @@
 //! The one reviewed design stack in Mirket's existing private Podman engine.
+use super::oci::{image_id, inspect};
+use super::oci::{inspected_image_id, normalize_image_id};
 use crate::{package_mcp::LaunchSpec, paths::Paths, podman::Engine, util};
 use anyhow::{Context, Result, bail, ensure};
 use serde::{Deserialize, Serialize};
@@ -316,20 +318,6 @@ fn engine(paths: &Paths) -> Result<Engine> {
 fn run(engine: &Engine, args: Vec<String>, timeout: Duration) -> Result<String> {
     engine.run(&args, timeout)
 }
-fn inspect(engine: &Engine, kind: &str, name: &str) -> Result<Value> {
-    serde_json::from_str(&run(
-        engine,
-        vec![
-            kind.into(),
-            "inspect".into(),
-            name.into(),
-            "--format".into(),
-            "{{json .}}".into(),
-        ],
-        Duration::from_secs(30),
-    )?)
-    .context("invalid Podman inspection")
-}
 fn inspect_many(engine: &Engine, kind: &str, names: &[String]) -> Result<Vec<Value>> {
     if names.is_empty() {
         return Ok(Vec::new());
@@ -343,39 +331,6 @@ fn inspect_many(engine: &Engine, kind: &str, names: &[String]) -> Result<Vec<Val
         "incomplete Podman batch inspection"
     );
     Ok(values)
-}
-fn normalize_image_id(value: &str) -> Result<String> {
-    let digest = value.strip_prefix("sha256:").unwrap_or(value);
-    ensure!(
-        digest.len() == 64
-            && digest
-                .bytes()
-                .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase()),
-        "invalid OCI image ID"
-    );
-    Ok(format!("sha256:{digest}"))
-}
-fn image_id(engine: &Engine, image: &str) -> Result<String> {
-    let v = inspect(engine, "image", image)?;
-    inspected_image_id(&v, image)
-}
-fn inspected_image_id(v: &Value, image: &str) -> Result<String> {
-    ensure!(
-        v["Architecture"] == "arm64" && v["Os"] == "linux",
-        "image is not native Linux ARM64: {image}"
-    );
-    let id = normalize_image_id(v["Id"].as_str().context("image ID missing")?)?;
-    if let Some((_, digest)) = image.split_once("@sha256:") {
-        let pinned = format!("sha256:{digest}");
-        let listed = v["RepoDigests"]
-            .as_array()
-            .is_some_and(|items| items.iter().any(|item| item.as_str() == Some(image)));
-        ensure!(
-            listed || v["Digest"] == pinned,
-            "image manifest digest drift: {image}"
-        );
-    }
-    Ok(id)
 }
 fn existing(engine: &Engine, kind: &str, name: &str, own: &str) -> Result<Option<Value>> {
     Ok(existing_many(engine, kind, &[name.to_owned()], own)?.remove(name))
@@ -786,6 +741,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
             (
                 "tools/operations.mjs",
                 include_bytes!("../../runtime/design/tools/operations.mjs"),
+            ),
+            (
+                "tools/media-evidence.mjs",
+                include_bytes!("../../runtime/design/tools/media-evidence.mjs"),
             ),
             (
                 "tools/request.mjs",

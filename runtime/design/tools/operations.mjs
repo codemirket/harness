@@ -7,7 +7,8 @@ import {optimize} from 'svgo';
 import {SaxesParser} from 'saxes';
 import {parse as parseCss, walk as walkCss} from 'css-tree';
 import {compileTokens} from './tokens.mjs';
-import {workspace, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, assertOutputReady, MAX_OUTPUT} from './paths.mjs';
+import {keyframeVerdict, encodedMediaEvidence} from './media-evidence.mjs';
+import {workspace, workspacePrefix, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, assertOutputReady, MAX_OUTPUT} from './paths.mjs';
 import {checkRequest, requestSignal, combinedSignal, redactSecrets} from './request.mjs';
 
 const toolRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -95,7 +96,9 @@ function svgBytes(source) {
     parser.write(xml).close();
   };
   validate(source);
-  const result = optimize(source, {multipass: true, plugins: [{name: 'preset-default', params: {overrides: {cleanupIds: false, collapseGroups: false}}}, 'removeDimensions']});
+  // These exports remain editable source. Hidden states, empty attachment groups
+  // and unused definitions may be consumed by a later editor or animation.
+  const result = optimize(source, {multipass: true, plugins: [{name: 'preset-default', params: {overrides: {cleanupIds: false, collapseGroups: false, removeHiddenElems: false, removeEmptyContainers: false, removeUselessDefs: false}}}, 'removeDimensions']});
   if (result.error || !result.data?.includes('<svg')) throw Error(`SVGO rejected SVG: ${result.error || 'missing root'}`);
   validate(result.data);
   return Buffer.from(result.data);
@@ -209,11 +212,11 @@ export async function staticRender(args) {
   if (!Array.isArray(args.fonts) || args.fonts.length < 1 || args.fonts.length > 8) throw Error('Satori requires 1..8 font files');
   const fonts = [];
   for (const font of args.fonts) {
-    if (!/\.(ttf|otf|woff)$/i.test(font.path)) throw Error('Satori fonts must be TTF, OTF, or WOFF');
+    if (!/\.(ttf|otf|woff2?)$/i.test(font.path)) throw Error('Satori fonts must be TTF, OTF, WOFF, or WOFF2');
     const data = await readFile(font.path, 8 * 1024 * 1024);
     const signature = data.subarray(0, 4).toString('latin1');
-    const expected = path.extname(font.path).toLowerCase() === '.ttf' ? '\0\x01\0\0' : path.extname(font.path).toLowerCase() === '.otf' ? 'OTTO' : 'wOFF';
-    if (signature !== expected) throw Error('Satori font bytes do not match TTF, OTF or WOFF extension');
+    const expected = {'.ttf': '\0\x01\0\0', '.otf': 'OTTO', '.woff': 'wOFF', '.woff2': 'wOF2'}[path.extname(font.path).toLowerCase()];
+    if (signature !== expected) throw Error('Satori font bytes do not match TTF, OTF, WOFF or WOFF2 extension');
     fonts.push({name: font.name || 'Design', data, weight: font.weight || 400, style: font.style || 'normal'});
   }
   const tree = await prepareSatoriTree(args.tree, tokenValues);
@@ -335,10 +338,21 @@ export function injectTokenStylesheet(html, stylesheetUrl) {
   const insertion = rootEnd || doctypeEnd;
   return html.slice(0, insertion) + `<head>${link}</head>` + html.slice(insertion);
 }
+export function scopedWorkspaceUrlAllowed(value, prefix = workspacePrefix) {
+  if (!prefix) return true;
+  try {
+    const target = new URL(value);
+    if (target.protocol !== 'http:' || target.host !== 'design-tools:9002') return false;
+    const parts = target.pathname.split('/').slice(1).map(decodeURIComponent);
+    if (parts.some(p => !p || p === '.' || p === '..' || /[\\/\0]/.test(p))) return false;
+    return parts.join('/').startsWith('files/' + prefix + '/');
+  } catch { return false; }
+}
 async function tokenDocument(url, stylesheetUrl) {
   const target = new URL(url);
   if (target.host !== 'design-tools:9002' || !target.pathname.startsWith('/files/') || target.search || target.hash) return null;
-  const relative = target.pathname.slice('/files/'.length).split('/').map(decodeURIComponent).join('/');
+  let relative = target.pathname.slice('/files/'.length).split('/').map(decodeURIComponent).join('/');
+  if (workspacePrefix) { if (!relative.startsWith(workspacePrefix + '/')) throw Error('Page is outside the assigned design project'); relative = relative.slice(workspacePrefix.length + 1); }
   if (path.extname(relative).toLowerCase() !== '.html') return null;
   const html = (await readFile(relative, 4 * 1024 * 1024)).toString('utf8');
   return injectTokenStylesheet(html, stylesheetUrl);
@@ -402,15 +416,18 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
   if ((actions.length || animation_time_ms != null) && new URL(url).host !== 'design-tools:9002') throw Error('Interactive QA is limited to owned workspace pages');
   const {chromium} = await import('playwright-core');
   const scratch = await temporaryDirectory('browser');
-  let ownedServer;
+  let ownedServer, browserTmp;
   try {
+  // Chromium singleton sockets must fit Unix path limits even in deeply nested
+  // project workspaces. HOME/artifact staging remain project-scoped.
+  browserTmp = await fs.mkdtemp('/tmp/mk-browser-');
   return await withBrowserCaptureSession(async (_, options) => {
     ownedServer = await chromium.launchServer({...options, host: '127.0.0.1', port: 0});
     return chromium.connect(ownedServer.wsEndpoint(), {timeout: 15000});
   }, null, {
     executablePath: path.join(toolRoot, 'chromium-launcher'), headless: true,
     args: ['--no-sandbox', '--disable-dev-shm-usage', `--unsafely-treat-insecure-origin-as-secure=${new URL(url).origin}`],
-    env: {PATH: process.env.PATH, HOME: scratch, TMPDIR: scratch, LANG: 'C.UTF-8'}, timeout: 15000,
+    env: {PATH: process.env.PATH, HOME: scratch, TMPDIR: browserTmp, LANG: 'C.UTF-8'}, timeout: 15000,
   }, async browser => {
     const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true, acceptDownloads: false, serviceWorkers: 'block', reducedMotion: reduced_motion, permissions: []});
     let routingError;
@@ -430,7 +447,8 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       await context.grantPermissions(['local-network-access'], {origin});
       await context.route('**/*', routed(route => {
         const target = new URL(route.request().url());
-        return target.origin === origin || ['data:', 'blob:'].includes(target.protocol) ? route.continue() : route.abort('blockedbyclient');
+        const local = target.origin === origin && scopedWorkspaceUrlAllowed(target.href);
+        return local || ['data:', 'blob:'].includes(target.protocol) ? route.continue() : route.abort('blockedbyclient');
       }));
       await context.routeWebSocket('**/*', ws => ws.close());
       const page = await context.newPage();
@@ -440,7 +458,8 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       if (tokensCss) {
         const stylesheetUrl = workspaceUrl(tokensCss);
         await page.route('http://design-tools:9002/files/**', routed(async route => {
-          if (route.request().resourceType() !== 'document') { await route.continue(); return; }
+          if (!scopedWorkspaceUrlAllowed(route.request().url())) { await route.abort('blockedbyclient'); return; }
+          if (route.request().resourceType() !== 'document') { await route.fallback(); return; }
           const html = await tokenDocument(route.request().url(), stylesheetUrl);
           if (html == null) { await route.continue(); return; }
           await route.fulfill({status: 200, contentType: 'text/html; charset=utf-8', body: html,
@@ -523,11 +542,12 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       } finally { clearTimeout(timer); }
     }
     await fs.rm(scratch, {recursive: true, force: true});
+    if (browserTmp) await fs.rm(browserTmp, {recursive: true, force: true});
   }
 }
 function workspaceUrl(source) {
   assertRelative(source);
-  return `http://design-tools:9002/files/${source.split('/').map(encodeURIComponent).join('/')}`;
+  return `http://design-tools:9002/files/${[workspacePrefix, source].filter(Boolean).join('/').split('/').map(encodeURIComponent).join('/')}`;
 }
 export async function browserScreenshot(args) {
   await assertOutputReady(args);
@@ -537,6 +557,7 @@ export async function browserScreenshot(args) {
   else {
     const candidate = new URL(args.url);
     if (candidate.protocol !== 'http:' || !['design-tools:9002', 'penpot-frontend:8080'].includes(candidate.host)) throw Error('Playwright URL must be an owned local workspace or Penpot page');
+    if (!scopedWorkspaceUrlAllowed(candidate.href)) throw Error('URL is outside the assigned design project');
     url = candidate.toString();
   }
   const shot = await browserCapture(url, {...args, tokensCss: tokens.outputs['tokens.css']});
@@ -572,9 +593,8 @@ export async function inspectHyperframesKeyframes(snapshots, baseline, inspect =
     checkRequest();
     keyframes.push({source: snapshot.artifact.path, inspection: await inspect(snapshot.artifact.path, index === 0 ? baseline : undefined)});
   }
-  const statuses = keyframes.map(item => item.inspection.status);
   return {
-    status: statuses.includes('failed') ? 'failed' : statuses.includes('changed_pixels') ? 'changed_pixels' : baseline ? 'match' : 'captured',
+    status: keyframeVerdict(keyframes),
     keyframes,
   };
 }
@@ -617,18 +637,28 @@ export async function copyBoundedProjectTree(origin, stage, {label, onFile}) {
   return {files, entries, bytes: total};
 }
 
-async function stageProject(sourceDir, stage) {
+export async function stageDesignAsset({dest, local, bytes}) {
+  const ext = path.extname(local).toLowerCase();
+  if (ext === '.svg') {
+    await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
+  } else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
+    // Validate the exact bounded snapshot, then preserve its encoding, size and
+    // color profile. Staging is not permission to resize or recompress artwork.
+    if (bytes.length > 32 * 1024 * 1024) throw Error('Composition raster exceeds 32 MiB');
+    const temp = await temporaryDirectory('raster-validation');
+    try {
+      const input = path.join(temp, 'input'), output = path.join(temp, 'output');
+      await fs.writeFile(input, bytes, {mode: 0o600});
+      await run(process.execPath, ['--max-old-space-size=192', path.join(toolRoot, 'raster-worker.mjs'), input, output, JSON.stringify({operation: 'preserve'})], {timeoutMs: 90000});
+      const validated = await regularOutput(output, 32 * 1024 * 1024);
+      await fs.writeFile(dest, validated);
+    } finally { await fs.rm(temp, {recursive: true, force: true}); }
+  } else await fs.writeFile(dest, bytes);
+}
+
+export async function stageProject(sourceDir, stage) {
   const origin = await workspacePath(sourceDir, {kind: 'directory'});
-  await copyBoundedProjectTree(origin, stage, {label: 'Composition', onFile: async ({dest, local, bytes}) => {
-    const ext = path.extname(local).toLowerCase();
-    if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
-    else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
-      const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
-      const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-      const processed = await rasterBytes({source: `${sourceDir}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format});
-      await fs.writeFile(dest, processed);
-    } else await fs.writeFile(dest, bytes);
-  }});
+  await copyBoundedProjectTree(origin, stage, {label: 'Composition', onFile: stageDesignAsset});
   const index = path.join(stage, 'index.html');
   let html = await fs.readFile(index, 'utf8');
   if (!/<head(?:\s|>)/i.test(html)) throw Error('HyperFrames project requires an HTML head');
@@ -721,10 +751,9 @@ export async function hyperframesRender(args) {
     const bytes = await regularOutput(renderFile);
     const probe = await run(process.env.HYPERFRAMES_FFPROBE_PATH || '/usr/bin/ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', renderFile], {timeoutMs: 30000});
     const media = JSON.parse(probe.stdout);
-    if (!media.streams?.some(stream => stream.codec_type === 'video' && stream.width > 0 && stream.height > 0) || !(Number(media.format?.duration) > 0)) throw Error('HyperFrames CLI produced unusable video metadata');
-    if (args.snapshot_times?.some(time => time > Number(media.format.duration))) throw Error('Snapshot time exceeds the encoded duration');
+    const mediaEvidence = encodedMediaEvidence(media, args.snapshot_times);
     const artifact = await publish(args.output, bytes, outputOptions(args));
-    return {tokens, artifact, lint: lintReport, snapshots, media: {duration: Number(media.format.duration), video: media.streams.filter(stream => stream.codec_type === 'video').map(stream => ({codec: stream.codec_name, width: stream.width, height: stream.height}))}, qa, phases: ['lint', 'snapshot', 'render'], engine: 'hyperframes-cli'};
+    return {tokens, artifact, lint: lintReport, snapshots, media: mediaEvidence, qa, phases: ['lint', 'snapshot', 'render'], engine: 'hyperframes-cli'};
   } finally { await fs.rm(stage, {recursive: true, force: true}); }
 }
 
@@ -737,15 +766,7 @@ export async function typstCompile(args) {
   try {
     const parent = path.posix.dirname(args.source);
     const origin = parent === '.' ? workspace : await workspacePath(parent, {kind: 'directory'});
-    await copyBoundedProjectTree(origin, stage, {label: 'Typst project', onFile: async ({dest, local, bytes}) => {
-      const ext = path.extname(local).toLowerCase();
-      if (ext === '.svg') await fs.writeFile(dest, svgBytes(bytes.toString('utf8')));
-      else if (['.png', '.jpg', '.jpeg', '.webp', '.avif'].includes(ext)) {
-        const dims = ext === '.png' ? pngDimensions(bytes) : [2048, 2048];
-        const format = ext === '.png' ? 'png' : ext === '.webp' ? 'webp' : ext === '.avif' ? 'avif' : 'jpeg';
-        await fs.writeFile(dest, await rasterBytes({source: parent === '.' ? local : `${parent}/${local}`, width: Math.min(dims[0], 4096), height: Math.min(dims[1], 4096), mode: 'fit', format}));
-      } else await fs.writeFile(dest, bytes);
-    }});
+    await copyBoundedProjectTree(origin, stage, {label: 'Typst project', onFile: stageDesignAsset});
     const stageSource = path.join(stage, path.basename(args.source));
     const typstSource = await fs.readFile(stageSource, 'utf8');
     const tokenImport = '/.mirket-canonical-tokens.typ';

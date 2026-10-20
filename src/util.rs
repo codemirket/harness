@@ -13,6 +13,14 @@ pub struct FileLock {
 
 impl FileLock {
     pub fn acquire(path: &Path) -> Result<Self> {
+        Self::open(path, false)
+    }
+
+    pub fn shared(path: &Path) -> Result<Self> {
+        Self::open(path, true)
+    }
+
+    fn open(path: &Path, shared: bool) -> Result<Self> {
         reject_symlink_components(path)?;
         let file = fs::OpenOptions::new()
             .create(true)
@@ -20,7 +28,11 @@ impl FileLock {
             .read(true)
             .write(true)
             .open(path)?;
-        file.try_lock()?;
+        if shared {
+            file.try_lock_shared()?;
+        } else {
+            file.try_lock()?;
+        }
         Ok(Self { _file: file })
     }
 }

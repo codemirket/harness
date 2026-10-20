@@ -1,9 +1,15 @@
+pub mod agent_runtime;
+pub mod backup;
 pub mod catalog;
 pub mod cli;
 pub mod craft;
 pub mod dev;
+pub mod identity;
 pub mod install;
+pub mod lifecycle;
+pub mod maintenance;
 pub mod mcp;
+pub mod memory;
 pub mod package_mcp;
 pub mod packages;
 pub mod paths;

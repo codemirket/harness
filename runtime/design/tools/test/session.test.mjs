@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {spawn, spawnSync} from 'node:child_process';
 import {once} from 'node:events';
-import {randomUUID} from 'node:crypto';
+import {randomUUID, createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {Server} from '@modelcontextprotocol/sdk/server/index.js';
 import {Client} from '@modelcontextprotocol/sdk/client/index.js';
@@ -234,4 +234,26 @@ test('stdio EOF reaps a TERM-resistant renderer before a late write', {timeout: 
     }
     await fs.rm(workspace, {recursive: true, force: true});
   }
+});
+
+
+test('live runtime identity accompanies actual tool responses and matches loaded source', {timeout:15000}, async () => {
+  const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-live-identity-'));
+  await fs.writeFile(path.join(workspace,'tokens.json'), JSON.stringify({color:{accent:{$type:'color',$value:'#123456'}}}));
+  const client = new Client({name:'identity-test',version:'1.0.0'});
+  const transport = new StdioClientTransport({command:process.execPath,args:[fileURLToPath(new URL('../server.mjs',import.meta.url))],env:{...process.env,MIRKET_DESIGN_GROUPS:'core',MIRKET_DESIGN_WORKSPACE:workspace},stderr:'pipe'});
+  try {
+    await client.connect(transport);
+    const result = await client.callTool({name:'tokens_compile',arguments:{source:'tokens.json'}});
+    assert.equal(result.isError,false);
+    const identity = result.structuredContent.runtime;
+    assert.deepEqual(identity, result._meta['mirket/runtime']);
+    assert.deepEqual(JSON.parse(result.content.find(c => c.type === 'text').text).runtime, identity);
+    assert.equal(identity.files['server.mjs'],createHash('sha256').update(await fs.readFile(new URL('../server.mjs',import.meta.url))).digest('hex'));
+    assert.equal(identity.files['package-lock.json'],createHash('sha256').update(await fs.readFile(new URL('../package-lock.json',import.meta.url))).digest('hex'));
+    assert.equal(client.getServerVersion().version,`1.0.0+${identity.sha256.slice(0,12)}`);
+    const reused = await client.callTool({name:'tokens_compile',arguments:{source:'tokens.json'}});
+    assert.equal(reused.structuredContent.reused,true);
+    assert.deepEqual(reused._meta['mirket/runtime'],identity);
+  } finally {await client.close();await fs.rm(workspace,{recursive:true,force:true});}
 });

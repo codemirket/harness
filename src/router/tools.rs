@@ -28,7 +28,7 @@ pub(crate) fn known_names() -> Result<BTreeSet<String>> {
     .collect())
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 pub struct ArtifactRef {
     pub path: PathBuf,
     pub sha256: String,
@@ -69,9 +69,32 @@ fn design_root(paths: &Paths) -> PathBuf {
     paths.root.join("execution/podman/staging/design/workspace")
 }
 
-fn design_file(paths: &Paths, relative: &str) -> Result<PathBuf> {
+pub(crate) fn design_scope(paths: &Paths, project: &Path) -> Result<PathBuf> {
+    let root = design_root(paths);
+    if project.starts_with(&root) && project != root {
+        Ok(project.to_owned())
+    } else {
+        Ok(root
+            .join("projects")
+            .join(crate::agent_runtime::scope(paths, project)?))
+    }
+}
+
+fn writable_file(paths: &Paths, project: &Path, value: &str) -> Result<PathBuf> {
+    let path = Path::new(value);
+    if !path.is_absolute() {
+        return file(project, value);
+    }
+    let root = design_scope(paths, project)?;
+    let relative = path
+        .strip_prefix(&root)
+        .context("absolute writes require the assigned design project workspace")?;
+    file(&root, relative.to_str().context("non UTF-8 path")?)
+}
+
+fn design_file(root: &Path, relative: &str) -> Result<PathBuf> {
     util::safe_relative(Path::new(relative))?;
-    let path = design_root(paths).join(relative);
+    let path = root.join(relative);
     util::reject_symlink_components(&path)?;
     Ok(path)
 }
@@ -97,13 +120,13 @@ fn readable_file(paths: &Paths, project: &Path, value: &str) -> Result<PathBuf> 
     util::reject_symlink_components(&path)?;
     let canonical = path.canonicalize()?;
     ensure!(
-        canonical.starts_with(project) || canonical.starts_with(design_root(paths)),
+        canonical.starts_with(project) || canonical.starts_with(design_scope(paths, project)?),
         "file is outside assigned workspaces"
     );
     Ok(canonical)
 }
 
-fn artifact_from_json(paths: &Paths, value: &Value) -> Result<Option<ArtifactRef>> {
+fn artifact_from_json(root: &Path, value: &Value) -> Result<Option<ArtifactRef>> {
     let Some(path) = value.get("path").and_then(Value::as_str) else {
         return Ok(None);
     };
@@ -115,22 +138,22 @@ fn artifact_from_json(paths: &Paths, value: &Value) -> Result<Option<ArtifactRef
         "design artifact digest is invalid"
     );
     Ok(Some(ArtifactRef {
-        path: design_file(paths, path)?,
+        path: design_file(root, path)?,
         sha256: sha256.to_owned(),
     }))
 }
 
-fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<ArtifactRef>> {
+fn design_artifacts(root: &Path, name: &str, value: &Value) -> Result<Vec<ArtifactRef>> {
     let mut refs = Vec::new();
     if name == "design/odiff_compare"
-        && let Some(item) = artifact_from_json(paths, &value["diff"])?
+        && let Some(item) = artifact_from_json(root, &value["diff"])?
     {
         refs.push(item);
     }
     // Typst and HyperFrames expose inspectable QA images for their PDF/video.
     // Their primary binary outputs are checked for stability separately.
     if !matches!(name, "design/typst_compile" | "design/hyperframes_render")
-        && let Some(item) = artifact_from_json(paths, &value["artifact"])?
+        && let Some(item) = artifact_from_json(root, &value["artifact"])?
     {
         refs.push(item);
     }
@@ -143,7 +166,7 @@ fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<Arti
         if let Some(items) = value[key].as_array() {
             for item in items {
                 if let Some(found) = artifact_from_json(
-                    paths,
+                    root,
                     if key == "snapshots" {
                         &item["artifact"]
                     } else {
@@ -156,7 +179,7 @@ fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<Arti
         }
     }
     if name == "design/vector_render"
-        && let Some(item) = artifact_from_json(paths, &value["preview"])?
+        && let Some(item) = artifact_from_json(root, &value["preview"])?
     {
         refs.push(item);
     }
@@ -164,7 +187,7 @@ fn design_artifacts(paths: &Paths, name: &str, value: &Value) -> Result<Vec<Arti
         && let Some(outputs) = value["outputs"].as_object()
     {
         for relative in outputs.values().filter_map(Value::as_str) {
-            let path = design_file(paths, relative)?;
+            let path = design_file(root, relative)?;
             let bytes = util::read_bounded(&path, 1024 * 1024)?;
             refs.push(ArtifactRef {
                 path,
@@ -231,6 +254,18 @@ fn definition(
     }
 }
 pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definition>> {
+    ensure!(
+        !names.iter().any(|name| matches!(
+            name.as_str(),
+            "design/execute_code"
+                | "design/export_shape"
+                | "design/import_image"
+                | "design/penpot_api_info"
+                | "design/high_level_overview"
+        )),
+        "Penpot object operations require the host's official MCP connection; project-scoped workers cannot authorize shared editor objects. Use host editing and verification."
+    );
+
     let mut all = vec![
         definition(
             "workspace_read",
@@ -252,7 +287,7 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             "workspace_write",
             Tier::T2Synthesis,
             false,
-            "Write UTF-8 source in the assigned project. Supply exactly one of content (whole file) or edits (1–64 sequential exact replacements, each old text must match once). Existing files require the exact expected SHA-256. Read back the changed file before completion.",
+            "Write UTF-8 source using a project-relative path or an absolute path inside the assigned design workspace. Supply exactly one of content (whole file) or edits (1–64 sequential exact replacements, each old text must match once). Existing files require the exact expected SHA-256. Read back the changed file before completion.",
             json!({"path":{"type":"string"},"content":{"type":"string"},"edits":{"type":"array","minItems":1,"maxItems":64,"items":{"type":"object","additionalProperties":false,"properties":{"old":{"type":"string","minLength":1},"new":{"type":"string"}},"required":["old","new"]}},"expected_sha256":{"type":["string","null"]}}),
             json!(["path", "expected_sha256"]),
         ),
@@ -260,7 +295,7 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             "inspect_image",
             Tier::T3Architect,
             true,
-            "Inspect PNG/JPEG/WebP pixels from the project or fixed design workspace. Use purpose reference for a stable brand/reference image, comparison for a saved alternative, or artifact for current output. At most two references receive retention priority within four images/8 MiB. Retained pixels are context, not verification after a later mutation.",
+            "Inspect PNG/JPEG/WebP pixels from the project or its assigned design workspace. Use purpose reference for a stable brand/reference image, comparison for a saved alternative, or artifact for current output. At most two references receive retention priority within four images/8 MiB. Retained pixels are context, not verification after a later mutation.",
             json!({"path":{"type":"string"},"purpose":{"type":"string","enum":["artifact","reference","comparison"],"default":"artifact"}}),
             json!(["path"]),
         ),
@@ -376,6 +411,105 @@ fn edited_content(original: &[u8], edits: &[TextEdit]) -> Result<String> {
         result = result.replacen(&edit.old, &edit.new, 1);
     }
     Ok(result)
+}
+
+/// Bind exact before/after bytes before dispatch so interruption never needs a
+/// blind write replay. This is evidence of the requested state, not authorship.
+pub fn write_intent_scoped(paths: &Paths, project: &Path, args: &Value) -> Result<Value> {
+    let value = args["path"].as_str().context("missing write path")?;
+    let absolute = writable_file(paths, project, value)?;
+    let root = if Path::new(value).is_absolute() {
+        design_scope(paths, project)?
+    } else {
+        project.to_owned()
+    };
+    let mut relative = args.clone();
+    relative["path"] = json!(absolute.strip_prefix(&root)?);
+    let mut intent = write_intent(&root, &relative)?;
+    intent["path"] = json!(value);
+    Ok(intent)
+}
+
+pub fn reconcile_write_scoped(
+    paths: &Paths,
+    project: &Path,
+    intent: &Value,
+) -> Result<(bool, ArtifactRef)> {
+    let value = intent["path"].as_str().context("missing intent path")?;
+    let absolute = writable_file(paths, project, value)?;
+    let root = if Path::new(value).is_absolute() {
+        design_scope(paths, project)?
+    } else {
+        project.to_owned()
+    };
+    let mut relative = intent.clone();
+    relative["path"] = json!(absolute.strip_prefix(&root)?);
+    reconcile_write(&root, &relative)
+}
+
+pub fn write_intent(project: &Path, args: &Value) -> Result<Value> {
+    let a: WriteArgs = serde_json::from_value(args.clone())?;
+    ensure!(
+        a.content.is_some() != a.edits.is_some(),
+        "provide content or edits"
+    );
+    let path = file(project, &a.path)?;
+    let old = if path.exists() {
+        let bytes = util::read_bounded(&path, 1024 * 1024)?;
+        ensure!(
+            a.expected_sha256.as_deref() == Some(util::sha256(&bytes).as_str()),
+            "existing file requires matching expected_sha256"
+        );
+        Some(bytes)
+    } else {
+        ensure!(
+            a.expected_sha256.is_none() && a.edits.is_none(),
+            "expected file does not exist"
+        );
+        None
+    };
+    let content = match (a.content, a.edits) {
+        (Some(content), None) => content,
+        (None, Some(edits)) => edited_content(old.as_deref().unwrap_or_default(), &edits)?,
+        _ => unreachable!(),
+    };
+    ensure!(content.len() <= 1024 * 1024, "worker file exceeds 1 MiB");
+    Ok(
+        json!({"path":a.path,"before_sha256":old.as_deref().map(util::sha256),"after_sha256":util::sha256(content.as_bytes())}),
+    )
+}
+
+pub fn reconcile_write(project: &Path, intent: &Value) -> Result<(bool, ArtifactRef)> {
+    let path = file(
+        project,
+        intent["path"]
+            .as_str()
+            .context("missing write intent path")?,
+    )?;
+    let after = intent["after_sha256"]
+        .as_str()
+        .context("missing write intent digest")?;
+    ensure!(
+        after.len() == 64 && after.bytes().all(|b| b.is_ascii_hexdigit()),
+        "invalid write intent digest"
+    );
+    let current = if path.exists() {
+        Some(current_digest(&path)?)
+    } else {
+        None
+    };
+    let matches = current.as_deref() == Some(after);
+    ensure!(
+        matches || current.as_deref() == intent["before_sha256"].as_str(),
+        "pending write differs from both intended and original bytes; external inspection required"
+    );
+    Ok((
+        matches,
+        ArtifactRef {
+            path,
+            sha256: after.into(),
+        },
+    ))
 }
 
 pub struct ToolResult {
@@ -499,7 +633,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                     .is_none_or(|value| value.len() <= 1024 * 1024),
                 "worker file exceeds 1 MiB"
             );
-            let path = file(project, &a.path)?;
+            let path = writable_file(paths, project, &a.path)?;
             let locks = paths.cache().join("worker-writes");
             util::ensure_directory(&locks)?;
             let _lock = util::FileLock::acquire(
@@ -550,7 +684,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
         }
         _ if name.starts_with("design/") => {
             let result = crate::package_mcp::call(
-                crate::packages::launch(paths, "design").await?,
+                crate::packages::launch_scoped(paths, &design_scope(paths, project)?).await?,
                 name[7..].into(),
                 args.as_object()
                     .cloned()
@@ -572,7 +706,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                         .strip_prefix("/workspace")
                         .context("Penpot export path is outside design workspace")?;
                     let path = design_file(
-                        paths,
+                        &design_scope(paths, project)?,
                         relative
                             .to_str()
                             .context("Penpot export path is not UTF-8")?,
@@ -583,9 +717,12 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                         sha256: util::sha256(&bytes),
                     });
                 } else if let Some(structured) = result.structured_content.as_ref() {
-                    artifacts = design_artifacts(paths, name, structured)?;
+                    artifacts = design_artifacts(&design_scope(paths, project)?, name, structured)?;
                     if matches!(name, "design/typst_compile" | "design/hyperframes_render")
-                        && let Some(primary) = artifact_from_json(paths, &structured["artifact"])?
+                        && let Some(primary) = artifact_from_json(
+                            &design_scope(paths, project)?,
+                            &structured["artifact"],
+                        )?
                     {
                         stable_artifacts.push(primary);
                     }
@@ -602,7 +739,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                     .and_then(|v| v.get("candidate"))
                     .and_then(Value::as_str)
             {
-                let path = design_file(paths, candidate)?;
+                let path = design_file(&design_scope(paths, project)?, candidate)?;
                 let bytes = util::read_bounded(&path, 32 * 1024 * 1024)?;
                 verifies.push(ArtifactRef {
                     path,
@@ -613,7 +750,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                 && passed
                 && let Some(source) = args.get("source").and_then(Value::as_str)
             {
-                let path = design_file(paths, source)?;
+                let path = design_file(&design_scope(paths, project)?, source)?;
                 let bytes = util::read_bounded(&path, 32 * 1024 * 1024)?;
                 verifies.push(ArtifactRef {
                     path,
@@ -639,6 +776,29 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn interrupted_write_reconciles_bytes_without_replay() {
+        let project = tempfile::tempdir().unwrap();
+        let root = project.path().canonicalize().unwrap();
+        let args = json!({"path":"result.txt","content":"new bytes"});
+        let intent = write_intent(&root, &args).unwrap();
+        assert!(!reconcile_write(&root, &intent).unwrap().0);
+        assert!(!root.join("result.txt").exists());
+        std::fs::write(root.join("result.txt"), "new bytes").unwrap();
+        assert!(reconcile_write(&root, &intent).unwrap().0);
+        let edits = json!({"path":"result.txt","edits":[{"old":"new","new":"changed"}],"expected_sha256":util::sha256(b"new bytes")});
+        let edit_intent = write_intent(&root, &edits).unwrap();
+        assert!(!reconcile_write(&root, &edit_intent).unwrap().0);
+        std::fs::write(root.join("result.txt"), "changed bytes").unwrap();
+        assert!(reconcile_write(&root, &edit_intent).unwrap().0);
+        std::fs::write(root.join("result.txt"), "unrelated user edit").unwrap();
+        assert!(reconcile_write(&root, &edit_intent).is_err());
+        let mut escaped = intent.clone();
+        escaped["path"] = json!("../escape");
+        assert!(reconcile_write(&root, &escaped).is_err());
+        assert!(write_intent(&root, &edits).is_err());
+    }
 
     #[test]
     fn disabled_assigned_design_tools_fail_preflight_without_blocking_other_work() {
@@ -775,7 +935,8 @@ mod tests {
             "design/odiff_compare",
             &CallToolResult::structured(value.clone())
         ));
-        let artifacts = design_artifacts(&paths, "design/odiff_compare", &value).unwrap();
+        let artifacts =
+            design_artifacts(&design_root(&paths), "design/odiff_compare", &value).unwrap();
         assert_eq!(artifacts.len(), 1);
         assert_eq!(artifacts[0].path, design_root(&paths).join("diff.png"));
         assert!(!design_mutates(
@@ -850,15 +1011,17 @@ mod tests {
     }
 
     #[test]
-    fn design_artifact_refs_stay_in_fixed_workspace() {
+    fn design_artifact_refs_stay_in_assigned_workspace() {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().into()).unwrap();
-        let root = design_root(&paths);
+        let project = home.path().canonicalize().unwrap().join("project");
+        std::fs::create_dir(&project).unwrap();
+        let root = design_scope(&paths, &project).unwrap();
         std::fs::create_dir_all(&root).unwrap();
         std::fs::write(root.join("render.png"), b"image").unwrap();
         let digest = util::sha256(b"image");
         let refs = design_artifacts(
-            &paths,
+            &root,
             "design/static_render",
             &json!({"artifact":{"path":"render.png","sha256":digest}}),
         )
@@ -872,19 +1035,14 @@ mod tests {
         );
         assert!(
             design_artifacts(
-                &paths,
+                &root,
                 "design/static_render",
                 &json!({"artifact":{"path":"../outside.png","sha256":util::sha256(b"image")}})
             )
             .is_err()
         );
         assert_eq!(
-            readable_file(
-                &paths,
-                home.path(),
-                root.join("render.png").to_str().unwrap()
-            )
-            .unwrap(),
+            readable_file(&paths, &project, root.join("render.png").to_str().unwrap()).unwrap(),
             root.join("render.png")
         );
     }
@@ -900,5 +1058,32 @@ mod tests {
         assert_ne!(current_digest(&pdf).unwrap(), expected);
         std::fs::remove_file(&pdf).unwrap();
         assert!(current_digest(&pdf).is_err());
+    }
+}
+
+#[cfg(test)]
+mod scoped_design_tests {
+    use super::*;
+    #[tokio::test]
+    async fn project_design_reads_writes_and_recovery_reject_siblings() {
+        let home = tempfile::tempdir().unwrap();
+        let root = home.path().canonicalize().unwrap();
+        let paths = Paths::new(root.clone()).unwrap();
+        let a = root.join("a");
+        let b = root.join("b");
+        std::fs::create_dir_all(&a).unwrap();
+        std::fs::create_dir_all(&b).unwrap();
+        let own = design_scope(&paths, &a).unwrap();
+        let other = design_scope(&paths, &b).unwrap();
+        std::fs::create_dir_all(&own).unwrap();
+        std::fs::create_dir_all(&other).unwrap();
+        std::fs::write(other.join("private.txt"), "other project").unwrap();
+        assert!(readable_file(&paths, &a, other.join("private.txt").to_str().unwrap()).is_err());
+        let args = json!({"path":own.join("source.txt"),"content":"owned"});
+        let intent = write_intent_scoped(&paths, &a, &args).unwrap();
+        invoke(&paths, &a, "workspace_write", args).await.unwrap();
+        assert!(reconcile_write_scoped(&paths, &a, &intent).unwrap().0);
+        assert!(reconcile_write_scoped(&paths, &b, &intent).is_err());
+        assert!(invoke(&paths,&b,"workspace_write",json!({"path":own.join("source.txt"),"content":"bad","expected_sha256":util::sha256(b"owned")})).await.is_err());
     }
 }

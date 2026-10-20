@@ -47,6 +47,33 @@ test('canonical token generation is complete, reused and detects drift', async (
   await fs.writeFile(path.join(workspace, 'design/tokens.json'), JSON.stringify({color: {accent: {$type: 'color', $value: '#654321'}}}));
 });
 
+test('unchanged tokens rebuild after compiler recipe or dependency identity changes', async () => {
+  const fixture = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-token-recipe-'));
+  try {
+    for (const name of ['tokens.mjs', 'paths.mjs', 'request.mjs', 'package-lock.json'])
+      await fs.copyFile(new URL(`../${name}`, import.meta.url), path.join(fixture, name));
+    await fs.symlink(new URL('../node_modules', import.meta.url).pathname, path.join(fixture, 'node_modules'), 'dir');
+    await fs.writeFile(path.join(workspace, 'recipe-tokens.json'), JSON.stringify({color: {accent: {$type:'color', $value:'#abcdef'}}}));
+    const module = new URL(`file://${fixture}/tokens.mjs`);
+    const first = await (await import(`${module}?v=1`)).compileTokens('recipe-tokens.json');
+    const original = await fs.readFile(path.join(fixture, 'tokens.mjs'), 'utf8');
+    await fs.writeFile(path.join(fixture, 'tokens.mjs'), original.replace('export const tokens =', '/* revised format */ export const tokens ='));
+    const secondCompiler = (await import(`${module}?v=2`)).compileTokens;
+    const second = await secondCompiler('recipe-tokens.json');
+    assert.equal(second.source_sha256, first.source_sha256);
+    assert.notEqual(second.compiler_sha256, first.compiler_sha256);
+    assert.notEqual(second.outputs['tokens.js'], first.outputs['tokens.js']);
+    assert.equal(second.reused, false);
+    assert.match(await fs.readFile(path.join(workspace, second.outputs['tokens.js']), 'utf8'), /revised format/);
+    assert.equal((await secondCompiler('recipe-tokens.json')).reused, true);
+    await fs.appendFile(path.join(fixture, 'package-lock.json'), '\n');
+    const third = await (await import(`${module}?v=3`)).compileTokens('recipe-tokens.json');
+    assert.equal(third.source_sha256, second.source_sha256);
+    assert.notEqual(third.compiler_sha256, second.compiler_sha256);
+    assert.equal(third.reused, false);
+  } finally { await fs.rm(fixture, {recursive:true, force:true}); }
+});
+
 test('concurrent cold token compilation shares one complete generation', async () => {
   await fs.mkdir(path.join(workspace, 'design'), {recursive:true});
   await fs.writeFile(path.join(workspace, 'design/concurrent.json'), JSON.stringify({color:{race:{$type:'color',$value:'#135724'}}}));
@@ -314,6 +341,23 @@ test('Satori resolves a canonical token into its SVG output', async t => {
   assert.match((await readFile('token-render.svg')).toString(), /#654321/i);
 });
 
+test('Satori renders a real WOFF2 glyph and rejects a mislabeled font', async () => {
+  const font = new URL('../node_modules/style-dictionary/examples/complete/assets/fonts/MaterialIcons-Regular.woff2', import.meta.url);
+  await fs.copyFile(font, path.join(workspace, 'icons.woff2'));
+  const args = {
+    fonts: [{path:'icons.woff2',name:'Icons'}], width:64, height:64, format:'svg', output:'woff2.svg',
+    tree:{type:'div',props:{style:{fontFamily:'Icons',fontSize:48,color:'#123456'}},children:'\ue88a'},
+  };
+  const rendered = await staticRender(args);
+  assert.ok(rendered.artifact.bytes > 100);
+  const svg = (await readFile('woff2.svg')).toString();
+  assert.match(svg, /<path/);
+  assert.match(svg, /#123456/);
+  await fs.writeFile(path.join(workspace, 'mislabeled.woff2'), Buffer.from('wOFF-invalid-font'));
+  await assert.rejects(staticRender({...args, fonts:[{path:'mislabeled.woff2'}], output:'invalid-woff2.svg'}), /font bytes do not match/);
+  await assert.rejects(fs.access(path.join(workspace, 'invalid-woff2.svg')));
+});
+
 test('Penpot token preflight maps supported types and rejects unsupported composites', async () => {
   assert.deepEqual(penpotTokenRecords({color: {accent: {$type: 'color', $value: '#fff'}}, font: {size: {$type: 'fontSize', $value: 16}}}), [
     {name: 'color.accent', type: 'color', value: '#fff'}, {name: 'font.size', type: 'fontSizes', value: '16'},
@@ -441,4 +485,18 @@ test('page and frame QA enforce a shared decoded-pixel budget', () => {
   const accept=imageBatchBudget();
   for(let i=0;i<4;i++) assert.deepEqual(accept(header),[4096,4096]);
   assert.throws(()=>accept(header),/aggregate/);
+});
+
+
+test('scoped browser routes reject sibling, encoded traversal and editor requests', async () => {
+  const {scopedWorkspaceUrlAllowed} = await import('../operations.mjs');
+  const prefix = 'projects/my project';
+  assert.equal(scopedWorkspaceUrlAllowed('http://design-tools:9002/files/projects/my%20project/index.html', prefix), true);
+  for (const url of [
+    'http://design-tools:9002/files/projects/sibling/secret.txt',
+    'http://design-tools:9002/files/projects/my%20project/%2e%2e/sibling/secret.txt',
+    'http://design-tools:9002/files/projects/my%20project/%2e%2e%2fsibling/secret.txt',
+    'http://design-tools:9002/files/projects/my%20project/a%5c..%5csecret.txt',
+    'http://penpot-frontend:8080/', 'file:///workspace/projects/my%20project/index.html',
+  ]) assert.equal(scopedWorkspaceUrlAllowed(url, prefix), false, url);
 });

@@ -6,7 +6,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-cleanup-'));
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
-const {rasterTransform, svgOptimize, vectorRender, browserInspect, validateBrowserActions, hyperframesSnapshotArgs, optimizeSvgBytes} = await import('../operations.mjs');
+const {rasterTransform, svgOptimize, vectorRender, browserInspect, validateBrowserActions, hyperframesSnapshotArgs, optimizeSvgBytes, stageProject, stageDesignAsset} = await import('../operations.mjs');
 const {withRenderSlot} = await import('../paths.mjs');
 const {withRequest} = await import('../request.mjs');
 test.after(() => fs.rm(workspace, {recursive:true, force:true}));
@@ -39,6 +39,45 @@ test('native PNG QA returns original pixels without a browser or duplicate scree
   assert.equal(qa.status,'ready_for_inspection');
 });
 
+test('composition staging retains original raster size, encoding and metadata', async () => {
+  const source = path.join(workspace, 'composition'), stage = path.join(workspace, 'staged');
+  await fs.mkdir(source); await fs.mkdir(stage);
+  await fs.writeFile(path.join(source, 'index.html'), '<html><head></head><body><img src="hero.jpeg"></body></html>');
+  const originals = new Map();
+  for (const format of ['jpeg', 'png', 'webp', 'avif']) {
+    const bytes = await sharp({create:{width:3000,height:12,channels:4,background:{r:20,g:60,b:120,alpha:0.5}}})
+      .withMetadata({orientation:6}).toFormat(format).toBuffer();
+    originals.set(format, bytes);
+    await fs.writeFile(path.join(source, `hero.${format}`), bytes);
+  }
+  await stageProject('composition', stage);
+  for (const [format, bytes] of originals) {
+    const actual = await fs.readFile(path.join(stage, `hero.${format}`));
+    assert.deepEqual(actual, bytes, `${format} changed during staging`);
+    const metadata = await sharp(actual).metadata();
+    assert.equal(Math.max(metadata.width, metadata.height), 3000);
+  }
+});
+
+test('shared video and paged asset staging rejects corrupt rasters before writing', async () => {
+  const dest = path.join(workspace, 'invalid-staged.png');
+  const png = await sharp({create:{width:40,height:40,channels:3,background:'#123456'}}).png().toBuffer();
+  await assert.rejects(stageDesignAsset({dest, local:'broken.png', bytes:png.subarray(0, 50)}));
+  await assert.rejects(fs.access(dest));
+  await assert.rejects(stageDesignAsset({dest, local:'fake.png', bytes:Buffer.from('<svg/>')}), /Only PNG/);
+  await assert.rejects(fs.access(dest));
+});
+
+test('staging refuses animated WebP instead of silently flattening its frames', async () => {
+  const pixels = Buffer.from([...Array(4).fill([255,0,0,255]).flat(), ...Array(4).fill([0,0,255,255]).flat()]);
+  const bytes = await sharp(pixels, {raw:{width:2,height:4,channels:4,pageHeight:2}})
+    .webp({loop:0,delay:[100,100]}).toBuffer();
+  assert.equal((await sharp(bytes).metadata()).pages, 2);
+  const dest = path.join(workspace, 'animated-staged.webp');
+  await assert.rejects(stageDesignAsset({dest, local:'animated.webp', bytes}), /explicit frame sequence or video/);
+  await assert.rejects(fs.access(dest));
+});
+
 test('editable vector output retains semantic groups and yields a matching native preview', async () => {
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 40"><g id="scene"><g id="subject"><rect x="8" y="8" width="64" height="24" fill="#13579b"/></g></g></svg>';
   await fs.writeFile(path.join(workspace,'art.svg'),svg);
@@ -50,6 +89,17 @@ test('editable vector output retains semantic groups and yields a matching nativ
   assert.equal(result.qa.screenshot.path,result.preview.path);
   await svgOptimize({source:'art.svg',output:'optimized.svg'});
   assert.throws(() => optimizeSvgBytes('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>'),/Unsafe SVG/);
+});
+
+test('editable vector output preserves hidden states and empty attachment groups', async () => {
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 40"><g id="rest"><rect width="40" height="40"/></g><g id="expanded" display="none"><circle cx="20" cy="20" r="10"/></g><g id="label-anchor"/></svg>';
+  await fs.writeFile(path.join(workspace, 'states.svg'), svg);
+  const result = await vectorRender({source:'states.svg',output:'states-editable.svg',width:80,height:40});
+  const saved = await fs.readFile(path.join(workspace,result.artifact.path),'utf8');
+  for (const id of ['rest', 'expanded', 'label-anchor']) assert.ok(saved.includes(`id="${id}"`), `${id} was deleted`);
+  const before = await sharp(Buffer.from(svg)).ensureAlpha().raw().toBuffer();
+  const after = await sharp(path.join(workspace,result.preview.path)).ensureAlpha().raw().toBuffer();
+  assert.deepEqual(after, before, 'preserving an inactive state must not reveal it');
 });
 
 test('native render admission serializes competing work and releases after failures', async () => {

@@ -24,8 +24,7 @@ production and correction.
 
 **Version availability:** the public download is **1.0.5** as of 2026-10-20.
 The verified desktop build **1.0.11** adds the memory, recovery and verification
-features documented below; it has not been published as a release or source
-update. See [versions and availability](docs/release-status.md) and use the
+features documented below; its source is now on `main`, with public binaries pending verification. See [versions and availability](docs/release-status.md) and use the
 selected release’s commands and manifest.
 
 ## Get started with your agent

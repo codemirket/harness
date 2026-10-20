@@ -607,7 +607,7 @@ fn runtime_state_concurrent_initializers_share_one_valid_schema() {
         database
             .pragma_query_value::<i64, _>(None, "user_version", |row| row.get(0))
             .unwrap(),
-        3
+        4
     );
 }
 
@@ -1061,7 +1061,7 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     });
     let client = ().serve(client_transport).await.unwrap();
     let tools = client.list_all_tools().await.unwrap();
-    assert_eq!(tools.len(), 17);
+    assert_eq!(tools.len(), 27);
     assert!(tools.iter().all(|tool| {
         tool.meta
             .as_ref()
@@ -1097,6 +1097,39 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     assert!(
         !f.paths.root.join("runs").exists(),
         "unregistered root started an execution"
+    );
+    for (name, args) in [
+        ("runtime_data", json!({"action":"export","project":outside})),
+        (
+            "runtime_data_apply",
+            json!({"project":outside,"plan":{},"expected_sha256":"test"}),
+        ),
+        ("memory_read", json!({"project":outside})),
+        (
+            "memory_put",
+            json!({"project":outside,"text":"test","kind":"fact","provenance":"fixture","key":"test"}),
+        ),
+        (
+            "workflow_status",
+            json!({"project":outside,"run_id":"routed-test"}),
+        ),
+        (
+            "resume_subagent",
+            json!({"project":outside,"run_id":"routed-test","expected_checkpoint_id":"test"}),
+        ),
+        (
+            "workflow_forget",
+            json!({"project":outside,"run_id":"routed-test","expected_checkpoint_id":"test"}),
+        ),
+    ] {
+        assert_eq!(
+            client.call_tool(call(name, args)).await.unwrap().is_error,
+            Some(true)
+        );
+    }
+    assert!(
+        !f.paths.root.join("execution/podman").exists(),
+        "unregistered project initialized a runtime"
     );
     let facets = client
         .call_tool(call("team_facets", json!({})))
@@ -1207,6 +1240,38 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
             .unwrap();
         assert_eq!(bounded.is_error, Some(rejected), "supporting count {count}");
     }
+    // Native targets are exposed on both public request schemas and rejected
+    // before discovery when the caller omits a meaningful suitability reason.
+    for name in ["route_task", "spawn_subagent"] {
+        let tool = tools.iter().find(|tool| tool.name == name).unwrap();
+        let schema = serde_json::to_string(&tool.input_schema).unwrap();
+        for variant in [
+            "native_specimen",
+            "image_to_code",
+            "code_fallback",
+            "design_document",
+        ] {
+            assert!(schema.contains(variant), "missing {variant} on {name}");
+        }
+    }
+    let invalid_native = client
+        .call_tool(call(
+            "route_task",
+            json!({
+                "objective":"Build an editable SVG icon", "project":f.project, "assigned_tools":[],
+                "task_intent":"synthesis", "complexity_class":"synthesis",
+                "task_needs":[{"workflow":"vector-art", "reason":"Editable SVG deliverable"}],
+                "design_input":{"mode":"native_specimen", "medium":"svg", "reason":" "}
+            }),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(invalid_native.is_error, Some(true));
+    assert!(
+        serde_json::to_string(&invalid_native)
+            .unwrap()
+            .contains("design gate text")
+    );
     let started=client.call_tool(call("task_start",json!({"project_id":f.project_id,"objective":"test task","skills":["engineering-judgment"],"acceptance":"saved output matches expected units","failure_probe":"malformed units rejected","key":"start"}))).await.unwrap();
     assert_eq!(started.is_error, Some(false));
     let task = started.structured_content.unwrap();

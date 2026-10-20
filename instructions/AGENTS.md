@@ -39,8 +39,8 @@ permissions.
   registration, installation, runtime readiness, invocation and useful output
   as separate facts; verify the actual application or artifact with its own
   commands.
-- For Mirket design production, use the single `design` package and its fixed
-  reported workspace. Compile Style Dictionary tokens before rendering. Route
+- For Mirket design production, use the single `design` package and its reported project workspace for routed workers; host design tools keep
+  the shared workspace. Compile Style Dictionary tokens before rendering. Route
   live UI to Playwright, editable design files to the official Penpot MCP,
   diagrams to Kroki, video to HyperFrames lint→snapshot→render, paged work to
   Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,
@@ -50,15 +50,17 @@ permissions.
 
 ## Execute toward evidence
 
-- Design work follows image-to-code: inspect a supplied target or create one
-  with the host's image model before implementation. If the host has no usable
-  image model, compose directly in code, then render and inspect that minimal
-  composition before expanding it. Compare current output with the frozen target;
-  gate composition, typography, assets, responsive layout, behavior and requested
-  motion. Use the interface-design image-to-code reference for the contract.
-  Allow at most two correction rounds and ten minutes per bounded composition;
-  report unresolved defects at the limit. Do not relaunch or run sample campaigns
-  to reset the budget. Native host tools remain host-controlled.
+- Design work starts from an inspected target suited to the medium: supplied
+  imagery, a host-generated raster composition, or a minimal native DOM, SVG,
+  pixel, diagram, typeset or editor specimen. Freeze rendered evidence before
+  expansion; compare composition, typography, assets, responsive layout, behavior
+  and requested motion. Use interface-design's image-to-code reference for the
+  medium-aware contract. Shared budgets are 15 minutes/two final repairs for
+  static/vector/diagram work, 30 minutes/three for interfaces and paged work,
+  45 minutes/four for motion. Combined deliverables use the largest limit, not
+  their sum. Allow one target repair; report unresolved defects at the limit.
+  Do not relaunch or run sample campaigns to reset the budget. Native host tools
+  remain host-controlled.
 
 - Establish the outcome, constraints, owner and observable completion. Investigate
   before asking; ask only for a decision or authorization that changes the work.

@@ -1,13 +1,13 @@
 # Versions and availability
 
 Checked on **2026-10-20**. Documentation can describe a verified desktop build
-before its source and binaries are published. Installing the latest public release
+before its binaries are published. Installing the latest public release
 does not install unpublished features.
 
 | Distribution | State | How to use its documentation |
 | --- | --- | --- |
-| [Public 1.0.5](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.5) | Published binaries for macOS ARM64, Linux x86-64 and Windows x86-64 | Use the release manifest and [versioned source documentation](https://github.com/codemirket/harness/tree/mirket-v1.0.5/docs); the public `main` source remains at this implementation |
-| Desktop build 1.0.11 | Built, tested and deployed to an existing macOS ARM64 installation; agent/design containers verified on Linux ARM64 | Newer behavior is documented here for that installation. Source changes and downloadable release assets have not been published. Do not substitute 1.0.5 or assume `cargo install` from public `main` produces 1.0.11 |
+| [Public 1.0.5](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.5) | Published binaries for macOS ARM64, Linux x86-64 and Windows x86-64 | Use the release manifest and [versioned source documentation](https://github.com/codemirket/harness/tree/mirket-v1.0.5/docs); use this tag when you need the 1.0.5 implementation |
+| Desktop build 1.0.11 | Built, tested and deployed to an existing macOS ARM64 installation; agent/design containers verified on Linux ARM64 | Newer behavior is documented here for that installation. The 1.0.11 source is on `main`; native release verification and downloadable assets are pending. Do not treat a source build as a published binary |
 
 Always resolve [the release list](https://github.com/codemirket/harness/releases)
 again before installing. A release manifest determines available targets; source
@@ -37,5 +37,4 @@ files matched; its live conversation connection was not independently observed.
 
 Those are bounded local checks, not a claim that every tool, platform, real-project
 retrieval task or visual output has passed. New public binaries need their own
-release artifacts, platform checks and publication. This documentation update
-publishes no binary and changes no installed desktop runtime.
+release artifacts, platform checks and publication. Source publication does not itself publish a binary or change an installed desktop runtime.

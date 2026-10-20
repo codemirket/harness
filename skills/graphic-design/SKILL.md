@@ -8,15 +8,15 @@ description: Create and refine visual identities, illustrations, posters, campai
 Deliver a composition that communicates at its intended size, with usable source
 and exports. Match the medium to the brief and verify the exported result.
 
-Design production starts from an inspected visual target: use supplied imagery
-or an available host image model before implementation. If the host has no usable
-image model, direct code composition is permitted; render and inspect one minimal
-proof before expansion. Freeze that target and compare current output against it.
-Gate composition, typography, assets and applicable responsive, behavior and motion
-checks. Allow at most two correction rounds and ten minutes per composition;
-preserve incomplete output and name defects at the limit. Do not relaunch workers
-or generate more samples to reset the budget. The
-[image production reference](references/image-production.md) covers the host handoff.
+Design production starts from an inspected target appropriate to the medium:
+supplied imagery, a host-generated raster composition, or a minimal native
+SVG, diagram, pixel, typeset or editor specimen. Freeze its rendered evidence
+before expansion and compare actual output. Read the shared contract with
+`mirket catalog read interface-design --path references/image-to-code.md`:
+15 minutes/two final repairs for static work, 30 minutes/three for editable or
+paged composition, 45 minutes/four for motion. Combined work shares the largest
+limit. The [image production reference](references/image-production.md) covers
+host raster generation; native geometry cannot substitute for requested rich imagery.
 
 ## Professional stance
 
@@ -69,6 +69,12 @@ Choose the craft emphasis from the deliverable:
   relationship between type and image. Test the complete poster, campaign or
   information graphic at its delivery size; a strong central image does not
   establish legible supporting copy or a truthful chart.
+
+For constructed subjects or editorial explanations, use
+[constructed illustration](references/constructed-illustration.md) for shared
+geometry, attachment/occlusion checks and section-level visual purpose. For
+multilingual type and export fidelity, read
+`mirket catalog read interface-design --path references/typography-proof.md`.
 
 ## Establish the composition
 
@@ -130,7 +136,7 @@ primitive SVG, a diagram, a CSS sketch or an unexecuted generation prompt.
   Use [diagram semantics](references/diagram-semantics.md) for policy decisions,
   queues, provenance, lifecycles and architecture changes before styling the graph.
 - Use Satori plus resvg for static text/image compositions using supported
-  Flexbox and supplied TTF, OTF or WOFF fonts. Use Typst for paged documents and
+  Flexbox and supplied TTF, OTF, WOFF or WOFF2 fonts. Use Typst for paged documents and
   decks. A flattened image is not an editable deck, workbook or document.
 - For artwork inside an expressive website, use `advanced-motion` for the shared
   scene and its medium-selection reference; `svg-animation` owns editable vector

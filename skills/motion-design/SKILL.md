@@ -5,6 +5,14 @@ description: Implement or review ordinary UI animation, including hover/focus fe
 
 # Motion design
 
+Use this as the motion entry point: own intent, timing and interaction behavior.
+For engine choice and multi-part scenes, read selected `advanced-motion`
+references; use `page-transitions` for navigation/history/focus and `svg-animation`
+for path/group mechanics. Load only the specialist boundary the task changes,
+not the complete motion profile. Shared authority and execution rules belong to
+`skill-catalog` and the applicable worker contract.
+
+
 For an optional language study, catalog-search a motion purpose or consult
 `design-inspiration` at `references/design-languages/index.md`. Material shape,
 Fluent spatial continuity, Apple control layers and Duolingo character

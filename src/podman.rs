@@ -553,6 +553,60 @@ impl Engine {
     }
 }
 
+/// Explicit recovery after replacing the registered Podman installation. Never
+/// rewrite arbitrary container settings or start/change the existing machine.
+pub fn repair_helpers(paths: &Paths, expected_sha256: &str) -> Result<Value> {
+    let binary = crate::tools::verified(paths, "podman")?;
+    ensure_machine_helpers(&binary)?;
+    let root = paths.root.join("execution/podman");
+    util::reject_symlink_components(&root)?;
+    let _lock = util::FileLock::acquire(&root.join("helpers.lock"))?;
+    let config = root.join("containers.conf");
+    util::reject_symlink_components(&config)?;
+    let saved = util::read_bounded(&config, 4096)?;
+    ensure!(
+        util::sha256(&saved) == expected_sha256,
+        "helper configuration changed; inspect it before repair"
+    );
+    let document: toml_edit::DocumentMut = std::str::from_utf8(&saved)?.parse()?;
+    let engine = document
+        .get("engine")
+        .and_then(toml_edit::Item::as_table)
+        .context("expected owned helper configuration")?;
+    let dirs = engine
+        .get("helper_binaries_dir")
+        .and_then(toml_edit::Item::as_array)
+        .context("expected helper directories")?;
+    let previous: Vec<&str> = dirs
+        .iter()
+        .map(|v| v.as_str().context("invalid helper path"))
+        .collect::<Result<_>>()?;
+    ensure!(
+        document.len() == 1 && engine.len() == 1 && !previous.is_empty() && previous.len() <= 3,
+        "refusing unrelated container configuration"
+    );
+    let canonical = format!(
+        "[engine]\nhelper_binaries_dir = {}\n",
+        serde_json::to_string(&previous)?
+    );
+    ensure!(
+        saved == canonical.as_bytes(),
+        "refusing non-owned container configuration"
+    );
+    let replacement = format!(
+        "[engine]\nhelper_binaries_dir = {}\n",
+        serde_json::to_string(&helper_directories(&binary)?)?
+    );
+    ensure!(
+        util::read_bounded(&config, 4096)? == saved,
+        "helper configuration changed during repair"
+    );
+    util::atomic_write(&config, replacement.as_bytes())?;
+    Ok(
+        json!({"repaired":config,"before_sha256":expected_sha256,"sha256":util::sha256(replacement.as_bytes()),"machine_changed":false}),
+    )
+}
+
 fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
     let bin = binary.parent().context("Podman helper directory")?;
     let mut directories = vec![bin.to_owned()];
@@ -900,7 +954,17 @@ mod tests {
             serde_json::to_string(&[bin, libexec.clone()]).unwrap()
         );
         assert_eq!(std::fs::read_to_string(&config).unwrap(), expected);
+        let relocated = "[engine]\nhelper_binaries_dir = [\"/previous/installation/bin\"]\n";
+        std::fs::write(&config, relocated).unwrap();
+        assert!(repair_helpers(&paths, &"0".repeat(64)).is_err());
+        assert_eq!(std::fs::read_to_string(&config).unwrap(), relocated);
+        let repaired = repair_helpers(&paths, &util::sha256(relocated.as_bytes())).unwrap();
+        assert_eq!(repaired["machine_changed"], false);
+        assert_eq!(std::fs::read_to_string(&config).unwrap(), expected);
         std::fs::write(&config, format!("{expected}# unexpected change\n")).unwrap();
+        let changed = std::fs::read(&config).unwrap();
+        assert!(repair_helpers(&paths, &util::sha256(&changed)).is_err());
+        assert_eq!(std::fs::read(&config).unwrap(), changed);
         assert!(
             Engine::resolve(&paths)
                 .unwrap_err()

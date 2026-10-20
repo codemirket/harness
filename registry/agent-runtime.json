@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "agent-runtime",
+  "name": "Local memory and durable execution",
+  "host_connection": false,
+  "description": "Mem0 OSS project memory and LangGraph checkpoints behind Mirket's existing scoped MCP/CLI boundaries.",
+  "python_image": "docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641",
+  "tools": ["mem0", "langgraph"],
+  "versions": {"mem0ai": "2.2.1", "langgraph": "1.2.16", "langgraph-checkpoint-sqlite": "3.1.2", "fastembed": "0.9.0"},
+  "runtime": "On-demand rootless OCI process, Linux ARM64, network disabled, immutable code/models, only private project-scoped runtime data writable.",
+  "memory": "Explicit facts with provenance; multilingual local dense embeddings, local BM25 and English NLP; no hosted account, automatic transcript harvesting or provider credentials.",
+  "workflow": "LangGraph checkpoints, effect-intent boundaries, preserved budgets and host verification; Rust retains model and tool permission enforcement.",
+  "limits": {"memory_mib": 1536, "cpus": 2, "pids": 128, "project_storage_mib": 512, "request_bytes": 4194304},
+  "licenses": ["Apache-2.0: Mem0, FastEmbed and multilingual embedding/BM25 models", "MIT: LangGraph and spaCy"]
+}

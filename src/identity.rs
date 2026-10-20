@@ -1,0 +1,43 @@
+//! Identity belongs to the running process, not the current bytes at its old path.
+use crate::{catalog::Catalog, paths::Paths, util};
+use serde_json::{Value, json};
+use std::sync::OnceLock;
+
+static LOADED: OnceLock<Option<String>> = OnceLock::new();
+
+pub fn capture() -> &'static Option<String> {
+    LOADED.get_or_init(|| {
+        let path = std::env::current_exe().ok()?;
+        util::read_bounded(&path, 256 * 1024 * 1024)
+            .ok()
+            .map(|bytes| util::sha256(&bytes))
+    })
+}
+
+pub fn version() -> String {
+    format!(
+        "{}+{}",
+        env!("CARGO_PKG_VERSION"),
+        &env!("MIRKET_SOURCE_SHA256")[..12]
+    )
+}
+
+pub fn status(paths: &Paths, catalog: &Catalog) -> Value {
+    let loaded = capture();
+    let installed = util::read_bounded(&paths.binary(), 256 * 1024 * 1024)
+        .ok()
+        .map(|bytes| util::sha256(&bytes));
+    json!({
+        "process": {"version":env!("CARGO_PKG_VERSION"), "source_sha256":env!("MIRKET_SOURCE_SHA256"),
+            "target":env!("MIRKET_TARGET"), "pid":std::process::id(), "executable_sha256":loaded},
+        "catalog": {"sha256":catalog.fingerprint(), "skills":catalog.skills().len(), "profiles":catalog.profiles().len()},
+        "installed_binary": {"path":paths.binary(), "sha256":installed,
+            "matches_process": loaded.as_ref().zip(installed.as_ref()).map(|(a,b)| a == b)},
+        "agent_runtime": {"selected":crate::agent_runtime::enabled(paths).ok(),
+            "expected_recipe":crate::packages::agent::recipe(),
+            "expected_versions":crate::packages::agent::definition().ok().map(|v| v["versions"].clone()),
+            "live_identity":"Call memory_read or package probe agent-runtime; this field is configuration only."},
+        "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+        "verification": "Identity and connection are not evidence that a user task passed."
+    })
+}

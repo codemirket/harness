@@ -449,6 +449,95 @@
       ],
       "scope": "Selective technique adaptation in existing owners; no upstream runtime, installer, assets or external service bundled.",
       "notice_section": "anthropics/knowledge-work-plugins — selected design methods"
+    },
+    "design-anatomy": {
+      "repository": "wheresryan22/anatomy",
+      "commit": "1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
+      "license_summary": "MIT",
+      "url": "https://github.com/wheresryan22/anatomy/tree/1482e8469b0a9e0d8cc18ea2740a01423d29ae80",
+      "notice_section": "wheresryan22/anatomy",
+      "reviewed_paths": [
+        "README.md",
+        "SKILL.md",
+        "references/craft.md",
+        "references/motion.md",
+        "kit/audit.mjs",
+        "LICENSE"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
+    },
+    "editorial-illustration": {
+      "repository": "helloianneo/ian-xiaohei-illustrations",
+      "commit": "4102eb807f03bcb6e538a16e8b31b41db8b5b954",
+      "license_summary": "MIT",
+      "url": "https://github.com/helloianneo/ian-xiaohei-illustrations/tree/4102eb807f03bcb6e538a16e8b31b41db8b5b954",
+      "notice_section": "helloianneo/ian-xiaohei-illustrations",
+      "reviewed_paths": [
+        "README.md",
+        "ian-xiaohei-illustrations/SKILL.md",
+        "ian-xiaohei-illustrations/references/composition-patterns.md",
+        "ian-xiaohei-illustrations/references/qa-checklist.md",
+        "LICENSE",
+        "NOTICE.md"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
+    },
+    "anime-runtime-review": {
+      "repository": "juliangarnier/anime",
+      "commit": "01b81be1df6843ccfe0a71c0699a746bf740dd77",
+      "license_summary": "MIT",
+      "url": "https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77",
+      "notice_section": "juliangarnier/anime",
+      "reviewed_paths": [
+        "README.md",
+        "src/scope/scope.js",
+        "src/svg/morphto.js",
+        "LICENSE.md"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
+    },
+    "motion-runtime-review": {
+      "repository": "motiondivision/motion",
+      "commit": "c5fab238ab4f8d8132d1cb05d6607439b3904058",
+      "license_summary": "MIT",
+      "url": "https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058",
+      "notice_section": "motiondivision/motion",
+      "reviewed_paths": [
+        "README.md",
+        "packages/framer-motion/src/components/AnimatePresence/index.tsx",
+        "packages/framer-motion/src/utils/reduced-motion/use-reduced-motion.ts",
+        "LICENSE.md"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
+    },
+    "radix-primitives-review": {
+      "repository": "radix-ui/primitives",
+      "commit": "eb3a2b7091293e27df8f9ba906632d8daa3d81a3",
+      "license_summary": "MIT",
+      "url": "https://github.com/radix-ui/primitives/tree/eb3a2b7091293e27df8f9ba906632d8daa3d81a3",
+      "notice_section": "radix-ui/primitives",
+      "reviewed_paths": [
+        "README.md",
+        "packages/react/dialog/src/dialog.tsx",
+        "packages/react/presence/src/presence.tsx",
+        "packages/react/focus-scope/src/focus-scope.tsx",
+        "LICENSE"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
+    },
+    "design-md-review": {
+      "repository": "voltagent/awesome-design-md",
+      "commit": "3b605329240ce735b510037cca322f1831fdd7f8",
+      "license_summary": "MIT",
+      "url": "https://github.com/voltagent/awesome-design-md/tree/3b605329240ce735b510037cca322f1831fdd7f8",
+      "notice_section": "voltagent/awesome-design-md",
+      "reviewed_paths": [
+        "README.md",
+        "design-md/linear.app/DESIGN.md",
+        "design-md/stripe/DESIGN.md",
+        "LICENSE"
+      ],
+      "scope": "Selective independently authored production guidance; no upstream code, assets or runtime redistributed."
     }
   },
   "skills": [
@@ -515,7 +604,8 @@
         "ibelick-ui",
         "owl-concepts",
         "better-design",
-        "knowledge-work-design"
+        "knowledge-work-design",
+        "design-md-review"
       ],
       "dependencies": [
         "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Playwright, compare pixels with Odiff, and use the official Penpot MCP/plugin for editable design files. Keep the app and its own behavior tests authoritative.",
@@ -1460,7 +1550,8 @@
       ],
       "url": "https://github.com/mattpocock/skills/blob/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d/skills/engineering/implement/SKILL.md",
       "sha256": "2a3c6550758274d630819749039cbd1e8bf2821b16784324734c1b1fd85cdc4e",
-      "installed_sha256": "91340978bd1de23087ef39b5b3d94927de576b1d926ba14c145b5791ddd18077"
+      "installed_sha256": "91340978bd1de23087ef39b5b3d94927de576b1d926ba14c145b5791ddd18077",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "implement-spec",
@@ -1497,7 +1588,8 @@
       ],
       "url": "https://github.com/mattpocock/skills/blob/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d/skills/engineering/implement-spec/SKILL.md",
       "sha256": "2cbc54bd8949e3238e85a1bddeb2ec8eaa90ea73e5ab1124d89571dd96fdc0ee",
-      "installed_sha256": "02b7f0e25de225d12ead960f5d045e70ea719a090c616c66580efb7aab1810ca"
+      "installed_sha256": "02b7f0e25de225d12ead960f5d045e70ea719a090c616c66580efb7aab1810ca",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "improve-codebase-architecture",
@@ -2123,7 +2215,8 @@
       ],
       "url": "https://github.com/mattpocock/skills/blob/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d/skills/productivity/handoff/SKILL.md",
       "sha256": "fa2cc580a28e2d963b8236e5fdc0354dd394b98336a6d0f8d269fa6a8b7bfef8",
-      "installed_sha256": "bfee88b3a082b3ec86314b110e9716b2af3e90f3d401614e9906e03fc17b4a74"
+      "installed_sha256": "bfee88b3a082b3ec86314b110e9716b2af3e90f3d401614e9906e03fc17b4a74",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "teach",
@@ -2280,7 +2373,8 @@
       ],
       "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/dispatching-parallel-agents/SKILL.md",
       "sha256": "2c599bdadca7ac8ccf087eb8f20055898f5e6d4e09762bd6ac348f28b9adcc2d",
-      "installed_sha256": "6e5c110eed6b882edac9a16ec2da9ff62834d5cbf0ba699b588afc4eb0011aba"
+      "installed_sha256": "6e5c110eed6b882edac9a16ec2da9ff62834d5cbf0ba699b588afc4eb0011aba",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "executing-plans",
@@ -2324,7 +2418,8 @@
       ],
       "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/executing-plans/SKILL.md",
       "sha256": "07d77055e61e188e4c9291f31d5820b84a96026fac292e5c2022d9a891e2eca2",
-      "installed_sha256": "652c87a63414a6b58c69a57117b68eafb515b658f6e284ba610c7a429bbde2f3"
+      "installed_sha256": "652c87a63414a6b58c69a57117b68eafb515b658f6e284ba610c7a429bbde2f3",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "finishing-a-development-branch",
@@ -2464,7 +2559,8 @@
       ],
       "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/subagent-driven-development/SKILL.md",
       "sha256": "2c665b573977bf8cf23278544d6438ce17fc27c0993c750d34055fed2b6ae8d6",
-      "installed_sha256": "db93f88e119211c590f6dc93f6c2d0e7e178224933ac16d7efd035227d3df5f2"
+      "installed_sha256": "db93f88e119211c590f6dc93f6c2d0e7e178224933ac16d7efd035227d3df5f2",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "systematic-debugging",
@@ -2539,7 +2635,8 @@
       "installed_sha256": "349f7d15bc7917113d5c67d2a1a0dcfe7ac397ab05601bc20f7d160aa4a943f6",
       "conflicts": [
         "addy-test-driven-development"
-      ]
+      ],
+      "discovery": "explicit-alternative"
     },
     {
       "name": "using-git-worktrees",
@@ -2605,7 +2702,8 @@
       ],
       "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/verification-before-completion/SKILL.md",
       "sha256": "79c258f6f950ccc4e1c09266e60cbd1021c935fae868e2fc013206cd1a57b6fa",
-      "installed_sha256": "325a344e8ef6ade80663ff0e4a1c807d5558180a307c14474690fc73db8f8fc4"
+      "installed_sha256": "325a344e8ef6ade80663ff0e4a1c807d5558180a307c14474690fc73db8f8fc4",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "writing-plans",
@@ -2638,7 +2736,8 @@
       ],
       "url": "https://github.com/obra/superpowers/blob/8ca22dba9a94f28898bbce59f2537ff4d87c747d/skills/writing-plans/SKILL.md",
       "sha256": "53f373e90e7762cb59147f143936e7cc9098d9810a7ae22175763d9a4d35d81e",
-      "installed_sha256": "16dc7a35ddfba28fc1f7af3ecaf075a7bdbd4f080859cca595b56b845e968171"
+      "installed_sha256": "16dc7a35ddfba28fc1f7af3ecaf075a7bdbd4f080859cca595b56b845e968171",
+      "discovery": "explicit-alternative"
     },
     {
       "name": "gstack-openclaw-ceo-review",
@@ -9894,7 +9993,8 @@
       "selection_reason": "Selective retrieval, durable handoffs and preserving active constraints.",
       "executable_files": [],
       "sha256": "3f24c11b55b71afa46e09cd50eebff83e41baeb57104b9715fc7f00c864cf149",
-      "installed_sha256": "598de14f88110a53b9f0a72f8528d0b439013abab52a4f16b5791fa212008c1b"
+      "installed_sha256": "598de14f88110a53b9f0a72f8528d0b439013abab52a4f16b5791fa212008c1b",
+      "discovery": "explicit-alternative"
     },
     {
       "source": "addy",
@@ -10200,7 +10300,8 @@
       "selection_reason": "Thin vertical or contract-first slices with observable checks and limited scope.",
       "executable_files": [],
       "sha256": "35cf3deb2bc1b50edf06f3d1eae8361cc5fa5bfdb07fa83ddaf0e5ce26f0417e",
-      "installed_sha256": "2e0d0771e4d13ce316b3c7df6787d8c5587e745d1bc41944873b90a99aa90689"
+      "installed_sha256": "2e0d0771e4d13ce316b3c7df6787d8c5587e745d1bc41944873b90a99aa90689",
+      "discovery": "explicit-alternative"
     },
     {
       "source": "addy",
@@ -10385,7 +10486,8 @@
       "selection_reason": "Dependency ordering, vertical slices, risk-first checkpoints and acceptance criteria.",
       "executable_files": [],
       "sha256": "0259f77f2d77d3250dd6cdc7ebadc87bce088596dd2a6510d119ddaf6933be0c",
-      "installed_sha256": "5ff9b55f30c4b69f4bd1633860a15446cf0836fad704ba7ba5f0c6442ab83485"
+      "installed_sha256": "5ff9b55f30c4b69f4bd1633860a15446cf0836fad704ba7ba5f0c6442ab83485",
+      "discovery": "explicit-alternative"
     },
     {
       "source": "addy",
@@ -10601,7 +10703,8 @@
       "installed_sha256": "2ebd45f6635a1f9c9d628ae6dcb94215ce76e8ec56b8cee05f15bbdbcad38cde",
       "conflicts": [
         "superpowers-test-driven-development"
-      ]
+      ],
+      "discovery": "explicit-alternative"
     },
     {
       "source": "addy",
@@ -11507,7 +11610,10 @@
         "libraries-craft",
         "scroll-craft",
         "gsap-official",
-        "canvas-ui"
+        "canvas-ui",
+        "anime-runtime-review",
+        "motion-runtime-review",
+        "radix-primitives-review"
       ]
     },
     {
@@ -11986,7 +12092,9 @@
       "informed_by": [
         "scroll-craft",
         "taste",
-        "diagram-design"
+        "diagram-design",
+        "design-anatomy",
+        "editorial-illustration"
       ]
     },
     {
@@ -12179,7 +12287,8 @@
         "debugging",
         "test-design",
         "release-operations"
-      ]
+      ],
+      "kind": "starter"
     },
     "engineering-core": {
       "description": "General implementation, causal debugging, behavior tests, CI and architecture review.",
@@ -12188,7 +12297,8 @@
         "test-design",
         "architecture-review",
         "ci-maintenance"
-      ]
+      ],
+      "kind": "specialist"
     },
     "architecture": {
       "description": "Domain models, contracts, ADRs and meaningful module boundaries.",
@@ -12199,7 +12309,8 @@
         "ecc-contract-first",
         "ecc-architecture-decision-records",
         "ecc-hexagonal-architecture"
-      ]
+      ],
+      "kind": "specialist"
     },
     "planning-matt": {
       "description": "Explicit Matt workflow for discovery, specifications and executable tickets.",
@@ -12209,14 +12320,16 @@
         "matt-to-spec",
         "matt-to-tickets",
         "matt-wayfinder"
-      ]
+      ],
+      "kind": "alternative"
     },
     "execution-matt": {
       "description": "Explicit Matt TDD, review and coordinated specification execution.",
       "skills": [
         "matt-implement-spec",
         "matt-handoff"
-      ]
+      ],
+      "kind": "alternative"
     },
     "execution-superpowers": {
       "description": "Explicit Superpowers execution workflow with all required sibling skills.",
@@ -12225,7 +12338,8 @@
         "superpowers-executing-plans",
         "superpowers-dispatching-parallel-agents",
         "superpowers-receiving-code-review"
-      ]
+      ],
+      "kind": "alternative"
     },
     "collaboration": {
       "description": "Parallel work, handoffs, bounded retrieval and long-session continuity.",
@@ -12234,7 +12348,8 @@
         "context-management",
         "matt-handoff",
         "matt-to-questionnaire"
-      ]
+      ],
+      "kind": "specialist"
     },
     "maintenance": {
       "description": "CI diagnosis, triage, review, project documentation and retrospectives.",
@@ -12244,7 +12359,8 @@
         "matt-code-review",
         "matt-retro",
         "matt-writing-for-agents"
-      ]
+      ],
+      "kind": "specialist"
     },
     "frontend-web": {
       "description": "React/Next, Vue/Nuxt or SvelteKit engineering, browser QA, mobile web and motion.",
@@ -12254,7 +12370,8 @@
         "emil-break-ui",
         "motion-design",
         "openai-playwright"
-      ]
+      ],
+      "kind": "starter"
     },
     "full-stack": {
       "description": "Cross-layer web contracts, database integrity, security, testing and release preparation. Add a backend/framework profile.",
@@ -12269,7 +12386,8 @@
         "openai-security-best-practices",
         "ci-maintenance",
         "release-operations"
-      ]
+      ],
+      "kind": "starter"
     },
     "backend-node": {
       "description": "TypeScript NestJS APIs and external API connectors.",
@@ -12279,7 +12397,8 @@
         "ecc-api-design",
         "ecc-contract-first",
         "ecc-api-connector"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-python": {
       "description": "FastAPI and Django patterns with API contracts and behavioral testing.",
@@ -12289,7 +12408,8 @@
         "ecc-django-patterns",
         "ecc-api-design",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-dotnet": {
       "description": "ASP.NET Core and .NET backend patterns.",
@@ -12298,7 +12418,8 @@
         "openai-aspnet-core",
         "ecc-dotnet-patterns",
         "ecc-api-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-java": {
       "description": "Spring Boot, JPA and API contracts.",
@@ -12307,7 +12428,8 @@
         "ecc-springboot-patterns",
         "ecc-jpa-patterns",
         "ecc-api-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-go": {
       "description": "Go gRPC services and Go testing.",
@@ -12316,7 +12438,8 @@
         "awesome-grpc-golang",
         "ecc-golang-testing",
         "ecc-contract-first"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-ruby": {
       "description": "Rails applications, contracts and behavioral tests.",
@@ -12325,7 +12448,8 @@
         "ecc-rails-patterns",
         "ecc-api-design",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "backend-php": {
       "description": "Laravel applications, contracts and behavioral tests.",
@@ -12334,7 +12458,8 @@
         "ecc-laravel-patterns",
         "ecc-api-design",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "testing-web": {
       "description": "Browser interactions, React behavioral tests, layout stress and CI failures.",
@@ -12344,7 +12469,8 @@
         "openai-playwright",
         "emil-break-ui",
         "ci-maintenance"
-      ]
+      ],
+      "kind": "specialist"
     },
     "testing-systems": {
       "description": "C++, Rust and Go tests plus repeatable performance measurements.",
@@ -12353,7 +12479,8 @@
         "ecc-rust-testing",
         "ecc-golang-testing",
         "ecc-benchmark-optimization"
-      ]
+      ],
+      "kind": "specialist"
     },
     "mobile-apple": {
       "description": "SwiftUI implementation and protocol-based test seams. Requires Apple tooling for builds.",
@@ -12363,7 +12490,8 @@
         "ecc-swiftui-patterns",
         "ecc-swift-protocol-di-testing",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "mobile-android": {
       "description": "Android/KMP architecture, Compose and coroutine/Flow behavior.",
@@ -12374,7 +12502,8 @@
         "ecc-compose-multiplatform-patterns",
         "ecc-kotlin-coroutines-flows",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "mobile-react-native": {
       "description": "React Native architecture and shared mobile interaction/testing concerns.",
@@ -12384,7 +12513,8 @@
         "ecc-react-native-patterns",
         "test-design",
         "motion-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "mobile-flutter": {
       "description": "Flutter/Dart review and regression design; complex implementation examples remain review-required.",
@@ -12394,7 +12524,8 @@
         "ecc-flutter-dart-code-review",
         "test-design",
         "architecture-review"
-      ]
+      ],
+      "kind": "specialist"
     },
     "desktop-crossplatform": {
       "description": "Electron/Tauri/native process boundaries, filesystem behavior, packaging and recovery.",
@@ -12403,7 +12534,8 @@
         "frontend-engineering",
         "test-design",
         "release-operations"
-      ]
+      ],
+      "kind": "specialist"
     },
     "desktop-windows": {
       "description": "WinUI and Windows desktop development; Windows required for runtime verification.",
@@ -12412,7 +12544,8 @@
         "desktop-integration",
         "test-design",
         "release-operations"
-      ]
+      ],
+      "kind": "specialist"
     },
     "databases": {
       "description": "PostgreSQL, MySQL, SQLite, Redis and document-store design/operations with safe migrations.",
@@ -12420,7 +12553,8 @@
         "database-systems",
         "data-migrations",
         "ecc-mysql-patterns"
-      ]
+      ],
+      "kind": "specialist"
     },
     "integrations": {
       "description": "API contracts/connectors, CLI interfaces and MCP server/client engineering.",
@@ -12429,7 +12563,8 @@
         "ecc-api-connector",
         "openai-cli-creator",
         "mcp-integration"
-      ]
+      ],
+      "kind": "specialist"
     },
     "security": {
       "description": "Evidence-based application security review and repository threat modeling.",
@@ -12437,7 +12572,8 @@
         "openai-security-threat-model",
         "awesome-security-auditor",
         "openai-security-best-practices"
-      ]
+      ],
+      "kind": "specialist"
     },
     "performance": {
       "description": "Repeatable benchmarks, latency paths and observable regressions.",
@@ -12446,7 +12582,8 @@
         "ecc-benchmark-optimization",
         "ecc-latency-critical-systems",
         "awesome-observability-engineer"
-      ]
+      ],
+      "kind": "specialist"
     },
     "cloud-gcp": {
       "description": "Cloud Run/SQL service delivery with explicit release boundaries and logging.",
@@ -12455,7 +12592,8 @@
         "google-cloud-sql-basics",
         "google-cloud-logging-query-generation",
         "release-operations"
-      ]
+      ],
+      "kind": "specialist"
     },
     "kubernetes": {
       "description": "Kubernetes/GKE manifests, reliability and workload diagnosis.",
@@ -12464,7 +12602,8 @@
         "google-gke-basics",
         "google-gke-reliability",
         "google-gke-workload-troubleshooting"
-      ]
+      ],
+      "kind": "specialist"
     },
     "operations": {
       "description": "Terraform, observability, release readiness, rollout and recovery.",
@@ -12475,7 +12614,8 @@
         "ecc-production-audit",
         "release-operations",
         "ci-maintenance"
-      ]
+      ],
+      "kind": "starter"
     },
     "data-analytics": {
       "description": "Reproducible quantitative analysis with notebooks, BigQuery optimization and source-grounded reporting when needed.",
@@ -12484,7 +12624,8 @@
         "openai-jupyter-notebook",
         "google-bigquery-basics",
         "google-bigquery-optimization"
-      ]
+      ],
+      "kind": "specialist"
     },
     "data-pipelines": {
       "description": "Document ingestion, Airflow DAG design and data migration integrity.",
@@ -12493,7 +12634,8 @@
         "document-parsing",
         "google-managed-airflow-dag-authoring",
         "data-migrations"
-      ]
+      ],
+      "kind": "specialist"
     },
     "ai-systems": {
       "description": "LLM/RAG/agent evaluation and MCP integration. Add the Genkit language skill if the project uses it.",
@@ -12501,7 +12643,8 @@
         "ai-system-evaluation",
         "mcp-integration",
         "research-and-synthesis"
-      ]
+      ],
+      "kind": "specialist"
     },
     "research": {
       "description": "Web/literature/document research, synthesis, developer documentation and evidence artifacts.",
@@ -12510,7 +12653,8 @@
         "document-parsing",
         "google-retrieving-developer-knowledge",
         "open-design-research-decision-room"
-      ]
+      ],
+      "kind": "starter"
     },
     "documents": {
       "description": "Word, spreadsheets, presentations and PDF creation/editing plus reliable extraction.",
@@ -12518,14 +12662,16 @@
         "office-authoring",
         "document-parsing",
         "openai-pdf"
-      ]
+      ],
+      "kind": "starter"
     },
     "media": {
       "description": "Audio transcription and speech generation with explicit output/data handling.",
       "skills": [
         "openai-transcribe",
         "openai-speech"
-      ]
+      ],
+      "kind": "specialist"
     },
     "design-prototyping": {
       "description": "Compare visual directions, preserve design evidence, and prototype login/FAQ flows.",
@@ -12536,7 +12682,8 @@
         "open-design-login-flow",
         "open-design-faq-page",
         "emil-pick-ui-library"
-      ]
+      ],
+      "kind": "specialist"
     },
     "design-redesign": {
       "description": "Improve an existing interface while preserving its brand, behavior and content.",
@@ -12545,7 +12692,8 @@
         "emil-break-ui",
         "emil-mobile-native",
         "motion-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "marketing-strategy": {
       "description": "Positioning, customer/competitor research, pricing, campaigns and launch planning.",
@@ -12557,7 +12705,8 @@
         "marketing-pricing",
         "marketing-launch",
         "ecc-marketing-campaign"
-      ]
+      ],
+      "kind": "starter"
     },
     "marketing-growth": {
       "description": "Experiment design, CRO, search review, onboarding, email, referrals and RevOps.",
@@ -12570,7 +12719,8 @@
         "marketing-emails",
         "marketing-referrals",
         "marketing-revops"
-      ]
+      ],
+      "kind": "specialist"
     },
     "marketing-content": {
       "description": "Brand voice, long-form and social content, banners and share cards.",
@@ -12578,7 +12728,8 @@
         "ecc-brand-voice",
         "ecc-article-writing",
         "ecc-content-engine"
-      ]
+      ],
+      "kind": "specialist"
     },
     "marketing-community": {
       "description": "Community and partner marketing. Publishing/outreach remains within user authorization.",
@@ -12586,7 +12737,8 @@
         "marketing-community-marketing",
         "marketing-co-marketing",
         "ecc-content-engine"
-      ]
+      ],
+      "kind": "specialist"
     },
     "fundraising": {
       "description": "Evidence-backed investor materials and outreach preparation.",
@@ -12594,7 +12746,8 @@
         "ecc-investor-materials",
         "ecc-investor-outreach",
         "ecc-market-research"
-      ]
+      ],
+      "kind": "specialist"
     },
     "product-discovery": {
       "description": "Evidence-led product decisions, prioritization and acceptance, with optional premise-challenging methods and customer research.",
@@ -12604,7 +12757,8 @@
         "gstack-openclaw-ceo-review",
         "customer-research",
         "matt-domain-modeling"
-      ]
+      ],
+      "kind": "specialist"
     },
     "learning": {
       "description": "Interactive technical teaching, exercises and agent-readable explanations.",
@@ -12612,13 +12766,15 @@
         "matt-teach",
         "matt-scaffold-exercises",
         "matt-writing-for-agents"
-      ]
+      ],
+      "kind": "specialist"
     },
     "focus-mode": {
       "description": "Explicit user-invoked ADHD-friendly presentation without reducing analysis or work quality.",
       "skills": [
         "adhd-i-have-adhd"
-      ]
+      ],
+      "kind": "alternative"
     },
     "react-next": {
       "description": "React/Next engineering and measured rendering/data performance; preserves installed framework versions.",
@@ -12626,14 +12782,16 @@
         "frontend-engineering",
         "vercel-react-best-practices",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "react-composition": {
       "description": "Focused React component API and composition review; avoid unnecessary context or breaking existing interfaces.",
       "skills": [
         "vercel-composition-patterns",
         "addy-api-and-interface-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "react-native-vercel": {
       "description": "Optional Vercel React Native/Expo guidance with native API/version checks and behavior tests.",
@@ -12642,14 +12800,16 @@
         "mobile-design",
         "vercel-react-native-skills",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "react-view-transitions": {
       "description": "Requested React route/state transitions with support checks, reduced motion and history/focus preservation.",
       "skills": [
         "vercel-react-view-transitions",
         "motion-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "web-quality": {
       "description": "Evidence-led web code review, performance investigation and browser regression design; apply only affected checks.",
@@ -12658,7 +12818,8 @@
         "addy-code-review-and-quality",
         "addy-performance-optimization",
         "test-design"
-      ]
+      ],
+      "kind": "specialist"
     },
     "engineering-addy": {
       "description": "Explicit Addy engineering workflow alternative for substantial work: context, planning, incremental implementation, debugging, TDD and ADRs. Do not combine with conflicting TDD suites.",
@@ -12669,7 +12830,8 @@
         "addy-debugging-and-error-recovery",
         "addy-test-driven-development",
         "addy-documentation-and-adrs"
-      ]
+      ],
+      "kind": "alternative"
     },
     "api-reliability": {
       "description": "API boundary contracts, security hardening and operational signals with project-specific controls.",
@@ -12677,7 +12839,8 @@
         "addy-api-and-interface-design",
         "addy-security-and-hardening",
         "addy-observability-and-instrumentation"
-      ]
+      ],
+      "kind": "specialist"
     },
     "idea-research": {
       "description": "Explicit idea refinement and official, installed-version technical research; reuse existing decisions.",
@@ -12685,20 +12848,23 @@
         "addy-idea-refine",
         "addy-source-driven-development",
         "research-and-synthesis"
-      ]
+      ],
+      "kind": "specialist"
     },
     "search-visibility": {
       "description": "Evidence-led organic/AI search review, crawler-purpose distinctions and content findings without invented visibility scores.",
       "skills": [
         "search-visibility"
-      ]
+      ],
+      "kind": "specialist"
     },
     "svg-studio": {
       "description": "Editable SVG illustrations, icons and marks with vector choreography, reduced motion and rendered verification. No additional runtime or library is installed.",
       "skills": [
         "svg-creation",
         "svg-animation"
-      ]
+      ],
+      "kind": "specialist"
     },
     "motion-studio": {
       "description": "Art direction, browser-native scenes, animated color and procedural Canvas, control/navigation choreography and editable SVG. Includes two contrasting source examples; no additional runtime or library is installed.",
@@ -12709,7 +12875,8 @@
         "advanced-motion",
         "svg-creation",
         "svg-animation"
-      ]
+      ],
+      "kind": "starter"
     },
     "portable-foundation": {
       "description": "Project foundation plus all shared Mirket guidance, explicitly copied into the selected project targets when those hosts have no global installation. Use project-foundation with normal shared setup.",
@@ -12719,20 +12886,23 @@
         "test-design",
         "release-operations"
       ],
-      "include_globals": true
+      "include_globals": true,
+      "kind": "specialist"
     },
     "brand-system": {
       "description": "Brand guidelines, editable visual assets and inspected applications using original portable workflows.",
       "skills": [
         "brand-guidelines",
         "svg-creation"
-      ]
+      ],
+      "kind": "specialist"
     },
     "project-start": {
       "description": "Scoped project scaffolding with existing-stack preservation and a runnable first slice.",
       "skills": [
         "project-scaffolding"
-      ]
+      ],
+      "kind": "specialist"
     },
     "business-decisions": {
       "description": "Company-wide allocation, product choices and reproducible data interpretation.",
@@ -12740,7 +12910,8 @@
         "executive-strategy",
         "product-management",
         "data-analysis"
-      ]
+      ],
+      "kind": "specialist"
     }
   }
 }

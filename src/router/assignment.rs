@@ -32,8 +32,17 @@ pub(crate) struct Assignment {
 }
 
 impl Assignment {
-    pub fn bind_workspaces(&mut self, paths: &crate::paths::Paths, project: &std::path::Path) {
-        self.metadata["workspaces"] = json!({"project_root":project,"design_workspace":paths.root.join("execution/podman/staging/design/workspace"),"path_rule":"File writes stay in the assigned project. Design tools use paths relative to the fixed design workspace. For authored design sources, select that workspace or a registered child as the project; no new filesystem access is granted."});
+    pub fn bind_workspaces(
+        &mut self,
+        paths: &crate::paths::Paths,
+        project: &std::path::Path,
+    ) -> Result<()> {
+        ensure!(
+            project != paths.root.join("execution/podman/staging/design/workspace"),
+            "choose an application project or a dedicated design project directory, not the shared workspace root"
+        );
+        self.metadata["workspaces"] = json!({"project_root":project,"design_workspace":super::tools::design_scope(paths, project)?,"path_rule":"Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope."});
+        Ok(())
     }
 
     pub fn resolve(&self, request: &SpawnRequest, policies: &[ToolPolicy]) -> Result<Resolution> {
@@ -95,6 +104,7 @@ fn unique(values: &[String], label: &str) -> Result<BTreeSet<String>> {
 }
 
 pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
+    super::handoff::validate_checks(request)?;
     if let Some(choice) = &request.model_selection {
         bounded(&choice.target, "model target", 128)?;
         bounded(&choice.id, "model ID", 256)?;
@@ -139,7 +149,7 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
     let design_production = workflows.iter().any(|workflow| workflow.design_production);
     ensure!(
         design_production == request.design_input.is_some(),
-        "design production requires design_input: image_to_code with a supplied/generated target image, or code_fallback with the host's reason that no image model is available; other workflows must omit it"
+        "design production requires design_input: image_to_code with an inspected target, native_specimen with medium and suitability reason, or code_fallback with the host's capability reason; other workflows must omit it"
     );
     if let Some(input) = &request.design_input {
         input.validate()?;
@@ -247,7 +257,8 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         "roles":roles.iter().map(|role| json!({"id":role.id,"title":role.title,"lead_skill":role.lead,"professional":role.professional})).collect::<Vec<_>>(),
         "guidance":reads,"workflow_rules":workflows.iter().map(|workflow| json!({"id":workflow.id,"rule":workflow.rule})).collect::<Vec<_>>(),
         "tool_selection":if automatic {"automatic"} else {"explicit_scoped_subset"},"assigned_tools":request.assigned_tools,"required_tools":required,"verification_tools":request.verification_tools,
-        "design_gate":request.design_input.as_ref().map(super::design_gate::contract),
+        "host_verification":if super::handoff::required(request) { Some(json!({"required_checks":request.host_verification_checks,"completion":"awaiting_host_verification","report_tool":"verification_handoff","boundary":"The worker reads back source; the host executes build/tests and reports hash-bound evidence. Worker output is not runtime verified."})) } else {None},
+        "design_gate":request.design_input.as_ref().map(|input| super::design_gate::contract(input, &request.task_needs)),
         "authority":"Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled."});
     ensure!(
         serde_json::to_vec(&metadata)?.len() <= 32 * 1024,
@@ -270,6 +281,7 @@ mod tests {
 
     fn task(workflow: &str) -> SpawnRequest {
         SpawnRequest {
+            memory_recall: Default::default(),
             objective: "Handle the specified task".into(),
             task_intent: TaskIntent::Synthesis,
             complexity_class: ComplexityClass::Synthesis,
@@ -296,6 +308,7 @@ mod tests {
                     reason: "Test host has no image model".into(),
                 }),
             verification_tools: vec![],
+            host_verification_checks: super::super::handoff::default_checks(),
         }
     }
 
@@ -320,7 +333,10 @@ mod tests {
             assignment.metadata["design_gate"]["input"]["mode"],
             "image_to_code"
         );
-        assert_eq!(assignment.metadata["design_gate"]["execution_seconds"], 600);
+        assert_eq!(
+            assignment.metadata["design_gate"]["execution_seconds"],
+            1800
+        );
         request.task_needs[0].workflow = "source-implementation".into();
         assert!(prepare(&mut request).is_err());
     }

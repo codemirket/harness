@@ -101,6 +101,15 @@ pub enum DeterministicOperation {
     SortLines,
 }
 
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum MemoryRecall {
+    Required,
+    #[default]
+    BestEffort,
+    Off,
+}
+
 /// Task needs constrain owned role, guidance and tool selection before execution.
 /// An explicit model choice narrows discovered candidates; it cannot assert
 /// capabilities, lower floors, add providers or authorize inference.
@@ -115,6 +124,8 @@ pub struct ModelSelection {
 #[derive(Clone, Debug, Deserialize, JsonSchema, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpawnRequest {
+    #[serde(default)]
+    pub memory_recall: MemoryRecall,
     pub objective: String,
     pub task_intent: TaskIntent,
     pub complexity_class: ComplexityClass,
@@ -137,12 +148,15 @@ pub struct SpawnRequest {
     pub requested_tier: Option<Tier>,
     #[serde(default)]
     pub model_selection: Option<ModelSelection>,
-    /// Required for design production: an inspected target, or a host-declared
-    /// fallback when no image model is available. Does not grant tool access.
+    /// Required for design production: an inspected image, native specimen with
+    /// suitability reason, or legacy capability fallback. Does not grant tool access.
     #[serde(default)]
     pub design_input: Option<super::DesignInput>,
     #[serde(default)]
     pub verification_tools: Vec<String>,
+    /// Named checks the host must report after source implementation.
+    #[serde(default = "super::handoff::default_checks")]
+    pub host_verification_checks: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -691,6 +705,7 @@ mod tests {
 
     fn request(intent: TaskIntent, class: ComplexityClass) -> SpawnRequest {
         SpawnRequest {
+            memory_recall: Default::default(),
             objective: "complete the task".into(),
             task_intent: intent,
             complexity_class: class,
@@ -707,6 +722,7 @@ mod tests {
             model_selection: None,
             design_input: None,
             verification_tools: vec![],
+            host_verification_checks: super::super::handoff::default_checks(),
         }
     }
 

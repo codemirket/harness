@@ -2,9 +2,11 @@
 mod assignment;
 mod codex;
 mod design_gate;
+pub mod durable;
+pub mod handoff;
 mod responses;
 pub use assignment::{SkillReference, TaskNeed};
-pub use design_gate::DesignInput;
+pub use design_gate::{DesignInput, Medium as DesignMedium};
 pub(crate) mod discovery;
 pub(crate) mod execution;
 pub(crate) mod native;

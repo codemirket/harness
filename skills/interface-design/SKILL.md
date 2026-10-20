@@ -8,12 +8,11 @@ description: Build and refine usable product screens and public pages with delib
 Make the screen work, look at it, and improve the specific things that are wrong.
 The deliverable is the working interface, not a declaration of design principles.
 
-For design production, follow [image-to-code and quality gates](references/image-to-code.md).
-Inspect a supplied or host-image-model target before implementing the full UI.
-When the host has no usable image model, compose directly in code and inspect
-that first rendered composition before expansion. Preserve the target, compare
-actual output, and finish within the bounded correction budget. A passing build
-or an attractive isolated asset does not satisfy these gates.
+For design production, follow [medium-aware targets and budgets](references/image-to-code.md).
+Use a supplied target or inspect a minimal native specimen appropriate to the
+medium; use host image generation when the composition benefits from raster
+artwork. Freeze the target and compare actual output within the deliverable's
+budget. A passing build or attractive isolated asset does not satisfy these gates.
 
 ## Professional stance
 
@@ -43,6 +42,10 @@ When the requested deliverable is an editable design document, use
 `graphic-design` and its design-document reference with the official Penpot
 MCP/plugin through the `design` package. A static design export does not implement responsive behavior,
 accessible controls or a working website.
+
+For font selection, multilingual layouts or animated text, use
+[typography proof](references/typography-proof.md) to inspect actual shaping,
+wrapping, fallback and readable settled states in the consuming renderer.
 
 ## Before composing
 
@@ -92,7 +95,7 @@ adaptation against the actual content, tokens and state ownership.
 
 Use actual copy and believable data shapes. Label fictional sample content. Keep
 claims and customer evidence supplied or verified. If the direction is uncertain
-and costly to change, resolve it through the image-to-code target gate. Routine
+and costly to change, resolve it through the medium-aware target gate. Routine
 repairs do not need speculative alternatives or a permission ceremony.
 
 For a new screen, meaningful redesign or design QA, use
