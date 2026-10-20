@@ -1,8 +1,8 @@
 # Mirket documentation
 
-Start with [versions and availability](release-status.md). The latest public
-release is 1.0.5 as of 2026-10-20; guides marked for desktop build 1.0.11 describe
-newer, locally verified behavior with source available and binary publication pending.
+Start with [versions and supported targets](release-status.md). These guides describe
+Mirket 1.0.11. Use versioned documentation for older binaries and keep optional
+container support separate from core CLI platform support.
 
 | Your task | Guide |
 | --- | --- |

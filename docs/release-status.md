@@ -1,19 +1,23 @@
-# Versions and availability
+# Mirket 1.0.11: versions and supported targets
 
-Checked on **2026-10-20**. Documentation can describe a verified desktop build
-before its binaries are published. Installing the latest public release
-does not install unpublished features.
+This is the **1.0.11** source and documentation reference, prepared on 2026-10-20.
+The [1.0.11 release page](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11)
+is authoritative for publication status, native artifacts and verification notes.
+Use its `mirket-release.json` or `SHA256SUMS` to verify downloads. A source commit
+or a running CI job is not a published binary.
 
-| Distribution | State | How to use its documentation |
-| --- | --- | --- |
-| [Public 1.0.5](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.5) | Published binaries for macOS ARM64, Linux x86-64 and Windows x86-64 | Use the release manifest and [versioned source documentation](https://github.com/codemirket/harness/tree/mirket-v1.0.5/docs); use this tag when you need the 1.0.5 implementation |
-| Desktop build 1.0.11 | Built, tested and deployed to an existing macOS ARM64 installation; agent/design containers verified on Linux ARM64 | Newer behavior is documented here for that installation. The 1.0.11 source is on `main`; native release verification and downloadable assets are pending. Do not treat a source build as a published binary |
+| Distribution | Targets and requirements |
+| --- | --- |
+| Core CLI and standalone installers | macOS ARM64 (`aarch64-apple-darwin`), Linux x86-64 (`x86_64-unknown-linux-gnu`), Windows x86-64 (`x86_64-pc-windows-msvc`) |
+| Optional design and agent-runtime packages | Supported private Podman environment with Linux ARM64 containers. An x86-64 CLI does not imply x86-64 container support |
+| Source | [Versioned source](https://github.com/codemirket/harness/tree/mirket-v1.0.11), with the locked Rust toolchain and dependency graph |
 
-Always resolve [the release list](https://github.com/codemirket/harness/releases)
-again before installing. A release manifest determines available targets; source
-portability does not establish native platform verification.
+Resolve [the release list](https://github.com/codemirket/harness/releases) again
+before installing. For an older installation, use its versioned documentation;
+[1.0.5 documentation](https://github.com/codemirket/harness/tree/mirket-v1.0.5/docs)
+remains available. New commands below require 1.0.11 unless otherwise documented.
 
-## What the newer desktop build adds
+## What 1.0.11 adds
 
 | Capability | Contract and limit |
 | --- | --- |
@@ -24,17 +28,21 @@ portability does not establish native platform verification.
 | Durable workers | LangGraph 1.2.16 and SQLite checkpointer 3.1.2, with scoped dispatch and bounded resumption. Uncertain effects are not blindly replayed. [Runtime](agent-runtime.md) |
 | Recovery | Restorable durable-state archives and relocation of an original renamed directory. Assets/settings need separate backups; cross-filesystem copies are unsupported. [Recovery](agent-runtime.md#restorable-backups-and-project-relocation) |
 | Typed lifecycle | Object cursors and retention plans through MCP; previews delete nothing and apply rejects stale plans. [Desktop contracts](agent-runtime.md#desktop-contracts-and-bounded-recall) |
-| Release acceptance | Explicit local gate for contained runtime, desktop contracts and backup recovery. It supplements standard checks and is not a hosted CI result. [Contributing](../CONTRIBUTING.md#contained-release-acceptance) |
+| Release acceptance | Explicit local gate for contained runtime, desktop contracts and backup recovery. It supplements standard checks. [Contributing](../CONTRIBUTING.md#contained-release-acceptance) |
 
-## Verification scope
+## Verification and upgrade boundaries
 
-The 1.0.11 deployment passed the standard Rust gate (392 tests passed, seven
-opt-in tests excluded), contained runtime regressions, explicit desktop acceptance
-and backup recovery. Post-restart calls in Codex verified matching runtime hashes,
-four parallel memory/lifecycle/identity calls, typed cursors, a saved design-token
-output and three source/installed/embedded skill matches. Claude installation
-files matched; its live conversation connection was not independently observed.
+The native [CI workflow](https://github.com/codemirket/harness/actions/workflows/check.yml)
+runs formatting, Clippy, standard tests, packaging, each standalone installer,
+disposable setup/doctor and managed updates on all three release targets. Release
+notes identify the successful artifact-producing run. The separate ARM64 contained
+gate exercises real memory/workflow behavior, typed MCP calls, parallel operations,
+design output and backup recovery. Core native CI does not run those optional
+containers on every platform.
 
-Those are bounded local checks, not a claim that every tool, platform, real-project
-retrieval task or visual output has passed. New public binaries need their own
-release artifacts, platform checks and publication. Source publication does not itself publish a binary or change an installed desktop runtime.
+Task databases migrate to schema 4. Preserve consistent state backups before
+upgrading older installations; a binary-only downgrade cannot read the newer
+schema. Read [migration and recovery](installation.md#updating-older-task-databases).
+Reconnect desktop MCP sessions after an update and verify each actual connection.
+Neither native CI nor a package receipt proves that a user's app reconnected,
+that retrieval works on every project, or that a visual result satisfies its brief.

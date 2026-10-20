@@ -22,10 +22,10 @@ production and correction.
 [Releases](https://github.com/codemirket/harness/releases/latest) ·
 [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
 
-**Version availability:** the public download is **1.0.5** as of 2026-10-20.
-The verified desktop build **1.0.11** adds the memory, recovery and verification
-features documented below; its source is now on `main`, with public binaries pending verification. See [versions and availability](docs/release-status.md) and use the
-selected release’s commands and manifest.
+**Current version: [1.0.11](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11).**
+Source, runtime contracts and installation guidance are kept together. Verify the
+selected release's manifest before downloading; see [versions and supported
+targets](docs/release-status.md).
 
 ## Get started with your agent
 
@@ -57,7 +57,7 @@ the result. Start a fresh host session if needed to load the new tools.
 
 **Prefer a manual install?** Download the matching executable from
 [Releases](https://github.com/codemirket/harness/releases/latest), verify its
-checksum and follow [manual installation](docs/installation.md). The 1.0.5 release
+checksum and follow [manual installation](docs/installation.md). The 1.0.11 release
 provides macOS ARM64, Linux x86-64 and Windows x86-64 binaries. Use the selected
 release's manifest for available targets.
 
@@ -207,7 +207,7 @@ readiness and invocation checks; a successful package probe is not a verified
 render. See [the package guide](docs/packages.md) and [Podman setup](docs/podman.md).
 The core expertise and coordination features work without this stack.
 
-## Memory, recovery and verification in the newer desktop build
+## Memory, recovery and verification
 
 The optional `agent-runtime` uses **Mem0** for explicit project facts and
 **LangGraph** for durable worker checkpoints. It shares the main MCP connection;
@@ -221,8 +221,8 @@ and traces; project source, design assets, credentials and desktop settings need
 separate backups. Relocation rebinds a renamed original directory while retaining
 its namespace. Cross-filesystem copies are not supported by that command.
 
-These features require the [verified 1.0.11 desktop build](docs/release-status.md),
-not the current public 1.0.5 download. Read [memory and durable workers](docs/agent-runtime.md),
+These features require [Mirket 1.0.11](docs/release-status.md) and the optional
+agent runtime where noted. Read [memory and durable workers](docs/agent-runtime.md),
 [verification handoffs](docs/task-evidence.md) and
 [recovery](docs/agent-runtime.md#restorable-backups-and-project-relocation).
 

@@ -1,6 +1,6 @@
 # Runtime packages
 
-> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
 
 `design` supplies production tools. The internal `agent-runtime` package supplies
 Mem0 memory and LangGraph worker checkpoints through Mirket itself; see

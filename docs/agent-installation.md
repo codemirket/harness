@@ -36,10 +36,9 @@ match. Validate that the binary URL belongs to that repository's GitHub release,
 uses HTTPS, and refers to the selected release. Never execute a downloaded file
 before verification.
 
-As of 2026-10-20, the latest public release is 1.0.5. The separately verified
-desktop build 1.0.11 is not a public download; do not assume its commands exist
-in 1.0.5. See [version availability](release-status.md). Resolve the selected
-release again at installation time. The 1.0.5 binaries cover:
+This guide covers 1.0.11. Resolve the latest stable or explicitly requested release
+at installation time, and use its manifest throughout. See [version availability](release-status.md).
+The 1.0.11 native release targets are:
 
 | Device | Manifest target |
 | --- | --- |

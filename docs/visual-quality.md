@@ -1,13 +1,13 @@
 # Visual production
 
-> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
 
 Mirket supplies visual guidance, scoped production tools and artifact checks.
 It does not certify aesthetic quality. A valid render, an AI review and user
 acceptance are different observations.
 
-Use [version availability](release-status.md) to distinguish the published
-workflow from the newer desktop implementation described here.
+Use [version availability](release-status.md) when working with an older binary.
+The [resource review](design-resource-review.md) records adoption decisions and exclusions.
 
 ## Medium-aware visual workflow
 

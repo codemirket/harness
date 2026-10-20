@@ -6,7 +6,7 @@ owns their formats and limits and ships with the agent-coordination skill.
 
 ## Worker verification handoff
 
-The [newer desktop build](release-status.md) also binds worker results to host
+[Mirket 1.0.11](release-status.md) also binds worker results to host
 verification. These are separate records: task completion checks coordination
 evidence; a worker handoff records checks against that worker's actual inputs.
 

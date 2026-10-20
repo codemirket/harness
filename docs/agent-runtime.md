@@ -1,6 +1,6 @@
 # Local memory and durable workers
 
-> **Version scope:** This guide includes the verified desktop build 1.0.11. The public download remains 1.0.5 as of 2026-10-20. Check [version availability](release-status.md) before using newer commands.
+> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
 
 `agent-runtime` contains Mem0 OSS 2.2.1, LangGraph 1.2.16 and the SQLite
 checkpointer 3.1.2. It is an internal package behind the existing Mirket MCP

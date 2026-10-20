@@ -20,8 +20,8 @@ try {
       page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
       await page.goto(url,{waitUntil:'networkidle'});
       assert.equal(await page.locator('h1').count(),1);
-      assert.match(await page.locator('#release-status').textContent(),/Public download: 1\.0\.5/);
-      assert.match(await page.locator('#continuity').textContent(),/not included in the current public 1\.0\.5/);
+      assert.match(await page.locator('#release-status').textContent(),/Mirket 1\.0\.11/);
+      assert.match(await page.locator('#continuity').textContent(),/optional agent runtime/);
       assert.equal(await page.locator('#install-prompt').inputValue(),expected);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`Overflow at ${width}`);
       await page.keyboard.press('Tab');

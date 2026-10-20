@@ -283,9 +283,8 @@ The operating system must match the executable target.
 
 ## Contained release acceptance
 
-This command is part of the [verified desktop build 1.0.11](docs/release-status.md);
-it is not available in the public 1.0.5 source or executable. Use it with its
-matching source and prepared runtime generation.
+`mirket dev acceptance` is available in [1.0.11](docs/release-status.md).
+Use the candidate executable with its matching source and prepared runtime generation.
 
 Before deploying a change to desktop contracts or owned runtime code, run both
 the standard gate and the explicit contained gate with the candidate CLI outside

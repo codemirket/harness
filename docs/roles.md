@@ -40,7 +40,7 @@ record when durable continuity or coordination requires it.
 
 ## Discover starter bundles
 
-In the [newer desktop build](release-status.md), `mirket catalog profiles` shows
+In [1.0.11](release-status.md), `mirket catalog profiles` shows
 eight starter bundles. Use `mirket catalog profiles --all` for specialist and
 alternative bundles. Existing IDs and saved selections keep their membership.
 Whole-workflow alternatives remain opt-in through a source keyword or exact skill
