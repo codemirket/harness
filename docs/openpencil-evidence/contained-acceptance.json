@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "ok": true,
+  "identity": {
+    "binary_sha256": "186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b",
+    "source_sha256": "a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "checks": [
+    "contained-runtime",
+    "desktop-contracts",
+    "parallel-runtime",
+    "design-output",
+    "backup-recovery"
+  ],
+  "limits": "Local test receipt, not a signature, human approval or desktop activation evidence. Standard Rust and JavaScript gates remain required.",
+  "raw_receipt_sha256": "17ffd03d50d50269d8f4b0fc7d13fc0ce5e18c3d925f8910ed7c576997a3a747"
+}

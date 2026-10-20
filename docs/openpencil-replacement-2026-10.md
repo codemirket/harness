@@ -1,8 +1,9 @@
 # OpenPencil replacement — 20 October 2026
 
 This replaces the Penpot runtime described in the earlier harness map and
-security reports. The change is prepared for review; the live installation has
-not been changed. Earlier Penpot evidence remains historical evidence.
+security reports. The verified replacement is deployed. The actual Codex Mirket connection
+reports the new binary; its separate design connection is awaiting reconnect
+after the private engine was restarted. Earlier Penpot evidence remains historical evidence.
 
 ## Runtime and routing
 
@@ -17,7 +18,7 @@ not been changed. Earlier Penpot evidence remains historical evidence.
 | Host path | Same owned tools in the host's shared design workspace |
 | Operations | `openpencil_inspect`, `openpencil_document`, `openpencil_edit`, `openpencil_export`; inspected upstream schemas govern arguments |
 | Tokens | Style Dictionary produces DTCG; new/imported documents receive variables/styles; edits compile tokens and can explicitly refresh them through `import_design_tokens` |
-| Persistence | No new service volumes. Stopped legacy state is archived byte-for-byte; old volumes and workspace files remain untouched |
+| Persistence | No new service volumes. The authorized cleanup removed legacy Penpot volumes, session state and generated token files |
 
 OpenPencil's current MCP server requires an attached editor. Mirket uses the
 official headless file CLI, so workers do not depend on a desktop session or
@@ -47,7 +48,7 @@ The existing Rust TLS closure also received compatible patches:
 rustls-webpki 0.103.16 and webpki-roots 1.0.10. Certifi is pinned to 2026.10.19 after the first hosted audit reported
 [GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2).
 The wheel hash and parsed CA bundle were verified; the affected root is absent.
-This is a source-lock change, with no live agent image deployment.
+The updated agent image is deployed; its inventory contains Certifi 2026.10.19.
 
 ## Verification status
 
@@ -104,15 +105,64 @@ logs, exported `.fig`/PNG proof and the verified image archive are retained in
 `~/.mirket/evidence/harness-openpencil-replacement-2026-10-20/`.
 
 
-## Limits and activation
+## Deployment and live verification — 21 October 2026
 
-No production deployment, desktop reconnect or saved Penpot database conversion
-has occurred. Validation used an isolated review checkout; the original workspace
-sync receipts and OS-offloading read limitations are retained in the private bundle. Stop the prior generation using its installed CLI before installing
-a replacement generation. Export needed legacy designs first. The migration
-retains legacy data; deleting it is a separate decision.
+The [deployment receipt](openpencil-evidence/deployment.json) identifies the
+installed macOS ARM64 release binary from the successful hosted run. Its SHA-256
+is `186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b`.
+The runtime update preserved the selected hosts and packages. Post-restart doctor
+checks pass for managed files, configuration, package readiness and fresh MCP calls.
+The actual Codex `runtime_status` call reports PID 1747, the reviewed source above,
+and an installed executable matching that process. Claude activation was not tested.
+
+The [live file verification](openpencil-evidence/live-verification.json) records
+creation, edit, save/reopen with persistent node IDs, canonical token variables,
+source-bound PNG/SVG export, stale-write rejection and missing-node rejection
+without publishing a partial file. The [pixel inspection](openpencil-evidence/live-pixel-inspection.json)
+confirms the 480×240 dark-blue rectangle, center RGB `(18, 52, 86)` and PNG digest.
+All 15 owned module hashes match the reviewed checkout. After reboot, fresh
+installed-CLI calls reopened the same saved `.fig` and produced a byte-identical
+PNG; the [post-restart export check](openpencil-evidence/export-after-restart.json)
+records its dimensions, pixel value and source digest.
+
+The restart left the private engine stopped. Starting it and the saved core and
+diagrams services restored discovery of 14 design tools, including all four
+OpenPencil tools and no Penpot tools. Codex had dropped its separate design server
+connection; a native design call in this chat remains pending reconnect. The CLI
+results above establish live service behavior, not that missing client connection.
+
+The contained acceptance gate passed before deployment and again after restart.
+The [retained acceptance receipt](openpencil-evidence/contained-acceptance.json) binds
+the deployed binary and reviewed source to all five passing checks: contained
+runtime, desktop contracts, parallel runtime, design output and backup recovery.
+The repeat replaced a final receipt lost from temporary storage during reboot;
+its full output is now saved directly to the durable bundle. No required checks
+or limits were reduced.
+
+## Penpot cleanup and retained failures
+
+The [removal receipt](openpencil-evidence/penpot-removal.json) records the authorized
+purge of the owned database, cache and assets volumes, old containers and session
+state. It also records removal of 33 generated Penpot token files, the empty Penpot
+scratch directory and 12 unused Penpot/PostgreSQL/Valkey images. Fresh inventory
+found no engine volumes or Penpot containers and none of those removed image IDs.
+Canonical design sources and historical audit evidence remain; no saved database
+conversion was requested or performed. This is deletion evidence, not a secure
+erasure claim.
+
+The initial agent-image build exhausted the private VM disk. Recovery removed the
+unused Penpot images and task-owned build scratch and reclaimed discarded VM
+blocks. A subsequent overlay I/O error required restarting the private VM before
+the image rebuilt successfully. Readiness timeouts also recurred under severe host
+swap pressure. The private VM was resized from 8192 to the supported 6144 MiB;
+an attempted 4096 MiB setting was rejected without changing it. The unrelated VM
+was left untouched. Failed probes and recovery receipts remain in the private
+bundle alongside successful checks.
+
+## Limits
 
 Schema/tool tests do not establish every OpenPencil feature, font family or file
 format round trip. OS/native/WASM inventory and scanner limitations are reported
 separately from npm advisory matching. Native Windows CLI checks do not establish
-Windows execution of Mirket's Linux ARM64 design container.
+Windows execution of Mirket's Linux ARM64 design container. Advisory-only image
+findings remain recorded warnings under the requested policy.

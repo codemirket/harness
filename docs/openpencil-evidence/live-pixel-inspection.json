@@ -1,0 +1,13 @@
+{
+  "dimensions": [
+    480,
+    240
+  ],
+  "center_rgb": [
+    18,
+    52,
+    86
+  ],
+  "png_sha256": "5f845d8ad6d2af5930169936b6cd86e27b56531093edb76fe03fcd7ca0a63fc7",
+  "visual_inspection": "Expected uniform dark-blue rectangle; no clipping or unexpected content."
+}

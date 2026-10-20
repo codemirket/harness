@@ -1,0 +1,13 @@
+{
+  "scope": "Mirket private engine and generated Penpot workspace state",
+  "purged_data": true,
+  "volumes": [],
+  "removed_unused_image_count": 12,
+  "removed_image_ids_absent": true,
+  "penpot_containers_absent": true,
+  "penpot_session_absent": true,
+  "generated_penpot_token_files_removed": 33,
+  "empty_penpot_scratch_directory_removed": true,
+  "preserved": "Historical audit/test evidence and shared canonical design sources.",
+  "limit": "The old controller validates ownership and checks each removal command before returning success; this receipt is not a forensic secure-erasure attestation."
+}

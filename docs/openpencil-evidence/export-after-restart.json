@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "dimensions": [
+    480,
+    240
+  ],
+  "center_rgb": [
+    18,
+    52,
+    86
+  ],
+  "png_sha256": "5f845d8ad6d2af5930169936b6cd86e27b56531093edb76fe03fcd7ca0a63fc7",
+  "identical_to_pre_restart_export": true,
+  "source_sha256": "3f9cbfa44b876977366eb1c05b37e7d69d0ba34bd0a2e8526dda988592d2480d",
+  "runtime_sha256": "7e8a614500065613fa0d9a1e036e9a6841d1abd5879e2be3fdf47a57aa0a78ae"
+}
