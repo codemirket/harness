@@ -1,0 +1,33 @@
+{
+  "engine": "OpenPencil",
+  "version": "0.16.0",
+  "mode": "headless-file",
+  "artifact": {
+    "path": "proof.png",
+    "sha256": "5f845d8ad6d2af5930169936b6cd86e27b56531093edb76fe03fcd7ca0a63fc7",
+    "bytes": 1051
+  },
+  "source": "proof.fig",
+  "source_sha256": "2ebe707b623a70d76aa4e575092cb2a8788ec9ccf58889df9d657c3bcb5ce9ca",
+  "dimensions": {
+    "width": 480,
+    "height": 240
+  },
+  "tokens": {
+    "source": "design/tokens.json",
+    "source_sha256": "02fc6e95fe30c6d56a273d53c50c912e0313c330ce5f2cf73b10a2638ba267d0",
+    "compiler_sha256": "77f93b4f8f9732c058c3d6867fa9615dc6c4c155c9fe78e2638e256676b9373e",
+    "outputs": {
+      "tokens.css": ".mirket-design/tokens/75b8aaead72172b8f176e44a123eae42565474fd9836ae35e7a48226ef967407/tokens.css",
+      "tokens.js": ".mirket-design/tokens/75b8aaead72172b8f176e44a123eae42565474fd9836ae35e7a48226ef967407/tokens.js",
+      "tokens.ts": ".mirket-design/tokens/75b8aaead72172b8f176e44a123eae42565474fd9836ae35e7a48226ef967407/tokens.ts",
+      "tokens.typ": ".mirket-design/tokens/75b8aaead72172b8f176e44a123eae42565474fd9836ae35e7a48226ef967407/tokens.typ",
+      "tokens.dtcg.json": ".mirket-design/tokens/75b8aaead72172b8f176e44a123eae42565474fd9836ae35e7a48226ef967407/tokens.dtcg.json"
+    },
+    "reused": true
+  },
+  "qa": {
+    "status": "passed",
+    "scope": "File exported; independent pixel inspection is required"
+  }
+}

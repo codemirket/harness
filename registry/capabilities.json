@@ -205,7 +205,7 @@
         "Indexability, ranking hypotheses and dashboard access distinguished"
       ],
       "professional": {
-        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience\u2019s actual search surfaces.",
+        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience’s actual search surfaces.",
         "priorities": [
           "Audience intent and useful landing content",
           "Observed crawl, index and citation barriers",
@@ -548,7 +548,7 @@
         ],
         "method": [
           "Establish the audience, offer, channel, next action and claims that must stay.",
-          "Build a message from benefit, mechanism, proof and the reader\u2019s likely objections.",
+          "Build a message from benefit, mechanism, proof and the reader’s likely objections.",
           "Edit for clarity and voice while preserving commitments and uncertainty.",
           "Deliver channel-ready copy and identify claims or variants needing evidence."
         ],
@@ -584,7 +584,7 @@
           "Explicit choices with reversal conditions"
         ],
         "method": [
-          "Frame the owner\u2019s decision, horizon, obligations and scarce resources.",
+          "Frame the owner’s decision, horizon, obligations and scarce resources.",
           "Compare viable options across customer fit, economics, cash, capacity and concentration.",
           "Stress the assumption most likely to reverse the ranking.",
           "Recommend an allocation and operating test with an owner, review point and stop conditions."
@@ -813,7 +813,7 @@
           "Triangulate consequential estimates and test the assumption that changes the opportunity."
         ],
         "decision_rule": "Reduce the opportunity estimate when buyer eligibility, channel reach or sales capacity constrains it; do not convert broad category spend into achievable revenue.",
-        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer\u2019s current workaround or material offer terms.",
+        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer’s current workaround or material offer terms.",
         "handoff": "Give strategy and venture owners buyer definitions, sourced ranges, reachable channels, competitive constraints and the largest unresolved commercial assumption."
       }
     },
@@ -876,7 +876,7 @@
         "Locale/register and unresolved ambiguity are recorded; native review claimed only if performed"
       ],
       "professional": {
-        "perspective": "Preserve the user\u2019s meaning and commitments while making language natural and usable in the target locale.",
+        "perspective": "Preserve the user’s meaning and commitments while making language natural and usable in the target locale.",
         "priorities": [
           "Semantic fidelity and consistent terminology",
           "Natural register and cultural context",
@@ -1032,7 +1032,7 @@
         ],
         "method": [
           "Identify reader, authoritative inputs, edit boundary and final format.",
-          "Organize content around the reader\u2019s question or action.",
+          "Organize content around the reader’s question or action.",
           "Verify claims, examples, links, units and obligations against their owners.",
           "Inspect the saved or rendered result and report material content or compatibility limits."
         ],
@@ -1053,7 +1053,7 @@
       ],
       "deliverable": "A coherent graphic composition, original illustration or consistent asset family with source masters and exports matched to its brief, medium, brand and consumer.",
       "failure_probe": "Use the relevant mode: malformed contact in an illustration, an illegible small asset, conflicting IDs in two inline SVG instances, or a raster wrapped in SVG must fail despite an attractive preview.",
-      "prerequisites": "Actual brief, content, asset rights and placement specifications. Choose the medium before tools: host image generation/editing when available for rich raster artwork; authored SVG/resvg for editable vector art; Sharp for existing pixels; Satori/resvg for static layout; Penpot for editable design files. Owned workers have no image generator. Compile tokens for dependent renders and verify requested editability.",
+      "prerequisites": "Actual brief, content, asset rights and placement specifications. Choose the medium before tools: host image generation/editing when available for rich raster artwork; authored SVG/resvg for editable vector art; Sharp for existing pixels; Satori/resvg for static layout; OpenPencil for editable design files. Owned workers have no image generator. Compile tokens for dependent renders and verify requested editability.",
       "aliases": [
         "Graphic Designer",
         "illustration",
@@ -1302,7 +1302,7 @@
       ],
       "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand.",
       "professional": {
-        "perspective": "Explain people\u2019s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
+        "perspective": "Explain people’s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
         "priorities": [
           "Observed behavior in realistic context",
           "Relevant participant variation and counterexamples",
@@ -1530,7 +1530,7 @@
       ],
       "failure_probe": "An attractive PDF export with lost editable charts, dropped comments, broken fields or overflow in the saved office file must fail delivery.",
       "professional": {
-        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient\u2019s real workflow.",
+        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient’s real workflow.",
         "priorities": [
           "Readable structure at the intended viewing size",
           "Preserved editability and source meaning",
@@ -2288,30 +2288,30 @@
     },
     {
       "id": "editable-interface",
-      "execution_owner": "host",
       "design_production": true,
-      "when": "Produce or export a layered editable Penpot canvas through its official connected plugin.",
+      "when": "Produce, edit or export layered OpenPencil .fig documents in the assigned design workspace.",
       "role": "web-design",
       "tools": [
         "workspace_read",
         "workspace_list",
-        "design/high_level_overview",
-        "design/penpot_api_info",
-        "design/execute_code",
-        "design/export_shape",
-        "design/import_image",
+        "workspace_write",
+        "design/tokens_compile",
+        "design/openpencil_inspect",
+        "design/openpencil_document",
+        "design/openpencil_edit",
+        "design/openpencil_export",
         "inspect_image"
       ],
       "required_tools": [
-        "design/high_level_overview",
-        "design/execute_code",
-        "design/export_shape",
+        "design/openpencil_inspect",
+        "design/openpencil_edit",
+        "design/openpencil_export",
         "inspect_image"
       ],
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use the official Penpot plugin connection. Opaque canvas edits require target-linked exported evidence and external inspection; never substitute a flat screenshot for an editable design.",
+      "rule": "Use OpenPencil file operations in the assigned design workspace. Keep editable .fig source, inspect its layers and exported pixels, and link evidence to the saved revision. Compile canonical tokens before editing. A flat screenshot cannot replace an editable design.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "mobile-design",

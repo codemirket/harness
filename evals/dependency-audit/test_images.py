@@ -21,17 +21,18 @@ class ImageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             archive = Path(temporary) / 'image.tar'
             archive.write_bytes(b'fixture')
-            receipt = {'ok':True,'alias':'penpot-backend','candidate':True,
+            receipt = {'ok':True,'alias':'design-tools','candidate':True,
                        'source_sha256':'a'*64,'archive':str(archive),
                        'archive_sha256':hashlib.sha256(b'fixture').hexdigest()}
-            self.assertEqual(validate_export(receipt,'penpot-backend','a'*64),archive.resolve())
+            self.assertEqual(validate_export(receipt,'design-tools','a'*64),archive.resolve())
             for change in [{'candidate':False},{'source_sha256':'b'*64},
-                           {'alias':'design-tools'},{'archive_sha256':'0'*64}]:
+                           {'alias':'agent-runtime'},{'archive_sha256':'0'*64}]:
                 with self.assertRaises(ValueError):
-                    validate_export(receipt | change,'penpot-backend','a'*64)
-            self.assertIn('penpot-backend',BUILT)
-            self.assertNotIn('penpot-backend',inventory(ROOT))
-            self.assertIn('penpot-backend-payload',inventory(ROOT))
+                    validate_export(receipt | change,'design-tools','a'*64)
+            self.assertIn('design-tools',BUILT)
+            self.assertNotIn('design-tools',inventory(ROOT))
+            self.assertIn('node-build',inventory(ROOT))
+            self.assertFalse(any('penpot' in alias for alias in inventory(ROOT)))
     def test_scanner_pin_and_regular_member_required_before_execution(self):
         data = io.BytesIO()
         with tarfile.open(fileobj=data, mode="w") as archive:
@@ -83,4 +84,4 @@ class ImageTests(unittest.TestCase):
         incomplete = evaluate(report, "pinned")
         self.assertFalse(incomplete["inventory_complete"])
         self.assertEqual(len(incomplete["findings"]), 1)
-        self.assertEqual(len(inventory(ROOT)), 10)
+        self.assertEqual(len(inventory(ROOT)), 4)

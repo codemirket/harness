@@ -127,7 +127,7 @@ state layout and execution boundaries.
 
 ## Optional packages
 
-- **`design`** adds Playwright, Penpot, Style Dictionary and tools for diagrams,
+- **`design`** adds Playwright, OpenPencil, Style Dictionary and tools for diagrams,
   video, documents, vectors and image processing. Its visual workflow starts with
   an inspected target and checks the actual output. See [packages](docs/packages.md)
   and [visual verification](docs/visual-quality.md).

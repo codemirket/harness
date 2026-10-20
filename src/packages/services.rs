@@ -13,48 +13,21 @@ use std::{
     path::{Path, PathBuf},
     time::{Duration, Instant},
 };
-pub(crate) mod backend_check;
 
 const REGISTRY: &str = include_str!("../../registry/design-stack.json");
 const OWNER_LABEL: &str = "org.mirket.design-owner";
 const BUILD_LABEL: &str = "org.mirket.design-build";
-const ALIASES: [&str; 10] = [
-    "penpot-postgres",
-    "penpot-valkey",
-    "penpot-backend",
-    "penpot-exporter",
-    "penpot-mcp",
-    "penpot-frontend",
-    "kroki-excalidraw",
-    "kroki",
-    "design-tools",
-    "penpot-session",
-];
-const VOLUMES: [&str; 3] = ["db", "cache", "assets"];
-const PUBLISHED: [(&str, &str, u16); 4] = [
-    ("penpot_frontend", "penpot-frontend", 8080),
-    ("penpot_mcp", "penpot-mcp", 4401),
-    ("penpot_plugin", "penpot-mcp", 4400),
-    ("kroki", "kroki", 8000),
-];
-const REMOTE: [&str; 9] = [
-    "penpot-postgres",
-    "penpot-valkey",
-    "penpot-backend-payload",
-    "debian-backend",
-    "penpot-exporter",
-    "penpot-frontend",
-    "kroki-excalidraw",
-    "kroki",
-    "node-build",
-];
+const ALIASES: [&str; 3] = ["kroki-excalidraw", "kroki", "design-tools"];
+const VOLUMES: [&str; 0] = [];
+const PUBLISHED: [(&str, &str, u16); 1] = [("kroki", "kroki", 8000)];
+const REMOTE: [&str; 3] = ["kroki-excalidraw", "kroki", "node-build"];
 const BUILD_TIMEOUT: Duration = Duration::from_secs(1800);
 
 fn selected_groups(groups: &[String]) -> Result<BTreeSet<String>> {
     let mut selected = BTreeSet::from(["core".to_owned()]);
     for group in groups {
         if group == "all" {
-            selected.extend(["diagrams".into(), "penpot".into()]);
+            selected.extend(["diagrams".into()]);
         } else {
             selected.insert(group.clone());
         }
@@ -67,7 +40,7 @@ fn validate_groups(groups: &BTreeSet<String>) -> Result<()> {
         groups.contains("core")
             && groups
                 .iter()
-                .all(|v| ["core", "diagrams", "penpot"].contains(&v.as_str())),
+                .all(|v| ["core", "diagrams"].contains(&v.as_str())),
         "invalid design service groups"
     );
     Ok(())
@@ -76,28 +49,20 @@ fn enabled(state: &State, alias: &str) -> bool {
     group_enabled(&state.groups, alias)
 }
 fn group_enabled(groups: &BTreeSet<String>, alias: &str) -> bool {
-    alias == "design-tools"
-        || groups.contains(if alias.starts_with("penpot-") {
-            "penpot"
-        } else {
-            "diagrams"
-        })
+    alias == "design-tools" || groups.contains("diagrams")
 }
 
-// One-way data migration, only after the old release has removed its containers.
-// Preserve account identity and named volumes; never adapt an old live process.
+// A topology cutover is allowed only after the prior CLI removed its containers.
+// Archive the exact private state; never open, migrate or purge legacy volumes.
 fn migrate_stopped_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<()> {
     if !state_path(paths).exists() {
         return Ok(());
     }
-    let mut value: Value = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
-    if value["schema_version"] != 1 {
+    let bytes = util::read_bounded(&state_path(paths), 32768)?;
+    let value: Value = serde_json::from_slice(&bytes)?;
+    if value["schema_version"] == 3 {
         return Ok(());
     }
-    ensure!(
-        value["owner"] == owner(paths) && value["engine_owner"] == engine.owner(),
-        "design state belongs to another environment"
-    );
     let names = run(
         engine,
         vec![
@@ -111,32 +76,60 @@ fn migrate_stopped_state(paths: &Paths, engine: &Engine, installed: &Receipt) ->
         ],
         Duration::from_secs(30),
     )?;
+    retain_legacy_state(paths, &engine.owner(), &bytes, &names)?;
+    let mut state = fresh_state(paths, engine, installed)?;
+    state.groups = legacy_groups(&value)?;
+    save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)
+}
+
+fn legacy_groups(value: &Value) -> Result<BTreeSet<String>> {
+    let mut groups = BTreeSet::from(["core".to_owned()]);
+    if let Some(saved) = value.get("groups") {
+        for group in saved.as_array().context("invalid legacy design groups")? {
+            match group.as_str() {
+                Some("core" | "penpot") => {}
+                Some("diagrams") => {
+                    groups.insert("diagrams".into());
+                }
+                _ => bail!("unknown legacy design group; inspect before replacing state"),
+            }
+        }
+    }
+    Ok(groups)
+}
+
+fn retain_legacy_state(
+    paths: &Paths,
+    engine_owner: &str,
+    bytes: &[u8],
+    names: &str,
+) -> Result<PathBuf> {
+    let value: Value = serde_json::from_slice(bytes)?;
+    ensure!(
+        matches!(value["schema_version"].as_u64(), Some(1 | 2)),
+        "unsupported design state schema"
+    );
+    ensure!(
+        value["owner"] == owner(paths) && value["engine_owner"] == engine_owner,
+        "design state belongs to another environment"
+    );
     ensure!(
         names.trim().is_empty(),
         "stop the prior design generation with its installed release before migration"
     );
-    let object = value.as_object_mut().context("invalid design state")?;
-    for key in ["browserless_token", "imgproxy_key", "imgproxy_salt"] {
-        object.remove(key);
-    }
-    object.insert("schema_version".into(), json!(2));
-    object.insert("groups".into(), json!(["core"]));
-    let ports = object
-        .get_mut("published_ports")
-        .and_then(Value::as_object_mut)
-        .context("missing design ports")?;
-    ports.retain(|key, _| PUBLISHED.iter().any(|(expected, _, _)| key == expected));
-    let state: State = serde_json::from_value(value.clone())?;
-    validate_state(paths, engine, &state)?;
-    // This topology cutover does not migrate database formats or application data.
-    // Refuse an unrelated image upgrade before any retained volume is opened.
-    for alias in ["penpot-postgres", "penpot-backend"] {
+    legacy_groups(&value)?;
+    let archive = root(paths)
+        .join("retained")
+        .join(format!("state-{}.json", util::sha256(bytes)));
+    if archive.exists() {
         ensure!(
-            state.images.get(alias) == installed.images.get(alias),
-            "prior {alias} image differs; a separately verified data upgrade is required"
+            util::read_bounded(&archive, 32768)? == bytes,
+            "retained state drift"
         );
+    } else {
+        save_private(&archive, bytes)?;
     }
-    save_private(&state_path(paths), &serde_json::to_vec_pretty(&value)?)
+    Ok(archive)
 }
 
 #[derive(Deserialize)]
@@ -187,10 +180,6 @@ struct State {
     images: BTreeMap<String, String>,
     published_ports: BTreeMap<String, u16>,
     groups: BTreeSet<String>,
-    database_password: String,
-    service_secret: String,
-    penpot_email: String,
-    penpot_password: String,
 }
 
 #[derive(Debug)]
@@ -198,14 +187,6 @@ enum StartEffect {
     CreatedNetwork(String),
     CreatedContainer { alias: String, name: String },
     StartedStoppedContainer { alias: String, name: String },
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct SessionIdentity {
-    schema_version: u32,
-    file_id: String,
-    team_id: String,
 }
 
 fn root(paths: &Paths) -> PathBuf {
@@ -227,9 +208,7 @@ fn owner(paths: &Paths) -> String {
 }
 fn registry_hash() -> String {
     let mut bytes = REGISTRY.as_bytes().to_vec();
-    for kind in ["penpot-mcp", "design-tools", "penpot-backend"] {
-        bytes.extend_from_slice(recipe_id(&build_files(kind)).as_bytes());
-    }
+    bytes.extend_from_slice(recipe_id(&build_files("design-tools")).as_bytes());
     util::sha256(&bytes)
 }
 fn name(owner: &str, alias: &str) -> String {
@@ -255,7 +234,7 @@ pub(super) fn definition() -> Result<Value> {
         "satori",
         "playwright",
         "sharp",
-        "penpot",
+        "openpencil",
         "kroki",
         "hyperframes",
         "typst",
@@ -448,25 +427,6 @@ fn rootless_keep_id_policy(host: &Value, user: u64) -> bool {
 fn service_command(alias: &str) -> Option<Vec<&'static str>> {
     match alias {
         "design-tools" => Some(vec!["node", "/opt/design/workspace-server.mjs"]),
-        "penpot-mcp" => Some(vec!["node", "/opt/serve.mjs"]),
-        "penpot-session" => Some(vec!["node", "/opt/design/penpot-session.mjs"]),
-        // The upstream entrypoint materializes nginx.conf before invoking this command.
-        // Its defaults size workers/connections for a public server, not a local canvas.
-        "penpot-frontend" => Some(vec![
-            "/bin/bash",
-            "-ec",
-            "sed -i 's/^worker_processes auto;/worker_processes 1;/; s/worker_connections 65535;/worker_connections 1024;/' /etc/nginx/nginx.conf; grep -q '^worker_processes 1;' /etc/nginx/nginx.conf; grep -q 'worker_connections 1024;' /etc/nginx/nginx.conf; exec nginx -g 'daemon off;'",
-        ]),
-        "penpot-valkey" => Some(vec![
-            "valkey-server",
-            "--save",
-            "60",
-            "1",
-            "--appendonly",
-            "yes",
-            "--dir",
-            "/data",
-        ]),
         _ => None,
     }
 }
@@ -533,7 +493,7 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
         "container lifecycle/port policy drift: {alias}"
     );
     ensure!(
-        if ["design-tools", "penpot-session"].contains(&alias) {
+        if alias == "design-tools" {
             host["Init"] == true
         } else {
             host["Init"].is_null() || host["Init"] == false
@@ -601,17 +561,6 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
     );
     Ok(())
 }
-fn secret(bytes: usize) -> Result<String> {
-    let mut data = vec![0u8; bytes];
-    fs::File::open("/dev/urandom")?.read_exact(&mut data)?;
-    Ok(data.iter().map(|b| format!("{b:02x}")).collect())
-}
-fn valid_secret(value: &str) -> bool {
-    value.len() == 64
-        && value
-            .bytes()
-            .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase())
-}
 fn saved_state_any(paths: &Paths, engine: &Engine) -> Result<State> {
     let state: State = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
     validate_state(paths, engine, &state)?;
@@ -619,20 +568,10 @@ fn saved_state_any(paths: &Paths, engine: &Engine) -> Result<State> {
 }
 fn validate_state(paths: &Paths, engine: &Engine, state: &State) -> Result<()> {
     ensure!(
-        state.schema_version == 2
+        state.schema_version == 3
             && state.owner == owner(paths)
             && state.engine_owner == engine.owner(),
         "design state belongs to another environment"
-    );
-    for value in [&state.database_password, &state.service_secret] {
-        ensure!(valid_secret(value), "invalid private design secret");
-    }
-    ensure!(
-        state
-            .penpot_password
-            .strip_suffix("Aa1!")
-            .is_some_and(valid_secret),
-        "invalid private Penpot password"
     );
     validate_published_ports(&state.published_ports)?;
     validate_groups(&state.groups)?;
@@ -664,44 +603,24 @@ fn recipe_id(files: &[(&str, &[u8])]) -> String {
     }
     util::sha256(&bytes)
 }
-fn build_recipe(registry: &Value, kind: &str) -> Result<String> {
-    let mut identity = recipe_id(&build_files(kind));
-    if kind == "penpot-mcp" {
-        identity.push_str(
-            registry["builds"][kind]["sha256"]
-                .as_str()
-                .context("source hash")?,
-        );
-    }
-    Ok(util::sha256(identity.as_bytes()))
+fn build_recipe(_registry: &Value, kind: &str) -> Result<String> {
+    Ok(util::sha256(recipe_id(&build_files(kind)).as_bytes()))
 }
 fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
-        "penpot-backend" => vec![
-            (
-                "Dockerfile",
-                include_bytes!("../../runtime/design/penpot-backend/Dockerfile"),
-            ),
-            (
-                "NOTICE.md",
-                include_bytes!("../../runtime/design/penpot-backend/NOTICE.md"),
-            ),
-        ],
-        "penpot-mcp" => vec![
-            (
-                "production.mjs",
-                include_bytes!("../../runtime/design/penpot-mcp/production.mjs"),
-            ),
-            (
-                "Dockerfile",
-                include_bytes!("../../runtime/design/penpot-mcp/Dockerfile"),
-            ),
-            (
-                "serve.mjs",
-                include_bytes!("../../runtime/design/penpot-mcp/serve.mjs"),
-            ),
-        ],
         "design-tools" => vec![
+            (
+                "tools/openpencil.mjs",
+                include_bytes!("../../runtime/design/tools/openpencil.mjs"),
+            ),
+            (
+                "tools/openpencil-cli.mjs",
+                include_bytes!("../../runtime/design/tools/openpencil-cli.mjs"),
+            ),
+            (
+                "tools/openpencil-tools.json",
+                include_bytes!("../../runtime/design/tools/openpencil-tools.json"),
+            ),
             (
                 "tools/vector-worker.mjs",
                 include_bytes!("../../runtime/design/tools/vector-worker.mjs"),
@@ -763,14 +682,6 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
                 include_bytes!("../../runtime/design/tools/request.mjs"),
             ),
             (
-                "tools/penpot-export.mjs",
-                include_bytes!("../../runtime/design/tools/penpot-export.mjs"),
-            ),
-            (
-                "tools/penpot-tokens.mjs",
-                include_bytes!("../../runtime/design/tools/penpot-tokens.mjs"),
-            ),
-            (
                 "tools/workspace-server.mjs",
                 include_bytes!("../../runtime/design/tools/workspace-server.mjs"),
             ),
@@ -778,38 +689,9 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
                 "tools/NOTICE.md",
                 include_bytes!("../../runtime/design/tools/NOTICE.md"),
             ),
-            (
-                "penpot-session.mjs",
-                include_bytes!("../../runtime/design/penpot-session.mjs"),
-            ),
         ],
         _ => unreachable!(),
     }
-}
-fn archive(paths: &Paths, registry: &Value, kind: &str, stage: &Path) -> Result<()> {
-    let info = &registry["builds"][kind];
-    let url = info["source_archive"]
-        .as_str()
-        .context("source archive URL")?;
-    let hash = info["sha256"].as_str().context("source archive hash")?;
-    let path = stage.join("penpot-source.tar.gz");
-    if path.exists() && util::sha256(&util::read_bounded(&path, 256 * 1024 * 1024)?) == hash {
-        return Ok(());
-    }
-    let client = reqwest::blocking::Client::builder()
-        .timeout(Duration::from_secs(300))
-        .build()?;
-    let response = client.get(url).send()?.error_for_status()?;
-    let mut bytes = Vec::new();
-    response
-        .take(256 * 1024 * 1024 + 1)
-        .read_to_end(&mut bytes)?;
-    ensure!(
-        bytes.len() <= 256 * 1024 * 1024 && util::sha256(&bytes) == hash,
-        "{kind} source archive digest mismatch"
-    );
-    let _ = paths;
-    util::atomic_write(&path, &bytes)
 }
 /// Development test run in an isolated container; never changes service selection,
 /// receipts or running services. The normal reviewed recipe supplies dependencies.
@@ -863,7 +745,7 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
 
 pub(crate) fn candidate_image(paths: &Paths, kind: &str) -> Result<String> {
     ensure!(
-        ["design-tools", "penpot-mcp", "penpot-backend"].contains(&kind),
+        ["design-tools"].contains(&kind),
         "unknown reviewed design build"
     );
     let engine = Engine::resolve(paths)?;
@@ -871,7 +753,7 @@ pub(crate) fn candidate_image(paths: &Paths, kind: &str) -> Result<String> {
     prepare_build(paths, &engine, &definition()?, kind)
 }
 
-fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -> Result<String> {
+fn prepare_build(_paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -> Result<String> {
     let files = build_files(kind);
     let recipe = build_recipe(registry, kind)?;
     let tag = format!("localhost/mirket-design-{kind}:{}", &recipe[..16]);
@@ -883,11 +765,7 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
         );
         return Ok(id);
     }
-    let bases: &[&str] = if kind == "penpot-backend" {
-        &["penpot-backend-payload", "debian-backend"]
-    } else {
-        &["node-build"]
-    };
+    let bases = &["node-build"];
     for base in bases {
         let reference = registry["images"][base].as_str().context("build base")?;
         if image_id(engine, reference).is_err() {
@@ -916,14 +794,12 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
         util::ensure_directory(destination.parent().context("build file parent")?)?;
         util::atomic_write(&destination, contents)?;
     }
-    if kind == "penpot-mcp" {
-        archive(paths, registry, kind, stage)?;
-    }
     run(
         engine,
         vec![
             "build".into(),
             "--jobs=1".into(),
+            "--force-rm".into(),
             "--memory=2g".into(),
             "--memory-swap=2g".into(),
             "--ulimit=nproc=512:512".into(),
@@ -1012,13 +888,10 @@ pub(super) fn prepare(paths: &Paths) -> Result<()> {
         };
         images.insert((*alias).to_owned(), id);
     }
-    for alias in ["penpot-mcp", "design-tools", "penpot-backend"] {
-        images.insert(
-            alias.into(),
-            prepare_build(paths, &engine, &registry, alias)?,
-        );
-    }
-    images.insert("penpot-session".into(), images["design-tools"].clone());
+    images.insert(
+        "design-tools".into(),
+        prepare_build(paths, &engine, &registry, "design-tools")?,
+    );
     let receipt = Receipt {
         schema_version: 1,
         owner: owner(paths),
@@ -1071,14 +944,7 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
     let references = ALIASES
         .iter()
         .map(|alias| {
-            if [
-                "penpot-mcp",
-                "design-tools",
-                "penpot-session",
-                "penpot-backend",
-            ]
-            .contains(alias)
-            {
+            if ["design-tools"].contains(alias) {
                 value
                     .images
                     .get(*alias)
@@ -1102,24 +968,9 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
             inspected_image_id(inspection, image)? == *expected,
             "design image drift: {alias}"
         );
-        if [
-            "penpot-mcp",
-            "design-tools",
-            "penpot-session",
-            "penpot-backend",
-        ]
-        .contains(alias)
-        {
+        if ["design-tools"].contains(alias) {
             ensure!(
-                inspection["Labels"][BUILD_LABEL]
-                    == build_recipe(
-                        &registry,
-                        if *alias == "penpot-session" {
-                            "design-tools"
-                        } else {
-                            alias
-                        }
-                    )?,
+                inspection["Labels"][BUILD_LABEL] == build_recipe(&registry, alias)?,
                 "design build recipe drift: {alias}"
             );
         }
@@ -1155,77 +1006,27 @@ fn new_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<Stat
         }
         return Ok(prior);
     }
-    let state = State {
-        schema_version: 2,
+    let state = fresh_state(paths, engine, installed)?;
+    save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)?;
+    Ok(state)
+}
+fn fresh_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<State> {
+    Ok(State {
+        schema_version: 3,
         owner: owner(paths),
         engine_owner: engine.owner(),
         registry_sha256: registry_hash(),
         images: installed.images.clone(),
         published_ports: allocate_published_ports()?,
         groups: BTreeSet::from(["core".into()]),
-        database_password: secret(32)?,
-        service_secret: secret(32)?,
-        penpot_email: format!("design-{}@mirket.invalid", &owner(paths)[14..]),
-        // Penpot requires lowercase, uppercase, a digit and a special character.
-        penpot_password: format!("{}Aa1!", secret(32)?),
-    };
-    save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)?;
-    Ok(state)
+    })
 }
 fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
-    let flags = "disable-email-verification disable-secure-session-cookies enable-registration enable-login-with-password enable-mcp disable-telemetry enable-air-gapped-conf disable-google-fonts-provider disable-dashboard-templates-section";
     let mut env = BTreeMap::new();
     let mut put = |key: &str, value: String| {
         env.insert(key.to_owned(), value);
     };
     match alias {
-        "penpot-postgres" => {
-            put("POSTGRES_INITDB_ARGS", "--data-checksums".into());
-            put("POSTGRES_DB", "penpot".into());
-            put("POSTGRES_USER", "penpot".into());
-            put("POSTGRES_PASSWORD", state.database_password.clone());
-        }
-        "penpot-backend" => {
-            put("PENPOT_FLAGS", flags.into());
-            put("PENPOT_PUBLIC_URI", "http://penpot-frontend:8080".into());
-            put("PENPOT_SECRET_KEY", state.service_secret.clone());
-            put(
-                "PENPOT_DATABASE_URI",
-                "postgresql://penpot-postgres/penpot".into(),
-            );
-            put("PENPOT_DATABASE_USERNAME", "penpot".into());
-            put("PENPOT_DATABASE_PASSWORD", state.database_password.clone());
-            put("PENPOT_DATABASE_MIN_POOL_SIZE", "4".into());
-            put("PENPOT_DATABASE_MAX_POOL_SIZE", "16".into());
-            put("PENPOT_REDIS_URI", "redis://penpot-valkey/0".into());
-            put("PENPOT_TELEMETRY_ENABLED", "false".into());
-            put("PENPOT_OBJECTS_STORAGE_BACKEND", "fs".into());
-            put(
-                "PENPOT_OBJECTS_STORAGE_FS_DIRECTORY",
-                "/opt/data/assets".into(),
-            );
-            put(
-                "JAVA_OPTS",
-                "-Xms128m -Xmx768m -XX:TieredStopAtLevel=1".into(),
-            );
-        }
-        "penpot-exporter" => {
-            put("PENPOT_FLAGS", flags.into());
-            put("PENPOT_PUBLIC_URI", "http://penpot-frontend:8080".into());
-            put("PENPOT_INTERNAL_URI", "http://penpot-frontend:8080".into());
-            put("PENPOT_SECRET_KEY", state.service_secret.clone());
-            put("PENPOT_REDIS_URI", "redis://penpot-valkey/0".into());
-            put("PENPOT_BROWSER_POOL_MIN", "0".into());
-            put("PENPOT_BROWSER_POOL_MAX", "1".into());
-        }
-        "penpot-frontend" => {
-            put("PENPOT_FLAGS", flags.into());
-            put("PENPOT_PUBLIC_URI", "http://penpot-frontend:8080".into());
-            put("PENPOT_BACKEND_URI", "http://penpot-backend:6060".into());
-            put("PENPOT_EXPORTER_URI", "http://penpot-exporter:6061".into());
-            put("PENPOT_MCP_URI", "http://penpot-mcp:4401".into());
-            put("PENPOT_MCP_URI_WS", "http://penpot-mcp:4402".into());
-        }
         "kroki" => {
             put("KROKI_EXCALIDRAW_HOST", "kroki-excalidraw".into());
             put("KROKI_EXCALIDRAW_PORT", "8004".into());
@@ -1236,30 +1037,19 @@ fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
                 state.groups.iter().cloned().collect::<Vec<_>>().join(","),
             );
         }
-        "penpot-session" => {
-            put("MIRKET_PENPOT_EMAIL", state.penpot_email.clone());
-            put("MIRKET_PENPOT_PASSWORD", state.penpot_password.clone());
-        }
         _ => {}
     }
     env
 }
 fn uid(alias: &str) -> u32 {
-    match alias {
-        "penpot-postgres" | "penpot-valkey" => 999,
-        "penpot-backend" | "penpot-exporter" | "penpot-frontend" | "kroki" | "kroki-excalidraw" => {
-            1001
-        }
-        _ => 1000,
+    if ["kroki", "kroki-excalidraw"].contains(&alias) {
+        1001
+    } else {
+        1000
     }
 }
 fn limits(alias: &str) -> (&'static str, &'static str, &'static str) {
     match alias {
-        "penpot-backend" => ("1280m", "1.5", "256"),
-        "penpot-exporter" => ("768m", "1.5", "256"),
-        "penpot-session" => ("1400m", "1.5", "256"),
-        "penpot-postgres" => ("256m", "1", "128"),
-        "penpot-valkey" => ("64m", "1", "128"),
         // Multiple desktop MCP connections share this renderer container.
         // Leave headroom for a real render alongside their retained sessions.
         "design-tools" => ("2048m", "2", "512"),
@@ -1319,15 +1109,8 @@ fn published_mappings(state: &State, alias: &str) -> Vec<String> {
         .map(|(key, _, internal)| format!("127.0.0.1:{}:{internal}", state.published_ports[*key]))
         .collect()
 }
-fn volumes(state: &State, alias: &str) -> Vec<(String, &'static str, bool)> {
-    let n = |part: &str| name(&state.owner, part);
-    match alias {
-        "penpot-postgres" => vec![(n("db"), "/var/lib/postgresql/data", true)],
-        "penpot-valkey" => vec![(n("cache"), "/data", true)],
-        "penpot-backend" => vec![(n("assets"), "/opt/data/assets", true)],
-        "penpot-frontend" => vec![(n("assets"), "/opt/data/assets", false)],
-        _ => Vec::new(),
-    }
+fn volumes(_state: &State, _alias: &str) -> Vec<(String, &'static str, bool)> {
+    vec![]
 }
 fn env_file(paths: &Paths, state: &State, alias: &str) -> Result<PathBuf> {
     let path = root(paths).join(format!("{alias}.env"));
@@ -1502,18 +1285,8 @@ fn create_container(
         "--volume".into(),
         format!("{}:/workspace:rw", work.display()),
     ];
-    if ["design-tools", "penpot-session"].contains(&alias) {
+    if alias == "design-tools" {
         args.push("--init".into());
-    }
-    if alias == "penpot-frontend" {
-        args.extend([
-            "--tmpfs".into(),
-            "/var/cache/nginx:rw,nosuid,nodev,size=64m,mode=1777".into(),
-            "--tmpfs".into(),
-            "/etc/nginx:rw,nosuid,nodev,size=32m,mode=1777,tmpcopyup".into(),
-            "--tmpfs".into(),
-            "/var/www/app/js:rw,nosuid,nodev,size=128m,mode=1777,tmpcopyup".into(),
-        ]);
     }
     for (volume, target, writable) in volumes(state, alias) {
         args.extend([
@@ -1551,78 +1324,29 @@ fn readiness_json(reader: impl Read, alias: &str) -> Result<Value> {
     serde_json::from_slice(&bytes).context("invalid readiness JSON")
 }
 fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
-    let client = reqwest::blocking::Client::builder()
-        .no_proxy()
+    if alias != "kroki" {
+        return Ok(());
+    }
+    let response = reqwest::blocking::Client::builder()
         .timeout(timeout)
-        .redirect(reqwest::redirect::Policy::none())
-        .build()?;
-    let (url, require_json) = match alias {
-        "penpot-mcp" => (
-            format!(
-                "http://127.0.0.1:{}/manifest.json",
-                state.published_ports["penpot_plugin"]
-            ),
-            true,
-        ),
-        "penpot-frontend" => (
-            format!(
-                "http://127.0.0.1:{}/api/main/methods/get-profile",
-                state.published_ports["penpot_frontend"]
-            ),
-            true,
-        ),
-        "kroki" => (
-            format!("http://127.0.0.1:{}/health", state.published_ports["kroki"]),
-            false,
-        ),
-        _ => return Ok(()),
-    };
-    let response = client
-        .get(url)
-        .header("Accept", "application/json")
+        .build()?
+        .get(format!(
+            "http://127.0.0.1:{}/health",
+            state.published_ports["kroki"]
+        ))
         .send()?;
     ensure!(
         response.status().is_success(),
         "{alias} HTTP readiness failed ({})",
         response.status()
     );
-    if alias == "penpot-mcp" {
-        let endpoint = client
-            .get(format!(
-                "http://127.0.0.1:{}/mcp",
-                state.published_ports["penpot_mcp"]
-            ))
-            .send()?;
-        ensure!(
-            endpoint.status() == reqwest::StatusCode::METHOD_NOT_ALLOWED,
-            "Penpot Streamable HTTP endpoint did not serve its native GET response ({})",
-            endpoint.status()
-        );
-    }
-    if require_json {
-        let value = readiness_json(response, alias)?;
-        if alias == "penpot-frontend" {
-            ensure!(
-                value["id"] == "00000000-0000-0000-0000-000000000000"
-                    && value["fullname"] == "Anonymous User",
-                "Penpot frontend/backend did not serve anonymous profile"
-            );
-        }
-        if alias == "penpot-mcp" {
-            ensure!(
-                value["name"] == "Penpot MCP Plugin",
-                "official Penpot plugin manifest identity drift"
-            );
-        }
-    }
+    let _ = readiness_json(response, alias)?;
     Ok(())
 }
 fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
     let n = name(&state.owner, alias);
     let cmd = match alias {
-        "penpot-postgres" => Some(vec!["pg_isready", "-U", "penpot", "-d", "penpot"]),
-        "penpot-valkey" => Some(vec!["valkey-cli", "ping"]),
-        "design-tools" | "penpot-session" => Some(vec![
+        "design-tools" => Some(vec![
             "node",
             "-e",
             "fetch('http://127.0.0.1:9002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
@@ -1644,19 +1368,8 @@ fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
     )?;
     Ok(())
 }
-fn startup_diagnostic(state: &State, value: &str) -> String {
-    let mut redacted = value.to_owned();
-    for secret in [
-        &state.database_password,
-        &state.service_secret,
-        &state.penpot_email,
-        &state.penpot_password,
-    ] {
-        if !secret.is_empty() {
-            redacted = redacted.replace(secret, "[redacted]");
-        }
-    }
-    redacted.chars().take(4096).collect()
+fn startup_diagnostic(_state: &State, value: &str) -> String {
+    value.chars().take(4096).collect()
 }
 fn startup_logs(engine: &Engine, state: &State, name: &str) -> String {
     let result = engine.container_logs(name);
@@ -1669,12 +1382,8 @@ fn startup_logs(engine: &Engine, state: &State, name: &str) -> String {
     )
 }
 fn await_ready(engine: &Engine, state: &State, alias: &str) -> Result<()> {
-    let deadline = Instant::now()
-        + Duration::from_secs(if ["design-tools", "penpot-session"].contains(&alias) {
-            180
-        } else {
-            90
-        });
+    let deadline =
+        Instant::now() + Duration::from_secs(if alias == "design-tools" { 180 } else { 90 });
     let name = name(&state.owner, alias);
     loop {
         let problem = match probe_container(engine, state, alias) {
@@ -1965,38 +1674,6 @@ pub(super) fn status(paths: &Paths) -> Result<Value> {
     );
     status_with(&engine, &state, &workspace(paths)?)
 }
-fn session_identity_for_purge(work: &Path) -> Result<Option<PathBuf>> {
-    let path = work.join(".mirket/penpot-session.json");
-    util::reject_symlink_components(&path)?;
-    let metadata = match fs::symlink_metadata(&path) {
-        Ok(value) => value,
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-        Err(error) => return Err(error.into()),
-    };
-    ensure!(
-        metadata.is_file(),
-        "owned Penpot session identity is not a regular file"
-    );
-    let identity: SessionIdentity = serde_json::from_slice(&util::read_bounded(&path, 4096)?)?;
-    let valid_uuid = |value: &str| {
-        let bytes = value.as_bytes();
-        bytes.len() == 36
-            && bytes.iter().enumerate().all(|(index, byte)| {
-                if [8, 13, 18, 23].contains(&index) {
-                    *byte == b'-'
-                } else {
-                    byte.is_ascii_hexdigit()
-                }
-            })
-    };
-    ensure!(
-        identity.schema_version == 1
-            && valid_uuid(&identity.file_id)
-            && valid_uuid(&identity.team_id),
-        "invalid owned Penpot session identity"
-    );
-    Ok(Some(path))
-}
 pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
     let engine = engine(paths)?;
     let state = saved_state_any(paths, &engine)?;
@@ -2004,11 +1681,6 @@ pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
     let _lock = util::FileLock::acquire(&dir.join("operation.lock"))?;
     let work = paths.root.join("execution/podman/staging/design/workspace");
     util::reject_symlink_components(&work)?;
-    let session_identity = if purge_data {
-        session_identity_for_purge(&work)?
-    } else {
-        None
-    };
     for alias in ALIASES {
         if let Some(value) = existing(
             &engine,
@@ -2061,9 +1733,6 @@ pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
                 vec!["network".into(), "rm".into(), n],
                 Duration::from_secs(60),
             )?;
-        }
-        if let Some(path) = session_identity {
-            fs::remove_file(path)?;
         }
         fs::remove_file(state_path(paths))?;
     }
@@ -2129,6 +1798,32 @@ mod tests {
     use super::*;
 
     #[test]
+    fn replacement_retains_exact_private_state_and_refuses_active_or_foreign_generations() {
+        let temp = tempfile::tempdir().unwrap();
+        let paths = Paths::new(temp.path().to_path_buf()).unwrap();
+        let legacy = json!({"schema_version":2,"owner":owner(&paths),"engine_owner":"engine","penpot_password":"private legacy secret","images":{"penpot-backend":"old"}});
+        let bytes = serde_json::to_vec(&legacy).unwrap();
+        assert!(retain_legacy_state(&paths, "engine", &bytes, "old-container").is_err());
+        assert!(!root(&paths).join("retained").exists());
+        assert!(retain_legacy_state(&paths, "other", &bytes, "").is_err());
+        let archive = retain_legacy_state(&paths, "engine", &bytes, "").unwrap();
+        assert_eq!(fs::read(&archive).unwrap(), bytes);
+        assert_eq!(
+            retain_legacy_state(&paths, "engine", &bytes, "").unwrap(),
+            archive
+        );
+        fs::write(&archive, b"drift").unwrap();
+        assert!(retain_legacy_state(&paths, "engine", &bytes, "").is_err());
+        assert!(ALIASES.iter().all(|alias| !alias.starts_with("penpot")));
+        assert!(VOLUMES.is_empty());
+        assert_eq!(
+            legacy_groups(&json!({"groups":["core","diagrams","penpot"]})).unwrap(),
+            BTreeSet::from(["core".into(), "diagrams".into()])
+        );
+        assert!(legacy_groups(&json!({"groups":["unrecognized"]})).is_err());
+    }
+
+    #[test]
     fn groups_require_explicit_heavy_capabilities() {
         assert_eq!(
             selected_groups(&[]).unwrap(),
@@ -2138,7 +1833,7 @@ mod tests {
             selected_groups(&["diagrams".into()]).unwrap(),
             BTreeSet::from(["core".into(), "diagrams".into()])
         );
-        assert_eq!(selected_groups(&["all".into()]).unwrap().len(), 3);
+        assert_eq!(selected_groups(&["all".into()]).unwrap().len(), 2);
         assert!(selected_groups(&["invented".into()]).is_err());
         assert!(validate_groups(&BTreeSet::from(["penpot".into()])).is_err());
     }
@@ -2149,7 +1844,7 @@ mod tests {
         let all = selected_groups(&["all".into()]).unwrap();
         assert!(validate_group_memory(&core, 6144 * 1024 * 1024).is_ok());
         assert!(validate_group_memory(&all, 7900 * 1024 * 1024).is_ok());
-        assert!(validate_group_memory(&all, 7680 * 1024 * 1024).is_err());
+        assert!(validate_group_memory(&all, 3417 * 1024 * 1024).is_err());
         assert!(validate_group_memory(&core, 2559 * 1024 * 1024).is_err());
     }
 
@@ -2293,7 +1988,6 @@ mod tests {
         assert!(TcpListener::bind(("127.0.0.1", ports["kroki"])).is_err());
         release_service_ports(&mut reservations, "kroki");
         let claimed = TcpListener::bind(("127.0.0.1", ports["kroki"])).unwrap();
-        assert!(TcpListener::bind(("127.0.0.1", ports["penpot_plugin"])).is_err());
         drop(claimed);
     }
 
@@ -2315,43 +2009,14 @@ mod tests {
     }
 
     #[test]
-    fn purge_accepts_only_a_valid_owned_penpot_session_file() {
-        let workspace = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
-        let private = workspace.path().join(".mirket");
-        fs::create_dir(&private).unwrap();
-        let path = private.join("penpot-session.json");
-        assert!(
-            session_identity_for_purge(workspace.path())
-                .unwrap()
-                .is_none()
-        );
-        fs::write(
-            &path,
-            r#"{"schemaVersion":1,"fileId":"12345678-1234-1234-1234-123456789abc","teamId":"abcdef12-3456-7890-abcd-ef1234567890"}"#,
-        )
-        .unwrap();
-        assert_eq!(
-            session_identity_for_purge(workspace.path()).unwrap(),
-            Some(path.clone())
-        );
-        fs::write(
-            &path,
-            r#"{"schemaVersion":1,"fileId":"not-a-uuid","teamId":"also-not-a-uuid"}"#,
-        )
-        .unwrap();
-        assert!(session_identity_for_purge(workspace.path()).is_err());
-    }
-
-    #[test]
     fn tools_build_closure_covers_every_runtime_module() {
-        let mut authored: BTreeSet<String> =
+        let authored: BTreeSet<String> =
             fs::read_dir(concat!(env!("CARGO_MANIFEST_DIR"), "/runtime/design/tools"))
                 .unwrap()
                 .map(|entry| entry.unwrap().file_name().to_string_lossy().into_owned())
                 .filter(|name| name.ends_with(".mjs"))
                 .map(|name| format!("tools/{name}"))
                 .collect();
-        authored.insert("penpot-session.mjs".into());
         let staged: BTreeSet<String> = build_files("design-tools")
             .iter()
             .map(|(name, _)| (*name).to_owned())
@@ -2371,7 +2036,6 @@ mod tests {
             "tools/tool-policy.json",
             "tools/tool-budgets.json",
             "tools/NOTICE.md",
-            "penpot-session.mjs",
         ] {
             assert!(staged.contains(required), "missing build input: {required}");
         }

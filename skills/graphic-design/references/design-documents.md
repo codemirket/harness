@@ -1,32 +1,32 @@
 # Editable design documents
 
-Use the official Penpot MCP/plugin through the `design` package when the
-deliverable is a structured, editable visual document. Mirket forwards the
-upstream MCP tool names and schemas unchanged. Confirm the requested portable
-format and actual upstream schema before creating a file. Inside the private
-design network the MCP endpoint is on port 4401 at `/mcp`, the plugin manifest
-is on port 4400 and its persistent WebSocket is on port 4402. Use the assigned
-loopback host ports reported by `package start` or `package status` for host
-access; the WebSocket port is not separately published. A saved local handle
-alone does not satisfy a portable-file
-request.
+Use the `design` package's OpenPencil file tools for layered, editable design
+files. The pinned official CLI runs headlessly in the existing tools container;
+no desktop app, login, database or plugin connection is required. Tool paths
+are relative to the reported workspace (project-scoped for routed workers).
 
-Compose with actual copy, reading order, typography roles, space and palette.
-Compile `design/tokens.json` through Style Dictionary first and use the emitted
-Penpot tokens in the editable file.
-Use only features that the saved format preserves. Inspect the saved document's
-IDs, geometry, text and relationships, refine using stable identities, then
-reopen and export the saved result. Keep editable source separate from static
-previews. Inspect those previews at intended sizes for hierarchy, text fit,
-clipping and consistency.
+Compile `design/tokens.json` first. `openpencil_document` creates a `.fig` file or
+imports `.fig`/`.pen` source and imports canonical DTCG tokens as variables and
+styles. `openpencil_inspect` without source lists supported upstream tools; with
+only `tool` it returns that tool's argument schema. Use a read tool plus `source`
+to inspect layers, geometry, text, variables and component identities.
 
-With Penpot's WASM text layout, changing width or height alone can leave stale
-line fragments even when the reported geometry changes. For a label that should
-fit one line, set `growType = 'auto-width'`, update its actual `characters`, and
-await `penpot.waitForLayoutUpdate()` before export. For wrapped text, preserve
-the intended wrapping and inspect the exported lines after resizing. Verify the
-same text ID, content and visible line positions in the SVG or portable file;
-waiting or reading dimensions alone does not establish reflow.
+Use `openpencil_edit` with source, upstream tool, arguments and a `.fig` output.
+Use the actual schema; do not invent a design-object API. Editing an existing
+output requires `overwrite: true` and its current `expected_sha256`. Canonical
+tokens are compiled before the edit; document creation/import adds variables and
+styles. To refresh them later, use the upstream `import_design_tokens` operation
+with the compiled DTCG contents, then read back the saved IDs. Unsupported code execution, network tools
+and desktop state operations are omitted. No provider credentials are passed.
 
-Design-file writes may persist before a request is cancelled. Keep credentials
-outside source and report the inspected file, exports and unverified behavior.
+Reopen the saved file with `openpencil_inspect`; export it with
+`openpencil_export` to PNG (2x) or SVG. Export leaves the source unchanged.
+Inspect PNG pixels independently for hierarchy, typography, clipping and layout;
+compare visible text and IDs with the saved document. Use embedded assets and
+bundled fonts; remote font/asset downloads are disabled. A saved file, successful
+export or dimension receipt does not prove visual quality or font fidelity.
+
+Keep `.fig` source and previews together. Open the `.fig` in OpenPencil for manual
+editing. The runtime does not control a user's open desktop document. Existing
+Penpot volumes are retained during the stopped-generation cutover, with no claim
+of automatic conversion; export required legacy designs before switching.

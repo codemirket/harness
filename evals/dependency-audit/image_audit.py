@@ -14,9 +14,9 @@ import subprocess
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILT = ("design-tools", "penpot-mcp", "penpot-backend", "agent-runtime")
+BUILT = ("design-tools", "agent-runtime")
 REQUIRED_TYPES = {"design-tools": {"node-pkg", "gobinary"},
-                  "penpot-mcp": {"node-pkg"}, "penpot-backend": {"jar"},
+
                   "agent-runtime": {"python-pkg"}}
 
 

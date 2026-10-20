@@ -206,7 +206,7 @@ async function satoriNode(node, tokenValues, image, depth = 0) {
 export async function staticRender(args) {
   await assertOutputReady(args);
   const tokens = await preflight(args);
-  const tokenValues = flatTokenValues(await readJson(tokens.outputs['penpot.tokens.json'], 512 * 1024));
+  const tokenValues = flatTokenValues(await readJson(tokens.outputs['tokens.dtcg.json'], 512 * 1024));
   const width = Number(args.width), height = Number(args.height);
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 16 || height < 16 || width > 4096 || height > 4096) throw Error('Satori dimensions must be in 16..4096');
   if (!Array.isArray(args.fonts) || args.fonts.length < 1 || args.fonts.length > 8) throw Error('Satori requires 1..8 font files');
@@ -556,7 +556,7 @@ export async function browserScreenshot(args) {
   if (args.source) { await workspacePath(args.source); url = workspaceUrl(args.source); }
   else {
     const candidate = new URL(args.url);
-    if (candidate.protocol !== 'http:' || !['design-tools:9002', 'penpot-frontend:8080'].includes(candidate.host)) throw Error('Playwright URL must be an owned local workspace or Penpot page');
+    if (candidate.protocol !== 'http:' || !['design-tools:9002'].includes(candidate.host)) throw Error('Playwright URL must be an owned local workspace page');
     if (!scopedWorkspaceUrlAllowed(candidate.href)) throw Error('URL is outside the assigned design project');
     url = candidate.toString();
   }

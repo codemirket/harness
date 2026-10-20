@@ -13,11 +13,6 @@ export function combinedSignal(timeoutMs) {
   const signal = requestSignal();
   return signal ? AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]) : AbortSignal.timeout(timeoutMs);
 }
-export function redactSecrets(value) {
-  let output = String(value);
-  for (const name of ['MIRKET_PENPOT_PASSWORD', 'MIRKET_PENPOT_EMAIL']) {
-    const secret = process.env[name];
-    if (secret && secret.length >= 4) output = output.split(secret).join('[redacted]');
-  }
-  return output;
-}
+// Renderers receive an explicit credential-free environment. Retain one bounded
+// error-formatting call site for callers without inspecting unrelated host secrets.
+export function redactSecrets(value) { return String(value); }

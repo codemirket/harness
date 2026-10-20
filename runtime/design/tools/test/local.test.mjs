@@ -11,8 +11,6 @@ const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await i
 const {compileTokens} = await import('../tokens.mjs');
 const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, inspectHyperframesKeyframes, optimizeSvgBytes, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
-const {penpotTokenRecords, synchronizePenpotTokens} = await import('../penpot-tokens.mjs');
-const {exportPenpotShape} = await import('../penpot-export.mjs');
 
 test.after(async () => fs.rm(workspace, {recursive: true, force: true}));
 
@@ -30,7 +28,7 @@ test('canonical token generation is complete, reused and detects drift', async (
   await fs.mkdir(path.join(workspace, 'design'));
   await fs.writeFile(path.join(workspace, 'design/tokens.json'), JSON.stringify({color: {accent: {$type: 'color', $value: '#123456'}}}));
   const first = await compileTokens('design/tokens.json');
-  assert.deepEqual(Object.keys(first.outputs).sort(), ['penpot.tokens.json', 'tokens.css', 'tokens.js', 'tokens.ts', 'tokens.typ']);
+  assert.deepEqual(Object.keys(first.outputs).sort(), ['tokens.css', 'tokens.dtcg.json', 'tokens.js', 'tokens.ts', 'tokens.typ']);
   assert.equal((await compileTokens('design/tokens.json')).reused, true);
   const loader = path.join(workspace, 'no-compiler-loader.mjs');
   await fs.writeFile(loader, `export async function resolve(specifier, context, next) {
@@ -289,11 +287,11 @@ test('cancellation removes a detached grandchild after its parent ignores SIGTER
 });
 
 test('renderer child receives no service credentials', async () => {
-  process.env.MIRKET_PENPOT_PASSWORD = 'test-secret-12345';
+  process.env.MIRKET_PRIVATE_TEST_SECRET = 'test-secret-12345';
   try {
-    const result = await run(process.execPath, ['-e', 'process.stdout.write(String(process.env.MIRKET_PENPOT_PASSWORD || "absent"))']);
+    const result = await run(process.execPath, ['-e', 'process.stdout.write(String(process.env.MIRKET_PRIVATE_TEST_SECRET || "absent"))']);
     assert.equal(result.stdout, 'absent');
-  } finally { delete process.env.MIRKET_PENPOT_PASSWORD; }
+  } finally { delete process.env.MIRKET_PRIVATE_TEST_SECRET; }
 });
 
 test('renderer child uses private workspace disk scratch and removes it after exit', async () => {
@@ -357,52 +355,6 @@ test('Satori renders a real WOFF2 glyph and rejects a mislabeled font', async ()
   await assert.rejects(staticRender({...args, fonts:[{path:'mislabeled.woff2'}], output:'invalid-woff2.svg'}), /font bytes do not match/);
   await assert.rejects(fs.access(path.join(workspace, 'invalid-woff2.svg')));
 });
-
-test('Penpot token preflight maps supported types and rejects unsupported composites', async () => {
-  assert.deepEqual(penpotTokenRecords({color: {accent: {$type: 'color', $value: '#fff'}}, font: {size: {$type: 'fontSize', $value: 16}}}), [
-    {name: 'color.accent', type: 'color', value: '#fff'}, {name: 'font.size', type: 'fontSizes', value: '16'},
-  ]);
-  assert.throws(() => penpotTokenRecords({motion: {$type: 'duration', $value: '1s'}}), /cannot map/);
-  assert.throws(() => penpotTokenRecords({text: {$type: 'typography', $value: {fontFamily: 'Arial'}}}), /cannot map|scalar/);
-});
-
-test('Penpot sync uses official execute_code and verifies acknowledgement', async () => {
-  const compiled = await compileTokens('design/tokens.json');
-  let called;
-  const client = {callTool: async request => {
-    called = request;
-    return {content: [{type: 'text', text: JSON.stringify({result: {marker: 'mirket-token-sync', source_sha256: compiled.source_sha256}})}]};
-  }};
-  const result = await synchronizePenpotTokens(client, compiled, undefined);
-  assert.equal(called.name, 'execute_code');
-  assert.match(called.arguments.code, /Mirket Canonical/);
-  assert.equal(result.count, 1);
-});
-
-test('official Penpot SVG export is staged, optimized, and never clobbers an existing path', async () => {
-  const target = path.join(workspace, 'penpot.svg');
-  const client = {callTool: async request => {
-    assert.equal(request.name, 'export_shape');
-    assert.notEqual(request.arguments.filePath, target);
-    await fs.writeFile(request.arguments.filePath, '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="red"/></svg>');
-    return {content: [{type: 'text', text: `The shape has been exported to ${request.arguments.filePath}`}]};
-  }};
-  const result = await exportPenpotShape(client, {shapeId: 'selection', format: 'svg', filePath: target});
-  assert.match(result.content[0].text, /penpot\.svg$/);
-  assert.match((await fs.readFile(target, 'utf8')), /<svg/);
-  await assert.rejects(exportPenpotShape(client, {shapeId: 'selection', format: 'svg', filePath: target}), /already exists/);
-});
-
-test('corrupt official Penpot SVG export fails without publishing', async () => {
-  const target = path.join(workspace, 'broken-penpot.svg');
-  const client = {callTool: async request => {
-    await fs.writeFile(request.arguments.filePath, Buffer.from([0, 0]));
-    return {content: [{type: 'text', text: 'success'}]};
-  }};
-  await assert.rejects(exportPenpotShape(client, {shapeId: 'selection', format: 'svg', filePath: target}), /SVG|saxes|Unclosed|disallowed character/i);
-  await assert.rejects(fs.stat(target), {code: 'ENOENT'});
-});
-
 
 test('concurrent overwrite publication has one revision winner', async () => {
   await publish('overwrite-race.txt', Buffer.from('before'));

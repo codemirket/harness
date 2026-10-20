@@ -6,7 +6,7 @@ Mirket has one command surface and one Rust implementation of each operation.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
 methods. The optional `design` package launches its pinned local tools and the
-official Penpot MCP through one reviewed package contract.
+OpenPencil file operations through one reviewed package contract.
 
 Embedded skill descriptions come from each `SKILL.md` frontmatter, so host
 triggers and catalog discovery use the same source. The registry owns selection,
@@ -192,8 +192,8 @@ The single design package receives a client entry running `mirket package serve
 design`. Its direct tool schemas use paths relative to one fixed `/workspace`
 mount, backed by the selected home's
 `.mirket/execution/podman/staging/design/workspace`. It forwards the official
-Penpot MCP tool schemas and calls without adapting them into another design-object
-API. `package start` and `package status` report the host workspace path.
+the pinned OpenPencil CLI with validated upstream tool arguments and bounded,
+revision-checked file publication. `package start` and `package status` report the host workspace path.
 Cancellation cannot undo effects already performed. See [packages](packages.md).
 
 `podman` owns the native registered client, private control directories and
@@ -223,10 +223,8 @@ It does not turn arbitrary executables into MCP tools or resolve packages.
 
 `mirket package` supplies reviewed server and runtime definitions through the
 same setup, doctor and update flow. Optional packages are explicit selections;
-a fresh unattended setup chooses none. Official Penpot MCP source is built with
-pinned pnpm dependencies during package preparation; serving performs no package
-resolution. Additional server profiles require pinned artifacts, complete
-notices, an appropriate tool policy and relevant invocation tests. See
+a fresh unattended setup chooses none. OpenPencil and its transitive packages use
+the design npm lock, retained notices, owned tool policy and invocation tests. See
 [local MCP packages](packages.md) for supported profiles and prerequisites.
 
 ## Live identity and source verification
@@ -239,7 +237,7 @@ These checks observe only the calling connection; other clients must reconnect a
 call separately. Direct design success responses include the same process-captured identity in
 `structuredContent.runtime`, ordinary text content and `_meta["mirket/runtime"]`.
 Use ordinary content when a desktop host hides metadata. These identities cover
-loaded design modules and dependency locks, not forwarded Penpot service identity. Semver alone cannot identify a local build.
+loaded design modules and dependency locks, including the pinned OpenPencil CLI closure. Semver alone cannot identify a local build.
 
 A source worker's internal artifact verification establishes readback, not runtime
 correctness. It returns `awaiting_host_verification`, declared check names and source

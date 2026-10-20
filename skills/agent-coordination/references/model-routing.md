@@ -66,7 +66,7 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Code changes / source findings | `source-implementation` / `source-review` | Writes plus exact readback / reads only |
 | Existing pixels or live DOM inspection | `visual-review` | Playwright, Odiff and pixel inspection; no source edits |
 | Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Playwright / Satori-resvg, followed by inspection |
-| Layered editable canvas | `editable-interface` | Official connected Penpot MCP and exported evidence |
+| Layered editable canvas | `editable-interface` | OpenPencil .fig file operations and inspected exports |
 | Graph layout / encoded motion / paged output | `diagram` / `motion` / `paged-media` | Kroki / HyperFrames / Typst with inspected outputs |
 | Editable vector art / raster preparation | `vector-art` / `raster-processing` | SVG/resvg previews / Sharp with inspection |
 | Vector hygiene / comparable pixels / tokens | `vector-optimization` / `pixel-comparison` / `design-tokens` | SVGO / Odiff / Style Dictionary |
@@ -169,9 +169,9 @@ readback, pixel inspection, screenshot or diff verification. Mirket matches
 those checks to the produced path and SHA-256; reading an unrelated file or
 image does not clear a mutation. Visual work requires observed pixel inspection
 after the latest mutation. Primary PDF/video bytes are rehashed at completion;
-their pages or snapshots remain the visual verification targets. Penpot edits
-without a target-linked artifact receipt stop incomplete and require external
-inspection.
+their pages or snapshots remain the visual verification targets. Editable
+OpenPencil .fig revisions are also rehashed at completion; inspect their layers
+and export the final revision to PNG for target-linked pixel review.
 
 Inspected pixels remain attached across turns and eligible-target failover,
 within four images and an aggregate eight MiB. `inspect_image` accepts an optional
@@ -307,7 +307,7 @@ with relevant source/test/configuration/lock paths and named command identities
 before running checks, then submit logs with the returned attempt ID and trace
 revision. Use a fresh attempt after repairs; retain previous evidence. UI workflows
 also require checks against the real application through authorized host tools.
-Routed design paths belong to the reported project design workspace. Shared Penpot
-objects require the host's official MCP connection; file scope cannot authorize them.
+Routed design paths, including editable OpenPencil documents, belong to the
+reported project design workspace. Host tools retain their shared workspace.
 `memory_recall` may be `best_effort` (default), `required`, or `off`; it does not disable
 LangGraph persistence or authorize a different provider.

@@ -53,8 +53,7 @@ mirket package probe design --schemas
 selected Mirket home and the assigned loopback host ports. Service port numbers
 in the design topology are internal; use the reported host ports for host access.
 Direct design tool paths are relative to its `/workspace`
-mount. The official Penpot `export_shape` and `import_image` `filePath` arguments
-require absolute `/workspace/...` paths. Design calls do not use `--project` or
+mount, including OpenPencil document sources and outputs. Design calls do not use `--project` or
 a configurable port. See
 [packages](packages.md) and the [execution environment](podman.md) for service
 topology. Tool calls retain the host's permissions.

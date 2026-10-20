@@ -608,7 +608,7 @@
         "design-md-review"
       ],
       "dependencies": [
-        "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Playwright, compare pixels with Odiff, and use the official Penpot MCP/plugin for editable design files. Keep the app and its own behavior tests authoritative.",
+        "For Mirket design work use the single design package: compile Style Dictionary tokens before rendering, inspect full DOM and 2x screenshots through Playwright, compare pixels with Odiff, and use OpenPencil file tools for editable design files. Keep the app and its own behavior tests authoritative.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -629,7 +629,7 @@
         "style-dictionary",
         "playwright",
         "odiff",
-        "penpot",
+        "openpencil",
         "component-workbench",
         "concept-selection"
       ],
@@ -5252,7 +5252,7 @@
         "ui-ux-pro-max",
         "ui-ux-pro-max"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through OpenPencil, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-ui-ux-pro-max",
       "source": "ui-ux-pro-max",
@@ -5281,7 +5281,7 @@
         "ui-ux-pro-max",
         "brand"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through OpenPencil, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-brand",
       "source": "ui-ux-pro-max",
@@ -5310,7 +5310,7 @@
         "ui-ux-pro-max",
         "ui-styling"
       ],
-      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through official Penpot, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
+      "adaptation": "Use only for application UI, brand analysis or component styling. Compile Style Dictionary tokens before dependent rendering; use Playwright for live DOM, interaction and 2x screenshot QA. Route editable design files through OpenPencil, generated bitmap imagery through static composition through Satori/resvg, and paged decks/documents through Typst. Preserve user brand and source rights.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "ui-ux-pro-max-ui-styling",
       "source": "ui-ux-pro-max",
@@ -5435,7 +5435,7 @@
         "open-design",
         "login-flow"
       ],
-      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use official Penpot for an editable design-file deliverable.",
+      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use OpenPencil for an editable design-file deliverable.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "open-design-login-flow",
       "source": "open-design",
@@ -5467,7 +5467,7 @@
         "open-design",
         "faq-page"
       ],
-      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use official Penpot for an editable design-file deliverable.",
+      "adaptation": "Use actual local file delivery rather than OpenDesign artifact XML. Resolve DESIGN.md from project context and preserve existing user content. Keep the prescribed artifact only when requested. For research, label inferred scoring and proposed owners/thresholds. For auth, deliver a prototype unless backend integration was requested. For FAQ, never invent product policies or answers. For Mirket design QA, inspect live DOM, interactions and 2x screenshots through Playwright; use OpenPencil for an editable design-file deliverable.",
       "asset_requirements": "Copy entire skill directory including local companions; preserve source notices. External fonts/assets retain their own terms.",
       "id": "open-design-faq-page",
       "source": "open-design",
@@ -11830,7 +11830,7 @@
         "claude"
       ],
       "dependencies": [
-        "Approved source assets/tokens or a proposed direction; compile Style Dictionary tokens to CSS, JavaScript, TypeScript, Typst and Penpot before rendering affected specimens at required sizes and backgrounds.",
+        "Approved source assets/tokens or a proposed direction; compile Style Dictionary tokens to CSS, JavaScript, TypeScript, Typst and DTCG before rendering affected specimens at required sizes and backgrounds.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -12062,7 +12062,7 @@
         "claude"
       ],
       "dependencies": [
-        "The single design package routes authored SVG artwork to vector_render and native resvg previews, raster preprocessing to Sharp, generated/imported SVG through SVGO, diagrams through Kroki, static Flexbox composition through Satori plus resvg, editable design files through the official Penpot MCP/plugin, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
+        "The single design package routes authored SVG artwork to vector_render and native resvg previews, raster preprocessing to Sharp, generated/imported SVG through SVGO, diagrams through Kroki, static Flexbox composition through Satori plus resvg, editable design files through OpenPencil file tools, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -12087,7 +12087,7 @@
         "kroki",
         "satori",
         "resvg",
-        "penpot"
+        "openpencil"
       ],
       "informed_by": [
         "scroll-craft",

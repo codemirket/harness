@@ -2,8 +2,8 @@
   "schema_version": 1,
   "id": "design",
   "name": "Local design toolstack",
-  "version": "2026-10-18",
-  "source": "https://github.com/penpot/penpot/tree/472ba8dde58b66651adef116f7d0095a948654d9/mcp",
+  "version": "2026-10-20",
+  "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5",
   "license": "Per-tool open-source licenses and bundled notices apply.",
   "workspace": "/workspace",
   "tools": [
@@ -25,13 +25,12 @@
       "renderer_source": "https://github.com/yisibl/resvg-js"
     },
     {
-      "id": "penpot",
-      "name": "Official Penpot MCP",
-      "execution": "service",
-      "port": 4401,
-      "version": "2.17.0",
-      "license": "MPL-2.0",
-      "source": "https://github.com/penpot/penpot/tree/472ba8dde58b66651adef116f7d0095a948654d9/mcp"
+      "id": "openpencil",
+      "name": "OpenPencil",
+      "execution": "tools-container",
+      "version": "0.16.0",
+      "license": "MIT",
+      "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5"
     },
     {
       "id": "kroki",
@@ -92,32 +91,14 @@
     }
   ],
   "images": {
-    "penpot-postgres": "docker.io/library/postgres@sha256:2338e3d79f75746cee7784825b6df3707a479ac8f24a36b9832aa4f16da4e81a",
-    "penpot-valkey": "docker.io/valkey/valkey@sha256:0e28101f7e5acb939f4e5152b09760b49ba61f278fbf10f6f1d9c45fbbd3f3c7",
-    "penpot-exporter": "docker.io/penpotapp/exporter@sha256:64d6474cad7464b082394e7aab0aa410c4709a1c5d308a3a64677a4af3d80e93",
-    "penpot-frontend": "docker.io/penpotapp/frontend@sha256:4b755d7b8dc666184cea086b25dffe3273e09df782e72b8e4eb3388624f9b28b",
     "kroki": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
     "kroki-excalidraw": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
-    "node-build": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd",
-    "penpot-backend-payload": "docker.io/penpotapp/backend@sha256:d5b8d69c00a9c4735c10b3612f7e3c18806f879367fa7be7f621058769cb551e",
-    "debian-backend": "docker.io/library/debian@sha256:a2ca65377c251208de42e1a2722cb949211236c161b634f6f3663754e2d06850"
+    "node-build": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd"
   },
   "builds": {
-    "penpot-mcp": {
-      "commit": "472ba8dde58b66651adef116f7d0095a948654d9",
-      "version": "2.17.0",
-      "source_archive": "https://codeload.github.com/penpot/penpot/tar.gz/472ba8dde58b66651adef116f7d0095a948654d9",
-      "sha256": "33a1819a60b3fbd4ec1b85979e5a7e5fa6dcfe6af84c8847d7ae21c853591059"
-    },
     "tools": {
       "source": "runtime/design/tools",
       "base": "node-build"
-    },
-    "penpot-backend": {
-      "source": "runtime/design/penpot-backend",
-      "payload": "penpot-backend-payload",
-      "base": "debian-backend",
-      "scope": "Unchanged upstream application payload; pinned Debian OS with retained package inventory."
     }
   }
 }

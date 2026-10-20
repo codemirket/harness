@@ -75,8 +75,9 @@ def contents(path, prefixes):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('before'); parser.add_argument('after'); parser.add_argument('output')
+    parser.add_argument('--prefix', action='append', required=True, help='Explicit final-image payload prefix to compare')
     args = parser.parse_args()
-    prefixes = ['opt/jre','opt/imagick','opt/penpot/backend']
+    prefixes = [name(prefix) for prefix in args.prefix]
     before = contents(args.before,prefixes); after = contents(args.after,prefixes)
     changed = [k for k in sorted(before.keys() | after.keys()) if before.get(k) != after.get(k)]
     report = {'ok':bool(before) and before == after,'scope':prefixes,'entries':len(before),

@@ -198,6 +198,27 @@ fn design_artifacts(root: &Path, name: &str, value: &Value) -> Result<Vec<Artifa
     Ok(refs)
 }
 
+// An editable binary is verified through a consuming edit/export, then its
+// exported pixels still require inspection. Unrelated exports cannot clear it.
+fn openpencil_source_receipt(root: &Path, value: &Value) -> Result<Option<ArtifactRef>> {
+    let source = value["source"]
+        .as_str()
+        .context("OpenPencil omitted source identity")?;
+    if value["artifact"]["path"] == source {
+        return Ok(None);
+    } // in-place save replaced the old revision
+    let receipt = artifact_from_json(
+        root,
+        &json!({"path":source,"sha256":value["source_sha256"]}),
+    )?
+    .context("OpenPencil omitted source digest")?;
+    ensure!(
+        current_digest(&receipt.path)? == receipt.sha256,
+        "OpenPencil source changed after consumption"
+    );
+    Ok(Some(receipt))
+}
+
 #[derive(Clone, Debug, Serialize)]
 pub struct Definition {
     pub policy: ToolPolicy,
@@ -254,18 +275,6 @@ fn definition(
     }
 }
 pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definition>> {
-    ensure!(
-        !names.iter().any(|name| matches!(
-            name.as_str(),
-            "design/execute_code"
-                | "design/export_shape"
-                | "design/import_image"
-                | "design/penpot_api_info"
-                | "design/high_level_overview"
-        )),
-        "Penpot object operations require the host's official MCP connection; project-scoped workers cannot authorize shared editor objects. Use host editing and verification."
-    );
-
     let mut all = vec![
         definition(
             "workspace_read",
@@ -529,11 +538,7 @@ pub struct ToolResult {
 
 pub fn may_mutate(name: &str) -> bool {
     name == "workspace_write"
-        || (name.starts_with("design/")
-            && !matches!(
-                name,
-                "design/penpot_api_info" | "design/high_level_overview"
-            ))
+        || (name.starts_with("design/") && !matches!(name, "design/openpencil_inspect"))
 }
 fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
     if design_rejected_before_dispatch(name, result) {
@@ -551,14 +556,18 @@ fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
 }
 
 fn design_rejected_before_dispatch(name: &str, result: &rmcp::model::CallToolResult) -> bool {
-    // Only owned direct tools issue this contract. Forwarded Penpot content or
+    // Only owned direct tools issue this contract. Upstream content or
     // an error message alone cannot attest that no mutation was dispatched.
     let Some(native) = name.strip_prefix("design/") else {
         return false;
     };
     if !matches!(
         native,
-        "tokens_compile"
+        "openpencil_inspect"
+            | "openpencil_document"
+            | "openpencil_edit"
+            | "openpencil_export"
+            | "tokens_compile"
             | "static_render"
             | "browser_screenshot"
             | "kroki_render"
@@ -755,26 +764,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                 && result.is_error != Some(true)
                 && (passed || name == "design/odiff_compare")
             {
-                if name == "design/export_shape" {
-                    let requested = args
-                        .get("filePath")
-                        .and_then(Value::as_str)
-                        .context("Penpot export omitted filePath")?;
-                    let relative = Path::new(requested)
-                        .strip_prefix("/workspace")
-                        .context("Penpot export path is outside design workspace")?;
-                    let path = design_file(
-                        &design_scope(paths, project)?,
-                        relative
-                            .to_str()
-                            .context("Penpot export path is not UTF-8")?,
-                    )?;
-                    let bytes = util::read_bounded(&path, 32 * 1024 * 1024)?;
-                    artifacts.push(ArtifactRef {
-                        path,
-                        sha256: util::sha256(&bytes),
-                    });
-                } else if let Some(structured) = result.structured_content.as_ref() {
+                if let Some(structured) = result.structured_content.as_ref() {
                     artifacts = design_artifacts(&design_scope(paths, project)?, name, structured)?;
                     if matches!(name, "design/typst_compile" | "design/hyperframes_render")
                         && let Some(primary) = artifact_from_json(
@@ -785,9 +775,17 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
                         stable_artifacts.push(primary);
                     }
                 }
-                opaque_mutation = artifacts.is_empty();
+                opaque_mutation = artifacts.is_empty() && stable_artifacts.is_empty();
             } else if mutates {
                 opaque_mutation = true;
+            }
+            if matches!(name, "design/openpencil_edit" | "design/openpencil_export")
+                && passed
+                && let Some(structured) = result.structured_content.as_ref()
+                && let Some(receipt) =
+                    openpencil_source_receipt(&design_scope(paths, project)?, structured)?
+            {
+                verifies.push(receipt);
             }
             if name == "design/odiff_compare"
                 && passed
@@ -834,6 +832,23 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn openpencil_exports_verify_only_the_exact_consumed_source_revision() {
+        let root = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        std::fs::write(root.path().join("design.fig"), b"editable").unwrap();
+        let digest = util::sha256(b"editable");
+        let value =
+            json!({"source":"design.fig","source_sha256":digest,"artifact":{"path":"preview.png"}});
+        let receipt = openpencil_source_receipt(root.path(), &value)
+            .unwrap()
+            .unwrap();
+        assert_eq!(receipt.sha256, digest);
+        std::fs::write(root.path().join("design.fig"), b"changed").unwrap();
+        assert!(openpencil_source_receipt(root.path(), &value).is_err());
+        assert!(openpencil_source_receipt(root.path(), &json!({"source":"../other.fig","source_sha256":digest,"artifact":{"path":"preview.png"}})).is_err());
+        assert!(openpencil_source_receipt(root.path(), &json!({"source":"design.fig","source_sha256":digest,"artifact":{"path":"design.fig"}})).unwrap().is_none());
+    }
 
     #[test]
     fn interrupted_write_reconciles_bytes_without_replay() {
@@ -894,9 +909,9 @@ mod tests {
             &CallToolResult::structured_error(receipt.clone())
         ));
         let mut remote = receipt.clone();
-        remote["execution"]["tool"] = json!("execute_code");
+        remote["execution"]["tool"] = json!("untrusted_tool");
         assert!(design_mutates(
-            "design/execute_code",
+            "design/untrusted_tool",
             &CallToolResult::structured_error(remote)
         ));
         for (key, value) in [("state", "started"), ("code", "renderer_failure")] {

@@ -11,13 +11,12 @@ import json
 from pathlib import Path
 import tomllib
 import urllib.request
-import penpot
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 def coordinates(root):
-    packages = set(penpot.coordinates(root))
+    packages = set()
     for item in tomllib.loads((root / 'Cargo.lock').read_text())['package']:
         if item.get('source', '').startswith('registry+'):
             packages.add(('crates.io', item['name'], item['version']))
@@ -83,9 +82,9 @@ def main():
     report = audit(coordinates(ROOT), keys)
     report.update(date=today.isoformat(),
                   coverage={'cargo':True,'owned_npm':True,'agent_python':True,
-                            'penpot_mcp_locked_coordinates':len(penpot.coordinates(ROOT)),
+                            'openpencil_locked_coordinates':sum(1 for e,n,v in coordinates(ROOT) if n.startswith('@open-pencil/')),
                             'os_and_images':'separate image_audit.py receipts required'},
-                  limits='Advisory matching is not exploitability analysis. Penpot coverage includes every MCP lock document, including build/dev packages; backend/frontend binary closures require image scans.')
+                  limits='Advisory matching is not exploitability analysis. OpenPencil and transitive packages are covered by the design npm lock; native/WASM and OS payloads also require image scans.')
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
     return 0 if report['ok'] else 1

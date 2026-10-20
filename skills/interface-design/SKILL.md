@@ -39,7 +39,7 @@ layout can still lack a convincing concept or illustration. Routine interface
 repairs need only the affected craft and behavior checks.
 
 When the requested deliverable is an editable design document, use
-`graphic-design` and its design-document reference with the official Penpot
+`graphic-design` and its design-document reference with the OpenPencil
 MCP/plugin through the `design` package. A static design export does not implement responsive behavior,
 accessible controls or a working website.
 
@@ -53,7 +53,7 @@ Identify the person, their immediate task and the important action. Inspect the
 existing screen, components, tokens, content and target devices. Preserve the
 project's system unless the requested change includes a new direction.
 When tokens change, compile `design/tokens.json` through Style Dictionary to the
-CSS, JavaScript, TypeScript, Typst and Penpot outputs before rendering dependent
+CSS, JavaScript, TypeScript, Typst and DTCG outputs before rendering dependent
 screens or exports.
 
 When documenting that system or alleging design drift, use

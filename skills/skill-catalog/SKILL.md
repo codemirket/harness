@@ -169,5 +169,4 @@ compiled source/catalog fingerprints and `installed_binary.matches_process`;
 `mirket info` checks a separate CLI process. A successful call observes only that
 connection. Direct design success responses carry `runtime` in ordinary structured
 and text content, as well as `mirket/runtime` metadata, for the running container's
-modules. Use ordinary content when the client hides metadata. Forwarded Penpot
-service identity is separate. Do not infer activation from a version string or setup receipt.
+modules. Use ordinary content when the client hides metadata. OpenPencil results also report the pinned engine version and file mode. Do not infer activation from a version string or setup receipt.

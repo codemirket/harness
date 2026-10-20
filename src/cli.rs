@@ -616,7 +616,7 @@ enum PackageCommand {
     /// Start a reviewed local service profile; never downloads images.
     Start {
         id: String,
-        #[arg(long = "group", value_parser = ["core", "diagrams", "penpot", "all"])]
+        #[arg(long = "group", value_parser = ["core", "diagrams", "all"])]
         groups: Vec<String>,
     },
     /// Stop owned services; retain designs unless --purge-data is explicitly supplied.
@@ -662,13 +662,6 @@ enum CraftCommand {
 }
 #[derive(Subcommand)]
 enum DevCommand {
-    /// Check the rebuilt backend against a disposable database, including restart.
-    BackendCheck {
-        #[arg(long)]
-        engine_home: PathBuf,
-        #[arg(long)]
-        output: PathBuf,
-    },
     /// Run native ARM64 Linux checks in an isolated pinned compiler container.
     LinuxCheck {
         #[arg(long, default_value = ".")]
@@ -1765,10 +1758,6 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 },
         } => crate::craft::contrast(&foreground, &background)?,
         Command::Dev { command } => match command {
-            DevCommand::BackendCheck {
-                engine_home,
-                output,
-            } => crate::packages::test_backend(&Paths::new(engine_home)?, &output)?,
             DevCommand::LinuxCheck {
                 project,
                 engine_home,

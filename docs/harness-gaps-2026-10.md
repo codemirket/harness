@@ -81,7 +81,7 @@ every locked package, including build/dev packages, without installing them.
 This distinction matters: a separate Trivy filesystem probe reported only 153
 packages for the same lock, whereas the complete pinned coordinate inventory
 contains 299. That partial scanner result was retained.
-[Capture and source binding](../evals/dependency-audit/penpot/provenance.json).
+[Capture and source binding](https://github.com/codemirket/harness/blob/3bcfac091f6a34021e148f4500c0262e8c24a417/evals/dependency-audit/penpot/provenance.json).
 
 The new [image audit](../evals/dependency-audit/image_audit.py) uses a pinned,
 separately fetched development scanner. It records the scanner digest and

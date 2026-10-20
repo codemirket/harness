@@ -128,7 +128,7 @@ primitive SVG, a diagram, a CSS sketch or an unexecuted generation prompt.
   Run generated and imported SVG through SVGO before delivery. Raster generation does not produce vector paths;
   wrapping a bitmap in an SVG does not make it vector artwork.
 - For editable design files and structured visual layouts, use the official
-  Penpot MCP/plugin. [Design documents](references/design-documents.md) describes
+  OpenPencil file tools. [Design documents](references/design-documents.md) describes
   saved-file refinement and preview checks. Website implementation belongs in
   the project's frontend tools.
 - For flows, C4, sequence, Vega-Lite and Excalidraw diagrams, preserve nodes,

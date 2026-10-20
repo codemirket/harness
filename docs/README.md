@@ -38,3 +38,5 @@ satisfies the user's request. No one check replaces the others.
 - [Image remediation and probe accounting](harness-image-remediation-2026-10.md) — patched owned images, retained Penpot OS inventory and hosted native CI evidence; accounting measurements are historical.
 
 - [Usage accounting removal](harness-accounting-removal-2026-10.md) — provider-owned usage tracking; execution diagnostics and budgets retained.
+
+- [OpenPencil replacement](openpencil-replacement-2026-10.md) — current editable-design topology, scoped file workflow, retained legacy data and validation evidence.

@@ -9,11 +9,10 @@
     "raster_transform": 120000,
     "svg_optimize": 120000,
     "odiff_compare": 120000,
-    "penpot_api_info": 120000,
-    "high_level_overview": 120000,
-    "execute_code": 240000,
-    "export_shape": 240000,
-    "import_image": 240000,
-    "vector_render": 180000
+    "vector_render": 180000,
+    "openpencil_inspect": 240000,
+    "openpencil_document": 240000,
+    "openpencil_edit": 240000,
+    "openpencil_export": 240000
   }
 }

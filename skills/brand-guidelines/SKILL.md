@@ -52,7 +52,7 @@ extend the system only after the core choices work together.
   values. A renamed token needs an explicit consumer mapping; duplicating a new
   palette beside unchanged product tokens produces contradictory guidance.
 - Compile the canonical `design/tokens.json` through Style Dictionary before any
-  dependent render. Check its CSS, JavaScript, TypeScript, Typst and Penpot outputs
+  dependent render. Check its CSS, JavaScript, TypeScript, Typst and DTCG outputs
   for the intended semantic values and type roles.
 - Define type roles and fallbacks with sample headings, paragraphs, labels,
   numerals and long content. Record licensed font source/weights where supplied.

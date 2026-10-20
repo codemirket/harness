@@ -1,5 +1,7 @@
 # Design capability review and adoption proposals
 
+> Historical review. The Penpot runtime conclusions below are superseded by the OpenPencil replacement; see [runtime packages](packages.md).
+
 Reviewed 19 October 2026. This extends the [earlier source review](design-source-review.md).
 
 ## Decision

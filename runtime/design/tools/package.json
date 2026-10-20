@@ -11,20 +11,22 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",
+    "@open-pencil/cli": "0.16.0",
     "@resvg/resvg-js": "2.6.2",
     "ajv": "8.18.0",
+    "css-tree": "3.2.1",
     "hyperframes": "0.8.149",
     "odiff-bin": "4.5.0",
     "playwright-core": "1.64.1",
     "satori": "0.62.0",
     "saxes": "6.0.0",
-    "style-dictionary": "5.7.0",
-    "svgo": "4.1.0",
     "sharp": "0.35.5",
-    "css-tree": "3.2.1"
+    "style-dictionary": "5.7.0",
+    "svgo": "4.1.0"
   },
   "overrides": {
     "fflate": "0.7.5",
-    "esbuild": "0.28.2"
+    "esbuild": "0.28.2",
+    "image-size": "2.0.4"
   }
 }

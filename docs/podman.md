@@ -42,7 +42,6 @@ Image builds run one stage at a time with a 2 GiB memory/swap ceiling and 512
 process resource limit. These are separate from the running service budgets.
 Startup sums the enabled service caps and requires another 512 MiB of usable VM
 RAM for the OS. Core fits the default 6 GiB VM; all groups need the 8 GiB VM.
-The local Penpot frontend uses one nginx worker and 1024 connections.
 Native render admission rejects competing jobs before loading renderers. No local
 image-generation model is installed. Input and output bounds still apply.
 `environment start` checks sharing and private connection identity before boot.
@@ -86,8 +85,7 @@ The selected design package owns its local services and shared workspace. The
 host directory is the selected home's
 `.mirket/execution/podman/staging/design/workspace`, mounted read/write as
 `/workspace` in every design container. Direct design tool file paths are
-relative to that mount; the official Penpot `export_shape` and `import_image`
-`filePath` arguments require absolute `/workspace/...` paths. Project directories
+relative to that mount, including OpenPencil document sources and outputs. Project directories
 are not mounted or expanded implicitly. `package start` and `package status`
 report the host path and assigned loopback host ports. These host ports are
 allocated automatically and saved with the package state; callers use the
@@ -97,9 +95,8 @@ loopback port. An existing owned container keeps its recorded mapping.
 
 Core has no public browser or raster-processing service: Playwright and Sharp run
 as bounded owned processes in design-tools. The optional diagrams group uses Kroki
-on internal port 8000. The optional Penpot group uses frontend 8080, official MCP
-4401 (`/mcp`), plugin manifest 4400 and private plugin WebSocket 4402. A separate
-bounded Penpot browser session keeps that plugin connected. Only enabled groups
+on internal port 8000. OpenPencil runs headlessly in core without additional
+ports, services or persistent volumes. Only enabled groups
 start. `environment status`, package status and a useful tool call establish
 separate readiness levels.
 

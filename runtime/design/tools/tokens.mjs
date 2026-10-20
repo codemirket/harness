@@ -4,7 +4,7 @@ import {workspace, workspacePath, readFile, sha256, temporaryDirectory, readBoun
 import {checkRequest} from './request.mjs';
 
 const DEFAULT_SOURCE = process.env.MIRKET_DESIGN_TOKENS || 'design/tokens.json';
-const OUTPUT_NAMES = ['tokens.css', 'tokens.js', 'tokens.ts', 'tokens.typ', 'penpot.tokens.json'];
+const OUTPUT_NAMES = ['tokens.css', 'tokens.js', 'tokens.ts', 'tokens.typ', 'tokens.dtcg.json'];
 
 function flat(dictionary) {
   return Object.fromEntries(dictionary.allTokens.map(token => [token.path.join('.'), token.$value ?? token.value]));
@@ -42,7 +42,7 @@ function tokenCompiler() {
       'mirket/js': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)};\n`,
       'mirket/ts': ({dictionary}) => `export const tokens = ${JSON.stringify(flat(dictionary), null, 2)} as const;\n`,
       'mirket/typst': ({dictionary}) => `#let tokens = ${typstValue(flat(dictionary))}\n`,
-      'mirket/penpot': ({dictionary}) => `${JSON.stringify(nested(dictionary), null, 2)}\n`,
+      'mirket/dtcg': ({dictionary}) => `${JSON.stringify(nested(dictionary), null, 2)}\n`,
     })) StyleDictionary.registerFormat({name, format});
     return StyleDictionary;
   });
@@ -100,7 +100,7 @@ export async function compileTokens(source = DEFAULT_SOURCE) {
         js: {transformGroup: 'js', buildPath: `${stage}/`, files: [{destination: 'tokens.js', format: 'mirket/js'}]},
         ts: {transformGroup: 'js', buildPath: `${stage}/`, files: [{destination: 'tokens.ts', format: 'mirket/ts'}]},
         typst: {transformGroup: 'js', buildPath: `${stage}/`, files: [{destination: 'tokens.typ', format: 'mirket/typst'}]},
-        penpot: {transformGroup: 'js', buildPath: `${stage}/`, files: [{destination: 'penpot.tokens.json', format: 'mirket/penpot'}]},
+        dtcg: {transformGroup: 'js', buildPath: `${stage}/`, files: [{destination: 'tokens.dtcg.json', format: 'mirket/dtcg'}]},
       },
     });
     await sd.buildAllPlatforms();

@@ -217,7 +217,7 @@ impl Gate {
             // including renderers that accept source, invalidates older output.
             if !matches!(
                 name,
-                "design/browser_screenshot" | "design/export_shape" | "design/odiff_compare"
+                "design/browser_screenshot" | "design/openpencil_export" | "design/odiff_compare"
             ) {
                 self.rendered.clear();
             }
@@ -228,7 +228,7 @@ impl Gate {
         if matches!(
             name,
             "design/browser_screenshot"
-                | "design/export_shape"
+                | "design/openpencil_export"
                 | "design/static_render"
                 | "design/kroki_render"
                 | "design/hyperframes_render"

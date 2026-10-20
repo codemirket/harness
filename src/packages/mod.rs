@@ -17,7 +17,7 @@ const TOOLS: [&str; 10] = [
     "style-dictionary",
     "satori",
     "playwright",
-    "penpot",
+    "openpencil",
     "kroki",
     "hyperframes",
     "typst",
@@ -199,21 +199,13 @@ pub async fn launch_scoped(paths: &Paths, scope: &std::path::Path) -> Result<Lau
             "MIRKET_SCOPED_WORKER=1".into(),
         ],
     );
-    for arg in &mut launch.args {
-        if let Some(groups) = arg.strip_prefix("MIRKET_DESIGN_GROUPS=") {
-            *arg = format!(
-                "MIRKET_DESIGN_GROUPS={}",
-                groups
-                    .split(',')
-                    .filter(|g| *g != "penpot")
-                    .collect::<Vec<_>>()
-                    .join(",")
-            );
-        }
-    }
     launch.cwd = scope.to_owned();
     launch.allowed_tools = Some(
         [
+            "openpencil_inspect",
+            "openpencil_document",
+            "openpencil_edit",
+            "openpencil_export",
             "tokens_compile",
             "static_render",
             "browser_screenshot",
@@ -263,9 +255,6 @@ pub fn service_stop(paths: &Paths, id: &str, purge_data: bool) -> Result<Value> 
 
 pub fn test_design_tools(paths: &Paths, project: &Path) -> Result<Value> {
     services::test_tools(paths, project)
-}
-pub fn test_backend(paths: &Paths, output: &Path) -> Result<Value> {
-    services::backend_check::check(paths, output)
 }
 
 #[cfg(test)]

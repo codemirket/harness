@@ -73,8 +73,8 @@ impl Assignment {
             || tool == "design/svg_optimize"
             || (tool == "design/static_render" && arguments["format"] == "svg")
             || (tool == "design/kroki_render" && arguments["format"] != "png")
-            || (tool == "design/export_shape"
-                && arguments["filePath"]
+            || (tool == "design/openpencil_export"
+                && arguments["output"]
                     .as_str()
                     .is_some_and(|path| path.ends_with(".svg")));
         ensure!(
@@ -324,6 +324,25 @@ mod tests {
             verification_tools: vec![],
             host_verification_checks: super::super::handoff::default_checks(),
         }
+    }
+
+    #[test]
+    fn editable_documents_are_scoped_worker_tools_with_export_and_pixel_verification() {
+        let mut request = task("editable-interface");
+        let assignment = prepare(&mut request).unwrap();
+        for tool in [
+            "design/openpencil_document",
+            "design/openpencil_edit",
+            "design/openpencil_export",
+            "design/openpencil_inspect",
+            "inspect_image",
+        ] {
+            assignment.authorize(tool).unwrap();
+        }
+        assert!(assignment.authorize("design/execute_code").is_err());
+        let missing = assignment.missing_production_tools(&BTreeSet::new());
+        assert!(missing.contains(&"design/openpencil_export".into()));
+        assert!(missing.contains(&"inspect_image".into()));
     }
 
     #[test]

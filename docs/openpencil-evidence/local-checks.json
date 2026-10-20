@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "source_sha256": "edb6137c600e09e62e46b9ac1f1e7b165effcb23cbca1522c40aa99d24fcf224",
+  "native_platform": "aarch64-apple-darwin",
+  "native_gate": {
+    "ok": true,
+    "checks": [
+      "format",
+      "clippy",
+      "tests"
+    ],
+    "passed": 413,
+    "failed": 0,
+    "ignored": 7
+  },
+  "design_container": {
+    "platform": "linux/arm64",
+    "image_id": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98",
+    "passed": 73,
+    "failed": 0,
+    "skipped": 0,
+    "network": "none",
+    "user_workspace_mounted": false
+  },
+  "disposable_setup_and_doctor": {
+    "ok": true,
+    "targets": [
+      "codex",
+      "claude-code"
+    ],
+    "optional_packages_selected": false
+  },
+  "catalog": {
+    "capabilities": 41,
+    "design_reference_instances": 27,
+    "embedded": 54,
+    "global_skills": 14,
+    "ok": true,
+    "profiles": 63,
+    "runtime_status": "not_checked",
+    "skills": 347,
+    "status": "valid"
+  },
+  "logs_sha256": {
+    "full-gate-d.log": "6f120ecd8cd75793808147a32e213efa282e0d3f390d0e91741bf20da3efe465",
+    "design-check-e.log": "43ee30ffd21f939cd1b70b3e98f261e12d2c5d124c95eabf957887acf35271a0",
+    "design-check-final.json": "3abd0626c2142fb80bd48807be27ec1c07ec455a8561a6f9778d603858191a6c",
+    "doctor-final.json": "b095f505ed341b8a8a3ed059a986083b5da43d6e96246e921b7a972c9ad51cf2"
+  },
+  "deployment": false,
+  "limits": [
+    "Native gate has 7 pre-existing opt-in ignored tests.",
+    "This is isolated candidate evidence, not a live desktop activation.",
+    "Headless PDF is unsupported; use the Typst workflow.",
+    "Image and hosted CI receipts are recorded separately."
+  ]
+}

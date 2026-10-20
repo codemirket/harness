@@ -1,0 +1,3651 @@
+{
+  "version": "0.16.0",
+  "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5",
+  "tools": [
+    {
+      "name": "get_node",
+      "effect": "read",
+      "description": "Get detailed properties of a node by ID. Use depth to limit child recursion (0 = node only, 1 = direct children, etc). Default: unlimited.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Max depth of children to include (0 = no children). Default: unlimited",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max depth of children to include (0 = no children). Default: unlimited",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "find_nodes",
+      "effect": "read",
+      "description": "Find nodes by name pattern and/or type.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name substring to match (case-insensitive)"
+          },
+          "type": {
+            "enum": [
+              "FRAME",
+              "RECTANGLE",
+              "ELLIPSE",
+              "TEXT",
+              "LINE",
+              "STAR",
+              "POLYGON",
+              "SECTION",
+              "GROUP",
+              "COMPONENT",
+              "INSTANCE",
+              "VECTOR"
+            ],
+            "type": "string",
+            "description": "Node type filter"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_jsx",
+      "effect": "read",
+      "description": "Get JSX representation of a node and its children. Compact round-trip format — same syntax as the render tool.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "Write JSX to this path instead of returning it (requires OPENPENCIL_MCP_ROOT)"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "update_node",
+      "effect": "write",
+      "description": "Update properties of an existing node: position, size, opacity, corner radius, visibility, text, font.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Width",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Width",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Height",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Height",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "opacity": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Opacity (0-1)"
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Opacity (0-1)",
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          },
+          "corner_radius": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Corner radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Corner radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "visible": {
+            "type": "boolean",
+            "description": "Visibility"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text content (TEXT nodes)"
+          },
+          "text_direction": {
+            "enum": [
+              "AUTO",
+              "LTR",
+              "RTL"
+            ],
+            "type": "string",
+            "description": "Text direction for TEXT nodes"
+          },
+          "flow_direction": {
+            "enum": [
+              "AUTO",
+              "LTR",
+              "RTL"
+            ],
+            "type": "string",
+            "description": "Auto-layout flow direction for FRAME nodes"
+          },
+          "font_size": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Font size",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Font size",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "font_weight": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 100,
+                "maximum": 900,
+                "description": "Font weight (100-900)"
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Font weight (100-900)",
+                "minimum": 100,
+                "maximum": 900
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Layer name"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_layout",
+      "effect": "write",
+      "description": "Set auto-layout (flexbox) on a frame. Direction, alignment, spacing, padding.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Frame node ID"
+          },
+          "direction": {
+            "enum": [
+              "HORIZONTAL",
+              "VERTICAL"
+            ],
+            "type": "string",
+            "description": "Layout direction (keeps current if omitted)"
+          },
+          "spacing": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Gap between items (only changes if provided)",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Gap between items (only changes if provided)",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "padding": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Equal padding on all sides (only changes if provided)",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Equal padding on all sides (only changes if provided)",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "padding_horizontal": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Horizontal padding",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Horizontal padding",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "padding_vertical": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Vertical padding",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Vertical padding",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "align": {
+            "enum": [
+              "MIN",
+              "CENTER",
+              "MAX",
+              "SPACE_BETWEEN"
+            ],
+            "type": "string",
+            "description": "Primary axis alignment (only changes if provided)"
+          },
+          "counter_align": {
+            "enum": [
+              "MIN",
+              "CENTER",
+              "MAX",
+              "STRETCH"
+            ],
+            "type": "string",
+            "description": "Cross axis alignment (only changes if provided)"
+          },
+          "flow_direction": {
+            "enum": [
+              "AUTO",
+              "LTR",
+              "RTL"
+            ],
+            "type": "string",
+            "description": "Child flow direction for auto-layout. AUTO inherits from parent."
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_layout_child",
+      "effect": "write",
+      "description": "Configure auto-layout child: sizing (FIXED/HUG/FILL), grow, alignment, absolute positioning.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Child node ID"
+          },
+          "sizing_horizontal": {
+            "enum": [
+              "FIXED",
+              "HUG",
+              "FILL"
+            ],
+            "type": "string",
+            "description": "Horizontal sizing mode"
+          },
+          "sizing_vertical": {
+            "enum": [
+              "FIXED",
+              "HUG",
+              "FILL"
+            ],
+            "type": "string",
+            "description": "Vertical sizing mode"
+          },
+          "grow": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Flex grow factor (0 = fixed, 1 = grow)",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Flex grow factor (0 = fixed, 1 = grow)",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "align_self": {
+            "enum": [
+              "INHERIT",
+              "MIN",
+              "CENTER",
+              "MAX",
+              "STRETCH",
+              "BASELINE"
+            ],
+            "type": "string",
+            "description": "Self alignment override (cross-axis)"
+          },
+          "positioning": {
+            "enum": [
+              "AUTO",
+              "ABSOLUTE"
+            ],
+            "type": "string",
+            "description": "ABSOLUTE to take node out of auto-layout flow"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_radius",
+      "effect": "write",
+      "description": "Set corner radius. Use individual corners for independent values.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "radius": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Corner radius for all corners",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Corner radius for all corners",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "top_left": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Top-left radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Top-left radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "top_right": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Top-right radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Top-right radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "bottom_right": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Bottom-right radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Bottom-right radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "bottom_left": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Bottom-left radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Bottom-left radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_fill",
+      "effect": "write",
+      "description": "Set fill on a node. Solid: color=\"#ff0000\". Linear gradient: gradient=\"top-bottom\" or \"left-right\" with color (start) and color_end (end).",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "color": {
+            "type": "string",
+            "description": "Color (hex). For gradient: start color."
+          },
+          "color_end": {
+            "type": "string",
+            "description": "End color for gradient (if omitted, solid fill)"
+          },
+          "gradient": {
+            "enum": [
+              "top-bottom",
+              "bottom-top",
+              "left-right",
+              "right-left"
+            ],
+            "type": "string",
+            "description": "Gradient direction"
+          }
+        },
+        "required": [
+          "id",
+          "color"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_stroke",
+      "effect": "write",
+      "description": "Set the stroke (border) of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "color": {
+            "type": "string",
+            "description": "Stroke color (hex)"
+          },
+          "weight": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.1,
+                "description": "Stroke weight",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Stroke weight",
+                "minimum": 0.1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 1
+          },
+          "align": {
+            "enum": [
+              "INSIDE",
+              "CENTER",
+              "OUTSIDE"
+            ],
+            "type": "string",
+            "description": "Stroke alignment",
+            "default": "INSIDE"
+          }
+        },
+        "required": [
+          "id",
+          "color"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_text",
+      "effect": "write",
+      "description": "Set text content of a text node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text content"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_text_properties",
+      "effect": "write",
+      "description": "Set text layout properties: alignment, auto-resize, text case, decoration, truncation.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Text node ID"
+          },
+          "align_horizontal": {
+            "enum": [
+              "LEFT",
+              "CENTER",
+              "RIGHT",
+              "JUSTIFIED"
+            ],
+            "type": "string",
+            "description": "Horizontal text alignment"
+          },
+          "align_vertical": {
+            "enum": [
+              "TOP",
+              "CENTER",
+              "BOTTOM"
+            ],
+            "type": "string",
+            "description": "Vertical text alignment"
+          },
+          "auto_resize": {
+            "enum": [
+              "NONE",
+              "WIDTH_AND_HEIGHT",
+              "HEIGHT",
+              "TRUNCATE"
+            ],
+            "type": "string",
+            "description": "Text auto-resize mode"
+          },
+          "direction": {
+            "enum": [
+              "AUTO",
+              "LTR",
+              "RTL"
+            ],
+            "type": "string",
+            "description": "Text direction"
+          },
+          "text_decoration": {
+            "enum": [
+              "NONE",
+              "UNDERLINE",
+              "STRIKETHROUGH"
+            ],
+            "type": "string",
+            "description": "Text decoration"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "delete_node",
+      "effect": "write",
+      "description": "Delete a node by ID.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID to delete"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "reparent_node",
+      "effect": "write",
+      "description": "Move a node into a different parent.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID to move"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "New parent node ID"
+          }
+        },
+        "required": [
+          "id",
+          "parent_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_resize",
+      "effect": "write",
+      "description": "Resize a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Width",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Width",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Height",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Height",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "batch_update",
+      "effect": "write",
+      "description": "Execute multiple modifications in one call. Each operation is {id, props} where props can include: spacing, padding, padding_horizontal, padding_vertical, counter_align, sizing_horizontal, sizing_vertical, grow, name, visible, corner_radius, auto_resize (for text), direction. Runs all updates with one layout recompute.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "operations": {
+            "type": "string",
+            "description": "JSON array: [{\"id\":\"0:5\",\"props\":{\"spacing\":8}},{\"id\":\"0:6\",\"props\":{\"sizing_horizontal\":\"FILL\",\"grow\":1}}]"
+          }
+        },
+        "required": [
+          "operations"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "describe",
+      "effect": "read",
+      "description": "Semantic description of one or more nodes. Pass `id` for a single node, or `ids` for multiple nodes in one call. Omit depth for auto — adapts to subtree size (small block → deeper, large page → shallower).",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID (single node)"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Node IDs (multiple nodes in one call)"
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Override depth (auto if omitted, max: 5)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Override depth (auto if omitted, max: 5)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "grid": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Grid size for alignment checks (default: 8)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Grid size for alignment checks (default: 8)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_page_tree",
+      "effect": "read",
+      "description": "Get the node tree of the current page. Returns lightweight hierarchy: id, type, name, size, and text for TEXT nodes. Use depth, root_id, or node_types to keep large pages small. Use get_node for full properties of a specific node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "depth": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Max nesting depth to return (1 = returned root nodes only). Default: unlimited",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max nesting depth to return (1 = returned root nodes only). Default: unlimited",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "root_id": {
+            "type": "string",
+            "description": "Return only this node subtree instead of the whole current page"
+          },
+          "node_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Keep only these node types and their ancestors, for example FRAME or TEXT"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_current_page",
+      "effect": "read",
+      "description": "Get the current page name and ID.",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "list_pages",
+      "effect": "read",
+      "description": "List all pages in the document.",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "query_nodes",
+      "effect": "read",
+      "description": "Query nodes using XPath selectors. Returns id, name, and type, plus text for TEXT nodes. Node types are element names (FRAME, TEXT, RECTANGLE, ELLIPSE, etc.). Attributes: id, name, width, height, x, y, visible, opacity, cornerRadius, fontSize, fontFamily, fontWeight, layoutMode, itemSpacing, paddingTop/Right/Bottom/Left, strokeWeight, rotation, locked, blendMode, text, lineHeight, letterSpacing.\n\nExamples:\n//FRAME — all frames\n//FRAME[@width < 300] — frames narrower than 300px\n//COMPONENT[starts-with(@name, 'Button')] — components starting with \"Button\"\n//SECTION/FRAME — direct frame children of sections\n//SECTION//TEXT — all text nodes inside sections\n//*[@cornerRadius > 0] — any node with corner radius\n//TEXT[contains(@text, 'Hello')] — text nodes containing \"Hello\"\n//*[@id='1:2']//TEXT[not(ancestor-or-self::*[@visible='false'])] — visible text inside a frame, in layer order",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "selector": {
+            "type": "string",
+            "description": "XPath selector"
+          },
+          "page": {
+            "type": "string",
+            "description": "Page name (default: current page)"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Max results (default: 1000)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max results (default: 1000)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "selector"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_components",
+      "effect": "read",
+      "description": "List reusable components from the document and enabled component libraries, optionally filtered by name.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Filter by name (case-insensitive substring)"
+          },
+          "source": {
+            "enum": [
+              "all",
+              "document",
+              "libraries"
+            ],
+            "type": "string",
+            "description": "Component source",
+            "default": "all"
+          },
+          "library_id": {
+            "type": "string",
+            "description": "Filter library components by library ID"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Max results (default: 50)",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "integer",
+                "pattern": "\\S",
+                "description": "Max results (default: 50)",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "page_bounds",
+      "effect": "read",
+      "description": "Get bounding box of all objects on the current page.",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_shape",
+      "effect": "write",
+      "description": "Create a shape on the canvas. Use FRAME for containers/cards, RECTANGLE for solid blocks, ELLIPSE for circles, TEXT for labels, LINE for rules and dividers, STAR for starbursts and badges, POLYGON for triangles and regular polygons, and SECTION for page sections. Use create_vector with an SVG path for arbitrary shapes.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "FRAME",
+              "RECTANGLE",
+              "ELLIPSE",
+              "TEXT",
+              "LINE",
+              "STAR",
+              "POLYGON",
+              "SECTION"
+            ],
+            "type": "string",
+            "description": "Node type"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Width in pixels",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Width in pixels",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Height in pixels",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Height in pixels",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Node name shown in layers panel"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Parent node ID to nest inside"
+          }
+        },
+        "required": [
+          "type",
+          "x",
+          "y",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "combine_as_variants",
+      "effect": "write",
+      "description": "Combine components sharing a parent into a component set (variant set). Components named as Figma names variants, \"State=On, Size=Large\", get those variant properties; names like \"Button/Primary\" derive a Variant property from the segments after the first slash.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Component node IDs to combine"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_component",
+      "effect": "write",
+      "description": "Convert a frame/group into a component.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID to convert"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_instance",
+      "effect": "write",
+      "description": "Create an instance of a component.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "description": "Component node ID"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "component_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_page",
+      "effect": "write",
+      "description": "Create a new page.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Page name"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_vector",
+      "effect": "write",
+      "description": "Create a vector node from SVG path data or a VectorNetwork.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Node name"
+          },
+          "path": {
+            "type": "string",
+            "description": "SVG path data (preferred, e.g. \"M0 0 L100 0 L50 80 Z\") or VectorNetwork JSON, e.g. {\"vertices\":[{\"x\":0,\"y\":0},{\"x\":10,\"y\":0}],\"segments\":[{\"start\":0,\"end\":1}],\"regions\":[]}"
+          },
+          "fill": {
+            "type": "string",
+            "description": "Fill color (hex)"
+          },
+          "stroke": {
+            "type": "string",
+            "description": "Stroke color (hex)"
+          },
+          "stroke_weight": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Stroke weight",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Stroke weight",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Parent node ID"
+          }
+        },
+        "required": [
+          "x",
+          "y"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_slice",
+      "effect": "write",
+      "description": "Create a slice (export region) on the canvas.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position in the parent, or on the page",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Width",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Width",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Height",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Height",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "Slice name"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Parent node ID"
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "import_svg",
+      "effect": "write",
+      "description": "Import raw SVG markup onto the canvas as editable layers, as pasting it into Figma does: a frame (a group when the SVG has no width, height, or viewBox) with a group per <g>, a vector per shape, and a text layer per <text>, named by their ids, and a mask group around clipped content. Supports common SVG shapes, text with <tspan> styles, inherited presentation attributes, opacity, transforms, gradients, clip paths, and internal <use> references.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "svg": {
+            "type": "string",
+            "description": "SVG markup string (e.g. '<svg viewBox=\"0 0 24 24\"><path d=\"M...\"/></svg>')"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name for the created frame or group (default: the root <svg> id, else \"Frame\" or \"Group\")"
+          },
+          "color": {
+            "type": "string",
+            "description": "Default color for currentColor fills/strokes (default: #000000)"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Parent node ID"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "svg"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_effects",
+      "effect": "write",
+      "description": "Set effects on a node (drop shadow, inner shadow, blur). Pass an array or a single effect.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "type": {
+            "enum": [
+              "DROP_SHADOW",
+              "INNER_SHADOW",
+              "FOREGROUND_BLUR",
+              "BACKGROUND_BLUR"
+            ],
+            "type": "string",
+            "description": "Effect type"
+          },
+          "color": {
+            "type": "string",
+            "description": "Shadow color (hex). Ignored for blur."
+          },
+          "offset_x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Shadow X offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Shadow X offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 0
+          },
+          "offset_y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Shadow Y offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Shadow Y offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 4
+          },
+          "radius": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Blur radius",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Blur radius",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 4
+          },
+          "spread": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Shadow spread",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Shadow spread",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 0
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_opacity",
+      "effect": "write",
+      "description": "Set opacity of a node (0-1).",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Opacity (0-1)"
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Opacity (0-1)",
+                "minimum": 0,
+                "maximum": 1
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_font",
+      "effect": "write",
+      "description": "Set font properties of a text node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "family": {
+            "type": "string",
+            "description": "Font family name"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Font size",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Font size",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "style": {
+            "type": "string",
+            "description": "Font style (e.g. \"Bold\", \"Regular\", \"Bold Italic\")"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_visible",
+      "effect": "write",
+      "description": "Set visibility of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "value": {
+            "type": "boolean",
+            "description": "Visible (true/false)"
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_constraints",
+      "effect": "write",
+      "description": "Set resize constraints for a node within its parent.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "horizontal": {
+            "enum": [
+              "MIN",
+              "CENTER",
+              "MAX",
+              "STRETCH",
+              "SCALE"
+            ],
+            "type": "string",
+            "description": "Horizontal constraint"
+          },
+          "vertical": {
+            "enum": [
+              "MIN",
+              "CENTER",
+              "MAX",
+              "STRETCH",
+              "SCALE"
+            ],
+            "type": "string",
+            "description": "Vertical constraint"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_rotation",
+      "effect": "write",
+      "description": "Set rotation angle of a node in degrees.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "angle": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Rotation angle in degrees",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Rotation angle in degrees",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "angle"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_minmax",
+      "effect": "write",
+      "description": "Set min/max width and height constraints on a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "min_width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Minimum width",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Minimum width",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "max_width": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Maximum width",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum width",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "min_height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Minimum height",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Minimum height",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "max_height": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Maximum height",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum height",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_font_range",
+      "effect": "write",
+      "description": "Set font properties for a text range.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "Start character index",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Start character index",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "description": "End character index",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "End character index",
+                "minimum": 0,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "family": {
+            "type": "string",
+            "description": "Font family name"
+          },
+          "size": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 1,
+                "description": "Font size",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Font size",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "style": {
+            "type": "string",
+            "description": "Font style"
+          },
+          "color": {
+            "type": "string",
+            "description": "Text color (hex)"
+          }
+        },
+        "required": [
+          "id",
+          "start",
+          "end"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_text_resize",
+      "effect": "write",
+      "description": "Set text auto-resize mode.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "mode": {
+            "enum": [
+              "NONE",
+              "WIDTH_AND_HEIGHT",
+              "HEIGHT",
+              "TRUNCATE"
+            ],
+            "type": "string",
+            "description": "Resize mode"
+          }
+        },
+        "required": [
+          "id",
+          "mode"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_blend",
+      "effect": "write",
+      "description": "Set blend mode of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "mode": {
+            "enum": [
+              "NORMAL",
+              "DARKEN",
+              "MULTIPLY",
+              "COLOR_BURN",
+              "LIGHTEN",
+              "SCREEN",
+              "COLOR_DODGE",
+              "OVERLAY",
+              "SOFT_LIGHT",
+              "HARD_LIGHT",
+              "DIFFERENCE",
+              "EXCLUSION",
+              "HUE",
+              "SATURATION",
+              "COLOR",
+              "LUMINOSITY"
+            ],
+            "type": "string",
+            "description": "Blend mode"
+          }
+        },
+        "required": [
+          "id",
+          "mode"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_locked",
+      "effect": "write",
+      "description": "Set locked state of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "value": {
+            "type": "boolean",
+            "description": "Locked (true/false)"
+          }
+        },
+        "required": [
+          "id",
+          "value"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_stroke_align",
+      "effect": "write",
+      "description": "Set stroke alignment of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "align": {
+            "enum": [
+              "INSIDE",
+              "CENTER",
+              "OUTSIDE"
+            ],
+            "type": "string",
+            "description": "Stroke alignment"
+          }
+        },
+        "required": [
+          "id",
+          "align"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_image_fill",
+      "effect": "write",
+      "description": "Set an image fill on a node from base64-encoded image data.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "image_data": {
+            "type": "string",
+            "description": "Base64-encoded image bytes (PNG, JPEG, or WEBP)"
+          },
+          "scale_mode": {
+            "enum": [
+              "FILL",
+              "FIT",
+              "CROP",
+              "TILE"
+            ],
+            "type": "string",
+            "description": "Image scale mode",
+            "default": "FILL"
+          }
+        },
+        "required": [
+          "id",
+          "image_data"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "clone_node",
+      "effect": "write",
+      "description": "Clone (duplicate) a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID to clone"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_move",
+      "effect": "write",
+      "description": "Move a node to new coordinates.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "x": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "y": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y position",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "x",
+          "y"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "rename_node",
+      "effect": "write",
+      "description": "Rename a node in the layers panel.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "New name"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "group_nodes",
+      "effect": "write",
+      "description": "Group selected nodes.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "description": "Node IDs to group"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "ungroup_node",
+      "effect": "write",
+      "description": "Ungroup a group node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Group node ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "flatten_nodes",
+      "effect": "write",
+      "description": "Flatten nodes into a single vector.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Node IDs to flatten"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_to_component",
+      "effect": "write",
+      "description": "Convert one or more frames/groups into components.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Node IDs to convert"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_bounds",
+      "effect": "read",
+      "description": "Get absolute bounding box of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_ancestors",
+      "effect": "read",
+      "description": "Get the ancestor chain from a node to the page root.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Max depth to traverse",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max depth to traverse",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_children",
+      "effect": "read",
+      "description": "Get direct children of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_tree",
+      "effect": "read",
+      "description": "Get a node tree with types and hierarchy.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Max depth (default: unlimited)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max depth (default: unlimited)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "node_bindings",
+      "effect": "read",
+      "description": "Get variable bindings for a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "arrange",
+      "effect": "write",
+      "description": "Arrange top-level nodes on the canvas in a grid, row, or column layout. Useful after batch creation to tidy up overlapping frames.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Node IDs to arrange (default: all top-level children)"
+          },
+          "mode": {
+            "enum": [
+              "grid",
+              "row",
+              "column"
+            ],
+            "type": "string",
+            "description": "Layout mode",
+            "default": "grid"
+          },
+          "gap": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Spacing between nodes (default: 40)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Spacing between nodes (default: 40)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "cols": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Column count for grid mode (default: auto)",
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "integer",
+                "pattern": "\\S",
+                "description": "Column count for grid mode (default: auto)",
+                "minimum": 1,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "list_variables",
+      "effect": "read",
+      "description": "List all design variables (colors, numbers, strings, booleans).",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "COLOR",
+              "FLOAT",
+              "STRING",
+              "BOOLEAN"
+            ],
+            "type": "string",
+            "description": "Filter by variable type"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "list_collections",
+      "effect": "read",
+      "description": "List all variable collections.",
+      "schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_variable",
+      "effect": "read",
+      "description": "Get a variable by ID.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Variable ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "find_variables",
+      "effect": "read",
+      "description": "Find variables by name pattern.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Name substring (case-insensitive)"
+          },
+          "type": {
+            "enum": [
+              "COLOR",
+              "FLOAT",
+              "STRING",
+              "BOOLEAN"
+            ],
+            "type": "string",
+            "description": "Filter by type"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_variable",
+      "effect": "write",
+      "description": "Create a new variable in a collection.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Variable name"
+          },
+          "type": {
+            "enum": [
+              "COLOR",
+              "FLOAT",
+              "STRING",
+              "BOOLEAN"
+            ],
+            "type": "string",
+            "description": "Variable type"
+          },
+          "collection_id": {
+            "type": "string",
+            "description": "Collection ID"
+          },
+          "value": {
+            "type": "string",
+            "description": "Initial value (hex for COLOR, number for FLOAT, etc.)"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "collection_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "set_variable",
+      "effect": "write",
+      "description": "Set the value of a variable for a specific mode.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Variable ID"
+          },
+          "mode": {
+            "type": "string",
+            "description": "Mode ID"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value (hex for COLOR, number for FLOAT, etc.)"
+          }
+        },
+        "required": [
+          "id",
+          "mode",
+          "value"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "delete_variable",
+      "effect": "write",
+      "description": "Delete a variable.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Variable ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "bind_variable",
+      "effect": "write",
+      "description": "Bind a variable to a node property. For fills/strokes color bindings use indexed format like \"fills/0/color\".",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "field": {
+            "type": "string",
+            "description": "Property field path. For fills/strokes use indexed format: \"fills/0/color\", \"strokes/0/color\". For FLOAT scalars: \"opacity\", \"width\", \"height\", \"cornerRadius\", \"fontSize\", \"letterSpacing\", \"lineHeight\", \"itemSpacing\", \"strokeWeight\", \"paddingLeft/Right/Top/Bottom\", \"counterAxisSpacing\", \"rotation\", \"x\", \"y\", \"minWidth\", \"maxWidth\", \"minHeight\", \"maxHeight\", \"topLeftRadius\", \"topRightRadius\", \"bottomLeftRadius\", \"bottomRightRadius\", \"borderTopWeight\", \"borderBottomWeight\", \"borderLeftWeight\", \"borderRightWeight\", \"gridRowGap\", \"gridColumnGap\". For STRING: \"fontFamily\". For BOOLEAN: \"visible\"."
+          },
+          "variable_id": {
+            "type": "string",
+            "description": "Variable ID"
+          }
+        },
+        "required": [
+          "node_id",
+          "field",
+          "variable_id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "unbind_variable",
+      "effect": "write",
+      "description": "Remove a variable binding from a node property.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "field": {
+            "type": "string",
+            "description": "Property field path to unbind. For fills/strokes use indexed format: \"fills/0/color\", \"strokes/0/color\". For FLOAT scalars: \"opacity\", \"width\", \"height\", \"cornerRadius\", \"fontSize\", \"letterSpacing\", \"lineHeight\", \"itemSpacing\", \"strokeWeight\", \"paddingLeft/Right/Top/Bottom\", \"counterAxisSpacing\", \"rotation\", \"x\", \"y\", \"minWidth\", \"maxWidth\", \"minHeight\", \"maxHeight\", \"topLeftRadius\", \"topRightRadius\", \"bottomLeftRadius\", \"bottomRightRadius\", \"borderTopWeight\", \"borderBottomWeight\", \"borderLeftWeight\", \"borderRightWeight\", \"gridRowGap\", \"gridColumnGap\". For STRING: \"fontFamily\". For BOOLEAN: \"visible\"."
+          }
+        },
+        "required": [
+          "node_id",
+          "field"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "get_collection",
+      "effect": "read",
+      "description": "Get a variable collection by ID.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Collection ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "create_collection",
+      "effect": "write",
+      "description": "Create a new variable collection.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Collection name"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "delete_collection",
+      "effect": "write",
+      "description": "Delete a variable collection and all its variables.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Collection ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "boolean_union",
+      "effect": "write",
+      "description": "Union (combine) multiple nodes.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "description": "Node IDs to union"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "boolean_subtract",
+      "effect": "write",
+      "description": "Subtract the second node from the first.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "description": "Node IDs (first minus rest)"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "boolean_intersect",
+      "effect": "write",
+      "description": "Intersect multiple nodes.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "description": "Node IDs to intersect"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "boolean_exclude",
+      "effect": "write",
+      "description": "Exclude (XOR) multiple nodes.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "description": "Node IDs to exclude"
+          }
+        },
+        "required": [
+          "ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "path_get",
+      "effect": "read",
+      "description": "Get vector path data of a node.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "path_set",
+      "effect": "write",
+      "description": "Set vector path data on a node. Provide a VectorNetwork JSON.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "path": {
+            "type": "string",
+            "description": "VectorNetwork JSON"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "path_scale",
+      "effect": "write",
+      "description": "Scale vector path from center.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "factor": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Scale factor (e.g. 2 for double)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Scale factor (e.g. 2 for double)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "factor"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "path_flip",
+      "effect": "write",
+      "description": "Flip vector path horizontally or vertically.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "axis": {
+            "enum": [
+              "horizontal",
+              "vertical"
+            ],
+            "type": "string",
+            "description": "Flip axis"
+          }
+        },
+        "required": [
+          "id",
+          "axis"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "path_move",
+      "effect": "write",
+      "description": "Move all path points by an offset.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Node ID"
+          },
+          "dx": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "X offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "X offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "dy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Y offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Y offset",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "dx",
+          "dy"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "analyze_colors",
+      "effect": "read",
+      "description": "Analyze color palette usage across the current page. Shows frequency, variable bindings, and optionally clusters similar colors.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 30
+          },
+          "show_similar": {
+            "type": "boolean",
+            "description": "Include similar-color clusters for potential merging"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Distance threshold for clustering (0-50, default: 15)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Distance threshold for clustering (0-50, default: 15)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "analyze_typography",
+      "effect": "read",
+      "description": "Analyze typography usage across the current page. Shows font families, sizes, weights, and their frequencies.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 30
+          },
+          "group_by": {
+            "enum": [
+              "family",
+              "size",
+              "weight"
+            ],
+            "type": "string",
+            "description": "Group results by a property"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "lint",
+      "effect": "read",
+      "description": "Check the design for accessibility and consistency issues: low text contrast, small touch targets and text, off-scale spacing and radius, colors that match a variable but are not bound, and structure hygiene. Findings are sorted by severity. A `fix` is safe to apply with lint_fix; `suggestions` change values and need judgment.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Layers to check, with their descendants (default: the current page)"
+          },
+          "preset": {
+            "enum": [
+              "recommended",
+              "strict",
+              "accessibility"
+            ],
+            "type": "string",
+            "description": "Rule preset: recommended (default), strict, or accessibility (contrast, touch targets, text size)",
+            "default": "recommended"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "no-hardcoded-colors",
+                "no-default-names",
+                "prefer-auto-layout",
+                "consistent-spacing",
+                "consistent-radius",
+                "color-contrast",
+                "touch-target-size",
+                "text-style-required",
+                "min-text-size",
+                "no-hidden-layers",
+                "no-deeply-nested",
+                "no-empty-frames",
+                "pixel-perfect",
+                "no-groups",
+                "effect-style-required",
+                "no-mixed-styles",
+                "no-detached-instances"
+              ],
+              "type": "string"
+            },
+            "description": "Check only these rules of the preset"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum results to return (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 30
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "lint_fix",
+      "effect": "write",
+      "description": "Apply lint fixes: bind colors to the variable they match and round geometry to whole pixels. With suggestions: true, also apply each finding’s first suggestion (snap radius and spacing to the scale, raise text to the minimum size, convert groups to frames, delete hidden layers). Returns what was applied and what remains.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Layers to check, with their descendants (default: the current page)"
+          },
+          "preset": {
+            "enum": [
+              "recommended",
+              "strict",
+              "accessibility"
+            ],
+            "type": "string",
+            "description": "Rule preset: recommended (default), strict, or accessibility (contrast, touch targets, text size)",
+            "default": "recommended"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "no-hardcoded-colors",
+                "no-default-names",
+                "prefer-auto-layout",
+                "consistent-spacing",
+                "consistent-radius",
+                "color-contrast",
+                "touch-target-size",
+                "text-style-required",
+                "min-text-size",
+                "no-hidden-layers",
+                "no-deeply-nested",
+                "no-empty-frames",
+                "pixel-perfect",
+                "no-groups",
+                "effect-style-required",
+                "no-mixed-styles",
+                "no-detached-instances"
+              ],
+              "type": "string"
+            },
+            "description": "Check only these rules of the preset"
+          },
+          "suggestions": {
+            "type": "boolean",
+            "description": "Also apply the first suggestion of each finding",
+            "default": false
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "analyze_spacing",
+      "effect": "read",
+      "description": "Analyze spacing values (gap, padding) across the current page. Checks grid compliance.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "grid": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "description": "Base grid size to check against (default: 8)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Base grid size to check against (default: 8)",
+                "exclusiveMinimum": 0,
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "analyze_clusters",
+      "effect": "read",
+      "description": "Find repeated design patterns (potential components). Groups nodes by structural signature — type, size, and child structure.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "min_count": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Min instances to form a cluster (default: 2)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Min instances to form a cluster (default: 2)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "min_size": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Min node size in px (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Min node size in px (default: 30)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Max clusters to return (default: 20)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Max clusters to return (default: 20)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "analyze_overlaps",
+      "effect": "read",
+      "description": "Detect visual overlaps and layout overflows across the current page. Useful for finding content that covers footers, text that bleeds outside frames, and accidental sibling overlaps.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "all",
+              "same-parent",
+              "cross-parent",
+              "top-level",
+              "inside-parent"
+            ],
+            "type": "string",
+            "description": "Which pairs to inspect: all, same-parent, cross-parent, top-level, inside-parent (default: all)",
+            "default": "all"
+          },
+          "category": {
+            "type": "string",
+            "description": "Comma-separated categories: sibling-overlap, parent-overflow, overlay (default: all)"
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "major",
+              "minor",
+              "info"
+            ],
+            "type": "string",
+            "description": "Minimum severity to include: critical, major, minor, info (default: info)",
+            "default": "info"
+          },
+          "min_area": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Minimum overlap area in square pixels (default: 0)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Minimum overlap area in square pixels (default: 0)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "min_ratio": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Minimum overlap ratio relative to the smaller node, 0.0–1.0 (default: 0)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Minimum overlap ratio relative to the smaller node, 0.0–1.0 (default: 0)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ]
+          },
+          "include_hidden": {
+            "type": "boolean",
+            "description": "Include hidden nodes in the analysis"
+          },
+          "include_locked": {
+            "type": "boolean",
+            "description": "Include locked nodes in the analysis"
+          },
+          "include_absolute": {
+            "type": "boolean",
+            "description": "Include absolutely-positioned nodes in the analysis"
+          },
+          "page": {
+            "type": "string",
+            "description": "Limit analysis to nodes on the named page"
+          },
+          "page_id": {
+            "type": "string",
+            "description": "Limit analysis to nodes on the page with this stable ID (takes precedence over page)"
+          },
+          "type": {
+            "type": "string",
+            "description": "Comma-separated node types to analyze, e.g. FRAME,TEXT"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number",
+                "description": "Maximum overlap findings to return (default: 100)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              {
+                "type": "number",
+                "pattern": "\\S",
+                "description": "Maximum overlap findings to return (default: 100)",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              }
+            ],
+            "default": 100
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "design_to_tokens",
+      "effect": "read",
+      "description": "Write the document variables as a stylesheet of CSS custom properties: defaults in :root, every other mode under its condition (a selector such as [data-theme=\"dark\"] or an @media query), aliases as var() references. The tailwind format puts tokens with a Tailwind v4 namespace (--color-*, --spacing-*, --radius-*, --text-*, …) in @theme and adds a @custom-variant per mode. The dtcg format returns W3C design token files instead: one per collection mode, text and effect styles as typography and shadow tokens, and a resolver document; collection and type filters do not apply to it. Issues lists tokens or modes that could not be written.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "enum": [
+              "css",
+              "tailwind",
+              "dtcg"
+            ],
+            "type": "string",
+            "description": "css: :root and mode scopes; tailwind: @theme, mode scopes and variants; dtcg: W3C design token files",
+            "default": "css"
+          },
+          "collection": {
+            "type": "string",
+            "description": "Filter by collection name (substring, case-insensitive)"
+          },
+          "type": {
+            "enum": [
+              "COLOR",
+              "FLOAT",
+              "STRING",
+              "BOOLEAN"
+            ],
+            "type": "string",
+            "description": "Filter by variable type"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "import_design_tokens",
+      "effect": "write",
+      "description": "Import W3C design token (DTCG) files into the document as variables, and typography and shadow tokens as text and effect styles. Pass each file with its path: a file per mode grouped by folder (as Figma exports modes), a .resolver.json with the files it refers to, or a Tokens Studio file with $themes. Collections and modes with the same names as existing ones are updated, variables are matched by name, and nothing is deleted. Returns what was added, updated, and skipped and why.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "text"
+              ]
+            },
+            "minItems": 1,
+            "description": "Token files, each with its path (folders name collections) and JSON text"
+          },
+          "add_missing": {
+            "type": "boolean",
+            "description": "Add tokens that match no variable (default true)",
+            "default": true
+          },
+          "styles": {
+            "type": "boolean",
+            "description": "Make text and effect styles (default true)",
+            "default": true
+          }
+        },
+        "required": [
+          "files"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    },
+    {
+      "name": "design_to_component_map",
+      "effect": "read",
+      "description": "Analyze the document and return a structured component decomposition: components (with variants, props, instance counts), screens, and a dependency overview.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "string",
+            "description": "Page name to analyze (default: current page)"
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      }
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "commit": "3bcfac091f6a34021e148f4500c0262e8c24a417",
+  "branch": "review/harness-remediation-windows-20261020",
+  "run_url": "https://github.com/codemirket/harness/actions/runs/39477052236",
+  "conclusion": "failure",
+  "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+  "jobs": [
+    {
+      "name": "javascript",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815613122"
+    },
+    {
+      "name": "image_dependencies",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815613544"
+    },
+    {
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815613619"
+    },
+    {
+      "name": "check (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815809357"
+    },
+    {
+      "name": "check (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815809414"
+    },
+    {
+      "name": "check (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/codemirket/harness/actions/runs/39477052236/job/118815809488"
+    }
+  ],
+  "native": {
+    "linux": {
+      "ok": true,
+      "identity": {
+        "executable_sha256": "47278c66ddb03f18d5ea09f315c822c195079694f9d7037d123acb5db7842129",
+        "pid": 10525,
+        "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+        "target": "x86_64-unknown-linux-gnu",
+        "version": "1.0.11"
+      },
+      "rust": {
+        "passed": 411,
+        "failed": 0,
+        "ignored": 7
+      },
+      "commands": 21,
+      "variants": [
+        {
+          "name": "mirket",
+          "ok": true
+        },
+        {
+          "name": "install-codex",
+          "ok": true
+        },
+        {
+          "name": "install-claude",
+          "ok": true
+        },
+        {
+          "name": "install-all",
+          "ok": true
+        }
+      ],
+      "receipt_sha256": "9023ec50a7309c4e30c46f06933b31df93d9de87179505fed8a92dd853bf3e63",
+      "verified_files": 42,
+      "verified_packages": 4
+    },
+    "windows": {
+      "ok": true,
+      "identity": {
+        "executable_sha256": "c54d330edda35fef6000c00f53c2e560bf84c640f191cbce8bd38884fc6319b9",
+        "pid": 5608,
+        "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+        "target": "x86_64-pc-windows-msvc",
+        "version": "1.0.11"
+      },
+      "rust": {
+        "passed": 381,
+        "failed": 0,
+        "ignored": 7
+      },
+      "commands": 21,
+      "variants": [
+        {
+          "name": "mirket",
+          "ok": true
+        },
+        {
+          "name": "install-codex",
+          "ok": true
+        },
+        {
+          "name": "install-claude",
+          "ok": true
+        },
+        {
+          "name": "install-all",
+          "ok": true
+        }
+      ],
+      "receipt_sha256": "055a73474b07703a0afd9848fc50b745302aa5f5b00fe38b3c17af9de0ab05e3",
+      "verified_files": 42,
+      "verified_packages": 4
+    },
+    "macos": {
+      "ok": true,
+      "identity": {
+        "executable_sha256": "12655f38160dcf1fbb95b3b592f923f6d2c37355d508a233d883d1906aedf7f8",
+        "pid": 19401,
+        "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+        "target": "aarch64-apple-darwin",
+        "version": "1.0.11"
+      },
+      "rust": {
+        "passed": 412,
+        "failed": 0,
+        "ignored": 7
+      },
+      "commands": 21,
+      "variants": [
+        {
+          "name": "mirket",
+          "ok": true
+        },
+        {
+          "name": "install-codex",
+          "ok": true
+        },
+        {
+          "name": "install-claude",
+          "ok": true
+        },
+        {
+          "name": "install-all",
+          "ok": true
+        }
+      ],
+      "receipt_sha256": "cac47940d5062c82d943a148318932cd970bade42476b2e79bdab1cc4eaaa8c8",
+      "verified_files": 42,
+      "verified_packages": 4
+    }
+  },
+  "deployed": false,
+  "limits": [
+    "The image audit remains red on untriaged advisories and the upstream backend inventory gap. Native CI success does not waive that gate.",
+    "These receipts validate the accounting removal commit; later Penpot source changes require their own validation."
+  ]
+}

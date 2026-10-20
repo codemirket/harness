@@ -68,6 +68,7 @@ WORKDIR /opt/design
 COPY tools/package.json tools/package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
     && node -e "import('@resvg/resvg-js').then(()=>import('satori'))" \
+    && node node_modules/@open-pencil/cli/bin/openpencil.js --help >/dev/null \
     && node node_modules/hyperframes/bin/hyperframes.mjs --help >/dev/null \
     && node_modules/.bin/odiff --help >/dev/null \
     && npm cache clean --force \
@@ -83,16 +84,15 @@ COPY --from=guard-build /mirket-runtime-guard /opt/design/runtime-guard
 COPY tools/*.mjs ./
 COPY tools/chromium-launcher ./
 RUN chmod 0755 /opt/design/chromium-launcher
+COPY tools/openpencil-tools.json ./openpencil-tools.json
 COPY tools/tool-policy.json ./tool-policy.json
 COPY tools/tool-budgets.json ./tool-budgets.json
 COPY tools/NOTICE.md ./NOTICE.md
-COPY penpot-session.mjs ./penpot-session.mjs
 RUN mkdir -p /workspace \
-    && chmod 0644 /opt/design/*.mjs /opt/design/NOTICE.md /opt/design/package.json /opt/design/package-lock.json /opt/design/tool-policy.json /opt/design/tool-budgets.json \
+    && chmod 0644 /opt/design/*.mjs /opt/design/NOTICE.md /opt/design/package.json /opt/design/package-lock.json /opt/design/tool-policy.json /opt/design/tool-budgets.json /opt/design/openpencil-tools.json \
     && chown node:node /workspace
 USER node
 RUN node --check /opt/design/workspace-server.mjs \
-    && node --check /opt/design/penpot-session.mjs \
     && node -e 'const policy = JSON.parse(require("node:fs").readFileSync("/opt/design/tool-policy.json", "utf8")); if (!Object.keys(policy).length) throw Error("Design tool policy is empty")'
 WORKDIR /workspace
 ENV HYPERFRAMES_NO_UPDATE_CHECK=1 \

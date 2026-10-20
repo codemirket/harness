@@ -15,11 +15,9 @@ share one read/write workspace. The host directory is the selected Mirket home's
 `.mirket/execution/podman/staging/design/workspace`; every design container sees
 that directory as `/workspace`. `package start` and `package status` report the
 host workspace path and assigned loopback host ports. Direct tool file arguments are relative to `/workspace`, so a
-single source or output path names the same file across the stack. The official
-Penpot `export_shape` and `import_image` `filePath` arguments require absolute
-`/workspace/...` paths in their upstream contract; they still refer to the same
-shared files. Design calls
-do not take `--project` or a configurable port.
+single source or output path names the same file across the stack. OpenPencil
+uses these same relative paths for editable `.fig` documents. Design calls do
+not take `--project` or a configurable port.
 
 ## Install and inspect
 
@@ -61,18 +59,18 @@ mirket package call design static_render --arguments '{"tree":{"type":"div","pro
 ```
 
 The output path is relative to the same workspace. Use `probe design --schemas`
-for the other direct tools and the official Penpot names forwarded by the
-running server.
+for every installed design tool.
 
 Core starts only the tools container: tokens, raster/vector processing, static cards,
-local Playwright, Typst, HyperFrames and Odiff. Enable heavier groups explicitly:
-`mirket package start design --group diagrams --group penpot` (core is always included),
+local Playwright, OpenPencil, Typst, HyperFrames and Odiff. Enable heavier groups explicitly:
+`mirket package start design --group diagrams` (core is always included),
 or `--group all`. Omitting groups reuses the saved selection. To change a running
 selection, stop it first; data and workspace are retained. Disabled groups do not
-block core readiness. Penpot tools appear only when its group is enabled.
+block core readiness.
 
 Stop the service with `mirket package stop design`. The explicit `--purge-data`
-option removes owned service volumes and account state. It leaves the shared
+option removes current service state and network. Retained legacy state and volumes
+are preserved. It leaves the shared
 workspace, including user files and models, intact. Stop and remove are different
 operations; a stopped service can retain its workspace and persisted design files.
 
@@ -80,10 +78,10 @@ operations; a stopped service can retain its workspace and persisted design file
 
 | Need | Tool domain | Required evidence |
 | --- | --- | --- |
-| Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and Penpot outputs in sync. Cached generations bind token bytes, the compiler/format configuration and locked dependencies; source and compiler identities remain separate in the result. |
+| Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and DTCG outputs in sync. Cached generations bind token bytes, the compiler/format configuration and locked dependencies; source and compiler identities remain separate in the result. |
 | Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF, WOFF or WOFF2 fonts. Inspect the saved output at its actual use size. |
 | Live web page and interaction | Playwright | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
-| Editable design file | Official Penpot MCP and plugin | Use the upstream `penpot/penpot` `develop/mcp` server and its forwarded tool schemas, with the plugin's persistent WebSocket. Inspect saved object identities and exports. |
+| Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles. |
 | Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
 | Fixed frame or video | HyperFrames | Run lint, snapshot, then render. Inspect representative frames and normal playback; keep editable source separate from exports. |
 | Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
@@ -92,9 +90,7 @@ operations; a stopped service can retain its workspace and persisted design file
 | Editable vector artwork | SVG authoring, SVGO and resvg | Use `vector_render` for a semantic SVG and native PNG preview. Read back the SVG and inspect its preview; use licensed existing images when raster content is needed. |
 | Comparable pixel QA | Odiff | Compare matched dimensions, content and state; inspect the diff and explain material changes. A low difference score is not aesthetic approval. |
 
-Native Penpot SVG exports embed validated fonts from the owned Penpot frontend
-before SVG validation and optimization, so saved files retain their typography
-without a server connection. CLI scratch directories use private directories on
+CLI scratch directories use private directories on
 the shared workspace disk and are removed after completion or cancellation.
 HyperFrames and Typst staging reject project assets above the 64 MiB total
 before loading them into memory. PNG, JPEG, WebP and AVIF assets are fully decoded
@@ -120,14 +116,29 @@ for HyperFrames and up to 90 minutes for a 64-page
 Typst job with per-page inspection. The host MCP request ceiling is the largest
 of these budgets; cancellation can still end an individual call earlier.
 
-Penpot's MCP is the official upstream implementation. Inside the private design
-network its MCP endpoint is `/mcp` on port 4401, the plugin manifest is served
-on port 4400, and its WebSocket is on port 4402. Host access to published
-services uses the assigned loopback ports reported by `package start` and
-`package status`; the internal WebSocket port is not separately published.
-Mirket forwards the official MCP tool names and schemas
-without custom design-object wrappers. Penpot writes can persist independently of
-a static export, so inspect the saved file and its preview separately.
+OpenPencil runs through its pinned official CLI in file mode, inside the core
+tools container. `openpencil_inspect` lists supported upstream operations and
+schemas, or reads a document. `openpencil_document` creates/imports an editable
+`.fig`; `openpencil_edit` validates and applies an upstream write operation;
+`openpencil_export` exports the saved source unchanged to PNG (2x) or SVG.
+Document creation/import adds canonical variables/styles. Edits compile tokens
+and preserve the saved file's IDs until serialization; their result contains the
+reopened tree with the IDs to use next. Upstream error objects fail the operation
+even when the CLI exits zero. The parent bounds inputs and publishes outputs with
+revision checks. The child
+can read only installed dependencies/fonts and its copied scratch inputs, and
+write only scratch outputs. Arbitrary evaluation, network tools, app-only state
+and remote font/asset downloads are excluded. No editor session or public port
+is needed. Open the resulting `.fig` manually in OpenPencil when desired.
+
+For example, after authoring canonical tokens and creating `artifacts/`:
+
+```sh
+mirket package call design openpencil_document --arguments '{"output":"artifacts/design.fig"}'
+mirket package call design openpencil_inspect --arguments '{"tool":"create_shape"}'
+mirket package call design openpencil_edit --arguments '{"source":"artifacts/design.fig","tool":"create_shape","arguments":{"type":"RECTANGLE","name":"Card","x":0,"y":0,"width":240,"height":120},"output":"artifacts/card.fig"}'
+mirket package call design openpencil_export --arguments '{"source":"artifacts/card.fig","output":"artifacts/card.png"}'
+```
 
 The source order is deliberate: token compilation precedes dependent rendering;
 raster inputs pass through Sharp before composition; generated and imported
@@ -146,7 +157,7 @@ Seeking checks composition; normal playback and interruption need separate tests
 HyperFrames accepts `snapshot_times`, one to eight unique timestamps in seconds,
 for named beats. Every requested sample must be returned and lie within the encoded
 duration; the default remains three evenly spaced samples.
-Actions never target the Penpot origin. External requests and WebSockets are
+Actions target only the local workspace. External requests and WebSockets are
 blocked during capture; no arbitrary evaluation tool is exposed.
 
 The package runs no local image-generation model. Art direction remains the
@@ -159,8 +170,11 @@ host generation tools remain outside Mirket's runtime and billing.
 Stop the design package with the currently installed release before a runtime
 generation change, then run `mirket update` and explicitly start the desired
 groups. Installation refuses an active incompatible generation before replacing
-the executable that can stop it. The one-way state migration retains Penpot
-account/file identities and volumes; it refuses database/backend image changes.
+the executable that can stop it. The OpenPencil cutover archives exact legacy
+private state under `packages/data/design/retained/` and retains all old volumes
+and workspace files. It never opens or migrates a Penpot database. Export required
+legacy files before switching; automatic Penpot-to-OpenPencil conversion is not
+provided. The new stack creates no database, cache or assets volume.
 
 `mirket update` reapplies saved package selections from the new release. A fresh
 unattended setup selects no optional package. `package status` checks the selected
@@ -169,8 +183,7 @@ Unexpected file or service drift needs inspection before reconciliation. Keep
 credentials, downloaded models and private design files out of repository source.
 
 Source and image pins are in [the design stack registry](../registry/design-stack.json).
-Dependency locks are in [the tool runtime](../runtime/design/tools/package-lock.json),
-pinned Penpot source. [Runtime notices](third-party-notices.md#runtime-packages) record the
+Dependency locks are in [the tool runtime](../runtime/design/tools/package-lock.json). [Runtime notices](third-party-notices.md#runtime-packages) record the
 shipped license provenance.
 
 Host MCP timeouts derive from the longest design tool budget plus a cleanup margin. The owned routed-spawner binding allows two hours for multi-turn work; individual inference turns and design phases retain their own bounded deadlines. Existing desktop MCP sessions must reconnect to load changed bindings.
@@ -198,7 +211,7 @@ before loading renderers, within the existing tool deadline. Cancellation remove
 a waiting request without starting its operation. Direct-tool schema, read-only
 output preflight, disabled-group and admission rejections carry a tool-bound `not_started` receipt, so a routed
 worker can correct the call without claiming an artifact was produced. Handler
-failures, missing receipts and forwarded Penpot errors retain uncertain-effect
+failures, missing receipts and upstream execution errors retain uncertain-effect
 semantics and require inspection before recovery. Output-path locks still reject
 conflicting writers; queueing render admission does not authorize overwrites.
 An overwrite requires the current `expected_sha256`; a missing or stale revision
@@ -233,8 +246,8 @@ Direct owned design tool success responses include `structuredContent.runtime`,
 the same identity in ordinary text content, and `_meta["mirket/runtime"]`: the process-captured
 runtime digest, module/lock-file digests and Node version. Use it to compare actual
 calls after a container rebuild. The package bridge's MCP version also includes
-the compiled Mirket source identity; these identify different layers. Forwarded
-Penpot responses retain their upstream metadata and require separate editor checks.
+the compiled Mirket source identity; these identify different layers. OpenPencil results additionally report the pinned
+engine version and headless file mode.
 
 If a native Podman upgrade removes its registered executable, inspect and explicitly
 replace that registration through `mirket tool remove/register`. For the resulting
@@ -255,9 +268,8 @@ scope alongside loaded source identity.
 
 Host design MCP calls retain the host-owned shared workspace. Project scoping is
 an enforced tool boundary, not a separate container/kernel sandbox per project.
-Penpot objects do not share the filesystem namespace: routed workers reject these
-operations before model execution and direct the host to the official Penpot MCP.
-Host editing remains available when Penpot is enabled. Within one project, use
+OpenPencil documents share this filesystem namespace and are available to routed
+workers through the `editable-interface` workflow. Within one project, use
 separate output names and revision hashes for concurrent work.
 
 The Typst tool deadline is 25 minutes, below the 30-minute paged-work budget;

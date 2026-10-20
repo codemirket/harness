@@ -4,42 +4,17 @@ import tempfile
 import unittest
 from pathlib import Path
 from check import audit, validate_exceptions
-from penpot import lock_coordinates, coordinates
+from check import coordinates
 
 class AuditTests(unittest.TestCase):
-    def test_penpot_multidocument_and_scoped_packages_are_not_silently_skipped(self):
-        lock = """---
-lockfileVersion: '9.0'
-packages:
-  '@pnpm/exe.linux-arm64@12.8.1':
-    resolution: {integrity: fake}
-snapshots:
-  ignored@1.0.0: {}
----
-lockfileVersion: '9.0'
-packages:
-  'zod@4.6.5':
-    resolution: {integrity: fake}
-  '@scope/parser@1.0.0-beta.1':
-    resolution: {integrity: fake}
-"""
-        self.assertEqual(len(lock_coordinates(lock)), 3)
-        self.assertIn(('npm', '@scope/parser', '1.0.0-beta.1'), lock_coordinates(lock))
-        for bad in ["packages: {}", "packages:\n  <<: *defaults", "packages:\n  git+https://private/repo:"]:
-            with self.assertRaises(ValueError): lock_coordinates(bad)
-
-    def test_checked_in_penpot_capture_is_bound_to_source_and_all_documents(self):
+    def test_openpencil_and_nested_alias_coordinates_are_covered(self):
         root = Path(__file__).resolve().parents[2]
-        self.assertGreater(len(coordinates(root)), 250)
-        with tempfile.TemporaryDirectory() as temp:
-            import shutil
-            copy = Path(temp)
-            shutil.copytree(root / 'evals/dependency-audit/penpot', copy / 'evals/dependency-audit/penpot')
-            (copy / 'registry').mkdir()
-            shutil.copyfile(root / 'registry/design-stack.json', copy / 'registry/design-stack.json')
-            lock = copy / 'evals/dependency-audit/penpot/pnpm-lock.yaml'
-            lock.write_text(lock.read_text() + '\n# drift\n')
-            with self.assertRaises(ValueError): coordinates(copy)
+        found = coordinates(root)
+        self.assertIn(('npm', '@open-pencil/cli', '0.16.0'), found)
+        self.assertIn(('npm', '@open-pencil/core', '0.16.0'), found)
+        self.assertIn(('npm', '@open-pencil/yoga-layout', '3.3.0-grid.3'), found)
+        self.assertIn(('npm', 'canvaskit-wasm', '0.41.1'), found)
+
     def test_new_findings_and_incomplete_responses_fail(self):
         packages = [('npm', 'fixture', '1.0')]
         query = lambda _: {'results': [{'vulns': [{'id': 'GHSA-fixture'}]}]}
