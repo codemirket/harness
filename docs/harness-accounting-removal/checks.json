@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "decision": "Usage and billing are provider-panel responsibilities; remove the harness utility and treat billing integration as out of scope.",
+  "base_commit": "10246ad172879979bc8d1c58912023e55ea1d9ee",
+  "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+  "candidate": {
+    "executable_sha256": "7f1092879a13b2d0f4abc394120ada767f184e4bd70b386ca3dbb4918b9c42b3",
+    "pid": 67075,
+    "source_sha256": "60d8d48ec6eb356aab52b61c1308abbc46122fd9d7f92314b3005a87107b0513",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "platform": "macOS ARM64",
+  "rust": {
+    "passed": 412,
+    "failed": 0,
+    "ignored": 7
+  },
+  "format_and_clippy": true,
+  "cli_checks": [
+    {
+      "name": "identity",
+      "exit": 0
+    },
+    {
+      "name": "catalog",
+      "exit": 0
+    },
+    {
+      "name": "setup",
+      "exit": 0
+    },
+    {
+      "name": "doctor",
+      "exit": 0
+    },
+    {
+      "name": "agent-help",
+      "exit": 0
+    },
+    {
+      "name": "removed-command",
+      "exit": 2
+    }
+  ],
+  "preserved": [
+    "response identity hashes",
+    "attempt elapsed time",
+    "bounded failure causes",
+    "vision conformance",
+    "resume state",
+    "execution budgets",
+    "existing historical records"
+  ],
+  "removed": [
+    "agent accounting command",
+    "token/cost collection and aggregation",
+    "accounting-version markers",
+    "durable usage/probe ledger"
+  ],
+  "deployed": false,
+  "committed": false,
+  "pushed": false,
+  "limits": [
+    "Windows and Linux were not rerun for this removal; their prior CI evidence belongs to the previous snapshot.",
+    "No contained package acceptance or live desktop activation is claimed; runtime recipes are unchanged."
+  ],
+  "private_evidence_root": ".mirket/implementation/harness-accounting-removal-2026-10-20",
+  "files": {
+    "docs/README.md": "bb4fb7177d49db3df3a759dd2b1f46415f191253ecc17ca59b2849aaeec441f0",
+    "docs/agent-runtime.md": "c47257eb3508257e0835c88f70c6d700dd4be24a1ff3d25ce11b819d66cf6331",
+    "docs/harness-gaps-2026-10.md": "2dbd424dc46d16dfc919038b59eab7741719584efb0bfe11eaf294175c998100",
+    "docs/harness-gaps/checks.json": "1a939845790fda3761fa71e82a38ca6e97d24855e14973555abcee3418e08cb3",
+    "src/cli.rs": "ebbc10fdb71dce27ae1d63340f9f7ffd3d7966c684a5aaa6b37305faa7dfc596",
+    "src/router/accounting.rs": null,
+    "src/router/codex.rs": "2e47215837e3f4bdc08338b58e7d1052ab55fe534e195edaaeb20b1b203d9ae7",
+    "src/router/codex_tests.rs": "aa52680097dbae0b8d6f72eb7a8d15d92c6bb6a07e20940803271d5b227f682b",
+    "src/router/execution.rs": "62d1a30c96f2d7a815254a976c86a85f9fc690dc4e38305f90aacd0e85a5fb25",
+    "src/router/mod.rs": "193e658da323301b98f1d58b8fee763c5e95b54aa9dc4588dffe7202a32df23a",
+    "src/router/native.rs": "b46ac30dcbd2ed9fbb83114a8d46eecb0cff72371e00381b1f24087350edc715",
+    "tests/model_routing.rs": "5e06708dd42b7042157215964d243f5fa976217171947d49697a2ee53bffa170",
+    "docs/harness-accounting-removal-2026-10.md": "317e5c63bf36a8fabbc1b3b038d82582e338ec887af0dc046e19b856d34bd1fa"
+  }
+}

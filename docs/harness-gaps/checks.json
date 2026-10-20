@@ -93,7 +93,7 @@
   ],
   "report": {
     "path": "docs/harness-gaps-2026-10.md",
-    "sha256": "0b53e293868b80deae40546f769bc3bfc8e28ac1ebceeb2bd07384444892f993"
+    "sha256": "2dbd424dc46d16dfc919038b59eab7741719584efb0bfe11eaf294175c998100"
   },
   "component_sha256": {
     ".github/workflows/check.yml": "b133955104efa5e8d529fe47d37a5bc5364584e627157c7fd87ac60f1f7a1f6a",
@@ -156,5 +156,12 @@
     "source-contract-final.log": "a121e0717d3a8b9022acd9c4438bcfda7cec759854e5878c2b9fec0b706a3398",
     "workflow-validation.json": "93846e268b8c5baf7d1b3622e02482437985d640c75dda792315be5dc21b93bc"
   },
-  "private_evidence": ".mirket/implementation/harness-gaps-2026-10-20"
+  "private_evidence": ".mirket/implementation/harness-gaps-2026-10-20",
+  "documentation_amendments": [
+    {
+      "date": "2026-10-20",
+      "previous_report_sha256": "0b53e293868b80deae40546f769bc3bfc8e28ac1ebceeb2bd07384444892f993",
+      "reason": "After user-directed removal, point the accounting source link at the last review commit; historical measurements and component hashes remain unchanged."
+    }
+  ]
 }

@@ -145,11 +145,6 @@ fn validate_stream(bytes: &[u8], model: &str, observation: &mut Value) -> Result
                 );
                 observation["response_sha256"] =
                     json!(util::sha256(&serde_json::to_vec(response)?));
-                super::accounting::observe(
-                    response,
-                    &super::discovery::Protocol::Codex,
-                    observation,
-                );
                 completed = Some(super::responses::action(&response["output"])?);
             }
             _ => bail!("Codex native tool, error or unknown event rejected before dispatch"),
@@ -496,7 +491,7 @@ mod tests {
             validate_stream(
                 &sse(output.clone(), "completed", "selected"),
                 "selected",
-                &mut super::super::accounting::empty()
+                &mut json!({"response_sha256":null})
             )
             .is_ok()
         );
@@ -504,7 +499,7 @@ mod tests {
             validate_stream(
                 &sse(output.clone(), "incomplete", "selected"),
                 "selected",
-                &mut super::super::accounting::empty()
+                &mut json!({"response_sha256":null})
             )
             .is_err()
         );
@@ -512,7 +507,7 @@ mod tests {
             validate_stream(
                 &sse(output, "completed", "changed"),
                 "selected",
-                &mut super::super::accounting::empty()
+                &mut json!({"response_sha256":null})
             )
             .is_err()
         );
@@ -520,12 +515,12 @@ mod tests {
             validate_stream(
                 b"data: {\"type\":\"response.created\"}\n\n",
                 "selected",
-                &mut super::super::accounting::empty()
+                &mut json!({"response_sha256":null})
             )
             .is_err()
         );
-        assert!(validate_stream(&sse(json!([{"type":"function_call","name":"exec_command","arguments":"touch sentinel"}]),"completed","selected"),"selected", &mut super::super::accounting::empty()).is_err());
-        assert!(validate_stream(b"data: {\"type\":\"response.function_call_arguments.delta\",\"delta\":\"touch sentinel\"}\n\n","selected", &mut super::super::accounting::empty()).is_err());
+        assert!(validate_stream(&sse(json!([{"type":"function_call","name":"exec_command","arguments":"touch sentinel"}]),"completed","selected"),"selected", &mut json!({"response_sha256":null})).is_err());
+        assert!(validate_stream(b"data: {\"type\":\"response.function_call_arguments.delta\",\"delta\":\"touch sentinel\"}\n\n","selected", &mut json!({"response_sha256":null})).is_err());
     }
     #[test]
     fn native_nonfatal_diagnostics_do_not_relax_execution_rejection() {

@@ -1059,7 +1059,7 @@ fn required_recall_without_runtime_rejects_before_any_inference() {
 }
 
 #[test]
-fn inference_usage_and_specific_parse_failure_survive_in_saved_trace() {
+fn inference_diagnostics_survive_without_usage_accounting() {
     for invalid in [false, true] {
         let sandbox = tempfile::tempdir().unwrap();
         let home = sandbox.path().join("home");
@@ -1099,8 +1099,14 @@ fn inference_usage_and_specific_parse_failure_survive_in_saved_trace() {
         let text = fs::read_to_string(run.join("trace.json")).unwrap();
         let trace: Value = serde_json::from_str(&text).unwrap();
         let inference = &trace["attempts"][0]["inference"];
-        assert_eq!(inference["usage"]["input_tokens"], 1234);
-        assert_eq!(inference["usage"]["output_tokens"], 56);
+        assert_eq!(inference.as_object().unwrap().len(), 2);
+        assert!(trace.get("accounting").is_none());
+        assert!(!run.join("accounting-version.json").exists());
+        assert!(!run.join("probes").exists());
+        if output.status.success() {
+            let result: Value = serde_json::from_slice(&output.stdout).unwrap();
+            assert!(result.get("accounting").is_none());
+        }
         assert_eq!(inference["response_sha256"], digest);
         assert!(inference["elapsed_ms"].is_u64());
         assert!(!text.contains("PRIVATE_PROVIDER_BODY"));

@@ -606,7 +606,6 @@ fn claude_result(
 ) -> Result<Value> {
     if seen_init && seen_model {
         observation["response_sha256"] = json!(crate::util::sha256(&serde_json::to_vec(frame)?));
-        super::accounting::observe(frame, &super::discovery::Protocol::Claude, observation);
     }
     if frame["is_error"] == true || frame["subtype"] != "success" {
         bail!(claude_failure(frame));
@@ -657,22 +656,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn terminal_result_accounts_once_even_when_the_action_failed() {
+    fn terminal_result_retains_response_identity_without_usage_or_cost() {
         for failed in [false, true] {
             let raw = json!({"type":"result","subtype":if failed {"error_during_execution"} else {"success"},
                 "is_error":failed,"usage":{"input_tokens":30,"output_tokens":12,"cache_read_input_tokens":200},
                 "total_cost_usd":0.01,"structured_output":{"action":"complete"},"result":"PRIVATE_PROVIDER_TEXT"});
-            let mut observation = super::super::accounting::empty();
+            let mut observation = json!({"response_sha256":null});
             assert_eq!(
                 claude_result(&raw, true, true, &mut observation).is_err(),
                 failed
             );
-            assert_eq!(observation["usage"]["output_tokens"], 12);
-            assert_eq!(observation["cost_estimate_usd"], 0.01);
+            assert_eq!(
+                observation,
+                json!({"response_sha256":crate::util::sha256(&serde_json::to_vec(&raw).unwrap())})
+            );
             assert!(!observation.to_string().contains("PRIVATE_PROVIDER_TEXT"));
-            let mut unknown = super::super::accounting::empty();
+            let mut unknown = json!({"response_sha256":null});
             assert!(claude_result(&raw, false, true, &mut unknown).is_err());
-            assert!(unknown["usage"].is_null());
+            assert_eq!(unknown, json!({"response_sha256":null}));
         }
     }
 

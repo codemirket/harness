@@ -20,7 +20,7 @@ candidate, regression results and retained evidence.
 
 ## Native usage and cost
 
-[Accounting](../src/router/accounting.rs) retains only allowlisted numeric
+[Accounting before removal](https://github.com/codemirket/harness/blob/10246ad172879979bc8d1c58912023e55ea1d9ee/src/router/accounting.rs) retains only allowlisted numeric
 counters. Native [Codex](../src/router/codex.rs) obtains usage from the validated
 terminal Responses object rather than trying to reconstruct it from child
 progress events. [Claude](../src/router/native.rs) records its terminal result

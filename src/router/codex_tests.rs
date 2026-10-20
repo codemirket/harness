@@ -23,7 +23,7 @@ fn completion(model: &str) -> Vec<u8> {
 fn phased_messages_select_only_the_final_action() {
     let message = |phase: Value, text: &str| json!({"type":"message","role":"assistant","phase":phase,"content":[{"type":"output_text","text":text}]});
     let check = |output: Value| {
-        validate_stream(&format!("data: {}\n\n", json!({"type":"response.completed","response":{"model":"selected","status":"completed","output":output}})).into_bytes(), "selected", &mut super::super::accounting::empty())
+        validate_stream(&format!("data: {}\n\n", json!({"type":"response.completed","response":{"model":"selected","status":"completed","output":output}})).into_bytes(), "selected", &mut json!({"response_sha256":null}))
     };
     let final_message = message(json!("final_answer"), &action().to_string());
     for interim in ["I will inspect the source.", "{\"action\":\"tool\"}"] {
@@ -107,7 +107,7 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
     let local_addr = listener.local_addr()?;
     let canonical = request_body("selected", Some("high"), 100, "private prompt", &[])?;
     let serve_task = tokio::spawn(async move {
-        let mut observation = super::super::accounting::empty();
+        let mut observation = json!({"response_sha256":null});
         let result = serve(
             listener,
             "capability",
@@ -188,9 +188,8 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
 async fn proxy_reconstructs_the_request_from_router_input() {
     let exchange = roundtrip(completion("selected")).await.unwrap();
     assert_eq!(exchange.served.unwrap(), action());
-    assert_eq!(exchange.observation["usage"]["input_tokens"], 41);
-    assert_eq!(exchange.observation["usage"]["total_tokens"], 50);
-    assert!(exchange.observation["cost_estimate_usd"].is_null());
+    assert_eq!(exchange.observation.as_object().unwrap().len(), 1);
+    assert!(exchange.observation["response_sha256"].is_string());
     assert!(!exchange.observation.to_string().contains("SECRET_USAGE"));
     assert_eq!(
         exchange.upstream_body["input"][0]["content"][0]["text"],

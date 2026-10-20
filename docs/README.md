@@ -35,4 +35,6 @@ satisfies the user's request. No one check replaces the others.
 
 - [Accounting, dependency and platform follow-up](harness-gaps-2026-10.md) — native usage, Penpot/image coverage, newly exposed image findings and native-platform receipts.
 
-- [Image remediation and probe accounting](harness-image-remediation-2026-10.md) — patched owned images, retained Penpot OS inventory, native probe receipts and remaining Windows/billing gates.
+- [Image remediation and probe accounting](harness-image-remediation-2026-10.md) — patched owned images, retained Penpot OS inventory and hosted native CI evidence; accounting measurements are historical.
+
+- [Usage accounting removal](harness-accounting-removal-2026-10.md) — provider-owned usage tracking; execution diagnostics and budgets retained.

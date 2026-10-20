@@ -173,11 +173,6 @@ enum MemoryCommand {
 }
 #[derive(Subcommand)]
 enum AgentCommand {
-    /// Read worker and durable probe accounting, including failed preflight runs.
-    Accounting {
-        #[arg(long)]
-        run_id: String,
-    },
     /// Export all facts and latest workflow snapshots to a new private JSONL file.
     Export {
         #[arg(long)]
@@ -1249,9 +1244,6 @@ fn dispatch(cli: Cli) -> Result<i32> {
         })?,
         Command::Info => crate::identity::info(&paths, &catalog()?),
         Command::Agent {
-            command: AgentCommand::Accounting { run_id },
-        } => crate::router::accounting::inspect_run(&paths, &run_id)?,
-        Command::Agent {
             command: AgentCommand::Export { project, output },
         } => runtime()?.block_on(crate::lifecycle::export(&paths, &project, &output))?,
         Command::Agent {
@@ -1912,6 +1904,10 @@ mod tests {
                 .is_err()
         );
         assert!(Cli::try_parse_from(["mirket", "package", "install"]).is_err());
+        assert!(
+            Cli::try_parse_from(["mirket", "agent", "accounting", "--run-id", "routed-old"])
+                .is_err()
+        );
         assert!(Cli::try_parse_from(["mirket", "package", "configure"]).is_err());
         assert!(Cli::try_parse_from(["mirket", "setup", "--microsoft-learn"]).is_err());
     }

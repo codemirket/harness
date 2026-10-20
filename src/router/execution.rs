@@ -71,7 +71,7 @@ async fn complete(
     images: &[PathBuf],
     observation: &mut Value,
 ) -> Result<Value> {
-    *observation = super::accounting::empty();
+    *observation = json!({"response_sha256":null});
     let effort = policy::effort_for(model, resolution);
     let mut max = policy::completion_tokens_for(model, resolution).unwrap_or(64_000);
     if let Some(context) = model.capabilities.context_window {
@@ -212,7 +212,6 @@ async fn complete(
     }
     let raw = discovery::response_json(outgoing.send().await?).await?;
     observation["response_sha256"] = json!(util::sha256(&serde_json::to_vec(&raw)?));
-    super::accounting::observe(&raw, &target.protocol, observation);
     validate_response(&raw, target, &model.id)?;
     if target.protocol == Protocol::Anthropic {
         return raw["content"]
@@ -444,7 +443,6 @@ fn next_candidate(registry: &Registry, candidates: &[Model], selected: usize) ->
 /// This is a capability check, not a quality benchmark or a task acceptance gate.
 async fn verify_vision(
     paths: &Paths,
-    run: &Path,
     registry: &mut Registry,
     resolution: &Resolution,
     persist: bool,
@@ -470,8 +468,7 @@ async fn verify_vision(
         let (_probe, image, expected) = vision_probe(&std::env::temp_dir())?;
         let prompt = "Identify the four large color quadrants in the attached image, ordered top-left, top-right, bottom-left, bottom-right. Use only color names red, blue, green, yellow, cyan, magenta, separated by commas with no spaces. Return a complete action with tool empty, arguments_json '{}', and result set to those four names. Do not use tools.";
         let started = std::time::Instant::now();
-        let probe = super::accounting::Probe::start(run, &model.target, &model.id)?;
-        let mut observation = super::accounting::empty();
+        let mut observation = json!({"response_sha256":null});
         let result = complete(
             paths,
             target,
@@ -483,7 +480,6 @@ async fn verify_vision(
         )
         .await;
         let (passed, diagnostic) = vision_outcome(result, &expected);
-        probe.finish(observation, passed, diagnostic.clone())?;
         if passed {
             let selected = registry
                 .models
@@ -660,16 +656,7 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
     // Narrow before vision probes or inference: explicit choice must not cause
     // task execution or capability probes against another model/provider.
     constrain_models(&mut registry, &request);
-    util::ensure_directory(&paths.root.join("runs"))?;
-    let run = tempfile::Builder::new()
-        .prefix("routed-")
-        .tempdir_in(paths.root.join("runs"))?
-        .keep();
-    let _lock = util::FileLock::acquire(&run.join("execution.lock"))?;
-    super::accounting::initialize(&run)?;
-    verify_vision(paths, &run, &mut registry, &resolution, true)
-        .await
-        .with_context(|| format!("preflight failed; accounting retained in {}", run.display()))?;
+    verify_vision(paths, &mut registry, &resolution, true).await?;
     let candidates = policy::rank_candidates(&registry.models, &resolution);
     ensure!(
         !candidates.is_empty(),
@@ -695,6 +682,12 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
         "guidance_sha256":util::sha256(&serde_json::to_vec(&assignment.guidance)?),
         "tools":definitions,"source_sha256":env!("MIRKET_SOURCE_SHA256"),
         "host_verification_required":super::handoff::required(&request)});
+    util::ensure_directory(&paths.root.join("runs"))?;
+    let run = tempfile::Builder::new()
+        .prefix("routed-")
+        .tempdir_in(paths.root.join("runs"))?
+        .keep();
+    let _lock = util::FileLock::acquire(&run.join("execution.lock"))?;
     let mut durable = super::durable::Driver::start(
         paths,
         &project,
@@ -884,7 +877,7 @@ pub async fn resume(paths: &Paths, request: super::durable::RunRequest) -> Resul
         scoped
             .models
             .retain(|m| m.id == selected.id && m.target == selected.target);
-        verify_vision(paths, &run, &mut scoped, &resolution, false).await?;
+        verify_vision(paths, &mut scoped, &resolution, false).await?;
         for live in &mut registry.models {
             if live.id == selected.id && live.target == selected.target {
                 *live = scoped.models[0].clone();
@@ -993,8 +986,7 @@ async fn finish_run(
     } else {
         "complete"
     };
-    let accounting = super::accounting::run_summary(run, &state.attempts)?;
-    let trace = json!({"accounting":accounting,"status":status,"result":result.as_ref().ok(),"host_verification":host_verification,
+    let trace = json!({"status":status,"result":result.as_ref().ok(),"host_verification":host_verification,
         "workflow":durable.summary(),"task_contract":assignment.metadata,"resolution":resolution,
         "attempts":state.attempts,"transcript":state.transcript,
         "error":result.as_ref().err().map(|e| failure_receipt(e, "execution"))});
@@ -1002,7 +994,7 @@ async fn finish_run(
     util::atomic_write_with_mode(&run.join("trace.json"), &bytes, Some(0o600))?;
     match result {
         Ok(value) => Ok(
-            json!({"accounting":accounting,"status":status,"run_id":run.file_name().context("run ID")?.to_string_lossy(),"workflow":durable.summary(),
+            json!({"status":status,"run_id":run.file_name().context("run ID")?.to_string_lossy(),"workflow":durable.summary(),
             "host_verification":host_verification,"trace_sha256":util::sha256(&bytes),"result":value,
             "model":candidates[state.selected],"task_contract":assignment.metadata,"resolution":resolution,"trace":run.join("trace.json")}),
         ),
@@ -1468,12 +1460,9 @@ async fn run_loop(
 mod tests {
     use super::*;
     #[tokio::test]
-    async fn failed_native_vision_dispatch_retains_probe_and_resume_attempts() {
+    async fn failed_native_vision_dispatch_retains_diagnostics_without_usage_ledger() {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().to_path_buf()).unwrap();
-        let run = paths.root.join("runs/routed-probe-fixture");
-        util::ensure_directory(&run).unwrap();
-        super::super::accounting::initialize(&run).unwrap();
         let mut registry = Registry {
             version: 2,
             refreshed_at: 0,
@@ -1502,25 +1491,14 @@ mod tests {
             "requires_vision":true,"requires_structured_outputs":true,"requires_tools":false,
             "effort_profile":"high","requested_effort":"high","downgrade_rejected":false,"reasons":[]})).unwrap();
         for persist in [true, false] {
-            assert!(
-                verify_vision(&paths, &run, &mut registry, &resolution, persist)
-                    .await
-                    .is_err()
-            );
+            let error = verify_vision(&paths, &mut registry, &resolution, persist)
+                .await
+                .unwrap_err();
+            let diagnostic = error.to_string();
+            assert!(diagnostic.contains("native vision conformance not established"));
+            assert!(diagnostic.contains("first_failures"));
+            assert!(!paths.root.join("runs").exists());
         }
-        let receipt =
-            super::super::accounting::inspect_run(&paths, "routed-probe-fixture").unwrap();
-        assert_eq!(receipt["vision_probes"]["inference_attempts"], 2);
-        assert_eq!(receipt["unknown_cost_attempts"], 2);
-        assert!(receipt["total_cost_estimate_usd"].is_null());
-        assert_eq!(receipt["worker_trace_available"], false);
-        assert!(
-            receipt["probe_receipts"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .all(|value| value["result"]["status"] == "failed")
-        );
     }
     #[cfg(unix)]
     #[test]

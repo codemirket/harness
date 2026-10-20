@@ -1,5 +1,4 @@
 //! Model discovery and the only model execution boundary owned by Mirket.
-pub(crate) mod accounting;
 mod assignment;
 mod codex;
 mod design_gate;
