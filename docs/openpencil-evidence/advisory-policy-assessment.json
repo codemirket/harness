@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "policy": "report",
+  "authorization": "Maintainer requested non-blocking treatment for costly advisory remediation; scanner, identity, inventory and functional failures remain blocking.",
+  "ok": true,
+  "images": {
+    "design-tools": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 351,
+        "node-pkg": 442,
+        "gobinary": 3
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "finding_records": 1116,
+      "unique_advisories": 441,
+      "severity_counts": {
+        "LOW": 283,
+        "HIGH": 301,
+        "MEDIUM": 487,
+        "UNKNOWN": 37,
+        "CRITICAL": 8
+      },
+      "report_sha256": "16e6afc5cb09ce29d0beab04339ee6383ba0844d2b92af5cde9a137f2f6d8ebf",
+      "target": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98"
+    },
+    "kroki": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "ubuntu": 417,
+        "jar": 75,
+        "gobinary": 43
+      },
+      "os": {
+        "Family": "ubuntu",
+        "Name": "24.04"
+      },
+      "image_id": "sha256:310141e18fe2c246685d4908c70919516129872583fcc31d2e018d12a0971827",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "finding_records": 4951,
+      "unique_advisories": 4426,
+      "severity_counts": {
+        "MEDIUM": 3474,
+        "LOW": 924,
+        "HIGH": 531,
+        "CRITICAL": 21,
+        "UNKNOWN": 1
+      },
+      "report_sha256": "0a926b499b0af3001328cd6b3364ec7d27115a4c6d35f2f8305dee5298921197",
+      "target": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe"
+    },
+    "kroki-excalidraw": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "alpine": 196,
+        "node-pkg": 471
+      },
+      "os": {
+        "Family": "alpine",
+        "Name": "3.24.1"
+      },
+      "image_id": "sha256:b404ff303a23c929fbe81494157a0425e8ca15462e787ca97e23d164aecd1bc6",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "finding_records": 132,
+      "unique_advisories": 102,
+      "severity_counts": {
+        "HIGH": 57,
+        "MEDIUM": 51,
+        "LOW": 20,
+        "UNKNOWN": 3,
+        "CRITICAL": 1
+      },
+      "report_sha256": "bba31e9d92e5ea1ef162f75f1e89fca6a3657eddd59e6b46b9cf188560dda68d",
+      "target": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c"
+    },
+    "node-build": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 88,
+        "node-pkg": 198
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:cd2df7ff65c5fce1f8a18ce89e3aac24a80c1db3776d5842a4cf86bc27f300a2",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "finding_records": 262,
+      "unique_advisories": 132,
+      "severity_counts": {
+        "LOW": 84,
+        "HIGH": 71,
+        "MEDIUM": 102,
+        "CRITICAL": 4,
+        "UNKNOWN": 1
+      },
+      "report_sha256": "bce0ac47093135fc9eee34f0a424b6c6104c711b7963aa7ab63727d8d62af0f5",
+      "target": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd"
+    },
+    "python-build": {
+      "ok": true,
+      "advisory_policy": "report",
+      "advisories_present": true,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 97,
+        "python-pkg": 19
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:da841a7026abc0089180121604f6d0ba4324998e2d133eccae13f22707055dc1",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "finding_records": 260,
+      "unique_advisories": 121,
+      "severity_counts": {
+        "LOW": 91,
+        "HIGH": 65,
+        "MEDIUM": 101,
+        "CRITICAL": 2,
+        "UNKNOWN": 1
+      },
+      "report_sha256": "3346cd86779b9dc577b72016c0808b2b3696be333cbf12e22786ba21c1bc2c71",
+      "target": "docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641"
+    }
+  },
+  "limits": "Policy evaluation of preserved raw scans, not a new scanner run or a claim that vulnerabilities were fixed. The separately built agent-runtime image was not scanned in this replacement task."
+}

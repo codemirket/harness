@@ -44,11 +44,14 @@ and Node file permissions limited to installed dependencies/fonts and scratch.
 The dependency audit identified image-size 1.2.1 through OpenPencil's PptxGenJS
 closure. Its lock override is 2.0.4. PowerPoint export is not exposed by Mirket.
 The existing Rust TLS closure also received compatible patches:
-rustls-webpki 0.103.16 and webpki-roots 1.0.10. No advisory gate was relaxed.
+rustls-webpki 0.103.16 and webpki-roots 1.0.10. Certifi is pinned to 2026.10.19 after the first hosted audit reported
+[GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2).
+The wheel hash and parsed CA bundle were verified; the affected root is absent.
+This is a source-lock change, with no live agent image deployment.
 
 ## Verification status
 
-The compiled candidate source is
+The OpenPencil implementation was initially verified at compiled source
 `edb6137c600e09e62e46b9ac1f1e7b165effcb23cbca1522c40aa99d24fcf224`.
 [Local receipts](openpencil-evidence/local-checks.json) record:
 
@@ -66,8 +69,32 @@ The compiled candidate source is
 
 The verified image is
 `sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98`.
-Its image scan and hosted Windows/Linux/macOS CI are pending final receipts.
-Failed probes and subsequent results are retained in the private evidence bundle.
+Its [raw-scan summary](openpencil-evidence/initial-built-image-audit.json) records
+351 Debian packages, 442 npm packages and 3 Go inventory entries. All required
+inventories are present. It reports 1,116 advisory/package occurrences (441
+unique advisory IDs), including 8 critical occurrences; these are retained as
+warnings, not claimed fixed. The OpenPencil npm closure has no untriaged findings.
+
+The maintainer explicitly requested avoiding costly advisory-only remediation.
+CI therefore uses `--advisory-policy report` for image scans: advisory findings
+remain visible and non-blocking; failed scans, wrong identities, missing/unsupported
+inventories, missing targets and functional test failures still fail. The default
+standalone scanner policy remains `fail`, and source dependency auditing remains
+unchanged. Twelve audit regression tests pass, including proof that report mode
+retains critical findings and still rejects missing inventories and wrong targets.
+The [policy assessment](openpencil-evidence/advisory-policy-assessment.json) evaluates
+the preserved built-image and four remote-image reports under this policy.
+
+An optional Go dependency patch was not retained after its candidate test run
+exceeded the existing 300-second deadline. The engine status check succeeded;
+the timeout's root cause was not established. The final design recipe is the
+same one that passed both 73-test runs and was scanned. Failed probes, the stopped
+optional export, and later results are preserved rather than described as passes.
+
+Hosted CI for the final policy and Certifi patch is pending. Raw evidence, test
+logs, exported `.fig`/PNG proof and the verified image archive are retained in
+`~/.mirket/evidence/harness-openpencil-replacement-2026-10-20/`.
+
 
 ## Limits and activation
 

@@ -130,6 +130,8 @@ can read only installed dependencies/fonts and its copied scratch inputs, and
 write only scratch outputs. Arbitrary evaluation, network tools, app-only state
 and remote font/asset downloads are excluded. No editor session or public port
 is needed. Open the resulting `.fig` manually in OpenPencil when desired.
+Headless PDF export is not exposed: the pinned upstream exporter requires browser
+APIs. Use the existing Typst workflow for paged PDF output.
 
 For example, after authoring canonical tokens and creating `artifacts/`:
 

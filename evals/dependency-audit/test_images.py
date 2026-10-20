@@ -68,6 +68,20 @@ class ImageTests(unittest.TestCase):
             mutation(report)
             self.assertFalse(evaluate(report, "pinned")["ok"])
 
+    def test_report_policy_retains_advisories_but_never_hides_broken_inventory(self):
+        report = self.fixture()
+        report["Results"][0]["Vulnerabilities"] = [{"VulnerabilityID":"CVE-fixture", "PkgName":"libc", "Severity":"CRITICAL"}]
+        self.assertFalse(evaluate(report,"pinned")["ok"])
+        accepted = evaluate(report,"pinned",advisory_policy="report")
+        self.assertTrue(accepted["ok"])
+        self.assertTrue(accepted["advisories_present"])
+        self.assertEqual(accepted["findings"][0]["Severity"],"CRITICAL")
+        self.assertFalse(evaluate(report,"pinned",required_types={"gobinary"},advisory_policy="report")["ok"])
+        report["Results"][0]["Packages"] = []
+        self.assertFalse(evaluate(report,"pinned",advisory_policy="report")["ok"])
+        with self.assertRaises(ValueError): evaluate(report,"other",advisory_policy="report")
+        with self.assertRaises(ValueError): evaluate(report,"pinned",advisory_policy="ignore-everything")
+
     def test_unfixed_and_language_findings_remain_actionable(self):
         report = self.fixture()
         report["Results"].append({"Class": "lang-pkgs", "Type": "node-pkg",

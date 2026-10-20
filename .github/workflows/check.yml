@@ -34,8 +34,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Fetch pinned development scanner without install hooks
         run: python3 evals/dependency-audit/fetch_scanner.py --target linux-amd64 --output "$RUNNER_TEMP/trivy"
-      - name: Audit all pinned ARM64 base and service images
-        run: python3 evals/dependency-audit/image_audit.py --scanner "$RUNNER_TEMP/trivy" --remote-only --output "$RUNNER_TEMP/image-audit"
+      - name: Inventory pinned ARM64 images and report advisories
+        run: python3 evals/dependency-audit/image_audit.py --scanner "$RUNNER_TEMP/trivy" --remote-only --advisory-policy report --output "$RUNNER_TEMP/image-audit"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:

@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "ok": false,
+  "scope": "remote_and_built_images",
+  "coverage_complete": false,
+  "unscanned_built_images": [
+    "agent-runtime"
+  ],
+  "missing": [
+    "agent-runtime",
+    "kroki",
+    "kroki-excalidraw",
+    "node-build",
+    "python-build"
+  ],
+  "scanner_sha256": "6b2f54b179c68f329370836a1e116aab7b7effa1bcfa3cd1e57fb28af550ecc2",
+  "scanner_unchanged": true,
+  "registry_sha256": {
+    "registry/design-stack.json": "72d86c4bdc28dc9fba4715e75267479babb41110de0e9be67e296d9eee2de653",
+    "registry/agent-runtime.json": "5f4363de38075843549f3ce1250f6e24e597575f5a2d6dcf8433a62ebb0a77e6"
+  },
+  "registries_unchanged": true,
+  "candidate_source_sha256": "edb6137c600e09e62e46b9ac1f1e7b165effcb23cbca1522c40aa99d24fcf224",
+  "limits": "No automatic exceptions. Every detected advisory remains untriaged. Partial scans cannot pass; detected-package coverage is not complete upstream dependency resolution.",
+  "images": {
+    "design-tools": {
+      "ok": false,
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 351,
+        "node-pkg": 442,
+        "gobinary": 3
+      },
+      "os": {
+        "Family": "debian",
+        "Name": "12.15"
+      },
+      "image_id": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98",
+      "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability.",
+      "report_sha256": "16e6afc5cb09ce29d0beab04339ee6383ba0844d2b92af5cde9a137f2f6d8ebf",
+      "target": "sha256:27fa82c56b00d54d2d7e44634db42cdb0e9cb814a3859ee9fc0a59d568364d98",
+      "finding_records": 1116,
+      "unique_advisories": 441,
+      "severity_counts": {
+        "LOW": 283,
+        "HIGH": 301,
+        "MEDIUM": 487,
+        "UNKNOWN": 37,
+        "CRITICAL": 8
+      },
+      "fix_available_records": 1
+    }
+  },
+  "evidence": "Raw reports preserved in the private harness-openpencil-replacement-2026-10-20 evidence bundle; remote reports also in the linked CI artifact."
+}

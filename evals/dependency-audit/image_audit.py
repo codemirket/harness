@@ -53,7 +53,9 @@ def validate_export(receipt, alias, expected_source=None):
     return archive
 
 
-def evaluate(report, identity, local=False, required_types=()):
+def evaluate(report, identity, local=False, required_types=(), advisory_policy="fail"):
+    if advisory_policy not in ("fail", "report"):
+        raise ValueError("unknown advisory policy")
     metadata = report.get("Metadata", {})
     if report.get("SchemaVersion") != 2 or report.get("ArtifactType") != "container_image":
         raise ValueError("not a supported container scan")
@@ -90,7 +92,8 @@ def evaluate(report, identity, local=False, required_types=()):
     for kind in sorted(set(required_types)):
         if not counts.get(kind):
             coverage_errors.append(f"required shipped language inventory missing: {kind}")
-    return {"ok": not findings and not coverage_errors,
+    return {"ok": not coverage_errors and (advisory_policy == "report" or not findings),
+            "advisory_policy": advisory_policy, "advisories_present": bool(findings),
             "inventory_complete": not coverage_errors, "coverage_errors": coverage_errors,
             "packages_by_type": counts, "findings": findings,
             "os": metadata.get("OS"), "image_id": metadata.get("ImageID"),
@@ -142,7 +145,7 @@ def run(args):
                 if result.returncode:
                     raise ValueError("scanner failed; inspect bounded target log")
             records[name] = evaluate(json.loads(report_path.read_text()), identity, local,
-                                     REQUIRED_TYPES.get(name, ()))
+                                     REQUIRED_TYPES.get(name, ()), args.advisory_policy)
             records[name].update(report_sha256=sha(report_path), target=identity)
         except (KeyError, ValueError, OSError, subprocess.SubprocessError) as error:
             records[name] = {"ok": False, "error": str(error)}
@@ -161,7 +164,9 @@ def run(args):
                "scanner_unchanged": sha(scanner) == before,
                "registry_sha256": registry_hashes, "registries_unchanged": registries_unchanged,
                "candidate_source_sha256": args.candidate_source_sha256,
-               "limits": "No automatic exceptions. Every detected advisory remains untriaged. Partial scans cannot pass; detected-package coverage is not complete upstream dependency resolution."}
+               "advisory_policy": args.advisory_policy,
+               "advisories_present": any(v.get("advisories_present") for v in records.values()),
+               "limits": "All findings are retained. Report policy makes advisories non-blocking, not fixed or proven safe. Missing targets/inventory and scanner or identity failures still fail. Detected-package coverage is not complete upstream dependency resolution."}
     (args.output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     cache.cleanup()
     return 0 if summary["ok"] else 1
@@ -173,6 +178,7 @@ if __name__ == "__main__":
     parser.add_argument("--exports", type=Path, help="Alias to mirket dev image-export receipt map")
     parser.add_argument("--candidate-source-sha256", help="Require candidate exports from this exact compiled source; installed or stale receipts fail")
     parser.add_argument("--output", type=Path, required=True, help="New evidence directory")
+    parser.add_argument("--advisory-policy", choices=("fail", "report"), default="fail", help="Report keeps advisories as warnings; scan, identity and inventory failures remain fatal")
     parser.add_argument("--only", nargs="+", help="Bounded triage subset; never establishes full coverage")
     parser.add_argument("--remote-only", action="store_true", help="CI scope: pinned bases/services only; built image coverage stays explicitly incomplete")
     raise SystemExit(run(parser.parse_args()))

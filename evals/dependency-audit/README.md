@@ -30,9 +30,11 @@ python3 evals/dependency-audit/fetch_scanner.py --target darwin-arm64 --output /
 python3 evals/dependency-audit/image_audit.py --scanner /absolute/new-trivy --remote-only --output /absolute/new-image-evidence
 ```
 
-CI uses the pinned Linux AMD64 scanner to inspect all ten pinned ARM64
-base/service images. Every detected advisory, including an unfixed advisory,
-fails that scoped gate. There are no automatic image exceptions. Missing OS
+CI uses the pinned Linux AMD64 scanner to inspect all four pinned ARM64
+base/service images. At the maintainer’s request, CI uses `--advisory-policy report`:
+image advisories remain in the evidence as non-blocking warnings rather than
+requiring costly upstream rebuilds. This does not declare them fixed or safe.
+The default CLI policy remains `fail`; the source-coordinate audit is unchanged. Missing OS
 inventory, an unsupported/end-of-life OS, scanner errors or identity mismatches
 cannot pass. Language findings remain visible even when OS coverage is missing.
 Private per-run scanner caches avoid lock collisions between concurrent scans.
@@ -47,7 +49,7 @@ mirket dev image-export --engine-home /absolute/engine-home --image design-tools
 
 Use `--candidate` to build an immutable reviewed image without activating design
 services. Agent candidates prepare their immutable runtime generation receipt.
-Save each JSON receipt and construct an object keyed by those four aliases,
+Save each JSON receipt and construct an object keyed by those two aliases,
 with the complete receipts as values. Then supply it with `--exports` to a full
 scan (omit `--remote-only`). Archive hashes and scanned image IDs must match.
 For candidate scans, pass `--candidate-source-sha256` with the compiled source
