@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mirket — Expertise and tools for your coding agent</title>
-  <meta name="description" content="A local harness for Codex and Claude: focused expertise, scoped tools and medium-aware quality gates. Inspect a target, build editable code and verify the result." />
+  <title>Mirket — A practical guide to your agent harness</title>
+  <meta name="description" content="Learn what Mirket adds to Codex and Claude, install it, choose project skills, and use guidance, scoped workers and verification in everyday development." />
   <meta name="theme-color" content="#fcf9fa" />
-  <meta property="og:title" content="Mirket — Expertise and tools for your coding agent" />
-  <meta property="og:description" content="Focused expertise and medium-aware quality gates for your agent. Start from a visual target, or an inspected native specimen suited to the medium." />
+  <meta property="og:title" content="Mirket — A practical guide to your agent harness" />
+  <meta property="og:description" content="Learn what Mirket adds to Codex and Claude, install it, choose project skills, and use guidance, scoped workers and verification in everyday development." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://harness.mirket.dev/" />
   <link rel="canonical" href="https://harness.mirket.dev/" />
@@ -19,24 +19,51 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="shell header">
-    <a class="brand" href="/" aria-label="Mirket home"><img class="brand-logo" src="./logo.png" width="40" height="40" alt="" /><span>mirket</span><span class="brand-kind">harness</span></a>
-    <nav aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#image-to-code">Visual workflow</a><a href="https://github.com/codemirket/harness/blob/main/docs/README.md">Docs</a><a href="https://github.com/codemirket/harness">GitHub <span aria-hidden="true">↗</span></a></nav>
+    <a class="brand" href="/" aria-label="Mirket home"><img class="brand-logo" src="./logo.png" width="36" height="36" alt="" /><span>mirket</span><span class="brand-kind">harness</span></a>
+    <nav aria-label="Main navigation"><a href="https://github.com/codemirket/harness/blob/main/docs/README.md">Reference docs ↗</a><a href="https://github.com/codemirket/harness">GitHub ↗</a></nav>
   </header>
-  <main id="main" class="shell">
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="eyebrow">OPEN SOURCE · RUNS LOCALLY</p>
-      <h1 id="hero-title">Expertise and tools for Codex and Claude.</h1>
-      <p class="intro">Focused guidance, scoped tools, and work you can inspect. For visual tasks, Mirket takes your agent from an inspected target to editable code, with quality gates along the way.</p>
-      <div class="host-line"><span>Codex Desktop</span><span>Claude Desktop Code</span><a href="https://github.com/codemirket/harness/releases/latest">Release 1.0.11 ↗</a></div>
-    </section>
-
-    <p class="release-note" id="release-status"><strong>Mirket 1.0.11.</strong> Project memory, durable recovery and verification tied to actual inputs. <a href="https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11">Read the release notes ↗</a></p>
-
-    <section id="install" class="install" aria-labelledby="install-title">
-      <div class="install-intro"><p class="eyebrow">GET STARTED</p><h2 id="install-title">Let your agent<br class="wide-only" /> handle setup.</h2><p>Copy this prompt into Codex or Claude with local file and terminal access.</p><p class="small">It checks your device, installs the matching release, and verifies the result.</p></div>
-      <div class="prompt-panel">
-        <div class="prompt-heading"><label for="install-prompt">Installation prompt</label><span class="small">Read it. Copy it. Run it.</span></div>
-        <textarea id="install-prompt" readonly spellcheck="false" aria-describedby="copy-status">Install Mirket for the agent environment I am using on this device. Read
+  <div class="shell guide-layout">
+    <aside class="sidebar" aria-label="Guide navigation">
+      <p class="eyebrow">THE MIRKET GUIDE</p>
+      <nav aria-label="On this page">
+        <a href="#overview">Overview</a><a href="#how-it-works">What it adds</a><a href="#install">Get started</a><a href="#daily-use">Everyday use</a><a href="#architecture">Architecture</a><a href="#packages">Optional packages</a><a href="#reference">Quick reference</a>
+      </nav>
+      <p class="small" id="release-status"><a href="https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11">Mirket 1.0.11 ↗</a><br />Open source · MIT</p>
+    </aside>
+    <main id="main" tabindex="-1">
+      <section class="hero" id="overview" aria-labelledby="hero-title">
+        <p class="eyebrow">FOR CODEX DESKTOP &amp; CLAUDE DESKTOP CODE</p>
+        <h1 id="hero-title">A working method for your coding agent.</h1>
+        <p class="intro">Mirket is a local harness that gives your agent focused expertise, tools for specific tasks, and records of what was checked. Use it to bring a repeatable workflow to development, design and research.</p>
+        <div class="actions"><a class="button" href="#install">Get started <span aria-hidden="true">↓</span></a><a href="#daily-use">See everyday examples →</a></div>
+        <p class="host-line">Rust CLI + local MCP server · Uses your existing agent environment</p>
+      </section>
+      <section class="section" id="how-it-works" aria-labelledby="how-title">
+        <p class="eyebrow">01 / UNDERSTAND THE ROLE</p>
+        <h2 id="how-title">Your agent does the work.<br />Mirket helps structure it.</h2>
+        <p>A harness is the supporting layer around an agent. Mirket connects to Codex or Claude through MCP, the protocol agents use to access tools, and installs guidance the agent can read when it needs it.</p>
+        <dl class="role-list">
+          <div><dt>You decide</dt><dd>The outcome, project rules, provider choices and permissions.</dd></div>
+          <div><dt>Your agent acts</dt><dd>Reads the code, reasons about changes, edits files, runs tools and explains the result.</dd></div>
+          <div><dt>Mirket supplies</dt><dd>Relevant methods and references, optional scoped workers, and records that connect the work to its verification.</dd></div>
+        </dl>
+        <div class="capabilities">
+          <article><h3>Choose useful expertise</h3><p>Discover focused skills for the task: API design, debugging, interfaces, research and more. Read what helps; keep the project’s own instructions in charge.</p></article>
+          <article><h3>Delegate bounded work</h3><p>When independent work helps, route Mirket-owned workers to available models with tools scoped to their assignment. The main agent integrates the result.</p></article>
+          <article><h3>Keep work resumable</h3><p>Optional task records retain decisions, progress and evidence for longer work. Add the agent runtime for explicit project memory and durable worker checkpoints.</p></article>
+          <article><h3>Make verification explicit</h3><p>Guidance calls for real tests and inspected outputs. Tracked completion checks catch missing or changed evidence; the agent still has to judge the result.</p></article>
+        </div>
+      </section>
+      <section class="section" id="install" aria-labelledby="install-title">
+        <p class="eyebrow">02 / GET STARTED</p>
+        <h2 id="install-title">Install once. Set up each project.</h2>
+        <p>You need Codex Desktop or Claude Desktop Code with local file and terminal access. The core harness is one executable; optional packages can wait until you need them.</p>
+        <article class="step">
+          <h3><span class="number">1.</span> Ask your agent to install Mirket</h3>
+          <p>Paste this prompt into your agent. It follows the official guide, checks your device and verifies the release before running setup.</p>
+          <div class="prompt-panel">
+            <div class="prompt-heading"><label for="install-prompt">Installation prompt</label><span class="small">Paste into Codex or Claude</span></div>
+            <textarea id="install-prompt" readonly spellcheck="false" aria-describedby="copy-status">Install Mirket for the agent environment I am using on this device. Read
 https://raw.githubusercontent.com/codemirket/harness/main/docs/agent-installation.md
 and carry out the installation, rather than only explaining it.
 
@@ -51,69 +78,94 @@ explain any fresh-session step needed to activate the tools. Do not claim
 activation until a Mirket tool has been invoked in the host. If this chat
 has a project, inspect it and propose the relevant expertise without
 changing application code as part of installation.</textarea>
-        <div class="prompt-actions"><button id="copy" type="button" hidden>Copy installation prompt <span aria-hidden="true">↗</span></button><a href="./install-prompt.txt">Open plain text</a></div>
-        <p id="copy-status" role="status" class="small">Your agent keeps your settings and asks when a choice is needed.</p>
-        <noscript><p class="small">Select the prompt above to copy it, or open the plain-text version.</p></noscript>
-      </div>
-    </section>
-    <p class="manual-note">Prefer the terminal? <a href="https://github.com/codemirket/harness/blob/main/docs/installation.md">Manual installation</a><span aria-hidden="true"> · </span><a href="https://github.com/codemirket/harness/blob/main/docs/agent-installation.md">What the agent will do</a></p>
+            <div class="prompt-actions"><button id="copy" type="button" hidden>Copy installation prompt <span aria-hidden="true">↗</span></button><a href="./install-prompt.txt">Open plain text</a></div>
+            <p id="copy-status" role="status" class="small">Read the prompt before running it in your agent.</p>
+            <noscript><p class="small">Select the prompt above to copy it, or open the plain-text version.</p></noscript>
+          </div>
+          <p class="small">Prefer a manual install? <a href="https://github.com/codemirket/harness/blob/main/docs/installation.md">Download, verify and set up the binary</a>. Check <a href="https://github.com/codemirket/harness/blob/main/docs/release-status.md">supported targets</a> before installing optional packages.</p>
+        </article>
+        <article class="step">
+          <h3><span class="number">2.</span> Confirm the agent can use it</h3>
+          <p>Start a fresh host session if needed. Ask the agent to invoke Mirket’s <code>runtime_status</code> tool. <code>mirket doctor</code> checks installation; a successful tool call in your host confirms that connection is active.</p>
+        </article>
+        <article class="step" id="project-setup">
+          <h3><span class="number">3.</span> Choose expertise for your project</h3>
+          <p>Open the project in your agent and ask:</p>
+          <blockquote><p>Inspect this project and its instructions. Use Mirket to select and install the expertise relevant to its stack and current work. Preserve existing selections and edits, verify project health, and explain what you selected. Do not change application behavior as part of setup.</p></blockquote>
+          <details><summary>Prefer the CLI? Set up a project explicitly</summary>
+            <p>Replace the absolute path and choose a capability that matches your work. This example selects both hosts and backend engineering guidance.</p>
+            <pre><code>mirket project init --project /absolute/project --target all
+mirket project add --project /absolute/project --profile project-foundation
+mirket project add --project /absolute/project --capability "Backend Engineer"
+mirket project plan --project /absolute/project
+mirket project sync --project /absolute/project
+mirket project doctor --project /absolute/project</code></pre>
+            <p class="small"><code>init</code> records the target hosts; <code>add</code> selects guidance; <code>sync</code> installs it. Selections live in <code>.mirket/project.json</code>. Use <code>portable-foundation</code> when the hosts have no shared global guidance.</p>
+          </details>
+        </article>
+      </section>
 
-    <section id="how-it-works" class="section" aria-labelledby="how-title">
-      <div class="section-title"><p class="eyebrow">WHAT IT ADDS</p><h2 id="how-title">From a request to work<br class="wide-only" /> you can inspect.</h2><p>Your agent still does the reasoning. Mirket supplies a working method and the tools to follow through.</p></div>
-      <div class="steps">
-        <article class="step"><span class="number">01</span><div><h3>Bring in the right expertise.</h3><p>The agent discovers and reads guidance for the actual task—engineering, design, research, writing and more. Projects select the skills they need, instead of loading the whole catalog.</p><a href="https://github.com/codemirket/harness/blob/main/docs/roles.md">Explore expertise ↗</a></div></article>
-        <article class="step"><span class="number">02</span><div><h3>Give the work a clear scope.</h3><p>When delegation helps, Mirket can route its own workers to discovered models with tools scoped to the assignment. Your host remains in charge of permissions and your chosen providers.</p><a href="https://github.com/codemirket/harness/blob/main/docs/workflows.md">Understand coordination ↗</a></div></article>
-        <article class="step"><span class="number">03</span><div><h3>Check what was actually produced.</h3><p>Guidance calls for real tests, rendered screens and inspected artifacts. Optional task records keep decisions and evidence together, and detect missing or stale evidence at completion.</p><a href="https://github.com/codemirket/harness/blob/main/docs/task-evidence.md">See how evidence works ↗</a></div></article>
-      </div>
-    </section>
+      <section class="section" id="daily-use" aria-labelledby="daily-title">
+        <p class="eyebrow">03 / EVERYDAY USE</p>
+        <h2 id="daily-title">Describe the outcome. Ask for evidence.</h2>
+        <p>Keep working in your usual agent conversation. You can name Mirket when you want a specific method. Routine changes can stay direct; delegation and durable tracking are useful when the task needs them.</p>
+        <article class="example"><h3>Fix a bug or add a feature</h3><blockquote><p>Use Mirket’s relevant engineering guidance to fix this failing checkout. Find the cause, make the smallest complete change, and run the project checks. Explain what changed and what remains untested.</p></blockquote><p class="small">Expected result: an implementation, checks that exercise the affected behavior, and a clear account of any remaining limits.</p></article>
+        <article class="example" id="image-to-code"><h3>Build or refine an interface</h3><blockquote><p>Use Mirket’s visual workflow for this settings screen. Inspect the existing screen or a minimal native specimen first. Build editable components, check desktop and mobile layouts, and test keyboard use and error states.</p></blockquote><p class="small">Expected result: a working interface and inspected renders compared with the starting target. <a href="https://github.com/codemirket/harness/blob/main/docs/visual-quality.md">Full visual workflow ↗</a></p>
+          <details id="quality-gates"><summary>What gets checked in visual work?</summary>
+            <dl class="quality-checks"><div><dt>Composition</dt><dd>Hierarchy, spacing and proportions.</dd></div><div><dt>Typography</dt><dd>Fonts, wrapping and readability.</dd></div><div><dt>Assets</dt><dd>Source rights, sharpness and fit.</dd></div><div><dt>Responsive layout</dt><dd>Reflow and reachable controls.</dd></div><div><dt>Behavior</dt><dd>Actions, keyboard access and states.</dd></div><div><dt>Motion</dt><dd>Playback and reduced motion, when needed.</dd></div></dl>
+            <p id="code-fallback">A supplied reference or an inspected native specimen can establish the target. Mirket provides rendering tools; image generation, when needed, comes from the host.</p>
+            <p class="small">Mirket-owned design workers enforce ordered reviews and evidence freshness. One target repair is allowed. Final repairs share a limit: static work gets 15 minutes/two repairs; interfaces and paged work 30 minutes/three; motion 45 minutes/four. Combined work uses the largest limit. Native host tools follow this as guidance. Passing a gate does not establish human approval.</p>
+          </details>
+        </article>
+        <article class="example"><h3>Continue a larger task</h3><blockquote><p>Use a Mirket task record for this migration. Keep the decisions, remaining work and verification evidence together so we can resume. Delegate only independent pieces that help, and integrate their results before checking completion.</p></blockquote><p class="small">Expected result: recoverable progress tied to the project. Reuse an existing sufficient task record. <a href="https://github.com/codemirket/harness/blob/main/docs/task-evidence.md">How task evidence works ↗</a></p></article>
+      </section>
 
-    <section id="continuity" class="section" aria-labelledby="continuity-title">
-      <div class="section-title"><p class="eyebrow">MEMORY &amp; RECOVERY</p><h2 id="continuity-title">Keep useful context.<br />Verify what changed.</h2><p>Available in 1.0.11. Add the optional agent runtime for project memory and durable workers.</p><a href="https://github.com/codemirket/harness/blob/main/docs/release-status.md">Supported targets ↗</a></div>
-      <div class="steps">
-        <article class="step"><span class="number">01</span><div><h3>Remember explicit project facts.</h3><p>Mem0 stores chosen facts with provenance and local retrieval. Expiry and supersession keep old decisions out of active recall. Bounded searches report when their results may be incomplete.</p><a href="https://github.com/codemirket/harness/blob/main/docs/agent-runtime.md#memory">Read the memory contract ↗</a></div></article>
-        <article class="step"><span class="number">02</span><div><h3>Resume with the original boundaries.</h3><p>LangGraph checkpoints preserve worker state. Recovery respects the original scope and budget, and keeps uncertain effects blocked. Durable-state backups and directory relocation preserve continuity; project assets need their own backup.</p><a href="https://github.com/codemirket/harness/blob/main/docs/agent-runtime.md#restorable-backups-and-project-relocation">Understand recovery ↗</a></div></article>
-        <article class="step"><span class="number">03</span><div><h3>Check the work and the live connection.</h3><p>Host verification binds inputs before checks run and detects stale evidence. Runtime fingerprints identify the process actually answering—not just the binary installed on disk.</p><a href="https://github.com/codemirket/harness/blob/main/docs/task-evidence.md">Read the verification contract ↗</a></div></article>
-      </div>
-    </section>
-
-    <section id="image-to-code" class="section" aria-labelledby="visual-title">
-      <div class="section-title"><p class="eyebrow">VISUAL WORKFLOW</p><h2 id="visual-title">Start with a target.<br />Finish with evidence.</h2><p>For new visual work and substantial redesign. An approved existing screen can guide a focused repair.</p><a href="https://github.com/codemirket/harness/blob/main/docs/visual-quality.md">Read the workflow ↗</a></div>
-      <div class="steps">
-        <article class="step"><span class="number">01</span><div><h3>Inspect the target first.</h3><p>Use your supplied reference, an inspected native specimen, or a host-generated composition suited to the medium. Inspect the hierarchy, type and focal asset. Freeze that target before implementation.</p></div></article>
-        <article class="step"><span class="number">02</span><div><h3>Build editable code.</h3><p>Turn the target into real components, responsive layout and working controls. Keep exact copy and logos in the source. A screenshot stretched across the page is not a working interface.</p></div></article>
-        <article class="step"><span class="number">03</span><div><h3>Render and compare.</h3><p>Inspect current output against the frozen target at matching content, viewport and state. Check narrow and wide layouts and exercise the interactions. Record specific defects and corrections.</p></div></article>
-      </div>
-    </section>
-
-    <aside id="code-fallback" class="example" aria-labelledby="fallback-title"><p class="eyebrow">NATIVE SPECIMENS</p><h3 id="fallback-title">Compose in code. Inspect before expanding.</h3><p>When the medium fits, the agent builds one minimal DOM, SVG, pixel, diagram, typeset or editor specimen, then renders and inspects it. That first passing render becomes the target. The same quality gates and limits apply.</p><p class="small">No new image provider or model change is required. Mirket supplies production tools; image generation, when available, belongs to your host.</p></aside>
-
-    <section id="quality-gates" class="section" aria-labelledby="gates-title">
-      <div class="section-title"><p class="eyebrow">QUALITY GATES</p><h2 id="gates-title">Six checks.<br />A bounded review.</h2><p>Each check gets an outcome and located observations. Missing, stale or failed required evidence blocks a Mirket-owned worker from completing.</p></div>
-      <div class="design-copy">
-        <dl class="quality-checks">
-          <div><dt>Composition</dt><dd>Hierarchy, spacing, proportions and crop.</dd></div>
-          <div><dt>Typography</dt><dd>Actual fonts, wrapping, legibility and contrast.</dd></div>
-          <div><dt>Assets</dt><dd>Source rights, sharpness and fit in the composition.</dd></div>
-          <div><dt>Responsive layout</dt><dd>Narrow and wide reflow, clipping and reachable controls.</dd></div>
-          <div><dt>Behavior</dt><dd>Primary actions, keyboard focus and relevant states.</dd></div>
-          <div><dt>Motion</dt><dd>Requested playback, interruption and reduced motion.</dd></div>
+      <section class="section" id="architecture" aria-labelledby="architecture-title">
+        <p class="eyebrow">04 / ARCHITECTURE</p>
+        <h2 id="architecture-title">One local core. Two ways to use it.</h2>
+        <p>The <code>mirket</code> command and local MCP server share the same Rust implementation. You use the CLI for setup and project management; your agent uses MCP tools to discover guidance and work with task state.</p>
+        <dl class="role-list">
+          <div><dt>Guidance</dt><dd>The embedded catalog contains roles, skills and references. Setup installs shared guidance; project sync adds your selected specialties.</dd></div>
+          <div><dt>Project state</dt><dd><code>.mirket/project.json</code> records project selections. The local Mirket home holds installation receipts, registered tools and a SQLite task database.</dd></div>
+          <div><dt>Worker routing</dt><dd>Mirket discovers available targets and models, resolves a bounded assignment, and dispatches only its assigned tools. Native host subagents remain outside this routing boundary.</dd></div>
+          <div><dt>Optional runtimes</dt><dd>Separate packages add design production tools or project memory and durable checkpoints. The core works without either.</dd></div>
         </dl>
-        <p>Working UI must pass responsive and behavior checks. Animated work must pass motion checks.</p>
-        <p><strong>One target repair. Static work: 15 minutes and two final repairs. Interfaces and paged work: 30 minutes and three. Motion: 45 minutes and four.</strong> Combined work shares the largest limit. At the limit, preserve the output and report remaining defects. New workers or extra variants do not reset the budget.</p>
-        <p class="small">Mirket-owned workers enforce review order, evidence freshness and these bounds. Native host tools follow the same workflow through guidance. Agent observations remain judgments; a passing gate is not an aesthetic guarantee or human approval.</p>
-      </div>
-    </section>
+        <aside class="note"><p><strong>Your host keeps control.</strong> Keep your existing agent and authentication. Local harness state does not mean local inference: configured models may be remote, with their own usage limits and billing. Mirket does not grant permissions or provide an operating-system sandbox.</p></aside>
+        <a href="https://github.com/codemirket/harness/blob/main/docs/architecture.md">Read the implementation map ↗</a>
+      </section>
 
-    <section class="section compact" aria-labelledby="design-title"><div class="section-title"><p class="eyebrow">OPTIONAL DESIGN TOOLS</p><h2 id="design-title">A workspace for<br class="wide-only" /> making and checking.</h2></div><div class="design-copy"><p>Add the design package when the work needs browser inspection, editable design files, diagrams, video, documents or image processing.</p><p class="tool-list">Playwright · Penpot · Style Dictionary · Kroki · HyperFrames · Typst · Sharp · Satori · resvg · SVGO · Odiff</p><p class="small">A separate local stack with Podman prerequisites. It includes renderers, not an image generation model. The core harness works without it.</p><a href="https://github.com/codemirket/harness/blob/main/docs/packages.md">Read the package guide ↗</a></div></section>
+      <section class="section" id="packages" aria-labelledby="packages-title">
+        <p class="eyebrow">05 / ADD ONLY WHAT YOU NEED</p>
+        <h2 id="packages-title">Optional packages</h2>
+        <p>Both packages require a supported private Podman environment with Linux ARM64 containers. A supported core CLI does not automatically mean your device can run these packages.</p>
+        <article class="example" id="design"><h3>Design: produce and inspect visual work</h3><p>Browser checks with Playwright, editable files with Penpot, tokens with Style Dictionary, and tools for diagrams, video, documents, vectors and image processing.</p><a href="https://github.com/codemirket/harness/blob/main/docs/packages.md">Design package setup and tools ↗</a></article>
+        <article class="example" id="continuity"><h3>Agent runtime: memory and recovery</h3><p>The optional agent runtime uses Mem0 for explicitly chosen project facts and LangGraph for durable worker checkpoints. Local recall needs no hosted memory account or inference credentials. Chat history is not automatically ingested.</p><p class="small">Durable-state backups cover records, memory and checkpoints. Project files, credentials and desktop settings need separate backups.</p><a href="https://github.com/codemirket/harness/blob/main/docs/agent-runtime.md">Memory, resumption and recovery ↗</a></article>
+      </section>
 
-    <section class="section compact faq" aria-labelledby="details-title"><div class="section-title"><p class="eyebrow">GOOD TO KNOW</p><h2 id="details-title">Fits your environment.</h2></div><div>
-      <details><summary>What changes on my device?</summary><p>Setup installs a managed Mirket executable, shared instructions, skills and local MCP connections for the hosts you select. It preserves unrelated configuration and stops on conflicting managed edits. Start a fresh host session to load the new tools.</p></details>
-      <details><summary>Where does memory live?</summary><p>Optional Mem0 memory and LangGraph checkpoints live in a contained local runtime with no network or provider credentials. Facts are explicitly chosen; chat history is not automatically ingested. Your agent’s inference still uses its configured provider. The memory package is Linux ARM64 only.</p></details>
-      <details><summary>Can I use it with an existing project?</summary><p>Yes. Your agent can inspect the project and select useful expertise. Project setup records those selections and installs their guidance. Installing Mirket does not automatically rewrite application code.</p></details>
-      <details><summary>Does it replace my agent or subscription?</summary><p>No. Keep Codex or Claude and your existing authentication. The harness and task state run locally; inference uses your configured providers, which may be remote. Their usage limits and billing still apply.</p></details>
-      <details><summary>Does it guarantee better results?</summary><p>No harness can guarantee correctness. Mirket makes guidance, tool scope and evidence explicit. Its checks can validate records and file identity; real tests and human judgment still determine whether the work is right.</p></details>
-    </div></section>
-  </main>
-  <footer class="shell footer"><a class="brand" href="/"><img class="brand-logo" src="./logo.png" width="40" height="40" alt="" /><span>mirket</span></a><p>Local harness. Open source.</p><nav aria-label="Footer"><a href="https://github.com/codemirket/harness">Source</a><a href="https://github.com/codemirket/harness/issues">Issues</a><a href="https://github.com/codemirket/harness/blob/main/LICENSE">MIT license</a></nav></footer>
+      <section class="section" id="reference" aria-labelledby="reference-title">
+        <p class="eyebrow">06 / KEEP THIS HANDY</p>
+        <h2 id="reference-title">Quick reference</h2>
+        <pre><code>mirket doctor          # Check your installation
+mirket catalog search debugging
+mirket update --check  # Check for a release
+mirket update          # Update using saved setup choices</code></pre>
+        <p class="small">Project skill updates stay explicit: run <code>mirket project sync --project /absolute/project</code> for the project you intend to update. Inspect conflicting managed edits before retrying.</p>
+        <div class="doc-links">
+          <a href="https://github.com/codemirket/harness/blob/main/docs/installation.md">Installation &amp; troubleshooting ↗<span>Manual setup, activation and updates</span></a>
+          <a href="https://github.com/codemirket/harness/blob/main/docs/roles.md">Roles &amp; skills ↗<span>Find and select useful expertise</span></a>
+          <a href="https://github.com/codemirket/harness/blob/main/docs/workflows.md">Projects &amp; workflows ↗<span>Configure work and coordinate tasks</span></a>
+          <a href="https://github.com/codemirket/harness/blob/main/docs/task-evidence.md">Verification &amp; evidence ↗<span>Record checks and detect stale inputs</span></a>
+          <a href="https://github.com/codemirket/harness/blob/main/docs/architecture.md">Architecture ↗<span>Modules, local state and execution boundaries</span></a>
+          <a href="https://github.com/codemirket/harness/blob/main/CONTRIBUTING.md">Contributing ↗<span>Build and verify changes to Mirket</span></a>
+        </div>
+        <div class="faq" style="margin-top: 24px">
+          <details><summary>What changes on my device?</summary><p>Setup installs a managed executable, shared instructions, skills and MCP configuration for your selected hosts. It preserves unrelated settings and stops on conflicting managed edits. A fresh unattended setup installs no optional packages.</p></details>
+          <details><summary>Does Mirket guarantee correct results?</summary><p>No. It supplies methods, scoped tools and inspectable evidence. Records and hashes can detect missing or changed artifacts; real tests, artifact inspection and human judgment determine whether the work is right.</p></details>
+        </div>
+        <p class="small" style="margin-top: 24px"><a href="https://github.com/codemirket/harness/blob/main/docs/README.md">Browse all documentation ↗</a> · <a href="https://github.com/codemirket/harness/releases/latest">Download a release ↗</a></p>
+      </section>
+    </main>
+  </div>
+  <footer class="shell footer"><p>Mirket · A local, open-source agent harness.</p><nav aria-label="Footer"><a href="https://github.com/codemirket/harness">Source</a><a href="https://github.com/codemirket/harness/issues">Issues</a><a href="https://github.com/codemirket/harness/blob/main/LICENSE">MIT license</a></nav></footer>
 </body>
 </html>

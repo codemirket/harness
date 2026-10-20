@@ -18,6 +18,7 @@ test("deployment admits only exact committed artifact bytes", async () => {
         recursive: true,
       });
     await fs.copyFile(path.join(source, "../README.md"), path.join(root, "README.md"));
+    await fs.copyFile(path.join(source, "../CONTRIBUTING.md"), path.join(root, "CONTRIBUTING.md"));
     await fs.mkdir(path.join(root, "docs"));
     for (const file of await fs.readdir(path.join(source, "../docs")))
       if (file.endsWith(".md"))

@@ -27,6 +27,17 @@ try {
       await page.keyboard.press('Tab');
       assert.equal(await page.locator(':focus').textContent(),'Skip to content');
       await page.screenshot({path:path.join(output,`${width}-entry.png`)});
+      await page.keyboard.press('Enter');
+      assert.equal(await page.locator(':focus').getAttribute('id'),'main');
+      await page.locator('.hero a[href="#install"]').click();
+      assert.equal(new URL(page.url()).hash,'#install');
+      assert.ok(await page.locator('#install').evaluate(e=>Math.abs(e.getBoundingClientRect().top-28)<2));
+      for (const link of await page.locator('.sidebar nav a').all()) {
+        const hash=await link.getAttribute('href');
+        await link.click();
+        assert.equal(new URL(page.url()).hash,hash);
+        assert.ok(await page.locator(hash).isVisible());
+      }
       await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.copiedText=text;}}}));
       await page.locator('#copy').focus();
       await page.keyboard.press('Enter');
@@ -41,7 +52,10 @@ try {
       await summary.focus();await page.keyboard.press('Enter');
       assert.equal(await page.locator('details').first().getAttribute('open'),'');
       await page.keyboard.press('Enter');
-      for(const selector of ['#install','#how-it-works','#continuity','#image-to-code','#code-fallback','#quality-gates','.compact','.faq']) {
+      await page.locator('#quality-gates summary').click();
+      assert.ok(await page.locator('#code-fallback').isVisible());
+      assert.equal(await page.locator('#quality-gates dt').count(),6);
+      for(const selector of ['#install','#project-setup','#how-it-works','#daily-use','#architecture','#packages','#continuity','#image-to-code','#code-fallback','#quality-gates','#reference','.faq']) {
         await page.locator(selector).first().scrollIntoViewIfNeeded();
         await page.screenshot({path:path.join(output,`${width}-${selector.replace(/[.#]/g,'')}.png`)});
       }
@@ -61,7 +75,10 @@ try {
     assert.ok(await page.locator('noscript').isVisible());
     assert.equal(await page.locator('#quality-gates dt').count(),6);
     assert.ok(await page.locator('#image-to-code').isVisible());
+    await page.locator('#quality-gates summary').click();
     assert.ok(await page.locator('#code-fallback').isVisible());
+    await page.locator('#project-setup summary').click();
+    assert.ok(await page.locator('#project-setup pre').isVisible());
     assert.ok(await page.locator('#copy').isHidden());
     const text=await context.request.get(new URL('install-prompt.txt',url).href);
     assert.ok(text.ok());assert.equal((await text.text()).trim(),expected);
