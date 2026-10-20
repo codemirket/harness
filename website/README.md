@@ -76,10 +76,12 @@ node website/scripts/browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence
 
 The checks include the release label, memory/recovery content, workflow selection,
 project setup, architecture and the visual workflow disclosures.
-They cover 1440, 768, 390 and 320 CSS-pixel widths, keyboard access, prompt
+They cover 1440, 768, 390 and 320 CSS-pixel widths, mobile touch emulation,
+44px navigation targets, unbroken installation step numbers, keyboard access, prompt
 copy success and clipboard denial, native disclosure controls, enlarged text,
 console errors and JavaScript-disabled access. Inspect the saved captures as well
-as the report. Keep evidence outside shipped source.
+as the report. Browser emulation does not establish physical iPhone or Android
+behavior. Keep evidence outside shipped source.
 
 ## Deploy
 

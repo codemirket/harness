@@ -90,6 +90,9 @@ nav {
 nav a {
   text-decoration: none;
   padding: 8px 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .skip {
@@ -153,8 +156,9 @@ h3 {
   padding: 6px 12px;
   border-radius: 20px;
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: 12px;
   text-decoration: none;
+  min-height: 44px;
 }
 
 .status-dot {
@@ -207,6 +211,9 @@ h3 {
 .text-link {
   font-size: 13px;
   text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .text-link span {
@@ -215,7 +222,7 @@ h3 {
 
 .host-line {
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 22px;
 }
 
@@ -228,12 +235,12 @@ h3 {
 
 .micro {
   color: var(--color-muted);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .faint {
   color: var(--color-muted);
-  font-size: 8px;
+  font-size: 10px;
   letter-spacing: .8px;
 }
 
@@ -255,7 +262,7 @@ h3 {
 }
 
 .bench-heading .mono:first-child {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .brief {
@@ -348,7 +355,7 @@ h3 {
 
 .harness-heading .micro {
   color: var(--color-accent);
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .support-grid {
@@ -379,14 +386,14 @@ h3 {
 .support-grid div>span:last-child {
   display: block;
   color: var(--color-muted);
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 5px;
 }
 
 .workbench figcaption {
   display: flex;
   gap: 8px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-muted);
   margin-top: 24px;
 }
@@ -406,7 +413,7 @@ h3 {
 
 .foundation>span {
   color: var(--color-muted);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .foundation p {
@@ -439,7 +446,7 @@ h3 {
 }
 
 .footer nav {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .error-page {
@@ -525,7 +532,7 @@ h3 {
     font-size: 12px;
   }
   .support-grid div>span:last-child {
-    font-size: 9px;
+    font-size: 12px;
   }
 }
 
@@ -634,8 +641,11 @@ h3 {
 }
 
 .stage-copy>a,.package>a {
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .stage-visual {
@@ -670,7 +680,7 @@ h3 {
 
 .file-row small {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--color-muted);
 }
 
@@ -690,7 +700,7 @@ h3 {
 
 .selected-method .micro {
   color: var(--color-accent);
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .selected-method strong {
@@ -703,7 +713,7 @@ h3 {
 
 .selected-method p {
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 6px;
 }
 
@@ -714,12 +724,12 @@ h3 {
   justify-content: space-between;
   padding: 16px 26px;
   border-top: 1px solid var(--color-rule);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-muted);
 }
 
 .workflow-foot .micro {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .diff-visual pre {
@@ -744,7 +754,7 @@ h3 {
 }
 
 .visual-foot {
-  font-size: 10px;
+  font-size: 12px;
   padding: 12px 18px;
   border-top: 1px solid var(--color-rule);
   color: var(--color-muted);
@@ -772,14 +782,14 @@ h3 {
 }
 
 .evidence-row small {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-muted);
   margin-top: 4px;
 }
 
 .evidence-row code {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--color-muted);
 }
 
@@ -811,7 +821,7 @@ h3 {
 
 .map-clients small,.map-stores small {
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .map-connectors {
@@ -870,11 +880,12 @@ h3 {
 }
 
 .map-stores .micro {
-  font-size: 8px;
+  font-size: 10px;
+  letter-spacing: .5px;
 }
 
 .architecture-map figcaption {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-muted);
   text-align: center;
   margin-top: 20px;
@@ -885,7 +896,7 @@ h3 {
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-muted);
   margin-top: 28px;
 }
@@ -1100,7 +1111,7 @@ h3 {
 }
 
 .memory-record small {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-muted);
   display: block;
   margin-top: 5px;
@@ -1130,7 +1141,7 @@ summary {
   position: relative;
   cursor: pointer;
   padding: 17px 24px 17px 0;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 summary::-webkit-details-marker {
@@ -1150,12 +1161,12 @@ details[open]>summary::after {
 
 details p {
   color: var(--color-muted);
-  font-size: 12px;
+  font-size: 14px;
   margin: 0 0 14px;
 }
 
 details a {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 details>div {
@@ -1177,7 +1188,7 @@ details>div {
 .quality-checks dd {
   margin: 4px 0 0;
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .install-wrap {
@@ -1213,9 +1224,11 @@ details>div {
 }
 
 .install-steps li>span {
-  font: 10px ui-monospace,monospace;
+  font: 12px ui-monospace,monospace;
   color: var(--color-accent);
   padding-top: 5px;
+  flex: 0 0 2ch;
+  white-space: nowrap;
 }
 
 .install-steps strong {
@@ -1224,7 +1237,7 @@ details>div {
 }
 
 .install-steps p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-muted);
   margin-top: 5px;
   max-width: 340px;
@@ -1247,12 +1260,12 @@ details>div {
 }
 
 .prompt-heading label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 
 .prompt-heading .micro {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 textarea {
@@ -1266,7 +1279,7 @@ textarea {
   padding: 16px;
   background: var(--color-canvas);
   color: var(--color-muted);
-  font: 11px/1.85 ui-monospace,SFMono-Regular,Consolas,monospace;
+  font: 14px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;
 }
 
 .prompt-actions {
@@ -1278,17 +1291,20 @@ textarea {
 }
 
 .prompt-actions button {
-  font-size: 12px;
+  font-size: 14px;
   padding: 10px 15px;
   gap: 18px;
 }
 
 .prompt-actions a {
-  font-size: 11px;
+  font-size: 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 #copy-status {
-  font-size: 10px;
+  font-size: 12px;
   min-height: 36px;
   margin-top: 14px;
 }
@@ -1311,7 +1327,7 @@ code {
 }
 
 .prompt-panel pre {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--color-muted);
   line-height: 2;
 }
@@ -1406,11 +1422,14 @@ code {
     margin-left: 34px;
   }
   .selected-method p {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
 @media(max-width:700px) {
+  textarea {
+    font-size: 16px;
+  }
   .section {
     padding-block: 52px;
   }
@@ -1431,14 +1450,14 @@ code {
   .workflow-controls button {
     padding: 16px 10px;
     gap: 8px;
-    font-size: 11px;
+    font-size: 13px;
     flex-wrap: wrap;
   }
   .workflow-controls button b {
     display: none;
   }
   .workflow-controls button span {
-    font-size: 8px;
+    font-size: 10px;
   }
   .stage {
     padding: 24px;
@@ -1463,14 +1482,14 @@ code {
     font-size: 15px;
   }
   .map-clients small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .map-core {
     padding: 18px 16px;
     flex-wrap: wrap;
   }
   .map-core>span {
-    font-size: 10px;
+    font-size: 12px;
   }
   .map-core code {
     display: none;
@@ -1482,12 +1501,13 @@ code {
     font-size: 14px;
   }
   .map-stores small {
-    font-size: 10px;
+    font-size: 12px;
     display: block;
   }
   .map-stores .micro {
-    font-size: 7px;
-  }
+    font-size: 10px;
+    letter-spacing: .5px;
+}
   .architecture-map {
     margin-top: 32px;
   }
@@ -1550,7 +1570,7 @@ code {
     padding: 16px;
   }
   .support-grid div>span:last-child {
-    font-size: 9px;
+    font-size: 12px;
   }
   .package-art {
     gap: 10px;

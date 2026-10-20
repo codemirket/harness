@@ -12,7 +12,7 @@ const browser = await chromium.launch({executablePath:process.env.MIRKET_CHROMIU
 const report=[];
 try {
   for (const width of [1440, 768, 390, 320]) {
-    const context=await browser.newContext({viewport:{width,height:1000},deviceScaleFactor:2,reducedMotion:'reduce'});
+    const context=await browser.newContext({viewport:{width,height:width<500?844:1000},deviceScaleFactor:2,isMobile:width<500,hasTouch:width<500,reducedMotion:'reduce'});
     try {
       const page=await context.newPage();
       const errors=[];const failed=[];
@@ -23,6 +23,16 @@ try {
       assert.match(await page.locator('#release-status').textContent(),/Mirket 1\.0\.11/);
       assert.match(await page.locator('#continuity').textContent(),/optional agent runtime/);
       assert.equal(await page.locator('#install-prompt').inputValue(),expected);
+      for (const number of await page.locator('.install-steps li > span').all()) {
+        assert.equal(await number.evaluate(e=>{const range=document.createRange();range.selectNodeContents(e);return range.getClientRects().length;}),1,`Split installation number at ${width}`);
+      }
+      for (const link of await page.locator('header nav a,footer nav a').all()) {
+        assert.ok((await link.boundingBox()).height>=44,`Small navigation target at ${width}`);
+      }
+      if(width<500) {
+        assert.ok(await page.locator('#install-prompt').evaluate(e=>parseFloat(getComputedStyle(e).fontSize)>=16),'Mobile prompt must remain readable when focused');
+      }
+
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`Overflow at ${width}`);
       await page.keyboard.press('Tab');
       assert.equal(await page.locator(':focus').textContent(),'Skip to content');
@@ -41,7 +51,8 @@ try {
       assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).colorScheme),'dark');
       for (const stage of ['build','verify','scope']) {
         const control=page.locator(`[data-stage="${stage}"]`);
-        await control.focus();await page.keyboard.press('Enter');
+        if(width<500) await control.tap();
+        else {await control.focus();await page.keyboard.press('Enter');}
         assert.equal(await control.getAttribute('aria-pressed'),'true');
         assert.ok(await page.locator(`[data-panel="${stage}"]`).isVisible());
         assert.equal(await page.locator('[data-panel]:visible').count(),1);
@@ -75,7 +86,7 @@ try {
       await page.locator('#install').scrollIntoViewIfNeeded();
       await page.screenshot({path:path.join(output,`${width}-enlarged.png`)});
       assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
-      report.push({width,deviceScale:2,copy:'success and denial',keyboard:'passed',overflow:false,consoleErrors:errors});
+      report.push({width,deviceScale:2,mobileEmulation:width<500,workflowInput:width<500?'touch':'keyboard',navigationTargets:'at least 44px',installationNumbers:'single line',copy:'success and denial',keyboard:'passed',overflow:false,consoleErrors:errors});
     } finally {await context.close();}
   }
   const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
