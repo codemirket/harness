@@ -530,7 +530,8 @@ fn command_output(
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
+// Packaging consumes the release identity subset of the extensible live-info
+// response. Required fields and their values remain strictly validated below.
 struct ExecutableInfo {
     name: String,
     version: String,
@@ -804,6 +805,30 @@ mod tests {
         ] {
             assert!(validate_info(&serde_json::to_vec(&info).unwrap(), "9.8.7").is_err());
         }
+    }
+
+    #[test]
+    fn executable_identity_accepts_current_cli_info_and_additive_fields() {
+        let root = tempfile::tempdir().unwrap();
+        let paths = crate::paths::Paths::new(root.path().to_owned()).unwrap();
+        let catalog = Catalog::embedded().unwrap();
+        let mut info = crate::identity::info(&paths, &catalog);
+        info["future_diagnostic"] = json!({"observed": true});
+        let parsed = validate_info(
+            &serde_json::to_vec(&info).unwrap(),
+            env!("CARGO_PKG_VERSION"),
+        )
+        .unwrap();
+        assert_eq!(parsed.target, env!("MIRKET_TARGET"));
+        // Extra diagnostics cannot substitute for a missing release identity.
+        info.as_object_mut().unwrap().remove("target");
+        assert!(
+            validate_info(
+                &serde_json::to_vec(&info).unwrap(),
+                env!("CARGO_PKG_VERSION")
+            )
+            .is_err()
+        );
     }
 
     #[test]

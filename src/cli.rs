@@ -1192,13 +1192,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 }
             }
         })?,
-        Command::Info => {
-            let mut info = crate::identity::status(&paths, &catalog()?);
-            info["name"] = json!("mirket");
-            info["version"] = json!(env!("CARGO_PKG_VERSION"));
-            info["target"] = json!(env!("MIRKET_TARGET"));
-            info
-        }
+        Command::Info => crate::identity::info(&paths, &catalog()?),
         Command::Agent {
             command: AgentCommand::Export { project, output },
         } => runtime()?.block_on(crate::lifecycle::export(&paths, &project, &output))?,

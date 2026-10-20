@@ -22,6 +22,14 @@ pub fn version() -> String {
     )
 }
 
+pub(crate) fn info(paths: &Paths, catalog: &Catalog) -> Value {
+    let mut info = status(paths, catalog);
+    info["name"] = json!("mirket");
+    info["version"] = json!(env!("CARGO_PKG_VERSION"));
+    info["target"] = json!(env!("MIRKET_TARGET"));
+    info
+}
+
 pub fn status(paths: &Paths, catalog: &Catalog) -> Value {
     let loaded = capture();
     let installed = util::read_bounded(&paths.binary(), 256 * 1024 * 1024)
