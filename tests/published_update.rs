@@ -289,7 +289,17 @@ fn published_update_restores_setup_and_installs_verified_release() -> Result<()>
     );
     let info = successful_json(&managed, &home, &["info", "--json"], local_timeout)?;
     ensure!(
-        info == json!({"name":"mirket","version":manifest.version,"target":target}),
+        info["name"] == "mirket"
+            && info["version"] == manifest.version
+            && info["target"] == target
+            && info["process"]["version"] == manifest.version
+            && info["process"]["target"] == target
+            && info["process"]["source_sha256"]
+                .as_str()
+                .is_some_and(|hash| hash.len() == 64 && hash.bytes().all(|b| b.is_ascii_hexdigit()))
+            && info["process"]["executable_sha256"] == expected_digest
+            && info["installed_binary"]["sha256"] == expected_digest
+            && info["installed_binary"]["matches_process"] == true,
         "published runtime reported an unexpected identity: {info}"
     );
     let version = invoke(&managed, &home, &["--version"], local_timeout)?;
