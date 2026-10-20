@@ -184,17 +184,22 @@ mod unix {
             "#!/bin/sh\n",
             "set -eu\n",
             "while IFS= read -r line; do\n",
-            "    method=$(printf '%s\\n' \"$line\" | /usr/bin/sed -n '",
-            "s/.*\"method\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p')\n",
-            "    id=$(printf '%s\\n' \"$line\" | /usr/bin/sed -n '",
-            "s/.*\"id\"[[:space:]]*:[[:space:]]*\\([0-9][0-9]*\\).*/\\1/p')\n",
-            "    if [ \"$method\" = initialize ]; then\n",
+            // This fixture consumes the pinned client's compact JSON and
+            // numeric request IDs. Shell builtins keep helper process startup
+            // out of the short deadline intended to exercise tools/list.
+            "    case \"$line\" in\n",
+            "    *'\"method\":\"initialize\"'*)\n",
+            "        id=${line#*'\"id\":'}\n",
+            "        id=${id%%[!0-9]*}\n",
+            "        [ -n \"$id\" ]\n",
             "        printf '{\"jsonrpc\":\"2.0\",\"id\":%s,\"result\":{\"protocolVersion\":\"2025-11-25\",\"capabilities\":{\"tools\":{}},\"serverInfo\":{\"name\":\"fixture\",\"version\":\"1\"}}}\\n' \"$id\"\n",
-            "    elif [ \"$method\" = tools/list ]; then\n",
+            "        ;;\n",
+            "    *'\"method\":\"tools/list\"'*)\n",
             "        : > \"$MARKER\"\n",
             "        while IFS= read -r ignored; do :; done\n",
             "        exit 0\n",
-            "    fi\n",
+            "        ;;\n",
+            "    esac\n",
             "done\n",
         );
         fs::write(&command, script).unwrap();
