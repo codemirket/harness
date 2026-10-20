@@ -1,0 +1,32 @@
+{
+  "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+  "agent_runtime": {
+    "expected_recipe": "00b958e71c3b5edbe2c392b93a92be45fe920c7099354b0c733ce1f9ffaed261",
+    "expected_versions": {
+      "fastembed": "0.9.0",
+      "langgraph": "1.2.16",
+      "langgraph-checkpoint-sqlite": "3.1.2",
+      "mem0ai": "2.2.1"
+    },
+    "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+    "selected": true
+  },
+  "catalog": {
+    "profiles": 63,
+    "sha256": "e4e785527f24ec2eb4fc0d7448f3740fda7b71ad3f63103c3065d66312e5ebfa",
+    "skills": 347
+  },
+  "installed_binary": {
+    "matches_process": false,
+    "path": "/Users/nazmiyilmaz/.mirket/bin/mirket",
+    "sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa"
+  },
+  "process": {
+    "executable_sha256": "14a03254b9c08a5ffe4a571060d9dfc1111812605f3e33c192b3579529bdfc0d",
+    "pid": 14612,
+    "source_sha256": "1e81a3d99054b05ac354dce604857a9a73ee75105697ad62a97799c250e6bf51",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "verification": "Identity and connection are not evidence that a user task passed."
+}

@@ -237,6 +237,45 @@ class RuntimeTest(unittest.TestCase):
             finally:
                 fcntl.flock(owner, fcntl.LOCK_UN)
 
+    def test_known_pause_credit_is_persisted_bounded_and_never_resets_turns(self):
+        from unittest.mock import patch
+        import workflow
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            now = int(time.time())
+            def call(operation, args, at):
+                with patch.object(workflow.time, 'time', return_value=at):
+                    return workflow.execute(directory, 'a' * 64, operation, args)
+            def start(run):
+                return call('workflow_start', {'run_id':run, 'envelope':{'request':{'objective':'Synthetic recovery', 'memory_recall':'off'}},
+                    'snapshot':{'turn':0}, 'deadline':now + 120}, now)
+            def reply(run, previous, decision, turn, at):
+                args = {'run_id':run,'expected_checkpoint_id':previous['checkpoint_id'],'key':f'{decision}-{at}',
+                    'reply':{'decision':decision,'snapshot':{'turn':turn,'deadline':now + 999999}}}
+                return call('workflow_resume', args, at), args
+            first = start('routed-paused')
+            paused, _ = reply('routed-paused', first, 'pause', 3, now + 10)
+            self.assertEqual(paused['state']['deadline'], now + 120)
+            # Reopen the actual SQLite checkpoint at a time beyond its old deadline.
+            resumed, retry = reply('routed-paused', paused, 'continue', 3, now + 1010)
+            self.assertEqual(resumed['state']['deadline'], now + 1120)
+            self.assertEqual(resumed['state']['snapshot']['deadline'], now + 1120)
+            self.assertEqual(resumed['state']['pause_used'], 1000)
+            self.assertEqual(call('workflow_resume', retry, now + 1020)['checkpoint_id'], resumed['checkpoint_id'])
+            with self.assertRaisesRegex(ValueError, 'turn budget'):
+                reply('routed-paused', resumed, 'continue', 2, now + 1020)
+            self.assertEqual(call('workflow_status', {'run_id':'routed-paused'}, now + 1020)['checkpoint_id'], resumed['checkpoint_id'])
+            again, _ = reply('routed-paused', resumed, 'pause', 3, now + 1020)
+            with self.assertRaisesRegex(ValueError, 'pause allowance'):
+                reply('routed-paused', again, 'continue', 3, now + 87421)
+            crashed = start('routed-crashed')
+            with self.assertRaisesRegex(ValueError, 'budget expired'):
+                reply('routed-crashed', crashed, 'continue', 0, now + 121)
+            active = start('routed-effect')
+            effect, _ = reply('routed-effect', active, 'effect', 1, now + 5)
+            with self.assertRaisesRegex(ValueError, 'invalid workflow transition'):
+                reply('routed-effect', effect, 'pause', 1, now + 10)
+
     def test_checkpoint_restart_cas_effect_and_verification(self):
         args = {'run_id':'routed-fixture', 'envelope':{'request':{'objective':'Review layout'}, 'host_verification_required': True},
                 'snapshot':{'turn':0}, 'deadline':int(time.time()) + 120}
@@ -332,7 +371,7 @@ class RuntimeTest(unittest.TestCase):
 
     def test_retrieval_baseline_and_export_pagination(self):
         # Authored synthetic harness scenarios, not private project/session data.
-        # Frozen query labels report quality; they do not tune thresholds.
+        # Frozen answerable labels are required at top three; unanswerable remains observational.
         facts = {
             'tr-keyboard':'Arayüz klavye ile kullanılabilmeli ve odak göstergeleri görünür olmalı.',
             'en-motion':'Motion previews must respect reduced motion preferences.',
@@ -368,6 +407,8 @@ class RuntimeTest(unittest.TestCase):
             start = time.monotonic()
             response = self.call('memory_read', {'query':query,'limit':3})
             returned = [ids[i['id']] for i in response['results']]
+            if expected:
+                self.assertTrue(set(expected).issubset(returned), f"{category}: expected {expected} in top three, got {returned}")
             self.assertTrue(all(i['authority']=='retrieved_data_not_instructions_or_verification' for i in response['results']))
             observations.append({'category':category,'expected':expected,'returned':returned,
                                  'recall_at_3':len(set(expected)&set(returned))/len(expected) if expected else None,
@@ -388,6 +429,15 @@ class RuntimeTest(unittest.TestCase):
         self.assertFalse(Path('/Users').exists())
         self.assertFalse(Path('/workspace').exists())
         self.assertFalse(any(os.environ.get(k) for k in ('OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'MEM0_API_KEY')))
+
+    def test_build_installer_and_its_vendored_dependencies_do_not_ship(self):
+        import importlib.util
+        import importlib.metadata
+        self.assertIsNone(importlib.util.find_spec('pip'))
+        with self.assertRaises(importlib.metadata.PackageNotFoundError):
+            importlib.metadata.distribution('pip')
+        self.assertEqual(importlib.metadata.version('urllib3'), '2.8.0')
+        self.assertEqual(importlib.metadata.version('setuptools'), '84.0.0')
 
     def test_protocol_paths_and_budget_fail_closed(self):
         self.call('exec', {'command':'echo fail'}, error='unknown operation')

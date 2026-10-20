@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "authored_markdown_files": 236,
+  "missing_snapshot_link_targets": [],
+  "limits": "Static link and selection review; actual Rust snapshot regression and native Linux gate still required."
+}

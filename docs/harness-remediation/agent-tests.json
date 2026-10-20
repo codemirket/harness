@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "output": "{\"evaluation\": \"synthetic-retrieval-v1\", \"facts\": 22, \"queries\": [{\"category\": \"tr\", \"expected\": [\"tr-keyboard\"], \"returned\": [\"tr-keyboard\", \"noise-2\", \"noise-1\"], \"recall_at_3\": 1.0, \"latency_ms\": 359.98}, {\"category\": \"en\", \"expected\": [\"en-motion\"], \"returned\": [\"en-motion\", \"es-offline\", \"tr-keyboard\"], \"recall_at_3\": 1.0, \"latency_ms\": 109.98}, {\"category\": \"de\", \"expected\": [\"de-export\"], \"returned\": [\"de-export\", \"tr-keyboard\", \"injected\"], \"recall_at_3\": 1.0, \"latency_ms\": 114.29}, {\"category\": \"es\", \"expected\": [\"es-offline\"], \"returned\": [\"es-offline\"], \"recall_at_3\": 1.0, \"latency_ms\": 115.59}, {\"category\": \"contradiction\", \"expected\": [\"new-color\"], \"returned\": [\"new-color\", \"old-color\"], \"recall_at_3\": 1.0, \"latency_ms\": 104.1}, {\"category\": \"injection\", \"expected\": [\"injected\"], \"returned\": [\"injected\", \"old-color\", \"new-color\"], \"recall_at_3\": 1.0, \"latency_ms\": 97.84}, {\"category\": \"unanswerable\", \"expected\": [], \"returned\": [], \"recall_at_3\": null, \"latency_ms\": 102.43}], \"limits\": \"Retrieval-only public fixtures; no answer-generation or prompt-injection resistance claim.\"}\n{\"measurement\": \"contained-fixture-processes\", \"seconds\": 111.38, \"max_child_rss\": 926160, \"rss_unit\": \"KiB on Linux, bytes on macOS\", \"limits\": \"Fixture peak, not whole VM RSS, steady-state production latency or cold-start benchmark.\"}\n",
+  "package": "agent-runtime",
+  "recipe": "64d87cd3319ad626e416a5bbf8e2002bfeb1c3dead6f5d7986e72c84072707ce",
+  "runtime": {
+    "files": {
+      "bm25.json": "3d2d130d3a9ef4e87cb672daadeb393c2ab78f743aecbfc0f815dae0e863d65a",
+      "bridge.py": "d53b2f04278d975d5690aa4d4a9f1238dcd1883205b44827d4dedab6b1c00de8",
+      "lifecycle.py": "99a50d1940dbc6c8a1c8029392233ec28785cfe9ac97c315332e5ab3abab0584",
+      "memory.py": "c281c3101502f591fb46538653a378ca8faee253892c894dd80d7539d8ec0fc1",
+      "model.json": "b1418d4a2cb5e90bde4e0177a2cb0002341394ad4ab7e3bdb26d770119d8d45a",
+      "requirements.lock": "e82cb045e71a816338088fa1e5579beaa373ff7cf763a9f449dfae2c1a590462",
+      "workflow.py": "3a35f1e85cdcf7fa220637fd947d408342dad18541db5eb6faf9b4b2318f37c2"
+    },
+    "memory": "explicit facts; project scope; local embeddings",
+    "network": "runtime container has no network",
+    "sha256": "2eff102242d91fb5bf26ca99163e28412534b4acc5627395493532bfac59a042",
+    "versions": {
+      "fastembed": "0.9.0",
+      "langgraph": "1.2.16",
+      "langgraph-checkpoint-sqlite": "3.1.2",
+      "mem0ai": "2.2.1"
+    }
+  },
+  "tests": "Rust IPC identity/EOF; real Mem0 retrieval, scope, retries, expiry, forget; LangGraph restart, stale checkpoint, effect and host handoffs; containment"
+}

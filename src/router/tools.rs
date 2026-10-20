@@ -271,16 +271,16 @@ pub async fn definitions(paths: &Paths, names: &[String]) -> Result<Vec<Definiti
             "workspace_read",
             Tier::T1Deterministic,
             false,
-            "Read UTF-8 source in the assigned project or fixed design workspace (at most 128 KiB).",
-            json!({"path":{"type":"string"}}),
+            "Read UTF-8 source up to 16 MiB in pages of at most 128 KiB. Continue at next_offset with expected_sha256. Partial pages never verify a whole artifact.",
+            json!({"path":{"type":"string"},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":4,"maximum":131072},"expected_sha256":{"type":"string"}}),
             json!(["path"]),
         ),
         definition(
             "workspace_list",
             Tier::T1Deterministic,
             false,
-            "List one project directory, excluding .git, with at most 1000 entries.",
-            json!({"path":{"type":"string"}}),
+            "List one project directory excluding .git in pages of at most 1000 entries. Continue at next_offset with expected_sha256; changed listings reject continuation.",
+            json!({"path":{"type":"string"},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1},"expected_sha256":{"type":"string"}}),
             json!(["path"]),
         ),
         definition(
@@ -353,8 +353,12 @@ pub fn file(project: &Path, relative: &str) -> Result<PathBuf> {
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
-struct FileArgs {
+struct PageArgs {
     path: String,
+    #[serde(default)]
+    offset: usize,
+    limit: Option<usize>,
+    expected_sha256: Option<String>,
 }
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, Eq, PartialEq)]
 #[serde(rename_all = "snake_case")]
@@ -593,33 +597,87 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
     let mut opaque_mutation = false;
     let value = match name {
         "workspace_read" => {
-            let a: FileArgs = serde_json::from_value(args)?;
+            let a: PageArgs = serde_json::from_value(args)?;
             let path = readable_file(paths, project, &a.path)?;
-            let bytes = util::read_bounded(&path, 128 * 1024)?;
-            verifies.push(ArtifactRef {
-                path,
-                sha256: util::sha256(&bytes),
-            });
-            json!({"path":a.path,"content":String::from_utf8(bytes.clone()).context("file is not UTF-8")?,"sha256":util::sha256(&bytes)})
+            let bytes = util::read_bounded(&path, 16 * 1024 * 1024)?;
+            let sha = util::sha256(&bytes);
+            let text = String::from_utf8(bytes).context("file is not UTF-8")?;
+            let limit = a.limit.unwrap_or(128 * 1024);
+            ensure!(
+                (4..=128 * 1024).contains(&limit),
+                "read limit must be 4..131072 bytes"
+            );
+            ensure!(
+                a.offset <= text.len() && text.is_char_boundary(a.offset),
+                "offset must be a UTF-8 boundary within the file"
+            );
+            ensure!(
+                a.offset == 0 || a.expected_sha256.is_some(),
+                "continuation requires expected_sha256"
+            );
+            ensure!(
+                a.expected_sha256
+                    .as_ref()
+                    .is_none_or(|expected| expected == &sha),
+                "file changed since previous page"
+            );
+            let mut end = a.offset.saturating_add(limit).min(text.len());
+            while !text.is_char_boundary(end) {
+                end -= 1;
+            }
+            let complete = a.offset == 0 && end == text.len();
+            if complete {
+                verifies.push(ArtifactRef {
+                    path: path.clone(),
+                    sha256: sha.clone(),
+                });
+            }
+            json!({"path":a.path,"content":&text[a.offset..end],"sha256":sha,"offset":a.offset,"total_bytes":text.len(),"next_offset":(end < text.len()).then_some(end),"complete":complete,"read_receipt":{"path":path,"sha256":sha,"offset":a.offset,"end":end,"total":text.len()}})
         }
         "workspace_list" => {
-            let a: FileArgs = serde_json::from_value(args)?;
+            let a: PageArgs = serde_json::from_value(args)?;
             let dir = if a.path == "." {
                 project.to_owned()
             } else {
                 file(project, &a.path)?
             };
+            let limit = a.limit.unwrap_or(1000);
+            ensure!(
+                (1..=1000).contains(&limit),
+                "list limit must be 1..1000 entries"
+            );
             let mut entries = Vec::new();
             for entry in std::fs::read_dir(dir)? {
                 let entry = entry?;
                 if repository_internal(Path::new(&entry.file_name())) {
                     continue;
                 }
-                ensure!(entries.len() < 1000, "directory exceeds 1000 entries");
-                entries.push(entry.file_name().to_string_lossy().into_owned());
+                ensure!(
+                    entries.len() < 100_000,
+                    "directory exceeds bounded 100000-entry scan"
+                );
+                entries.push(
+                    entry
+                        .file_name()
+                        .into_string()
+                        .map_err(|_| anyhow::anyhow!("directory entry is not UTF-8"))?,
+                );
             }
             entries.sort();
-            json!({"entries":entries})
+            let sha = util::sha256(&serde_json::to_vec(&entries)?);
+            ensure!(a.offset <= entries.len(), "offset exceeds listing");
+            ensure!(
+                a.offset == 0 || a.expected_sha256.is_some(),
+                "continuation requires expected_sha256"
+            );
+            ensure!(
+                a.expected_sha256
+                    .as_ref()
+                    .is_none_or(|expected| expected == &sha),
+                "directory listing changed since previous page"
+            );
+            let end = a.offset.saturating_add(limit).min(entries.len());
+            json!({"entries":&entries[a.offset..end],"sha256":sha,"offset":a.offset,"total_entries":entries.len(),"next_offset":(end < entries.len()).then_some(end)})
         }
         "workspace_write" => {
             let a: WriteArgs = serde_json::from_value(args)?;
@@ -853,6 +911,111 @@ mod tests {
             "design/vector_render",
             &CallToolResult::structured_error(json!({"message":"operation did not start"}))
         ));
+    }
+    #[tokio::test]
+    async fn paged_reads_preserve_utf8_reject_drift_and_never_verify_fragments() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().into()).unwrap();
+        let project = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let original = "α".repeat(100_000);
+        std::fs::write(project.path().join("large"), &original).unwrap();
+        let first = invoke(
+            &paths,
+            project.path(),
+            "workspace_read",
+            json!({"path":"large","limit":131071}),
+        )
+        .await
+        .unwrap();
+        assert!(first.verifies.is_empty());
+        let next = first.value["next_offset"].as_u64().unwrap();
+        assert_eq!(next, 131070);
+        let second = invoke(
+            &paths,
+            project.path(),
+            "workspace_read",
+            json!({"path":"large","offset":next,"expected_sha256":first.value["sha256"]}),
+        )
+        .await
+        .unwrap();
+        assert!(second.verifies.is_empty());
+        assert!(second.value["next_offset"].is_null());
+        assert_eq!(
+            format!(
+                "{}{}",
+                first.value["content"].as_str().unwrap(),
+                second.value["content"].as_str().unwrap()
+            ),
+            original
+        );
+        assert!(
+            invoke(
+                &paths,
+                project.path(),
+                "workspace_read",
+                json!({"path":"large","offset":next})
+            )
+            .await
+            .is_err()
+        );
+        std::fs::write(project.path().join("large"), "changed").unwrap();
+        assert!(
+            invoke(
+                &paths,
+                project.path(),
+                "workspace_read",
+                json!({"path":"large","expected_sha256":first.value["sha256"]})
+            )
+            .await
+            .is_err()
+        );
+        let complete = invoke(
+            &paths,
+            project.path(),
+            "workspace_read",
+            json!({"path":"large"}),
+        )
+        .await
+        .unwrap();
+        assert_eq!(complete.verifies.len(), 1);
+    }
+    #[tokio::test]
+    async fn directory_pagination_is_stable_and_detects_added_entries() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().into()).unwrap();
+        let project = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        for index in 0..1001 {
+            std::fs::write(project.path().join(format!("file-{index:04}")), "").unwrap();
+        }
+        let first = invoke(
+            &paths,
+            project.path(),
+            "workspace_list",
+            json!({"path":"."}),
+        )
+        .await
+        .unwrap();
+        assert_eq!(first.value["entries"].as_array().unwrap().len(), 1000);
+        let second = invoke(
+            &paths,
+            project.path(),
+            "workspace_list",
+            json!({"path":".","offset":1000,"expected_sha256":first.value["sha256"]}),
+        )
+        .await
+        .unwrap();
+        assert_eq!(second.value["entries"], json!(["file-1000"]));
+        std::fs::write(project.path().join("added"), "").unwrap();
+        assert!(
+            invoke(
+                &paths,
+                project.path(),
+                "workspace_list",
+                json!({"path":".","offset":1000,"expected_sha256":first.value["sha256"]})
+            )
+            .await
+            .is_err()
+        );
     }
     #[tokio::test]
     async fn exact_edits_are_digest_bound_and_transactional() {

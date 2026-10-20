@@ -20,7 +20,7 @@ pub use design_references::DesignContext;
 mod teams;
 pub use teams::{FacetSelection, ProfessionalProfile, TeamFacet};
 mod workflows;
-pub use workflows::Workflow;
+pub use workflows::{ExecutionOwner, Workflow};
 
 static SKILLS: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/skills");
 const CATALOG: &str = include_str!("../registry/catalog.json");

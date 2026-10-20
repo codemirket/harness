@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "status": "implemented_with_open_security_billing_and_windows_gates",
+  "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
+  "candidate": {
+    "executable_sha256": "9e4d961b208fc1443678f8d481957b73265390b4cb82398b387fadf49fd8aaac",
+    "pid": 12196,
+    "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "deployed": false,
+  "published": false,
+  "platforms": {
+    "macos": {
+      "rust": {
+        "passed": 416,
+        "failed": 0,
+        "ignored": 7
+      },
+      "packaged_journeys": true
+    },
+    "linux_arm64": {
+      "rust": {
+        "passed": 415,
+        "failed": 0,
+        "ignored": 7
+      },
+      "native_gate": true
+    },
+    "windows": {
+      "status": "not_run_on_current_source",
+      "requires": "Approved commit/push to a review branch and hosted Windows runner"
+    }
+  },
+  "component_checks": {
+    "design_runtime": {
+      "passed": 82,
+      "failed": 0,
+      "image": "sha256:6672f289fd1605fd1decaf76bbbae58eb3ade47eaa5238437c280876a1de717d"
+    },
+    "agent_runtime": {
+      "ok": true,
+      "recipe": "1319d11dcbfce9da21feae40e29df0e7660f1d5cf33a78ad4ecf3433bf080b70"
+    },
+    "backend": {
+      "cleanup_errors": [],
+      "error": null,
+      "images": {
+        "penpot-backend": "sha256:023d40a54df39f66b638ea13c64a3fa19cfc4b0b8ac8c084aa7326895b847040",
+        "penpot-postgres": "sha256:411fa9a1a50de5c5be7b6b0296e08f486e2488da8a3fff401586c0a63f1e823b",
+        "penpot-valkey": "sha256:021d108fa0212239dd407b83429cc07fb89cd32bde5bc30476a2e2ac468c33d8"
+      },
+      "ok": true,
+      "result": {
+        "native_runtime": "openjdk version \"26.0.2\" 2026-07-21\nOpenJDK Runtime Environment Zulu26.32+13-CA (build 26.0.2+10)\nOpenJDK 64-Bit Server VM Zulu26.32+13-CA (build 26.0.2+10, mixed mode)\nVersion: ImageMagick 7.1.2-27 Q16-HDRI aarch64 e4c2b403b:20260705 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/license/\nFeatures: Cipher DPC HDRI OpenMP(4.5) \nDelegates (built-in): bzlib fontconfig freetype heic jbig jng jpeg lcms lzma openexr pangocairo png tiff webp x xml zip zlib zstd\nCompiler: gcc (14.2)\n228\n",
+        "profile": {
+          "fullname": "Anonymous User",
+          "id": "00000000-0000-0000-0000-000000000000"
+        },
+        "public_tables": "60",
+        "restart_profile": {
+          "fullname": "Anonymous User",
+          "id": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "scope": "Fresh isolated database, internal network, tmpfs data; no host ports or saved volumes. Not a production data migration test.",
+      "source_sha256": "e72298e4d60cccbbaa9bdcf0537b84eb37ec0f3422a267c25ae606155e62e44e"
+    },
+    "python_dependency_regressions": 12,
+    "python_platform_feedback_regressions": 5
+  },
+  "images": {
+    "gate": "failed_unresolved_advisories",
+    "final_runtime_inventory_complete": true,
+    "source_payload_os_inventory_complete": false,
+    "high_critical_occurrences_removed_in_three_previously_scanned_owned_images": 261
+  },
+  "original_checkout_rehash": {
+    "status": "timed_out",
+    "seconds": 60,
+    "limit": "Final platform claims bind the frozen candidate; recheck original checkout before publication."
+  },
+  "billing": {
+    "provider_invoice_available": false,
+    "native_probe_observed": true,
+    "estimate_usd": 0.0472228
+  },
+  "public_evidence": {
+    "docs/harness-image-remediation-2026-10.md": {
+      "sha256": "6526df3d0a0206bb184de626fdd55a3b8f36786b6b051ea45bfc12a4e21bddbc",
+      "bytes": 10893
+    },
+    "docs/harness-image-remediation/backend-runtime.json": {
+      "sha256": "d55bb8429f65e23140f49e6a3c211f0a60edba6b4597eeedab179265a9ca576d",
+      "bytes": 1444
+    },
+    "docs/harness-image-remediation/dependency-audit.json": {
+      "sha256": "01f1a6cae75c7f272ff96286de3b0a5c9c41687640443c48a88466b0408ebcf7",
+      "bytes": 955
+    },
+    "docs/harness-image-remediation/images.json": {
+      "sha256": "3c9e91fb1f2915e31487a7ba7568d94438eb371fa0febfdaa049d2f9edd7ca15",
+      "bytes": 8572
+    },
+    "docs/harness-image-remediation/linux.json": {
+      "sha256": "51e9575022fcea6c9c0136c932192a8332bea0a1014cb37c89bcac8c15243df9",
+      "bytes": 2055
+    },
+    "docs/harness-image-remediation/macos.json": {
+      "sha256": "438fb59ea546219e121680ba32b8fa5cc89bde54c45d8e82f979d35c5b3df279",
+      "bytes": 7744
+    },
+    "docs/harness-image-remediation/native-accounting.json": {
+      "sha256": "23ac4d2a999b9105c9c0aaf32f402a685fa8ecee2e8cd44b5701e955bfabc033",
+      "bytes": 1774
+    }
+  },
+  "private_evidence_root": ".mirket/implementation/harness-image-remediation-2026-10-20",
+  "source_contract": {
+    "passed": 2,
+    "failed": 0,
+    "ignored": 0
+  },
+  "limits": [
+    "No current Windows run, account-wide invoice, full remote-image remediation, existing-data migration or desktop activation is established.",
+    "Scanner matches are not exploitability findings; no thresholds or image exceptions were relaxed.",
+    "Component checks retain their own tested executable/source identities; immutable image IDs and recipes bind unchanged runtime components."
+  ],
+  "implementation_files": {
+    ".github/workflows/check.yml": "014ddba3e48a597fb8ed39e5c3e36c0753bae18e698057df3a6b61b7abe8f5cc",
+    "registry/design-stack.json": "52ffa9b11ead51bcfc02c702b41b04fdc068801c4f3b16f9dc74ce4cc720356e",
+    "src/cli.rs": "b64bef237b865acff7e635233b1e67ad6c52b2dab3ded3d2e6f50dabc0dceb63",
+    "src/router/accounting.rs": "8ede7f64d4067549927baed12368cd20d7948d809b4e9828b187393f312e4d81",
+    "src/router/execution.rs": "9ee89e9b53a264175019e305a491a8b6dcf06d8096deac02adfadf0d070364ef",
+    "src/router/mod.rs": "198bc551fb7f3a11b499634054e00951bfb1a7652c883855370d41b87d0ad4bf",
+    "src/packages/audit.rs": "202863d35898a0193d77d446af929edcb8db12d11cd34fd4ac691af6f0833940",
+    "src/packages/services.rs": "1e059cfc77c44c11a9a1b7c2d8e290c671f7922060ac7dbea9eb5ffc7ee2b417",
+    "src/packages/services/backend_check.rs": "883b8ff2877e41eda152f8590907fb97749525ff28f48cedb5f4af7b409cb935",
+    "src/packages/mod.rs": "978f7e51828094f174276294bb6b74fe5770039ea3048aa288fcb16d7a5038b4",
+    "runtime/agent/Dockerfile": "c28dbdb0c415ee356da8c517e844729129afac32d2ecd0e9c3fcff5f7e743a1d",
+    "runtime/agent/test_runtime.py": "5ec0750f52b65bac9571329942fabc2091b5747f5c7d6791470b2c6da4f908bb",
+    "runtime/design/tools/Dockerfile": "47ecfdf9469a8e6d00714182c20e358afc85763eb1b276683a28d6eb2e461c19",
+    "runtime/design/tools/NOTICE.md": "f8b50492a06fcb9b1f091eddb3b31889d7f90e75c0f0137b98ce2d3e7e3b489d",
+    "runtime/design/tools/package.json": "a9060310ebabf59565396c06c35f18753d51ee59d7232f616fe9d445e3d10024",
+    "runtime/design/tools/package-lock.json": "01911c7ec0b8e4a11c7eb1eac40ebf782dc52f387529a1784d4a95b1cdcbecf8",
+    "runtime/design/tools/test/live-browser.test.mjs": "a54229afc4b4e343092662e2cab9fdecc726eb2aff8270820182f823d8cfbd7b",
+    "runtime/design/penpot-mcp/Dockerfile": "a6af7265383b18599552c7edd96f2efdd2be039d4f7e1e9a587d06f34fe95c62",
+    "runtime/design/penpot-backend/Dockerfile": "a35816feafc2dacca03bd7e6914ce70e2f707e80de723faf9dc11015a7519724",
+    "runtime/design/penpot-backend/NOTICE.md": "c07b36c39328a4e6a32f4c7ffc8141d9d3c58e7b72053750a5e5011ed95338fb",
+    "evals/dependency-audit/image_audit.py": "34abfa962b6781e6979e340195b03537af31051c36ea0d6a725acdfd3f0d9536",
+    "evals/dependency-audit/image_contents.py": "f5ca5bc52f233e23814f0278d015978389afc347a75474318dc81f7aa3d89b0a",
+    "evals/dependency-audit/test_images.py": "2a987c2fbb68fef68eeea863350500f0e9201e867b831ccec2e9eecb665c9d9d",
+    "evals/dependency-audit/test_image_contents.py": "fc57460e677683ec62a32018e4b9c2e887676a36e55d2906f1800bd62fc085fa",
+    "evals/dependency-audit/README.md": "304def0c44ab8749effe4eb339a322b054223abdd24f5e7ab7e7abf097c135fb",
+    "docs/agent-runtime.md": "c25c030103e1ebdc4f115abf1ffd99b1ab359659b4be9e43a6c2a8f313286687"
+  },
+  "snapshot_scope": "Retained frozen source and test context; later evidence sealing is outside the compiled source fingerprint.",
+  "private_manifest_sha256": "e17414d1eaf7dd23bb78c04d6435659612363a4ba9f21bb166345796d54edb60"
+}

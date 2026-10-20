@@ -1,0 +1,174 @@
+{
+  "setup": {
+    "exit_code": 0,
+    "result": {
+      "version": "1.0.11",
+      "targets": [
+        "codex",
+        "claude"
+      ],
+      "files": 115,
+      "changed": 118,
+      "binary": "/private<disposable-home>/.mirket/bin/mirket",
+      "packages": []
+    }
+  },
+  "doctor": {
+    "exit_code": 0,
+    "result": {
+      "installation": {
+        "checks": [
+          {
+            "message": "Installed runtime: 1.0.11; executing runtime: 1.0.11.",
+            "name": "runtime version",
+            "status": "pass"
+          },
+          {
+            "message": "mirket 1.0.11 configured for codex, claude",
+            "name": "receipt",
+            "status": "pass"
+          },
+          {
+            "message": "All installed file digests and executable modes match.",
+            "name": "managed files",
+            "status": "pass"
+          },
+          {
+            "message": "Managed payload and MCP definitions match this runtime.",
+            "name": "configuration",
+            "status": "pass"
+          },
+          {
+            "message": "{\"checks\":[],\"ok\":true,\"verification\":\"Local installation identity and live service health are separate. Use package probe and saved output inspection for invocation evidence.\"}",
+            "name": "packages",
+            "status": "pass"
+          },
+          {
+            "message": "Executable found at <home>/.nvm/versions/node/v24.18.1/lib/node_modules/@openai/codex/bin/codex.js. Authentication and live skill/MCP activation require a client task.",
+            "name": "codex client",
+            "status": "pass"
+          },
+          {
+            "message": "Executable found at <home>/.local/share/claude/versions/2.1.289. Authentication and live skill/MCP activation require a client task.",
+            "name": "claude client",
+            "status": "pass"
+          },
+          {
+            "message": "Static checks establish installation readiness. Open a fresh client session and invoke a mirket tool to verify activation.",
+            "name": "activation",
+            "status": "warning"
+          }
+        ],
+        "installed": true,
+        "ok": true
+      },
+      "mcp": {
+        "ok": true,
+        "result": {
+          "arbitrary_resource_rejected": true,
+          "concurrent_requests": 4,
+          "iterations": 3,
+          "malformed_input_rejected": true,
+          "measurement": "One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee.",
+          "ok": true,
+          "request_median_ms": 0.33875,
+          "request_p95_ms": 0.464916,
+          "resource_read": true,
+          "runtime_identity": {
+            "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+            "agent_runtime": {
+              "expected_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+              "expected_versions": {
+                "fastembed": "0.9.0",
+                "langgraph": "1.2.16",
+                "langgraph-checkpoint-sqlite": "3.1.2",
+                "mem0ai": "2.2.1"
+              },
+              "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+              "selected": false
+            },
+            "catalog": {
+              "profiles": 63,
+              "sha256": "8b9badb9bee933c818d7ff15b7412d94924f52a74fd5b76099c8b0acba998b1f",
+              "skills": 347
+            },
+            "installed_binary": {
+              "matches_process": true,
+              "path": "/private<disposable-home>/.mirket/bin/mirket",
+              "sha256": "9ae1d5a9074f0f7c4cf5c1b132fda319dffb16242ac8dc9b9313f926247febcd"
+            },
+            "process": {
+              "executable_sha256": "9ae1d5a9074f0f7c4cf5c1b132fda319dffb16242ac8dc9b9313f926247febcd",
+              "pid": 96419,
+              "source_sha256": "e1529964ef1767db25890ccf313c637fcf2eb560800ee0e92e2ca92cca72a841",
+              "target": "aarch64-apple-darwin",
+              "version": "1.0.11"
+            },
+            "verification": "Identity and connection are not evidence that a user task passed."
+          },
+          "sdk": "rmcp 3.5.1",
+          "selected_metadata_read_route": true,
+          "sequential_requests_per_second": 2673.298824015847,
+          "skill_delivery": true,
+          "startup_ms": 478.117083,
+          "tools": [
+            "capability_plan",
+            "catalog_search",
+            "catalog_show",
+            "memory_forget",
+            "memory_put",
+            "memory_read",
+            "model_registry",
+            "project_list",
+            "resume_subagent",
+            "route_task",
+            "runtime_data",
+            "runtime_data_apply",
+            "runtime_status",
+            "skill_read",
+            "spawn_subagent",
+            "task_checkpoint",
+            "task_evidence",
+            "task_finish",
+            "task_history",
+            "task_start",
+            "task_status",
+            "task_validate",
+            "team_facets",
+            "team_plan",
+            "verification_handoff",
+            "workflow_forget",
+            "workflow_status"
+          ],
+          "transport": "stdio",
+          "upstream_body_rejected": true
+        }
+      },
+      "ok": true,
+      "packages": {
+        "checks": [],
+        "ok": true,
+        "verification": "Local installation identity and live service health are separate. Use package probe and saved output inspection for invocation evidence."
+      },
+      "project": null,
+      "tools": {
+        "checks": [],
+        "ok": true
+      }
+    }
+  },
+  "catalog": {
+    "exit_code": 0,
+    "result": {
+      "capabilities": 41,
+      "design_reference_instances": 27,
+      "embedded": 54,
+      "global_skills": 14,
+      "ok": true,
+      "profiles": 63,
+      "runtime_status": "not_checked",
+      "skills": 347,
+      "status": "valid"
+    }
+  }
+}

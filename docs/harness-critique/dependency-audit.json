@@ -1,0 +1,5233 @@
+{
+  "date": "2026-10-20",
+  "scope": "Public locked package coordinates only; no project contents or credentials transmitted. OS packages, container images and complete upstream Penpot closure excluded.",
+  "osv": {
+    "url": "https://api.osv.dev/v1/querybatch",
+    "packages": [
+      {
+        "ecosystem": "PyPI",
+        "name": "Jinja2",
+        "version": "3.1.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "MarkupSafe",
+        "version": "3.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "PyYAML",
+        "version": "6.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "Pygments",
+        "version": "2.21.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "SQLAlchemy",
+        "version": "2.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "aiosqlite",
+        "version": "0.22.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "annotated-doc",
+        "version": "0.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "annotated-types",
+        "version": "0.8.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "anyio",
+        "version": "4.15.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "backoff",
+        "version": "2.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "blis",
+        "version": "1.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "catalogue",
+        "version": "2.0.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "certifi",
+        "version": "2026.10.18",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "charset-normalizer",
+        "version": "3.5.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "click",
+        "version": "8.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "cloudpathlib",
+        "version": "0.26.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "confection",
+        "version": "1.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "cymem",
+        "version": "2.0.13",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "distro",
+        "version": "1.9.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "en_core_web_sm",
+        "version": "3.8.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "fastembed",
+        "version": "0.9.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "filelock",
+        "version": "4.2.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "flatbuffers",
+        "version": "25.12.19",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "fsspec",
+        "version": "2026.9.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "grpcio",
+        "version": "1.84.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "h11",
+        "version": "0.16.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "h2",
+        "version": "4.4.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "hf-xet",
+        "version": "1.7.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "hpack",
+        "version": "4.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "httpcore",
+        "version": "1.0.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "httpcore2",
+        "version": "2.14.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "httpx",
+        "version": "0.28.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "httpx2",
+        "version": "2.14.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "huggingface_hub",
+        "version": "1.33.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "hyperframe",
+        "version": "6.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "idna",
+        "version": "3.20",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "jiter",
+        "version": "0.17.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "jsonpatch",
+        "version": "1.36",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "jsonpointer",
+        "version": "3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langchain-core",
+        "version": "1.6.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langchain-protocol",
+        "version": "0.0.19",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langgraph",
+        "version": "1.2.16",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langgraph-checkpoint",
+        "version": "4.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langgraph-checkpoint-sqlite",
+        "version": "3.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langgraph-prebuilt",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langgraph-sdk",
+        "version": "0.4.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "langsmith",
+        "version": "0.14.11",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "loguru",
+        "version": "0.7.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "markdown-it-py",
+        "version": "4.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "mdurl",
+        "version": "0.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "mem0ai",
+        "version": "2.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "mmh3",
+        "version": "5.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "murmurhash",
+        "version": "1.0.15",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "numpy",
+        "version": "2.5.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "onnxruntime",
+        "version": "1.31.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "openai",
+        "version": "3.35.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "orjson",
+        "version": "3.13.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "ormsgpack",
+        "version": "1.13.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "packaging",
+        "version": "26.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "pillow",
+        "version": "12.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "portalocker",
+        "version": "3.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "posthog",
+        "version": "7.71.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "preshed",
+        "version": "3.0.13",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "protobuf",
+        "version": "6.33.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "py_rust_stemmers",
+        "version": "0.1.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "pydantic",
+        "version": "2.14.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "pydantic_core",
+        "version": "2.50.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "pytz",
+        "version": "2026.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "qdrant-client",
+        "version": "1.19.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "requests",
+        "version": "2.34.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "requests-toolbelt",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "rich",
+        "version": "15.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "setuptools",
+        "version": "84.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "shellingham",
+        "version": "1.5.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "smart_open",
+        "version": "8.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "sniffio",
+        "version": "1.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "spacy",
+        "version": "3.8.13",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "spacy-legacy",
+        "version": "3.0.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "spacy-loggers",
+        "version": "1.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "sqlite-vec",
+        "version": "0.1.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "srsly",
+        "version": "2.5.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "tenacity",
+        "version": "9.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "thinc",
+        "version": "8.3.13",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "tokenizers",
+        "version": "0.23.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "tqdm",
+        "version": "4.70.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "truststore",
+        "version": "0.10.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "typer",
+        "version": "0.27.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "typing-inspection",
+        "version": "0.4.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "typing_extensions",
+        "version": "4.16.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "urllib3",
+        "version": "2.8.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "uuid_utils",
+        "version": "0.18.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "wasabi",
+        "version": "1.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "weasel",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "websockets",
+        "version": "16.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "wrapt",
+        "version": "2.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "xxhash",
+        "version": "4.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "PyPI",
+        "name": "zstandard",
+        "version": "0.25.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "android_system_properties",
+        "version": "0.1.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anstream",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anstyle",
+        "version": "1.0.14",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anstyle-parse",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anstyle-query",
+        "version": "1.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anstyle-wincon",
+        "version": "3.0.11",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "anyhow",
+        "version": "1.0.104",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "arbitrary",
+        "version": "1.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "atomic-waker",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "autocfg",
+        "version": "1.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "base64",
+        "version": "0.22.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "base64",
+        "version": "0.23.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "bitflags",
+        "version": "2.13.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "block-buffer",
+        "version": "0.10.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "bumpalo",
+        "version": "3.20.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "bytes",
+        "version": "1.12.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "cc",
+        "version": "1.7.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "cfg-if",
+        "version": "1.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "cfg_aliases",
+        "version": "0.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "chacha20",
+        "version": "0.10.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "chrono",
+        "version": "0.4.45",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "clap",
+        "version": "4.6.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "clap_builder",
+        "version": "4.6.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "clap_derive",
+        "version": "4.6.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "clap_lex",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "colorchoice",
+        "version": "1.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "core-foundation-sys",
+        "version": "0.8.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "cpufeatures",
+        "version": "0.2.17",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "cpufeatures",
+        "version": "0.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "crc32fast",
+        "version": "1.5.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "crypto-common",
+        "version": "0.1.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "darling",
+        "version": "0.24.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "darling_core",
+        "version": "0.24.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "darling_macro",
+        "version": "0.24.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "derive_arbitrary",
+        "version": "1.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "digest",
+        "version": "0.10.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "displaydoc",
+        "version": "0.2.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "dyn-clone",
+        "version": "1.0.20",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "equivalent",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "errno",
+        "version": "0.3.14",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "fallible-iterator",
+        "version": "0.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "fallible-streaming-iterator",
+        "version": "0.1.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "fastrand",
+        "version": "2.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "filetime",
+        "version": "0.2.29",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "find-msvc-tools",
+        "version": "0.1.14",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "flate2",
+        "version": "1.1.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "foldhash",
+        "version": "0.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "form_urlencoded",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-channel",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-core",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-executor",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-io",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-macro",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-sink",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-task",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "futures-util",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "generic-array",
+        "version": "0.14.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "getrandom",
+        "version": "0.2.17",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "getrandom",
+        "version": "0.4.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hashbrown",
+        "version": "0.15.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hashlink",
+        "version": "0.10.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "heck",
+        "version": "0.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "http",
+        "version": "1.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "http-body",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "http-body-util",
+        "version": "0.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "httparse",
+        "version": "1.10.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hyper",
+        "version": "1.12.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hyper-rustls",
+        "version": "0.27.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "hyper-util",
+        "version": "0.1.21",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "iana-time-zone",
+        "version": "0.1.65",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "iana-time-zone-haiku",
+        "version": "0.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_collections",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_locale_core",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_normalizer",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_normalizer_data",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_properties",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_properties_data",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "icu_provider",
+        "version": "2.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ident_case",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "idna",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "idna_adapter",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "include_dir",
+        "version": "0.7.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "include_dir_macros",
+        "version": "0.7.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "indexmap",
+        "version": "2.14.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ipnet",
+        "version": "2.12.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "is_terminal_polyfill",
+        "version": "1.70.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "itoa",
+        "version": "1.0.18",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "js-sys",
+        "version": "0.3.106",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "libc",
+        "version": "0.2.190",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "libsqlite3-sys",
+        "version": "0.35.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "linux-raw-sys",
+        "version": "0.12.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "litemap",
+        "version": "0.8.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "log",
+        "version": "0.4.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "lru-slab",
+        "version": "0.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "memchr",
+        "version": "2.8.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "mio",
+        "version": "1.2.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "nix",
+        "version": "0.31.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "num-traits",
+        "version": "0.2.19",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "once_cell",
+        "version": "1.21.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "once_cell_polyfill",
+        "version": "1.70.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "pastey",
+        "version": "0.2.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "percent-encoding",
+        "version": "2.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "pin-project-lite",
+        "version": "0.2.17",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "pkg-config",
+        "version": "0.3.34",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "potential_utf",
+        "version": "0.1.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "proc-macro2",
+        "version": "1.0.107",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "process-wrap",
+        "version": "10.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "quinn",
+        "version": "0.11.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "quinn-proto",
+        "version": "0.11.19",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "quinn-udp",
+        "version": "0.5.16",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "quote",
+        "version": "1.0.47",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "r-efi",
+        "version": "6.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rand",
+        "version": "0.10.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rand_core",
+        "version": "0.10.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rand_pcg",
+        "version": "0.10.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ref-cast",
+        "version": "1.0.27",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ref-cast-impl",
+        "version": "1.0.27",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "reqwest",
+        "version": "0.12.28",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ring",
+        "version": "0.17.14",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rmcp",
+        "version": "3.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rmcp-macros",
+        "version": "3.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "roxmltree",
+        "version": "0.21.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rusqlite",
+        "version": "0.37.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustc-hash",
+        "version": "2.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustix",
+        "version": "1.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustls",
+        "version": "0.23.45",
+        "result": {
+          "vulns": [
+            {
+              "id": "RUSTSEC-2026-0346",
+              "modified": "2026-10-14T13:30:02.480694Z"
+            },
+            {
+              "id": "RUSTSEC-2026-0347",
+              "modified": "2026-10-14T13:30:02.472103Z"
+            },
+            {
+              "id": "RUSTSEC-2026-0348",
+              "modified": "2026-10-14T13:30:02.480925Z"
+            },
+            {
+              "id": "RUSTSEC-2026-0349",
+              "modified": "2026-10-14T13:30:02.475705Z"
+            }
+          ]
+        }
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustls-pki-types",
+        "version": "1.15.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustls-webpki",
+        "version": "0.103.15",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "rustversion",
+        "version": "1.0.23",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "ryu",
+        "version": "1.0.23",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "schemars",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "schemars_derive",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde",
+        "version": "1.0.229",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde_core",
+        "version": "1.0.229",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde_derive",
+        "version": "1.0.229",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde_derive_internals",
+        "version": "0.30.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde_json",
+        "version": "1.0.151",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "serde_urlencoded",
+        "version": "0.7.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "sha2",
+        "version": "0.10.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "shlex",
+        "version": "2.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "signal-hook-registry",
+        "version": "1.4.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "simd-adler32",
+        "version": "0.3.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "slab",
+        "version": "0.4.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "smallvec",
+        "version": "1.16.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "socket2",
+        "version": "0.6.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "stable_deref_trait",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "strsim",
+        "version": "0.11.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "subtle",
+        "version": "2.6.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "syn",
+        "version": "2.0.119",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "syn",
+        "version": "3.0.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "sync_wrapper",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "synstructure",
+        "version": "0.14.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tar",
+        "version": "0.4.46",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tempfile",
+        "version": "3.27.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "thiserror",
+        "version": "2.0.21",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "thiserror-impl",
+        "version": "2.0.21",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tinystr",
+        "version": "0.8.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tinyvec",
+        "version": "1.13.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tokio",
+        "version": "1.53.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tokio-macros",
+        "version": "2.7.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tokio-rustls",
+        "version": "0.26.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tokio-stream",
+        "version": "0.1.19",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tokio-util",
+        "version": "0.7.20",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "toml_datetime",
+        "version": "0.7.5+spec-1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "toml_edit",
+        "version": "0.23.10+spec-1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "toml_parser",
+        "version": "1.1.5+spec-1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "toml_writer",
+        "version": "1.1.3+spec-1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tower",
+        "version": "0.5.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tower-http",
+        "version": "0.6.11",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tower-layer",
+        "version": "0.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tower-service",
+        "version": "0.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tracing",
+        "version": "0.1.44",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tracing-attributes",
+        "version": "0.1.31",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "tracing-core",
+        "version": "0.1.36",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "try-lock",
+        "version": "0.2.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "typenum",
+        "version": "1.20.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "unicode-ident",
+        "version": "1.0.26",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "untrusted",
+        "version": "0.9.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "url",
+        "version": "2.5.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "utf8_iter",
+        "version": "1.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "utf8parse",
+        "version": "0.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "uuid",
+        "version": "1.26.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "vcpkg",
+        "version": "0.2.15",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "version_check",
+        "version": "0.9.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "want",
+        "version": "0.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasi",
+        "version": "0.11.1+wasi-snapshot-preview1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasm-bindgen",
+        "version": "0.2.129",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasm-bindgen-futures",
+        "version": "0.4.79",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasm-bindgen-macro",
+        "version": "0.2.129",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasm-bindgen-macro-support",
+        "version": "0.2.129",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "wasm-bindgen-shared",
+        "version": "0.2.129",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "web-sys",
+        "version": "0.3.106",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "web-time",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "webpki-roots",
+        "version": "1.0.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows",
+        "version": "0.62.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-collections",
+        "version": "0.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-core",
+        "version": "0.62.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-future",
+        "version": "0.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-implement",
+        "version": "0.60.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-interface",
+        "version": "0.59.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-link",
+        "version": "0.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-numerics",
+        "version": "0.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-result",
+        "version": "0.4.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-strings",
+        "version": "0.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-sys",
+        "version": "0.52.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-sys",
+        "version": "0.61.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-targets",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows-threading",
+        "version": "0.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_aarch64_gnullvm",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_aarch64_msvc",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_i686_gnu",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_i686_gnullvm",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_i686_msvc",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_x86_64_gnu",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_x86_64_gnullvm",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "windows_x86_64_msvc",
+        "version": "0.52.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "winnow",
+        "version": "0.7.15",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "winnow",
+        "version": "1.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "writeable",
+        "version": "0.6.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "yoke",
+        "version": "0.8.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "yoke-derive",
+        "version": "0.8.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zerofrom",
+        "version": "0.1.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zerofrom-derive",
+        "version": "0.1.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zeroize",
+        "version": "1.9.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zerotrie",
+        "version": "0.2.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zerovec",
+        "version": "0.11.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zerovec-derive",
+        "version": "0.11.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zip",
+        "version": "6.0.0",
+        "result": {
+          "vulns": [
+            {
+              "id": "RUSTSEC-2026-0367",
+              "modified": "2026-10-16T23:30:02.392172Z"
+            },
+            {
+              "id": "RUSTSEC-2026-0368",
+              "modified": "2026-10-16T23:30:02.383750Z"
+            },
+            {
+              "id": "RUSTSEC-2026-0369",
+              "modified": "2026-10-16T23:30:02.387698Z"
+            }
+          ]
+        }
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zlib-rs",
+        "version": "0.6.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zmij",
+        "version": "1.0.23",
+        "result": {}
+      },
+      {
+        "ecosystem": "crates.io",
+        "name": "zopfli",
+        "version": "0.8.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@bundled-es-modules/deepmerge",
+        "version": "4.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@bundled-es-modules/glob",
+        "version": "13.0.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@bundled-es-modules/memfs",
+        "version": "4.17.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@emnapi/runtime",
+        "version": "1.11.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/aix-ppc64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/android-arm",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/android-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/android-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/darwin-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/darwin-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/freebsd-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/freebsd-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-arm",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-ia32",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-loong64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-mips64el",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-ppc64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-riscv64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-s390x",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/linux-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/netbsd-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/netbsd-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/openbsd-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/openbsd-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/openharmony-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/sunos-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/win32-arm64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/win32-ia32",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@esbuild/win32-x64",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@hono/node-server",
+        "version": "2.1.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/colour",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-darwin-arm64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-darwin-x64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-freebsd-wasm32",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-darwin-arm64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-darwin-x64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-arm",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-arm64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-ppc64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-riscv64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-s390x",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linux-x64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linuxmusl-arm64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-libvips-linuxmusl-x64",
+        "version": "1.3.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-arm",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-arm64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-ppc64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-riscv64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-s390x",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linux-x64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linuxmusl-arm64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-linuxmusl-x64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-wasm32",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-webcontainers-wasm32",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-win32-arm64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-win32-ia32",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@img/sharp-win32-x64",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/base64",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/base64",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/buffers",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/buffers",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/codegen",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/codegen",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-core",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-fsa",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-node",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-node-builtins",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-node-to-fsa",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-node-utils",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-print",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/fs-snapshot",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/json-pack",
+        "version": "1.21.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/json-pack",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/json-pointer",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/json-pointer",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/util",
+        "version": "1.9.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@jsonjoy.com/util",
+        "version": "17.67.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@modelcontextprotocol/sdk",
+        "version": "1.32.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/darwin-arm64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/darwin-x64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/linux-arm64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/linux-riscv64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/linux-x64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/win32-arm64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@odiff/win32-x64",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@puppeteer/browsers",
+        "version": "3.2.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-android-arm-eabi",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-android-arm64",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-darwin-arm64",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-darwin-x64",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-linux-arm-gnueabihf",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-linux-arm64-gnu",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-linux-arm64-musl",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-linux-x64-gnu",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-linux-x64-musl",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-win32-arm64-msvc",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-win32-ia32-msvc",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@resvg/resvg-js-win32-x64-msvc",
+        "version": "2.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@shuding/opentype.js",
+        "version": "1.4.0-beta.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@swc/helpers",
+        "version": "0.5.23",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "@zip.js/zip.js",
+        "version": "2.24.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "accepts",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "adm-zip",
+        "version": "0.6.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ajv",
+        "version": "8.17.1",
+        "result": {
+          "vulns": [
+            {
+              "id": "GHSA-2g4f-4pwh-qvx6",
+              "modified": "2026-09-10T03:50:33.716487Z"
+            }
+          ]
+        }
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ajv-formats",
+        "version": "3.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ansi-regex",
+        "version": "6.4.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ansi-styles",
+        "version": "6.2.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "assert",
+        "version": "2.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "available-typed-arrays",
+        "version": "1.0.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "balanced-match",
+        "version": "4.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "base64-js",
+        "version": "0.0.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "base64-js",
+        "version": "1.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "body-parser",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "boolbase",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "brace-expansion",
+        "version": "5.0.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "brotli",
+        "version": "1.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "buffer",
+        "version": "6.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "bundle-name",
+        "version": "4.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "bytes",
+        "version": "3.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "call-bind",
+        "version": "1.0.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "call-bind-apply-helpers",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "call-bound",
+        "version": "1.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "camelize",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "chalk",
+        "version": "5.6.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "change-case",
+        "version": "5.4.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "chromium-bidi",
+        "version": "157.0.8090-0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "citty",
+        "version": "0.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "cliui",
+        "version": "9.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "clone",
+        "version": "2.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "color-name",
+        "version": "1.1.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "colorjs.io",
+        "version": "0.5.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "commander",
+        "version": "11.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "commander",
+        "version": "12.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "compare-versions",
+        "version": "6.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "component-emitter",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "content-disposition",
+        "version": "2.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "content-type",
+        "version": "1.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "content-type",
+        "version": "2.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "cookie",
+        "version": "0.7.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "cookie-signature",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "cors",
+        "version": "2.8.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "cross-spawn",
+        "version": "7.0.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-background-parser",
+        "version": "0.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-box-shadow",
+        "version": "1.0.0-3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-color-keywords",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-gradient-parser",
+        "version": "0.0.17",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-select",
+        "version": "6.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-to-react-native",
+        "version": "3.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-tree",
+        "version": "2.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-tree",
+        "version": "3.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "css-what",
+        "version": "7.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "csso",
+        "version": "5.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "debug",
+        "version": "4.4.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "deepmerge",
+        "version": "4.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "default-browser",
+        "version": "5.5.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "default-browser-id",
+        "version": "5.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "define-data-property",
+        "version": "1.1.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "define-lazy-prop",
+        "version": "3.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "define-properties",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "depd",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "detect-libc",
+        "version": "2.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "devtools-protocol",
+        "version": "0.0.1696802",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "dfa",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "dom-serializer",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "domelementtype",
+        "version": "2.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "domhandler",
+        "version": "5.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "domutils",
+        "version": "3.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "dunder-proto",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ee-first",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "emoji-regex",
+        "version": "10.6.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "emoji-regex-xs",
+        "version": "2.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "encodeurl",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "entities",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "es-define-property",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "es-errors",
+        "version": "1.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "es-object-atoms",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "esbuild",
+        "version": "0.25.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "escalade",
+        "version": "3.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "escape-html",
+        "version": "1.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "etag",
+        "version": "1.8.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "events",
+        "version": "3.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "eventsource",
+        "version": "3.0.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "eventsource-parser",
+        "version": "3.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "express",
+        "version": "5.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "express-rate-limit",
+        "version": "8.7.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "fast-deep-equal",
+        "version": "3.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "fast-uri",
+        "version": "3.1.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "fflate",
+        "version": "0.7.3",
+        "result": {
+          "vulns": [
+            {
+              "id": "GHSA-px8p-9vwx-vf98",
+              "modified": "2026-09-10T03:50:52.758792Z"
+            }
+          ]
+        }
+      },
+      {
+        "ecosystem": "npm",
+        "name": "finalhandler",
+        "version": "2.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "fontkit",
+        "version": "2.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "for-each",
+        "version": "0.3.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "forwarded",
+        "version": "0.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "fresh",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "function-bind",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "generator-function",
+        "version": "2.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "get-caller-file",
+        "version": "2.0.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "get-east-asian-width",
+        "version": "1.7.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "get-intrinsic",
+        "version": "1.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "get-proto",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "giget",
+        "version": "3.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "glob",
+        "version": "13.0.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "glob-to-regex.js",
+        "version": "1.3.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "gopd",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "harfbuzzjs",
+        "version": "0.10.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "has-property-descriptors",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "has-symbols",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "has-tostringtag",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "hasown",
+        "version": "2.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "hex-rgb",
+        "version": "4.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "hono",
+        "version": "4.13.13",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "http-errors",
+        "version": "2.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "hyperdyperid",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "hyperframes",
+        "version": "0.8.149",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "iconv-lite",
+        "version": "0.7.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ieee754",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ignore",
+        "version": "5.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "inherits",
+        "version": "2.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "inherits",
+        "version": "2.0.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ip-address",
+        "version": "10.7.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ipaddr.js",
+        "version": "1.9.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-arguments",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-callable",
+        "version": "1.2.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-docker",
+        "version": "3.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-generator-function",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-inside-container",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-nan",
+        "version": "1.3.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-plain-obj",
+        "version": "4.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-promise",
+        "version": "4.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-regex",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-typed-array",
+        "version": "1.1.15",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "is-wsl",
+        "version": "3.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "isexe",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "jose",
+        "version": "6.2.12",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "json-schema-traverse",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "json-schema-typed",
+        "version": "8.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "json5",
+        "version": "2.2.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "linebreak",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "lru-cache",
+        "version": "11.5.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "math-intrinsics",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "mdn-data",
+        "version": "2.0.28",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "mdn-data",
+        "version": "2.27.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "media-typer",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "memfs",
+        "version": "4.80.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "merge-descriptors",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "mime-db",
+        "version": "1.54.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "mime-types",
+        "version": "3.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "minimatch",
+        "version": "10.2.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "minipass",
+        "version": "7.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "mitt",
+        "version": "3.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "modern-tar",
+        "version": "0.8.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ms",
+        "version": "2.1.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "nanoid",
+        "version": "3.3.20",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "negotiator",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "nth-check",
+        "version": "2.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "object-assign",
+        "version": "4.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "object-inspect",
+        "version": "1.13.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "object-is",
+        "version": "1.1.6",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "object-keys",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "object.assign",
+        "version": "4.1.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "odiff-bin",
+        "version": "4.5.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "on-finished",
+        "version": "2.4.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "once",
+        "version": "1.4.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "open",
+        "version": "10.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "pako",
+        "version": "0.2.9",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "parse-css-color",
+        "version": "0.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "parseurl",
+        "version": "1.3.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "path",
+        "version": "0.12.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "path-key",
+        "version": "3.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "path-scurry",
+        "version": "2.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "path-to-regexp",
+        "version": "8.4.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "path-unified",
+        "version": "0.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "pend",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "picocolors",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "pkce-challenge",
+        "version": "5.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "playwright-core",
+        "version": "1.64.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "possible-typed-array-names",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "postcss",
+        "version": "8.5.30",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "postcss-value-parser",
+        "version": "4.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "prettier",
+        "version": "3.9.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "process",
+        "version": "0.11.10",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "proxy-addr",
+        "version": "2.0.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "punycode",
+        "version": "1.4.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "puppeteer-core",
+        "version": "25.14.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "qs",
+        "version": "6.16.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "range-parser",
+        "version": "1.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "raw-body",
+        "version": "3.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "require-from-string",
+        "version": "2.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "restructure",
+        "version": "3.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "router",
+        "version": "2.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "run-applescript",
+        "version": "7.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "safe-buffer",
+        "version": "5.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "safe-regex-test",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "safer-buffer",
+        "version": "2.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "satori",
+        "version": "0.62.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "sax",
+        "version": "1.6.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "saxes",
+        "version": "6.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "semver",
+        "version": "7.8.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "send",
+        "version": "1.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "serve-static",
+        "version": "2.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "set-function-length",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "setprototypeof",
+        "version": "1.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "sharp",
+        "version": "0.35.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "shebang-command",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "shebang-regex",
+        "version": "3.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "side-channel",
+        "version": "1.1.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "side-channel-list",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "side-channel-map",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "side-channel-weakmap",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "source-map-js",
+        "version": "1.2.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "statuses",
+        "version": "2.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "stream",
+        "version": "0.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "string-width",
+        "version": "7.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "string-width",
+        "version": "8.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "string.prototype.codepointat",
+        "version": "0.2.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "string_decoder",
+        "version": "1.3.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "strip-ansi",
+        "version": "7.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "style-dictionary",
+        "version": "5.7.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "svgo",
+        "version": "4.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "thingies",
+        "version": "2.6.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "tiny-inflate",
+        "version": "1.0.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "tinycolor2",
+        "version": "1.6.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "toidentifier",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "tree-dump",
+        "version": "1.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "tslib",
+        "version": "2.8.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "type-is",
+        "version": "2.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "typed-query-selector",
+        "version": "2.12.3",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "unicode-properties",
+        "version": "1.4.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "unicode-trie",
+        "version": "2.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "unpipe",
+        "version": "1.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "url",
+        "version": "0.11.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "util",
+        "version": "0.10.4",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "util",
+        "version": "0.12.5",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "vary",
+        "version": "1.1.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "webdriver-bidi-protocol",
+        "version": "1.0.1",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "which",
+        "version": "2.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "which-typed-array",
+        "version": "1.1.24",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "wrap-ansi",
+        "version": "9.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "wrappy",
+        "version": "1.0.2",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "ws",
+        "version": "8.22.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "wsl-utils",
+        "version": "0.1.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "xmlchars",
+        "version": "2.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "y18n",
+        "version": "5.0.8",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "yargs",
+        "version": "18.2.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "yargs-parser",
+        "version": "22.0.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "yauzl",
+        "version": "3.4.0",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "zod",
+        "version": "4.6.7",
+        "result": {}
+      },
+      {
+        "ecosystem": "npm",
+        "name": "zod-to-json-schema",
+        "version": "3.25.2",
+        "result": {}
+      }
+    ],
+    "errors": [],
+    "requested_unique_packages": 679
+  },
+  "latest_direct": [
+    {
+      "ecosystem": "crates.io",
+      "name": "anyhow",
+      "locked": [
+        "1.0.104"
+      ],
+      "url": "https://crates.io/api/v1/crates/anyhow",
+      "latest_stable": "1.0.104",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "clap",
+      "locked": [
+        "4.6.7"
+      ],
+      "url": "https://crates.io/api/v1/crates/clap",
+      "latest_stable": "4.6.7",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "include_dir",
+      "locked": [
+        "0.7.4"
+      ],
+      "url": "https://crates.io/api/v1/crates/include_dir",
+      "latest_stable": "0.7.4",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "flate2",
+      "locked": [
+        "1.1.10"
+      ],
+      "url": "https://crates.io/api/v1/crates/flate2",
+      "latest_stable": "1.1.10",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "reqwest",
+      "locked": [
+        "0.12.28"
+      ],
+      "url": "https://crates.io/api/v1/crates/reqwest",
+      "latest_stable": "0.13.5",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "rmcp",
+      "locked": [
+        "3.5.1"
+      ],
+      "url": "https://crates.io/api/v1/crates/rmcp",
+      "latest_stable": "3.6.0",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "rusqlite",
+      "locked": [
+        "0.37.0"
+      ],
+      "url": "https://crates.io/api/v1/crates/rusqlite",
+      "latest_stable": "0.40.2",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "serde",
+      "locked": [
+        "1.0.229"
+      ],
+      "url": "https://crates.io/api/v1/crates/serde",
+      "latest_stable": "1.0.229",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "serde_json",
+      "locked": [
+        "1.0.151"
+      ],
+      "url": "https://crates.io/api/v1/crates/serde_json",
+      "latest_stable": "1.0.154",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "sha2",
+      "locked": [
+        "0.10.9"
+      ],
+      "url": "https://crates.io/api/v1/crates/sha2",
+      "latest_stable": "0.11.1",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "tempfile",
+      "locked": [
+        "3.27.0"
+      ],
+      "url": "https://crates.io/api/v1/crates/tempfile",
+      "latest_stable": "3.27.0",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "tar",
+      "locked": [
+        "0.4.46"
+      ],
+      "url": "https://crates.io/api/v1/crates/tar",
+      "latest_stable": "0.4.46",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "tokio",
+      "locked": [
+        "1.53.2"
+      ],
+      "url": "https://crates.io/api/v1/crates/tokio",
+      "latest_stable": "1.54.0",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "toml_edit",
+      "locked": [
+        "0.23.10+spec-1.0.0"
+      ],
+      "url": "https://crates.io/api/v1/crates/toml_edit",
+      "latest_stable": "0.25.17+spec-1.1.0",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "locked": [
+        "6.0.0"
+      ],
+      "url": "https://crates.io/api/v1/crates/zip",
+      "latest_stable": "9.0.5",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@modelcontextprotocol/sdk",
+      "locked": [
+        "1.32.1"
+      ],
+      "url": "https://registry.npmjs.org/%40modelcontextprotocol%2Fsdk",
+      "latest_stable": "1.32.1",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@resvg/resvg-js",
+      "locked": [
+        "2.6.2"
+      ],
+      "url": "https://registry.npmjs.org/%40resvg%2Fresvg-js",
+      "latest_stable": "2.6.2",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ajv",
+      "locked": [
+        "8.17.1"
+      ],
+      "url": "https://registry.npmjs.org/ajv",
+      "latest_stable": "8.20.0",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "hyperframes",
+      "locked": [
+        "0.8.149"
+      ],
+      "url": "https://registry.npmjs.org/hyperframes",
+      "latest_stable": "0.8.181",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "odiff-bin",
+      "locked": [
+        "4.5.0"
+      ],
+      "url": "https://registry.npmjs.org/odiff-bin",
+      "latest_stable": "4.5.0",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "playwright-core",
+      "locked": [
+        "1.64.1"
+      ],
+      "url": "https://registry.npmjs.org/playwright-core",
+      "latest_stable": "1.64.1",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "satori",
+      "locked": [
+        "0.62.0"
+      ],
+      "url": "https://registry.npmjs.org/satori",
+      "latest_stable": "0.63.1",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "saxes",
+      "locked": [
+        "6.0.0"
+      ],
+      "url": "https://registry.npmjs.org/saxes",
+      "latest_stable": "6.0.0",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "style-dictionary",
+      "locked": [
+        "5.7.0"
+      ],
+      "url": "https://registry.npmjs.org/style-dictionary",
+      "latest_stable": "5.7.0",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "svgo",
+      "locked": [
+        "4.1.0"
+      ],
+      "url": "https://registry.npmjs.org/svgo",
+      "latest_stable": "4.1.0",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "sharp",
+      "locked": [
+        "0.35.5"
+      ],
+      "url": "https://registry.npmjs.org/sharp",
+      "latest_stable": "0.35.5",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "npm",
+      "name": "css-tree",
+      "locked": [
+        "3.2.1"
+      ],
+      "url": "https://registry.npmjs.org/css-tree",
+      "latest_stable": "3.2.1",
+      "deprecated_locked": {}
+    },
+    {
+      "ecosystem": "PyPI",
+      "name": "mem0ai",
+      "locked": [
+        "2.2.1"
+      ],
+      "url": "https://pypi.org/pypi/mem0ai/json",
+      "latest_stable": "2.2.1",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "PyPI",
+      "name": "langgraph",
+      "locked": [
+        "1.2.16"
+      ],
+      "url": "https://pypi.org/pypi/langgraph/json",
+      "latest_stable": "1.2.16",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "PyPI",
+      "name": "langgraph-checkpoint-sqlite",
+      "locked": [
+        "3.1.2"
+      ],
+      "url": "https://pypi.org/pypi/langgraph-checkpoint-sqlite/json",
+      "latest_stable": "3.1.2",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "PyPI",
+      "name": "fastembed",
+      "locked": [
+        "0.9.0"
+      ],
+      "url": "https://pypi.org/pypi/fastembed/json",
+      "latest_stable": "0.9.0",
+      "yanked_locked": []
+    },
+    {
+      "ecosystem": "PyPI",
+      "name": "spacy",
+      "locked": [
+        "3.8.13"
+      ],
+      "url": "https://pypi.org/pypi/spacy/json",
+      "latest_stable": "3.8.16",
+      "yanked_locked": []
+    }
+  ],
+  "advisory_details": [
+    {
+      "id": "GHSA-2g4f-4pwh-qvx6",
+      "summary": "ajv has ReDoS when using `$data` option",
+      "details": "ajv (Another JSON Schema Validator) through version 8.17.1 is vulnerable to Regular Expression Denial of Service (ReDoS) when the `$data` option is enabled. The pattern keyword accepts runtime data via JSON Pointer syntax (`$data` reference), which is passed directly to the JavaScript `RegExp()` constructor without validation. An attacker can inject a malicious regex pattern (e.g., `\\\"^(a|a)*$\\\"`) combined with crafted input to cause catastrophic backtracking. A 31-character payload causes approximately 44 seconds of CPU blocking, with each additional character doubling execution time. This enables complete denial of service with a single HTTP request against any API using ajv with `$data`: true for dynamic schema validation.",
+      "aliases": [
+        "CVE-2025-69873"
+      ],
+      "modified": "2026-09-10T03:50:33.716487588Z",
+      "published": "2026-02-11T21:30:39Z",
+      "database_specific": {
+        "nvd_published_at": "2026-02-11T19:15:50Z",
+        "cwe_ids": [
+          "CWE-1333",
+          "CWE-400"
+        ],
+        "severity": "MODERATE",
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-02-17T16:38:57Z"
+      },
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-69873"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/pull/2586"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/pull/2588"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/pull/2590"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/github/advisory-database/pull/6991"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/commit/720a23fa453ffae8340e92c9b0fe886c54cfe0d5"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/EthanKim88/ethan-cve-disclosures/blob/main/CVE-2025-69873-ajv-ReDoS.md"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6"
+        },
+        {
+          "type": "PACKAGE",
+          "url": "https://github.com/ajv-validator/ajv"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/releases/tag/v6.14.0"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/ajv-validator/ajv/releases/tag/v8.18.0"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "ajv",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/ajv"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "7.0.0-alpha.0"
+                },
+                {
+                  "fixed": "8.18.0"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/02/GHSA-2g4f-4pwh-qvx6/GHSA-2g4f-4pwh-qvx6.json"
+          }
+        },
+        {
+          "package": {
+            "name": "ajv",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/ajv"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0"
+                },
+                {
+                  "fixed": "6.14.0"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/02/GHSA-2g4f-4pwh-qvx6/GHSA-2g4f-4pwh-qvx6.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V4",
+          "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:P"
+        }
+      ]
+    },
+    {
+      "id": "GHSA-px8p-9vwx-vf98",
+      "summary": "fflate unzipSync can enter an infinite loop when parsing malformed ZIP64 archives",
+      "details": "fflate through 0.8.2 is vulnerable to denial of service via an infinite loop in unzipSync(). A crafted ZIP archive with a central directory entry declaring compressed_size=0xFFFFFFFF (ZIP64 sentinel) but missing the required ZIP64 extra field tag 0x0001 causes z64e() to loop indefinitely due to out-of-bounds reads returning undefined, which coerces to 0, keeping the loop condition permanently true.",
+      "aliases": [
+        "CVE-2026-45820"
+      ],
+      "modified": "2026-09-10T03:50:52.758792289Z",
+      "published": "2026-07-22T09:32:13Z",
+      "database_specific": {
+        "severity": "MODERATE",
+        "github_reviewed": true,
+        "github_reviewed_at": "2026-09-03T14:58:12Z",
+        "nvd_published_at": "2026-07-22T08:16:23Z",
+        "cwe_ids": [
+          "CWE-400"
+        ]
+      },
+      "references": [
+        {
+          "type": "ADVISORY",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-45820"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/101arrowz/fflate/commit/e6d5e6e1076892f72770ac732d83c81da9f3316e"
+        },
+        {
+          "type": "PACKAGE",
+          "url": "https://github.com/101arrowz/fflate"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/101arrowz/fflate/blob/f7873560ad229c22c4b23b06c6a3806ffde77569/src/index.ts#L2714"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/101arrowz/fflate/releases/tag/v0.8.3"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "fflate",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/fflate"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.4.5"
+                },
+                {
+                  "fixed": "0.4.9"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-px8p-9vwx-vf98/GHSA-px8p-9vwx-vf98.json"
+          }
+        },
+        {
+          "package": {
+            "name": "fflate",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/fflate"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.5.0"
+                },
+                {
+                  "fixed": "0.5.4"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-px8p-9vwx-vf98/GHSA-px8p-9vwx-vf98.json"
+          }
+        },
+        {
+          "package": {
+            "name": "fflate",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/fflate"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.6.0"
+                },
+                {
+                  "fixed": "0.6.11"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-px8p-9vwx-vf98/GHSA-px8p-9vwx-vf98.json"
+          }
+        },
+        {
+          "package": {
+            "name": "fflate",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/fflate"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.7.0"
+                },
+                {
+                  "fixed": "0.7.5"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-px8p-9vwx-vf98/GHSA-px8p-9vwx-vf98.json"
+          }
+        },
+        {
+          "package": {
+            "name": "fflate",
+            "ecosystem": "npm",
+            "purl": "pkg:npm/fflate"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.8.0"
+                },
+                {
+                  "fixed": "0.8.3"
+                }
+              ]
+            }
+          ],
+          "database_specific": {
+            "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/07/GHSA-px8p-9vwx-vf98/GHSA-px8p-9vwx-vf98.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        },
+        {
+          "type": "CVSS_V4",
+          "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/E:U/S:N/AU:Y/R:U/V:D/RE:M/U:Amber"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0346",
+      "summary": "`Debug` impls for client session values expose TLS secrets",
+      "details": "The `Debug` implementations of `Tls12ClientSessionValue` and\n`Tls13ClientSessionValue` were derived, and so included the TLS 1.2 master\nsecret or TLS 1.3 resumption PSK in their output.\n\nCustom `ClientSessionStore` implementations that format these values with\n`Debug` (for example, when logging) could disclose these secrets to readers of\nthe logs. This conflicts with rustls's\n[key-material redaction policy](https://github.com/rustls/rustls/blob/99f2358cae2954837dbb866faf6727de75489ab9/SECURITY.md#boundary-public-api).\n\nOrdinary connection and built-in session cache `Debug` output is redacted and\nis not affected.",
+      "aliases": [
+        "GHSA-c8m5-c952-6cm4"
+      ],
+      "modified": "2026-10-14T13:30:02.480694744Z",
+      "published": "2026-10-14T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/rustls"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0346.html"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/rustls/rustls/pull/3299"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "rustls",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/rustls"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.21.0"
+                },
+                {
+                  "fixed": "0.23.46"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affected_functions": null,
+            "affects": {
+              "functions": [],
+              "arch": [],
+              "os": []
+            }
+          },
+          "database_specific": {
+            "informational": null,
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0346.json",
+            "categories": [
+              "crypto-failure"
+            ],
+            "cvss": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:H/I:N/A:N"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0347",
+      "summary": "Buffered application data sent to outer server after ECH rejection",
+      "details": "When a server rejects Encrypted Client Hello (ECH), the client completes the\nhandshake using the outer ClientHello and authenticates the server against the\nECH config's `public_name`. At the end of that handshake, rustls encrypted and\nqueued any application data buffered via `ClientConnection::writer()` *before*\nqueueing the `ech_required` alert.\n\nThe application correctly receives\n`Error::PeerIncompatible(ServerRejectedEncryptedClientHello)`, but the next\n`write_tls()` call (needed to send the alert) also sends the buffered\napplication data. Plaintext meant for the inner server therefore goes to the\nclient-facing server named by `public_name`.\n\nThat server is authenticated, so this is not exploitable by an unauthenticated\nparty, but it violates RFC 9849 section 6.1.6, which requires the client to\nabort with `ech_required` \"before sending any application data to the server\".\n\nThis affects only clients that:\n\n- use `EchMode::Enable` (GREASE ECH is not affected),\n- write application data before the handshake completes, and\n- connect to a server that rejects their ECH config (for example, because it is stale).\n\nThe underlying ordering bug is older, but before 0.23.44 the client checked\nthe server certificate against the inner server name rather than `public_name`,\nso certificate verification failed first and no data was sent.",
+      "aliases": [
+        "GHSA-vp88-798v-h67f"
+      ],
+      "modified": "2026-10-14T13:30:02.472103370Z",
+      "published": "2026-10-14T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/rustls"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0347.html"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/rustls/rustls/pull/3300"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "rustls",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/rustls"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.23.44"
+                },
+                {
+                  "fixed": "0.23.46"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "functions": [],
+              "arch": [],
+              "os": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "cvss": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N",
+            "informational": null,
+            "categories": [
+              "crypto-failure"
+            ],
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0347.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0348",
+      "summary": "Brotli certificate decompression can allocate up to 1 GiB before authentication",
+      "details": "The built-in Brotli certificate decompressor (enabled by the non-default\n`brotli` crate feature) bounded the size of the decompressed output, but\naccepted a peer-selected history window. Brotli's large-window extension was\nenabled, so a five-byte header could cause an allocation of 1 GiB. A peer can\nabort a process whose allocator cannot satisfy that request.\n\nNo trusted certificate is required by the attacker. Affected configurations are:\n\n- clients that enable the `brotli` feature and connect to a malicious server, and\n- servers that enable the `brotli` feature and request client certificates.\n\nApplications that do not enable the `brotli` feature are not affected.",
+      "aliases": [
+        "GHSA-h2v8-394m-p7vv"
+      ],
+      "modified": "2026-10-14T13:30:02.480925286Z",
+      "published": "2026-10-14T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/rustls"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0348.html"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/rustls/rustls/pull/3297"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "rustls",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/rustls"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.23.9"
+                },
+                {
+                  "fixed": "0.23.46"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "functions": [],
+              "arch": [],
+              "os": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "informational": null,
+            "categories": [
+              "denial-of-service"
+            ],
+            "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0348.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0349",
+      "summary": "Unauthenticated ServerHello can downgrade later connections to classical key exchange",
+      "details": "The client recorded the server-selected key exchange group for each server\nname when processing the ServerHello, before the server was authenticated.\nThis record is used to predict which key share to send in future ClientHellos\nto that server name.\n\nA network attacker can answer one connection attempt with a ServerHello\nselecting X25519, and then close the connection. Later ClientHellos for that\nname carry only an X25519 key share, while `supported_groups` still lists\nX25519MLKEM768 first. If the genuine server accepts that share rather than\nsending a HelloRetryRequest for its preferred hybrid group, the handshake\ncompletes with classical-only key exchange and no error. This persists for as\nlong as the entry stays in the client's session store.\n\nThe impact is loss of post-quantum confidentiality for affected connections\n(\"harvest now, decrypt later\"). There is no key compromise and no\nauthentication bypass.\n\nThe following are not affected:\n\n- connections to servers which send a HelloRetryRequest for their preferred group,\n- clients with resumption disabled (as nothing is stored), and\n- other server names.\n\nThis behaviour is discussed in\n[draft-ietf-tls-key-share-prediction](https://www.ietf.org/archive/id/draft-ietf-tls-key-share-prediction-01.html#name-security-considerations),\nso the practical impact depends largely on server policy.",
+      "aliases": [
+        "GHSA-w44r-93j7-qv28"
+      ],
+      "modified": "2026-10-14T13:30:02.475705129Z",
+      "published": "2026-10-14T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/rustls"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0349.html"
+        },
+        {
+          "type": "WEB",
+          "url": "https://github.com/rustls/rustls/pull/3355"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "rustls",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/rustls"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "0.23.46"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "arch": [],
+              "os": [],
+              "functions": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "categories": [
+              "crypto-failure"
+            ],
+            "cvss": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+            "informational": null,
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0349.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0367",
+      "summary": " Insecure Preservation of SUID/SGID Bits during ZIP Extraction Leading to Potential Privilege Escalation",
+      "details": "The `zip` crate preserves privileged Unix permission bits (SUID, SGID, and sticky bits) from ZIP `external_attributes` during extraction, instead of masking them to safe permission bits. If a privileged process (for example, `root` in an installer, CI/CD pipeline, or container build) extracts an attacker-controlled ZIP archive using `ZipArchive::extract()` or the stream extraction API, files can be created as setuid-root or setgid. This behavior allows the creation of SUID/SGID files during extraction, which can lead to local privilege escalation depending on the execution environment.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-vv5m-jxxh-4627",
+      "aliases": [
+        "GHSA-vv5m-jxxh-4627"
+      ],
+      "modified": "2026-10-16T23:30:02.392172556Z",
+      "published": "2026-10-09T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/zip"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0367.html"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "zip",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/zip"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "9.0.0"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "arch": [],
+              "os": [],
+              "functions": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "categories": [
+              "privilege-escalation"
+            ],
+            "cvss": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+            "informational": null,
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0367.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H"
+        }
+      ]
+    },
+    {
+      "id": "RUSTSEC-2026-0368",
+      "summary": "zip: `ZipArchive::extract` creates symbolic links whose attacker-controlled targets are outside the destination directory",
+      "details": "In `zip` 9.0.0-pre2, `ZipArchive::extract` creates a symbolic link from an archive entry after validating only the output entry path. The link target bytes are passed directly to the platform symlink API, so a malicious archive can create an entry inside the destination that resolves to an attacker-chosen path outside it. This behavior was verified on macOS and Linux. On either platform, a subsequent application read or write through that extracted entry accesses the external target with the extracting process's permissions.\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4v9h-p7m9-rh26",
+      "aliases": [
+        "GHSA-4v9h-p7m9-rh26"
+      ],
+      "modified": "2026-10-16T23:30:02.383750571Z",
+      "published": "2026-10-09T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/zip"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0368.html"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "zip",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/zip"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "9.0.0"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "functions": [],
+              "arch": [],
+              "os": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "categories": [
+              "privilege-escalation"
+            ],
+            "cvss": null,
+            "informational": null,
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0368.json"
+          }
+        }
+      ],
+      "schema_version": "1.9.0"
+    },
+    {
+      "id": "RUSTSEC-2026-0369",
+      "summary": "ZipStreamReader::extract() and ZipArchive::extract() apply Unix permissions through symlinks without confining the target",
+      "details": "`ZipStreamReader::extract()` applies Unix permissions through extracted symlinks without validating the symlink target stays within the destination\n\nFor further details see: https://github.com/zip-rs/zip2/security/advisories/GHSA-4684-h2q9-2vcp",
+      "aliases": [
+        "GHSA-4684-h2q9-2vcp"
+      ],
+      "modified": "2026-10-16T23:30:02.387698467Z",
+      "published": "2026-10-10T12:00:00Z",
+      "database_specific": {
+        "license": "CC0-1.0"
+      },
+      "references": [
+        {
+          "type": "PACKAGE",
+          "url": "https://crates.io/crates/zip"
+        },
+        {
+          "type": "ADVISORY",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0369.html"
+        }
+      ],
+      "affected": [
+        {
+          "package": {
+            "name": "zip",
+            "ecosystem": "crates.io",
+            "purl": "pkg:cargo/zip"
+          },
+          "ranges": [
+            {
+              "type": "SEMVER",
+              "events": [
+                {
+                  "introduced": "0.0.0-0"
+                },
+                {
+                  "fixed": "9.0.0"
+                }
+              ]
+            }
+          ],
+          "ecosystem_specific": {
+            "affects": {
+              "arch": [],
+              "os": [],
+              "functions": []
+            },
+            "affected_functions": null
+          },
+          "database_specific": {
+            "informational": null,
+            "source": "https://github.com/rustsec/advisory-db/blob/osv/crates/RUSTSEC-2026-0369.json",
+            "categories": [
+              "privilege-escalation"
+            ],
+            "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H"
+          }
+        }
+      ],
+      "schema_version": "1.9.0",
+      "severity": [
+        {
+          "type": "CVSS_V3",
+          "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H"
+        }
+      ]
+    }
+  ]
+}

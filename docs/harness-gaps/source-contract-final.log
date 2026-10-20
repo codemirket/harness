@@ -1,0 +1,18 @@
+mirket dev: cargo test --locked --test source_contract
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.38s
+     Running tests/source_contract.rs (target/debug/deps/source_contract-cfe48734bcf4d9e2)
+
+running 2 tests
+test authored_guidance_has_no_detached_helpers ... ok
+test authored_guidance_has_existing_local_links ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+{
+  "filter": null,
+  "ignored": false,
+  "ok": true,
+  "profile": "debug",
+  "source": "/Users/nazmiyilmaz/Documents/.ai",
+  "test_target": "source_contract"
+}

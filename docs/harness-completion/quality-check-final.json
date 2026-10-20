@@ -1,0 +1,38 @@
+{
+  "aggregates": [
+    {
+      "configuration": "g",
+      "infrastructure_failed": 0,
+      "known_cost_usd": -0.0,
+      "known_latency_trials": 4,
+      "mean_known_latency_ms": 36015.985083499996,
+      "mean_score": 1.0,
+      "passed": 4,
+      "scored_trials": 4,
+      "split": "held_out",
+      "task_failed": 0,
+      "total_cost_usd": null,
+      "trials": 4,
+      "unknown_cost_trials": 4
+    },
+    {
+      "configuration": "q",
+      "infrastructure_failed": 0,
+      "known_cost_usd": -0.0,
+      "known_latency_trials": 4,
+      "mean_known_latency_ms": 42381.2328645,
+      "mean_score": 1.0,
+      "passed": 4,
+      "scored_trials": 4,
+      "split": "held_out",
+      "task_failed": 0,
+      "total_cost_usd": null,
+      "trials": 4,
+      "unknown_cost_trials": 4
+    }
+  ],
+  "limits": "Verifies record consistency and current declared file identities; does not authenticate execution, grade semantics, or establish general role-quality improvement.",
+  "provenance": "host_observed",
+  "schema_version": 1,
+  "valid": true
+}

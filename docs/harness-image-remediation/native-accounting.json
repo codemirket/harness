@@ -1,0 +1,33 @@
+{
+  "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
+  "target": "claude",
+  "model": "claude-sonnet-5-5",
+  "status": "complete",
+  "expected_result": "red,green,blue,yellow",
+  "observed_result": "Quadrant colors in quadrants.png, inspected after the last tool call (no files modified): top-left red, top-right green, bottom-left blue, bottom-right yellow.",
+  "worker": {
+    "attempts_with_usage": 2,
+    "inference_attempts": 2,
+    "known_cost_estimate_usd": 0.036912799999999996,
+    "limits": "SDK estimates are not billing. Missing, interrupted or older observations remain unknown; input counters have provider-specific cache semantics.",
+    "scope": "Recorded worker inference attempts, including retries and restored attempts; excludes discovery and vision conformance probes.",
+    "total_cost_estimate_usd": 0.036912799999999996,
+    "unknown_cost_attempts": 0
+  },
+  "probes": {
+    "attempts_with_usage": 1,
+    "inference_attempts": 1,
+    "known_cost_estimate_usd": 0.01031,
+    "limits": "SDK estimates are not billing. Missing, interrupted or older observations remain unknown; input counters have provider-specific cache semantics.",
+    "scope": "Distinct durable vision conformance probe attempts; pending and interrupted receipts retain unknown usage and cost.",
+    "total_cost_estimate_usd": 0.01031,
+    "unknown_cost_attempts": 0
+  },
+  "combined_attempts": 3,
+  "total_cost_estimate_usd": 0.047222799999999995,
+  "billing_usd": null,
+  "probe_history_complete": true,
+  "repeat_reads_identical": true,
+  "raw_sha256": "13add40f57edae39563d88ed50e0a6d386bf1cd3347988f10087a57fa949fb07",
+  "limits": "Native SDK estimate, not invoice or account-wide metering; no other provider was invoked by this fixture."
+}

@@ -48,3 +48,30 @@ The current main packet schedule is v3. Its 32 label mappings, presentation
 order, view policy, calibration identities and scoring rules are unchanged from
 v2; only the final I/O helper bindings and provenance note differ. No frozen
 README, worker prompt, rubric, initialization or prior score file is edited.
+
+
+Before freezing a new campaign, `prepare.py freeze` now runs the synthetic
+collector → score lock → packet identity verification → frozen analyzer preflight.
+It binds the result and helper sources into the freeze, so subsequent collection
+rejects changed inputs. CI also runs this check directly:
+
+```sh
+python3 evals/design-quality/packet_preflight.py
+```
+
+Capture every worker self-check or failed return immediately, before a repair,
+using a distinct source path for each attempt:
+
+```sh
+python3 evals/design-quality/prepare.py --experiment-root .mirket/my-study/experiment capture-attempt CELL_ID attempt-1 --report .mirket/my-study/worker-returns/attempt-1.json
+```
+
+The host owns `experiment/attempts/`; keep it, receipts, grading and hidden inputs
+outside workers' allowed write roots. The collector does not enforce a sandbox.
+Captured records retain raw failed or malformed reports, bind the original file,
+and use exclusive creation. Sealing requires at least one capture and fixes the
+attempt inventory. Collection rejects overwritten sources, changed captures or
+late additions; retries need new source files. Reports not captured before they
+are overwritten cannot be reconstructed or claimed as retained. These checks
+establish schema and identity continuity, not model execution, grading accuracy
+or a quality gain. The frozen first-wave analyzer and thresholds remain unchanged.

@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "status": "completed_local_verification",
+  "source_sha256": "e1529964ef1767db25890ccf313c637fcf2eb560800ee0e92e2ca92cca72a841",
+  "checks": {
+    "rust_gate": {
+      "passed": 404,
+      "failed": 0,
+      "ignored": 7,
+      "format": "passed",
+      "clippy": "passed",
+      "evidence": "rust-check.log"
+    },
+    "agent_runtime": {
+      "passed": true,
+      "recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+      "evidence": "agent-tests.json",
+      "data": "disposable synthetic facts and SQLite checkpoints"
+    },
+    "evaluation_pipeline": {
+      "passed": true,
+      "cells": 24,
+      "attempts": 48,
+      "locked_ratings": 32,
+      "model_executions": 0,
+      "evidence": "evaluation-preflight.json"
+    },
+    "packet_helper_tests": {
+      "passed": 20,
+      "failed": 0,
+      "evidence": "packet-tests.log"
+    },
+    "python_regressions": {
+      "passed": 5,
+      "failed": 0,
+      "evidence": "python-checks.log"
+    },
+    "disposable_installation": {
+      "passed": true,
+      "checks": [
+        "setup all",
+        "doctor",
+        "catalog check"
+      ],
+      "evidence": "installation.json"
+    },
+    "optimized_mcp_samples": {
+      "passed": 3,
+      "failed": 0,
+      "evidence": "optimized-startup.json"
+    },
+    "debug_startup_repetitions": {
+      "passed": 6,
+      "failed": 0,
+      "concurrent_targets": 3,
+      "isolated_targets": 3,
+      "initialization_deadline_seconds": 15,
+      "operation_deadline_seconds": 45,
+      "evidence": "debug-startup.json"
+    }
+  },
+  "limits": [
+    "Component/source identities are not semantic acceptance or native desktop activation.",
+    "Historical 15-second startup failure was not reproduced; root cause remains unproven.",
+    "Native vision behavior uses a scoped conformance probe; no paid/native-provider resume smoke was run.",
+    "Evaluation evidence is synthetic; no demonstrated quality gain.",
+    "Native Windows/Linux and remote CI not exercised.",
+    "Complete release acceptance and desktop activation remain pending.",
+    "Prior JS runtime evidence reused; those sources did not change."
+  ],
+  "completed_at_utc": "2026-10-20T12:37:56.730133+00:00",
+  "release_acceptance_receipt": false,
+  "evidence_sha256": {
+    "agent-tests.json": "fd4aabe719ba0772de8ae347a82c6ec77acaa654c391b5d6b8bbb465e231438e",
+    "debug-startup.json": "73d95f53253e38ffce03faad49ed2318f3b738f4bfd030729eec8714328e3a73",
+    "evaluation-preflight.json": "cd0c132a1adae8ed837d5f74d3d277c965b5d608e5c9fd1849ed7f1ed746256d",
+    "identity.json": "b4bee58780d1e81c7a286dbb2300c1e192fbbdde33cc30ce708b650ad29e3bfc",
+    "initial-check-failure.log": "b922783d04dfc98bdedb036b73deaeb77fa96567945678e4d953bb85e2a0b0e1",
+    "initial-runtime-failure.log": "f61be95c46f03d052f830573aeb49be0e0e15eca95e5f1cafefb1e615f776cc2",
+    "installation.json": "e08601b94296c77fd84a11799340ac3efcedfa7280ce30ac20fb16d2ad3493f5",
+    "optimized-startup.json": "78378f7c4571598dd8d2add9cfe3c298c330de86c4a18a34fc64d811c0f18388",
+    "packet-tests.log": "9ff1b7f17059ff233722b73ac553299a2312f5f305623dc09259505975ebe8c6",
+    "pre-manifest-gate-failure.log": "c20f5b525096d6b652eba314a48377ea627dbefc8a288a676eb467d93d26f567",
+    "python-checks.log": "a9286df705b1fb2734fc38e28007ebdb4cc99ae81f0fbf0fe1a25530b0ce5849",
+    "rust-check.log": "3778c88906f0567bac80133bc4590f4e2fc9224dc29bd6ace4035ed4cf46eac3",
+    "startup-before.log": "1ab814e0ee0a68e0602718c59f0bfaf367ee34b80d96280e556006cdec844378",
+    "startup-concurrent-1.log": "56b566d8f9f718cfb5f9e1b22bd805a94c8230e1147adcf38bd8073e8fead3a5",
+    "startup-concurrent-2.log": "115f18ab85b6583eea2e942389daaf7264e223fa43ce21e6cc584d4c30fa12c2",
+    "startup-concurrent-3.log": "a929e2addc111b565c048ee37e9e9c2432287bac639a6afeb57ee6450d0ea17a",
+    "startup-isolated-1.log": "7fe53f6a67607650c1a0a68fc75f9d98597fadb152c3d2ce5905a1d0caaa54a3",
+    "startup-isolated-2.log": "4add72dc3679af99992893dd1238d291ec8a524e465f532bad7b68dc66ea867c",
+    "startup-isolated-3.log": "10c773a0ff5bcf6c84c9c28649ede3287bebcf01d5e9d0c39f427862e49fd71b"
+  }
+}

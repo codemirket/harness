@@ -1,0 +1,14 @@
+{
+  "version": "1.0.11",
+  "targets": [
+    "codex",
+    "claude"
+  ],
+  "files": 115,
+  "changed": 2,
+  "binary": "/Users/nazmiyilmaz/.mirket/bin/mirket",
+  "packages": [
+    "design",
+    "agent-runtime"
+  ]
+}

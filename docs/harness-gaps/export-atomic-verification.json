@@ -1,0 +1,12 @@
+{
+  "alias": "penpot-mcp",
+  "archive": "/private/tmp/mirket-next-evidence/penpot-mcp-atomic.tar",
+  "archive_sha256": "abf564eaa7010eed68e2862dde990a2520331b4d184fcc792419bc386eba1559",
+  "bytes": 393029632,
+  "image_id": "sha256:9afc99172f1d5d1e1f41292ee6675f080ced92745b53fad4e09089137333fb7a",
+  "limits": "Image identity/export only; advisory coverage requires a scanner and its database identity.",
+  "ok": true,
+  "platform": "linux/arm64",
+  "archive_rehashed": true,
+  "docker_manifest_image_matches": true
+}

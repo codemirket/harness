@@ -1,0 +1,958 @@
+{
+  "schema": 1,
+  "binary_sha256": "9dd475373417dec028f24f2713d7a1449f6961f6da67485d463e16ba740a11b4",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "deadline_seconds": 15,
+  "groups": [
+    {
+      "concurrency": 1,
+      "samples": [
+        {
+          "slot": 0,
+          "ok": true,
+          "initialize_ms": 319.96070799999995,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 36,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 307,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 311,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 313,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 313,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "concurrency": 4,
+      "samples": [
+        {
+          "slot": 0,
+          "ok": true,
+          "initialize_ms": 308.125,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 32,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 310,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 313,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 313,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 314,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "ok": true,
+          "initialize_ms": 307.66345799999993,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 29,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 306,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 310,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 310,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 310,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "ok": true,
+          "initialize_ms": 323.285375,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 33,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 319,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 323,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 323,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 323,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "ok": true,
+          "initialize_ms": 324.21145900000005,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 30,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 317,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 321,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 321,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 321,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "concurrency": 8,
+      "samples": [
+        {
+          "slot": 0,
+          "ok": true,
+          "initialize_ms": 335.48929199999986,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 37,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 359,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 362,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 381,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 382,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "ok": true,
+          "initialize_ms": 362.59762499999994,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 59,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 401,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 406,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 407,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 407,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "ok": true,
+          "initialize_ms": 345.81120799999997,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 36,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 375,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 379,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 386,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 387,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "ok": true,
+          "initialize_ms": 361.0719170000001,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 35,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 391,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 397,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 398,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 398,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "ok": true,
+          "initialize_ms": 357.445333,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 30,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 382,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 385,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 386,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 386,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "ok": true,
+          "initialize_ms": 375.58908299999996,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 50,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 392,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 396,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 397,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 397,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "ok": true,
+          "initialize_ms": 339.24600000000004,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 44,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 350,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 354,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 357,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 357,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 7,
+          "ok": true,
+          "initialize_ms": 417.154791,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 44,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 404,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 407,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 408,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 408,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "concurrency": 16,
+      "samples": [
+        {
+          "slot": 0,
+          "ok": true,
+          "initialize_ms": 1057.4006249999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 50,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1171,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1175,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1177,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1177,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "ok": true,
+          "initialize_ms": 974.6882089999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 55,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1063,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1072,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1075,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1080,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "ok": true,
+          "initialize_ms": 954.5243750000001,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 73,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1044,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1055,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1069,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1069,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "ok": true,
+          "initialize_ms": 957.2014170000001,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 37,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1007,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1047,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1070,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1075,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "ok": true,
+          "initialize_ms": 1023.8570410000001,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 105,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1100,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1105,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1117,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1118,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "ok": true,
+          "initialize_ms": 942.1393340000002,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 76,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1000,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1009,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1059,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1065,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "ok": true,
+          "initialize_ms": 1035.1589589999999,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 78,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1108,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1114,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1118,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1119,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 7,
+          "ok": true,
+          "initialize_ms": 1066.5603749999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 75,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1140,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1145,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1146,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1147,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 8,
+          "ok": true,
+          "initialize_ms": 953.998458,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 92,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 986,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1008,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1031,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1033,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 9,
+          "ok": true,
+          "initialize_ms": 1055.9774579999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 65,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1106,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1111,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1113,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1113,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 10,
+          "ok": true,
+          "initialize_ms": 981.4764159999997,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 49,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1022,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1026,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1036,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1038,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 11,
+          "ok": true,
+          "initialize_ms": 979.3659999999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 63,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1011,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1017,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1033,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1033,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 12,
+          "ok": true,
+          "initialize_ms": 1025.1671670000003,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 46,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 1056,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 1065,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 1067,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 1067,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 13,
+          "ok": true,
+          "initialize_ms": 752.4865000000003,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 84,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 736,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 758,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 777,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 781,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 14,
+          "ok": true,
+          "initialize_ms": 717.3848329999998,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 176,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 639,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 681,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 696,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 699,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        },
+        {
+          "slot": 15,
+          "ok": true,
+          "initialize_ms": 684.1874159999999,
+          "error": null,
+          "phases": [
+            {
+              "elapsed_ms": 0,
+              "mirket_startup": "entry"
+            },
+            {
+              "elapsed_ms": 182,
+              "mirket_startup": "catalog_loaded"
+            },
+            {
+              "elapsed_ms": 634,
+              "mirket_startup": "identity_captured"
+            },
+            {
+              "elapsed_ms": 655,
+              "mirket_startup": "state_opened"
+            },
+            {
+              "elapsed_ms": 669,
+              "mirket_startup": "mcp_initialized"
+            },
+            {
+              "elapsed_ms": 669,
+              "mirket_startup": "discovery_started"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "binary_unchanged": true,
+  "ok": true
+}

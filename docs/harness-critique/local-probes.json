@@ -1,0 +1,847 @@
+{
+  "date": "2026-10-20",
+  "binary": "/Users/nazmiyilmaz/.mirket/bin/mirket",
+  "scope": "Synthetic localhost server, disposable home/project, explicit unavailable native targets, no external inference.",
+  "records": [
+    {
+      "case": "editable-interface-route",
+      "exit_code": 1,
+      "stderr": "mirket: Penpot object operations require the host's official MCP connection; project-scoped workers cannot authorize shared editor objects. Use host editing and verification.\n",
+      "posts": []
+    },
+    {
+      "case": "invalid-json-trace",
+      "exit_code": 1,
+      "stderr": "mirket: routed execution incomplete; trace <disposable-home>/.mirket/runs/routed-ycVCzk/trace.json: model action is invalid JSON: expected ident at line 1 column 2\n",
+      "posts": [
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-frontier"
+        }
+      ],
+      "trace": {
+        "attempts": [
+          {
+            "effort": "high",
+            "max_completion_tokens": 64000,
+            "model": "fixture-frontier",
+            "target": "fixture",
+            "tier": "T3_ARCHITECT",
+            "turn": 1
+          }
+        ],
+        "error": "Execution stopped; inspect checkpoint and workspace before resuming. Effects may already have occurred.",
+        "host_verification": null,
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "high",
+          "min_tier": "T3_ARCHITECT",
+          "reasons": [
+            "task floor: T2Synthesis",
+            "tool workspace_list floor: T1Deterministic",
+            "tool workspace_read floor: T1Deterministic",
+            "multiple assigned tools require at least T2",
+            "owned task-needs floor: T2Synthesis",
+            "quality selection and failover floor: T3Architect"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": true,
+          "requires_vision": false
+        },
+        "result": null,
+        "status": "incomplete",
+        "task_contract": {
+          "assigned_tools": [
+            "workspace_list",
+            "workspace_read"
+          ],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5184,
+              "id": "research-and-synthesis",
+              "path": "SKILL.md",
+              "sha256": "8e3d4b133194ef9c6e0a57a5d654d52235c9dd86a10a7343c0ddebcc98f48266"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T2_SYNTHESIS",
+          "model_selection": null,
+          "primary_role": "deep-research",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "deep-research",
+              "lead_skill": "research-and-synthesis",
+              "professional": {
+                "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+                "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+                "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation.",
+                "method": [
+                  "Decompose the decision into material claims and define evidence needed for each.",
+                  "Search alternate terminology and disconfirming explanations; read original sources.",
+                  "Compare methods, definitions, dates and evidentiary independence.",
+                  "Synthesize the supported choice with its reversal conditions and remaining gaps."
+                ],
+                "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+                "priorities": [
+                  "Claims supported by actually read sources",
+                  "Counterevidence and applicability",
+                  "A useful conclusion at justified confidence"
+                ]
+              },
+              "title": "Deep Research"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Synthesize supplied synthetic evidence.",
+              "workflow": "analysis"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "analysis",
+              "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        },
+        "transcript": [
+          {
+            "deterministic_input": null,
+            "deterministic_operation": null,
+            "objective": "Synthesize the supplied evidence: the answer is 42."
+          }
+        ],
+        "workflow": {
+          "engine": "ephemeral",
+          "reason": "agent-runtime not selected",
+          "resumable": false
+        }
+      },
+      "specific_error_retained": false
+    },
+    {
+      "case": "usage-receipt",
+      "exit_code": 0,
+      "stderr": "",
+      "posts": [
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-frontier"
+        }
+      ],
+      "result": {
+        "host_verification": null,
+        "model": {
+          "available": true,
+          "capabilities": {
+            "context_window": 262144,
+            "max_completion_tokens": 64000,
+            "pricing": null,
+            "reasoning_efforts": [
+              "high"
+            ],
+            "structured_outputs": true,
+            "thinking_budget_max": null,
+            "thinking_modes": [],
+            "tools": true,
+            "vision": null
+          },
+          "classification_evidence": [
+            "discovered metadata from fixture",
+            "policy: verified tools and structured outputs; full-size signal frontier",
+            "policy: high reasoning plus frontier or full-size workhorse signal"
+          ],
+          "description": "frontier reasoning model",
+          "display_name": "fixture-frontier",
+          "id": "fixture-frontier",
+          "line": null,
+          "target": "fixture",
+          "tier": "T3_ARCHITECT"
+        },
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "high",
+          "min_tier": "T3_ARCHITECT",
+          "reasons": [
+            "task floor: T2Synthesis",
+            "tool workspace_list floor: T1Deterministic",
+            "tool workspace_read floor: T1Deterministic",
+            "multiple assigned tools require at least T2",
+            "owned task-needs floor: T2Synthesis",
+            "quality selection and failover floor: T3Architect"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": true,
+          "requires_vision": false
+        },
+        "result": "Synthetic answer: 42.",
+        "run_id": "routed-tr8iJ4",
+        "status": "complete",
+        "task_contract": {
+          "assigned_tools": [
+            "workspace_list",
+            "workspace_read"
+          ],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5184,
+              "id": "research-and-synthesis",
+              "path": "SKILL.md",
+              "sha256": "8e3d4b133194ef9c6e0a57a5d654d52235c9dd86a10a7343c0ddebcc98f48266"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T2_SYNTHESIS",
+          "model_selection": null,
+          "primary_role": "deep-research",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "deep-research",
+              "lead_skill": "research-and-synthesis",
+              "professional": {
+                "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+                "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+                "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation.",
+                "method": [
+                  "Decompose the decision into material claims and define evidence needed for each.",
+                  "Search alternate terminology and disconfirming explanations; read original sources.",
+                  "Compare methods, definitions, dates and evidentiary independence.",
+                  "Synthesize the supported choice with its reversal conditions and remaining gaps."
+                ],
+                "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+                "priorities": [
+                  "Claims supported by actually read sources",
+                  "Counterevidence and applicability",
+                  "A useful conclusion at justified confidence"
+                ]
+              },
+              "title": "Deep Research"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Synthesize supplied synthetic evidence.",
+              "workflow": "analysis"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "analysis",
+              "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        },
+        "trace": "<disposable-home>/.mirket/runs/routed-tr8iJ4/trace.json",
+        "trace_sha256": "060ad8990b8ec9bbbac030edc185a7cdc99cc33989d67d17d4d5259c7eccb027",
+        "workflow": {
+          "engine": "ephemeral",
+          "reason": "agent-runtime not selected",
+          "resumable": false
+        }
+      },
+      "trace": {
+        "attempts": [
+          {
+            "effort": "high",
+            "max_completion_tokens": 64000,
+            "model": "fixture-frontier",
+            "target": "fixture",
+            "tier": "T3_ARCHITECT",
+            "turn": 1
+          }
+        ],
+        "error": null,
+        "host_verification": null,
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "high",
+          "min_tier": "T3_ARCHITECT",
+          "reasons": [
+            "task floor: T2Synthesis",
+            "tool workspace_list floor: T1Deterministic",
+            "tool workspace_read floor: T1Deterministic",
+            "multiple assigned tools require at least T2",
+            "owned task-needs floor: T2Synthesis",
+            "quality selection and failover floor: T3Architect"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": true,
+          "requires_vision": false
+        },
+        "result": "Synthetic answer: 42.",
+        "status": "complete",
+        "task_contract": {
+          "assigned_tools": [
+            "workspace_list",
+            "workspace_read"
+          ],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5184,
+              "id": "research-and-synthesis",
+              "path": "SKILL.md",
+              "sha256": "8e3d4b133194ef9c6e0a57a5d654d52235c9dd86a10a7343c0ddebcc98f48266"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T2_SYNTHESIS",
+          "model_selection": null,
+          "primary_role": "deep-research",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "deep-research",
+              "lead_skill": "research-and-synthesis",
+              "professional": {
+                "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+                "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+                "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation.",
+                "method": [
+                  "Decompose the decision into material claims and define evidence needed for each.",
+                  "Search alternate terminology and disconfirming explanations; read original sources.",
+                  "Compare methods, definitions, dates and evidentiary independence.",
+                  "Synthesize the supported choice with its reversal conditions and remaining gaps."
+                ],
+                "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+                "priorities": [
+                  "Claims supported by actually read sources",
+                  "Counterevidence and applicability",
+                  "A useful conclusion at justified confidence"
+                ]
+              },
+              "title": "Deep Research"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Synthesize supplied synthetic evidence.",
+              "workflow": "analysis"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "analysis",
+              "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        },
+        "transcript": [
+          {
+            "deterministic_input": null,
+            "deterministic_operation": null,
+            "objective": "Synthesize the supplied evidence: the answer is 42."
+          },
+          {
+            "assistant": {
+              "action": "complete",
+              "arguments_json": "{}",
+              "result": "Synthetic answer: 42.",
+              "tool": ""
+            }
+          }
+        ],
+        "workflow": {
+          "engine": "ephemeral",
+          "reason": "agent-runtime not selected",
+          "resumable": false
+        }
+      },
+      "reported_usage_retained": false
+    },
+    {
+      "case": "required-memory-without-runtime",
+      "exit_code": 0,
+      "stderr": "",
+      "posts": [
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-frontier"
+        }
+      ],
+      "result": {
+        "host_verification": null,
+        "model": {
+          "available": true,
+          "capabilities": {
+            "context_window": 262144,
+            "max_completion_tokens": 64000,
+            "pricing": null,
+            "reasoning_efforts": [
+              "high"
+            ],
+            "structured_outputs": true,
+            "thinking_budget_max": null,
+            "thinking_modes": [],
+            "tools": true,
+            "vision": null
+          },
+          "classification_evidence": [
+            "discovered metadata from fixture",
+            "policy: verified tools and structured outputs; full-size signal frontier",
+            "policy: high reasoning plus frontier or full-size workhorse signal"
+          ],
+          "description": "frontier reasoning model",
+          "display_name": "fixture-frontier",
+          "id": "fixture-frontier",
+          "line": null,
+          "target": "fixture",
+          "tier": "T3_ARCHITECT"
+        },
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "high",
+          "min_tier": "T3_ARCHITECT",
+          "reasons": [
+            "task floor: T2Synthesis",
+            "tool workspace_list floor: T1Deterministic",
+            "tool workspace_read floor: T1Deterministic",
+            "multiple assigned tools require at least T2",
+            "owned task-needs floor: T2Synthesis",
+            "quality selection and failover floor: T3Architect"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": true,
+          "requires_vision": false
+        },
+        "result": "Synthetic answer: 42.",
+        "run_id": "routed-MEcNYd",
+        "status": "complete",
+        "task_contract": {
+          "assigned_tools": [
+            "workspace_list",
+            "workspace_read"
+          ],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5184,
+              "id": "research-and-synthesis",
+              "path": "SKILL.md",
+              "sha256": "8e3d4b133194ef9c6e0a57a5d654d52235c9dd86a10a7343c0ddebcc98f48266"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T2_SYNTHESIS",
+          "model_selection": null,
+          "primary_role": "deep-research",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "deep-research",
+              "lead_skill": "research-and-synthesis",
+              "professional": {
+                "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+                "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+                "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation.",
+                "method": [
+                  "Decompose the decision into material claims and define evidence needed for each.",
+                  "Search alternate terminology and disconfirming explanations; read original sources.",
+                  "Compare methods, definitions, dates and evidentiary independence.",
+                  "Synthesize the supported choice with its reversal conditions and remaining gaps."
+                ],
+                "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+                "priorities": [
+                  "Claims supported by actually read sources",
+                  "Counterevidence and applicability",
+                  "A useful conclusion at justified confidence"
+                ]
+              },
+              "title": "Deep Research"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Synthesize supplied synthetic evidence.",
+              "workflow": "analysis"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "analysis",
+              "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        },
+        "trace": "<disposable-home>/.mirket/runs/routed-MEcNYd/trace.json",
+        "trace_sha256": "060ad8990b8ec9bbbac030edc185a7cdc99cc33989d67d17d4d5259c7eccb027",
+        "workflow": {
+          "engine": "ephemeral",
+          "reason": "agent-runtime not selected",
+          "resumable": false
+        }
+      }
+    },
+    {
+      "case": "mechanical-model-ranking",
+      "exit_code": 0,
+      "stderr": "",
+      "posts": [],
+      "result": {
+        "boundary": "Mirket-owned spawner; independent host spawners are outside this boundary",
+        "candidates": [
+          {
+            "available": true,
+            "capabilities": {
+              "context_window": 262144,
+              "max_completion_tokens": 64000,
+              "pricing": null,
+              "reasoning_efforts": [
+                "high"
+              ],
+              "structured_outputs": true,
+              "thinking_budget_max": null,
+              "thinking_modes": [],
+              "tools": true,
+              "vision": null
+            },
+            "classification_evidence": [
+              "discovered metadata from fixture",
+              "policy: verified tools and structured outputs; full-size signal frontier",
+              "policy: high reasoning plus frontier or full-size workhorse signal"
+            ],
+            "description": "frontier reasoning model",
+            "display_name": "fixture-frontier",
+            "id": "fixture-frontier",
+            "line": null,
+            "target": "fixture",
+            "tier": "T3_ARCHITECT"
+          },
+          {
+            "available": true,
+            "capabilities": {
+              "context_window": 262144,
+              "max_completion_tokens": 64000,
+              "pricing": null,
+              "reasoning_efforts": [
+                "high"
+              ],
+              "structured_outputs": true,
+              "thinking_budget_max": null,
+              "thinking_modes": [],
+              "tools": true,
+              "vision": null
+            },
+            "classification_evidence": [
+              "discovered metadata from fixture",
+              "policy: lightweight morphology (mini); fixed mechanical tier"
+            ],
+            "description": "fast utility",
+            "display_name": "fixture-mini",
+            "id": "fixture-mini",
+            "line": null,
+            "target": "fixture",
+            "tier": "T1_DETERMINISTIC"
+          }
+        ],
+        "execution": "not_dispatched",
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "low",
+          "min_tier": "T1_DETERMINISTIC",
+          "reasons": [
+            "task floor: T1Deterministic",
+            "explicit single-operation mechanical contract",
+            "owned task-needs floor: T1Deterministic"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": false,
+          "requires_vision": false
+        },
+        "targets": [
+          {
+            "authenticated": true,
+            "diagnostic": null,
+            "execution_ready": true,
+            "target": {
+              "credential_env": null,
+              "endpoint": "http://127.0.0.1:53859/v1",
+              "executable": null,
+              "name": "fixture",
+              "protocol": "openai_chat"
+            }
+          },
+          {
+            "authenticated": false,
+            "diagnostic": "Target probe unavailable, unauthenticated, malformed, or exceeded its deadline; no stale models are eligible",
+            "execution_ready": false,
+            "target": {
+              "credential_env": null,
+              "endpoint": null,
+              "executable": "/usr/bin/false",
+              "name": "codex-disabled",
+              "protocol": "codex"
+            }
+          },
+          {
+            "authenticated": false,
+            "diagnostic": "Target probe unavailable, unauthenticated, malformed, or exceeded its deadline; no stale models are eligible",
+            "execution_ready": false,
+            "target": {
+              "credential_env": null,
+              "endpoint": null,
+              "executable": "/usr/bin/false",
+              "name": "claude-disabled",
+              "protocol": "claude"
+            }
+          }
+        ],
+        "task_contract": {
+          "assigned_tools": [],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5969,
+              "id": "data-analysis",
+              "path": "SKILL.md",
+              "sha256": "adb269f3ec5c9e1d272a11932864f78c7a672ad214a00d8354581a54325ed5d4"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T1_DETERMINISTIC",
+          "model_selection": null,
+          "primary_role": "data-analysis",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "data-analysis",
+              "lead_skill": "data-analysis",
+              "professional": {
+                "challenge": "Challenge product dashboards with unstable denominators and strategy claims that turn an association into causation; request experimentation when identification matters.",
+                "decision_rule": "Revise or qualify a finding when a plausible definition, missing group or cohort difference can change its direction or practical meaning.",
+                "handoff": "Provide metric definitions, input provenance, executable calculation, reconciliations, effect magnitude and decision-sensitive uncertainty.",
+                "method": [
+                  "Define the population, unit, time window and metric before calculating.",
+                  "Inspect coverage, missingness, duplicate identity and join cardinality.",
+                  "Reconcile transformations and compare compatible cohorts or populations.",
+                  "Check a control or boundary and deliver the finding with reproducible calculations."
+                ],
+                "perspective": "Determine what the observed data can support by making definitions, transformations and comparison populations explicit.",
+                "priorities": [
+                  "Correct grain and denominators",
+                  "Reconciled reproducible transformations",
+                  "Magnitude and uncertainty with applicability"
+                ]
+              },
+              "title": "Data Analysis and Deep Understanding"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Sort supplied text with no filesystem effects.",
+              "workflow": "structured-response"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "structured-response",
+              "rule": "Use the declared deterministic operation and input as data. A compound or ambiguous objective must resolve upward; no tools are available in this workflow."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        }
+      }
+    },
+    {
+      "case": "source-over-read-limit",
+      "exit_code": 1,
+      "stderr": "mirket: routed execution incomplete; trace <disposable-home>/.mirket/runs/routed-J3TKSD/trace.json: worker reported a blocker; run remains incomplete (see trace)\n",
+      "posts": [
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-frontier"
+        },
+        {
+          "path": "/v1/chat/completions",
+          "model": "fixture-frontier"
+        }
+      ],
+      "trace": {
+        "attempts": [
+          {
+            "effort": "high",
+            "max_completion_tokens": 64000,
+            "model": "fixture-frontier",
+            "target": "fixture",
+            "tier": "T3_ARCHITECT",
+            "turn": 1
+          },
+          {
+            "effort": "high",
+            "max_completion_tokens": 64000,
+            "model": "fixture-frontier",
+            "target": "fixture",
+            "tier": "T3_ARCHITECT",
+            "turn": 2
+          }
+        ],
+        "error": "Execution stopped; inspect checkpoint and workspace before resuming. Effects may already have occurred.",
+        "host_verification": null,
+        "resolution": {
+          "downgrade_rejected": false,
+          "effort_profile": "high",
+          "min_tier": "T3_ARCHITECT",
+          "reasons": [
+            "task floor: T2Synthesis",
+            "tool workspace_list floor: T1Deterministic",
+            "tool workspace_read floor: T1Deterministic",
+            "multiple assigned tools require at least T2",
+            "owned task-needs floor: T2Synthesis",
+            "quality selection and failover floor: T3Architect"
+          ],
+          "requested_effort": null,
+          "requires_structured_outputs": true,
+          "requires_tools": true,
+          "requires_vision": false
+        },
+        "result": null,
+        "status": "incomplete",
+        "task_contract": {
+          "assigned_tools": [
+            "workspace_list",
+            "workspace_read"
+          ],
+          "authority": "Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled.",
+          "design_gate": null,
+          "guidance": [
+            {
+              "bytes": 5184,
+              "id": "research-and-synthesis",
+              "path": "SKILL.md",
+              "sha256": "8e3d4b133194ef9c6e0a57a5d654d52235c9dd86a10a7343c0ddebcc98f48266"
+            }
+          ],
+          "host_verification": null,
+          "min_tier": "T2_SYNTHESIS",
+          "model_selection": null,
+          "primary_role": "deep-research",
+          "required_tools": [],
+          "roles": [
+            {
+              "id": "deep-research",
+              "lead_skill": "research-and-synthesis",
+              "professional": {
+                "challenge": "Challenge strategy or marketing conclusions whose certainty exceeds their source; challenge analysts who transfer a result across incompatible populations.",
+                "decision_rule": "Stop searching when the important claims support the decision; reduce confidence or withhold a conclusion when unresolved evidence could reverse it.",
+                "handoff": "Provide a claim-to-source map, counterevidence, applicability limits and the next observation that would change the recommendation.",
+                "method": [
+                  "Decompose the decision into material claims and define evidence needed for each.",
+                  "Search alternate terminology and disconfirming explanations; read original sources.",
+                  "Compare methods, definitions, dates and evidentiary independence.",
+                  "Synthesize the supported choice with its reversal conditions and remaining gaps."
+                ],
+                "perspective": "Protect the decision from unsupported certainty by comparing evidence origins, applicability and competing explanations.",
+                "priorities": [
+                  "Claims supported by actually read sources",
+                  "Counterevidence and applicability",
+                  "A useful conclusion at justified confidence"
+                ]
+              },
+              "title": "Deep Research"
+            }
+          ],
+          "task_needs": [
+            {
+              "reason": "Synthesize supplied synthetic evidence.",
+              "workflow": "analysis"
+            }
+          ],
+          "tool_selection": "automatic",
+          "verification_tools": [],
+          "workflow_rules": [
+            {
+              "id": "analysis",
+              "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool."
+            }
+          ],
+          "workspaces": {
+            "design_workspace": "<disposable-home>/.mirket/execution/podman/staging/design/workspace/projects/06f8d149db73711b7d983d1c0e2b8855e5289f08977c1233844d49654a787439",
+            "path_rule": "Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope.",
+            "project_root": "<disposable-home>/project"
+          }
+        },
+        "transcript": [
+          {
+            "deterministic_input": null,
+            "deterministic_operation": null,
+            "objective": "Synthesize the supplied evidence: the answer is 42."
+          },
+          {
+            "assistant": {
+              "action": "tool",
+              "arguments_json": "{\"path\": \"large.txt\"}",
+              "result": "",
+              "tool": "workspace_read"
+            }
+          },
+          {
+            "effects": "No mutating tool was dispatched. Reinspect current inputs before another attempt.",
+            "error": "file is not regular or exceeds 131072 bytes",
+            "tool": "workspace_read"
+          },
+          {
+            "assistant": {
+              "action": "blocked",
+              "arguments_json": "{}",
+              "result": "Cannot read source with the assigned tool.",
+              "tool": ""
+            }
+          }
+        ],
+        "workflow": {
+          "engine": "ephemeral",
+          "reason": "agent-runtime not selected",
+          "resumable": false
+        }
+      }
+    }
+  ]
+}

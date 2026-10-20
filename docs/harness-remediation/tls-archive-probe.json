@@ -1,0 +1,6 @@
+{
+  "purpose": "Exercise patched native HTTPS client and pinned archive member validation; no installation or upstream code execution",
+  "exit_code": 0,
+  "stdout": "{\n  \"executed\": false,\n  \"files\": 5,\n  \"id\": \"matt-domain-modeling\",\n  \"sha256\": \"2c3aac14e652b351b3fca627aa2433b731979aaafa0fdca66881884d74c0f1c3\"\n}\n",
+  "stderr": ""
+}

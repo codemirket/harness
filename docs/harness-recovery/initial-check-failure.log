@@ -1,0 +1,23 @@
+mirket dev: cargo fmt --all -- --check
+mirket dev: cargo clippy --locked --all-targets -- -D warnings
+   Compiling mirket v1.0.11 (<checkout>)
+error: the `Err`-variant returned from this closure is very large
+   --> tests/motion_payload.rs:310:25
+    |
+310 |           .unwrap_or_else(|error| {
+    |  _________________________^
+311 | |             panic!(
+312 | |                 "MCP initialization: {error}; phases: {}",
+313 | |                 fs::read_to_string(&diagnostics).unwrap()
+314 | |             )
+315 | |         })
+    | |_________^ the `Err`-variant is at least 376 bytes
+    |
+    = help: try reducing the size of `rmcp::service::ClientInitializeError`, for example by boxing large elements or replacing it with `Box<rmcp::service::ClientInitializeError>`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#result_large_err
+    = note: `-D clippy::result-large-err` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::result_large_err)]`
+
+error: could not compile `mirket` (test "motion_payload") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+mirket: cargo clippy --locked --all-targets -- -D warnings failed

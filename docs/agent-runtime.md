@@ -7,6 +7,32 @@ checkpointer 3.1.2. It is an internal package behind the existing Mirket MCP
 connection. It does not install a third desktop server, run LangSmith, create a
 Mem0 account, or select an inference provider.
 
+Worker traces retain numeric usage observations for HTTP and native Codex/Claude
+inference attempts, including failed terminal responses when their identity is
+verified. Responses usage includes cache and reasoning breakdowns when supplied.
+Claude's terminal main-loop counters keep cache reads/writes separate from
+uncached input; repeated assistant frames are not summed. Each native invocation
+uses a new session, so its one terminal result is counted once.
+
+Claude's `cost_estimate_usd` is labeled `native_sdk_estimate`: it comes from the
+installed CLI's price table and is not billed spend. Codex cost remains null when
+the Responses transport reports no price. Mirket does not invent a rate from a
+model name or treat subscription usage as free. The run's `accounting` field
+reports known estimated cost separately; its total remains null if any recorded
+attempt lacks a cost, including interrupted and older attempts. Existing
+attempts restored on resume are aggregated once from the durable list.
+Vision conformance probes now publish an exclusive intent receipt before
+dispatch under the run's `probes/` directory, followed by a numeric result
+receipt on success or failure. Interrupted probes retain unknown usage and cost.
+Resumed probes have distinct IDs; repeated accounting reads do not count them
+again. Failed preflight reports its retained run path even without a worker trace.
+Use `mirket agent accounting --run-id routed-ID` to inspect worker and probe
+subtotals together. Older runs without the accounting marker cannot establish
+complete probe history. Discovery sends account/control/model-list requests,
+not inference prompts; this does not measure account-wide billing.
+`billing_usd` remains null without authoritative billing evidence. This is observability,
+not a monetary budget, invoice or complete account-wide usage report.
+
 ```sh
 mirket package install design agent-runtime
 mirket package probe agent-runtime
@@ -125,8 +151,24 @@ mirket agent resume --project /absolute/path/project --run-id routed-ID --expect
 The MCP equivalents are `workflow_status` and `resume_subagent`. Resume requires
 explicit authorization to continue that worker and the observed checkpoint. It
 revalidates the compiled generation, contract/guidance/tool identities, original
-provider/model capabilities, artifact/image hashes and remaining budget. It does
-not reset turns, design correction counts or elapsed time. For a pending
+selected provider/model execution capabilities, native executable bytes,
+artifact/image hashes and remaining budget. Labels, descriptions, pricing and
+classification explanations may change without invalidating recovery. An unused
+candidate that disappears or changes its execution contract is excluded from
+failover and recorded in the trace; saved candidate indices remain stable. A
+selected native model with previously probed vision support and unknown refreshed
+metadata must pass a new conformance probe on the same bound executable. It cannot
+borrow another model's vision receipt.
+
+A persisted incomplete return at a worker boundary can record a known inactive
+pause. On resume, LangGraph credits only that interval, with a cumulative maximum
+of 24 hours across the run. Turns, active seconds and design repair counts never
+reset. Crashes without a persisted pause, pending effects and expired active
+budgets retain the original wall deadline. Failed pause persistence grants no
+credit. `paused_at` and `pause_used` distinguish a paused run from an expired active
+run; the stored deadline is advanced once when the pause is resumed. Existing
+checkpoints without these fields receive no retrospective credit. Clock rollback
+or exhausted pause allowance rejects resume. For a pending
 `workspace_write`, the saved intent binds exact before/after digests, including
 edits. Resume compares current bytes: intended bytes restore the artifact
 obligation; original bytes allow the worker to reconsider the action. Neither
@@ -336,3 +378,15 @@ the ceiling prevented filling the requested result count; an empty result in tha
 case is not evidence that no matching active fact exists. History and exports keep
 the original facts. This is bounded retrieval, not a claim of exhaustive semantic
 relevance. See [release acceptance](../CONTRIBUTING.md#contained-release-acceptance).
+
+### Focused worker recall
+
+A worker request may provide `memory_queries` (up to eight nonempty strings,
+512 characters each). The embedding token window is also enforced; an explicit
+query is never silently truncated. Without explicit queries, recall considers
+both ends of the objective and declared task-need reasons, then samples remaining
+objective chunks within eight queries. The receipt records the actual queries and
+marks bounded/shortened coverage incomplete. Up to twenty results are interleaved
+across query ranks without treating cross-query scores as calibrated. Required
+recall rejects an absent runtime before model inference; an available empty store
+can still return no facts.

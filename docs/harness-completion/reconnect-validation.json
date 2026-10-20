@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "checks": [
+    "Actual Codex MCP source and executable match accepted candidate",
+    "Installed binary matches running MCP process",
+    "All 15 reported design runtime files match checkout",
+    "Source token hash matches actual input",
+    "All five compiled formats preserve ink #17253c; Penpot DTCG JSON matches source"
+  ],
+  "runtime_source_mapping": {
+    "media-evidence.mjs": "runtime/design/tools/media-evidence.mjs",
+    "operations.mjs": "runtime/design/tools/operations.mjs",
+    "package-lock.json": "runtime/design/tools/package-lock.json",
+    "paths.mjs": "runtime/design/tools/paths.mjs",
+    "penpot-export.mjs": "runtime/design/tools/penpot-export.mjs",
+    "penpot-session.mjs": "runtime/design/penpot-session.mjs",
+    "penpot-tokens.mjs": "runtime/design/tools/penpot-tokens.mjs",
+    "raster-worker.mjs": "runtime/design/tools/raster-worker.mjs",
+    "request.mjs": "runtime/design/tools/request.mjs",
+    "server.mjs": "runtime/design/tools/server.mjs",
+    "tokens.mjs": "runtime/design/tools/tokens.mjs",
+    "tool-budgets.json": "runtime/design/tools/tool-budgets.json",
+    "tool-policy.json": "runtime/design/tools/tool-policy.json",
+    "vector-worker.mjs": "runtime/design/tools/vector-worker.mjs",
+    "workspace-server.mjs": "runtime/design/tools/workspace-server.mjs"
+  },
+  "cache_reused": true,
+  "outputs": {
+    "penpot.tokens.json": {
+      "sha256": "4c6c09dc4a1a40df7a2e310479840844dc16677bcbae9091f34a7883af2e2158",
+      "text": "{\n  \"color\": {\n    \"ink\": {\n      \"$type\": \"color\",\n      \"$value\": \"#17253c\"\n    }\n  }\n}\n"
+    },
+    "tokens.css": {
+      "sha256": "3c4b6cab294fa9ab0c82acb8b2516e4eb984c6bddc4f52dd2ca8f7efe43bbfb9",
+      "text": "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n:root {\n  --color-ink: #17253c;\n}\n"
+    },
+    "tokens.js": {
+      "sha256": "7eca4b18f7f7d78dbd83dd2ec5d0605b05325925417cb6953ba1a1235b744fd4",
+      "text": "export const tokens = {\n  \"color.ink\": \"#17253c\"\n};\n"
+    },
+    "tokens.ts": {
+      "sha256": "eec963f381c2b42727ac3a9a991e35b10e4a9e8c462987de6d350a327b116d14",
+      "text": "export const tokens = {\n  \"color.ink\": \"#17253c\"\n} as const;\n"
+    },
+    "tokens.typ": {
+      "sha256": "91b563631025a842f486d78dac3c6afdbab627466222434f8378cf1c08d3860b",
+      "text": "#let tokens = ((\"color.ink\", \"#17253c\"),).to-dict()\n"
+    }
+  },
+  "limits": "Cached compile result; proves connected runtime identity and retained output content, not a fresh build or every design tool. Claude Desktop connection was not observed.",
+  "initial_validation_failure": "Initial host comparison assumed every design module lived under tools/. penpot-session.mjs is owned by runtime/design/; corrected the source mapping before comparison. No runtime or result changed."
+}

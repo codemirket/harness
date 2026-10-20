@@ -1,0 +1,171 @@
+{
+  "identity": {
+    "executable_sha256": "ea401ce2e2811dabca888170365428bd7d7373cb4fa5ee4ce465ce48725386fe",
+    "pid": 64633,
+    "source_sha256": "0f2752da0685d726e4a1d5b142aac08d0262c7c1afb62ed9fbe525939b534303",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "providers": [
+    {
+      "provider": "codex",
+      "status": "complete",
+      "model": "gpt-6.1-sol",
+      "accounting": {
+        "attempts_with_usage": 2,
+        "inference_attempts": 3,
+        "known_cost_estimate_usd": 0.0,
+        "limits": "SDK estimates are not billing. Missing, interrupted or older observations remain unknown; input counters have provider-specific cache semantics.",
+        "scope": "Recorded worker inference attempts, including retries and restored attempts; excludes discovery and vision conformance probes.",
+        "total_cost_estimate_usd": null,
+        "unknown_cost_attempts": 3
+      },
+      "attempts": [
+        {
+          "turn": 1,
+          "target": "codex-desktop-1",
+          "model": "gpt-6.1-sol",
+          "inference": {
+            "cost_estimate_usd": null,
+            "cost_source": "unavailable",
+            "elapsed_ms": 13881,
+            "input_token_semantics": "input includes cache counters; reasoning is part of output",
+            "response_sha256": "ca113de238c34c4bc9e0cd5fd2014b61a7ec96792a751f2e52a36cacd147fc0b",
+            "usage": {
+              "cache_write_input_tokens": 0,
+              "cached_input_tokens": 0,
+              "input_tokens": 1857,
+              "output_tokens": 32,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 1889
+            },
+            "usage_source": "provider_reported"
+          },
+          "failure": null,
+          "retry": null
+        },
+        {
+          "turn": 2,
+          "target": "codex-desktop-1",
+          "model": "gpt-6.1-sol",
+          "inference": {
+            "cost_estimate_usd": null,
+            "cost_source": "unavailable",
+            "elapsed_ms": 22081,
+            "response_sha256": null,
+            "usage": null,
+            "usage_source": "unavailable"
+          },
+          "failure": {
+            "code": "transport_failure",
+            "effects": "Unknown; inspect the checkpoint and workspace before replaying effects.",
+            "json_column": null,
+            "json_line": null,
+            "message": "Execution stopped. Numeric parse location and inference response digest are retained when available; raw provider errors are excluded.",
+            "native_code": null,
+            "retryable_transport": true,
+            "stage": "inference"
+          },
+          "retry": null
+        },
+        {
+          "turn": null,
+          "target": "codex-desktop-1",
+          "model": "gpt-6.1-sol",
+          "inference": null,
+          "failure": null,
+          "retry": "inference_transport"
+        },
+        {
+          "turn": 3,
+          "target": "codex-desktop-1",
+          "model": "gpt-6.1-sol",
+          "inference": {
+            "cost_estimate_usd": null,
+            "cost_source": "unavailable",
+            "elapsed_ms": 19195,
+            "input_token_semantics": "input includes cache counters; reasoning is part of output",
+            "response_sha256": "6a1f53e5a5faf66b68a57bf40346d2b33b4e4f0d2536ecd49f7df0dd0ba432e2",
+            "usage": {
+              "cache_write_input_tokens": 0,
+              "cached_input_tokens": 0,
+              "input_tokens": 2032,
+              "output_tokens": 141,
+              "reasoning_output_tokens": 0,
+              "total_tokens": 2173
+            },
+            "usage_source": "provider_reported"
+          },
+          "failure": null,
+          "retry": null
+        }
+      ],
+      "trace_sha256": "ef3a89a0c05888a5b5a026ae060567b2b4f18b1c95692404f36d41037e9eb74f",
+      "result": "Inspected `ready.txt`. Its exact content is `ready\\n` (the word `ready` followed by a newline), totaling 6 bytes.\n\nSource evidence: complete `workspace_read` receipt for `/private/tmp/mirket-finish-native/project/ready.txt`, bytes 0\u20136; SHA-256: `ed1a545bb85e55816bbf9566b028b2a0bc456b88f49f6f266c0401048824194b`.\n\nNo files were modified or other files inspected."
+    },
+    {
+      "provider": "claude",
+      "status": "complete",
+      "model": "claude-sonnet-5-5",
+      "accounting": {
+        "attempts_with_usage": 2,
+        "inference_attempts": 2,
+        "known_cost_estimate_usd": 0.0332268,
+        "limits": "SDK estimates are not billing. Missing, interrupted or older observations remain unknown; input counters have provider-specific cache semantics.",
+        "scope": "Recorded worker inference attempts, including retries and restored attempts; excludes discovery and vision conformance probes.",
+        "total_cost_estimate_usd": 0.0332268,
+        "unknown_cost_attempts": 0
+      },
+      "attempts": [
+        {
+          "turn": 1,
+          "target": "claude",
+          "model": "claude-sonnet-5-5",
+          "inference": {
+            "cost_estimate_usd": 0.0153794,
+            "cost_source": "native_sdk_estimate",
+            "elapsed_ms": 4528,
+            "input_token_semantics": "uncached_input; cache_read and cache_write are separate",
+            "response_sha256": "9db36745737cfd439936cb4bab4dd6139333586de4be75b0af2ff168577abf71",
+            "usage": {
+              "cache_write_input_tokens": 3380,
+              "cached_input_tokens": 1677,
+              "input_tokens": 2,
+              "output_tokens": 152,
+              "reasoning_output_tokens": null,
+              "total_tokens": null
+            },
+            "usage_source": "claude_result_main_loop"
+          },
+          "failure": null,
+          "retry": null
+        },
+        {
+          "turn": 2,
+          "target": "claude",
+          "model": "claude-sonnet-5-5",
+          "inference": {
+            "cost_estimate_usd": 0.0178474,
+            "cost_source": "native_sdk_estimate",
+            "elapsed_ms": 7209,
+            "input_token_semantics": "uncached_input; cache_read and cache_write are separate",
+            "response_sha256": "e7532f10f3d030cadc828e45edbb6479a1df9e26e928048b76dd942d1cbb68af",
+            "usage": {
+              "cache_write_input_tokens": 3682,
+              "cached_input_tokens": 1677,
+              "input_tokens": 2,
+              "output_tokens": 278,
+              "reasoning_output_tokens": null,
+              "total_tokens": null
+            },
+            "usage_source": "claude_result_main_loop"
+          },
+          "failure": null,
+          "retry": null
+        }
+      ],
+      "trace_sha256": "e5bf752ee076d27340f6a4c2a6b5c34ea589151c12cd92088109fd994befee4f",
+      "result": "Source inspection of /private/tmp/mirket-finish-native/project/ready.txt (single full read, no other files inspected, nothing modified): the exact content is \"ready\" followed by a newline (6 bytes total, offset 0\u20136, complete in one page, next_offset null). SHA-256: ed1a545bb85e55816bbf9566b028b2a0bc456b88f49f6f266c0401048824194b. The read receipt covers the whole file, so this verifies the full artifact."
+    }
+  ]
+}

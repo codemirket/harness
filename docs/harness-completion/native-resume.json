@@ -1,0 +1,174 @@
+[
+  {
+    "provider": "codex",
+    "process": {
+      "executable_sha256": "713751ac13aff1360c2dd3c9632ff9278d871db96fd5ed8685fdac5bc953971e",
+      "pid": 13285,
+      "source_sha256": "3c99735925bbdc946d5e0fffcb97e14d1aaee0d1cd5fbb5eb4164fee11db8ca6",
+      "target": "aarch64-apple-darwin",
+      "version": "1.0.11"
+    },
+    "model": {
+      "available": true,
+      "capabilities": {
+        "context_window": null,
+        "max_completion_tokens": null,
+        "pricing": null,
+        "reasoning_efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max",
+          "ultra"
+        ],
+        "structured_outputs": true,
+        "thinking_budget_max": null,
+        "thinking_modes": [],
+        "tools": true,
+        "vision": true
+      },
+      "classification_evidence": [
+        "discovered metadata from codex-desktop-1",
+        "native CLI strict JSON action protocol; tool dispatch is owned by Mirket",
+        "policy: verified tools and structured outputs; full-size signal workhorse",
+        "policy: high reasoning plus frontier or full-size workhorse signal"
+      ],
+      "description": "Latest workhorse model for coding and everyday work.",
+      "display_name": "GPT-6.1-Sol",
+      "id": "gpt-6.1-sol",
+      "line": null,
+      "target": "codex-desktop-1",
+      "tier": "T3_ARCHITECT"
+    },
+    "first_status": "incomplete",
+    "first_error": {
+      "code": "worker_blocked",
+      "effects": "Unknown; inspect the checkpoint and workspace before replaying effects.",
+      "json_column": null,
+      "json_line": null,
+      "message": "Execution stopped. Numeric parse location and inference response digest are retained when available; raw provider errors are excluded.",
+      "retryable_transport": false,
+      "stage": "execution"
+    },
+    "first_workflow": {
+      "checkpoint_id": "1f1cc881-868e-655e-8006-88844057b689",
+      "deadline": 1792509201,
+      "engine": "langgraph",
+      "interrupts": [
+        {
+          "effect": {},
+          "kind": "worker_turn",
+          "turn": 2
+        }
+      ],
+      "next": [
+        "worker"
+      ],
+      "pause_used": 0,
+      "paused_at": 1792502032,
+      "resumable": true
+    },
+    "resumed_workflow": {
+      "checkpoint_id": "1f1cc885-4906-6bf5-8010-44af04a39dc6",
+      "deadline": 1792509276,
+      "engine": "langgraph",
+      "interrupts": [],
+      "next": [],
+      "pause_used": 75,
+      "paused_at": 0,
+      "resumable": false
+    },
+    "result": "Top-left: red; top-right: green; bottom-left: blue; bottom-right: yellow.",
+    "first_trace_sha256": "2ae4ec4b2770723607e3bcce3814db62ce0f3800f5789c4ba3c5ee8e16069f1e",
+    "resumed_receipt_sha256": "37327499660f930e85bf715c04330bb6925f23b9343eb23db525b788f4874b0f",
+    "source_note": "Codex journey preceded the vision temporary-path, diagnostics and cache-merge fixes. Claude journey includes the temporary-path/diagnostics fixes and precedes cache merge. The separate live cache check uses the final source in a debug binary; release acceptance binds the final optimized candidate."
+  },
+  {
+    "provider": "claude",
+    "process": {
+      "executable_sha256": "0a1474b1c0b8610826cf08d122a7cc2f63976340e34611a38bf4c4b33c48d720",
+      "pid": 13302,
+      "source_sha256": "dabe9a4be8b3277ea582598c4ccd585003fd83c0aa220a99877bc60942f0c3f4",
+      "target": "aarch64-apple-darwin",
+      "version": "1.0.11"
+    },
+    "model": {
+      "available": true,
+      "capabilities": {
+        "context_window": null,
+        "max_completion_tokens": null,
+        "pricing": null,
+        "reasoning_efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "structured_outputs": true,
+        "thinking_budget_max": null,
+        "thinking_modes": [],
+        "tools": true,
+        "vision": true
+      },
+      "classification_evidence": [
+        "discovered metadata from claude",
+        "native CLI strict JSON action protocol; tool dispatch is owned by Mirket",
+        "Claude initialize supportsEffort/supportedEffortLevels",
+        "native vision conformance: randomized four-quadrant image recognized",
+        "policy: verified tools and structured outputs; full-size signal sonnet",
+        "policy: high reasoning plus frontier or full-size workhorse signal"
+      ],
+      "description": "Sonnet 5.5 \u00b7 Efficient for routine tasks",
+      "display_name": "Sonnet",
+      "id": "claude-sonnet-5-5",
+      "line": null,
+      "target": "claude",
+      "tier": "T3_ARCHITECT"
+    },
+    "first_status": "incomplete",
+    "first_error": {
+      "code": "worker_blocked",
+      "effects": "Unknown; inspect the checkpoint and workspace before replaying effects.",
+      "json_column": null,
+      "json_line": null,
+      "message": "Execution stopped. Numeric parse location and inference response digest are retained when available; raw provider errors are excluded.",
+      "native_code": null,
+      "retryable_transport": false,
+      "stage": "execution"
+    },
+    "first_workflow": {
+      "checkpoint_id": "1f1cc895-8c68-6819-8006-d5812ba3e5bb",
+      "deadline": 1792509739,
+      "engine": "langgraph",
+      "interrupts": [
+        {
+          "effect": {},
+          "kind": "worker_turn",
+          "turn": 2
+        }
+      ],
+      "next": [
+        "worker"
+      ],
+      "pause_used": 0,
+      "paused_at": 1792502569,
+      "resumable": true
+    },
+    "resumed_workflow": {
+      "checkpoint_id": "1f1cc897-6175-6588-8010-b3fae33f93a7",
+      "deadline": 1792509765,
+      "engine": "langgraph",
+      "interrupts": [],
+      "next": [],
+      "pause_used": 26,
+      "paused_at": 0,
+      "resumable": false
+    },
+    "result": "ready.txt now reads \"ready\" (it read \"waiting\" earlier, before the host resumed the run). I inspected quadrants.png (sha256 a0de969e...c0b2) after that read. Quadrant colors in order: top-left red, top-right green, bottom-left blue, bottom-right yellow. I modified no files. Evidence limit: this is a visual read of the image only. I did not sample exact pixel values, so \"red\", \"green\", \"blue\" and \"yellow\" are color names, not verified RGB values.",
+    "first_trace_sha256": "edf29ab492685854c9aec9b3e2dac8ef185e9f257ba306495cf6ceba6bb6c887",
+    "resumed_receipt_sha256": "2122e0f31b30c07b2b27684622f4b70c7a39a9576bb83bbd18daf5a7dd0f9150",
+    "source_note": "Codex journey preceded the vision temporary-path, diagnostics and cache-merge fixes. Claude journey includes the temporary-path/diagnostics fixes and precedes cache merge. The separate live cache check uses the final source in a debug binary; release acceptance binds the final optimized candidate."
+  }
+]

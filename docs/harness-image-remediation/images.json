@@ -1,0 +1,241 @@
+{
+  "design-tools": {
+    "image_id": "sha256:6672f289fd1605fd1decaf76bbbae58eb3ade47eaa5238437c280876a1de717d",
+    "inventory_complete": true,
+    "packages_by_type": {
+      "debian": 351,
+      "node-pkg": 311,
+      "gobinary": 3
+    },
+    "findings": 1116,
+    "severity": {
+      "LOW": 283,
+      "HIGH": 301,
+      "MEDIUM": 487,
+      "UNKNOWN": 37,
+      "CRITICAL": 8
+    },
+    "fixed_high_critical": [],
+    "raw_sha256": "7e7a20be6b382776f9197b2b416c84735ba99c81d7d3b923d9ccac0dfea80bd6",
+    "before": {
+      "findings": 1778,
+      "severity": {
+        "LOW": 412,
+        "HIGH": 543,
+        "MEDIUM": 770,
+        "CRITICAL": 16,
+        "UNKNOWN": 37
+      }
+    }
+  },
+  "penpot-mcp": {
+    "image_id": "sha256:3923d369c0c846d0df1cc8547317fd10149a2e70e7487593394bd5afd2a13161",
+    "inventory_complete": true,
+    "packages_by_type": {
+      "debian": 88,
+      "node-pkg": 130
+    },
+    "findings": 228,
+    "severity": {
+      "LOW": 83,
+      "HIGH": 56,
+      "MEDIUM": 87,
+      "UNKNOWN": 1,
+      "CRITICAL": 1
+    },
+    "fixed_high_critical": [],
+    "raw_sha256": "dbdf9328d0e29a45122025a4952199dab89635a4df0425962ca43b55666a92b3",
+    "before": {
+      "findings": 241,
+      "severity": {
+        "LOW": 83,
+        "HIGH": 60,
+        "MEDIUM": 93,
+        "CRITICAL": 4,
+        "UNKNOWN": 1
+      }
+    }
+  },
+  "penpot-backend": {
+    "image_id": "sha256:023d40a54df39f66b638ea13c64a3fa19cfc4b0b8ac8c084aa7326895b847040",
+    "inventory_complete": true,
+    "packages_by_type": {
+      "debian": 228,
+      "jar": 167
+    },
+    "findings": 685,
+    "severity": {
+      "LOW": 274,
+      "HIGH": 121,
+      "MEDIUM": 225,
+      "UNKNOWN": 61,
+      "CRITICAL": 4
+    },
+    "fixed_high_critical": [
+      {
+        "VulnerabilityID": "CVE-2026-106451",
+        "PkgName": "at.yawk.lz4:lz4-java",
+        "InstalledVersion": "1.11.2",
+        "FixedVersion": "1.11.4",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-106451",
+        "Title": "org.lz4/lz4-java: lz4-java: Arbitrary code execution via insecure temporary file handling",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-89407",
+        "PkgName": "com.fasterxml.jackson.core:jackson-core",
+        "InstalledVersion": "2.22.2",
+        "FixedVersion": "2.18.11, 2.21.7, 2.22.3",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-89407",
+        "Title": "com.fasterxml.jackson/jackson-core: tools.jackson.core/jackson-core: Jackson-core: Denial of Service via regular expression backtracking",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-89425",
+        "PkgName": "com.fasterxml.jackson.core:jackson-core",
+        "InstalledVersion": "2.22.2",
+        "FixedVersion": "2.21.7, 2.22.3, 2.18.11",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-89425",
+        "Title": "com.fasterxml.jackson.core/jackson-core: Jackson-core: Denial of Service via unbounded StringBuilder growth during malformed token processing",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-91776",
+        "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+        "InstalledVersion": "2.22.2",
+        "FixedVersion": "2.18.11, 2.21.7, 2.22.3",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-91776",
+        "Title": "jackson-databind: com.fasterxml.jackson/jackson-core: jackson-databind: Denial of Service via unbounded cache growth in TypeDeserializerBase",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-91777",
+        "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+        "InstalledVersion": "2.22.2",
+        "FixedVersion": "2.21.7, 2.18.11, 2.22.3",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-91777",
+        "Title": "com.fasterxml.jackson.core/jackson-databind: tools.jackson.core:jackson-databind: Jackson-databind: Denial of Service via quadratic forward-reference completion",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-75595",
+        "PkgName": "io.netty:netty-handler",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.17.Final, 4.1.137.Final",
+        "Severity": "CRITICAL",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-75595",
+        "Title": "io.netty/netty-handler: Netty: SNI Routing Bypass via Fragmented TLS ClientHello Causing Fallback to Default SslContext",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-44249",
+        "PkgName": "io.netty:netty-handler",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.15.Final, 4.1.135.Final",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-44249",
+        "Title": "netty-handler: netty-handler: IPv6 subnet rule bypass due to incorrect masking operation",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-45416",
+        "PkgName": "io.netty:netty-handler",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.15.Final, 4.1.135.Final",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-45416",
+        "Title": "netty-handler: Netty: Denial of Service due to eager buffer allocation in TLS handshake",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-50010",
+        "PkgName": "io.netty:netty-handler",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.15.Final, 4.1.135.Final",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-50010",
+        "Title": "netty-handler: Netty: Improper trust manager handling leads to hostname verification bypass",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-45674",
+        "PkgName": "io.netty:netty-resolver-dns",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.15.Final, 4.1.135.Final",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-45674",
+        "Title": "netty-resolver-dns: Netty: Information disclosure and data manipulation due to improper CNAME record validation",
+        "type": "jar"
+      },
+      {
+        "VulnerabilityID": "CVE-2026-47691",
+        "PkgName": "io.netty:netty-resolver-dns",
+        "InstalledVersion": "4.2.13.Final",
+        "FixedVersion": "4.2.15.Final, 4.1.135.Final",
+        "Severity": "HIGH",
+        "Status": "fixed",
+        "SeveritySource": "ghsa",
+        "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-47691",
+        "Title": "io.netty/netty-resolver-dns: Netty has Insufficient Bailiwick Validation for NS Records",
+        "type": "jar"
+      }
+    ],
+    "raw_sha256": "53cae4520eafcec365f1181afeedc2e3466cb745171e22f8b7be14354718704c"
+  },
+  "agent-runtime": {
+    "image_id": "sha256:7f80f5f9446b1dfffdbb08cf28384c1ca8ecb81e84ed3309782a3fbd9a374f1a",
+    "inventory_complete": true,
+    "packages_by_type": {
+      "debian": 97,
+      "python-pkg": 109
+    },
+    "findings": 254,
+    "severity": {
+      "LOW": 91,
+      "HIGH": 61,
+      "MEDIUM": 99,
+      "CRITICAL": 2,
+      "UNKNOWN": 1
+    },
+    "fixed_high_critical": [],
+    "raw_sha256": "4fa20ce74b41abbc54e8cd540db6f966b6daa1b3895c38118f022fa87e42cf0e",
+    "before": {
+      "findings": 260,
+      "severity": {
+        "LOW": 91,
+        "HIGH": 65,
+        "MEDIUM": 101,
+        "CRITICAL": 2,
+        "UNKNOWN": 1
+      }
+    }
+  },
+  "limits": "Finding occurrences, not exploitability. Original Penpot payload OS coverage remains missing. No exceptions added; all image gates remain red.",
+  "source_sha256": "712494f47832c1ae5268d4d8bf4806221e66582c2356f17c860f4026069767cc",
+  "scanner_sha256": "6b2f54b179c68f329370836a1e116aab7b7effa1bcfa3cd1e57fb28af550ecc2"
+}

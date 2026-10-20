@@ -13,6 +13,7 @@ use std::{
     path::{Path, PathBuf},
     time::{Duration, Instant},
 };
+pub(crate) mod backend_check;
 
 const REGISTRY: &str = include_str!("../../registry/design-stack.json");
 const OWNER_LABEL: &str = "org.mirket.design-owner";
@@ -36,10 +37,11 @@ const PUBLISHED: [(&str, &str, u16); 4] = [
     ("penpot_plugin", "penpot-mcp", 4400),
     ("kroki", "kroki", 8000),
 ];
-const REMOTE: [&str; 8] = [
+const REMOTE: [&str; 9] = [
     "penpot-postgres",
     "penpot-valkey",
-    "penpot-backend",
+    "penpot-backend-payload",
+    "debian-backend",
     "penpot-exporter",
     "penpot-frontend",
     "kroki-excalidraw",
@@ -225,7 +227,7 @@ fn owner(paths: &Paths) -> String {
 }
 fn registry_hash() -> String {
     let mut bytes = REGISTRY.as_bytes().to_vec();
-    for kind in ["penpot-mcp", "design-tools"] {
+    for kind in ["penpot-mcp", "design-tools", "penpot-backend"] {
         bytes.extend_from_slice(recipe_id(&build_files(kind)).as_bytes());
     }
     util::sha256(&bytes)
@@ -664,7 +666,7 @@ fn recipe_id(files: &[(&str, &[u8])]) -> String {
 }
 fn build_recipe(registry: &Value, kind: &str) -> Result<String> {
     let mut identity = recipe_id(&build_files(kind));
-    if kind != "design-tools" {
+    if kind == "penpot-mcp" {
         identity.push_str(
             registry["builds"][kind]["sha256"]
                 .as_str()
@@ -675,6 +677,16 @@ fn build_recipe(registry: &Value, kind: &str) -> Result<String> {
 }
 fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
+        "penpot-backend" => vec![
+            (
+                "Dockerfile",
+                include_bytes!("../../runtime/design/penpot-backend/Dockerfile"),
+            ),
+            (
+                "NOTICE.md",
+                include_bytes!("../../runtime/design/penpot-backend/NOTICE.md"),
+            ),
+        ],
         "penpot-mcp" => vec![
             (
                 "production.mjs",
@@ -799,6 +811,66 @@ fn archive(paths: &Paths, registry: &Value, kind: &str, stage: &Path) -> Result<
     let _ = paths;
     util::atomic_write(&path, &bytes)
 }
+/// Development test run in an isolated container; never changes service selection,
+/// receipts or running services. The normal reviewed recipe supplies dependencies.
+pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
+    let engine = Engine::resolve(paths)?;
+    engine.ready()?;
+    let registry = definition()?;
+    let image = prepare_build(paths, &engine, &registry, "design-tools")?;
+    let tests = project.join("runtime/design/tools/test").canonicalize()?;
+    let payload = crate::catalog::read_payload_directory(&tests, &[])?;
+    let stage = tempfile::Builder::new()
+        .prefix("design-test-")
+        .tempdir_in(&engine.staging)?;
+    let mut names = Vec::new();
+    for (name, bytes) in payload {
+        let destination = stage.path().join(&name);
+        util::ensure_directory(destination.parent().context("test fixture parent")?)?;
+        util::atomic_write(&destination, &bytes)?;
+        if name.ends_with(".test.mjs") {
+            names.push(format!("/opt/design/test/{name}"));
+        }
+    }
+    ensure!(!names.is_empty(), "no design tests found");
+    let mut args = vec![
+        "run".into(),
+        "--rm".into(),
+        "--network=none".into(),
+        "--read-only".into(),
+        "--cap-drop=ALL".into(),
+        "--security-opt=no-new-privileges".into(),
+        "--pids-limit=512".into(),
+        "--memory=2g".into(),
+        "--memory-swap=2g".into(),
+        "--tmpfs=/tmp:rw,size=768m,mode=1777".into(),
+        "--env=MIRKET_LIVE_BROWSER_TEST=1".into(),
+        "--env=MIRKET_ISOLATED_TEST=1".into(),
+        "--tmpfs=/workspace:rw,size=512m,mode=1777".into(),
+        "--add-host=design-tools:127.0.0.1".into(),
+        format!("--volume={}:/opt/design/test:ro", stage.path().display()),
+        "--entrypoint=node".into(),
+        image.clone(),
+        "--test".into(),
+        "--test-reporter=spec".into(),
+    ];
+    args.extend(names);
+    let output = engine.run(&args, Duration::from_secs(300))?;
+    Ok(
+        json!({"ok":true,"image":image,"output":output,"scope":"Isolated test container; no user workspace mount or running service change"}),
+    )
+}
+
+pub(crate) fn candidate_image(paths: &Paths, kind: &str) -> Result<String> {
+    ensure!(
+        ["design-tools", "penpot-mcp", "penpot-backend"].contains(&kind),
+        "unknown reviewed design build"
+    );
+    let engine = Engine::resolve(paths)?;
+    engine.ready()?;
+    prepare_build(paths, &engine, &definition()?, kind)
+}
+
 fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -> Result<String> {
     let files = build_files(kind);
     let recipe = build_recipe(registry, kind)?;
@@ -810,6 +882,27 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
             "reviewed design build tag has untrusted recipe label: {kind}"
         );
         return Ok(id);
+    }
+    let bases: &[&str] = if kind == "penpot-backend" {
+        &["penpot-backend-payload", "debian-backend"]
+    } else {
+        &["node-build"]
+    };
+    for base in bases {
+        let reference = registry["images"][base].as_str().context("build base")?;
+        if image_id(engine, reference).is_err() {
+            run(
+                engine,
+                vec![
+                    "pull".into(),
+                    "--quiet".into(),
+                    "--platform=linux/arm64".into(),
+                    reference.into(),
+                ],
+                Duration::from_secs(900),
+            )?;
+        }
+        image_id(engine, reference)?;
     }
     let stage_parent = engine.staging.join("design/build");
     util::reject_symlink_components(&stage_parent)?;
@@ -823,7 +916,7 @@ fn prepare_build(paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -
         util::ensure_directory(destination.parent().context("build file parent")?)?;
         util::atomic_write(&destination, contents)?;
     }
-    if kind != "design-tools" {
+    if kind == "penpot-mcp" {
         archive(paths, registry, kind, stage)?;
     }
     run(
@@ -919,7 +1012,7 @@ pub(super) fn prepare(paths: &Paths) -> Result<()> {
         };
         images.insert((*alias).to_owned(), id);
     }
-    for alias in ["penpot-mcp", "design-tools"] {
+    for alias in ["penpot-mcp", "design-tools", "penpot-backend"] {
         images.insert(
             alias.into(),
             prepare_build(paths, &engine, &registry, alias)?,
@@ -978,7 +1071,14 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
     let references = ALIASES
         .iter()
         .map(|alias| {
-            if ["penpot-mcp", "design-tools", "penpot-session"].contains(alias) {
+            if [
+                "penpot-mcp",
+                "design-tools",
+                "penpot-session",
+                "penpot-backend",
+            ]
+            .contains(alias)
+            {
                 value
                     .images
                     .get(*alias)
@@ -1002,7 +1102,14 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
             inspected_image_id(inspection, image)? == *expected,
             "design image drift: {alias}"
         );
-        if ["penpot-mcp", "design-tools", "penpot-session"].contains(alias) {
+        if [
+            "penpot-mcp",
+            "design-tools",
+            "penpot-session",
+            "penpot-backend",
+        ]
+        .contains(alias)
+        {
             ensure!(
                 inspection["Labels"][BUILD_LABEL]
                     == build_recipe(

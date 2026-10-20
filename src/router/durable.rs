@@ -45,6 +45,34 @@ fn resumable_boundary(run: &Value) -> bool {
             && run["state"]["effect"]["write_intent"].is_object())
 }
 
+// Only a persisted safe stop suspends time. Crashes and pending effects retain
+// their wall deadline; the Python checkpoint owner applies the same bounded rule.
+fn effective_deadline(state: &Value, now: u64) -> Option<u64> {
+    let deadline = state["deadline"].as_u64()?;
+    let paused = state.get("paused_at").map_or(Some(0), Value::as_u64)?;
+    let used = state.get("pause_used").map_or(Some(0), Value::as_u64)?;
+    let allowance = 86400u64.checked_sub(used)?;
+    let effective = if paused != 0 {
+        let elapsed = now.checked_sub(paused)?;
+        if elapsed > allowance || paused >= deadline {
+            return None;
+        }
+        deadline.checked_add(elapsed)?
+    } else {
+        deadline
+    };
+    (effective > now).then_some(effective)
+}
+
+/// Required recall is a precondition, including when persistence is optional.
+pub fn require_recall_runtime(paths: &Paths, mode: super::policy::MemoryRecall) -> Result<()> {
+    ensure!(
+        !matches!(mode, super::policy::MemoryRecall::Required) || agent_runtime::enabled(paths)?,
+        "required memory recall is unavailable: agent-runtime is not selected; no inference was dispatched"
+    );
+    Ok(())
+}
+
 pub struct Driver {
     session: Option<agent_runtime::Session>,
     project: PathBuf,
@@ -71,6 +99,9 @@ impl Driver {
             run_id,
             observed: Value::Null,
         };
+        let mode = serde_json::from_value(envelope["request"]["memory_recall"].clone())
+            .unwrap_or_default();
+        require_recall_runtime(paths, mode)?;
         if agent_runtime::enabled(paths)? {
             let mut session = agent_runtime::Session::open_worker(paths, project).await?;
             driver.observed = session.call(Some(project), "workflow_start", json!({"run_id":driver.run_id,"envelope":envelope,"snapshot":snapshot,"deadline":deadline})).await?["result"].clone();
@@ -107,6 +138,30 @@ impl Driver {
     pub fn state(&self) -> Option<&Value> {
         self.observed.get("state")
     }
+    pub fn resume_deadline(&self) -> Result<u64> {
+        effective_deadline(&self.observed["state"], now())
+            .context("original active or pause budget expired")
+    }
+    pub async fn activate(&mut self, snapshot: Value) -> Result<()> {
+        if self.observed["state"]["paused_at"]
+            .as_u64()
+            .is_some_and(|v| v != 0)
+        {
+            self.advance("continue", snapshot, json!({})).await?;
+        }
+        Ok(())
+    }
+    pub async fn pause(&mut self, snapshot: Value) -> Result<()> {
+        if self.session.is_some()
+            && self.observed["interrupts"][0]["kind"] == "worker_turn"
+            && self.observed["state"]["deadline"]
+                .as_u64()
+                .is_some_and(|d| d > now())
+        {
+            self.advance("pause", snapshot, json!({})).await?;
+        }
+        Ok(())
+    }
     pub fn pending_write(&self) -> Option<Value> {
         (self.observed["interrupts"][0]["kind"] == "effect")
             .then(|| self.observed["state"]["effect"].clone())
@@ -119,8 +174,8 @@ impl Driver {
             return json!({"engine":"ephemeral","resumable":false,"reason":"agent-runtime not selected"});
         }
         json!({"engine":"langgraph","checkpoint_id":self.observed["checkpoint_id"],"next":self.observed["next"],
-            "interrupts":self.observed["interrupts"],"deadline":self.observed["state"]["deadline"],
-            "resumable":resumable_boundary(&self.observed) && self.observed["state"]["deadline"].as_u64().is_some_and(|d| d > now())})
+            "interrupts":self.observed["interrupts"],"paused_at":self.observed["state"]["paused_at"],"pause_used":self.observed["state"]["pause_used"],"deadline":self.observed["state"]["deadline"],
+            "resumable":resumable_boundary(&self.observed) && effective_deadline(&self.observed["state"], now()).is_some()})
     }
     pub async fn advance(&mut self, decision: &str, snapshot: Value, effect: Value) -> Result<()> {
         if let Some(session) = &mut self.session {
@@ -161,9 +216,9 @@ pub async fn status(paths: &Paths, request: &RunRequest) -> Result<Value> {
     Ok(
         json!({"run_id":request.run_id,"engine":"langgraph","checkpoint_id":run["checkpoint_id"],
         "next":run["next"],"interrupts":run["interrupts"],"deadline":run["state"]["deadline"],
-        "turn":run["state"]["snapshot"]["turn"],"runtime":value["runtime"],
+        "paused_at":run["state"]["paused_at"],"pause_used":run["state"]["pause_used"],"turn":run["state"]["snapshot"]["turn"],"runtime":value["runtime"],
         "bindings_match":bindings_match,
-        "resumable":bindings_match && resumable_boundary(run) && run["state"]["deadline"].as_u64().is_some_and(|d| d > now()),
+        "resumable":bindings_match && resumable_boundary(run) && effective_deadline(&run["state"], now()).is_some(),
         "recovery_requires_byte_check":run["interrupts"][0]["kind"] == "effect",
         "assurance":"Checkpoint consistency is not proof of external effects or acceptance."}),
     )
@@ -218,6 +273,33 @@ pub async fn forget(paths: &Paths, request: &RunRequest) -> Result<Value> {
 #[cfg(test)]
 mod binding_tests {
     use super::*;
+    #[test]
+    fn pause_status_matches_checkpoint_budget_and_uncertain_work_expires() {
+        assert_eq!(
+            effective_deadline(
+                &json!({"deadline":1120,"paused_at":1010,"pause_used":0}),
+                2010
+            ),
+            Some(2120)
+        );
+        assert_eq!(effective_deadline(&json!({"deadline":1120}), 2010), None);
+        assert_eq!(
+            effective_deadline(
+                &json!({"deadline":1120,"paused_at":1010,"pause_used":86400}),
+                1011
+            ),
+            None
+        );
+        assert_eq!(
+            effective_deadline(&json!({"deadline":1120,"paused_at":1010}), 1009),
+            None
+        );
+        assert_eq!(
+            effective_deadline(&json!({"deadline":1120,"paused_at":1120}), 1121),
+            None
+        );
+    }
+
     #[test]
     fn relocated_or_old_generation_checkpoints_are_not_advertised_as_resumable() {
         let run = json!({"state":{"envelope":{"project":"/original","source_sha256":env!("MIRKET_SOURCE_SHA256")}}});

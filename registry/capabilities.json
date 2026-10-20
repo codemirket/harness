@@ -2288,6 +2288,7 @@
     },
     {
       "id": "editable-interface",
+      "execution_owner": "host",
       "design_production": true,
       "when": "Produce or export a layered editable Penpot canvas through its official connected plugin.",
       "role": "web-design",

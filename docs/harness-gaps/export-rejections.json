@@ -1,0 +1,8 @@
+{
+  "ok": true,
+  "existing_output_preserved": true,
+  "existing_output_sha256": "437855c873fa42be5e1653124481a0e970b20c62bd2366a88aedec69859511c7",
+  "existing_output_error": "mirket: export needs a new absolute output path\n",
+  "unknown_alias_rejected": true,
+  "unknown_alias_error": "mirket: unknown installed design image alias\n"
+}

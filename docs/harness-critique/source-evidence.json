@@ -1,0 +1,26 @@
+{
+  "revision": "d8013f53969db336d813274d1fbfba53a89ad0e2",
+  "date": "2026-10-20",
+  "source_files": {
+    "Cargo.lock": "a8833c50283c05a5e186a480b4ec1b8683da76949a233ff38d6f95f8e2687fc4",
+    "Cargo.toml": "b8ec5b5816382bc8b2c447a6da754ec6309c30b8ac388efca20973e2dad26879",
+    "rust-toolchain.toml": "2ad6f15416572b4836585087f1d4abc53b8fa2dbd616f8dacfaa587ed6714228",
+    "registry/capabilities.json": "1f3fce6c447fdbaa96750523bdafe263ffb9f7a9f70b8e9496055a94b731b8c2",
+    "runtime/design/tools/package-lock.json": "dda0b0824b2fff09f1dff88952116009e71d5c49f63243abe14b3b8c54845bd1",
+    "runtime/agent/requirements.lock": "e82cb045e71a816338088fa1e5579beaa373ff7cf763a9f449dfae2c1a590462",
+    "src/router/execution.rs": "a7facaffc675a2750acd9cd83f5273b877334389a6eb9f2819795cd692d1fdef",
+    "src/router/durable.rs": "6285f36b18af72bdedbd90babec613d48d185f8bda267e1ee87c00cc1c87b176",
+    "src/router/tools.rs": "1f3da60195e415ca6bf9189d72556b7e28af6baa84a2570bdbf5a2d16e8ed669",
+    "runtime/agent/workflow.py": "c03b83ec0bb4b08b8a2d5b5571ac116eeb7285750467505fbcdd0ac011384d5d",
+    "runtime/agent/test_runtime.py": "450cde60e5451a059e67b4356bc454663a9334b8e7a5ba2998440215c51873cb",
+    ".github/workflows/check.yml": "4949f4edb0380d79ec552c7c66d7e7070a8bfe1fae5842a224d97cdd2df54fea",
+    "src/dev.rs": "401172dec9d8edb4f2969f48235b3674caec81abc3796269d02fbea52a3584f8"
+  },
+  "rustls_build_features": [
+    "ring",
+    "std",
+    "tls12"
+  ],
+  "platform": "macOS ARM64",
+  "baseline_gate": "Previous map turn at this unchanged production source: 393 Rust tests passed, 7 ignored; current critique gate recorded separately."
+}

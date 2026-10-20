@@ -126,6 +126,14 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         request.assigned_tools.len() <= 19 && request.verification_tools.len() <= 19,
         "task tool selection exceeds owned tool surface"
     );
+    ensure!(
+        request.memory_queries.len() <= 8
+            && request
+                .memory_queries
+                .iter()
+                .all(|q| !q.trim().is_empty() && q.chars().count() <= 512),
+        "memory_queries requires at most eight nonempty queries of at most 512 characters"
+    );
     let catalog = Catalog::embedded()?;
     let mut workflows = Vec::new();
     let mut selected = BTreeSet::new();
@@ -141,6 +149,11 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
             need.workflow
         );
         let workflow = catalog.workflow(&need.workflow)?;
+        ensure!(
+            workflow.execution_owner == crate::catalog::ExecutionOwner::Worker,
+            "workflow {} requires host execution through the official MCP connection; it is unavailable to project-scoped workers",
+            workflow.id
+        );
         allowed.extend(workflow.tools.iter().cloned());
         required.extend(workflow.required_tools.iter().cloned());
         verification.extend(workflow.verification_tools.iter().cloned());
@@ -282,6 +295,7 @@ mod tests {
     fn task(workflow: &str) -> SpawnRequest {
         SpawnRequest {
             memory_recall: Default::default(),
+            memory_queries: vec![],
             objective: "Handle the specified task".into(),
             task_intent: TaskIntent::Synthesis,
             complexity_class: ComplexityClass::Synthesis,
@@ -346,6 +360,16 @@ mod tests {
         let catalog = Catalog::embedded().unwrap();
         for workflow in catalog.workflows() {
             let mut request = task(&workflow.id);
+            if workflow.execution_owner == crate::catalog::ExecutionOwner::Host {
+                assert!(
+                    prepare(&mut request)
+                        .err()
+                        .unwrap()
+                        .to_string()
+                        .contains("requires host execution")
+                );
+                continue;
+            }
             let assignment = prepare(&mut request).unwrap();
             assert_eq!(
                 request

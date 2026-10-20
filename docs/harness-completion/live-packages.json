@@ -1,0 +1,150 @@
+{
+  "checks": [
+    {
+      "id": "design",
+      "installation": {
+        "images": {
+          "design-tools": "sha256:5790182749504e1003e57fd1e52ad0a5630cf79bda95735e3c31c41331e4fd18",
+          "kroki": "sha256:310141e18fe2c246685d4908c70919516129872583fcc31d2e018d12a0971827",
+          "kroki-excalidraw": "sha256:b404ff303a23c929fbe81494157a0425e8ca15462e787ca97e23d164aecd1bc6",
+          "node-build": "sha256:cd2df7ff65c5fce1f8a18ce89e3aac24a80c1db3776d5842a4cf86bc27f300a2",
+          "penpot-backend": "sha256:a54e2fda5c63fb9296fc9a2e1c252b51cf612cb61efa15628eedfff8deed0409",
+          "penpot-exporter": "sha256:d9bf9cdba416e16c6dfb1ad8d68adea33fe9c09eebad7ce485e265643bfa5fbd",
+          "penpot-frontend": "sha256:b59fcd78d91b5ccda20f4a048c81bd1924a5ef923aba6890db2476973b8f1f55",
+          "penpot-mcp": "sha256:9afc99172f1d5d1e1f41292ee6675f080ced92745b53fad4e09089137333fb7a",
+          "penpot-postgres": "sha256:411fa9a1a50de5c5be7b6b0296e08f486e2488da8a3fff401586c0a63f1e823b",
+          "penpot-session": "sha256:5790182749504e1003e57fd1e52ad0a5630cf79bda95735e3c31c41331e4fd18",
+          "penpot-valkey": "sha256:021d108fa0212239dd407b83429cc07fb89cd32bde5bc30476a2e2ac468c33d8"
+        },
+        "installed": true,
+        "package": "design",
+        "registry_sha256": "a4daf100a2c000058728f0d1f3702cb7a90b5a450a0be755163c029de9b82b5c",
+        "workspace": "/Users/nazmiyilmaz/.mirket/execution/podman/staging/design/workspace"
+      },
+      "ok": true,
+      "runtime": {
+        "core_ready": true,
+        "groups": [
+          "core",
+          "diagrams"
+        ],
+        "network": "mirket-design-64f61db634acccc9-network",
+        "package": "design",
+        "published_ports": {
+          "kroki": 54116,
+          "penpot_frontend": 54113,
+          "penpot_mcp": 54114,
+          "penpot_plugin": 54115
+        },
+        "ready": true,
+        "services": [
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-postgres",
+            "enabled": false,
+            "present": false,
+            "published_ports": [],
+            "running": false,
+            "service": "penpot-postgres"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-valkey",
+            "enabled": false,
+            "present": false,
+            "published_ports": [],
+            "running": false,
+            "service": "penpot-valkey"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-backend",
+            "enabled": false,
+            "present": false,
+            "published_ports": [],
+            "running": false,
+            "service": "penpot-backend"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-exporter",
+            "enabled": false,
+            "present": false,
+            "published_ports": [],
+            "running": false,
+            "service": "penpot-exporter"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-mcp",
+            "enabled": false,
+            "present": false,
+            "published_ports": [
+              "127.0.0.1:54114:4401",
+              "127.0.0.1:54115:4400"
+            ],
+            "running": false,
+            "service": "penpot-mcp"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-frontend",
+            "enabled": false,
+            "present": false,
+            "published_ports": [
+              "127.0.0.1:54113:8080"
+            ],
+            "running": false,
+            "service": "penpot-frontend"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-kroki-excalidraw",
+            "enabled": true,
+            "present": true,
+            "published_ports": [],
+            "running": true,
+            "service": "kroki-excalidraw"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-kroki",
+            "enabled": true,
+            "present": true,
+            "published_ports": [
+              "127.0.0.1:54116:8000"
+            ],
+            "running": true,
+            "service": "kroki"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-design-tools",
+            "enabled": true,
+            "present": true,
+            "published_ports": [],
+            "running": true,
+            "service": "design-tools"
+          },
+          {
+            "container": "mirket-design-64f61db634acccc9-penpot-session",
+            "enabled": false,
+            "present": false,
+            "published_ports": [],
+            "running": false,
+            "service": "penpot-session"
+          }
+        ],
+        "workspace": "/Users/nazmiyilmaz/.mirket/execution/podman/staging/design/workspace"
+      },
+      "workspace": "/Users/nazmiyilmaz/.mirket/execution/podman/staging/design/workspace"
+    },
+    {
+      "data": "/Users/nazmiyilmaz/.mirket/execution/podman/staging/agent-runtime/data",
+      "lifecycle": "on_demand",
+      "network": "none",
+      "ok": true,
+      "package": "agent-runtime",
+      "ready": true,
+      "receipt": {
+        "image": "sha256:d4cd6263c76ca73c01aac3df82af567aa7928380d36745c97825e4cf03f05adf",
+        "owner": "mirket-agent-64f61db634acccc9",
+        "recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+        "schema_version": 1
+      }
+    }
+  ],
+  "ok": true,
+  "verification": "Local installation identity and live service health are separate. Use package probe and saved output inspection for invocation evidence."
+}

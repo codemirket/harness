@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "models_before": 20,
+  "models_after": 20,
+  "menu_preserved": true,
+  "other_models_unchanged": true,
+  "selected_vision_before": null,
+  "selected_vision_after": true,
+  "binary_sha256": "9dd475373417dec028f24f2713d7a1449f6961f6da67485d463e16ba740a11b4",
+  "ok": true
+}

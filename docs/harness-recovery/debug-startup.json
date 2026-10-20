@@ -1,0 +1,212 @@
+[
+  {
+    "mode": "concurrent",
+    "repeat": 1,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 102,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4065,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4069,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4071,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4072,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.80s"
+    ],
+    "log": "startup-concurrent-1.log"
+  },
+  {
+    "mode": "concurrent",
+    "repeat": 2,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 104,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4525,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4534,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4537,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4543,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.58s"
+    ],
+    "log": "startup-concurrent-2.log"
+  },
+  {
+    "mode": "concurrent",
+    "repeat": 3,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 104,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4332,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4337,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4339,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4340,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.71s"
+    ],
+    "log": "startup-concurrent-3.log"
+  },
+  {
+    "mode": "isolated",
+    "repeat": 1,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 116,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4159,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4163,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4165,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4166,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 18.45s"
+    ],
+    "log": "startup-isolated-1.log"
+  },
+  {
+    "mode": "isolated",
+    "repeat": 2,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 117,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4167,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4172,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4174,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4175,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 18.97s"
+    ],
+    "log": "startup-isolated-2.log"
+  },
+  {
+    "mode": "isolated",
+    "repeat": 3,
+    "exit_code": 0,
+    "phases": [
+      {
+        "elapsed_ms": 0,
+        "mirket_startup": "entry"
+      },
+      {
+        "elapsed_ms": 103,
+        "mirket_startup": "catalog_loaded"
+      },
+      {
+        "elapsed_ms": 4037,
+        "mirket_startup": "identity_captured"
+      },
+      {
+        "elapsed_ms": 4041,
+        "mirket_startup": "state_opened"
+      },
+      {
+        "elapsed_ms": 4043,
+        "mirket_startup": "mcp_initialized"
+      },
+      {
+        "elapsed_ms": 4044,
+        "mirket_startup": "discovery_started"
+      }
+    ],
+    "test_summaries": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 18.70s"
+    ],
+    "log": "startup-isolated-3.log"
+  }
+]

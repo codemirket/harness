@@ -1,0 +1,192 @@
+{
+  "ok": true,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "validator_sha256": "250b1ebe69c8bfc457c16e25dad8157cd792b1fa08156a166b4d0e02731f882f",
+  "commands": [
+    {
+      "name": "identity",
+      "exit": 0,
+      "seconds": 0.11934529151767492
+    },
+    {
+      "name": "mirket-setup",
+      "exit": 0,
+      "seconds": 1.085943916812539
+    },
+    {
+      "name": "mirket-doctor",
+      "exit": 0,
+      "seconds": 1.3413484571501613
+    },
+    {
+      "name": "mirket-update",
+      "exit": 0,
+      "seconds": 0.7393650002777576
+    },
+    {
+      "name": "mirket-updated-doctor",
+      "exit": 0,
+      "seconds": 0.917490417137742
+    },
+    {
+      "name": "mirket-mcp",
+      "exit": 0,
+      "seconds": 0.7430880824103951
+    },
+    {
+      "name": "install-codex-setup",
+      "exit": 0,
+      "seconds": 0.9232446253299713
+    },
+    {
+      "name": "install-codex-doctor",
+      "exit": 0,
+      "seconds": 1.322049249894917
+    },
+    {
+      "name": "install-codex-update",
+      "exit": 0,
+      "seconds": 0.931375958956778
+    },
+    {
+      "name": "install-codex-updated-doctor",
+      "exit": 0,
+      "seconds": 1.2989143747836351
+    },
+    {
+      "name": "install-codex-mcp",
+      "exit": 0,
+      "seconds": 0.73562700022012
+    },
+    {
+      "name": "install-claude-setup",
+      "exit": 0,
+      "seconds": 0.9728312501683831
+    },
+    {
+      "name": "install-claude-doctor",
+      "exit": 0,
+      "seconds": 1.3196705002337694
+    },
+    {
+      "name": "install-claude-update",
+      "exit": 0,
+      "seconds": 1.0137043753638864
+    },
+    {
+      "name": "install-claude-updated-doctor",
+      "exit": 0,
+      "seconds": 1.2940963748842478
+    },
+    {
+      "name": "install-claude-mcp",
+      "exit": 0,
+      "seconds": 0.7556035425513983
+    },
+    {
+      "name": "install-all-setup",
+      "exit": 0,
+      "seconds": 1.2965255407616496
+    },
+    {
+      "name": "install-all-doctor",
+      "exit": 0,
+      "seconds": 1.3245720425620675
+    },
+    {
+      "name": "install-all-update",
+      "exit": 0,
+      "seconds": 0.9379062503576279
+    },
+    {
+      "name": "install-all-updated-doctor",
+      "exit": 0,
+      "seconds": 1.3301217081025243
+    },
+    {
+      "name": "install-all-mcp",
+      "exit": 0,
+      "seconds": 0.7834872081875801
+    }
+  ],
+  "variants": [
+    {
+      "name": "mirket",
+      "ok": true
+    },
+    {
+      "name": "install-codex",
+      "ok": true
+    },
+    {
+      "name": "install-claude",
+      "ok": true
+    },
+    {
+      "name": "install-all",
+      "ok": true
+    }
+  ],
+  "limits": "Native CLI/install/MCP checks only; no desktop GUI activation or contained package acceptance.",
+  "identity": {
+    "executable_sha256": "eef6811fb2cea64d25d406fc2000c30f28026a4d50e514a9bc2fd440b6341034",
+    "pid": 95548,
+    "source_sha256": "59ed3c2c4ce3acf3f17d8bae86447584e574aa1b180a7452455c9e30e0a248a4",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "package_sha256": {
+    "mirket-aarch64-apple-darwin": "eef6811fb2cea64d25d406fc2000c30f28026a4d50e514a9bc2fd440b6341034",
+    "install-codex-aarch64-apple-darwin": "fa15cf2a3517cf0e457ed43e2bc00591239ab4d09f781dd65954be42dedc044c",
+    "install-claude-aarch64-apple-darwin": "d082119030e72b05f176f20f683cf287bd8aeeb452b2d58b9b428537b61cd54c",
+    "install-all-aarch64-apple-darwin": "2e6330b22835561d43dde436f27f342a44d52de116defd076ff7575849ccc29a"
+  },
+  "validator_unchanged": true,
+  "files": {
+    "identity.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "identity.stdout": "2fe39a783a076f5b0774a3e8e3ce26295390892c3c408fc0eb2a8e56174d05c4",
+    "install-all-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-all-doctor.stdout": "5a74705e10fc4348f5b94acbb394c37686c3d435627e6dfbfb7c4bf95907b542",
+    "install-all-mcp.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-all-mcp.stdout": "639044d2e473a43430ff19b21dd1b36739eef4cda2ce489662463ce56293959d",
+    "install-all-setup.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-all-setup.stdout": "72582e57469161bc798f0b8cbc95caac5798ed5b7434d3286772618a7629b7a3",
+    "install-all-update.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-all-update.stdout": "9671090d671c44bc1ec9b25ac591e7c6c1404a23bbeb0324544b297755f0b24d",
+    "install-all-updated-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-all-updated-doctor.stdout": "048ebe415641430f12b2834aeac19c40904e3152af4cd1c1442e36c556aff9a4",
+    "install-claude-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-claude-doctor.stdout": "2d4beb8f8cafdd4534b0cdcc44b54f0122d6bae39a0dc8c2a36eec4572237ece",
+    "install-claude-mcp.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-claude-mcp.stdout": "b7b9854716fb8a3a981322dc1a961b7530a38066d38b708a3a9411090293274b",
+    "install-claude-setup.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-claude-setup.stdout": "386e0e928c3f7a1ccadbe2d5b961779c14cca887ed685a3dc83c0541095e52ab",
+    "install-claude-update.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-claude-update.stdout": "4ceec39f5fb672df5a899f42902ff0cd8704a810c144de304a0c20c512257b4d",
+    "install-claude-updated-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-claude-updated-doctor.stdout": "f2d26f8301e0c8305ce614b83a49110088b251ef5beddc9f9d3cf601dcc71cf5",
+    "install-codex-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-codex-doctor.stdout": "a1ff529c59628fac19911ea87b43bedf509a30cfebfc01b2e0962777e849b744",
+    "install-codex-mcp.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-codex-mcp.stdout": "e236dcde942a4386a0adf8a99f34898ddaa962675071c8368736867a1b7f1188",
+    "install-codex-setup.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-codex-setup.stdout": "05cde545852b5ab9805ad4330377e9eb38e49f0df4d7b1d5b954a8de3bbe2cca",
+    "install-codex-update.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-codex-update.stdout": "c9c36dbd5ab62c866fc511a7960164d2f53c0fe4d34979b407f96cc1e380f052",
+    "install-codex-updated-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "install-codex-updated-doctor.stdout": "d57f5d29a657db1c937dd593117c9e898950093d12fcee2cf1d564279bd0494d",
+    "mirket-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mirket-doctor.stdout": "e4b763dbc65d6134ed7961c084632cd957ac861a6c415914ad63761bebf42d57",
+    "mirket-mcp.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mirket-mcp.stdout": "5f1d03d6892fdfb254f6455ad8c42330093c256ff88f13fa667e68002b6148a7",
+    "mirket-setup.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mirket-setup.stdout": "8b971ebd01bd1b15f645fb4595f0a2594f5f2f7b34627068deba6b3e48b1cce8",
+    "mirket-update.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mirket-update.stdout": "2fdde4da1c34490a4d8c463c9be3e2df0b3c73323da9f1ceaa335ca996c7d28b",
+    "mirket-updated-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mirket-updated-doctor.stdout": "5c3b72ff40750c390076c235e26e7764e139da01b86baae715a027cf1348fc8b"
+  }
+}

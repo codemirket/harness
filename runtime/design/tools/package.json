@@ -12,7 +12,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",
     "@resvg/resvg-js": "2.6.2",
-    "ajv": "8.17.1",
+    "ajv": "8.18.0",
     "hyperframes": "0.8.149",
     "odiff-bin": "4.5.0",
     "playwright-core": "1.64.1",
@@ -22,5 +22,9 @@
     "svgo": "4.1.0",
     "sharp": "0.35.5",
     "css-tree": "3.2.1"
+  },
+  "overrides": {
+    "fflate": "0.7.5",
+    "esbuild": "0.28.2"
   }
 }

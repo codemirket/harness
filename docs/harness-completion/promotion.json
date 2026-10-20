@@ -1,0 +1,8 @@
+{
+  "ok": true,
+  "output": "/private/tmp/mirket-finish-evidence/accepted-manifest.json",
+  "targets": [
+    "aarch64-apple-darwin"
+  ],
+  "version": "1.0.11"
+}

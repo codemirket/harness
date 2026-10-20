@@ -1,0 +1,37 @@
+{
+  "queried": 828,
+  "findings": [
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0367",
+      "excepted": true
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0368",
+      "excepted": true
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0369",
+      "excepted": true
+    }
+  ],
+  "untriaged": [],
+  "ok": true,
+  "date": "2026-10-20",
+  "coverage": {
+    "cargo": true,
+    "owned_npm": true,
+    "agent_python": true,
+    "penpot_mcp_locked_coordinates": 299,
+    "os_and_images": "separate image_audit.py receipts required"
+  },
+  "limits": "Advisory matching is not exploitability analysis. Penpot coverage includes every MCP lock document, including build/dev packages; backend/frontend binary closures require image scans."
+}

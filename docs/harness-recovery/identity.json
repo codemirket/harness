@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "platform": "macOS ARM64",
+  "release_process": {
+    "executable_sha256": "9ae1d5a9074f0f7c4cf5c1b132fda319dffb16242ac8dc9b9313f926247febcd",
+    "pid": 96310,
+    "source_sha256": "e1529964ef1767db25890ccf313c637fcf2eb560800ee0e92e2ca92cca72a841",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "agent_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+  "component_sources": {
+    "src/router/execution.rs": "7580736b24fe9eb3f93973e37ff0988f5a93cf2938f63b8bb6263122bef0bb66",
+    "src/router/discovery.rs": "6d61aadd803a049ac5efb47fbe4cddd9415049dfc04c7c727e49b7a103690faf",
+    "src/router/durable.rs": "bc918c6d3c6412d46ebc040254a5a81209215d2093a3c65d75555764a00f07d7",
+    "src/mcp.rs": "85872f24eef48a50ebe88b15bb523f625e8d11b4cb60a4036cfeccedc2942af9",
+    "src/cli.rs": "efb2db41a087e947a8472331128ebd3d1499471071ddd02e69ce7d886621ede2",
+    "runtime/agent/workflow.py": "e2baa9f2a0c7c5d807779bd531accbe799aa2b405d3d21d7d5ce576d4f08d108",
+    "runtime/agent/test_runtime.py": "f3557058d7d2355665d2ef0812b355a66fe636b08ec3c0e842cb32ab6a9d60b9",
+    "tests/motion_payload.rs": "26b4f34ecc9970999b9525c61f6a2865d33dda4256687c1c451d41796038a305",
+    "evals/design-quality/prepare.py": "91e39fae99c0f29f36a99f11a88466cee8962616c64e2b62159741ec0cf541a2",
+    "evals/design-quality/make-judge-packets.py": "350261a7cef12d2a51a54600c9696064aa1a1ce0ec4e6f5c0271762304556a4f",
+    "evals/design-quality/packet_preflight.py": "f18b7836d1b810c7cba82faf7c51da67f5b6d80dafe10e8aae0e8f35c3609cf0",
+    "evals/design-quality/analyze.py": "a5e7d03fc92f602a14da4b79cf2b3091183e7601906d2d0b65b277cbe68dfad6",
+    ".github/workflows/check.yml": "6625f27abd4b062048f4481a01a170c33709f7d3b71973dd63a0a9b4f0742ec2",
+    "evals/harness-remediation/test_feedback.py": "9202e9e629221c50046cb7c9aac66cac2d03788e1a00e1585e4de6b3c07e6a06"
+  },
+  "negative_evidence": {
+    "runtime_recipe_before_prevalidation_fix": "e6ce1e596ef91a24020b69b20a435cc40cb8adcfecec8f58b7e294a665db4446",
+    "runtime_image_before_prevalidation_fix": "sha256:3c60e8e0aef6721799a785196ae7841116a18152c04e53a233329b2ff565922e",
+    "initial_runtime_suite": "11 passed, 1 error; rejected LangGraph resume input remained in pending writes",
+    "initial_rust_gate": "Clippy result_large_err on timeout diagnostic closure; replaced with match without suppression"
+  },
+  "limits": [
+    "Component/source identities are not semantic acceptance or native desktop activation.",
+    "Historical 15-second startup failure was not reproduced; root cause remains unproven.",
+    "Native vision behavior uses a scoped conformance probe; no paid/native-provider resume smoke was run.",
+    "Evaluation evidence is synthetic; no demonstrated quality gain."
+  ],
+  "debug_process": {
+    "executable_sha256": "dd9dc9543fdf4415dcabee6b9f4ee2e8c37a6828f1ccbc72b799acab3cc17c27",
+    "pid": 20072,
+    "source_sha256": "e1529964ef1767db25890ccf313c637fcf2eb560800ee0e92e2ca92cca72a841",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  }
+}

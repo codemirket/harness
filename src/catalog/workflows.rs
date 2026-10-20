@@ -5,10 +5,20 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeSet;
 
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ExecutionOwner {
+    #[default]
+    Worker,
+    Host,
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Workflow {
     pub id: String,
+    #[serde(default)]
+    pub execution_owner: ExecutionOwner,
     pub when: String,
     pub role: String,
     /// Suitable explicit perspectives can replace this workflow's default expertise.
@@ -103,7 +113,7 @@ impl Catalog {
         self.workflows()
             .iter()
             .filter(|workflow| role.is_none_or(|role|workflow.role == role || workflow.alternative_roles.iter().any(|candidate|candidate == role)))
-            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"design_input_required":workflow.design_production,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
+            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"execution_owner":workflow.execution_owner,"worker_available":workflow.execution_owner == ExecutionOwner::Worker,"design_input_required":workflow.design_production,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
             .collect()
     }
 }

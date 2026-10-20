@@ -1,0 +1,48 @@
+{
+  "kind": "host_observed_visual_review_role_pilot",
+  "worker_model": "gpt-6.1-sol",
+  "effort": "high",
+  "scored_trials": 8,
+  "blinded_judge_calls": 8,
+  "locked_review_ratings": 16,
+  "criterion_judgments": 64,
+  "judge_agreement_cells": 8,
+  "initial_infrastructure_failures_retained": 8,
+  "arms": {
+    "q": {
+      "role": "quality-assurance",
+      "passed": 4,
+      "mean_score": 1,
+      "mean_latency_seconds": 42.38123286450001,
+      "cost_usd": null
+    },
+    "g": {
+      "role": "graphic-design",
+      "passed": 4,
+      "mean_score": 1,
+      "mean_latency_seconds": 36.01598508349999,
+      "cost_usd": null
+    }
+  },
+  "advance": false,
+  "decision": "Keep existing default role; no measured advantage and inadequate sample for a general benefit claim.",
+  "limitations": [
+    "Four original synthetic cases, one trial per arm; not representative of broad design-production quality.",
+    "Both arms and both independent judges used the same model family; shared bias remains possible.",
+    "Every scored criterion passed: ceiling effect, no observed advantage; production defaults remain unchanged.",
+    "Eight earlier trials blocked due to an omitted input filename; all are retained separately, not discarded from study history.",
+    "The corrected wave reuses the same fixtures after infrastructure repair; judges are arm-blinded, but this is not an unseen confirmation after tuning.",
+    "Native token usage and cost were unavailable; no cost-efficiency claim.",
+    "Record checker validates hashes and arithmetic, not semantic grading or human approval."
+  ],
+  "suite": {
+    "path": ".mirket/implementation/harness-completion-2026-10-20/mirket-finish-quality-v2/checked-report/suite-v2.json",
+    "sha256": "e3dd3b9bd06f64b2d22422cade11f5a7bdc5bc0097a3cdd2a1dc67e1087a3c38"
+  },
+  "report": {
+    "path": ".mirket/implementation/harness-completion-2026-10-20/mirket-finish-quality-v2/checked-report/report-v2.json",
+    "sha256": "5ec6e132b9b72aa628b2202e5c8b3aa64e1e131c3b718b74a7536536fb976c0d"
+  },
+  "record_serializer_correction": "Initial checker configuration used an object model field and omitted explicit settings/budget/hash map. The checker rejected it; v2 conforms to the documented schema. Raw trials, inputs, score locks and verdicts were not changed.",
+  "raw_evidence": "Private retained task evidence under .mirket/implementation/harness-completion-2026-10-20; never included in package publication."
+}

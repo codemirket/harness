@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "output": "{\"evaluation\": \"synthetic-retrieval-v1\", \"facts\": 22, \"queries\": [{\"category\": \"tr\", \"expected\": [\"tr-keyboard\"], \"returned\": [\"tr-keyboard\", \"noise-2\", \"noise-1\"], \"recall_at_3\": 1.0, \"latency_ms\": 322.03}, {\"category\": \"en\", \"expected\": [\"en-motion\"], \"returned\": [\"en-motion\", \"es-offline\", \"tr-keyboard\"], \"recall_at_3\": 1.0, \"latency_ms\": 108.57}, {\"category\": \"de\", \"expected\": [\"de-export\"], \"returned\": [\"de-export\", \"tr-keyboard\", \"injected\"], \"recall_at_3\": 1.0, \"latency_ms\": 114.77}, {\"category\": \"es\", \"expected\": [\"es-offline\"], \"returned\": [\"es-offline\"], \"recall_at_3\": 1.0, \"latency_ms\": 106.45}, {\"category\": \"contradiction\", \"expected\": [\"new-color\"], \"returned\": [\"new-color\", \"old-color\"], \"recall_at_3\": 1.0, \"latency_ms\": 101.12}, {\"category\": \"injection\", \"expected\": [\"injected\"], \"returned\": [\"injected\", \"old-color\", \"new-color\"], \"recall_at_3\": 1.0, \"latency_ms\": 97.4}, {\"category\": \"unanswerable\", \"expected\": [], \"returned\": [], \"recall_at_3\": null, \"latency_ms\": 104.42}], \"limits\": \"Retrieval-only public fixtures; no answer-generation or prompt-injection resistance claim.\"}\n{\"measurement\": \"contained-fixture-processes\", \"seconds\": 108.24, \"max_child_rss\": 943092, \"rss_unit\": \"KiB on Linux, bytes on macOS\", \"limits\": \"Fixture peak, not whole VM RSS, steady-state production latency or cold-start benchmark.\"}\n",
+  "package": "agent-runtime",
+  "recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+  "runtime": {
+    "files": {
+      "bm25.json": "3d2d130d3a9ef4e87cb672daadeb393c2ab78f743aecbfc0f815dae0e863d65a",
+      "bridge.py": "d53b2f04278d975d5690aa4d4a9f1238dcd1883205b44827d4dedab6b1c00de8",
+      "lifecycle.py": "99a50d1940dbc6c8a1c8029392233ec28785cfe9ac97c315332e5ab3abab0584",
+      "memory.py": "c281c3101502f591fb46538653a378ca8faee253892c894dd80d7539d8ec0fc1",
+      "model.json": "b1418d4a2cb5e90bde4e0177a2cb0002341394ad4ab7e3bdb26d770119d8d45a",
+      "requirements.lock": "e82cb045e71a816338088fa1e5579beaa373ff7cf763a9f449dfae2c1a590462",
+      "workflow.py": "e2baa9f2a0c7c5d807779bd531accbe799aa2b405d3d21d7d5ce576d4f08d108"
+    },
+    "memory": "explicit facts; project scope; local embeddings",
+    "network": "runtime container has no network",
+    "sha256": "7cdab8e0beeecb1257908a38d42c8d6ed1ae279c81daa1707601e57882395f8a",
+    "versions": {
+      "fastembed": "0.9.0",
+      "langgraph": "1.2.16",
+      "langgraph-checkpoint-sqlite": "3.1.2",
+      "mem0ai": "2.2.1"
+    }
+  },
+  "tests": "Rust IPC identity/EOF; real Mem0 retrieval, scope, retries, expiry, forget; LangGraph restart, stale checkpoint, effect and host handoffs; containment",
+  "contained_image": "sha256:d4cd6263c76ca73c01aac3df82af567aa7928380d36745c97825e4cf03f05adf",
+  "test_source": "runtime/agent/test_runtime.py",
+  "scope": "Synthetic facts and disposable SQLite state in the shipped offline Linux ARM64 image; no user memories."
+}

@@ -32,6 +32,18 @@ use tokio::{
     sync::Semaphore,
 };
 
+/// Opt-in bounded, payload-free startup diagnostics on stderr (never MCP stdout).
+pub(crate) fn startup_phase(phase: &str) {
+    static START: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
+    if std::env::var_os("MIRKET_STARTUP_TIMING").as_deref() == Some(std::ffi::OsStr::new("1")) {
+        let elapsed = START
+            .get_or_init(std::time::Instant::now)
+            .elapsed()
+            .as_millis();
+        eprintln!("{}", json!({"mirket_startup":phase,"elapsed_ms":elapsed}));
+    }
+}
+
 pub const MAX_FRAME_BYTES: usize = 128 * 1024;
 pub const MAX_RESULT_BYTES: usize = 64 * 1024;
 const GUIDE: &str = "Mirket supplies professional guidance, optional team briefs, embedded references and durable task evidence. Use catalog_search/catalog_show to discover useful expertise; skill_read and resources return embedded material, never fetch upstream skills. The catalog is not exhaustive: the host/model can seek other sources, combine methods or use none. User/project requirements, source rights and host permissions govern. team_facets/team_plan help when independent assignments are useful; plans and read receipts do not establish execution. Keep sufficient existing workflows authoritative.
@@ -51,9 +63,12 @@ pub struct MirketServer {
 impl MirketServer {
     pub fn new(paths: &Paths, catalog: Catalog) -> Result<Self> {
         crate::identity::capture();
+        startup_phase("identity_captured");
+        let state = State::open(paths)?;
+        startup_phase("state_opened");
         Ok(Self {
             paths: paths.clone(),
-            state: State::open(paths)?,
+            state,
             catalog,
             workers: Arc::new(Semaphore::new(4)),
             execution: Arc::new(Semaphore::new(4)),
@@ -980,13 +995,17 @@ impl<R: AsyncRead + Unpin> AsyncRead for BoundedLines<R> {
 }
 
 pub async fn serve(paths: Paths, catalog: Catalog) -> Result<()> {
-    let discovery_paths = paths.clone();
-    let discovery = tokio::spawn(async move {
-        let _ = crate::router::discovery::discover(&discovery_paths, false).await;
-    });
     let service = MirketServer::new(&paths, catalog)?
         .serve((BoundedLines::new(tokio::io::stdin()), tokio::io::stdout()))
         .await?;
+    startup_phase("mcp_initialized");
+    // Native discovery hashes/probes ambient applications. It must not compete
+    // with identity capture and the client initialization deadline.
+    let discovery = tokio::spawn(async move {
+        startup_phase("discovery_started");
+        let _ = crate::router::discovery::discover(&paths, false).await;
+        startup_phase("discovery_finished");
+    });
     service.waiting().await?;
     discovery.abort();
     Ok(())

@@ -1,0 +1,51 @@
+{
+  "build_settings": {
+    "debug_assertions": true,
+    "debug_symbols": false,
+    "incremental": false,
+    "jobs": 2
+  },
+  "compiler_image": "docker.io/library/rust@sha256:8a2a102d089fbd151137b9473c01b1ed4519a64fb9c032a03609b815701615c8",
+  "limits": "Native Linux ARM64 process execution inside the explicitly selected macOS VM; no Windows, x86 Linux, desktop GUI or package-controller support claim.",
+  "log_sha256": "db054bd37b87ee5d7c8bb248ad03e3cf78dd5efe9b5e24fc1126cc7074109a55",
+  "native_identity": {
+    "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+    "agent_runtime": {
+      "expected_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+      "expected_versions": {
+        "fastembed": "0.9.0",
+        "langgraph": "1.2.16",
+        "langgraph-checkpoint-sqlite": "3.1.2",
+        "mem0ai": "2.2.1"
+      },
+      "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+      "selected": false
+    },
+    "catalog": {
+      "profiles": 63,
+      "sha256": "8b9badb9bee933c818d7ff15b7412d94924f52a74fd5b76099c8b0acba998b1f",
+      "skills": 347
+    },
+    "installed_binary": {
+      "matches_process": null,
+      "path": "/root/.mirket/bin/mirket",
+      "sha256": null
+    },
+    "name": "mirket",
+    "process": {
+      "executable_sha256": "bb10136d2733dd850152024623962efb58bddcdeb2797c2dd652b27b00cb356d",
+      "pid": 2350,
+      "source_sha256": "539c900bd8ba0b632bbce6ed85792bba5c1cca698ebaee0986c7718a46456c3b",
+      "target": "aarch64-unknown-linux-gnu",
+      "version": "1.0.11"
+    },
+    "target": "aarch64-unknown-linux-gnu",
+    "verification": "Identity and connection are not evidence that a user task passed.",
+    "version": "1.0.11"
+  },
+  "native_identity_matches": true,
+  "ok": false,
+  "platform": "aarch64-unknown-linux-gnu",
+  "source_sha256": "539c900bd8ba0b632bbce6ed85792bba5c1cca698ebaee0986c7718a46456c3b",
+  "source_unchanged": true
+}

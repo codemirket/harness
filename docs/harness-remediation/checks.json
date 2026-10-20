@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-20",
+  "source_sha256": "d7f0e005170cad4214c8f73041d06bab7f7834f0973fec0322b0b0aa2b715955",
+  "source_identity_independently_recomputed": true,
+  "platform": "aarch64-apple-darwin",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "rust_gate": {
+    "command": "mirket dev check --project .",
+    "passed": 401,
+    "failed": 0,
+    "ignored": 7,
+    "format": "passed",
+    "clippy": "passed",
+    "log": "rust-check.log"
+  },
+  "python_regressions": {
+    "tests": 4,
+    "passed": 4
+  },
+  "design_suite": {
+    "passed": 81,
+    "failed": 0,
+    "skipped": 0,
+    "evidence": "design-tests.json"
+  },
+  "agent_suite": {
+    "passed": true,
+    "evidence": "agent-tests.json"
+  },
+  "advisory_scan": {
+    "queried": 679,
+    "untriaged": 0,
+    "zip_exceptions": 3
+  },
+  "limits": [
+    "Remote GitHub jobs and Windows/Linux native packaging not run",
+    "No full candidate contained-acceptance receipt or desktop activation",
+    "F08/F11/F12 remain open; F13 cause remains unproven despite passing motion tests"
+  ],
+  "native_package": {
+    "verified": true,
+    "four_installers_passed": true,
+    "source_matches_final": true,
+    "evidence": "native-package-checks.json",
+    "published": false
+  },
+  "workflow_yaml": "parsed with Ruby Psych",
+  "tls_archive_probe": "passed with patched native client and pinned payload verification"
+}

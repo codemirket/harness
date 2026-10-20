@@ -36,6 +36,11 @@ lto = "thin"
 codegen-units = 1
 strip = "symbols"
 
+# Debug installs still hash whole executables before the MCP handshake. Keep
+# the hash implementation optimized without disabling assertions in our code.
+[profile.dev.package.sha2]
+opt-level = 3
+
 [[bin]]
 name = "mirket"
 path = "src/main.rs"

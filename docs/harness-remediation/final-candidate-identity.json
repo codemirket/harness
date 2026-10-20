@@ -1,0 +1,7 @@
+{
+  "version": "1.0.11",
+  "target": "aarch64-apple-darwin",
+  "source_sha256": "d7f0e005170cad4214c8f73041d06bab7f7834f0973fec0322b0b0aa2b715955",
+  "binary_sha256": "ec588adbd3e6ecb6d4ad5654a94faa9b0c3124cbff896ff78ff40da0b3442bee",
+  "agent_recipe": "64d87cd3319ad626e416a5bbf8e2002bfeb1c3dead6f5d7986e72c84072707ce"
+}

@@ -1,0 +1,8 @@
+{
+  "accepted": false,
+  "binary_sha256": "eef6811fb2cea64d25d406fc2000c30f28026a4d50e514a9bc2fd440b6341034",
+  "schema": 1,
+  "source_sha256": "59ed3c2c4ce3acf3f17d8bae86447584e574aa1b180a7452455c9e30e0a248a4",
+  "target": "aarch64-apple-darwin",
+  "version": "1.0.11"
+}

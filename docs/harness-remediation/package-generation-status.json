@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "error": "design stack is not installed; run mirket package install design: No such file or directory (os error 2)",
+      "id": "design",
+      "ok": false
+    },
+    {
+      "data": "<engine-home>/.mirket/execution/podman/staging/agent-runtime/data",
+      "lifecycle": "on_demand",
+      "network": "none",
+      "ok": true,
+      "package": "agent-runtime",
+      "ready": true,
+      "receipt": {
+        "image": "sha256:3d734904da19519c7b965893e2ace90f325848d92e7feb537633edec434b27bf",
+        "owner": "mirket-agent-64f61db634acccc9",
+        "recipe": "64d87cd3319ad626e416a5bbf8e2002bfeb1c3dead6f5d7986e72c84072707ce",
+        "schema_version": 1
+      }
+    }
+  ],
+  "ok": false,
+  "verification": "Local installation identity and live service health are separate. Use package probe and saved output inspection for invocation evidence."
+}

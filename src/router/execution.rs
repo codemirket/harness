@@ -11,7 +11,7 @@ use anyhow::{Context, Result, bail, ensure};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeMap, BTreeSet},
     io::Write,
     path::{Path, PathBuf},
 };
@@ -61,6 +61,7 @@ fn data_url(path: &Path) -> Result<String> {
     Ok(format!("data:image/{kind};base64,{}", base64(&bytes)))
 }
 
+#[allow(clippy::too_many_arguments)]
 async fn complete(
     paths: &Paths,
     target: &Target,
@@ -68,7 +69,9 @@ async fn complete(
     resolution: &Resolution,
     prompt: &str,
     images: &[PathBuf],
+    observation: &mut Value,
 ) -> Result<Value> {
+    *observation = super::accounting::empty();
     let effort = policy::effort_for(model, resolution);
     let mut max = policy::completion_tokens_for(model, resolution).unwrap_or(64_000);
     if let Some(context) = model.capabilities.context_window {
@@ -95,6 +98,7 @@ async fn complete(
             max,
             prompt,
             images,
+            observation,
         )
         .await;
     }
@@ -110,6 +114,7 @@ async fn complete(
             max,
             prompt,
             images,
+            observation,
         )
         .await;
     }
@@ -206,6 +211,8 @@ async fn complete(
         outgoing = outgoing.header(name, value);
     }
     let raw = discovery::response_json(outgoing.send().await?).await?;
+    observation["response_sha256"] = json!(util::sha256(&serde_json::to_vec(&raw)?));
+    super::accounting::observe(&raw, &target.protocol, observation);
     validate_response(&raw, target, &model.id)?;
     if target.protocol == Protocol::Anthropic {
         return raw["content"]
@@ -229,6 +236,36 @@ async fn complete(
     }
     .context("model did not return a complete JSON action")?;
     serde_json::from_str(text).context("model action is invalid JSON")
+}
+
+fn failure_receipt(error: &anyhow::Error, stage: &str) -> Value {
+    let parse = error.downcast_ref::<serde_json::Error>();
+    // Never persist arbitrary error strings: HTTP/native errors can echo private inputs.
+    let code = if parse.is_some() {
+        "invalid_json"
+    } else if error.downcast_ref::<reqwest::Error>().is_some() {
+        "transport_failure"
+    } else if error
+        .chain()
+        .any(|e| e.to_string() == "worker reported a blocker; run remains incomplete (see trace)")
+    {
+        "worker_blocked"
+    } else if error.chain().any(|e| {
+        e.to_string()
+            .starts_with("target changed or omitted selected model")
+    }) {
+        "model_identity_changed"
+    } else if error
+        .chain()
+        .any(|e| e.to_string().starts_with("inference target HTTP status"))
+    {
+        "http_status_failure"
+    } else {
+        "execution_contract_failure"
+    };
+    json!({"stage":stage,"code":code,"native_code":super::native::failure_code(error),"json_line":parse.map(|e|e.line()),"json_column":parse.map(|e|e.column()),
+        "retryable_transport":retryable_transport(error),"effects":"Unknown; inspect the checkpoint and workspace before replaying effects.",
+        "message":"Execution stopped. Numeric parse location and inference response digest are retained when available; raw provider errors are excluded."})
 }
 
 fn validate_response(raw: &Value, target: &Target, model: &str) -> Result<()> {
@@ -307,12 +344,110 @@ fn target<'a>(registry: &'a Registry, model: &Model) -> Result<&'a Target> {
         .context("selected target is not ready")
 }
 
+// Display labels, explanations and prices are discovery observations, not the
+// execution contract. Preserve all capability, tier and availability bindings.
+fn model_contract(model: &Model) -> Value {
+    let mut capabilities = serde_json::to_value(&model.capabilities).expect("model capabilities");
+    capabilities.as_object_mut().unwrap().remove("pricing");
+    json!({"id":model.id,"target":model.target,"tier":model.tier,
+        "available":model.available,"capabilities":capabilities})
+}
+
+fn provider_binding(target: &Target) -> Result<Value> {
+    let executable_sha256 = target
+        .executable
+        .as_deref()
+        .map(discovery::executable_identity)
+        .transpose()?
+        .map(|identity| identity["sha256"].clone());
+    Ok(json!({"target":target,"executable_sha256":executable_sha256}))
+}
+
+fn bound_provider(registry: &Registry, model: &Model, bindings: &Value) -> Result<()> {
+    let current = provider_binding(target(registry, model)?)?;
+    ensure!(
+        bindings
+            .as_array()
+            .is_some_and(|items| items.contains(&current)),
+        "original provider target or executable changed"
+    );
+    Ok(())
+}
+
+fn compatible_model(registry: &Registry, model: &Model, bindings: &Value) -> Result<()> {
+    bound_provider(registry, model, bindings)?;
+    let live = registry
+        .models
+        .iter()
+        .find(|m| m.target == model.target && m.id == model.id)
+        .context("original model unavailable")?;
+    ensure!(
+        model_contract(live) == model_contract(model),
+        "original model capability identity changed"
+    );
+    Ok(())
+}
+
+fn revalidate_candidates(
+    registry: &mut Registry,
+    candidates: &[Model],
+    selected: usize,
+    bindings: &Value,
+) -> Result<Vec<Value>> {
+    let chosen = candidates
+        .get(selected)
+        .context("invalid saved model selection")?;
+    compatible_model(registry, chosen, bindings)?;
+    let mut eligible = BTreeSet::new();
+    let mut providers = BTreeMap::from([(chosen.target.clone(), true)]);
+    let mut excluded = vec![];
+    for (index, model) in candidates.iter().enumerate() {
+        let provider_matches = *providers
+            .entry(model.target.clone())
+            .or_insert_with(|| bound_provider(registry, model, bindings).is_ok());
+        if provider_matches
+            && registry.models.iter().any(|live| {
+                live.id == model.id
+                    && live.target == model.target
+                    && model_contract(live) == model_contract(model)
+            })
+        {
+            eligible.insert((model.target.clone(), model.id.clone()));
+        } else {
+            excluded.push(
+                json!({"resume_candidate_excluded":index,"target":model.target,"model":model.id,
+                "reason":"saved_execution_contract_unavailable"}),
+            );
+        }
+    }
+    registry
+        .models
+        .retain(|m| eligible.contains(&(m.target.clone(), m.id.clone())));
+    Ok(excluded)
+}
+
+fn next_candidate(registry: &Registry, candidates: &[Model], selected: usize) -> Option<usize> {
+    candidates
+        .iter()
+        .enumerate()
+        .skip(selected + 1)
+        .find(|(_, m)| {
+            registry
+                .models
+                .iter()
+                .any(|live| live.id == m.id && live.target == m.target)
+        })
+        .map(|(index, _)| index)
+}
+
 /// A controlled image probe establishes an unknown native CLI vision contract.
 /// This is a capability check, not a quality benchmark or a task acceptance gate.
 async fn verify_vision(
     paths: &Paths,
+    run: &Path,
     registry: &mut Registry,
     resolution: &Resolution,
+    persist: bool,
 ) -> Result<()> {
     if !resolution.requires_vision {
         return Ok(());
@@ -320,6 +455,7 @@ async fn verify_vision(
     let mut candidates_resolution = resolution.clone();
     candidates_resolution.requires_vision = false;
     let candidates = policy::rank_candidates(&registry.models, &candidates_resolution);
+    let mut failures = Vec::new();
     for model in candidates {
         if model.capabilities.vision == Some(true) {
             return Ok(());
@@ -331,17 +467,24 @@ async fn verify_vision(
         if target.protocol != Protocol::Claude {
             continue;
         }
-        let probe = tempfile::tempdir()?;
-        let image = probe.path().join("vision.png");
-        let (png, expected) =
-            vision_fixture(&util::sha256(probe.path().to_string_lossy().as_bytes()))?;
-        std::fs::write(&image, png)?;
+        let (_probe, image, expected) = vision_probe(&std::env::temp_dir())?;
         let prompt = "Identify the four large color quadrants in the attached image, ordered top-left, top-right, bottom-left, bottom-right. Use only color names red, blue, green, yellow, cyan, magenta, separated by commas with no spaces. Return a complete action with tool empty, arguments_json '{}', and result set to those four names. Do not use tools.";
-        if let Ok(raw) = complete(paths, target, &model, resolution, prompt, &[image]).await
-            && let Ok(action) = serde_json::from_value::<Action>(raw)
-            && action.action == "complete"
-            && action.result.trim().to_lowercase() == expected
-        {
+        let started = std::time::Instant::now();
+        let probe = super::accounting::Probe::start(run, &model.target, &model.id)?;
+        let mut observation = super::accounting::empty();
+        let result = complete(
+            paths,
+            target,
+            &model,
+            resolution,
+            prompt,
+            &[image],
+            &mut observation,
+        )
+        .await;
+        let (passed, diagnostic) = vision_outcome(result, &expected);
+        probe.finish(observation, passed, diagnostic.clone())?;
+        if passed {
             let selected = registry
                 .models
                 .iter_mut()
@@ -351,15 +494,60 @@ async fn verify_vision(
             selected.classification_evidence.push(
                 "native vision conformance: randomized four-quadrant image recognized".into(),
             );
-            util::atomic_write_with_mode(
-                &paths.cache().join("inference-models.json"),
-                &serde_json::to_vec_pretty(registry)?,
-                Some(0o600),
-            )?;
+            if persist {
+                discovery::record_vision(paths, &registry.fingerprint, &model, selected).await?;
+            }
             return Ok(());
         }
+        // A failed probe is not proof that the model cannot see. Keep the
+        // transport/contract distinction without retaining provider text.
+        failures.push(json!({"target":model.target,"model":model.id,
+            "elapsed_ms":started.elapsed().as_millis(),"diagnostic":diagnostic}));
+    }
+    if !failures.is_empty() {
+        let count = failures.len();
+        failures.truncate(8);
+        bail!(
+            "native vision conformance not established: {}",
+            json!({"failed_probes":count,"first_failures":failures})
+        );
     }
     Ok(())
+}
+
+fn vision_outcome(result: Result<Value>, expected: &str) -> (bool, Value) {
+    match result {
+        Err(error) => (false, failure_receipt(&error, "vision_conformance")),
+        Ok(raw) => {
+            let digest = util::sha256(raw.to_string().as_bytes());
+            match serde_json::from_value::<Action>(raw) {
+                Ok(action)
+                    if action.action == "complete"
+                        && action.result.trim().to_lowercase() == expected =>
+                {
+                    (true, json!({"code":"passed","response_sha256":digest}))
+                }
+                Ok(_) => (
+                    false,
+                    json!({"code":"vision_answer_mismatch","response_sha256":digest}),
+                ),
+                Err(_) => (
+                    false,
+                    json!({"code":"invalid_vision_action","response_sha256":digest}),
+                ),
+            }
+        }
+    }
+}
+
+fn vision_probe(root: &Path) -> Result<(tempfile::TempDir, PathBuf, String)> {
+    // Canonicalize only the system temporary directory before creating our own
+    // private fixture. User image paths still pass the strict no-symlink reader.
+    let probe = tempfile::tempdir_in(root.canonicalize()?)?;
+    let image = probe.path().join("vision.png");
+    let (png, expected) = vision_fixture(&util::sha256(probe.path().to_string_lossy().as_bytes()))?;
+    std::fs::write(&image, png)?;
+    Ok((probe, image, expected))
 }
 fn vision_fixture(seed: &str) -> Result<(Vec<u8>, String)> {
     let colors = [
@@ -427,6 +615,7 @@ fn constrain_models(registry: &mut Registry, request: &SpawnRequest) {
 
 pub async fn plan(paths: &Paths, request: &SpawnRequest) -> Result<Value> {
     let mut request = request.clone();
+    super::durable::require_recall_runtime(paths, request.memory_recall)?;
     let mut assignment = assignment::prepare(&mut request)?;
     let project = crate::paths::canonical_project(&request.project)?;
     assignment.bind_workspaces(paths, &project)?;
@@ -447,6 +636,7 @@ pub async fn plan(paths: &Paths, request: &SpawnRequest) -> Result<Value> {
 
 pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
     let _maintenance = crate::maintenance::shared(paths)?;
+    super::durable::require_recall_runtime(paths, request.memory_recall)?;
     let mut assignment = assignment::prepare(&mut request)?;
     ensure!(
         request.objective.len() <= 64 * 1024
@@ -470,7 +660,16 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
     // Narrow before vision probes or inference: explicit choice must not cause
     // task execution or capability probes against another model/provider.
     constrain_models(&mut registry, &request);
-    verify_vision(paths, &mut registry, &resolution).await?;
+    util::ensure_directory(&paths.root.join("runs"))?;
+    let run = tempfile::Builder::new()
+        .prefix("routed-")
+        .tempdir_in(paths.root.join("runs"))?
+        .keep();
+    let _lock = util::FileLock::acquire(&run.join("execution.lock"))?;
+    super::accounting::initialize(&run)?;
+    verify_vision(paths, &run, &mut registry, &resolution, true)
+        .await
+        .with_context(|| format!("preflight failed; accounting retained in {}", run.display()))?;
     let candidates = policy::rank_candidates(&registry.models, &resolution);
     ensure!(
         !candidates.is_empty(),
@@ -483,14 +682,15 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
         resolution.min_tier
     ));
     let candidates = policy::rank_candidates(&registry.models, &resolution);
-    util::ensure_directory(&paths.root.join("runs"))?;
-    let run = tempfile::Builder::new()
-        .prefix("routed-")
-        .tempdir_in(paths.root.join("runs"))?
-        .keep();
-    let _lock = util::FileLock::acquire(&run.join("execution.lock"))?;
     let mut state = ExecutionState::new(&request);
-    let envelope = json!({"request":request,"project":project,"resolution":resolution,
+    let candidate_targets: BTreeSet<_> = candidates.iter().map(|model| &model.target).collect();
+    let provider_bindings = registry
+        .targets
+        .iter()
+        .filter(|status| candidate_targets.contains(&status.target.name))
+        .map(|status| provider_binding(&status.target))
+        .collect::<Result<Vec<_>>>()?;
+    let envelope = json!({"provider_bindings":provider_bindings,"request":request,"project":project,"resolution":resolution,
         "candidates":candidates,"targets":registry.targets,"contract":assignment.metadata,
         "guidance_sha256":util::sha256(&serde_json::to_vec(&assignment.guidance)?),
         "tools":definitions,"source_sha256":env!("MIRKET_SOURCE_SHA256"),
@@ -638,7 +838,8 @@ pub async fn resume(paths: &Paths, request: super::durable::RunRequest) -> Resul
     let _lock = util::FileLock::acquire(&run.join("execution.lock"))?;
     let mut durable = super::durable::Driver::resume(paths, &project, &request).await?;
     let saved = durable.state().context("missing durable state")?;
-    let envelope = &saved["envelope"];
+    let envelope = saved["envelope"].clone();
+    let mut state: ExecutionState = serde_json::from_value(saved["snapshot"].clone())?;
     ensure!(
         envelope["source_sha256"] == env!("MIRKET_SOURCE_SHA256"),
         "runtime generation changed; old run cannot dispatch tools"
@@ -648,6 +849,12 @@ pub async fn resume(paths: &Paths, request: super::durable::RunRequest) -> Resul
         "run project changed"
     );
     let mut original: SpawnRequest = serde_json::from_value(envelope["request"].clone())?;
+    ensure!(state.turn < 256, "original worker turn budget expired");
+    state.deadline = durable.resume_deadline()?;
+    // End a known pause before discovery or any conformance inference. Failed
+    // revalidation remains conservative: it cannot manufacture another pause.
+    durable.activate(serde_json::to_value(&state)?).await?;
+    state.deadline = durable.resume_deadline()?;
     let mut assignment = assignment::prepare(&mut original)?;
     assignment.bind_workspaces(paths, &project)?;
     let definitions = tools::definitions(paths, &original.assigned_tools).await?;
@@ -658,30 +865,40 @@ pub async fn resume(paths: &Paths, request: super::durable::RunRequest) -> Resul
                 == util::sha256(&serde_json::to_vec(&assignment.guidance)?),
         "task contract changed; resume rejected"
     );
-    let registry = discovery::discover(paths, true).await?;
+    let mut registry = discovery::discover(paths, true).await?;
     let candidates: Vec<Model> = serde_json::from_value(envelope["candidates"].clone())?;
-    for model in &candidates {
-        let live = registry
-            .models
-            .iter()
-            .find(|m| m.target == model.target && m.id == model.id)
-            .context("original model unavailable")?;
-        ensure!(
-            serde_json::to_value(live)? == serde_json::to_value(model)?,
-            "original model capability identity changed"
-        );
-        let live_target = target(&registry, model)?;
-        ensure!(
-            envelope["targets"]
-                .as_array()
-                .context("saved targets")?
-                .iter()
-                .any(|v| v["target"] == serde_json::to_value(live_target).unwrap_or(Value::Null)),
-            "original provider target changed"
-        );
-    }
     let resolution: Resolution = serde_json::from_value(envelope["resolution"].clone())?;
-    let mut state: ExecutionState = serde_json::from_value(saved["snapshot"].clone())?;
+    let selected = candidates
+        .get(state.selected)
+        .context("invalid saved model selection")?;
+    bound_provider(&registry, selected, &envelope["provider_bindings"])?;
+    // Raw rediscovery cannot reproduce a conformance observation. Probe only the
+    // bound selected model; never let a different candidate satisfy its check.
+    if resolution.requires_vision
+        && selected.capabilities.vision == Some(true)
+        && registry.models.iter().any(|m| {
+            m.id == selected.id && m.target == selected.target && m.capabilities.vision.is_none()
+        })
+    {
+        let mut scoped = registry.clone();
+        scoped
+            .models
+            .retain(|m| m.id == selected.id && m.target == selected.target);
+        verify_vision(paths, &run, &mut scoped, &resolution, false).await?;
+        for live in &mut registry.models {
+            if live.id == selected.id && live.target == selected.target {
+                *live = scoped.models[0].clone();
+            }
+        }
+    }
+    // Keep saved indices intact across every checkpoint; only live eligibility changes.
+    state.attempts.extend(revalidate_candidates(
+        &mut registry,
+        &candidates,
+        state.selected,
+        &envelope["provider_bindings"],
+    )?);
+    state.deadline = durable.resume_deadline()?;
     if let Some(effect) = durable.pending_write() {
         assignment.authorize("workspace_write")?;
         assignment.validate_arguments("workspace_write", &effect["arguments"])?;
@@ -762,6 +979,13 @@ async fn finish_run(
     {
         result = Err(error);
     }
+    if result.is_err()
+        && let Err(error) = durable.pause(serde_json::to_value(&state)?).await
+    {
+        state
+            .attempts
+            .push(json!({"pause_not_persisted":failure_receipt(&error, "checkpoint")}));
+    }
     let status = if result.is_err() {
         "incomplete"
     } else if host_verification.is_some() {
@@ -769,15 +993,16 @@ async fn finish_run(
     } else {
         "complete"
     };
-    let trace = json!({"status":status,"result":result.as_ref().ok(),"host_verification":host_verification,
+    let accounting = super::accounting::run_summary(run, &state.attempts)?;
+    let trace = json!({"accounting":accounting,"status":status,"result":result.as_ref().ok(),"host_verification":host_verification,
         "workflow":durable.summary(),"task_contract":assignment.metadata,"resolution":resolution,
         "attempts":state.attempts,"transcript":state.transcript,
-        "error":result.as_ref().err().map(|_|"Execution stopped; inspect checkpoint and workspace before resuming. Effects may already have occurred.")});
+        "error":result.as_ref().err().map(|e| failure_receipt(e, "execution"))});
     let bytes = serde_json::to_vec_pretty(&trace)?;
     util::atomic_write_with_mode(&run.join("trace.json"), &bytes, Some(0o600))?;
     match result {
         Ok(value) => Ok(
-            json!({"status":status,"run_id":run.file_name().context("run ID")?.to_string_lossy(),"workflow":durable.summary(),
+            json!({"accounting":accounting,"status":status,"run_id":run.file_name().context("run ID")?.to_string_lossy(),"workflow":durable.summary(),
             "host_verification":host_verification,"trace_sha256":util::sha256(&bytes),"result":value,
             "model":candidates[state.selected],"task_contract":assignment.metadata,"resolution":resolution,"trace":run.join("trace.json")}),
         ),
@@ -811,6 +1036,54 @@ fn validate_assignment(request: &SpawnRequest, resolution: &Resolution) -> Resul
         );
     }
     Ok(())
+}
+
+/// A fragment is never a whole-file attestation. Only contiguous coverage of
+/// the current digest after the latest mutation can satisfy readback.
+fn paged_readbacks(transcript: &[Value], pending: &[ArtifactRef]) -> Vec<ArtifactRef> {
+    let start = transcript
+        .iter()
+        .rposition(|entry| entry["tool"].as_str().is_some_and(tools::may_mutate))
+        .map_or(0, |i| i + 1);
+    pending
+        .iter()
+        .filter(|artifact| {
+            let mut ranges = Vec::new();
+            let mut total = None;
+            for entry in &transcript[start..] {
+                if entry["tool"] != "workspace_read" || entry["passed"] != true {
+                    continue;
+                }
+                let receipt = &entry["result"]["read_receipt"];
+                if receipt["path"].as_str() != artifact.path.to_str()
+                    || receipt["sha256"] != artifact.sha256
+                {
+                    continue;
+                }
+                if let (Some(offset), Some(end), Some(size)) = (
+                    receipt["offset"].as_u64(),
+                    receipt["end"].as_u64(),
+                    receipt["total"].as_u64(),
+                ) {
+                    if end < offset || end > size || total.is_some_and(|old| old != size) {
+                        return false;
+                    }
+                    total = Some(size);
+                    ranges.push((offset, end));
+                }
+            }
+            ranges.sort_unstable();
+            let mut covered = 0;
+            for (offset, end) in ranges {
+                if offset > covered {
+                    return false;
+                }
+                covered = covered.max(end);
+            }
+            total == Some(covered)
+        })
+        .cloned()
+        .collect()
 }
 
 fn record_artifacts(
@@ -979,8 +1252,26 @@ async fn run_loop(
             );
         }
         let image_paths: Vec<PathBuf> = images.iter().map(|image| image.path.clone()).collect();
-        let response = match complete(paths, target, model, resolution, &prompt, &image_paths).await
-        {
+        let started = std::time::Instant::now();
+        let mut observation = Value::Null;
+        let completion = complete(
+            paths,
+            target,
+            model,
+            resolution,
+            &prompt,
+            &image_paths,
+            &mut observation,
+        )
+        .await;
+        observation["elapsed_ms"] = json!(started.elapsed().as_millis());
+        if let Some(attempt) = attempts.last_mut() {
+            attempt["inference"] = observation;
+            if let Err(error) = &completion {
+                attempt["failure"] = failure_receipt(error, "inference");
+            }
+        }
+        let response = match completion {
             Ok(value) => value,
             Err(error) if retryable_transport(&error) && *transport_retries < 2 => {
                 *transport_retries += 1;
@@ -989,8 +1280,12 @@ async fn run_loop(
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
                 continue;
             }
-            Err(error) if retryable(&error) && *selected + 1 < candidates.len() => {
-                *selected += 1;
+            Err(error)
+                if retryable(&error)
+                    && next_candidate(registry, candidates, *selected).is_some() =>
+            {
+                *selected =
+                    next_candidate(registry, candidates, *selected).expect("eligible fallback");
                 attempts.push(json!({"failover":"equivalent_or_higher_tier","previous_target":model.target,"previous_model":model.id}));
                 continue;
             }
@@ -1110,7 +1405,10 @@ async fn run_loop(
                         }
                         if result.passed {
                             executed_tools.insert(action.tool.clone());
-                            let matching = matching_receipts(pending, &result.verifies);
+                            let mut matching = matching_receipts(pending, &result.verifies);
+                            if action.tool == "workspace_read" {
+                                matching.extend(paged_readbacks(transcript, pending));
+                            }
                             for receipt in &matching {
                                 verified.insert((receipt.path.clone(), receipt.sha256.clone()));
                             }
@@ -1169,6 +1467,246 @@ async fn run_loop(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn failed_native_vision_dispatch_retains_probe_and_resume_attempts() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().to_path_buf()).unwrap();
+        let run = paths.root.join("runs/routed-probe-fixture");
+        util::ensure_directory(&run).unwrap();
+        super::super::accounting::initialize(&run).unwrap();
+        let mut registry = Registry {
+            version: 2,
+            refreshed_at: 0,
+            fingerprint: String::new(),
+            targets: vec![discovery::TargetStatus {
+                target: Target {
+                    name: "fixture".into(),
+                    protocol: Protocol::Claude,
+                    endpoint: None,
+                    credential_env: None,
+                    executable: Some(paths.home.join("absent-native-client")),
+                },
+                authenticated: true,
+                execution_ready: true,
+                diagnostic: None,
+            }],
+            models: vec![
+                serde_json::from_value(json!({"id":"probe-model","target":"fixture",
+                "display_name":"Fixture","description":"","tier":"T3_ARCHITECT","available":true,
+                "capabilities":{"tools":true,"structured_outputs":true,"vision":null,
+                "context_window":262144,"reasoning_efforts":["high"]}}))
+                .unwrap(),
+            ],
+        };
+        let resolution: Resolution = serde_json::from_value(json!({"min_tier":"T1_DETERMINISTIC",
+            "requires_vision":true,"requires_structured_outputs":true,"requires_tools":false,
+            "effort_profile":"high","requested_effort":"high","downgrade_rejected":false,"reasons":[]})).unwrap();
+        for persist in [true, false] {
+            assert!(
+                verify_vision(&paths, &run, &mut registry, &resolution, persist)
+                    .await
+                    .is_err()
+            );
+        }
+        let receipt =
+            super::super::accounting::inspect_run(&paths, "routed-probe-fixture").unwrap();
+        assert_eq!(receipt["vision_probes"]["inference_attempts"], 2);
+        assert_eq!(receipt["unknown_cost_attempts"], 2);
+        assert!(receipt["total_cost_estimate_usd"].is_null());
+        assert_eq!(receipt["worker_trace_available"], false);
+        assert!(
+            receipt["probe_receipts"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .all(|value| value["result"]["status"] == "failed")
+        );
+    }
+    #[cfg(unix)]
+    #[test]
+    fn native_vision_probe_accepts_system_temp_alias_but_not_image_aliases() {
+        let root = tempfile::tempdir().unwrap();
+        let root = root.path().canonicalize().unwrap();
+        let real = root.join("real");
+        std::fs::create_dir(&real).unwrap();
+        let alias = root.join("alias");
+        std::os::unix::fs::symlink(&real, &alias).unwrap();
+        // Reproduce the former macOS /var temporary path failure.
+        let old = tempfile::tempdir_in(&alias).unwrap();
+        let old_image = old.path().join("old.png");
+        std::fs::write(&old_image, vision_fixture("abcd").unwrap().0).unwrap();
+        assert!(util::read_bounded(&old_image, 4 * 1024 * 1024).is_err());
+        let (_owner, image, expected) = vision_probe(&alias).unwrap();
+        let bytes = util::read_bounded(&image, 4 * 1024 * 1024).unwrap();
+        assert_eq!(
+            super::super::native::image_media_type(&bytes),
+            Some("image/png")
+        );
+        assert_eq!(expected.split(',').count(), 4);
+        let image_alias = root.join("image.png");
+        std::os::unix::fs::symlink(&image, &image_alias).unwrap();
+        assert!(util::read_bounded(&image_alias, 4 * 1024 * 1024).is_err());
+    }
+    #[test]
+    fn vision_probe_distinguishes_contract_failure_from_incorrect_pixels() {
+        let action =
+            |answer| json!({"action":"complete","tool":"","arguments_json":"{}","result":answer});
+        let (passed, _) = vision_outcome(Ok(action("red,blue")), "red,blue");
+        assert!(passed);
+        let (passed, wrong) = vision_outcome(Ok(action("private incorrect answer")), "red,blue");
+        assert!(!passed);
+        assert_eq!(wrong["code"], "vision_answer_mismatch");
+        assert_eq!(wrong["response_sha256"].as_str().unwrap().len(), 64);
+        assert!(!wrong.to_string().contains("private"));
+        let (_, invalid) = vision_outcome(Ok(json!({"private":"provider payload"})), "red,blue");
+        assert_eq!(invalid["code"], "invalid_vision_action");
+        let (_, transport) = vision_outcome(
+            Err(anyhow::anyhow!("private provider detail")
+                .context("native child closed its response stream")),
+            "red,blue",
+        );
+        assert_eq!(transport["native_code"], "response_stream_closed");
+        assert!(!transport.to_string().contains("private"));
+        let (_, untrusted) = vision_outcome(
+            Err(anyhow::anyhow!(
+                "native child closed its response stream: secret"
+            )),
+            "red,blue",
+        );
+        assert!(untrusted["native_code"].is_null());
+        assert!(!untrusted.to_string().contains("secret"));
+    }
+
+    #[test]
+    fn paged_readback_needs_all_bytes_same_digest_after_last_mutation() {
+        let artifact = ArtifactRef {
+            path: PathBuf::from("/project/file"),
+            sha256: "a".repeat(64),
+        };
+        let page = |offset, end| json!({"tool":"workspace_read","passed":true,"result":{"read_receipt":{"path":artifact.path,"sha256":artifact.sha256,"offset":offset,"end":end,"total":200000}}});
+        let first = page(0, 131072);
+        let last = page(131072, 200000);
+        let pending = [artifact.clone()];
+        assert!(paged_readbacks(std::slice::from_ref(&first), &pending).is_empty());
+        assert!(paged_readbacks(std::slice::from_ref(&last), &pending).is_empty());
+        assert_eq!(
+            paged_readbacks(&[first.clone(), last.clone()], &pending),
+            pending
+        );
+        assert!(
+            paged_readbacks(
+                &[
+                    first.clone(),
+                    json!({"tool":"workspace_write"}),
+                    last.clone()
+                ],
+                &pending
+            )
+            .is_empty()
+        );
+        let mut wrong = last;
+        wrong["result"]["read_receipt"]["sha256"] = json!("b".repeat(64));
+        assert!(paged_readbacks(&[first, wrong], &pending).is_empty());
+    }
+    #[test]
+    fn resume_contract_ignores_unused_candidates_and_observation_metadata() {
+        let provider = Target {
+            name: "fixture".into(),
+            protocol: Protocol::OpenaiChat,
+            endpoint: Some("http://127.0.0.1:1234/v1".into()),
+            credential_env: None,
+            executable: None,
+        };
+        let original: Model =
+            serde_json::from_value(json!({"id":"a","target":"fixture","display_name":"A",
+            "description":"old","tier":"T3_ARCHITECT","available":true,"capabilities":{
+                "tools":true,"structured_outputs":true,"vision":true,"context_window":262144,
+                "reasoning_efforts":["high"],"pricing":{"input":1}}}))
+            .unwrap();
+        let bindings = json!([provider_binding(&provider).unwrap()]);
+        let mut registry = Registry {
+            version: 2,
+            refreshed_at: 0,
+            fingerprint: String::new(),
+            targets: vec![discovery::TargetStatus {
+                target: provider,
+                authenticated: true,
+                execution_ready: true,
+                diagnostic: None,
+            }],
+            models: vec![original.clone()],
+        };
+        let mut unused = original.clone();
+        unused.id = "removed-fallback".into();
+        registry.models[0].description = "new description".into();
+        registry.models[0].display_name = "new label".into();
+        registry.models[0]
+            .classification_evidence
+            .push("new explanation".into());
+        registry.models[0].capabilities.pricing = Some(json!({"input":2}));
+        compatible_model(&registry, &original, &bindings).unwrap();
+        assert!(compatible_model(&registry, &unused, &bindings).is_err());
+        let mut later = original.clone();
+        later.id = "later".into();
+        registry.models.push(later.clone());
+        let saved = vec![original.clone(), unused.clone(), later];
+        let exclusions = revalidate_candidates(&mut registry, &saved, 0, &bindings).unwrap();
+        assert_eq!(exclusions.len(), 1);
+        assert_eq!(exclusions[0]["resume_candidate_excluded"], 1);
+        assert_eq!(next_candidate(&registry, &saved, 0), Some(2));
+        assert!(revalidate_candidates(&mut registry, &saved, 1, &bindings).is_err());
+        assert!(revalidate_candidates(&mut registry, &saved, 3, &bindings).is_err());
+
+        for field in [
+            "tools",
+            "structured_outputs",
+            "vision",
+            "context_window",
+            "max_completion_tokens",
+            "thinking_budget_max",
+            "reasoning_efforts",
+            "thinking_modes",
+        ] {
+            let mut changed = serde_json::to_value(&original).unwrap();
+            changed["capabilities"][field] = match field {
+                "reasoning_efforts" | "thinking_modes" => json!(["different"]),
+                "tools" | "structured_outputs" | "vision" => json!(false),
+                _ => json!(123),
+            };
+            registry.models[0] = serde_json::from_value(changed).unwrap();
+            assert!(
+                compatible_model(&registry, &original, &bindings).is_err(),
+                "{field}"
+            );
+        }
+        registry.models[0] = original.clone();
+        registry.models[0].capabilities.vision = None;
+        assert!(
+            compatible_model(&registry, &original, &bindings).is_err(),
+            "unknown vision needs fresh conformance"
+        );
+        registry.models[0].capabilities.vision = Some(true);
+        compatible_model(&registry, &original, &bindings).unwrap();
+        registry.targets[0].target.endpoint = Some("http://127.0.0.1:5678/v1".into());
+        assert!(compatible_model(&registry, &original, &bindings).is_err());
+    }
+
+    #[test]
+    fn resume_provider_binding_detects_replaced_native_executable() {
+        let home = tempfile::tempdir().unwrap();
+        let executable = home.path().join("native");
+        std::fs::write(&executable, b"first").unwrap();
+        let provider = Target {
+            name: "native".into(),
+            protocol: Protocol::Claude,
+            endpoint: None,
+            credential_env: None,
+            executable: Some(executable.clone()),
+        };
+        let before = provider_binding(&provider).unwrap();
+        std::fs::write(executable, b"other").unwrap();
+        assert_ne!(before, provider_binding(&provider).unwrap());
+    }
 
     #[test]
     fn recovered_write_keeps_readback_and_budget_obligations() {

@@ -4,6 +4,43 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
+test('shipped Chromium meets the reviewed security floor and esbuild still bundles', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1'}, async () => {
+  const {execFile} = await import('node:child_process');
+  const {promisify} = await import('node:util');
+  const run = promisify(execFile);
+  const {stdout} = await run('dpkg-query', ['-W', '-f=${Version}', 'chromium']);
+  await run('dpkg', ['--compare-versions', stdout.trim(), 'ge', '155.0.8059.79-1~deb12u1']);
+  const esbuild = await import('esbuild');
+  assert.equal(esbuild.version, '0.28.2');
+  const binary = await fs.readFile(`/opt/design/node_modules/@esbuild/linux-${process.arch}/bin/esbuild`);
+  assert.ok(binary.includes(Buffer.from([255, 32, 71, 111, 32, 98, 117, 105, 108, 100, 105, 110, 102, 58])), 'Go build metadata must remain scannable');
+  assert.ok(binary.includes(Buffer.from('go1.27.3')), 'patched Go runtime must be in the actual binary');
+  const bundled = await esbuild.build({stdin:{contents:'export const sum = (a: number, b: number) => a + b;', loader:'ts'}, bundle:true, write:false, format:'esm'});
+  const loaded = await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].text).toString('base64')}`);
+  assert.equal(loaded.sum(2,3),5);
+});
+
+// The development gate owns a fresh workspace and loopback HTTP server inside
+// its disposable container. Existing service-based invocation stays supported.
+let isolatedServer;
+if (process.env.MIRKET_ISOLATED_TEST === '1') {
+  test.before(async () => {
+    const {workspace} = await import('../paths.mjs');
+    await fs.mkdir(path.join(workspace, 'design'), {recursive:true});
+    await fs.writeFile(path.join(workspace, 'design/tokens.json'), JSON.stringify({color:{accent:{$type:'color',$value:'#345678'}}}));
+    const {handleWorkspaceRequest} = await import('../workspace-server.mjs');
+    const {createServer} = await import('node:http');
+    isolatedServer = createServer(handleWorkspaceRequest);
+    await new Promise((resolve,reject) => {
+      isolatedServer.once('error', reject);
+      isolatedServer.listen(9002, '0.0.0.0', resolve);
+    });
+  });
+  test.after(async () => {
+    if (isolatedServer) await new Promise(resolve => isolatedServer.close(resolve));
+  });
+}
+
 // Opt in only inside a running tools service with its real workspace HTTP server.
 test('real Chromium captures viewport and full page at exactly 2x and seeks reproducibly', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1', timeout: 90000}, async () => {
   const {workspace} = await import('../paths.mjs');

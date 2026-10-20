@@ -1,0 +1,8 @@
+{
+  "synthetic_receipt": true,
+  "purpose": "negative CLI fixture, never valid acceptance evidence",
+  "expected": "reject changed candidate source without writing output",
+  "exit_code": 1,
+  "stderr": "mirket: release inputs differ from accepted source/version (including locks, recipes, tests and toolchain)\n",
+  "output_created": false
+}

@@ -98,6 +98,54 @@ pub struct Registry {
     pub models: Vec<Model>,
 }
 
+/// A selected-model probe must never replace the shared menu with its scoped
+/// registry. Merge only into the same discovery generation and model metadata.
+pub(super) async fn record_vision(
+    paths: &Paths,
+    fingerprint: &str,
+    expected: &Model,
+    observed: &Model,
+) -> Result<()> {
+    let gate = discovery_gate(&paths.root);
+    let _guard = gate.lock.lock().await;
+    let path = paths.cache().join("inference-models.json");
+    let Ok(bytes) = util::read_bounded(&path, MAX_METADATA as u64) else {
+        return Ok(());
+    };
+    let Ok(mut cached) = serde_json::from_slice::<Registry>(&bytes) else {
+        return Ok(());
+    };
+    if merge_vision(&mut cached, fingerprint, expected, observed)? {
+        util::atomic_write_with_mode(&path, &serde_json::to_vec_pretty(&cached)?, Some(0o600))?;
+    }
+    Ok(())
+}
+
+fn merge_vision(
+    cached: &mut Registry,
+    fingerprint: &str,
+    expected: &Model,
+    observed: &Model,
+) -> Result<bool> {
+    if cached.version != REGISTRY_VERSION || cached.fingerprint != fingerprint {
+        return Ok(false);
+    }
+    let Some(entry) = cached
+        .models
+        .iter_mut()
+        .find(|entry| entry.id == expected.id && entry.target == expected.target)
+    else {
+        return Ok(false);
+    };
+    if serde_json::to_value(&*entry)? != serde_json::to_value(expected)? {
+        return Ok(false);
+    }
+    // The only facts a vision probe may add are vision and its evidence.
+    entry.capabilities.vision = observed.capabilities.vision;
+    entry.classification_evidence = observed.classification_evidence.clone();
+    Ok(true)
+}
+
 fn now() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -105,7 +153,7 @@ fn now() -> u64 {
         .as_secs()
 }
 
-fn executable_identity(path: &Path) -> Result<Value> {
+pub(super) fn executable_identity(path: &Path) -> Result<Value> {
     let mut file = File::open(path).context("read inference executable identity")?;
     let metadata = file.metadata().context("inspect inference executable")?;
     ensure!(
@@ -1047,6 +1095,55 @@ pub async fn discover(paths: &Paths, refresh: bool) -> Result<Registry> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn selected_vision_observation_preserves_shared_menu_and_rejects_stale_metadata() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
+        util::ensure_directory(&paths.cache()).unwrap();
+        let target = Target {
+            name: "fixture".into(),
+            protocol: Protocol::Claude,
+            endpoint: None,
+            credential_env: None,
+            executable: None,
+        };
+        let model = |id| normalize(&target, &json!({"resolvedModel":id}), true).unwrap();
+        let first = model("first");
+        let other = model("other");
+        let mut observed = first.clone();
+        observed.capabilities.vision = Some(true);
+        observed.classification_evidence.push("probe passed".into());
+        let original = Registry {
+            version: REGISTRY_VERSION,
+            refreshed_at: 123,
+            fingerprint: "generation".into(),
+            targets: vec![],
+            models: vec![first.clone(), other.clone()],
+        };
+        let path = paths.cache().join("inference-models.json");
+        util::atomic_write_with_mode(&path, &serde_json::to_vec(&original).unwrap(), Some(0o600))
+            .unwrap();
+        record_vision(&paths, "generation", &first, &observed)
+            .await
+            .unwrap();
+        let bytes = util::read_bounded(&path, MAX_METADATA as u64).unwrap();
+        let cached: Registry = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(cached.models.len(), 2);
+        assert_eq!(cached.models[0].capabilities.vision, Some(true));
+        assert_eq!(
+            serde_json::to_value(&cached.models[1]).unwrap(),
+            serde_json::to_value(other).unwrap()
+        );
+        assert_eq!(cached.refreshed_at, 123);
+        // Neither a stale generation nor stale pre-probe metadata may overwrite.
+        record_vision(&paths, "old-generation", &first, &observed)
+            .await
+            .unwrap();
+        record_vision(&paths, "generation", &first, &observed)
+            .await
+            .unwrap();
+        assert_eq!(std::fs::read(path).unwrap(), bytes);
+    }
     #[test]
     fn model_budget_bounds_retained_metadata_without_rejecting_unused_provider_fields() {
         let target = endpoint_target(

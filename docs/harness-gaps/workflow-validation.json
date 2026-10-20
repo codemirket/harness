@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "yaml_parsed": true,
+  "native_platforms": [
+    "ubuntu-latest",
+    "macos-latest",
+    "windows-latest"
+  ],
+  "workflow_sha256": "b133955104efa5e8d529fe47d37a5bc5364584e627157c7fd87ac60f1f7a1f6a"
+}

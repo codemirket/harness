@@ -2,6 +2,7 @@
 import json
 import sqlite3
 import time
+from contextlib import closing
 from typing import TypedDict
 
 from langgraph.checkpoint.sqlite import SqliteSaver
@@ -20,9 +21,42 @@ class Run(TypedDict, total=False):
     effect: dict
     turn: int
     deadline: int
+    paused_at: int
+    pause_used: int
     last_key: str
     last_digest: str
     verification: dict
+
+
+def recall_queries(request, tokenizer):
+    explicit = request.get("memory_queries", [])
+    if explicit:
+        if not isinstance(explicit, list) or len(explicit) > 8 or any(not isinstance(q, str) or not q.strip() or len(q) > 512 for q in explicit):
+            raise ValueError("invalid explicit memory queries")
+        if any(tokenizer.encode(q).overflowing for q in explicit):
+            raise ValueError("explicit memory query exceeds embedding token window")
+        return list(dict.fromkeys(explicit)), False
+    objective = request["objective"]
+    candidates = [objective[i:i + 256] for i in range(0, len(objective), 256)]
+    # Prioritize both ends and concrete deliverable requirements before sampling
+    # the middle. No model rewrite and no silent prefix-only interpretation.
+    selected = candidates[:1] + candidates[-1:]
+    needs = [need["reason"] for need in request.get("task_needs", [])]
+    selected += needs
+    selected += [candidates[round(i * (len(candidates) - 1) / 7)] for i in range(8)] if candidates else []
+    selected = list(dict.fromkeys(q for q in selected if q.strip()))[:8]
+    queries = []
+    shortened = False
+    for text in selected:
+        while tokenizer.encode(text).overflowing:
+            if len(text) <= 1:
+                raise ValueError("embedding tokenizer cannot encode a query")
+            # Keep both ends of a requirement when fitting the token budget.
+            width = max(1, len(text) // 4)
+            text = text[:width] + " … " + text[-width:] if len(text) > 8 else text[:len(text)//2]
+            shortened = True
+        queries.append(text)
+    return queries, shortened or any(q not in selected for q in candidates + needs)
 
 
 def recall_node(state, directory, scope):
@@ -34,13 +68,20 @@ def recall_node(state, directory, scope):
     if mode == "off" or not (directory / "vectors").exists():
         return {"memories": {**empty, "status": "disabled" if mode == "off" else "empty"}}
     try:
-        objective = request["objective"][:256]
-        tokenizer = embedding_model().model.tokenizer
-        while tokenizer.encode(objective).overflowing:
-            objective = objective[:max(1, len(objective) // 2)]
-        memories = recall(directory, scope, {"query": objective, "limit": 5})
-        memories["query_excerpt"] = objective
-        memories["objective_sha256"] = digest(request["objective"])
+        queries, incomplete = recall_queries(request, embedding_model().model.tokenizer)
+        pages = [recall(directory, scope, {"query": query, "limit": 5}) for query in queries]
+        results, seen = [], set()
+        # Interleave ranks; scores from different queries are not calibrated.
+        for rank in range(5):
+            for page in pages:
+                items = page["results"]
+                if rank < len(items) and items[rank]["id"] not in seen:
+                    seen.add(items[rank]["id"])
+                    results.append(items[rank])
+        memories = {**empty, "results": results[:20], "queries": queries,
+                    "objective_sha256": digest(request["objective"]),
+                    "retrieval": {"incomplete": incomplete or len(results) > 20 or any(p.get("retrieval", {}).get("incomplete", False) for p in pages),
+                                  "query_count": len(queries), "result_limit": 20}}
         return {"memories": memories}
     except Exception as error:
         if mode == "required":
@@ -49,23 +90,65 @@ def recall_node(state, directory, scope):
         return {"memories": {**empty, "status": "unavailable", "warning": type(error).__name__}}
 
 
-def receive(state, kind):
-    if int(time.time()) >= state["deadline"] and kind != "host_verification":
+MAX_PAUSE_SECONDS = 86400  # Cumulative known-inactive time, never per resume.
+
+
+def effective_deadline(state, now):
+    paused = state.get("paused_at", 0)
+    used = state.get("pause_used", 0)
+    if not 0 <= used <= MAX_PAUSE_SECONDS:
+        raise ValueError("invalid cumulative pause budget")
+    if paused:
+        if not paused <= now or now - paused > MAX_PAUSE_SECONDS - used:
+            raise ValueError("cumulative pause allowance exhausted or clock moved backward")
+        if paused >= state["deadline"]:
+            raise ValueError("active budget was exhausted before pause")
+        return state["deadline"] + now - paused
+    return state["deadline"]
+
+
+def budget_transition(state, kind, reply, now):
+    deadline = effective_deadline(state, now)
+    if now >= deadline:
         raise ValueError("original run budget expired; resumption cannot reset it")
-    reply = interrupt({"kind": kind, "turn": state.get("turn", 0), "effect": state.get("effect")})
-    allowed = {"continue", "effect", "done", "blocked"} if kind == "worker_turn" else ({"continue", "blocked"} if kind == "effect" else {"verified", "pending"})
+    decision = reply["decision"]
+    paused = state.get("paused_at", 0)
+    used = state.get("pause_used", 0)
+    if decision == "pause":
+        if kind != "worker_turn" or paused:
+            raise ValueError("only an active worker boundary can pause")
+        return {"paused_at": now, "pause_used": used, "deadline": deadline}
+    return {"paused_at": 0, "pause_used": used + (now - paused if paused else 0), "deadline": deadline}
+
+
+def validate_transition(state, kind, reply, now):
+    if kind not in ("worker_turn", "effect", "host_verification"):
+        raise ValueError("unknown workflow boundary")
+    allowed = {"continue", "effect", "done", "blocked", "pause"} if kind == "worker_turn" else ({"continue", "blocked"} if kind == "effect" else {"verified", "pending"})
     if reply.get("decision") not in allowed:
         raise ValueError("invalid workflow transition")
     result = {key: reply[key] for key in ("snapshot", "decision", "effect", "last_key", "last_digest", "verification") if key in reply}
-    if kind == "worker_turn":
-        result["turn"] = reply.get("snapshot", {}).get("turn", state.get("turn", 0))
-        if result["turn"] > 256:
-            raise ValueError("original turn budget exhausted")
+    if kind != "host_verification":
+        result.update(budget_transition(state, kind, reply, now))
+        snapshot = result.get("snapshot", {})
+        if not isinstance(snapshot, dict):
+            raise ValueError("workflow snapshot must be an object")
+        result["snapshot"] = {**snapshot, "deadline": result["deadline"]}
+        result["turn"] = snapshot.get("turn", state.get("turn", 0))
+        if type(result["turn"]) is not int or not state.get("turn", 0) <= result["turn"] <= 256:
+            raise ValueError("original turn budget exhausted or reset")
     return result
 
 
+def receive(state, kind):
+    if kind != "host_verification" and int(time.time()) >= effective_deadline(state, int(time.time())):
+        raise ValueError("original run budget expired; resumption cannot reset it")
+    reply = interrupt({"kind": kind, "turn": state.get("turn", 0), "effect": state.get("effect")})
+    return validate_transition(state, kind, reply, int(time.time()))
+
+
 def route(state):
-    return {"continue": "worker", "effect": "effect", "done": "verification", "blocked": END}[state["decision"]]
+    return {"continue": "worker", "pause": "worker", "effect": "effect", "done": "verification", "blocked": END}[state["decision"]]
 
 
 def verification_node(state):
@@ -103,7 +186,7 @@ def describe(graph, config):
 def execute(directory, scope, operation, args):
     run_id = args["run_id"]
     config = {"configurable": {"thread_id": run_id}, "recursion_limit": 1024}
-    with sqlite3.connect(directory / "workflows.sqlite", check_same_thread=False, timeout=10) as connection:
+    with closing(sqlite3.connect(directory / "workflows.sqlite", check_same_thread=False, timeout=10)) as connection, connection:
         connection.execute("PRAGMA busy_timeout=10000")
         graph = compiled(connection, directory, scope)
         current = graph.get_state(config)
@@ -138,6 +221,9 @@ def execute(directory, scope, operation, args):
             if not observed["interrupts"]:
                 raise ValueError("workflow has no pending host handoff")
             reply = {**args["reply"], "last_key": key, "last_digest": fingerprint}
+            # LangGraph persists interrupt resumes before running the node. Reject
+            # invalid input before it can poison the pending-write journal.
+            validate_transition(observed["state"], observed["interrupts"][0]["kind"], reply, int(time.time()))
             graph.invoke(Command(resume=reply), config, durability="sync")
         elif operation == "workflow_hostcheck":
             observed = describe(graph, config)

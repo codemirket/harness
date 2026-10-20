@@ -1,0 +1,561 @@
+mirket dev: cargo fmt --all -- --check
+mirket dev: cargo clippy --locked --all-targets -- -D warnings
+   Compiling mirket v1.0.11 (<checkout>)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.80s
+mirket dev: cargo test --locked --all-targets
+   Compiling mirket v1.0.11 (<checkout>)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.71s
+     Running unittests src/lib.rs (target/debug/deps/mirket-6bdb6d9fe7d7c69d)
+
+running 255 tests
+test agent_runtime::tests::startup_holder_fixture ... ok
+test agent_runtime::tests::startup_queue_does_not_retry_path_errors ... ok
+test agent_runtime::tests::cancelling_queued_start_does_not_claim_or_leak_the_lock ... ok
+test agent_runtime::tests::startup_queue_coordinates_processes_and_releases_after_handshake ... ok
+test catalog::tests::archive_rejects_selected_symlink_and_retains_licenses ... ok
+test catalog::design_references::coverage::tests::unrelated_cells_cannot_be_pooled_into_a_complete_combination ... ok
+test catalog::design_references::tests::a_poor_fit_is_not_a_positive_discovery_match ... ok
+test catalog::design_references::coverage::tests::lookup_preserves_gaps_and_never_certifies_the_current_task ... ok
+test agent_runtime::tests::long_workers_preserve_operation_capacity_and_queue_is_bounded ... ok
+test catalog::tests::bounded_read_rejects_traversal_and_huge_response ... ok
+test catalog::design_references::tests::reference_contract_rejects_missing_unsafe_or_unaccounted_material ... ok
+test catalog::tests::capability_composes_only_explicit_leads ... ok
+test catalog::design_references::coverage::tests::invalid_requests_and_unaccounted_coverage_are_rejected ... ok
+test catalog::tests::payload_paths_are_portable_and_noncolliding ... ok
+test catalog::tests::embedded_provenance_cannot_silently_omit_required_notices ... ok
+test catalog::tests::cached_payload_modification_is_detected ... ok
+test catalog::tests::notices_follow_applicable_provenance_without_unrelated_payload_churn ... ok
+test catalog::tests::skill_fields_require_closed_inline_frontmatter ... ok
+test cli::tests::cli_definitions_are_consistent ... ok
+test cli::tests::optional_target_mapping_preserves_all_target_semantics ... ok
+test cli::tests::package_mcp_cli_arguments_are_bounded_objects ... ok
+test cli::tests::package_mcp_setup_selection_is_explicit_and_preserves_saved_configuration ... ok
+test cli::tests::removed_replay_is_scoped_to_setup_and_requires_an_explicit_home ... ok
+test catalog::tests::search_prefers_relevance_over_delivery_and_keeps_availability_as_a_tie_break ... ok
+test craft::tests::known_ratios_and_input_boundaries ... ok
+test dev::release_gate::tests::promotion_rejects_stale_source_binary_or_missing_checks ... ok
+test cli::tests::setup_and_update_contracts ... ok
+test dev::release_gate::tests::receipt_never_overwrites_prior_evidence ... ok
+test dev::tests::cargo_artifacts_reject_changed_package_or_mixed_targets ... ok
+test backup::tests::interrupted_restore_preserves_unexpected_destination_changes ... ok
+test catalog::tests::discovery_reports_read_routes_and_bounded_selected_metadata ... ok
+test dev::tests::cargo_artifacts_use_reported_paths_and_retain_human_diagnostics ... ok
+test dev::tests::cargo_identity_requires_current_manifest_and_version ... ok
+test dev::tests::executable_identity_rejects_version_and_target_mismatch ... ok
+test backup::tests::interrupted_restore_blocks_calls_then_reconciles_published_root ... ok
+test install::recovery_tests::committed_cleanup_keeps_marker_until_journal_is_removed ... ok
+test dev::tests::cargo_messages_are_bounded ... ok
+test dev::tests::unavailable_target_execution_reports_a_clear_packaging_limit ... ok
+test install::recovery_tests::committed_recovery_accepts_marker_only_partial_cleanup_without_rollback ... ok
+test catalog::tests::catalog_check_rejects_conflicting_profile_composition ... ok
+test install::recovery_tests::design_timeout_settings_round_trip_and_preserve_other_servers ... ok
+test dev::tests::packaging_uses_built_identity_and_immutable_artifact_copies ... ok
+test install::recovery_tests::committed_setup_preserves_user_edits_and_rejects_unknown_transaction_files ... ok
+test catalog::tests::embedded_discovery_uses_the_skill_trigger_and_external_metadata_stays_required ... ok
+test install::recovery_tests::committed_setup_survives_interrupted_journal_cleanup ... ok
+test install::recovery_tests::late_destination_edit_prevents_all_setup_writes ... ok
+test install::recovery_tests::interrupted_setup_never_overwrites_divergent_user_changes ... ok
+test install::recovery_tests::interrupted_setup_restores_before_images_and_is_repeatable ... ok
+test install::recovery_tests::edit_after_inspection_blocks_skill_and_client_config_activation ... ok
+test catalog::tests::reference_entries_require_valid_source_pins ... ok
+test install::recovery_tests::rollback_cleanup_removes_journal_before_before_images ... ok
+test backup::tests::backup_rejects_links_duplicates_missing_and_modified_entries_even_with_new_archive_hash ... ok
+test install::recovery_tests::prepare_keeps_the_validated_receipt_snapshot_for_activation ... ok
+test install::recovery_tests::recovery_accepts_rollback_cleanup_after_journal_was_removed ... ok
+test lifecycle::tests::export_preserves_existing_destination ... ok
+test lifecycle::tests::retention_refuses_active_worker_before_runtime_or_deletion ... ok
+test install::recovery_tests::rollback_cleanup_preserves_late_unknown_entries ... ok
+test package_mcp::tests::package_mcp_discovery_rejects_repeated_cursors ... ok
+test package_mcp::tests::package_mcp_does_not_fulfill_or_retry_upstream_input_rounds ... ok
+test package_mcp::tests::package_mcp_dynamic_discovery_is_filtered_and_not_stale ... ok
+test package_mcp::tests::package_mcp_frame_limit_counts_partial_reads_and_resets_on_newlines ... ok
+test package_mcp::tests::package_mcp_long_tool_outlives_the_former_120_second_cap ... ignored, 125-second live SDK deadline regression
+test package_mcp::tests::package_mcp_host_cancellation_reaches_upstream_without_new_authority ... ok
+test install::recovery_tests::rollback_rejects_unknown_transaction_files_before_restoring_anything ... ok
+test install::recovery_tests::recovery_accepts_atomic_mode_transition_and_restores_deleted_files ... ok
+test package_mcp::tests::package_mcp_request_size_limit_prevents_invocation ... ok
+test package_mcp::tests::package_mcp_sdk_discovery_and_direct_calls_apply_the_same_filter ... ok
+test package_mcp::tests::package_mcp_selects_the_tool_budget_below_the_host_ceiling ... ok
+test packages::agent::tests::contained_agent_runtime_on_registered_engine ... ignored, explicit registered engine; builds image and runs real offline fixtures
+test packages::agent::tests::recipe_covers_runtime_models_lock_and_notices ... ok
+test packages::machine::tests::boot_pin_rejects_truncated_and_non_regular_artifacts ... ok
+test packages::services::tests::actual_private_keep_id_mapping_accepts_only_owned_user_translation ... ok
+test packages::services::tests::batch_image_validation_keeps_architecture_and_manifest_checks ... ok
+test packages::services::tests::batch_inspection_checks_every_identity_and_owner ... ok
+test packages::services::tests::design_tool_budgets_cover_policy_and_outlast_long_jobs ... ok
+test packages::services::tests::groups_require_explicit_heavy_capabilities ... ok
+test packages::services::tests::missing_service_gets_a_free_port_without_reassigning_existing_service ... ok
+test packages::services::tests::occupied_host_port_is_reported_before_startup_effects ... ok
+test package_mcp::tests::package_mcp_timeout_sends_cancellation_to_the_upstream_sdk ... ok
+test packages::services::tests::purge_accepts_only_a_valid_owned_penpot_session_file ... ok
+test packages::services::tests::readiness_rejects_an_unbounded_body_without_buffering_it ... ok
+test packages::services::tests::selected_service_caps_leave_os_headroom_before_starting ... ok
+test packages::services::tests::tools_build_closure_covers_every_runtime_module ... ok
+test packages::tests::registry_exposes_exactly_the_canonical_stack ... ok
+test packages::tests::preparation_requires_existing_selection_before_any_effect ... ok
+test podman::tests::expired_operation_budget_rejects_before_starting_any_command ... ok
+test packages::tests::unselected_stack_cannot_start_or_serve ... ok
+test podman::tests::failed_build_retains_underlying_stdout_diagnostics ... ok
+test podman::tests::managed_controller_support_is_platform_explicit ... ok
+test podman::tests::memory_allocation_preserves_host_headroom_and_rejects_overflow ... ok
+test podman::tests::machine_helpers_accept_colocated_and_split_installations_but_not_partial_pairs ... ok
+test podman::tests::successful_log_command_preserves_both_container_streams ... ok
+test process::tests::dropping_native_child_defers_group_reaping_off_runtime_worker ... ok
+test install::recovery_tests::recovery_preserves_permission_only_changes_and_ambiguous_legacy_chmod ... ok
+test process::tests::queued_reaper_runs_even_when_runtime_cancels_its_blocking_task ... ok
+test catalog::tests::professional_catalog_rejects_incomplete_profiles_and_invalid_team_assignments ... ok
+test package_mcp::tests::package_mcp_oversized_result_terminates_upstream_framing ... ok
+test podman::tests::selected_installation_helpers_migrate_only_the_exact_legacy_config ... ok
+test project::recovery::tests::interruption_child ... ignored, subprocess helper invoked only by actual_process_interruption_recovers
+test package_mcp::tests::package_mcp_startup_deadline_covers_initial_discovery ... ok
+test project::recovery::tests::committed_cleanup_preserves_post_commit_destination_edits ... ok
+test project::recovery::tests::incomplete_preparation_and_partial_cleanup_are_preserved ... ok
+test project::tests::capability_with_global_lead_does_not_implicitly_select_global_skill ... ok
+test project::tests::adding_without_selection_keeps_existing_profile_configuration ... ok
+test project::recovery::tests::interrupted_prune_recovers_and_unknown_remnants_are_reported ... ok
+test project::recovery::tests::rollback_can_resume_after_withdrawal_before_restoration ... ok
+test project::tests::collision_scan_is_permissive_for_external_skill_bodies_and_atomic_on_conflict ... ok
+test project::tests::explicit_global_skill_is_scoped_to_target_and_removed_explicitly ... ok
+test project::tests::init_starts_empty_and_explicit_foundation_is_retained ... ok
+test project::tests::invalid_selection_does_not_change_manifest ... ok
+test project::tests::drift_stops_all_writes_and_unrelated_skills_survive ... ok
+test install::recovery_tests::recovery_keeps_the_chosen_executable_bytes_for_setup ... ok
+test project::tests::current_catalog_modes_are_checked_even_if_local_receipt_was_edited ... ok
+test project::tests::profile_owned_selection_is_reported_after_removing_a_skill_selector ... ok
+test project::tests::modified_unselected_copy_blocks_prune_before_new_writes ... ok
+test release::tests::duplicate_targets_mixed_versions_and_invalid_inputs_publish_nothing ... ok
+test project::recovery::tests::actual_process_interruption_recovers ... ok
+test release::tests::encoded_path_delimiters_cannot_select_files_outside_the_manifest_directory ... ok
+test release::tests::existing_output_is_preserved ... ok
+test project::recovery::tests::recovery_preserves_changed_destination_backup_and_unknown_files ... ok
+test release::tests::symlink_assets_and_dangling_output_symlinks_are_rejected ... ok
+test router::assignment::tests::composed_needs_union_only_selected_workflows_and_reject_malformed_scope ... ok
+test router::assignment::tests::design_contract_is_required_before_discovery_and_cannot_claim_an_empty_fallback ... ok
+test release::tests::tampered_missing_and_empty_assets_are_rejected_without_execution ... ok
+test router::assignment::tests::each_workflow_selects_only_its_tools_and_delivers_embedded_expertise ... ok
+test router::assignment::tests::explicit_role_and_support_cannot_expand_tools_or_skip_task_specialist ... ok
+test router::assignment::tests::expressive_scene_references_fit_the_actual_worker_delivery_limit ... ok
+test router::assignment::tests::output_arguments_must_have_a_usable_verification_route_before_effects ... ok
+test router::assignment::tests::references_are_bounded_to_selected_embedded_expertise ... ok
+test release::tests::merge_verifies_local_assets_preserves_inputs_and_sorts_targets ... ok
+test router::assignment::tests::wrong_pipeline_review_mutation_and_missing_quality_tools_are_rejected ... ok
+test router::assignment::tests::suitable_explicit_specialist_replaces_default_without_extra_guidance ... ok
+test router::assignment::tests::workflow_floor_survives_mechanical_labels_and_explicit_tool_subset ... ok
+test router::codex::tests::native_nonfatal_diagnostics_do_not_relax_execution_rejection ... ok
+test router::codex::tests::canonical_request_has_no_native_context_or_tools ... ok
+test router::codex::tests::complete_stream_is_text_only_identity_bound_and_untruncated ... ok
+test router::codex::transport_tests::phased_messages_select_only_the_final_action ... ok
+test router::codex::transport_tests::executable_item_hidden_in_created_snapshot_is_rejected ... ok
+test router::codex::transport_tests::proxy_reconstructs_the_request_from_router_input ... ok
+test router::codex::transport_tests::request_line_is_capped_before_allocation ... ok
+test router::codex::transport_tests::valid_no_space_sse_tool_frame_is_rejected_before_forwarding ... ok
+test router::design_gate::tests::deadline_stops_pending_execution_and_keeps_finished_results ... ok
+test router::codex::transport_tests::wrong_model_and_missing_completion_never_reach_native_client ... ok
+test router::design_gate::tests::failed_checks_cannot_complete_or_create_an_unbounded_repair_loop ... ok
+test router::design_gate::tests::fallback_requires_rendered_proof_then_final_comparison_and_rejects_stale_output ... ok
+test router::design_gate::tests::native_input_requires_suitability_and_a_supported_medium ... ok
+test router::design_gate::tests::image_to_code_blocks_effects_until_declared_target_is_inspected_and_passed ... ok
+test router::design_gate::tests::native_specimen_needs_a_current_render_and_cannot_change_its_target ... ok
+test router::design_gate::tests::required_checks_cannot_be_waived_or_replaced_with_a_generic_score ... ok
+test router::discovery::tests::anthropic_line_and_lifecycle_override_identity_hints ... ok
+test router::discovery::tests::anthropic_nested_capabilities_and_limits_are_normalized_without_tool_inference ... ok
+test router::design_gate::tests::target_repairs_are_bounded_and_target_cannot_be_reselected ... ok
+test router::discovery::tests::cache_reclassification_rejects_forged_tier_and_unready_target ... ok
+test router::discovery::tests::cached_public_catalog_cannot_retain_forged_inference_readiness ... ok
+test router::discovery::tests::claude_requires_resolved_identity_and_supported_effort_contract ... ok
+test router::discovery::tests::config_has_no_model_registry_surface ... ok
+test router::discovery::tests::discovery_coordination_is_scoped_to_the_home ... ok
+test router::discovery::tests::endpoint_cannot_embed_auth_or_leak_to_redirect ... ok
+test router::design_gate::tests::deliverable_budgets_are_shared_and_enforce_the_resolved_review_limit ... ok
+test project::tests::symlink_target_and_executable_drift_fail_closed ... ok
+test router::discovery::tests::independent_targets_are_probed_concurrently ... ok
+test router::discovery::tests::cache_fingerprint_changes_with_credentials_and_executable_bytes ... ok
+test router::discovery::tests::native_readiness_never_comes_from_endpoint_shape ... ok
+test router::discovery::tests::ollama_capability_strings_expose_thinking_without_assuming_structured_output ... ok
+test router::discovery::tests::pagination_rejects_incomplete_catalog_at_page_limit ... ok
+test router::discovery::tests::model_budget_bounds_retained_metadata_without_rejecting_unused_provider_fields ... ok
+test router::discovery::tests::unknown_capabilities_stay_unknown ... ok
+test router::discovery::tests::public_remote_metadata_does_not_establish_inference_auth ... ok
+test router::durable::binding_tests::pause_status_matches_checkpoint_budget_and_uncertain_work_expires ... ok
+test router::durable::binding_tests::relocated_or_old_generation_checkpoints_are_not_advertised_as_resumable ... ok
+test router::discovery::tests::implicit_providers_cannot_bypass_target_budget ... ok
+test router::execution::tests::failover_does_not_retry_policy_or_identity_failures ... ok
+test router::execution::tests::explicit_model_selection_prevents_other_target_and_model_candidates ... ok
+test router::execution::tests::paged_readback_needs_all_bytes_same_digest_after_last_mutation ... ok
+test router::execution::tests::resume_contract_ignores_unused_candidates_and_observation_metadata ... ok
+test router::execution::tests::fixture_is_real_png_and_randomized ... ok
+test router::execution::tests::rewriting_same_artifact_invalidates_prior_verification ... ok
+test router::execution::tests::schema_has_no_model_override ... ok
+test router::execution::tests::recovered_write_keeps_readback_and_budget_obligations ... ok
+test router::execution::tests::unrelated_image_receipt_cannot_satisfy_artifact_obligation ... ok
+test router::execution::tests::resume_provider_binding_detects_replaced_native_executable ... ok
+test router::native::tests::action_requires_current_exact_identity_and_effort_before_inference ... ok
+test router::native::tests::image_inputs_are_regular_bounded_files ... ok
+test router::execution::tests::visual_revision_keeps_references_but_requires_fresh_verification ... ok
+test router::policy::tests::assigned_tools_require_verified_support_and_multiple_tools_raise_tier ... ok
+test router::policy::tests::completion_headroom_respects_known_limit_and_schema_rejects_model_id ... ok
+test router::policy::tests::creative_intent_and_owned_tool_raise_floor ... ok
+test router::policy::tests::full_size_without_extended_reasoning_stays_t2 ... ok
+test router::policy::tests::explicit_effort_is_exact_supported_and_cannot_lower_the_floor ... ok
+test router::policy::tests::future_model_uses_capability_metadata_without_id_allowlist ... ok
+test router::policy::tests::generic_file_or_parameter_labels_do_not_establish_mechanical_work ... ok
+test router::policy::tests::high_effort_and_large_limits_do_not_promote_utility_model ... ok
+test router::policy::tests::lightweight_identity_cannot_be_promoted_by_provider_family_metadata ... ok
+test router::policy::tests::lightweight_model_morphology_overrides_frontier_and_reasoning_signals ... ok
+test router::policy::tests::mechanical_contract_rejects_compound_objectives_and_missing_operation ... ok
+test router::policy::tests::mechanical_intent_cannot_hide_creative_or_unknown_output ... ok
+test router::policy::tests::requested_tier_is_upward_only_and_caller_complexity_cannot_lower_intent ... ok
+test router::policy::tests::synthesis_label_cannot_lower_architectural_or_debugging_work ... ok
+test router::policy::tests::unknown_contract_is_quarantined_even_with_frontier_label ... ok
+test router::policy::tests::unknown_model_is_t1_even_with_verified_tools_and_high_reasoning ... ok
+test router::policy::tests::unknown_tools_and_unassigned_verification_fail_closed ... ok
+test router::policy::tests::vision_and_high_effort_are_checked_at_candidate_boundary ... ok
+test router::discovery::tests::paginated_catalog_has_one_streaming_byte_budget ... ok
+test project::tests::foundation_and_capabilities_install_exact_target_membership ... ok
+test router::tools::tests::disabled_assigned_design_tools_fail_preflight_without_blocking_other_work ... ok
+test router::tools::tests::exact_edits_are_digest_bound_and_transactional ... ok
+test router::tools::tests::interrupted_write_reconciles_bytes_without_replay ... ok
+test router::tools::tests::odiff_mismatch_is_a_failed_gate_even_when_transport_succeeded ... ok
+test router::tools::tests::odiff_published_diagnostics_are_mutations_with_artifact_receipts ... ok
+test router::tools::tests::only_bound_owned_predispatch_rejections_can_clear_mutation_uncertainty ... ok
+test router::tools::tests::design_artifact_refs_stay_in_assigned_workspace ... ok
+test router::tools::tests::paths_cannot_escape_project ... ok
+test router::tools::tests::primary_artifact_digest_rejects_changed_or_deleted_output ... ok
+test router::tools::tests::repository_internals_reject_case_aliases_on_every_path_surface ... ok
+test router::tools::tests::writes_require_observed_identity ... ok
+test router::tools::tests::paged_reads_preserve_utf8_reject_drift_and_never_verify_fragments ... ok
+test rust_notices::tests::rust_notices_declared_file_cannot_escape_and_lock_must_match ... ok
+test rust_notices::tests::rust_notices_missing_body_and_standard_library_evidence_fail ... ok
+test rust_notices::tests::rust_notices_retain_nested_native_notices_deterministically_without_local_paths ... ok
+test rust_notices::tests::rust_notices_sqlite_header_is_required_separately_from_wrapper_license ... ok
+test state::contracts::tests::binding_work_is_bounded_and_conflicting_shared_digests_are_rejected ... ok
+test router::tools::scoped_design_tests::project_design_reads_writes_and_recovery_reject_siblings ... ok
+test rust_notices::tests::rust_notices_ring_preserves_distinct_source_grants_and_requires_reviewed_headers ... ok
+test state::contracts::tests::contribution_coverage_attempts_and_dependencies_are_checked ... ok
+test state::contracts::tests::partial_and_unknown_worker_reports_are_retained_without_claiming_completion ... ok
+test state::contracts::tests::strict_versioned_contract_rejects_wrong_task_empty_inputs_and_unknown_fields ... ok
+test state::contracts::tests::roster_binding_objective_skills_and_canonical_roles_prevent_forged_coverage ... ok
+test state::contracts::tests::contributions_roster_uses_the_shared_contract_read_limit ... ok
+test state::contracts::tests::traversal_absolute_directory_and_symlink_bindings_are_rejected ... ok
+test state::contracts::tests::terminal_reports_require_host_identity_evidence_and_explicit_disposition ... ok
+test state::contracts::tests::unsuccessful_checks_register_but_do_not_complete ... ok
+test state::tests::checked_evidence_returns_the_validated_bytes_and_applies_the_requested_limit ... ok
+test state::contracts::tests::verification_tracks_only_declared_inputs_checker_and_result ... ok
+test state::tests::task_paging_queries_use_ordered_index_and_cursor_range ... ok
+test project::tests::selection_removal_requires_explicit_prune_and_preserves_unmanaged_copies ... ok
+test router::tools::tests::directory_pagination_is_stable_and_detects_added_entries ... ok
+test tools::tests::owned_tool_preserves_normal_exit_status ... ok
+test state::tests::project_pages_reach_every_registered_root_without_truncation ... ok
+test tools::tests::process_fixture ... ok
+test tools::tests::registration_never_executes_and_changed_bytes_fail ... ok
+test router::execution::tests::visual_reference_priority_stays_within_count_and_byte_limits ... ok
+kill: 97488: No such process
+kill: 97493: No such process
+test update::entrypoint_tests::bounded_update_kills_descendants_after_launcher_exit ... ok
+test mcp::router_boundary_tests::registered_worker_keeps_the_resolved_root_after_original_symlink_changes ... ok
+test update::entrypoint_tests::entrypoint_update_late_failure_reports_partial_success_without_overwrite ... ok
+test util::tests::dropping_lock_owner_releases_while_an_inherited_descriptor_remains ... ok
+test util::tests::reads_reject_special_files_and_excess_bytes ... ok
+test dev::tests::executable_identity_accepts_current_cli_info_and_additive_fields ... ok
+test mcp::admission_tests::identity_remains_available_while_execution_and_runtime_are_full ... ok
+test tools::tests::run_rechecks_registration_before_spawning ... ok
+test project::tests::portable_foundation_delivers_shared_guidance_only_to_selected_targets ... ok
+kill: 97499: No such process
+test update::entrypoint_tests::bounded_update_kills_descendants_after_timeout ... ok
+test tools::tests::owned_tool_cancellation_stops_late_descendant_writes ... ok
+test tools::tests::owned_tool_cleans_descendants_after_launcher_success ... ok
+test tools::tests::owned_tool_dropped_future_stops_late_descendant_writes ... ok
+test tools::tests::owned_tool_timeout_stops_late_descendant_writes ... ok
+
+test result: ok. 252 passed; 0 failed; 3 ignored; 0 measured; 0 filtered out; finished in 8.75s
+
+     Running unittests setup/all.rs (target/debug/deps/install_all-48125571854b0886)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests setup/claude.rs (target/debug/deps/install_claude-8f7c9011401614aa)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests setup/codex.rs (target/debug/deps/install_codex-a02d3afc40dd6278)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/mirket-1ae32a95a2f266d0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/backup_relocation.rs (target/debug/deps/backup_relocation-e3bee474b9a94a86)
+
+running 5 tests
+test migration_preserves_existing_path_namespace_and_maintenance_blocks_connections ... ok
+test backup_rejects_symlink_data_and_relocation_aliases ... ok
+test relocation_preserves_task_id_namespace_and_rejects_replacement_or_old_path_reuse ... ok
+test backup_corruption_wrong_home_and_busy_state_fail_without_publication ... ok
+test backup_round_trip_preserves_wal_tasks_runtime_bytes_and_traces ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests/backup_runtime.rs (target/debug/deps/backup_runtime-8af1958bda6a65f4)
+
+running 1 test
+test backup_runtime_recovers_history_pending_effect_and_relocated_memory ... ignored, explicit registered engine; exercises real pinned Mem0/LangGraph against disposable state
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/capability_workflows.rs (target/debug/deps/capability_workflows-86f5519f2f31f6f3)
+
+running 5 tests
+test role_plans_keep_workflow_discovery_compact_and_bind_the_selected_role ... ok
+test role_entrypoints_select_production_guidance_without_loading_optional_support ... ok
+test consolidated_roles_preserve_legacy_names_and_compose_once ... ok
+test legacy_and_new_role_selections_install_and_remove_the_canonical_lead ... ok
+test every_role_delivers_its_exact_lead_offline_to_both_project_targets ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.13s
+
+     Running tests/cli_workflow.rs (target/debug/deps/cli_workflow-d79d2432c1e40220)
+
+running 6 tests
+test environment_init_checks_helpers_before_downloading_or_invoking_podman ... ok
+test cli_tracks_selected_skills_and_rejects_changed_evidence ... ok
+test newer_runtime_handoff_preserves_the_entry_pid_arguments_and_exit_status ... ok
+test standalone_installer_installs_the_complete_cli ... ok
+test package_install_replaces_retired_selection_before_preparation_without_partial_setup ... ok
+test setup_doctor_and_registered_executable_use_only_the_selected_home ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.20s
+
+     Running tests/design_language_payload.rs (target/debug/deps/design_language_payload-5243a31810b8004d)
+
+running 5 tests
+test structured_coverage_keeps_the_combination_and_limits_visible ... ok
+test broad_reference_queries_offer_provisional_candidates_without_changing_search_or_coverage ... ok
+test all_twenty_seven_instances_are_bounded_readable_and_discoverable_individually ... ok
+test installed_mcp_discovers_specific_lesson_and_delivers_every_example ... ok
+test complete_library_reaches_both_hosts_through_existing_project_delivery has been running for over 60 seconds
+test complete_library_reaches_both_hosts_through_existing_project_delivery ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 92.65s
+
+     Running tests/desktop_acceptance.rs (target/debug/deps/desktop_acceptance-48f63f180ea68250)
+
+running 2 tests
+test prepared_packages_pass_desktop_acceptance ... ignored, explicit prepared ARM64 engine; real runtimes with disposable synthetic state
+test desktop_lifecycle_schemas_and_roundtrips_are_typed ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 10.96s
+
+     Running tests/distribution.rs (target/debug/deps/distribution-5a77625ac832a0bb)
+
+running 1 test
+test cli_identity_reports_the_executed_build ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.36s
+
+     Running tests/illustration_evaluation.rs (target/debug/deps/illustration_evaluation-b6385c1e91863295)
+
+running 1 test
+test illustration_suite_binds_every_brief_rubric_and_configuration ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/install_update.rs (target/debug/deps/install_update-3adc3f5219ef09b0)
+
+running 32 tests
+test forged_receipt_cannot_claim_unrelated_files ... ok
+test changing_an_owned_mcp_command_is_detected_without_overwrite ... ok
+test io_failure_rolls_back_completed_payload_writes ... ok
+test malformed_second_target_settings_produce_no_payload_writes ... ok
+test changing_a_codex_owned_mcp_server_is_detected_without_overwrite ... ok
+test failing_new_runtime_preserves_installation ... ok
+test host_settings_reformat_and_unrelated_edits_remain_healthy_and_unchanged ... ok
+test release_manifest_requires_matching_official_assets_and_unique_targets ... ok
+test newer_managed_runtime_requires_matching_owned_bytes_and_prevents_downgrade ... ok
+test ordinary_permission_changes_are_preserved ... ok
+test modified_managed_file_blocks_all_planned_changes ... ok
+test removed_documentation_receipt_migration_remains_strict ... ok
+test removed_documentation_does_not_delete_a_customized_receipt_contract ... ok
+test package_setup_rejects_conflicts_before_downloading_or_changing_state ... ok
+test runtime_and_unknown_packages_fail_before_installation ... ok
+test setup_lock_prevents_concurrent_installations ... ok
+test removed_documentation_cleanup_is_preflighted_before_any_target_changes ... ok
+test entrypoint_update_refuses_destination_changed_after_preflight ... ok
+test symlinked_destination_and_executable_mode_drift_are_rejected ... ok
+test setup_preserves_unrelated_settings_and_verifies_actual_payload ... ok
+test unmanaged_instruction_conflict_is_preserved ... ok
+test removed_documentation_setup_removes_only_exact_owned_entries_and_receipt_choice ... ok
+test unexpected_skill_helper_is_a_conflict ... ok
+test removed_documentation_preserves_customized_and_unmanaged_entries ... ok
+test update_rejects_bad_digest_before_executing_or_mutating ... ok
+test target_change_removes_only_owned_files_and_servers ... ok
+test update_generation_guard_preserves_newer_saved_choices ... ok
+test entrypoint_update_rejects_file_and_parent_symlinks ... ok
+test entrypoint_update_rejects_invalid_destinations_before_changing_installation ... ok
+test removed_documentation_saved_choice_update_replays_without_removed_cli_flag ... ok
+test offline_update_runs_new_cli_and_reapplies_saved_setup ... ok
+test entrypoint_update_copies_verified_binary_and_retries_idempotently has been running for over 60 seconds
+test entrypoint_update_copies_verified_binary_and_retries_idempotently ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 66.85s
+
+     Running tests/live_identity.rs (target/debug/deps/live_identity-b98d88cf17cd6233)
+
+running 2 tests
+test alternative_workflows_are_explicit_and_profile_selections_are_preserved ... ok
+test connected_identity_does_not_change_when_the_installed_binary_is_replaced ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.41s
+
+     Running tests/mcp_state.rs (target/debug/deps/mcp_state-78116e7c4ad5c34a)
+
+running 25 tests
+test pinned_upstream_fetch_uses_cli_and_rejects_modified_cache ... ignored, downloads an explicitly selected public upstream payload; run when network verification is requested
+test paginated_task_and_project_discovery_survives_lost_session_ids ... ok
+test idempotency_and_optimistic_revision_prevent_duplicate_or_lost_updates ... ok
+test evidence_retries_replay_receipts_while_completion_checks_current_bytes ... ok
+test project_registry_and_file_evidence_reject_identity_and_path_escape ... ok
+test interrupted_task_reopens_with_same_project_and_partial_evidence ... ok
+test runtime_state_concurrent_initializers_share_one_valid_schema ... ok
+test runtime_state_cursor_handles_creation_ties_and_inserts_and_is_project_bound ... ok
+test durable_completion_requires_delivered_guidance_and_current_artifacts ... ok
+test runtime_state_read_open_does_not_need_the_writer_lock ... ok
+test runtime_state_cli_uses_cursor_and_reads_while_a_writer_is_active ... ok
+test runtime_state_initialization_rejects_incompatible_schema_without_repair ... ok
+test stdio_frame_boundary_limits_single_lines_without_limiting_session_bytes ... ok
+test state_validates_input_and_skill_identity_for_every_caller ... ok
+test runtime_state_task_pages_do_not_skip_a_task_updated_between_pages ... ok
+test unsupported_state_formats_fail_closed_and_database_is_private ... ok
+test unregister_uses_stored_identity_even_after_project_root_moves_or_disappears ... ok
+test serialized_response_budget_rolls_back_writes_before_they_become_unreadable ... ok
+test unregister_removes_only_selected_coordination_records_and_preserves_project_files ... ok
+test runtime_state_cli_task_start_scopes_verification_criteria ... ok
+test current_mcp_discovery_lifecycle_serves_registered_projects ... ok
+test runtime_state_mcp_advertises_and_follows_only_task_cursors ... ok
+test official_mcp_client_discovers_calls_and_reads_scoped_resources ... ok
+test compact_mcp_mutations_replay_exactly_and_recover_full_history ... ok
+test actual_cli_serves_mcp_protocol_over_child_stdio ... ok
+
+test result: ok. 24 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 7.51s
+
+     Running tests/model_routing.rs (target/debug/deps/model_routing-f5060684838c3259)
+
+running 16 tests
+test a_role_claim_in_model_output_cannot_escape_review_tool_scope ... ok
+test assigning_required_tools_without_executing_them_cannot_complete ... ok
+test inappropriate_task_tools_are_rejected_before_discovery_or_inference ... ok
+test inspected_pixels_survive_intervening_read_only_turns ... ok
+test required_recall_without_runtime_rejects_before_any_inference ... ok
+test inference_usage_and_specific_parse_failure_survive_in_saved_trace ... ok
+test rate_limit_failover_preserves_tier_and_skips_lower_model ... ok
+test responses_dispatches_only_final_answers_after_commentary ... ok
+test a_large_written_artifact_requires_all_digest_bound_read_pages ... ok
+test refresh_observes_new_models_without_published_ids_or_inference ... ok
+test changed_missing_or_truncated_model_response_cannot_write ... ok
+test mechanical_utility_can_run_but_architecture_and_model_overrides_cannot ... ok
+test unrelated_readback_cannot_verify_a_written_artifact ... ok
+test spawn_requires_post_write_verification_and_sends_high_effort ... ok
+test pinned_transport_retry_keeps_the_model_and_never_replays_a_prior_write ... ok
+test pinned_transport_retries_stop_at_the_run_budget ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.39s
+
+     Running tests/motion_payload.rs (target/debug/deps/motion_payload-6c79674749d21a83)
+
+running 4 tests
+test motion_payload_embeds_complete_sources_with_bounded_text_reads ... ok
+test motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources ... ok
+test design_craft_references_and_specimens_survive_embedded_and_both_host_delivery ... ok
+test motion_payload_installed_cli_preserves_both_target_assets_and_refuses_drift ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 41.05s
+
+     Running tests/package_mcp.rs (target/debug/deps/package_mcp-546086c812229442)
+
+running 8 tests
+test package_mcp_relative_command_fails_before_spawn ... ok
+Terminated: 15
+test unix::package_mcp_aborted_startup_allows_parent_to_clean_its_native_job ... ok
+Terminated: 15
+test unix::package_mcp_startup_deadline_allows_parent_to_clean_its_native_job ... ok
+test unix::package_mcp_real_stdio_startup_deadline_covers_tools_list ... ok
+test unix::package_mcp_aborted_reaper_does_not_block_executor_progress ... ok
+test unix::package_mcp_runtime_shutdown_waits_for_aborted_reaper ... ok
+test unix::package_mcp_unresponsive_startup_group_is_forcibly_reaped ... ok
+test package_mcp_real_child_initializes_filters_and_executes_a_useful_call ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.79s
+
+     Running tests/professional_teams.rs (target/debug/deps/professional_teams-341d59083e62f4f9)
+
+running 3 tests
+test checkout_assigns_complementary_professionals_and_preserves_shared_contributions ... ok
+test team_selection_is_bounded_explicit_and_does_not_expand_support_recursively ... ok
+test generated_cli_arguments_create_replayable_tasks_and_bind_the_saved_roster ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+
+     Running tests/published_update.rs (target/debug/deps/published_update-25730f21f13f9139)
+
+running 1 test
+test published_update_restores_setup_and_installs_verified_release ... ignored, downloads and installs the public latest release in a disposable home
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/role_evaluation.rs (target/debug/deps/role_evaluation-4ff7c228bbf8014e)
+
+running 10 tests
+test deterministic_aggregates_retain_failures_and_unknown_measurements ... ok
+test planned_repeats_and_comparison_arms_require_every_cell ... ok
+test rejects_split_overlap_even_under_renamed_case_ids ... ok
+test held_out_only_confirmation_retains_every_assignment_and_split_check ... ok
+test rejects_unknown_duplicate_missing_and_unplanned_cells ... ok
+test infrastructure_failures_cannot_be_scored_and_verdicts_must_be_complete ... ok
+test rejects_identity_drift_nonfinite_scores_and_fabricated_aggregates ... ok
+test rejects_symlink_evidence ... ok
+test oversized_infrastructure_evidence_and_unfilled_host_configuration_reject ... ok
+test file_checker_detects_stale_input_rubric_configuration_and_saved_output ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/setup_generation.rs (target/debug/deps/setup_generation-712f4c14c0b91e19)
+
+running 4 tests
+test setup_generation_invalid_tokens_do_not_create_installation_state ... ok
+test setup_generation_absent_snapshot_does_not_replace_a_first_commit ... ok
+test setup_generation_matching_absent_and_saved_tokens_apply ... ok
+test setup_generation_snapshot_preserves_a_later_saved_selection ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.64s
+
+     Running tests/source_contract.rs (target/debug/deps/source_contract-07fb643ffdbb6d83)
+
+running 2 tests
+test authored_guidance_has_no_detached_helpers ... ok
+test authored_guidance_has_existing_local_links ... FAILED
+
+failures:
+
+---- authored_guidance_has_existing_local_links stdout ----
+
+thread 'authored_guidance_has_existing_local_links' (146402068) panicked at tests/source_contract.rs:57:5:
+broken local links:
+docs/harness-recovery-2026-10.md -> harness-recovery/checks.json
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    authored_guidance_has_existing_local_links
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+error: test failed, to rerun pass `--test source_contract`
+mirket: cargo test --locked --all-targets failed

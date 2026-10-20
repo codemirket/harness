@@ -20,6 +20,7 @@ pub mod release;
 pub mod role_eval;
 pub mod router;
 mod rust_notices;
+mod source_identity;
 pub mod state;
 mod target;
 pub mod tools;

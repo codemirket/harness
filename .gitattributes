@@ -1,3 +1,7 @@
+# Native release candidates compare exact source fingerprints across platforms.
+# Normalize authored text consistently; binary files remain binary.
+* text=auto eol=lf
+
 # Pinned upstream copies and their inventories retain their original bytes.
 docs/licenses/** -text
 

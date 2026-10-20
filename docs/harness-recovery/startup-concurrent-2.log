@@ -1,0 +1,27 @@
+mirket dev: cargo test --locked --test motion_payload
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.28s
+     Running tests/motion_payload.rs (target/debug/deps/motion_payload-6c79674749d21a83)
+
+running 4 tests
+test motion_payload_embeds_complete_sources_with_bounded_text_reads ... ok
+test design_craft_references_and_specimens_survive_embedded_and_both_host_delivery ... ok
+{"elapsed_ms":0,"mirket_startup":"entry"}
+{"elapsed_ms":104,"mirket_startup":"catalog_loaded"}
+{"elapsed_ms":4525,"mirket_startup":"identity_captured"}
+{"elapsed_ms":4534,"mirket_startup":"state_opened"}
+{"elapsed_ms":4537,"mirket_startup":"mcp_initialized"}
+{"elapsed_ms":4543,"mirket_startup":"discovery_started"}
+
+test motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources ... ok
+test motion_payload_installed_cli_preserves_both_target_assets_and_refuses_drift ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.58s
+
+{
+  "filter": null,
+  "ignored": false,
+  "ok": true,
+  "profile": "debug",
+  "source": "<checkout>",
+  "test_target": "motion_payload"
+}

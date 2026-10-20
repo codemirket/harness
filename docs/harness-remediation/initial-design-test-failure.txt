@@ -1,0 +1,234 @@
+mirket: Podman failed (exit status: 1): stderr:
+
+stdout:
+nt overwrite publication has one revision winner
+  ---
+  duration_ms: 49.585091
+  type: 'test'
+  ...
+# Subtest: Satori rejects wide trees before fetching and serializes/deduplicates image preparation
+ok 46 - Satori rejects wide trees before fetching and serializes/deduplicates image preparation
+  ---
+  duration_ms: 11.793951
+  type: 'test'
+  ...
+# Subtest: bounded readers cap bytes even when a regular file grows after fstat
+ok 47 - bounded readers cap bytes even when a regular file grows after fstat
+  ---
+  duration_ms: 16.711614
+  type: 'test'
+  ...
+# Subtest: successful renderer exit reaps detached stdio-independent descendants
+ok 48 - successful renderer exit reaps detached stdio-independent descendants
+  ---
+  duration_ms: 56.233212
+  type: 'test'
+  ...
+# Subtest: cold token compilation is safe across independent processes and missing parents
+ok 49 - cold token compilation is safe across independent processes and missing parents
+  ---
+  duration_ms: 609.414334
+  type: 'test'
+  ...
+# Subtest: non-rendering operations do not load Satori, resvg or browser clients
+ok 50 - non-rendering operations do not load Satori, resvg or browser clients
+  ---
+  duration_ms: 345.377347
+  type: 'test'
+  ...
+# Subtest: Odiff rejects compressed-image dimension bombs before native decoding
+ok 51 - Odiff rejects compressed-image dimension bombs before native decoding
+  ---
+  duration_ms: 3.534997
+  type: 'test'
+  ...
+# Subtest: page and frame QA enforce a shared decoded-pixel budget
+ok 52 - page and frame QA enforce a shared decoded-pixel budget
+  ---
+  duration_ms: 0.453084
+  type: 'test'
+  ...
+# Subtest: scoped browser routes reject sibling, encoded traversal and editor requests
+ok 53 - scoped browser routes reject sibling, encoded traversal and editor requests
+  ---
+  duration_ms: 0.763958
+  type: 'test'
+  ...
+# Subtest: one matching baseline cannot certify other captured keyframes
+ok 54 - one matching baseline cannot certify other captured keyframes
+  ---
+  duration_ms: 0.589291
+  type: 'test'
+  ...
+# Subtest: a positive container duration cannot hide truncated video behind audio
+ok 55 - a positive container duration cannot hide truncated video behind audio
+  ---
+  duration_ms: 0.378208
+  type: 'test'
+  ...
+# Subtest: short audio and mux rounding remain valid
+ok 56 - short audio and mux rounding remain valid
+  ---
+  duration_ms: 0.213625
+  type: 'test'
+  ...
+# Subtest: WebM duration tags are checked; missing duration is explicitly unknown
+ok 57 - WebM duration tags are checked; missing duration is explicitly unknown
+  ---
+  duration_ms: 0.18825
+  type: 'test'
+  ...
+# Subtest: bad container metadata and cover art do not establish usable video
+ok 58 - bad container metadata and cover art do not establish usable video
+  ---
+  duration_ms: 0.920917
+  type: 'test'
+  ...
+# Subtest: Odiff publishes only actual diagnostics and reports dimension mismatches
+ok 59 - Odiff publishes only actual diagnostics and reports dimension mismatches
+  ---
+  duration_ms: 334.553813
+  type: 'test'
+  ...
+# Subtest: Playwright cancellation before connect or before the operation microtask prevents work
+ok 60 - Playwright cancellation before connect or before the operation microtask prevents work
+  ---
+  duration_ms: 2.689956
+  type: 'test'
+  ...
+# Subtest: Playwright cancellation arriving during connect closes the eventual browser before context work
+ok 61 - Playwright cancellation arriving during connect closes the eventual browser before context work
+  ---
+  duration_ms: 0.643917
+  type: 'test'
+  ...
+# Subtest: Playwright capture operation deadline rejects stalled protocol work and closes the browser
+ok 62 - Playwright capture operation deadline rejects stalled protocol work and closes the browser
+  ---
+  duration_ms: 24.964775
+  type: 'test'
+  ...
+# Subtest: bounded traversal counts empty directories instead of allowing file-limit bypass
+ok 63 - bounded traversal counts empty directories instead of allowing file-limit bypass
+  ---
+  duration_ms: 67.468038
+  type: 'test'
+  ...
+# Subtest: bounded traversal rejects excessive depth before creating or descending into it
+ok 64 - bounded traversal rejects excessive depth before creating or descending into it
+  ---
+  duration_ms: 24.042692
+  type: 'test'
+  ...
+# Subtest: bounded project asset reads observe cancellation between descriptor reads
+ok 65 - bounded project asset reads observe cancellation between descriptor reads
+  ---
+  duration_ms: 4.371039
+  type: 'test'
+  ...
+# Subtest: nonblocking no-follow project asset reader promptly rejects a FIFO replacement
+ok 66 - nonblocking no-follow project asset reader promptly rejects a FIFO replacement
+  ---
+  duration_ms: 255.411534
+  type: 'test'
+  ...
+# Subtest: nonblocking descriptor reads preserve stable normal project assets
+ok 67 - nonblocking descriptor reads preserve stable normal project assets
+  ---
+  duration_ms: 3.122956
+  type: 'test'
+  ...
+# Subtest: native Penpot font routes become self-contained before SVG optimization
+ok 68 - native Penpot font routes become self-contained before SVG optimization
+  ---
+  duration_ms: 102.39168
+  type: 'test'
+  ...
+# Subtest: font embedding refuses external, normalized and malicious SVG before requests
+ok 69 - font embedding refuses external, normalized and malicious SVG before requests
+  ---
+  duration_ms: 1.552582
+  type: 'test'
+  ...
+# Subtest: repeated references are rejected before one font can expand beyond the output bound
+ok 70 - repeated references are rejected before one font can expand beyond the output bound
+  ---
+  duration_ms: 87.872732
+  type: 'test'
+  ...
+# Subtest: font response magic and streaming size are checked without trusting headers
+ok 71 - font response magic and streaming size are checked without trusting headers
+  ---
+  duration_ms: 11.126701
+  type: 'test'
+  ...
+# Subtest: SVG hygiene rejects relative and escaped CSS resources while retaining fragment fills
+ok 72 - SVG hygiene rejects relative and escaped CSS resources while retaining fragment fills
+  ---
+  duration_ms: 14.504199
+  type: 'test'
+  ...
+# Subtest: owned schema and availability rejections attest no dispatch; handler errors do not
+ok 73 - owned schema and availability rejections attest no dispatch; handler errors do not
+  ---
+  duration_ms: 3887.540092
+  type: 'test'
+  ...
+# Subtest: discovery avoids rendering imports and EOF closes the Penpot HTTP session
+ok 74 - discovery avoids rendering imports and EOF closes the Penpot HTTP session
+  ---
+  duration_ms: 2574.496198
+  type: 'test'
+  ...
+# Subtest: stdio EOF reaps a TERM-resistant renderer before a late write
+ok 75 - stdio EOF reaps a TERM-resistant renderer before a late write
+  ---
+  duration_ms: 8243.113488
+  type: 'test'
+  ...
+# Subtest: live runtime identity accompanies actual tool responses and matches loaded source
+ok 76 - live runtime identity accompanies actual tool responses and matches loaded source
+  ---
+  duration_ms: 546.289627
+  type: 'test'
+  ...
+# Subtest: workspace HTTP handles empty files and HEAD using the validated descriptor
+ok 77 - workspace HTTP handles empty files and HEAD using the validated descriptor
+  ---
+  duration_ms: 63.835707
+  type: 'test'
+  ...
+# Subtest: workspace HTTP silences implicit favicon but keeps missing files at 404
+ok 78 - workspace HTTP silences implicit favicon but keeps missing files at 404
+  ---
+  duration_ms: 90.44273
+  type: 'test'
+  ...
+# Subtest: workspace HTTP rejects a final-file symlink replacement between validation and open
+ok 79 - workspace HTTP rejects a final-file symlink replacement between validation and open
+  ---
+  duration_ms: 52.949838
+  type: 'test'
+  ...
+# Subtest: workspace HTTP rejects an ancestor replacement between validation and descriptor traversal
+ok 80 - workspace HTTP rejects an ancestor replacement between validation and descriptor traversal
+  ---
+  duration_ms: 15.220156
+  type: 'test'
+  ...
+# Subtest: workspace HTTP streams only the fstat byte range when a file grows afterward
+ok 81 - workspace HTTP streams only the fstat byte range when a file grows afterward
+  ---
+  duration_ms: 43.087054
+  type: 'test'
+  ...
+1..81
+# tests 81
+# suites 0
+# pass 78
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18293.3762
+

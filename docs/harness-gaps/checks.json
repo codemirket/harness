@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-20T14:53:34.568214+00:00",
+  "status": "implemented_with_explicit_open_gaps",
+  "candidate": {
+    "accepted": false,
+    "binary_sha256": "eef6811fb2cea64d25d406fc2000c30f28026a4d50e514a9bc2fd440b6341034",
+    "schema": 1,
+    "source_sha256": "59ed3c2c4ce3acf3f17d8bae86447584e574aa1b180a7452455c9e30e0a248a4",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "native_macos_identity": {
+    "executable_sha256": "eef6811fb2cea64d25d406fc2000c30f28026a4d50e514a9bc2fd440b6341034",
+    "pid": 95548,
+    "source_sha256": "59ed3c2c4ce3acf3f17d8bae86447584e574aa1b180a7452455c9e30e0a248a4",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "source_fingerprint_recomputed": true,
+  "verification": {
+    "macos_rust": {
+      "passed": 412,
+      "failed": 0,
+      "ignored": 7
+    },
+    "linux_arm64_rust": {
+      "passed": 411,
+      "failed": 0,
+      "ignored": 7
+    },
+    "format_and_clippy": [
+      "macos-arm64",
+      "linux-arm64"
+    ],
+    "macos_packaged_installers": 4,
+    "macos_packaged_updates_and_mcp": true,
+    "linux_catalog_disposable_install_doctor_mcp": true,
+    "linux_build_settings": {
+      "debug_assertions": true,
+      "debug_symbols": false,
+      "incremental": false,
+      "jobs": 2
+    },
+    "linux_scope": "Native Linux ARM64 process execution inside the explicitly selected macOS VM; no Windows, x86 Linux, desktop GUI or package-controller support claim.",
+    "python_dependency_scanner_tests": 7,
+    "python_feedback_platform_tests": 5,
+    "workflow_yaml_parsed": true,
+    "source_contract": {
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    "native_codex_live_completed": true,
+    "native_claude_live_completed": true,
+    "live_native_identity": {
+      "executable_sha256": "ea401ce2e2811dabca888170365428bd7d7373cb4fa5ee4ce465ce48725386fe",
+      "pid": 64633,
+      "source_sha256": "0f2752da0685d726e4a1d5b142aac08d0262c7c1afb62ed9fbe525939b534303",
+      "target": "aarch64-apple-darwin",
+      "version": "1.0.11"
+    },
+    "live_native_limit": "Live calls used the earlier development identity above; later source changes concern Linux runner and image-export bookkeeping. Final native/accounting regressions passed in both full Rust gates.",
+    "osv_unique_coordinates": 855,
+    "penpot_lock_coordinates": 299,
+    "osv_untriaged": 0,
+    "existing_source_bound_zip_exceptions": 3,
+    "image_scanned_targets": 12,
+    "image_usable_os_inventories": 11,
+    "image_audit_passed": false,
+    "image_finding_occurrences": 10523,
+    "image_unique_package_version_advisories": 9157,
+    "windows_current_tree": "not_run",
+    "hosted_linux_current_tree": "not_run",
+    "baseline_ci_commit": "d8013f53969db336d813274d1fbfba53a89ad0e2",
+    "new_contained_acceptance": false,
+    "deployed": false,
+    "committed_or_pushed": false,
+    "production_dependencies_added": false
+  },
+  "open_gaps": [
+    "Image advisory applicability and remediation; no new exceptions",
+    "Penpot backend exact-image OS inventory",
+    "Current Windows and hosted x86 Linux CI",
+    "Native Codex USD billing and account-wide totals",
+    "Discovery and vision-conformance accounting"
+  ],
+  "limits": [
+    "Scanner matches are not confirmed exploitable vulnerabilities.",
+    "SDK estimates are not billed costs; missing amounts remain null.",
+    "The desktop still uses the previously accepted generation.",
+    "Historical JavaScript/contained acceptance results were not rerun or relabeled for this candidate."
+  ],
+  "report": {
+    "path": "docs/harness-gaps-2026-10.md",
+    "sha256": "0b53e293868b80deae40546f769bc3bfc8e28ac1ebceeb2bd07384444892f993"
+  },
+  "component_sha256": {
+    ".github/workflows/check.yml": "b133955104efa5e8d529fe47d37a5bc5364584e627157c7fd87ac60f1f7a1f6a",
+    "Cargo.lock": "e61d7b8becd54d56a0cde701a28499d0dbcbc07e35a4bd480d103e1b00184207",
+    "Cargo.toml": "1e0358a43629fddf35ff4b5bf3eb9dc3a4bcd4553c0c09af23170c5b57220a07",
+    "evals/dependency-audit/README.md": "85b055a2d8cc299deb0b3d53ea8f9454b3b6d299ff94fca6d805545109d08ff1",
+    "evals/dependency-audit/check.py": "2d533e535314078ab39fc286b45eea53729d4919488280d97e1b588d494d1310",
+    "evals/dependency-audit/exceptions.json": "42db8261fbf1aec6d315a4983055ccbf25fbc72508598f62a1856229d3bbc16a",
+    "evals/dependency-audit/fetch_scanner.py": "b30aa907d549c9c534b2453e08e958ed7a36f242b3739b42a6fe5dd605543357",
+    "evals/dependency-audit/image_audit.py": "81d37de58ce7b65d60c3642963b4fb109f849738e5599619837d00b27c9b26b7",
+    "evals/dependency-audit/penpot/LICENSE": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5",
+    "evals/dependency-audit/penpot/pnpm-lock.yaml": "8e9793148174a36f9083ae599183ff0d1b7948fbdbaa399a382a721df4f493bf",
+    "evals/dependency-audit/penpot/provenance.json": "3792a6603619bab2e4c4d24625bed1cde925b6e1b59cee36656bcc765d6fbdfe",
+    "evals/dependency-audit/penpot.py": "808718ee9caf065db3b903b6dcc82c92027269a3aecceb2cbe8c8c22fb7b4aee",
+    "evals/dependency-audit/scanner.json": "ddf7b5db0fb5258f3bc9dcc718f110fd46648737ada2d707d3f942d3a6f26bec",
+    "evals/dependency-audit/test_check.py": "857cfaa860d8f1431fb4beb73ff72f6bdc0b4914b4f4838dce0a0ef303eaf671",
+    "evals/dependency-audit/test_images.py": "ebcd08bf4142c735238cdbb494bae201bcf4cad7d9eda2f0e0699454691b4f47",
+    "evals/harness-remediation/README.md": "92099e36683309eb5ff39afcc9b6ed00f2d490549b286721c891cfea983f134d",
+    "evals/harness-remediation/native_validate.py": "250b1ebe69c8bfc457c16e25dad8157cd792b1fa08156a166b4d0e02731f882f",
+    "evals/harness-remediation/startup_probe.py": "39856f2146c8bcccdbcb4a31b3c2e9d1ec99f08dc0ecc93cfa25588d64fdaf91",
+    "evals/harness-remediation/test_feedback.py": "9202e9e629221c50046cb7c9aac66cac2d03788e1a00e1585e4de6b3c07e6a06",
+    "evals/harness-remediation/test_platform.py": "ab51cbffcb843aa0dcf176be558dae0873d1dd31489c1f3b0087aecca73759c7",
+    "registry/agent-runtime.json": "5f4363de38075843549f3ce1250f6e24e597575f5a2d6dcf8433a62ebb0a77e6",
+    "registry/design-stack.json": "da34793ca37cb94228ba10c0931addff650ebcf12acbb4b46905789a20bc7291",
+    "src/cli.rs": "2726ce2fe158b38b1889db03bc63f4083b8147c4387975d5a723a1fff734e479",
+    "src/dev/linux.rs": "a6db5c4bf3fab06f8a5b5ca2f952a8e3bec5d3250480c7581708517c0051973c",
+    "src/dev.rs": "3a628b28794343d719f44c8b5861b729630a5b91667395d356cbcb0f6fb2160c",
+    "src/packages/audit.rs": "751ef3c1846767cb8e2263455a70bb4066f35ce9a130961ba8eda9cb698ae75c",
+    "src/router/accounting.rs": "4327c486f71d5eda162c59bcd152dc07534e1bf0d779053a36ec9aadd316f545",
+    "src/router/codex.rs": "77e8e5577b88ca71dd9220cb5c79b9394a642fc17d194c4547dcc2155007f31d",
+    "src/router/codex_tests.rs": "ff19d9c22977c8daa5c9f7746f477269bb6760e4fe4547a5444cd2fb03cdae64",
+    "src/router/execution.rs": "7cb933074a8fb43558208834461a9d1e60f09bcbc76a11d55a3507f87b8cac52",
+    "src/router/native.rs": "a84badd28b20add3c5d09a0ac1bd22b2ba069210f1fad1210577aafbb6b9b0ee",
+    "src/source_identity.rs": "938e970c8913b0a9feb7d7233462488918e4d23993991ad530e2710d777d09d4"
+  },
+  "evidence_sha256": {
+    "built-images-v3-scanner.json": "8db632be0c5de2e8d8bb8667ca7ef8759cbead79ab35ea6da4682615619394ad",
+    "candidate-build.json": "330a8244a106fb562afb281f269c1de62e3fe1478080530c7aec420573df85dd",
+    "candidate-debug-identity.json": "c15a912ff70dbdcc1724455275cd6c8e2462289e499bb931036b469a257a269f",
+    "catalog-check.json": "1cb507aa826929c5df197728ed9b866f29fdf58755ab1f09d0402ec15902b8ec",
+    "dependency-audit.json": "346dbd4c1d273150da5de5ab38e63d5fb8e02334c966f05ba4d19e3bf4119c89",
+    "dependency-tests-final.log": "e34bbc677c14b125f9ccb68304940462c5bde90a1c7d9cc7b491e6f2b8053238",
+    "export-atomic-verification.json": "6d2b4e7454cc996032ed2d00de70f14017ffe5a7f20541d9ad9b346b569e55e4",
+    "export-rejections.json": "00274edbbbdccee2966aacc134878c3df6ba71805e6b26c3066bd532f7480230",
+    "image-triage.json": "900887babaa145b0f20677b66141dd0d4cf6d82b4824ebe73a5227ed30d9e554",
+    "linux-initial-disk-failure.json": "4ac2be1c6af559def7ae7b739a1b4c91343eb1521f109710c111dbb21d322cc9",
+    "linux-initial-disk-failure.log": "527d5eec26c5282e886e2a89508ed54c324d0e0e2d20ee6fc271149bc480aabd",
+    "linux-snapshot-failure.json": "336638c7f49bf8bd1c5598776cfed6e9581241acd9a2b05c3698e06c9ed2efa9",
+    "linux-snapshot-failure.log": "db054bd37b87ee5d7c8bb248ad03e3cf78dd5efe9b5e24fc1126cc7074109a55",
+    "linux.json": "00df74ce30305d08c54a66e532998218e8685c66d1484b947348a749dad1d488",
+    "linux.log": "4724ba5ad8fcbd305d45658e1ea9d745543c048e3763c77c8f907e087b1508b5",
+    "native-accounting-summary.json": "7deb3ac306f8a4fd1bc4410521528fba9b0bf491f7976aa28cde768d5ef8ebbf",
+    "native-macos.json": "7437b355db1828e9e05c033ed7294cb5ffb2a17f6b0982c88dcef025aa16e6d6",
+    "platform-tests-final.log": "a2e97b7515932007aa3d038fcfa41fdd107cb2467ff84d182512ff3c7e24f045",
+    "remote-baseline-jobs.json": "65894c7193bd343180ca521acd6a1f262a07d7469c707619b2a119e8476d6ae0",
+    "remote-baseline.json": "6d74d7078bb2d6ccd584459fab9795b0dcfec5a67c3a78b8469f134032d30fc8",
+    "remote-images-scanner.json": "09123cc1f0f2ecd646508c9199c94fce2c02b3ab7bf5526c7489a0fc3ef19a4a",
+    "rust-check-final.log": "1eb55b41752b6eb95ec16ae08e6bd76220e24f0f111955c2b9cd96f7261d7377",
+    "snapshot-link-review.json": "453b5df15e619e0316271b1c3a9ca37f736c8851357f43b9797436200ec6cc85",
+    "source-contract-final.log": "a121e0717d3a8b9022acd9c4438bcfda7cec759854e5878c2b9fec0b706a3398",
+    "workflow-validation.json": "93846e268b8c5baf7d1b3622e02482437985d640c75dda792315be5dc21b93bc"
+  },
+  "private_evidence": ".mirket/implementation/harness-gaps-2026-10-20"
+}

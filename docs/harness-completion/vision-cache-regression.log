@@ -1,0 +1,180 @@
+mirket dev: cargo test --locked --all-targets selected_vision_observation
+   Compiling mirket v1.0.11 (/Users/nazmiyilmaz/Documents/.ai)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 20.32s
+     Running unittests src/lib.rs (target/debug/deps/mirket-7d77341320d149ee)
+
+running 1 test
+test router::discovery::tests::selected_vision_observation_preserves_shared_menu_and_rejects_stale_metadata ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 257 filtered out; finished in 0.05s
+
+     Running unittests setup/all.rs (target/debug/deps/install_all-dc36800cc17fafd2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests setup/claude.rs (target/debug/deps/install_claude-899e290ccefaaf4a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests setup/codex.rs (target/debug/deps/install_codex-141592fa397c6d5d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/mirket-547d7d5765b75520)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/backup_relocation.rs (target/debug/deps/backup_relocation-93a28b1d755398c7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/backup_runtime.rs (target/debug/deps/backup_runtime-4dfd7b2d9b177009)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/capability_workflows.rs (target/debug/deps/capability_workflows-2242e4d0a9f3b35c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/cli_workflow.rs (target/debug/deps/cli_workflow-53a7c2d22f66ec49)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/design_language_payload.rs (target/debug/deps/design_language_payload-94a325f10c832882)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/desktop_acceptance.rs (target/debug/deps/desktop_acceptance-4b48c04611e030f9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/distribution.rs (target/debug/deps/distribution-465eda33b9d5e815)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/illustration_evaluation.rs (target/debug/deps/illustration_evaluation-fdbce52aba3364dc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/install_update.rs (target/debug/deps/install_update-0035d89634be40d4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.00s
+
+     Running tests/live_identity.rs (target/debug/deps/live_identity-8c5b9a673028ed54)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/mcp_state.rs (target/debug/deps/mcp_state-89bc4f9d518ea734)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 25 filtered out; finished in 0.00s
+
+     Running tests/model_routing.rs (target/debug/deps/model_routing-3e49080f06de2019)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 16 filtered out; finished in 0.00s
+
+     Running tests/motion_payload.rs (target/debug/deps/motion_payload-a19eaee5bbed2250)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/package_mcp.rs (target/debug/deps/package_mcp-8fe735071f710493)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/professional_teams.rs (target/debug/deps/professional_teams-30803c24f3c78afd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/published_update.rs (target/debug/deps/published_update-db79749c3339fa01)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/role_evaluation.rs (target/debug/deps/role_evaluation-4a2f9e5e1b8e36a3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 0.00s
+
+     Running tests/setup_generation.rs (target/debug/deps/setup_generation-cec42687713a8429)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/source_contract.rs (target/debug/deps/source_contract-cfe48734bcf4d9e2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/task_contracts.rs (target/debug/deps/task_contracts-d0706d615052c0cc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+     Running tests/task_history.rs (target/debug/deps/task_history-bb97f6fcfa1faefb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/task_protocol.rs (target/debug/deps/task_protocol-b82f818d8f4633bb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/verification_handoff.rs (target/debug/deps/verification_handoff-af0adcda8fbe7dbf)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+{
+  "filter": "selected_vision_observation",
+  "ignored": false,
+  "ok": true,
+  "profile": "debug",
+  "source": "/Users/nazmiyilmaz/Documents/.ai",
+  "test_target": null
+}

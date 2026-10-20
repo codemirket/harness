@@ -32,7 +32,9 @@ production dependency change has been approved under [AGENTS.md](AGENTS.md),
 run `mirket dev lock --project .` to resolve the workspace requirements while
 retaining other locked versions where their constraints permit. Review the
 resulting `Cargo.lock` diff before running checks; lockfile reconciliation is not
-permission to add a dependency.
+permission to add a dependency. For a reviewed transitive patch, use
+`mirket dev lock --project . --package rustls --precise 0.23.46`; this updates only
+that package and any dependencies Cargo must reconcile.
 `mirket dev test FILTER` runs a focused test selection. `--ignored` explicitly
 selects opt-in tests, including real package downloads.
 Use `--release` for installed native-package checks so they exercise the optimized
@@ -79,6 +81,13 @@ cancellation and child-process cleanup.
 Run `mirket benchmark` on an optimized binary for named local workloads; report
 sample count, target and binary identity. The output retains raw samples and
 separates version startup, fresh-process catalog startup and warm catalog calls.
+For startup diagnosis, set `MIRKET_STARTUP_TIMING=1` on `mirket mcp serve`
+or `mirket mcp doctor --iterations 2`. It emits bounded, payload-free JSON phases
+on stderr for catalog loading, executable identity, database opening, handshake
+and background discovery. MCP stdout remains protocol-only. The installed motion
+payload regression retains these diagnostics on a timeout and checks that native
+model discovery starts after the handshake; its 15-second deadline is unchanged.
+
 Compare unchanged workloads and content identities before attributing a change
 to runtime speed. Search relevance changes are a quality/performance tradeoff,
 not equivalent-output throughput evidence. Do not turn machine-dependent timing
@@ -226,7 +235,23 @@ workflow and current limitations.
 The standard Rust gate covers the controller and package bridge. It does not
 launch the ten design services or run the JavaScript tool suite. With the
 locked tool dependencies available under Node 22, run `npm test` in
-`runtime/design/tools` for the owned JavaScript tests. Provision dependencies
+`runtime/design/tools` for the owned JavaScript tests. These tests require Linux
+and the owned guard: compile it with
+`cc -O2 -Wall -Wextra -Werror runtime-guard.c -o runtime-guard` in an isolated copy
+of the tool directory before testing. CI uses Node 22, the exact npm lock and
+`npm ci --ignore-scripts`. Keep `node_modules` and generated binaries outside the
+checkout because runtime source identity includes this directory.
+
+On macOS with an explicitly selected, running Mirket engine, the matching candidate
+can build the reviewed design image and run the suite, including browser fixtures,
+in an isolated container:
+
+```sh
+mirket dev design-check --project . --engine-home /absolute/engine-home
+```
+
+This does not change package selections, service receipts, running services or
+mount a user project. It can prepare a new dependency image in the engine cache. Provision dependencies
 only as an explicit development step; package serving never installs them.
 
 For live acceptance, use an existing disposable home, register the approved
@@ -271,11 +296,14 @@ is missing. It does not publish. Native CI runners test and package their target
 Combine their manifests through the CLI:
 
 ```sh
-mirket dev manifest --input /absolute/macos/mirket-release.json --input /absolute/windows/mirket-release.json --output /absolute/release/mirket-release.json
+mirket dev manifest --input /absolute/macos/mirket-release.json --input /absolute/windows/mirket-release.json --acceptance /absolute/evidence/acceptance.json --output /absolute/release/mirket-release.json
 ```
 
 The command verifies the listed local binaries against their checksums, requires
-one version and unique targets, and writes a new manifest without executing the
+one version and unique targets, verifies adjacent `mirket-build.json` records,
+requires a successful contained-acceptance receipt whose executable is one of the
+candidates and whose source identity matches every candidate, and writes a new
+manifest without executing the
 binaries. Upload that manifest, the packaged executables, checksums and notices
 only after publication is explicitly authorized. If native notice files differ,
 publish each with its executable target in the filename rather than dropping one.
@@ -297,7 +325,7 @@ mirket dev check --project .
 mirket package prepare agent-runtime
 mirket package prepare design
 mirket package start design
-mirket dev acceptance --project . --engine-home /absolute/engine-home
+mirket dev acceptance --project . --engine-home /absolute/engine-home --output /absolute/evidence/acceptance.json
 ```
 
 Use `--home /absolute/engine-home` on package commands when the selected engine
@@ -320,3 +348,25 @@ already-running desktop connection has reconnected, or judge aesthetic quality.
 After deployment call `runtime_status` in each actual client, inspect ordinary
 `runtime` from a direct design response, and verify loaded skill hashes. Never
 substitute an installed binary or fresh SDK session for those observations.
+
+## Dependency admission
+
+CI queries OSV for all locked Cargo, design npm and agent Python coordinates.
+Unknown advisories, incomplete responses, expired exceptions and changes to an
+exception's reviewed source fail the gate. Exceptions in
+[exceptions.json](evals/dependency-audit/exceptions.json) bind exact versions,
+advisories, source bytes, owner and expiry. These are reachability dispositions,
+not statements that a dependency is universally safe. Update notices and inspect
+native output when changing runtime dependencies. The checked Penpot MCP lock
+capture covers every package entry across its documents. The separate pinned
+image scan job covers OS and detected language packages in remote base/service
+images; candidate-built layers additionally require verified image exports.
+Missing inventories and untriaged advisories fail those gates. See the
+[audit workflow](evals/dependency-audit/README.md) for coverage, export commands
+and explicit limits.
+
+Run with Python 3.11 or later:
+
+```sh
+python3 evals/dependency-audit/check.py --output /absolute/evidence/dependency-audit.json
+```

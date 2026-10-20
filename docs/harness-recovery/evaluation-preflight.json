@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic_packet_pipeline_preflight",
+  "ok": true,
+  "model_executions": 0,
+  "planned_cells": 24,
+  "retained_attempts": 48,
+  "locked_ratings": 32,
+  "independent_briefs": 4,
+  "checks": [
+    "collector rejects overwritten failure",
+    "oversized report rejected before capture",
+    "captured failure bytes retained",
+    "sealed attempt set cannot grow",
+    "all planned cells survive production collector",
+    "production score lock and post-score merge",
+    "score-lock overwrite rejected",
+    "packet path and hash verification",
+    "frozen analyzer accepts round trip",
+    "missing cell rejected",
+    "contradictory judges and failed task guard prevent advancement"
+  ],
+  "sources": {
+    "prepare.py": "91e39fae99c0f29f36a99f11a88466cee8962616c64e2b62159741ec0cf541a2",
+    "make-judge-packets.py": "350261a7cef12d2a51a54600c9696064aa1a1ce0ec4e6f5c0271762304556a4f",
+    "analyze.py": "a5e7d03fc92f602a14da4b79cf2b3091183e7601906d2d0b65b277cbe68dfad6",
+    "packet_preflight.py": "f18b7836d1b810c7cba82faf7c51da67f5b6d80dafe10e8aae0e8f35c3609cf0"
+  },
+  "limits": [
+    "Synthetic schema/identity regression only; no measured guidance benefit or human acceptance."
+  ]
+}

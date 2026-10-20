@@ -173,6 +173,11 @@ enum MemoryCommand {
 }
 #[derive(Subcommand)]
 enum AgentCommand {
+    /// Read worker and durable probe accounting, including failed preflight runs.
+    Accounting {
+        #[arg(long)]
+        run_id: String,
+    },
     /// Export all facts and latest workflow snapshots to a new private JSONL file.
     Export {
         #[arg(long)]
@@ -662,6 +667,36 @@ enum CraftCommand {
 }
 #[derive(Subcommand)]
 enum DevCommand {
+    /// Check the rebuilt backend against a disposable database, including restart.
+    BackendCheck {
+        #[arg(long)]
+        engine_home: PathBuf,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Run native ARM64 Linux checks in an isolated pinned compiler container.
+    LinuxCheck {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        #[arg(long)]
+        engine_home: PathBuf,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Export an installed, verified image for an explicit external vulnerability scan.
+    ImageExport {
+        #[arg(long)]
+        engine_home: PathBuf,
+        /// Installed design image alias or agent-runtime.
+        #[arg(long)]
+        image: String,
+        /// New absolute Docker archive path.
+        #[arg(long)]
+        output: PathBuf,
+        /// Build the reviewed immutable candidate without activating services.
+        #[arg(long)]
+        candidate: bool,
+    },
     /// Inspect role fixtures or validate host-recorded trial results; never launches models.
     RoleEval {
         #[command(subcommand)]
@@ -671,6 +706,11 @@ enum DevCommand {
     Lock {
         #[arg(long, default_value = ".")]
         project: PathBuf,
+        /// Update only this existing locked package.
+        #[arg(long, requires = "precise")]
+        package: Option<String>,
+        #[arg(long, requires = "package")]
+        precise: Option<String>,
     },
     Fmt {
         #[arg(long, default_value = ".")]
@@ -680,6 +720,13 @@ enum DevCommand {
         #[arg(long, default_value = ".")]
         project: PathBuf,
     },
+    /// Run the owned JavaScript suite in an isolated Linux container without changing live services.
+    DesignCheck {
+        #[arg(long, default_value = ".")]
+        project: PathBuf,
+        #[arg(long)]
+        engine_home: PathBuf,
+    },
     /// Exercise prepared ARM64 runtimes and fresh MCP sessions with disposable fixtures.
     Acceptance {
         #[arg(long, default_value = ".")]
@@ -687,6 +734,9 @@ enum DevCommand {
         /// Explicit home with the registered engine and both prepared packages.
         #[arg(long)]
         engine_home: PathBuf,
+        /// Save a new candidate-bound acceptance receipt after all checks pass.
+        #[arg(long)]
+        output: Option<PathBuf>,
     },
     /// Run focused tests; --ignored explicitly enables opt-in tests such as downloads.
     Test {
@@ -717,8 +767,10 @@ enum DevCommand {
         #[arg(long)]
         output: PathBuf,
     },
-    /// Verify native release artifacts and combine their update manifests.
+    /// Verify native artifacts and a contained acceptance receipt before release assembly.
     Manifest {
+        #[arg(long)]
+        acceptance: PathBuf,
         #[arg(long = "input", required = true)]
         inputs: Vec<PathBuf>,
         #[arg(long)]
@@ -1107,7 +1159,10 @@ fn dispatch(cli: Cli) -> Result<i32> {
         command: McpCommand::Serve,
     } = cli.command
     {
-        runtime()?.block_on(crate::mcp::serve(paths, Catalog::embedded()?))?;
+        crate::mcp::startup_phase("entry");
+        let catalog = Catalog::embedded()?;
+        crate::mcp::startup_phase("catalog_loaded");
+        runtime()?.block_on(crate::mcp::serve(paths, catalog))?;
         return Ok(0);
     }
     if let Command::Mcp {
@@ -1193,6 +1248,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
             }
         })?,
         Command::Info => crate::identity::info(&paths, &catalog()?),
+        Command::Agent {
+            command: AgentCommand::Accounting { run_id },
+        } => crate::router::accounting::inspect_run(&paths, &run_id)?,
         Command::Agent {
             command: AgentCommand::Export { project, output },
         } => runtime()?.block_on(crate::lifecycle::export(&paths, &project, &output))?,
@@ -1715,6 +1773,26 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 },
         } => crate::craft::contrast(&foreground, &background)?,
         Command::Dev { command } => match command {
+            DevCommand::BackendCheck {
+                engine_home,
+                output,
+            } => crate::packages::test_backend(&Paths::new(engine_home)?, &output)?,
+            DevCommand::LinuxCheck {
+                project,
+                engine_home,
+                output,
+            } => crate::dev::linux::check(&project, &engine_home, &output)?,
+            DevCommand::ImageExport {
+                engine_home,
+                image,
+                output,
+                candidate,
+            } => crate::packages::audit::export(
+                &Paths::new(engine_home)?,
+                &image,
+                &output,
+                candidate,
+            )?,
             DevCommand::RoleEval { command } => match command {
                 RoleEvalCommand::Suite { project, suite } => {
                     crate::role_eval::suite(&project, &suite)?
@@ -1725,13 +1803,22 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     report,
                 } => crate::role_eval::check(&project, &suite, &report)?,
             },
-            DevCommand::Lock { project } => crate::dev::lock(&project)?,
+            DevCommand::Lock {
+                project,
+                package,
+                precise,
+            } => crate::dev::lock(&project, package.as_deref(), precise.as_deref())?,
             DevCommand::Fmt { project } => crate::dev::format(&project)?,
             DevCommand::Check { project } => crate::dev::check(&project)?,
+            DevCommand::DesignCheck {
+                project,
+                engine_home,
+            } => crate::dev::design_check(&project, &engine_home)?,
             DevCommand::Acceptance {
                 project,
                 engine_home,
-            } => crate::dev::acceptance(&project, &engine_home)?,
+                output,
+            } => crate::dev::acceptance(&project, &engine_home, output.as_deref())?,
             DevCommand::Test {
                 project,
                 filter,
@@ -1751,7 +1838,11 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 bin,
             } => crate::dev::build(&project, release, bin.as_deref())?,
             DevCommand::Dist { project, output } => crate::dev::dist(&project, &output)?,
-            DevCommand::Manifest { inputs, output } => crate::release::manifest(&inputs, &output)?,
+            DevCommand::Manifest {
+                inputs,
+                output,
+                acceptance,
+            } => crate::dev::release_gate::promote(&inputs, &output, &acceptance)?,
         },
         Command::Benchmark { iterations } => crate::dev::benchmark(&catalog()?, iterations)?,
         Command::Mcp { .. } | Command::Models { .. } | Command::Agent { .. } => unreachable!(),

@@ -1,0 +1,47 @@
+{
+  "platform": "aarch64-apple-darwin",
+  "build": {
+    "accepted": false,
+    "binary_sha256": "b437e78d73e2b57bb16d0745960782a8babefafd0c1d0b602c20003158e5c15d",
+    "schema": 1,
+    "source_sha256": "d7f0e005170cad4214c8f73041d06bab7f7834f0973fec0322b0b0aa2b715955",
+    "target": "aarch64-apple-darwin",
+    "version": "1.0.11"
+  },
+  "artifact_bytes": 16009504,
+  "all_four_executable_checksums_verified": [
+    "mirket-aarch64-apple-darwin",
+    "install-codex-aarch64-apple-darwin",
+    "install-claude-aarch64-apple-darwin",
+    "install-all-aarch64-apple-darwin"
+  ],
+  "licenses_present": true,
+  "disposable_installer_checks": [
+    {
+      "variant": "mirket",
+      "target": "all",
+      "setup_exit": 0,
+      "doctor_ok": true
+    },
+    {
+      "variant": "install-codex",
+      "target": "codex",
+      "setup_exit": 0,
+      "doctor_ok": true
+    },
+    {
+      "variant": "install-claude",
+      "target": "claude",
+      "setup_exit": 0,
+      "doctor_ok": true
+    },
+    {
+      "variant": "install-all",
+      "target": "all",
+      "setup_exit": 0,
+      "doctor_ok": true
+    }
+  ],
+  "published": false,
+  "acceptance_receipt": null
+}

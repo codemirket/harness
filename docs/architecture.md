@@ -128,7 +128,7 @@ Only explicit CLI project registration admits a canonical root to task tracking.
 The coordination MCP server cannot register a filesystem root or execute a
 shell command. Its `spawn_subagent` tool executes schema-bound inference and
 explicitly assigned file/design tools through the [capability router](../skills/agent-coordination/references/model-routing.md).
-Discovery runs at MCP initialization and uses a bounded TTL cache; raw model IDs
+Discovery starts after the MCP initialization handshake and uses a bounded TTL cache; raw model IDs
 are accepted only from target metadata. Concurrent refreshes share work per home;
 at most two targets are probed at once, with target and refresh deadlines. The
 32-target limit includes automatically discovered targets, and both paginated

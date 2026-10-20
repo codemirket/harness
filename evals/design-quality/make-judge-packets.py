@@ -91,7 +91,8 @@ def save(path, value):
     path = owned(path)
     require(not path.exists(), 'Refusing to overwrite a frozen artifact')
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+    with path.open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + '\n')
 
 
 def safe_name(value):

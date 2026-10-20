@@ -1,0 +1,45 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"source\":\"finish-quality-20261020/tokens.json\",\"source_sha256\":\"b0ba7ca4c2689b29cf0a3bb0b440ca380a8c926b6e52e401c76308f64306595e\",\"compiler_sha256\":\"42cca2ef61987e5fabf6071a63a60d50b333df2e8b49cb5016522e625b57255a\",\"outputs\":{\"tokens.css\":\".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.css\",\"tokens.js\":\".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.js\",\"tokens.ts\":\".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.ts\",\"tokens.typ\":\".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.typ\",\"penpot.tokens.json\":\".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/penpot.tokens.json\"},\"reused\":true,\"runtime\":{\"sha256\":\"7924f01d8c8406459abf2eeb820263a15f936b52486cb24d7e3109d8514eecbc\",\"files\":{\"media-evidence.mjs\":\"3303441d9ff3b791c31ff25149beb33382895039c77f083fd05dd624d9a83f9e\",\"operations.mjs\":\"d2c74df3b00d251d248407e258fbdf3da89c2708b5dcfc4142bb1eedaa639437\",\"package-lock.json\":\"9d22d624f9ab6e3425a52df03e11267089551b68b31e1651481900c48243eabc\",\"paths.mjs\":\"551ec20941c641140f21bae77be9da1755c830b768ac6633834b77bb48af36d4\",\"penpot-export.mjs\":\"5d32f5adc1dd572e9015ce1713de5ca985e4ee511f0aea94719003726c551950\",\"penpot-session.mjs\":\"a247202b2dc4343ff80e2ad8d09c83b761f89a93b20a207625a7f460b60954e3\",\"penpot-tokens.mjs\":\"73001877bc4283654f1274fe8e61d8817e59a0a11b7c0f1381be14f2516d97cc\",\"raster-worker.mjs\":\"fc164f49f09ae5169a9c2d2704b64b9ed717b4a7a7cb15b774b5508286cd6dc5\",\"request.mjs\":\"e1142761f3d99d1650606d6908e0dd31b212a749d03022e9d9ec524145ca5e8b\",\"server.mjs\":\"db0b442dd8f19d6e8a93a77b0939559b336fbdeb55edd19718edef909790a68a\",\"tokens.mjs\":\"c3e7bf1e8acd50ddfa3c2bdad8d3d2a4c88eb5bb1ac4acf0d611ababc2108c66\",\"tool-budgets.json\":\"7c090eaa79f7c98cca5458dbab7c1b510295dd300db024bf6c993184a41bd4ee\",\"tool-policy.json\":\"3b11aa94dbc40a2aea7b6b19493f74bb754e67446b5191ccba35baff61338c4b\",\"vector-worker.mjs\":\"7afd65ec1e4a2bd91f561f5c43291f0e90b8499c7b7bcc1653648692358ebddc\",\"workspace-server.mjs\":\"02b2e051c34807f31aea4e4c7c2f07b91e3dc6ceefe72942649b7fd4b6880d52\"},\"node\":\"v22.23.3\",\"workspace\":\"/workspace\",\"scope\":\"host\"}}"
+    }
+  ],
+  "structuredContent": {
+    "compiler_sha256": "42cca2ef61987e5fabf6071a63a60d50b333df2e8b49cb5016522e625b57255a",
+    "outputs": {
+      "penpot.tokens.json": ".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/penpot.tokens.json",
+      "tokens.css": ".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.css",
+      "tokens.js": ".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.js",
+      "tokens.ts": ".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.ts",
+      "tokens.typ": ".mirket-design/tokens/6c21ac0cf00bee77f422afffcd0f4413582141576fbd83bfa96d17d65bc3ac0c/tokens.typ"
+    },
+    "reused": true,
+    "runtime": {
+      "files": {
+        "media-evidence.mjs": "3303441d9ff3b791c31ff25149beb33382895039c77f083fd05dd624d9a83f9e",
+        "operations.mjs": "d2c74df3b00d251d248407e258fbdf3da89c2708b5dcfc4142bb1eedaa639437",
+        "package-lock.json": "9d22d624f9ab6e3425a52df03e11267089551b68b31e1651481900c48243eabc",
+        "paths.mjs": "551ec20941c641140f21bae77be9da1755c830b768ac6633834b77bb48af36d4",
+        "penpot-export.mjs": "5d32f5adc1dd572e9015ce1713de5ca985e4ee511f0aea94719003726c551950",
+        "penpot-session.mjs": "a247202b2dc4343ff80e2ad8d09c83b761f89a93b20a207625a7f460b60954e3",
+        "penpot-tokens.mjs": "73001877bc4283654f1274fe8e61d8817e59a0a11b7c0f1381be14f2516d97cc",
+        "raster-worker.mjs": "fc164f49f09ae5169a9c2d2704b64b9ed717b4a7a7cb15b774b5508286cd6dc5",
+        "request.mjs": "e1142761f3d99d1650606d6908e0dd31b212a749d03022e9d9ec524145ca5e8b",
+        "server.mjs": "db0b442dd8f19d6e8a93a77b0939559b336fbdeb55edd19718edef909790a68a",
+        "tokens.mjs": "c3e7bf1e8acd50ddfa3c2bdad8d3d2a4c88eb5bb1ac4acf0d611ababc2108c66",
+        "tool-budgets.json": "7c090eaa79f7c98cca5458dbab7c1b510295dd300db024bf6c993184a41bd4ee",
+        "tool-policy.json": "3b11aa94dbc40a2aea7b6b19493f74bb754e67446b5191ccba35baff61338c4b",
+        "vector-worker.mjs": "7afd65ec1e4a2bd91f561f5c43291f0e90b8499c7b7bcc1653648692358ebddc",
+        "workspace-server.mjs": "02b2e051c34807f31aea4e4c7c2f07b91e3dc6ceefe72942649b7fd4b6880d52"
+      },
+      "node": "v22.23.3",
+      "scope": "host",
+      "sha256": "7924f01d8c8406459abf2eeb820263a15f936b52486cb24d7e3109d8514eecbc",
+      "workspace": "/workspace"
+    },
+    "source": "finish-quality-20261020/tokens.json",
+    "source_sha256": "b0ba7ca4c2689b29cf0a3bb0b440ca380a8c926b6e52e401c76308f64306595e"
+  },
+  "isError": false
+}

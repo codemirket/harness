@@ -12,7 +12,7 @@ fn completion(model: &str) -> Vec<u8> {
     format!(
         "data: {}\n\n",
         json!({"type":"response.completed","response":{
-            "model":model,"status":"completed","output":[{"type":"message",
+            "model":model,"status":"completed","usage":{"input_tokens":41,"output_tokens":9,"total_tokens":50,"private":"SECRET_USAGE"},"output":[{"type":"message",
             "role":"assistant","content":[{"type":"output_text","text":action().to_string()}]}]
         }})
     )
@@ -23,7 +23,7 @@ fn completion(model: &str) -> Vec<u8> {
 fn phased_messages_select_only_the_final_action() {
     let message = |phase: Value, text: &str| json!({"type":"message","role":"assistant","phase":phase,"content":[{"type":"output_text","text":text}]});
     let check = |output: Value| {
-        validate_stream(&format!("data: {}\n\n", json!({"type":"response.completed","response":{"model":"selected","status":"completed","output":output}})).into_bytes(), "selected")
+        validate_stream(&format!("data: {}\n\n", json!({"type":"response.completed","response":{"model":"selected","status":"completed","output":output}})).into_bytes(), "selected", &mut super::super::accounting::empty())
     };
     let final_message = message(json!("final_answer"), &action().to_string());
     for interim in ["I will inspect the source.", "{\"action\":\"tool\"}"] {
@@ -60,6 +60,7 @@ struct Roundtrip {
     served: Result<Value>,
     native_reply: Vec<u8>,
     upstream_body: Value,
+    observation: Value,
 }
 
 async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
@@ -106,7 +107,17 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
     let local_addr = listener.local_addr()?;
     let canonical = request_body("selected", Some("high"), 100, "private prompt", &[])?;
     let serve_task = tokio::spawn(async move {
-        serve(listener, "capability", &upstream_url, "selected", canonical).await
+        let mut observation = super::super::accounting::empty();
+        let result = serve(
+            listener,
+            "capability",
+            &upstream_url,
+            "selected",
+            canonical,
+            &mut observation,
+        )
+        .await;
+        (result, observation)
     });
     // Unauthenticated connections cannot exhaust the protocol request count.
     for _ in 0..8 {
@@ -157,7 +168,7 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
     )
     .await
     .context("native socket did not close")??;
-    let served = timeout(Duration::from_secs(10), serve_task)
+    let (served, observation) = timeout(Duration::from_secs(10), serve_task)
         .await
         .context("proxy did not finish")?
         .context("proxy task panicked")?;
@@ -169,6 +180,7 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
         served,
         native_reply,
         upstream_body,
+        observation,
     })
 }
 
@@ -176,6 +188,10 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
 async fn proxy_reconstructs_the_request_from_router_input() {
     let exchange = roundtrip(completion("selected")).await.unwrap();
     assert_eq!(exchange.served.unwrap(), action());
+    assert_eq!(exchange.observation["usage"]["input_tokens"], 41);
+    assert_eq!(exchange.observation["usage"]["total_tokens"], 50);
+    assert!(exchange.observation["cost_estimate_usd"].is_null());
+    assert!(!exchange.observation.to_string().contains("SECRET_USAGE"));
     assert_eq!(
         exchange.upstream_body["input"][0]["content"][0]["text"],
         "private prompt"

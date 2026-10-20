@@ -126,6 +126,10 @@ pub struct ModelSelection {
 pub struct SpawnRequest {
     #[serde(default)]
     pub memory_recall: MemoryRecall,
+    /// Optional focused recall queries; at most eight, each at most 512 characters.
+    /// The embedding tokenizer also rejects queries exceeding its token window.
+    #[serde(default)]
+    pub memory_queries: Vec<String>,
     pub objective: String,
     pub task_intent: TaskIntent,
     pub complexity_class: ComplexityClass,
@@ -706,6 +710,7 @@ mod tests {
     fn request(intent: TaskIntent, class: ComplexityClass) -> SpawnRequest {
         SpawnRequest {
             memory_recall: Default::default(),
+            memory_queries: vec![],
             objective: "complete the task".into(),
             task_intent: intent,
             complexity_class: class,

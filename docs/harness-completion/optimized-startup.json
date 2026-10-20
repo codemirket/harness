@@ -1,0 +1,251 @@
+[
+  {
+    "exit": 0,
+    "result": {
+      "arbitrary_resource_rejected": true,
+      "concurrent_requests": 4,
+      "iterations": 2,
+      "malformed_input_rejected": true,
+      "measurement": "One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee.",
+      "ok": true,
+      "request_median_ms": 0.2825,
+      "request_p95_ms": 0.43425,
+      "resource_read": true,
+      "runtime_identity": {
+        "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+        "agent_runtime": {
+          "expected_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+          "expected_versions": {
+            "fastembed": "0.9.0",
+            "langgraph": "1.2.16",
+            "langgraph-checkpoint-sqlite": "3.1.2",
+            "mem0ai": "2.2.1"
+          },
+          "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+          "selected": false
+        },
+        "catalog": {
+          "profiles": 63,
+          "sha256": "8b9badb9bee933c818d7ff15b7412d94924f52a74fd5b76099c8b0acba998b1f",
+          "skills": 347
+        },
+        "installed_binary": {
+          "matches_process": true,
+          "path": "/private/var/folders/4z/v18wnt491wd53z5kctrk2rgc0000gn/T/mirket-finish-install-wb84vmj5/.mirket/bin/mirket",
+          "sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa"
+        },
+        "process": {
+          "executable_sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa",
+          "pid": 8784,
+          "source_sha256": "231b49a6f81ba6fb291aa37ab68cc45d310291fb2522fd5bd376a8e018f7af49",
+          "target": "aarch64-apple-darwin",
+          "version": "1.0.11"
+        },
+        "verification": "Identity and connection are not evidence that a user task passed."
+      },
+      "sdk": "rmcp 3.5.1",
+      "selected_metadata_read_route": true,
+      "sequential_requests_per_second": 2766.569329535756,
+      "skill_delivery": true,
+      "startup_ms": 64.780667,
+      "tools": [
+        "capability_plan",
+        "catalog_search",
+        "catalog_show",
+        "memory_forget",
+        "memory_put",
+        "memory_read",
+        "model_registry",
+        "project_list",
+        "resume_subagent",
+        "route_task",
+        "runtime_data",
+        "runtime_data_apply",
+        "runtime_status",
+        "skill_read",
+        "spawn_subagent",
+        "task_checkpoint",
+        "task_evidence",
+        "task_finish",
+        "task_history",
+        "task_start",
+        "task_status",
+        "task_validate",
+        "team_facets",
+        "team_plan",
+        "verification_handoff",
+        "workflow_forget",
+        "workflow_status"
+      ],
+      "transport": "stdio",
+      "upstream_body_rejected": true
+    },
+    "diagnostics": "{\"elapsed_ms\":0,\"mirket_startup\":\"entry\"}\n{\"elapsed_ms\":8,\"mirket_startup\":\"catalog_loaded\"}\n{\"elapsed_ms\":59,\"mirket_startup\":\"identity_captured\"}\n{\"elapsed_ms\":60,\"mirket_startup\":\"state_opened\"}\n{\"elapsed_ms\":61,\"mirket_startup\":\"mcp_initialized\"}\n{\"elapsed_ms\":61,\"mirket_startup\":\"discovery_started\"}\n"
+  },
+  {
+    "exit": 0,
+    "result": {
+      "arbitrary_resource_rejected": true,
+      "concurrent_requests": 4,
+      "iterations": 2,
+      "malformed_input_rejected": true,
+      "measurement": "One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee.",
+      "ok": true,
+      "request_median_ms": 0.355792,
+      "request_p95_ms": 0.922333,
+      "resource_read": true,
+      "runtime_identity": {
+        "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+        "agent_runtime": {
+          "expected_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+          "expected_versions": {
+            "fastembed": "0.9.0",
+            "langgraph": "1.2.16",
+            "langgraph-checkpoint-sqlite": "3.1.2",
+            "mem0ai": "2.2.1"
+          },
+          "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+          "selected": false
+        },
+        "catalog": {
+          "profiles": 63,
+          "sha256": "8b9badb9bee933c818d7ff15b7412d94924f52a74fd5b76099c8b0acba998b1f",
+          "skills": 347
+        },
+        "installed_binary": {
+          "matches_process": true,
+          "path": "/private/var/folders/4z/v18wnt491wd53z5kctrk2rgc0000gn/T/mirket-finish-install-wb84vmj5/.mirket/bin/mirket",
+          "sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa"
+        },
+        "process": {
+          "executable_sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa",
+          "pid": 8916,
+          "source_sha256": "231b49a6f81ba6fb291aa37ab68cc45d310291fb2522fd5bd376a8e018f7af49",
+          "target": "aarch64-apple-darwin",
+          "version": "1.0.11"
+        },
+        "verification": "Identity and connection are not evidence that a user task passed."
+      },
+      "sdk": "rmcp 3.5.1",
+      "selected_metadata_read_route": true,
+      "sequential_requests_per_second": 1560.164628571607,
+      "skill_delivery": true,
+      "startup_ms": 65.822875,
+      "tools": [
+        "capability_plan",
+        "catalog_search",
+        "catalog_show",
+        "memory_forget",
+        "memory_put",
+        "memory_read",
+        "model_registry",
+        "project_list",
+        "resume_subagent",
+        "route_task",
+        "runtime_data",
+        "runtime_data_apply",
+        "runtime_status",
+        "skill_read",
+        "spawn_subagent",
+        "task_checkpoint",
+        "task_evidence",
+        "task_finish",
+        "task_history",
+        "task_start",
+        "task_status",
+        "task_validate",
+        "team_facets",
+        "team_plan",
+        "verification_handoff",
+        "workflow_forget",
+        "workflow_status"
+      ],
+      "transport": "stdio",
+      "upstream_body_rejected": true
+    },
+    "diagnostics": "{\"elapsed_ms\":0,\"mirket_startup\":\"entry\"}\n{\"elapsed_ms\":9,\"mirket_startup\":\"catalog_loaded\"}\n{\"elapsed_ms\":60,\"mirket_startup\":\"identity_captured\"}\n{\"elapsed_ms\":62,\"mirket_startup\":\"state_opened\"}\n{\"elapsed_ms\":62,\"mirket_startup\":\"mcp_initialized\"}\n{\"elapsed_ms\":62,\"mirket_startup\":\"discovery_started\"}\n"
+  },
+  {
+    "exit": 0,
+    "result": {
+      "arbitrary_resource_rejected": true,
+      "concurrent_requests": 4,
+      "iterations": 2,
+      "malformed_input_rejected": true,
+      "measurement": "One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee.",
+      "ok": true,
+      "request_median_ms": 0.231709,
+      "request_p95_ms": 0.360375,
+      "resource_read": true,
+      "runtime_identity": {
+        "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",
+        "agent_runtime": {
+          "expected_recipe": "2b8cbc8e3d81622801e95d8592ae84c405360cf093bc948ce0c0e5aec874d1ef",
+          "expected_versions": {
+            "fastembed": "0.9.0",
+            "langgraph": "1.2.16",
+            "langgraph-checkpoint-sqlite": "3.1.2",
+            "mem0ai": "2.2.1"
+          },
+          "live_identity": "Call memory_read or package probe agent-runtime; this field is configuration only.",
+          "selected": false
+        },
+        "catalog": {
+          "profiles": 63,
+          "sha256": "8b9badb9bee933c818d7ff15b7412d94924f52a74fd5b76099c8b0acba998b1f",
+          "skills": 347
+        },
+        "installed_binary": {
+          "matches_process": true,
+          "path": "/private/var/folders/4z/v18wnt491wd53z5kctrk2rgc0000gn/T/mirket-finish-install-wb84vmj5/.mirket/bin/mirket",
+          "sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa"
+        },
+        "process": {
+          "executable_sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa",
+          "pid": 9385,
+          "source_sha256": "231b49a6f81ba6fb291aa37ab68cc45d310291fb2522fd5bd376a8e018f7af49",
+          "target": "aarch64-apple-darwin",
+          "version": "1.0.11"
+        },
+        "verification": "Identity and connection are not evidence that a user task passed."
+      },
+      "sdk": "rmcp 3.5.1",
+      "selected_metadata_read_route": true,
+      "sequential_requests_per_second": 3360.638521319051,
+      "skill_delivery": true,
+      "startup_ms": 64.51162500000001,
+      "tools": [
+        "capability_plan",
+        "catalog_search",
+        "catalog_show",
+        "memory_forget",
+        "memory_put",
+        "memory_read",
+        "model_registry",
+        "project_list",
+        "resume_subagent",
+        "route_task",
+        "runtime_data",
+        "runtime_data_apply",
+        "runtime_status",
+        "skill_read",
+        "spawn_subagent",
+        "task_checkpoint",
+        "task_evidence",
+        "task_finish",
+        "task_history",
+        "task_start",
+        "task_status",
+        "task_validate",
+        "team_facets",
+        "team_plan",
+        "verification_handoff",
+        "workflow_forget",
+        "workflow_status"
+      ],
+      "transport": "stdio",
+      "upstream_body_rejected": true
+    },
+    "diagnostics": "{\"elapsed_ms\":0,\"mirket_startup\":\"entry\"}\n{\"elapsed_ms\":8,\"mirket_startup\":\"catalog_loaded\"}\n{\"elapsed_ms\":59,\"mirket_startup\":\"identity_captured\"}\n{\"elapsed_ms\":60,\"mirket_startup\":\"state_opened\"}\n{\"elapsed_ms\":61,\"mirket_startup\":\"mcp_initialized\"}\n{\"elapsed_ms\":61,\"mirket_startup\":\"discovery_started\"}\n"
+  }
+]

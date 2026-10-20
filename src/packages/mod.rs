@@ -1,5 +1,6 @@
 //! Reviewed runtimes, installed and administered through the shared setup owner.
 pub mod agent;
+pub(crate) mod audit;
 mod machine;
 mod oci;
 mod services;
@@ -258,6 +259,13 @@ pub fn service_stop(paths: &Paths, id: &str, purge_data: bool) -> Result<Value> 
         return agent::stop(paths, purge_data);
     }
     services::stop(paths, purge_data)
+}
+
+pub fn test_design_tools(paths: &Paths, project: &Path) -> Result<Value> {
+    services::test_tools(paths, project)
+}
+pub fn test_backend(paths: &Paths, output: &Path) -> Result<Value> {
+    services::backend_check::check(paths, output)
 }
 
 #[cfg(test)]

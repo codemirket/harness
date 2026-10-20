@@ -1,0 +1,7 @@
+.................../Users/nazmiyilmaz/Documents/.ai/evals/design-quality/test_tile_judge_views.py:152: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  self.assertEqual(list(tile.getdata()), [pixel(x, y + view['tile']['y'])
+.
+----------------------------------------------------------------------
+Ran 20 tests in 3.053s
+
+OK

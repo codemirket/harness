@@ -1,0 +1,30 @@
+{
+  "queried": 679,
+  "findings": [
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0367",
+      "excepted": true
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0368",
+      "excepted": true
+    },
+    {
+      "ecosystem": "crates.io",
+      "name": "zip",
+      "version": "6.0.0",
+      "advisory": "RUSTSEC-2026-0369",
+      "excepted": true
+    }
+  ],
+  "untriaged": [],
+  "ok": true,
+  "date": "2026-10-20",
+  "limits": "Advisory matching is not exploitability analysis; OS packages, images and upstream Penpot closure excluded."
+}

@@ -1,0 +1,324 @@
+{
+  "workers": [
+    {
+      "cell": "availability-g",
+      "role": "graphic-design",
+      "review": "**One consequential factual defect: the availability headline contradicts the stated downtime.**\n\n- **Located evidence:** The large headline reads **99.99%**. The screen also states a **720-hour** window, **7 hours 12 minutes** of unplanned downtime, and explicitly says all of that downtime is included.\n- **Check:** 7 hours 12 minutes = 7.2 hours. Availability is therefore `(720 \u2212 7.2) / 720 \u00d7 100 = 99.00%`, not 99.99%. The headline implies only about 4 minutes 19 seconds of downtime\u2014100 times less than stated.\n- **User consequence:** The most prominent figure materially overstates reliability and could mislead service-performance decisions.\n- **Minimal correction:** If the displayed window and downtime are correct, change the headline to **99.00%**. Otherwise, reconcile the underlying figures before displaying the percentage.\n\nNo additional consequential visual-encoding defect is evident. Spacing or typography changes would be optional style preferences, not necessary corrections.",
+      "trace_sha256": "3adba1ff13f69b9e1c753af93618104e8629e3c4fc0768e9004dbb38da00e22f"
+    },
+    {
+      "cell": "availability-q",
+      "role": "quality-assurance",
+      "review": "**Consequential defect \u2014 availability contradicts the stated downtime.** The upper-left KPI reports **99.99%**, while the screen states a **720-hour window**, **7 hours 12 minutes of unplanned downtime**, and explicitly includes all that downtime in the window.\n\n7 hours 12 minutes = 7.2 hours; availability is therefore `(720 \u2212 7.2) / 720 \u00d7 100 = 99.00%`. A 99.99% figure would allow only about 4 minutes 19 seconds of downtime.\n\n**User consequence:** The headline materially overstates reliability, implying 100 times less downtime than the stated duration.\n\n**Minimal correction:** If the displayed window and downtime are correct, change the KPI to **99.00%**. Otherwise, verify and correct the inconsistent underlying value before presenting the metric.\n\nNo additional consequential visual-encoding defect is evident in this screenshot. Spacing or typography changes would be optional style preferences, not correctness fixes.",
+      "trace_sha256": "29b64bec11d4ab26a4dfc2830389a173862db96cd6eb6a3156ba60be5ff65203"
+    },
+    {
+      "cell": "chart-g",
+      "role": "graphic-design",
+      "review": "**One consequential visual-encoding defect:** The bars start at 90%, not zero. Team A\u2019s 92% bar therefore has a visible height of 2 percentage points, while Team B\u2019s 98% bar has a height of 8\u2014making B appear four times as tall. The actual difference is **6 percentage points**, not four times the resolution rate.\n\n**User consequence:** The chart exaggerates the performance difference. The truncated axis is disclosed in the footnote and tick labels, but that does not correct the misleading bar-length comparison.\n\n**Minimal correction:** Start the bars at 0% on a 0\u2013100% axis. If highlighting small differences is important, use a dot plot on the clearly labeled 90\u2013100% scale instead.\n\nThe value labels agree with the plotted endpoints; no additional factual inconsistency is evident. No style-only changes are necessary.",
+      "trace_sha256": "4b0f1827a19bf4507b48dc5584bd4057f6f7847460265993b076986381c0a31d"
+    },
+    {
+      "cell": "chart-q",
+      "role": "quality-assurance",
+      "review": "**One consequential visual-encoding defect:** The bars use a truncated baseline of 90% (bottom gridline). Team A\u2019s 92% bar is roughly one-quarter the height of Team B\u2019s 98% bar, visually exaggerating a **6-percentage-point difference** into an apparent fourfold difference in performance. The footer discloses the truncated axis, but does not fix the misleading bar-length comparison.\n\n**Minimal correction:** Start the bar-chart axis at 0%, retaining the value labels. If highlighting small differences is important, use a dot plot on the clearly labeled 90\u2013100% scale instead.\n\nThe value labels and bar tops are internally consistent. No additional factual defect is established by the screenshot; cosmetic changes are optional.",
+      "trace_sha256": "68cbeca3c9ad5a3b708527a7c1e413ac7c696b894849a92f753d4a1a73d08e9a"
+    },
+    {
+      "cell": "control-g",
+      "role": "graphic-design",
+      "review": "No consequential factual or visual-encoding defects found in the supplied screenshot.\n\n- **Arithmetic is consistent:** The header specifies 60 minutes per service. Atlas and Cedar each show 0 minutes downtime and 100.0% availability. Beacon shows 6 minutes downtime, giving (60 \u2212 6) / 60 = 90.0%, as displayed.\n- **Status is explicit:** Each service has a written status beside its downtime and availability. Readers do not need to infer status from color, symbols or a chart scale.\n- **Presentation is legible:** Labels and values are fully visible, with clear contrast and consistent row spacing.\n\n**Required corrections:** None identified. This establishes internal consistency, not independent verification of the underlying service measurements.\n\n**Optional style preference:** Bold service names to improve scanning; this is not a correctness fix.",
+      "trace_sha256": "3b88fdebcdd5b6435531bcf20b9748ea7864b2de46e0359f81c2436ba832a32f"
+    },
+    {
+      "cell": "control-q",
+      "role": "quality-assurance",
+      "review": "**No blocking factual or visual-encoding defect found in the supplied screenshot.**\n\n- **Reporting window:** The header states 12:00\u201313:00 UTC and 60 minutes per service; these agree.\n- **Availability figures:** Atlas and Cedar each show 0 minutes downtime and 100.0% availability. Beacon shows 6 minutes downtime and 90.0% availability, consistent with (60 \u2212 6) / 60 = 90%.\n- **Status encoding:** Each service\u2019s status is explicitly written beside its name and metrics. Interpretation does not depend on color or a potentially misleading chart scale.\n\n**Correction:** None required by the visible evidence.\n\n**Optional style only:** Aligned metric columns could make comparisons faster, but the current rows are readable; this is not a correctness defect.\n\nThis review checks the screenshot\u2019s internal consistency, not the underlying monitoring data or unspecified status thresholds.",
+      "trace_sha256": "df76e6bb476915acfb573846471e3b78b5705182a2cbef12db93a2b493e0e052"
+    },
+    {
+      "cell": "invoice-g",
+      "role": "graphic-design",
+      "review": "**Consequential defect \u2014 total does not reconcile.** The line items above the divider show $180.00 for seats, a \u2212$18.00 discount, a $12.00 delivery fee and $0.00 taxes. These sum to **$174.00**, but \u201cTotal due\u201d displays **$192.00**\u2014$18.00 too high, consistent with omitting the discount. The note \u201cNo other fees or charges\u201d provides no explanation for the difference.\n\n**User consequence:** The screen presents an amount due that overstates its own itemized charges by $18.00; the screenshot alone cannot establish what would actually be charged.\n\n**Minimal correction:** Change \u201cTotal due\u201d to **$174.00** if the displayed line items are correct.\n\n**Optional style only:** Align monetary amounts in a right-hand column to make reconciliation easier. The current alignment is not itself a factual defect.",
+      "trace_sha256": "50663340e0c1c9ebb2a5b4c79640cd5ba8c3d8883514f4147afc52dd67005c9b"
+    },
+    {
+      "cell": "invoice-q",
+      "role": "quality-assurance",
+      "review": "**Defect \u2014 total due does not include the displayed discount.** Below the divider, \u201cTotal due $192.00\u201d conflicts with the itemized amounts: $180.00 \u2212 $18.00 + $12.00 + $0.00 = **$174.00**. The displayed $192.00 equals the seat subtotal plus delivery, without the discount.\n\n**User consequence:** The invoice overstates the amount due by $18.00, making the discount appear unapplied. The screenshot alone does not establish what would actually be charged.\n\n**Minimal correction:** Change the total to **$174.00** and ensure the total calculation subtracts the listed discount.\n\nNo other consequential visual-encoding defect is evident. No style changes are necessary for correctness.",
+      "trace_sha256": "8dac5575cf2260dfb111e831501f0ddbe658f9d64f9eb363c54004eeb633bfd6"
+    }
+  ],
+  "judges": [
+    {
+      "packet": "availability-1.score-lock",
+      "lock_sha256": "d11adf8a139b8898c7ccfc26c89b7cdf38b181bf168a16ae939cb97a9f1c2b7e",
+      "ratings": [
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly identifies the contradiction between the upper-left 99.99% availability KPI and the visible 720-hour window with 7 hours 12 minutes of included downtime. The calculation yields 99.00%, matching the reference expectation, and the proposed percentage correction or source-data reconciliation is minimal. The 4-minute-19-second comparison is accurate; no unsupported blocker is introduced."
+        },
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Accurately cites the visible 99.99% headline, 720-hour window, 7-hour-12-minute downtime, and explicit inclusion statement. Its 99.00% calculation and minimal correction match the reference expectation. It correctly explains the overstated reliability without inventing requirements, hidden behavior, or additional blocking defects."
+        }
+      ]
+    },
+    {
+      "packet": "availability-2.score-lock",
+      "lock_sha256": "49594fbe716d91679e63d85e768949bf71a9777bd8796ac57c6754a13728a525",
+      "ratings": [
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Accurately identifies the visible contradiction between 99.99% availability and 7 hours 12 minutes of included downtime over 720 hours. The independent calculation yields 99.00%, matching the reference expectation. Correcting the headline or reconciling the source data is the minimal fix. Cites the actual displayed figures and inclusion statement without inventing additional blockers."
+        },
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly locates the upper-left 99.99% KPI and the displayed 720-hour window, 7-hour-12-minute downtime, and explicit inclusion statement. Its calculation of 99.00% and approximately 4 minutes 19 seconds implied by 99.99% are accurate. The proposed percentage correction or source-data reconciliation matches the reference, and no unsupported blocker is introduced."
+        }
+      ]
+    },
+    {
+      "packet": "chart-1.score-lock",
+      "lock_sha256": "593c8416befd2239ccf1b6393bfb0e412249366089d266b15cb5085ac1417680",
+      "ratings": [
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly identifies the disclosed 90% baseline: the 92% and 98% bars span 2 and 8 percentage points, exaggerating a 6-point difference through a fourfold height comparison. Locates the supporting tick labels, footer and matching endpoints. Zero-baseline bars or a clearly labeled dot plot match the reference correction while retaining the correct values; no unsupported defect is added."
+        },
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly locates the 90% bottom gridline and footer disclosure, and describes the visible 1:4 bar-height ratio despite only a 6-percentage-point difference between 92% and 98%. Recommends the reference-supported correction of zero-baseline bars with retained labels or a clearly labeled dot plot. Acknowledges consistent labels and endpoints without inventing additional blockers."
+        }
+      ]
+    },
+    {
+      "packet": "chart-2.score-lock",
+      "lock_sha256": "211072586a6c8880308e978e4500c08472f64c62629f323888b4993e8c43d163",
+      "ratings": [
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly identifies the disclosed 90% baseline: Team A reaches 92% and Team B 98%, producing a 1:4 visible-height ratio despite a 6-percentage-point difference. Locates the bottom gridline, labels and footer. Zero-baseline bars retaining the values, or a clearly labeled dot plot, match the reference correction. Adds no unsupported defect or requirement."
+        },
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly explains that bars extending from 90% to 92% and 98% encode heights of 2 and 8 percentage points, exaggerating the actual 6-point difference. Grounds the finding in the team labels, endpoints, ticks and disclosure footnote. Recommends zero-baseline bars or a labeled dot plot without inventing factual inconsistencies or style blockers."
+        }
+      ]
+    },
+    {
+      "packet": "control-1.score-lock",
+      "lock_sha256": "c4d3f142480a76d23ad717b2de405e581e8c9d19adfce8948df94ad6c114eeec",
+      "ratings": [
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly finds no blocking defect: the visible 12:00\u201313:00 UTC window is 60 minutes, Beacon's 6 minutes downtime yields 90.0% availability, and Atlas and Cedar each show 0 minutes and 100.0%. It locates the header and service rows, correctly recognizes explicit written statuses, and requires no correction. Column alignment is clearly separated as optional style; no unsupported blocker is invented."
+        },
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly verifies the visible per-service arithmetic and written statuses, consistent with the reference expectation of no blocking defect. Its evidence identifies the 60-minute header and all three service rows; the screenshot also supports its legibility and spacing observations. Requiring no correction is appropriate, and bold service names are explicitly optional rather than a fabricated requirement."
+        }
+      ]
+    },
+    {
+      "packet": "control-2.score-lock",
+      "lock_sha256": "e91813093dd35f522c68a937c6819ac6f19b674f3c0f4d585a467d73915baf39",
+      "ratings": [
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly finds no blocking defect, matching the reference expectation and visible pixels. It locates the 60-minute denominator and all three service rows: Beacon\u2019s 6 minutes downtime gives 90.0% availability, while Atlas and Cedar show 0 minutes and 100.0%. Written Healthy/Degraded statuses and legible text support its encoding assessment. No correction is needed; bold service names is explicitly optional, not an invented blocker."
+        },
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly identifies no blocking defect. The visible 12:00\u201313:00 UTC window supports 60 minutes per service, and the cited downtime and availability values agree arithmetically. Explicit Healthy/Degraded labels support its conclusion that status is not color-dependent. Requiring no correction matches the reference expectation; column alignment is appropriately optional, and the review does not invent monitoring facts or status thresholds."
+        }
+      ]
+    },
+    {
+      "packet": "invoice-1.score-lock",
+      "lock_sha256": "543d259d83a99bd5ba50a48c10cae4488aba44498d15fee29ecc400cbd8a42cb",
+      "ratings": [
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly reconciles the visible items as $180 \u2212 $18 + $12 + $0 = $174, identifying the displayed $192 total as $18 too high. Locates the items above the divider and the Total due field, and proposes the correct minimal correction to $174. Explicitly distinguishes optional alignment advice from defects and does not claim an actual overcharge."
+        },
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Accurately identifies that the $192 total below the divider omits the displayed $18 discount: the visible items sum to $174. Proposes correcting the total to $174 and subtracting the discount in the calculation, matching the reference expectation. Grounds the finding in visible amounts without inventing additional defects or asserting what would actually be charged."
+        }
+      ]
+    },
+    {
+      "packet": "invoice-2.score-lock",
+      "lock_sha256": "2a034e0ed8c0e1ddcbabd32d820341d5f6b9398099155230c0b5eb545e8809cd",
+      "ratings": [
+        {
+          "label": "Review Y",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Correctly identifies that $180.00 \u2212 $18.00 + $12.00 + $0.00 equals $174.00, not the displayed $192.00. Locates the conflicting total below the divider and recommends correcting it and subtracting the discount in the calculation. Distinguishes the visible $18.00 overstatement from an unverified actual charge and invents no additional blocker."
+        },
+        {
+          "label": "Review X",
+          "verdicts": {
+            "primary_issue_accuracy": true,
+            "correct_minimal_fix": true,
+            "located_evidence": true,
+            "no_fabricated_blocker": true
+          },
+          "rationale": "Accurately cites the visible line items, $192.00 total and \u2018No other fees or charges\u2019 note, establishing an $18.00 discrepancy. Changing the total to $174.00 is the correct minimal correction given those line items. Does not claim an actual overcharge, and explicitly treats right-column alignment as optional style rather than a blocking defect."
+        }
+      ]
+    }
+  ],
+  "unblinding": {
+    "availability": {
+      "Review X": "availability-q",
+      "Review Y": "availability-g"
+    },
+    "invoice": {
+      "Review X": "invoice-g",
+      "Review Y": "invoice-q"
+    },
+    "chart": {
+      "Review X": "chart-g",
+      "Review Y": "chart-q"
+    },
+    "control": {
+      "Review X": "control-q",
+      "Review Y": "control-g"
+    }
+  },
+  "pre_registration": {
+    "question": "Does the existing Graphic Design role improve consequential visual review versus the default QA role?",
+    "model": {
+      "target": "codex-desktop-1",
+      "id": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "cases": [
+      "availability",
+      "invoice",
+      "chart",
+      "control"
+    ],
+    "arms": [
+      "quality-assurance",
+      "graphic-design"
+    ],
+    "repeats": 1,
+    "tools": [
+      "inspect_image",
+      "workspace_read"
+    ],
+    "memory": "off",
+    "worker_deadline_seconds": 180,
+    "judge_deadline_seconds": 180,
+    "judges_per_case": 2,
+    "planned_worker_cells": 8,
+    "planned_judge_packets": 8,
+    "analysis": "Descriptive pilot only; no population or design-production benefit claim. Keep all failures; no repairs or reruns. Judge arm labels blinded and counterbalanced. Host adjudicates disagreements against seeded oracle after initial score lock.",
+    "criteria": [
+      "primary_issue_accuracy",
+      "correct_minimal_fix",
+      "located_evidence",
+      "no_fabricated_blocker"
+    ],
+    "advance_rule": "Do not change production defaults from this small pilot, even if a mean improves. Retain each judge and disagreements.",
+    "rights": "All fixtures original synthetic text/SVG authored for this evaluation."
+  },
+  "amendment": {
+    "prior_wave": "/private/tmp/mirket-finish-quality",
+    "reason": "All eight workers blocked because the prompt omitted the screenshot filename and their narrowed tools had no directory listing. No quality scores were produced.",
+    "change": "Add explicit filenames screen.png and brief.txt to every objective, equally across arms. Keep cases, rubric, model, roles, tools and deadlines unchanged.",
+    "claims": "Judges blinded to role labels. Small synthetic review pilot, not validation of prior design-production guidance. Prior eight failures remain retained."
+  }
+}

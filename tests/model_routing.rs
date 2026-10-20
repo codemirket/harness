@@ -1029,3 +1029,156 @@ fn assigning_required_tools_without_executing_them_cannot_complete() {
             .contains("missing_required_tools")
     );
 }
+
+#[test]
+fn required_recall_without_runtime_rejects_before_any_inference() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty_path = sandbox.path().join("empty-path");
+    for p in [&home, &project, &empty_path] {
+        fs::create_dir_all(p).unwrap();
+    }
+    let server = MockTarget::new(vec![model("frontier-recall", "frontier model")], vec![]);
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(&home, &project, &[], &[]);
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["memory_recall"] = json!("required");
+    fs::write(&path, serde_json::to_vec(&value).unwrap()).unwrap();
+    let output = invoke(
+        &home,
+        &empty_path,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert!(!output.status.success());
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("required memory recall is unavailable")
+    );
+    assert!(server.posts().is_empty());
+    assert!(!home.join(".mirket/runs").exists());
+}
+
+#[test]
+fn inference_usage_and_specific_parse_failure_survive_in_saved_trace() {
+    for invalid in [false, true] {
+        let sandbox = tempfile::tempdir().unwrap();
+        let home = sandbox.path().join("home");
+        let project = sandbox.path().join("project");
+        let empty = sandbox.path().join("empty");
+        for p in [&home, &project, &empty] {
+            fs::create_dir_all(p).unwrap();
+        }
+        let selected = "frontier-receipt";
+        let content = if invalid {
+            "not-json PRIVATE_PROVIDER_BODY".into()
+        } else {
+            json!({"action":"complete","tool":"","arguments_json":"{}","result":"Checked synthetic evidence."}).to_string()
+        };
+        let raw = json!({"model":selected,"choices":[{"finish_reason":"stop","message":{"content":content}}],"usage":{"prompt_tokens":1234,"completion_tokens":56,"total_tokens":1290,"private":"DO_NOT_SAVE_USAGE_FIELD"}});
+        let digest = mirket::util::sha256(&serde_json::to_vec(&raw).unwrap());
+        let server = MockTarget::new(vec![model(selected, "frontier model")], vec![(200, raw)]);
+        configure(&home, vec![target("mock", &server)]);
+        let path = request(&home, &project, &[], &[]);
+        let output = invoke(
+            &home,
+            &empty,
+            &["agent", "spawn", "--request", path.to_str().unwrap()],
+        );
+        assert_eq!(
+            output.status.success(),
+            !invalid,
+            "{}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        let run = fs::read_dir(home.join(".mirket/runs"))
+            .unwrap()
+            .next()
+            .unwrap()
+            .unwrap()
+            .path();
+        let text = fs::read_to_string(run.join("trace.json")).unwrap();
+        let trace: Value = serde_json::from_str(&text).unwrap();
+        let inference = &trace["attempts"][0]["inference"];
+        assert_eq!(inference["usage"]["input_tokens"], 1234);
+        assert_eq!(inference["usage"]["output_tokens"], 56);
+        assert_eq!(inference["response_sha256"], digest);
+        assert!(inference["elapsed_ms"].is_u64());
+        assert!(!text.contains("PRIVATE_PROVIDER_BODY"));
+        assert!(!text.contains("DO_NOT_SAVE_USAGE_FIELD"));
+        if invalid {
+            assert_eq!(trace["error"]["code"], "invalid_json");
+            assert_eq!(trace["error"]["json_line"], 1);
+        }
+    }
+}
+
+#[test]
+fn a_large_written_artifact_requires_all_digest_bound_read_pages() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty = sandbox.path().join("empty");
+    for p in [&home, &project, &empty] {
+        fs::create_dir_all(p).unwrap();
+    }
+    let selected = "frontier-pages";
+    let content = "x".repeat(200_000);
+    let sha = mirket::util::sha256(content.as_bytes());
+    let tool = |name: &str, args: Value| {
+        action(
+            selected,
+            json!({"action":"tool","tool":name,"arguments_json":args.to_string(),"result":""}),
+        )
+    };
+    let mut live = model(selected, "frontier model");
+    live["context_length"] = json!(1048576);
+    let server = MockTarget::new(
+        vec![live],
+        vec![
+            tool(
+                "workspace_write",
+                json!({"path":"large.txt","content":content,"expected_sha256":null}),
+            ),
+            tool("workspace_read", json!({"path":"large.txt"})),
+            action(
+                selected,
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"Premature partial read cannot pass."}),
+            ),
+            tool(
+                "workspace_read",
+                json!({"path":"large.txt","offset":131072,"expected_sha256":sha}),
+            ),
+            action(
+                selected,
+                json!({"action":"complete","tool":"","arguments_json":"{}","result":"All bytes read after the write."}),
+            ),
+        ],
+    );
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(
+        &home,
+        &project,
+        &["workspace_write", "workspace_read"],
+        &["workspace_read"],
+    );
+    let result = ok(
+        &home,
+        &empty,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert_eq!(result["result"], "All bytes read after the write.");
+    assert_eq!(server.posts().len(), 5);
+    assert_eq!(
+        fs::read_to_string(project.join("large.txt")).unwrap(),
+        content
+    );
+    let trace: Value =
+        serde_json::from_slice(&fs::read(result["trace"].as_str().unwrap()).unwrap()).unwrap();
+    assert!(
+        trace["transcript"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|v| v["verification_gate"] == "pending")
+    );
+}

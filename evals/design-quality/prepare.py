@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 
@@ -46,7 +47,8 @@ def write(p, v):
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists():
         raise ValueError(f'Refusing overwrite: {p.relative_to(ROOT)}')
-    p.write_text(json.dumps(v, indent=2, ensure_ascii=False) + '\n')
+    with p.open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(v, indent=2, ensure_ascii=False, allow_nan=False) + '\n')
 
 
 def binding(p):
@@ -172,7 +174,11 @@ def initial():
 
 
 def freeze(context):
+    from packet_preflight import run_preflight
     v = initial()
+    preflight = run_preflight()
+    write(EXP / 'pipeline-preflight.json', preflight)
+    v['protocol_bindings'] += [binding(EXP / 'pipeline-preflight.json')] + [binding(BASE / name) for name in preflight['sources']]
     m = EXP / 'manifests/context-improved.json'
     write(m, context_manifest(context))
     write(EXP / 'configurations/improved.json', configuration('improved', m))
@@ -216,6 +222,55 @@ def frozen():
     return v
 
 
+def read_attempt_source(path):
+    path = path.absolute()
+    if ROOT not in path.parents or any(part == '..' for part in path.parts) or not path.is_file():
+        raise ValueError('Attempt report must be a normal project-owned regular file')
+    for component in [path, *path.parents]:
+        if component == ROOT:
+            break
+        if component.is_symlink():
+            raise ValueError('Attempt report symlink refused')
+    with path.open('rb') as stream:
+        raw = stream.read(1024 * 1024 + 1)
+    if len(raw) > 1024 * 1024:
+        raise ValueError('Attempt report exceeds one MiB')
+    return {'path':str(path.relative_to(ROOT)), 'sha256':hashlib.sha256(raw).hexdigest()}, raw.decode('utf-8')
+
+
+def attempt_records(label):
+    if not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', label):
+        raise ValueError('Invalid cell label')
+    records = [binding(p) for p in sorted((EXP / 'attempts' / label).glob('*.json'))]
+    if not records:
+        raise ValueError('Capture every attempt before sealing; at least one is required')
+    for record in records:
+        value = read(verify(record))
+        if value.get('kind') != 'host_captured_attempt' or value.get('label') != label:
+            raise ValueError('Attempt identity mismatch')
+        # Original failed bytes remain in the immutable host record. A worker
+        # rewriting that source is a collection error, never a silently lost try.
+        current, _ = read_attempt_source(ROOT / value['source']['path'])
+        if current != value['source']:
+            raise ValueError('Stale evidence: captured attempt source changed')
+    return records
+
+
+def capture_attempt(label, attempt_id, report):
+    freeze = read(EXP / ('freeze.json' if (EXP / 'freeze.json').exists() else 'initialization.json'))
+    cell = next(c for c in freeze['cells'] if c['label'] == label)
+    if not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', label) or not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', attempt_id):
+        raise ValueError('Invalid attempt identity')
+    if (ROOT / cell['receipt']).exists():
+        raise ValueError('Cannot add attempts after sealing a trial')
+    source, raw = read_attempt_source(report)
+    # Preserve even a malformed/failed self-check verbatim; grades stay separate.
+    write(EXP / 'attempts' / label / f'{attempt_id}.json', {
+        'schema_version':1, 'kind':'host_captured_attempt', 'label':label,
+        'attempt_id':attempt_id, 'source':source, 'raw_report':raw,
+        'assurance':'Host collection receipt, not authenticated execution or acceptance.'})
+
+
 def seal(label, worker, status, returned, note):
     v = read(EXP / ('freeze.json' if (EXP / 'freeze.json').exists() else 'initialization.json'))
     c = next(c for c in v['cells'] if c['label']==label)
@@ -229,6 +284,7 @@ def seal(label, worker, status, returned, note):
     value = {'schema_version':1,'kind':'host_trial_receipt','label':label,'worker_id':worker,
              'case_id':c['case_id'],'configuration':c['configuration'],'trial':c['trial'],
              'execution_status':status,'prompt':prompt,'output_bindings':files,
+             'attempts':attempt_records(label),
              'returned_response':binding(returned) if returned else None,
              'cost_usd':None,'latency_ms':None,'host_note':note or 'Actual unrepaired first return retained.',
              'retrieval_limit':'Helper delivery events show instrumented bytes delivered, not authenticated attention/use; historical host source reads unavailable.',
@@ -252,9 +308,12 @@ def collect():
         if r['execution_status'] not in ('completed','infrastructure_failed') or not r['worker_id']:
             raise ValueError('Every planned actual trial is required')
         verify(r['prompt'])
+        attempts = attempt_records(c['label'])
+        if r.get('attempts') != attempts:
+            raise ValueError('Captured attempt inventory changed after sealing')
         for b in r['output_bindings']:
             verify(b)
-        evidence=[binding(receipt_path)]
+        evidence=[binding(receipt_path), *attempts]
         if r.get('returned_response'): verify(r['returned_response'])
         if r['execution_status']=='infrastructure_failed':
             verdicts={};score=None;outcome='infrastructure_failed';rationale=r['host_note']
@@ -290,6 +349,9 @@ def main():
     s.add_argument('--status',choices=['completed','infrastructure_failed'],default='completed')
     s.add_argument('--returned-response',type=Path);s.add_argument('--note',default='')
     sub.add_parser('collect')
+    capture = sub.add_parser('capture-attempt')
+    capture.add_argument('label'); capture.add_argument('attempt_id')
+    capture.add_argument('--report', type=Path, required=True)
     a=p.parse_args()
     try:
         select_experiment_root(a.experiment_root)
@@ -297,6 +359,7 @@ def main():
         p.error(str(error))
     if a.command=='initialize':initialize()
     elif a.command=='freeze':freeze(a.improved_context.resolve(strict=True))
+    elif a.command=='capture-attempt':capture_attempt(a.label,a.attempt_id,a.report)
     elif a.command=='seal':seal(a.label,a.worker_id,a.status,a.returned_response,a.note)
     else:collect()
 

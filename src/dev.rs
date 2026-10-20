@@ -11,6 +11,9 @@ use std::{
     time::{Duration, Instant},
 };
 
+pub mod linux;
+pub mod release_gate;
+
 const BINARIES: [&str; 4] = ["mirket", "install-codex", "install-claude", "install-all"];
 const MAX_CARGO_MESSAGE: u64 = 4 * 1024 * 1024;
 
@@ -75,10 +78,29 @@ pub fn check(project: &Path) -> Result<Value> {
     Ok(json!({"ok":true,"checks":["format","clippy","tests"],"source":project}))
 }
 
+/// Explicit prepared engine, isolated test container and the reviewed build recipe.
+pub fn design_check(project: &Path, engine_home: &Path) -> Result<Value> {
+    let project = checkout(project)?;
+    let before = release_gate::candidate_identity(&project)?;
+    let result = crate::packages::test_design_tools(
+        &crate::paths::Paths::new(engine_home.to_owned())?,
+        &project,
+    )?;
+    anyhow::ensure!(
+        before == release_gate::candidate_identity(&project)?,
+        "design test inputs changed during checks"
+    );
+    Ok(result)
+}
+
 /// Explicit release acceptance against already prepared, selected ARM64 packages.
 /// Reuse the same test owners; never install packages or read user project facts.
-pub fn acceptance(project: &Path, engine_home: &Path) -> Result<Value> {
+pub fn acceptance(project: &Path, engine_home: &Path, output: Option<&Path>) -> Result<Value> {
     let project = checkout(project)?;
+    let before = release_gate::candidate_identity(&project)?;
+    if let Some(output) = output {
+        release_gate::require_new(output)?;
+    }
     let paths = crate::paths::Paths::new(engine_home.to_path_buf())?;
     let runtime = crate::packages::agent::test(&paths)?;
     for target in ["desktop_acceptance", "backup_runtime"] {
@@ -102,9 +124,17 @@ pub fn acceptance(project: &Path, engine_home: &Path) -> Result<Value> {
             bail!("release acceptance failed: {target}");
         }
     }
-    Ok(json!({"ok":true,"source":project,"runtime":runtime,
-        "checks":["contained-runtime","desktop-contracts","parallel-runtime","design-output","backup-recovery"],
-        "limits":"Fresh MCP sessions and disposable fixtures; actual desktop activation must be checked after deployment. Standard dev check remains required."}))
+    anyhow::ensure!(
+        before == release_gate::candidate_identity(&project)?,
+        "acceptance inputs changed during checks"
+    );
+    let receipt = json!({"schema":1,"ok":true,"identity":before,"runtime":runtime,
+        "checks":release_gate::CHECKS,
+        "limits":"Local test receipt, not a signature, human approval or desktop activation evidence. Standard Rust and JavaScript gates remain required."});
+    if let Some(output) = output {
+        release_gate::save_new(output, &receipt)?;
+    }
+    Ok(receipt)
 }
 
 pub fn format(project: &Path) -> Result<Value> {
@@ -115,9 +145,22 @@ pub fn format(project: &Path) -> Result<Value> {
 
 /// Resolve newly approved workspace dependency requirements while retaining
 /// registry versions already present in the lockfile where constraints permit.
-pub fn lock(project: &Path) -> Result<Value> {
+pub fn lock(project: &Path, package: Option<&str>, precise: Option<&str>) -> Result<Value> {
     let project = checkout(project)?;
-    cargo(&project, &["update", "--workspace"])?;
+    match (package, precise) {
+        (Some(package), Some(precise)) => {
+            anyhow::ensure!(
+                !package.starts_with('-') && !precise.starts_with('-'),
+                "invalid package/version"
+            );
+            cargo(
+                &project,
+                &["update", "--package", package, "--precise", precise],
+            )?;
+        }
+        (None, None) => cargo(&project, &["update", "--workspace"])?,
+        _ => bail!("package and precise must be supplied together"),
+    }
     Ok(json!({"ok":true,"source":project,"lockfile":"Cargo.lock"}))
 }
 
@@ -204,6 +247,13 @@ pub fn dist(project: &Path, output: &Path) -> Result<Value> {
     let rust_notices = dependency_notices(&project, &source)?;
     let info = executable_info(&binaries["mirket"].path, &source.version)?;
     let manifest = package_binaries(stage.path(), &binaries, &info)?;
+    util::atomic_write(
+        &stage.path().join("mirket-build.json"),
+        &serde_json::to_vec_pretty(&json!({
+            "schema":1,"version":info.version,"target":info.target,"source_sha256":info.source_sha256,
+            "binary_sha256":manifest.assets[0].sha256,"accepted":false
+        }))?,
+    )?;
     util::atomic_write(
         &stage.path().join("mirket-release.json"),
         &serde_json::to_vec_pretty(&manifest)?,
@@ -536,14 +586,22 @@ struct ExecutableInfo {
     name: String,
     version: String,
     target: String,
+    #[serde(default)]
+    process: Value,
+    #[serde(skip)]
+    source_sha256: String,
 }
 
 fn validate_info(bytes: &[u8], source_version: &str) -> Result<ExecutableInfo> {
-    let info: ExecutableInfo =
+    let mut info: ExecutableInfo =
         serde_json::from_slice(bytes).context("built Mirket info is not valid JSON")?;
     if info.name != "mirket" || info.version != source_version {
         bail!("built executable identity must match Mirket source version {source_version}");
     }
+    info.source_sha256 = info.process["source_sha256"]
+        .as_str()
+        .unwrap_or_default()
+        .to_owned();
     update::validate_manifest(&release_manifest(&info, "0".repeat(64)))?;
     Ok(info)
 }
@@ -558,7 +616,12 @@ fn executable_info(binary: &Path, source_version: &str) -> Result<ExecutableInfo
         64 * 1024,
     )
     .context("distribution requires a host capable of executing the selected Cargo target; check CARGO_BUILD_TARGET or Cargo build.target")?;
-    validate_info(&output, source_version)
+    let info = validate_info(&output, source_version)?;
+    anyhow::ensure!(
+        info.source_sha256.len() == 64,
+        "built candidate omitted source identity"
+    );
+    Ok(info)
 }
 
 struct StagedBinary {

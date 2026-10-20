@@ -2,13 +2,64 @@ name: Mirket checks
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 7 * * 1'
 permissions:
   contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Verify audit failure behavior
+        run: |
+          python3 -m unittest discover -s evals/dependency-audit
+          python3 -m unittest discover -s evals/harness-remediation
+          python3 evals/design-quality/packet_preflight.py
+      - name: Audit locked dependency closures
+        run: python3 evals/dependency-audit/check.py --output "$RUNNER_TEMP/dependency-audit.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: dependency-audit
+          path: ${{ runner.temp }}/dependency-audit.json
+  image_dependencies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Fetch pinned development scanner without install hooks
+        run: python3 evals/dependency-audit/fetch_scanner.py --target linux-amd64 --output "$RUNNER_TEMP/trivy"
+      - name: Audit all pinned ARM64 base and service images
+        run: python3 evals/dependency-audit/image_audit.py --scanner "$RUNNER_TEMP/trivy" --remote-only --output "$RUNNER_TEMP/image-audit"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: pinned-image-audit
+          path: ${{ runner.temp }}/image-audit/
+  javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+      - name: Test locked owned design tools in an isolated dependency directory
+        run: |
+          cp -R runtime/design/tools "$RUNNER_TEMP/design-tools"
+          cd "$RUNNER_TEMP/design-tools"
+          npm ci --ignore-scripts --no-audit --no-fund
+          cc -O2 -Wall -Wextra -Werror runtime-guard.c -o runtime-guard
+          npm test
   check:
+    needs: [javascript, dependencies]
+    # Preserve every prerequisite gate while collecting native evidence even
+    # when an advisory or JavaScript failure would otherwise skip Windows.
+    if: ${{ !cancelled() }}
     strategy:
       fail-fast: false
       matrix:
@@ -16,6 +67,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
       - name: Install pinned toolchain
         run: rustup show active-toolchain
       - name: Bootstrap Mirket
@@ -24,41 +78,20 @@ jobs:
           cargo install --locked --debug --path . --bin mirket --root "$env:RUNNER_TEMP/mirket-bootstrap"
           if ($LASTEXITCODE -ne 0) { throw 'Mirket bootstrap failed' }
           Add-Content -Path $env:GITHUB_PATH -Value "$env:RUNNER_TEMP/mirket-bootstrap/bin"
-      - name: Check through Mirket
-        run: mirket dev check --project .
-      - name: Package native binaries
-        run: mirket dev dist --project . --output dist
-      - name: Verify packaged runtime and installers
+      - name: Check through Mirket and preserve failures
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Stop'
-          $manifest = Get-Content dist/mirket-release.json -Raw | ConvertFrom-Json
-          $asset = $manifest.assets[0]
-          $runtimeName = [IO.Path]::GetFileName(([uri]$asset.url).AbsolutePath)
-          $runtime = Join-Path (Get-Location) "dist/$runtimeName"
-          $variants = @{ 'mirket' = 'all'; 'install-codex' = 'codex'; 'install-claude' = 'claude'; 'install-all' = 'all' }
-          foreach ($variant in $variants.GetEnumerator()) {
-            $testHome = Join-Path $env:RUNNER_TEMP "mirket-release-$($variant.Key)"
-            New-Item -ItemType Directory -Path $testHome | Out-Null
-            $installerName = $runtimeName -replace '^mirket-', "$($variant.Key)-"
-            $installer = Join-Path (Get-Location) "dist/$installerName"
-            if ($variant.Key -eq 'mirket') {
-              & $installer --home $testHome setup --target $variant.Value --yes
-            } else {
-              & $installer --home $testHome --yes
-            }
-            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) setup failed" }
-            & $runtime --home $testHome doctor --json
-            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) doctor failed" }
-            $managedName = if ($IsWindows) { 'mirket.exe' } else { 'mirket' }
-            $managed = Join-Path $testHome ".mirket/bin/$managedName"
-            & $managed --home $testHome update --from $runtime --sha256 $asset.sha256
-            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) update failed" }
-            & $managed --home $testHome doctor --json
-            if ($LASTEXITCODE -ne 0) { throw "Packaged $($variant.Key) post-update doctor failed" }
-            Remove-Item -LiteralPath $testHome -Recurse -Force
-          }
+          mirket dev check --project . 2>&1 | Tee-Object -FilePath native-check.log
+          if ($LASTEXITCODE -ne 0) { throw 'Mirket checks failed' }
+      - name: Package unaccepted native candidates
+        run: mirket dev dist --project . --output dist
+      - name: Verify native packaged runtime, installers and MCP with retained receipts
+        run: python evals/harness-remediation/native_validate.py --dist dist --output native-evidence
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
         with:
           name: mirket-${{ matrix.os }}
-          path: dist/
+          path: |
+            dist/
+            native-check.log
+            native-evidence/

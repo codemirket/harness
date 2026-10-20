@@ -298,12 +298,20 @@ async fn motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped
         .arg("--home")
         .arg(&installed.paths.home)
         .args(["mcp", "serve"])
+        .env("MIRKET_STARTUP_TIMING", "1")
         .kill_on_drop(true);
-    let transport = TokioChildProcess::new(command).unwrap();
-    let client = tokio::time::timeout(Duration::from_secs(15), ().serve(transport))
-        .await
-        .unwrap()
+    let diagnostics = installed.paths.home.join("startup.jsonl");
+    let (transport, _) = TokioChildProcess::builder(command)
+        .stderr(fs::File::create(&diagnostics).unwrap())
+        .spawn()
         .unwrap();
+    let client = match tokio::time::timeout(Duration::from_secs(15), ().serve(transport)).await {
+        Ok(result) => result.unwrap(),
+        Err(error) => panic!(
+            "MCP initialization: {error}; phases: {}",
+            fs::read_to_string(&diagnostics).unwrap()
+        ),
+    };
     let operation = async {
         let tools = client.list_all_tools().await.unwrap();
         assert!(tools.iter().any(|tool| tool.name == "skill_read"));
@@ -403,4 +411,19 @@ async fn motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped
         .unwrap()
         .unwrap();
     result.unwrap();
+    let phases = fs::read_to_string(diagnostics).unwrap();
+    eprintln!("{phases}");
+    let records: Vec<Value> = phases
+        .lines()
+        .filter_map(|line| serde_json::from_str(line).ok())
+        .collect();
+    let position = |name| {
+        records
+            .iter()
+            .position(|r| r["mirket_startup"] == name)
+            .unwrap()
+    };
+    assert!(position("catalog_loaded") < position("identity_captured"));
+    assert!(position("identity_captured") < position("mcp_initialized"));
+    assert!(position("mcp_initialized") < position("discovery_started"));
 }

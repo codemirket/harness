@@ -24,6 +24,42 @@ const MAX_IMAGE_BYTES: usize = 4 * 1024 * 1024;
 const MAX_IMAGES: usize = 4;
 const EMPTY_MCP: &str = r#"{"mcpServers":{}}"#;
 
+/// Only our exact static errors may become diagnostics; never provider text.
+pub(super) fn failure_code(error: &anyhow::Error) -> Option<&'static str> {
+    error
+        .chain()
+        .find_map(|cause| match cause.to_string().as_str() {
+            "Claude target rate limit" => Some("rate_limit"),
+            "Claude target overloaded" => Some("overloaded"),
+            "Claude target unavailable" => Some("unavailable"),
+            "Claude authentication unavailable" | "Claude CLI is not authenticated" => {
+                Some("authentication")
+            }
+            "Claude action failed or was refused" => Some("refused"),
+            "native child response timed out" => Some("response_timeout"),
+            "native child closed its response stream" => Some("response_stream_closed"),
+            "native child emitted invalid JSON" => Some("invalid_protocol_json"),
+            "read bounded Claude image input" => Some("image_input_rejected"),
+            "selected Claude model unavailable by exact identity" => {
+                Some("selected_model_unavailable")
+            }
+            "required effort unavailable for selected Claude model" => {
+                Some("selected_effort_unavailable")
+            }
+            "Claude action exposed unexpected native tools" => Some("unexpected_native_tools"),
+            "Claude action exposed unexpected MCP servers" => Some("unexpected_mcp_servers"),
+            "Claude changed from selected model" => Some("model_identity_changed"),
+            "Claude action returned without tool-boundary confirmation" => {
+                Some("missing_tool_boundary")
+            }
+            "Claude action returned without verifiable model identity" => {
+                Some("missing_model_identity")
+            }
+            "Claude action omitted structured output" => Some("missing_structured_output"),
+            _ => None,
+        })
+}
+
 type JsonLines = Lines<BufReader<BoundedLines<ChildStdout>>>;
 
 pub(super) fn native_command(executable: &Path, home: &Path) -> Command {
@@ -481,6 +517,7 @@ fn validate_claude_selection(
 }
 
 /// Run one Claude action turn with no native tool capability and strict JSON output.
+#[allow(clippy::too_many_arguments)]
 pub async fn claude_complete(
     executable: &Path,
     home: &Path,
@@ -489,6 +526,7 @@ pub async fn claude_complete(
     max_tokens: u64,
     prompt: &str,
     images: &[PathBuf],
+    observation: &mut Value,
 ) -> Result<Value> {
     if model.trim().is_empty() || max_tokens == 0 {
         bail!("Claude model or output limit is missing");
@@ -550,24 +588,7 @@ pub async fn claude_complete(
                     }
                     seen_model = true;
                 }
-                Some("result") => {
-                    if frame["is_error"] == true || frame["subtype"] != "success" {
-                        bail!(claude_failure(&frame));
-                    }
-                    if !seen_init {
-                        bail!("Claude action returned without tool-boundary confirmation");
-                    }
-                    if !seen_model {
-                        bail!("Claude action returned without verifiable model identity");
-                    }
-                    if let Some(output) = frame.get("structured_output") {
-                        if !output.is_object() {
-                            bail!("Claude structured output is not an object");
-                        }
-                        return Ok(output.clone());
-                    }
-                    bail!("Claude action omitted structured output");
-                }
+                Some("result") => return claude_result(&frame, seen_init, seen_model, observation),
                 _ => {}
             }
         }
@@ -575,6 +596,34 @@ pub async fn claude_complete(
     .await;
     owned.finish().await.context("stop Claude action child")?;
     result
+}
+
+fn claude_result(
+    frame: &Value,
+    seen_init: bool,
+    seen_model: bool,
+    observation: &mut Value,
+) -> Result<Value> {
+    if seen_init && seen_model {
+        observation["response_sha256"] = json!(crate::util::sha256(&serde_json::to_vec(frame)?));
+        super::accounting::observe(frame, &super::discovery::Protocol::Claude, observation);
+    }
+    if frame["is_error"] == true || frame["subtype"] != "success" {
+        bail!(claude_failure(frame));
+    }
+    if !seen_init {
+        bail!("Claude action returned without tool-boundary confirmation");
+    }
+    if !seen_model {
+        bail!("Claude action returned without verifiable model identity");
+    }
+    let output = frame
+        .get("structured_output")
+        .context("Claude action omitted structured output")?;
+    if !output.is_object() {
+        bail!("Claude structured output is not an object");
+    }
+    Ok(output.clone())
 }
 
 /// Codex authenticates its request; the owned transport removes all native tool
@@ -588,13 +637,44 @@ pub async fn codex_complete(
     max: u64,
     prompt: &str,
     images: &[PathBuf],
+    observation: &mut Value,
 ) -> Result<Value> {
-    super::codex::complete(executable, home, model, effort, max, prompt, images).await
+    super::codex::complete(
+        executable,
+        home,
+        model,
+        effort,
+        max,
+        prompt,
+        images,
+        observation,
+    )
+    .await
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn terminal_result_accounts_once_even_when_the_action_failed() {
+        for failed in [false, true] {
+            let raw = json!({"type":"result","subtype":if failed {"error_during_execution"} else {"success"},
+                "is_error":failed,"usage":{"input_tokens":30,"output_tokens":12,"cache_read_input_tokens":200},
+                "total_cost_usd":0.01,"structured_output":{"action":"complete"},"result":"PRIVATE_PROVIDER_TEXT"});
+            let mut observation = super::super::accounting::empty();
+            assert_eq!(
+                claude_result(&raw, true, true, &mut observation).is_err(),
+                failed
+            );
+            assert_eq!(observation["usage"]["output_tokens"], 12);
+            assert_eq!(observation["cost_estimate_usd"], 0.01);
+            assert!(!observation.to_string().contains("PRIVATE_PROVIDER_TEXT"));
+            let mut unknown = super::super::accounting::empty();
+            assert!(claude_result(&raw, false, true, &mut unknown).is_err());
+            assert!(unknown["usage"].is_null());
+        }
+    }
 
     #[test]
     fn image_inputs_are_regular_bounded_files() {

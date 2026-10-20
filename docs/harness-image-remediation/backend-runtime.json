@@ -1,0 +1,24 @@
+{
+  "cleanup_errors": [],
+  "error": null,
+  "images": {
+    "penpot-backend": "sha256:023d40a54df39f66b638ea13c64a3fa19cfc4b0b8ac8c084aa7326895b847040",
+    "penpot-postgres": "sha256:411fa9a1a50de5c5be7b6b0296e08f486e2488da8a3fff401586c0a63f1e823b",
+    "penpot-valkey": "sha256:021d108fa0212239dd407b83429cc07fb89cd32bde5bc30476a2e2ac468c33d8"
+  },
+  "ok": true,
+  "result": {
+    "native_runtime": "openjdk version \"26.0.2\" 2026-07-21\nOpenJDK Runtime Environment Zulu26.32+13-CA (build 26.0.2+10)\nOpenJDK 64-Bit Server VM Zulu26.32+13-CA (build 26.0.2+10, mixed mode)\nVersion: ImageMagick 7.1.2-27 Q16-HDRI aarch64 e4c2b403b:20260705 https://imagemagick.org\nCopyright: (C) 1999 ImageMagick Studio LLC\nLicense: https://imagemagick.org/license/\nFeatures: Cipher DPC HDRI OpenMP(4.5) \nDelegates (built-in): bzlib fontconfig freetype heic jbig jng jpeg lcms lzma openexr pangocairo png tiff webp x xml zip zlib zstd\nCompiler: gcc (14.2)\n228\n",
+    "profile": {
+      "fullname": "Anonymous User",
+      "id": "00000000-0000-0000-0000-000000000000"
+    },
+    "public_tables": "60",
+    "restart_profile": {
+      "fullname": "Anonymous User",
+      "id": "00000000-0000-0000-0000-000000000000"
+    }
+  },
+  "scope": "Fresh isolated database, internal network, tmpfs data; no host ports or saved volumes. Not a production data migration test.",
+  "source_sha256": "e72298e4d60cccbbaa9bdcf0537b84eb37ec0f3422a267c25ae606155e62e44e"
+}

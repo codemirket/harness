@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "ok": false,
+  "coverage_complete": false,
+  "images": {
+    "penpot-postgres": {
+      "target": "docker.io/library/postgres@sha256:2338e3d79f75746cee7784825b6df3707a479ac8f24a36b9832aa4f16da4e81a",
+      "image_id": "sha256:411fa9a1a50de5c5be7b6b0296e08f486e2488da8a3fff401586c0a63f1e823b",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 142,
+        "gobinary": 4
+      },
+      "severity_counts": {
+        "LOW": 249,
+        "HIGH": 190,
+        "MEDIUM": 296,
+        "CRITICAL": 19,
+        "UNKNOWN": 9
+      },
+      "finding_count": 763,
+      "raw_report_sha256": "33da4a2740e9beb91c4feede5dc0a038b55f41393a71a9bce22730f91ccc793b",
+      "raw_report": "remote-images/penpot-postgres.json"
+    },
+    "penpot-valkey": {
+      "target": "docker.io/valkey/valkey@sha256:0e28101f7e5acb939f4e5152b09760b49ba61f278fbf10f6f1d9c45fbbd3f3c7",
+      "image_id": "sha256:021d108fa0212239dd407b83429cc07fb89cd32bde5bc30476a2e2ac468c33d8",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 89
+      },
+      "severity_counts": {
+        "LOW": 110,
+        "HIGH": 82,
+        "MEDIUM": 141,
+        "CRITICAL": 7,
+        "UNKNOWN": 4
+      },
+      "finding_count": 344,
+      "raw_report_sha256": "8381aee22d40803cc583818ab224fca9f457b2f9cd8da7e60c7a57612d2b54f2",
+      "raw_report": "remote-images/penpot-valkey.json"
+    },
+    "penpot-backend": {
+      "target": "docker.io/penpotapp/backend@sha256:d5b8d69c00a9c4735c10b3612f7e3c18806f879367fa7be7f621058769cb551e",
+      "image_id": "sha256:a54e2fda5c63fb9296fc9a2e1c252b51cf612cb61efa15628eedfff8deed0409",
+      "inventory_complete": false,
+      "coverage_errors": [
+        "OS package inventory missing; empty results are not a pass"
+      ],
+      "packages_by_type": {
+        "debian": 0,
+        "jar": 167,
+        "python-pkg": 1
+      },
+      "severity_counts": {
+        "HIGH": 10,
+        "MEDIUM": 4,
+        "LOW": 1,
+        "CRITICAL": 1
+      },
+      "finding_count": 16,
+      "raw_report_sha256": "6d937a946d9e6c893115846d0e8e01cf484dee2c85184224691accd226961621",
+      "raw_report": "remote-images/penpot-backend.json"
+    },
+    "penpot-exporter": {
+      "target": "docker.io/penpotapp/exporter@sha256:64d6474cad7464b082394e7aab0aa410c4709a1c5d308a3a64677a4af3d80e93",
+      "image_id": "sha256:d9bf9cdba416e16c6dfb1ad8d68adea33fe9c09eebad7ce485e265643bfa5fbd",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 347,
+        "node-pkg": 1
+      },
+      "severity_counts": {
+        "LOW": 447,
+        "HIGH": 182,
+        "MEDIUM": 364,
+        "UNKNOWN": 104,
+        "CRITICAL": 3
+      },
+      "finding_count": 1100,
+      "raw_report_sha256": "366a91dfa679f19d6d935be3084c4b382fd003bdbbd98dce319b1fd1f311840c",
+      "raw_report": "remote-images/penpot-exporter.json"
+    },
+    "penpot-frontend": {
+      "target": "docker.io/penpotapp/frontend@sha256:4b755d7b8dc666184cea086b25dffe3273e09df782e72b8e4eb3388624f9b28b",
+      "image_id": "sha256:b59fcd78d91b5ccda20f4a048c81bd1924a5ef923aba6890db2476973b8f1f55",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 112
+      },
+      "severity_counts": {
+        "LOW": 140,
+        "HIGH": 108,
+        "MEDIUM": 162,
+        "CRITICAL": 4,
+        "UNKNOWN": 2
+      },
+      "finding_count": 416,
+      "raw_report_sha256": "2a701fed1f4ac2d03e969d0ae6cbb091f77b95d936182f3e4f312d5e577a813b",
+      "raw_report": "remote-images/penpot-frontend.json"
+    },
+    "kroki": {
+      "target": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
+      "image_id": "sha256:310141e18fe2c246685d4908c70919516129872583fcc31d2e018d12a0971827",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "ubuntu": 417,
+        "jar": 75,
+        "gobinary": 43
+      },
+      "severity_counts": {
+        "MEDIUM": 3474,
+        "LOW": 924,
+        "HIGH": 531,
+        "CRITICAL": 21,
+        "UNKNOWN": 1
+      },
+      "finding_count": 4951,
+      "raw_report_sha256": "3a0c9d66d1556033a2b6a45ac8f72eb05e46caf113ee375d4280ee3713d3487c",
+      "raw_report": "remote-images/kroki.json"
+    },
+    "kroki-excalidraw": {
+      "target": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
+      "image_id": "sha256:b404ff303a23c929fbe81494157a0425e8ca15462e787ca97e23d164aecd1bc6",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "alpine": 196,
+        "node-pkg": 471
+      },
+      "severity_counts": {
+        "HIGH": 57,
+        "MEDIUM": 51,
+        "LOW": 20,
+        "UNKNOWN": 3,
+        "CRITICAL": 1
+      },
+      "finding_count": 132,
+      "raw_report_sha256": "4bebf4541337197d1f6f0dd835f4b980f798b9b818b01ea0f5953a27d1281a5a",
+      "raw_report": "remote-images/kroki-excalidraw.json"
+    },
+    "node-build": {
+      "target": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd",
+      "image_id": "sha256:cd2df7ff65c5fce1f8a18ce89e3aac24a80c1db3776d5842a4cf86bc27f300a2",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 88,
+        "node-pkg": 198
+      },
+      "severity_counts": {
+        "LOW": 84,
+        "HIGH": 71,
+        "MEDIUM": 102,
+        "CRITICAL": 4,
+        "UNKNOWN": 1
+      },
+      "finding_count": 262,
+      "raw_report_sha256": "d9aff85ab097795b5a8ff99c1b69e25c20755883fb8a516d5b530ae1a5ffbc03",
+      "raw_report": "remote-images/node-build.json"
+    },
+    "python-build": {
+      "target": "docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641",
+      "image_id": "sha256:da841a7026abc0089180121604f6d0ba4324998e2d133eccae13f22707055dc1",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 97,
+        "python-pkg": 19
+      },
+      "severity_counts": {
+        "LOW": 91,
+        "HIGH": 65,
+        "MEDIUM": 101,
+        "CRITICAL": 2,
+        "UNKNOWN": 1
+      },
+      "finding_count": 260,
+      "raw_report_sha256": "6de57483cf2bbccea430fcfb53abd604c66d36455d04779a981afae28ada979a",
+      "raw_report": "remote-images/python-build.json"
+    },
+    "penpot-mcp": {
+      "target": "sha256:9afc99172f1d5d1e1f41292ee6675f080ced92745b53fad4e09089137333fb7a",
+      "image_id": "sha256:9afc99172f1d5d1e1f41292ee6675f080ced92745b53fad4e09089137333fb7a",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 88,
+        "node-pkg": 130
+      },
+      "severity_counts": {
+        "LOW": 83,
+        "HIGH": 60,
+        "MEDIUM": 93,
+        "CRITICAL": 4,
+        "UNKNOWN": 1
+      },
+      "finding_count": 241,
+      "raw_report_sha256": "6e33b094a5683dd7f5ac0211d780f0e9e9c9ec856981c19aaa786c6d5946eebf",
+      "raw_report": "built-images-v3/penpot-mcp.json"
+    },
+    "agent-runtime": {
+      "target": "sha256:d4cd6263c76ca73c01aac3df82af567aa7928380d36745c97825e4cf03f05adf",
+      "image_id": "sha256:d4cd6263c76ca73c01aac3df82af567aa7928380d36745c97825e4cf03f05adf",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 97,
+        "python-pkg": 128
+      },
+      "severity_counts": {
+        "LOW": 91,
+        "HIGH": 65,
+        "MEDIUM": 101,
+        "CRITICAL": 2,
+        "UNKNOWN": 1
+      },
+      "finding_count": 260,
+      "raw_report_sha256": "e4b1d8bcd964e21f42193fc52e9db67bae79c385a5fcfd7a274a489c0aba4791",
+      "raw_report": "built-images-v3/agent-runtime.json"
+    },
+    "design-tools": {
+      "target": "sha256:5790182749504e1003e57fd1e52ad0a5630cf79bda95735e3c31c41331e4fd18",
+      "image_id": "sha256:5790182749504e1003e57fd1e52ad0a5630cf79bda95735e3c31c41331e4fd18",
+      "inventory_complete": true,
+      "coverage_errors": [],
+      "packages_by_type": {
+        "debian": 351,
+        "node-pkg": 311,
+        "gobinary": 3
+      },
+      "severity_counts": {
+        "LOW": 412,
+        "HIGH": 543,
+        "MEDIUM": 770,
+        "CRITICAL": 16,
+        "UNKNOWN": 37
+      },
+      "finding_count": 1778,
+      "raw_report_sha256": "0efc9cde10ee1f8bbeab5da03fd75ee2e3a02d9fefd727ef7081dc3c3d8b7468",
+      "raw_report": "built-images-v3/design-tools.json"
+    }
+  },
+  "notes": [
+    "Counts are scanner matches, not confirmed exploitable vulnerabilities. Packages shared across images create repeated findings. No image exceptions were applied.",
+    "Raw reports were evaluated again with the final parser so OS coverage failures do not suppress language findings."
+  ],
+  "scanned_images": 12,
+  "inventories_complete": 11,
+  "finding_occurrences": 10523,
+  "unique_package_version_advisories": 9157,
+  "severity_counts": {
+    "LOW": 2652,
+    "HIGH": 1964,
+    "MEDIUM": 5659,
+    "CRITICAL": 84,
+    "UNKNOWN": 164
+  },
+  "registry_sha256": {
+    "registry/design-stack.json": "da34793ca37cb94228ba10c0931addff650ebcf12acbb4b46905789a20bc7291",
+    "registry/agent-runtime.json": "5f4363de38075843549f3ce1250f6e24e597575f5a2d6dcf8433a62ebb0a77e6"
+  },
+  "critical_high_unique_advisory_ids": 835,
+  "raw_evidence": ".mirket/implementation/harness-gaps-2026-10-20; reports retained privately, hashes below identify the exact originals.",
+  "vendor_review": [
+    {
+      "advisory": "CVE-2026-102322",
+      "priority": "P1",
+      "image": "design-tools",
+      "package": "chromium",
+      "installed": "154.0.8037.92-1~deb12u1",
+      "fixed_floor": "155.0.8059.39-1~deb12u1",
+      "reason": "Intended HTML-rendering boundary; vendor describes crafted-HTML code execution. Actual exploitability in Mirket containment not established.",
+      "fix": "Review a newer frozen Debian security snapshot, rebuild isolated design image, inspect Chromium version, rerun browser/renderer suite and scan before deployment.",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2026-102322"
+    },
+    {
+      "advisory": "CVE-2026-106195",
+      "priority": "P2 applicability review",
+      "reason": "Scanner labels critical but vendor description is Mac-specific and Chromium severity Low; scanned image is Linux ARM64. No automatic exception applied.",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2026-106195"
+    },
+    {
+      "advisory": "CVE-2023-45853",
+      "priority": "P2 binary composition review",
+      "reason": "Debian notes affected contrib/minizip is not built by the Bookworm zlib source; inspect installed binary composition before treating zlib1g matches as exploitable. No automatic exception applied.",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2023-45853"
+    },
+    {
+      "advisory": "CVE-2025-7458",
+      "priority": "P2 reachability review",
+      "reason": "Vendor describes crafted arbitrary SQL. Inspect upstream SQL construction/reachability in the agent runtime before claiming this applies. No automatic exception applied.",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2025-7458"
+    }
+  ]
+}

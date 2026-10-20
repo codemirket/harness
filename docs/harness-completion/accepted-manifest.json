@@ -1,0 +1,10 @@
+{
+  "version": "1.0.11",
+  "assets": [
+    {
+      "target": "aarch64-apple-darwin",
+      "url": "https://github.com/codemirket/harness/releases/download/mirket-v1.0.11/mirket-aarch64-apple-darwin",
+      "sha256": "e10197e183c93c07e760b85b05d08aee41d30ad892a46d3e232adb21c5bb1aaa"
+    }
+  ]
+}

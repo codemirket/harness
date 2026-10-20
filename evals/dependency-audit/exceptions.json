@@ -1,0 +1,35 @@
+[
+  {
+    "ecosystem": "crates.io",
+    "name": "zip",
+    "version": "6.0.0",
+    "advisory": "RUSTSEC-2026-0367",
+    "owner": "Mirket maintainers",
+    "expires": "2026-11-20",
+    "source": "src/catalog.rs",
+    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
+    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+  },
+  {
+    "ecosystem": "crates.io",
+    "name": "zip",
+    "version": "6.0.0",
+    "advisory": "RUSTSEC-2026-0368",
+    "owner": "Mirket maintainers",
+    "expires": "2026-11-20",
+    "source": "src/catalog.rs",
+    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
+    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+  },
+  {
+    "ecosystem": "crates.io",
+    "name": "zip",
+    "version": "6.0.0",
+    "advisory": "RUSTSEC-2026-0369",
+    "owner": "Mirket maintainers",
+    "expires": "2026-11-20",
+    "source": "src/catalog.rs",
+    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
+    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+  }
+]

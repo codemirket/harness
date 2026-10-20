@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-20",
+  "scope": "Exact owned function bodies executed with controlled memory/tokenizer fakes; no actual embedding or runtime claim.",
+  "empty_search_baseline": {
+    "test_returned_normally": true,
+    "search_calls": 7,
+    "observations": {
+      "evaluation": "synthetic-retrieval-v1",
+      "facts": 22,
+      "queries": [
+        {
+          "category": "tr",
+          "expected": [
+            "tr-keyboard"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "en",
+          "expected": [
+            "en-motion"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "de",
+          "expected": [
+            "de-export"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "es",
+          "expected": [
+            "es-offline"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "contradiction",
+          "expected": [
+            "new-color"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "injection",
+          "expected": [
+            "injected"
+          ],
+          "returned": [],
+          "recall_at_3": 0.0,
+          "latency_ms": 0.0
+        },
+        {
+          "category": "unanswerable",
+          "expected": [],
+          "returned": [],
+          "recall_at_3": null,
+          "latency_ms": 0.0
+        }
+      ],
+      "limits": "Retrieval-only public fixtures; no answer-generation or prompt-injection resistance claim."
+    }
+  },
+  "recall_prefix_collision": {
+    "same_query": true,
+    "query_characters": 256,
+    "different_suffixes_ignored": true
+  }
+}

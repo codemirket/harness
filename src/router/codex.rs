@@ -65,7 +65,7 @@ fn request_body(
 
 /// Fail closed on new event kinds, incomplete streams, changed model identity,
 /// and any executable output. Validation happens before forwarding even a byte.
-fn validate_stream(bytes: &[u8], model: &str) -> Result<(Value, Vec<u8>)> {
+fn validate_stream(bytes: &[u8], model: &str, observation: &mut Value) -> Result<(Value, Vec<u8>)> {
     let stream = std::str::from_utf8(bytes).context("Codex stream is not UTF-8")?;
     let mut completed = None;
     let mut normalized = Vec::new();
@@ -143,6 +143,13 @@ fn validate_stream(bytes: &[u8], model: &str) -> Result<(Value, Vec<u8>)> {
                     response["status"] == "completed",
                     "Codex response incomplete"
                 );
+                observation["response_sha256"] =
+                    json!(util::sha256(&serde_json::to_vec(response)?));
+                super::accounting::observe(
+                    response,
+                    &super::discovery::Protocol::Codex,
+                    observation,
+                );
                 completed = Some(super::responses::action(&response["output"])?);
             }
             _ => bail!("Codex native tool, error or unknown event rejected before dispatch"),
@@ -219,6 +226,7 @@ async fn serve(
     url: &str,
     model: &str,
     body: Value,
+    observation: &mut Value,
 ) -> Result<Value> {
     let mut authenticated_requests = 0;
     loop {
@@ -297,7 +305,7 @@ async fn serve(
             );
             bytes.extend_from_slice(&chunk);
         }
-        let (action, bytes) = validate_stream(&bytes, model)?;
+        let (action, bytes) = validate_stream(&bytes, model, observation)?;
         stream.write_all(format!("HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",bytes.len()).as_bytes()).await?;
         stream.write_all(&bytes).await?;
         stream.shutdown().await?;
@@ -344,6 +352,7 @@ pub(super) async fn complete(
     max: u64,
     prompt: &str,
     images: &[PathBuf],
+    observation: &mut Value,
 ) -> Result<Value> {
     let url = upstream(&native::codex_account_kind(executable, home).await?)?;
     let body = request_body(model, effort, max, prompt, images)?;
@@ -458,8 +467,10 @@ pub(super) async fn complete(
                 }
             }
         };
-        let (child_action, transport_action) =
-            tokio::try_join!(child, serve(listener, &capability, url, model, body))?;
+        let (child_action, transport_action) = tokio::try_join!(
+            child,
+            serve(listener, &capability, url, model, body, observation)
+        )?;
         ensure!(
             child_action == transport_action,
             "Codex child changed the validated action"
@@ -481,14 +492,40 @@ mod tests {
     #[test]
     fn complete_stream_is_text_only_identity_bound_and_untruncated() {
         let output = json!([{"type":"message","role":"assistant","content":[{"type":"output_text","text":"{\"action\":\"complete\"}"}]}]);
-        assert!(validate_stream(&sse(output.clone(), "completed", "selected"), "selected").is_ok());
         assert!(
-            validate_stream(&sse(output.clone(), "incomplete", "selected"), "selected").is_err()
+            validate_stream(
+                &sse(output.clone(), "completed", "selected"),
+                "selected",
+                &mut super::super::accounting::empty()
+            )
+            .is_ok()
         );
-        assert!(validate_stream(&sse(output, "completed", "changed"), "selected").is_err());
-        assert!(validate_stream(b"data: {\"type\":\"response.created\"}\n\n", "selected").is_err());
-        assert!(validate_stream(&sse(json!([{"type":"function_call","name":"exec_command","arguments":"touch sentinel"}]),"completed","selected"),"selected").is_err());
-        assert!(validate_stream(b"data: {\"type\":\"response.function_call_arguments.delta\",\"delta\":\"touch sentinel\"}\n\n","selected").is_err());
+        assert!(
+            validate_stream(
+                &sse(output.clone(), "incomplete", "selected"),
+                "selected",
+                &mut super::super::accounting::empty()
+            )
+            .is_err()
+        );
+        assert!(
+            validate_stream(
+                &sse(output, "completed", "changed"),
+                "selected",
+                &mut super::super::accounting::empty()
+            )
+            .is_err()
+        );
+        assert!(
+            validate_stream(
+                b"data: {\"type\":\"response.created\"}\n\n",
+                "selected",
+                &mut super::super::accounting::empty()
+            )
+            .is_err()
+        );
+        assert!(validate_stream(&sse(json!([{"type":"function_call","name":"exec_command","arguments":"touch sentinel"}]),"completed","selected"),"selected", &mut super::super::accounting::empty()).is_err());
+        assert!(validate_stream(b"data: {\"type\":\"response.function_call_arguments.delta\",\"delta\":\"touch sentinel\"}\n\n","selected", &mut super::super::accounting::empty()).is_err());
     }
     #[test]
     fn native_nonfatal_diagnostics_do_not_relax_execution_rejection() {

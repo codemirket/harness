@@ -18,6 +18,14 @@ RUN node /opt/production.mjs \
     && corepack pnpm@12.8.1 install --prod --frozen-lockfile --ignore-scripts --store-dir /opt/penpot/.pnpm-store
 
 FROM docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd
+RUN node -e 'require("node:fs").writeFileSync("/tmp/node-root-ca.pem", require("node:tls").rootCertificates.join("\n") + "\n", {mode: 0o644})' \
+    && printf 'Types: deb\nURIs: https://snapshot.debian.org/archive/debian/20261020T000000Z/\nSuites: bookworm bookworm-updates\nComponents: main\nCheck-Valid-Until: no\n\nTypes: deb\nURIs: https://snapshot.debian.org/archive/debian-security/20261020T000000Z/\nSuites: bookworm-security\nComponents: main\nCheck-Valid-Until: no\n' > /etc/apt/sources.list.d/debian.sources \
+    && rm -f /etc/apt/sources.list \
+    && apt-get -o Acquire::https::CaInfo=/tmp/node-root-ca.pem update \
+    && apt-get -o Acquire::https::CaInfo=/tmp/node-root-ca.pem -y upgrade \
+    && rm -f /tmp/node-root-ca.pem \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /opt/penpot/LICENSE /opt/penpot/LICENSE
 COPY --from=build /opt/server /opt/server
 COPY --from=build /opt/penpot/mcp/packages/plugin/dist /opt/plugin

@@ -1,0 +1,24 @@
+mirket dev: cargo test --locked --test motion_payload motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running tests/motion_payload.rs (target/debug/deps/motion_payload-6c79674749d21a83)
+
+running 1 test
+{"elapsed_ms":0,"mirket_startup":"entry"}
+{"elapsed_ms":117,"mirket_startup":"catalog_loaded"}
+{"elapsed_ms":4167,"mirket_startup":"identity_captured"}
+{"elapsed_ms":4172,"mirket_startup":"state_opened"}
+{"elapsed_ms":4174,"mirket_startup":"mcp_initialized"}
+{"elapsed_ms":4175,"mirket_startup":"discovery_started"}
+
+test motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 18.97s
+
+{
+  "filter": "motion_payload_installed_mcp_delivers_typed_sources_and_rejects_escaped_resources",
+  "ignored": false,
+  "ok": true,
+  "profile": "debug",
+  "source": "<checkout>",
+  "test_target": "motion_payload"
+}
