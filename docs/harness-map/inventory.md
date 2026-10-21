@@ -1,6 +1,6 @@
 # Harness inventory
 
-Generated from working files based on HEAD `cc8a258655ca15edf5f584df5052184bcc596b92` by [extract.py](../../evals/harness-map/extract.py). Full contracts, provenance, locks, input hashes, source changes and graph edges are in [inventory.json](inventory.json).
+Generated from content-hashed working files by [extract.py](../../evals/harness-map/extract.py). Full contracts, provenance, locks, input hashes and graph edges are in [inventory.json](inventory.json).
 
 This is a declaration inventory, not an installed-capability or quality report. Read the [system map](../harness-map.md), [professional methods](methodologies.md) and [dependency appendix](dependencies.md).
 

@@ -258,13 +258,12 @@ test('renderer child receives no service credentials', async () => {
 });
 
 test('renderer child uses private workspace disk scratch and removes it after exit', async () => {
-  const code = 'const fs=require("node:fs");const path=require("node:path");fs.writeFileSync(path.join(process.env.TMPDIR,"probe"),"temporary");process.stdout.write(JSON.stringify({home:process.env.HOME,tmp:process.env.TMPDIR,cache:process.env.XDG_CACHE_HOME,telemetry:process.env.HYPERFRAMES_NO_TELEMETRY}));';
+  const code = 'const fs=require("node:fs");const path=require("node:path");fs.writeFileSync(path.join(process.env.TMPDIR,"probe"),"temporary");process.stdout.write(JSON.stringify({home:process.env.HOME,tmp:process.env.TMPDIR,cache:process.env.XDG_CACHE_HOME}));';
   const result = await run(process.execPath, ['-e', code]);
   const child = JSON.parse(result.stdout);
   assert.match(child.tmp, /[\\/]\.mirket-design[\\/]child-[^\\/]+$/);
   assert.equal(child.home, child.tmp);
   assert.equal(child.cache, path.join(child.tmp, 'cache'));
-  assert.equal(child.telemetry, '1');
   await assert.rejects(fs.stat(child.tmp), {code: 'ENOENT'});
 });
 

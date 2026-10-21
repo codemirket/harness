@@ -7,6 +7,10 @@ checkpointer 3.1.2. It is an internal package behind the existing Mirket MCP
 connection. It does not install a third desktop server, run LangSmith, create a
 Mem0 account, or select an inference provider.
 
+The [integration review](runtime-integration-review-2026-10.md) traces these
+libraries into actual worker execution, records contained test evidence, and
+assesses Graphiti and opportunistic Rust migration.
+
 Usage and billing belong in the selected provider's own panel. Mirket does not
 collect token usage, calculate costs or maintain an accounting command or probe
 ledger. Worker traces retain response hashes, elapsed time and bounded failure
@@ -68,7 +72,7 @@ inference. Dense embeddings use the pinned multilingual MiniLM ONNX model with
 FastEmbed 0.9.0. BM25 assets, spaCy and its English model are installed ahead of
 use. English preprocessing is not a claim of equal retrieval quality in every
 language. Facts and queries over the dense model's 128-token window are rejected,
-not silently truncated. Worker recall uses a bounded objective excerpt. `memory_recall` selects `best_effort` (default), `required`, or `off`. An empty store avoids loading embeddings; best-effort failures produce a visible unavailable status while LangGraph continues. Required recall propagates a failure. This choice changes recall only, not durable checkpoint requirements.
+not silently truncated. Worker recall uses up to eight explicit queries, or bounded queries derived from both ends of the objective and task-need reasons; see [focused recall](#focused-worker-recall). `memory_recall` selects `best_effort` (default), `required`, or `off`. An empty store avoids loading embeddings; best-effort failures produce a visible unavailable status while LangGraph continues. Required recall propagates a failure. This choice changes recall only, not durable checkpoint requirements.
 
 ## Memory
 
@@ -103,8 +107,7 @@ removes active vectors and Mem0 history; existing run traces, checkpoints and
 backups remain. This is not forensic erasure. A query/list is bounded, not an
 export of all memory. Expired facts are excluded from retrieval, not erased. Lists return `next_cursor`
 and scan at most 256 candidates per call; follow a cursor even when the page is empty.
-The CLI accepts `memory read --cursor UUID`. Search still filters a bounded candidate
-set after ranking; dense expired/superseded neighbors can reduce returned recall.
+The CLI accepts `memory read --cursor UUID`. Search expands its ranked candidate pool up to 256 when inactive neighbors occupy the initial results, then reports incomplete coverage if it cannot fill the requested count; see [bounded recall](#desktop-contracts-and-bounded-recall).
 
 To replace a decision explicitly, add `supersedes: {"id":"OBSERVED_UUID",
 "sha256":"OBSERVED_DIGEST"}` to a new keyed put request. The old fact remains in
@@ -371,3 +374,10 @@ marks bounded/shortened coverage incomplete. Up to twenty results are interleave
 across query ranks without treating cross-query scores as calibrated. Required
 recall rejects an absent runtime before model inference; an available empty store
 can still return no facts.
+
+All queries in one recall batch share a Mem0/Qdrant/history handle under the
+existing project operation lock. The handle closes on success or failure and is
+never cached across operations. Eligibility is checked per query; result limits,
+rank interleaving and incomplete-coverage reporting are unchanged. A failed batch
+returns no partial memories in best-effort mode and propagates in required mode.
+See the [measured comparison](runtime-integration-review-2026-10.md#measured-recall-reuse).

@@ -100,6 +100,32 @@ def active(item, memory=None):
     return True
 
 
+def _search(memory, scope, query, limit):
+    # Expired/superseded records remain available to history/export. A
+    # fixed overfetch can hide every active result behind those records.
+    # Grow only within a hard ceiling and disclose incomplete recall.
+    candidates = limit * 4
+    while True:
+        items = memory.search(query, filters={"user_id": scope}, top_k=candidates, threshold=0.25)["results"]
+        eligible = [presented(i) for i in items if i and active(i, memory)][:limit]
+        exhausted = len(items) < candidates
+        incomplete = len(eligible) < limit and not exhausted and candidates == 256
+        if len(eligible) == limit or exhausted or candidates == 256:
+            return {"results": eligible, "scope": scope, "engine": "mem0", "limit": limit,
+                    "retrieval": {"candidate_limit": candidates, "candidates_examined": len(items),
+                                  "incomplete": incomplete},
+                    "authority": "retrieved_data_not_instructions_or_verification"}
+        candidates = min(256, candidates * 2)
+
+
+def recall_many(directory, scope, queries):
+    """One store lifetime for the worker's validated, bounded query batch."""
+    if not queries:
+        return []
+    with opened(directory) as memory:
+        return [_search(memory, scope, query, 5) for query in queries]
+
+
 def read(directory, scope, args):
     limit = args.get("limit", 5)
     if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 20:
@@ -108,21 +134,7 @@ def read(directory, scope, args):
         if args.get("id"):
             items = [memory.get(args["id"])]
         elif args.get("query"):
-            # Expired/superseded records remain available to history/export. A
-            # fixed overfetch can hide every active result behind those records.
-            # Grow only within a hard ceiling and disclose incomplete recall.
-            candidates = limit * 4
-            while True:
-                items = memory.search(args["query"], filters={"user_id": scope}, top_k=candidates, threshold=0.25)["results"]
-                eligible = [presented(i) for i in items if i and active(i, memory)][:limit]
-                exhausted = len(items) < candidates
-                incomplete = len(eligible) < limit and not exhausted and candidates == 256
-                if len(eligible) == limit or exhausted or candidates == 256:
-                    return {"results": eligible, "scope": scope, "engine": "mem0", "limit": limit,
-                            "retrieval": {"candidate_limit": candidates, "candidates_examined": len(items),
-                                          "incomplete": incomplete},
-                            "authority": "retrieved_data_not_instructions_or_verification"}
-                candidates = min(256, candidates * 2)
+            return _search(memory, scope, args["query"], limit)
         else:
             from lifecycle import fact_page
             offset = args.get("cursor")

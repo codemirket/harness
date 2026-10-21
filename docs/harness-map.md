@@ -1,6 +1,6 @@
 # Mirket system map
 
-Snapshot: **21 October 2026**, current consolidated `main` working tree. This map supports the final harness review: it describes what exists, who owns each outcome, what it depends on, how it is selected and which claims still need evidence. It does not authorize further implementation or deployment.
+Snapshot: **21 October 2026**, consolidated `main` after the documented review cleanup and measured recall optimization, following `33f4cd2`. This map supports the final harness review: it describes what exists, who owns each outcome, what it depends on, how it is selected and which claims still need evidence. It does not authorize further implementation or deployment.
 
 ## 1. Read this map and its inventories
 
@@ -18,10 +18,10 @@ The source of truth remains the owning implementation and registries. These docu
 
 | Layer | Snapshot and limitation |
 | --- | --- |
-| Git base | `cc8a258655ca15edf5f584df5052184bcc596b92` on `main` |
-| Working source | `da370a1529a8d062b3308fe24feb616f08288e74c1d623256588bb7b16c6ec63`; calculated using the exact framing and roots in [source_identity.rs](../src/source_identity.rs) |
-| Changes included beyond HEAD | Video retirement, explicit Excalidraw group/state-v4 migration, advisory reporting, owned tool dispatch and bounded quality-feedback repairs, plus prior package-service fixes. See [implementation record](harness-final-pass-implementation-2026-10.md). |
-| Local candidate | 1.0.11, `aarch64-apple-darwin`, built outside Cargo output for final-pass checks. Source identity and verification results are recorded in the [implementation record](harness-final-pass-implementation-2026-10.md). |
+| Prior implementation commit | `33f4cd2e61935a216cab820b23705acbcbb634b5` on `main`; subsequent changes are recorded with this map in Git history |
+| Working source | `c0a8aa3ba4ded447888bd44b3e555cad419c47e255af7f6eb7a0b8b991a1bf7e`; calculated using the exact framing and roots in [source_identity.rs](../src/source_identity.rs) |
+| Implementation included | Committed video retirement, explicit Excalidraw group/state-v4 migration, advisory reporting, owned tool dispatch and bounded quality-feedback repairs. Generated inventories now use content identity rather than Git HEAD. See [implementation record](harness-final-pass-implementation-2026-10.md). |
+| Local candidate | 1.0.11, `aarch64-apple-darwin`, built outside Cargo output. The [integration review](runtime-integration-review-2026-10.md) records the subsequent cleanup and checks; the [implementation record](harness-final-pass-implementation-2026-10.md) retains the earlier committed candidate. |
 | Installed executable | Passively hashed as `186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b`; differs from the candidate. Same version string does not mean same implementation. |
 | Live desktop/container state | Not freshly activated or probed for this extraction. Earlier connection and artifact evidence remains dated evidence. No claim that the working-tree fixes are deployed. |
 
@@ -197,6 +197,11 @@ flowchart LR
 
 Mem0 receives explicit facts with provenance, expiry, idempotency and supersession. `infer=False` and the `ExplicitFacts` adapter disable secondary extraction LLM calls. Dense and sparse retrieval plus English NLP are distinct parts of the dependency path. Removing spaCy is not equivalent to removing unused code. The current four-arm fixture did not establish a practical NLP benefit or a measured resource saving; it also did not justify assuming equivalent real-project recall.
 
+Worker recall shares one Mem0/Qdrant/history handle across its bounded query batch,
+then closes it before the next operation. The existing project lock, per-query
+eligibility checks and checkpoint boundaries remain. The [runtime review](runtime-integration-review-2026-10.md#measured-recall-reuse)
+records the warm batch latency comparison and its limits.
+
 LangGraph owns interrupted workflow state, pending effect boundaries and host-verification transitions. Rust still owns model/tool permissions and exact-write reconciliation. Known safe pauses receive bounded cumulative inactive-time credit; crashes and uncertain effects retain conservative deadlines. Resume does not reset turn/repair budgets or silently replace the original provider/model contract.
 
 ## 5. Execution journeys
@@ -350,10 +355,12 @@ The detailed methods are available for every role in the methodology appendix. A
 
 | Evidence | Revision/scope | What can be concluded |
 | --- | --- | --- |
-| Final-pass candidate | Current working-source fingerprint above | Formatting/Clippy and 420 native tests passed (8 opt-in ignored); rebuilt design image passed 69/69 with no skips; catalog and disposable all-target setup/doctor passed. No desktop deployment. |
+| Committed final-pass candidate | `33f4cd2`, source `da370a1529a8d062b3308fe24feb616f08288e74c1d623256588bb7b16c6ec63` | Formatting/Clippy and 424 native tests passed (8 opt-in ignored); rebuilt design image passed 70/70 with no skips; catalog and disposable all-target setup/doctor passed. No desktop deployment. |
+| Initial integration review | [Runtime review](runtime-integration-review-2026-10.md), before batched recall | Contained Mem0/LangGraph suite passed, including persistence, isolation, supersession, restart, checkpoint CAS, bounded pause and host verification. Seven-query synthetic fixture has six answerable hits at rank 3 and one empty negative. Not natural adoption or answer quality. |
+| Shared recall handle | Same review, final implementation; 22/128 synthetic facts, five alternating pairs per query count | Four-query median batch time reduced 59–61%; eight-query time reduced 72–73%. Records, ordering and coverage unchanged; score differences at floating-point roundoff. No end-to-end worker or cold-start claim. |
 | Consolidated-branch local review | Prior final-pass baseline `4b97d97f…`; historical after implementation | Formatting, Clippy, 418 native tests passed; 9 explicit opt-in tests ignored. Catalog, disposable all-target setup/doctor, 13 dependency-audit unit tests and 5 remediation tests passed. No deployed activation follows. |
 | Consolidated push CI | [Run 39543975339](https://github.com/codemirket/harness/actions/runs/39543975339), exact `cc8a258` | JavaScript and Linux/macOS/Windows native jobs passed. Dependency job failed on stale source exception; new local fixes have not run in remote CI. |
-| Current source-coordinate audit | 21 October review, 808 coordinates | Source exception pins repaired after ZIP call-path review; nine Pillow 12.3.0 advisories remain. Reported fixes require 13.0.0, incompatible with current FastEmbed 0.9.0 constraint. No blanket exception or override added. |
+| Latest source-coordinate audit | Committed final-pass review, 732 coordinates; locks unchanged in subsequent cleanup | Source exception pins repaired after ZIP call-path review; nine Pillow 12.3.0 advisories remain. Reported fixes require 13.0.0, incompatible with current FastEmbed 0.9.0 constraint. No blanket exception or override added. |
 | Simplification trials | [Report](harness-simplification-2026-10.md), [evidence](harness-simplification/evidence.json), prior candidate | 77/77 contained design checks and bounded real outputs; four retrieval arms; selective-preparation fake-engine checks; encoded-video recovery. Results are fixture- and revision-bound. |
 | Discovery size | Same report, matched query | Graphic-design plan reduced from 12,280 to 10,224 serialized characters (16.7%). Not a token/cost/latency measurement. |
 | Memory comparison | 23 facts / 15 queries / four fresh-index arms | Answerable recall@3=1 for all arms; semantic arms abstained on 1/2 negatives, lexical on 2/2. Small fixture, not general retrieval equivalence or an NLP-removal case. |

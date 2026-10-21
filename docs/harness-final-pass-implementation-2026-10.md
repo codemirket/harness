@@ -1,7 +1,9 @@
 # Final-pass implementation — 21 October 2026
 
-Implemented locally on consolidated `main`; not deployed or committed. This record
-owns current status. The [decision baseline](harness-final-pass-2026-10.md) and
+The implementation below was committed locally on consolidated `main` as
+`33f4cd2e61935a216cab820b23705acbcbb634b5`; not pushed or deployed. This record
+owns that implementation's status. Subsequent cleanup is recorded in the
+[runtime integration review](runtime-integration-review-2026-10.md). The [decision baseline](harness-final-pass-2026-10.md) and
 earlier evidence retain their original scope. The later user instruction authorizes
 advisory-only reporting; Pillow findings no longer block ordinary changes solely
 because an advisory exists. Candidate-bound release acceptance is still required.
@@ -56,7 +58,7 @@ These changes improve feedback consistency; they do not establish aesthetic gain
 
 ## Candidate identity
 
-- Base: `main`, `cc8a258655ca15edf5f584df5052184bcc596b92` plus preserved local changes.
+- Base: `main`, `cc8a258655ca15edf5f584df5052184bcc596b92` plus the changes recorded in commit `33f4cd2`.
 - Source SHA-256: `da370a1529a8d062b3308fe24feb616f08288e74c1d623256588bb7b16c6ec63`.
 - Candidate executable SHA-256: `24457de17b768c240d916114e06179afccbfff5f7c4c6e60640230461983c850`; 1.0.11, macOS ARM64.
 - Tested design image: `sha256:4126350726d5fe134b5e1d0aeeef97abba58d5c67bcb61fbce2927b3ae30664f`; Linux ARM64, Node 22.23.3.
@@ -89,8 +91,9 @@ no additional parser dependency was introduced.
 
 ## Limits and rollout
 
-No deployment, commits, pushes, paid inference, provider/model changes or user data
-deletion. Container checks used the prepared engine and isolated workspace. No new
+The implementation was committed after verification, as recorded above. There was
+no deployment, push, paid inference, provider/model change or user data deletion.
+Container checks used the prepared engine and isolated workspace. No new
 Windows/Linux native run, full image scan, desktop activation, natural-selection
 trial, model-cost comparison or live Excalidraw semantic-render claim. The optional
 agent runtime and its pinned NLP/recovery dependencies were not replaced.

@@ -136,6 +136,8 @@ class RuntimeTest(unittest.TestCase):
                 self.assertEqual(bounded['results'], [])
                 self.assertTrue(bounded['retrieval']['incomplete'])
                 self.assertEqual(search.call_args.kwargs['top_k'],256)
+                batch = adapter.recall_many(directory, 'a'*64, ['brand color', 'current decision'])
+                self.assertEqual(batch, [bounded, bounded])
         self.start()
         exported = self.call('data_export', {})
         self.assertEqual({x['value']['id'] for x in exported['items']}, {old['id'],new['id']})
@@ -200,6 +202,76 @@ class RuntimeTest(unittest.TestCase):
             state['envelope']['request']['memory_recall'] = 'required'
             with self.assertRaisesRegex(RuntimeError, 'private upstream detail'):
                 workflow.recall_node(state, directory, 'a'*64)
+
+    def test_worker_recall_batch_preserves_results_and_releases_store_on_failure(self):
+        from contextlib import contextmanager
+        from unittest.mock import patch
+        import copy
+        sys.path.insert(0, str(Path(os.environ.get('MIRKET_BRIDGE', str(Path(__file__).with_name('bridge.py')))).parent))
+        import memory as adapter
+        import workflow
+        fact = {'text':'The approved brand color is orange.', 'kind':'decision', 'provenance':'Batch recall regression', 'key':'old'}
+        old = self.call('memory_put', fact)['memory']
+        current = self.call('memory_put', {**fact, 'text':'The approved brand color is cobalt blue.', 'key':'current',
+            'supersedes':{'id':old['id'], 'sha256':old['sha256']}})['memory']
+        offline = self.call('memory_put', {**fact, 'text':'La aplicación debe funcionar sin conexión a Internet.', 'key':'offline'})['memory']
+        expired = self.call('memory_put', {**fact, 'text':'The temporary brand font is Georgia.', 'key':'expired'})['memory']
+        self.close()
+        directory, scope = Path(self.temp.name) / ('a'*64), 'a'*64
+        with adapter.opened(directory) as memory:
+            memory.vector_store.client.set_payload(collection_name='facts', payload={'expires_at':1}, points=[expired['id']])
+        queries = ['What is the approved brand color?', '¿Necesita la aplicación acceso a Internet?',
+                   'What is the annual tax liability?', 'What is the temporary brand font?']
+        state = {'envelope':{'request':{'objective':'Recall current product decisions', 'memory_queries':queries, 'memory_recall':'required'}}}
+        # Independent control uses the prior one-store-per-query path through the
+        # same real retrieval and worker interleaving, not a fake result list.
+        def repeated(path, scope, queries):
+            return [adapter.read(path, scope, {'query':query, 'limit':5}) for query in queries]
+        with patch.object(workflow, 'recall_many', repeated):
+            expected = workflow.recall_node(state, directory, scope)
+        opened, stores = adapter.opened, []
+        @contextmanager
+        def tracking(path):
+            with opened(path) as memory:
+                stores.append(memory.db.connection)
+                yield memory
+        with patch.object(adapter, 'opened', tracking):
+            actual = workflow.recall_node(state, directory, scope)
+        self.assertEqual(len(stores), 1)
+        # Qdrant can differ at floating-point roundoff after reopening. All other
+        # fields, ordering and disclosures must match exactly.
+        left, right = copy.deepcopy(actual), copy.deepcopy(expected)
+        self.assertEqual(len(left['memories']['results']), len(right['memories']['results']))
+        for a, b in zip(left['memories']['results'], right['memories']['results']):
+            self.assertAlmostEqual(a.pop('score'), b.pop('score'), places=12)
+        self.assertEqual(left, right)
+        ids = {i['id'] for i in actual['memories']['results']}
+        self.assertTrue({current['id'], offline['id']}.issubset(ids))
+        self.assertTrue(ids.isdisjoint({old['id'], expired['id']}))
+        search = adapter._search
+        def fail_second(memory, scope, query, limit):
+            if query == queries[1]:
+                raise RuntimeError('private failure after first query')
+            return search(memory, scope, query, limit)
+        with patch.object(adapter, 'opened', tracking), patch.object(adapter, '_search', fail_second):
+            state['envelope']['request']['memory_recall'] = 'best_effort'
+            failed = workflow.recall_node(state, directory, scope)['memories']
+            self.assertEqual(failed['status'], 'unavailable')
+            self.assertEqual(failed['results'], [], 'no partial batch is presented as successful recall')
+            self.assertNotIn('private failure', json.dumps(failed))
+            state['envelope']['request']['memory_recall'] = 'required'
+            with self.assertRaisesRegex(RuntimeError, 'private failure'):
+                workflow.recall_node(state, directory, scope)
+        self.assertEqual(len(stores), 3)
+        for connection in stores:
+            with self.assertRaises(sqlite3.ProgrammingError):
+                connection.execute('SELECT 1')
+        # The next operation can acquire Qdrant, and a later batch sees mutation.
+        self.start()
+        self.call('memory_forget', {'id':current['id'], 'expected_sha256':current['sha256']})
+        self.close()
+        after = workflow.recall_node(state, directory, scope)['memories']
+        self.assertTrue({i['id'] for i in after['results']}.isdisjoint({old['id'], current['id'], expired['id']}))
 
     def test_parallel_scope_wait_survives_ten_seconds_and_stays_bounded(self):
         import fcntl

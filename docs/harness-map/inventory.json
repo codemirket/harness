@@ -1,13 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "scope": "Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.",
-  "revision": "cc8a258655ca15edf5f584df5052184bcc596b92",
   "version": "1.0.11",
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 4184,
-      "sha256": "98540313a3b7e3e31ea91156b606cd72f6468a9ccd60b7780f659e0ce83dc83f"
+      "bytes": 4239,
+      "sha256": "345483d003decb81aa4e015b07a30b5683072e61f05382722ddcc3c630a63c46"
     },
     {
       "path": "AGENTS.md",
@@ -36,8 +35,8 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 19880,
-      "sha256": "58818cec442da1e9382d8be0500af42cee5ae58a6593739eb88e1458ff6e02b7"
+      "bytes": 19976,
+      "sha256": "fbd63b703e343e1d51fa9f2b37b57fbbb1b883314686ede8feb41f12fdc03547"
     },
     {
       "path": "docs/licenses/rust-runtime/README.md",
@@ -76,8 +75,8 @@
     },
     {
       "path": "evals/harness-map/extract.py",
-      "bytes": 23513,
-      "sha256": "a256f53b502cf8f40045b9f2f82631742260532fa7408f3d0e643851b498c823"
+      "bytes": 22909,
+      "sha256": "0abb49d094651863d3a11a4d2f11583a0b889dd115cb0d5f1d286d13605dc88d"
     },
     {
       "path": "instructions/AGENTS.md",
@@ -146,8 +145,8 @@
     },
     {
       "path": "runtime/agent/memory.py",
-      "bytes": 11324,
-      "sha256": "c281c3101502f591fb46538653a378ca8faee253892c894dd80d7539d8ec0fc1"
+      "bytes": 11575,
+      "sha256": "6b006736205c750af2e29f73fec18d0a1112cc42e91beadaad2e0b5cecfd3e2c"
     },
     {
       "path": "runtime/agent/model.json",
@@ -166,13 +165,13 @@
     },
     {
       "path": "runtime/agent/test_runtime.py",
-      "bytes": 30975,
-      "sha256": "5ec0750f52b65bac9571329942fabc2091b5747f5c7d6791470b2c6da4f908bb"
+      "bytes": 35833,
+      "sha256": "7690f0cd8df0c840db203ce4e440b8ee5f5b4c81b2787e85bbbc01a869a24249"
     },
     {
       "path": "runtime/agent/workflow.py",
-      "bytes": 12869,
-      "sha256": "e2baa9f2a0c7c5d807779bd531accbe799aa2b405d3d21d7d5ce576d4f08d108"
+      "bytes": 12827,
+      "sha256": "6d088e303252856d286c4275c4242cc81ed5241f1875ab36f5f96bcebd560fa0"
     },
     {
       "path": "runtime/design/tools/Dockerfile",
@@ -221,8 +220,8 @@
     },
     {
       "path": "runtime/design/tools/paths.mjs",
-      "bytes": 13453,
-      "sha256": "551ec20941c641140f21bae77be9da1755c830b768ac6633834b77bb48af36d4"
+      "bytes": 13110,
+      "sha256": "d7ed5b49243e09aa8f9412724027c66473cc801863c2eb31c75a09fcd3aec6f5"
     },
     {
       "path": "runtime/design/tools/raster-worker.mjs",
@@ -256,8 +255,8 @@
     },
     {
       "path": "runtime/design/tools/test/local.test.mjs",
-      "bytes": 27097,
-      "sha256": "c079b9f686d44853e2f8767fac79d0ab7ea758f9f9e7db557ec1cedd976ce1f2"
+      "bytes": 27012,
+      "sha256": "5f3cb48ae0f6c38b058a7331dbe798b777fa9843841ebb1f9837c4670b644db6"
     },
     {
       "path": "runtime/design/tools/test/odiff-contract.test.mjs",
@@ -34642,8 +34641,6 @@
     "evals/design-quality/test_viewport_proof.cjs",
     "evals/design-quality/tile-judge-views.py",
     "evals/design-quality/viewport-proof.cjs",
-    "evals/harness-critique/dependency-audit.py",
-    "evals/harness-critique/feedback-probe.py",
     "evals/harness-critique/probe.py",
     "evals/harness-map/extract.py",
     "evals/harness-remediation/native_validate.py",
@@ -34652,55 +34649,7 @@
     "evals/harness-remediation/test_feedback.py",
     "evals/harness-remediation/test_platform.py"
   ],
-  "source_sha256": "da370a1529a8d062b3308fe24feb616f08288e74c1d623256588bb7b16c6ec63",
-  "branch": "main",
-  "source_changes_from_head": [
-    "docs/third-party-notices.md",
-    "instructions/AGENTS.md",
-    "registry/capabilities.json",
-    "registry/catalog.json",
-    "registry/design-stack.json",
-    "runtime/design/tools/Dockerfile",
-    "runtime/design/tools/NOTICE.md",
-    "runtime/design/tools/media-evidence.mjs",
-    "runtime/design/tools/openpencil-cli.mjs",
-    "runtime/design/tools/operations.mjs",
-    "runtime/design/tools/package-lock.json",
-    "runtime/design/tools/package.json",
-    "runtime/design/tools/server.mjs",
-    "runtime/design/tools/test/cleanup.test.mjs",
-    "runtime/design/tools/test/live-browser.test.mjs",
-    "runtime/design/tools/test/local.test.mjs",
-    "runtime/design/tools/test/media-evidence.test.mjs",
-    "runtime/design/tools/test/simplification.test.mjs",
-    "runtime/design/tools/tool-budgets.json",
-    "runtime/design/tools/tool-policy.json",
-    "skills/advanced-motion/references/art-direction-and-medium.md",
-    "skills/advanced-motion/references/engine-selection.md",
-    "skills/advanced-motion/references/gsap-integration.md",
-    "skills/advanced-motion/references/local-video.md",
-    "skills/agent-coordination/references/model-routing.md",
-    "skills/graphic-design/references/production-and-proof.md",
-    "skills/skill-catalog/references/task-routing.md",
-    "skills/svg-animation/SKILL.md",
-    "src/cli.rs",
-    "src/packages/mod.rs",
-    "src/packages/services.rs",
-    "src/router/assignment.rs",
-    "src/router/design_gate.rs",
-    "src/router/execution.rs",
-    "src/router/tools.rs",
-    "tests/capability_workflows.rs",
-    "tests/runtime_simplification.rs"
-  ],
-  "audit_changes_from_head": [
-    "evals/dependency-audit/README.md",
-    "evals/dependency-audit/check.py",
-    "evals/dependency-audit/exceptions.json",
-    "evals/dependency-audit/image_audit.py",
-    "evals/dependency-audit/test_check.py",
-    "evals/dependency-audit/test_images.py"
-  ],
+  "source_sha256": "c0a8aa3ba4ded447888bd44b3e555cad419c47e255af7f6eb7a0b8b991a1bf7e",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
@@ -42844,22 +42793,6 @@
     "HF_HUB_OFFLINE": [
       "runtime/agent/bridge.py",
       "runtime/agent/memory.py"
-    ],
-    "HYPERFRAMES_BROWSER_PATH": [
-      "runtime/design/tools/paths.mjs"
-    ],
-    "HYPERFRAMES_FFMPEG_PATH": [
-      "runtime/design/tools/paths.mjs"
-    ],
-    "HYPERFRAMES_FFPROBE_PATH": [
-      "runtime/design/tools/paths.mjs"
-    ],
-    "HYPERFRAMES_NO_TELEMETRY": [
-      "runtime/design/tools/paths.mjs",
-      "runtime/design/tools/test/local.test.mjs"
-    ],
-    "HYPERFRAMES_NO_UPDATE_CHECK": [
-      "runtime/design/tools/paths.mjs"
     ],
     "LANGSMITH_TRACING": [
       "runtime/agent/bridge.py",

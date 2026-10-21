@@ -6,7 +6,6 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import subprocess
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -65,9 +64,8 @@ refs = [file_record(p) for p in sorted((ROOT / 'skills').rglob('*')) if p.is_fil
 inputs = ['registry/catalog.json', 'registry/capabilities.json', 'registry/harness.json', 'registry/design-stack.json', 'registry/agent-runtime.json', 'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'runtime/design/tools/package.json', 'runtime/design/tools/package-lock.json', 'runtime/design/tools/tool-policy.json', 'runtime/agent/requirements.in', 'runtime/agent/requirements.lock', 'runtime/agent/model.json', 'runtime/agent/bm25.json', 'src/mcp.rs']
 mcp = re.findall(r'#\[tool\([\s\S]*?\)\]\s*async fn (\w+)', (ROOT / 'src/mcp.rs').read_text())
 inventory = {
- 'schema_version': 1,
+ 'schema_version': 3,
  'scope': 'Static repository inventory; declarations do not establish runtime availability, dependency freshness or quality.',
- 'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
  'version': cargo['package']['version'],
  'input_files': [file_record(ROOT / p) for p in inputs],
  'counts': {'skills': len(catalog['skills']), 'delivery': dict(collections.Counter(s['delivery'] for s in catalog['skills'])), 'profiles': len(catalog['profiles']), 'profile_kinds': dict(collections.Counter(p.get('kind') for p in catalog['profiles'].values())), 'roles': len(capabilities['capabilities']), 'facets': len(capabilities['team_facets']), 'workflows': len(capabilities['workflows']), 'sources': len(catalog['sources']), 'reference_files': len(refs), 'main_mcp_tools': len(mcp)},
@@ -77,7 +75,7 @@ inventory = {
  'main_mcp_tools': mcp, 'reference_files': refs, 'edges': edges,
  'test_files': [p.relative_to(ROOT).as_posix() for base in ['tests', 'runtime/design/tools/test', 'evals'] for p in sorted((ROOT / base).rglob('*')) if p.is_file() and p.suffix in ('.rs', '.py', '.cjs', '.mjs')],
 }
-lines = ['# Harness inventory', '', f"Generated from working files based on HEAD `{inventory['revision']}` by [extract.py](../../evals/harness-map/extract.py). Full contracts, provenance, locks, input hashes, source changes and graph edges are in [inventory.json](inventory.json).", '', 'This is a declaration inventory, not an installed-capability or quality report. Read the [system map](../harness-map.md), [professional methods](methodologies.md) and [dependency appendix](dependencies.md).', '', '## Roles', '', '| ID | Lead skill | Optional support | Aliases |', '| --- | --- | --- | --- |']
+lines = ['# Harness inventory', '', "Generated from content-hashed working files by [extract.py](../../evals/harness-map/extract.py). Full contracts, provenance, locks, input hashes and graph edges are in [inventory.json](inventory.json).", '', 'This is a declaration inventory, not an installed-capability or quality report. Read the [system map](../harness-map.md), [professional methods](methodologies.md) and [dependency appendix](dependencies.md).', '', '## Roles', '', '| ID | Lead skill | Optional support | Aliases |', '| --- | --- | --- | --- |']
 for r in capabilities['capabilities']:
     lines.append('| ' + ' | '.join(cell(r[k]) for k in ['id', 'lead', 'support', 'aliases']) + ' |')
 lines += ['', '## Worker workflows', '', '| ID | Default role | Owner | Floor | Allowed tools | Required invocation | Verification tools |', '| --- | --- | --- | --- | --- | --- | --- |']
@@ -118,10 +116,7 @@ for path in source_files:
     source_hash.update(len(data).to_bytes(8, 'little')); source_hash.update(data)
 extra_inputs = ['AGENTS.md', 'CONTRIBUTING.md', 'docs/architecture.md', '.github/workflows/check.yml',
                 'evals/harness-map/extract.py', 'evals/dependency-audit/check.py', 'evals/dependency-audit/exceptions.json']
-inventory.update(schema_version=2, source_sha256=source_hash.hexdigest(),
-    branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip(),
-    source_changes_from_head=subprocess.check_output(['git','diff','HEAD','--name-only','--',*source_roots],cwd=ROOT,text=True).splitlines(),
-    audit_changes_from_head=subprocess.check_output(['git','diff','HEAD','--name-only','--','evals/dependency-audit'],cwd=ROOT,text=True).splitlines(),
+inventory.update(source_sha256=source_hash.hexdigest(),
     input_files=[file_record(p) for p in sorted(set(source_files + [ROOT / p for p in extra_inputs]))])
 inventory['scope'] = 'Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.'
 
@@ -215,7 +210,7 @@ inventory['counts'].update(global_skills=len(inventory['global']['global_skills'
 
 def table(headers, rows):
     return ['| '+' | '.join(headers)+' |','| '+' | '.join(['---']*len(headers))+' |'] + ['| '+' | '.join(cell(v) for v in row)+' |' for row in rows]
-intro=[f"Working-source SHA-256: `{inventory['source_sha256']}`; base HEAD `{inventory['revision']}`.",'',
+intro=[f"Working-source SHA-256: `{inventory['source_sha256']}`.",'',
        'Generated by [extract.py](../../evals/harness-map/extract.py). Read the [system map](../harness-map.md) for ownership, side effects and evidence limits. Full records: [inventory.json](inventory.json).','']
 extra=['','## Snapshot counts','']+table(['Measure','Value'],inventory['counts'].items())
 extra+=['','## Global guidance','','Default host setup: '+cell(inventory['global']['global_skills']), '', '## Main MCP surface','','Annotations are hints; read-like operations can still open state, refresh discovery or launch a contained runtime.','']

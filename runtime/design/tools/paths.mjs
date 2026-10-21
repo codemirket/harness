@@ -192,12 +192,10 @@ function appendWithinLimit(current, chunk, limit) {
   if (!remaining) return current;
   return Buffer.concat([current, chunk.subarray(0, remaining)]);
 }
-export async function run(executable, args, {cwd = workspace, env = {}, timeoutMs = 90000, maxStdout = 262144, maxStderr = 262144, allowedCodes = [0]} = {}) {
+export async function run(executable, args, {cwd = workspace, timeoutMs = 90000, maxStdout = 262144, maxStderr = 262144, allowedCodes = [0]} = {}) {
   checkRequest();
-  const allowed = new Set(['HYPERFRAMES_NO_UPDATE_CHECK', 'HYPERFRAMES_NO_TELEMETRY', 'HYPERFRAMES_BROWSER_PATH', 'HYPERFRAMES_FFMPEG_PATH', 'HYPERFRAMES_FFPROBE_PATH']);
-  for (const key of Object.keys(env)) if (!allowed.has(key)) throw Error(`Unapproved child environment variable: ${key}`);
   const scratch = await temporaryDirectory('child');
-  const childEnv = {PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin', HOME: scratch, TMPDIR: scratch, LANG: 'C.UTF-8', XDG_CACHE_HOME: path.join(scratch, 'cache'), HYPERFRAMES_NO_TELEMETRY: '1', ...env};
+  const childEnv = {PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin', HOME: scratch, TMPDIR: scratch, LANG: 'C.UTF-8', XDG_CACHE_HOME: path.join(scratch, 'cache')};
   let record, finish;
   const done = new Promise(resolveDone => { finish = resolveDone; });
   try {

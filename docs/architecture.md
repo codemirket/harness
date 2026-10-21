@@ -2,7 +2,9 @@
 
 > **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
 
-Mirket has one command surface and one Rust implementation of each operation.
+Mirket has one Rust command and orchestration surface. Optional specialist operations
+run through owned Python and Node adapters; the Rust host retains permission and
+execution authority.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
 methods. The optional `design` package launches its pinned local tools and the
@@ -191,8 +193,7 @@ none of these mechanisms alone establishes aesthetic quality or user acceptance.
 The single design package receives a client entry running `mirket package serve
 design`. Its direct tool schemas use paths relative to one fixed `/workspace`
 mount, backed by the selected home's
-`.mirket/execution/podman/staging/design/workspace`. It forwards the official
-the pinned OpenPencil CLI with validated upstream tool arguments and bounded,
+`.mirket/execution/podman/staging/design/workspace`. It invokes the pinned OpenPencil CLI with validated upstream tool arguments and bounded,
 revision-checked file publication. `package start` and `package status` report the host workspace path.
 Cancellation cannot undo effects already performed. See [packages](packages.md).
 

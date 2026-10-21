@@ -5,8 +5,6 @@ They are analysis tools, not production features or runtime dependencies. Use Py
 
 ```sh
 python3.13 evals/harness-critique/probe.py --binary /absolute/path/to/mirket --output docs/harness-critique/local-probes.json
-python3.13 evals/harness-critique/feedback-probe.py
-python3.13 evals/harness-critique/dependency-audit.py
 ```
 
 `probe.py` starts one localhost synthetic inference server and uses a disposable
@@ -17,19 +15,12 @@ usage and bounded source reads. The dated JSON remains historical evidence; do n
 interpret its old Penpot or memory expectations as current defects. Owning test
 suites retain the regression checks.
 
-`feedback-probe.py` executes exact selected owned function bodies with controlled
-memory/tokenizer fakes. It demonstrates a test-oracle gap and objective-prefix
-collision. It does not test actual embeddings, Mem0 or container behavior. The
-existing separate English memory retrieval assertion is not bypassed or assessed
-by this isolated baseline probe.
-
-`dependency-audit.py` sends public package names/versions to OSV and queries
-crates.io, npm and PyPI for direct dependency metadata. It downloads metadata only,
-never installs packages or invokes their code. Outputs replace the dated JSON
-snapshot; compare provenance before interpreting a later run. Advisory matches
-need separate reachability analysis. This does not inventory OS packages, actual
-container images or the complete runtime dependency closure.
-
-The recorded review date is 2026-10-20. Update that field for later investigations.
-Current evidence is linked from the critique. Preserve negative results rather
-than changing assertions to make an implementation appear correct.
+The historical feedback and dependency JSON reports retain their 20 October
+scope. Their one-off generators were retired: the feedback probe depended on
+superseded function bodies, and the old audit duplicated the maintained
+[dependency audit](../dependency-audit/README.md). Use that audit for current
+coordinates and advisory policy. Current recall regressions live in
+[the agent runtime suite](../../runtime/agent/test_runtime.py) and
+[the remediation suite](../harness-remediation). The original generators remain
+available in Git history for historical reproduction; do not overwrite the dated
+evidence with current runs.

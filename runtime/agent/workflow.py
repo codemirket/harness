@@ -10,7 +10,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
 from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 
-from memory import digest, embedding_model, read as recall
+from memory import digest, embedding_model, recall_many
 
 
 class Run(TypedDict, total=False):
@@ -69,7 +69,7 @@ def recall_node(state, directory, scope):
         return {"memories": {**empty, "status": "disabled" if mode == "off" else "empty"}}
     try:
         queries, incomplete = recall_queries(request, embedding_model().model.tokenizer)
-        pages = [recall(directory, scope, {"query": query, "limit": 5}) for query in queries]
+        pages = recall_many(directory, scope, queries)
         results, seen = [], set()
         # Interleave ranks; scores from different queries are not calibrated.
         for rank in range(5):
