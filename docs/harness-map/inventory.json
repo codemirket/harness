@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "scope": "Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
@@ -20,13 +20,13 @@
     },
     {
       "path": "Cargo.lock",
-      "bytes": 56829,
-      "sha256": "14deb4f8c2fbbf9966ca92edf5b207aaa415588ff5f0670a0d50cc8a6af1ccbe"
+      "bytes": 56828,
+      "sha256": "6c96184e9f3ebe6436f85d8fc5e36167ee0c04111000953761830b313c19de43"
     },
     {
       "path": "Cargo.toml",
-      "bytes": 1621,
-      "sha256": "1e0358a43629fddf35ff4b5bf3eb9dc3a4bcd4553c0c09af23170c5b57220a07"
+      "bytes": 1620,
+      "sha256": "bedcf1b512351da85f2bf7383fe379ef666598287b8dee71064c7931588b82cf"
     },
     {
       "path": "build.rs",
@@ -17629,7 +17629,7 @@
     "rust_manifest": {
       "package": {
         "name": "mirket",
-        "version": "1.0.11",
+        "version": "1.1.0",
         "edition": "2024",
         "rust-version": "1.99",
         "description": "A local agent harness for Codex and Claude",
@@ -18665,7 +18665,7 @@
       },
       {
         "name": "mirket",
-        "version": "1.0.11",
+        "version": "1.1.0",
         "dependencies": [
           "anyhow",
           "clap",
@@ -34653,7 +34653,7 @@
     "evals/harness-remediation/test_feedback.py",
     "evals/harness-remediation/test_platform.py"
   ],
-  "source_sha256": "f6ea4b36cb91572ba8e380f0aa5f9bd839ae270be31a3cef168b8d3981911616",
+  "source_sha256": "2c2b37058a2a61abb38d3994ea346ba6af420b9857efb4822eacabf8fbbf27d9",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

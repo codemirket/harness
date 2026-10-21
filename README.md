@@ -18,6 +18,10 @@ apply.
 [Release 1.0.11](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11) ·
 [Contributing](CONTRIBUTING.md)
 
+This checkout prepares **1.1.0**, which is not yet published. See the
+[candidate changes and release requirements](docs/release-status.md).
+The release link above continues to identify the published download.
+
 ## What it adds
 
 | Capability | Use it when you need to… |
