@@ -1,5 +1,7 @@
 //! Durable coordination records. These records describe work; the host executes it.
 pub mod contracts;
+mod identity;
+mod identity_recovery;
 use crate::{catalog::Catalog, paths::Paths, util};
 use anyhow::{Context, Result, bail};
 use contracts::ContractKind;
@@ -385,18 +387,18 @@ impl State {
         util::reject_symlink_components(&root)?;
         let root = root.to_str().context("project path must be UTF-8")?;
         bounded(root, "project path", 4096)?;
-        let current_identity = identity(Path::new(root))?;
+        let current_identity = identity::current(Path::new(root))?;
         let mut conn = self.connection()?;
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let previous: Option<(String, String)> = tx
+        let previous: Option<(String, String, i64)> = tx
             .query_row(
-                "SELECT id,identity FROM projects WHERE root=?1",
+                "SELECT id,identity,created FROM projects WHERE root=?1",
                 [root],
-                |row| Ok((row.get(0)?, row.get(1)?)),
+                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
             )
             .optional()?;
-        let id = if let Some((id, previous)) = previous {
-            if previous != current_identity {
+        let id = if let Some((id, previous, registered)) = previous {
+            if !identity::matches_registered(Path::new(root), &previous, registered)? {
                 bail!("registered project identity changed; use a distinct project directory");
             }
             id
@@ -410,9 +412,18 @@ impl State {
                 .optional()?;
             let id = if let Some((id, expected)) = retained {
                 anyhow::ensure!(
-                    expected == current_identity,
+                    identity::matches(Path::new(root), &expected)?,
                     "durable project identity changed; use a distinct directory"
                 );
+                if expected != current_identity {
+                    anyhow::ensure!(
+                        tx.execute(
+                            "UPDATE project_scopes SET identity=?1 WHERE project_id=?2 AND identity=?3",
+                            params![current_identity, id, expected],
+                        )? == 1,
+                        "durable project identity changed during registration"
+                    );
+                }
                 id
             } else {
                 let scope = util::sha256(root.as_bytes());
@@ -491,17 +502,21 @@ impl State {
         let canonical = crate::paths::canonical_project(path)?;
         let root = canonical.to_str().context("project path must be UTF-8")?;
         let conn = self.connection()?;
-        if let Some((scope, expected)) = conn
+        if let Some((scope, expected, registered)) = conn
             .query_row(
-                "SELECT scope,identity FROM project_scopes WHERE root=?1",
+                "SELECT s.scope,s.identity,p.created FROM project_scopes s LEFT JOIN projects p ON p.id=s.project_id WHERE s.root=?1",
                 [root],
-                |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?)),
+                |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?, r.get::<_, Option<i64>>(2)?)),
             )
             .optional()?
         {
             util::reject_symlink_components(&canonical)?;
             anyhow::ensure!(
-                identity(&canonical)? == expected,
+                if let Some(created) = registered {
+                    identity::matches_registered(&canonical, &expected, created)?
+                } else {
+                    identity::matches(&canonical, &expected)?
+                },
                 "durable project identity changed"
             );
             anyhow::ensure!(
@@ -546,12 +561,12 @@ impl State {
         );
         let mut conn = self.unleased_connection()?;
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let (root, expected, scope): (String,String,String) = tx.query_row(
-            "SELECT p.root,p.identity,s.scope FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1", [id],
-            |r| Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional()?.context("project is not registered")?;
+        let (root, expected, scope, registered): (String,String,String,i64) = tx.query_row(
+            "SELECT p.root,p.identity,s.scope,p.created FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1", [id],
+            |r| Ok((r.get(0)?,r.get(1)?,r.get(2)?,r.get(3)?))).optional()?.context("project is not registered")?;
         // The original inode/creation identity is retained; copied replacements are not relocation.
         anyhow::ensure!(
-            identity(&destination)? == expected,
+            identity::matches_registered(&destination, &expected, registered)?,
             "destination is not the registered directory; rename the original project, do not copy it"
         );
         if Path::new(&root) == destination {
@@ -673,17 +688,20 @@ impl State {
 
     fn root(conn: &Connection, project_id: &str) -> Result<PathBuf> {
         bounded(project_id, "project id", 64)?;
-        let (root, expected): (String, String) = conn
+        let (root, expected, registered): (String, String, i64) = conn
             .query_row(
-                "SELECT root,identity FROM projects WHERE id=?1",
+                "SELECT root,identity,created FROM projects WHERE id=?1",
                 [project_id],
-                |row| Ok((row.get(0)?, row.get(1)?)),
+                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
             )
             .optional()?
             .context("project is not registered; run mirket project register through the host")?;
         let path = PathBuf::from(root);
         util::reject_symlink_components(&path)?;
-        if !path.is_dir() || path.canonicalize()? != path || identity(&path)? != expected {
+        if !path.is_dir()
+            || path.canonicalize()? != path
+            || !identity::matches_registered(&path, &expected, registered)?
+        {
             bail!("registered project identity changed");
         }
         Ok(path)

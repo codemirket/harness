@@ -179,6 +179,16 @@ fn relocation_preserves_task_id_namespace_and_rejects_replacement_or_old_path_re
 fn migration_preserves_existing_path_namespace_and_maintenance_blocks_connections() {
     let f = Fixture::new();
     let conn = rusqlite::Connection::open(f.paths.database()).unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::MetadataExt;
+        let metadata = fs::metadata(&f.project).unwrap();
+        conn.execute(
+            "UPDATE projects SET identity=?1 WHERE id=?2",
+            rusqlite::params![format!("{}:{}", metadata.dev(), metadata.ino()), f.id],
+        )
+        .unwrap();
+    }
     conn.execute_batch("DROP TABLE project_scopes; PRAGMA user_version=3;")
         .unwrap();
     drop(conn);
@@ -186,6 +196,11 @@ fn migration_preserves_existing_path_namespace_and_maintenance_blocks_connection
     assert_eq!(
         state.runtime_scope(&f.project).unwrap(),
         util::sha256(f.project.to_str().unwrap().as_bytes())
+    );
+    #[cfg(unix)]
+    assert_eq!(
+        state.identity_preview(0, 10).unwrap()["projects"][0]["status"],
+        "valid_legacy"
     );
     let lease = maintenance::exclusive(&f.paths).unwrap();
     assert!(state.status(&f.task).is_err());

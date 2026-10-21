@@ -123,6 +123,14 @@ project's original path-derived runtime namespace and directory identity.
 Current schema-4 opens validate without writing a new schema. Verify the migrated
 records and database integrity before resuming writers.
 
+Schema 4 can contain either legacy `device:inode` project identities or
+versioned identities. A schema migration does not silently rebind a registered
+directory after a device-number change. Use the paged
+[`project identity` recovery](agent-runtime.md#project-identity-after-a-device-number-transition)
+with a validated durable backup, then reconnect and verify the affected
+desktop clients. This changes only the registration identity fields and audit
+records; it retains project IDs and runtime namespaces.
+
 New task mutations return versioned compact receipts. Use task status/history
 for full state and recovery. Exact retries of pre-upgrade operations return their
 original recorded reply, which can be a full snapshot. See [task evidence](task-evidence.md).

@@ -263,6 +263,70 @@ copy between filesystems or accept a replacement directory. The old root must be
 absent. An identical retry is harmless. A copy to another filesystem requires a
 separate migration design; this command will reject it.
 
+### Project identity after a device-number transition
+
+Registered directory identity is versioned. On macOS, new registrations bind
+the persistent volume UUID, directory inode and creation time to the canonical
+root. The Unix device number is not part of that identity because it can change
+for the same mounted volume. Existing `device:inode` registrations remain
+readable while they match; a mismatch never silently rebinds them. On other
+Unix hosts, the versioned identity retains device, inode and creation time; on
+Windows it uses the persistent local-volume GUID, 128-bit directory file ID and
+creation time. Other platforms fail closed when their available filesystem
+identity changes and require explicit review. Filesystems that cannot supply
+the required stable identity are unsupported for new registration.
+
+Inspect all pages, including valid registrations, before changing anything:
+
+```sh
+mirket project identity preview --offset 0 --limit 10 > /absolute/review-page-0.json
+# Continue with each reported next_offset until it is null.
+mirket backup create --output /absolute/new-durable-backup.tar
+mirket backup inspect --archive /absolute/new-durable-backup.tar --sha256 REPORTED_SHA256
+mirket project identity apply --plan /absolute/review-page-0.json \
+  --backup /absolute/new-durable-backup.tar --sha256 REPORTED_SHA256 \
+  --attestation /absolute/reviewed-evidence.json
+```
+
+Preview does not rewrite registrations. Opening an older state schema can run
+Mirket's normal schema migration or create maintenance files; do not treat
+opening a fresh home as a purely passive filesystem inspection.
+`valid_legacy` is eligible for explicit format promotion.
+`legacy_device_transition_review_required` is eligible only after checking
+that the specific path, project ID, original inode, current filesystem volume,
+creation time and project contents belong together. The old format did not
+record a persistent volume UUID or content fingerprint, so these observations
+alone cannot prove historical ownership. If that evidence is ambiguous, do not
+apply the page; obtain additional project-specific evidence. Missing, moved,
+replaced, symlinked, collided or inconsistent registrations are rejected. A
+page with any rejected project changes none of its projects. Use smaller pages
+to isolate a questionable registration without migrating valid neighbours.
+For every `legacy_device_transition_review_required` item, the attestation file
+must contain one entry with its exact `id`, `root`, `saved_identity`,
+`current_identity` and a concise `evidence` explanation (20–1000 bytes):
+
+```json
+{"schema":1,"projects":[{"id":"p_...","root":"/absolute/project","saved_identity":"OLD_DEVICE:INODE","current_identity":"v2:mac:VOLUME_UUID:INODE:BIRTH_NANOSECONDS","evidence":"Verified this project's pre-transition source and directory history against the registered root."}]}
+```
+
+Use an empty `projects` array or omit `--attestation` when promoting only
+`valid_legacy` entries. The tool checks each statement against the reviewed
+page and saves the attestation digest in its audit records. The explanation is
+an operator assertion; the tool cannot infer historical directory ownership
+from the legacy identity alone.
+
+Apply requires an intact backup bound to the same canonical home and containing
+each reviewed registration's original identity, an exact preview digest and
+an exclusive maintenance lease. It rechecks every
+directory and updates project and runtime-scope identity together in one
+SQLite transaction per page, adding an audit operation for each change.
+Project IDs, task records, idempotency replies, memory namespaces and worker
+data remain unchanged. An interrupted transaction rolls back; retry the same
+plan, or preview again if state changed. A completed exact retry returns its
+audit records without rewriting identities. Reconnect clients to a binary that
+understands versioned identities before applying recovery. Verify task history
+and memory through the actual client afterwards.
+
 Historical worker paths and evidence are not rewritten. Status marks old path- or
 source-bound runs non-resumable; start a new worker at the new root. Historical
 checkpoints remain inspectable and memory remains usable. Recheck source/evidence

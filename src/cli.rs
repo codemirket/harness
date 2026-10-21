@@ -401,6 +401,11 @@ struct ProjectPath {
 }
 #[derive(Subcommand)]
 enum ProjectCommand {
+    /// Preview or apply versioned identity recovery without changing project files.
+    Identity {
+        #[command(subcommand)]
+        command: ProjectIdentityCommand,
+    },
     Init {
         #[arg(long, default_value = ".")]
         project: PathBuf,
@@ -469,6 +474,28 @@ enum ProjectCommand {
         offset: usize,
         #[arg(long, default_value_t = 10)]
         limit: usize,
+    },
+}
+#[derive(Subcommand)]
+enum ProjectIdentityCommand {
+    /// Inspect registered roots and produce a reviewable, digest-bound page.
+    Preview {
+        #[arg(long, default_value_t = 0)]
+        offset: usize,
+        #[arg(long, default_value_t = 10)]
+        limit: usize,
+    },
+    /// Atomically apply one exact preview page after validating a durable backup.
+    Apply {
+        #[arg(long)]
+        plan: PathBuf,
+        #[arg(long)]
+        backup: PathBuf,
+        #[arg(long)]
+        sha256: String,
+        /// Per-project evidence for reviewed legacy device transitions.
+        #[arg(long)]
+        attestation: Option<PathBuf>,
     },
 }
 #[derive(Args)]
@@ -1474,6 +1501,22 @@ fn dispatch(cli: Cli) -> Result<i32> {
             } => crate::backup::restore(&paths, &archive, &sha256)?,
         },
         Command::Project { command } => match command {
+            ProjectCommand::Identity { command } => match command {
+                ProjectIdentityCommand::Preview { offset, limit } => {
+                    State::open(&paths)?.identity_preview(offset, limit)?
+                }
+                ProjectIdentityCommand::Apply {
+                    plan,
+                    backup,
+                    sha256,
+                    attestation,
+                } => State::open(&paths)?.identity_apply(
+                    &plan,
+                    &backup,
+                    &sha256,
+                    attestation.as_deref(),
+                )?,
+            },
             ProjectCommand::Relocate {
                 id,
                 expected_root,

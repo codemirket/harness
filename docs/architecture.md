@@ -277,6 +277,10 @@ home/runtime recipe, with no automatic evidence acceptance.
 
 State schema 4 stores each registered project's original namespace in
 `project_scopes`. Migration retains all existing IDs and path-derived namespaces.
+`src/state/identity.rs` owns versioned directory identity, including macOS
+persistent volume UUID, inode and creation time. `src/state/identity_recovery.rs`
+owns paged inspection and explicit transaction-bound recovery of legacy
+device/inode registrations; no task or runtime namespace key is rewritten.
 `project relocate` checks an actual renamed directory and atomically rebinds its
 root while retaining the namespace. Memory and assigned design workspace resolution
 use that binding. Historical worker envelopes keep their absolute paths and cannot
