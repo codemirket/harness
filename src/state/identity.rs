@@ -48,7 +48,7 @@ pub(super) fn current(path: &Path) -> Result<String> {
         let after = windows_identity(path)?;
         ensure!(
             birth == handle_birth
-                && after == (volume.clone(), file_id, handle_birth)
+                && after == (volume.clone(), file_id.clone(), handle_birth)
                 && metadata.created()? == fs::metadata(path)?.created()?,
             "project directory changed during identity inspection"
         );

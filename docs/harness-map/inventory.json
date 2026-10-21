@@ -1770,8 +1770,8 @@
     },
     {
       "path": "src/state/identity.rs",
-      "bytes": 8940,
-      "sha256": "adf9a2dd45eea18852d3fa6229ae35a7487c504636724300947d170becbff5e4"
+      "bytes": 8948,
+      "sha256": "7c430b446b7be719da07ba96336168c119fc4360ce0a0927288c4482f6467caa"
     },
     {
       "path": "src/state.rs",
@@ -34664,7 +34664,7 @@
     "evals/harness-remediation/test_feedback.py",
     "evals/harness-remediation/test_platform.py"
   ],
-  "source_sha256": "0fad0b6d7462150aca59605ae83bb7b64319bfe0389ca34295d44753126083a1",
+  "source_sha256": "9fafb9569f18111047ac704301513aca67ae85ab04a0f588f95382425e0f133e",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
