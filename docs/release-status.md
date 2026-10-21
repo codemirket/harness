@@ -1,6 +1,6 @@
 # Mirket 1.1.0: release and supported targets
 
-**1.1.0** is the release prepared for publication on 2026-10-21.
+**1.1.0** was published on 2026-10-21.
 The [1.1.0 release page](https://github.com/codemirket/harness/releases/tag/mirket-v1.1.0)
 is authoritative for publication status, downloads and verification notes.
 Use its `mirket-release.json` and `SHA256SUMS` to verify downloads. A source
@@ -57,6 +57,24 @@ every candidate shares the final source/version identity. Source-lock and full
 image audit evidence, checksums and license notices are retained. Claude live
 activation remains deferred; configuration checks are not proof of a running
 Claude session.
+
+### Published downloads and upgrade verification
+
+The public latest release is `mirket-v1.1.0`, tagged at
+`013ec778db09dbfddb586edb63d9d1649bf8cc96`. All 23 assets were downloaded
+without authentication and matched the verified bundle, GitHub asset digests
+and published checksums. The public source archive matched all 705 tracked
+files at that tag; its 383 compiled-source inputs matched the release fingerprint.
+
+On macOS ARM64, the online-update regression passed against the public latest
+release. A separate trial installed the published 1.0.11 binary into a disposable
+home and ran its real `mirket update` path to 1.1.0. It preserved both selected
+clients and unrelated Codex/Claude settings, detected and restored a deliberately
+missing managed skill, installed the exact published CLI bytes and passed doctor
+and MCP checks. These trials did not install optional packages, replace the
+user's existing installation or verify live desktop reconnection. Windows and
+Linux update behavior was verified in the native CI run below; the post-publication
+network upgrade trial ran on macOS only.
 
 ### Release verification — 21 October 2026
 
