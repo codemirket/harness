@@ -34,6 +34,8 @@ passed. Native logs report 429 macOS, 427 Linux and 394 Windows passing tests,
 with zero failures and eight explicit opt-in tests ignored on each target.
 [Website checks](https://github.com/codemirket/harness/actions/runs/39615033486)
 passed.
+The documentation follow-up also passed all six jobs in
+[CI run 39618860794](https://github.com/codemirket/harness/actions/runs/39618860794).
 
 Contained acceptance passed against the exact CI macOS executable, including
 real Mem0/LangGraph package behavior, desktop protocol contracts, parallel
@@ -56,8 +58,14 @@ and public `update --check` passed. The old local project registrations and
 Mirket-owned task, memory and checkpoint stores were intentionally removed
 without a backup for a fresh start. Project-local source and selections were
 left in their repositories. Codex Desktop's prior MCP processes were stopped
-for replacement; the desktop session still needs to reconnect before live
-activation can be claimed. Claude live activation was not checked.
+for replacement. After the Codex Desktop restart on 2026-10-21, a live main
+`runtime_status` call reported Mirket 0.0.1, the installed executable digest
+`20221fee28ff8658c6dd59d2e119f1b8bd42ff6ba88f93a93549df4583e6a208`
+and a matching process. A live design `openpencil_inspect` call completed in
+headless-file mode with OpenPencil 0.16.0; its reported runtime file hashes
+matched the release source. These calls establish activation and runtime
+identity, not a new design-quality acceptance run. Claude live activation was
+not checked.
 
 Future release acceptance requires native formatting, Clippy, tests,
 standalone installer/setup/doctor checks on all three targets, contained
