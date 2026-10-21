@@ -1,25 +1,24 @@
-# Mirket 1.1.0: release candidate and supported targets
+# Mirket 1.1.0: release and supported targets
 
-This checkout prepares **1.1.0**, starting on 2026-10-21. It is **not published**.
-The [1.0.11 release page](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11)
-remains the published download reference. Its artifacts and verification notes
-belong to 1.0.11, not this candidate. Use the selected release's
-`mirket-release.json` or `SHA256SUMS` to verify downloads. A source commit,
-local candidate or running CI job is not a published binary.
+**1.1.0** is the release prepared for publication on 2026-10-21.
+The [1.1.0 release page](https://github.com/codemirket/harness/releases/tag/mirket-v1.1.0)
+is authoritative for publication status, downloads and verification notes.
+Use its `mirket-release.json` and `SHA256SUMS` to verify downloads. A source
+commit, local candidate or running CI job is not a published binary.
 
 | Distribution | Targets and requirements |
 | --- | --- |
 | Core CLI and standalone installers | macOS ARM64 (`aarch64-apple-darwin`), Linux x86-64 (`x86_64-unknown-linux-gnu`), Windows x86-64 (`x86_64-pc-windows-msvc`) |
 | Optional design and agent-runtime packages | Supported private Podman environment with Linux ARM64 containers. An x86-64 CLI does not imply x86-64 container support |
-| Source | This 1.1.0 checkout, with the locked Rust toolchain and dependency graph; no 1.1.0 tag has been published |
+| Source | [Versioned source](https://github.com/codemirket/harness/tree/mirket-v1.1.0), with the locked Rust toolchain and dependency graph |
 
 Resolve [the release list](https://github.com/codemirket/harness/releases) again
 before installing. For an older installation, use its versioned documentation;
 [1.0.5 documentation](https://github.com/codemirket/harness/tree/mirket-v1.0.5/docs)
 remains available. The retained memory/recovery commands require at least 1.0.11;
-the changes below describe the 1.1.0 candidate.
+the changes below describe 1.1.0.
 
-## Changes prepared for 1.1.0
+## Changes in 1.1.0
 
 | Change | Outcome and compatibility |
 | --- | --- |
@@ -51,31 +50,34 @@ Satori or core recovery capability was removed without replacement evidence.
 
 ## Verification and upgrade boundaries
 
-Before publication, build optimized native distributions for the release targets,
-validate installers and updates, and run contained acceptance with an exact
-packaged executable. The release manifest requires the accepted binary to be one
-of its candidates and every candidate to share the final source/version identity.
-Earlier debug or 1.0.11 acceptance receipts cannot approve these new binaries.
-Retain source-lock and full image audit evidence, checksums and license notices.
-Claude live activation is deferred; configuration checks are not proof of a
-running Claude session. Final native-platform and publication status must be
-reported from actual receipts rather than inferred from this document.
+The optimized distributions passed native installer/update validation and
+contained acceptance against the exact CI-built macOS executable. Release
+manifest assembly verified that the accepted binary is one of its candidates and
+every candidate shares the final source/version identity. Source-lock and full
+image audit evidence, checksums and license notices are retained. Claude live
+activation remains deferred; configuration checks are not proof of a running
+Claude session.
 
-### Local candidate verification — 21 October 2026
+### Release verification — 21 October 2026
 
-The optimized macOS ARM64 distribution and its Codex, Claude and combined
-standalone installers were built and validated locally. Candidate identity:
+The optimized macOS ARM64, Linux x86-64 and Windows x86-64 distributions and
+their Codex, Claude and combined standalone installers passed
+[CI run 39586200087](https://github.com/codemirket/harness/actions/runs/39586200087).
+The artifact-producing commit is `275167d22d0e072712af44530082aa0e6ba4820d`.
+The release documentation update does not change compiled source inputs.
+Release identity:
 
 - Source: `2c2b37058a2a61abb38d3994ea346ba6af420b9857efb4822eacabf8fbbf27d9`.
-- Packaged CLI: `cf947b8eb21f5a9a971ade51abef9a7a4147da183da64122c418834810568efe`.
+- Accepted CI macOS CLI: `4be949b014a995e8344aa3bef827300761159c8c9c0ecf23eb924f26347437b4`.
+- All target-specific hashes are in the release manifest and checksums.
 
 | Check | Observed result |
 | --- | --- |
-| Native gate | Formatting, Clippy and 426 tests passed; eight opt-in tests explicitly ignored |
-| Packaged installation | All four executable variants passed disposable setup, doctor, update and MCP checks |
+| Native gate | Formatting and Clippy passed on all three targets; 426 macOS, 425 Linux and 392 Windows tests passed, with eight opt-in tests explicitly ignored per target |
+| Packaged installation | All twelve executable variants passed native disposable setup, doctor, update and MCP checks; all 126 retained output-file hashes verified |
 | Design tools | 70 tests passed, no skips, in the isolated Linux ARM64 test container |
 | Contained acceptance | All five checks passed against the exact packaged CLI: contained runtime, desktop contracts, parallel runtime, design output and backup recovery |
-| Artifact assembly | Local macOS manifest validated against packaged bytes and the new acceptance receipt; checksums and license notices retained |
+| Artifact assembly | Three-target manifest validated against CI-produced bytes and exact-binary acceptance; all archive/executable checksums and license notices verified |
 | Source dependency audit | 732 coordinates checked; nine unresolved Pillow findings, three existing ZIP exceptions, no stale reviews |
 | Full image audit | All four pinned base/service images and both candidate runtime exports passed identity and required inventory checks; no missing targets |
 | Documentation and evaluation tooling | Generated map current; local candidate-document links and diff checks passed; 15 audit tests, five remediation tests and synthetic evaluation preflight passed |
@@ -95,10 +97,11 @@ receipts. Runtime exports matched the already prepared design and agent images;
 no installed main CLI replacement or service restart was needed. No model
 inference or natural-adoption trial was run.
 
-Windows x86-64 and Linux x86-64 native builds/validation and final-revision remote
-CI remain pending. The single-target local manifest is not the complete
-three-target release. Claude live activation remains deferred. Nothing has been
-pushed or published, and the installed desktop CLI remains the prior candidate.
+The earlier locally built macOS binary passed acceptance but differs from the
+CI binary. Acceptance was therefore rerun against the exact CI bytes used in
+this release. Website checks also passed for the artifact-producing commit.
+Claude live activation remains deferred. Release publication does not replace
+an already installed desktop executable or reconnect its sessions.
 
 The native [CI workflow](https://github.com/codemirket/harness/actions/workflows/check.yml)
 runs formatting, Clippy, standard tests, packaging, each standalone installer,

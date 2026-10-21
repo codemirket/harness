@@ -15,12 +15,10 @@ apply.
 
 [Website & usage guide](https://harness.mirket.dev) ·
 [Documentation](docs/README.md) ·
-[Release 1.0.11](https://github.com/codemirket/harness/releases/tag/mirket-v1.0.11) ·
+[Release 1.1.0](https://github.com/codemirket/harness/releases/tag/mirket-v1.1.0) ·
 [Contributing](CONTRIBUTING.md)
 
-This checkout prepares **1.1.0**, which is not yet published. See the
-[candidate changes and release requirements](docs/release-status.md).
-The release link above continues to identify the published download.
+See the [1.1.0 changes, verification and upgrade boundaries](docs/release-status.md).
 
 ## What it adds
 
