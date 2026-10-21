@@ -76,6 +76,13 @@ not silently truncated. Worker recall uses up to eight explicit queries, or boun
 
 ## Memory
 
+Installed guidance uses Mem0 for relevant prior project decisions and deliberately
+retained verified facts, with unchanged scope, provenance and supersession rules.
+It does not require memory calls for self-contained tasks. `context-management`
+owns this recall/retain/resume method; host instructions link it instead of
+creating a second tracker. Selected Mirket workers use LangGraph automatically.
+
+
 `memory_read`, `memory_put`, `memory_forget` are host tools, not worker write
 permissions. The CLI equivalents are `mirket memory read`, `put`, and `forget`.
 Store concise stable facts only when useful within the user's scope. Include a
@@ -381,3 +388,19 @@ never cached across operations. Eligibility is checked per query; result limits,
 rank interleaving and incomplete-coverage reporting are unchanged. A failed batch
 returns no partial memories in best-effort mode and propagates in required mode.
 See the [measured comparison](runtime-integration-review-2026-10.md#measured-recall-reuse).
+
+Worker results and `workflow_status` expose a compact `memory` summary: engine,
+status, result count, query count and incomplete coverage. Successful older
+checkpoints without a status are interpreted from their results; missing recall
+evidence remains `unknown`. Summaries omit facts, query text and upstream error
+messages. `available` means results were retrieved, not that they were relevant,
+used correctly or accepted. An unselected runtime reports `not_selected` and
+an ephemeral worker cannot promise checkpoint recovery.
+
+`runtime_status` passively compares process/installed binary identity and saved
+selection, reporting concrete reconnect/doctor actions when identity or selection
+is uncertain. It does not probe providers, launch containers, start a VM or
+reconcile managed files. `memory_read` and `workflow_status` launch the private
+runtime and can initialize project storage; their read-only hints describe domain
+operations, not zero filesystem/process effects. Use the explicit environment
+start command when authorized; do not hide activation in a status call.

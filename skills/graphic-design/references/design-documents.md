@@ -9,7 +9,9 @@ Compile `design/tokens.json` first. `openpencil_document` creates a `.fig` file 
 imports `.fig`/`.pen` source and imports canonical DTCG tokens as variables and
 styles. `openpencil_inspect` without source lists supported upstream tools; with
 only `tool` it returns that tool's argument schema. Use a read tool plus `source`
-to inspect layers, geometry, text, variables and component identities.
+to inspect layers, geometry, text, variables and component identities. A source
+inspection returns its consumed SHA-256; schema discovery has no document receipt
+and cannot satisfy a worker's document-inspection requirement.
 
 Use `openpencil_edit` with source, upstream tool, arguments and a `.fig` output.
 Use the actual schema; do not invent a design-object API. Editing an existing

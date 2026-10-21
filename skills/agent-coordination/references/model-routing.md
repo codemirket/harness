@@ -56,7 +56,8 @@ that might be useful. Split broader work into phases.
 An empty `assigned_tools` selects that workflow's small owned tool set. An explicit
 list can narrow it, but cannot introduce an unrelated tool or omit canonical
 production and verification tools. Required tools must actually succeed before
-completion; registering or merely assigning a renderer is insufficient. Workflow
+completion; choose arguments that contribute to the requested artifact, never a
+dummy invocation solely to satisfy the tool requirement. Registering or merely assigning a renderer is insufficient. Workflow
 floors remain effective even if the caller labels architectural work mechanical.
 
 | Need | Workflow | Owned route |
@@ -159,8 +160,8 @@ source needs a new implementation handoff, not a recycled success. Logs must be
 kept at stable paths; changing a previous log invalidates its report. Exact retries
 are idempotent. The tool records host testimony; it does not execute commands,
 authenticate a human reviewer, or prove the checks are semantically sufficient.
- A
-`verification_tools` entry must also be assigned; completion waits for those
+
+A `verification_tools` entry must also be assigned; completion waits for those
 checks after mutation. To request T1, declare one typed
 `deterministic_operation` and use its exact single-operation objective, for
 example `"objective":"Convert CSV to JSON"` with

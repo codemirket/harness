@@ -2311,7 +2311,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use OpenPencil file operations in the assigned design workspace. Keep editable .fig source, inspect its layers and exported pixels, and link evidence to the saved revision. Compile canonical tokens before editing. A flat screenshot cannot replace an editable design.",
+      "rule": "Use OpenPencil file operations in the assigned design workspace. Keep editable .fig source, inspect its saved layers (schema discovery does not count) and exported pixels, and link evidence to the saved revision. Compile canonical tokens before editing. A flat screenshot cannot replace an editable design.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "mobile-design",

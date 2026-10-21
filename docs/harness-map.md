@@ -1,6 +1,12 @@
 # Mirket system map
 
-Snapshot: **21 October 2026**, consolidated `main` after the documented review cleanup and measured recall optimization, following `33f4cd2`. This map supports the final harness review: it describes what exists, who owns each outcome, what it depends on, how it is selected and which claims still need evidence. It does not authorize further implementation or deployment.
+Snapshot: **21 October 2026**, consolidated `main`, with the pre-release adoption and inspection follow-up based on `c5ecde3`. This map supports the final harness review: it describes what exists, who owns each outcome, what it depends on, how it is selected and which claims still need evidence. It does not authorize further implementation or deployment.
+
+The pre-release follow-up adds Mem0 recall disclosures to worker/recovery results,
+focused recall/retention/resume guidance, passive actionable identity diagnostics,
+and saved-document evidence for required OpenPencil inspection. The current
+[decision record](runtime-integration-review-2026-10.md#pre-release-follow-up)
+records the installed dependency closure and limits of the design-quality claim.
 
 ## 1. Read this map and its inventories
 
@@ -355,6 +361,7 @@ The detailed methods are available for every role in the methodology appendix. A
 
 | Evidence | Revision/scope | What can be concluded |
 | --- | --- | --- |
+| Pre-release follow-up | Based on `c5ecde3`; current source in generated inventory | 426 native and 70 design tests passed, plus disposable setup/doctor. After authorized activation of the matching design stack, all five full-acceptance checks passed and a candidate-bound receipt was created. Main CLI and existing desktop sessions were not updated. See the runtime review for dependency evidence and remaining limits. |
 | Committed final-pass candidate | `33f4cd2`, source `da370a1529a8d062b3308fe24feb616f08288e74c1d623256588bb7b16c6ec63` | Formatting/Clippy and 424 native tests passed (8 opt-in ignored); rebuilt design image passed 70/70 with no skips; catalog and disposable all-target setup/doctor passed. No desktop deployment. |
 | Initial integration review | [Runtime review](runtime-integration-review-2026-10.md), before batched recall | Contained Mem0/LangGraph suite passed, including persistence, isolation, supersession, restart, checkpoint CAS, bounded pause and host verification. Seven-query synthetic fixture has six answerable hits at rank 3 and one empty negative. Not natural adoption or answer quality. |
 | Shared recall handle | Same review, final implementation; 22/128 synthetic facts, five alternating pairs per query count | Four-query median batch time reduced 59–61%; eight-query time reduced 72–73%. Records, ordering and coverage unchanged; score differences at floating-point roundoff. No end-to-end worker or cold-start claim. |

@@ -63,7 +63,7 @@ export async function openpencilInspect(args) {
   }
   const name=args.tool || 'get_page_tree';
   validateOpenPencilTool(name,args.arguments || {},'read');
-  return staged(args.source,async(stage,input)=>({...metadata,source:args.source,
+  return staged(args.source,async(stage,input)=>({...metadata,source:args.source,source_sha256:sha256(await regularOutput(input)),
     result:await cli(stage,['tool','call',name,input,'--args',JSON.stringify(args.arguments || {}),'--json'],true)}));
 }
 export async function openpencilDocument(args) {

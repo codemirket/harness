@@ -8679,7 +8679,11 @@
         "repository-retrieval",
         "index-freshness",
         "memory",
-        "recall"
+        "recall",
+        "mem0",
+        "langgraph",
+        "interrupted-worker",
+        "project-decisions"
       ]
     },
     {

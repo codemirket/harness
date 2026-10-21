@@ -10,7 +10,7 @@ current explicit-fact, offline memory contract.
 This review follows implementation commit `33f4cd2e61935a216cab820b23705acbcbb634b5`
 on `main`. The cleanup and measured recall optimization are recorded with this
 document in local Git history; nothing was pushed or deployed.
-Current source fingerprint:
+Source fingerprint of the completed recall optimization (before the follow-up below):
 `c0a8aa3ba4ded447888bd44b3e555cad419c47e255af7f6eb7a0b8b991a1bf7e`.
 The [system map](harness-map.md), [runtime guide](agent-runtime.md) and
 [implementation record](harness-final-pass-implementation-2026-10.md) retain their
@@ -272,3 +272,161 @@ reconfiguration or data migration occurred. Windows/Linux native activation,
 live desktop reconnection, natural selection and a full candidate image advisory
 scan are not established by these local checks. Repository inspection is not a
 proof that no future drift or inefficiency exists.
+
+
+## Pre-release follow-up
+
+This implementation pass starts from clean `c5ecde3`. The subsequent authorized
+follow-up activates the matching design stack and commits the changes. Publication,
+push, main-CLI replacement and provider inference remain outside this pass. No library is exempt from replacement;
+retention below means the current consumer needs its behavior, not a permanent
+architectural commitment.
+
+### Adoption and owned authority
+
+Host entry guidance now directs focused Mem0 recall for recurring decisions,
+verified stable-fact retention with provenance and supersession, and LangGraph
+resume after interruptions. The canonical method is `context-management`, also
+searchable by Mem0, LangGraph and interrupted-worker terms. Self-contained work
+needs no memory ceremony. Worker results and recovery status disclose recall
+availability/count/coverage without duplicating private facts or queries.
+
+Mirket owns its managed configuration and routed dispatch. Passive runtime status
+now gives actionable reconnect/doctor diagnostics for mismatched or unreadable
+identity/selection. Proactive repair stays within existing authorization through
+the owning commands. It does not confer device-wide permissions, install packages,
+start a VM, schedule background work or intercept host-native tools.
+
+One reproduced compliance loophole was repaired: `openpencil_inspect` schema lookup
+could count as required document inspection. Saved-document inspection now returns
+a consumed-source digest, checked against the scoped current file by Rust; only
+that receipt satisfies the existing worker requirement. Discovery remains useful
+and successful, without pretending it inspected a document. Existing artifact,
+visual, recovery and host-verification checks remain in place.
+
+### Runtime dependency decisions
+
+A fresh, network-disabled Linux ARM64 trial read installed distribution metadata
+and traversed active requirement markers/extras from all six agent roots. All 97
+distributions are reachable; there is no orphan distribution to safely uninstall
+from this exact supported closure. This is dependency evidence, not proof that
+every feature of each library is useful. Recorded file sizes total 427.38 MiB,
+excluding models, base OS, image compression/layers, private data and RSS.
+
+| Component or group | Actual consumer / unique value | Decision and removal consequence |
+| --- | --- | --- |
+| Mem0, local Qdrant, SQLAlchemy/history | Explicit scoped facts, hybrid retrieval and mutation history | Keep. A replacement must preserve provenance, expiry, supersession, idempotency, pagination and export/migration; no current drop-in demonstrated. |
+| LangGraph, SQLite checkpoint adapter and required LangChain/SDK closure | StateGraph, durable interrupts, checkpoint CAS and budget-preserving effect recovery | Keep. Do not delete SDK/prebuilt distributions merely because Mirket calls StateGraph; the installed package declares them required. A narrower supported upstream distribution is a valid future replacement. |
+| FastEmbed, ONNX Runtime, tokenizer, NumPy, multilingual model and BM25 assets | Offline dense semantics and lexical retrieval | Keep. Lexical-only removes semantic capability; replacing embeddings requires reindex/migration and representative retrieval evidence. |
+| spaCy, English model and exclusively reachable NLP closure | Lemmatization/entity preprocessing in Mem0 | Best reduction candidate: 27 distributions, 171.42 MiB of recorded files exclusive to these roots. Fresh four-arm trial still does not establish broad noninferiority; do not strip this closure in this release. |
+| OpenAI/PostHog/LangSmith clients | Required by Mem0 / LangChain metadata; extraction/tracing/network disabled in owned runtime | No standalone uninstall. Removing them requires a supported lean upstream boundary or maintained fork and import/metadata tests; a disabled service is not an orphan package. |
+| FastEmbed → Pillow | Required pinned closure despite text-only Mirket embedding use | Keep compatible constraints. The fresh 732-coordinate audit still reports nine advisory findings; Pillow 13 conflicts with the current FastEmbed constraint. Do not break the lock or fork merely to clear advisories. |
+| MCP SDK, AJV | Design transport and bounded argument validation | Keep; actual imports in server/OpenPencil adapter. Removing them changes protocol/schema enforcement. |
+| OpenPencil and its CLI/core/CanvasKit/Yoga closure | Saved editable documents and lazy operation schemas | Keep, with stronger inspection evidence. Any replacement must prove creation, existing-document edit, save/reopen, IDs, tokens and exports. |
+| Satori + resvg | Static Flexbox/text layout plus native vector previews | Keep now. Browser replacement requires matched font/wrapping/layout and delivery-contract trials; resvg alone does not supply layout. |
+| Sharp | Intentional raster crop/resize/format conversion | Keep; input staging is not an equivalent transformation. |
+| Odiff | Independent comparison of saved pixels and dimension failures | Keep; renderer-local comparison does not replace its standalone contract. |
+| SVGO + saxes + css-tree | Optimization and SVG/XML/CSS validation across several retained renderers | Keep libraries. Standalone optimizer consolidation remains possible only preserving its larger input contract and saved consumers. |
+| Playwright/Chromium, Typst, fonts | Working DOM inspection; paged output; reproducible baseline glyphs | Keep. Editable files do not replace working UI or paged typesetting. Additional licensed fonts remain task inputs. |
+| Kroki / Excalidraw | Actual graph layout / optional specialized syntax | Keep outside core defaults; Excalidraw remains explicit opt-in with old selections preserved. No service was started by this review. |
+| Video, Python pip and Node package managers in runtime layers | Already removed from shipped runtime by prior implementation | Keep excluded. No new removal or image-size saving claimed in this pass. |
+
+The fresh 23-fact/15-query comparison again obtained answerable recall@3 of 1.0
+in hybrid+NLP, hybrid-no-NLP, dense and lexical arms. The first three returned
+nothing for only one of two unanswerable cases; lexical for both. It exercises
+identifiers, inflections, multilingual facts, supersession and expiry, but remains
+a small synthetic fixture, not proof that NLP or semantics can be removed. Runtime
+metadata and raw results are retained outside shipped source in the task evidence
+directory. Temporary metadata instrumentation was restored after the trial.
+
+### Designer capability and remaining release claims
+
+The existing guidance covers art direction, typography proof, references and asset
+rights, semantic diagrams, editable masters, source/export handoff and located
+critique. All twelve direct design npm libraries have active consumers. Adding a
+new design framework or a larger reference catalog would not resolve the missing
+quality evidence. The useful retained outcome boundaries are:
+
+| Outcome | Proof required from the actual task | Remaining limit |
+| --- | --- | --- |
+| New and existing editable design | Saved .fig, reopened layers/IDs, final export and inspected pixels | A schema manifest or simple shape test cannot certify all operations or complex imports. |
+| Web interface | Real states, keyboard/reflow, narrow/wide rendering, actual assets and text | Screenshot availability does not establish usability or visual craft. |
+| Static/vector/raster assets | Editable master where requested, typography/alpha/use-size inspection and coherent family | Rich raster creation remains a host capability, not a worker renderer. |
+| Diagram | Source semantics checked against every rendered relationship | Graph layout success is not semantic accuracy; optional services must be explicitly available. |
+| Paged output | Every final page inspected, fonts/assets and destination requirements verified | Generic RGB/PDF output is not press certification; specialized print/prepress is host-owned. |
+| Video or specialized native/3D work | Explicitly selected capable host tool and actual final artifact | No bundled encoder or general native/3D production promise. |
+
+The earlier negative design-quality evaluation remains valid historical evidence.
+This pass improves deterministic inspection fidelity and host guidance, not a
+measured aesthetic or natural-selection gain. No new paid model campaign was run.
+
+### Next decisions in order
+
+1. Exercise the changed candidate through native, runtime and disposable-host
+   checks before release. Reconnect each actual desktop only after an authorized
+   installation; candidate acceptance is not installed-client activation.
+2. Run bounded natural task opportunities on an authorized host: recurring project
+   decision/retention, interrupted worker, new/editable design, live interface,
+   static/vector, diagram and paged artifact, plus self-contained and unavailable
+   cases. Distinguish first attempt from repair, correct invocation from useful
+   contribution, host fallback from harness output, and report opportunities as
+   denominators. Use existing evaluation contracts and preserve negative results.
+3. Decide the NLP reduction with a separate held-out corpus of realistic project
+   facts, difficult identifiers/inflections/multilingual queries and negatives.
+   Freeze relevance labels before comparison; require no lost critical facts,
+   unchanged expiry/supersession/isolation, and a tested reindex/rollback path.
+   If it fails, retain NLP and record the failing cases rather than expanding an
+   open-ended optimization project. This is the largest evidenced reduction lead.
+4. Trial a browser-based replacement for Satori only on actual static-layout
+   opportunities. Preserve editability, fonts, input limits and saved selections;
+   if equivalent, clean the dependency/lock/image/schema/registry/guidance/tests
+   together. Do not remove shared SVGO or introduce a Rust port merely for counts.
+
+### Follow-up verification and scorecard
+
+Candidate: macOS ARM64, source
+`f6ea4b36cb91572ba8e380f0aa5f9bd839ae270be31a3cef168b8d3981911616`, binary
+`b67a3dd931734e1bb6e883d5ecc0291b3a77917aa4e6e9d0addde59153f5aec9`.
+Evidence: `~/.mirket/work/pre-release-_x90jv2f` (logs, dependency graph/trial,
+matching candidate, disposable setup and rendered OpenPencil specimen).
+
+| Check or outcome | Before | This pass |
+| --- | --- | --- |
+| Native gates | 424 passed, 8 opt-in ignored | Formatting/Clippy and 426 passed, 8 opt-in ignored; includes schema-discovery false-positive and recall-disclosure regressions |
+| Design runtime | 70 passed | 70 passed, no skips; real saved OpenPencil inspection digest and schema-only absence checked. Saved 480×240 solid-color specimen inspected; not a design-quality benchmark |
+| Agent runtime | Real Mem0/LangGraph integration already exercised | Contained runtime and fresh four-arm retrieval comparison passed; subsequent complete acceptance passed against the activated design stack |
+| Recovery | Prior checkpoint/backup tests | Explicit backup-runtime test passed: history, pending effect, relocation and recovery with disposable state |
+| Host delivery and inventory | Prior source | Catalog valid; both-target disposable setup/doctor passed; generated map matches source |
+| Evaluation tooling | Prior check results | 15 dependency-audit tests, 5 remediation tests, synthetic quality-packet preflight passed; zero model executions |
+| Dependency audit | Nine untriaged Pillow findings | 732 coordinates queried; same nine findings, three existing zip exceptions, no stale reviews. No fresh OS/image scan claimed |
+| Installed-stack acceptance | Initial attempt failed: design stack absent/drifted | Matching stack activated through the supported stop/prepare/start path; all five full-acceptance checks passed and a candidate-bound receipt was created |
+| Dependency/image savings | Prior video/package-manager removal | No new removals or claimed savings; measured exclusive NLP metadata footprint is a candidate, not reclaimed space |
+| Natural adoption / designer quality | Historical weak/negative evidence | Still unmeasured; guidance and artifact enforcement improved, no inferred quality gain |
+
+An initial design-check invocation rejected the older bootstrap fingerprint after
+final guidance changed. Rebuilding the matching executable resolved that specific
+failure; its isolated design suite then passed. Initial full acceptance reached
+fresh MCP/skills and real memory/pagination/concurrency checks, then failed at
+installed design launch. That failure is retained in the evidence rather than
+presented as a code defect or a passed gate.
+
+The subsequent user-authorized activation used the installed CLI to stop the old
+design services without purging data, then the matching candidate to prepare and
+start them. Schema-3 `core`/`diagrams` selection migrated to schema-4
+`core`/`diagrams`/`excalidraw`, preserving the old companion behavior. The workspace
+and Kroki port were retained. The active tools image is
+`sha256:46395b3f3ba702a37b37bbceaf3f0fa335f33e116c195c08dc570e42c00b05cb`.
+A direct OpenPencil response matched all 14 reported runtime files to source.
+
+Full acceptance then passed: contained runtime, desktop contracts, parallel
+runtime, design output and backup recovery. `acceptance-activated.json` in the
+same evidence directory binds the source and executable digests above. This
+resolves the installed-stack acceptance blocker without lowering a check or
+changing source to bypass the prerequisite. The unchanged source also retains
+the passing 426 native/70 design checks. No further code repair was needed.
+
+Saved setup choices, client configuration and the installed main CLI were not
+replaced. These checks used fresh candidate processes; they do not establish
+reconnection of existing desktop sessions or aesthetic acceptance. Source changes
+and this verification record are committed together locally. Nothing was pushed
+or published.

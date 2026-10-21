@@ -24,6 +24,7 @@ async fn connected_identity_does_not_change_when_the_installed_binary_is_replace
         .unwrap();
     assert_eq!(before["catalog"]["sha256"], expected_catalog);
     assert_eq!(before["installed_binary"]["matches_process"], true);
+    assert_eq!(before["recommended_actions"], json!([]));
     assert!(
         client
             .peer_info()
@@ -43,6 +44,13 @@ async fn connected_identity_does_not_change_when_the_installed_binary_is_replace
         .unwrap();
     assert_eq!(after["process"], before["process"]);
     assert_eq!(after["installed_binary"]["matches_process"], false);
+    assert!(
+        after["recommended_actions"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|a| a.as_str().unwrap().contains("Reconnect this client"))
+    );
     let args = json!({"project":paths.home,"run_id":"routed-fixture"});
     let rejected = client
         .call_tool(

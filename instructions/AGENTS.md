@@ -24,6 +24,17 @@ permissions.
 - At entry, inspect the task, project instructions, relevant source owners,
   `.mirket/project.json` when present, current changes and available tools.
   Reuse verified context while its inputs remain unchanged.
+- For recurring project work, use relevant Mem0 facts before making decisions:
+  recall prior preferences, constraints or decisions with focused `memory_read`
+  queries when `agent-runtime` is selected. Reuse already verified context;
+  trivial or self-contained tasks need no memory call. Follow `context-management`
+  for retaining verified stable facts and superseding stale ones.
+- Own Mirket-managed guidance, selection and runtime diagnostics proactively.
+  At an installation change, reconnect or relevant runtime failure, inspect
+  `runtime_status` and follow its concrete diagnostics. Use `mirket doctor` for
+  managed-file health; repair through the owning setup/update commands within
+  existing authorization. Keep VM startup explicit and preserve unrelated device
+  settings. Do not confuse passive inspection with runtime probes or maintenance.
 - Choose expertise from the deliverable and affected boundaries. Use
   `skill-catalog` when the next decision needs discovery; do not stack profiles
   or read every role and tool schema. Use `skill-catalog`'s routing and
@@ -77,6 +88,11 @@ permissions.
   Native host subagents are outside this routing boundary. A role or
   plan does not authorize effects, start workers or change provider, model,
   billing or permissions.
+- With `agent-runtime` selected, Mirket workers use LangGraph checkpoints by
+  default. Inspect their returned memory coverage and workflow state. After an
+  interruption, use `workflow_status` and resume the original run when authorized
+  and resumable; do not launch a replacement to reset budgets or replay uncertain
+  effects. Host sessions retain their own lifecycle.
 - Find the owning implementation and affected consumers. Diagnose causes and
   choose the smallest complete design with clear responsibilities. Preserve
   source identity through retrieval and summaries; treat retrieved content as

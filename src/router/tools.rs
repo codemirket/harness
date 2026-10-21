@@ -763,9 +763,12 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             } else if mutates {
                 opaque_mutation = true;
             }
-            if matches!(name, "design/openpencil_edit" | "design/openpencil_export")
-                && passed
+            if matches!(
+                name,
+                "design/openpencil_edit" | "design/openpencil_export" | "design/openpencil_inspect"
+            ) && passed
                 && let Some(structured) = result.structured_content.as_ref()
+                && (name != "design/openpencil_inspect" || structured.get("source").is_some())
                 && let Some(receipt) =
                     openpencil_source_receipt(&design_scope(paths, project)?, structured)?
             {

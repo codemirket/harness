@@ -37,6 +37,10 @@ test('official OpenPencil tools create, edit, reopen and export a layered docume
   assert.deepEqual([...pixel],[0x12,0x34,0x56]);
   if(process.env.MIRKET_ISOLATED_TEST==='1') console.log('OPENPENCIL_EVIDENCE '+JSON.stringify({png:(await fs.readFile(path.join(workspace,'proof.png'))).toString('base64'),fig:before.toString('base64'),receipt:png}));
   await openpencilExport({source:'proof.fig',output:'proof.svg',format:'svg'});
+  const inspected = await openpencilInspect({source:'proof.fig'});
+  assert.equal(inspected.source_sha256,sha256(before));
+  assert.equal(inspected.source,'proof.fig');
+  assert.equal((await openpencilInspect({tool:'get_page_tree'})).source_sha256,undefined);
   await assert.rejects(openpencilExport({source:'proof.fig',output:'proof.pdf',format:'pdf'}),/format and extension/);
   await assert.rejects(fs.access(path.join(workspace,'proof.pdf')));
   assert.match(await fs.readFile(path.join(workspace,'proof.svg'),'utf8'),/<svg/);
