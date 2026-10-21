@@ -2,8 +2,8 @@
 
 This replaces the Penpot runtime described in the earlier harness map and
 security reports. The verified replacement is deployed. The actual Codex Mirket connection
-reports the new binary; its separate design connection is awaiting reconnect
-after the private engine was restarted. Earlier Penpot evidence remains historical evidence.
+reports the new binary. The separate design connection subsequently responded
+successfully during the 21 October review; activation is connection-specific. Earlier Penpot evidence remains historical evidence.
 
 ## Runtime and routing
 
@@ -128,8 +128,9 @@ records its dimensions, pixel value and source digest.
 The restart left the private engine stopped. Starting it and the saved core and
 diagrams services restored discovery of 14 design tools, including all four
 OpenPencil tools and no Penpot tools. Codex had dropped its separate design server
-connection; a native design call in this chat remains pending reconnect. The CLI
-results above establish live service behavior, not that missing client connection.
+connection at that point. The subsequent 21 October review observed a successful
+native design response with matching module identities. The CLI checks and that
+connection observation remain separate evidence; Claude activation was not tested.
 
 The contained acceptance gate passed before deployment and again after restart.
 The [retained acceptance receipt](openpencil-evidence/contained-acceptance.json) binds

@@ -1,6 +1,11 @@
 # Editable source to local video
 
-Use HyperFrames in the `design` package for encoded video or exact frames.
+HyperFrames in the `design` package offers experimental encoded-video export or exact frames.
+Its supported evidence is a bounded synthetic export, not demonstrated autonomous
+production quality or natural adoption. HyperFrames and FFmpeg are still bundled
+with design core; there is no independent video installation switch. Keep this
+experimental path only for an explicitly requested export whose result can be
+inspected. Interactive browser work does not require it.
 Keep editable source distinct from rendered frames and video. Inspect the actual
 tool schema and runtime readiness before promising an output format.
 

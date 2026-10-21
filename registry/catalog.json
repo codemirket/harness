@@ -631,7 +631,9 @@
         "odiff",
         "openpencil",
         "component-workbench",
-        "concept-selection"
+        "concept-selection",
+        "editable",
+        "fig"
       ],
       "license_files": [
         "docs/third-party-notices.md"
@@ -808,7 +810,9 @@
         "accessibility",
         "interaction-recipes",
         "animator",
-        "motion-audit"
+        "motion-audit",
+        "video",
+        "encoded"
       ]
     },
     {
@@ -8673,7 +8677,9 @@
         "context-management",
         "code-graph",
         "repository-retrieval",
-        "index-freshness"
+        "index-freshness",
+        "memory",
+        "recall"
       ]
     },
     {
@@ -11603,7 +11609,9 @@
         "frame-rendering",
         "scroll-media",
         "video-scrubbing",
-        "layer-compositing"
+        "layer-compositing",
+        "video",
+        "encoded"
       ],
       "informed_by": [
         "lottiefiles-motion",
@@ -12087,7 +12095,9 @@
         "kroki",
         "satori",
         "resvg",
-        "openpencil"
+        "openpencil",
+        "static",
+        "diagram"
       ],
       "informed_by": [
         "scroll-craft",

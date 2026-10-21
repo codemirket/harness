@@ -1,6 +1,6 @@
 # Runtime packages
 
-> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** This guide describes the working source following Mirket 1.0.11. The selective `package prepare --group` behavior is unreleased. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
 
 `design` supplies production tools. The internal `agent-runtime` package supplies
 Mem0 memory and LangGraph worker checkpoints through Mirket itself; see
@@ -61,8 +61,13 @@ mirket package call design static_render --arguments '{"tree":{"type":"div","pro
 The output path is relative to the same workspace. Use `probe design --schemas`
 for every installed design tool.
 
+Encoded video remains experimental: the bounded export fixture does not establish
+autonomous production quality or natural adoption. HyperFrames and FFmpeg remain
+bundled with design core; video is not independently installable.
+
 Core starts only the tools container: tokens, raster/vector processing, static cards,
 local Playwright, OpenPencil, Typst, HyperFrames and Odiff. Enable heavier groups explicitly:
+`mirket package prepare design --group diagrams`, then
 `mirket package start design --group diagrams` (core is always included),
 or `--group all`. Omitting groups reuses the saved selection. To change a running
 selection, stop it first; data and workspace are retained. Disabled groups do not
@@ -83,7 +88,7 @@ operations; a stopped service can retain its workspace and persisted design file
 | Live web page and interaction | Playwright | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
 | Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles. |
 | Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
-| Fixed frame or video | HyperFrames | Run lint, snapshot, then render. Inspect representative frames and normal playback; keep editable source separate from exports. |
+| Experimental fixed frame or encoded video | HyperFrames | Run lint, snapshot, then render. Inspect representative frames and normal playback; keep editable source separate from exports. |
 | Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
 | Raster input preparation | Sharp | Inspect dimensions, crop, color and transparency before downstream composition. |
 | Generated or imported SVG | SVGO | Optimize every SVG, then compare structure and appearance with the required semantic IDs intact. Optimization is not sanitization. |
@@ -112,8 +117,8 @@ support or establish browser-equivalent shaping for every script and inline layo
 
 The owned [tool budgets](../runtime/design/tools/tool-budgets.json) set each
 design call's bridge deadline. They allow long renders, including 15 minutes
-for HyperFrames and up to 90 minutes for a 64-page
-Typst job with per-page inspection. The host MCP request ceiling is the largest
+for HyperFrames and 25 minutes for Typst, including page-image inspection.
+The 64-page bound is a limit, not a promise that every job fits the deadline. The host MCP request ceiling is the largest
 of these budgets; cancellation can still end an individual call earlier.
 
 OpenPencil runs through its pinned official CLI in file mode, inside the core
@@ -277,3 +282,28 @@ separate output names and revision hashes for concurrent work.
 The Typst tool deadline is 25 minutes, below the 30-minute paged-work budget;
 inner compiler and page-image limits remain in force. This ceiling does not
 estimate job duration or guarantee that 64 complex pages fit the budget.
+
+
+## Selective diagram preparation
+
+A fresh design installation prepares the core image and its pinned build base.
+It does not pull Kroki or the Excalidraw companion. To add diagrams explicitly:
+
+```sh
+mirket package prepare design --group diagrams
+mirket package stop design
+mirket package start design --group diagrams
+```
+
+Preparation downloads missing pinned images but does not start services or change
+saved groups. Startup never downloads. Setup/update preserve saved diagram groups;
+a previously prepared full image receipt remains valid. Core and optional diagram
+receipts are immutable within a generation: preparation can finish after a failed
+pull, but conflicting or modified receipts require inspection, never overwrite.
+Prepared additions do not invalidate a running core. Changing enabled groups or
+runtime generations still requires stopping the owned services first. Existing
+images and user artifacts are not deleted by this change.
+
+The diagram group retains Excalidraw format support. Encoded video remains a
+specialist capability of the explicitly selected design package; no claim of
+natural adoption or production-quality gain follows from its availability.

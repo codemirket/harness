@@ -1,0 +1,1165 @@
+{
+  "date": "2026-10-21",
+  "status": "unreleased candidate; no deployment or publication",
+  "identities": {
+    "original": {
+      "head": "d8013f53969db336d813274d1fbfba53a89ad0e2",
+      "source_sha256": "a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a",
+      "input_files": 383
+    },
+    "candidate": {
+      "head": "1da51f6c8c46f873304892a9962b98ec407f3eb2",
+      "source_sha256": "b0fca214ac0f06fc63c73e9a44ae7f8ed970a6afb16035e40bb6866ffbe727a0",
+      "input_files": 385
+    },
+    "installed_binary": {
+      "sha256": "186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b"
+    },
+    "candidate_binary": {
+      "sha256": "85adf80ec275c277cfbcbd01daecf9d1414aeb0609ba34f1886892598fcec86a"
+    }
+  },
+  "live_installed_runtime": {
+    "process": {
+      "executable_sha256": "186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b",
+      "source_sha256": "a0f2d924a1512ae2c7a037d88fb257b30760cd0ab2e20b327dff3df85ae6b41a",
+      "target": "aarch64-apple-darwin",
+      "version": "1.0.11"
+    },
+    "installed_binary": {
+      "sha256": "186a2311aa928238db6df3227876794a1dfd6b4bd052876eb9e732b2e58f1d3b",
+      "matches_process": true
+    },
+    "catalog": {
+      "profiles": 63,
+      "sha256": "7764ca3fb4e54886aad67545959632250dc69ad2ebaed28e30f01b802ba83ae9",
+      "skills": 347
+    },
+    "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls."
+  },
+  "native": {
+    "format": "passed",
+    "clippy": "passed, warnings denied",
+    "passed": 417,
+    "failed": 0,
+    "ignored": 9,
+    "targets": 29
+  },
+  "design": {
+    "ok": true,
+    "image": "sha256:f24da48b2b3060066789531dfc731a6462e454f348f81bfd8c2f027efd5c349b",
+    "passed": 77,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 17832.523032,
+    "source_sha256": "b0fca214ac0f06fc63c73e9a44ae7f8ed970a6afb16035e40bb6866ffbe727a0"
+  },
+  "agent_runtime": {
+    "ok": true,
+    "recipe": "93d935f6ac439688fe7df76be0af48a9ff9520d349331a8cf19223703fb5dbc8",
+    "runtime": {
+      "files": {
+        "bm25.json": "3d2d130d3a9ef4e87cb672daadeb393c2ab78f743aecbfc0f815dae0e863d65a",
+        "bridge.py": "d53b2f04278d975d5690aa4d4a9f1238dcd1883205b44827d4dedab6b1c00de8",
+        "lifecycle.py": "99a50d1940dbc6c8a1c8029392233ec28785cfe9ac97c315332e5ab3abab0584",
+        "memory.py": "c281c3101502f591fb46538653a378ca8faee253892c894dd80d7539d8ec0fc1",
+        "model.json": "b1418d4a2cb5e90bde4e0177a2cb0002341394ad4ab7e3bdb26d770119d8d45a",
+        "requirements.lock": "34a2fcf536dc80d50d5d6fc039fd66ff7f0cd426742941d23d3d971d58f425d3",
+        "workflow.py": "e2baa9f2a0c7c5d807779bd531accbe799aa2b405d3d21d7d5ce576d4f08d108"
+      },
+      "memory": "explicit facts; project scope; local embeddings",
+      "network": "runtime container has no network",
+      "sha256": "1b44dbf36ac0a6d7ca1a8214ac7103b14cb6712ac1463ec918ec0cfd9a56efe4",
+      "versions": {
+        "fastembed": "0.9.0",
+        "langgraph": "1.2.16",
+        "langgraph-checkpoint-sqlite": "3.1.2",
+        "mem0ai": "2.2.1"
+      }
+    },
+    "scope": "Real existing unchanged agent runtime, synthetic tmpfs facts, no private memories or provider inference",
+    "measurements": [
+      {
+        "measurement": "contained-fixture-processes",
+        "seconds": 92.68,
+        "max_child_rss": 943036,
+        "rss_unit": "KiB on Linux, bytes on macOS",
+        "limits": "Fixture peak, not whole VM RSS, steady-state production latency or cold-start benchmark."
+      }
+    ]
+  },
+  "backup_runtime": {
+    "passed": 1,
+    "failed": 0,
+    "test": "backup_runtime_recovers_history_pending_effect_and_relocated_memory",
+    "scope": "Explicit existing runtime; disposable synthetic state; history/pending effect/relocated memory recovery"
+  },
+  "installation": {
+    "setup": "passed both targets in disposable home",
+    "doctor_ok": true,
+    "packages_selected": false,
+    "desktop_activation_tested": false,
+    "mcp_sample": {
+      "startup_ms": 1464.973042,
+      "request_median_ms": 2.217667,
+      "request_p95_ms": 2.685167,
+      "iterations": 3,
+      "measurement": "One spawned process; startup includes initialization. Request samples use catalog_search after discovery. Values describe this run, not a performance guarantee."
+    },
+    "limits": "One debug disposable process; not current optimized startup or before/after benchmark"
+  },
+  "catalog": {
+    "capabilities": 41,
+    "design_reference_instances": 27,
+    "embedded": 54,
+    "global_skills": 14,
+    "ok": true,
+    "profiles": 63,
+    "runtime_status": "not_checked",
+    "skills": 347,
+    "status": "valid"
+  },
+  "inventory": {
+    "skills": 347,
+    "delivery": {
+      "embedded": 54,
+      "upstream": 149,
+      "reference": 139,
+      "package": 5
+    },
+    "profiles": 63,
+    "profile_kinds": {
+      "starter": 8,
+      "specialist": 50,
+      "alternative": 5
+    },
+    "roles": 41,
+    "facets": 37,
+    "workflows": 17,
+    "sources": 47,
+    "reference_files": 139,
+    "main_mcp_tools": 27
+  },
+  "plan_size": [
+    {
+      "condition": "installed",
+      "serialized_characters": 12280,
+      "role_workflows": 10,
+      "worker_workflows": 17
+    },
+    {
+      "condition": "candidate",
+      "serialized_characters": 10224,
+      "role_workflows": 10,
+      "worker_workflows": 17
+    }
+  ],
+  "targeted_searches": {
+    "queries": [
+      "static graphic",
+      "editable design",
+      "diagram",
+      "video",
+      "memory recall"
+    ],
+    "passed": 5,
+    "scope": "Deterministic discovery access, not autonomous selection"
+  },
+  "local_provider_probes": {
+    "passed": 6,
+    "cases": [
+      {
+        "case": "editable-interface-route",
+        "exit_code": 1
+      },
+      {
+        "case": "invalid-json-trace",
+        "exit_code": 1
+      },
+      {
+        "case": "provider-owned-usage",
+        "exit_code": 0
+      },
+      {
+        "case": "required-memory-without-runtime",
+        "exit_code": 1
+      },
+      {
+        "case": "mechanical-model-ranking",
+        "exit_code": 0
+      },
+      {
+        "case": "source-over-read-limit",
+        "exit_code": 1
+      }
+    ],
+    "scope": "Synthetic localhost provider; expected failures included, no paid model calls"
+  },
+  "retrieval_ablation": {
+    "evaluation": "retrieval-ablation-v1",
+    "facts": 23,
+    "queries": 15,
+    "arms": [
+      {
+        "arm": "hybrid-nlp",
+        "answerable_recall_at_3": 1.0,
+        "unanswerable_empty": 1,
+        "unanswerable_cases": 2,
+        "elapsed_seconds": 1.7,
+        "queries": [
+          {
+            "category": "identifier",
+            "expected": [
+              "identifier"
+            ],
+            "returned": [
+              "identifier",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 204.68
+          },
+          {
+            "category": "near-identifier",
+            "expected": [
+              "identifier-near"
+            ],
+            "returned": [
+              "identifier-near",
+              "identifier",
+              "retention"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 19.69
+          },
+          {
+            "category": "inflection",
+            "expected": [
+              "inflection"
+            ],
+            "returned": [
+              "inflection",
+              "identifier",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 20.31
+          },
+          {
+            "category": "entity",
+            "expected": [
+              "entity"
+            ],
+            "returned": [
+              "entity"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 18.55
+          },
+          {
+            "category": "tr",
+            "expected": [
+              "tr"
+            ],
+            "returned": [
+              "tr",
+              "noise-2",
+              "noise-1"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 24.87
+          },
+          {
+            "category": "de",
+            "expected": [
+              "de"
+            ],
+            "returned": [
+              "de",
+              "path",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 24.59
+          },
+          {
+            "category": "es",
+            "expected": [
+              "es"
+            ],
+            "returned": [
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 18.65
+          },
+          {
+            "category": "paraphrase",
+            "expected": [
+              "motion"
+            ],
+            "returned": [
+              "motion",
+              "path",
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 19.3
+          },
+          {
+            "category": "retention",
+            "expected": [
+              "retention"
+            ],
+            "returned": [
+              "retention",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 11.57
+          },
+          {
+            "category": "path",
+            "expected": [
+              "path"
+            ],
+            "returned": [
+              "path",
+              "noise-0"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 16.25
+          },
+          {
+            "category": "version",
+            "expected": [
+              "version"
+            ],
+            "returned": [
+              "version",
+              "path",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 14.55
+          },
+          {
+            "category": "supersession",
+            "expected": [
+              "new-color"
+            ],
+            "returned": [
+              "new-color"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 14.91
+          },
+          {
+            "category": "injection-as-data",
+            "expected": [
+              "injection"
+            ],
+            "returned": [
+              "injection",
+              "new-color",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 10.93
+          },
+          {
+            "category": "unanswerable",
+            "expected": [],
+            "returned": [
+              "identifier-near"
+            ],
+            "recall_at_3": null,
+            "latency_ms": 15.28
+          },
+          {
+            "category": "expired",
+            "expected": [],
+            "returned": [],
+            "recall_at_3": null,
+            "latency_ms": 18.91
+          }
+        ]
+      },
+      {
+        "arm": "hybrid-no-nlp",
+        "answerable_recall_at_3": 1.0,
+        "unanswerable_empty": 1,
+        "unanswerable_cases": 2,
+        "elapsed_seconds": 0.4,
+        "queries": [
+          {
+            "category": "identifier",
+            "expected": [
+              "identifier"
+            ],
+            "returned": [
+              "identifier",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.78
+          },
+          {
+            "category": "near-identifier",
+            "expected": [
+              "identifier-near"
+            ],
+            "returned": [
+              "identifier-near",
+              "identifier",
+              "retention"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.83
+          },
+          {
+            "category": "inflection",
+            "expected": [
+              "inflection"
+            ],
+            "returned": [
+              "inflection",
+              "identifier",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 10.3
+          },
+          {
+            "category": "entity",
+            "expected": [
+              "entity"
+            ],
+            "returned": [
+              "entity"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.92
+          },
+          {
+            "category": "tr",
+            "expected": [
+              "tr"
+            ],
+            "returned": [
+              "tr",
+              "noise-2",
+              "noise-1"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.88
+          },
+          {
+            "category": "de",
+            "expected": [
+              "de"
+            ],
+            "returned": [
+              "de",
+              "path",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.72
+          },
+          {
+            "category": "es",
+            "expected": [
+              "es"
+            ],
+            "returned": [
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.9
+          },
+          {
+            "category": "paraphrase",
+            "expected": [
+              "motion"
+            ],
+            "returned": [
+              "motion",
+              "path",
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.71
+          },
+          {
+            "category": "retention",
+            "expected": [
+              "retention"
+            ],
+            "returned": [
+              "retention",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.5
+          },
+          {
+            "category": "path",
+            "expected": [
+              "path"
+            ],
+            "returned": [
+              "path",
+              "noise-0"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 7.36
+          },
+          {
+            "category": "version",
+            "expected": [
+              "version"
+            ],
+            "returned": [
+              "version",
+              "path",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.85
+          },
+          {
+            "category": "supersession",
+            "expected": [
+              "new-color"
+            ],
+            "returned": [
+              "new-color"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.92
+          },
+          {
+            "category": "injection-as-data",
+            "expected": [
+              "injection"
+            ],
+            "returned": [
+              "injection",
+              "new-color",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.9
+          },
+          {
+            "category": "unanswerable",
+            "expected": [],
+            "returned": [
+              "identifier-near"
+            ],
+            "recall_at_3": null,
+            "latency_ms": 6.83
+          },
+          {
+            "category": "expired",
+            "expected": [],
+            "returned": [],
+            "recall_at_3": null,
+            "latency_ms": 8.54
+          }
+        ]
+      },
+      {
+        "arm": "dense",
+        "answerable_recall_at_3": 1.0,
+        "unanswerable_empty": 1,
+        "unanswerable_cases": 2,
+        "elapsed_seconds": 0.39,
+        "queries": [
+          {
+            "category": "identifier",
+            "expected": [
+              "identifier"
+            ],
+            "returned": [
+              "identifier",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.45
+          },
+          {
+            "category": "near-identifier",
+            "expected": [
+              "identifier-near"
+            ],
+            "returned": [
+              "identifier-near",
+              "identifier",
+              "retention"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.54
+          },
+          {
+            "category": "inflection",
+            "expected": [
+              "inflection"
+            ],
+            "returned": [
+              "inflection",
+              "identifier",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.89
+          },
+          {
+            "category": "entity",
+            "expected": [
+              "entity"
+            ],
+            "returned": [
+              "entity"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.93
+          },
+          {
+            "category": "tr",
+            "expected": [
+              "tr"
+            ],
+            "returned": [
+              "tr",
+              "noise-2",
+              "noise-1"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.6
+          },
+          {
+            "category": "de",
+            "expected": [
+              "de"
+            ],
+            "returned": [
+              "de",
+              "path",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.46
+          },
+          {
+            "category": "es",
+            "expected": [
+              "es"
+            ],
+            "returned": [
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.53
+          },
+          {
+            "category": "paraphrase",
+            "expected": [
+              "motion"
+            ],
+            "returned": [
+              "motion",
+              "path",
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 8.51
+          },
+          {
+            "category": "retention",
+            "expected": [
+              "retention"
+            ],
+            "returned": [
+              "retention",
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.66
+          },
+          {
+            "category": "path",
+            "expected": [
+              "path"
+            ],
+            "returned": [
+              "path",
+              "noise-0"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.89
+          },
+          {
+            "category": "version",
+            "expected": [
+              "version"
+            ],
+            "returned": [
+              "version",
+              "path",
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 7.0
+          },
+          {
+            "category": "supersession",
+            "expected": [
+              "new-color"
+            ],
+            "returned": [
+              "new-color"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.66
+          },
+          {
+            "category": "injection-as-data",
+            "expected": [
+              "injection"
+            ],
+            "returned": [
+              "injection",
+              "new-color",
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 6.53
+          },
+          {
+            "category": "unanswerable",
+            "expected": [],
+            "returned": [
+              "identifier-near"
+            ],
+            "recall_at_3": null,
+            "latency_ms": 6.53
+          },
+          {
+            "category": "expired",
+            "expected": [],
+            "returned": [],
+            "recall_at_3": null,
+            "latency_ms": 8.25
+          }
+        ]
+      },
+      {
+        "arm": "lexical",
+        "answerable_recall_at_3": 1.0,
+        "unanswerable_empty": 2,
+        "unanswerable_cases": 2,
+        "elapsed_seconds": 0.28,
+        "queries": [
+          {
+            "category": "identifier",
+            "expected": [
+              "identifier"
+            ],
+            "returned": [
+              "identifier"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.44
+          },
+          {
+            "category": "near-identifier",
+            "expected": [
+              "identifier-near"
+            ],
+            "returned": [
+              "identifier-near"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.32
+          },
+          {
+            "category": "inflection",
+            "expected": [
+              "inflection"
+            ],
+            "returned": [
+              "inflection",
+              "identifier"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.39
+          },
+          {
+            "category": "entity",
+            "expected": [
+              "entity"
+            ],
+            "returned": [
+              "entity"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.34
+          },
+          {
+            "category": "tr",
+            "expected": [
+              "tr"
+            ],
+            "returned": [
+              "tr"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.34
+          },
+          {
+            "category": "de",
+            "expected": [
+              "de"
+            ],
+            "returned": [
+              "de"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.69
+          },
+          {
+            "category": "es",
+            "expected": [
+              "es"
+            ],
+            "returned": [
+              "es"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.33
+          },
+          {
+            "category": "paraphrase",
+            "expected": [
+              "motion"
+            ],
+            "returned": [
+              "motion"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.31
+          },
+          {
+            "category": "retention",
+            "expected": [
+              "retention"
+            ],
+            "returned": [
+              "retention"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.31
+          },
+          {
+            "category": "path",
+            "expected": [
+              "path"
+            ],
+            "returned": [
+              "path"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.3
+          },
+          {
+            "category": "version",
+            "expected": [
+              "version"
+            ],
+            "returned": [
+              "version"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.29
+          },
+          {
+            "category": "supersession",
+            "expected": [
+              "new-color"
+            ],
+            "returned": [
+              "new-color",
+              "injection"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.41
+          },
+          {
+            "category": "injection-as-data",
+            "expected": [
+              "injection"
+            ],
+            "returned": [
+              "injection",
+              "new-color"
+            ],
+            "recall_at_3": 1.0,
+            "latency_ms": 0.39
+          },
+          {
+            "category": "unanswerable",
+            "expected": [],
+            "returned": [],
+            "recall_at_3": null,
+            "latency_ms": 0.26
+          },
+          {
+            "category": "expired",
+            "expected": [],
+            "returned": [],
+            "recall_at_3": null,
+            "latency_ms": 0.31
+          }
+        ]
+      }
+    ],
+    "private_data_mounted": false,
+    "limits": [
+      "Synthetic retrieval only, not natural adoption or answer quality.",
+      "Indexes rebuilt per arm; no production migration or removal is authorized by this fixture alone.",
+      "Fixed semantic threshold 0.25; lexical accepts positive BM25 scores, not a comparable calibrated confidence.",
+      "Shared process/model caches and installed dependencies; elapsed times are not cold-start or dependency savings."
+    ]
+  },
+  "video": {
+    "opportunities": 1,
+    "invocations": 4,
+    "first_attempt_success": false,
+    "recovered": true,
+    "failure_causes": [
+      "Fixture node PID1 rejected by child containment guard",
+      "Fixture missing timeline registration failed real lint",
+      "Fixture tmpfs below upstream disk-space preflight"
+    ],
+    "successful_image": "sha256:9316406ac78b5382ab74f6b382760d505e1ad5cde722e17e81ae1491eb196c10",
+    "limits": "Earlier candidate image; final change to video tool was description only. Real encode, named adapter, no natural adoption or ordinary-speed playback claim. No shared budget reset.",
+    "elapsed_ms_successful_invocation": 6041,
+    "media": {
+      "duration": 1,
+      "video": [
+        {
+          "codec": "h264",
+          "width": 320,
+          "height": 180,
+          "duration": 1,
+          "end": 1,
+          "duration_check": "passed"
+        }
+      ],
+      "audio": [],
+      "requires_playback_inspection": true
+    },
+    "decoded": {
+      "decoded_frames": 24,
+      "box_left_x_each_frame": [
+        20,
+        30,
+        39,
+        48,
+        57,
+        66,
+        75,
+        84,
+        94,
+        103,
+        112,
+        121,
+        130,
+        140,
+        149,
+        158,
+        167,
+        176,
+        185,
+        194,
+        204,
+        213,
+        222,
+        231
+      ],
+      "dimensions": [
+        320,
+        180
+      ],
+      "monotonic_motion": true,
+      "limits": "Pixel trajectory check and inspected snapshots; ordinary-speed playback/audio not evaluated."
+    }
+  },
+  "diagram": {
+    "ok": true,
+    "engine": "live installed Kroki/Graphviz",
+    "scope": "One named invocation; four nodes, three arrows, valid/invalid labels inspected. Not candidate-package startup or natural adoption evidence."
+  },
+  "visual_inspection": {
+    "wrapping": "Readable three-line text within card",
+    "multilingual": "Turkish, German and Spanish text retained",
+    "data-card": "Values 24, 18, 6 visible in two-line card",
+    "typst": "Two separate pages, First page and Second page",
+    "large-svg": "Navy rectangle after standalone optimization; hidden ID asserted in SVG",
+    "diagram": "Request to Validate; valid to Save, invalid to Reject",
+    "video": "Start/middle/end square positions advance; decoded all 24 frames advance"
+  },
+  "python_checks": {
+    "remediation": 5,
+    "dependency_audit": 12,
+    "dependency_python": "3.13",
+    "system_python_3_9_attempt": "Failed import tomllib; no dependency installation",
+    "packet_preflight": true,
+    "models_executed": 0
+  },
+  "artifacts": {
+    "data-card.png": {
+      "sha256": "b0641ec3ce7410ffe601020a76b2d03911bcd741bc37d37a2faa08403d613343",
+      "bytes": 7079
+    },
+    "diagram.png": {
+      "sha256": "1ba4832f1da46fb2b87d71bc6ed7307b06b49ef3081b34414de5fdfd0e90eb1d",
+      "bytes": 44030
+    },
+    "flow.svg": {
+      "sha256": "eb6be3cb4411ac101447de92d926b83ad2c04c1e0f2070dd35dcd44e40b96d8b",
+      "bytes": 1978
+    },
+    "large-svg-after-optimization.png": {
+      "sha256": "ee2ea2d5f9cacae320ecaa38ffcb960ccb6d30496675c8435d0f73397c6757f3",
+      "bytes": 437
+    },
+    "multilingual.png": {
+      "sha256": "b5b2d46bea1f5588a9c7f357548a73e69929913d93b0c1c03d43ae995680448f",
+      "bytes": 4989
+    },
+    "typst-page-1.png": {
+      "sha256": "0e699c34030d756819108128e69d6a2fc01fe852dea82cd1cdfc14868de334f6",
+      "bytes": 4452
+    },
+    "typst-page-2.png": {
+      "sha256": "de30d989808c4e718726c8e69a9d22f7b45e3d9b518c2a762c6499029d20e705",
+      "bytes": 5228
+    },
+    "video-0.png": {
+      "sha256": "9ac95004ac5bac5a45aa9c99e6e4d6b42de1add8222338cf996fe65a1475c24f",
+      "bytes": 4775
+    },
+    "video-1.png": {
+      "sha256": "82178613fdcc8e2ade9639d3f5cef3f5367eb5d87443388b2786a2e9c55b9091",
+      "bytes": 4778
+    },
+    "video-2.png": {
+      "sha256": "c24100130f3dd7ef6f574d558c3845616a31bcf2a19c1671d4aec4e6f73859cd",
+      "bytes": 4778
+    },
+    "video.mp4": {
+      "sha256": "92d8d1f5e83ba9c1427e0f56095cc3c583ff4a8094c1058e76f11316a6adb963",
+      "bytes": 7648
+    },
+    "wrapping.png": {
+      "sha256": "c84973783c559a692699920ad53973cf86a5d41a56e660e31e10df8902a82006",
+      "bytes": 9255
+    }
+  },
+  "external_report_hashes": {
+    "native-check-final.log": {
+      "sha256": "98b93d9f78abf1fb0bdef1a299b32d5f929b85d8834099c0a3dfe4d7b2af6ec9",
+      "bytes": 43988
+    },
+    "design-check-final.json": {
+      "sha256": "8b5a9042a36da4ba144ec6b60d48990f263ac664555d8cbb194495f59dbf2863",
+      "bytes": 91724
+    },
+    "agent-runtime-check.json": {
+      "sha256": "8026c4edc6020e9ebfe65e886d9dbda89cf4b35e9af1b84bd24e2bae0fcc1daa",
+      "bytes": 2822
+    },
+    "current-probes-final.json": {
+      "sha256": "45f60d7325b174878fb4a51f5bd13f85266052e62f9401ca2b84d76febf292b4",
+      "bytes": 164748
+    },
+    "retrieval-ablation.json": {
+      "sha256": "7bdf268c3c34aa44f4e3176ad743e829a0569c849be857e9537f2a212da4b3c0",
+      "bytes": 8559
+    },
+    "video-trial-1.json": {
+      "sha256": "343f1f2d6b77c3b900e6ace4836dc98951285e8051a006f0dab4a7eeca19578c",
+      "bytes": 145
+    },
+    "video-trial-2.json": {
+      "sha256": "bab244ccdcde00eca7467cf73f9f6a9305dc889313d7e40c707f993809568898",
+      "bytes": 2257
+    },
+    "video-trial-3.json": {
+      "sha256": "03047af8139bc027bc4fd385088d7d11179424e96042b21a7ee80e88f7a0766d",
+      "bytes": 464
+    },
+    "video-trial-4.json": {
+      "sha256": "0b9baac7f1694d7393c3d5c83187b8df3788f9708dcef41ba25c35a17dcd6da5",
+      "bytes": 31309
+    },
+    "video-decoded.json": {
+      "sha256": "43abd89a2561522dd8c4129d6e4b4c3794050cfa7d01b7ce769c55fc6321b47c",
+      "bytes": 443
+    },
+    "disposable-setup.json": {
+      "sha256": "de4b0b98e11fc788199266aa262183d405d2ce69c7a5bfb2879b1357e4fdbb0e",
+      "bytes": 228
+    },
+    "disposable-doctor.json": {
+      "sha256": "06652af037537ca5ca3212477712209c2bbd7dea396eac9487af75911fd1723c",
+      "bytes": 4909
+    },
+    "catalog-check.json": {
+      "sha256": "1cb507aa826929c5df197728ed9b866f29fdf58755ab1f09d0402ec15902b8ec",
+      "bytes": 207
+    },
+    "python-audit-check.log": {
+      "sha256": "7552bd12ae276340729a65d44a110f392bc7234a9105e01401a941279fa79dfd",
+      "bytes": 111
+    },
+    "map-check.json": {
+      "sha256": "5bf869f9a089cf1661761c640965009e24227c318ee2d3a2a6f8eccbf5ad1fe1",
+      "bytes": 604
+    },
+    "packet-preflight.json": {
+      "sha256": "cd0c132a1adae8ed837d5f74d3d277c965b5d608e5c9fd1849ed7f1ed746256d",
+      "bytes": 1227
+    },
+    "evals/harness-remediation/design-decision.mjs": {
+      "sha256": "f8b00f2c41e12e82a73b502603820c0edbf2c457a4b4bbfd6c8b6fbcb15950be",
+      "bytes": 2199
+    },
+    "evals/harness-remediation/retrieval-ablation.py": {
+      "sha256": "56411b8d5df017f07e71176c7e9dec8cc12d3d9b796b8962e80b00de8c6dbbee",
+      "bytes": 6458
+    },
+    "evals/harness-critique/probe.py": {
+      "sha256": "009567a6fcd7e0aa448a6567f48537953b33349e2a09f4da40c9d2f163157261",
+      "bytes": 6663
+    },
+    "evals/harness-map/extract.py": {
+      "sha256": "355a6853c50ce64ea940b9b08a785b79d65a755b09912b770474e030d0f3e022",
+      "bytes": 7844
+    },
+    "backup-runtime.log": {
+      "sha256": "d1e48a422c0ae9fe582a4305bd44a7da915fae02ae03d95aa8395d692064724b",
+      "bytes": 609
+    }
+  },
+  "limits": [
+    "No real natural-selection campaign or general quality gain",
+    "No cold transfer/download saving or full runtime RSS measurement",
+    "NLP equivalence fixture is not migration/reindex proof",
+    "No fresh Claude or non-macOS container activation",
+    "Full candidate release acceptance not run against a deployed matching package; no release claim"
+  ]
+}

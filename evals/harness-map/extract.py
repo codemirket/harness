@@ -77,7 +77,7 @@ for r in capabilities['capabilities']:
 lines += ['', '## Worker workflows', '', '| ID | Default role | Allowed tools | Required invocation | Verification tools |', '| --- | --- | --- | --- | --- |']
 for w in capabilities['workflows']:
     lines.append('| ' + ' | '.join(cell(w.get(k, [])) for k in ['id', 'role', 'tools', 'required_tools', 'verification_tools']) + ' |')
-lines += ['', '**Runtime exception:** `editable-interface` declares Penpot operations that the owned dispatcher currently rejects. See [tools.rs](../../src/router/tools.rs) and the main map.', '', '## Profiles', '', '| ID | Kind | Skills |', '| --- | --- | --- |']
+lines += ['', '**Execution scope:** `editable-interface` uses the four OpenPencil file wrappers in the assigned design workspace. Inventory does not establish runtime readiness or useful output. See [tools.rs](../../src/router/tools.rs).', '', '## Profiles', '', '| ID | Kind | Skills |', '| --- | --- | --- |']
 for name,p in catalog['profiles'].items():
     lines.append('| ' + ' | '.join(cell(v) for v in [name,p.get('kind'),p['skills']]) + ' |')
 lines += ['', '## Skills', '', '| ID | Delivery | Category | Source or local body | Requires |', '| --- | --- | --- | --- | --- |']

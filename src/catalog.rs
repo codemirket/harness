@@ -676,6 +676,10 @@ impl Catalog {
                     "installable": skill.delivery == "embedded" || skill.delivery == "upstream",
                     "guidance_access": guidance_access(skill), "discovery":skill.metadata.get("discovery").and_then(Value::as_str).unwrap_or("default")
                 });
+                let workflows = self.0.workflows.iter().filter(|workflow|
+                    self.capability(&workflow.role).is_ok_and(|role| role.lead == skill.id)
+                ).map(|workflow| json!({"id":workflow.id,"when":workflow.when,"execution_owner":workflow.execution_owner})).collect::<Vec<_>>();
+                if !workflows.is_empty() { item["workflows"] = json!(workflows); }
                 if skill.id == design_references::OWNER
                     && let Some(library) = &self.0.design_references
                 {
@@ -828,7 +832,9 @@ impl Catalog {
         Ok(
             json!({"primary":primary.id,"contracts":contracts,"read_sequence":reads,
             "worker_workflows":self.workflow_choices(None),
-            "role_workflows":self.workflow_choices(Some(&primary.id)),
+            "role_workflows":self.workflow_choices(Some(&primary.id)).into_iter().map(|row|
+                json!({"id":row["id"],"explicit_role_can_replace_default":row["explicit_role_can_replace_default"]})
+            ).collect::<Vec<_>>(),
             "worker_request_defaults":{"primary_role":primary.id,"assigned_tools":[]},
             "worker_routing":"Declare bounded task_needs with workflow IDs and concrete reasons. The owned router loads the selected role and task-specialist skills, selects scoped default tools when assigned_tools is empty, and rejects tools outside those needs. A role never grants permissions or expands a workflow's tools.",
             "project_skills":project_skills,"runtime_status":"not_checked",

@@ -213,3 +213,58 @@ fn role_plans_keep_workflow_discovery_compact_and_bind_the_selected_role() {
                 && row["explicit_role_can_replace_default"] == true)
     );
 }
+
+#[test]
+fn outcome_search_reaches_owned_guidance_and_compact_plan_preserves_role_decisions() {
+    let catalog = Catalog::embedded().unwrap();
+    for (query, owner, workflow) in [
+        ("static graphic", "graphic-design", "static-graphic"),
+        ("editable design", "interface-design", "editable-interface"),
+        ("diagram", "graphic-design", "diagram"),
+        ("video", "motion-design", "motion"),
+    ] {
+        let result = catalog.search(query, 0, 5).unwrap();
+        let item = result["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|item| item["id"] == owner)
+            .unwrap_or_else(|| panic!("{query}: {result}"));
+        assert!(
+            item["workflows"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|row| row["id"] == workflow),
+            "{query}: {item}"
+        );
+    }
+    assert!(
+        catalog.search("memory recall", 0, 5).unwrap()["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|row| row["id"] == "context-management")
+    );
+    let plan = catalog.capability_plan("Graphic Designer", &[]).unwrap();
+    let rows = plan["role_workflows"].as_array().unwrap();
+    for row in rows {
+        let id = row["id"].as_str().unwrap();
+        let workflow = catalog.workflow(id).unwrap();
+        assert_eq!(
+            row["explicit_role_can_replace_default"],
+            workflow
+                .alternative_roles
+                .iter()
+                .any(|role| role == "graphic-design")
+        );
+        assert_eq!(row.as_object().unwrap().len(), 2);
+        assert!(
+            plan["worker_workflows"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|w| w["id"] == id && w["when"] == workflow.when)
+        );
+    }
+}

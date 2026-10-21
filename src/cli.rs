@@ -602,7 +602,12 @@ enum ToolCommand {
 #[derive(Subcommand)]
 enum PackageCommand {
     /// Prepare an already-selected package for verification before desktop update.
-    Prepare { id: String },
+    Prepare {
+        id: String,
+        /// Prepare optional design images without starting services or changing saved groups.
+        #[arg(long = "group", value_parser = ["core", "diagrams", "all"])]
+        groups: Vec<String>,
+    },
     /// Report installed Python dependency inventory without network or private data.
     Audit { id: String },
     /// Run real offline dependency and containment tests using synthetic data.
@@ -1670,7 +1675,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
             }
         }
         Command::Package { command } => match command {
-            PackageCommand::Prepare { id } => packages::prepare_selected(&paths, &id)?,
+            PackageCommand::Prepare { id, groups } => {
+                packages::prepare_selected(&paths, &id, &groups)?
+            }
             PackageCommand::List => packages::Registry::embedded()?.list(),
             PackageCommand::Show { id } => {
                 serde_json::to_value(packages::Registry::embedded()?.get(&id)?)?

@@ -109,11 +109,12 @@ the result and controls permissions. Direct native host tools and spawners remai
 outside the Mirket-owned worker boundary; use these workflow choices as planning
 guidance there, without claiming that Mirket intercepts those calls.
 
-The resolved contract reports both workspace roots. File writes stay inside the
-assigned project; design tools receive paths relative to the fixed design
-workspace. When authoring design input files, use that workspace or a registered
-child as the worker's project so writing and rendering share paths. Source-repo
-workers do not gain an extra write root. Request a valid readback tool when
+The resolved contract reports both workspace roots. Relative file writes stay
+inside the source project. Absolute file writes are accepted only inside its
+assigned design workspace; design tools receive paths relative to that workspace.
+Use the reported design root when authoring inputs for rendering. Sibling project
+paths, repository internals and symlink escapes remain rejected. Host design tools
+retain their shared workspace; workers do not gain access to that shared root. Request a valid readback tool when
 writing files; SVG outputs require exact text readback as well as pixel inspection.
 
 When the user explicitly chooses a model, use `model_selection` with its exact

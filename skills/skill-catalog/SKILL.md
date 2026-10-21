@@ -89,7 +89,9 @@ Search is bounded and paginated with `--offset` and `--limit`. Query relevance
 comes first: exact IDs, positive names, role aliases and tags precede weaker
 matches. Delivery is a final tie-breaker only; catalog ranking does not inspect
 whether a skill is installed in a home, project or host. Ranking never selects
-a task automatically. Search reports each entry's read route.
+a task automatically. Search reports each entry's read route and owned workflow summaries where present.
+Capability plans keep canonical descriptions in `worker_workflows`; `role_workflows`
+contains ID references and role-specific eligibility, not duplicate descriptions.
 `catalog_show` provides pins, adaptation, dependencies and caveats;
 `skill_read` returns embedded guidance only. Upstream entries include pinned
 source and license information: read adaptation, companions, runtime needs and

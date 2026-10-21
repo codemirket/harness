@@ -12,10 +12,10 @@ python3.13 evals/harness-critique/dependency-audit.py
 `probe.py` starts one localhost synthetic inference server and uses a disposable
 home/project. Native inference targets are explicitly bound to `/usr/bin/false`
 (macOS/Linux fixture); provider environment variables are removed from the child.
-It performs no external inference or user-project work. Its assertions reproduce
-current defects/limits; they are review probes, not desired-behavior regression
-tests. A successful fix should make the corresponding assertions fail and should
-be covered by a proper regression in the owning test suite.
+It performs no external inference or user-project work. Its current assertions cover OpenPencil routing, required-memory refusal, provider-owned
+usage and bounded source reads. The dated JSON remains historical evidence; do not
+interpret its old Penpot or memory expectations as current defects. Owning test
+suites retain the regression checks.
 
 `feedback-probe.py` executes exact selected owned function bodies with controlled
 memory/tokenizer fakes. It demonstrates a test-oracle gap and objective-prefix
@@ -28,7 +28,7 @@ crates.io, npm and PyPI for direct dependency metadata. It downloads metadata on
 never installs packages or invokes their code. Outputs replace the dated JSON
 snapshot; compare provenance before interpreting a later run. Advisory matches
 need separate reachability analysis. This does not inventory OS packages, actual
-container images or the complete forwarded Penpot closure.
+container images or the complete runtime dependency closure.
 
 The recorded review date is 2026-10-20. Update that field for later investigations.
 Current evidence is linked from the critique. Preserve negative results rather

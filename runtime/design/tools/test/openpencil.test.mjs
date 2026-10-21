@@ -98,3 +98,32 @@ test('actual design MCP discovery and calls expose OpenPencil with the scoped ru
     await assert.rejects(fs.access(path.join(workspace,'eval.fig')));
   } finally { await client.close(); }
 });
+
+test('schema discovery writes nothing and remains available while another connection holds the render slot',async()=>{
+  const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
+  const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
+  const {withRenderSlot}=await import('../paths.mjs');
+  const schemaRoot=await fs.mkdtemp(path.join(os.tmpdir(),'mirket-schema-'));
+  async function connect(root) {
+    const client=new Client({name:'schema-inspection',version:'1'});
+    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:root,MIRKET_DESIGN_WORKSPACE:root,MIRKET_DESIGN_GROUPS:'core'},stderr:'pipe'}));
+    return client;
+  }
+  let client=await connect(schemaRoot);
+  try {
+    const result=await client.callTool({name:'openpencil_inspect',arguments:{tool:'create_shape'}});
+    assert.notEqual(result.isError,true);
+    assert.equal(result.structuredContent.tool.effect,'write');
+    assert.deepEqual(await fs.readdir(schemaRoot),[]);
+  } finally {await client.close();await fs.rm(schemaRoot,{recursive:true,force:true});}
+  client=await connect(workspace);
+  try {
+    await withRenderSlot(async()=>{
+      const result=await client.callTool({name:'openpencil_inspect',arguments:{}},undefined,{timeout:3000});
+      assert.notEqual(result.isError,true);
+      assert.equal(result.structuredContent.tools.length,87);
+      const schema=await client.callTool({name:'openpencil_inspect',arguments:{tool:'get_node'}},undefined,{timeout:3000});
+      assert.equal(schema.structuredContent.tool.effect,'read');
+    });
+  } finally {await client.close();}
+});

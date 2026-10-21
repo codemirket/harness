@@ -2375,7 +2375,7 @@
     {
       "id": "motion",
       "design_production": true,
-      "when": "Produce finite encoded video from an authored HTML/CSS/SVG timeline.",
+      "when": "Experimental finite encoded-video export from an authored HTML/CSS/SVG timeline; verify actual frames and playback before accepting the result.",
       "role": "animation",
       "tools": [
         "workspace_read",

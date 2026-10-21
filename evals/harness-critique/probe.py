@@ -2,6 +2,7 @@
 """Local synthetic routing probes. No external inference, credentials or user projects."""
 import argparse
 import contextlib
+from datetime import date
 import http.server
 import json
 import os
@@ -59,9 +60,11 @@ try:
    except ValueError:pass
    records.append(r);return r
   base={'objective':'Synthesize the supplied evidence: the answer is 42.','task_intent':'synthesis','complexity_class':'synthesis','assigned_tools':[],'task_needs':[{'workflow':'analysis','reason':'Synthesize supplied synthetic evidence.'}],'project':str(project)}
-  penpot={**base,'task_needs':[{'workflow':'editable-interface','reason':'Produce an editable design.'}],'design_input':{'mode':'native_specimen','medium':'design_document','reason':'An editable canvas is the target medium.'}}
-  r=run('editable-interface-route',penpot,['models','route'])
-  assert r['exit_code']!=0 and 'Penpot object operations require' in r['stderr'] and not r['posts']
+  editable={**base,'task_needs':[{'workflow':'editable-interface','reason':'Produce an editable design.'}],'design_input':{'mode':'native_specimen','medium':'design_document','reason':'An editable canvas is the target medium.'}}
+  r=run('editable-interface-route',editable,['models','route'])
+  assert r['exit_code']!=0 and not r['posts']
+  assert 'run mirket setup first' in r['stderr']
+  assert 'Penpot' not in r['stderr']
   mode='invalid_json'
   r=run('invalid-json-trace',base,['agent','spawn'])
   assert r['exit_code']!=0
@@ -69,12 +72,13 @@ try:
   trace=json.loads(traces[0].read_text());r['trace']=trace
   r['specific_error_retained']=any(s in json.dumps(trace) for s in ['expected ident','invalid action schema','not-json'])
   mode='valid'
-  r=run('usage-receipt',base,['agent','spawn'])
+  r=run('provider-owned-usage',base,['agent','spawn'])
   assert r['exit_code']==0
   trace=json.loads(Path(r['result']['trace']).read_text());r['trace']=trace
   r['reported_usage_retained']='prompt_tokens' in json.dumps(trace) or 'total_tokens' in json.dumps(trace)
   r=run('required-memory-without-runtime',{**base,'memory_recall':'required'},['agent','spawn'])
-  assert r['exit_code']==0 and r['result']['workflow']['engine']=='ephemeral'
+  assert r['exit_code']!=0 and not r['posts']
+  assert 'required memory recall' in r['stderr'].lower()
   mechanical={**base,'objective':'Sort lines','task_intent':'file_hygiene','complexity_class':'deterministic','deterministic_operation':{'action':'sort_lines'},'deterministic_input':'b\na','task_needs':[{'workflow':'structured-response','reason':'Sort supplied text with no filesystem effects.'}]}
   r=run('mechanical-model-ranking',mechanical,['models','route'])
   assert r['exit_code']==0
@@ -87,7 +91,7 @@ try:
   trace=max((home/'.mirket/runs').glob('*/trace.json'),key=lambda p:p.stat().st_mtime_ns)
   r['trace']=json.loads(trace.read_text())
   # Synthetic disposable paths are redacted after all dependent reads.
-  data=json.dumps({'date':'2026-10-20','binary':str(binary),'scope':'Synthetic localhost server, disposable home/project, explicit unavailable native targets, no external inference.','records':records},indent=2).replace(str(home),'<disposable-home>')
+  data=json.dumps({'date':date.today().isoformat(),'binary':str(binary),'scope':'Synthetic localhost server, disposable home/project, explicit unavailable native targets, no external inference.','records':records},indent=2).replace(str(home),'<disposable-home>')
   args.output.write_text(data+'\n')
   for r in records:print(r['case'],r['exit_code'],{k:v for k,v in r.items() if k.endswith('_retained')})
 finally:

@@ -106,7 +106,7 @@ pub(crate) fn prepare_with_registry(
     registry.validate_selection(selected)?;
     for id in selected {
         match id.as_str() {
-            "design" => services::prepare(paths)?,
+            "design" => services::prepare(paths, &[])?,
             "agent-runtime" => agent::prepare(paths)?,
             _ => unreachable!(),
         }
@@ -238,10 +238,18 @@ pub fn service_start(paths: &Paths, id: &str, groups: &[String]) -> Result<Value
 
 /// Stage through the installer-owned preparation path without replacing client
 /// configuration, saved choices or the installed binary. Selection is explicit.
-pub fn prepare_selected(paths: &Paths, id: &str) -> Result<Value> {
+pub fn prepare_selected(paths: &Paths, id: &str, groups: &[String]) -> Result<Value> {
     selected(paths, id)?;
     let selected = vec![id.to_owned()];
-    prepare_with_registry(paths, &selected, &Registry::embedded()?)?;
+    if id == "design" {
+        services::prepare(paths, groups)?;
+    } else {
+        ensure!(
+            groups.is_empty(),
+            "agent-runtime has no design service groups"
+        );
+        agent::prepare(paths)?;
+    }
     doctor(paths, &selected)
 }
 
@@ -264,7 +272,7 @@ mod tests {
     fn preparation_requires_existing_selection_before_any_effect() {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
-        assert!(prepare_selected(&paths, "agent-runtime").is_err());
+        assert!(prepare_selected(&paths, "agent-runtime", &[]).is_err());
         assert!(!paths.root.exists());
     }
     #[test]

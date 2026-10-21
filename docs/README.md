@@ -17,6 +17,7 @@ container support separate from core CLI platform support.
 | Understand source ownership and state boundaries | [Architecture](architecture.md) |
 | Map topology, expertise, dependencies and execution paths for critique | [Harness map](harness-map.md) · [Complete inventory](harness-map/inventory.md) |
 | Review prioritized defects, gaps and remediation | [Harness critique — 20 October 2026](harness-critique-2026-10.md) |
+| Review simplification decisions and unreleased changes | [Simplification and completion](harness-simplification-2026-10.md) |
 | Develop and verify a change | [Contributing](../CONTRIBUTING.md) |
 | Inspect source reuse and licenses | [Source review](source-review.md) · [Third-party notices](third-party-notices.md) |
 
