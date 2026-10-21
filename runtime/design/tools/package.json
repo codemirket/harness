@@ -15,7 +15,7 @@
     "@resvg/resvg-js": "2.6.2",
     "ajv": "8.18.0",
     "css-tree": "3.2.1",
-    "hyperframes": "0.8.149",
+    "hyperframes": "0.8.169",
     "odiff-bin": "4.5.0",
     "playwright-core": "1.64.1",
     "satori": "0.62.0",
