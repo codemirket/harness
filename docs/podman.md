@@ -5,12 +5,14 @@ service lifecycle and shared workspace.
 
 ## Explicit setup
 
-Install the approved official Podman client outside Mirket's immutable package
-store, then select its absolute executable. Host software installation and VM
-creation require the user's authorization.
+Select an approved native Podman client and import its exact client and AppleHV
+helpers into Mirket's dependency tree. Import retains the external source as an
+installation input; subsequent Mirket VM operations use the pinned local copy.
+Host software installation and VM creation require the user's authorization.
 
 ```sh
 mirket tool register podman --executable /absolute/path/to/podman
+mirket environment localize-client
 mirket environment init
 mirket environment start
 mirket environment status
@@ -53,19 +55,26 @@ release binary's `mirket setup --target all --package design --yes` after
 `environment start`, or run `package install design`. Both explicitly replace the
 saved selection and reconcile the owned client bindings before later updates.
 
-The registered client is digest checked. Private XDG configuration, storage,
-connection and helper paths avoid selecting an unrelated engine. Short owned
-runtime directories under `/private/tmp/mirket-<identity>` accommodate macOS Unix
-socket limits. No workload receives that socket. `environment stop` preserves
-the VM's images and durable service volumes.
-Machine helpers use the selected client's directory and its exact adjacent
-`libexec/podman` directory. Initialization and startup require executable
-`gvproxy` and `vfkit` there before downloading a boot image or issuing VM
-commands; a client-only installation fails with the missing helper's name.
-This supports Homebrew's split installation layout without consulting global
-Podman configuration. The client digest does not independently pin helper bytes;
-those remain part of the approved host installation. Existing exact Mirket
+The installed executable, approved Podman client, `gvproxy`, `vfkit`, verified
+downloads, machine configuration, disk, image storage, durable volumes, package
+state and disposable host work all live under the selected `~/.mirket` root.
+Private XDG configuration, storage and runtime paths avoid selecting an unrelated
+engine. A short `~/.mirket/p` prefix accommodates macOS Unix socket limits;
+homes whose path exceeds the socket budget fail before VM creation or start.
+No workload receives that socket. `environment stop` preserves the VM's images
+and durable service volumes.
+The local client and both helpers have separate digest receipts. Initialization
+and startup require executable `gvproxy` and `vfkit` before downloading a boot
+image or issuing VM commands. Import supports Homebrew's split installation
+layout without consulting global Podman configuration. Existing exact Mirket
 helper configuration is migrated; other configuration changes are refused.
+
+The private host runtime lives at `~/.mirket/p`. `environment status` reports
+that path and whether the Podman client was imported. It probes readiness and
+is not a purely passive file read. The managed VM and client use only the
+selected Mirket home; an installation with a different runtime path is not
+adopted or migrated by 0.0.1.
+
 Each native API client retains a private socket hard link for its lifetime so an
 unlinked endpoint cannot reuse the captured inode and pass the identity check.
 The final client clone's drop removes that pin.

@@ -1,6 +1,6 @@
 # Visual production
 
-> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket supplies visual guidance, scoped production tools and artifact checks.
 It does not certify aesthetic quality. A valid render, an AI review and user

@@ -1,6 +1,6 @@
 # Workflows and MCP
 
-> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket supplies focused expertise and consistent task state. The host chooses
 and executes actual tools under its permissions. All operations are available
@@ -104,7 +104,7 @@ local editable records cannot attest reviewer identity or human approval.
 
 | Tool | Operation |
 | --- | --- |
-| `runtime_status` | Live MCP process, compiled source/catalog fingerprints and installed-binary match (1.0.11) |
+| `runtime_status` | Live MCP process, compiled source/catalog fingerprints and installed-binary match |
 | `catalog_search` | Bounded reviewed-catalog discovery |
 | `catalog_show` | Selected metadata, pins, caveats and correct read route |
 | `capability_plan` | Exact role selection and outcome contract |
@@ -121,7 +121,7 @@ local editable records cannot attest reviewer identity or human approval.
 | `task_evidence` | Bind a project-relative artifact and observed result |
 | `task_finish` | Complete or reopen a task after consistency checks |
 
-Mirket 1.0.11 also exposes these operations through the same main MCP
+Mirket 0.0.1 also exposes these operations through the same main MCP
 connection. Memory and durable worker operations require `agent-runtime` and a
 registered project; backup and relocation remain explicit CLI operations.
 
@@ -145,13 +145,12 @@ Resources expose embedded skill content. They do not provide arbitrary filesyste
 reads. Tool annotations communicate behavior; they are not permission enforcement.
 
 The stdio boundary limits request frames to 128 KiB and structured results to
-64 KiB. The newer desktop build separates control, execution and runtime
+64 KiB. The desktop server separates control, execution and runtime
 admission, with four slots in each class; the contained agent runtime has its
 own cross-process limits. Ordinary state operations have a ten-second deadline;
 agent-runtime responses have a 120-second deadline and workers retain their
 assigned execution budgets. See [runtime containment](agent-runtime.md#ownership-and-containment).
-The older 1.0.5 server uses one four-operation pool; inspect its tool description
-for exceptions to the ordinary deadline. A short database operation may
+A short database operation may
 finish after cancellation or a timeout: inspect task state or retry the identical
 idempotency key before issuing another mutation.
 

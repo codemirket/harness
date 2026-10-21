@@ -1,10 +1,11 @@
 //! Explicitly registered local executables. Execution is a CLI-only operation.
 use crate::{paths::Paths, util};
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result, bail, ensure};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
     collections::BTreeMap,
+    fs,
     path::{Path, PathBuf},
     process::Stdio,
     time::Duration,
@@ -15,6 +16,8 @@ use std::{
 pub struct Tool {
     pub executable: PathBuf,
     pub sha256: String,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub helpers: BTreeMap<String, String>,
 }
 
 fn validate_name(name: &str) -> Result<()> {
@@ -80,7 +83,14 @@ pub fn register(paths: &Paths, name: &str, executable: &Path) -> Result<Value> {
             "tool is already registered; remove it explicitly before registering different bytes"
         );
     }
-    tools.insert(name.to_string(), Tool { executable, sha256 });
+    tools.insert(
+        name.to_string(),
+        Tool {
+            executable,
+            sha256,
+            helpers: BTreeMap::new(),
+        },
+    );
     save(paths, &tools)?;
     Ok(
         json!({"registered": name, "tool":tools[name], "scope":"CLI execution under the host's permissions"}),
@@ -101,6 +111,141 @@ pub fn list(paths: &Paths) -> Result<Value> {
     Ok(serde_json::to_value(load(paths)?)?)
 }
 
+fn localized_podman(
+    paths: &Paths,
+    source: &Path,
+    client_sha: &str,
+    helpers: &[PathBuf; 2],
+) -> Result<Tool> {
+    let gvproxy_sha = executable_digest(&helpers[0])?;
+    let vfkit_sha = executable_digest(&helpers[1])?;
+    let generation =
+        crate::util::sha256(format!("{client_sha}:{gvproxy_sha}:{vfkit_sha}").as_bytes());
+    let parent = paths.root.join("dependencies/podman");
+    crate::util::ensure_directory(&parent)?;
+    let destination = parent.join(generation);
+    let client_name = source
+        .file_name()
+        .context("Podman client filename missing")?;
+    let client = destination.join("bin").join(client_name);
+    let gvproxy = destination.join("libexec/podman/gvproxy");
+    let vfkit = destination.join("libexec/podman/vfkit");
+    let expected = [
+        (client.as_path(), client_sha),
+        (gvproxy.as_path(), gvproxy_sha.as_str()),
+        (vfkit.as_path(), vfkit_sha.as_str()),
+    ];
+    if !destination.try_exists()? {
+        let stage = tempfile::Builder::new()
+            .prefix("podman-stage-")
+            .tempdir_in(&parent)?;
+        let bin = stage.path().join("bin");
+        let libexec = stage.path().join("libexec/podman");
+        crate::util::ensure_directory(&bin)?;
+        crate::util::ensure_directory(&libexec)?;
+        for (from, to) in [
+            (source, bin.join(client_name)),
+            (helpers[0].as_path(), libexec.join("gvproxy")),
+            (helpers[1].as_path(), libexec.join("vfkit")),
+        ] {
+            crate::util::reject_symlink_components(from)?;
+            fs::copy(from, &to)?;
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                fs::set_permissions(&to, fs::Permissions::from_mode(0o700))?;
+            }
+        }
+        fs::rename(stage.path(), &destination)?;
+    }
+    for (path, sha) in expected {
+        crate::util::reject_symlink_components(path)?;
+        if executable_digest(path)? != sha {
+            bail!(
+                "localized Podman dependency has changed: {}",
+                path.display()
+            );
+        }
+    }
+    Ok(Tool {
+        executable: client,
+        sha256: client_sha.to_owned(),
+        helpers: BTreeMap::from([("gvproxy".into(), gvproxy_sha), ("vfkit".into(), vfkit_sha)]),
+    })
+}
+
+/// Import the exact registered native Podman client and helpers into Mirket's
+/// owned dependency tree. A resumed call finishes an interrupted config-first
+/// migration without changing the selected client bytes.
+pub fn localize_podman(paths: &Paths) -> Result<Value> {
+    let _lock = lock(paths)?;
+    let mut tools = load(paths)?;
+    let old = tools
+        .get("podman")
+        .context("register Podman before localization")?;
+    ensure_registered_podman(paths, old)?;
+    if old.executable.starts_with(&paths.root) && old.helpers.len() == 2 {
+        return Ok(json!({"localized":old.executable,"changed":false}));
+    }
+    let helper_files = crate::podman::machine_helper_files(&old.executable)?;
+    let replacement = localized_podman(paths, &old.executable, &old.sha256, &helper_files)?;
+    let config = paths.root.join("execution/podman/containers.conf");
+    let new_config = crate::podman::helper_config(&replacement.executable)?;
+    let previous = if config.try_exists()? {
+        let saved = crate::util::read_bounded(&config, 4096)?;
+        let exact = crate::podman::helper_config(&old.executable)?;
+        let original_dir = old.executable.parent().context("Podman source directory")?;
+        let prior = format!(
+            "[engine]\nhelper_binaries_dir = [{}]\n",
+            serde_json::to_string(&original_dir.to_string_lossy())?
+        );
+        ensure!(
+            saved == exact.as_bytes()
+                || saved == prior.as_bytes()
+                || saved == new_config.as_bytes(),
+            "Mirket Podman helper configuration has drifted; no registry change"
+        );
+        Some(saved)
+    } else {
+        None
+    };
+    let changed_config = previous.as_deref() != Some(new_config.as_bytes());
+    if changed_config && previous.is_some() {
+        crate::util::atomic_write(&config, new_config.as_bytes())?;
+    }
+    tools.insert("podman".into(), replacement);
+    if let Err(error) = save(paths, &tools) {
+        if changed_config && let Some(previous) = previous {
+            crate::util::atomic_write(&config, &previous)
+                .context("restore Podman helper configuration after registry failure")?;
+        }
+        return Err(error).context("save localized Podman registry");
+    }
+    Ok(json!({"localized":tools["podman"].executable,"changed":true,"source_preserved":true}))
+}
+
+fn ensure_registered_podman(paths: &Paths, tool: &Tool) -> Result<()> {
+    if executable_digest(&tool.executable)? != tool.sha256 {
+        bail!("registered podman executable changed; inspect the approved binary");
+    }
+    if !tool.helpers.is_empty() {
+        ensure!(
+            tool.executable.starts_with(&paths.root) && tool.helpers.len() == 2,
+            "localized Podman helper receipt is incomplete or outside ~/.mirket"
+        );
+        let files = crate::podman::machine_helper_files(&tool.executable)?;
+        for (name, file) in [("gvproxy", &files[0]), ("vfkit", &files[1])] {
+            ensure!(
+                tool.helpers
+                    .get(name)
+                    .is_some_and(|sha| executable_digest(file).ok().as_ref() == Some(sha)),
+                "localized Podman helper {name} changed"
+            );
+        }
+    }
+    Ok(())
+}
+
 /// Resolve only an explicitly selected executable whose bytes still match.
 pub(crate) fn verified(paths: &Paths, name: &str) -> Result<PathBuf> {
     let tools = load(paths)?;
@@ -108,17 +253,20 @@ pub(crate) fn verified(paths: &Paths, name: &str) -> Result<PathBuf> {
     if executable_digest(&tool.executable)? != tool.sha256 {
         bail!("registered {name} executable changed; inspect and register the approved binary");
     }
+    if name == "podman" {
+        ensure_registered_podman(paths, tool)?;
+    }
     Ok(tool.executable.clone())
 }
 
 pub fn doctor(paths: &Paths) -> Result<Value> {
-    let checks: Vec<_> = load(paths)?.into_iter().map(|(name,tool)| {
-        match executable_digest(&tool.executable) {
-            Ok(hash) if hash == tool.sha256 => json!({"name":name,"ok":true}),
-            Ok(_) => json!({"name":name,"ok":false,"issue":"executable bytes changed; inspect and register the approved binary"}),
+    let checks: Vec<_> = load(paths)?
+        .into_keys()
+        .map(|name| match verified(paths, &name) {
+            Ok(_) => json!({"name":name,"ok":true}),
             Err(error) => json!({"name":name,"ok":false,"issue":error.to_string()}),
-        }
-    }).collect();
+        })
+        .collect();
     Ok(json!({"ok":checks.iter().all(|c| c["ok"] == true),"checks":checks}))
 }
 
@@ -329,6 +477,90 @@ mod tests {
         remove(&paths, "renderer").unwrap();
         assert_eq!(list(&paths).unwrap(), json!({}));
         assert!(register(&paths, "../escape", &executable).is_err());
+    }
+
+    #[test]
+    fn podman_localization_preserves_the_registration_and_pins_helpers() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().to_owned()).unwrap();
+        let source = paths.home.join("approved-podman");
+        let bin = source.join("bin");
+        let libexec = source.join("libexec/podman");
+        fs::create_dir_all(&bin).unwrap();
+        fs::create_dir_all(&libexec).unwrap();
+        let client = bin.join("podman-remote");
+        let gvproxy = libexec.join("gvproxy");
+        let vfkit = libexec.join("vfkit");
+        for (path, bytes) in [
+            (&client, b"approved-client".as_slice()),
+            (&gvproxy, b"approved-gvproxy".as_slice()),
+            (&vfkit, b"approved-vfkit".as_slice()),
+        ] {
+            fs::write(path, bytes).unwrap();
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                fs::set_permissions(path, fs::Permissions::from_mode(0o700)).unwrap();
+            }
+        }
+        register(&paths, "podman", &client).unwrap();
+        let config = paths.root.join("execution/podman/containers.conf");
+        crate::util::ensure_directory(config.parent().unwrap()).unwrap();
+        fs::write(&config, crate::podman::helper_config(&client).unwrap()).unwrap();
+        let old = fs::read(&config).unwrap();
+        let changed = localize_podman(&paths).unwrap();
+        assert_eq!(changed["changed"], true);
+        let selected = verified(&paths, "podman").unwrap();
+        assert!(selected.starts_with(paths.root.join("dependencies/podman")));
+        assert_eq!(fs::read(&client).unwrap(), b"approved-client");
+        assert_ne!(fs::read(&config).unwrap(), old);
+        assert_eq!(
+            fs::read_to_string(&config).unwrap(),
+            crate::podman::helper_config(&selected).unwrap()
+        );
+        assert_eq!(localize_podman(&paths).unwrap()["changed"], false);
+        let helper = selected
+            .parent()
+            .unwrap()
+            .parent()
+            .unwrap()
+            .join("libexec/podman/vfkit");
+        fs::write(&helper, b"tampered-vfkit").unwrap();
+        assert!(
+            verified(&paths, "podman")
+                .unwrap_err()
+                .to_string()
+                .contains("helper vfkit changed")
+        );
+    }
+
+    #[test]
+    fn podman_localization_refuses_unowned_helper_configuration() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().to_owned()).unwrap();
+        let source = paths.home.join("approved-podman");
+        let bin = source.join("bin");
+        fs::create_dir_all(&bin).unwrap();
+        let client = bin.join("podman-remote");
+        for name in ["podman-remote", "gvproxy", "vfkit"] {
+            let path = bin.join(name);
+            fs::write(&path, name).unwrap();
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                fs::set_permissions(&path, fs::Permissions::from_mode(0o700)).unwrap();
+            }
+        }
+        register(&paths, "podman", &client).unwrap();
+        let config = paths.root.join("execution/podman/containers.conf");
+        crate::util::ensure_directory(config.parent().unwrap()).unwrap();
+        fs::write(&config, b"[engine]\nhelper_binaries_dir = [\"/foreign\"]\n").unwrap();
+        assert!(localize_podman(&paths).is_err());
+        assert_eq!(verified(&paths, "podman").unwrap(), client);
+        assert_eq!(
+            fs::read(&config).unwrap(),
+            b"[engine]\nhelper_binaries_dir = [\"/foreign\"]\n"
+        );
     }
 
     #[tokio::test]

@@ -1,6 +1,6 @@
 # Architecture
 
-> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket has one Rust command and orchestration surface. Optional specialist operations
 run through owned Python and Node adapters; the Rust host retains permission and
@@ -50,9 +50,21 @@ guidance read route.
 
 ## Local state
 
-`~/.mirket` holds the managed binary, saved setup, install receipt, verified
-payload cache, registered tools and SQLite task database. Package download
+The canonical per-user application data root is `~/.mirket` on macOS, Linux and
+Windows (`%USERPROFILE%\.mirket` on Windows). It holds the managed binary, saved
+setup, install receipt, verified payload cache, registered tools, SQLite task
+database, private scratch and native runtime dependencies. Package download
 caches, prepared generations and mutable data live under `~/.mirket/packages`.
+The managed Podman client's imported bytes, host sockets, machine configuration,
+disk, container images and volumes stay under this same root. The macOS VM requires a short private socket prefix under the same root;
+unsupported path lengths fail before startup.
+
+Host-owned Codex/Claude configuration and skill entrypoints are projections of
+the installed Mirket payload, not alternate application-data stores. Each
+project's `.mirket/project.json` and sync receipts bind that project to its
+selection; project files remain with the project. Third-party host accounts,
+native browser settings and operating-system services remain owned by their
+hosts. Container `/tmp` is ephemeral tmpfs inside the private VM.
 `--home` changes the
 user-home boundary for all harness/client installation paths. Each project's
 `.mirket` directory contains its own selection, copy receipts and durable sync
@@ -69,8 +81,7 @@ termination continues to target the runtime PID.
 
 SQLite transactions are short; WAL permits concurrent reads. Opening a validated
 current database performs no schema write. State schema 4 retains project namespaces
-across relocation; see [database migration](installation.md#updating-older-task-databases)
-for the supported upgrade path and rollback limits. Unknown or malformed layouts
+across relocation. Older layouts are not imported. Unknown or malformed layouts
 fail closed. Task lists use project-bound cursors
 over immutable creation time and ID; checkpoints cannot shift page membership.
 Task status identifies omitted checkpoints; task-bound history cursors recover
@@ -275,12 +286,10 @@ connections do not hold leases. Runtime control files and project/design assets
 are not backup payloads. Restore requires empty durable stores and the original
 home/runtime recipe, with no automatic evidence acceptance.
 
-State schema 4 stores each registered project's original namespace in
-`project_scopes`. Migration retains all existing IDs and path-derived namespaces.
-`src/state/identity.rs` owns versioned directory identity, including macOS
-persistent volume UUID, inode and creation time. `src/state/identity_recovery.rs`
-owns paged inspection and explicit transaction-bound recovery of legacy
-device/inode registrations; no task or runtime namespace key is rewritten.
+State schema 4 stores each registered project's namespace in `project_scopes`.
+`src/state/identity.rs` owns directory identity, including macOS persistent
+volume UUID, inode and creation time. Older device/inode identities are not
+accepted by the 0.0.1 baseline.
 `project relocate` checks an actual renamed directory and atomically rebinds its
 root while retaining the namespace. Memory and assigned design workspace resolution
 use that binding. Historical worker envelopes keep their absolute paths and cannot

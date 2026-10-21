@@ -61,96 +61,6 @@ fn group_enabled(groups: &BTreeSet<String>, alias: &str) -> bool {
     }
 }
 
-// A topology cutover is allowed only after the prior CLI removed its containers.
-// Archive the exact private state; never open, migrate or purge legacy volumes.
-fn migrate_stopped_state(paths: &Paths, engine: &Engine, installed: &Receipt) -> Result<()> {
-    if !state_path(paths).exists() {
-        return Ok(());
-    }
-    let bytes = util::read_bounded(&state_path(paths), 32768)?;
-    let value: Value = serde_json::from_slice(&bytes)?;
-    if value["schema_version"] == 4 {
-        return Ok(());
-    }
-    let names = run(
-        engine,
-        vec![
-            "container".into(),
-            "ls".into(),
-            "--all".into(),
-            "--filter".into(),
-            format!("label={OWNER_LABEL}={}", owner(paths)),
-            "--format".into(),
-            "{{.Names}}".into(),
-        ],
-        Duration::from_secs(30),
-    )?;
-    retain_legacy_state(paths, &engine.owner(), &bytes, &names)?;
-    let mut state = fresh_state(paths, engine, installed)?;
-    state.groups = legacy_groups(&value)?;
-    if value["schema_version"] == 3 {
-        let old: State = serde_json::from_value(value)?;
-        validate_published_ports(&old.published_ports)?;
-        state.published_ports = old.published_ports;
-    }
-    save_private(&state_path(paths), &serde_json::to_vec_pretty(&state)?)
-}
-
-fn legacy_groups(value: &Value) -> Result<BTreeSet<String>> {
-    if value["schema_version"] == 3 {
-        let prior: State = serde_json::from_value(value.clone())?;
-        validate_groups(&prior.groups)?;
-        validate_published_ports(&prior.published_ports)?;
-    }
-    let mut groups = BTreeSet::from(["core".to_owned()]);
-    if let Some(saved) = value.get("groups") {
-        for group in saved.as_array().context("invalid legacy design groups")? {
-            match group.as_str() {
-                Some("core" | "penpot") => {}
-                Some("diagrams") => {
-                    groups.extend(["diagrams".into(), "excalidraw".into()]);
-                }
-                _ => bail!("unknown legacy design group; inspect before replacing state"),
-            }
-        }
-    }
-    Ok(groups)
-}
-
-fn retain_legacy_state(
-    paths: &Paths,
-    engine_owner: &str,
-    bytes: &[u8],
-    names: &str,
-) -> Result<PathBuf> {
-    let value: Value = serde_json::from_slice(bytes)?;
-    ensure!(
-        matches!(value["schema_version"].as_u64(), Some(1..=3)),
-        "unsupported design state schema"
-    );
-    ensure!(
-        value["owner"] == owner(paths) && value["engine_owner"] == engine_owner,
-        "design state belongs to another environment"
-    );
-    ensure!(
-        names.trim().is_empty(),
-        "stop the prior design generation with its installed release before migration"
-    );
-    legacy_groups(&value)?;
-    let archive = root(paths)
-        .join("retained")
-        .join(format!("state-{}.json", util::sha256(bytes)));
-    if archive.exists() {
-        ensure!(
-            util::read_bounded(&archive, 32768)? == bytes,
-            "retained state drift"
-        );
-    } else {
-        save_private(&archive, bytes)?;
-    }
-    Ok(archive)
-}
-
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ToolBudgets {
@@ -180,7 +90,7 @@ pub(super) fn tool_budgets() -> Result<(Duration, BTreeMap<String, Duration>)> {
     Ok((maximum, tools))
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Receipt {
     schema_version: u32,
@@ -871,8 +781,7 @@ fn preflight_installed_generation(paths: &Paths, engine: &Engine) -> Result<()> 
     Ok(())
 }
 
-// Keep each receipt immutable. Optional diagrams have a separate receipt in the
-// same generation; old full receipts remain valid and are never rewritten.
+// Keep each receipt immutable. Optional images have their own receipts.
 fn diagrams_receipt_path(paths: &Paths) -> PathBuf {
     root(paths)
         .join("receipts")
@@ -892,13 +801,11 @@ fn validate_receipt(paths: &Paths, value: &Receipt, group: &str) -> Result<()> {
     );
     let keys: BTreeSet<_> = value.images.keys().map(String::as_str).collect();
     let core = BTreeSet::from(["node-build", "design-tools"]);
-    let optional = BTreeSet::from(["kroki", "kroki-excalidraw"]);
-    let full = core.union(&optional).copied().collect();
     ensure!(
         match group {
-            "diagrams" => keys == BTreeSet::from(["kroki"]) || keys == optional,
+            "diagrams" => keys == BTreeSet::from(["kroki"]),
             "excalidraw" => keys == BTreeSet::from(["kroki-excalidraw"]),
-            "core" => keys == core || keys == full,
+            "core" => keys == core,
             _ => false,
         },
         "incomplete or unknown design image receipt"
@@ -933,24 +840,15 @@ fn preparation_groups(
     groups: &[String],
 ) -> Result<BTreeSet<String>> {
     let mut selected = selected_groups(groups)?;
-    // Setup/update must preserve already selected groups, including prior topology.
+    // Setup/update preserves the current saved group selection.
     if state_path(paths).exists() {
-        let value: Value = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
+        let state: State = serde_json::from_slice(&util::read_bounded(&state_path(paths), 32768)?)?;
         ensure!(
-            value["owner"] == owner(paths) && value["engine_owner"] == engine.owner(),
+            state.owner == owner(paths) && state.engine_owner == engine.owner(),
             "design state belongs to another environment"
         );
-        if value["schema_version"] == 4 {
-            let state: State = serde_json::from_value(value)?;
-            validate_state(paths, engine, &state)?;
-            selected.extend(state.groups);
-        } else {
-            ensure!(
-                matches!(value["schema_version"].as_u64(), Some(1..=3)),
-                "unsupported design state schema"
-            );
-            selected.extend(legacy_groups(&value)?);
-        }
+        validate_state(paths, engine, &state)?;
+        selected.extend(state.groups);
     }
     Ok(selected)
 }
@@ -1652,7 +1550,6 @@ pub(super) fn start(paths: &Paths, groups: &[String]) -> Result<Value> {
         selected_groups(groups)?
     };
     require_prepared(&requested, &installed)?;
-    migrate_stopped_state(paths, &engine, &installed)?;
     let mut state = new_state(paths, &engine, &installed)?;
     let usable_memory = engine.ready()?["host"]["memTotal"]
         .as_u64()
@@ -1962,32 +1859,6 @@ pub(super) fn launch(paths: &Paths, deadline: Instant) -> Result<LaunchSpec> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn replacement_retains_exact_private_state_and_refuses_active_or_foreign_generations() {
-        let temp = tempfile::tempdir().unwrap();
-        let paths = Paths::new(temp.path().to_path_buf()).unwrap();
-        let legacy = json!({"schema_version":2,"owner":owner(&paths),"engine_owner":"engine","penpot_password":"private legacy secret","images":{"penpot-backend":"old"}});
-        let bytes = serde_json::to_vec(&legacy).unwrap();
-        assert!(retain_legacy_state(&paths, "engine", &bytes, "old-container").is_err());
-        assert!(!root(&paths).join("retained").exists());
-        assert!(retain_legacy_state(&paths, "other", &bytes, "").is_err());
-        let archive = retain_legacy_state(&paths, "engine", &bytes, "").unwrap();
-        assert_eq!(fs::read(&archive).unwrap(), bytes);
-        assert_eq!(
-            retain_legacy_state(&paths, "engine", &bytes, "").unwrap(),
-            archive
-        );
-        fs::write(&archive, b"drift").unwrap();
-        assert!(retain_legacy_state(&paths, "engine", &bytes, "").is_err());
-        assert!(ALIASES.iter().all(|alias| !alias.starts_with("penpot")));
-        assert!(VOLUMES.is_empty());
-        assert_eq!(
-            legacy_groups(&json!({"groups":["core","diagrams","penpot"]})).unwrap(),
-            BTreeSet::from(["core".into(), "diagrams".into(), "excalidraw".into()])
-        );
-        assert!(legacy_groups(&json!({"groups":["unrecognized"]})).is_err());
-    }
-
     #[cfg(unix)]
     #[test]
     fn core_preparation_never_requests_diagrams_and_failed_optional_pull_is_recoverable() {
@@ -2089,99 +1960,6 @@ print(json.dumps(result[0] if '--format' in args else result))
         assert_eq!(fs::read_to_string(paths.home.join("calls")).unwrap(), "");
     }
 
-    #[cfg(unix)]
-    #[test]
-    fn old_diagram_selection_migrates_only_when_stopped_and_preserves_ports_and_artifacts() {
-        use std::os::unix::fs::PermissionsExt;
-        let home = tempfile::tempdir().unwrap();
-        let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
-        let binary = paths.home.join("podman-fixture");
-        fs::write(&binary, "#!/usr/bin/python3\nimport pathlib\nprint('owned-container' if (pathlib.Path(__file__).parent/'active').exists() else '')\n").unwrap();
-        fs::set_permissions(&binary, fs::Permissions::from_mode(0o700)).unwrap();
-        crate::tools::register(&paths, "podman", &binary).unwrap();
-        let engine = Engine::resolve(&paths).unwrap();
-        let images: BTreeMap<String, String> =
-            ["node-build", "design-tools", "kroki", "kroki-excalidraw"]
-                .into_iter()
-                .map(|a| (a.into(), format!("sha256:{}", "a".repeat(64))))
-                .collect();
-        let prior = State {
-            schema_version: 3,
-            owner: owner(&paths),
-            engine_owner: engine.owner(),
-            registry_sha256: "old-generation".into(),
-            images: images.clone(),
-            published_ports: BTreeMap::from([("kroki".into(), 23456)]),
-            groups: BTreeSet::from(["core".into(), "diagrams".into()]),
-        };
-        let bytes = serde_json::to_vec_pretty(&prior).unwrap();
-        let mut invalid = serde_json::to_value(&prior).unwrap();
-        invalid["groups"] = json!([]);
-        assert!(
-            legacy_groups(&invalid).is_err(),
-            "do not turn corrupt saved selections into core defaults"
-        );
-        save_private(&state_path(&paths), &bytes).unwrap();
-        let work = ensure_workspace(&paths).unwrap();
-        fs::write(work.join("scene.html"), "retained user scene").unwrap();
-        let installed = Receipt {
-            schema_version: 1,
-            owner: owner(&paths),
-            registry_sha256: registry_hash(),
-            images,
-        };
-        assert!(
-            preparation_groups(&paths, &engine, &[])
-                .unwrap()
-                .contains("excalidraw")
-        );
-        fs::write(paths.home.join("active"), "").unwrap();
-        assert!(migrate_stopped_state(&paths, &engine, &installed).is_err());
-        assert_eq!(fs::read(state_path(&paths)).unwrap(), bytes);
-        fs::remove_file(paths.home.join("active")).unwrap();
-        migrate_stopped_state(&paths, &engine, &installed).unwrap();
-        let migrated = saved_state(&paths, &engine).unwrap();
-        assert_eq!(migrated.schema_version, 4);
-        assert_eq!(
-            migrated.groups,
-            selected_groups(&["excalidraw".into()]).unwrap()
-        );
-        assert_eq!(migrated.published_ports, prior.published_ports);
-        assert_eq!(
-            fs::read(
-                root(&paths)
-                    .join("retained")
-                    .join(format!("state-{}.json", util::sha256(&bytes)))
-            )
-            .unwrap(),
-            bytes
-        );
-        assert_eq!(
-            fs::read_to_string(work.join("scene.html")).unwrap(),
-            "retained user scene"
-        );
-        migrate_stopped_state(&paths, &engine, &installed).unwrap();
-        assert!(
-            preparation_groups(&paths, &engine, &[])
-                .unwrap()
-                .contains("excalidraw")
-        );
-        let mut ordinary = migrated;
-        ordinary.groups = selected_groups(&["diagrams".into()]).unwrap();
-        save_private(
-            &state_path(&paths),
-            &serde_json::to_vec_pretty(&ordinary).unwrap(),
-        )
-        .unwrap();
-        assert!(
-            !preparation_groups(&paths, &engine, &[])
-                .unwrap()
-                .contains("excalidraw")
-        );
-        assert!(!env_for(&ordinary, "kroki").contains_key("KROKI_EXCALIDRAW_HOST"));
-        assert!(!enabled(&ordinary, "kroki-excalidraw"));
-    }
-
     #[test]
     fn optional_image_receipts_preserve_core_and_reject_drift() {
         let home = tempfile::tempdir().unwrap();
@@ -2202,7 +1980,7 @@ print(json.dumps(result[0] if '--format' in args else result))
         let selected = selected_groups(&["diagrams".into()]).unwrap();
         assert!(require_prepared(&selected, &local_receipt(&paths).unwrap()).is_err());
         assert!(require_prepared(&selected_groups(&[]).unwrap(), &core).is_ok());
-        let optional = make(&["kroki", "kroki-excalidraw"]);
+        let optional = make(&["kroki"]);
         publish_receipt(
             &paths,
             &diagrams_receipt_path(&paths),
@@ -2298,7 +2076,7 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
     }
 
     #[test]
-    fn full_legacy_receipts_and_optional_conflicts_are_checked() {
+    fn combined_receipts_are_rejected_and_split_optional_receipts_work() {
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().to_owned()).unwrap();
         let id = format!("sha256:{}", "a".repeat(64));
@@ -2311,9 +2089,12 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
                 .map(|a| (a.into(), id.clone()))
                 .collect(),
         };
+        assert!(publish_receipt(&paths, &receipt_path(&paths), &full, "core").is_err());
+        full.images.remove("kroki");
+        full.images.remove("kroki-excalidraw");
         publish_receipt(&paths, &receipt_path(&paths), &full, "core").unwrap();
         assert_eq!(local_receipt(&paths).unwrap().images, full.images);
-        full.images.remove("kroki-excalidraw");
+        full.images.insert("kroki".into(), id.clone());
         assert!(validate_receipt(&paths, &full, "core").is_err());
         full.images.insert("unknown".into(), id.clone());
         assert!(validate_receipt(&paths, &full, "core").is_err());
@@ -2326,14 +2107,34 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
                 .map(|a| (a.into(), format!("sha256:{}", "b".repeat(64))))
                 .collect(),
         };
+        assert!(
+            publish_receipt(
+                &paths,
+                &diagrams_receipt_path(&paths),
+                &optional,
+                "diagrams",
+            )
+            .is_err()
+        );
+        let mut diagrams = optional.clone();
+        diagrams.images.remove("kroki-excalidraw");
         publish_receipt(
             &paths,
             &diagrams_receipt_path(&paths),
-            &optional,
+            &diagrams,
             "diagrams",
         )
         .unwrap();
-        assert!(local_receipt(&paths).is_err());
+        let mut excalidraw = optional;
+        excalidraw.images.remove("kroki");
+        publish_receipt(
+            &paths,
+            &excalidraw_receipt_path(&paths),
+            &excalidraw,
+            "excalidraw",
+        )
+        .unwrap();
+        assert_eq!(local_receipt(&paths).unwrap().images.len(), 4);
     }
 
     #[test]

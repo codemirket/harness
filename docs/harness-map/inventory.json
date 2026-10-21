@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "scope": "Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.",
-  "version": "1.1.0",
+  "version": "0.0.1",
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
@@ -15,18 +15,18 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "bytes": 20829,
-      "sha256": "ceaf07cfde5f523a6b5bab63f2bdb067d61c72b15a829b745b08a54ac7ca08c5"
+      "bytes": 20840,
+      "sha256": "b80477c1127ec58b93f5107c225a2acd03849e2088119db4f40cf58b9cf47882"
     },
     {
       "path": "Cargo.lock",
       "bytes": 56828,
-      "sha256": "6c96184e9f3ebe6436f85d8fc5e36167ee0c04111000953761830b313c19de43"
+      "sha256": "bb87e3010f7b765c27a03b0dde801e31bd0b5c2061b502ef91c9c1ff045d39b4"
     },
     {
       "path": "Cargo.toml",
       "bytes": 1620,
-      "sha256": "bedcf1b512351da85f2bf7383fe379ef666598287b8dee71064c7931588b82cf"
+      "sha256": "8a5d8eff9fd0c7b057ee910cde551b52b04df182870ce29bf5b9fd353b855db7"
     },
     {
       "path": "build.rs",
@@ -35,8 +35,8 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 19976,
-      "sha256": "fbd63b703e343e1d51fa9f2b37b57fbbb1b883314686ede8feb41f12fdc03547"
+      "bytes": 20813,
+      "sha256": "9f83f65d7b8b900978887b2a2275c77e04aa9213d383ae7666bb80c872647e3c"
     },
     {
       "path": "docs/licenses/rust-runtime/README.md",
@@ -1545,8 +1545,8 @@
     },
     {
       "path": "src/cli.rs",
-      "bytes": 66911,
-      "sha256": "c6d7472875b97f3ab25dd785e12778b9211561e55b262d50929c5161e3936978"
+      "bytes": 67302,
+      "sha256": "5fa5667f32a9ddd86099355e60d6550096e6e8896707a96fc1ed60742bb55f58"
     },
     {
       "path": "src/craft.rs",
@@ -1640,18 +1640,18 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 95607,
-      "sha256": "14c4a8161f90c816683ffdfdf6482c6d52ca25c549c078741a4e70876e1cd560"
+      "bytes": 87180,
+      "sha256": "a50f02a1f62ba65fb7f946dc141ee1004677e0d07b45471fd369d45aafc5c535"
     },
     {
       "path": "src/paths.rs",
-      "bytes": 1566,
-      "sha256": "7687531342c8f1dc6200a83a3f00b45e6c7ebcca14efe04e2c3117bdcf361954"
+      "bytes": 3342,
+      "sha256": "0c4703bae014740bf589976266d813e623d0daf722e2ffcca44abc1a865e0ec5"
     },
     {
       "path": "src/podman.rs",
-      "bytes": 42754,
-      "sha256": "c2f8f8692b154109299514ff2a40f134a455a116e48ebf9276fa19f27326ee63"
+      "bytes": 46681,
+      "sha256": "52fde8b1c7b4cc4d02d639270185e939e7d29d2d1dd29c50515dbc8e03608c8c"
     },
     {
       "path": "src/process/unix.rs",
@@ -1695,8 +1695,8 @@
     },
     {
       "path": "src/router/codex.rs",
-      "bytes": 21245,
-      "sha256": "2e47215837e3f4bdc08338b58e7d1052ab55fe534e195edaaeb20b1b203d9ae7"
+      "bytes": 21301,
+      "sha256": "e273beadacb8a81ab8eae2af436a234c6955081bba616956c19eec7f158ca6d1"
     },
     {
       "path": "src/router/codex_tests.rs",
@@ -1720,8 +1720,8 @@
     },
     {
       "path": "src/router/execution.rs",
-      "bytes": 82632,
-      "sha256": "50f83d5dd58908b21b1e331b57be221d93800eba8a51c78664257aa9a6064804"
+      "bytes": 82592,
+      "sha256": "b29b9eaed604ec37716a65557a9b78ad3f4736cc72facd6adc1a1cc5828e6edc"
     },
     {
       "path": "src/router/handoff.rs",
@@ -1769,9 +1769,14 @@
       "sha256": "f02dc1cd5ce98ad87dce8056e35c33cd6f36a0faca37db0e17d76fd06e36abba"
     },
     {
+      "path": "src/state/identity.rs",
+      "bytes": 8940,
+      "sha256": "adf9a2dd45eea18852d3fa6229ae35a7487c504636724300947d170becbff5e4"
+    },
+    {
       "path": "src/state.rs",
-      "bytes": 58455,
-      "sha256": "e53287108cd3443898d48bbdf841507121c8e5976dc6295559ca7618dfe003d7"
+      "bytes": 57173,
+      "sha256": "8cd00b9688e3e2aea1d48e2b969a7f63b188fe0922ca66a0b12ed6b087ce364a"
     },
     {
       "path": "src/target.rs",
@@ -1780,8 +1785,8 @@
     },
     {
       "path": "src/tools.rs",
-      "bytes": 13726,
-      "sha256": "67a8251d18279aaad686dd6d3bab185081d6b1a4c240273666de6c8a0566996f"
+      "bytes": 23025,
+      "sha256": "f4b77bb3bb71cb65939caa6e5177ecc14c95e98d28485cef21686c5fd3559751"
     },
     {
       "path": "src/update.rs",
@@ -1795,8 +1800,8 @@
     },
     {
       "path": "tests/backup_relocation.rs",
-      "bytes": 7651,
-      "sha256": "da16fe3cedbf8cd3181d8801e12195e92c84362a1ba53779d38f69ebf7fe7133"
+      "bytes": 7455,
+      "sha256": "cc68e511f478b356a3a7c9dcc90a5279cb9352a0f3908d7226d5a84455eab0a9"
     },
     {
       "path": "tests/backup_runtime.rs",
@@ -1909,6 +1914,11 @@
       "sha256": "bb840bc0e6f5ef8e185ef7820a1b9f6af66bf4a4576f3283d469ad9280d16146"
     },
     {
+      "path": "tests/project_identity.rs",
+      "bytes": 2500,
+      "sha256": "a0445e56767bc3bcdd4039171bf881a90060838384c8ada5b377b49bf9dcf9a8"
+    },
+    {
       "path": "tests/published_update.rs",
       "bytes": 12184,
       "sha256": "90abb6767819f0bc783816bfbda14b6843bfaec4b0256085f7d688c640e1ebc2"
@@ -1935,8 +1945,8 @@
     },
     {
       "path": "tests/task_contracts.rs",
-      "bytes": 25350,
-      "sha256": "9d626b285e5f9556b6e7c6c78d02636bc26c812d35a55a2fa5d54371b2ae1fe8"
+      "bytes": 18449,
+      "sha256": "892556cf66c7598eb1f765d72a90e6efb02524e3f55a905627f1b19f1a3913d5"
     },
     {
       "path": "tests/task_history.rs",
@@ -17629,7 +17639,7 @@
     "rust_manifest": {
       "package": {
         "name": "mirket",
-        "version": "1.1.0",
+        "version": "0.0.1",
         "edition": "2024",
         "rust-version": "1.99",
         "description": "A local agent harness for Codex and Claude",
@@ -18665,7 +18675,7 @@
       },
       {
         "name": "mirket",
-        "version": "1.1.0",
+        "version": "0.0.1",
         "dependencies": [
           "anyhow",
           "clap",
@@ -34601,6 +34611,7 @@
     "tests/motion_payload.rs",
     "tests/package_mcp.rs",
     "tests/professional_teams.rs",
+    "tests/project_identity.rs",
     "tests/published_update.rs",
     "tests/role_evaluation.rs",
     "tests/runtime_simplification.rs",
@@ -34653,7 +34664,7 @@
     "evals/harness-remediation/test_feedback.py",
     "evals/harness-remediation/test_platform.py"
   ],
-  "source_sha256": "2c2b37058a2a61abb38d3994ea346ba6af420b9857efb4822eacabf8fbbf27d9",
+  "source_sha256": "0fad0b6d7462150aca59605ae83bb7b64319bfe0389ca34295d44753126083a1",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

@@ -1,5 +1,4 @@
-//! Versioned project directory identity. Legacy `dev:ino` records are read-only
-//! until an explicit recovery migrates them. Evidence files keep their separate
+//! Durable project directory identity. Evidence files keep a separate
 //! short-lived `dev:ino` race check.
 use anyhow::{Context, Result, ensure};
 use std::{fs, path::Path, time::UNIX_EPOCH};
@@ -198,43 +197,8 @@ fn windows_identity(path: &Path) -> Result<(String, String, u128)> {
     result
 }
 
-pub(super) fn legacy(path: &Path) -> Result<String> {
-    let metadata = fs::metadata(path)?;
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::MetadataExt;
-        Ok(format!("{}:{}", metadata.dev(), metadata.ino()))
-    }
-    #[cfg(not(unix))]
-    {
-        Ok(format!(
-            "{}",
-            metadata.created()?.duration_since(UNIX_EPOCH)?.as_nanos()
-        ))
-    }
-}
-
 pub(super) fn matches(path: &Path, saved: &str) -> Result<bool> {
-    Ok(if saved.starts_with("v2:") {
-        current(path)? == saved
-    } else {
-        legacy(path)? == saved
-    })
-}
-
-pub(super) fn matches_registered(path: &Path, saved: &str, registered: i64) -> Result<bool> {
-    if !matches(path, saved)? {
-        return Ok(false);
-    }
-    if saved.starts_with("v2:") {
-        return Ok(true);
-    }
-    let birth = current(path)?
-        .rsplit(':')
-        .next()
-        .and_then(|value| value.parse::<u128>().ok());
-    Ok(registered >= 0
-        && birth.is_some_and(|value| value <= (registered as u128 + 1) * 1_000_000_000))
+    Ok(saved.starts_with("v2:") && current(path)? == saved)
 }
 
 #[cfg(target_os = "macos")]

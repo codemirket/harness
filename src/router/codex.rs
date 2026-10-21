@@ -4,7 +4,7 @@
 //! from the router's input, and the entire bounded SSE response is validated
 //! before any response bytes are released. No credentials are copied to disk.
 use super::{execution, native, responses::validate_item};
-use crate::{process::OwnedChild, util};
+use crate::{paths::Paths, process::OwnedChild, util};
 use anyhow::{Context, Result, bail, ensure};
 use serde_json::{Value, json};
 use std::{
@@ -353,7 +353,7 @@ pub(super) async fn complete(
     let body = request_body(model, effort, max, prompt, images)?;
     let scratch = tempfile::Builder::new()
         .prefix("mirket-codex-sampler-")
-        .tempdir()?;
+        .tempdir_in(Paths::new(home.to_owned())?.scratch()?)?;
     let capability_file = tempfile::Builder::new()
         .prefix("cap-")
         .rand_bytes(32)

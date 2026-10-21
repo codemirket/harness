@@ -18,13 +18,11 @@ choice remains ambiguous; do not silently configure both hosts. Use the existing
 project's instructions and preserve its uncommitted work. A project directory is
 not required for device installation.
 
-If Mirket is already installed, run `mirket --version`, `mirket doctor --json` and
-`mirket update --check --json`. A healthy installation at the requested version
-needs no replacement. For an authorized update, use `mirket update`, then rerun
-health checks. If the user requested a specific release, keep that choice;
-`update` normally follows the latest release, not an arbitrary version flag.
-Read [updates and recovery](installation.md#update) before repairing drift or
-upgrading installations with existing task state.
+If Mirket 0.0.1 is already installed, run `mirket --version` and
+`mirket doctor --json`. A healthy installation needs no replacement. An older
+Mirket home is a separate installation: 0.0.1 does not import its receipts or
+state. Follow the [fresh-start contract](installation.md#update) and do not
+delete existing data without the owner's authorization.
 
 ## 2. Obtain and verify the official release
 
@@ -36,9 +34,7 @@ match. Validate that the binary URL belongs to that repository's GitHub release,
 uses HTTPS, and refers to the selected release. Never execute a downloaded file
 before verification.
 
-This guide covers 1.0.11. Resolve the latest stable or explicitly requested release
-at installation time, and use its manifest throughout. See [version availability](release-status.md).
-The 1.0.11 native release targets are:
+This guide covers the 0.0.1 fresh baseline. Resolve the latest stable or explicitly requested release at installation time and use its manifest throughout. See [version availability](release-status.md). The intended native release targets are:
 
 | Device | Manifest target |
 | --- | --- |
@@ -52,7 +48,7 @@ consult the source-build option in [manual installation](installation.md).
 Installing a missing compiler or other prerequisites needs the user's applicable
 authorization; source installation is not a silent fallback.
 
-Download the selected binary to a fresh temporary directory. Compute its SHA-256
+Download the selected binary to a fresh temporary directory for verification. After verification, install it under the selected user home’s `.mirket/bin` directory. Compute its SHA-256
 with the host's available tool (`shasum -a 256`, `sha256sum`, or PowerShell
 `Get-FileHash -Algorithm SHA256`) and compare it exactly with the manifest.
 Stop on a mismatch or missing checksum. Same-release `SHA256SUMS` is also
@@ -108,15 +104,14 @@ a fresh session when necessary. In a host where Mirket is available, invoke
 Verify that the tool returned useful content. This establishes activation in
 that host; it does not establish activation in every configured host.
 
-On a build exposing `runtime_status`, call it in the actual host and compare its
+Call `runtime_status` in the actual host and compare its
 executable, source and catalog fingerprints with `mirket info --json`. Require
 `installed_binary.matches_process` to be true after an update. A separate CLI
 process cannot prove that an existing desktop connection restarted. Invoke a
 selected design tool and inspect its saved output; newer direct responses expose
 `runtime` in ordinary structured/text content even if the host hides metadata.
 Check agent-runtime with an actual read-only `memory_read` when it is selected.
-Report each observed connection separately. Older releases without these tools
-retain the discovery/content check above; do not report newer identity checks as passed.
+Report each observed connection separately.
 
 If this chat is attached to a project, inspect its instructions, registration and
 `.mirket/project.json`. Recommend focused expertise based on its actual stack

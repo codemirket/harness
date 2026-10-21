@@ -11,8 +11,36 @@ use std::{
     time::{Duration, Instant},
 };
 
+fn unified_runtime(paths: &Paths) -> PathBuf {
+    paths.root.join("p")
+}
+
+#[cfg(target_os = "macos")]
+fn check_socket_budget(short: &std::path::Path, connection: &str) -> Result<()> {
+    use std::os::unix::ffi::OsStrExt;
+    for socket in [
+        short
+            .join("t/podman")
+            .join(format!("{connection}-gvproxy.sock")),
+        short
+            .join("t/podman")
+            .join(format!("{connection}-api.sock")),
+        short
+            .join("h/.podman")
+            .join(format!("{connection}-ignition.sock")),
+    ] {
+        ensure!(
+            socket.as_os_str().as_bytes().len() < 104,
+            "home path is too long for private Podman sockets inside ~/.mirket: {}",
+            socket.display()
+        );
+    }
+    Ok(())
+}
+
 #[derive(Debug, Clone)]
 pub struct Engine {
+    pub root: PathBuf,
     pub binary: PathBuf,
     pub env: BTreeMap<String, String>,
     pub staging: PathBuf,
@@ -53,13 +81,13 @@ impl Engine {
             }
         }
         let root = root.canonicalize()?;
-        // macOS Unix sockets have a short path limit. Podman places Ignition and
-        // gvproxy sockets under HOME/TMPDIR, even with private XDG state.
+        // Podman host-side sockets and temporary files stay under ~/.mirket.
+        let connection = format!(
+            "mirket-{}",
+            &util::sha256(paths.root.to_string_lossy().as_bytes())[..16]
+        );
         let short = if cfg!(target_os = "macos") {
-            PathBuf::from("/private/tmp").join(format!(
-                "mirket-{}",
-                &util::sha256(paths.root.to_string_lossy().as_bytes())[..16]
-            ))
+            unified_runtime(paths)
         } else {
             root.join("run")
         };
@@ -83,11 +111,7 @@ impl Engine {
             }
         }
         let helper = binary.parent().context("Podman helper directory")?;
-        let helpers = helper_directories(&binary)?;
-        let conf = format!(
-            "[engine]\nhelper_binaries_dir = {}\n",
-            serde_json::to_string(&helpers)?
-        );
+        let conf = helper_config(&binary)?;
         let config = root.join("containers.conf");
         if config.exists() {
             let prior = format!(
@@ -136,14 +160,24 @@ impl Engine {
             "TMPDIR".into(),
             short.join("t").to_string_lossy().into_owned(),
         );
+        if short == unified_runtime(paths) {
+            let runtime = short.join("r");
+            util::ensure_directory(&runtime)?;
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                std::fs::set_permissions(&runtime, std::fs::Permissions::from_mode(0o700))?;
+            }
+            env.insert(
+                "XDG_RUNTIME_DIR".into(),
+                runtime.to_string_lossy().into_owned(),
+            );
+        }
         if cfg!(target_os = "macos") {
             env.insert("CONTAINERS_MACHINE_PROVIDER".into(), "applehv".into());
         }
-        let connection = format!(
-            "mirket-{}",
-            &util::sha256(paths.root.to_string_lossy().as_bytes())[..16]
-        );
         Ok(Self {
+            root: paths.root.clone(),
             binary,
             env,
             staging: root.join("staging"),
@@ -196,6 +230,7 @@ impl Engine {
     }
     pub fn ready(&self) -> Result<Value> {
         ensure_controller_supported()?;
+        self.require_local_client()?;
         self.validate_machine()?;
         let value: Value = serde_json::from_str(&self.run(&["info".into(), "--format=json".into()], Duration::from_secs(8))
             .context("Mirket Podman environment is absent or stopped; run mirket environment init, then mirket environment start")?)?;
@@ -323,14 +358,51 @@ impl Engine {
     pub fn status(&self) -> Value {
         match self.ready() {
             Ok(info) => {
-                json!({"ok":true,"connection":self.connection,"staging":self.staging,"engine":info["host"]})
+                json!({"ok":true,"connection":self.connection,"staging":self.staging,"runtime_home":self.env["HOME"],"runtime_tmp":self.env["TMPDIR"],"client_localized":self.binary.starts_with(&self.root),"engine":info["host"]})
             }
-            Err(e) => json!({"ok":false,"connection":self.connection,"issue":format!("{e:#}")}),
+            Err(e) => {
+                json!({"ok":false,"connection":self.connection,"runtime_home":self.env["HOME"],"runtime_tmp":self.env["TMPDIR"],"client_localized":self.binary.starts_with(&self.root),"issue":format!("{e:#}")})
+            }
         }
+    }
+    fn require_local_client(&self) -> Result<()> {
+        ensure!(
+            self.binary.starts_with(&self.root),
+            "Podman client is outside ~/.mirket; run mirket environment localize-client"
+        );
+        Ok(())
+    }
+    fn runtime_prefix(&self) -> Result<&std::path::Path> {
+        std::path::Path::new(&self.env["HOME"])
+            .parent()
+            .context("private Podman runtime prefix missing")
+    }
+    fn lock_runtime_transition(&self) -> Result<util::FileLock> {
+        let lock = self.root.join("execution/podman/runtime-consolidate.lock");
+        let guard = util::FileLock::acquire(&lock)?;
+        let home = self.root.parent().context("Mirket home path missing")?;
+        let paths = Paths {
+            home: home.to_owned(),
+            root: self.root.clone(),
+        };
+        let selected = if cfg!(target_os = "macos") {
+            unified_runtime(&paths)
+        } else {
+            self.root.join("execution/podman/run")
+        };
+        ensure!(
+            self.runtime_prefix()? == selected,
+            "Podman runtime location changed; retry with a fresh Mirket command"
+        );
+        Ok(guard)
     }
     pub fn init(&self, image: &std::path::Path) -> Result<Value> {
         ensure_controller_supported()?;
+        let _runtime_lock = self.lock_runtime_transition()?;
         self.ensure_machine_helpers()?;
+        self.require_local_client()?;
+        #[cfg(target_os = "macos")]
+        check_socket_budget(self.runtime_prefix()?, &self.connection)?;
         validate_memory_allocation(6144, host_memory_bytes()?)?;
         util::reject_symlink_components(image)?;
         // An approved, exact upstream boot artifact; no caller-selected ignition or helper.
@@ -359,7 +431,11 @@ impl Engine {
     }
     pub fn start(&self) -> Result<Value> {
         ensure_controller_supported()?;
+        let _runtime_lock = self.lock_runtime_transition()?;
         self.ensure_machine_helpers()?;
+        self.require_local_client()?;
+        #[cfg(target_os = "macos")]
+        check_socket_budget(self.runtime_prefix()?, &self.connection)?;
         self.validate_machine()?;
         self.raw(
             &["machine".into(), "start".into(), self.connection.clone()],
@@ -370,6 +446,7 @@ impl Engine {
     }
     pub fn resize(&self, memory_mib: u64) -> Result<Value> {
         ensure_controller_supported()?;
+        let _runtime_lock = self.lock_runtime_transition()?;
         self.ensure_machine_helpers()?;
         validate_memory_allocation(memory_mib, host_memory_bytes()?)?;
         self.validate_machine()?;
@@ -408,6 +485,7 @@ impl Engine {
     }
     pub fn stop(&self) -> Result<Value> {
         ensure_controller_supported()?;
+        let _runtime_lock = self.lock_runtime_transition()?;
         self.validate_machine()?;
         // A valid loopback URL can still belong to a different VM. Read its
         // actual device identity before the native client sends a stop request.
@@ -607,6 +685,13 @@ pub fn repair_helpers(paths: &Paths, expected_sha256: &str) -> Result<Value> {
     )
 }
 
+pub(crate) fn helper_config(binary: &std::path::Path) -> Result<String> {
+    Ok(format!(
+        "[engine]\nhelper_binaries_dir = {}\n",
+        serde_json::to_string(&helper_directories(binary)?)?
+    ))
+}
+
 fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
     let bin = binary.parent().context("Podman helper directory")?;
     let mut directories = vec![bin.to_owned()];
@@ -639,7 +724,7 @@ fn helper_directories(binary: &std::path::Path) -> Result<Vec<PathBuf>> {
     Ok(directories)
 }
 
-fn ensure_machine_helpers(binary: &std::path::Path) -> Result<()> {
+pub(crate) fn machine_helper_files(binary: &std::path::Path) -> Result<[PathBuf; 2]> {
     util::reject_symlink_components(binary)?;
     ensure!(
         binary.is_file(),
@@ -651,8 +736,9 @@ fn ensure_machine_helpers(binary: &std::path::Path) -> Result<()> {
         std::fs::metadata(binary)?.uid()
     };
     let directories = helper_directories(binary)?;
+    let mut selected = Vec::new();
     for name in ["gvproxy", "vfkit"] {
-        let mut found = false;
+        let mut found = None;
         for directory in &directories {
             let path = directory.join(name);
             util::reject_symlink_components(&path)?;
@@ -679,14 +765,16 @@ fn ensure_machine_helpers(binary: &std::path::Path) -> Result<()> {
                     "Podman helper {name} is not executable"
                 );
             }
-            found = true;
+            found = Some(path);
             break;
         }
-        ensure!(
-            found,
-            "selected Podman installation lacks executable {name}; install its native machine helpers before environment init or start"
-        );
+        selected.push(found.with_context(|| format!("selected Podman installation lacks executable {name}; install its native machine helpers before environment init or start"))?);
     }
+    Ok([selected.remove(0), selected.remove(0)])
+}
+
+fn ensure_machine_helpers(binary: &std::path::Path) -> Result<()> {
+    machine_helper_files(binary)?;
     Ok(())
 }
 
@@ -838,6 +926,7 @@ mod tests {
     #[test]
     fn expired_operation_budget_rejects_before_starting_any_command() {
         let engine = Engine {
+            root: PathBuf::new(),
             binary: PathBuf::from("/must-not-execute"),
             env: BTreeMap::new(),
             staging: PathBuf::new(),
@@ -898,6 +987,22 @@ mod tests {
         let (stdout, stderr) = capture_output(command, Duration::from_secs(5)).unwrap();
         assert_eq!(stdout, b"service output");
         assert_eq!(stderr, b"startup failure");
+    }
+
+    #[cfg(target_os = "macos")]
+    #[test]
+    fn private_socket_budget_rejects_overlong_home_paths() {
+        assert!(
+            check_socket_budget(
+                std::path::Path::new("/Users/example/.mirket/p"),
+                "mirket-64f61db634acccc9"
+            )
+            .is_ok()
+        );
+        let long = format!("/Users/{}/.mirket/p", "x".repeat(90));
+        assert!(
+            check_socket_budget(std::path::Path::new(&long), "mirket-64f61db634acccc9").is_err()
+        );
     }
 
     #[cfg(unix)]

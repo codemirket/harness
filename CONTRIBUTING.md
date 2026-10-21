@@ -311,7 +311,7 @@ The operating system must match the executable target.
 
 ## Contained release acceptance
 
-`mirket dev acceptance` is available in [1.0.11](docs/release-status.md).
+`mirket dev acceptance` is part of the [0.0.1 release gate](docs/release-status.md).
 Use the candidate executable with its matching source and prepared runtime generation.
 
 Before deploying a change to desktop contracts or owned runtime code, run both

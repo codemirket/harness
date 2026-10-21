@@ -385,59 +385,6 @@ pub fn inspect(paths: &Paths, archive: &Path, expected: &str) -> Result<Value> {
     )
 }
 
-/// Verify that a recovery archive contains the exact registration preimages
-/// from a reviewed page, in addition to its complete durable-data checks.
-pub(crate) fn inspect_project_identity_preimages(
-    paths: &Paths,
-    archive: &Path,
-    expected: &str,
-    plan: &Value,
-) -> Result<Value> {
-    paths.ensure()?;
-    let stage = tempfile::tempdir_in(&paths.root)?;
-    let manifest = unpack(archive, stage.path(), expected)?;
-    ensure!(
-        manifest.home == paths.home,
-        "backup belongs to another home"
-    );
-    let conn = rusqlite::Connection::open_with_flags(
-        stage.path().join("state.db"),
-        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
-    )?;
-    for project in plan["projects"]
-        .as_array()
-        .context("reviewed project page missing")?
-    {
-        let id = project["id"]
-            .as_str()
-            .context("reviewed project ID missing")?;
-        let expected_root = project["root"]
-            .as_str()
-            .context("reviewed project root missing")?;
-        let expected_identity = project["saved_identity"]
-            .as_str()
-            .context("reviewed identity missing")?;
-        let expected_scope = project["scope"]
-            .as_str()
-            .context("reviewed scope missing")?;
-        let (root, identity, scope, scope_root, scope_identity): (String, String, String, String, String) =
-            conn.query_row(
-                "SELECT p.root,p.identity,s.scope,s.root,s.identity FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1",
-                [id],
-                |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)),
-            )?;
-        ensure!(
-            root == expected_root
-                && identity == expected_identity
-                && scope == expected_scope
-                && scope_root == expected_root
-                && scope_identity == expected_identity,
-            "backup does not contain reviewed registration preimage for {id}"
-        );
-    }
-    Ok(json!({"valid":true,"manifest":manifest}))
-}
-
 pub fn restore(paths: &Paths, archive: &Path, expected: &str) -> Result<Value> {
     let _lease = maintenance::exclusive(paths)?;
     let journal = paths.root.join("restore-pending.json");

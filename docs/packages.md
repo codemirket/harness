@@ -1,6 +1,6 @@
 # Runtime packages
 
-> **Version scope:** This guide describes the working source following Mirket 1.0.11. The selective `package prepare --group` behavior is unreleased. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 `design` supplies production tools. The internal `agent-runtime` package supplies
 Mem0 memory and LangGraph worker checkpoints through Mirket itself; see
@@ -65,9 +65,9 @@ Bundled video production is retired. Mirket does not ship HyperFrames or an
 FFmpeg encoder. Existing scenes, outputs, profiles and the `motion` workflow ID
 remain available; `motion` now explicitly requires selected host tooling and is
 unavailable to routed workers. It is not redirected to browser animation.
-Old checkpoints retain their original bindings and cannot resume under this
-changed source/tool generation. Inspect/export their state before deciding how
-to continue the work; no budget reset or tool/provider substitution is implied.
+Checkpoints bind their original source/tool generation. Inspect the workflow
+state before attempting a resume; no budget reset or tool/provider substitution
+is implied.
 
 Core starts only the tools container: tokens, raster/vector processing, static
 cards, local Playwright, OpenPencil, Typst and Odiff. Prepare/start ordinary
@@ -75,15 +75,13 @@ diagrams with `--group diagrams`; this acquires Kroki alone for fresh selections
 Use `mirket package prepare design --group excalidraw`, then
 `mirket package start design --group excalidraw` for Excalidraw input; this includes
 Kroki and core. `--group all` includes the companion too. Omitting groups reuses
-the saved selection. Old diagram selections migrate to `diagrams,excalidraw`,
-preserving their formats. Preparation never enables a group. To change a running
+the saved selection. Preparation never enables a group. To change a running
 selection, stop it first; data and workspace are retained. Disabled groups do not
 block core readiness. Unsupported Excalidraw calls fail before rendering with an
 explicit preparation/selection instruction.
 
 Stop the service with `mirket package stop design`. The explicit `--purge-data`
-option removes current service state and network. Retained legacy state and volumes
-are preserved. It leaves the shared
+option removes current service state and network. It leaves the shared
 workspace, including user files and models, intact. Stop and remove are different
 operations; a stopped service can retain its workspace and persisted design files.
 
@@ -178,14 +176,11 @@ host generation tools remain outside Mirket's runtime and billing.
 
 ## Updates and recovery
 
-Stop the design package with the currently installed release before a runtime
-generation change, then run `mirket update` and explicitly start the desired
-groups. Installation refuses an active incompatible generation before replacing
-the executable that can stop it. The OpenPencil cutover archives exact legacy
-private state under `packages/data/design/retained/` and retains all old volumes
-and workspace files. It never opens or migrates a Penpot database. Export required
-legacy files before switching; automatic Penpot-to-OpenPencil conversion is not
-provided. The new stack creates no database, cache or assets volume.
+Stop the design package before a runtime generation change, then run
+`mirket update` and explicitly start the desired groups. Installation refuses
+an active incompatible generation before replacing the executable that can
+stop it. The OpenPencil stack creates no separate database, cache or assets
+volume; project workspace files remain under the selected Mirket home.
 
 `mirket update` reapplies saved package selections from the new release. A fresh
 unattended setup selects no optional package. `package status` checks the selected

@@ -15,10 +15,10 @@ apply.
 
 [Website & usage guide](https://harness.mirket.dev) ·
 [Documentation](docs/README.md) ·
-[Release 1.1.0](https://github.com/codemirket/harness/releases/tag/mirket-v1.1.0) ·
+[Release 0.0.1](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.1) ·
 [Contributing](CONTRIBUTING.md)
 
-See the [1.1.0 changes, verification and upgrade boundaries](docs/release-status.md).
+See the [0.0.1 release status and fresh-install boundaries](docs/release-status.md).
 
 ## What it adds
 
@@ -46,21 +46,23 @@ settings and run setup checks.
 
 <!-- installation-prompt:start -->
 ```text
-Install Mirket for the agent environment I am using on this device. Read
+Install Mirket 0.0.1 for the agent environment I am using on this device. Read
 https://raw.githubusercontent.com/codemirket/harness/main/docs/agent-installation.md
 and carry out the installation, rather than only explaining it.
 
 Inspect my OS, architecture, available host and any existing Mirket setup.
 Use the official codemirket/harness release, verify its checksum before
-execution, and preserve my existing settings, credentials and project files.
-Use Mirket's own setup and update commands. Ask only for choices or
-permissions you cannot infer safely. Keep optional packages opt-in.
+execution, and install the managed executable under my home’s .mirket/bin.
+Keep Mirket runtime data under the same .mirket root. Preserve unrelated
+host settings, credentials and project source files. Older Mirket data is
+not imported into 0.0.1; ask before removing any existing installation.
+Keep optional packages opt-in.
 
-Run the health checks, report the installed version and actual results, and
-explain any fresh-session step needed to activate the tools. Do not claim
+Run setup and health checks, report the installed version and actual results,
+and explain any fresh-session step needed to activate the tools. Do not claim
 activation until a Mirket tool has been invoked in the host. If this chat
-has a project, inspect it and propose the relevant expertise without
-changing application code as part of installation.
+has a project, inspect it and propose relevant expertise without changing
+application code as part of installation.
 ```
 <!-- installation-prompt:end -->
 

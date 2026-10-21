@@ -1,6 +1,6 @@
 # Installation and updates
 
-> **Version scope:** This guide describes Mirket 1.0.11. Use the matching release manifest and [version guide](release-status.md); older binaries may not support every command.
+> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 For guided setup, paste the [installation prompt](../website/public/install-prompt.txt)
 into your agent. The [agent execution guide](agent-installation.md) covers device
@@ -14,9 +14,12 @@ Download the Mirket executable for the machine from the
 names include the OS and architecture: `aarch64` is ARM64 and `x86_64` is Intel/AMD
 64-bit. Rename the selected `mirket-TARGET` file to `mirket` (`mirket.exe` on
 Windows), verify its SHA-256 against the same release's manifest or `SHA256SUMS`
-before execution, make it executable on macOS or Linux with `chmod +x mirket`,
-add its
-directory to PATH and run `mirket setup`. Each release includes `SHA256SUMS` for
+before execution. Place the verified executable in `~/.mirket/bin/mirket`
+(`%USERPROFILE%\.mirket\bin\mirket.exe` on Windows), make it executable on
+macOS or Linux with `chmod +x`, and run setup from that absolute path. Keep
+that directory on PATH if desired. This is the installed executable location
+on all supported CLI platforms; no separate release-binary location is needed.
+Each release includes `SHA256SUMS` for
 the downloadable binaries, plus `LICENSE`, `NOTICE.md` and Rust dependency
 notices accompanying the native distributions. Source installation uses
 `cargo install --locked --path . --bin mirket`; normal use needs only the compiled
@@ -39,6 +42,13 @@ resolve dependencies or run package installers. See [local MCP packages](package
 configuration, platform support and invocation checks.
 
 Package runtimes are private dependencies and do not replace system runtimes.
+Mirket's per-user data root is `~/.mirket` on macOS and Linux and
+`%USERPROFILE%\.mirket` on Windows. Runtime downloads, package generations,
+databases, VM disk/images/volumes, the imported Podman client and host-side
+Podman runtime paths live under it. Host client configuration, projected skills
+and project-local `.mirket` selection files remain in their owning host or
+project directories. The managed container controller has been verified on
+macOS ARM64; this location contract does not claim VM readiness on other hosts.
 The design stack is one `design` package. After setting up the selected Podman
 environment, install, start and inspect it:
 
@@ -95,106 +105,31 @@ checks; a cross-platform source file is not proof of native behavior.
 
 ## Update
 
-When replacing a saved package selection, first run the new release binary's
-`mirket setup --target all --package design --yes` with its private Podman
-environment running. Setup reconciles the owned bindings and saves the new
-selection. An update reuses saved selections; it does not choose replacements.
+Mirket 0.0.1 is a fresh baseline. It creates the current schema-4 task database
+and versioned project identities. It does not migrate databases, project
+registrations, package state or managed host receipts from deleted pre-0.0.1
+releases. Keep an older installation separate until its owner has explicitly
+chosen what data to retain or remove; do not silently bind its projects to a
+new installation.
 
-`mirket update` retrieves the official GitHub release manifest, selects this
-binary's target, checks the SHA-256 digest and version, then launches the verified
-candidate to reapply saved setup. `mirket update --check` reports availability
-without installing. The repository must have a published release with
-`mirket-release.json` and its listed executables; an absent release is an explicit
-error and does not change the installation.
+After 0.0.1, `mirket update --check` can inspect a newer published release.
+`mirket update` verifies that release's manifest and executable hash before
+reapplying saved setup. The installed binary remains under `~/.mirket/bin` on
+all CLI platforms. Update keeps saved package selections and refuses modified
+managed copies. Restart desktop MCP sessions after an update and compare each
+live `runtime_status` with the installed executable. Project selections need
+an explicit `mirket project sync` in each project.
 
-### Updating older task databases
-
-Before updating an installation with existing tasks, quiesce Mirket task-state
-writers and retain a consistent SQLite backup of `~/.mirket/state.db`. SQLite's
-backup API includes committed WAL data; copying only an active database file is
-not a complete backup. Rehearse recovery in a disposable home.
-
-The current runtime's first task-state or MCP open migrates valid schema-1,
-schema-2 or schema-3 databases transactionally to schema 4. Projects, tasks,
-deliveries, evidence, checkpoints, contracts and recorded idempotency replies
-retain their values. Earlier migrations add evidence contracts and the
-creation-time/ID pagination index. Schema 4 adds `project_scopes`, retaining each
-project's original path-derived runtime namespace and directory identity.
-Current schema-4 opens validate without writing a new schema. Verify the migrated
-records and database integrity before resuming writers.
-
-Schema 4 can contain either legacy `device:inode` project identities or
-versioned identities. A schema migration does not silently rebind a registered
-directory after a device-number change. Use the paged
-[`project identity` recovery](agent-runtime.md#project-identity-after-a-device-number-transition)
-with a validated durable backup, then reconnect and verify the affected
-desktop clients. This changes only the registration identity fields and audit
-records; it retains project IDs and runtime namespaces.
-
-New task mutations return versioned compact receipts. Use task status/history
-for full state and recovery. Exact retries of pre-upgrade operations return their
-original recorded reply, which can be a full snapshot. See [task evidence](task-evidence.md).
-
-Embedded skill notices are now scoped to each owner's declared sources. This
-one-time change invalidates older aggregate delivery hashes: resume an active
-task with status, then reread its selected guidance with the current revision
-and a fresh key before completion. Task/evidence/history records are retained.
-Future unrelated notice updates no longer invalidate that owner's payload.
-
-Restart existing Mirket MCP connections during cutover. Replacing the executable
-does not replace an already-running process. Runtimes predating schema 4 refuse the new database;
-a binary-only downgrade cannot read the new database. Preserve newer state and
-reconcile post-backup writes before restoring an old backup. New host sessions
-use the updated connection.
-
-For a separately obtained, trusted local release executable:
+For a separately obtained trusted release executable, use:
 
 ```sh
 mirket update --from /absolute/mirket --sha256 EXPECTED_SHA256
 ```
 
-A checksum downloaded from the same release establishes transfer integrity; it
-is not an independent release signature. Downloads use the official release
-origin and HTTPS. Never replace the expected digest just to accept a mismatch.
-
-A bootstrap CLI on PATH forwards to a verified newer managed release, including
-new commands and version output. Published versions must be immutable.
-
-For a 2.0.0 installation, download and verify the 3.0.0 executable first, then
-run that executable's `update` against the existing home. Close the selected
-desktop clients before this reconfiguration. The 2.0.0 updater and bootstrap
-require receipt fields and saved choices removed in 3.0.0; they cannot verify
-the new receipt. Use the resulting managed 3.0.0 executable for further commands.
-If PATH contains a separate 2.0.0 executable, replace it during this update with
-the entrypoint options below, invoking the downloaded 3.0.0 executable. Preserve
-the setup receipt: it identifies owned settings and files for reconciliation.
-If the old updater already reported an error after installation, run 3.0.0
-`doctor`, then 3.0.0 `update` to complete and verify the saved setup.
-
-To replace a separate CLI file on PATH with the same verified release, run the
-managed CLI and identify both the destination and its current SHA-256 digest:
-
-```sh
-/absolute/home/.mirket/bin/mirket update \
-  --entrypoint /absolute/bin/mirket \
-  --expected-entrypoint-sha256 CURRENT_ENTRYPOINT_SHA256
-```
-
-The entrypoint must be an existing regular file named `mirket` (`mirket.exe` on
-Windows), with an absolute path and no symlinks. Mirket checks its current bytes
-before updating the environment and again before replacing the file. A changed
-digest refuses replacement; an entrypoint already matching the candidate is a
-safe retry. This option cannot be combined with `--check`. On Windows, invoke a
-different Mirket executable because a running entrypoint cannot be replaced.
-If the environment update succeeds but entrypoint replacement fails, the error
-identifies that partial outcome so the replacement can be retried.
-
-Updates reapply selected global setup, package choices and package settings using
-the new executable's embedded definitions. They do not follow upstream package
-releases independently. Project skill selections remain explicit;
-use `mirket project sync` on the project whose payloads you intend to reconcile.
-A conflicting managed edit stops setup. Inspect and preserve it before retrying.
-Do not grant overwrite authority by deleting a receipt.
+A checksum from the release establishes transfer integrity, not an independent
+publisher signature. Future releases must retain their own state migration or
+explicit fresh-start contract; a lower version number alone cannot safely read
+newer data.
 
 ## Diagnosis and isolation
 

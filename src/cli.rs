@@ -255,6 +255,8 @@ enum EnvironmentCommand {
         #[arg(long)]
         expected_sha256: String,
     },
+    /// Import the registered Podman client and machine helpers into ~/.mirket.
+    LocalizeClient,
     /// Initialize a staging-only VM from the reviewed boot image.
     Init {
         /// Existing exact pinned boot image; otherwise download through the package cache.
@@ -401,11 +403,6 @@ struct ProjectPath {
 }
 #[derive(Subcommand)]
 enum ProjectCommand {
-    /// Preview or apply versioned identity recovery without changing project files.
-    Identity {
-        #[command(subcommand)]
-        command: ProjectIdentityCommand,
-    },
     Init {
         #[arg(long, default_value = ".")]
         project: PathBuf,
@@ -474,28 +471,6 @@ enum ProjectCommand {
         offset: usize,
         #[arg(long, default_value_t = 10)]
         limit: usize,
-    },
-}
-#[derive(Subcommand)]
-enum ProjectIdentityCommand {
-    /// Inspect registered roots and produce a reviewable, digest-bound page.
-    Preview {
-        #[arg(long, default_value_t = 0)]
-        offset: usize,
-        #[arg(long, default_value_t = 10)]
-        limit: usize,
-    },
-    /// Atomically apply one exact preview page after validating a durable backup.
-    Apply {
-        #[arg(long)]
-        plan: PathBuf,
-        #[arg(long)]
-        backup: PathBuf,
-        #[arg(long)]
-        sha256: String,
-        /// Per-project evidence for reviewed legacy device transitions.
-        #[arg(long)]
-        attestation: Option<PathBuf>,
     },
 }
 #[derive(Args)]
@@ -1501,22 +1476,6 @@ fn dispatch(cli: Cli) -> Result<i32> {
             } => crate::backup::restore(&paths, &archive, &sha256)?,
         },
         Command::Project { command } => match command {
-            ProjectCommand::Identity { command } => match command {
-                ProjectIdentityCommand::Preview { offset, limit } => {
-                    State::open(&paths)?.identity_preview(offset, limit)?
-                }
-                ProjectIdentityCommand::Apply {
-                    plan,
-                    backup,
-                    sha256,
-                    attestation,
-                } => State::open(&paths)?.identity_apply(
-                    &plan,
-                    &backup,
-                    &sha256,
-                    attestation.as_deref(),
-                )?,
-            },
             ProjectCommand::Relocate {
                 id,
                 expected_root,
@@ -1698,23 +1657,28 @@ fn dispatch(cli: Cli) -> Result<i32> {
             command: EnvironmentCommand::RepairHelpers { expected_sha256 },
         } => crate::podman::repair_helpers(&paths, &expected_sha256)?,
         Command::Environment { command } => {
-            if !matches!(&command, EnvironmentCommand::Status) {
-                crate::podman::ensure_controller_supported()?;
-            }
-            let engine = crate::podman::Engine::resolve(&paths)?;
-            match command {
-                EnvironmentCommand::Init { image } => {
-                    engine.ensure_machine_helpers()?;
-                    engine.init(&match image {
-                        Some(path) => path,
-                        None => packages::machine_image(&paths)?,
-                    })?
+            if matches!(&command, EnvironmentCommand::LocalizeClient) {
+                crate::tools::localize_podman(&paths)?
+            } else {
+                if !matches!(&command, EnvironmentCommand::Status) {
+                    crate::podman::ensure_controller_supported()?;
                 }
-                EnvironmentCommand::Start => engine.start()?,
-                EnvironmentCommand::Stop => engine.stop()?,
-                EnvironmentCommand::Resize { memory_mib } => engine.resize(memory_mib)?,
-                EnvironmentCommand::Status => engine.status(),
-                EnvironmentCommand::RepairHelpers { .. } => unreachable!(),
+                let engine = crate::podman::Engine::resolve(&paths)?;
+                match command {
+                    EnvironmentCommand::Init { image } => {
+                        engine.ensure_machine_helpers()?;
+                        engine.init(&match image {
+                            Some(path) => path,
+                            None => packages::machine_image(&paths)?,
+                        })?
+                    }
+                    EnvironmentCommand::Start => engine.start()?,
+                    EnvironmentCommand::Stop => engine.stop()?,
+                    EnvironmentCommand::Resize { memory_mib } => engine.resize(memory_mib)?,
+                    EnvironmentCommand::Status => engine.status(),
+                    EnvironmentCommand::LocalizeClient
+                    | EnvironmentCommand::RepairHelpers { .. } => unreachable!(),
+                }
             }
         }
         Command::Package { command } => match command {

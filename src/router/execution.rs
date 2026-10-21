@@ -465,7 +465,7 @@ async fn verify_vision(
         if target.protocol != Protocol::Claude {
             continue;
         }
-        let (_probe, image, expected) = vision_probe(&std::env::temp_dir())?;
+        let (_probe, image, expected) = vision_probe(&paths.scratch()?)?;
         let prompt = "Identify the four large color quadrants in the attached image, ordered top-left, top-right, bottom-left, bottom-right. Use only color names red, blue, green, yellow, cyan, magenta, separated by commas with no spaces. Return a complete action with tool empty, arguments_json '{}', and result set to those four names. Do not use tools.";
         let started = std::time::Instant::now();
         let mut observation = json!({"response_sha256":null});
@@ -537,8 +537,8 @@ fn vision_outcome(result: Result<Value>, expected: &str) -> (bool, Value) {
 }
 
 fn vision_probe(root: &Path) -> Result<(tempfile::TempDir, PathBuf, String)> {
-    // Canonicalize only the system temporary directory before creating our own
-    // private fixture. User image paths still pass the strict no-symlink reader.
+    // Keep this fixture in Mirket's private work directory. User image paths
+    // still pass the strict no-symlink reader.
     let probe = tempfile::tempdir_in(root.canonicalize()?)?;
     let image = probe.path().join("vision.png");
     let (png, expected) = vision_fixture(&util::sha256(probe.path().to_string_lossy().as_bytes()))?;

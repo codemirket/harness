@@ -1,7 +1,6 @@
 //! Durable coordination records. These records describe work; the host executes it.
 pub mod contracts;
 mod identity;
-mod identity_recovery;
 use crate::{catalog::Catalog, paths::Paths, util};
 use anyhow::{Context, Result, bail};
 use contracts::ContractKind;
@@ -76,7 +75,7 @@ const SCHEMA: &[(&str, &str)] = &[
         scope TEXT NOT NULL, key TEXT NOT NULL, fingerprint TEXT NOT NULL,
         response TEXT NOT NULL, PRIMARY KEY(scope,key)
     ) STRICT"),
-    ("tasks_project", "CREATE INDEX tasks_project ON tasks(project_id,updated)"),
+    PAGING_INDEX,
 ];
 
 #[derive(Clone, Debug)]
@@ -135,18 +134,10 @@ fn identity(path: &Path) -> Result<String> {
     }
 }
 
-fn validate_schema(conn: &Connection, version: i64) -> Result<()> {
+fn validate_schema(conn: &Connection) -> Result<()> {
     let mut schema = SCHEMA.to_vec();
-    if version >= 2 {
-        schema.push(CONTRACT_SCHEMA);
-    }
-    if version >= 3 {
-        schema.retain(|(name, _)| *name != "tasks_project");
-        schema.push(PAGING_INDEX);
-    }
-    if version >= 4 {
-        schema.push(SCOPE_SCHEMA);
-    }
+    schema.push(CONTRACT_SCHEMA);
+    schema.push(SCOPE_SCHEMA);
     let mut statement = conn.prepare(
         "SELECT name,sql FROM sqlite_schema WHERE sql IS NOT NULL AND name NOT GLOB 'sqlite_*'",
     )?;
@@ -240,7 +231,7 @@ impl State {
         let mut conn = state.connection()?;
         let read = conn.transaction()?;
         let version: i64 = read.pragma_query_value(None, "user_version", |row| row.get(0))?;
-        if !(0..=4).contains(&version) {
+        if version != 0 && version != 4 {
             bail!("unsupported Mirket state format: {version}");
         }
         #[cfg(unix)]
@@ -249,7 +240,7 @@ impl State {
             fs::set_permissions(&state.database, fs::Permissions::from_mode(0o600))?;
         }
         if version == 4 {
-            validate_schema(&read, 4)?;
+            validate_schema(&read)?;
             let journal: String =
                 read.pragma_query_value(None, "journal_mode", |row| row.get(0))?;
             if journal != "wal" {
@@ -258,11 +249,7 @@ impl State {
             read.commit()?;
             return Ok(state);
         }
-        if version > 0 {
-            validate_schema(&read, version)?;
-        } else {
-            empty_schema(&read)?;
-        }
+        empty_schema(&read)?;
         read.commit()?;
 
         // WAL mode cannot be changed inside a transaction. Concurrent first
@@ -282,52 +269,18 @@ impl State {
         }
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
         let version: i64 = tx.pragma_query_value(None, "user_version", |row| row.get(0))?;
-        match version {
-            0 => {
-                empty_schema(&tx)?;
-                for (_, sql) in SCHEMA {
-                    tx.execute_batch(sql)?;
-                }
-                tx.execute_batch(CONTRACT_SCHEMA.1)?;
-                tx.pragma_update(None, "user_version", 2)?;
+        if version == 0 {
+            empty_schema(&tx)?;
+            for (_, sql) in SCHEMA {
+                tx.execute_batch(sql)?;
             }
-            1 => {
-                validate_schema(&tx, 1)?;
-                tx.execute_batch(CONTRACT_SCHEMA.1)?;
-                tx.pragma_update(None, "user_version", 2)?;
-            }
-            2 => validate_schema(&tx, 2)?,
-            3 => validate_schema(&tx, 3)?,
-            4 => validate_schema(&tx, 4)?,
-            _ => bail!("unsupported Mirket state format: {version}"),
-        }
-        // Replace the obsolete updated-order index atomically with the cursor
-        // ordering. No task, evidence, checkpoint or exact replay is rewritten.
-        if version < 3 {
-            tx.execute_batch("DROP INDEX tasks_project")?;
-            tx.execute_batch(PAGING_INDEX.1)?;
-            tx.pragma_update(None, "user_version", 3)?;
-        }
-        if version < 4 {
+            tx.execute_batch(CONTRACT_SCHEMA.1)?;
             tx.execute_batch(SCOPE_SCHEMA.1)?;
-            let projects = {
-                let mut q = tx.prepare("SELECT id,root,identity FROM projects")?;
-                q.query_map([], |r| {
-                    Ok((
-                        r.get::<_, String>(0)?,
-                        r.get::<_, String>(1)?,
-                        r.get::<_, String>(2)?,
-                    ))
-                })?
-                .collect::<rusqlite::Result<Vec<_>>>()?
-            };
-            for (id, root, identity) in projects {
-                tx.execute(
-                    "INSERT INTO project_scopes VALUES(?1,?2,?3,?4)",
-                    params![id, util::sha256(root.as_bytes()), root, identity],
-                )?;
-            }
             tx.pragma_update(None, "user_version", 4)?;
+        } else if version == 4 {
+            validate_schema(&tx)?;
+        } else {
+            bail!("unsupported Mirket state format: {version}");
         }
         tx.commit()?;
         Ok(state)
@@ -359,7 +312,7 @@ impl State {
         let conn = Connection::open_with_flags(path, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY)?;
         let version: i64 = conn.pragma_query_value(None, "user_version", |r| r.get(0))?;
         anyhow::ensure!(version == 4, "unsupported backup state schema");
-        validate_schema(&conn, version)?;
+        validate_schema(&conn)?;
         anyhow::ensure!(
             conn.query_row("PRAGMA integrity_check", [], |r| r.get::<_, String>(0))? == "ok",
             "backup SQLite integrity failure"
@@ -390,15 +343,15 @@ impl State {
         let current_identity = identity::current(Path::new(root))?;
         let mut conn = self.connection()?;
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let previous: Option<(String, String, i64)> = tx
+        let previous: Option<(String, String)> = tx
             .query_row(
-                "SELECT id,identity,created FROM projects WHERE root=?1",
+                "SELECT id,identity FROM projects WHERE root=?1",
                 [root],
-                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+                |row| Ok((row.get(0)?, row.get(1)?)),
             )
             .optional()?;
-        let id = if let Some((id, previous, registered)) = previous {
-            if !identity::matches_registered(Path::new(root), &previous, registered)? {
+        let id = if let Some((id, previous)) = previous {
+            if !identity::matches(Path::new(root), &previous)? {
                 bail!("registered project identity changed; use a distinct project directory");
             }
             id
@@ -497,26 +450,22 @@ impl State {
             .collect::<rusqlite::Result<Vec<_>>>()?)
     }
 
-    /// Stable namespace for registered roots; legacy CLI-only roots retain path hashing.
+    /// Stable namespace for registered roots; unregistered CLI roots use path hashing.
     pub fn runtime_scope(&self, path: &Path) -> Result<String> {
         let canonical = crate::paths::canonical_project(path)?;
         let root = canonical.to_str().context("project path must be UTF-8")?;
         let conn = self.connection()?;
-        if let Some((scope, expected, registered)) = conn
+        if let Some((scope, expected)) = conn
             .query_row(
-                "SELECT s.scope,s.identity,p.created FROM project_scopes s LEFT JOIN projects p ON p.id=s.project_id WHERE s.root=?1",
+                "SELECT scope,identity FROM project_scopes WHERE root=?1",
                 [root],
-                |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?, r.get::<_, Option<i64>>(2)?)),
+                |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?)),
             )
             .optional()?
         {
             util::reject_symlink_components(&canonical)?;
             anyhow::ensure!(
-                if let Some(created) = registered {
-                    identity::matches_registered(&canonical, &expected, created)?
-                } else {
-                    identity::matches(&canonical, &expected)?
-                },
+                identity::matches(&canonical, &expected)?,
                 "durable project identity changed"
             );
             anyhow::ensure!(
@@ -561,12 +510,12 @@ impl State {
         );
         let mut conn = self.unleased_connection()?;
         let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-        let (root, expected, scope, registered): (String,String,String,i64) = tx.query_row(
-            "SELECT p.root,p.identity,s.scope,p.created FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1", [id],
-            |r| Ok((r.get(0)?,r.get(1)?,r.get(2)?,r.get(3)?))).optional()?.context("project is not registered")?;
+        let (root, expected, scope): (String,String,String) = tx.query_row(
+            "SELECT p.root,p.identity,s.scope FROM projects p JOIN project_scopes s ON s.project_id=p.id WHERE p.id=?1", [id],
+            |r| Ok((r.get(0)?,r.get(1)?,r.get(2)?))).optional()?.context("project is not registered")?;
         // The original inode/creation identity is retained; copied replacements are not relocation.
         anyhow::ensure!(
-            identity::matches_registered(&destination, &expected, registered)?,
+            identity::matches(&destination, &expected)?,
             "destination is not the registered directory; rename the original project, do not copy it"
         );
         if Path::new(&root) == destination {
@@ -688,20 +637,17 @@ impl State {
 
     fn root(conn: &Connection, project_id: &str) -> Result<PathBuf> {
         bounded(project_id, "project id", 64)?;
-        let (root, expected, registered): (String, String, i64) = conn
+        let (root, expected): (String, String) = conn
             .query_row(
-                "SELECT root,identity,created FROM projects WHERE id=?1",
+                "SELECT root,identity FROM projects WHERE id=?1",
                 [project_id],
-                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+                |row| Ok((row.get(0)?, row.get(1)?)),
             )
             .optional()?
             .context("project is not registered; run mirket project register through the host")?;
         let path = PathBuf::from(root);
         util::reject_symlink_components(&path)?;
-        if !path.is_dir()
-            || path.canonicalize()? != path
-            || !identity::matches_registered(&path, &expected, registered)?
-        {
+        if !path.is_dir() || path.canonicalize()? != path || !identity::matches(&path, &expected)? {
             bail!("registered project identity changed");
         }
         Ok(path)
