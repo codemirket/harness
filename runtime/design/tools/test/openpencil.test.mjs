@@ -29,7 +29,12 @@ test('official OpenPencil tools create, edit, reopen and export a layered docume
   const vars=await openpencilInspect({source:'proof.fig',tool:'list_variables'});
   assert.match(JSON.stringify(vars.result),/accent/);
   const before=await fs.readFile(path.join(workspace,'proof.fig'));
-  const png=await openpencilExport({source:'proof.fig',output:'proof.png'});
+  await fs.rename(path.join(workspace,'design/tokens.json'),path.join(workspace,'design/saved-tokens.json'));
+  let png;
+  try {
+    png=await openpencilExport({source:'proof.fig',output:'proof.png'});
+    assert.equal(png.tokens,undefined);
+  } finally { await fs.rename(path.join(workspace,'design/saved-tokens.json'),path.join(workspace,'design/tokens.json')); }
   assert.deepEqual(png.dimensions,{width:480,height:240});
   assert.equal(png.source_sha256,sha256(before));
   const {default:sharp}=await import('sharp');

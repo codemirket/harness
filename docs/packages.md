@@ -91,15 +91,15 @@ operations; a stopped service can retain its workspace and persisted design file
 | --- | --- | --- |
 | Shared visual tokens | Style Dictionary | Compile `design/tokens.json` before any dependent render; keep CSS, JavaScript, TypeScript, Typst and DTCG outputs in sync. Cached generations bind token bytes, the compiler/format configuration and locked dependencies; source and compiler identities remain separate in the result. |
 | Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF, WOFF or WOFF2 fonts. Inspect the saved output at its actual use size. |
-| Live web page and interaction | Playwright | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
-| Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles. |
+| Live web page and interaction | Playwright | Observe authored HTML without token injection; explicitly link compiled styles in production sources. Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
+| Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles during creation/editing; unchanged export needs no token source. |
 | Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
 | Encoded video | Explicitly selected host encoder | Mirket has no bundled encoder. Preserve editable source; inspect frames, playback, duration and audio where requested. |
 | Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
 | Raster input preparation | Sharp | Inspect dimensions, crop, color and transparency before downstream composition. |
 | Generated or imported SVG | SVGO | Optimize every SVG, then compare structure and appearance with the required semantic IDs intact. Optimization is not sanitization. |
 | Editable vector artwork | SVG authoring, SVGO and resvg | Use `vector_render` for a semantic SVG and native PNG preview. Read back the SVG and inspect its preview; use licensed existing images when raster content is needed. |
-| Comparable pixel QA | Odiff | Compare matched dimensions, content and state; inspect the diff and explain material changes. A low difference score is not aesthetic approval. |
+| Comparable pixel QA | Odiff | Compare dimensions, content and state; report differences by default or set `expect_match:true` for an equality gate. Inspect and interpret differences through visual-review when needed. A low difference score is not aesthetic approval. |
 
 CLI scratch directories use private directories on
 the shared workspace disk and are removed after completion or cancellation.
@@ -306,3 +306,11 @@ images and user artifacts are not deleted by this change.
 The diagram group retains Excalidraw format support. Encoded video remains a
 specialist capability of the explicitly selected design package; no claim of
 natural adoption or production-quality gain follows from its availability.
+
+Produced PNG/JPEG/WebP rasters larger than four MiB retain their original artifact
+and include an `inspection` receipt with a bounded overview and lossless PNG
+tiles. AVIF output receives PNG evidence regardless of size. The worker must
+inspect every tile; the original digest remains a completion/resume stability
+requirement. Tiling does not increase the four-image/eight-MiB retained context
+budget or replace visual judgment. Native coordinates make the inspected regions
+explicit.

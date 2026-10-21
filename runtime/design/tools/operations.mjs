@@ -299,43 +299,10 @@ export async function odiffCompare(args) {
       if (!args.output) await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
       artifact = await publish(args.output || `.mirket-design/qa/${crypto.randomUUID()}-diff.png`, bytes, outputOptions(args));
     }
-    return {match: result.code === 0, exit_code: result.code, stdout: result.stdout.slice(0, 4096), diff: artifact || null, baseline: args.baseline, candidate: args.candidate};
+    return {match: result.code === 0, expect_match: args.expect_match === true, baseline_sha256:sha(leftBytes), candidate_sha256:sha(rightBytes), exit_code: result.code, stdout: result.stdout.slice(0, 4096), diff: artifact || null, baseline: args.baseline, candidate: args.candidate};
   } finally { await fs.rm(temp, {recursive: true, force: true}); }
 }
 
-export function injectTokenStylesheet(html, stylesheetUrl) {
-  const link = `<link rel="stylesheet" data-mirket-tokens href="${stylesheetUrl}">`;
-  // Inspect only the document prologue. A later '<head>' may be text inside
-  // script/style content, an attribute, or a comment, not an insertion point.
-  let offset = 0, doctypeEnd = 0;
-  const trivia = () => {
-    for (;;) {
-      offset += /^\s*/.exec(html.slice(offset))[0].length;
-      if (html.startsWith('<!--', offset)) {
-        const end = html.indexOf('-->', offset + 4);
-        if (end < 0) throw Error('HTML prologue comment is unterminated');
-        offset = end + 3;
-      } else {
-        const declaration = /^<!doctype\b(?:[^>"']|"[^"]*"|'[^']*')*>/i.exec(html.slice(offset));
-        if (!declaration) return;
-        offset += declaration[0].length; doctypeEnd = offset;
-      }
-    }
-  };
-  const tag = name => new RegExp(`^<${name}\\b(?:[^>"']|"[^"]*"|'[^']*')*>`, 'i').exec(html.slice(offset));
-  trivia();
-  const root = tag('html');
-  const rootEnd = root ? offset + root[0].length : 0;
-  if (root) { offset = rootEnd; trivia(); }
-  const head = tag('head');
-  if (head) {
-    const insertion = offset + head[0].length;
-    return html.slice(0, insertion) + link + html.slice(insertion);
-  }
-  if (!root && tag('script')) throw Error('HTML executes a script before the canonical token stylesheet can load');
-  const insertion = rootEnd || doctypeEnd;
-  return html.slice(0, insertion) + `<head>${link}</head>` + html.slice(insertion);
-}
 export function scopedWorkspaceUrlAllowed(value, prefix = workspacePrefix) {
   if (!prefix) return true;
   try {
@@ -345,15 +312,6 @@ export function scopedWorkspaceUrlAllowed(value, prefix = workspacePrefix) {
     if (parts.some(p => !p || p === '.' || p === '..' || /[\\/\0]/.test(p))) return false;
     return parts.join('/').startsWith('files/' + prefix + '/');
   } catch { return false; }
-}
-async function tokenDocument(url, stylesheetUrl) {
-  const target = new URL(url);
-  if (target.host !== 'design-tools:9002' || !target.pathname.startsWith('/files/') || target.search || target.hash) return null;
-  let relative = target.pathname.slice('/files/'.length).split('/').map(decodeURIComponent).join('/');
-  if (workspacePrefix) { if (!relative.startsWith(workspacePrefix + '/')) throw Error('Page is outside the assigned design project'); relative = relative.slice(workspacePrefix.length + 1); }
-  if (path.extname(relative).toLowerCase() !== '.html') return null;
-  const html = (await readFile(relative, 4 * 1024 * 1024)).toString('utf8');
-  return injectTokenStylesheet(html, stylesheetUrl);
 }
 export async function withBrowserCaptureSession(connect, endpoint, connectOptions, operation, {signal = requestSignal(), timeoutMs = 120000} = {}) {
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1) throw Error('Playwright capture deadline is invalid');
@@ -408,7 +366,7 @@ export function validateBrowserActions(actions, time, reducedMotion) {
   if (time != null && (!Number.isInteger(time) || time < 0 || time > 60000)) throw Error('Animation inspection time must be in 0..60000 ms');
   if (!['reduce', 'no-preference'].includes(reducedMotion)) throw Error('Invalid reduced motion preference');
 }
-async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], tokensCss, actions = [], animation_time_ms, reduced_motion = 'no-preference'} = {}) {
+async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], actions = [], animation_time_ms, reduced_motion = 'no-preference'} = {}) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 64 || height < 64 || width > 1920 || height > 1920) throw Error('Browser viewport out of range');
   validateBrowserActions(actions, animation_time_ms, reduced_motion);
   if ((actions.length || animation_time_ms != null) && new URL(url).host !== 'design-tools:9002') throw Error('Interactive QA is limited to owned workspace pages');
@@ -440,8 +398,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
     };
     try {
       const origin = new URL(url).origin;
-      // Fulfilled HTML lacks a peer address. Grant local-network access only
-      // to this owned origin so Chromium can load its workspace stylesheet/assets.
+      // Grant local-network access only to the owned workspace origin.
       await context.grantPermissions(['local-network-access'], {origin});
       await context.route('**/*', routed(route => {
         const target = new URL(route.request().url());
@@ -453,17 +410,6 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       const consoleErrors = [];
       page.on('pageerror', error => { if (consoleErrors.length < 20) consoleErrors.push(String(error).slice(0, 500)); });
       page.on('console', message => { if (message.type() === 'error' && consoleErrors.length < 20) consoleErrors.push(message.text().slice(0, 500)); });
-      if (tokensCss) {
-        const stylesheetUrl = workspaceUrl(tokensCss);
-        await page.route('http://design-tools:9002/files/**', routed(async route => {
-          if (!scopedWorkspaceUrlAllowed(route.request().url())) { await route.abort('blockedbyclient'); return; }
-          if (route.request().resourceType() !== 'document') { await route.fallback(); return; }
-          const html = await tokenDocument(route.request().url(), stylesheetUrl);
-          if (html == null) { await route.continue(); return; }
-          await route.fulfill({status: 200, contentType: 'text/html; charset=utf-8', body: html,
-            headers: {'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self' data: blob: 'unsafe-inline'"}});
-        }));
-      }
       await page.goto(url, {waitUntil: 'networkidle', timeout: 30000});
       if (wait_for) await page.locator(wait_for).waitFor({state: 'visible', timeout: 10000});
       for (const action of actions) {
@@ -549,7 +495,6 @@ function workspaceUrl(source) {
 }
 export async function browserScreenshot(args) {
   await assertOutputReady(args);
-  const tokens = await preflight(args);
   let url;
   if (args.source) { await workspacePath(args.source); url = workspaceUrl(args.source); }
   else {
@@ -558,10 +503,10 @@ export async function browserScreenshot(args) {
     if (!scopedWorkspaceUrlAllowed(candidate.href)) throw Error('URL is outside the assigned design project');
     url = candidate.toString();
   }
-  const shot = await browserCapture(url, {...args, tokensCss: tokens.outputs['tokens.css']});
+  const shot = await browserCapture(url, args);
   const artifact = await publish(args.output, shot.bytes, outputOptions(args));
   const diff = args.baseline ? await odiffCompare({baseline: args.baseline, candidate: args.output}) : null;
-  return {tokens, artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: diff ? {status: diff.match ? 'match' : 'changed_pixels', odiff: diff} : {status: 'captured', requires_visual_inspection: true}};
+  return {artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: diff ? {status: diff.match ? 'match' : 'changed_pixels', odiff: diff} : {status: 'captured', requires_visual_inspection: true}};
 }
 export async function browserInspect(source, {baseline} = {}) {
   await workspacePath(source);

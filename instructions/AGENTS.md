@@ -51,7 +51,9 @@ permissions.
   as separate facts; verify the actual application or artifact with its own
   commands.
 - For Mirket design production, use the single `design` package and its reported project workspace for routed workers; host design tools keep
-  the shared workspace. Compile Style Dictionary tokens before rendering. Route
+  the shared workspace. Compile Style Dictionary tokens for dependent production
+  and reference their outputs in authored source. Captures and saved-file exports
+  observe existing sources without injecting tokens. Route
   live UI to Playwright, editable design files to OpenPencil file tools,
   diagrams to Kroki (select Excalidraw explicitly), paged work to
   Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,

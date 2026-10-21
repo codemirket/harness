@@ -64,6 +64,43 @@ fn id(task: &Value) -> &str {
     task["id"].as_str().unwrap()
 }
 
+#[tokio::test]
+async fn metadata_survives_corrupt_coordination_state_and_state_calls_fail_lazily() {
+    let home = tempfile::tempdir().unwrap();
+    let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
+    fs::create_dir_all(&paths.root).unwrap();
+    fs::write(paths.database(), b"corrupt database fixture").unwrap();
+    let server = MirketServer::new(&paths, Catalog::embedded().unwrap()).unwrap();
+    let (a, b) = tokio::io::duplex(8192);
+    let host = tokio::spawn(server.serve(a));
+    let mut client = ().serve(b).await.unwrap();
+    let mut host = host.await.unwrap().unwrap();
+    for (name, args) in [
+        ("catalog_search", json!({"query":"database","limit":1})),
+        ("skill_read", json!({"skill_id":"engineering-judgment"})),
+        ("runtime_status", json!({})),
+    ] {
+        let result = client
+            .call_tool(
+                CallToolRequestParams::new(name).with_arguments(args.as_object().unwrap().clone()),
+            )
+            .await
+            .unwrap();
+        assert_ne!(result.is_error, Some(true), "{name}: {result:?}");
+    }
+    let result = client
+        .call_tool(CallToolRequestParams::new("project_list").with_arguments(Default::default()))
+        .await
+        .unwrap();
+    assert_eq!(result.is_error, Some(true));
+    assert_eq!(
+        fs::read(paths.database()).unwrap(),
+        b"corrupt database fixture"
+    );
+    client.close().await.unwrap();
+    host.close().await.unwrap();
+}
+
 #[test]
 fn unregister_removes_only_selected_coordination_records_and_preserves_project_files() {
     let f = Fixture::new();

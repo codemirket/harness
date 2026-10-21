@@ -97,11 +97,9 @@ export async function openpencilExport(args) {
   const format=args.format || 'png';
   if(!['png','svg'].includes(format)||!args.output.endsWith(`.${format}`)) throw Error('OpenPencil export format and extension must match');
   await assertOutputReady(args);
-  const tokens=await tokensFor(args);
   return staged(args.source,async(stage,input)=>{
     const output=path.join(stage,`export.${format}`);
-    // Export the saved document unchanged. Tokens are compiled but never silently
-    // rewrite the design during verification.
+    // Export the saved document unchanged.
     await cli(stage,['export',input,'--output',output,'--format',format,'--scale','2',...(args.node?['--node',args.node]:[]),...(args.page?['--page',args.page]:[])]);
     const sourceHash=sha256(await regularOutput(input));
     let bytes=await regularOutput(output);
@@ -113,7 +111,7 @@ export async function openpencilExport(args) {
       if(!dimensions.width||!dimensions.height||dimensions.width*dimensions.height>16*1024*1024)throw Error('OpenPencil PNG exceeds pixel budget');
     }
     const artifact=await publish(args.output,bytes,args);
-    return {...metadata,artifact,source:args.source,source_sha256:sourceHash,dimensions,tokens:tokens.compiled,
+    return {...metadata,artifact,source:args.source,source_sha256:sourceHash,dimensions,
       qa:{status:'passed',scope:'File exported; independent pixel inspection is required'}};
   });
 }

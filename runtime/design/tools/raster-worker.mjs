@@ -1,6 +1,7 @@
 // One bounded native decoder per child; the parent owns cancellation and cleanup.
 import sharp from 'sharp';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 sharp.cache(false);
 sharp.concurrency(1);
 const [input, output, json] = process.argv.slice(2);
@@ -17,7 +18,24 @@ if (!raster) throw Error('Only PNG, JPEG, GIF, WebP and AVIF raster sources are 
 const image = sharp(input, {limitInputPixels: 17_000_000, sequentialRead: true, animated: false, failOn: 'warning'});
 const metadata = await image.metadata();
 if (!metadata.width || !metadata.height || metadata.width * metadata.height > 17_000_000) throw Error('Raster exceeds source pixel budget');
-if (operation === 'preserve') {
+if (operation === 'inspection') {
+  if ((metadata.pages || 1) > 1) throw Error('Inspection requires a single frame');
+  const {data, info} = await image.ensureAlpha().raw().toBuffer({resolveWithObject:true});
+  const tilePixels = 512 * 1024;
+  const tileWidth = Math.min(info.width, Math.max(1, Math.floor(Math.sqrt(tilePixels * info.width / info.height))));
+  const tileHeight = Math.min(info.height, Math.max(1, Math.floor(tilePixels / tileWidth)));
+  const plan = {width:info.width, height:info.height, tiles:[], overview:{file:'overview.png'}};
+  const decoded = () => sharp(data, {raw:{width:info.width, height:info.height, channels:info.channels}});
+  await decoded().resize({width:768, height:768, fit:'inside', withoutEnlargement:true}).png().toFile(path.join(path.dirname(output), 'overview.png'));
+  for (let top=0; top<info.height; top+=tileHeight) for (let left=0; left<info.width; left+=tileWidth) {
+    if (plan.tiles.length >= 64) throw Error('Inspection exceeds tile budget');
+    const region = {left, top, width:Math.min(tileWidth,info.width-left), height:Math.min(tileHeight,info.height-top)};
+    const file = `tile-${plan.tiles.length}.png`;
+    await decoded().extract(region).png().toFile(path.join(path.dirname(output), file));
+    plan.tiles.push({file, ...region});
+  }
+  await fs.writeFile(output, JSON.stringify(plan));
+} else if (operation === 'preserve') {
   if ((metadata.pages || 1) > 1) throw Error('Animated composition rasters require an explicit frame sequence or video asset');
   // metadata() alone accepts truncated bodies. Force decoding before retaining
   // the original bytes; never turn staging into a lossy export operation.

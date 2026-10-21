@@ -17,30 +17,35 @@ pub struct Budget {
     pub max_correction_rounds: usize,
 }
 
-pub fn budget(workflows: &[super::TaskNeed]) -> Budget {
-    let motion = workflows
-        .iter()
-        .any(|w| matches!(w.workflow.as_str(), "motion" | "interactive-motion"));
-    let composition = workflows.iter().any(|w| {
-        matches!(
-            w.workflow.as_str(),
-            "web-interface" | "editable-interface" | "paged-media"
-        )
-    });
-    if motion {
-        Budget {
-            execution_seconds: 2700,
-            max_correction_rounds: 4,
-        }
-    } else if composition {
-        Budget {
-            execution_seconds: 1800,
-            max_correction_rounds: 3,
-        }
-    } else {
-        Budget {
-            execution_seconds: 900,
-            max_correction_rounds: 2,
+/// Resolved once from the selected owned workflows, and retained in the contract.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ExecutionPolicy {
+    pub budget: Budget,
+    pub host_verification: bool,
+    pub interactive: bool,
+    pub motion: bool,
+}
+impl ExecutionPolicy {
+    pub fn from_workflows(workflows: &[&crate::catalog::Workflow]) -> Self {
+        use crate::catalog::BudgetClass;
+        let class = workflows
+            .iter()
+            .map(|w| w.budget_class)
+            .max()
+            .unwrap_or(BudgetClass::Static);
+        let (execution_seconds, max_correction_rounds) = match class {
+            BudgetClass::Static => (900, 2),
+            BudgetClass::Composition => (1800, 3),
+            BudgetClass::Motion => (2700, 4),
+        };
+        Self {
+            budget: Budget {
+                execution_seconds,
+                max_correction_rounds,
+            },
+            host_verification: workflows.iter().any(|w| w.host_verification),
+            interactive: workflows.iter().any(|w| w.interactive),
+            motion: workflows.iter().any(|w| w.motion),
         }
     }
 }
@@ -101,8 +106,8 @@ fn bounded(text: &str, max: usize) -> Result<()> {
     Ok(())
 }
 
-pub fn contract(input: &DesignInput, workflows: &[super::TaskNeed]) -> Value {
-    let budget = budget(workflows);
+pub fn contract(input: &DesignInput, policy: &ExecutionPolicy) -> Value {
+    let budget = policy.budget;
     json!({
         "input":input, "execution_seconds":budget.execution_seconds,
         "max_correction_rounds":budget.max_correction_rounds,
@@ -162,7 +167,7 @@ pub struct Gate {
 }
 
 impl Gate {
-    pub fn new(input: DesignInput, workflows: &[super::TaskNeed]) -> Self {
+    pub fn new(input: DesignInput, policy: &ExecutionPolicy) -> Self {
         Self {
             input,
             target: vec![],
@@ -171,13 +176,9 @@ impl Gate {
             final_pass: false,
             reviews: 0,
             target_reviews: 0,
-            budget: budget(workflows),
-            interactive: workflows
-                .iter()
-                .any(|w| matches!(w.workflow.as_str(), "web-interface" | "interactive-motion")),
-            motion: workflows
-                .iter()
-                .any(|w| matches!(w.workflow.as_str(), "motion" | "interactive-motion")),
+            budget: policy.budget,
+            interactive: policy.interactive,
+            motion: policy.motion,
         }
     }
 
@@ -364,6 +365,19 @@ impl Gate {
 mod tests {
     use super::*;
 
+    fn test_policy(needs: &[super::super::TaskNeed]) -> ExecutionPolicy {
+        let catalog = crate::catalog::Catalog::embedded().unwrap();
+        ExecutionPolicy::from_workflows(
+            &needs
+                .iter()
+                .map(|n| catalog.workflow(&n.workflow).unwrap())
+                .collect::<Vec<_>>(),
+        )
+    }
+    fn gate(input: DesignInput, needs: &[super::super::TaskNeed]) -> Gate {
+        Gate::new(input, &test_policy(needs))
+    }
+
     #[tokio::test]
     async fn deadline_stops_pending_execution_and_keeps_finished_results() {
         use std::time::Duration;
@@ -401,6 +415,7 @@ mod tests {
                 vec![]
             },
             stable_artifacts: vec![],
+            consumed_artifacts: vec![],
             verifies: if render {
                 vec![]
             } else {
@@ -436,7 +451,7 @@ mod tests {
         json!({"stage":stage,"images":[artifact.path],"comparison":"Matched hierarchy; narrow crop preserves the focal subject.","checks":checks})
     }
     fn fallback() -> Gate {
-        Gate::new(
+        gate(
             DesignInput::CodeFallback {
                 reason: "No host image model".into(),
             },
@@ -451,6 +466,7 @@ mod tests {
             passed: true,
             artifacts: vec![],
             stable_artifacts: vec![],
+            consumed_artifacts: vec![],
             verifies: vec![],
             opaque_mutation: false,
         }
@@ -492,7 +508,7 @@ mod tests {
         let root = dir.path().canonicalize().unwrap();
         let target = image(&root, "target.png");
         let unrelated = image(&root, "other.png");
-        let mut gate = Gate::new(
+        let mut gate = gate(
             DesignInput::ImageToCode {
                 image: "target.png".into(),
             },
@@ -548,7 +564,7 @@ mod tests {
         }))
         .unwrap();
         input.validate().unwrap();
-        let mut gate = Gate::new(input, &[]);
+        let mut gate = gate(input, &[]);
         assert!(gate.before_tool("workspace_write").is_ok());
         observe(&mut gate, &target, false);
         assert!(gate.review(&root, report("target", &target, true)).is_err());
@@ -620,10 +636,10 @@ mod tests {
                 medium: Medium::Dom,
                 reason: "Native composition".into(),
             };
-            let contract = contract(&input, &needs);
+            let contract = contract(&input, &test_policy(&needs));
             assert_eq!(contract["execution_seconds"], seconds);
             assert_eq!(contract["max_correction_rounds"], corrections);
-            let mut gate = Gate::new(input, &needs);
+            let mut gate = gate(input, &needs);
             let dir = tempfile::tempdir().unwrap();
             let root = dir.path().canonicalize().unwrap();
             let target = image(&root, "target.png");
@@ -644,7 +660,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let root = dir.path().canonicalize().unwrap();
         let target = image(&root, "target.png");
-        let mut gate = Gate::new(
+        let mut gate = gate(
             DesignInput::CodeFallback {
                 reason: "Unavailable image model".into(),
             },

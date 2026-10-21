@@ -47,7 +47,7 @@ pub fn status(paths: &Paths, catalog: &Catalog) -> Value {
         actions.push("Saved package selection could not be read. Use mirket doctor; do not assume memory or durable execution is available.");
     }
     json!({
-        "process": {"version":env!("CARGO_PKG_VERSION"), "source_sha256":env!("MIRKET_SOURCE_SHA256"),
+        "process": {"version":env!("CARGO_PKG_VERSION"), "source_sha256":env!("MIRKET_SOURCE_SHA256"), "execution_sha256":env!("MIRKET_EXECUTION_SHA256"),
             "target":env!("MIRKET_TARGET"), "pid":std::process::id(), "executable_sha256":loaded},
         "catalog": {"sha256":catalog.fingerprint(), "skills":catalog.skills().len(), "profiles":catalog.profiles().len()},
         "installed_binary": {"path":paths.binary(), "sha256":installed,

@@ -61,6 +61,7 @@ This is a declaration inventory, not an installed-capability or quality report. 
 | visual-review | quality-assurance | worker | T3_ARCHITECT | workspace_read, workspace_list, design/browser_screenshot, design/odiff_compare, inspect_image | inspect_image | inspect_image |
 | web-interface | web-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/browser_screenshot, inspect_image | workspace_write, workspace_read, design/browser_screenshot, inspect_image | workspace_read, inspect_image |
 | editable-interface | web-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/tokens_compile, design/openpencil_inspect, design/openpencil_document, design/openpencil_edit, design/openpencil_export, inspect_image | design/openpencil_inspect, design/openpencil_edit, design/openpencil_export, inspect_image | inspect_image |
+| editable-export | web-design | worker | T3_ARCHITECT | workspace_read, workspace_list, design/openpencil_inspect, design/openpencil_export, inspect_image | design/openpencil_inspect, design/openpencil_export, inspect_image | inspect_image |
 | static-graphic | graphic-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/static_render, inspect_image | design/static_render, inspect_image | inspect_image |
 | diagram | graphic-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/kroki_render, inspect_image | design/kroki_render, inspect_image | inspect_image |
 | motion | animation | host | T3_ARCHITECT |  |  |  |
@@ -744,7 +745,7 @@ All files under authored skill `references/` directories, including data and spe
 | profile_kinds | {'starter': 8, 'specialist': 50, 'alternative': 5} |
 | roles | 41 |
 | facets | 37 |
-| workflows | 17 |
+| workflows | 18 |
 | sources | 47 |
 | reference_files | 139 |
 | main_mcp_tools | 27 |
@@ -756,8 +757,8 @@ All files under authored skill `references/` directories, including data and spe
 | cargo_lock_records | 234 |
 | npm_lock_records_including_root | 409 |
 | python_locked_wheels | 97 |
-| graph_nodes | 880 |
-| graph_edges | 1447 |
+| graph_nodes | 881 |
+| graph_edges | 1460 |
 
 ## Global guidance
 
@@ -781,7 +782,7 @@ Annotations are hints; read-like operations can still open state, refresh discov
 | verification_handoff | Inspect source/UI host verification, begin an attempt with relevant input paths and named commands before checks, then submit checks with attempt_id and observed trace digest. Rechecks the input manifest and logs; stale evidence revokes completion. Executes no commands; results remain host testimony. |
 | model_registry | List live dynamically discovered models and their verified/unknown capabilities. Refresh bypasses the TTL cache; this does not execute inference. |
 | route_task | Resolve declared task_needs to role guidance, scoped tools, verification, capability floors and generous effort without inference. Empty assigned_tools selects owned workflow defaults. Unknown needs, unrelated tools, unsupported support skills, omitted canonical tools and raw model overrides are rejected. model_selection can narrow to one discovered target/model and supported effort without lowering floors. Inspect capability_plan for workflow IDs. |
-| spawn_subagent | Run a Mirket-owned worker with mandatory task_needs, task intent, complexity and project. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled. |
+| spawn_subagent | Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled. |
 | catalog_search | Find reviewed skills by keyword with bounded pagination and guidance routes. Optional design_context checks the complete requested design combination against scoped reference coverage, exposing gaps without claiming task validation. Read the design-inspiration coverage registry for exact axis IDs. Use catalog_show for pins and caveats. |
 | catalog_show | Inspect one selected skill's source pin, dependencies, adaptation, caveats and read route without fetching a payload or executing tools. Upstream and reference entries are not readable via skill_read. |
 | capability_plan | Resolve a role or capability into concrete lead skills, prerequisites, acceptance evidence and failure probes. A role grants expertise, not authority. |
@@ -809,13 +810,13 @@ Outer per-call limits differ from child-process limits and whole-worker budgets.
 | openpencil_export | T3_ARCHITECT | True | 240 | Export the saved OpenPencil document or selected node to PNG at 2x or SVG. Inspect PNG pixels independently; export is not design acceptance. |
 | tokens_compile | T1_DETERMINISTIC | False | 120 | Compile one canonical DTCG token JSON into CSS, JavaScript, TypeScript, Typst and DTCG outputs with Style Dictionary. |
 | static_render | T3_ARCHITECT | True | 600 | Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection. |
-| browser_screenshot | T3_ARCHITECT | True | 240 | Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison. |
+| browser_screenshot | T3_ARCHITECT | True | 240 | Observe the authored page without injecting styles or compiling tokens. Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison. |
 | kroki_render | T2_SYNTHESIS | True | 240 | POST a diagram to Kroki and inspect its optimized SVG or PNG output. |
 | typst_compile | T3_ARCHITECT | True | 1500 | Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection. |
 | raster_transform | T1_DETERMINISTIC | False | 120 | Preprocess a workspace raster through an isolated, bounded Sharp worker. |
 | vector_render | T3_ARCHITECT | True | 180 | Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki. |
 | svg_optimize | T1_DETERMINISTIC | False | 120 | Optimize a generated or imported SVG with SVGO before publication. |
-| odiff_compare | T1_DETERMINISTIC | False | 120 | Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ. |
+| odiff_compare | T1_DETERMINISTIC | False | 120 | Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ. Differences are reportable results unless expect_match is true. |
 
 ## OpenPencil lazy operations
 

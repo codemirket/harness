@@ -242,6 +242,7 @@ the design npm lock, retained notices, owned tool policy and invocation tests. S
 ## Live identity and source verification
 
 `mirket info` and the MCP `runtime_status` report compiled source identity,
+execution compatibility identity,
 embedded catalog identity, the captured running-executable digest and the current
 managed executable digest. MCP initialization includes a source fingerprint suffix.
 A replaced executable cannot change an already connected process's captured identity.
@@ -264,6 +265,26 @@ Profile discovery starts with eight bundles; `catalog profiles --all` retains al
 specialist and alternative bundles and every saved selection. Selected competing
 whole-workflow skills require a source keyword or exact ID in ordinary search;
 this changes discovery, not installation, provenance or explicit skill access.
+
+Resume compatibility binds owned runtime code and dependencies separately from the
+full audit source identity. The run still binds selected workflow contracts,
+guidance, tool schemas, providers and artifacts. Changes to unrelated catalog
+entries, standalone tests and notices do not invalidate that execution identity.
+Inline tests in runtime source files conservatively remain part of the runtime hash.
+Legacy runs without an execution identity fail closed.
+
+The main MCP initializes without opening the coordination database. Pure catalog,
+resource and runtime-identity reads remain available when the database is corrupt;
+state-dependent calls open it and report the error at their own boundary.
+
+Design capture observes authored HTML; token styles must be referenced by the
+source, rather than injected by the screenshot tool. Saved OpenPencil export
+needs no token source and has its own workflow without mandatory editing.
+Odiff distinguishes successful comparison from the optional `expect_match` gate.
+Produced rasters over four MiB retain their original bytes and receive an overview
+plus lossless PNG tiles for inspection. Tile coverage and source identity are
+checked, and originals are rehashed at completion. The model's per-image and
+retained-context budgets remain unchanged.
 
 ## Memory and durable execution
 

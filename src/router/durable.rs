@@ -225,7 +225,7 @@ impl Driver {
 
 fn bindings_match(run: &Value, project: &Path) -> bool {
     run["state"]["envelope"]["project"].as_str() == project.to_str()
-        && run["state"]["envelope"]["source_sha256"] == env!("MIRKET_SOURCE_SHA256")
+        && run["state"]["envelope"]["execution_sha256"] == env!("MIRKET_EXECUTION_SHA256")
 }
 
 pub async fn status(paths: &Paths, request: &RunRequest) -> Result<Value> {
@@ -350,8 +350,13 @@ mod binding_tests {
 
     #[test]
     fn relocated_or_old_generation_checkpoints_are_not_advertised_as_resumable() {
-        let run = json!({"state":{"envelope":{"project":"/original","source_sha256":env!("MIRKET_SOURCE_SHA256")}}});
+        let run = json!({"state":{"envelope":{"project":"/original","execution_sha256":env!("MIRKET_EXECUTION_SHA256")}}});
         assert!(bindings_match(&run, Path::new("/original")));
+        let mut audit_only = run.clone();
+        audit_only["state"]["envelope"]["source_sha256"] = json!("different audit source");
+        assert!(bindings_match(&audit_only, Path::new("/original")));
+        audit_only["state"]["envelope"]["execution_sha256"] = json!("different runtime");
+        assert!(!bindings_match(&audit_only, Path::new("/original")));
         assert!(!bindings_match(&run, Path::new("/relocated")));
         let old = json!({"state":{"envelope":{"project":"/original","source_sha256":"old"}}});
         assert!(!bindings_match(&old, Path::new("/original")));

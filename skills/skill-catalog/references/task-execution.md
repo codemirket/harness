@@ -54,8 +54,8 @@ useful slice, observe the consumer, repair the cause and expand once that
 boundary works. A failure probe names a useful test; it is not a mandatory
 simulation for every small request.
 
-For Mirket-delegated work, use its routed spawner with task intent, complexity
-and assigned tools (see [model routing](../../agent-coordination/references/model-routing.md)), a professional brief,
+For Mirket-delegated work, use its routed spawner with concrete task needs
+and scoped assigned tools (see [model routing](../../agent-coordination/references/model-routing.md)), a professional brief,
 owned paths/effects, raw source context, dependencies, concrete artifact and
 required evidence. Keep shared writers disjoint. The lead integrates returns,
 resolves disagreement against the user's constraints and verifies joined

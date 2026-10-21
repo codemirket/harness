@@ -101,6 +101,26 @@ pub enum DeterministicOperation {
     SortLines,
 }
 
+impl DeterministicOperation {
+    pub fn validate(&self) -> anyhow::Result<()> {
+        let format = |name: &str| {
+            [
+                "json", "yaml", "yml", "csv", "tsv", "xml", "markdown", "md", "txt", "text",
+                "html", "pdf",
+            ]
+            .iter()
+            .any(|allowed| allowed.eq_ignore_ascii_case(name))
+        };
+        let valid = match self {
+            Self::Convert { from, to } => format(from) && format(to),
+            Self::ExtractSchema { from } => format(from),
+            _ => true,
+        };
+        anyhow::ensure!(valid, "unsupported deterministic operation format");
+        Ok(())
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum MemoryRecall {
@@ -131,7 +151,11 @@ pub struct SpawnRequest {
     #[serde(default)]
     pub memory_queries: Vec<String>,
     pub objective: String,
+    /// Legacy descriptive field, accepted for compatibility; workflows own routing floors.
+    #[serde(default = "legacy_intent")]
     pub task_intent: TaskIntent,
+    /// Legacy descriptive field, accepted for compatibility; use requested_tier to raise a floor.
+    #[serde(default = "legacy_complexity")]
     pub complexity_class: ComplexityClass,
     #[serde(default)]
     pub deterministic_operation: Option<DeterministicOperation>,
@@ -355,72 +379,19 @@ pub fn classify(model: &mut Model) {
     }
 }
 
-fn intent_floor(intent: TaskIntent) -> Tier {
-    match intent {
-        TaskIntent::FormatConversion
-        | TaskIntent::CliParameters
-        | TaskIntent::SchemaExtraction
-        | TaskIntent::FileHygiene => Tier::T1Deterministic,
-        TaskIntent::Synthesis | TaskIntent::MultiToolChaining => Tier::T2Synthesis,
-        TaskIntent::Creativity
-        | TaskIntent::Layout
-        | TaskIntent::Motion
-        | TaskIntent::Architecture
-        | TaskIntent::Debugging
-        | TaskIntent::MultiStepVisualQa
-        | TaskIntent::MultiConstraint
-        | TaskIntent::Ambiguity => Tier::T3Architect,
-    }
+fn legacy_intent() -> TaskIntent {
+    TaskIntent::Synthesis
 }
-
-fn complexity_floor(class: ComplexityClass) -> Tier {
-    match class {
-        ComplexityClass::Deterministic => Tier::T1Deterministic,
-        ComplexityClass::Synthesis => Tier::T2Synthesis,
-        ComplexityClass::CreativeArchitectural => Tier::T3Architect,
-    }
-}
-
-fn mechanical_contract(request: &SpawnRequest) -> bool {
-    let objective = request.objective.trim();
-    let format = |name: &str| {
-        [
-            "json", "yaml", "yml", "csv", "tsv", "xml", "markdown", "md", "txt", "text", "html",
-            "pdf",
-        ]
-        .iter()
-        .any(|allowed| allowed.eq_ignore_ascii_case(name))
-    };
-    match (&request.task_intent, &request.deterministic_operation) {
-        (TaskIntent::FormatConversion, Some(DeterministicOperation::Convert { from, to })) => {
-            format(from)
-                && format(to)
-                && objective.eq_ignore_ascii_case(&format!("Convert {from} to {to}"))
-        }
-        (TaskIntent::CliParameters, Some(DeterministicOperation::FormatCliArguments)) => {
-            objective.eq_ignore_ascii_case("Format CLI arguments")
-        }
-        (TaskIntent::SchemaExtraction, Some(DeterministicOperation::ExtractSchema { from })) => {
-            format(from) && objective.eq_ignore_ascii_case(&format!("Extract fields from {from}"))
-        }
-        (TaskIntent::FileHygiene, Some(DeterministicOperation::TrimWhitespace)) => {
-            objective.eq_ignore_ascii_case("Trim trailing whitespace")
-        }
-        (TaskIntent::FileHygiene, Some(DeterministicOperation::RenameFile)) => {
-            objective.eq_ignore_ascii_case("Rename a file")
-        }
-        (TaskIntent::FileHygiene, Some(DeterministicOperation::DeduplicateLines)) => {
-            objective.eq_ignore_ascii_case("Deduplicate lines")
-        }
-        (TaskIntent::FileHygiene, Some(DeterministicOperation::SortLines)) => {
-            objective.eq_ignore_ascii_case("Sort lines")
-        }
-        _ => false,
-    }
+fn legacy_complexity() -> ComplexityClass {
+    ComplexityClass::Synthesis
 }
 
 /// Resolve a task floor using only the request and its owned tool policies.
-pub fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolution, PolicyError> {
+pub fn resolve(
+    request: &SpawnRequest,
+    tools: &[ToolPolicy],
+    workflow_floor: Tier,
+) -> Result<Resolution, PolicyError> {
     if request.objective.trim().is_empty() {
         return Err(PolicyError::EmptyObjective);
     }
@@ -441,75 +412,9 @@ pub fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolutio
         }
     }
 
-    let mut task_floor =
-        intent_floor(request.task_intent).max(complexity_floor(request.complexity_class));
-    let objective_words: Vec<_> = request
-        .objective
-        .split(|c: char| !c.is_ascii_alphanumeric())
-        .filter(|s| !s.is_empty())
-        .map(str::to_ascii_lowercase)
-        .collect();
-    let complex_signal = [
-        "architecture",
-        "architectural",
-        "architect",
-        "debug",
-        "debugging",
-        "creative",
-        "creativity",
-        "layout",
-        "choreography",
-        "animation",
-        "motion",
-        "ambiguous",
-        "ambiguity",
-        "constraints",
-        "multiconstraint",
-        "visual",
-        "spatial",
-        "dashboard",
-        "interface",
-        "poster",
-        "illustration",
-        "storyboard",
-        "composition",
-        "typography",
-        "responsive",
-    ]
-    .into_iter()
-    .find(|word| objective_words.iter().any(|part| part == word));
-    if complex_signal.is_some() {
-        task_floor = Tier::T3Architect;
-    }
-    let mechanical_intent = matches!(
-        request.task_intent,
-        TaskIntent::FormatConversion
-            | TaskIntent::CliParameters
-            | TaskIntent::SchemaExtraction
-            | TaskIntent::FileHygiene
-    );
-    let known_mechanical_output = !mechanical_intent || mechanical_contract(request);
-    if !known_mechanical_output {
-        task_floor = Tier::T3Architect;
-    }
-    let mut min_tier = task_floor;
-    let mut requires_vision = request.requires_vision
-        || matches!(
-            request.task_intent,
-            TaskIntent::Layout | TaskIntent::Motion | TaskIntent::MultiStepVisualQa
-        );
-    let mut reasons = vec![format!("task floor: {task_floor:?}")];
-    if let Some(signal) = complex_signal {
-        reasons.push(format!(
-            "objective requires architectural/creative reasoning: {signal}"
-        ));
-    }
-    if !known_mechanical_output {
-        reasons.push("unrecognized mechanical output; elevated to T3".into());
-    }
-    if mechanical_intent && known_mechanical_output {
-        reasons.push("explicit single-operation mechanical contract".into());
-    }
+    let mut min_tier = workflow_floor;
+    let mut requires_vision = request.requires_vision;
+    let mut reasons = vec![format!("owned workflow floor: {workflow_floor:?}")];
 
     for name in &request.assigned_tools {
         let policy = policies
@@ -518,11 +423,6 @@ pub fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolutio
         min_tier = min_tier.max(policy.min_tier);
         requires_vision |= policy.requires_vision;
         reasons.push(format!("tool {name} floor: {:?}", policy.min_tier));
-    }
-
-    if request.assigned_tools.len() > 1 {
-        min_tier = min_tier.max(Tier::T2Synthesis);
-        reasons.push("multiple assigned tools require at least T2".into());
     }
 
     let mut downgrade_rejected = false;
@@ -731,21 +631,42 @@ mod tests {
         }
     }
 
+    // Test calls choose an explicit owned floor independently of objective prose.
+    fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolution, PolicyError> {
+        let floor = match request.task_intent {
+            TaskIntent::FormatConversion
+            | TaskIntent::CliParameters
+            | TaskIntent::SchemaExtraction
+            | TaskIntent::FileHygiene => Tier::T1Deterministic,
+            TaskIntent::Synthesis | TaskIntent::MultiToolChaining => Tier::T2Synthesis,
+            _ => Tier::T3Architect,
+        };
+        super::resolve(request, tools, floor)
+    }
+
     #[test]
-    fn synthesis_label_cannot_lower_architectural_or_debugging_work() {
+    fn prose_and_legacy_labels_do_not_override_the_owned_workflow_floor() {
+        let mut task = request(
+            TaskIntent::Architecture,
+            ComplexityClass::CreativeArchitectural,
+        );
         for objective in [
             "Debugging a concurrent failure",
-            "Resolve architecture constraints",
-            "Invent a creative layout",
+            "Format architecture notes",
+            "Türkçe alanları sırala",
+            "Convert CSV to JSON and summarize",
         ] {
-            let mut task = request(TaskIntent::Synthesis, ComplexityClass::Synthesis);
             task.objective = objective.into();
-            task.requested_tier = Some(Tier::T1Deterministic);
-            let resolution = resolve(&task, &[]).unwrap();
-            assert_eq!(resolution.min_tier, Tier::T3Architect);
-            assert_eq!(resolution.effort_profile, "high");
-            assert!(resolution.downgrade_rejected);
+            let resolved = super::resolve(&task, &[], Tier::T1Deterministic).unwrap();
+            assert_eq!(resolved.min_tier, Tier::T1Deterministic);
+            assert!(!resolved.requires_vision);
         }
+        task.requested_tier = Some(Tier::T1Deterministic);
+        assert!(
+            super::resolve(&task, &[], Tier::T3Architect)
+                .unwrap()
+                .downgrade_rejected
+        );
     }
 
     #[test]
@@ -1002,69 +923,7 @@ mod tests {
     }
 
     #[test]
-    fn mechanical_intent_cannot_hide_creative_or_unknown_output() {
-        let mut req = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
-        req.objective = "Convert this design into a responsive layout".into();
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-        req.objective = "Please handle this".into();
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-        req.objective = "Convert this document".into();
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-        req.objective = "Convert CSV to JSON".into();
-        req.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "CSV".into(),
-            to: "JSON".into(),
-        });
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T1Deterministic);
-    }
-
-    #[test]
-    fn mechanical_contract_rejects_compound_objectives_and_missing_operation() {
-        let mut req = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
-        req.objective = "Convert CSV to JSON".into();
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-        req.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "CSV".into(),
-            to: "JSON".into(),
-        });
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T1Deterministic);
-        req.objective = "Convert CSV to JSON and summarize the findings".into();
-        assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-    }
-
-    #[test]
-    fn generic_file_or_parameter_labels_do_not_establish_mechanical_work() {
-        for (intent, objective) in [
-            (TaskIntent::FileHygiene, "Build dashboard file"),
-            (TaskIntent::FileHygiene, "Handle this file"),
-            (TaskIntent::CliParameters, "Select a command"),
-            (TaskIntent::SchemaExtraction, "Consider the schema"),
-        ] {
-            let mut req = request(intent, ComplexityClass::Deterministic);
-            req.objective = objective.into();
-            assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T3Architect);
-        }
-        for (intent, objective) in [
-            (TaskIntent::FileHygiene, "Trim trailing whitespace"),
-            (TaskIntent::CliParameters, "Format CLI arguments"),
-            (TaskIntent::SchemaExtraction, "Extract fields from JSON"),
-        ] {
-            let mut req = request(intent, ComplexityClass::Deterministic);
-            req.objective = objective.into();
-            req.deterministic_operation = Some(match intent {
-                TaskIntent::FileHygiene => DeterministicOperation::TrimWhitespace,
-                TaskIntent::CliParameters => DeterministicOperation::FormatCliArguments,
-                TaskIntent::SchemaExtraction => DeterministicOperation::ExtractSchema {
-                    from: "JSON".into(),
-                },
-                _ => unreachable!(),
-            });
-            assert_eq!(resolve(&req, &[]).unwrap().min_tier, Tier::T1Deterministic);
-        }
-    }
-
-    #[test]
-    fn assigned_tools_require_verified_support_and_multiple_tools_raise_tier() {
+    fn assigned_tools_require_verified_support_without_a_tool_count_penalty() {
         let mut req = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
         req.objective = "Convert CSV to JSON".into();
         req.deterministic_operation = Some(DeterministicOperation::Convert {
@@ -1093,7 +952,7 @@ mod tests {
         req.assigned_tools.push("writer".into());
         assert_eq!(
             resolve(&req, &policies).unwrap().min_tier,
-            Tier::T2Synthesis
+            Tier::T1Deterministic
         );
     }
 }

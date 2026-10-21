@@ -30,13 +30,13 @@
     },
     {
       "path": "build.rs",
-      "bytes": 421,
-      "sha256": "38a64ee6cfb70f6508a68418fe6dded7d5a33716c57fe866c160b8ae87b3ad64"
+      "bytes": 579,
+      "sha256": "61cd24be4470a416627e24fbec970a406c58abd079fee856621a781111768254"
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 20813,
-      "sha256": "9f83f65d7b8b900978887b2a2275c77e04aa9213d383ae7666bb80c872647e3c"
+      "bytes": 22139,
+      "sha256": "d621d39a2e6a93c22871e310760717e8e86ff7d689807265884b02716de77e11"
     },
     {
       "path": "docs/licenses/rust-runtime/README.md",
@@ -80,8 +80,8 @@
     },
     {
       "path": "instructions/AGENTS.md",
-      "bytes": 8002,
-      "sha256": "b597cb4408b8d7152235f765fbf6f994c4f8c4a904e098e8cc93f1c299328ee6"
+      "bytes": 8144,
+      "sha256": "fc79a54e83109595051c66bd15df8dbd6f70a12ca2de88fcb5a29a611065d56c"
     },
     {
       "path": "registry/agent-runtime.json",
@@ -90,8 +90,8 @@
     },
     {
       "path": "registry/capabilities.json",
-      "bytes": 130112,
-      "sha256": "f48bc2733ba81c100b8443259c5ba25a4b160348ec26761a990a387ccffba744"
+      "bytes": 133267,
+      "sha256": "9ee8f33da15e217f7c017a9ef770ef0f1f08b8341827158647aadcc0c692f6d8"
     },
     {
       "path": "registry/catalog.json",
@@ -189,6 +189,11 @@
       "sha256": "aef73afcef07ace51f57751446d9b5cd98e4f4c690d43dc917e7553d4a6d6a48"
     },
     {
+      "path": "runtime/design/tools/inspection.mjs",
+      "bytes": 2938,
+      "sha256": "66823cffcf5f3759644a9733d1366e17b614723603853866c55d587006e0e083"
+    },
+    {
       "path": "runtime/design/tools/openpencil-cli.mjs",
       "bytes": 1293,
       "sha256": "b791605ce479fccb7e3bf5cd5d5628651d4c8b22318ffd4755fb5d613f552879"
@@ -200,13 +205,13 @@
     },
     {
       "path": "runtime/design/tools/openpencil.mjs",
-      "bytes": 7529,
-      "sha256": "f7c679865af2a8f2d7a69ed85a456b6cd29e5395ea8b273c95726bb51e524427"
+      "bytes": 7382,
+      "sha256": "ebf4a58dac49703aa16445264cdb3b89f09fae7b31003933ead85a4b849e4a81"
     },
     {
       "path": "runtime/design/tools/operations.mjs",
-      "bytes": 45125,
-      "sha256": "9180c7b3b0843f57d1d6df6972c5d277bf7eec117dd56905007b45c2d507b641"
+      "bytes": 42009,
+      "sha256": "de8a73a995209a377fe52cf81b1ccffc929421671a30e04767f9d9f067a9522c"
     },
     {
       "path": "runtime/design/tools/package-lock.json",
@@ -225,8 +230,8 @@
     },
     {
       "path": "runtime/design/tools/raster-worker.mjs",
-      "bytes": 2338,
-      "sha256": "fc164f49f09ae5169a9c2d2704b64b9ed717b4a7a7cb15b774b5508286cd6dc5"
+      "bytes": 3723,
+      "sha256": "4a1dcb36a3803fa1fa5057268a97f3368efe27b6cb02c486c5ba44030c79a3a4"
     },
     {
       "path": "runtime/design/tools/request.mjs",
@@ -240,8 +245,8 @@
     },
     {
       "path": "runtime/design/tools/server.mjs",
-      "bytes": 14103,
-      "sha256": "55bcf7347a49735b079c9f20f3633e79d40507a94768d02a6995fabe4f8ae6d3"
+      "bytes": 14599,
+      "sha256": "221be01e2c744aca7ef8c482bed7b5e97dc14182be3b2fc8d9168ab9d912a4a7"
     },
     {
       "path": "runtime/design/tools/test/cleanup.test.mjs",
@@ -249,24 +254,29 @@
       "sha256": "95867dbd76838d5633b602e756a803fcd9c0211d8200d98d65a7507341171305"
     },
     {
+      "path": "runtime/design/tools/test/inspection.test.mjs",
+      "bytes": 2659,
+      "sha256": "6fdc91b73e4976df64d34d4d91865e2e203f10a82f340c6eb41031ce21fc5f9d"
+    },
+    {
       "path": "runtime/design/tools/test/live-browser.test.mjs",
-      "bytes": 8209,
-      "sha256": "8fbeeb359a463311bdb19f07ff4334ecda5c9a1ce777f950c36e07109a6336ad"
+      "bytes": 8343,
+      "sha256": "6cc018e3b99c2ce4609686b834ff4abd23a8ee73e9fafb05fa31aceeaad2af6c"
     },
     {
       "path": "runtime/design/tools/test/local.test.mjs",
-      "bytes": 27012,
-      "sha256": "5f3cb48ae0f6c38b058a7331dbe798b777fa9843841ebb1f9837c4670b644db6"
+      "bytes": 25375,
+      "sha256": "078754b59b517d809958ecd2ff50dce6d3b269737c86215e62f1424f5b6e7c56"
     },
     {
       "path": "runtime/design/tools/test/odiff-contract.test.mjs",
-      "bytes": 1587,
-      "sha256": "e39c093987898e95dc67e90214a8f2c6544aede825b9f540909fbfd4ef9b5e30"
+      "bytes": 2913,
+      "sha256": "918107e855f48e76212ea9a5b3b3f0a07990168cf9398944daa352d7ba62cfec"
     },
     {
       "path": "runtime/design/tools/test/openpencil.test.mjs",
-      "bytes": 9604,
-      "sha256": "b55c5f263c84b1b194d99652af70931feab020987a2f45cf26c0abe152d50f1e"
+      "bytes": 9893,
+      "sha256": "f550745bf27157817a0f93c62a1fcdc3c50dbf797fd9a4442738dec5ab417d0b"
     },
     {
       "path": "runtime/design/tools/test/operations-bounds.test.mjs",
@@ -435,13 +445,13 @@
     },
     {
       "path": "skills/agent-coordination/references/claude-code.md",
-      "bytes": 2584,
-      "sha256": "ceac5367b8483ed16bc18a49781a71b109e7a72a399a05e1984f6f0573050d4c"
+      "bytes": 2559,
+      "sha256": "04371afd92fb9481f5740797350e3970aa222d48112853dad82db49ab8a83f26"
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 19444,
-      "sha256": "7f852e5fbe042069c67ceaf853e8eb83e370b1ed975023234806712a042f22e9"
+      "bytes": 20876,
+      "sha256": "db9c34ab5fd8dfae293c3a7deeac17b1efae09b60cea1065476dc4409ab0a3f5"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -1405,8 +1415,8 @@
     },
     {
       "path": "skills/skill-catalog/references/task-execution.md",
-      "bytes": 5033,
-      "sha256": "b2871fa3a4eb88deab88eddf39218f6f81d1c5fa3049735216892c05749f89f2"
+      "bytes": 5036,
+      "sha256": "e5bd9cbb998f5e28aa59aa05f49e464f05c2cf9564fb079a12fc89940fd4f4e2"
     },
     {
       "path": "skills/skill-catalog/references/task-routing.md",
@@ -1535,13 +1545,13 @@
     },
     {
       "path": "src/catalog/workflows.rs",
-      "bytes": 4675,
-      "sha256": "617768bc1c8c05d5251399cb1341f0d6faf412a0424c0161c04e9da8d88388cf"
+      "bytes": 5179,
+      "sha256": "6097b7245ba95fa4edf7101e564940039dd44a52b9e82d77a0766f554e2f1968"
     },
     {
       "path": "src/catalog.rs",
-      "bytes": 77064,
-      "sha256": "026a8983923cbf8c60dd3d9106766f4a0804f64b20cbb69888581d7098d5445a"
+      "bytes": 77077,
+      "sha256": "d97114a9e48825b1667105e2e21dd7ece449aba4c44c9b5dbb1b2e05439f9082"
     },
     {
       "path": "src/cli.rs",
@@ -1560,8 +1570,8 @@
     },
     {
       "path": "src/dev/release_gate.rs",
-      "bytes": 5611,
-      "sha256": "189a52fda555d999360d7673c19e13ef60d8d95e3c868aab88d0fbcd8001e26a"
+      "bytes": 5710,
+      "sha256": "89af30b37d9ca1bc65a91ea7aae4f5d13a49698d883da71c874c4e549e1f3536"
     },
     {
       "path": "src/dev.rs",
@@ -1570,8 +1580,8 @@
     },
     {
       "path": "src/identity.rs",
-      "bytes": 3454,
-      "sha256": "ee6589aea11fff80ae1c340d857618989724e540dac014143de874190ff4653e"
+      "bytes": 3506,
+      "sha256": "a37acfb8719ad55530ad27594bd937cda27c0201812a0a300778072fddb21024"
     },
     {
       "path": "src/install.rs",
@@ -1600,8 +1610,8 @@
     },
     {
       "path": "src/mcp.rs",
-      "bytes": 54202,
-      "sha256": "87dc343cb4f140eedffefeca228e3f74496980b4b37c858fcd9beee47c2209dd"
+      "bytes": 54717,
+      "sha256": "87df23c2822fd8709c5a639160206829923850e733776352a9b5a275a2ba5f64"
     },
     {
       "path": "src/memory.rs",
@@ -1640,8 +1650,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 87180,
-      "sha256": "a50f02a1f62ba65fb7f946dc141ee1004677e0d07b45471fd369d45aafc5c535"
+      "bytes": 87326,
+      "sha256": "0c393ca29f2120480051433c1a9181e12038e698b8718762697205272ee13407"
     },
     {
       "path": "src/paths.rs",
@@ -1690,8 +1700,8 @@
     },
     {
       "path": "src/router/assignment.rs",
-      "bytes": 25539,
-      "sha256": "5a0cc8eaa5b3d53d40f62564e79955adcfe67491a70e293da9c0eb39d258da72"
+      "bytes": 28017,
+      "sha256": "dbb0786d48b1d8aa2ecdd4631bf4b23ddd428d762c0986cd2472793a8d9d1a07"
     },
     {
       "path": "src/router/codex.rs",
@@ -1705,8 +1715,8 @@
     },
     {
       "path": "src/router/design_gate.rs",
-      "bytes": 26878,
-      "sha256": "79fecb6f29239943f36eeeebf033ed7d76390f4298718334324f2b63422e4687"
+      "bytes": 27581,
+      "sha256": "5ca6d1413bad8e35dd4147b62daa0e20b95cb2e9c13f9f11f0ef437db407b278"
     },
     {
       "path": "src/router/discovery.rs",
@@ -1715,18 +1725,18 @@
     },
     {
       "path": "src/router/durable.rs",
-      "bytes": 14960,
-      "sha256": "24b0ab81d405a64b243b2519fde4ee5807dccd0c2e4fa702b2848d1a3f922777"
+      "bytes": 15337,
+      "sha256": "142d107cd631eb81aba1f0ef4f43f0a82bb015657ffdf88f058fd35ce8a5790a"
     },
     {
       "path": "src/router/execution.rs",
-      "bytes": 82592,
-      "sha256": "b29b9eaed604ec37716a65557a9b78ad3f4736cc72facd6adc1a1cc5828e6edc"
+      "bytes": 85659,
+      "sha256": "72e72d27687eab6febf2e4ac970f5b098bddf36f8a00cadc7df477b58a4b2a54"
     },
     {
       "path": "src/router/handoff.rs",
-      "bytes": 19340,
-      "sha256": "74bd70b849ffb79b04a24227982a82375c8c90cbd8b8941063754b462c916c85"
+      "bytes": 19077,
+      "sha256": "b2bf3c02df01ec2725459a92c8ee03cc6f1d84214782223a45db28c06b7130df"
     },
     {
       "path": "src/router/mod.rs",
@@ -1740,8 +1750,8 @@
     },
     {
       "path": "src/router/policy.rs",
-      "bytes": 40305,
-      "sha256": "78d950ee13260abf788c1cc4cd9628ad88bf086bf72fc7d9b7a89eeeb828bd73"
+      "bytes": 34349,
+      "sha256": "f8d6742b40b839c91cb203bed0f7b0ca6dcdf606dfd328efe96234656119178f"
     },
     {
       "path": "src/router/responses.rs",
@@ -1750,8 +1760,8 @@
     },
     {
       "path": "src/router/tools.rs",
-      "bytes": 51008,
-      "sha256": "59953fc279576d84b7d54ec2f36cc0fb9cb1feff1805ac38d508a1063d0d2376"
+      "bytes": 57666,
+      "sha256": "a575db9a6cd103480d8753dbf9a3868895895b181b5fef4960e6a7725160594a"
     },
     {
       "path": "src/rust_notices.rs",
@@ -1760,8 +1770,8 @@
     },
     {
       "path": "src/source_identity.rs",
-      "bytes": 1717,
-      "sha256": "938e970c8913b0a9feb7d7233462488918e4d23993991ad530e2710d777d09d4"
+      "bytes": 4184,
+      "sha256": "34456385edd08f8c41946aceb2d7da3a8736ab5b72372764ffee365a8d2132b7"
     },
     {
       "path": "src/state/contracts.rs",
@@ -1805,8 +1815,8 @@
     },
     {
       "path": "tests/backup_runtime.rs",
-      "bytes": 7048,
-      "sha256": "e236b68ff92c229b8cb9e4902b94d7e28dde910f049bad2c2bf641f03d77be98"
+      "bytes": 7099,
+      "sha256": "bc1b563d6b6101c1d2687c66f966a26869c7d1a1b0eb0f26e3a9df7f0243cfaf"
     },
     {
       "path": "tests/browser.cjs",
@@ -1890,13 +1900,13 @@
     },
     {
       "path": "tests/mcp_state.rs",
-      "bytes": 51326,
-      "sha256": "1d12eb32fa488a08f09bf039fb1092060c1ea5f4cd24c026629f7f67d30d229a"
+      "bytes": 52801,
+      "sha256": "3ca91fd243e43b45456a43fbc82eebdf80fa06c5f8a37c216e516daf2be28201"
     },
     {
       "path": "tests/model_routing.rs",
-      "bytes": 44454,
-      "sha256": "5e06708dd42b7042157215964d243f5fa976217171947d49697a2ee53bffa170"
+      "bytes": 44564,
+      "sha256": "5194c56cd9551af1e25247f0d46d12bdd10d22785a74d71c3c1ef1ae71aa3d3b"
     },
     {
       "path": "tests/motion_payload.rs",
@@ -1980,7 +1990,7 @@
     },
     "roles": 41,
     "facets": 37,
-    "workflows": 17,
+    "workflows": 18,
     "sources": 47,
     "reference_files": 139,
     "main_mcp_tools": 27,
@@ -1995,8 +2005,8 @@
     "cargo_lock_records": 234,
     "npm_lock_records_including_root": 409,
     "python_locked_wheels": 97,
-    "graph_nodes": 880,
-    "graph_edges": 1447
+    "graph_nodes": 881,
+    "graph_edges": 1460
   },
   "catalog": {
     "schema_version": 1,
@@ -17036,7 +17046,11 @@
           "release-engineering",
           "data-migration",
           "office-production"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "structured-response",
@@ -17088,7 +17102,12 @@
           "release-engineering",
           "data-migration",
           "office-production"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false,
+        "requires_operation": true
       },
       {
         "id": "source-implementation",
@@ -17122,7 +17141,11 @@
           "devops-infrastructure",
           "release-engineering",
           "project-scaffolding"
-        ]
+        ],
+        "host_verification": true,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "source-review",
@@ -17157,7 +17180,11 @@
           "security-engineering",
           "quality-assurance",
           "accessibility-engineering"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "visual-review",
@@ -17183,7 +17210,11 @@
           "mobile-design",
           "graphic-design",
           "accessibility-engineering"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "web-interface",
@@ -17214,12 +17245,16 @@
           "frontend-engineering",
           "accessibility-engineering",
           "desktop-engineering"
-        ]
+        ],
+        "host_verification": true,
+        "budget_class": "composition",
+        "interactive": true,
+        "motion": false
       },
       {
         "id": "editable-interface",
         "design_production": true,
-        "when": "Produce, edit or export layered OpenPencil .fig documents in the assigned design workspace.",
+        "when": "Create or edit layered OpenPencil .fig documents in the assigned design workspace.",
         "role": "web-design",
         "tools": [
           "workspace_read",
@@ -17247,7 +17282,42 @@
           "mobile-design",
           "graphic-design",
           "brand-guidelines"
-        ]
+        ],
+        "host_verification": true,
+        "budget_class": "composition",
+        "interactive": false,
+        "motion": false
+      },
+      {
+        "id": "editable-export",
+        "when": "Inspect and export an existing layered OpenPencil .fig/.pen document without editing it.",
+        "role": "web-design",
+        "tools": [
+          "workspace_read",
+          "workspace_list",
+          "design/openpencil_inspect",
+          "design/openpencil_export",
+          "inspect_image"
+        ],
+        "required_tools": [
+          "design/openpencil_inspect",
+          "design/openpencil_export",
+          "inspect_image"
+        ],
+        "verification_tools": [
+          "inspect_image"
+        ],
+        "rule": "Inspect saved layers and exported pixels, bind the export to the consumed source revision, and preserve the editable source unchanged. No token source or edit is required. SVG exports also require source readback.",
+        "min_tier": "T3_ARCHITECT",
+        "alternative_roles": [
+          "mobile-design",
+          "graphic-design",
+          "brand-guidelines"
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "static-graphic",
@@ -17272,7 +17342,11 @@
         "min_tier": "T3_ARCHITECT",
         "alternative_roles": [
           "brand-guidelines"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "diagram",
@@ -17300,7 +17374,11 @@
           "technical-leadership",
           "documentation",
           "data-analysis"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "motion",
@@ -17313,7 +17391,11 @@
         "rule": "Preserve existing scenes and outputs. Choose and authorize a host encoder explicitly; Mirket supplies no video encoder. Do not substitute browser animation for encoded video. Interrupted workers bound to the retired renderer cannot resume under a changed tool set.",
         "min_tier": "T3_ARCHITECT",
         "alternative_roles": [],
-        "execution_owner": "host"
+        "execution_owner": "host",
+        "host_verification": false,
+        "budget_class": "motion",
+        "interactive": false,
+        "motion": true
       },
       {
         "id": "interactive-motion",
@@ -17341,7 +17423,11 @@
         "min_tier": "T3_ARCHITECT",
         "alternative_roles": [
           "frontend-engineering"
-        ]
+        ],
+        "host_verification": true,
+        "budget_class": "motion",
+        "interactive": true,
+        "motion": true
       },
       {
         "id": "paged-media",
@@ -17366,7 +17452,11 @@
         "min_tier": "T3_ARCHITECT",
         "alternative_roles": [
           "documentation"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "composition",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "vector-art",
@@ -17390,7 +17480,11 @@
         ],
         "rule": "Choose SVG for requested vector editability or suitable geometric artwork, never as a silent fallback for rich raster illustration. Author meaningful geometry and semantic groups; compile tokens, render with vector_render, read back source and inspect pixels. Critique the visual idea and construction against the brief; revise material defects. An inspected render alone is not quality acceptance.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": []
+        "alternative_roles": [],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "raster-processing",
@@ -17414,7 +17508,11 @@
         "alternative_roles": [
           "frontend-engineering",
           "office-production"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "vector-optimization",
@@ -17441,7 +17539,11 @@
         "alternative_roles": [
           "frontend-engineering",
           "office-production"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "pixel-comparison",
@@ -17456,9 +17558,13 @@
         "verification_tools": [
           "design/odiff_compare"
         ],
-        "rule": "Use Odiff against comparable pixels. A mismatch is a failed verification gate; add visual-review when interpretation or refinement is required.",
+        "rule": "Use Odiff against comparable pixels. By default report equality or differences; set expect_match=true only for an equality gate. Keep diagnostics and input identities. Add visual-review when interpretation or refinement is required.",
         "min_tier": "T1_DETERMINISTIC",
-        "alternative_roles": []
+        "alternative_roles": [],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       },
       {
         "id": "design-tokens",
@@ -17482,7 +17588,11 @@
           "frontend-engineering",
           "web-design",
           "graphic-design"
-        ]
+        ],
+        "host_verification": false,
+        "budget_class": "static",
+        "interactive": false,
+        "motion": false
       }
     ]
   },
@@ -26703,13 +26813,13 @@
     },
     {
       "path": "skills/agent-coordination/references/claude-code.md",
-      "bytes": 2584,
-      "sha256": "ceac5367b8483ed16bc18a49781a71b109e7a72a399a05e1984f6f0573050d4c"
+      "bytes": 2559,
+      "sha256": "04371afd92fb9481f5740797350e3970aa222d48112853dad82db49ab8a83f26"
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 19444,
-      "sha256": "7f852e5fbe042069c67ceaf853e8eb83e370b1ed975023234806712a042f22e9"
+      "bytes": 20876,
+      "sha256": "db9c34ab5fd8dfae293c3a7deeac17b1efae09b60cea1065476dc4409ab0a3f5"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -27293,8 +27403,8 @@
     },
     {
       "path": "skills/skill-catalog/references/task-execution.md",
-      "bytes": 5033,
-      "sha256": "b2871fa3a4eb88deab88eddf39218f6f81d1c5fa3049735216892c05749f89f2"
+      "bytes": 5036,
+      "sha256": "e5bd9cbb998f5e28aa59aa05f49e464f05c2cf9564fb079a12fc89940fd4f4e2"
     },
     {
       "path": "skills/skill-catalog/references/task-routing.md",
@@ -33589,6 +33699,71 @@
       "to": "tool:inspect_image"
     },
     {
+      "from": "workflow:editable-export",
+      "relation": "allows",
+      "to": "tool:design/openpencil_export"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "allows",
+      "to": "tool:design/openpencil_inspect"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "allows",
+      "to": "tool:inspect_image"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "allows",
+      "to": "tool:workspace_list"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "allows",
+      "to": "tool:workspace_read"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "alternative_role",
+      "to": "role:brand-guidelines"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "alternative_role",
+      "to": "role:graphic-design"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "alternative_role",
+      "to": "role:mobile-design"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "default_role",
+      "to": "role:web-design"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "required_tools",
+      "to": "tool:design/openpencil_export"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "required_tools",
+      "to": "tool:design/openpencil_inspect"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "required_tools",
+      "to": "tool:inspect_image"
+    },
+    {
+      "from": "workflow:editable-export",
+      "relation": "verification_tools",
+      "to": "tool:inspect_image"
+    },
+    {
       "from": "workflow:editable-interface",
       "relation": "allows",
       "to": "tool:design/openpencil_document"
@@ -34622,6 +34797,7 @@
     "tests/task_protocol.rs",
     "tests/verification_handoff.rs",
     "runtime/design/tools/test/cleanup.test.mjs",
+    "runtime/design/tools/test/inspection.test.mjs",
     "runtime/design/tools/test/live-browser.test.mjs",
     "runtime/design/tools/test/local.test.mjs",
     "runtime/design/tools/test/odiff-contract.test.mjs",
@@ -34664,7 +34840,7 @@
     "evals/harness-remediation/test_feedback.py",
     "evals/harness-remediation/test_platform.py"
   ],
-  "source_sha256": "9fafb9569f18111047ac704301513aca67ae85ab04a0f588f95382425e0f133e",
+  "source_sha256": "6a9ae3edda73a5eb0118d8614f5ff7ff61aba7444d99838ff729a9486b880744",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
@@ -34728,8 +34904,8 @@
     },
     {
       "name": "spawn_subagent",
-      "description": "Run a Mirket-owned worker with mandatory task_needs, task intent, complexity and project. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
-      "annotations_source": "description = \"Run a Mirket-owned worker with mandatory task_needs, task intent, complexity and project. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.\",\n        annotations(read_only_hint = false, open_world_hint = true)"
+      "description": "Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
+      "annotations_source": "description = \"Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.\",\n        annotations(read_only_hint = false, open_world_hint = true)"
     },
     {
       "name": "catalog_search",
@@ -34859,7 +35035,7 @@
     },
     {
       "name": "browser_screenshot",
-      "description": "Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison.",
+      "description": "Observe the authored page without injecting styles or compiling tokens. Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison.",
       "policy": {
         "min_tier": "T3_ARCHITECT",
         "requires_vision": true
@@ -34913,7 +35089,7 @@
     },
     {
       "name": "odiff_compare",
-      "description": "Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ.",
+      "description": "Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ. Differences are reportable results unless expect_match is true.",
       "policy": {
         "min_tier": "T1_DETERMINISTIC",
         "requires_vision": false
@@ -42741,6 +42917,10 @@
       "kind": "workflow"
     },
     {
+      "id": "workflow:editable-export",
+      "kind": "workflow"
+    },
+    {
       "id": "workflow:editable-interface",
       "kind": "workflow"
     },
@@ -42846,6 +43026,7 @@
     "MIRKET_DESIGN_WORKSPACE": [
       "runtime/design/tools/paths.mjs",
       "runtime/design/tools/test/cleanup.test.mjs",
+      "runtime/design/tools/test/inspection.test.mjs",
       "runtime/design/tools/test/live-browser.test.mjs",
       "runtime/design/tools/test/local.test.mjs",
       "runtime/design/tools/test/odiff-contract.test.mjs",
@@ -42859,6 +43040,11 @@
       "src/cli.rs",
       "src/dev.rs",
       "src/update.rs"
+    ],
+    "MIRKET_EXECUTION_SHA256": [
+      "src/identity.rs",
+      "src/router/durable.rs",
+      "src/router/execution.rs"
     ],
     "MIRKET_ISOLATED_TEST": [
       "runtime/design/tools/test/live-browser.test.mjs",
@@ -42889,7 +43075,6 @@
       "src/dev/release_gate.rs",
       "src/identity.rs",
       "src/packages/audit.rs",
-      "src/router/durable.rs",
       "src/router/execution.rs"
     ],
     "MIRKET_STARTUP_TIMING": [

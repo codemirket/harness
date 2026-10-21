@@ -13,6 +13,14 @@ pub enum ExecutionOwner {
     Host,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "snake_case")]
+pub enum BudgetClass {
+    Static,
+    Composition,
+    Motion,
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Workflow {
@@ -26,6 +34,12 @@ pub struct Workflow {
     /// Requires the bounded medium-aware visual contract at the owned worker boundary.
     #[serde(default)]
     pub design_production: bool,
+    #[serde(default)]
+    pub requires_operation: bool,
+    pub host_verification: bool,
+    pub budget_class: BudgetClass,
+    pub interactive: bool,
+    pub motion: bool,
     pub min_tier: crate::router::policy::Tier,
     pub tools: Vec<String>,
     pub required_tools: Vec<String>,
@@ -113,7 +127,7 @@ impl Catalog {
         self.workflows()
             .iter()
             .filter(|workflow| role.is_none_or(|role|workflow.role == role || workflow.alternative_roles.iter().any(|candidate|candidate == role)))
-            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"execution_owner":workflow.execution_owner,"worker_available":workflow.execution_owner == ExecutionOwner::Worker,"design_input_required":workflow.design_production,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
+            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"execution_owner":workflow.execution_owner,"worker_available":workflow.execution_owner == ExecutionOwner::Worker,"design_input_required":workflow.design_production,"operation_required":workflow.requires_operation,"host_verification_required":workflow.host_verification,"budget_class":workflow.budget_class,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
             .collect()
     }
 }

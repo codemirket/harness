@@ -2106,7 +2106,11 @@
         "release-engineering",
         "data-migration",
         "office-production"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "structured-response",
@@ -2158,7 +2162,12 @@
         "release-engineering",
         "data-migration",
         "office-production"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false,
+      "requires_operation": true
     },
     {
       "id": "source-implementation",
@@ -2192,7 +2201,11 @@
         "devops-infrastructure",
         "release-engineering",
         "project-scaffolding"
-      ]
+      ],
+      "host_verification": true,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "source-review",
@@ -2227,7 +2240,11 @@
         "security-engineering",
         "quality-assurance",
         "accessibility-engineering"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "visual-review",
@@ -2253,7 +2270,11 @@
         "mobile-design",
         "graphic-design",
         "accessibility-engineering"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "web-interface",
@@ -2284,12 +2305,16 @@
         "frontend-engineering",
         "accessibility-engineering",
         "desktop-engineering"
-      ]
+      ],
+      "host_verification": true,
+      "budget_class": "composition",
+      "interactive": true,
+      "motion": false
     },
     {
       "id": "editable-interface",
       "design_production": true,
-      "when": "Produce, edit or export layered OpenPencil .fig documents in the assigned design workspace.",
+      "when": "Create or edit layered OpenPencil .fig documents in the assigned design workspace.",
       "role": "web-design",
       "tools": [
         "workspace_read",
@@ -2317,7 +2342,42 @@
         "mobile-design",
         "graphic-design",
         "brand-guidelines"
-      ]
+      ],
+      "host_verification": true,
+      "budget_class": "composition",
+      "interactive": false,
+      "motion": false
+    },
+    {
+      "id": "editable-export",
+      "when": "Inspect and export an existing layered OpenPencil .fig/.pen document without editing it.",
+      "role": "web-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "design/openpencil_inspect",
+        "design/openpencil_export",
+        "inspect_image"
+      ],
+      "required_tools": [
+        "design/openpencil_inspect",
+        "design/openpencil_export",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Inspect saved layers and exported pixels, bind the export to the consumed source revision, and preserve the editable source unchanged. No token source or edit is required. SVG exports also require source readback.",
+      "min_tier": "T3_ARCHITECT",
+      "alternative_roles": [
+        "mobile-design",
+        "graphic-design",
+        "brand-guidelines"
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "static-graphic",
@@ -2342,7 +2402,11 @@
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "brand-guidelines"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "diagram",
@@ -2370,7 +2434,11 @@
         "technical-leadership",
         "documentation",
         "data-analysis"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "motion",
@@ -2383,7 +2451,11 @@
       "rule": "Preserve existing scenes and outputs. Choose and authorize a host encoder explicitly; Mirket supplies no video encoder. Do not substitute browser animation for encoded video. Interrupted workers bound to the retired renderer cannot resume under a changed tool set.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [],
-      "execution_owner": "host"
+      "execution_owner": "host",
+      "host_verification": false,
+      "budget_class": "motion",
+      "interactive": false,
+      "motion": true
     },
     {
       "id": "interactive-motion",
@@ -2411,7 +2483,11 @@
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "frontend-engineering"
-      ]
+      ],
+      "host_verification": true,
+      "budget_class": "motion",
+      "interactive": true,
+      "motion": true
     },
     {
       "id": "paged-media",
@@ -2436,7 +2512,11 @@
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "documentation"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "composition",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "vector-art",
@@ -2460,7 +2540,11 @@
       ],
       "rule": "Choose SVG for requested vector editability or suitable geometric artwork, never as a silent fallback for rich raster illustration. Author meaningful geometry and semantic groups; compile tokens, render with vector_render, read back source and inspect pixels. Critique the visual idea and construction against the brief; revise material defects. An inspected render alone is not quality acceptance.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": []
+      "alternative_roles": [],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "raster-processing",
@@ -2484,7 +2568,11 @@
       "alternative_roles": [
         "frontend-engineering",
         "office-production"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "vector-optimization",
@@ -2511,7 +2599,11 @@
       "alternative_roles": [
         "frontend-engineering",
         "office-production"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "pixel-comparison",
@@ -2526,9 +2618,13 @@
       "verification_tools": [
         "design/odiff_compare"
       ],
-      "rule": "Use Odiff against comparable pixels. A mismatch is a failed verification gate; add visual-review when interpretation or refinement is required.",
+      "rule": "Use Odiff against comparable pixels. By default report equality or differences; set expect_match=true only for an equality gate. Keep diagnostics and input identities. Add visual-review when interpretation or refinement is required.",
       "min_tier": "T1_DETERMINISTIC",
-      "alternative_roles": []
+      "alternative_roles": [],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     },
     {
       "id": "design-tokens",
@@ -2552,7 +2648,11 @@
         "frontend-engineering",
         "web-design",
         "graphic-design"
-      ]
+      ],
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
     }
   ]
 }

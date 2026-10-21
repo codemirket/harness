@@ -34,6 +34,7 @@ pub fn save_new(path: &Path, value: &Value) -> Result<()> {
 }
 pub fn candidate_identity(project: &Path) -> Result<Value> {
     let source = source_identity::fingerprint(project)?;
+    let execution = source_identity::execution_fingerprint(project)?;
     ensure!(
         source == env!("MIRKET_SOURCE_SHA256"),
         "acceptance candidate differs from checkout; build and use the matching candidate executable"
@@ -47,7 +48,7 @@ pub fn candidate_identity(project: &Path) -> Result<Value> {
         "candidate executable changed since startup"
     );
     Ok(
-        json!({"source_sha256":source,"binary_sha256":binary,"target":env!("MIRKET_TARGET"),"version":env!("CARGO_PKG_VERSION")}),
+        json!({"source_sha256":source,"execution_sha256":execution,"binary_sha256":binary,"target":env!("MIRKET_TARGET"),"version":env!("CARGO_PKG_VERSION")}),
     )
 }
 fn read(path: &Path) -> Result<Value> {

@@ -23,6 +23,27 @@ test('Odiff publishes only actual diagnostics and reports dimension mismatches',
   assert.equal(dimensions.match, false);
   const changed = await odiffCompare({baseline: 'baseline.png', candidate: 'changed.png'});
   assert.equal(changed.match, false);
+  assert.equal(changed.expect_match, false);
+  assert.equal(changed.candidate_sha256.length,64);
+  const gate = await odiffCompare({baseline:"baseline.png",candidate:"changed.png",expect_match:true});
+  assert.equal(gate.match,false);
+  assert.equal(gate.expect_match,true);
   assert.equal(typeof changed.diff?.sha256, 'string');
   assert.ok((await fs.stat(path.join(workspace, changed.diff.path))).size > 0);
+});
+
+test('MCP comparison reports unequal pixels successfully unless equality is required',async()=>{
+  const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
+  const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
+  const client=new Client({name:'odiff-expectation',version:'1'});
+  try {
+    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace},stderr:'pipe'}));
+    for(const expect_match of [false,true]) {
+      const result=await client.callTool({name:'odiff_compare',arguments:{baseline:'baseline.png',candidate:'changed.png',expect_match}});
+      assert.equal(result.structuredContent.match,false);
+      assert.equal(result.structuredContent.expect_match,expect_match);
+      assert.equal(result.isError,expect_match);
+      assert.equal(result.structuredContent.execution.state,'completed');
+    }
+  } finally {await client.close();}
 });

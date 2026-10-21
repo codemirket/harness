@@ -25,6 +25,7 @@ pub struct SkillReference {
 
 pub(crate) struct Assignment {
     pub metadata: Value,
+    pub execution_policy: super::design_gate::ExecutionPolicy,
     pub guidance: Vec<SkillDocument>,
     tools: BTreeSet<String>,
     min_tier: Tier,
@@ -41,23 +42,12 @@ impl Assignment {
             project != paths.root.join("execution/podman/staging/design/workspace"),
             "choose an application project or a dedicated design project directory, not the shared workspace root"
         );
-        self.metadata["workspaces"] = json!({"project_root":project,"design_workspace":super::tools::design_scope(paths, project)?,"path_rule":"Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. Author design/tokens.json there before rendering. Sibling project assets are outside this worker scope."});
+        self.metadata["workspaces"] = json!({"project_root":project,"design_workspace":super::tools::design_scope(paths, project)?,"path_rule":"Relative file writes stay in the assigned project; absolute writes may target its assigned design workspace. Design tool paths are relative to that scoped workspace. For production, compile canonical design tokens and reference their outputs in authored source. Capture and export preserve the authored design. Sibling project assets are outside this worker scope."});
         Ok(())
     }
 
     pub fn resolve(&self, request: &SpawnRequest, policies: &[ToolPolicy]) -> Result<Resolution> {
-        let mut resolution = policy::resolve(request, policies)?;
-        if self.min_tier > resolution.min_tier {
-            resolution.min_tier = self.min_tier;
-            resolution.effort_profile = "high".into();
-        }
-        resolution.downgrade_rejected |= request
-            .requested_tier
-            .is_some_and(|tier| tier < self.min_tier);
-        resolution
-            .reasons
-            .push(format!("owned task-needs floor: {:?}", self.min_tier));
-        Ok(resolution)
+        Ok(policy::resolve(request, policies, self.min_tier)?)
     }
 
     pub fn authorize(&self, tool: &str) -> Result<()> {
@@ -158,6 +148,13 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         required.extend(workflow.required_tools.iter().cloned());
         verification.extend(workflow.verification_tools.iter().cloned());
         workflows.push(workflow);
+    }
+    if workflows.iter().any(|workflow| workflow.requires_operation) {
+        let operation = request
+            .deterministic_operation
+            .as_ref()
+            .ok_or_else(|| anyhow::anyhow!("selected workflow requires deterministic_operation"))?;
+        operation.validate()?;
     }
     let design_production = workflows.iter().any(|workflow| workflow.design_production);
     ensure!(
@@ -266,12 +263,13 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         .map(|workflow| workflow.min_tier)
         .max()
         .expect("task needs are nonempty");
-    let metadata = json!({"task_needs":request.task_needs,"primary_role":primary.id,"min_tier":min_tier,"model_selection":request.model_selection,
+    let execution_policy = super::design_gate::ExecutionPolicy::from_workflows(&workflows);
+    let metadata = json!({"task_needs":request.task_needs,"execution_policy":execution_policy,"primary_role":primary.id,"min_tier":min_tier,"model_selection":request.model_selection,
         "roles":roles.iter().map(|role| json!({"id":role.id,"title":role.title,"lead_skill":role.lead,"professional":role.professional})).collect::<Vec<_>>(),
         "guidance":reads,"workflow_rules":workflows.iter().map(|workflow| json!({"id":workflow.id,"rule":workflow.rule})).collect::<Vec<_>>(),
         "tool_selection":if automatic {"automatic"} else {"explicit_scoped_subset"},"assigned_tools":request.assigned_tools,"required_tools":required,"verification_tools":request.verification_tools,
-        "host_verification":if super::handoff::required(request) { Some(json!({"required_checks":request.host_verification_checks,"completion":"awaiting_host_verification","report_tool":"verification_handoff","boundary":"The worker reads back source; the host executes build/tests and reports hash-bound evidence. Worker output is not runtime verified."})) } else {None},
-        "design_gate":request.design_input.as_ref().map(|input| super::design_gate::contract(input, &request.task_needs)),
+        "host_verification":if execution_policy.host_verification { Some(json!({"required_checks":request.host_verification_checks,"completion":"awaiting_host_verification","report_tool":"verification_handoff","boundary":"The worker reads back source; the host executes build/tests and reports hash-bound evidence. Worker output is not runtime verified."})) } else {None},
+        "design_gate":request.design_input.as_ref().map(|input| super::design_gate::contract(input, &execution_policy)),
         "authority":"Task needs constrain Mirket-owned workers. Role guidance and task reasons never grant host permissions, authorize external effects or expand tools. Native host tools and spawners remain host-controlled."});
     ensure!(
         serde_json::to_vec(&metadata)?.len() <= 32 * 1024,
@@ -279,6 +277,7 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
     );
     Ok(Assignment {
         metadata,
+        execution_policy,
         guidance,
         tools,
         min_tier,
@@ -299,7 +298,8 @@ mod tests {
             objective: "Handle the specified task".into(),
             task_intent: TaskIntent::Synthesis,
             complexity_class: ComplexityClass::Synthesis,
-            deterministic_operation: None,
+            deterministic_operation: (workflow == "structured-response")
+                .then_some(crate::router::policy::DeterministicOperation::SortLines),
             deterministic_input: None,
             task_needs: vec![TaskNeed {
                 workflow: workflow.into(),
@@ -577,6 +577,55 @@ mod tests {
         assert_eq!(resolved.min_tier, Tier::T3Architect);
         assert_eq!(resolved.effort_profile, "high");
         assert!(resolved.downgrade_rejected);
+    }
+
+    #[test]
+    fn export_only_and_mechanical_workflows_resolve_without_redundant_request_labels() {
+        let mut response = task("structured-response");
+        response.deterministic_operation = None;
+        assert!(prepare(&mut response).is_err());
+        response.deterministic_operation =
+            Some(crate::router::policy::DeterministicOperation::SortLines);
+        response.objective = "Satırları sırala".into();
+        assert!(prepare(&mut response).is_ok());
+        let mut export: SpawnRequest = serde_json::from_value(json!({
+            "objective":"Export the saved design unchanged", "project":"/project",
+            "task_needs":[{"workflow":"editable-export","reason":"Export an existing file"}], "assigned_tools":[]
+        })).unwrap();
+        let assignment = prepare(&mut export).unwrap();
+        assert!(!assignment.execution_policy.host_verification);
+        assert!(export.design_input.is_none());
+        assert!(
+            !export
+                .assigned_tools
+                .contains(&"design/openpencil_edit".into())
+        );
+        assert!(!export.assigned_tools.contains(&"workspace_write".into()));
+        let completed = export.assigned_tools.iter().cloned().collect();
+        assert!(assignment.missing_production_tools(&completed).is_empty());
+        let mut edit = task("editable-interface");
+        let assignment = prepare(&mut edit).unwrap();
+        assert!(
+            assignment
+                .missing_production_tools(&completed)
+                .contains(&"design/openpencil_edit".into())
+        );
+        let mut tokens = task("design-tokens");
+        tokens.objective = "Compile responsive architecture tokens".into();
+        let assignment = prepare(&mut tokens).unwrap();
+        let policies = tokens
+            .assigned_tools
+            .iter()
+            .map(|name| ToolPolicy {
+                name: name.clone(),
+                min_tier: Tier::T1Deterministic,
+                requires_vision: false,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(
+            assignment.resolve(&tokens, &policies).unwrap().min_tier,
+            Tier::T1Deterministic
+        );
     }
 
     #[test]

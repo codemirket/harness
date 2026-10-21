@@ -669,7 +669,7 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
         resolution.min_tier
     ));
     let candidates = policy::rank_candidates(&registry.models, &resolution);
-    let mut state = ExecutionState::new(&request);
+    let mut state = ExecutionState::new(&request, &assignment.execution_policy);
     let candidate_targets: BTreeSet<_> = candidates.iter().map(|model| &model.target).collect();
     let provider_bindings = registry
         .targets
@@ -680,8 +680,8 @@ pub async fn spawn(paths: &Paths, mut request: SpawnRequest) -> Result<Value> {
     let envelope = json!({"provider_bindings":provider_bindings,"request":request,"project":project,"resolution":resolution,
         "candidates":candidates,"targets":registry.targets,"contract":assignment.metadata,
         "guidance_sha256":util::sha256(&serde_json::to_vec(&assignment.guidance)?),
-        "tools":definitions,"source_sha256":env!("MIRKET_SOURCE_SHA256"),
-        "host_verification_required":super::handoff::required(&request)});
+        "tools":definitions,"source_sha256":env!("MIRKET_SOURCE_SHA256"),"execution_sha256":env!("MIRKET_EXECUTION_SHA256"),
+        "host_verification_required":assignment.execution_policy.host_verification});
     util::ensure_directory(&paths.root.join("runs"))?;
     let run = tempfile::Builder::new()
         .prefix("routed-")
@@ -732,7 +732,7 @@ struct ExecutionState {
     deadline: u64,
 }
 impl ExecutionState {
-    fn new(request: &SpawnRequest) -> Self {
+    fn new(request: &SpawnRequest, policy: &design_gate::ExecutionPolicy) -> Self {
         Self {
             transcript: vec![
                 json!({"objective":request.objective,"deterministic_operation":request.deterministic_operation,"deterministic_input":request.deterministic_input}),
@@ -751,11 +751,11 @@ impl ExecutionState {
             design_gate: request
                 .design_input
                 .clone()
-                .map(|input| Gate::new(input, &request.task_needs)),
+                .map(|input| Gate::new(input, policy)),
             turn: 0,
             deadline: super::durable::now()
                 + if request.design_input.is_some() {
-                    design_gate::budget(&request.task_needs).execution_seconds
+                    policy.budget.execution_seconds
                 } else {
                     7200
                 },
@@ -775,6 +775,7 @@ impl ExecutionState {
                         passed: true,
                         artifacts: vec![artifact.clone()],
                         stable_artifacts: vec![],
+                        consumed_artifacts: vec![],
                         verifies: vec![],
                         opaque_mutation: false,
                     },
@@ -834,8 +835,8 @@ pub async fn resume(paths: &Paths, request: super::durable::RunRequest) -> Resul
     let envelope = saved["envelope"].clone();
     let mut state: ExecutionState = serde_json::from_value(saved["snapshot"].clone())?;
     ensure!(
-        envelope["source_sha256"] == env!("MIRKET_SOURCE_SHA256"),
-        "runtime generation changed; old run cannot dispatch tools"
+        envelope["execution_sha256"] == env!("MIRKET_EXECUTION_SHA256"),
+        "execution compatibility changed or absent; old run cannot dispatch tools"
     );
     ensure!(
         envelope["project"].as_str() == project.to_str(),
@@ -961,7 +962,13 @@ async fn finish_run(
     let mut result =
         design_gate::within_budget(execution, std::time::Duration::from_secs(seconds)).await;
     let host_verification = if result.is_ok() {
-        super::handoff::create(paths, request, project, &state.pending)?
+        super::handoff::create(
+            paths,
+            request,
+            project,
+            &state.pending,
+            assignment.execution_policy.host_verification,
+        )?
     } else {
         None
     };
@@ -1099,6 +1106,15 @@ fn record_artifacts(
     }
 }
 
+// A successful read/comparison binds inputs even when it produces no file.
+// It cannot discharge an output's existing inspection/readback obligation.
+fn record_consumed(stable: &mut Vec<ArtifactRef>, consumed: &[ArtifactRef]) {
+    for artifact in consumed {
+        stable.retain(|old| old.path != artifact.path);
+        stable.push(artifact.clone());
+    }
+}
+
 fn matching_receipts(pending: &[ArtifactRef], receipts: &[ArtifactRef]) -> Vec<ArtifactRef> {
     receipts
         .iter()
@@ -1187,6 +1203,20 @@ fn invalidate_visual_context(
     completed.clear();
     *inspected = false;
     transcript.push(json!({"image_context":"retained_after_mutation","images":images.iter().map(|i| json!({"path":i.path,"sha256":i.sha256,"purpose":i.purpose})).collect::<Vec<_>>(),"note":"These unchanged pixels are context only. Render changed source and inspect its current output before completion."}));
+}
+
+fn verification_evidence(
+    tool: &str,
+    pending: &[ArtifactRef],
+    matching: &[ArtifactRef],
+    required: &[String],
+) -> bool {
+    // Comparisons attest execution independently of equality. Pending artifacts
+    // still need their own matching receipt before the run can complete.
+    tool == "design/odiff_compare"
+        || pending.is_empty()
+        || !matching.is_empty()
+        || !required.iter().any(|name| name == tool)
 }
 
 fn production_evidence(tool: &str, result: &tools::ToolResult) -> bool {
@@ -1396,6 +1426,7 @@ async fn run_loop(
                                 "mutation has no target-linked artifact receipt; run remains incomplete and requires external inspection"
                             );
                         }
+                        record_consumed(stable_artifacts, &result.consumed_artifacts);
                         if result.passed {
                             if production_evidence(&action.tool, &result) {
                                 executed_tools.insert(action.tool.clone());
@@ -1407,10 +1438,12 @@ async fn run_loop(
                             for receipt in &matching {
                                 verified.insert((receipt.path.clone(), receipt.sha256.clone()));
                             }
-                            if pending.is_empty()
-                                || !matching.is_empty()
-                                || !request.verification_tools.contains(&action.tool)
-                            {
+                            if verification_evidence(
+                                &action.tool,
+                                pending,
+                                &matching,
+                                &request.verification_tools,
+                            ) {
                                 failed_tools.remove(&action.tool);
                                 completed.insert(action.tool.clone());
                             } else {
@@ -1462,6 +1495,49 @@ async fn run_loop(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn comparison_inputs_remain_bound_without_clearing_pending_inspection() {
+        let dir = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let path = dir.path().join("candidate.png");
+        std::fs::write(&path, b"candidate pixels").unwrap();
+        let candidate = ArtifactRef {
+            path,
+            sha256: util::sha256(b"candidate pixels"),
+        };
+        let mut pending = vec![candidate.clone()];
+        let mut stable = vec![];
+        let mut verified = BTreeSet::new();
+        // Report-only comparison has no verifies receipt, whether or not a diff was saved.
+        record_artifacts(&mut pending, &mut stable, &mut verified, &[], &[]);
+        record_consumed(&mut stable, std::slice::from_ref(&candidate));
+        assert_eq!(pending, vec![candidate.clone()]);
+        assert!(matching_receipts(&pending, &[]).is_empty());
+        assert!(verification_evidence(
+            "design/odiff_compare",
+            &pending,
+            &[],
+            &["design/odiff_compare".into()]
+        ));
+        assert!(!verification_evidence(
+            "inspect_image",
+            &pending,
+            &[],
+            &["inspect_image".into()]
+        ));
+        assert!(verified.is_empty());
+        assert_eq!(stable, vec![candidate.clone()]);
+        // An explicit successful equality gate may supply this exact receipt.
+        assert_eq!(
+            matching_receipts(&pending, std::slice::from_ref(&candidate)),
+            pending
+        );
+        std::fs::write(&candidate.path, b"changed input").unwrap();
+        assert_ne!(
+            tools::current_digest(&stable[0].path).unwrap(),
+            stable[0].sha256
+        );
+    }
     #[test]
     fn schema_discovery_does_not_satisfy_document_inspection() {
         let mut result = tools::ToolResult {
@@ -1471,6 +1547,7 @@ mod tests {
             passed: true,
             artifacts: vec![],
             stable_artifacts: vec![],
+            consumed_artifacts: vec![],
             verifies: vec![],
             opaque_mutation: false,
         };
@@ -1718,7 +1795,8 @@ mod tests {
         let path = project.join("result.txt");
         std::fs::write(&path, "old").unwrap();
         let request: SpawnRequest = serde_json::from_value(json!({"objective":"Update result", "task_intent":"architecture", "complexity_class":"creative_architectural", "assigned_tools":[], "task_needs":[], "project":project})).unwrap();
-        let mut state = ExecutionState::new(&request);
+        let mut state =
+            ExecutionState::new(&request, &design_gate::ExecutionPolicy::from_workflows(&[]));
         state.turn = 7;
         let deadline = state.deadline;
         let before = ArtifactRef {

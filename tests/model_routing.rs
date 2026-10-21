@@ -198,6 +198,8 @@ fn request(home: &Path, project: &Path, assigned: &[&str], verification: &[&str]
             "objective": "Inspect the assigned workspace and produce a checked artifact with evidence.",
             "task_intent": "architecture",
             "complexity_class": "creative_architectural",
+            "requested_tier": "T3_ARCHITECT",
+            "deterministic_operation": {"action":"sort_lines"},
             "assigned_tools": assigned,
             "task_needs": [{"workflow":if assigned.contains(&"workspace_write") {"source-implementation"} else if assigned.contains(&"inspect_image") {"visual-review"} else if assigned.is_empty() {"structured-response"} else {"analysis"},"reason":"The fixture exercises the corresponding declared deliverable."}],
             "project": project,

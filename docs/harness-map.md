@@ -46,7 +46,7 @@ The host owns permissions, session lifecycle, native tools and account access. P
 
 ## Expertise and selection
 
-The catalog declares 347 entries: 54 embedded, 149 upstream, 139 references and five package-delivery descriptions. It also declares 63 profiles, 41 roles, 37 facets and 17 workflows. Profiles choose installed guidance. Roles define professional methods. Facets describe complementary boundaries. Workflows bind an outcome to an owner, permitted tools, required invocations and verification. Package-delivery entries are not runtime packages.
+The catalog declares 347 entries: 54 embedded, 149 upstream, 139 references and five package-delivery descriptions. It also declares 63 profiles, 41 roles, 37 facets and 18 workflows. Profiles choose installed guidance. Roles define professional methods. Facets describe complementary boundaries. Workflows bind an outcome to an owner, permitted tools, required invocations, verification, tier floor, review budget and host checks. Saved-file export is separate from editable design production. Package-delivery entries are not runtime packages.
 
 Selection begins with the task and project instructions. `catalog_search` and `capability_plan` find relevant guidance; `skill_read` supplies a selected embedded body. Mirket-owned routed workers receive bounded deliverables, eligible models and scoped tools. A role or model route never authorizes effects. Registration, preparation, live connection, invocation and useful output are separate observations.
 
@@ -54,7 +54,7 @@ Selection begins with the task and project instructions. `catalog_search` and `c
 
 The main MCP exposes 27 tools for discovery, task coordination, routing, memory, recovery and runtime identity. The design MCP exposes 13 tools, including four lazy OpenPencil wrappers. OpenPencil has 29 read and 58 write operations behind those wrappers. Workers can select from 17 scoped native/design tools; each workflow narrows the actual set. See the [complete inventory](harness-map/inventory.md).
 
-The design image supplies OpenPencil, Style Dictionary, Satori/resvg/SVGO, Sharp, Playwright/Chromium, Typst and Odiff. Ordinary diagram selection adds Kroki; Excalidraw requires explicit selection. Encoded video is not bundled. The agent image supplies explicit Mem0 facts with hybrid retrieval and LangGraph checkpoint recovery. Coordination SQLite, Mem0 memory and LangGraph checkpoints have distinct ownership and deletion semantics.
+The design image supplies OpenPencil, Style Dictionary, Satori/resvg/SVGO, Sharp, Playwright/Chromium, Typst and Odiff. Ordinary diagram selection adds Kroki; Excalidraw requires explicit selection. Encoded video is not bundled. The agent image supplies explicit Mem0 facts with hybrid retrieval and LangGraph checkpoint recovery. Coordination SQLite, Mem0 memory and LangGraph checkpoints have distinct ownership and deletion semantics. The main MCP opens coordination state only for state-dependent calls; catalog reads and runtime identity remain available if that database is broken.
 
 The locked inventory has 234 Cargo records, 409 npm records including the root, and 97 Python wheels. These are lock records, not installed services or independent capabilities. Native CLI builds target macOS ARM64, Linux x86-64 and Windows x86-64. The managed container controller is macOS ARM64 with Linux ARM64 images; native CLI portability does not establish container portability.
 

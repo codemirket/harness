@@ -538,6 +538,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
         "design-tools" => vec![
             (
+                "tools/inspection.mjs",
+                include_bytes!("../../runtime/design/tools/inspection.mjs"),
+            ),
+            (
                 "tools/openpencil.mjs",
                 include_bytes!("../../runtime/design/tools/openpencil.mjs"),
             ),

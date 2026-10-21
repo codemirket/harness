@@ -7,6 +7,10 @@ fn main() {
         println!("cargo:rerun-if-changed={path}");
     }
     println!(
+        "cargo:rustc-env=MIRKET_EXECUTION_SHA256={}",
+        source_identity::execution_fingerprint(std::path::Path::new(".")).unwrap()
+    );
+    println!(
         "cargo:rustc-env=MIRKET_SOURCE_SHA256={}",
         source_identity::fingerprint(std::path::Path::new(".")).unwrap()
     );

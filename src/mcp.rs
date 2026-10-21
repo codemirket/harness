@@ -53,7 +53,6 @@ Use task tracking when coordination, resumption or user/project requirements war
 #[derive(Clone)]
 pub struct MirketServer {
     paths: Paths,
-    state: State,
     catalog: Catalog,
     workers: Arc<Semaphore>,
     execution: Arc<Semaphore>,
@@ -64,11 +63,8 @@ impl MirketServer {
     pub fn new(paths: &Paths, catalog: Catalog) -> Result<Self> {
         crate::identity::capture();
         startup_phase("identity_captured");
-        let state = State::open(paths)?;
-        startup_phase("state_opened");
         Ok(Self {
             paths: paths.clone(),
-            state,
             catalog,
             workers: Arc::new(Semaphore::new(4)),
             execution: Arc::new(Semaphore::new(4)),
@@ -78,22 +74,34 @@ impl MirketServer {
 
     fn registered_worker_project(&self, path: &std::path::Path) -> Result<std::path::PathBuf> {
         let canonical = crate::paths::canonical_project(path)?;
-        self.state.project_id(&canonical)?;
+        State::open(&self.paths)?.project_id(&canonical)?;
         Ok(canonical)
+    }
+
+    async fn run_state(
+        &self,
+        operation: impl FnOnce(State, Catalog) -> Result<Value> + Send + 'static,
+    ) -> CallToolResult {
+        self.run(move |paths, catalog| {
+            let state = State::open(&paths)?;
+            startup_phase("state_opened");
+            operation(state, catalog)
+        })
+        .await
     }
 
     async fn run(
         &self,
-        operation: impl FnOnce(State, Catalog) -> Result<Value> + Send + 'static,
+        operation: impl FnOnce(Paths, Catalog) -> Result<Value> + Send + 'static,
     ) -> CallToolResult {
         let Ok(permit) = self.workers.clone().try_acquire_owned() else {
             return failure("Mirket is busy; retry this operation with the same idempotency key");
         };
-        let state = self.state.clone();
+        let paths = self.paths.clone();
         let catalog = self.catalog.clone();
         let work = tokio::task::spawn_blocking(move || {
             let _permit = permit;
-            operation(state, catalog)
+            operation(paths, catalog)
         });
         match tokio::time::timeout(Duration::from_secs(10), work).await {
             Ok(Ok(Ok(value))) => match serde_json::to_vec(&value) {
@@ -545,7 +553,7 @@ impl MirketServer {
     }
 
     #[tool(
-        description = "Run a Mirket-owned worker with mandatory task_needs, task intent, complexity and project. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
+        description = "Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
         annotations(read_only_hint = false, open_world_hint = true)
     )]
     async fn spawn_subagent(
@@ -665,14 +673,14 @@ impl MirketServer {
         )
     )]
     async fn skill_read(&self, Parameters(args): Parameters<SkillRead>) -> CallToolResult {
-        self.run(move |state,catalog| {
+        self.run(move |paths,catalog| {
             if args.skill_id.len()>128 || args.path.len()>512 { bail!("skill id or path exceeds its limit"); }
             let doc = catalog.read(&args.skill_id,&args.path,48*1024)?;
             let mut output = json!({"skill_id":doc.id,"path":doc.path,"sha256":doc.sha256,"content":doc.content});
             match (args.task_id,args.revision,args.key) {
                 (None,None,None) => {},
                 (Some(task),Some(revision),Some(key)) if args.path == "SKILL.md" => {
-                    let receipt = state.record_skill(&task,revision,&args.skill_id,output["sha256"].as_str().context("invalid skill hash")?,&key)?;
+                    let receipt = State::open(&paths)?.record_skill(&task,revision,&args.skill_id,output["sha256"].as_str().context("invalid skill hash")?,&key)?;
                     output["delivery"] = json!({"task_id":receipt["id"],"revision":receipt["revision"],"meaning":"Selected skill content delivered; application remains the host agent's responsibility"});
                 },
                 _ => bail!("provide task_id, revision and key together for SKILL.md delivery"),
@@ -686,7 +694,7 @@ impl MirketServer {
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn project_list(&self, Parameters(args): Parameters<ProjectPage>) -> CallToolResult {
-        self.run(move |state, _| state.projects_page(args.offset, args.limit))
+        self.run_state(move |state, _| state.projects_page(args.offset, args.limit))
             .await
     }
 
@@ -700,7 +708,7 @@ impl MirketServer {
         )
     )]
     async fn task_start(&self, Parameters(args): Parameters<Start>) -> CallToolResult {
-        self.run(move |state, _| {
+        self.run_state(move |state, _| {
             state.begin(
                 &args.project_id,
                 &args.objective,
@@ -718,7 +726,7 @@ impl MirketServer {
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn task_status(&self, Parameters(args): Parameters<Task>) -> CallToolResult {
-        self.run(move |state, _| match (args.task_id, args.project_id) {
+        self.run_state(move |state, _| match (args.task_id, args.project_id) {
             (Some(task), None) => state.status(&task),
             (None, Some(project)) => state.tasks(&project, args.cursor.as_deref(), args.limit),
             _ => bail!("provide exactly one of task_id or project_id"),
@@ -731,7 +739,7 @@ impl MirketServer {
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn task_history(&self, Parameters(args): Parameters<History>) -> CallToolResult {
-        self.run(move |state, _| {
+        self.run_state(move |state, _| {
             state.task_history(&args.task_id, args.cursor.as_deref(), args.limit)
         })
         .await
@@ -742,7 +750,7 @@ impl MirketServer {
         annotations(read_only_hint = true, open_world_hint = false)
     )]
     async fn task_validate(&self, Parameters(args): Parameters<Validate>) -> CallToolResult {
-        self.run(move |state, _| {
+        self.run_state(move |state, _| {
             state.validate_contract(&args.task_id, &args.path, args.contract, args.completion)
         })
         .await
@@ -758,7 +766,7 @@ impl MirketServer {
         )
     )]
     async fn task_checkpoint(&self, Parameters(args): Parameters<Checkpoint>) -> CallToolResult {
-        self.run(move |state, _| {
+        self.run_state(move |state, _| {
             state.checkpoint(&args.task_id, args.revision, &args.note, &args.key)
         })
         .await
@@ -774,7 +782,7 @@ impl MirketServer {
         )
     )]
     async fn task_evidence(&self, Parameters(args): Parameters<Evidence>) -> CallToolResult {
-        self.run(move |state, _| {
+        self.run_state(move |state, _| {
             state.evidence_with_contract(
                 &args.task_id,
                 args.revision,
@@ -801,7 +809,7 @@ impl MirketServer {
         )
     )]
     async fn task_finish(&self, Parameters(args): Parameters<Finish>) -> CallToolResult {
-        self.run(move |state, _| match args.action {
+        self.run_state(move |state, _| match args.action {
             FinishAction::Complete => {
                 if args.reason.is_some() {
                     bail!("reason is only accepted when reopening a task");
@@ -1236,14 +1244,22 @@ mod router_boundary_tests {
         std::fs::create_dir(&registered).unwrap();
         std::fs::create_dir(&unrelated).unwrap();
         let server = MirketServer::new(&paths, Catalog::embedded().unwrap()).unwrap();
-        server.state.register_project(&registered).unwrap();
+        State::open(&server.paths)
+            .unwrap()
+            .register_project(&registered)
+            .unwrap();
         symlink(&registered, &alias).unwrap();
         let resolved = server.registered_worker_project(&alias).unwrap();
         std::fs::remove_file(&alias).unwrap();
         symlink(&unrelated, &alias).unwrap();
         assert_eq!(resolved, registered);
         assert!(server.registered_worker_project(&alias).is_err());
-        assert!(server.state.project_id(&resolved).is_ok());
+        assert!(
+            State::open(&server.paths)
+                .unwrap()
+                .project_id(&resolved)
+                .is_ok()
+        );
     }
 }
 

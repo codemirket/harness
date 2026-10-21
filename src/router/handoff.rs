@@ -41,23 +41,15 @@ pub fn validate_checks(request: &SpawnRequest) -> Result<()> {
     Ok(())
 }
 
-pub(crate) fn required(request: &SpawnRequest) -> bool {
-    request.task_needs.iter().any(|need| {
-        matches!(
-            need.workflow.as_str(),
-            "source-implementation" | "web-interface" | "interactive-motion" | "editable-interface"
-        )
-    })
-}
-
 pub(crate) fn create(
     paths: &Paths,
     request: &SpawnRequest,
     project: &Path,
     artifacts: &[ArtifactRef],
+    required: bool,
 ) -> Result<Option<Value>> {
     let design_scope = super::tools::design_scope(paths, project)?;
-    Ok(required(request).then(|| json!({
+    Ok(required.then(|| json!({
         "project":project, "required_checks":request.host_verification_checks,
         "artifacts":artifacts.iter().filter(|a| a.path.starts_with(project)).map(|a| json!({"path":a.path.strip_prefix(project).expect("project artifact"), "sha256":a.sha256})).collect::<Vec<_>>(),
         "design_artifacts":artifacts.iter().filter(|a| !a.path.starts_with(project)).filter_map(|a| a.path.strip_prefix(&design_scope).ok().map(|path| json!({"path":path,"sha256":a.sha256}))).collect::<Vec<_>>(),

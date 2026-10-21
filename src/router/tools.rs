@@ -186,6 +186,86 @@ fn design_artifacts(root: &Path, name: &str, value: &Value) -> Result<Vec<Artifa
     Ok(refs)
 }
 
+fn inspection_artifacts(
+    root: &Path,
+    value: &Value,
+    artifacts: &mut Vec<ArtifactRef>,
+) -> Result<Vec<ArtifactRef>> {
+    let mut originals = Vec::new();
+    let Some(plans) = value.get("inspection") else {
+        return Ok(originals);
+    };
+    let plans = plans.as_array().context("invalid inspection plans")?;
+    ensure!(plans.len() <= 128, "too many inspection plans");
+    for plan in plans {
+        let source =
+            artifact_from_json(root, &plan["source"])?.context("inspection source missing")?;
+        let index = artifacts
+            .iter()
+            .position(|a| a == &source)
+            .context("inspection source is not a produced artifact")?;
+        ensure!(
+            current_digest(&source.path)? == source.sha256,
+            "inspection source changed"
+        );
+        let width = plan["width"].as_u64().context("inspection width missing")?;
+        let height = plan["height"]
+            .as_u64()
+            .context("inspection height missing")?;
+        ensure!(
+            width > 0 && height > 0 && width.checked_mul(height).is_some_and(|n| n <= 17_000_000),
+            "inspection pixel budget exceeded"
+        );
+        let tiles = plan["tiles"]
+            .as_array()
+            .context("inspection tiles missing")?;
+        ensure!(
+            !tiles.is_empty() && tiles.len() <= 64,
+            "invalid inspection tile count"
+        );
+        let mut rectangles = Vec::new();
+        let mut area = 0;
+        for tile in tiles {
+            let x = tile["left"].as_u64().context("tile left missing")?;
+            let y = tile["top"].as_u64().context("tile top missing")?;
+            let w = tile["width"].as_u64().context("tile width missing")?;
+            let h = tile["height"].as_u64().context("tile height missing")?;
+            ensure!(
+                w > 0
+                    && h > 0
+                    && x.checked_add(w).is_some_and(|r| r <= width)
+                    && y.checked_add(h).is_some_and(|b| b <= height),
+                "tile outside source"
+            );
+            for &(rx, ry, rw, rh) in &rectangles {
+                ensure!(
+                    x >= rx + rw || rx >= x + w || y >= ry + rh || ry >= y + h,
+                    "overlapping inspection tiles"
+                );
+            }
+            rectangles.push((x, y, w, h));
+            area += w * h;
+        }
+        ensure!(
+            area == width * height,
+            "inspection tiles omit source pixels"
+        );
+        artifacts.remove(index);
+        for item in std::iter::once(&plan["overview"]).chain(tiles) {
+            let receipt =
+                artifact_from_json(root, item)?.context("inspection image receipt missing")?;
+            let bytes = util::read_bounded(&receipt.path, 4 * 1024 * 1024)?;
+            ensure!(
+                bytes.starts_with(b"\x89PNG\r\n\x1a\n") && util::sha256(&bytes) == receipt.sha256,
+                "inspection image changed or invalid"
+            );
+            artifacts.push(receipt);
+        }
+        originals.push(source);
+    }
+    Ok(originals)
+}
+
 // An editable binary is verified through a consuming edit/export, then its
 // exported pixels still require inspection. Unrelated exports cannot clear it.
 fn openpencil_source_receipt(root: &Path, value: &Value) -> Result<Option<ArtifactRef>> {
@@ -234,14 +314,19 @@ fn require_available(raw: &Value, assigned: &[String]) -> Result<()> {
 }
 
 fn design_check_passed(name: &str, result: &rmcp::model::CallToolResult) -> bool {
-    result.is_error != Some(true)
-        && (name != "design/odiff_compare"
-            || result
-                .structured_content
-                .as_ref()
-                .and_then(|value| value.get("match"))
-                .and_then(Value::as_bool)
-                == Some(true))
+    if result.is_error == Some(true) {
+        return false;
+    }
+    if name != "design/odiff_compare" {
+        return true;
+    }
+    let Some(value) = result.structured_content.as_ref() else {
+        return false;
+    };
+    match (value["match"].as_bool(), value["expect_match"].as_bool()) {
+        (Some(equal), Some(expected)) => !expected || equal,
+        _ => false,
+    }
 }
 
 fn definition(
@@ -520,6 +605,8 @@ pub struct ToolResult {
     pub passed: bool,
     pub artifacts: Vec<ArtifactRef>,
     pub stable_artifacts: Vec<ArtifactRef>,
+    /// Consumed inputs remain stable without replacing pending output verification.
+    pub consumed_artifacts: Vec<ArtifactRef>,
     pub verifies: Vec<ArtifactRef>,
     pub opaque_mutation: bool,
 }
@@ -584,6 +671,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
     let mut passed = true;
     let mut artifacts = Vec::new();
     let mut stable_artifacts = Vec::new();
+    let mut consumed_artifacts = Vec::new();
     let mut verifies = Vec::new();
     let mut opaque_mutation = false;
     let value = match name {
@@ -750,6 +838,15 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             {
                 if let Some(structured) = result.structured_content.as_ref() {
                     artifacts = design_artifacts(&design_scope(paths, project)?, name, structured)?;
+                    stable_artifacts.extend(inspection_artifacts(
+                        &design_scope(paths, project)?,
+                        structured,
+                        &mut artifacts,
+                    )?);
+                    if name == "design/odiff_compare" {
+                        // Diagnostics need identity/stability, not a visual acceptance gate.
+                        stable_artifacts.append(&mut artifacts);
+                    }
                     if matches!(name, "design/typst_compile")
                         && let Some(primary) = artifact_from_json(
                             &design_scope(paths, project)?,
@@ -774,20 +871,27 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             {
                 verifies.push(receipt);
             }
-            if name == "design/odiff_compare"
-                && passed
-                && let Some(candidate) = result
+            if name == "design/odiff_compare" && passed {
+                let structured = result
                     .structured_content
                     .as_ref()
-                    .and_then(|v| v.get("candidate"))
-                    .and_then(Value::as_str)
-            {
-                let path = design_file(&design_scope(paths, project)?, candidate)?;
-                let bytes = util::read_bounded(&path, 32 * 1024 * 1024)?;
-                verifies.push(ArtifactRef {
-                    path,
-                    sha256: util::sha256(&bytes),
-                });
+                    .context("comparison receipt missing")?;
+                ensure!(
+                    structured["expect_match"].as_bool()
+                        == Some(args["expect_match"].as_bool().unwrap_or(false)),
+                    "comparison expectation changed"
+                );
+                for key in ["baseline", "candidate"] {
+                    let receipt = artifact_from_json(&design_scope(paths, project)?, &json!({"path":structured[key],"sha256":structured[format!("{key}_sha256")]}))?.context("comparison omitted input identity")?;
+                    ensure!(
+                        current_digest(&receipt.path)? == receipt.sha256,
+                        "comparison input changed after consumption"
+                    );
+                    if key == "candidate" && structured["expect_match"] == true {
+                        verifies.push(receipt.clone());
+                    }
+                    consumed_artifacts.push(receipt);
+                }
             }
             if name == "design/browser_screenshot"
                 && passed
@@ -811,6 +915,7 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
         passed,
         artifacts,
         stable_artifacts,
+        consumed_artifacts,
         verifies,
         opaque_mutation,
     })
@@ -1118,11 +1223,13 @@ mod tests {
         );
     }
     #[test]
-    fn odiff_mismatch_is_a_failed_gate_even_when_transport_succeeded() {
+    fn odiff_reports_differences_and_only_fails_explicit_equality_gates() {
         use rmcp::model::CallToolResult;
         assert!(!design_check_passed(
             "design/odiff_compare",
-            &CallToolResult::structured(json!({"match": false, "exit_code": 21}))
+            &CallToolResult::structured(
+                json!({"match": false, "expect_match":true, "exit_code": 21})
+            )
         ));
         assert!(!design_check_passed(
             "design/odiff_compare",
@@ -1130,12 +1237,54 @@ mod tests {
         ));
         assert!(design_check_passed(
             "design/odiff_compare",
-            &CallToolResult::structured(json!({"match": true, "exit_code": 0}))
+            &CallToolResult::structured(
+                json!({"match": true, "expect_match":true, "exit_code": 0})
+            )
+        ));
+        assert!(design_check_passed(
+            "design/odiff_compare",
+            &CallToolResult::structured(json!({"match":false,"expect_match":false,"exit_code":21}))
         ));
         assert!(!design_check_passed(
             "design/odiff_compare",
             &CallToolResult::structured_error(json!({"match": true}))
         ));
+    }
+
+    #[test]
+    fn tiled_evidence_keeps_original_identity_and_requires_complete_nonoverlapping_coverage() {
+        let dir = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
+        let root = dir.path();
+        let image = b"\x89PNG\r\n\x1a\nfixture";
+        for name in ["original.png", "overview.png", "left.png", "right.png"] {
+            std::fs::write(root.join(name), image).unwrap();
+        }
+        let receipt = |name: &str| json!({"path":name,"sha256":util::sha256(image)});
+        let original = artifact_from_json(root, &receipt("original.png"))
+            .unwrap()
+            .unwrap();
+        let plan = json!({"inspection":[{"source":receipt("original.png"),"width":4,"height":2,
+        "overview":receipt("overview.png"),"tiles":[
+            {"path":"left.png","sha256":util::sha256(image),"left":0,"top":0,"width":2,"height":2},
+            {"path":"right.png","sha256":util::sha256(image),"left":2,"top":0,"width":2,"height":2}
+        ]}]});
+        let mut pending = vec![original.clone()];
+        let stable = inspection_artifacts(root, &plan, &mut pending).unwrap();
+        assert_eq!(stable, vec![original.clone()]);
+        assert_eq!(pending.len(), 3);
+        assert!(!pending.contains(&original));
+        let mut overlap = plan.clone();
+        overlap["inspection"][0]["tiles"][1]["left"] = json!(1);
+        assert!(inspection_artifacts(root, &overlap, &mut vec![original.clone()]).is_err());
+        let mut missing = plan.clone();
+        missing["inspection"][0]["tiles"]
+            .as_array_mut()
+            .unwrap()
+            .pop();
+        assert!(inspection_artifacts(root, &missing, &mut vec![original.clone()]).is_err());
+        std::fs::write(&original.path, b"changed source").unwrap();
+        assert_ne!(current_digest(&stable[0].path).unwrap(), stable[0].sha256);
+        assert!(inspection_artifacts(root, &plan, &mut vec![original]).is_err());
     }
 
     #[test]

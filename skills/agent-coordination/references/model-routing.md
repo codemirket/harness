@@ -29,8 +29,6 @@ Create a request file with a task brief and an absolute project path:
 ```json
 {
   "objective": "Read the assigned project notes and summarize the open decisions with file evidence.",
-  "task_intent": "synthesis",
-  "complexity_class": "synthesis",
   "task_needs": [
     {"workflow":"analysis","reason":"Synthesize the supplied project notes without changing source."}
   ],
@@ -67,6 +65,7 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Code changes / source findings | `source-implementation` / `source-review` | Writes plus exact readback / reads only |
 | Existing pixels or live DOM inspection | `visual-review` | Playwright, Odiff and pixel inspection; no source edits |
 | Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Playwright / Satori-resvg, followed by inspection |
+| Saved layered file inspection/export | `editable-export` | Inspect/export unchanged source; no edit or token prerequisite |
 | Layered editable canvas | `editable-interface` | OpenPencil .fig file operations and inspected exports |
 | Graph layout / paged output | `diagram` / `paged-media` | Kroki / Typst with inspected outputs |
 | Encoded video (retired worker route) | `motion` remains host-owned | Explicitly selected host encoder; no bundled renderer or silent substitution |
@@ -128,8 +127,7 @@ or target. The host's selected model is not automatically inherited by Mirket.
 Omit this field for ordinary policy-based routing. Never invent model identities.
 There is no provider endpoint override or caller-defined tool policy.
 `requested_tier` is optional and can raise the floor, never lower it; its values
-are `T1_DETERMINISTIC`, `T2_SYNTHESIS`, and `T3_ARCHITECT`. Task intent,
-complexity, owned task needs and each assigned tool set the effective floor. The worker can invoke
+are `T1_DETERMINISTIC`, `T2_SYNTHESIS`, and `T3_ARCHITECT`. Owned task needs and each assigned tool set the effective floor. The worker can invoke
 only its assigned Mirket tools. Current built-in names are `workspace_read`,
 `workspace_list`, `workspace_write`, and `inspect_image`; available
 `design/...` tools are read from the installed design package and its owned
@@ -162,12 +160,14 @@ are idempotent. The tool records host testimony; it does not execute commands,
 authenticate a human reviewer, or prove the checks are semantically sufficient.
 
 A `verification_tools` entry must also be assigned; completion waits for those
-checks after mutation. To request T1, declare one typed
-`deterministic_operation` and use its exact single-operation objective, for
-example `"objective":"Convert CSV to JSON"` with
-`"deterministic_operation":{"action":"convert","from":"CSV","to":"JSON"}`.
-Put source text in `deterministic_input`. A missing contract or compound objective
-raises a mechanical task to T3. Mutation-capable workers must include artifact
+checks after mutation. Owned workflow and tool floors determine the tier;
+`requested_tier` can raise it. The legacy `task_intent` and `complexity_class`
+fields are optional descriptive compatibility fields and do not affect routing.
+Objective wording and tool count do not affect the floor. `structured-response`
+requires a typed `deterministic_operation`; place source text in
+`deterministic_input`. Other mechanical workflows need no redundant operation label.
+For example, `{"action":"convert","from":"CSV","to":"JSON"}` binds the
+operation without requiring a particular English sentence. Mutation-capable workers must include artifact
 readback, pixel inspection, screenshot or diff verification. Mirket matches
 those checks to the produced path and SHA-256; reading an unrelated file or
 image does not clear a mutation. Visual work requires observed pixel inspection
@@ -175,6 +175,17 @@ after the latest mutation. Primary PDF/video bytes are rehashed at completion;
 their pages or snapshots remain the visual verification targets. Editable
 OpenPencil .fig revisions are also rehashed at completion; inspect their layers
 and export the final revision to PNG for target-linked pixel review.
+
+Browser capture observes the authored page without injecting CSS or compiling
+tokens. Production sources must explicitly reference compiled token outputs.
+OpenPencil export preserves the saved source and needs no token file. Odiff
+reports differences by default; set `expect_match:true` to require equal pixels.
+Report-only diffs are identity-bound diagnostics, not failed visual acceptance.
+
+Oversized produced rasters retain their full original bytes and receive a small
+PNG overview plus lossless native-resolution tiles below four MiB each. Inspect
+the overview and every tile; coordinates and source digest bind the evidence.
+The original is rehashed at completion. AVIF outputs also get PNG evidence.
 
 Inspected pixels remain attached across turns and eligible-target failover,
 within four images and an aggregate eight MiB. `inspect_image` accepts an optional
@@ -314,3 +325,10 @@ Routed design paths, including editable OpenPencil documents, belong to the
 reported project design workspace. Host tools retain their shared workspace.
 `memory_recall` may be `best_effort` (default), `required`, or `off`; it does not disable
 LangGraph persistence or authorize a different provider.
+
+Resume checks use a compiled execution-compatibility identity for owned runtime
+code and dependencies, while retaining the full source identity for audit.
+Selected workflow contracts, guidance, tool schemas, provider bindings and saved
+artifact identities must still match. Unrelated catalog entries, standalone
+tests and notices do not invalidate execution compatibility. Legacy runs lacking
+the compatibility identity are rejected rather than guessed compatible.

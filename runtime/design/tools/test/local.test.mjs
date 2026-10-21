@@ -9,7 +9,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, optimizeSvgBytes, typstCompile, readBoundedProjectAsset, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, optimizeSvgBytes, typstCompile, readBoundedProjectAsset, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 
 test.after(async () => fs.rm(workspace, {recursive: true, force: true}));
@@ -100,24 +100,6 @@ test('Style Dictionary composite shadow values retain object and array structure
   assert.match(typst, /\("color", "#fedcba"\)/);
   assert.match(typst, /\.to-dict\(\)/);
   assert.doesNotMatch(typst, /\[object Object\]/);
-});
-
-test('Playwright HTML receives canonical CSS before head scripts run', () => {
-  const css = 'http://design-tools:9002/files/.mirket-design/tokens/abc/tokens.css';
-  const document = '<!doctype html><html><head><script>window.initial = getComputedStyle(document.documentElement).getPropertyValue("--color-accent")</script></head><body>Probe</body></html>';
-  const injected = injectTokenStylesheet(document, css);
-  assert.match(injected, /data-mirket-tokens/);
-  assert.ok(injected.indexOf(`href="${css}"`) < injected.indexOf('<script>'));
-  assert.ok(injected.startsWith('<!doctype html><html><head>'));
-  assert.match(injectTokenStylesheet('<html><body>Probe</body></html>', css), /<html><head><link[^>]+><\/head><body>/);
-  const implicit = '<!doctype html><html lang="en"><meta charset="utf-8"><script>const literal = "<head>";</script></html>';
-  const implicitResult = injectTokenStylesheet(implicit, css);
-  assert.ok(implicitResult.indexOf('data-mirket-tokens') < implicitResult.indexOf('<meta'));
-  assert.ok(implicitResult.endsWith('<script>const literal = "<head>";</script></html>'));
-  const comments = '<!doctype html><!-- <head><script>fake</script> --><html data-label="<head>"><!-- <script> --><head title=">">';
-  assert.equal(injectTokenStylesheet(comments, css), `${comments}<link rel="stylesheet" data-mirket-tokens href="${css}">`);
-  assert.throws(() => injectTokenStylesheet('<!-- unfinished', css), /unterminated/);
-  assert.throws(() => injectTokenStylesheet('<script>window.initial = "too early"</script><html><head></head></html>', css), /before the canonical token stylesheet/);
 });
 
 test('full-page QA uses Chromium content size to enforce a physical-pixel budget', () => {

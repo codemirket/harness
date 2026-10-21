@@ -79,7 +79,7 @@ async fn backup_runtime_recovers_history_pending_effect_and_relocated_memory() {
     let first=call(&engine_home,&paths,&scope,"memory_put",json!({"text":"The approved brand color is orange.","kind":"decision","provenance":"Synthetic backup fixture","key":"old"})).await["memory"].clone();
     let new=call(&engine_home,&paths,&scope,"memory_put",json!({"text":"The approved brand color is cobalt blue.","kind":"decision","provenance":"Synthetic backup fixture","key":"new","supersedes":{"id":first["id"],"sha256":first["sha256"]}})).await["memory"].clone();
     let run_id = "routed-backup-fixture";
-    let start=call(&engine_home,&paths,&scope,"workflow_start",json!({"run_id":run_id,"envelope":{"request":{"objective":"Exercise recovery","memory_recall":"off"},"project":project,"source_sha256":env!("MIRKET_SOURCE_SHA256"),"host_verification_required":true},"snapshot":{"turn":0},"deadline":mirket::router::durable::now()+3600})).await;
+    let start=call(&engine_home,&paths,&scope,"workflow_start",json!({"run_id":run_id,"envelope":{"request":{"objective":"Exercise recovery","memory_recall":"off"},"project":project,"source_sha256":env!("MIRKET_SOURCE_SHA256"),"execution_sha256":env!("MIRKET_EXECUTION_SHA256"),"host_verification_required":true},"snapshot":{"turn":0},"deadline":mirket::router::durable::now()+3600})).await;
     let pending=call(&engine_home,&paths,&scope,"workflow_resume",json!({"run_id":run_id,"expected_checkpoint_id":start["checkpoint_id"],"key":"effect","reply":{"decision":"effect","snapshot":{"turn":1},"effect":{"tool":"external-effect","may_mutate":true}}})).await;
     let run = paths.root.join("runs").join(run_id);
     fs::create_dir_all(&run).unwrap();
