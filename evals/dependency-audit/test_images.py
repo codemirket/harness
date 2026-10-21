@@ -4,7 +4,7 @@ import tarfile
 import unittest
 import tempfile
 from pathlib import Path
-from image_audit import evaluate, inventory, validate_export, ROOT, BUILT
+from image_audit import evaluate, inventory, validate_export, ROOT, BUILT, REQUIRED_TYPES
 from fetch_scanner import binary
 
 
@@ -17,6 +17,12 @@ class ImageTests(unittest.TestCase):
         self.assertIn("gobinary",str(result["coverage_errors"]))
         report["Results"].append({"Type":"gobinary","Packages":[{"Name":"stdlib","Version":"v1.27.3"}]})
         self.assertTrue(evaluate(report,"pinned",required_types={"node-pkg","gobinary"})["ok"])
+    def test_current_design_inventory_requires_node_without_retired_go_payload(self):
+        report = self.fixture()
+        self.assertFalse(evaluate(report, 'pinned', required_types=REQUIRED_TYPES['design-tools'])['ok'])
+        report['Results'].append({'Type': 'node-pkg', 'Packages': [{'Name': '@open-pencil/cli'}]})
+        self.assertTrue(evaluate(report, 'pinned', required_types=REQUIRED_TYPES['design-tools'])['ok'])
+
     def test_candidate_scan_rejects_old_installed_and_wrong_source_archives(self):
         with tempfile.TemporaryDirectory() as temporary:
             archive = Path(temporary) / 'image.tar'
@@ -71,7 +77,7 @@ class ImageTests(unittest.TestCase):
     def test_report_policy_retains_advisories_but_never_hides_broken_inventory(self):
         report = self.fixture()
         report["Results"][0]["Vulnerabilities"] = [{"VulnerabilityID":"CVE-fixture", "PkgName":"libc", "Severity":"CRITICAL"}]
-        self.assertFalse(evaluate(report,"pinned")["ok"])
+        self.assertFalse(evaluate(report,"pinned",advisory_policy="fail")["ok"])
         accepted = evaluate(report,"pinned",advisory_policy="report")
         self.assertTrue(accepted["ok"])
         self.assertTrue(accepted["advisories_present"])
@@ -89,7 +95,7 @@ class ImageTests(unittest.TestCase):
                 "VulnerabilityID": "CVE-fixture", "PkgName": "fixture",
                 "InstalledVersion": "1.0", "FixedVersion": "", "Severity": "HIGH",
                 "Description": "PRIVATE_UNNEEDED_CONTENT"}]})
-        result = evaluate(report, "pinned")
+        result = evaluate(report, "pinned", advisory_policy="fail")
         self.assertFalse(result["ok"])
         self.assertEqual(result["packages_by_type"]["node-pkg"], 1)
         self.assertEqual(result["findings"][0]["FixedVersion"], "")

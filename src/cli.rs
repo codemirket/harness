@@ -605,7 +605,7 @@ enum PackageCommand {
     Prepare {
         id: String,
         /// Prepare optional design images without starting services or changing saved groups.
-        #[arg(long = "group", value_parser = ["core", "diagrams", "all"])]
+        #[arg(long = "group", value_parser = ["core", "diagrams", "excalidraw", "all"])]
         groups: Vec<String>,
     },
     /// Report installed Python dependency inventory without network or private data.
@@ -621,7 +621,7 @@ enum PackageCommand {
     /// Start a reviewed local service profile; never downloads images.
     Start {
         id: String,
-        #[arg(long = "group", value_parser = ["core", "diagrams", "all"])]
+        #[arg(long = "group", value_parser = ["core", "diagrams", "excalidraw", "all"])]
         groups: Vec<String>,
     },
     /// Stop owned services; retain designs unless --purge-data is explicitly supplied.

@@ -186,3 +186,19 @@ contains eight original varied briefs and a separate craft-review protocol.
 Use fixed comparable configurations, preserve failed trials and collect fresh
 transfer evidence before claiming a general improvement. Its shipped templates
 are not observed results or a quality certification.
+
+## Repair feedback and completion
+
+A completed renderer response includes an owned `execution` receipt. Negative QA
+(such as a baseline pixel mismatch) retains its artifacts for inspection and repair;
+it does not count as successful tool use or verification. The worker must correct
+and rerun the failed tool, inspect the current outputs and pass the final review.
+An exception without a completed or pre-dispatch receipt remains an uncertain
+effect and stops for recovery. No automatic mutation replay is introduced.
+
+Malformed or stale `design_review` submissions return bounded correction feedback
+within the same turn and elapsed-time limits. Valid failed reviews consume the
+existing correction allowance; neither malformed testimony nor recovery resets it.
+Completion still rechecks produced artifact bytes and requires all assigned
+verification, required-tool and quality conditions. These checks establish evidence
+consistency, not aesthetic quality or human acceptance.

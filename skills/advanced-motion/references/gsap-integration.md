@@ -3,8 +3,8 @@
 Read only when GSAP is installed or its addition is authorized for an actual
 need. This is a focused integration reference, not an installer or a replacement
 for the installed version's official documentation. CSS/WAAPI or an existing
-Motion integration may already cover the work. Video export retains HyperFrames
-lint → snapshot → render and inspection of the delivered media.
+Motion integration may already cover the work. Video export requires an explicitly
+selected host encoder and inspection of the delivered media.
 
 ## Compose a score with owned state
 

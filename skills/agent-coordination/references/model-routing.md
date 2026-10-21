@@ -67,7 +67,8 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Existing pixels or live DOM inspection | `visual-review` | Playwright, Odiff and pixel inspection; no source edits |
 | Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Playwright / Satori-resvg, followed by inspection |
 | Layered editable canvas | `editable-interface` | OpenPencil .fig file operations and inspected exports |
-| Graph layout / encoded motion / paged output | `diagram` / `motion` / `paged-media` | Kroki / HyperFrames / Typst with inspected outputs |
+| Graph layout / paged output | `diagram` / `paged-media` | Kroki / Typst with inspected outputs |
+| Encoded video (retired worker route) | `motion` remains host-owned | Explicitly selected host encoder; no bundled renderer or silent substitution |
 | Editable vector art / raster preparation | `vector-art` / `raster-processing` | SVG/resvg previews / Sharp with inspection |
 | Vector hygiene / comparable pixels / tokens | `vector-optimization` / `pixel-comparison` / `design-tokens` | SVGO / Odiff / Style Dictionary |
 

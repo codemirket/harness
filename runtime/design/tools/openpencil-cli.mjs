@@ -1,4 +1,5 @@
 // Pin the official file-mode CLI; no desktop discovery or remote asset downloads.
+import {createRequire} from 'node:module';
 globalThis.fetch = async () => { throw Error('OpenPencil network access is disabled; embed assets and use bundled/local fonts'); };
 if (process.argv[2] === 'tool' && process.argv[3] === 'call') {
   const {ALL_TOOLS} = await import('@open-pencil/core/tools');
@@ -11,5 +12,8 @@ if (process.argv[2] === 'tool' && process.argv[3] === 'call') {
   process.argv[index+1] = JSON.stringify(parse(tool.input, JSON.parse(process.argv[index+1])));
 }
 const {COMMANDS} = await import('@open-pencil/cli/commands');
-const {runMain} = await import('citty');
+// Resolve the CLI's own locked dependency, not an unrelated root-hoisted copy.
+// Retiring another tool must not change the parser used by OpenPencil.
+const fromCli = createRequire(import.meta.resolve('@open-pencil/cli/commands'));
+const {runMain} = fromCli('citty');
 await runMain({meta:{name:'openpencil',version:'0.16.0'},subCommands:COMMANDS});

@@ -7,12 +7,10 @@ import {optimize} from 'svgo';
 import {SaxesParser} from 'saxes';
 import {parse as parseCss, walk as walkCss} from 'css-tree';
 import {compileTokens} from './tokens.mjs';
-import {keyframeVerdict, encodedMediaEvidence} from './media-evidence.mjs';
 import {workspace, workspacePrefix, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, assertOutputReady, MAX_OUTPUT} from './paths.mjs';
 import {checkRequest, requestSignal, combinedSignal, redactSecrets} from './request.mjs';
 
 const toolRoot = path.dirname(fileURLToPath(import.meta.url));
-const hf = path.join(toolRoot, 'node_modules/hyperframes/bin/hyperframes.mjs');
 const odiff = path.join(toolRoot, 'node_modules/.bin/odiff');
 const sha = bytes => sha256(bytes);
 const MAX_PROJECT_BYTES = 64 * 1024 * 1024;
@@ -586,19 +584,6 @@ async function inspectSaved(source, baseline) {
   try { return await browserInspect(source, {baseline}); }
   catch (error) { return {status: 'failed', error: redactSecrets(error.message || error), artifact_retained: source}; }
 }
-export async function inspectHyperframesKeyframes(snapshots, baseline, inspect = inspectSaved) {
-  if (!snapshots.length) throw Error('HyperFrames CLI snapshot produced no PNG frames');
-  const keyframes = [];
-  for (const [index, snapshot] of snapshots.entries()) {
-    checkRequest();
-    keyframes.push({source: snapshot.artifact.path, inspection: await inspect(snapshot.artifact.path, index === 0 ? baseline : undefined)});
-  }
-  return {
-    status: keyframeVerdict(keyframes),
-    keyframes,
-  };
-}
-
 export async function copyBoundedProjectTree(origin, stage, {label, onFile}) {
   if (typeof label !== 'string' || !label || typeof onFile !== 'function') throw Error('Bounded project traversal options are invalid');
   let files = 0, entries = 0, total = 0;
@@ -656,16 +641,6 @@ export async function stageDesignAsset({dest, local, bytes}) {
   } else await fs.writeFile(dest, bytes);
 }
 
-export async function stageProject(sourceDir, stage) {
-  const origin = await workspacePath(sourceDir, {kind: 'directory'});
-  await copyBoundedProjectTree(origin, stage, {label: 'Composition', onFile: stageDesignAsset});
-  const index = path.join(stage, 'index.html');
-  let html = await fs.readFile(index, 'utf8');
-  if (!/<head(?:\s|>)/i.test(html)) throw Error('HyperFrames project requires an HTML head');
-  html = html.replace(/<head([^>]*)>/i, '<head$1><link rel="stylesheet" href="/__mirket_tokens.css">');
-  await fs.writeFile(index, html);
-}
-
 export async function readBoundedProjectAsset(file, remaining, label) {
   if (!Number.isSafeInteger(remaining) || remaining < 0) throw Error(`${label} has an invalid remaining byte budget`);
   checkRequest();
@@ -689,17 +664,6 @@ export async function readBoundedProjectAsset(file, remaining, label) {
   } finally { await handle.close(); }
 }
 
-export function parseHyperframesLint(stdout) {
-  let report;
-  try { report = JSON.parse(stdout); }
-  catch { throw Error('HyperFrames linter returned invalid JSON'); }
-  if (!report || typeof report !== 'object' || Array.isArray(report) ||
-      typeof report.ok !== 'boolean' || !Number.isSafeInteger(report.errorCount) || report.errorCount < 0) {
-    throw Error('HyperFrames linter returned an invalid verdict');
-  }
-  if (!report.ok || report.errorCount > 0) throw Error('HyperFrames linter reported errors');
-  return report;
-}
 export function imageBatchBudget() {
   let bytes = 0, pixels = 0, count = 0;
   return image => {
@@ -709,54 +673,6 @@ export function imageBatchBudget() {
     return dimensions;
   };
 }
-export function hyperframesSnapshotArgs(times) {
-  if (times == null) return ['--frames', '3'];
-  if (!Array.isArray(times) || times.length < 1 || times.length > 8 || times.some(t => !Number.isFinite(t) || t < 0 || t > 3600) || new Set(times).size !== times.length) throw Error('Choose 1..8 unique snapshot times in 0..3600 seconds');
-  return ['--at', [...times].sort((a,b) => a-b).join(','), '--no-end'];
-}
-export async function hyperframesRender(args) {
-  await assertOutputReady(args);
-  const tokens = await preflight(args);
-  const snapshotArgs = hyperframesSnapshotArgs(args.snapshot_times);
-  const sourceDir = args.project;
-  await workspacePath(sourceDir, {kind: 'directory'});
-  const format = args.format || 'mp4';
-  if (!['mp4', 'webm'].includes(format) || !args.output?.endsWith(`.${format}`)) throw Error('HyperFrames output extension must match MP4 or WebM format');
-  const stage = await temporaryDirectory('hyperframes');
-  try {
-    await stageProject(sourceDir, stage);
-    await fs.copyFile(path.join(workspace, tokens.outputs['tokens.css']), path.join(stage, '__mirket_tokens.css'));
-    const env = {HYPERFRAMES_NO_UPDATE_CHECK: '1', HYPERFRAMES_NO_TELEMETRY: '1', HYPERFRAMES_BROWSER_PATH: process.env.HYPERFRAMES_BROWSER_PATH || '/usr/bin/chromium', HYPERFRAMES_FFMPEG_PATH: process.env.HYPERFRAMES_FFMPEG_PATH || '/usr/bin/ffmpeg', HYPERFRAMES_FFPROBE_PATH: process.env.HYPERFRAMES_FFPROBE_PATH || '/usr/bin/ffprobe'};
-    const lint = await run(process.execPath, [hf, 'lint', stage, '--json'], {env, timeoutMs: 45000});
-    const lintReport = parseHyperframesLint(lint.stdout);
-    const snapshotsDir = path.join(stage, 'snapshots');
-    await run(process.execPath, [hf, 'snapshot', stage, ...snapshotArgs, '--describe', 'false', '--output', snapshotsDir], {env, timeoutMs: 120000, maxStdout: 65536});
-    const snapshots = [], acceptImage = imageBatchBudget();
-    const snapshotRoot = `.mirket-design/qa/${crypto.randomUUID()}-hyperframes`;
-    await fs.mkdir(path.join(workspace, snapshotRoot), {recursive: true});
-    for (const name of (await fs.readdir(snapshotsDir)).sort()) {
-      if (!name.endsWith('.png')) continue;
-      const bytes = await regularOutput(path.join(snapshotsDir, name), 16 * 1024 * 1024);
-      const dimensions = acceptImage(bytes);
-      const artifact = await publish(`${snapshotRoot}/${name}`, bytes);
-      snapshots.push({artifact, dimensions});
-    }
-    if (args.snapshot_times && snapshots.length !== args.snapshot_times.length) throw Error('HyperFrames did not return every requested snapshot');
-    const qa = await inspectHyperframesKeyframes(snapshots, args.baseline);
-    if (qa.status === 'failed' || qa.status === 'changed_pixels') {
-      return {tokens, artifact: null, lint: lintReport, snapshots, qa, phases: ['lint', 'snapshot'], render_skipped: 'keyframe_qa', engine: 'hyperframes-cli'};
-    }
-    const renderFile = path.join(stage, `render.${format}`);
-    await run(process.execPath, [hf, 'render', stage, '--format', format, '--output', renderFile], {env, timeoutMs: 300000, maxStdout: 65536});
-    const bytes = await regularOutput(renderFile);
-    const probe = await run(process.env.HYPERFRAMES_FFPROBE_PATH || '/usr/bin/ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', renderFile], {timeoutMs: 30000});
-    const media = JSON.parse(probe.stdout);
-    const mediaEvidence = encodedMediaEvidence(media, args.snapshot_times);
-    const artifact = await publish(args.output, bytes, outputOptions(args));
-    return {tokens, artifact, lint: lintReport, snapshots, media: mediaEvidence, qa, phases: ['lint', 'snapshot', 'render'], engine: 'hyperframes-cli'};
-  } finally { await fs.rm(stage, {recursive: true, force: true}); }
-}
-
 export async function typstCompile(args) {
   await assertOutputReady(args);
   const tokens = await preflight(args);

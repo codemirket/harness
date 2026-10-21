@@ -798,7 +798,7 @@
         "motion-primitives"
       ],
       "dependencies": [
-        "Actual browser/device with controllable input, playback and motion preference; Playwright for full DOM and 2x screenshot inspection. Frame/video work uses HyperFrames lint, snapshot and render in that order.",
+        "Actual browser/device with controllable input, playback and motion preference; Playwright for full DOM and 2x screenshot inspection. Encoded video requires an explicitly selected host encoder; Mirket no longer bundles video rendering.",
         "Skill registration supplies guidance; verify tool availability and invocation separately."
       ],
       "caveats": [
@@ -11543,7 +11543,7 @@
         "claude"
       ],
       "dependencies": [
-        "Use supported browser APIs or the existing project animation/router integration; Playwright inspects live behavior. HyperFrames produces requested fixed frames or video through lint, snapshot and render."
+        "Use supported browser APIs or the existing project animation/router integration; Playwright inspects live behavior. Encoded video requires explicitly selected host tooling; Mirket has no bundled encoder."
       ],
       "caveats": [
         "Original portable craft guidance; native support and framework versions need project checks. Registration does not certify visual quality or performance."
@@ -11603,7 +11603,6 @@
         "website-motion",
         "gradients",
         "video-export",
-        "hyperframes",
         "playwright",
         "mp4",
         "frame-rendering",

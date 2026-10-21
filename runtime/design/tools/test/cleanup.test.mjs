@@ -6,7 +6,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-cleanup-'));
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
-const {rasterTransform, svgOptimize, vectorRender, browserInspect, validateBrowserActions, hyperframesSnapshotArgs, optimizeSvgBytes, stageProject, stageDesignAsset} = await import('../operations.mjs');
+const {rasterTransform, svgOptimize, vectorRender, browserInspect, validateBrowserActions, optimizeSvgBytes, copyBoundedProjectTree, stageDesignAsset} = await import('../operations.mjs');
 const {withRenderSlot} = await import('../paths.mjs');
 const {withRequest} = await import('../request.mjs');
 test.after(() => fs.rm(workspace, {recursive:true, force:true}));
@@ -50,7 +50,7 @@ test('composition staging retains original raster size, encoding and metadata', 
     originals.set(format, bytes);
     await fs.writeFile(path.join(source, `hero.${format}`), bytes);
   }
-  await stageProject('composition', stage);
+  await copyBoundedProjectTree(path.join(workspace, 'composition'), stage, {label:'Composition', onFile:stageDesignAsset});
   for (const [format, bytes] of originals) {
     const actual = await fs.readFile(path.join(stage, `hero.${format}`));
     assert.deepEqual(actual, bytes, `${format} changed during staging`);
@@ -59,7 +59,7 @@ test('composition staging retains original raster size, encoding and metadata', 
   }
 });
 
-test('shared video and paged asset staging rejects corrupt rasters before writing', async () => {
+test('paged asset staging rejects corrupt rasters before writing', async () => {
   const dest = path.join(workspace, 'invalid-staged.png');
   const png = await sharp({create:{width:40,height:40,channels:3,background:'#123456'}}).png().toBuffer();
   await assert.rejects(stageDesignAsset({dest, local:'broken.png', bytes:png.subarray(0, 50)}));
@@ -161,12 +161,6 @@ test('browser actions and timing reject unbounded or executable instructions', (
 });
 
 
-test('motion checkpoint selection is bounded and preserves exact requested times', () => {
-  assert.deepEqual(hyperframesSnapshotArgs([1.5,0,0.5]), ['--at','0,0.5,1.5','--no-end']);
-  assert.throws(() => hyperframesSnapshotArgs([1,1]), /unique/);
-  assert.throws(() => hyperframesSnapshotArgs([3601]), /3600/);
-  assert.throws(() => hyperframesSnapshotArgs([]), /1..8/);
-});
 
 test('SVG styles validate combined text and CDATA before and after optimization', () => {
   for (const css of ['<![CDATA[@import url("https://example.test/x.css");]]>', '<![CDATA[rect{fill:url(https://example.test/x.svg)}]]>', '@im<![CDATA[port "https://example.test/x.css";]]>']) {

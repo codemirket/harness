@@ -15,10 +15,6 @@
     "min_tier": "T2_SYNTHESIS",
     "requires_vision": true
   },
-  "hyperframes_render": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
-  },
   "typst_compile": {
     "min_tier": "T3_ARCHITECT",
     "requires_vision": true

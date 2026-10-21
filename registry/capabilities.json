@@ -270,7 +270,7 @@
       ],
       "deliverable": "Purposeful motion matched to the brief and brand, with an editable implementation, readable static composition and interruption-safe behavior.",
       "failure_probe": "Rapidly retarget or reverse midway and change motion preference; no stale state, clipped essential content or trapped control. For subject animation, inspect playback with surrounding effects excluded: the requested subject must visibly perform its action. A screenshot or successful build alone cannot accept motion.",
-      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or HyperFrames lint, snapshot and render for requested video. Use the existing host model; verify Playwright and renderer readiness.",
+      "prerequisites": "Inspect brief, brand, audience, content and references. Choose motion-design for ordinary controls, page-transitions for navigation, advanced-motion for substantial browser compositions, svg-animation for editable vector choreography, or explicitly selected host tooling for requested video; Mirket has no bundled encoder. Use the existing host model; verify Playwright and renderer readiness.",
       "aliases": [
         "Motion Designer"
       ],
@@ -2374,26 +2374,16 @@
     },
     {
       "id": "motion",
-      "design_production": true,
-      "when": "Experimental finite encoded-video export from an authored HTML/CSS/SVG timeline; verify actual frames and playback before accepting the result.",
+      "design_production": false,
+      "when": "Encoded video requires explicitly selected host tooling; bundled video production is retired. Existing motion selections remain available as guidance.",
       "role": "animation",
-      "tools": [
-        "workspace_read",
-        "workspace_list",
-        "workspace_write",
-        "design/hyperframes_render",
-        "inspect_image"
-      ],
-      "required_tools": [
-        "design/hyperframes_render",
-        "inspect_image"
-      ],
-      "verification_tools": [
-        "inspect_image"
-      ],
-      "rule": "Use HyperFrames lint, snapshot and render in order. Inspect saved keyframes; a successful encoder alone cannot establish composition quality.",
+      "tools": [],
+      "required_tools": [],
+      "verification_tools": [],
+      "rule": "Preserve existing scenes and outputs. Choose and authorize a host encoder explicitly; Mirket supplies no video encoder. Do not substitute browser animation for encoded video. Interrupted workers bound to the retired renderer cannot resume under a changed tool set.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": []
+      "alternative_roles": [],
+      "execution_owner": "host"
     },
     {
       "id": "interactive-motion",
@@ -2417,7 +2407,7 @@
         "workspace_read",
         "inspect_image"
       ],
-      "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. For requested subject animation, verify its moving parts in a subject-only playback crop; background effects and whole-image entrances cannot establish internal articulation. Inspect saved states; do not claim playback smoothness from a seek. Use motion/HyperFrames only for encoded video.",
+      "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. For requested subject animation, verify its moving parts in a subject-only playback crop; background effects and whole-image entrances cannot establish internal articulation. Inspect saved states; do not claim playback smoothness from a seek. The retained motion workflow is host-owned and requires an explicitly selected encoder for video.",
       "min_tier": "T3_ARCHITECT",
       "alternative_roles": [
         "frontend-engineering"

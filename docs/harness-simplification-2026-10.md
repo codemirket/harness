@@ -219,5 +219,7 @@ shipped source in the task's evidence directory. Reproduction owners are
 [design contract trials](../runtime/design/tools/test/simplification.test.mjs),
 [explicit offline runtime trials](../tests/runtime_simplification.rs),
 [retrieval fixture](../evals/harness-remediation/retrieval-ablation.py),
-[video fixture](../evals/harness-remediation/design-decision.mjs), and
-[current routing probes](../evals/harness-critique/probe.py).
+and
+[current routing probes](../evals/harness-critique/probe.py). The pre-retirement
+video fixture was removed with the final cleanup; its original revision and
+outcome remain recorded in the evidence bundle.

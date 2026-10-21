@@ -7,8 +7,8 @@
     "owner": "Mirket maintainers",
     "expires": "2026-11-20",
     "source": "src/catalog.rs",
-    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
-    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+    "source_sha256": "026a8983923cbf8c60dd3d9106766f4a0804f64b20cbb69888581d7098d5445a",
+    "reason": "Re-reviewed 2026-10-21 after discovery-only changes in cc8a258; ZIP loading and cache publication are unchanged. select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
   },
   {
     "ecosystem": "crates.io",
@@ -18,8 +18,8 @@
     "owner": "Mirket maintainers",
     "expires": "2026-11-20",
     "source": "src/catalog.rs",
-    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
-    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+    "source_sha256": "026a8983923cbf8c60dd3d9106766f4a0804f64b20cbb69888581d7098d5445a",
+    "reason": "Re-reviewed 2026-10-21 after discovery-only changes in cc8a258; ZIP loading and cache publication are unchanged. select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
   },
   {
     "ecosystem": "crates.io",
@@ -29,7 +29,7 @@
     "owner": "Mirket maintainers",
     "expires": "2026-11-20",
     "source": "src/catalog.rs",
-    "source_sha256": "c6719c0e15ea80779f23b664b6b859f00c08e576a692d15f15392ae5ad94d535",
-    "reason": "select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+    "source_sha256": "026a8983923cbf8c60dd3d9106766f4a0804f64b20cbb69888581d7098d5445a",
+    "reason": "Re-reviewed 2026-10-21 after discovery-only changes in cc8a258; ZIP loading and cache publication are unchanged. select_archive manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
   }
 ]

@@ -61,17 +61,25 @@ mirket package call design static_render --arguments '{"tree":{"type":"div","pro
 The output path is relative to the same workspace. Use `probe design --schemas`
 for every installed design tool.
 
-Encoded video remains experimental: the bounded export fixture does not establish
-autonomous production quality or natural adoption. HyperFrames and FFmpeg remain
-bundled with design core; video is not independently installable.
+Bundled video production is retired. Mirket does not ship HyperFrames or an
+FFmpeg encoder. Existing scenes, outputs, profiles and the `motion` workflow ID
+remain available; `motion` now explicitly requires selected host tooling and is
+unavailable to routed workers. It is not redirected to browser animation.
+Old checkpoints retain their original bindings and cannot resume under this
+changed source/tool generation. Inspect/export their state before deciding how
+to continue the work; no budget reset or tool/provider substitution is implied.
 
-Core starts only the tools container: tokens, raster/vector processing, static cards,
-local Playwright, OpenPencil, Typst, HyperFrames and Odiff. Enable heavier groups explicitly:
-`mirket package prepare design --group diagrams`, then
-`mirket package start design --group diagrams` (core is always included),
-or `--group all`. Omitting groups reuses the saved selection. To change a running
+Core starts only the tools container: tokens, raster/vector processing, static
+cards, local Playwright, OpenPencil, Typst and Odiff. Prepare/start ordinary
+diagrams with `--group diagrams`; this acquires Kroki alone for fresh selections.
+Use `mirket package prepare design --group excalidraw`, then
+`mirket package start design --group excalidraw` for Excalidraw input; this includes
+Kroki and core. `--group all` includes the companion too. Omitting groups reuses
+the saved selection. Old diagram selections migrate to `diagrams,excalidraw`,
+preserving their formats. Preparation never enables a group. To change a running
 selection, stop it first; data and workspace are retained. Disabled groups do not
-block core readiness.
+block core readiness. Unsupported Excalidraw calls fail before rendering with an
+explicit preparation/selection instruction.
 
 Stop the service with `mirket package stop design`. The explicit `--purge-data`
 option removes current service state and network. Retained legacy state and volumes
@@ -88,7 +96,7 @@ operations; a stopped service can retain its workspace and persisted design file
 | Live web page and interaction | Playwright | Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
 | Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles. |
 | Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
-| Experimental fixed frame or encoded video | HyperFrames | Run lint, snapshot, then render. Inspect representative frames and normal playback; keep editable source separate from exports. |
+| Encoded video | Explicitly selected host encoder | Mirket has no bundled encoder. Preserve editable source; inspect frames, playback, duration and audio where requested. |
 | Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
 | Raster input preparation | Sharp | Inspect dimensions, crop, color and transparency before downstream composition. |
 | Generated or imported SVG | SVGO | Optimize every SVG, then compare structure and appearance with the required semantic IDs intact. Optimization is not sanitization. |
@@ -97,7 +105,7 @@ operations; a stopped service can retain its workspace and persisted design file
 
 CLI scratch directories use private directories on
 the shared workspace disk and are removed after completion or cancellation.
-HyperFrames and Typst staging reject project assets above the 64 MiB total
+Typst staging reject project assets above the 64 MiB total
 before loading them into memory. PNG, JPEG, WebP and AVIF assets are fully decoded
 for validation in an isolated worker, then staged byte-for-byte (at most 32 MiB
 and 17 million source pixels per raster). Staging preserves dimensions, encoding
@@ -116,8 +124,7 @@ actual glyphs and wrapping. This does not expand `vector_render`'s resvg font-fi
 support or establish browser-equivalent shaping for every script and inline layout.
 
 The owned [tool budgets](../runtime/design/tools/tool-budgets.json) set each
-design call's bridge deadline. They allow long renders, including 15 minutes
-for HyperFrames and 25 minutes for Typst, including page-image inspection.
+design call's bridge deadline. They allow long renders, including 25 minutes for Typst, including page-image inspection.
 The 64-page bound is a limit, not a promise that every job fits the deadline. The host MCP request ceiling is the largest
 of these budgets; cancellation can still end an individual call earlier.
 
@@ -149,7 +156,7 @@ mirket package call design openpencil_export --arguments '{"source":"artifacts/c
 
 The source order is deliberate: token compilation precedes dependent rendering;
 raster inputs pass through Sharp before composition; generated and imported
-SVG passes through SVGO; HyperFrames runs lint, snapshot and render; Playwright
+SVG passes through SVGO; Playwright
 checks web behavior and 2x appearance; Odiff checks comparable pixels. A tool
 response or file hash identifies an output, but the user journey and visual result
 need their own inspection.
@@ -161,9 +168,6 @@ above 16 Mi pixels. `browser_screenshot` accepts up to eight local workspace
 `animation_time_ms` for CSS/WAAPI samples. Authored JS scenes may provide
 `window.__mirketSeek(milliseconds)` to seek and settle their own timeline.
 Seeking checks composition; normal playback and interruption need separate tests.
-HyperFrames accepts `snapshot_times`, one to eight unique timestamps in seconds,
-for named beats. Every requested sample must be returned and lie within the encoded
-duration; the default remains three evenly spaced samples.
 Actions target only the local workspace. External requests and WebSockets are
 blocked during capture; no arbitrary evaluation tool is exposed.
 

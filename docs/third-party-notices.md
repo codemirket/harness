@@ -42,7 +42,7 @@ Mem0, LangSmith, LangGraph Agent Server or provider credentials are included.
 The `design` package contains individually licensed upstream tools.
 [The design stack manifest](../registry/design-stack.json) records ten tool
  domains, source locations, pinned service images and source builds. Style
-Dictionary, Satori/resvg, Playwright, OpenPencil, Kroki, HyperFrames,
+Dictionary, Satori/resvg, Playwright, OpenPencil, Kroki,
 Typst, Sharp, SVGO and Odiff keep their own terms. Dependency and source notices
 accompany the selected runtime; Mirket's license does not replace upstream terms.
 

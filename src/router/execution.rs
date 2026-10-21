@@ -1290,15 +1290,11 @@ async fn run_loop(
         match action.action.as_str() {
             "blocked" => bail!("worker reported a blocker; run remains incomplete (see trace)"),
             "design_review" => {
-                ensure!(
-                    action.tool.is_empty() && action.arguments_json.len() <= 16 * 1024,
-                    "invalid design review action"
-                );
+                ensure!(action.tool.is_empty(), "invalid design review action");
                 let gate = design_gate
                     .as_mut()
                     .context("design review is outside this task contract")?;
-                let args = serde_json::from_str(&action.arguments_json)?;
-                let receipt = gate.review(project, args)?;
+                let receipt = gate.review_feedback(project, &action.arguments_json);
                 transcript.push(json!({"design_review":receipt}));
             }
             "complete" => {

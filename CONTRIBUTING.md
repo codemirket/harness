@@ -233,7 +233,7 @@ workflow and current limitations.
 ## Exercise the design stack
 
 The standard Rust gate covers the controller and package bridge. It does not
-launch the three design services or run the JavaScript tool suite. With the
+launch design services or run the JavaScript tool suite. With the
 locked tool dependencies available under Node 22, run `npm test` in
 `runtime/design/tools` for the owned JavaScript tests. These tests require Linux
 and the owned guard: compile it with
@@ -267,7 +267,7 @@ mirket --home /absolute/test-home package probe design --schemas
 Place bounded fixtures in the reported shared workspace. Invoke the actual
 MCP tools with `package call` or a native SDK client: compile tokens, render a
 Satori card, capture a full-DOM page at 2x, create/edit/export an OpenPencil file,
-render Kroki diagrams, complete HyperFrames lint→snapshot→render, compile a
+render Kroki diagrams with explicit Excalidraw selection when needed, compile a
 multi-page Typst PDF, transform a raster with Sharp, render editable vector art,
 and compare equal and changed pixels with Odiff. Exercise core alone and optional
 diagrams group and core OpenPencil tools, input and animation states, cancellation and memory bounds.
@@ -349,21 +349,21 @@ After deployment call `runtime_status` in each actual client, inspect ordinary
 `runtime` from a direct design response, and verify loaded skill hashes. Never
 substitute an installed binary or fresh SDK session for those observations.
 
-## Dependency admission
+## Dependency reporting
 
-CI queries OSV for all locked Cargo, design npm and agent Python coordinates.
-Unknown advisories, incomplete responses, expired exceptions and changes to an
-exception's reviewed source fail the gate. Exceptions in
-[exceptions.json](evals/dependency-audit/exceptions.json) bind exact versions,
-advisories, source bytes, owner and expiry. These are reachability dispositions,
-not statements that a dependency is universally safe. Update notices and inspect
-native output when changing runtime dependencies. The design npm lock covers OpenPencil, including its codecs, CanvasKit and Yoga
-WASM packages. The separate pinned
-image scan job covers OS and detected language packages in remote base/service
-images; candidate-built layers additionally require verified image exports.
-Missing inventories and untriaged advisories fail those gates. See the
-[audit workflow](evals/dependency-audit/README.md) for coverage, export commands
-and explicit limits.
+CI queries OSV for every locked Cargo, design npm and agent Python coordinate.
+Source and image advisories are reported without blocking ordinary changes;
+apply low-effort compatible fixes and retain unresolved findings. Incomplete
+queries, invalid inventory, scanner failures and identity mismatches remain errors.
+[Reachability reviews](evals/dependency-audit/exceptions.json) bind exact versions,
+advisories, source bytes, owner and expiry. Stale reviews become visible warnings
+and stop suppressing findings. Do not renew them merely to clear a check.
+
+The design lock covers OpenPencil, codecs, CanvasKit and Yoga. Pinned remote-image
+scans cover detected OS/language packages; candidate layers additionally require
+verified image exports. See the [audit workflow](evals/dependency-audit/README.md)
+for coverage and strict opt-in policy. Neither a successful report nor a hash
+establishes exploitability or safety.
 
 Run with Python 3.11 or later:
 

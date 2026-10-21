@@ -4,20 +4,17 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
-test('shipped Chromium meets the reviewed security floor and esbuild still bundles', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1'}, async () => {
+test('shipped Chromium meets the reviewed security floor and retired video dependencies are absent', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1'}, async () => {
   const {execFile} = await import('node:child_process');
   const {promisify} = await import('node:util');
   const run = promisify(execFile);
   const {stdout} = await run('dpkg-query', ['-W', '-f=${Version}', 'chromium']);
   await run('dpkg', ['--compare-versions', stdout.trim(), 'ge', '155.0.8059.79-1~deb12u1']);
-  const esbuild = await import('esbuild');
-  assert.equal(esbuild.version, '0.28.2');
-  const binary = await fs.readFile(`/opt/design/node_modules/@esbuild/linux-${process.arch}/bin/esbuild`);
-  assert.ok(binary.includes(Buffer.from([255, 32, 71, 111, 32, 98, 117, 105, 108, 100, 105, 110, 102, 58])), 'Go build metadata must remain scannable');
-  assert.ok(binary.includes(Buffer.from('go1.27.3')), 'patched Go runtime must be in the actual binary');
-  const bundled = await esbuild.build({stdin:{contents:'export const sum = (a: number, b: number) => a + b;', loader:'ts'}, bundle:true, write:false, format:'esm'});
-  const loaded = await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].text).toString('base64')}`);
-  assert.equal(loaded.sum(2,3),5);
+  for (const name of ['esbuild','hyperframes']) {
+    await assert.rejects(import(name), {code:'ERR_MODULE_NOT_FOUND'});
+  }
+  await assert.rejects(fs.access('/usr/bin/ffmpeg'));
+  await assert.rejects(fs.access('/usr/bin/ffprobe'));
 });
 
 // The development gate owns a fresh workspace and loopback HTTP server inside

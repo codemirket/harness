@@ -151,7 +151,7 @@ pub(crate) fn prepare(request: &mut SpawnRequest) -> Result<Assignment> {
         let workflow = catalog.workflow(&need.workflow)?;
         ensure!(
             workflow.execution_owner == crate::catalog::ExecutionOwner::Worker,
-            "workflow {} requires host execution through the official MCP connection; it is unavailable to project-scoped workers",
+            "workflow {} requires host execution with explicitly selected tooling and is unavailable to project-scoped workers",
             workflow.id
         );
         allowed.extend(workflow.tools.iter().cloned());
@@ -471,6 +471,36 @@ mod tests {
             ["frontend-engineering"]
         );
         assert!(assignment.authorize("design/execute_code").is_err());
+    }
+
+    #[test]
+    fn every_declared_alternative_delivers_its_expertise_with_the_same_workflow_scope() {
+        let catalog = Catalog::embedded().unwrap();
+        for workflow in catalog
+            .workflows()
+            .iter()
+            .filter(|w| w.execution_owner == crate::catalog::ExecutionOwner::Worker)
+        {
+            for alternative in &workflow.alternative_roles {
+                let mut request = task(&workflow.id);
+                request.primary_role = Some(alternative.clone());
+                let assignment = prepare(&mut request).unwrap();
+                let specialist = catalog.capability(alternative).unwrap();
+                assert_eq!(assignment.metadata["primary_role"], specialist.id);
+                assert!(assignment.guidance.iter().any(|d| d.id == specialist.lead));
+                assert_eq!(
+                    request.assigned_tools.iter().collect::<BTreeSet<_>>(),
+                    workflow.tools.iter().collect()
+                );
+                assert_eq!(
+                    assignment.required_tools,
+                    workflow.required_tools.iter().cloned().collect()
+                );
+                for verification in &workflow.verification_tools {
+                    assert!(request.verification_tools.contains(verification));
+                }
+            }
+        }
     }
 
     #[test]

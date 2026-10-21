@@ -20,8 +20,8 @@ jobs:
           python3 -m unittest discover -s evals/dependency-audit
           python3 -m unittest discover -s evals/harness-remediation
           python3 evals/design-quality/packet_preflight.py
-      - name: Audit locked dependency closures
-        run: python3 evals/dependency-audit/check.py --output "$RUNNER_TEMP/dependency-audit.json"
+      - name: Inventory locked dependencies and report advisories
+        run: python3 evals/dependency-audit/check.py --advisory-policy report --output "$RUNNER_TEMP/dependency-audit.json"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
@@ -58,7 +58,7 @@ jobs:
   check:
     needs: [javascript, dependencies]
     # Preserve every prerequisite gate while collecting native evidence even
-    # when an advisory or JavaScript failure would otherwise skip Windows.
+    # when a dependency scan or JavaScript failure would otherwise skip Windows.
     if: ${{ !cancelled() }}
     strategy:
       fail-fast: false

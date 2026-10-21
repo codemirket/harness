@@ -13,13 +13,12 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const TOOLS: [&str; 10] = [
+const TOOLS: [&str; 9] = [
     "style-dictionary",
     "satori",
     "playwright",
     "openpencil",
     "kroki",
-    "hyperframes",
     "typst",
     "sharp",
     "svgo",
@@ -48,14 +47,14 @@ impl Registry {
         );
         let tools = design["tools"]
             .as_array()
-            .context("design registry requires its ten tools")?;
+            .context("design registry requires its nine tools")?;
         let ids = tools
             .iter()
             .map(|tool| tool["id"].as_str().context("design tool ID missing"))
             .collect::<Result<BTreeSet<_>>>()?;
         ensure!(
             tools.len() == TOOLS.len() && ids == TOOLS.into_iter().collect(),
-            "design registry differs from the canonical ten-tool stack"
+            "design registry differs from the canonical nine-tool stack"
         );
         Ok(Self {
             design,
@@ -213,7 +212,6 @@ pub async fn launch_scoped(paths: &Paths, scope: &std::path::Path) -> Result<Lau
             "svg_optimize",
             "raster_transform",
             "kroki_render",
-            "hyperframes_render",
             "typst_compile",
             "odiff_compare",
         ]
@@ -284,7 +282,7 @@ mod tests {
                 .as_array()
                 .unwrap()
                 .len(),
-            10
+            9
         );
         assert!(registry.get("invented-package").is_err());
         assert!(registry.validate_selection(&[]).is_ok());

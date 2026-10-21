@@ -9,7 +9,7 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, inspectHyperframesKeyframes, optimizeSvgBytes, hyperframesRender, typstCompile, readBoundedProjectAsset, parseHyperframesLint, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, injectTokenStylesheet, optimizeSvgBytes, typstCompile, readBoundedProjectAsset, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 
 test.after(async () => fs.rm(workspace, {recursive: true, force: true}));
@@ -135,32 +135,9 @@ test('full-page QA uses Chromium content size to enforce a physical-pixel budget
   assert.throws(() => verifyScreenshotPixels(4000, 5000, plan), /16 Mi pixel budget/);
 });
 
-test('HyperFrames inspects every keyframe before a failed QA gate can render', async () => {
-  const snapshots = ['frame-00.png', 'frame-01.png', 'frame-02.png'].map(name => ({artifact: {path: name}}));
-  const seen = [];
-  const qa = await inspectHyperframesKeyframes(snapshots, 'baseline.png', async (source, baseline) => {
-    seen.push([source, baseline]);
-    return {status: source === 'frame-01.png' ? 'failed' : 'captured', artifact_retained: source};
-  });
-  assert.deepEqual(seen, [
-    ['frame-00.png', 'baseline.png'], ['frame-01.png', undefined], ['frame-02.png', undefined],
-  ]);
-  assert.equal(qa.status, 'failed');
-  assert.equal(qa.keyframes.length, 3);
-  assert.deepEqual(qa.keyframes.map(item => item.source), snapshots.map(item => item.artifact.path));
-});
 
-test('HyperFrames lint requires a valid zero-error verdict before snapshots', () => {
-  const good = {ok: true, errorCount: 0, warningCount: 0, findings: [], filesScanned: 1};
-  assert.deepEqual(parseHyperframesLint(JSON.stringify(good)), good);
-  assert.throws(() => parseHyperframesLint('warning before {"ok":true,"errorCount":0}'), /invalid JSON/);
-  assert.throws(() => parseHyperframesLint('{"ok":true}'), /invalid verdict/);
-  assert.throws(() => parseHyperframesLint('{"ok":true,"errorCount":"0"}'), /invalid verdict/);
-  assert.throws(() => parseHyperframesLint('{"ok":false,"errorCount":0}'), /reported errors/);
-  assert.throws(() => parseHyperframesLint('{"ok":true,"errorCount":1}'), /reported errors/);
-});
 
-test('oversized sparse assets are rejected before HyperFrames or Typst launches', async () => {
+test('oversized sparse assets are rejected before Typst launches', async () => {
   const motion = path.join(workspace, 'oversized-motion');
   const paged = path.join(workspace, 'oversized-paged');
   await fs.mkdir(motion);
@@ -173,7 +150,6 @@ test('oversized sparse assets are rejected before HyperFrames or Typst launches'
     finally { await handle.close(); }
   }
   await assert.rejects(readBoundedProjectAsset(path.join(motion, 'oversized.bin'), 64 * 1024 * 1024, 'Composition'), /Composition exceeds 64 MiB/);
-  await assert.rejects(hyperframesRender({project: 'oversized-motion', output: 'oversized.mp4'}), /Composition exceeds 64 MiB/);
   await assert.rejects(typstCompile({source: 'oversized-paged/document.typ', output: 'oversized.pdf'}), /Typst project exceeds 64 MiB/);
   await assert.rejects(fs.stat(path.join(workspace, 'oversized.mp4')), {code: 'ENOENT'});
   await assert.rejects(fs.stat(path.join(workspace, 'oversized.pdf')), {code: 'ENOENT'});
@@ -210,19 +186,6 @@ test('standard Graphviz SVG 1.1 header is stripped without resolving arbitrary D
   assert.throws(() => optimizeSvgBytes('<!DOCTYPE svg SYSTEM "file:///etc/passwd">' + body), /DTD and entity declarations are refused/);
 });
 
-test('known output conflicts stop HyperFrames before external work', async () => {
-  await fs.writeFile(path.join(workspace, 'occupied.png'), 'existing-output');
-  await fs.writeFile(path.join(workspace, 'occupied.mp4'), 'existing-output');
-  await fs.writeFile(path.join(workspace, 'empty.png'), '');
-  const originalFetch = global.fetch;
-  let requests = 0;
-  global.fetch = () => { requests++; throw Error('External service was touched'); };
-  try {
-    await assert.rejects(hyperframesRender({project: 'missing-project', output: 'occupied.mp4'}), /Output exists; pass overwrite=true/);
-    assert.equal(requests, 0);
-  } finally { global.fetch = originalFetch; }
-  assert.equal((await fs.readFile(path.join(workspace, 'occupied.png'), 'utf8')), 'existing-output');
-});
 
 test('child timeout stops the process group and reports timeout', async () => {
   await assert.rejects(run(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], {timeoutMs: 100}), /timed out/);

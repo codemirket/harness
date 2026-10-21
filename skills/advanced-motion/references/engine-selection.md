@@ -12,7 +12,7 @@ source listing does not establish accessibility, performance or reuse rights.
 | Framework-independent DOM/SVG choreography | Anime.js when its timeline, scope and SVG tools cover the scene. |
 | Elaborate coordinated timeline, measured scroll or pinned scene | GSAP when the actual scene warrants it; use the existing GSAP integration reference for cleanup and scroll math. |
 | Focus, keyboard, dialog/menu state and semantics | Existing accessible primitives such as Radix own behavior; the animation engine only visualizes state. |
-| Offline frame-based video | Keep the proven renderer. Compare HyperFrames with Remotion only on a representative deterministic scene, seeking, fonts, encode and editability; changing source format alone is not a quality win. |
+| Offline frame-based video | Keep the proven renderer. Compare alternative host encoders only on a representative deterministic scene, seeking, fonts, encode and editability; changing source format alone is not a quality win. |
 
 Animate.css can suit an existing class-based effect vocabulary. ScrollReveal is
 narrowly focused on entry effects and has distinct license choices. mo.js is a

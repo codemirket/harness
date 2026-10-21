@@ -38,7 +38,6 @@ const definitions = [
   {name: 'static_render', description: 'Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection.', inputSchema: schema(['tree', 'fonts', 'width', 'height', 'output'], {...common, tree: {type: 'object'}, fonts: {type: 'array', items: schema(['path'], {path: file, name: {type: 'string'}, weight: {type: 'integer'}, style: {type: 'string'}})}, width: {type: 'integer'}, height: {type: 'integer'}, format: {type: 'string', enum: ['png', 'svg']}, output})},
   {name: 'browser_screenshot', description: 'Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison.', inputSchema: schema(['output'], {...common, source: file, url: {type: 'string'}, width: {type: 'integer'}, height: {type: 'integer'}, wait_for: {type: 'string'}, inspect_selectors: {type: 'array', maxItems: 16, items: {type: 'string', maxLength: 256}}, actions: {type:'array',maxItems:8,items:schema(['kind','selector'],{kind:{type:'string',enum:['click','hover','focus','press']},selector:{type:'string',minLength:1,maxLength:256},key:{type:'string',enum:['Enter','Space','Tab','Escape','ArrowLeft','ArrowRight','ArrowUp','ArrowDown']}})}, animation_time_ms:{type:'integer',minimum:0,maximum:60000,description:'Seek CSS/WAAPI animations; authored JS timelines may implement window.__mirketSeek(milliseconds).'}, reduced_motion:{type:'string',enum:['reduce','no-preference']}, full_page: {type: 'boolean'}, output})},
   {name: 'kroki_render', description: 'POST a diagram to Kroki and inspect its optimized SVG or PNG output.', inputSchema: schema(['source', 'diagram_type', 'output'], {...common, source: file, diagram_type: {type: 'string', enum: ['plantuml', 'c4plantuml', 'vegalite', 'excalidraw', 'd2', 'graphviz']}, format: {type: 'string', enum: ['svg', 'png']}, output})},
-  {name: 'hyperframes_render', description: 'Experimental encoded-video export through HyperFrames lint, snapshot and render. Inspect actual frames and playback; successful encoding is not production-quality acceptance.', inputSchema: schema(['project', 'output'], {...common, project: file, snapshot_times:{type:'array',minItems:1,maxItems:8,uniqueItems:true,items:{type:'number',minimum:0,maximum:3600}}, format: {type: 'string', enum: ['mp4', 'webm']}, output})},
   {name: 'typst_compile', description: 'Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection.', inputSchema: schema(['source', 'output'], {...common, source: file, output})},
   {name: 'raster_transform', description: 'Preprocess a workspace raster through an isolated, bounded Sharp worker.', inputSchema: schema(['source', 'width', 'height', 'output'], {...common, source: file, width: {type: 'integer'}, height: {type: 'integer'}, mode: {type: 'string', enum: ['fit', 'fill', 'force']}, gravity: {type: 'string', enum: ['sm', 'ce', 'no', 'ea', 'so', 'we']}, quality: {type: 'integer', minimum: 1, maximum: 100}, enlarge: {type:'boolean',default:false}, format: {type: 'string', enum: ['png', 'jpeg', 'webp', 'avif']}, output})},
   {name: 'vector_render', description: 'Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput, width: {type: 'integer', minimum:16, maximum:4096}, height:{type:'integer',minimum:16,maximum:4096}, fonts:{type:'array',maxItems:8,items:file}})},
@@ -58,7 +57,6 @@ const handlers = {
   static_render: operation('staticRender'),
   browser_screenshot: operation('browserScreenshot'),
   kroki_render: operation('krokiRender'),
-  hyperframes_render: operation('hyperframesRender'),
   typst_compile: operation('typstCompile'),
   raster_transform: operation('rasterTransform'),
   svg_optimize: operation('svgOptimize'),
@@ -117,11 +115,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
   const args = request.params.arguments || {};
   try {
     checkRequest();
-    if (handlers[name]) {
+    if (Object.hasOwn(handlers, name)) {
       // Only this owned boundary can attest that the operation did not start.
       // Never attach this receipt to a handler or upstream operation error.
       const rejected = (code, message) => ({isError:true, content:[{type:'text', text:message}], structuredContent:{execution:{tool:name, state:'not_started', code}, message}});
       if (name === 'kroki_render' && !groups.has('diagrams')) return rejected('disabled_group', 'Diagrams group is disabled; explicitly stop design, prepare design --group diagrams, then start design --group diagrams');
+      if (name === 'kroki_render' && args.diagram_type === 'excalidraw' && !groups.has('excalidraw')) return rejected('disabled_group', 'Excalidraw is not selected; explicitly stop design, prepare design --group excalidraw, then start design --group excalidraw. Existing artifacts are preserved.');
       if (!validators[name](args)) return rejected('invalid_arguments', `Invalid ${name} arguments: ${ajv.errorsText(validators[name].errors)}`);
       if (typeof args.output === 'string') {
         try { await assertOutputReady(args); }
@@ -134,13 +133,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
         const result = name === 'tokens_compile' || schemaOnly ? await invoke() : await withRenderSlot(invoke);
         // Some desktop hosts omit MCP _meta from model-visible responses.
         // Keep the exact loaded identity in ordinary content as well.
-        const visible = {...result, runtime: runtimeIdentity};
+        const visible = {...result, execution:{tool:name,state:'completed'}, runtime: runtimeIdentity};
         return {_meta:{'mirket/runtime':runtimeIdentity}, content: [{type: 'text', text: JSON.stringify(visible)}], structuredContent: visible, isError: ['failed', 'changed_pixels'].includes(result.qa?.status)};
       } catch (error) {
         if (!started) return rejected('render_admission', redactSecrets(String(error.message || error)));
         throw error;
       }
     }
+    if (name === 'hyperframes_render') throw Error('Bundled video production is retired. Existing scenes and outputs are preserved; explicitly select and authorize a host encoder.');
     throw Error(`Unknown design tool: ${name}`);
   } catch (error) {
     return {isError: true, content: [{type: 'text', text: redactSecrets(error.stack || error.message || error)}]};

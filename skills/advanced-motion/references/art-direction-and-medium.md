@@ -113,7 +113,7 @@ motion rather than claiming a parameter value guarantees a particular emotion.
 | Editable illustration, crisp paths, named moving parts | SVG with static groups; CSS/WAAPI or supported declarative animation | Canvas can suit dense repeated drawing when per-object DOM/editability is unnecessary |
 | Procedural lines, dense particles, generated textures | Canvas 2D with an explicit draw function | A handful of vector shapes rarely needs a perpetual raster loop |
 | Interactive shader effects and WebGL surfaces | Inspect the existing web implementation through Playwright after a small target-device probe | CSS transforms may cover layered planes; neither medium guarantees lower cost |
-| Encoded video or a fixed frame sequence | HyperFrames lint, snapshot and render with explicit frame rate and duration | A live page or screen recording does not establish deterministic video delivery |
+| Encoded video or a fixed frame sequence | Explicitly selected host encoder with frame rate and duration | A live page or screen recording does not establish deterministic video delivery |
 
 Combine media when their roles are clear: semantic DOM copy over a Canvas field,
 an editable SVG focal object inside a CSS color scene, or DOM controls around an
@@ -124,7 +124,7 @@ tools before promising the delivery path.
 
 For vector work, read `svg-animation` and `svg-creation` for geometry/embedding.
 For a real route change, read `page-transitions`; scroll narration does not require
-a router. For video in Mirket, use HyperFrames lint, snapshot and render, then
+a router. For video, explicitly select and authorize a host encoder, then
 inspect the encoded output. Verify its supported SVG features against the actual
 tool schema and rendered frames.
 
@@ -186,8 +186,7 @@ Expressive vocabulary selectively adapts LottieFiles
 MIT © 2025 LottieFiles: motion personality, emotion mapping, animation principles,
 choreography and narrative structure. Mirket's examples and conditional choices
 replace universal tables, required layers, unsupported GPU capacity claims and
-industry/color defaults. The attribution supplies motion vocabulary. Mirket video
-production uses HyperFrames lint, snapshot and render with output inspection.
+industry/color defaults. The attribution supplies motion vocabulary. Mirket does not bundle video production; explicitly selected host encoders still require output inspection.
 
 The spring distinction is checked against the linear model in
 [MIT's Quantifying Uncertainty lectures](https://www.ocw.mit.edu/courses/12-s990-quantifying-uncertainty-fall-2012/8bf391b4f96b87e03cf8328d669ef5e2_MIT12_S990F12_lec2-3.pdf)

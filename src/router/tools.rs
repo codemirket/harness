@@ -150,31 +150,19 @@ fn design_artifacts(root: &Path, name: &str, value: &Value) -> Result<Vec<Artifa
     {
         refs.push(item);
     }
-    // Typst and HyperFrames expose inspectable QA images for their PDF/video.
+    // Typst exposes inspectable QA images for its PDF.
     // Their primary binary outputs are checked for stability separately.
-    if !matches!(name, "design/typst_compile" | "design/hyperframes_render")
+    if !matches!(name, "design/typst_compile")
         && let Some(item) = artifact_from_json(root, &value["artifact"])?
     {
         refs.push(item);
     }
-    if matches!(name, "design/typst_compile" | "design/hyperframes_render") {
-        let key = if name == "design/typst_compile" {
-            "pages"
-        } else {
-            "snapshots"
-        };
-        if let Some(items) = value[key].as_array() {
-            for item in items {
-                if let Some(found) = artifact_from_json(
-                    root,
-                    if key == "snapshots" {
-                        &item["artifact"]
-                    } else {
-                        item
-                    },
-                )? {
-                    refs.push(found);
-                }
+    if name == "design/typst_compile"
+        && let Some(items) = value["pages"].as_array()
+    {
+        for item in items {
+            if let Some(found) = artifact_from_json(root, item)? {
+                refs.push(found);
             }
         }
     }
@@ -555,30 +543,23 @@ fn design_mutates(name: &str, result: &rmcp::model::CallToolResult) -> bool {
     may_mutate(name)
 }
 
+fn design_completed(name: &str, result: &rmcp::model::CallToolResult) -> bool {
+    let Some(native) = name.strip_prefix("design/") else {
+        return false;
+    };
+    known_names().is_ok_and(|names| names.contains(name))
+        && result.structured_content.as_ref().is_some_and(|value| {
+            value["execution"]["tool"] == native && value["execution"]["state"] == "completed"
+        })
+}
+
 fn design_rejected_before_dispatch(name: &str, result: &rmcp::model::CallToolResult) -> bool {
     // Only owned direct tools issue this contract. Upstream content or
     // an error message alone cannot attest that no mutation was dispatched.
     let Some(native) = name.strip_prefix("design/") else {
         return false;
     };
-    if !matches!(
-        native,
-        "openpencil_inspect"
-            | "openpencil_document"
-            | "openpencil_edit"
-            | "openpencil_export"
-            | "tokens_compile"
-            | "static_render"
-            | "browser_screenshot"
-            | "kroki_render"
-            | "hyperframes_render"
-            | "typst_compile"
-            | "raster_transform"
-            | "vector_render"
-            | "svg_optimize"
-            | "odiff_compare"
-    ) || result.is_error != Some(true)
-    {
+    if !known_names().is_ok_and(|names| names.contains(name)) || result.is_error != Some(true) {
         return false;
     }
     result.structured_content.as_ref().is_some_and(|value| {
@@ -597,6 +578,7 @@ fn design_rejected_before_dispatch(name: &str, result: &rmcp::model::CallToolRes
     })
 }
 pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> Result<ToolResult> {
+    ensure!(known_names()?.contains(name), "unknown owned tool: {name}");
     let mut image = None;
     let mut mutates = false;
     let mut passed = true;
@@ -760,13 +742,15 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
             .await?;
             passed = design_check_passed(name, &result);
             mutates = design_mutates(name, &result);
+            // A completed render with negative QA is repairable, not an
+            // uncertain mutation. It stays failed and requires fresh proof.
             if mutates
-                && result.is_error != Some(true)
-                && (passed || name == "design/odiff_compare")
+                && ((result.is_error != Some(true) && (passed || name == "design/odiff_compare"))
+                    || design_completed(name, &result))
             {
                 if let Some(structured) = result.structured_content.as_ref() {
                     artifacts = design_artifacts(&design_scope(paths, project)?, name, structured)?;
-                    if matches!(name, "design/typst_compile" | "design/hyperframes_render")
+                    if matches!(name, "design/typst_compile")
                         && let Some(primary) = artifact_from_json(
                             &design_scope(paths, project)?,
                             &structured["artifact"],
@@ -833,6 +817,18 @@ pub async fn invoke(paths: &Paths, project: &Path, name: &str, args: Value) -> R
 mod tests {
     use super::*;
 
+    #[tokio::test]
+    async fn unknown_design_tools_fail_before_runtime_activation() {
+        let dir = tempfile::tempdir().unwrap();
+        let paths = Paths::new(dir.path().to_path_buf()).unwrap();
+        let error = invoke(&paths, dir.path(), "design/execute_code", json!({}))
+            .await
+            .err()
+            .unwrap();
+        assert!(error.to_string().contains("unknown owned tool"));
+        assert!(!paths.root.exists());
+    }
+
     #[test]
     fn openpencil_exports_verify_only_the_exact_consumed_source_revision() {
         let root = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
@@ -884,6 +880,44 @@ mod tests {
         let mut ready = raw.clone();
         ready["_meta"]["mirket/availability"]["enabled"] = json!(true);
         assert!(require_available(&ready, &["design/kroki_render".into()]).is_ok());
+    }
+
+    #[test]
+    fn completed_negative_qa_keeps_artifacts_without_claiming_success() {
+        use rmcp::model::CallToolResult;
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path().canonicalize().unwrap();
+        std::fs::write(root.join("render.svg"), "saved render").unwrap();
+        let value = json!({"execution":{"tool":"vector_render","state":"completed"},
+            "qa":{"status":"changed_pixels"},
+            "artifact":{"path":"render.svg","sha256":util::sha256(b"saved render")}});
+        let result = CallToolResult::structured_error(value.clone());
+        assert!(design_completed("design/vector_render", &result));
+        assert!(design_mutates("design/vector_render", &result));
+        assert!(!design_check_passed("design/vector_render", &result));
+        let artifacts = design_artifacts(&root, "design/vector_render", &value).unwrap();
+        assert_eq!(artifacts.len(), 1);
+        assert_eq!(
+            current_digest(&artifacts[0].path).unwrap(),
+            artifacts[0].sha256
+        );
+        assert!(!design_completed("design/browser_screenshot", &result));
+        let mut unknown = value.clone();
+        unknown["execution"]["tool"] = json!("execute_code");
+        assert!(!design_completed(
+            "design/execute_code",
+            &CallToolResult::structured_error(unknown)
+        ));
+        assert!(!design_completed(
+            "design/vector_render",
+            &CallToolResult::structured_error(json!({"message":"completed"}))
+        ));
+        let mut uncertain = value;
+        uncertain["execution"]["state"] = json!("started");
+        assert!(!design_completed(
+            "design/vector_render",
+            &CallToolResult::structured_error(uncertain)
+        ));
     }
 
     #[test]

@@ -1,18 +1,24 @@
-# Locked dependency admission
+# Locked dependency reporting
 
 Run `python3 check.py --output /absolute/evidence/audit.json` with Python 3.11+.
 The script queries public OSV metadata for all Cargo registry packages, npm lock
-entries, pinned Python wheels and every package key in both documents of the
-OpenPencil transitive closure in the design npm lock. No package code is imported or installed.
+entries, pinned Python wheels and the OpenPencil transitive closure in the design npm lock. No package code is imported or installed.
 
-The check rejects untriaged advisories, partial/error responses, expired exceptions
-and changes to a reviewed source file. `exceptions.json` records exact coordinates,
-advisories, maintainer ownership, expiry and source hashes. Re-review reachability
-before updating a hash; never renew an exception just to make CI green.
+Source and image audits default to `--advisory-policy report`: findings stay visible
+without blocking ordinary changes. Fix compatible, low-effort issues; do not add
+costly rebuilds, dependency overrides or new layers solely to clear advisories.
+A reachable defect in Mirket's own tool or permission boundary still needs a fix.
+
+Incomplete/error responses, invalid inventory, malformed review records and
+identity mismatches remain errors. `exceptions.json` retains exact coordinates,
+reachability reasons, owners, expiry and reviewed source hashes. Expired or
+source-stale reviews are reported and cease to suppress findings; they do not
+require ceremonial renewal. `--advisory-policy fail` is available for an explicit
+strict audit and also rejects stale reviews. Neither policy declares a package safe.
 
 Run `python3 -m unittest discover -s evals/dependency-audit` from the repository
-root. The regressions cover new findings, incomplete/error replies, expiry and
-source drift. CI retains its live report and checks weekly as well as on changes.
+root. Regressions cover reporting, strict mode, malformed/incomplete replies,
+expiry, source drift and image identity. CI retains live reports weekly and on changes.
 OpenPencil's CLI, engine, codecs, aliased Yoga package and CanvasKit are captured
 in the design npm lock. OSV checks every nested package by its actual package
 name/version; native and WASM payloads still need image inventory and manual
@@ -34,7 +40,7 @@ CI uses the pinned Linux AMD64 scanner to inspect all four pinned ARM64
 base/service images. At the maintainer’s request, CI uses `--advisory-policy report`:
 image advisories remain in the evidence as non-blocking warnings rather than
 requiring costly upstream rebuilds. This does not declare them fixed or safe.
-The default CLI policy remains `fail`; the source-coordinate audit is unchanged. Missing OS
+Both command-line audits use the same report policy by default. Missing OS
 inventory, an unsupported/end-of-life OS, scanner errors or identity mismatches
 cannot pass. Language findings remain visible even when OS coverage is missing.
 Private per-run scanner caches avoid lock collisions between concurrent scans.
@@ -54,8 +60,9 @@ with the complete receipts as values. Then supply it with `--exports` to a full
 scan (omit `--remote-only`). Archive hashes and scanned image IDs must match.
 For candidate scans, pass `--candidate-source-sha256` with the compiled source
 identity to reject old installed exports or exports from another build.
-Owned images also require their known language inventories. In particular,
-an esbuild npm entry without Go binary metadata cannot claim complete coverage.
+Owned images also require their retained language inventories: Node packages for
+design and Python packages for agents. The removed esbuild payload no longer
+creates a Go inventory requirement. Any detected Go findings still appear.
 `--only ALIAS ...` supports bounded triage; it cannot establish complete coverage.
 The script uses a fresh evidence directory and retains failures. Full coverage
 requires all remote and built images and a usable inventory for each.

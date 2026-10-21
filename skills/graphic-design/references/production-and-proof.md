@@ -12,7 +12,7 @@ requirements from the destination or provider before a costly final export.
 | System, flow, C4 or sequence explanation | Semantic diagram source rendered with Kroki | Every relationship, label, branch and direction against the source |
 | Quantitative chart | Source-backed Vega-Lite through Kroki, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |
 | Paged presentation or report | Typst with compiled tokens and linked or embedded assets | Every final page/slide at delivery size and exported output |
-| Animation or video | HyperFrames lint, snapshot and render | Playback, key frames, timing, captions and final encoded artifact |
+| Animation or video | Explicitly selected host encoder; Mirket bundles no video renderer | Playback, key frames, timing, captions and final encoded artifact |
 
 Start from the requested medium and editability. Use a simpler available route
 when it meets the need, without silently reducing the requested visual ambition.

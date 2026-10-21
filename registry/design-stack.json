@@ -42,14 +42,6 @@
       "source": "https://github.com/yuzutech/kroki"
     },
     {
-      "id": "hyperframes",
-      "name": "HyperFrames",
-      "execution": "tools-container",
-      "version": "0.8.149",
-      "license": "Apache-2.0",
-      "source": "https://github.com/heygen-com/hyperframes"
-    },
-    {
       "id": "typst",
       "name": "Typst",
       "execution": "tools-container",

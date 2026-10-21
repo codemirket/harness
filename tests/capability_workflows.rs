@@ -268,3 +268,23 @@ fn outcome_search_reaches_owned_guidance_and_compact_plan_preserves_role_decisio
         );
     }
 }
+
+#[test]
+fn saved_motion_identity_is_retained_without_promising_a_worker_encoder() {
+    let catalog = Catalog::embedded().unwrap();
+    let workflow = catalog.workflow("motion").unwrap();
+    assert_eq!(
+        workflow.execution_owner,
+        mirket::catalog::ExecutionOwner::Host
+    );
+    assert!(workflow.tools.is_empty());
+    assert!(workflow.required_tools.is_empty());
+    assert!(workflow.rule.contains("no video encoder"));
+    assert_eq!(
+        catalog
+            .workflow("interactive-motion")
+            .unwrap()
+            .execution_owner,
+        mirket::catalog::ExecutionOwner::Worker
+    );
+}

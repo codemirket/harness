@@ -40,8 +40,7 @@ Choose delivery context before API:
 - Inline SVG/component: CSS or Web Animations can handle many sequences and
   interactive playback. Reuse the project's installed motion library when it
   resolves an actual requirement. No new library is implied by this skill.
-- Video/export in Mirket: retain editable vector source and use HyperFrames
-  lint, snapshot and render. A browser animation does not establish video or
+- Video/export: retain editable vector source and explicitly select an authorized host encoder; Mirket has no bundled video renderer. A browser animation does not establish video or
   editor compatibility.
 
 Verify target support for morphing, motion paths and exporter behavior against
@@ -49,8 +48,7 @@ current official documentation and a small render. Use a workable transform,
 crossfade or path construction when a requested technique is unavailable.
 
 For website-integrated SVG, retain editable SVG plus CSS/WAAPI or the project's
-controller. For a fixed-frame video export in Mirket, use HyperFrames lint,
-snapshot and render, and give the finite timeline ownership of vector properties. Inspect real tool schemas
+controller. For video export, explicitly select a host encoder and give the finite timeline ownership of vector properties. Inspect real tool schemas
 and preview limits before use. An export does not replace browser/reduced-motion
 QA of the actual embedding.
 

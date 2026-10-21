@@ -231,7 +231,6 @@ impl Gate {
                 | "design/openpencil_export"
                 | "design/static_render"
                 | "design/kroki_render"
-                | "design/hyperframes_render"
                 | "design/typst_compile"
                 | "design/vector_render"
         ) {
@@ -245,6 +244,20 @@ impl Gate {
                     self.observed.insert(image.clone(), receipt.clone());
                 }
             }
+        }
+    }
+
+    /// Rejected testimony has no effect. The caller's existing turn/deadline
+    /// budget still bounds retries; accepted reviews consume the review budget.
+    pub fn review_feedback(&mut self, project: &Path, arguments: &str) -> Value {
+        let result = (|| {
+            ensure!(arguments.len() <= 16 * 1024, "design review exceeds 16 KiB");
+            self.review(project, serde_json::from_str(arguments)?)
+        })();
+        match result {
+            Ok(receipt) => receipt,
+            Err(error) => json!({"accepted":false,"passed":false,
+                "reason":error.to_string().chars().take(1200).collect::<String>()}),
         }
     }
 
@@ -441,6 +454,36 @@ mod tests {
             verifies: vec![],
             opaque_mutation: false,
         }
+    }
+
+    #[test]
+    fn malformed_reviews_return_feedback_without_consuming_or_resetting_review_budget() {
+        let dir = tempfile::tempdir().unwrap();
+        let root = dir.path().canonicalize().unwrap();
+        let target = image(&root, "target.png");
+        let mut gate = fallback();
+        observe(&mut gate, &target, true);
+        for malformed in ["not-json".to_owned(), "{}".to_owned(), "x".repeat(16385)] {
+            assert_eq!(gate.review_feedback(&root, &malformed)["accepted"], false);
+            assert_eq!(gate.target_reviews, 0);
+            assert!(gate.complete().is_err());
+        }
+        let target_review = report("target", &target, true).to_string();
+        assert_eq!(
+            gate.review_feedback(&root, &target_review)["target_frozen"],
+            true
+        );
+        assert_eq!(gate.target_reviews, 1);
+        let failed = report("final", &target, false).to_string();
+        for _ in 0..=gate.budget.max_correction_rounds {
+            assert_eq!(gate.review_feedback(&root, &failed)["passed"], false);
+        }
+        assert_eq!(
+            gate.review_feedback(&root, &report("final", &target, true).to_string())["accepted"],
+            false
+        );
+        assert!(gate.complete().is_err());
+        assert!(gate.before_tool("workspace_write").is_err());
     }
 
     #[test]

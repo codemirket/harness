@@ -42,7 +42,7 @@ permissions.
 - For Mirket design production, use the single `design` package and its reported project workspace for routed workers; host design tools keep
   the shared workspace. Compile Style Dictionary tokens before rendering. Route
   live UI to Playwright, editable design files to OpenPencil file tools,
-  diagrams to Kroki, video to HyperFrames lint→snapshot→render, paged work to
+  diagrams to Kroki (select Excalidraw explicitly), paged work to
   Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,
   raster preparation through Sharp, static Flexbox graphics to Satori/resvg,
   and comparable pixels to Odiff. Inspect actual outputs and do not invent tool

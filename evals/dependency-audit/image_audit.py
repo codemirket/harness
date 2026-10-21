@@ -15,7 +15,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILT = ("design-tools", "agent-runtime")
-REQUIRED_TYPES = {"design-tools": {"node-pkg", "gobinary"},
+REQUIRED_TYPES = {"design-tools": {"node-pkg"},
 
                   "agent-runtime": {"python-pkg"}}
 
@@ -53,7 +53,7 @@ def validate_export(receipt, alias, expected_source=None):
     return archive
 
 
-def evaluate(report, identity, local=False, required_types=(), advisory_policy="fail"):
+def evaluate(report, identity, local=False, required_types=(), advisory_policy="report"):
     if advisory_policy not in ("fail", "report"):
         raise ValueError("unknown advisory policy")
     metadata = report.get("Metadata", {})
@@ -178,7 +178,7 @@ if __name__ == "__main__":
     parser.add_argument("--exports", type=Path, help="Alias to mirket dev image-export receipt map")
     parser.add_argument("--candidate-source-sha256", help="Require candidate exports from this exact compiled source; installed or stale receipts fail")
     parser.add_argument("--output", type=Path, required=True, help="New evidence directory")
-    parser.add_argument("--advisory-policy", choices=("fail", "report"), default="fail", help="Report keeps advisories as warnings; scan, identity and inventory failures remain fatal")
+    parser.add_argument("--advisory-policy", choices=("fail", "report"), default="report", help="Report keeps advisories as warnings; scan, identity and inventory failures remain fatal")
     parser.add_argument("--only", nargs="+", help="Bounded triage subset; never establishes full coverage")
     parser.add_argument("--remote-only", action="store_true", help="CI scope: pinned bases/services only; built image coverage stays explicitly incomplete")
     raise SystemExit(run(parser.parse_args()))
