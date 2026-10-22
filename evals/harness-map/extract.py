@@ -103,7 +103,7 @@ outputs['inventory.md'] = '\n'.join(lines) + '\n'
 def owned_files(path):
     if path.is_symlink():
         raise ValueError(f'source symlink: {path}')
-    if path.name == '.DS_Store':
+    if path.name in ('.DS_Store', '__pycache__'):
         return []
     return [p for c in sorted(path.iterdir()) for p in owned_files(c)] if path.is_dir() else [path]
 

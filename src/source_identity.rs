@@ -22,7 +22,10 @@ pub const INPUTS: &[&str] = &[
     "evals",
 ];
 fn files(root: &Path, path: &Path, out: &mut Vec<PathBuf>) -> io::Result<()> {
-    if path.file_name().is_some_and(|n| n == ".DS_Store") {
+    if path
+        .file_name()
+        .is_some_and(|n| n == ".DS_Store" || n == "__pycache__")
+    {
         return Ok(());
     }
     let metadata = fs::symlink_metadata(path)?;
@@ -130,6 +133,14 @@ mod tests {
         fs::write(root.join("src/worker.rs"), "runtime v1").unwrap();
         let audit = fingerprint(root).unwrap();
         let execution = execution_fingerprint(root).unwrap();
+        fs::create_dir_all(root.join("evals/__pycache__")).unwrap();
+        fs::write(
+            root.join("evals/__pycache__/audit.cpython-313.pyc"),
+            "cache",
+        )
+        .unwrap();
+        assert_eq!(fingerprint(root).unwrap(), audit);
+        assert_eq!(execution_fingerprint(root).unwrap(), execution);
         for name in [
             "src/cli.rs",
             "src/codex_tests.rs",

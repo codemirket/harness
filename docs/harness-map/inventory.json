@@ -425,8 +425,8 @@
     },
     {
       "path": "evals/harness-map/extract.py",
-      "bytes": 23120,
-      "sha256": "f89212a9eb722834873a9a168471d2d22b75ec84570e48df7aa0a79abccddf81"
+      "bytes": 23137,
+      "sha256": "c63a96cb173c3173d0cb8012f69b9289e34b4dbd5d59926c9aa99e86077e64c8"
     },
     {
       "path": "evals/harness-remediation/README.md",
@@ -2490,8 +2490,8 @@
     },
     {
       "path": "src/source_identity.rs",
-      "bytes": 4984,
-      "sha256": "1b0be51071c27986232eda9012fa1b7b18d5e14daf38848c9370aecad9125dfc"
+      "bytes": 5356,
+      "sha256": "6598a763fc030e80f2f7774ff7f2510ed64919b7d426668204912095a693aa74"
     },
     {
       "path": "src/state/contracts.rs",
@@ -34930,7 +34930,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "429a2c3f2d4b4f1744ffc438ddefd6aa5e6ddcf6941bd07531d42d258bfbc4c9",
+  "source_sha256": "0fb54e2565f0c3fdd6b1b5eb069fdcaaecba7e4501c3028ce3f98e03045cbd68",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
