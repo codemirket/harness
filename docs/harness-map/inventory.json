@@ -25,8 +25,8 @@
     },
     {
       "path": "Cargo.toml",
-      "bytes": 1647,
-      "sha256": "ca740dc685625b00a2c37f0d32549888570d2c944e4edee7658b78e345bf31a5"
+      "bytes": 1824,
+      "sha256": "02f46cb9a2845cf69d664bb561ab9cf8ca8cff14e39c6272dca73625d85af2f7"
     },
     {
       "path": "build.rs",
@@ -18421,6 +18421,7 @@
           "strip": "symbols"
         },
         "dev": {
+          "debug": 1,
           "package": {
             "sha2": {
               "opt-level": 3
@@ -34930,7 +34931,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "0fb54e2565f0c3fdd6b1b5eb069fdcaaecba7e4501c3028ce3f98e03045cbd68",
+  "source_sha256": "871567796bd82d1cac7b5ff19bf4d05006bc6439b97aec7c9a77b5224f5aeebb",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

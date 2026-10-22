@@ -40,6 +40,11 @@ strip = "symbols"
 
 # Debug installs still hash whole executables before the MCP handshake. Keep
 # the hash implementation optimized without disabling assertions in our code.
+[profile.dev]
+# Full dependency debug information can exceed the installer's 256 MiB artifact
+# bound on Linux. Retain line-level debugging and all debug assertions.
+debug = 1
+
 [profile.dev.package.sha2]
 opt-level = 3
 
