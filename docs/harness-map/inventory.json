@@ -2425,8 +2425,8 @@
     },
     {
       "path": "src/router/search.rs",
-      "bytes": 8963,
-      "sha256": "870fbe795862407ad444691d8bbbf522e596dfbc556daab1e6c209494868649c"
+      "bytes": 9166,
+      "sha256": "eca087aa25340506eb4676d36307361dd1fa178f64efde8996570ea5779c306e"
     },
     {
       "path": "src/router/tests/assignment.rs",
@@ -2470,8 +2470,8 @@
     },
     {
       "path": "src/router/tests/search.rs",
-      "bytes": 4029,
-      "sha256": "8f36d5b87908c6ca78cb17cc02b4d44294de94d7937eaad9d653ab1704ebed14"
+      "bytes": 4104,
+      "sha256": "062c835873619954c8bb2e42a74491c75be4ded8c43a9802587a0e13f6f91b88"
     },
     {
       "path": "src/router/tests/tools.rs",
@@ -34931,7 +34931,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "871567796bd82d1cac7b5ff19bf4d05006bc6439b97aec7c9a77b5224f5aeebb",
+  "source_sha256": "d0482b152dd40aea9a1329090bfa81ab3f9fc7eed83397fa8f59ef3913e9f14d",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

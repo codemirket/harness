@@ -18,6 +18,15 @@ struct Rules {
     parent: Option<Arc<Rules>>,
 }
 
+fn relative_path(project: &Path, path: &Path) -> Result<String> {
+    Ok(path
+        .strip_prefix(project)?
+        .iter()
+        .map(|part| part.to_string_lossy())
+        .collect::<Vec<_>>()
+        .join("/"))
+}
+
 fn ignored(rules: &Option<Arc<Rules>>, path: &Path, directory: bool) -> bool {
     let mut current = rules.as_ref();
     while let Some(rules) = current {
@@ -51,8 +60,9 @@ fn load_rules(
     for line in std::str::from_utf8(&content)?.lines() {
         builder.add_line(Some(path.clone()), line)?;
     }
-    receipts
-        .push(json!({"path":path.strip_prefix(project)?,"sha256":crate::util::sha256(&content)}));
+    receipts.push(
+        json!({"path":relative_path(project, &path)?,"sha256":crate::util::sha256(&content)}),
+    );
     Ok(Some(Arc::new(Rules {
         matcher: builder.build()?,
         parent,
@@ -131,7 +141,7 @@ pub fn search(project: &Path, args: Value) -> Result<Value> {
             truncated = true;
             break;
         }
-        let relative = path.strip_prefix(project)?.to_string_lossy().into_owned();
+        let relative = relative_path(project, &path)?;
         crate::util::reject_symlink_components(path.parent().context("search parent")?)?;
         let metadata = std::fs::symlink_metadata(&path)?;
         if excluded_ancestor || ignored(&rules, &path, metadata.is_dir()) {

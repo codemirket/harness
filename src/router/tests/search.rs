@@ -16,6 +16,7 @@ mod tests {
         let paths: Vec<_> = found["matches"].as_array().unwrap().iter().map(|m| m["path"].as_str().unwrap()).collect();
         assert_eq!(paths, ["a.rs", "keep.log", "nested/local.log"]);
         assert_eq!(found["ignore_files"].as_array().unwrap().len(), 2);
+        assert_eq!(found["ignore_files"][1]["path"], "nested/.gitignore");
         let scoped = search(&root, json!({"query":"foo_123","path":"nested"})).unwrap();
         assert_eq!(scoped["matches"][0]["path"], "nested/local.log");
         assert_eq!(scoped["matches"].as_array().unwrap().len(), 1);
