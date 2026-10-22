@@ -21,6 +21,11 @@ assert.equal(
 );
 const html = await fs.readFile(path.join(root, "public/index.html"), "utf8");
 const prompt = (await fs.readFile(path.join(root, "public/install-prompt.txt"), "utf8")).trim();
+const release = /^Install Mirket (\d+\.\d+\.\d+)\b/.exec(prompt)?.[1];
+assert.ok(release, "Installation prompt must name the reviewed release");
+const badge = /<a\b[^>]*\bid="release-status"[^>]*>[\s\S]*?<\/a>/.exec(html)?.[0];
+assert.ok(badge?.includes(`Mirket ${release} `), "Release badge differs from installation prompt");
+assert.ok(badge.includes(`href="https://github.com/codemirket/harness/releases/tag/mirket-v${release}"`), "Release link differs from installation prompt");
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#x27;");
 assert.ok(html.includes(`>${escapeHtml(prompt)}</textarea>`), "Website installation prompt drifted");
 const readme = await fs.readFile(path.join(root, "../README.md"), "utf8");

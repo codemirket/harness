@@ -303,9 +303,8 @@ Prepared additions do not invalidate a running core. Changing enabled groups or
 runtime generations still requires stopping the owned services first. Existing
 images and user artifacts are not deleted by this change.
 
-The diagram group retains Excalidraw format support. Encoded video remains a
-specialist capability of the explicitly selected design package; no claim of
-natural adoption or production-quality gain follows from its availability.
+The diagram group retains Excalidraw format support. Encoded-video production is not bundled; use explicitly selected host tooling
+when the deliverable requires it.
 
 Produced PNG/JPEG/WebP rasters larger than four MiB retain their original artifact
 and include an `inspection` receipt with a bounded overview and lossless PNG

@@ -26,3 +26,15 @@ if (controls) {
   selectStage('scope');
   for (const control of stages) control.addEventListener('click', () => selectStage(control.dataset.stage));
 }
+
+// Fragment links reveal their native disclosure, including direct arrivals.
+function revealDisclosure(hash = location.hash) {
+  const target = document.getElementById(hash.slice(1));
+  if (target?.tagName === 'DETAILS') target.open = true;
+}
+document.addEventListener('click', event => {
+  const link = event.target.closest('a[href^="#"]');
+  if (link) revealDisclosure(link.hash);
+});
+window.addEventListener('hashchange', () => revealDisclosure());
+revealDisclosure();

@@ -7,6 +7,7 @@ const [url, output] = process.argv.slice(2);
 if (!url || !output || !process.env.MIRKET_CHROMIUM_PATH)
   throw Error('Provide URL, evidence directory and MIRKET_CHROMIUM_PATH');
 const expected = (await fs.readFile(new URL('../public/install-prompt.txt', import.meta.url), 'utf8')).trim();
+const release = /^Install Mirket (\d+\.\d+\.\d+)\b/.exec(expected)[1];
 await fs.mkdir(output, {recursive:true});
 const browser = await chromium.launch({executablePath:process.env.MIRKET_CHROMIUM_PATH,headless:true});
 const report=[];
@@ -20,7 +21,8 @@ try {
       page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
       await page.goto(url,{waitUntil:'networkidle'});
       assert.equal(await page.locator('h1').count(),1);
-      assert.match(await page.locator('#release-status').textContent(),/Mirket 0\.0\.1/);
+      assert.ok((await page.locator('#release-status').textContent()).includes(`Mirket ${release}`));
+      assert.equal(await page.locator('#release-status').getAttribute('href'),`https://github.com/codemirket/harness/releases/tag/mirket-v${release}`);
       assert.match(await page.locator('#continuity').textContent(),/optional agent runtime/);
       assert.equal(await page.locator('#install-prompt').inputValue(),expected);
       for (const number of await page.locator('.install-steps li > span').all()) {
@@ -39,6 +41,17 @@ try {
       await page.screenshot({path:path.join(output,`${width}-entry.png`)});
       await page.keyboard.press('Enter');
       assert.equal(await page.locator(':focus').getAttribute('id'),'main');
+      await page.locator('.hero a[href="#release-notes"]').click();
+      await page.locator('#release-notes[open]').waitFor();
+      assert.equal(await page.locator('#release-notes').getAttribute('open'),'');
+      await page.locator('#release-notes summary').click();
+      await page.locator('.hero a[href="#release-notes"]').click();
+      await page.locator('#release-notes[open]').waitFor();
+      await page.locator('#upgrade summary').click();
+      assert.ok(await page.locator('#upgrade pre').isVisible());
+      await page.locator('#project-setup summary').click();
+      assert.match(await page.locator('#project-setup').textContent(),/project register/);
+      await page.locator('#project-setup summary').click();
       await page.locator('.hero a[href="#install"]').click();
       assert.equal(new URL(page.url()).hash,'#install');
       assert.ok(await page.locator('#install').evaluate(e=>Math.abs(e.getBoundingClientRect().top-28)<2));
@@ -76,7 +89,7 @@ try {
       await page.locator('#quality-gates summary').click();
       assert.ok(await page.locator('#code-fallback').isVisible());
       assert.equal(await page.locator('#quality-gates dt').count(),6);
-      for(const selector of ['#install','#project-setup','#how-it-works','#daily-use','#architecture','#packages','#continuity','#image-to-code','#code-fallback','#quality-gates','#reference','.faq']) {
+      for(const selector of ['#install','#project-setup','#how-it-works','#daily-use','#architecture','#packages','#continuity','#image-to-code','#code-fallback','#quality-gates','#reference','#release-notes','#upgrade','.faq']) {
         await page.locator(selector).first().scrollIntoViewIfNeeded();
         await page.screenshot({path:path.join(output,`${width}-${selector.replace(/[.#]/g,'')}.png`)});
       }
@@ -86,6 +99,9 @@ try {
       await page.locator('#install').scrollIntoViewIfNeeded();
       await page.screenshot({path:path.join(output,`${width}-enlarged.png`)});
       assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
+      await page.goto(new URL('#upgrade',url).href);
+      await page.reload();
+      assert.equal(await page.locator('#upgrade').getAttribute('open'),'');
       report.push({width,deviceScale:2,mobileEmulation:width<500,workflowInput:width<500?'touch':'keyboard',navigationTargets:'at least 44px',installationNumbers:'single line',copy:'success and denial',keyboard:'passed',overflow:false,consoleErrors:errors});
     } finally {await context.close();}
   }

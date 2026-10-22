@@ -12,8 +12,8 @@ repository. Publish that guide before deploying a site that references it.
 Manual installation remains in `docs/installation.md`.
 
 Documentation is published in the repository, with `docs/README.md` as its index.
-`docs/release-status.md` distinguishes the public download from newer verified
-desktop behavior. Publish linked guides before activating the site; do not change
+`docs/release-status.md` records the published release and separates download
+identity, desktop activation and useful task outcomes. Publish linked guides before activating the site; do not change
 the public release label until matching binaries and their manifest are published.
 
 The dark landing page explains the harness through editable HTML/CSS visuals:
@@ -63,7 +63,7 @@ reported design workspace, call `tokens_compile`, copy its CSS output to
 No design runtime is required to serve already compiled static assets.
 
 For visual QA, copy `public/` into the design package's reported workspace and use
-`browser_screenshot` with the token source. Inspect actual 2x desktop and narrow
+`browser_screenshot` to observe the existing page without token injection. Inspect actual 2x desktop and narrow
 captures. For the complete interaction checks, serve the site locally and use an
 existing Playwright installation and browser (the script installs nothing):
 
@@ -74,7 +74,9 @@ python3 -m http.server 8767 --bind 127.0.0.1 --directory website/public
 node website/scripts/browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence
 ```
 
-The checks include the release label, memory/recovery content, workflow selection,
+The build and browser checks bind the release badge and link to the canonical
+installation prompt. The browser checks include upgrade and project-registration
+disclosures, memory/recovery content, workflow selection,
 project setup, architecture and the visual workflow disclosures.
 They cover 1440, 768, 390 and 320 CSS-pixel widths, mobile touch emulation,
 44px navigation targets, unbroken installation step numbers, keyboard access, prompt

@@ -42,6 +42,13 @@ test("deployment admits only exact committed artifact bytes", async () => {
     const build = () => run(process.execPath, ["website/scripts/build.mjs"]);
     const built = build();
     assert.equal(built.status, 0, built.stderr);
+    const homepage = path.join(root, "website/public/index.html");
+    const html = await fs.readFile(homepage, "utf8");
+    await fs.writeFile(homepage, html.replace(/(id="release-status"[\s\S]*?Mirket )\d+\.\d+\.\d+/, "$10.0.0"));
+    assert.match(build().stderr, /Release badge differs/);
+    await fs.writeFile(homepage, html.replace(/(id="release-status"[^>]*releases\/tag\/mirket-v)\d+\.\d+\.\d+/, "$10.0.0"));
+    assert.match(build().stderr, /Release link differs/);
+    await fs.writeFile(homepage, html);
     const deploy = () =>
       run(process.execPath, ["website/scripts/deploy.mjs", "--dry-run"]);
     const good = deploy();

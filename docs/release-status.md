@@ -43,6 +43,28 @@ Publication requires the native and contained gates below. The selected release'
 manifest, build receipts and acceptance artifact identify the exact published
 source and binaries; this source document does not predeclare passing CI.
 
+## Published 0.0.2
+
+[Mirket 0.0.2](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.2)
+was published on October 22, 2026 from commit
+`e7b875cf147260b7a012f38ab257883d6736c71f`, with compiled-source fingerprint
+`d0482b152dd40aea9a1329090bfa81ab3f9fc7eed83397fa8f59ef3913e9f14d`.
+All six jobs in [native CI run 39753753026](https://github.com/codemirket/harness/actions/runs/39753753026)
+passed: 444 macOS, 442 Linux and 409 Windows tests, zero failures and nine
+explicit opt-in tests excluded per platform. Contained acceptance passed
+against the exact CI macOS binary; all 72 design tests passed without skips.
+
+All 30 public assets were downloaded and checked against their published sizes,
+digests and verified bundle. The source archive matched all 740 tracked files
+and the compiled-source fingerprint. Source and image advisory findings remain
+visible under report policy; these checks are not a security certification.
+
+After a Codex Desktop restart, the actual MCP connection reported 0.0.2 with
+matching executable, source, catalog and execution identities. A live design
+browser capture matched the expected release modules and inspected output.
+Claude activation was not checked. These are observations of that macOS ARM64
+installation, not a guarantee for other devices or tasks.
+
 ## Published 0.0.1 baseline
 
 [Mirket 0.0.1](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.1)
