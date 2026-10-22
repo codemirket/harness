@@ -19,6 +19,7 @@ try {
       await page.goto(url);
       for (const file of ['legal.html']) {
         await page.locator(`footer a[href="./${file}"]`).click();
+        await page.waitForLoadState('load');
         assert.equal(new URL(page.url()).pathname,`/${file}`);
         assert.equal(await page.locator('h1').count(),1);
         assert.equal(await page.locator('main').count(),1);
