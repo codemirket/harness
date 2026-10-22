@@ -57,3 +57,20 @@ cases. The held-out set must remain nonempty, every case must belong to its stat
 split, and every planned arm/repeat cell must still be recorded. A confirmation
 does not need invented development runs to satisfy the record format.
 No providers, model dispatch, automatic graders or new dependencies are included.
+
+## Simplification comparisons
+
+`simplification-suite.json` defines matched minimal-tools, guidance-only and full
+harness arms over no-change, source-search, recovery, saved-export and multilingual
+memory tasks. It is a protocol template, not recorded quality evidence. Freeze the
+same model, settings, fixture bytes and budgets, run three trials per case, retain
+failed attempts, and blind a separate reviewer before recording verdicts. Trial
+records now accept optional input/output tokens and human interventions; missing
+values remain unknown in aggregation. No automatic paid campaign is launched by
+validation.
+
+`experiments/retrieval-ablation.py` runs four offline retrieval arms on synthetic
+facts, including negation, multilingual queries, stale facts and unanswerables.
+Run the ignored `runtime_experiments` target through `mirket dev test` with an
+explicit prepared engine home. The no-NLP arm is controlled instrumentation, not
+a supported production dependency-removal configuration or migration proof.

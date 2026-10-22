@@ -6,7 +6,7 @@ RUN python -m pip install --require-hashes --only-binary=:all: --no-cache-dir -r
     && python -m pip check \
     && python -m pip uninstall --yes pip \
     && python -c "import importlib.util; assert importlib.util.find_spec('pip') is None"
-COPY bridge.py memory.py workflow.py lifecycle.py model.json bm25.json NOTICE.md /opt/agent/
+COPY bridge.py memory.py workflow.py lifecycle.py recovery-contract.json model.json bm25.json NOTICE.md /opt/agent/
 COPY tests /opt/agent/tests
 COPY licenses /opt/agent/licenses
 COPY model /opt/models

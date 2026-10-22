@@ -1093,3 +1093,48 @@ fn newer_managed_runtime_requires_matching_owned_bytes_and_prevents_downgrade() 
             .contains("differs from its setup receipt")
     );
 }
+
+#[test]
+fn activation_plan_is_read_only_and_installed_phase_resumes_without_reinstalling() {
+    let fixture = Fixture::new();
+    fixture.setup(&codex()).unwrap();
+    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
+        .canonicalize()
+        .unwrap();
+    let mut options = UpdateOptions {
+        from: Some(artifact.clone()),
+        sha256: Some(sha256(&fs::read(&artifact).unwrap())),
+        plan: true,
+        ..Default::default()
+    };
+    let before = fs::read(fixture.paths.binary()).unwrap();
+    let plan = update::update(&fixture.paths, &options).unwrap();
+    assert_eq!(plan.activation["phase"], "prepared");
+    assert_eq!(plan.activation["clients"], "pending_reconnection");
+    assert_eq!(fs::read(fixture.paths.binary()).unwrap(), before);
+    let journal = fixture.paths.root.join("update-activation.json");
+    assert!(!journal.exists());
+    options.plan = false;
+    options.activate = true;
+    let applied = update::update(&fixture.paths, &options).unwrap();
+    assert_eq!(applied.activation["phase"], "services_restored");
+    assert_eq!(applied.activation["clients"], "pending_reconnection");
+    let mut pending = applied.activation.clone();
+    pending["phase"] = serde_json::json!("installed");
+    fs::write(&journal, serde_json::to_vec(&pending).unwrap()).unwrap();
+    let resumed = update::update(&fixture.paths, &options).unwrap();
+    assert_eq!(resumed.activation["phase"], "services_restored");
+    assert!(!resumed.reconfigured);
+    pending["entrypoint_request"]["path"] = serde_json::json!("/old/request/mirket");
+    fs::write(&journal, serde_json::to_vec(&pending).unwrap()).unwrap();
+    assert!(
+        update::update(&fixture.paths, &options)
+            .unwrap_err()
+            .to_string()
+            .contains("entrypoint options changed")
+    );
+    pending["entrypoint_request"] = applied.activation["entrypoint_request"].clone();
+    pending["candidate_sha256"] = serde_json::json!("0".repeat(64));
+    fs::write(&journal, serde_json::to_vec(&pending).unwrap()).unwrap();
+    assert!(update::update(&fixture.paths, &options).is_err());
+}

@@ -251,13 +251,7 @@ fn outcome_search_reaches_owned_guidance_and_compact_plan_preserves_role_decisio
     for row in rows {
         let id = row["id"].as_str().unwrap();
         let workflow = catalog.workflow(id).unwrap();
-        assert_eq!(
-            row["explicit_role_can_replace_default"],
-            workflow
-                .alternative_roles
-                .iter()
-                .any(|role| role == "graphic-design")
-        );
+        assert_eq!(row["explicit_role_can_replace_default"], true);
         assert_eq!(row.as_object().unwrap().len(), 2);
         assert!(
             plan["worker_workflows"]

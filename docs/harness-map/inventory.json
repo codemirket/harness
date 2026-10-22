@@ -20,13 +20,13 @@
     },
     {
       "path": "Cargo.lock",
-      "bytes": 56828,
-      "sha256": "bb87e3010f7b765c27a03b0dde801e31bd0b5c2061b502ef91c9c1ff045d39b4"
+      "bytes": 60048,
+      "sha256": "4a5b8802c6164a3d8fc4eb8a60b9091d215574ce8571b423ad049aaeb8a67350"
     },
     {
       "path": "Cargo.toml",
-      "bytes": 1620,
-      "sha256": "8a5d8eff9fd0c7b057ee910cde551b52b04df182870ce29bf5b9fd353b855db7"
+      "bytes": 1647,
+      "sha256": "c9bbf0c37a1197b7622c1b0a8c1ed9a01c9797bb7162da9f6583e5da596bf2a4"
     },
     {
       "path": "build.rs",
@@ -35,8 +35,8 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 22139,
-      "sha256": "d621d39a2e6a93c22871e310760717e8e86ff7d689807265884b02716de77e11"
+      "bytes": 22140,
+      "sha256": "ded5f0649eb1ad649af7c19aebd5b98e621bacb6b8318d610f6b1290a2eed460"
     },
     {
       "path": "docs/licenses/rust-runtime/README.md",
@@ -64,6 +64,11 @@
       "sha256": "15451ce720092448875d2d2a467b900197fbd8c9ec5c279c42346ba5d684cc0e"
     },
     {
+      "path": "evals/dependency-audit/README.md",
+      "bytes": 4606,
+      "sha256": "da19393296b1ad25d57721e01f6ef02a9e0342dc6560b98269b0cf0fafc67e5c"
+    },
+    {
       "path": "evals/dependency-audit/check.py",
       "bytes": 6149,
       "sha256": "dd6c5920e1137c458e768e3327e3ab399c3c415498e2251326aebc6bb38d288f"
@@ -74,9 +79,664 @@
       "sha256": "cc180d25445508b2d3cab31fc6073653af3fe8590fb194f65c5d3a692fbeba8e"
     },
     {
+      "path": "evals/dependency-audit/fetch_scanner.py",
+      "bytes": 1406,
+      "sha256": "b30aa907d549c9c534b2453e08e958ed7a36f242b3739b42a6fe5dd605543357"
+    },
+    {
+      "path": "evals/dependency-audit/image_audit.py",
+      "bytes": 10567,
+      "sha256": "a2fc73507af0bdf2abf34ba8f613fc838fa6c037421b5162b4b69a6d81612757"
+    },
+    {
+      "path": "evals/dependency-audit/image_contents.py",
+      "bytes": 4256,
+      "sha256": "f9f52b36e0870ee382453086806254873922a8e1178d853d7c82c2f260fa94c6"
+    },
+    {
+      "path": "evals/dependency-audit/scanner.json",
+      "bytes": 612,
+      "sha256": "ddf7b5db0fb5258f3bc9dcc718f110fd46648737ada2d707d3f942d3a6f26bec"
+    },
+    {
+      "path": "evals/dependency-audit/test_check.py",
+      "bytes": 3518,
+      "sha256": "632c23fea43c7ecd1d9e868853c29f8f5aaf82630a120edac149b2ec94b626ba"
+    },
+    {
+      "path": "evals/dependency-audit/test_image_contents.py",
+      "bytes": 2204,
+      "sha256": "fc57460e677683ec62a32018e4b9c2e887676a36e55d2906f1800bd62fc085fa"
+    },
+    {
+      "path": "evals/dependency-audit/test_images.py",
+      "bytes": 6297,
+      "sha256": "b98d6f76d52faef9ed9c7c056fe4ea79ede4cce04fa6682b73aedb739d9f3954"
+    },
+    {
+      "path": "evals/design-coverage/README.md",
+      "bytes": 12423,
+      "sha256": "51b62403ed6b220a0cce4a02754b6d706702352175acb9ffacd1b175bf2d458c"
+    },
+    {
+      "path": "evals/design-coverage/check-artifact.cjs",
+      "bytes": 18422,
+      "sha256": "19c0fd1f65448e4abfb0d257a5ab9e485a5e59b2504c8c2c50c0a30c0f58a5d1"
+    },
+    {
+      "path": "evals/design-coverage/configurations/assisted-template.json",
+      "bytes": 1042,
+      "sha256": "8fce546d0f74358bc388381a2e430edd92cbda69944cead20b8a05ebf8950e0a"
+    },
+    {
+      "path": "evals/design-coverage/configurations/baseline-template.json",
+      "bytes": 1003,
+      "sha256": "1551643ae97ebcf41e0376e314c7b249a01afac625200a8eb88c122b11380d94"
+    },
+    {
+      "path": "evals/design-coverage/fixtures/development-fake.html",
+      "bytes": 391,
+      "sha256": "792ed46f2e2382fa0e71ee7b2423488cd91cf1cf9d4a7890ab008e37936ba436"
+    },
+    {
+      "path": "evals/design-coverage/fixtures/development-good.html",
+      "bytes": 446,
+      "sha256": "24325e7c2ab27eba5deadf7bd5992376b6385da6f82e0d317ca6fde0957a19d7"
+    },
+    {
+      "path": "evals/design-coverage/graders/cue-review.json",
+      "bytes": 2476,
+      "sha256": "b630ab043fc7c4a607fb9cde0d587d4b8d076f84ae6c48202a888caba8893808"
+    },
+    {
+      "path": "evals/design-coverage/graders/development-checker.json",
+      "bytes": 873,
+      "sha256": "6700822a74f6c2ce6cdca6389397fb6836e60f54135a061d831b8e3161c51445"
+    },
+    {
+      "path": "evals/design-coverage/graders/field-library.json",
+      "bytes": 2566,
+      "sha256": "f5f70b716b09fb940ac3c3ef2b461c1294a175d30561b1a4991031a2d29aba57"
+    },
+    {
+      "path": "evals/design-coverage/graders/native-handover.json",
+      "bytes": 2571,
+      "sha256": "e7f7d08a3255be8cde5e869631a65c5eeea767c5ee1e44ce0278e53c98dc78ff"
+    },
+    {
+      "path": "evals/design-coverage/inputs/cue-review.md",
+      "bytes": 3300,
+      "sha256": "df6ce07039678ec01e7695b53d6f586426e1f9bdc9608fe19cc07759db321d17"
+    },
+    {
+      "path": "evals/design-coverage/inputs/development-checker.md",
+      "bytes": 1148,
+      "sha256": "8dd6d2039da4aa8ba9ce8560c39bee79c9fc6d79d5e85e59159acf7051389812"
+    },
+    {
+      "path": "evals/design-coverage/inputs/field-library.md",
+      "bytes": 2936,
+      "sha256": "fc249558d5bb20800f456e454b4e51734e070de9fca3413c8e84ff67e17cc1d8"
+    },
+    {
+      "path": "evals/design-coverage/inputs/native-handover.md",
+      "bytes": 2838,
+      "sha256": "e3f8471f7af638fa35498447351deac2deee52a103d247cbb434e8d03cfcd02e"
+    },
+    {
+      "path": "evals/design-coverage/prepare.py",
+      "bytes": 18666,
+      "sha256": "6d0eedf383d76e1cba4a6813a764c0b048c725994c6ba94c4546ef6e1ee88e7d"
+    },
+    {
+      "path": "evals/design-coverage/suite.json",
+      "bytes": 3312,
+      "sha256": "133c0d53a2877cabaee5fa09a6764d08fcef538e65d6a939005597706cb33403"
+    },
+    {
+      "path": "evals/design-quality/README.md",
+      "bytes": 10676,
+      "sha256": "01cab8e8eda14d3fe3b56ab15a4708a1ee946516b69214831ca0793f72e71b76"
+    },
+    {
+      "path": "evals/design-quality/RESULTS-2026-10-16.md",
+      "bytes": 6206,
+      "sha256": "6746702cc17e129e3f992c195b2499535e8bdd16e3b9b503b1558f92e9c302b0"
+    },
+    {
+      "path": "evals/design-quality/analyze.py",
+      "bytes": 55103,
+      "sha256": "a5e7d03fc92f602a14da4b79cf2b3091183e7601906d2d0b65b277cbe68dfad6"
+    },
+    {
+      "path": "evals/design-quality/analyze_v2.py",
+      "bytes": 11622,
+      "sha256": "20a56584a11ed1f373ac565c2844045a4493b06b994e2d6423db46c61fb38e57"
+    },
+    {
+      "path": "evals/design-quality/calibration/README.md",
+      "bytes": 4074,
+      "sha256": "dd0c2e4ceaf026847c2d8090315124cd001799cd5c6b5025ab9b39fb7b40ca20"
+    },
+    {
+      "path": "evals/design-quality/calibration/control-spec.json",
+      "bytes": 6215,
+      "sha256": "d9c1af411a703fe729654fd5eee3911fe3dd21284098461c0caecf75623f7d84"
+    },
+    {
+      "path": "evals/design-quality/calibration/judge-template.json",
+      "bytes": 1143,
+      "sha256": "abe5f583a85f0f0d3064f582399a1b400bc021f8f95ef8c39da384614974b00e"
+    },
+    {
+      "path": "evals/design-quality/calibration/neutral-pack.cjs",
+      "bytes": 2319,
+      "sha256": "e78a3153c6d5b09db6c130b286490a06b3559f0e0d639af8e1ec91a448550b4f"
+    },
+    {
+      "path": "evals/design-quality/calibration/neutral-pack.md",
+      "bytes": 1195,
+      "sha256": "84ed9461372f384aec7fc3e5570537e2f07cf98a9b428cfe5fadeb2ed1400ece"
+    },
+    {
+      "path": "evals/design-quality/calibration/pack.cjs",
+      "bytes": 5934,
+      "sha256": "af433e67c88cc966953d3e9977abc25bfbef9bcbff0baf4e511b1baf1ad2ded2"
+    },
+    {
+      "path": "evals/design-quality/calibration/validate-judgment.cjs",
+      "bytes": 5824,
+      "sha256": "1408db534be509fc386883ddd112b8c657120d42fd43b1692d22b793de49f3f4"
+    },
+    {
+      "path": "evals/design-quality/controls/C101/index.html",
+      "bytes": 15381,
+      "sha256": "4987781fc7dd73c73bf881348c81e592c05fe40af24806d1fe31eb349a2d1901"
+    },
+    {
+      "path": "evals/design-quality/controls/C102/index.html",
+      "bytes": 15616,
+      "sha256": "81f10b589ff828c5ea07019306e703ac658ec9d871c60281ce39f9c459c381fa"
+    },
+    {
+      "path": "evals/design-quality/controls/C103/index.html",
+      "bytes": 15380,
+      "sha256": "6d6ebe3c7f851d00dc14d99892781389ea7ba4ffea7efe1f9e03d56b58d37992"
+    },
+    {
+      "path": "evals/design-quality/controls/C104/index.html",
+      "bytes": 15381,
+      "sha256": "4987781fc7dd73c73bf881348c81e592c05fe40af24806d1fe31eb349a2d1901"
+    },
+    {
+      "path": "evals/design-quality/controls/C105/index.html",
+      "bytes": 15381,
+      "sha256": "eca7e0fd042550592c56b7554ad87e76174538ef43ef58bb40460bf470966025"
+    },
+    {
+      "path": "evals/design-quality/controls/C106/index.html",
+      "bytes": 12930,
+      "sha256": "78647f284561a3b47585bec225ad06a5be1727a056eb438f6ff3d954ea339263"
+    },
+    {
+      "path": "evals/design-quality/controls/C107/index.html",
+      "bytes": 13641,
+      "sha256": "bd813081b562deb82ff8cecc9dcd40d328bd05b742bc9ef650883a8cbec69419"
+    },
+    {
+      "path": "evals/design-quality/controls/LICENSE",
+      "bytes": 1082,
+      "sha256": "28ab527e39e9ee464c404f2f3ca3c5f973f76a29e1860c138052c71c933f05be"
+    },
+    {
+      "path": "evals/design-quality/controls/generate.cjs",
+      "bytes": 37041,
+      "sha256": "fce7d9957001faf4af8acb8d1668deee5da7274b9dfebe436b38ade6c0fda540"
+    },
+    {
+      "path": "evals/design-quality/controls/local-save.probe.json",
+      "bytes": 2444,
+      "sha256": "39a51201c51a1c7304ffdd1b0d422ab27214f221584dd3ac285f8ef383a93246"
+    },
+    {
+      "path": "evals/design-quality/controls/manifest.json",
+      "bytes": 2746,
+      "sha256": "cd57f555b988e50b5b689bed2e838a057fe4bbf2d2908993daf5fd680f26f8c5"
+    },
+    {
+      "path": "evals/design-quality/controls/observer-contract.md",
+      "bytes": 5925,
+      "sha256": "90aeff09c546a026930d74682b861ba638db452bb72b0299b877a0c441b27aeb"
+    },
+    {
+      "path": "evals/design-quality/controls/run-controls.cjs",
+      "bytes": 5412,
+      "sha256": "663b61f5705ee2e128177f7bfcfc20e1a9cbd0711026835f1ffd61a6a70e07ff"
+    },
+    {
+      "path": "evals/design-quality/controls/service-review.probe.json",
+      "bytes": 2024,
+      "sha256": "15e2b7e4bb7441d419fbcddda41aed18f4f51b642f36b9fe0423b66f764de33f"
+    },
+    {
+      "path": "evals/design-quality/craft-rubric.json",
+      "bytes": 3127,
+      "sha256": "9db402e9b349fcde1d78d143e3a7dbd0626c509832b76d051c6f3a6a3619a003"
+    },
+    {
+      "path": "evals/design-quality/make-judge-packets.md",
+      "bytes": 3900,
+      "sha256": "3df42a7d2d406e73e58ebcf2ecc8ca388ea75facc7f7a7820e526a9f65b85309"
+    },
+    {
+      "path": "evals/design-quality/make-judge-packets.py",
+      "bytes": 33292,
+      "sha256": "350261a7cef12d2a51a54600c9696064aa1a1ce0ec4e6f5c0271762304556a4f"
+    },
+    {
+      "path": "evals/design-quality/observe.cjs",
+      "bytes": 32053,
+      "sha256": "cffb674d9323dad06f882afa8e78ca66a4c7e3dde7a32c107004110eb5da9a7d"
+    },
+    {
+      "path": "evals/design-quality/packet_preflight.py",
+      "bytes": 13285,
+      "sha256": "f18b7836d1b810c7cba82faf7c51da67f5b6d80dafe10e8aae0e8f35c3609cf0"
+    },
+    {
+      "path": "evals/design-quality/preflight.cjs",
+      "bytes": 6349,
+      "sha256": "78eba84d538d58df74f1b139d4be069584a21702ccc51cda06fa463643d93918"
+    },
+    {
+      "path": "evals/design-quality/preflight.md",
+      "bytes": 1415,
+      "sha256": "41197431b8a913901c7f1d70013436fa325e850a9d5660a2935cdca7a0c96441"
+    },
+    {
+      "path": "evals/design-quality/prepare.py",
+      "bytes": 20934,
+      "sha256": "91e39fae99c0f29f36a99f11a88466cee8962616c64e2b62159741ec0cf541a2"
+    },
+    {
+      "path": "evals/design-quality/reference.py",
+      "bytes": 4262,
+      "sha256": "98906e88584aacdaeb8b79064a88bd85cf873f74fa2d01b5049d3888a632c946"
+    },
+    {
+      "path": "evals/design-quality/reuse.md",
+      "bytes": 4763,
+      "sha256": "55efe594ae898a0da227b2c3d6953af37d461b12c0832d27941a6f4232b052f5"
+    },
+    {
+      "path": "evals/design-quality/test_analyze_v2.py",
+      "bytes": 10667,
+      "sha256": "5634cf5b2b43bf91b529400e47e5ef4d4440b50c34ad909488b9bfdbf31eb28c"
+    },
+    {
+      "path": "evals/design-quality/test_tile_judge_views.py",
+      "bytes": 21931,
+      "sha256": "c2d1d564905bbbe599da48ddc260cf1e943036b47a66a482ecaee0c4f545a7fb"
+    },
+    {
+      "path": "evals/design-quality/test_viewport_proof.cjs",
+      "bytes": 25239,
+      "sha256": "1164452a6a822b3d02faf868300e7f7e50a3acc4853938ac3df1001cb35e59f8"
+    },
+    {
+      "path": "evals/design-quality/tile-judge-views.md",
+      "bytes": 4515,
+      "sha256": "4abe84874b8c7acf0695b071b4da4bfc5b8f38ec15b30d89851930f7233c2ef1"
+    },
+    {
+      "path": "evals/design-quality/tile-judge-views.py",
+      "bytes": 32116,
+      "sha256": "e4fa04a5083b355b432fe429e0bba85f8e3235061980720d7fbfad64039e46fd"
+    },
+    {
+      "path": "evals/design-quality/viewport-proof.cjs",
+      "bytes": 6957,
+      "sha256": "ecb3e8f7698d0ee4ee461f00d1b820e2504c5bab321c54e55784a5c95b140c85"
+    },
+    {
+      "path": "evals/design-quality/viewport-proof.md",
+      "bytes": 3311,
+      "sha256": "0327ff79b61bcbb45c60084bb7ce0a3b95935d3faa67183e9d5e3b586defdac1"
+    },
+    {
+      "path": "evals/design-quality/worker-prompt.md",
+      "bytes": 3243,
+      "sha256": "593717870aad882a054ded262c3498721d39235858dd8fdb03306337fa16e525"
+    },
+    {
+      "path": "evals/harness-critique/README.md",
+      "bytes": 1573,
+      "sha256": "4996e0741f213664514e0f520ebac6806b0864168051a4af60e4db68445e4134"
+    },
+    {
+      "path": "evals/harness-critique/probe.py",
+      "bytes": 6663,
+      "sha256": "009567a6fcd7e0aa448a6567f48537953b33349e2a09f4da40c9d2f163157261"
+    },
+    {
+      "path": "evals/harness-map/README.md",
+      "bytes": 1549,
+      "sha256": "05a19edf4cdb14a5b3a10c390d328a45e5a5b2fdc03a3b77494864db27aee20d"
+    },
+    {
       "path": "evals/harness-map/extract.py",
-      "bytes": 22909,
-      "sha256": "0abb49d094651863d3a11a4d2f11583a0b889dd115cb0d5f1d286d13605dc88d"
+      "bytes": 23120,
+      "sha256": "f89212a9eb722834873a9a168471d2d22b75ec84570e48df7aa0a79abccddf81"
+    },
+    {
+      "path": "evals/harness-remediation/README.md",
+      "bytes": 2953,
+      "sha256": "92099e36683309eb5ff39afcc9b6ed00f2d490549b286721c891cfea983f134d"
+    },
+    {
+      "path": "evals/harness-remediation/native_validate.py",
+      "bytes": 7182,
+      "sha256": "250b1ebe69c8bfc457c16e25dad8157cd792b1fa08156a166b4d0e02731f882f"
+    },
+    {
+      "path": "evals/harness-remediation/retrieval-ablation.py",
+      "bytes": 6458,
+      "sha256": "56411b8d5df017f07e71176c7e9dec8cc12d3d9b796b8962e80b00de8c6dbbee"
+    },
+    {
+      "path": "evals/harness-remediation/startup_probe.py",
+      "bytes": 4347,
+      "sha256": "39856f2146c8bcccdbcb4a31b3c2e9d1ec99f08dc0ecc93cfa25588d64fdaf91"
+    },
+    {
+      "path": "evals/harness-remediation/test_feedback.py",
+      "bytes": 4093,
+      "sha256": "9202e9e629221c50046cb7c9aac66cac2d03788e1a00e1585e4de6b3c07e6a06"
+    },
+    {
+      "path": "evals/harness-remediation/test_platform.py",
+      "bytes": 2781,
+      "sha256": "ab51cbffcb843aa0dcf176be558dae0873d1dd31489c1f3b0087aecca73759c7"
+    },
+    {
+      "path": "evals/illustration-quality/README.md",
+      "bytes": 3646,
+      "sha256": "fc869c5d6d3d9a17d3f4118a01a5fbbf4565d64c3f6d11054198d990fe2d2509"
+    },
+    {
+      "path": "evals/illustration-quality/configurations/baseline-template.json",
+      "bytes": 612,
+      "sha256": "a8f469b8c2b917eca472c75ee3d5467fbb43685b599999a18e9e52ee995de770"
+    },
+    {
+      "path": "evals/illustration-quality/configurations/revised-template.json",
+      "bytes": 612,
+      "sha256": "a8f469b8c2b917eca472c75ee3d5467fbb43685b599999a18e9e52ee995de770"
+    },
+    {
+      "path": "evals/illustration-quality/craft-review.md",
+      "bytes": 2547,
+      "sha256": "a4e7795468a87c2ace8179069bcdc7e6376bf87213ed78da8d1602f543a315eb"
+    },
+    {
+      "path": "evals/illustration-quality/graders/archive-card.json",
+      "bytes": 1143,
+      "sha256": "d4b935af97a32e41e0a1ca66bf8b30fd2ff790b44d6a098503e4fd5c0443d8f3"
+    },
+    {
+      "path": "evals/illustration-quality/graders/field-icons.json",
+      "bytes": 1134,
+      "sha256": "c013e169ed2600aa1c20dcc1c697b45220106827f60ae2a16ce203239faea1bc"
+    },
+    {
+      "path": "evals/illustration-quality/graders/library-hero.json",
+      "bytes": 1146,
+      "sha256": "4c4b79db495a9f8863cd7ea5e22136bef3398d61d6951e581521d7fd190f6f09"
+    },
+    {
+      "path": "evals/illustration-quality/graders/night-garden.json",
+      "bytes": 1116,
+      "sha256": "85d5d934ce15fa984ff8142e80c08323ca7543cd2bff6b3a76f74d8f61e94a74"
+    },
+    {
+      "path": "evals/illustration-quality/graders/quiet-signal.json",
+      "bytes": 1117,
+      "sha256": "f227428e0b401374cd581039a61b7a30932e1ccc687ac76294ef463c9d557899"
+    },
+    {
+      "path": "evals/illustration-quality/graders/repair-cafe.json",
+      "bytes": 1135,
+      "sha256": "68f16351b517ed2f751bcfb1e79074e1e285674fee1c9f1ce6dd21e2b1bfa85e"
+    },
+    {
+      "path": "evals/illustration-quality/graders/water-loop.json",
+      "bytes": 1148,
+      "sha256": "466c7c51e67e5cfe396cb2699d0d12a6bc39f045404cd63537a44760d330a53b"
+    },
+    {
+      "path": "evals/illustration-quality/graders/weather-family.json",
+      "bytes": 1129,
+      "sha256": "22edf30b5c4db6de9a3702156e82ce56c045ba174fc1d3403eb45ebbabd515af"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/archive-card.md",
+      "bytes": 434,
+      "sha256": "2ad1cce04263dabfba570e96a170598b9283f870311507a06f90af124d1024e5"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/field-icons.md",
+      "bytes": 400,
+      "sha256": "9bedd45f11821b139857a020d529dbe3ba85707401f46dc61c44fde7837b7d92"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/library-hero.md",
+      "bytes": 485,
+      "sha256": "3f66a102c1b6986f70a4c074dac97098be5a9b792525556c0a6b05d43b6b76c0"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/night-garden.md",
+      "bytes": 466,
+      "sha256": "89ecb3267a4528a37066bca8d18685ae950643eff3efe52eb8a58505a445837c"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/quiet-signal.md",
+      "bytes": 424,
+      "sha256": "526eb8807a367d6829e8bb2a75c166bbb876a2667a8f56bd4c112b3d778cd5d9"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/repair-cafe.md",
+      "bytes": 468,
+      "sha256": "f0844111dcb3573590b2f04096b2f53c53638bbea94fc12601d329e32bbe5d1a"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/water-loop.md",
+      "bytes": 462,
+      "sha256": "ddfd7cd7264dfd398f21067dc3bef734ef902f5a64b2364dfba36759e8ff3ed3"
+    },
+    {
+      "path": "evals/illustration-quality/inputs/weather-family.md",
+      "bytes": 399,
+      "sha256": "04ed4b6df35c033527e9481cce01d9fdf88304877d4b82f39303030341ef43d6"
+    },
+    {
+      "path": "evals/illustration-quality/suite.json",
+      "bytes": 5726,
+      "sha256": "913cd1a6b25623188e9fcf244dc7ef093141892bf379a73397589c80e6697912"
+    },
+    {
+      "path": "evals/role-workflow/README.md",
+      "bytes": 4978,
+      "sha256": "6b40dd9a8299cc5dbd7aabc68930137992a807263f31d340d2ad5a85f389365a"
+    },
+    {
+      "path": "evals/role-workflow/configurations/full-harness.json",
+      "bytes": 445,
+      "sha256": "bc2f2cd9dfec97b404ae3fce4746cc1dd7d584125c055b8344b91e5a0d498ffd"
+    },
+    {
+      "path": "evals/role-workflow/configurations/guidance-only.json",
+      "bytes": 446,
+      "sha256": "bdd565509157be22c73455b6d3c4f04ae59bee2c5959730217f23a7c82c8eaba"
+    },
+    {
+      "path": "evals/role-workflow/configurations/minimal-tools.json",
+      "bytes": 446,
+      "sha256": "1eb91d9ef2d4c09fe9a9e5cc152d3da12df6a3c6225453bb2affce386580baac"
+    },
+    {
+      "path": "evals/role-workflow/configurations/pilot-template.json",
+      "bytes": 390,
+      "sha256": "79308390050b0140488cd75de6f8eca23b56d2efcd1176516b2f1e4e7f99ffd7"
+    },
+    {
+      "path": "evals/role-workflow/experiments/journal-prototype.rs",
+      "bytes": 3290,
+      "sha256": "24d59c4c19b7f09a6b7aea37588adf076d9501db78c0a7eb0b2cf2ab483b3d6b"
+    },
+    {
+      "path": "evals/role-workflow/experiments/retrieval-ablation.py",
+      "bytes": 7128,
+      "sha256": "c48a28518cd02c0176373ee82900c74742905e75ee28f17521d898570ee23007"
+    },
+    {
+      "path": "evals/role-workflow/graders/ambiguous-selection.json",
+      "bytes": 643,
+      "sha256": "906e162a791f0264b5fa5e7b8516396104106056b5d7009559ac5c50be545507"
+    },
+    {
+      "path": "evals/role-workflow/graders/explicit-skill.json",
+      "bytes": 622,
+      "sha256": "eeb01277ca186d0f6564ec52fe705260c3f41280283175f3d63e6ac47729bf1a"
+    },
+    {
+      "path": "evals/role-workflow/graders/interrupted-audit.json",
+      "bytes": 583,
+      "sha256": "5241dc4ea983d81243264770e67882c373efe91aa23eab787772f9d91fd037d1"
+    },
+    {
+      "path": "evals/role-workflow/graders/interrupted-specialist.json",
+      "bytes": 620,
+      "sha256": "148db06fcd7e504c1f9131db98434afb525b27c34f4b06caf02f5f256190cb1e"
+    },
+    {
+      "path": "evals/role-workflow/graders/inventory-recovery.json",
+      "bytes": 611,
+      "sha256": "0239abc169697cbf33ea6867528123b96410dcfac3a2c79ae0acf5497acb07b3"
+    },
+    {
+      "path": "evals/role-workflow/graders/simplification-multilingual-memory.json",
+      "bytes": 558,
+      "sha256": "50dacaa6d6c841aa4ee64d9092b3e7208413fe26c1952074aa7c2fd7c9b2291c"
+    },
+    {
+      "path": "evals/role-workflow/graders/simplification-no-change.json",
+      "bytes": 570,
+      "sha256": "4f38adb474a6f16743410fe2529460929d1206a61489e76234396b5eaa42ba21"
+    },
+    {
+      "path": "evals/role-workflow/graders/simplification-recovery.json",
+      "bytes": 588,
+      "sha256": "2501f20cff7b2fa44562041d253c50ece1580c7fc00f07e78e8b5316e25132b2"
+    },
+    {
+      "path": "evals/role-workflow/graders/simplification-saved-export.json",
+      "bytes": 567,
+      "sha256": "bbe9ad8a8b4c76ae877d3023875c39b3ac162e86cdf5f5e046a375e4c9e2830a"
+    },
+    {
+      "path": "evals/role-workflow/graders/simplification-source-search.json",
+      "bytes": 576,
+      "sha256": "282d52174e2b53d02dcb32fd90f30d784ed05303bf4b1f6e67693ddbc305feec"
+    },
+    {
+      "path": "evals/role-workflow/graders/timeout-disagreement.json",
+      "bytes": 679,
+      "sha256": "7471bab13248981ad1d375c662d62e8b48d7ebfd10e80cb87d09129306e78817"
+    },
+    {
+      "path": "evals/role-workflow/graders/trivial-direct.json",
+      "bytes": 494,
+      "sha256": "ac42adbb645e1027f4f159b4913967f618a7ef09eb7f85d7ea55f1be95d841f3"
+    },
+    {
+      "path": "evals/role-workflow/graders/unsupported-research.json",
+      "bytes": 641,
+      "sha256": "dfa37ff409dd7a7370f32f6c81ce965edc9e83e7f6703cb7f95912798740d8b2"
+    },
+    {
+      "path": "evals/role-workflow/inputs/ambiguous-selection.md",
+      "bytes": 317,
+      "sha256": "b1edbef7df48fe7038e594730145dd0e1cba865ffed1b66722b0e4b90ff4dabd"
+    },
+    {
+      "path": "evals/role-workflow/inputs/explicit-skill.md",
+      "bytes": 380,
+      "sha256": "b9aa2d19c4a95310a44721b8f0bd860c3c44540e39954f8ce2dd07ced9bebf2d"
+    },
+    {
+      "path": "evals/role-workflow/inputs/interrupted-audit.md",
+      "bytes": 256,
+      "sha256": "1e03dddf4cde6d35f874b52c88c6b74af8166f1a37b14c98bf7911dd5c2ea070"
+    },
+    {
+      "path": "evals/role-workflow/inputs/interrupted-specialist.md",
+      "bytes": 340,
+      "sha256": "d7c143bc06b5270b74760711d804bf8bae3e63f91a743a69f9084f414daaf33f"
+    },
+    {
+      "path": "evals/role-workflow/inputs/inventory-recovery.md",
+      "bytes": 300,
+      "sha256": "4e1e84fecafe384cca4013267a524580130a64019d5541d1a461e58534fa10a7"
+    },
+    {
+      "path": "evals/role-workflow/inputs/simplification-multilingual-memory.md",
+      "bytes": 246,
+      "sha256": "3358f984769b285c9a4d63509dfaa8b90a5029d516718462cc6008cf344d678e"
+    },
+    {
+      "path": "evals/role-workflow/inputs/simplification-no-change.md",
+      "bytes": 233,
+      "sha256": "e03336183e84fb9c501e3fd5601be23349586f9830dac3e09dddf162113d7eeb"
+    },
+    {
+      "path": "evals/role-workflow/inputs/simplification-recovery.md",
+      "bytes": 251,
+      "sha256": "87f74432d1afaeda5197178fdf83bbcde1de1f4e12791516d25e2d3da4ec6f66"
+    },
+    {
+      "path": "evals/role-workflow/inputs/simplification-saved-export.md",
+      "bytes": 204,
+      "sha256": "c0ce57de810f3df341b67d4ae0357b059e236b15310673c51d98b93e7252ce1d"
+    },
+    {
+      "path": "evals/role-workflow/inputs/simplification-source-search.md",
+      "bytes": 239,
+      "sha256": "266bd01ff6a7adaf4e2175153605606d0c28a671cddc12e076d878a9bc9fc151"
+    },
+    {
+      "path": "evals/role-workflow/inputs/timeout-disagreement.md",
+      "bytes": 344,
+      "sha256": "07ab13651b7bb595053ebc68eb6c26e65a4e350a820670cd30e3129e5d341385"
+    },
+    {
+      "path": "evals/role-workflow/inputs/trivial-direct.md",
+      "bytes": 102,
+      "sha256": "320e1e20c5f7d502e03be3afe3b6c42277d92b67577256ec7b0786acee8acb1e"
+    },
+    {
+      "path": "evals/role-workflow/inputs/unsupported-research.md",
+      "bytes": 390,
+      "sha256": "3a7b56a2fb71599d8df22b46eb9fd144bd789b16cb23ade85e8f8bcea0d56486"
+    },
+    {
+      "path": "evals/role-workflow/simplification-suite.json",
+      "bytes": 3849,
+      "sha256": "eb594798f0177c6450a6df0110d70aa979c2b67b4956229e2edba8ff9e447256"
+    },
+    {
+      "path": "evals/role-workflow/suite.json",
+      "bytes": 5328,
+      "sha256": "913b3e005d0e4d9388591651060e56d4dfb0a54699cd5169b93510bfae023546"
     },
     {
       "path": "instructions/AGENTS.md",
@@ -90,8 +750,8 @@
     },
     {
       "path": "registry/capabilities.json",
-      "bytes": 133267,
-      "sha256": "9ee8f33da15e217f7c017a9ef770ef0f1f08b8341827158647aadcc0c692f6d8"
+      "bytes": 129157,
+      "sha256": "b9452301f003231be93cf3b7b09751afaa7169683ab9fb87941baacb2ae63143"
     },
     {
       "path": "registry/catalog.json",
@@ -110,8 +770,8 @@
     },
     {
       "path": "runtime/agent/Dockerfile",
-      "bytes": 1254,
-      "sha256": "c28dbdb0c415ee356da8c517e844729129afac32d2ecd0e9c3fcff5f7e743a1d"
+      "bytes": 1277,
+      "sha256": "b81116a9198354ed07aff09d3b14bfa729b6f44badb55f230f8e8158d1102fca"
     },
     {
       "path": "runtime/agent/NOTICE.md",
@@ -125,8 +785,8 @@
     },
     {
       "path": "runtime/agent/bridge.py",
-      "bytes": 7136,
-      "sha256": "d53b2f04278d975d5690aa4d4a9f1238dcd1883205b44827d4dedab6b1c00de8"
+      "bytes": 7377,
+      "sha256": "0158c9f0c005f2bdb6b85e8c89e50784389ed3f6990b52773ccea8f8360f1adb"
     },
     {
       "path": "runtime/agent/licenses/langgraph.txt",
@@ -154,6 +814,11 @@
       "sha256": "b1418d4a2cb5e90bde4e0177a2cb0002341394ad4ab7e3bdb26d770119d8d45a"
     },
     {
+      "path": "runtime/agent/recovery-contract.json",
+      "bytes": 528,
+      "sha256": "852ea0013c4d9f00e554bff5f2696d64e67bb946bae458ab91bf89a0096445aa"
+    },
+    {
       "path": "runtime/agent/requirements.in",
       "bytes": 234,
       "sha256": "6ed2c8b95964c8ed4a73144a406a38edd71d3e33ea6edff188941cd8f9d72d81"
@@ -165,13 +830,13 @@
     },
     {
       "path": "runtime/agent/test_runtime.py",
-      "bytes": 35833,
-      "sha256": "7690f0cd8df0c840db203ce4e440b8ee5f5b4c81b2787e85bbbc01a869a24249"
+      "bytes": 36737,
+      "sha256": "dacfc79c093b5566b315b80b8d1e84de1def93f043c7854d8a60354142f3ae0c"
     },
     {
       "path": "runtime/agent/workflow.py",
-      "bytes": 12827,
-      "sha256": "6d088e303252856d286c4275c4242cc81ed5241f1875ab36f5f96bcebd560fa0"
+      "bytes": 13165,
+      "sha256": "cdeb0f4a5bc6b23beb27473319c7b5f98f9f00a60f599ec57f318a1ad1538b88"
     },
     {
       "path": "runtime/design/tools/Dockerfile",
@@ -305,8 +970,8 @@
     },
     {
       "path": "runtime/design/tools/tool-policy.json",
-      "bytes": 1170,
-      "sha256": "1e8031139c4e0a4c64a50e994a80c0fb2e2b4b87db417b881c4dc4a16f19964c"
+      "bytes": 1200,
+      "sha256": "ad497d2de26b4136478c664a28984aa2fc5757fafc97164db3527b52e541b544"
     },
     {
       "path": "runtime/design/tools/vector-worker.mjs",
@@ -450,8 +1115,8 @@
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 20876,
-      "sha256": "db9c34ab5fd8dfae293c3a7deeac17b1efae09b60cea1065476dc4409ab0a3f5"
+      "bytes": 24128,
+      "sha256": "bfdec0487fdfc61c27bfb8e9c9629168fb4103690a21d9b4c84ed4017e80c786"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -1515,8 +2180,8 @@
     },
     {
       "path": "src/agent_runtime.rs",
-      "bytes": 16005,
-      "sha256": "465de03b8c1b28dd70add91e040e19e7bf49dd7fc54f7119c3c6cf976df45bbc"
+      "bytes": 16031,
+      "sha256": "b4c686af8b5959953e7cd8f3ed6338f23041602abb50b4fa148c90c327fc9f29"
     },
     {
       "path": "src/backup.rs",
@@ -1545,8 +2210,8 @@
     },
     {
       "path": "src/catalog/workflows.rs",
-      "bytes": 5179,
-      "sha256": "6097b7245ba95fa4edf7101e564940039dd44a52b9e82d77a0766f554e2f1968"
+      "bytes": 4531,
+      "sha256": "15d70f7b1d406a7753dd5d971c58d9c6a8caecb641714b7c8a196c684bb93bc1"
     },
     {
       "path": "src/catalog.rs",
@@ -1555,8 +2220,8 @@
     },
     {
       "path": "src/cli.rs",
-      "bytes": 67302,
-      "sha256": "5fa5667f32a9ddd86099355e60d6550096e6e8896707a96fc1ed60742bb55f58"
+      "bytes": 69765,
+      "sha256": "11576f47a11951167596eb406a6337e4e9272020b6d90d8e8bd3ca946d7276e9"
     },
     {
       "path": "src/craft.rs",
@@ -1610,8 +2275,8 @@
     },
     {
       "path": "src/mcp.rs",
-      "bytes": 54717,
-      "sha256": "87df23c2822fd8709c5a639160206829923850e733776352a9b5a275a2ba5f64"
+      "bytes": 52967,
+      "sha256": "1d86df2bc355294ce83b3d657a2043fc23e184b048bba40afac8f4a1945b7ed0"
     },
     {
       "path": "src/memory.rs",
@@ -1625,8 +2290,8 @@
     },
     {
       "path": "src/packages/agent.rs",
-      "bytes": 15270,
-      "sha256": "e2f186497720bb3ad06b5300527e72e4735a90dc619a245e2845459b81cceee9"
+      "bytes": 15403,
+      "sha256": "0c1ef820f16b0cf5cbeb1e709b2502fb923c507bcdf375bd8044ad08c7ee16b7"
     },
     {
       "path": "src/packages/audit.rs",
@@ -1640,8 +2305,8 @@
     },
     {
       "path": "src/packages/mod.rs",
-      "bytes": 10193,
-      "sha256": "78ee9b158eb6059bd5783fa239b3501513ca5c5599641d9ac44919b7fa204728"
+      "bytes": 13498,
+      "sha256": "90f976bbba59fb85f908ba583e166fd4e5111ba978f44ca45ce28950f6ffc24b"
     },
     {
       "path": "src/packages/oci.rs",
@@ -1650,8 +2315,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 87326,
-      "sha256": "0c393ca29f2120480051433c1a9181e12038e698b8718762697205272ee13407"
+      "bytes": 87802,
+      "sha256": "c40f140cd63d8351a2c6904d1a773eddb8fa59f9cef341dd314a9c4c255ba54d"
     },
     {
       "path": "src/paths.rs",
@@ -1695,43 +2360,43 @@
     },
     {
       "path": "src/role_eval.rs",
-      "bytes": 15272,
-      "sha256": "0dbb5be9a86bb7c9f7de3611ebe9441863a999895480a16e515fc97de2071b45"
+      "bytes": 16280,
+      "sha256": "3bdf0e049a39b5264d65d9919a9b2347082365ccd2b6fb5b8379a7141e5425a2"
     },
     {
       "path": "src/router/assignment.rs",
-      "bytes": 28017,
-      "sha256": "dbb0786d48b1d8aa2ecdd4631bf4b23ddd428d762c0986cd2472793a8d9d1a07"
+      "bytes": 12309,
+      "sha256": "87e2632fe885df7289cd1434865e8750f8b32757390db3d3752ab5b65f98690e"
     },
     {
       "path": "src/router/codex.rs",
-      "bytes": 21301,
-      "sha256": "e273beadacb8a81ab8eae2af436a234c6955081bba616956c19eec7f158ca6d1"
+      "bytes": 18524,
+      "sha256": "3b7f47653e8d3a5b63d0c41634c84aec97536b98dcf9714b5d12edafed762333"
     },
     {
       "path": "src/router/codex_tests.rs",
-      "bytes": 10331,
-      "sha256": "aa52680097dbae0b8d6f72eb7a8d15d92c6bb6a07e20940803271d5b227f682b"
+      "bytes": 10465,
+      "sha256": "7b60de92f268cc18a6f05f0e09dec4f5237e8f650b8bb26c362e69cc1017fe6c"
     },
     {
       "path": "src/router/design_gate.rs",
-      "bytes": 27581,
-      "sha256": "5ca6d1413bad8e35dd4147b62daa0e20b95cb2e9c13f9f11f0ef437db407b278"
+      "bytes": 13984,
+      "sha256": "aaa1edc3ef7074acb4c9353574b8eead77198dcee1b385155bba2d407e77f1e6"
     },
     {
       "path": "src/router/discovery.rs",
-      "bytes": 59088,
-      "sha256": "c50ab7fba5b825b2e19c1a76d527d79c5c092839c51cb1c78d33559939e585cf"
+      "bytes": 38550,
+      "sha256": "b14a5d2497a1ce1c22b8ff6f43527f69454599f5231110eaf1b84ef3d72e5998"
     },
     {
       "path": "src/router/durable.rs",
-      "bytes": 15337,
-      "sha256": "142d107cd631eb81aba1f0ef4f43f0a82bb015657ffdf88f058fd35ce8a5790a"
+      "bytes": 18677,
+      "sha256": "ad0e2cdf63073d4d8a8dbc8bcc4c7afc6cdc33d440b413f12600d0d505d298b5"
     },
     {
       "path": "src/router/execution.rs",
-      "bytes": 85659,
-      "sha256": "72e72d27687eab6febf2e4ac970f5b098bddf36f8a00cadc7df477b58a4b2a54"
+      "bytes": 70110,
+      "sha256": "20bdd411587a56acc8bdf140ec70b15167501741f36f142c60ad8d267e19970f"
     },
     {
       "path": "src/router/handoff.rs",
@@ -1740,18 +2405,18 @@
     },
     {
       "path": "src/router/mod.rs",
-      "bytes": 495,
-      "sha256": "193e658da323301b98f1d58b8fee763c5e95b54aa9dc4588dffe7202a32df23a"
+      "bytes": 507,
+      "sha256": "fb542c6d6ea54b79b75f03393782caf0f584cbc10caa257e8845ffeba840ea15"
     },
     {
       "path": "src/router/native.rs",
-      "bytes": 26412,
-      "sha256": "b46ac30dcbd2ed9fbb83114a8d46eecb0cff72371e00381b1f24087350edc715"
+      "bytes": 23150,
+      "sha256": "d70b9acfe5c8754b8a8d5fecf03c546e47ff838ff9cdb03a8fa30b3b4e47f3da"
     },
     {
       "path": "src/router/policy.rs",
-      "bytes": 34349,
-      "sha256": "f8d6742b40b839c91cb203bed0f7b0ca6dcdf606dfd328efe96234656119178f"
+      "bytes": 17680,
+      "sha256": "933bbe79c160a8313cb3cb44acda27e9bec094d0eee8998f78a058366fd94c7a"
     },
     {
       "path": "src/router/responses.rs",
@@ -1759,9 +2424,64 @@
       "sha256": "4d9d2aa39abadd23d2d223a8fd4a9976c5721249bf982e3fefe933f82c030cee"
     },
     {
+      "path": "src/router/search.rs",
+      "bytes": 8963,
+      "sha256": "870fbe795862407ad444691d8bbbf522e596dfbc556daab1e6c209494868649c"
+    },
+    {
+      "path": "src/router/tests/assignment.rs",
+      "bytes": 16162,
+      "sha256": "d9982780e870e768f157c3e387359c28897bc478f523098925e1fd94428e9d10"
+    },
+    {
+      "path": "src/router/tests/codex.rs",
+      "bytes": 2903,
+      "sha256": "71f4a25c26bdab45eddcc6c167217262aa7dde65d58cd66c7d61cbd5dfb448e3"
+    },
+    {
+      "path": "src/router/tests/design_gate.rs",
+      "bytes": 14727,
+      "sha256": "4382eeafbb38abab221bb8cf0adb865bb636a8a377443cb6f2d9309a569a9ef9"
+    },
+    {
+      "path": "src/router/tests/discovery.rs",
+      "bytes": 20595,
+      "sha256": "532db771a8af16c08351bda4db87e33cf5d582ee3abde6123a3e75e201b9b46a"
+    },
+    {
+      "path": "src/router/tests/durable.rs",
+      "bytes": 4090,
+      "sha256": "d1ffa222a26b1f2ea9368bfde0b16d009a2833578058deccc3affff32066bf0d"
+    },
+    {
+      "path": "src/router/tests/execution.rs",
+      "bytes": 24109,
+      "sha256": "411516eb3ee6353345ddc8c9470f13e6b2d84b220c3b0ae199ee153e12bbce53"
+    },
+    {
+      "path": "src/router/tests/native.rs",
+      "bytes": 3433,
+      "sha256": "25a4eea61f57bb1a93f8d339a16545962321df57f046692616c7320abbc5b751"
+    },
+    {
+      "path": "src/router/tests/policy.rs",
+      "bytes": 13829,
+      "sha256": "dd30fb4535bcf2b22f913942729234d9d2cff5cda14e12df83110c5d2e364871"
+    },
+    {
+      "path": "src/router/tests/search.rs",
+      "bytes": 4029,
+      "sha256": "8f36d5b87908c6ca78cb17cc02b4d44294de94d7937eaad9d653ab1704ebed14"
+    },
+    {
+      "path": "src/router/tests/tools.rs",
+      "bytes": 22489,
+      "sha256": "1edd23bc34bab3555aaa43c3bd9c8dca3e1c162ef5677934d4b95b8298786793"
+    },
+    {
       "path": "src/router/tools.rs",
-      "bytes": 57666,
-      "sha256": "a575db9a6cd103480d8753dbf9a3868895895b181b5fef4960e6a7725160594a"
+      "bytes": 35961,
+      "sha256": "bbc17d62b738e48ea3e79cae05454207eab7b3d575cebdabd26f3b70453f7440"
     },
     {
       "path": "src/rust_notices.rs",
@@ -1770,8 +2490,8 @@
     },
     {
       "path": "src/source_identity.rs",
-      "bytes": 4184,
-      "sha256": "34456385edd08f8c41946aceb2d7da3a8736ab5b72372764ffee365a8d2132b7"
+      "bytes": 4984,
+      "sha256": "1b0be51071c27986232eda9012fa1b7b18d5e14daf38848c9370aecad9125dfc"
     },
     {
       "path": "src/state/contracts.rs",
@@ -1799,9 +2519,14 @@
       "sha256": "f4b77bb3bb71cb65939caa6e5177ecc14c95e98d28485cef21686c5fd3559751"
     },
     {
+      "path": "src/update/activation.rs",
+      "bytes": 7711,
+      "sha256": "ad0cf16d076e96451412a1aa8f8a3e82e719f8670c9f5995dd3aeb4130ffced1"
+    },
+    {
       "path": "src/update.rs",
-      "bytes": 24476,
-      "sha256": "fe9bc3dbe8829b60c7f857bc5d77a1586ac23c2673285e215fb26fa4b25014da"
+      "bytes": 25002,
+      "sha256": "3a6ff20276ca5cf3b01501e953d22c7eba45e4de035ed89bc3be49e953a6f16d"
     },
     {
       "path": "src/util.rs",
@@ -1850,13 +2575,13 @@
     },
     {
       "path": "tests/capability_workflows.rs",
-      "bytes": 10956,
-      "sha256": "45af960fba49e174e607b05392a2a9eafd9e519eb03fd0dc8943d9d38c0410d0"
+      "bytes": 10805,
+      "sha256": "e848a86ce4e58f94d3a3c35a0616f195e4e7adfabc9fefa54055c031c9e703c7"
     },
     {
       "path": "tests/cli_workflow.rs",
-      "bytes": 10686,
-      "sha256": "c67f0432213cac569f0a95b270c0d389d938e186237371e920b00d0b7ee712b7"
+      "bytes": 10678,
+      "sha256": "b0e01ffb7c81973c39528a4b45966c184237e8ef22ff2a715aede3851d7d6549"
     },
     {
       "path": "tests/design_language_payload.rs",
@@ -1865,8 +2590,8 @@
     },
     {
       "path": "tests/desktop_acceptance.rs",
-      "bytes": 11560,
-      "sha256": "55ce89f872322321cf36d91cab43c506bb2332ef9b2fb80466f89673c6b4ab44"
+      "bytes": 16060,
+      "sha256": "0eb26687dac202ccce4a40030a7bcfdc67deb57f73f54eda5eece46974767fcf"
     },
     {
       "path": "tests/distribution.rs",
@@ -1890,8 +2615,8 @@
     },
     {
       "path": "tests/install_update.rs",
-      "bytes": 38836,
-      "sha256": "4448ce17183e712070d7716cda1374762654b1d048e31d194e11fc2813c000ff"
+      "bytes": 40948,
+      "sha256": "39dac16e6864295f976cad7e8a3b35d62d523e22c314819ff46e40b39acf96f0"
     },
     {
       "path": "tests/live_identity.rs",
@@ -1900,13 +2625,13 @@
     },
     {
       "path": "tests/mcp_state.rs",
-      "bytes": 52801,
-      "sha256": "3ca91fd243e43b45456a43fbc82eebdf80fa06c5f8a37c216e516daf2be28201"
+      "bytes": 52832,
+      "sha256": "b6bc187feca81064bc5cc7a4675ca60d8927d7ee704a6b784a2fb06714787ac2"
     },
     {
       "path": "tests/model_routing.rs",
-      "bytes": 44564,
-      "sha256": "5194c56cd9551af1e25247f0d46d12bdd10d22785a74d71c3c1ef1ae71aa3d3b"
+      "bytes": 47600,
+      "sha256": "45273640c71ec6f051c6a3f434824fcea47a866613962a45f4381636057753ee"
     },
     {
       "path": "tests/motion_payload.rs",
@@ -1937,6 +2662,11 @@
       "path": "tests/role_evaluation.rs",
       "bytes": 12631,
       "sha256": "c7f3c55fbe7a5de39acce25372e04239d419ee5feb86fdf9bbf6632df3e2658e"
+    },
+    {
+      "path": "tests/runtime_experiments.rs",
+      "bytes": 1532,
+      "sha256": "cee6c14ac310d9e55783bd2be9bc842167c3017ee726c9c4e4fb8588c18b2fca"
     },
     {
       "path": "tests/runtime_simplification.rs",
@@ -1997,16 +2727,16 @@
     "global_skills": 14,
     "runtime_packages": 2,
     "design_mcp_tools": 13,
-    "worker_tools": 17,
+    "worker_tools": 18,
     "openpencil_operations": {
       "read": 29,
       "write": 58
     },
-    "cargo_lock_records": 234,
+    "cargo_lock_records": 247,
     "npm_lock_records_including_root": 409,
     "python_locked_wheels": 97,
-    "graph_nodes": 881,
-    "graph_edges": 1460
+    "graph_nodes": 882,
+    "graph_edges": 1336
   },
   "catalog": {
     "schema_version": 1,
@@ -16999,54 +17729,13 @@
         "role": "deep-research",
         "tools": [
           "workspace_read",
-          "workspace_list"
+          "workspace_list",
+          "workspace_search"
         ],
         "required_tools": [],
         "verification_tools": [],
         "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool.",
         "min_tier": "T2_SYNTHESIS",
-        "alternative_roles": [
-          "frontend-engineering",
-          "backend-engineering",
-          "brand-guidelines",
-          "web-design",
-          "mobile-design",
-          "seo",
-          "animation",
-          "project-review",
-          "planning",
-          "product-management",
-          "database",
-          "systems-engineering",
-          "devops-infrastructure",
-          "marketing",
-          "executive-strategy",
-          "data-analysis",
-          "project-scaffolding",
-          "optimization",
-          "financial-analysis",
-          "technical-leadership",
-          "market-analysis",
-          "venture-validation",
-          "localization",
-          "spreadsheet-analysis",
-          "mobile-engineering",
-          "it-operations",
-          "documentation",
-          "graphic-design",
-          "security-engineering",
-          "quality-assurance",
-          "ai-engineering",
-          "data-engineering",
-          "accessibility-engineering",
-          "user-research",
-          "desktop-engineering",
-          "mcp-engineering",
-          "experimentation",
-          "release-engineering",
-          "data-migration",
-          "office-production"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17061,48 +17750,6 @@
         "verification_tools": [],
         "rule": "Use the declared deterministic operation and input as data. A compound or ambiguous objective must resolve upward; no tools are available in this workflow.",
         "min_tier": "T1_DETERMINISTIC",
-        "alternative_roles": [
-          "frontend-engineering",
-          "backend-engineering",
-          "brand-guidelines",
-          "web-design",
-          "mobile-design",
-          "seo",
-          "deep-research",
-          "animation",
-          "project-review",
-          "planning",
-          "product-management",
-          "database",
-          "systems-engineering",
-          "devops-infrastructure",
-          "marketing",
-          "executive-strategy",
-          "project-scaffolding",
-          "optimization",
-          "financial-analysis",
-          "technical-leadership",
-          "market-analysis",
-          "venture-validation",
-          "localization",
-          "spreadsheet-analysis",
-          "mobile-engineering",
-          "it-operations",
-          "documentation",
-          "graphic-design",
-          "security-engineering",
-          "quality-assurance",
-          "ai-engineering",
-          "data-engineering",
-          "accessibility-engineering",
-          "user-research",
-          "desktop-engineering",
-          "mcp-engineering",
-          "experimentation",
-          "release-engineering",
-          "data-migration",
-          "office-production"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17116,7 +17763,8 @@
         "tools": [
           "workspace_read",
           "workspace_list",
-          "workspace_write"
+          "workspace_write",
+          "workspace_search"
         ],
         "required_tools": [
           "workspace_write",
@@ -17127,21 +17775,6 @@
         ],
         "rule": "Write only assigned project files and read back each changed artifact. Return awaiting_host_verification; the host must run declared build/tests and report current evidence through verification_handoff. No shell, dependency installation, commit, deployment or external effects are granted.",
         "min_tier": "T2_SYNTHESIS",
-        "alternative_roles": [
-          "frontend-engineering",
-          "mobile-engineering",
-          "desktop-engineering",
-          "data-engineering",
-          "ai-engineering",
-          "mcp-engineering",
-          "systems-engineering",
-          "database",
-          "optimization",
-          "data-migration",
-          "devops-infrastructure",
-          "release-engineering",
-          "project-scaffolding"
-        ],
         "host_verification": true,
         "budget_class": "static",
         "interactive": false,
@@ -17153,7 +17786,8 @@
         "role": "project-review",
         "tools": [
           "workspace_read",
-          "workspace_list"
+          "workspace_list",
+          "workspace_search"
         ],
         "required_tools": [
           "workspace_read"
@@ -17161,26 +17795,6 @@
         "verification_tools": [],
         "rule": "Return evidence-linked findings. Source mutation and design rendering are unavailable; add a separately justified deliverable if actual production is required.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "frontend-engineering",
-          "backend-engineering",
-          "mobile-engineering",
-          "desktop-engineering",
-          "data-engineering",
-          "ai-engineering",
-          "mcp-engineering",
-          "systems-engineering",
-          "database",
-          "optimization",
-          "data-migration",
-          "devops-infrastructure",
-          "release-engineering",
-          "project-scaffolding",
-          "technical-leadership",
-          "security-engineering",
-          "quality-assurance",
-          "accessibility-engineering"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17195,7 +17809,8 @@
           "workspace_list",
           "design/browser_screenshot",
           "design/odiff_compare",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "inspect_image"
@@ -17205,12 +17820,6 @@
         ],
         "rule": "Inspect actual pixels against the brief and multiple relevant references, never similarity to one example alone. Locate defects in concept, composition, construction, coherence and placement fit; distinguish taste from correctness. Pixel diffs do not grade appeal. Captures and diff artifacts are permitted; source and canvas mutations are absent.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "web-design",
-          "mobile-design",
-          "graphic-design",
-          "accessibility-engineering"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17226,7 +17835,8 @@
           "workspace_list",
           "workspace_write",
           "design/browser_screenshot",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "workspace_write",
@@ -17240,12 +17850,6 @@
         ],
         "rule": "Use Playwright for Grid, filters, Canvas/WebGL and live DOM. Inspect at verified 2x scale; a static-card renderer cannot replace DOM verification.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "mobile-design",
-          "frontend-engineering",
-          "accessibility-engineering",
-          "desktop-engineering"
-        ],
         "host_verification": true,
         "budget_class": "composition",
         "interactive": true,
@@ -17265,7 +17869,8 @@
           "design/openpencil_document",
           "design/openpencil_edit",
           "design/openpencil_export",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/openpencil_inspect",
@@ -17278,11 +17883,6 @@
         ],
         "rule": "Use OpenPencil file operations in the assigned design workspace. Keep editable .fig source, inspect its saved layers (schema discovery does not count) and exported pixels, and link evidence to the saved revision. Compile canonical tokens before editing. A flat screenshot cannot replace an editable design.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "mobile-design",
-          "graphic-design",
-          "brand-guidelines"
-        ],
         "host_verification": true,
         "budget_class": "composition",
         "interactive": false,
@@ -17297,7 +17897,8 @@
           "workspace_list",
           "design/openpencil_inspect",
           "design/openpencil_export",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/openpencil_inspect",
@@ -17309,11 +17910,6 @@
         ],
         "rule": "Inspect saved layers and exported pixels, bind the export to the consumed source revision, and preserve the editable source unchanged. No token source or edit is required. SVG exports also require source readback.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "mobile-design",
-          "graphic-design",
-          "brand-guidelines"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17329,7 +17925,8 @@
           "workspace_list",
           "workspace_write",
           "design/static_render",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/static_render",
@@ -17340,9 +17937,6 @@
         ],
         "rule": "Use Satori/resvg for text/image composition with canonical tokens and supported fonts/Flexbox. Create image layers with a suitable available producer first; this renderer is not an image generator. Inspect hierarchy, crop, typography and brand fit at placement size and revise visible defects. Use web-interface for full DOM features; compose both only for distinct deliverables.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "brand-guidelines"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17358,7 +17952,8 @@
           "workspace_list",
           "workspace_write",
           "design/kroki_render",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/kroki_render",
@@ -17369,12 +17964,6 @@
         ],
         "rule": "Use Kroki declarative layouts and the built-in SVGO/Playwright QA. Never replace graph layout with hand-positioned SVG coordinates.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "systems-engineering",
-          "technical-leadership",
-          "documentation",
-          "data-analysis"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17390,7 +17979,6 @@
         "verification_tools": [],
         "rule": "Preserve existing scenes and outputs. Choose and authorize a host encoder explicitly; Mirket supplies no video encoder. Do not substitute browser animation for encoded video. Interrupted workers bound to the retired renderer cannot resume under a changed tool set.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [],
         "execution_owner": "host",
         "host_verification": false,
         "budget_class": "motion",
@@ -17407,7 +17995,8 @@
           "workspace_list",
           "workspace_write",
           "design/browser_screenshot",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "workspace_write",
@@ -17421,9 +18010,6 @@
         ],
         "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. For requested subject animation, verify its moving parts in a subject-only playback crop; background effects and whole-image entrances cannot establish internal articulation. Inspect saved states; do not claim playback smoothness from a seek. The retained motion workflow is host-owned and requires an explicitly selected encoder for video.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "frontend-engineering"
-        ],
         "host_verification": true,
         "budget_class": "motion",
         "interactive": true,
@@ -17439,7 +18025,8 @@
           "workspace_list",
           "workspace_write",
           "design/typst_compile",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/typst_compile",
@@ -17450,9 +18037,6 @@
         ],
         "rule": "Use Typst for paged output. Inspect every saved page; Playwright is QA support rather than an alternative PDF authoring pipeline.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "documentation"
-        ],
         "host_verification": false,
         "budget_class": "composition",
         "interactive": false,
@@ -17468,7 +18052,8 @@
           "workspace_list",
           "workspace_write",
           "design/vector_render",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/vector_render",
@@ -17480,7 +18065,6 @@
         ],
         "rule": "Choose SVG for requested vector editability or suitable geometric artwork, never as a silent fallback for rich raster illustration. Author meaningful geometry and semantic groups; compile tokens, render with vector_render, read back source and inspect pixels. Critique the visual idea and construction against the brief; revise material defects. An inspected render alone is not quality acceptance.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17494,7 +18078,8 @@
           "workspace_read",
           "workspace_list",
           "design/raster_transform",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/raster_transform",
@@ -17505,10 +18090,6 @@
         ],
         "rule": "Use Sharp before compositing. Inspect output dimensions and focal crop; generation and general-purpose code execution are unavailable.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "frontend-engineering",
-          "office-production"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17523,7 +18104,8 @@
           "workspace_list",
           "design/svg_optimize",
           "design/browser_screenshot",
-          "inspect_image"
+          "inspect_image",
+          "workspace_search"
         ],
         "required_tools": [
           "design/svg_optimize",
@@ -17536,10 +18118,6 @@
         ],
         "rule": "Use SVGO for SVG hygiene and Playwright for its rendered comparison. Do not treat an optimized path or hash as visual equivalence.",
         "min_tier": "T3_ARCHITECT",
-        "alternative_roles": [
-          "frontend-engineering",
-          "office-production"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17560,7 +18138,6 @@
         ],
         "rule": "Use Odiff against comparable pixels. By default report equality or differences; set expect_match=true only for an equality gate. Keep diagnostics and input identities. Add visual-review when interpretation or refinement is required.",
         "min_tier": "T1_DETERMINISTIC",
-        "alternative_roles": [],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17573,7 +18150,8 @@
         "tools": [
           "workspace_read",
           "workspace_list",
-          "design/tokens_compile"
+          "design/tokens_compile",
+          "workspace_search"
         ],
         "required_tools": [
           "design/tokens_compile",
@@ -17584,11 +18162,6 @@
         ],
         "rule": "Style Dictionary is the token source of truth. Read back all generated formats before rendering; a role cannot override canonical token routing.",
         "min_tier": "T1_DETERMINISTIC",
-        "alternative_roles": [
-          "frontend-engineering",
-          "web-design",
-          "graphic-design"
-        ],
         "host_verification": false,
         "budget_class": "static",
         "interactive": false,
@@ -17766,6 +18339,8 @@
           ]
         },
         "include_dir": "0.7",
+        "ignore": "0.4",
+        "regex": "1",
         "flate2": {
           "version": "1.1",
           "default-features": false,
@@ -17873,6 +18448,15 @@
       ]
     },
     "rust_locked_packages": [
+      {
+        "name": "aho-corasick",
+        "version": "1.1.5",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "c982642fa9e8606056828ee9a8505737230110bb1099153c79efe865c59d12ba",
+        "dependencies": [
+          "memchr"
+        ]
+      },
       {
         "name": "android_system_properties",
         "version": "0.1.6",
@@ -17984,6 +18568,16 @@
         "checksum": "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71",
         "dependencies": [
           "generic-array"
+        ]
+      },
+      {
+        "name": "bstr",
+        "version": "1.13.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "6bb31b46c14244e20ee9984b11bf5c992b91fb6939fea616e3512c8baecdbe5f",
+        "dependencies": [
+          "memchr",
+          "serde_core"
         ]
       },
       {
@@ -18121,6 +18715,31 @@
         "dependencies": [
           "cfg-if"
         ]
+      },
+      {
+        "name": "crossbeam-deque",
+        "version": "0.8.8",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "622f3fc73690be383c7214310406f28a90e6edeadc3cea882f9d71e495b9711a",
+        "dependencies": [
+          "crossbeam-epoch",
+          "crossbeam-utils"
+        ]
+      },
+      {
+        "name": "crossbeam-epoch",
+        "version": "0.9.21",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "dc74980687109a3b14c72fd458107bf0baa1da1a1a805e178d15501ba9b86d9d",
+        "dependencies": [
+          "crossbeam-utils"
+        ]
+      },
+      {
+        "name": "crossbeam-utils",
+        "version": "0.8.23",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "a31eee39dddec8330830986fcd7625edb5a24ec90ea038215273bbc3adb08ac6"
       },
       {
         "name": "crypto-common",
@@ -18404,6 +19023,19 @@
         ]
       },
       {
+        "name": "globset",
+        "version": "0.4.20",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "07c34a9410465b45bd9787443bc7370f37735bad04b0f0cd57ff1a3186c98988",
+        "dependencies": [
+          "aho-corasick",
+          "bstr",
+          "log",
+          "regex-automata",
+          "regex-syntax"
+        ]
+      },
+      {
         "name": "hashbrown",
         "version": "0.15.5",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
@@ -18666,6 +19298,22 @@
         ]
       },
       {
+        "name": "ignore",
+        "version": "0.4.33",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "00b69833ed729dc5aa7d19541d96d6cf8e9137194207a04916d658e43168402f",
+        "dependencies": [
+          "crossbeam-deque",
+          "globset",
+          "log",
+          "memchr",
+          "regex-automata",
+          "same-file",
+          "walkdir",
+          "winapi-util"
+        ]
+      },
+      {
         "name": "include_dir",
         "version": "0.7.4",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
@@ -18790,7 +19438,9 @@
           "anyhow",
           "clap",
           "flate2",
+          "ignore",
           "include_dir",
+          "regex",
           "reqwest",
           "rmcp",
           "roxmltree",
@@ -19012,6 +19662,35 @@
         ]
       },
       {
+        "name": "regex",
+        "version": "1.13.1",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d",
+        "dependencies": [
+          "aho-corasick",
+          "memchr",
+          "regex-automata",
+          "regex-syntax"
+        ]
+      },
+      {
+        "name": "regex-automata",
+        "version": "0.4.18",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "ad8553b9b26413251cbf30e620595c7a41b3887f03da04579c0e6b0d6a06b4b2",
+        "dependencies": [
+          "aho-corasick",
+          "memchr",
+          "regex-syntax"
+        ]
+      },
+      {
+        "name": "regex-syntax",
+        "version": "0.8.11",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
+      },
+      {
         "name": "reqwest",
         "version": "0.12.28",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
@@ -19191,6 +19870,15 @@
         "version": "1.0.23",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
         "checksum": "9774ba4a74de5f7b1c1451ed6cd5285a32eddb5cccb8cc655a4e50009e06477f"
+      },
+      {
+        "name": "same-file",
+        "version": "1.0.6",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502",
+        "dependencies": [
+          "winapi-util"
+        ]
       },
       {
         "name": "schemars",
@@ -19705,6 +20393,16 @@
         "checksum": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
       },
       {
+        "name": "walkdir",
+        "version": "2.5.0",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b",
+        "dependencies": [
+          "same-file",
+          "winapi-util"
+        ]
+      },
+      {
         "name": "want",
         "version": "0.3.2",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
@@ -19802,6 +20500,15 @@
         "checksum": "1c1c8e20c8a38fc7d65abfe74eb7280e4aa667e8eec8bc84996d2874810748d9",
         "dependencies": [
           "rustls-pki-types"
+        ]
+      },
+      {
+        "name": "winapi-util",
+        "version": "0.1.11",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22",
+        "dependencies": [
+          "windows-sys 0.61.2"
         ]
       },
       {
@@ -26818,8 +27525,8 @@
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 20876,
-      "sha256": "db9c34ab5fd8dfae293c3a7deeac17b1efae09b60cea1065476dc4409ab0a3f5"
+      "bytes": 24128,
+      "sha256": "bfdec0487fdfc61c27bfb8e9c9629168fb4103690a21d9b4c84ed4017e80c786"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -33380,203 +34087,8 @@
     },
     {
       "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:accessibility-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:ai-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:animation"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:backend-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:brand-guidelines"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:data-analysis"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:data-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:data-migration"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:database"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:desktop-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:devops-infrastructure"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:documentation"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:executive-strategy"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:experimentation"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:financial-analysis"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:it-operations"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:localization"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:market-analysis"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:marketing"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:mcp-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:mobile-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:office-production"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:optimization"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:planning"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:product-management"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:project-review"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:project-scaffolding"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:quality-assurance"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:release-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:security-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:seo"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:spreadsheet-analysis"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:systems-engineering"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:technical-leadership"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:user-research"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:venture-validation"
-    },
-    {
-      "from": "workflow:analysis",
-      "relation": "alternative_role",
-      "to": "role:web-design"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:analysis",
@@ -33600,18 +34112,8 @@
     },
     {
       "from": "workflow:design-tokens",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:design-tokens",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:design-tokens",
-      "relation": "alternative_role",
-      "to": "role:web-design"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:design-tokens",
@@ -33656,27 +34158,12 @@
     {
       "from": "workflow:diagram",
       "relation": "allows",
+      "to": "tool:workspace_search"
+    },
+    {
+      "from": "workflow:diagram",
+      "relation": "allows",
       "to": "tool:workspace_write"
-    },
-    {
-      "from": "workflow:diagram",
-      "relation": "alternative_role",
-      "to": "role:data-analysis"
-    },
-    {
-      "from": "workflow:diagram",
-      "relation": "alternative_role",
-      "to": "role:documentation"
-    },
-    {
-      "from": "workflow:diagram",
-      "relation": "alternative_role",
-      "to": "role:systems-engineering"
-    },
-    {
-      "from": "workflow:diagram",
-      "relation": "alternative_role",
-      "to": "role:technical-leadership"
     },
     {
       "from": "workflow:diagram",
@@ -33725,18 +34212,8 @@
     },
     {
       "from": "workflow:editable-export",
-      "relation": "alternative_role",
-      "to": "role:brand-guidelines"
-    },
-    {
-      "from": "workflow:editable-export",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:editable-export",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:editable-export",
@@ -33806,22 +34283,12 @@
     {
       "from": "workflow:editable-interface",
       "relation": "allows",
+      "to": "tool:workspace_search"
+    },
+    {
+      "from": "workflow:editable-interface",
+      "relation": "allows",
       "to": "tool:workspace_write"
-    },
-    {
-      "from": "workflow:editable-interface",
-      "relation": "alternative_role",
-      "to": "role:brand-guidelines"
-    },
-    {
-      "from": "workflow:editable-interface",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:editable-interface",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
     },
     {
       "from": "workflow:editable-interface",
@@ -33876,12 +34343,12 @@
     {
       "from": "workflow:interactive-motion",
       "relation": "allows",
-      "to": "tool:workspace_write"
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:interactive-motion",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
+      "relation": "allows",
+      "to": "tool:workspace_write"
     },
     {
       "from": "workflow:interactive-motion",
@@ -33946,12 +34413,12 @@
     {
       "from": "workflow:paged-media",
       "relation": "allows",
-      "to": "tool:workspace_write"
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:paged-media",
-      "relation": "alternative_role",
-      "to": "role:documentation"
+      "relation": "allows",
+      "to": "tool:workspace_write"
     },
     {
       "from": "workflow:paged-media",
@@ -34015,13 +34482,8 @@
     },
     {
       "from": "workflow:raster-processing",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:raster-processing",
-      "relation": "alternative_role",
-      "to": "role:office-production"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:raster-processing",
@@ -34056,72 +34518,12 @@
     {
       "from": "workflow:source-implementation",
       "relation": "allows",
+      "to": "tool:workspace_search"
+    },
+    {
+      "from": "workflow:source-implementation",
+      "relation": "allows",
       "to": "tool:workspace_write"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:ai-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:data-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:data-migration"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:database"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:desktop-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:devops-infrastructure"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:mcp-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:mobile-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:optimization"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:project-scaffolding"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:release-engineering"
-    },
-    {
-      "from": "workflow:source-implementation",
-      "relation": "alternative_role",
-      "to": "role:systems-engineering"
     },
     {
       "from": "workflow:source-implementation",
@@ -34155,93 +34557,8 @@
     },
     {
       "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:accessibility-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:ai-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:backend-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:data-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:data-migration"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:database"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:desktop-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:devops-infrastructure"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:mcp-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:mobile-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:optimization"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:project-scaffolding"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:quality-assurance"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:release-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:security-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:systems-engineering"
-    },
-    {
-      "from": "workflow:source-review",
-      "relation": "alternative_role",
-      "to": "role:technical-leadership"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:source-review",
@@ -34276,12 +34593,12 @@
     {
       "from": "workflow:static-graphic",
       "relation": "allows",
-      "to": "tool:workspace_write"
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:static-graphic",
-      "relation": "alternative_role",
-      "to": "role:brand-guidelines"
+      "relation": "allows",
+      "to": "tool:workspace_write"
     },
     {
       "from": "workflow:static-graphic",
@@ -34302,206 +34619,6 @@
       "from": "workflow:static-graphic",
       "relation": "verification_tools",
       "to": "tool:inspect_image"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:accessibility-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:ai-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:animation"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:backend-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:brand-guidelines"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:data-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:data-migration"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:database"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:deep-research"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:desktop-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:devops-infrastructure"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:documentation"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:executive-strategy"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:experimentation"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:financial-analysis"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:it-operations"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:localization"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:market-analysis"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:marketing"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:mcp-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:mobile-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:office-production"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:optimization"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:planning"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:product-management"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:project-review"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:project-scaffolding"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:quality-assurance"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:release-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:security-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:seo"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:spreadsheet-analysis"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:systems-engineering"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:technical-leadership"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:user-research"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:venture-validation"
-    },
-    {
-      "from": "workflow:structured-response",
-      "relation": "alternative_role",
-      "to": "role:web-design"
     },
     {
       "from": "workflow:structured-response",
@@ -34527,6 +34644,11 @@
       "from": "workflow:vector-art",
       "relation": "allows",
       "to": "tool:workspace_read"
+    },
+    {
+      "from": "workflow:vector-art",
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:vector-art",
@@ -34585,13 +34707,8 @@
     },
     {
       "from": "workflow:vector-optimization",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:vector-optimization",
-      "relation": "alternative_role",
-      "to": "role:office-production"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:vector-optimization",
@@ -34650,23 +34767,8 @@
     },
     {
       "from": "workflow:visual-review",
-      "relation": "alternative_role",
-      "to": "role:accessibility-engineering"
-    },
-    {
-      "from": "workflow:visual-review",
-      "relation": "alternative_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:visual-review",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
-    },
-    {
-      "from": "workflow:visual-review",
-      "relation": "alternative_role",
-      "to": "role:web-design"
+      "relation": "allows",
+      "to": "tool:workspace_search"
     },
     {
       "from": "workflow:visual-review",
@@ -34706,27 +34808,12 @@
     {
       "from": "workflow:web-interface",
       "relation": "allows",
+      "to": "tool:workspace_search"
+    },
+    {
+      "from": "workflow:web-interface",
+      "relation": "allows",
       "to": "tool:workspace_write"
-    },
-    {
-      "from": "workflow:web-interface",
-      "relation": "alternative_role",
-      "to": "role:accessibility-engineering"
-    },
-    {
-      "from": "workflow:web-interface",
-      "relation": "alternative_role",
-      "to": "role:desktop-engineering"
-    },
-    {
-      "from": "workflow:web-interface",
-      "relation": "alternative_role",
-      "to": "role:frontend-engineering"
-    },
-    {
-      "from": "workflow:web-interface",
-      "relation": "alternative_role",
-      "to": "role:mobile-design"
     },
     {
       "from": "workflow:web-interface",
@@ -34789,6 +34876,7 @@
     "tests/project_identity.rs",
     "tests/published_update.rs",
     "tests/role_evaluation.rs",
+    "tests/runtime_experiments.rs",
     "tests/runtime_simplification.rs",
     "tests/setup_generation.rs",
     "tests/source_contract.rs",
@@ -34838,9 +34926,11 @@
     "evals/harness-remediation/retrieval-ablation.py",
     "evals/harness-remediation/startup_probe.py",
     "evals/harness-remediation/test_feedback.py",
-    "evals/harness-remediation/test_platform.py"
+    "evals/harness-remediation/test_platform.py",
+    "evals/role-workflow/experiments/journal-prototype.rs",
+    "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "6a9ae3edda73a5eb0118d8614f5ff7ff61aba7444d99838ff729a9486b880744",
+  "source_sha256": "e622e5c79c2d882748ece79ede419186fd9e9d6a52688da98f9b9b675bf55b18",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
@@ -34904,8 +34994,8 @@
     },
     {
       "name": "spawn_subagent",
-      "description": "Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
-      "annotations_source": "description = \"Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then tier/vision floors, high effort, upward-only failover and artifact verification. Design-production workflows require design_input (image_to_code target, native_specimen medium/reason or code_fallback reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.\",\n        annotations(read_only_hint = false, open_world_hint = true)"
+      "description": "Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then capability/vision floors, supported effort, bounded calls and artifact verification. Design-production workflows require design_input (image_to_code target or native_specimen medium/reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.",
+      "annotations_source": "description = \"Run a Mirket-owned worker with mandatory task_needs and project. Owned workflows determine routing floors; requested_tier may raise them. Select only actual workflow deliverables; empty assigned_tools uses scoped defaults. Loads selected role/task skill bodies, enforces their owned tool scope on every dispatch, then capability/vision floors, supported effort, bounded calls and artifact verification. Design-production workflows require design_input (image_to_code target or native_specimen medium/reason) and ordered target/final quality reviews within a shared deliverable budget (15/30/45 minutes). Role text never grants permissions. No shell or nested native agents; independent host tools remain host-controlled.\",\n        annotations(read_only_hint = false, open_world_hint = true)"
     },
     {
       "name": "catalog_search",
@@ -35010,8 +35100,8 @@
       "name": "openpencil_export",
       "description": "Export the saved OpenPencil document or selected node to PNG at 2x or SVG. Inspect PNG pixels independently; export is not design acceptance.",
       "policy": {
-        "min_tier": "T3_ARCHITECT",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 240000
     },
@@ -35028,8 +35118,8 @@
       "name": "static_render",
       "description": "Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection.",
       "policy": {
-        "min_tier": "T3_ARCHITECT",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 600000
     },
@@ -35037,8 +35127,8 @@
       "name": "browser_screenshot",
       "description": "Observe the authored page without injecting styles or compiling tokens. Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison.",
       "policy": {
-        "min_tier": "T3_ARCHITECT",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 240000
     },
@@ -35046,8 +35136,8 @@
       "name": "kroki_render",
       "description": "POST a diagram to Kroki and inspect its optimized SVG or PNG output.",
       "policy": {
-        "min_tier": "T2_SYNTHESIS",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 240000
     },
@@ -35055,8 +35145,8 @@
       "name": "typst_compile",
       "description": "Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection.",
       "policy": {
-        "min_tier": "T3_ARCHITECT",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 1500000
     },
@@ -35073,8 +35163,8 @@
       "name": "vector_render",
       "description": "Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki.",
       "policy": {
-        "min_tier": "T3_ARCHITECT",
-        "requires_vision": true
+        "min_tier": "T1_DETERMINISTIC",
+        "requires_vision": false
       },
       "outer_timeout_ms": 180000
     },
@@ -42901,6 +42991,10 @@
       "kind": "worker_tool"
     },
     {
+      "id": "tool:workspace_search",
+      "kind": "worker_tool"
+    },
+    {
       "id": "tool:workspace_write",
       "kind": "worker_tool"
     },
@@ -43039,12 +43133,14 @@
     "MIRKET_DIRECT": [
       "src/cli.rs",
       "src/dev.rs",
-      "src/update.rs"
+      "src/update.rs",
+      "src/update/activation.rs"
     ],
     "MIRKET_EXECUTION_SHA256": [
       "src/identity.rs",
       "src/router/durable.rs",
-      "src/router/execution.rs"
+      "src/router/execution.rs",
+      "src/router/tests/durable.rs"
     ],
     "MIRKET_ISOLATED_TEST": [
       "runtime/design/tools/test/live-browser.test.mjs",
@@ -43063,7 +43159,7 @@
       "runtime/design/tools/test/local.test.mjs"
     ],
     "MIRKET_ROUTER_TEST_CREDENTIAL": [
-      "src/router/discovery.rs"
+      "src/router/tests/discovery.rs"
     ],
     "MIRKET_SCOPED_WORKER": [
       "runtime/design/tools/paths.mjs",

@@ -62,6 +62,12 @@ enum Command {
     Update {
         #[arg(long)]
         check: bool,
+        /// Preview candidate validation and the service/client activation checklist.
+        #[arg(long, conflicts_with_all = ["check", "activate"])]
+        plan: bool,
+        /// Apply/resume activation, restoring only previously running groups.
+        #[arg(long, conflicts_with = "check")]
+        activate: bool,
         #[arg(long)]
         from: Option<PathBuf>,
         #[arg(long, requires = "from")]
@@ -618,7 +624,7 @@ enum PackageCommand {
     List,
     /// Inspect the pinned source, files, runtime and tool policy for a package.
     Show { id: String },
-    /// Verify the content of selected packages without starting their processes.
+    /// Report live readiness separately from installation; never starts services or a VM.
     Status,
     /// Start a reviewed local service profile; never downloads images.
     Start {
@@ -633,11 +639,13 @@ enum PackageCommand {
         #[arg(long)]
         purge_data: bool,
     },
-    /// Install reviewed packages, replacing the saved package selection.
+    /// Add reviewed packages while preserving existing selections and settings.
     Install {
         #[arg(required = true, num_args = 1..)]
         ids: Vec<String>,
     },
+    /// Replace the complete saved package selection (omit IDs to deselect all).
+    Set { ids: Vec<String> },
     /// Remove selected package registrations through the saved environment setup.
     Remove {
         #[arg(required = true, num_args = 1..)]
@@ -1110,6 +1118,27 @@ fn package_arguments(arguments: &str) -> Result<serde_json::Map<String, Value>> 
         .context("package arguments must be a JSON object")
 }
 
+fn select_packages(options: &mut SetupOptions, ids: Vec<String>, replace: bool) -> Result<()> {
+    let registry = packages::Registry::embedded()?;
+    registry.validate_selection(&ids)?;
+    let mut selected = if replace {
+        Vec::new()
+    } else {
+        options.packages.clone()
+    };
+    for id in ids {
+        if !selected.contains(&id) {
+            selected.push(id);
+        }
+    }
+    registry.validate_selection(&selected)?;
+    options
+        .package_settings
+        .retain(|id, _| selected.contains(id));
+    options.packages = selected;
+    Ok(())
+}
+
 fn saved_package_options(paths: &Paths) -> Result<(SetupOptions, String)> {
     let snapshot = install::setup_snapshot(paths)?;
     Ok((
@@ -1386,6 +1415,8 @@ fn dispatch(cli: Cli) -> Result<i32> {
         }
         Command::Update {
             check,
+            plan,
+            activate,
             from,
             sha256,
             entrypoint,
@@ -1396,6 +1427,8 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 from,
                 sha256,
                 check,
+                plan,
+                activate,
                 entrypoint,
                 expected_entrypoint_sha256,
             },
@@ -1693,7 +1726,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 let selected = install::saved_options(&paths)?
                     .map(|s| s.packages)
                     .unwrap_or_default();
-                packages::doctor(&paths, &selected)?
+                packages::status(&paths, &selected)?
             }
             PackageCommand::Start { id, groups } => packages::service_start(&paths, &id, &groups)?,
             PackageCommand::Stop { id, purge_data } => {
@@ -1708,10 +1741,17 @@ fn dispatch(cli: Cli) -> Result<i32> {
             }
             PackageCommand::Install { ids } => {
                 let (mut options, token) = saved_package_options(&paths)?;
-                options.packages = ids;
-                options
-                    .package_settings
-                    .retain(|id, _| options.packages.contains(id));
+                select_packages(&mut options, ids, false)?;
+                serde_json::to_value(install::setup_checked(
+                    &paths,
+                    &catalog()?,
+                    &options,
+                    Some(&token),
+                )?)?
+            }
+            PackageCommand::Set { ids } => {
+                let (mut options, token) = saved_package_options(&paths)?;
+                select_packages(&mut options, ids, true)?;
                 serde_json::to_value(install::setup_checked(
                     &paths,
                     &catalog()?,
@@ -1850,6 +1890,28 @@ fn dispatch(cli: Cli) -> Result<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn package_install_is_additive_and_set_is_explicit() {
+        let mut options = SetupOptions {
+            packages: vec!["design".into()],
+            ..Default::default()
+        };
+        options
+            .package_settings
+            .insert("design".into(), json!({"saved":true}));
+        select_packages(&mut options, vec!["agent-runtime".into()], false).unwrap();
+        assert_eq!(options.packages, ["design", "agent-runtime"]);
+        assert_eq!(options.package_settings["design"]["saved"], true);
+        let before = serde_json::to_value(&options).unwrap();
+        assert!(select_packages(&mut options, vec!["unknown".into()], true).is_err());
+        assert_eq!(serde_json::to_value(&options).unwrap(), before);
+        select_packages(&mut options, vec!["agent-runtime".into()], true).unwrap();
+        assert_eq!(options.packages, ["agent-runtime"]);
+        assert!(options.package_settings.is_empty());
+        select_packages(&mut options, vec![], true).unwrap();
+        assert!(options.packages.is_empty());
+    }
+
     #[test]
     fn removed_replay_is_scoped_to_setup_and_requires_an_explicit_home() {
         let args = [

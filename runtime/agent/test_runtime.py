@@ -12,6 +12,22 @@ import unittest
 
 
 class RuntimeTest(unittest.TestCase):
+    def test_ephemeral_recall_does_not_create_a_workflow(self):
+        result = self.call('worker_recall', {'request': {'memory_recall': 'off', 'objective': 'Synthetic ephemeral request'}})
+        self.assertEqual(result['state']['memories']['status'], 'disabled')
+        self.assertFalse((Path(self.temp.name) / ('a'*64) / 'workflows.sqlite').exists())
+
+    def test_shared_pause_contract(self):
+        sys.path.insert(0, str(Path(os.environ.get("MIRKET_BRIDGE", str(Path(__file__).with_name("bridge.py")))).parent))
+        from workflow import RECOVERY_CONTRACT, effective_deadline
+        for case in RECOVERY_CONTRACT["cases"]:
+            try:
+                value = effective_deadline(case["state"], case["now"])
+                value = value if value > case["now"] else None
+            except ValueError:
+                value = None
+            self.assertEqual(value, case["effective"])
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.environment = {**os.environ, 'MIRKET_AGENT_DATA': self.temp.name, 'PYTHONDONTWRITEBYTECODE': '1'}

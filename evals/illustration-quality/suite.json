@@ -3,7 +3,7 @@
   "id": "illustration-quality-v1",
   "checker": {
     "path": "src/role_eval.rs",
-    "sha256": "0dbb5be9a86bb7c9f7de3611ebe9441863a999895480a16e515fc97de2071b45"
+    "sha256": "3bdf0e049a39b5264d65d9919a9b2347082365ccd2b6fb5b8379a7141e5425a2"
   },
   "configurations": [
     {

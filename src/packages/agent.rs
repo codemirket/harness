@@ -50,6 +50,10 @@ pub fn files() -> Vec<(&'static str, &'static [u8])> {
             "model.json",
             include_bytes!("../../runtime/agent/model.json"),
         ),
+        (
+            "recovery-contract.json",
+            include_bytes!("../../runtime/agent/recovery-contract.json"),
+        ),
         ("bm25.json", include_bytes!("../../runtime/agent/bm25.json")),
         (
             "tests/test_runtime.py",

@@ -58,6 +58,12 @@ pub struct Trial {
     pub rationale: String,
     pub cost_usd: Option<f64>,
     pub latency_ms: Option<f64>,
+    #[serde(default)]
+    pub input_tokens: Option<u64>,
+    #[serde(default)]
+    pub output_tokens: Option<u64>,
+    #[serde(default)]
+    pub human_interventions: Option<u64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -279,6 +285,17 @@ pub fn validate(suite: &Suite, suite_sha256: &str, report: &RunReport) -> Result
             !trial.rationale.trim().is_empty(),
             "trial requires rationale"
         );
+        ensure!(
+            [
+                trial.input_tokens,
+                trial.output_tokens,
+                trial.human_interventions
+            ]
+            .into_iter()
+            .flatten()
+            .all(|n| n <= 1_000_000_000),
+            "invalid trial usage/intervention count"
+        );
         for value in [trial.cost_usd, trial.latency_ms].into_iter().flatten() {
             ensure!(
                 value.is_finite() && (0.0..=1e15).contains(&value),
@@ -330,7 +347,7 @@ pub fn validate(suite: &Suite, suite_sha256: &str, report: &RunReport) -> Result
         let scored: Vec<f64> = trials.iter().filter_map(|t| t.score).collect();
         let costs: Vec<f64> = trials.iter().filter_map(|t| t.cost_usd).collect();
         let latency: Vec<f64> = trials.iter().filter_map(|t| t.latency_ms).collect();
-        json!({"configuration":configuration,"split":split,"trials":trials.len(),"passed":trials.iter().filter(|t| t.outcome=="passed").count(),"task_failed":trials.iter().filter(|t| t.outcome=="task_failed").count(),"infrastructure_failed":trials.len()-scored.len(),"scored_trials":scored.len(),"mean_score":if scored.is_empty(){None}else{Some(scored.iter().sum::<f64>()/scored.len() as f64)},"known_cost_usd":costs.iter().sum::<f64>(),"unknown_cost_trials":trials.len()-costs.len(),"total_cost_usd":if costs.len()==trials.len(){Some(costs.iter().sum::<f64>())}else{None},"known_latency_trials":latency.len(),"mean_known_latency_ms":if latency.is_empty(){None}else{Some(latency.iter().sum::<f64>()/latency.len() as f64)}})
+        json!({"configuration":configuration,"split":split,"trials":trials.len(),"passed":trials.iter().filter(|t| t.outcome=="passed").count(),"task_failed":trials.iter().filter(|t| t.outcome=="task_failed").count(),"infrastructure_failed":trials.len()-scored.len(),"scored_trials":scored.len(),"mean_score":if scored.is_empty(){None}else{Some(scored.iter().sum::<f64>()/scored.len() as f64)},"known_input_tokens":trials.iter().filter_map(|t| t.input_tokens).sum::<u64>(),"unknown_input_trials":trials.iter().filter(|t| t.input_tokens.is_none()).count(),"known_output_tokens":trials.iter().filter_map(|t| t.output_tokens).sum::<u64>(),"unknown_output_trials":trials.iter().filter(|t| t.output_tokens.is_none()).count(),"known_human_interventions":trials.iter().filter_map(|t| t.human_interventions).sum::<u64>(),"unknown_intervention_trials":trials.iter().filter(|t| t.human_interventions.is_none()).count(),"known_cost_usd":costs.iter().sum::<f64>(),"unknown_cost_trials":trials.len()-costs.len(),"total_cost_usd":if costs.len()==trials.len(){Some(costs.iter().sum::<f64>())}else{None},"known_latency_trials":latency.len(),"mean_known_latency_ms":if latency.is_empty(){None}else{Some(latency.iter().sum::<f64>()/latency.len() as f64)}})
     }).collect();
     Ok(
         json!({"schema_version":1,"valid":true,"provenance":report.provenance,"aggregates":aggregates,"limits":"Verifies record consistency and current declared file identities; does not authenticate execution, grade semantics, or establish general role-quality improvement."}),

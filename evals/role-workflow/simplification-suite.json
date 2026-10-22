@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "id": "simplification-v1",
+  "checker": {
+    "path": "src/role_eval.rs",
+    "sha256": "3bdf0e049a39b5264d65d9919a9b2347082365ccd2b6fb5b8379a7141e5425a2"
+  },
+  "configurations": [
+    {
+      "id": "minimal-tools",
+      "file": {
+        "path": "evals/role-workflow/configurations/minimal-tools.json",
+        "sha256": "1eb91d9ef2d4c09fe9a9e5cc152d3da12df6a3c6225453bb2affce386580baac"
+      }
+    },
+    {
+      "id": "guidance-only",
+      "file": {
+        "path": "evals/role-workflow/configurations/guidance-only.json",
+        "sha256": "bdd565509157be22c73455b6d3c4f04ae59bee2c5959730217f23a7c82c8eaba"
+      }
+    },
+    {
+      "id": "full-harness",
+      "file": {
+        "path": "evals/role-workflow/configurations/full-harness.json",
+        "sha256": "bc2f2cd9dfec97b404ae3fce4746cc1dd7d584125c055b8344b91e5a0d498ffd"
+      }
+    }
+  ],
+  "trials_per_case": 3,
+  "development": [
+    "no-change",
+    "source-search",
+    "recovery"
+  ],
+  "held_out": [
+    "saved-export",
+    "multilingual-memory"
+  ],
+  "cases": [
+    {
+      "id": "no-change",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/simplification-no-change.md",
+        "sha256": "e03336183e84fb9c501e3fd5601be23349586f9830dac3e09dddf162113d7eeb"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/simplification-no-change.json",
+        "sha256": "4f38adb474a6f16743410fe2529460929d1206a61489e76234396b5eaa42ba21"
+      },
+      "criteria": [
+        "unchanged_source",
+        "source_evidence",
+        "host_checks"
+      ]
+    },
+    {
+      "id": "source-search",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/simplification-source-search.md",
+        "sha256": "266bd01ff6a7adaf4e2175153605606d0c28a671cddc12e076d878a9bc9fc151"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/simplification-source-search.json",
+        "sha256": "282d52174e2b53d02dcb32fd90f30d784ed05303bf4b1f6e67693ddbc305feec"
+      },
+      "criteria": [
+        "located_handler",
+        "bounded_search",
+        "scope_preserved"
+      ]
+    },
+    {
+      "id": "recovery",
+      "split": "development",
+      "input": {
+        "path": "evals/role-workflow/inputs/simplification-recovery.md",
+        "sha256": "87f74432d1afaeda5197178fdf83bbcde1de1f4e12791516d25e2d3da4ec6f66"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/simplification-recovery.json",
+        "sha256": "2501f20cff7b2fa44562041d253c50ece1580c7fc00f07e78e8b5316e25132b2"
+      },
+      "criteria": [
+        "no_duplicate_effect",
+        "stale_rejected",
+        "budget_retained"
+      ]
+    },
+    {
+      "id": "saved-export",
+      "split": "held_out",
+      "input": {
+        "path": "evals/role-workflow/inputs/simplification-saved-export.md",
+        "sha256": "c0ce57de810f3df341b67d4ae0357b059e236b15310673c51d98b93e7252ce1d"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/simplification-saved-export.json",
+        "sha256": "bbe9ad8a8b4c76ae877d3023875c39b3ac162e86cdf5f5e046a375e4c9e2830a"
+      },
+      "criteria": [
+        "source_preserved",
+        "saved_export",
+        "actual_pixels"
+      ]
+    },
+    {
+      "id": "multilingual-memory",
+      "split": "held_out",
+      "input": {
+        "path": "evals/role-workflow/inputs/simplification-multilingual-memory.md",
+        "sha256": "3358f984769b285c9a4d63509dfaa8b90a5029d516718462cc6008cf344d678e"
+      },
+      "rubric": {
+        "path": "evals/role-workflow/graders/simplification-multilingual-memory.json",
+        "sha256": "50dacaa6d6c841aa4ee64d9092b3e7208413fe26c1952074aa7c2fd7c9b2291c"
+      },
+      "criteria": [
+        "relevant_facts",
+        "stale_filtered",
+        "abstention"
+      ]
+    }
+  ]
+}

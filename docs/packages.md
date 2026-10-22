@@ -6,7 +6,7 @@
 Mem0 memory and LangGraph worker checkpoints through Mirket itself; see
 [local memory and durable workers](agent-runtime.md). To retain both, install
 `mirket package install design agent-runtime`. Commands below show design-only
-selection and replace any previously saved package selection.
+selection and preserve other selected packages.
 
 ## Design package
 
@@ -29,9 +29,9 @@ mirket setup --target all --package design --yes
 ```
 
 This reconciles the owned client bindings and saves `design` for later updates.
-`package install design` also explicitly replaces the saved package selection
-with this single stack and removes settings for deselected packages. Both paths
-preserve unrelated client configuration. Use these commands to install or repair
+`package install design` adds this stack while retaining other selected packages
+and their settings. Use `package set design` to replace the complete selection,
+or `package set` to deselect all. These paths preserve unrelated client configuration. Use these commands to install or repair
 the stack:
 
 ```sh
@@ -314,3 +314,21 @@ inspect every tile; the original digest remains a completion/resume stability
 requirement. Tiling does not increase the four-image/eight-MiB retained context
 budget or replace visual judgment. Native coordinates make the inspected regions
 explicit.
+
+## Installation, readiness and update activation
+
+`doctor` checks installation identity without probing long-lived design services.
+`package status` reports live readiness and exits unsuccessfully when a selected
+runtime is not ready. Reports expose `configured`, `installed`, `installation_ok`,
+`running` and `ready` separately; null means unobserved. An on-demand agent runtime
+can be ready without a persistent process. Neither command starts the VM.
+
+For a hash-bound local candidate, `mirket update --from /absolute/candidate
+--sha256 HASH --plan` previews candidate validation and activation steps.
+Use the same arguments with `--activate` to save an activation journal, stop
+running design services, apply the existing setup transaction, and restore only
+the recorded running groups. Rerun the same activation after interruption;
+a different candidate or unexpected installed binary is rejected. Partially
+running dependency groups require inspection first. The VM must already be
+available. This does not restart clients: the report keeps client reconnection
+pending until the host actually observes it. Plain `update` remains installation-only.

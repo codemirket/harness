@@ -120,30 +120,72 @@ pub fn machine_image(paths: &Paths) -> Result<PathBuf> {
     machine::download(paths)
 }
 
+/// Installation checks do not require selected long-lived services to be running.
 pub fn doctor(paths: &Paths, selected: &[String]) -> Result<Value> {
-    Registry::embedded()?.validate_selection(selected)?;
-    let mut checks = Vec::new();
-    for id in selected {
-        if id == "agent-runtime" {
-            checks.push(match agent::verify(paths) {
-                Ok(value) => value,
-                Err(error) => json!({"id":id,"ok":false,"error":format!("{error:#}")}),
+    inspect(paths, selected, false)
+}
+
+/// Readiness includes live observations, without starting services or a VM.
+pub fn status(paths: &Paths, selected: &[String]) -> Result<Value> {
+    inspect(paths, selected, true)
+}
+
+fn package_check(
+    id: &str,
+    installation: Result<Value>,
+    runtime: Option<Result<Value>>,
+    readiness: bool,
+) -> Value {
+    match installation {
+        Err(error) => json!({"id":id,"configured":true,"installed":null,"installation_ok":false,
+            "running":null,"ready":false,"ok":false,"error":format!("{error:#}")}),
+        Ok(installation) => {
+            let runtime = runtime.map(|result| {
+                result.unwrap_or_else(|error| json!({"ready":false,"error":format!("{error:#}")}))
             });
-            continue;
+            let ready = if id == "agent-runtime" {
+                Some(true)
+            } else {
+                runtime.as_ref().and_then(|value| value["ready"].as_bool())
+            };
+            let running = runtime
+                .as_ref()
+                .and_then(|value| value["services"].as_array())
+                .map(|entries| {
+                    entries
+                        .iter()
+                        .filter(|entry| entry["enabled"] == true)
+                        .all(|entry| entry["running"] == true)
+                });
+            json!({"id":id,"configured":true,"installed":true,"installation_ok":true,
+                "running":running,"ready":ready,"ok":!readiness || ready == Some(true),
+                "installation":installation,"runtime":runtime,
+                "lifecycle":if id == "agent-runtime" {"on_demand"} else {"services"}})
         }
-        checks.push(match services::verify(paths) {
-            Ok(receipt) => {
-                let runtime = match services::status(paths) {
-                    Ok(status) => status,
-                    Err(error) => json!({"ok":false,"error":format!("{error:#}")}),
-                };
-                json!({"id":"design","ok":true,"installation":receipt,"runtime":runtime,"workspace":services::workspace(paths)?})
-            }
-            Err(error) => json!({"id":"design","ok":false,"error":format!("{error:#}")}),
-        });
     }
+}
+
+fn inspect(paths: &Paths, selected: &[String], readiness: bool) -> Result<Value> {
+    Registry::embedded()?.validate_selection(selected)?;
+    let checks: Vec<_> = selected
+        .iter()
+        .map(|id| {
+            let installation = if id == "agent-runtime" {
+                agent::verify(paths)
+            } else {
+                services::verify(paths)
+            };
+            let runtime = (readiness && id == "design" && installation.is_ok())
+                .then(|| services::status(paths));
+            package_check(id, installation, runtime, readiness)
+        })
+        .collect();
     Ok(
-        json!({"ok":checks.iter().all(|check| check["ok"] == true),"checks":checks,"verification":"Local installation identity and live service health are separate. Use package probe and saved output inspection for invocation evidence."}),
+        json!({"scope":if readiness {"readiness"} else {"installation"},
+        "ok":checks.iter().all(|check| check["ok"] == true),
+        "installation_ok":checks.iter().all(|check| check["installation_ok"] == true),
+        "ready":if readiness {Some(checks.iter().all(|check| check["ready"] == true))} else {None},
+        "checks":checks,"verification":"Null means unobserved. On-demand runtimes need no persistent process. Readiness is not invocation or artifact evidence."}),
     )
 }
 
@@ -259,6 +301,17 @@ pub fn service_stop(paths: &Paths, id: &str, purge_data: bool) -> Result<Value> 
     services::stop(paths, purge_data)
 }
 
+pub(crate) fn activation_status(paths: &Paths) -> Result<Value> {
+    selected(paths, "design")?;
+    services::activation_status(paths)
+}
+
+/// Reviewed candidate image for explicit isolated acceptance fixtures; never activates services.
+#[doc(hidden)]
+pub fn design_candidate_image(paths: &Paths) -> Result<String> {
+    services::candidate_image(paths, "design-tools")
+}
+
 pub fn test_design_tools(paths: &Paths, project: &Path) -> Result<Value> {
     services::test_tools(paths, project)
 }
@@ -266,6 +319,37 @@ pub fn test_design_tools(paths: &Paths, project: &Path) -> Result<Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn readiness_never_hides_a_stopped_or_unobservable_runtime() {
+        let installed = || Ok(json!({"receipt":"valid"}));
+        let stopped = package_check(
+            "design",
+            installed(),
+            Some(Ok(
+                json!({"ready":false,"services":[{"enabled":true,"running":false}]}),
+            )),
+            true,
+        );
+        assert_eq!(stopped["installation_ok"], true);
+        assert_eq!(stopped["ok"], false);
+        assert_eq!(stopped["running"], false);
+        let unavailable = package_check(
+            "design",
+            installed(),
+            Some(Err(anyhow::anyhow!("offline"))),
+            true,
+        );
+        assert_eq!(unavailable["ok"], false);
+        assert!(unavailable["running"].is_null());
+        let passive = package_check("design", installed(), None, false);
+        assert_eq!(passive["ok"], true);
+        assert!(passive["ready"].is_null());
+        let healthy = package_check("design", installed(), Some(Ok(json!({"ready":true}))), true);
+        assert_eq!(healthy["ok"], true);
+        let demand = package_check("agent-runtime", installed(), None, true);
+        assert_eq!(demand["ready"], true);
+        assert!(demand["running"].is_null());
+    }
     #[test]
     fn preparation_requires_existing_selection_before_any_effect() {
         let home = tempfile::tempdir().unwrap();

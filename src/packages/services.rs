@@ -1740,6 +1740,15 @@ pub(super) fn status(paths: &Paths) -> Result<Value> {
     );
     status_with(&engine, &state, &workspace(paths)?)
 }
+/// Observe the installed generation before an upgrade, under the same ownership
+/// and container-drift checks used by stop. Candidate readiness is a later fact.
+pub(super) fn activation_status(paths: &Paths) -> Result<Value> {
+    let engine = engine(paths)?;
+    let state = saved_state_any(paths, &engine)?;
+    let work = paths.root.join("execution/podman/staging/design/workspace");
+    util::reject_symlink_components(&work)?;
+    status_with(&engine, &state, &work)
+}
 pub(super) fn stop(paths: &Paths, purge_data: bool) -> Result<Value> {
     let engine = engine(paths)?;
     let state = saved_state_any(paths, &engine)?;

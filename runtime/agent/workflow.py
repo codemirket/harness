@@ -1,5 +1,6 @@
 """LangGraph owns durable transitions; the Rust host owns every external effect."""
 import json
+from pathlib import Path
 import sqlite3
 import time
 from contextlib import closing
@@ -90,7 +91,8 @@ def recall_node(state, directory, scope):
         return {"memories": {**empty, "status": "unavailable", "warning": type(error).__name__}}
 
 
-MAX_PAUSE_SECONDS = 86400  # Cumulative known-inactive time, never per resume.
+RECOVERY_CONTRACT = json.loads(Path(__file__).with_name("recovery-contract.json").read_text())
+MAX_PAUSE_SECONDS = RECOVERY_CONTRACT["max_pause_seconds"]
 
 
 def effective_deadline(state, now):
@@ -200,6 +202,8 @@ def execute(directory, scope, operation, args):
             return {"deleted": True, "run_id": run_id, "trace_retained": True,
                     "assurance": "Checkpoint deletion disables resumption; evidence traces and backups remain."}
         if operation == "workflow_start":
+            if args["envelope"].get("checkpoint_format_version", RECOVERY_CONTRACT["checkpoint_format_version"]) != RECOVERY_CONTRACT["checkpoint_format_version"]:
+                raise ValueError("unsupported checkpoint format version")
             if current.values:
                 if current.values["envelope"] != args["envelope"]:
                     raise ValueError("workflow ID already belongs to different input")

@@ -6,6 +6,15 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
+pub fn checkpoint_format_version() -> u64 {
+    let contract: Value =
+        serde_json::from_str(include_str!("../../runtime/agent/recovery-contract.json"))
+            .expect("embedded recovery contract");
+    contract["checkpoint_format_version"]
+        .as_u64()
+        .expect("checkpoint version")
+}
+
 pub fn now() -> u64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -75,7 +84,9 @@ fn effective_deadline(state: &Value, now: u64) -> Option<u64> {
     let deadline = state["deadline"].as_u64()?;
     let paused = state.get("paused_at").map_or(Some(0), Value::as_u64)?;
     let used = state.get("pause_used").map_or(Some(0), Value::as_u64)?;
-    let allowance = 86400u64.checked_sub(used)?;
+    let contract: Value =
+        serde_json::from_str(include_str!("../../runtime/agent/recovery-contract.json")).ok()?;
+    let allowance = contract["max_pause_seconds"].as_u64()?.checked_sub(used)?;
     let effective = if paused != 0 {
         let elapsed = now.checked_sub(paused)?;
         if elapsed > allowance || paused >= deadline {
@@ -97,13 +108,112 @@ pub fn require_recall_runtime(paths: &Paths, mode: super::policy::MemoryRecall) 
     Ok(())
 }
 
+// Immutable observations live beside the existing trace. Checkpoints retain hash
+// references, avoiding repeated multi-megabyte transcript IPC. These are evidence
+// blobs, not a second workflow state machine; restore verifies every referenced byte.
+fn compact_snapshot(
+    run: &Path,
+    mut snapshot: Value,
+    known: &mut std::collections::BTreeSet<String>,
+) -> Result<Value> {
+    let Some(entries) = snapshot["transcript"].as_array() else {
+        return Ok(snapshot);
+    };
+    let directory = run.join("observations");
+    util::ensure_directory(&directory)?;
+    let mut references = Vec::new();
+    let mut total = 0;
+    for entry in entries {
+        let bytes = serde_json::to_vec(entry)?;
+        total += bytes.len();
+        ensure!(
+            total <= 24 * 1024 * 1024,
+            "run observation archive exceeds 24 MiB; preserve trace and stop"
+        );
+        let sha = util::sha256(&bytes);
+        if !known.contains(&sha) {
+            let path = directory.join(format!("{sha}.json"));
+            util::reject_symlink_components(&path)?;
+            if path.exists() {
+                ensure!(
+                    util::sha256(&util::read_bounded(&path, 24 * 1024 * 1024)?) == sha,
+                    "observation archive drift"
+                );
+            } else {
+                util::atomic_write_with_mode(&path, &bytes, Some(0o600))?;
+            }
+            known.insert(sha.clone());
+        }
+        references.push(json!({"sha256":sha}));
+    }
+    snapshot["transcript"] = Value::Null;
+    snapshot["observation_archive"] = json!(references);
+    Ok(snapshot)
+}
+
+fn expand_snapshot(run: &Path, mut snapshot: Value) -> Result<Value> {
+    let Some(entries) = snapshot
+        .get("observation_archive")
+        .and_then(Value::as_array)
+    else {
+        return Ok(snapshot);
+    };
+    ensure!(
+        entries.len() <= 4096,
+        "observation archive has excessive entries"
+    );
+    let mut transcript = Vec::new();
+    let mut total = 0;
+    for entry in entries {
+        let sha = entry["sha256"]
+            .as_str()
+            .context("observation digest missing")?;
+        ensure!(
+            sha.len() == 64
+                && sha
+                    .bytes()
+                    .all(|b| b.is_ascii_hexdigit() && !b.is_ascii_uppercase()),
+            "invalid observation digest"
+        );
+        let path = run.join("observations").join(format!("{sha}.json"));
+        util::reject_symlink_components(&path)?;
+        let bytes = util::read_bounded(&path, 24 * 1024 * 1024)?;
+        total += bytes.len();
+        ensure!(
+            total <= 24 * 1024 * 1024,
+            "observation archive exceeds bound"
+        );
+        ensure!(
+            util::sha256(&bytes) == sha,
+            "observation archive changed; cannot resume"
+        );
+        transcript.push(serde_json::from_slice::<Value>(&bytes)?);
+    }
+    snapshot
+        .as_object_mut()
+        .context("snapshot object")?
+        .remove("observation_archive");
+    snapshot["transcript"] = json!(transcript);
+    Ok(snapshot)
+}
+
 pub struct Driver {
+    run: PathBuf,
+    recorded: std::collections::BTreeSet<String>,
     session: Option<agent_runtime::Session>,
     project: PathBuf,
     run_id: String,
     observed: Value,
 }
 impl Driver {
+    /// Close the owned runtime session before removing task-owned test or run data.
+    pub async fn close(mut self) -> Result<()> {
+        if let Some(session) = self.session.take() {
+            session.close().await?;
+        }
+        Ok(())
+    }
+
     pub async fn start(
         paths: &Paths,
         project: &Path,
@@ -118,6 +228,8 @@ impl Driver {
             .to_string_lossy()
             .into_owned();
         let mut driver = Self {
+            run: run.to_owned(),
+            recorded: Default::default(),
             session: None,
             project: project.into(),
             run_id,
@@ -126,8 +238,42 @@ impl Driver {
         let mode = serde_json::from_value(envelope["request"]["memory_recall"].clone())
             .unwrap_or_default();
         require_recall_runtime(paths, mode)?;
-        if agent_runtime::enabled(paths)? {
+        let persistence: super::policy::Persistence =
+            serde_json::from_value(envelope["request"]["persistence"].clone()).unwrap_or_default();
+        let enabled = agent_runtime::enabled(paths)?;
+        ensure!(
+            persistence != super::policy::Persistence::Durable || enabled,
+            "durable persistence requires agent-runtime; no inference dispatched"
+        );
+        if persistence == super::policy::Persistence::Ephemeral {
+            if enabled && !matches!(mode, super::policy::MemoryRecall::Off) {
+                let recall: Result<Value> = async {
+                    let mut session = agent_runtime::Session::open_worker(paths, project).await?;
+                    let value = session
+                        .call(
+                            Some(project),
+                            "worker_recall",
+                            json!({"request":envelope["request"]}),
+                        )
+                        .await?["result"]
+                        .clone();
+                    session.close().await?;
+                    Ok(value)
+                }
+                .await;
+                driver.observed = match recall {
+                    Ok(value) => value,
+                    Err(error) if matches!(mode, super::policy::MemoryRecall::Required) => {
+                        return Err(error);
+                    }
+                    Err(_) => json!({"state":{"memories":{"status":"unavailable","results":[]}}}),
+                };
+            } else {
+                driver.observed = json!({"state":{"memories":{"status":if enabled {"disabled"} else {"unavailable"},"results":[]}}});
+            }
+        } else if enabled {
             let mut session = agent_runtime::Session::open_worker(paths, project).await?;
+            let snapshot = compact_snapshot(run, snapshot, &mut driver.recorded)?;
             driver.observed = session.call(Some(project), "workflow_start", json!({"run_id":driver.run_id,"envelope":envelope,"snapshot":snapshot,"deadline":deadline})).await?["result"].clone();
             driver.session = Some(session);
         }
@@ -135,7 +281,7 @@ impl Driver {
     }
     pub async fn resume(paths: &Paths, project: &Path, request: &RunRequest) -> Result<Self> {
         let mut session = agent_runtime::Session::open_worker(paths, project).await?;
-        let observed = session
+        let mut observed = session
             .call(
                 Some(project),
                 "workflow_status",
@@ -152,7 +298,12 @@ impl Driver {
             "run is not at a resumable boundary; other pending effects need external inspection and host verification has its own handoff"
         );
 
+        let run = run_path(paths, &request.run_id)?;
+        observed["state"]["snapshot"] =
+            expand_snapshot(&run, observed["state"]["snapshot"].clone())?;
         Ok(Self {
+            run,
+            recorded: Default::default(),
             session: Some(session),
             project: project.into(),
             run_id: request.run_id.clone(),
@@ -195,8 +346,8 @@ impl Driver {
     }
     pub fn summary(&self) -> Value {
         if self.session.is_none() {
-            return json!({"engine":"ephemeral","resumable":false,"reason":"agent-runtime not selected",
-                "memory":{"engine":"mem0","status":"not_selected","result_count":null},
+            return json!({"engine":"ephemeral","resumable":false,"reason":"ephemeral requested or agent-runtime not selected",
+                "memory":memory_summary(&self.memories()),
                 "next_action":"No checkpoint exists. Preserve the trace and current artifacts; do not promise resume_subagent recovery."});
         }
         json!({"engine":"langgraph","checkpoint_id":self.observed["checkpoint_id"],"next":self.observed["next"],
@@ -206,6 +357,7 @@ impl Driver {
     }
     pub async fn advance(&mut self, decision: &str, snapshot: Value, effect: Value) -> Result<()> {
         if let Some(session) = &mut self.session {
+            let snapshot = compact_snapshot(&self.run, snapshot, &mut self.recorded)?;
             let reply = json!({"decision":decision,"snapshot":snapshot,"effect":effect});
             let checkpoint = self.observed["checkpoint_id"].clone();
             let key = util::sha256(&serde_json::to_vec(&json!([checkpoint, reply]))?);
@@ -224,7 +376,11 @@ impl Driver {
 }
 
 fn bindings_match(run: &Value, project: &Path) -> bool {
-    run["state"]["envelope"]["project"].as_str() == project.to_str()
+    run["state"]["envelope"]["checkpoint_format_version"]
+        .as_u64()
+        .unwrap_or(1)
+        == checkpoint_format_version()
+        && run["state"]["envelope"]["project"].as_str() == project.to_str()
         && run["state"]["envelope"]["execution_sha256"] == env!("MIRKET_EXECUTION_SHA256")
 }
 
@@ -299,66 +455,4 @@ pub async fn forget(paths: &Paths, request: &RunRequest) -> Result<Value> {
 }
 
 #[cfg(test)]
-mod binding_tests {
-    use super::*;
-    #[test]
-    fn recall_summary_discloses_failure_and_coverage_without_private_payloads() {
-        let summary = memory_summary(&json!({"results":[{"text":"private fact"}],
-            "queries":["private query"],"retrieval":{"query_count":4,"incomplete":true}}));
-        assert_eq!(summary["status"], "available");
-        assert_eq!(summary["result_count"], 1);
-        assert_eq!(summary["query_count"], 4);
-        assert_eq!(summary["incomplete"], true);
-        assert!(!summary.to_string().contains("private"));
-        for status in ["disabled", "unavailable", "empty"] {
-            let summary = memory_summary(
-                &json!({"status":status,"results":[],"warning":"private exception"}),
-            );
-            assert_eq!(summary["status"], status);
-            assert!(!summary.to_string().contains("private"));
-        }
-        assert_eq!(memory_summary(&json!({"results":[]}))["status"], "empty");
-        assert_eq!(memory_summary(&Value::Null)["status"], "unknown");
-        assert!(memory_summary(&Value::Null)["result_count"].is_null());
-    }
-    #[test]
-    fn pause_status_matches_checkpoint_budget_and_uncertain_work_expires() {
-        assert_eq!(
-            effective_deadline(
-                &json!({"deadline":1120,"paused_at":1010,"pause_used":0}),
-                2010
-            ),
-            Some(2120)
-        );
-        assert_eq!(effective_deadline(&json!({"deadline":1120}), 2010), None);
-        assert_eq!(
-            effective_deadline(
-                &json!({"deadline":1120,"paused_at":1010,"pause_used":86400}),
-                1011
-            ),
-            None
-        );
-        assert_eq!(
-            effective_deadline(&json!({"deadline":1120,"paused_at":1010}), 1009),
-            None
-        );
-        assert_eq!(
-            effective_deadline(&json!({"deadline":1120,"paused_at":1120}), 1121),
-            None
-        );
-    }
-
-    #[test]
-    fn relocated_or_old_generation_checkpoints_are_not_advertised_as_resumable() {
-        let run = json!({"state":{"envelope":{"project":"/original","execution_sha256":env!("MIRKET_EXECUTION_SHA256")}}});
-        assert!(bindings_match(&run, Path::new("/original")));
-        let mut audit_only = run.clone();
-        audit_only["state"]["envelope"]["source_sha256"] = json!("different audit source");
-        assert!(bindings_match(&audit_only, Path::new("/original")));
-        audit_only["state"]["envelope"]["execution_sha256"] = json!("different runtime");
-        assert!(!bindings_match(&audit_only, Path::new("/original")));
-        assert!(!bindings_match(&run, Path::new("/relocated")));
-        let old = json!({"state":{"envelope":{"project":"/original","source_sha256":"old"}}});
-        assert!(!bindings_match(&old, Path::new("/original")));
-    }
-}
+include!("tests/durable.rs");

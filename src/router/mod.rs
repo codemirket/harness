@@ -5,6 +5,7 @@ mod design_gate;
 pub mod durable;
 pub mod handoff;
 mod responses;
+mod search;
 pub use assignment::{SkillReference, TaskNeed};
 pub use design_gate::{DesignInput, Medium as DesignMedium};
 pub(crate) mod discovery;

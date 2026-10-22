@@ -1,0 +1,12 @@
+{
+  "checkpoint_format_version": 2,
+  "max_pause_seconds": 86400,
+  "cases": [
+    {"state":{"deadline":100},"now":50,"effective":100},
+    {"state":{"deadline":100,"paused_at":30,"pause_used":10},"now":60,"effective":130},
+    {"state":{"deadline":100,"paused_at":30,"pause_used":86400},"now":31,"effective":null},
+    {"state":{"deadline":100,"paused_at":100},"now":101,"effective":null},
+    {"state":{"deadline":100,"paused_at":50},"now":40,"effective":null},
+    {"state":{"deadline":100},"now":100,"effective":null}
+  ]
+}

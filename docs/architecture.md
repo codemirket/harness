@@ -157,7 +157,7 @@ small tool set with mandatory invocation and verification. An explicit role can
 add its professional perspective without removing task-specialist guidance or
 expanding tools. Explicit tool selections can narrow the owned scope, never add
 unrelated tools or omit required producers. The same contract drives preview,
-inference context, intelligence floors, dispatch checks, completion and traces.
+inference context, capability envelopes, dispatch checks, completion and traces.
 Workflow IDs and reasons are a structured host interpretation of the task, not
 proof of semantic fit or authorization. Mirket cannot intercept direct native
 host tools or infer human approval from role text.

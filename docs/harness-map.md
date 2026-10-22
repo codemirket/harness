@@ -52,7 +52,7 @@ Selection begins with the task and project instructions. `catalog_search` and `c
 
 ## Runtime surfaces and dependencies
 
-The main MCP exposes 27 tools for discovery, task coordination, routing, memory, recovery and runtime identity. The design MCP exposes 13 tools, including four lazy OpenPencil wrappers. OpenPencil has 29 read and 58 write operations behind those wrappers. Workers can select from 17 scoped native/design tools; each workflow narrows the actual set. See the [complete inventory](harness-map/inventory.md).
+The main MCP exposes 27 tools for discovery, task coordination, routing, memory, recovery and runtime identity. The design MCP exposes 13 tools, including four lazy OpenPencil wrappers. OpenPencil has 29 read and 58 write operations behind those wrappers. Workers can select from 18 scoped native/design tools; each workflow narrows the actual set. See the [complete inventory](harness-map/inventory.md).
 
 The design image supplies OpenPencil, Style Dictionary, Satori/resvg/SVGO, Sharp, Playwright/Chromium, Typst and Odiff. Ordinary diagram selection adds Kroki; Excalidraw requires explicit selection. Encoded video is not bundled. The agent image supplies explicit Mem0 facts with hybrid retrieval and LangGraph checkpoint recovery. Coordination SQLite, Mem0 memory and LangGraph checkpoints have distinct ownership and deletion semantics. The main MCP opens coordination state only for state-dependent calls; catalog reads and runtime identity remain available if that database is broken.
 

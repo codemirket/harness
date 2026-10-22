@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "unchanged_source",
+    "source_evidence",
+    "host_checks"
+  ],
+  "assertions": {
+    "unchanged_source": "Inspect saved artifacts, raw trace and host evidence for unchanged source.",
+    "source_evidence": "Inspect saved artifacts, raw trace and host evidence for source evidence.",
+    "host_checks": "Inspect saved artifacts, raw trace and host evidence for host checks."
+  },
+  "grading": "A separate reviewer scores anonymized outputs before configuration labels are revealed. Missing evidence fails the criterion."
+}

@@ -2059,54 +2059,13 @@
       "role": "deep-research",
       "tools": [
         "workspace_read",
-        "workspace_list"
+        "workspace_list",
+        "workspace_search"
       ],
       "required_tools": [],
       "verification_tools": [],
       "rule": "Use supplied evidence. Report missing retrieval or account access; this workflow has no shell, browser, source mutation or external messaging tool.",
       "min_tier": "T2_SYNTHESIS",
-      "alternative_roles": [
-        "frontend-engineering",
-        "backend-engineering",
-        "brand-guidelines",
-        "web-design",
-        "mobile-design",
-        "seo",
-        "animation",
-        "project-review",
-        "planning",
-        "product-management",
-        "database",
-        "systems-engineering",
-        "devops-infrastructure",
-        "marketing",
-        "executive-strategy",
-        "data-analysis",
-        "project-scaffolding",
-        "optimization",
-        "financial-analysis",
-        "technical-leadership",
-        "market-analysis",
-        "venture-validation",
-        "localization",
-        "spreadsheet-analysis",
-        "mobile-engineering",
-        "it-operations",
-        "documentation",
-        "graphic-design",
-        "security-engineering",
-        "quality-assurance",
-        "ai-engineering",
-        "data-engineering",
-        "accessibility-engineering",
-        "user-research",
-        "desktop-engineering",
-        "mcp-engineering",
-        "experimentation",
-        "release-engineering",
-        "data-migration",
-        "office-production"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2121,48 +2080,6 @@
       "verification_tools": [],
       "rule": "Use the declared deterministic operation and input as data. A compound or ambiguous objective must resolve upward; no tools are available in this workflow.",
       "min_tier": "T1_DETERMINISTIC",
-      "alternative_roles": [
-        "frontend-engineering",
-        "backend-engineering",
-        "brand-guidelines",
-        "web-design",
-        "mobile-design",
-        "seo",
-        "deep-research",
-        "animation",
-        "project-review",
-        "planning",
-        "product-management",
-        "database",
-        "systems-engineering",
-        "devops-infrastructure",
-        "marketing",
-        "executive-strategy",
-        "project-scaffolding",
-        "optimization",
-        "financial-analysis",
-        "technical-leadership",
-        "market-analysis",
-        "venture-validation",
-        "localization",
-        "spreadsheet-analysis",
-        "mobile-engineering",
-        "it-operations",
-        "documentation",
-        "graphic-design",
-        "security-engineering",
-        "quality-assurance",
-        "ai-engineering",
-        "data-engineering",
-        "accessibility-engineering",
-        "user-research",
-        "desktop-engineering",
-        "mcp-engineering",
-        "experimentation",
-        "release-engineering",
-        "data-migration",
-        "office-production"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2176,7 +2093,8 @@
       "tools": [
         "workspace_read",
         "workspace_list",
-        "workspace_write"
+        "workspace_write",
+        "workspace_search"
       ],
       "required_tools": [
         "workspace_write",
@@ -2187,21 +2105,6 @@
       ],
       "rule": "Write only assigned project files and read back each changed artifact. Return awaiting_host_verification; the host must run declared build/tests and report current evidence through verification_handoff. No shell, dependency installation, commit, deployment or external effects are granted.",
       "min_tier": "T2_SYNTHESIS",
-      "alternative_roles": [
-        "frontend-engineering",
-        "mobile-engineering",
-        "desktop-engineering",
-        "data-engineering",
-        "ai-engineering",
-        "mcp-engineering",
-        "systems-engineering",
-        "database",
-        "optimization",
-        "data-migration",
-        "devops-infrastructure",
-        "release-engineering",
-        "project-scaffolding"
-      ],
       "host_verification": true,
       "budget_class": "static",
       "interactive": false,
@@ -2213,7 +2116,8 @@
       "role": "project-review",
       "tools": [
         "workspace_read",
-        "workspace_list"
+        "workspace_list",
+        "workspace_search"
       ],
       "required_tools": [
         "workspace_read"
@@ -2221,26 +2125,6 @@
       "verification_tools": [],
       "rule": "Return evidence-linked findings. Source mutation and design rendering are unavailable; add a separately justified deliverable if actual production is required.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "frontend-engineering",
-        "backend-engineering",
-        "mobile-engineering",
-        "desktop-engineering",
-        "data-engineering",
-        "ai-engineering",
-        "mcp-engineering",
-        "systems-engineering",
-        "database",
-        "optimization",
-        "data-migration",
-        "devops-infrastructure",
-        "release-engineering",
-        "project-scaffolding",
-        "technical-leadership",
-        "security-engineering",
-        "quality-assurance",
-        "accessibility-engineering"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2255,7 +2139,8 @@
         "workspace_list",
         "design/browser_screenshot",
         "design/odiff_compare",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "inspect_image"
@@ -2265,12 +2150,6 @@
       ],
       "rule": "Inspect actual pixels against the brief and multiple relevant references, never similarity to one example alone. Locate defects in concept, composition, construction, coherence and placement fit; distinguish taste from correctness. Pixel diffs do not grade appeal. Captures and diff artifacts are permitted; source and canvas mutations are absent.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "web-design",
-        "mobile-design",
-        "graphic-design",
-        "accessibility-engineering"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2286,7 +2165,8 @@
         "workspace_list",
         "workspace_write",
         "design/browser_screenshot",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "workspace_write",
@@ -2300,12 +2180,6 @@
       ],
       "rule": "Use Playwright for Grid, filters, Canvas/WebGL and live DOM. Inspect at verified 2x scale; a static-card renderer cannot replace DOM verification.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "mobile-design",
-        "frontend-engineering",
-        "accessibility-engineering",
-        "desktop-engineering"
-      ],
       "host_verification": true,
       "budget_class": "composition",
       "interactive": true,
@@ -2325,7 +2199,8 @@
         "design/openpencil_document",
         "design/openpencil_edit",
         "design/openpencil_export",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/openpencil_inspect",
@@ -2338,11 +2213,6 @@
       ],
       "rule": "Use OpenPencil file operations in the assigned design workspace. Keep editable .fig source, inspect its saved layers (schema discovery does not count) and exported pixels, and link evidence to the saved revision. Compile canonical tokens before editing. A flat screenshot cannot replace an editable design.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "mobile-design",
-        "graphic-design",
-        "brand-guidelines"
-      ],
       "host_verification": true,
       "budget_class": "composition",
       "interactive": false,
@@ -2357,7 +2227,8 @@
         "workspace_list",
         "design/openpencil_inspect",
         "design/openpencil_export",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/openpencil_inspect",
@@ -2369,11 +2240,6 @@
       ],
       "rule": "Inspect saved layers and exported pixels, bind the export to the consumed source revision, and preserve the editable source unchanged. No token source or edit is required. SVG exports also require source readback.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "mobile-design",
-        "graphic-design",
-        "brand-guidelines"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2389,7 +2255,8 @@
         "workspace_list",
         "workspace_write",
         "design/static_render",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/static_render",
@@ -2400,9 +2267,6 @@
       ],
       "rule": "Use Satori/resvg for text/image composition with canonical tokens and supported fonts/Flexbox. Create image layers with a suitable available producer first; this renderer is not an image generator. Inspect hierarchy, crop, typography and brand fit at placement size and revise visible defects. Use web-interface for full DOM features; compose both only for distinct deliverables.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "brand-guidelines"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2418,7 +2282,8 @@
         "workspace_list",
         "workspace_write",
         "design/kroki_render",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/kroki_render",
@@ -2429,12 +2294,6 @@
       ],
       "rule": "Use Kroki declarative layouts and the built-in SVGO/Playwright QA. Never replace graph layout with hand-positioned SVG coordinates.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "systems-engineering",
-        "technical-leadership",
-        "documentation",
-        "data-analysis"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2450,7 +2309,6 @@
       "verification_tools": [],
       "rule": "Preserve existing scenes and outputs. Choose and authorize a host encoder explicitly; Mirket supplies no video encoder. Do not substitute browser animation for encoded video. Interrupted workers bound to the retired renderer cannot resume under a changed tool set.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [],
       "execution_owner": "host",
       "host_verification": false,
       "budget_class": "motion",
@@ -2467,7 +2325,8 @@
         "workspace_list",
         "workspace_write",
         "design/browser_screenshot",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "workspace_write",
@@ -2481,9 +2340,6 @@
       ],
       "rule": "Use browser_screenshot with bounded actions, CSS/WAAPI time samples or an authored __mirketSeek hook, and reduced-motion checks. For requested subject animation, verify its moving parts in a subject-only playback crop; background effects and whole-image entrances cannot establish internal articulation. Inspect saved states; do not claim playback smoothness from a seek. The retained motion workflow is host-owned and requires an explicitly selected encoder for video.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "frontend-engineering"
-      ],
       "host_verification": true,
       "budget_class": "motion",
       "interactive": true,
@@ -2499,7 +2355,8 @@
         "workspace_list",
         "workspace_write",
         "design/typst_compile",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/typst_compile",
@@ -2510,9 +2367,6 @@
       ],
       "rule": "Use Typst for paged output. Inspect every saved page; Playwright is QA support rather than an alternative PDF authoring pipeline.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "documentation"
-      ],
       "host_verification": false,
       "budget_class": "composition",
       "interactive": false,
@@ -2528,7 +2382,8 @@
         "workspace_list",
         "workspace_write",
         "design/vector_render",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/vector_render",
@@ -2540,7 +2395,6 @@
       ],
       "rule": "Choose SVG for requested vector editability or suitable geometric artwork, never as a silent fallback for rich raster illustration. Author meaningful geometry and semantic groups; compile tokens, render with vector_render, read back source and inspect pixels. Critique the visual idea and construction against the brief; revise material defects. An inspected render alone is not quality acceptance.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2554,7 +2408,8 @@
         "workspace_read",
         "workspace_list",
         "design/raster_transform",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/raster_transform",
@@ -2565,10 +2420,6 @@
       ],
       "rule": "Use Sharp before compositing. Inspect output dimensions and focal crop; generation and general-purpose code execution are unavailable.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "frontend-engineering",
-        "office-production"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2583,7 +2434,8 @@
         "workspace_list",
         "design/svg_optimize",
         "design/browser_screenshot",
-        "inspect_image"
+        "inspect_image",
+        "workspace_search"
       ],
       "required_tools": [
         "design/svg_optimize",
@@ -2596,10 +2448,6 @@
       ],
       "rule": "Use SVGO for SVG hygiene and Playwright for its rendered comparison. Do not treat an optimized path or hash as visual equivalence.",
       "min_tier": "T3_ARCHITECT",
-      "alternative_roles": [
-        "frontend-engineering",
-        "office-production"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2620,7 +2468,6 @@
       ],
       "rule": "Use Odiff against comparable pixels. By default report equality or differences; set expect_match=true only for an equality gate. Keep diagnostics and input identities. Add visual-review when interpretation or refinement is required.",
       "min_tier": "T1_DETERMINISTIC",
-      "alternative_roles": [],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,
@@ -2633,7 +2480,8 @@
       "tools": [
         "workspace_read",
         "workspace_list",
-        "design/tokens_compile"
+        "design/tokens_compile",
+        "workspace_search"
       ],
       "required_tools": [
         "design/tokens_compile",
@@ -2644,11 +2492,6 @@
       ],
       "rule": "Style Dictionary is the token source of truth. Read back all generated formats before rendering; a role cannot override canonical token routing.",
       "min_tier": "T1_DETERMINISTIC",
-      "alternative_roles": [
-        "frontend-engineering",
-        "web-design",
-        "graphic-design"
-      ],
       "host_verification": false,
       "budget_class": "static",
       "interactive": false,

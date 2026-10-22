@@ -254,24 +254,144 @@ async fn prepared_packages_pass_desktop_acceptance() {
     .unwrap();
     assert_eq!(applied["result"]["applied"], true);
 
+    // Exercise real checkpoint IPC and restart with the Rust archive owner.
+    let recovery = RuntimeFixture::new(&paths);
+    util::ensure_directory(&paths.root.join("runs")).unwrap();
+    let run = tempfile::Builder::new()
+        .prefix("routed-")
+        .tempdir_in(paths.root.join("runs"))
+        .unwrap();
+    let deadline = mirket::router::durable::now() + 600;
+    let snapshot =
+        json!({"turn":1,"deadline":deadline,"transcript":[{"result":"evidence".repeat(32768)}]});
+    let envelope = json!({"checkpoint_format_version":mirket::router::durable::checkpoint_format_version(),
+        "request":{"memory_recall":"off","persistence":"durable"},"host_verification_required":false});
+    let mut driver = mirket::router::durable::Driver::start(
+        &paths,
+        &recovery.project,
+        run.path(),
+        envelope,
+        snapshot.clone(),
+        deadline,
+    )
+    .await
+    .unwrap();
+    driver
+        .advance("continue", snapshot.clone(), json!({}))
+        .await
+        .unwrap();
+    let checkpoint = driver.summary()["checkpoint_id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    driver.close().await.unwrap();
+    let request = mirket::router::durable::RunRequest {
+        project: recovery.project.clone(),
+        run_id: run
+            .path()
+            .file_name()
+            .unwrap()
+            .to_string_lossy()
+            .into_owned(),
+        expected_checkpoint_id: Some(checkpoint),
+    };
+    let resumed = mirket::router::durable::Driver::resume(&paths, &recovery.project, &request)
+        .await
+        .unwrap();
+    assert_eq!(
+        resumed.state().unwrap()["snapshot"]["transcript"],
+        snapshot["transcript"]
+    );
+    resumed.close().await.unwrap();
+    let blob = fs::read_dir(run.path().join("observations"))
+        .unwrap()
+        .next()
+        .unwrap()
+        .unwrap()
+        .path();
+    fs::write(blob, b"{}").unwrap();
+    assert!(
+        mirket::router::durable::Driver::resume(&paths, &recovery.project, &request)
+            .await
+            .is_err()
+    );
+
     let workspace = paths.root.join("execution/podman/staging/design/workspace");
     let design = tempfile::Builder::new()
         .prefix("acceptance-")
         .tempdir_in(&workspace)
         .unwrap();
-    fs::create_dir(design.path().join("design")).unwrap();
+    let design_project = design.path().join("project");
+    fs::create_dir_all(design_project.join("design")).unwrap();
     fs::write(
-        design.path().join("design/tokens.json"),
+        design_project.join("design/tokens.json"),
         r##"{"color":{"accent":{"$type":"color","$value":"#276a83"}}}"##,
     )
     .unwrap();
-    let call = async |name: &'static str, args: Value| {
-        let spec = mirket::packages::launch_scoped(&paths, design.path())
-            .await
-            .unwrap();
-        let reply = mirket::package_mcp::call(spec, name.into(), args.as_object().unwrap().clone())
-            .await
-            .unwrap();
+    // Candidate protocol acceptance must not replace the user's running stack.
+    let candidate_image = mirket::packages::design_candidate_image(&paths).unwrap();
+    let engine = mirket::podman::Engine::resolve(&paths).unwrap();
+    struct TestContainer(mirket::podman::Engine, String);
+    impl Drop for TestContainer {
+        fn drop(&mut self) {
+            let _ = self.0.run(
+                &["rm".into(), "--force".into(), self.1.clone()],
+                std::time::Duration::from_secs(15),
+            );
+        }
+    }
+    let call = async |name: &'static str, arguments: Value| {
+        let container = format!(
+            "mirket-acceptance-{}",
+            &util::sha256(format!("{}-{name}", design.path().display()).as_bytes())[..16]
+        );
+        let _cleanup = TestContainer(engine.clone(), container.clone());
+        let mut args = Vec::new();
+        if cfg!(target_os = "macos") || cfg!(windows) {
+            args.extend(["--connection".into(), engine.connection.clone()]);
+        }
+        args.extend([
+            "run".into(),
+            "--rm".into(),
+            "-i".into(),
+            "--init".into(),
+            "--pull=never".into(),
+            "--name".into(),
+            container,
+            "--network=none".into(),
+            "--userns=keep-id:uid=1000,gid=1000".into(),
+            "--user=1000:1000".into(),
+            "--read-only".into(),
+            "--cap-drop=ALL".into(),
+            "--security-opt=no-new-privileges".into(),
+            "--pids-limit=128".into(),
+            "--memory=1g".into(),
+            "--memory-swap=1g".into(),
+            "--tmpfs=/tmp:rw,size=256m,mode=1777".into(),
+            "--volume".into(),
+            format!("{}:/workspace:rw", design.path().display()),
+            "--workdir=/workspace/project".into(),
+            "--env=MIRKET_DESIGN_WORKSPACE=/workspace/project".into(),
+            "--env=MIRKET_SCOPED_WORKER=1".into(),
+            "--entrypoint=node".into(),
+            candidate_image.clone(),
+            "/opt/design/server.mjs".into(),
+        ]);
+        let spec = mirket::package_mcp::LaunchSpec {
+            command: engine.binary.clone(),
+            args,
+            env: engine.env.clone(),
+            cwd: design_project.clone(),
+            allowed_tools: Some([name.to_owned()].into_iter().collect()),
+            denied_tools: Default::default(),
+            startup_timeout: std::time::Duration::from_secs(120),
+            request_timeout: std::time::Duration::from_secs(120),
+            tool_timeouts: Default::default(),
+        };
+        let reply =
+            mirket::package_mcp::call(spec, name.into(), arguments.as_object().unwrap().clone())
+                .await
+                .unwrap();
         assert_ne!(reply.is_error, Some(true), "{reply:?}");
         reply.structured_content.unwrap()
     };
@@ -281,31 +401,23 @@ async fn prepared_packages_pass_desktop_acceptance() {
         util::sha256(include_bytes!("../runtime/design/tools/server.mjs"))
     );
     assert_eq!(tokens["runtime"]["scope"], "project");
-    let css = fs::read_to_string(
-        design
-            .path()
-            .join(tokens["outputs"]["tokens.css"].as_str().unwrap()),
-    )
-    .unwrap();
+    let css =
+        fs::read_to_string(design_project.join(tokens["outputs"]["tokens.css"].as_str().unwrap()))
+            .unwrap();
     assert!(css.contains("--color-accent: #276a83;"));
-    fs::write(design.path().join("source.svg"),r##"<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#276a83"/></svg>"##).unwrap();
+    fs::write(design_project.join("source.svg"),r##"<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#276a83"/></svg>"##).unwrap();
     let vector = call(
         "vector_render",
         json!({"source":"source.svg","output":"result.svg","width":64,"height":64}),
     )
     .await;
     assert_eq!(vector["runtime"], tokens["runtime"]);
-    let png = fs::read(
-        design
-            .path()
-            .join(vector["preview"]["path"].as_str().unwrap()),
-    )
-    .unwrap();
+    let png = fs::read(design_project.join(vector["preview"]["path"].as_str().unwrap())).unwrap();
     assert_eq!(&png[..8], b"\x89PNG\r\n\x1a\n");
     assert_eq!(u32::from_be_bytes(png[16..20].try_into().unwrap()), 64);
     assert_eq!(u32::from_be_bytes(png[20..24].try_into().unwrap()), 64);
     assert!(
-        fs::read_to_string(design.path().join("result.svg"))
+        fs::read_to_string(design_project.join("result.svg"))
             .unwrap()
             .contains("#276a83")
     );

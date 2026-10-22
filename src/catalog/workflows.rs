@@ -29,8 +29,6 @@ pub struct Workflow {
     pub execution_owner: ExecutionOwner,
     pub when: String,
     pub role: String,
-    /// Suitable explicit perspectives can replace this workflow's default expertise.
-    pub alternative_roles: Vec<String>,
     /// Requires the bounded medium-aware visual contract at the owned worker boundary.
     #[serde(default)]
     pub design_production: bool,
@@ -67,17 +65,6 @@ pub(super) fn validate(workflows: &[Workflow], roles: &[Capability]) -> Result<(
             "unknown workflow role: {}",
             workflow.role
         );
-        let alternatives: BTreeSet<_> = workflow.alternative_roles.iter().collect();
-        ensure!(
-            alternatives.len() == workflow.alternative_roles.len(),
-            "duplicate workflow alternative roles"
-        );
-        for role in alternatives {
-            ensure!(
-                roles.iter().any(|candidate| candidate.id == *role),
-                "unknown workflow alternative role: {role}"
-            );
-        }
         for text in [&workflow.when, &workflow.rule] {
             ensure!(
                 !text.trim().is_empty() && text.len() <= 600 && !text.contains('\0'),
@@ -126,8 +113,7 @@ impl Catalog {
     pub(super) fn workflow_choices(&self, role: Option<&str>) -> Vec<Value> {
         self.workflows()
             .iter()
-            .filter(|workflow| role.is_none_or(|role|workflow.role == role || workflow.alternative_roles.iter().any(|candidate|candidate == role)))
-            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"execution_owner":workflow.execution_owner,"worker_available":workflow.execution_owner == ExecutionOwner::Worker,"design_input_required":workflow.design_production,"operation_required":workflow.requires_operation,"host_verification_required":workflow.host_verification,"budget_class":workflow.budget_class,"explicit_role_can_replace_default":role.map(|role|workflow.alternative_roles.iter().any(|candidate|candidate==role))}))
+            .map(|workflow| serde_json::json!({"id":workflow.id,"when":workflow.when,"role":workflow.role,"min_tier":workflow.min_tier,"execution_owner":workflow.execution_owner,"worker_available":workflow.execution_owner == ExecutionOwner::Worker,"design_input_required":workflow.design_production,"operation_required":workflow.requires_operation,"host_verification_required":workflow.host_verification,"budget_class":workflow.budget_class,"explicit_role_can_replace_default":role.map(|_| true),"kind":if workflow.execution_owner == ExecutionOwner::Worker {"worker_contract"} else {"host_required"},"readiness":"not_observed"}))
             .collect()
     }
 }

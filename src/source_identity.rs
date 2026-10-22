@@ -19,6 +19,7 @@ pub const INPUTS: &[&str] = &[
     "build.rs",
     "rust-toolchain.toml",
     "tests",
+    "evals",
 ];
 fn files(root: &Path, path: &Path, out: &mut Vec<PathBuf>) -> io::Result<()> {
     if path.file_name().is_some_and(|n| n == ".DS_Store") {
@@ -78,6 +79,27 @@ fn fingerprint_inputs(root: &Path, names: &[&str], execution: bool) -> io::Resul
         {
             continue;
         }
+        if execution {
+            let filename = path
+                .file_name()
+                .and_then(|name| name.to_str())
+                .unwrap_or("");
+            if filename.starts_with("test_")
+                || filename.ends_with("_tests.rs")
+                || [
+                    "src/cli.rs",
+                    "src/update.rs",
+                    "src/role_eval.rs",
+                    "src/dev.rs",
+                ]
+                .iter()
+                .any(|name| path == Path::new(name))
+                || path.starts_with("src/update")
+                || path.starts_with("src/dev")
+            {
+                continue;
+            }
+        }
         let name = path.to_string_lossy().replace('\\', "/");
         let bytes = fs::read(root.join(path))?;
         hash.update((name.len() as u64).to_le_bytes());
@@ -109,6 +131,9 @@ mod tests {
         let audit = fingerprint(root).unwrap();
         let execution = execution_fingerprint(root).unwrap();
         for name in [
+            "src/cli.rs",
+            "src/codex_tests.rs",
+            "runtime/agent/test_runtime.py",
             "skills/unrelated.md",
             "registry/profiles.json",
             "tests/probe.rs",

@@ -156,7 +156,8 @@ for kind, rows in [('skill',catalog['skills']),('role',capabilities['capabilitie
     for row in rows: add_node(kind+':'+row['id'],kind)
 for kind, names in [('source',catalog['sources']),('profile',catalog['profiles']),('package',['design','agent-runtime']),('host',['codex','claude'])]:
     for name in names: add_node(kind+':'+name,kind)
-for name in ['workspace_read','workspace_list','workspace_write','inspect_image'] + ['design/'+t['name'] for t in design_tools]: add_node('tool:'+name,'worker_tool')
+native_block = (ROOT / 'src/router/tools.rs').read_text().split('pub(crate) fn known_names()', 1)[1].split('.into_iter()', 1)[0]
+for name in re.findall(r'"(workspace_[a-z]+|inspect_image)"', native_block) + ['design/'+t['name'] for t in design_tools]: add_node('tool:'+name,'worker_tool')
 for t in main_tools: add_node('main_mcp:'+t['name'],'main_mcp')
 for r in refs + bodies: add_node('file:'+r['path'],'file')
 for e in edges:
@@ -203,7 +204,7 @@ for path in source_files:
 inventory['environment_names']={k:sorted(v) for k,v in sorted(environment.items())}
 inventory['environment_limit']='Lexical references, including tests; not current values or a supported settings schema. No environment values were read.'
 inventory['counts'].update(global_skills=len(inventory['global']['global_skills']),runtime_packages=2,
-    design_mcp_tools=len(design_tools),worker_tools=4+len(design_tools),
+    design_mcp_tools=len(design_tools),worker_tools=sum(node['kind']=='worker_tool' for node in nodes.values()),
     openpencil_operations=dict(collections.Counter(t['effect'] for t in pencil['tools'])),
     cargo_lock_records=len(lock['package']),npm_lock_records_including_root=len(inventory['dependencies']['node_locked_packages']),
     python_locked_wheels=len(python_wheels),graph_nodes=len(nodes),graph_edges=len(edges))
@@ -236,7 +237,7 @@ for b in bodies:
     methods += ['### '+b['id'],'',b['description'],'',link(b['path'],'Current body'),'', 'Method sections: '+cell(b['headings']),'']
 methods += ['## Workflow rules','']
 for w in capabilities['workflows']:
-    methods += ['### '+w['id'],'','**When:** '+w['when'],'','**Rule:** '+w['rule'],'','**Alternative roles:** '+cell(w.get('alternative_roles',[])),'']
+    methods += ['### '+w['id'],'','**When:** '+w['when'],'','**Rule:** '+w['rule'],'','**Expertise:** default role is advisory; an explicit embedded role replaces it without changing tool scope.','']
 outputs['methodologies.md']='\n'.join(methods)+'\n'
 
 d=inventory['dependencies']; depdoc=['# Runtime and environmental dependencies','']+intro

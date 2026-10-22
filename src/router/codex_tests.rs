@@ -188,7 +188,9 @@ async fn roundtrip(upstream_sse: Vec<u8>) -> Result<Roundtrip> {
 async fn proxy_reconstructs_the_request_from_router_input() {
     let exchange = roundtrip(completion("selected")).await.unwrap();
     assert_eq!(exchange.served.unwrap(), action());
-    assert_eq!(exchange.observation.as_object().unwrap().len(), 1);
+    assert_eq!(exchange.observation.as_object().unwrap().len(), 2);
+    assert_eq!(exchange.observation["usage"]["input_tokens"], 41);
+    assert_eq!(exchange.observation["usage"]["output_tokens"], 9);
     assert!(exchange.observation["response_sha256"].is_string());
     assert!(!exchange.observation.to_string().contains("SECRET_USAGE"));
     assert_eq!(

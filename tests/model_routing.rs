@@ -468,7 +468,7 @@ fn spawn_requires_post_write_verification_and_sends_high_effort() {
     assert!(
         posts
             .iter()
-            .all(|body| body["max_completion_tokens"] == 64000)
+            .all(|body| body["max_completion_tokens"] == 8192)
     );
     assert!(
         posts[2]["messages"][0]["content"][0]["text"]
@@ -1061,7 +1061,7 @@ fn required_recall_without_runtime_rejects_before_any_inference() {
 }
 
 #[test]
-fn inference_diagnostics_survive_without_usage_accounting() {
+fn inference_diagnostics_keep_numeric_usage_without_private_fields() {
     for invalid in [false, true] {
         let sandbox = tempfile::tempdir().unwrap();
         let home = sandbox.path().join("home");
@@ -1101,7 +1101,10 @@ fn inference_diagnostics_survive_without_usage_accounting() {
         let text = fs::read_to_string(run.join("trace.json")).unwrap();
         let trace: Value = serde_json::from_str(&text).unwrap();
         let inference = &trace["attempts"][0]["inference"];
-        assert_eq!(inference.as_object().unwrap().len(), 2);
+        assert_eq!(inference.as_object().unwrap().len(), 3);
+        assert_eq!(inference["usage"]["input_tokens"], 1234);
+        assert_eq!(inference["usage"]["output_tokens"], 56);
+        assert!(inference["usage"]["cost_usd"].is_null());
         assert!(trace.get("accounting").is_none());
         assert!(!run.join("accounting-version.json").exists());
         assert!(!run.join("probes").exists());
@@ -1189,4 +1192,85 @@ fn a_large_written_artifact_requires_all_digest_bound_read_pages() {
             .iter()
             .any(|v| v["verification_gate"] == "pending")
     );
+}
+
+#[test]
+fn already_satisfied_keeps_source_unchanged_and_requires_host_checks() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty = sandbox.path().join("empty");
+    for dir in [&home, &project, &empty] {
+        fs::create_dir_all(dir).unwrap();
+    }
+    fs::write(project.join("ready.txt"), "already correct").unwrap();
+    let selected = "neutral-mini";
+    let server = MockTarget::new(
+        vec![model(selected, "neutral")],
+        vec![
+            action(
+                selected,
+                json!({"action":"tool","tool":"workspace_read","arguments_json":"{\"path\":\"ready.txt\"}","result":""}),
+            ),
+            action(
+                selected,
+                json!({"action":"already_satisfied","tool":"","arguments_json":"{}","result":"The requested source is already present."}),
+            ),
+        ],
+    );
+    configure(&home, vec![target("mock", &server)]);
+    let path = request(
+        &home,
+        &project,
+        &["workspace_write", "workspace_read"],
+        &["workspace_read"],
+    );
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["allow_already_satisfied"] = json!(true);
+    value["limits"] = json!({"max_calls":2,"max_completion_tokens":4096});
+    fs::write(&path, value.to_string()).unwrap();
+    let result = ok(
+        &home,
+        &empty,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert_eq!(result["status"], "awaiting_host_verification");
+    assert_eq!(
+        result["host_verification"]["artifacts"][0]["path"],
+        "ready.txt"
+    );
+    assert_eq!(
+        fs::read(project.join("ready.txt")).unwrap(),
+        b"already correct"
+    );
+    assert_eq!(server.posts().len(), 2);
+    assert!(
+        server
+            .posts()
+            .iter()
+            .all(|p| p["max_completion_tokens"] == 4096)
+    );
+}
+
+#[test]
+fn native_line_operations_do_not_discover_or_invoke_models() {
+    let sandbox = tempfile::tempdir().unwrap();
+    let home = sandbox.path().join("home");
+    let project = sandbox.path().join("project");
+    let empty = sandbox.path().join("empty");
+    for dir in [&home, &project, &empty] {
+        fs::create_dir_all(dir).unwrap();
+    }
+    let path = request(&home, &project, &[], &[]);
+    let mut value: Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    value["deterministic_input"] = json!("b\na\nb");
+    fs::write(&path, value.to_string()).unwrap();
+    let result = ok(
+        &home,
+        &empty,
+        &["agent", "spawn", "--request", path.to_str().unwrap()],
+    );
+    assert_eq!(result["execution"], "pure_function");
+    assert_eq!(result["result"], "a\nb\nb");
+    assert!(result["model"].is_null());
 }

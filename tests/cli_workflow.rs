@@ -246,7 +246,7 @@ fn standalone_installer_installs_the_complete_cli() {
 }
 
 #[test]
-fn package_install_replaces_retired_selection_before_preparation_without_partial_setup() {
+fn package_set_replaces_retired_selection_before_preparation_without_partial_setup() {
     let temporary = tempfile::tempdir().unwrap();
     let home = temporary.path();
     ok(home, &["setup", "--yes", "--target", "codex", "--json"]);
@@ -261,7 +261,7 @@ fn package_install_replaces_retired_selection_before_preparation_without_partial
     let config_path = home.join(".codex/config.toml");
     let before_config = std::fs::read(&config_path).unwrap();
 
-    let result = invoke(home, &["package", "install", "design"]);
+    let result = invoke(home, &["package", "set", "design"]);
     assert!(!result.status.success());
     let error = String::from_utf8_lossy(&result.stderr);
     assert!(

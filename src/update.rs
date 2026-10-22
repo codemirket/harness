@@ -15,6 +15,8 @@ use std::{
 };
 use tokio::process::Command;
 
+mod activation;
+
 const MAX_BINARY: u64 = 256 * 1024 * 1024;
 const MANIFEST_URL: &str =
     "https://github.com/codemirket/harness/releases/latest/download/mirket-release.json";
@@ -24,6 +26,8 @@ pub struct UpdateOptions {
     pub from: Option<PathBuf>,
     pub sha256: Option<String>,
     pub check: bool,
+    pub plan: bool,
+    pub activate: bool,
     pub entrypoint: Option<PathBuf>,
     pub expected_entrypoint_sha256: Option<String>,
 }
@@ -34,6 +38,7 @@ pub struct UpdateReport {
     pub updated: bool,
     pub reconfigured: bool,
     pub binary: PathBuf,
+    pub activation: serde_json::Value,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub entrypoint: Option<EntrypointReport>,
 }
@@ -70,6 +75,10 @@ pub fn target_triple() -> Result<&'static str> {
 }
 
 pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
+    activation::update(paths, options)
+}
+
+fn install_update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
     if options.from.is_some() != options.sha256.is_some() {
         bail!("offline update requires both --from and --sha256");
     }
@@ -127,6 +136,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
                 updated: false,
                 reconfigured: false,
                 binary: paths.binary(),
+                activation: serde_json::json!({"status":"installation_only","clients":"not_observed"}),
                 entrypoint: None,
             });
         }
@@ -196,6 +206,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
             updated: false,
             reconfigured: false,
             binary: paths.binary(),
+            activation: serde_json::json!({"status":"installation_only","clients":"not_observed"}),
             entrypoint: None,
         });
     }
@@ -243,6 +254,7 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
         updated: old_digest != expected_digest,
         reconfigured: true,
         binary: paths.binary(),
+        activation: serde_json::json!({"status":"installation_only","clients":"not_observed"}),
         entrypoint,
     })
 }

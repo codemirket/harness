@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "source_preserved",
+    "saved_export",
+    "actual_pixels"
+  ],
+  "assertions": {
+    "source_preserved": "Inspect saved artifacts, raw trace and host evidence for source preserved.",
+    "saved_export": "Inspect saved artifacts, raw trace and host evidence for saved export.",
+    "actual_pixels": "Inspect saved artifacts, raw trace and host evidence for actual pixels."
+  },
+  "grading": "A separate reviewer scores anonymized outputs before configuration labels are revealed. Missing evidence fails the criterion."
+}

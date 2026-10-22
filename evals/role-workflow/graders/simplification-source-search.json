@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "located_handler",
+    "bounded_search",
+    "scope_preserved"
+  ],
+  "assertions": {
+    "located_handler": "Inspect saved artifacts, raw trace and host evidence for located handler.",
+    "bounded_search": "Inspect saved artifacts, raw trace and host evidence for bounded search.",
+    "scope_preserved": "Inspect saved artifacts, raw trace and host evidence for scope preserved."
+  },
+  "grading": "A separate reviewer scores anonymized outputs before configuration labels are revealed. Missing evidence fails the criterion."
+}

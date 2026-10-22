@@ -1,7 +1,7 @@
-//! Deterministic task floors and provisional model capability classification.
+//! Workflow capability envelopes and explicit model selection.
 //!
 //! Classification uses current discovery metadata, never a published model ID.
-//! Its tier is a routing heuristic, not a measured quality or benchmark claim.
+//! Its tier describes supported controls, not measured quality or benchmark claims.
 //! Adapters must set capability flags from a verified provider/host contract;
 //! unknown flags quarantine a model rather than assuming support.
 
@@ -92,16 +92,46 @@ pub enum ComplexityClass {
 #[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[serde(tag = "action", rename_all = "snake_case", deny_unknown_fields)]
 pub enum DeterministicOperation {
-    Convert { from: String, to: String },
+    Convert {
+        from: String,
+        to: String,
+    },
     FormatCliArguments,
-    ExtractSchema { from: String },
+    ExtractSchema {
+        from: String,
+    },
     TrimWhitespace,
+    #[schemars(skip)]
     RenameFile,
     DeduplicateLines,
     SortLines,
 }
 
 impl DeterministicOperation {
+    /// Only these transformations have deterministic native semantics. Others use
+    /// schema-bound model inference and must not be described as deterministic.
+    pub fn execute(&self, input: &str) -> Option<String> {
+        match self {
+            Self::TrimWhitespace => Some(input.trim().to_owned()),
+            Self::SortLines => {
+                let mut lines: Vec<_> = input.lines().collect();
+                lines.sort();
+                Some(lines.join("\n"))
+            }
+            Self::DeduplicateLines => {
+                let mut seen = HashSet::new();
+                Some(
+                    input
+                        .lines()
+                        .filter(|line| seen.insert(*line))
+                        .collect::<Vec<_>>()
+                        .join("\n"),
+                )
+            }
+            _ => None,
+        }
+    }
+
     pub fn validate(&self) -> anyhow::Result<()> {
         let format = |name: &str| {
             [
@@ -114,6 +144,7 @@ impl DeterministicOperation {
         let valid = match self {
             Self::Convert { from, to } => format(from) && format(to),
             Self::ExtractSchema { from } => format(from),
+            Self::RenameFile => false,
             _ => true,
         };
         anyhow::ensure!(valid, "unsupported deterministic operation format");
@@ -128,6 +159,48 @@ pub enum MemoryRecall {
     #[default]
     BestEffort,
     Off,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum Persistence {
+    #[default]
+    Auto,
+    Durable,
+    Ephemeral,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(default, deny_unknown_fields)]
+pub struct RunLimits {
+    pub max_calls: usize,
+    pub max_completion_tokens: u64,
+    /// Conservative reservation: UTF-8 input bytes + image allowance + requested output tokens.
+    /// This is not a provider billing estimate. Unknown usage is never treated as zero.
+    pub token_reservation: u64,
+    pub context_bytes: usize,
+}
+impl Default for RunLimits {
+    fn default() -> Self {
+        Self {
+            max_calls: 256,
+            max_completion_tokens: 8192,
+            token_reservation: 8_000_000,
+            context_bytes: 256 * 1024,
+        }
+    }
+}
+impl RunLimits {
+    pub fn validate(&self) -> anyhow::Result<()> {
+        anyhow::ensure!(
+            (1..=256).contains(&self.max_calls)
+                && (4096..=64_000).contains(&self.max_completion_tokens)
+                && (8192..=64_000_000).contains(&self.token_reservation)
+                && (32 * 1024..=1024 * 1024).contains(&self.context_bytes),
+            "run limits exceed supported bounds"
+        );
+        Ok(())
+    }
 }
 
 /// Task needs constrain owned role, guidance and tool selection before execution.
@@ -145,6 +218,17 @@ pub struct ModelSelection {
 #[serde(deny_unknown_fields)]
 pub struct SpawnRequest {
     #[serde(default)]
+    pub limits: RunLimits,
+    #[serde(default)]
+    pub persistence: Persistence,
+    /// Explicitly permit a source-implementation assessment that requires no mutation.
+    /// Exact source readback and host verification remain mandatory.
+    #[serde(default)]
+    pub allow_already_satisfied: bool,
+    /// Require a separate host review with the named host_verification_checks, including for design.
+    #[serde(default)]
+    pub host_review: bool,
+    #[serde(default)]
     pub memory_recall: MemoryRecall,
     /// Optional focused recall queries; at most eight, each at most 512 characters.
     /// The embedding tokenizer also rejects queries exceeding its token window.
@@ -152,9 +236,11 @@ pub struct SpawnRequest {
     pub memory_queries: Vec<String>,
     pub objective: String,
     /// Legacy descriptive field, accepted for compatibility; workflows own routing floors.
+    #[schemars(skip)]
     #[serde(default = "legacy_intent")]
     pub task_intent: TaskIntent,
     /// Legacy descriptive field, accepted for compatibility; use requested_tier to raise a floor.
+    #[schemars(skip)]
     #[serde(default = "legacy_complexity")]
     pub complexity_class: ComplexityClass,
     #[serde(default)]
@@ -224,159 +310,38 @@ impl fmt::Display for PolicyError {
 
 impl Error for PolicyError {}
 
-fn model_words(model: &Model) -> Vec<String> {
-    format!("{} {} {}", model.id, model.display_name, model.description)
-        .to_ascii_lowercase()
-        .split(|c: char| !c.is_ascii_alphanumeric())
-        .filter(|word| !word.is_empty())
-        .map(str::to_owned)
-        .collect()
-}
-
-fn contains_word(words: &[String], needle: &str) -> bool {
-    words.iter().any(|word| word == needle)
-}
-
-fn lightweight_signal(model: &Model, words: &[String]) -> Option<&'static str> {
-    let identity: Vec<_> = format!("{} {}", model.id, model.display_name)
-        .to_ascii_lowercase()
-        .split(|c: char| !c.is_ascii_alphanumeric())
-        .filter(|word| !word.is_empty())
-        .map(str::to_owned)
-        .collect();
-    for marker in ["luna", "flash", "haiku", "mini", "nano", "small"] {
-        if contains_word(&identity, marker) {
-            return Some(marker);
-        }
-    }
-    let description = model.description.to_ascii_lowercase();
-    if description.contains("fast utility") || description.contains("fast and affordable") {
-        return Some("fast utility");
-    }
-    if let Some(line) = model.line.as_deref() {
-        return (line == "haiku").then_some("line:haiku");
-    }
-    [
-        "luna",
-        "flash",
-        "haiku",
-        "mini",
-        "nano",
-        "small",
-        "speed",
-        "affordable",
-    ]
-    .into_iter()
-    .find(|marker| contains_word(words, marker))
-}
-
-fn frontier_signal(model: &Model, words: &[String]) -> Option<&'static str> {
-    if let Some(line) = model.line.as_deref() {
-        return (line == "opus").then_some("line:opus");
-    }
-    for marker in ["opus", "ultra", "max", "frontier"] {
-        if contains_word(words, marker) {
-            return Some(marker);
-        }
-    }
-    if words
-        .windows(2)
-        .any(|pair| pair[0] == "deep" && pair[1] == "think")
-    {
-        return Some("deep-think");
-    }
-    None
-}
-
-fn full_size_signal(model: &Model, words: &[String]) -> Option<&'static str> {
-    if let Some(line) = model.line.as_deref() {
-        return match line {
-            "sonnet" => Some("line:sonnet"),
-            "opus" => Some("line:opus"),
-            _ => None,
-        };
-    }
-    for marker in ["flagship", "workhorse", "sonnet", "pro"] {
-        if contains_word(words, marker) {
-            return Some(marker);
-        }
-    }
-    if words
-        .windows(2)
-        .any(|pair| pair[0] == "full" && pair[1] == "size")
-    {
-        return Some("full-size");
-    }
-    None
-}
-
-fn supports_high_reasoning(model: &Model) -> bool {
-    model
-        .capabilities
-        .reasoning_efforts
-        .iter()
-        .any(|effort| effort_rank(effort).is_some_and(|rank| rank >= 4))
-}
-
-/// Recompute a model's provisional tier from metadata and verified flags.
-/// Preserve `available = false` when an adapter has marked the model unavailable.
+/// Capability envelope, not model quality. Identity and marketing never affect eligibility.
+/// Tier names remain wire-compatible; quality is unmeasured until backed by evaluations.
 pub fn classify(model: &mut Model) {
     model
         .classification_evidence
-        .retain(|evidence| !evidence.starts_with("policy: "));
+        .retain(|e| !e.starts_with("policy: "));
     model.tier = Tier::T1Deterministic;
-
-    let words = model_words(model);
-    if let Some(signal) = lightweight_signal(model, &words) {
-        model.classification_evidence.push(format!(
-            "policy: lightweight morphology ({signal}); fixed mechanical tier"
-        ));
-        if model.capabilities.tools.is_none() || model.capabilities.structured_outputs.is_none() {
-            model.available = false;
-            model
-                .classification_evidence
-                .push("policy: unknown tools or structured-output contract; unavailable".into());
-        }
-        return;
-    }
-
     if model.capabilities.tools.is_none() || model.capabilities.structured_outputs.is_none() {
         model.available = false;
         model
             .classification_evidence
-            .push("policy: unknown tools or structured-output contract; unavailable".into());
+            .push("policy: unknown tool or structured-output contract; unavailable".into());
         return;
     }
-
     if model.capabilities.tools == Some(true) && model.capabilities.structured_outputs == Some(true)
     {
-        let frontier = frontier_signal(model, &words);
-        let full_size = full_size_signal(model, &words);
-        if frontier.is_some() || full_size.is_some() {
-            model.tier = Tier::T2Synthesis;
-            model.classification_evidence.push(format!(
-                "policy: verified tools and structured outputs; full-size signal {}",
-                frontier.or(full_size).unwrap_or_default()
-            ));
-        } else {
-            model.classification_evidence.push(
-                "policy: no positive full-size or frontier evidence; quarantined at T1".into(),
-            );
-        }
-        if model.tier == Tier::T2Synthesis
-            && supports_high_reasoning(model)
-            && (frontier.is_some() || full_size.is_some())
+        model.tier = if model.capabilities.reasoning_efforts.is_empty()
+            || model
+                .capabilities
+                .reasoning_efforts
+                .iter()
+                .any(|e| effort_rank(e).is_some_and(|r| r >= 4))
         {
-            model.tier = Tier::T3Architect;
-            model
-                .classification_evidence
-                .push("policy: high reasoning plus frontier or full-size workhorse signal".into());
-        }
-    } else {
-        model.classification_evidence.push(
-            "policy: missing verified tools or structured outputs; mechanical tier only".into(),
-        );
+            Tier::T3Architect
+        } else {
+            Tier::T2Synthesis
+        };
     }
+    model.classification_evidence.push(
+        "policy: verified capability envelope; quality unmeasured; no model-name classification"
+            .into(),
+    );
 }
 
 fn legacy_intent() -> TaskIntent {
@@ -502,7 +467,7 @@ pub fn effort_for(model: &Model, resolution: &Resolution) -> Option<String> {
         .map(|(_, effort)| effort.clone())
 }
 
-/// Aim for 64k completion tokens, capped by known positive provider limits.
+/// Provider ceiling, capped at 64k; the executor applies the smaller per-run limit.
 /// The executor must also subtract its actual input from the context window.
 /// A missing completion limit cannot establish a safe explicit token request.
 pub fn completion_tokens_for(model: &Model, _resolution: &Resolution) -> Option<u64> {
@@ -551,31 +516,6 @@ pub fn rank_candidates(models: &[Model], resolution: &Resolution) -> Vec<Model> 
     eligible.sort_by(|a, b| {
         b.tier
             .cmp(&a.tier)
-            .then_with(|| {
-                frontier_signal(b, &model_words(b))
-                    .is_some()
-                    .cmp(&frontier_signal(a, &model_words(a)).is_some())
-            })
-            .then_with(|| {
-                let strongest = |m: &Model| {
-                    m.capabilities
-                        .reasoning_efforts
-                        .iter()
-                        .filter_map(|e| effort_rank(e))
-                        .max()
-                };
-                strongest(b).cmp(&strongest(a))
-            })
-            .then_with(|| {
-                b.capabilities
-                    .max_completion_tokens
-                    .cmp(&a.capabilities.max_completion_tokens)
-            })
-            .then_with(|| {
-                b.capabilities
-                    .context_window
-                    .cmp(&a.capabilities.context_window)
-            })
             .then_with(|| a.target.cmp(&b.target))
             .then_with(|| a.id.cmp(&b.id))
     });
@@ -583,376 +523,4 @@ pub fn rank_candidates(models: &[Model], resolution: &Resolution) -> Vec<Model> 
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn model(name: &str, description: &str) -> Model {
-        Model {
-            id: format!("dynamic-{name}"),
-            target: "native".into(),
-            display_name: name.into(),
-            description: description.into(),
-            line: None,
-            capabilities: Capabilities {
-                tools: Some(true),
-                structured_outputs: Some(true),
-                vision: Some(true),
-                reasoning_efforts: vec!["low".into(), "high".into()],
-                max_completion_tokens: Some(100_000),
-                ..Capabilities::default()
-            },
-            tier: Tier::T1Deterministic,
-            classification_evidence: vec![],
-            available: true,
-        }
-    }
-
-    fn request(intent: TaskIntent, class: ComplexityClass) -> SpawnRequest {
-        SpawnRequest {
-            memory_recall: Default::default(),
-            memory_queries: vec![],
-            objective: "complete the task".into(),
-            task_intent: intent,
-            complexity_class: class,
-            deterministic_operation: None,
-            deterministic_input: None,
-            assigned_tools: vec![],
-            task_needs: vec![],
-            primary_role: None,
-            supporting_skills: vec![],
-            skill_references: vec![],
-            project: PathBuf::from("/project"),
-            requires_vision: false,
-            requested_tier: None,
-            model_selection: None,
-            design_input: None,
-            verification_tools: vec![],
-            host_verification_checks: super::super::handoff::default_checks(),
-        }
-    }
-
-    // Test calls choose an explicit owned floor independently of objective prose.
-    fn resolve(request: &SpawnRequest, tools: &[ToolPolicy]) -> Result<Resolution, PolicyError> {
-        let floor = match request.task_intent {
-            TaskIntent::FormatConversion
-            | TaskIntent::CliParameters
-            | TaskIntent::SchemaExtraction
-            | TaskIntent::FileHygiene => Tier::T1Deterministic,
-            TaskIntent::Synthesis | TaskIntent::MultiToolChaining => Tier::T2Synthesis,
-            _ => Tier::T3Architect,
-        };
-        super::resolve(request, tools, floor)
-    }
-
-    #[test]
-    fn prose_and_legacy_labels_do_not_override_the_owned_workflow_floor() {
-        let mut task = request(
-            TaskIntent::Architecture,
-            ComplexityClass::CreativeArchitectural,
-        );
-        for objective in [
-            "Debugging a concurrent failure",
-            "Format architecture notes",
-            "Türkçe alanları sırala",
-            "Convert CSV to JSON and summarize",
-        ] {
-            task.objective = objective.into();
-            let resolved = super::resolve(&task, &[], Tier::T1Deterministic).unwrap();
-            assert_eq!(resolved.min_tier, Tier::T1Deterministic);
-            assert!(!resolved.requires_vision);
-        }
-        task.requested_tier = Some(Tier::T1Deterministic);
-        assert!(
-            super::resolve(&task, &[], Tier::T3Architect)
-                .unwrap()
-                .downgrade_rejected
-        );
-    }
-
-    #[test]
-    fn future_model_uses_capability_metadata_without_id_allowlist() {
-        let mut future = model("Novel Future Model", "Frontier model for complex work");
-        classify(&mut future);
-        assert_eq!(future.tier, Tier::T3Architect);
-        assert!(future.available);
-        assert!(
-            future
-                .classification_evidence
-                .iter()
-                .any(|s| s.contains("frontier"))
-        );
-    }
-
-    #[test]
-    fn unknown_contract_is_quarantined_even_with_frontier_label() {
-        let mut unknown = model("Future Frontier", "deep reasoning");
-        unknown.capabilities.tools = None;
-        classify(&mut unknown);
-        assert!(!unknown.available);
-        assert_eq!(unknown.tier, Tier::T1Deterministic);
-        let mut task = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
-        task.objective = "Convert JSON to YAML".into();
-        task.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "JSON".into(),
-            to: "YAML".into(),
-        });
-        let resolution = resolve(&task, &[]).unwrap();
-        assert!(rank_candidates(&[unknown], &resolution).is_empty());
-    }
-
-    #[test]
-    fn high_effort_and_large_limits_do_not_promote_utility_model() {
-        let mut utility = model("Utility", "Fast utility for routine work");
-        utility.capabilities.reasoning_efforts = vec!["ultra".into()];
-        utility.capabilities.context_window = Some(1_000_000);
-        classify(&mut utility);
-        assert_eq!(utility.tier, Tier::T1Deterministic);
-        let architect = resolve(
-            &request(TaskIntent::Architecture, ComplexityClass::Synthesis),
-            &[],
-        )
-        .unwrap();
-        assert!(rank_candidates(&[utility], &architect).is_empty());
-    }
-
-    #[test]
-    fn creative_intent_and_owned_tool_raise_floor() {
-        let creative = resolve(
-            &request(TaskIntent::Layout, ComplexityClass::Deterministic),
-            &[],
-        )
-        .unwrap();
-        assert_eq!(creative.min_tier, Tier::T3Architect);
-        let mut synthesis = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
-        synthesis.objective = "Convert JSON to YAML".into();
-        synthesis.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "JSON".into(),
-            to: "YAML".into(),
-        });
-        synthesis.assigned_tools.push("browser".into());
-        let tools = [ToolPolicy {
-            name: "browser".into(),
-            min_tier: Tier::T2Synthesis,
-            requires_vision: true,
-        }];
-        let resolved = resolve(&synthesis, &tools).unwrap();
-        assert_eq!(resolved.min_tier, Tier::T2Synthesis);
-        assert!(resolved.requires_vision);
-        assert!(resolved.requires_structured_outputs);
-    }
-
-    #[test]
-    fn unknown_tools_and_unassigned_verification_fail_closed() {
-        let mut req = request(TaskIntent::Synthesis, ComplexityClass::Synthesis);
-        req.assigned_tools.push("unknown".into());
-        assert_eq!(
-            resolve(&req, &[]).unwrap_err(),
-            PolicyError::UnknownTool("unknown".into())
-        );
-        req.verification_tools.push("other".into());
-        assert_eq!(
-            resolve(&req, &[]).unwrap_err(),
-            PolicyError::UnassignedVerificationTool("other".into())
-        );
-    }
-
-    #[test]
-    fn requested_tier_is_upward_only_and_caller_complexity_cannot_lower_intent() {
-        let mut req = request(TaskIntent::Debugging, ComplexityClass::Deterministic);
-        req.requested_tier = Some(Tier::T1Deterministic);
-        let result = resolve(&req, &[]).unwrap();
-        assert_eq!(result.min_tier, Tier::T3Architect);
-        assert!(result.downgrade_rejected);
-
-        req.task_intent = TaskIntent::FormatConversion;
-        req.objective = "Convert JSON to YAML".into();
-        req.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "JSON".into(),
-            to: "YAML".into(),
-        });
-        req.complexity_class = ComplexityClass::Deterministic;
-        req.requested_tier = Some(Tier::T3Architect);
-        let raised = resolve(&req, &[]).unwrap();
-        assert_eq!(raised.min_tier, Tier::T3Architect);
-        assert!(!raised.downgrade_rejected);
-    }
-
-    #[test]
-    fn vision_and_high_effort_are_checked_at_candidate_boundary() {
-        let mut visual = request(
-            TaskIntent::MultiStepVisualQa,
-            ComplexityClass::Deterministic,
-        );
-        visual.requires_vision = true;
-        let resolution = resolve(&visual, &[]).unwrap();
-        let mut candidate = model("Novel Workhorse", "full-size workhorse model");
-        classify(&mut candidate);
-        candidate.capabilities.vision = None;
-        assert!(rank_candidates(&[candidate.clone()], &resolution).is_empty());
-        candidate.capabilities.vision = Some(true);
-        candidate.capabilities.reasoning_efforts = vec!["medium".into()];
-        assert!(rank_candidates(&[candidate.clone()], &resolution).is_empty());
-        candidate
-            .capabilities
-            .reasoning_efforts
-            .push("xhigh".into());
-        assert_eq!(
-            effort_for(&candidate, &resolution).as_deref(),
-            Some("xhigh")
-        );
-        assert_eq!(rank_candidates(&[candidate], &resolution).len(), 1);
-    }
-
-    #[test]
-    fn completion_headroom_respects_known_limit_and_schema_rejects_model_id() {
-        let mut candidate = model("Novel Workhorse", "full-size workhorse model");
-        let resolution = resolve(
-            &request(
-                TaskIntent::Architecture,
-                ComplexityClass::CreativeArchitectural,
-            ),
-            &[],
-        )
-        .unwrap();
-        assert_eq!(completion_tokens_for(&candidate, &resolution), Some(64_000));
-        candidate.capabilities.max_completion_tokens = Some(24_000);
-        assert_eq!(completion_tokens_for(&candidate, &resolution), Some(24_000));
-        candidate.capabilities.context_window = Some(16_000);
-        assert_eq!(completion_tokens_for(&candidate, &resolution), Some(16_000));
-        let mut json = serde_json::to_value(request(
-            TaskIntent::FormatConversion,
-            ComplexityClass::Deterministic,
-        ))
-        .unwrap();
-        json["model_id"] = Value::String("provider-fixed-name".into());
-        assert!(serde_json::from_value::<SpawnRequest>(json).is_err());
-    }
-
-    #[test]
-    fn explicit_effort_is_exact_supported_and_cannot_lower_the_floor() {
-        let mut task = request(
-            TaskIntent::Creativity,
-            ComplexityClass::CreativeArchitectural,
-        );
-        let mut candidate = model("Novel Frontier", "frontier model");
-        classify(&mut candidate);
-        task.model_selection = Some(ModelSelection {
-            target: candidate.target.clone(),
-            id: candidate.id.clone(),
-            effort: "high".into(),
-        });
-        let mut resolution = resolve(&task, &[]).unwrap();
-        assert_eq!(effort_for(&candidate, &resolution).as_deref(), Some("high"));
-        assert_eq!(rank_candidates(&[candidate.clone()], &resolution).len(), 1);
-        for invalid in ["low", "unknown", "ultra"] {
-            resolution.requested_effort = Some(invalid.into());
-            assert!(rank_candidates(&[candidate.clone()], &resolution).is_empty());
-        }
-        resolution.requested_effort = Some("high".into());
-        candidate.capabilities.reasoning_efforts.clear();
-        assert!(rank_candidates(&[candidate], &resolution).is_empty());
-    }
-
-    #[test]
-    fn lightweight_model_morphology_overrides_frontier_and_reasoning_signals() {
-        let mut lite = model("Novel Flash-Lite Frontier", "full-size frontier workhorse");
-        lite.capabilities.reasoning_efforts = vec!["ultra".into()];
-        lite.classification_evidence
-            .push("adapter: strict JSON action conformance".into());
-        classify(&mut lite);
-        assert_eq!(lite.tier, Tier::T1Deterministic);
-        assert!(
-            lite.classification_evidence
-                .iter()
-                .any(|s| s.starts_with("adapter: "))
-        );
-        classify(&mut lite);
-        assert_eq!(
-            lite.classification_evidence
-                .iter()
-                .filter(|s| s.starts_with("policy: "))
-                .count(),
-            1
-        );
-    }
-
-    #[test]
-    fn lightweight_identity_cannot_be_promoted_by_provider_family_metadata() {
-        let mut haiku = model("Novel Opus", "frontier workhorse");
-        haiku.line = Some("haiku".into());
-        classify(&mut haiku);
-        assert_eq!(haiku.tier, Tier::T1Deterministic);
-
-        let mut sonnet = model("Novel Mini", "fast utility");
-        sonnet.line = Some("sonnet".into());
-        classify(&mut sonnet);
-        assert_eq!(sonnet.tier, Tier::T1Deterministic);
-
-        let mut standard = model("Novel Standard", "balanced speed and intelligence");
-        standard.line = Some("sonnet".into());
-        classify(&mut standard);
-        assert_eq!(standard.tier, Tier::T3Architect);
-    }
-
-    #[test]
-    fn unknown_model_is_t1_even_with_verified_tools_and_high_reasoning() {
-        let mut unknown = model("Future Unknown", "general model for tasks");
-        classify(&mut unknown);
-        assert_eq!(unknown.tier, Tier::T1Deterministic);
-        assert!(unknown.available);
-        let architect = resolve(
-            &request(TaskIntent::Architecture, ComplexityClass::Deterministic),
-            &[],
-        )
-        .unwrap();
-        assert!(rank_candidates(&[unknown], &architect).is_empty());
-    }
-
-    #[test]
-    fn full_size_without_extended_reasoning_stays_t2() {
-        let mut full = model("Novel Pro", "full-size synthesis model");
-        full.capabilities.reasoning_efforts = vec!["low".into(), "medium".into()];
-        classify(&mut full);
-        assert_eq!(full.tier, Tier::T2Synthesis);
-        let task = resolve(
-            &request(TaskIntent::Synthesis, ComplexityClass::Deterministic),
-            &[],
-        )
-        .unwrap();
-        assert!(rank_candidates(&[full], &task).is_empty()); // high effort required when supported
-    }
-
-    #[test]
-    fn assigned_tools_require_verified_support_without_a_tool_count_penalty() {
-        let mut req = request(TaskIntent::FormatConversion, ComplexityClass::Deterministic);
-        req.objective = "Convert CSV to JSON".into();
-        req.deterministic_operation = Some(DeterministicOperation::Convert {
-            from: "CSV".into(),
-            to: "JSON".into(),
-        });
-        req.assigned_tools.push("reader".into());
-        let policies = [
-            ToolPolicy {
-                name: "reader".into(),
-                min_tier: Tier::T1Deterministic,
-                requires_vision: false,
-            },
-            ToolPolicy {
-                name: "writer".into(),
-                min_tier: Tier::T1Deterministic,
-                requires_vision: false,
-            },
-        ];
-        let one = resolve(&req, &policies).unwrap();
-        assert_eq!(one.min_tier, Tier::T1Deterministic);
-        let mut text_only = model("Novel Flash", "fast utility");
-        text_only.capabilities.tools = Some(false);
-        classify(&mut text_only);
-        assert!(rank_candidates(&[text_only], &one).is_empty());
-        req.assigned_tools.push("writer".into());
-        assert_eq!(
-            resolve(&req, &policies).unwrap().min_tier,
-            Tier::T1Deterministic
-        );
-    }
-}
+include!("tests/policy.rs");

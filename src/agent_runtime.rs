@@ -185,7 +185,7 @@ impl Session {
             );
             for (name, contents) in crate::packages::agent::files() {
                 if (name.ends_with(".py") && !name.contains('/'))
-                    || ["requirements.lock", "model.json", "bm25.json"].contains(&name)
+                    || ["requirements.lock", "model.json", "bm25.json", "recovery-contract.json"].contains(&name)
                 {
                     ensure!(
                         response["runtime"]["files"][name] == util::sha256(contents),

@@ -4,20 +4,20 @@
     "requires_vision": false
   },
   "static_render": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   },
   "browser_screenshot": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   },
   "kroki_render": {
-    "min_tier": "T2_SYNTHESIS",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   },
   "typst_compile": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   },
   "raster_transform": {
     "min_tier": "T1_DETERMINISTIC",
@@ -32,8 +32,8 @@
     "requires_vision": false
   },
   "vector_render": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   },
   "openpencil_inspect": {
     "min_tier": "T1_DETERMINISTIC",
@@ -48,7 +48,7 @@
     "requires_vision": true
   },
   "openpencil_export": {
-    "min_tier": "T3_ARCHITECT",
-    "requires_vision": true
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
   }
 }

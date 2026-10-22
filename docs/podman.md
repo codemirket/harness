@@ -52,7 +52,7 @@ environment is an actionable readiness error.
 
 For an existing installation with a package selection to replace, use the new
 release binary's `mirket setup --target all --package design --yes` after
-`environment start`, or run `package install design`. Both explicitly replace the
+`environment start`, or run `package set design`. Both explicitly replace the
 saved selection and reconcile the owned client bindings before later updates.
 
 The installed executable, approved Podman client, `gvproxy`, `vfkit`, verified

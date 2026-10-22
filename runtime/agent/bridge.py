@@ -23,7 +23,7 @@ LIMIT = 4 * 1024 * 1024
 
 def identity():
     files = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(__file__).parent.iterdir())
-             if p.is_file() and (p.name in ("bridge.py", "memory.py", "workflow.py", "lifecycle.py") or p.name in ("requirements.lock", "model.json", "bm25.json"))}
+             if p.is_file() and (p.name in ("bridge.py", "memory.py", "workflow.py", "lifecycle.py") or p.name in ("requirements.lock", "model.json", "bm25.json", "recovery-contract.json"))}
     return {"sha256": hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest(), "files": files,
             "versions": {name: importlib.metadata.version(name) for name in ("mem0ai", "langgraph", "langgraph-checkpoint-sqlite", "fastembed")},
             "network": "runtime container has no network", "memory": "explicit facts; project scope; local embeddings"}
@@ -99,6 +99,7 @@ def dispatch(request):
         "memory_read": {"query", "id", "limit", "cursor"},
         "memory_put": {"text", "kind", "provenance", "expires_at", "key", "supersedes"},
         "memory_forget": {"id", "expected_sha256"},
+        "worker_recall": {"request"},
         "workflow_start": {"run_id", "envelope", "snapshot", "deadline"},
         "workflow_status": {"run_id"},
         "workflow_forget": {"run_id", "expected_checkpoint_id"},
@@ -120,6 +121,9 @@ def dispatch(request):
         if operation.startswith("memory_"):
             from memory import read, put, forget
             return {"memory_read": read, "memory_put": put, "memory_forget": forget}[operation](directory, request["scope"], args)
+        if operation == "worker_recall":
+            from workflow import recall_node
+            return {"state": recall_node({"envelope": args}, directory, request["scope"])}
         from workflow import execute
         return execute(directory, request["scope"], operation, args)
 

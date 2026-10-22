@@ -3,7 +3,7 @@
   "id": "design-coverage-transfer-v1",
   "checker": {
     "path": "src/role_eval.rs",
-    "sha256": "513ad15a438438b6153c95dd253347d4f35887a82e7f01978e10a850c0c11473"
+    "sha256": "3bdf0e049a39b5264d65d9919a9b2347082365ccd2b6fb5b8379a7141e5425a2"
   },
   "configurations": [
     {

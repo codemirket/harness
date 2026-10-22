@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "status": "template_not_run",
+  "arm": "full-harness",
+  "host": null,
+  "model": null,
+  "model_settings": {},
+  "budget": {
+    "max_calls": 32,
+    "max_completion_tokens": 8192
+  },
+  "authority": "Disposable fixtures only; fix identical model/settings/input/budget across arms.",
+  "note": "Record provider usage and interventions, retain raw traces and blind reviewer evidence. No quality result is asserted."
+}

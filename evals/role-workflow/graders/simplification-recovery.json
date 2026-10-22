@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "no_duplicate_effect",
+    "stale_rejected",
+    "budget_retained"
+  ],
+  "assertions": {
+    "no_duplicate_effect": "Inspect saved artifacts, raw trace and host evidence for no duplicate effect.",
+    "stale_rejected": "Inspect saved artifacts, raw trace and host evidence for stale rejected.",
+    "budget_retained": "Inspect saved artifacts, raw trace and host evidence for budget retained."
+  },
+  "grading": "A separate reviewer scores anonymized outputs before configuration labels are revealed. Missing evidence fails the criterion."
+}

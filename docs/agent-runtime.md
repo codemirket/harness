@@ -413,3 +413,19 @@ reconcile managed files. `memory_read` and `workflow_status` launch the private
 runtime and can initialize project storage; their read-only hints describe domain
 operations, not zero filesystem/process effects. Use the explicit environment
 start command when authorized; do not hide activation in a status call.
+
+## Persistence selection and compatibility
+
+Worker requests accept independent `persistence` and `memory_recall` choices.
+`auto` retains the durable default when this package is selected; `ephemeral`
+performs optional memory recall without creating a LangGraph run; `durable` fails
+before inference if the package is unavailable. Both implementations consume the
+pause allowance in `recovery-contract.json`, with shared conformance cases.
+
+Execution compatibility excludes standalone tests, router test modules and CLI,
+update and development presentation code; the full audit identity retains them.
+Selected guidance, providers, tool contracts and artifacts remain separately bound.
+Other production dependencies are conservatively included; this is not a promise
+that every unrelated source edit preserves checkpoint compatibility.
+
+Checkpoint format 2 stores immutable observation hashes alongside the existing run trace. Rust verifies and expands every referenced blob on resume; missing or changed blobs prevent recovery. Snapshot IPC carries references instead of repeating large tool outputs. Back up the whole run directory, including observations. The complete observation archive is bounded to 24 MiB.

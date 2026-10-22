@@ -1282,12 +1282,9 @@ async fn official_mcp_client_discovers_calls_and_reads_scoped_resources() {
     for name in ["route_task", "spawn_subagent"] {
         let tool = tools.iter().find(|tool| tool.name == name).unwrap();
         let schema = serde_json::to_string(&tool.input_schema).unwrap();
-        for variant in [
-            "native_specimen",
-            "image_to_code",
-            "code_fallback",
-            "design_document",
-        ] {
+        assert!(!schema.contains("code_fallback"));
+        assert!(!schema.contains("complexity_class"));
+        for variant in ["native_specimen", "image_to_code", "design_document"] {
             assert!(schema.contains(variant), "missing {variant} on {name}");
         }
     }

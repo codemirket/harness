@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    "relevant_facts",
+    "stale_filtered",
+    "abstention"
+  ],
+  "assertions": {
+    "relevant_facts": "Inspect saved artifacts, raw trace and host evidence for relevant facts.",
+    "stale_filtered": "Inspect saved artifacts, raw trace and host evidence for stale filtered.",
+    "abstention": "Inspect saved artifacts, raw trace and host evidence for abstention."
+  },
+  "grading": "A separate reviewer scores anonymized outputs before configuration labels are revealed. Missing evidence fails the criterion."
+}

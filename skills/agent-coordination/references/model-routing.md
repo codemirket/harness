@@ -61,7 +61,7 @@ floors remain effective even if the caller labels architectural work mechanical.
 | Need | Workflow | Owned route |
 | --- | --- | --- |
 | Supplied evidence and a written answer | `analysis` | Project reads; no edits or external retrieval |
-| One mechanical in-memory response | `structured-response` | No tools; strict deterministic operation |
+| One mechanical in-memory response | `structured-response` | Native trim/sort/deduplicate; other conversions use model inference |
 | Code changes / source findings | `source-implementation` / `source-review` | Writes plus exact readback / reads only |
 | Existing pixels or live DOM inspection | `visual-review` | Playwright, Odiff and pixel inspection; no source edits |
 | Full DOM interface / static Flexbox card | `web-interface` / `static-graphic` | Playwright / Satori-resvg, followed by inspection |
@@ -77,7 +77,7 @@ Design-production workflows report `design_input_required:true`. Supply
 for an inspected supplied or host-generated composition. For a native proof use
 `"design_input":{"mode":"native_specimen","medium":"dom","reason":"Real components and text determine this interface"}`.
 Media are `dom`, `svg`, `pixel`, `diagram`, `typeset`, `design_document`.
-`code_fallback` with the host's capability `reason` remains supported.
+Legacy `code_fallback` input remains readable during 0.x migration; new requests use `native_specimen`.
 The worker receives `design_review`: image targets pass before mutation;
 native/fallback targets must be rendered and inspected before expansion. Final
 review compares current output with the frozen target and records composition,
@@ -129,7 +129,7 @@ There is no provider endpoint override or caller-defined tool policy.
 `requested_tier` is optional and can raise the floor, never lower it; its values
 are `T1_DETERMINISTIC`, `T2_SYNTHESIS`, and `T3_ARCHITECT`. Owned task needs and each assigned tool set the effective floor. The worker can invoke
 only its assigned Mirket tools. Current built-in names are `workspace_read`,
-`workspace_list`, `workspace_write`, and `inspect_image`; available
+`workspace_list`, `workspace_search`, `workspace_write`, and `inspect_image`; available
 `design/...` tools are read from the installed design package and its owned
 policy. There is no arbitrary shell tool in this worker interface. Source implementation therefore ends
 with `status: "awaiting_host_verification"`, even when every write was read back.
@@ -332,3 +332,50 @@ Selected workflow contracts, guidance, tool schemas, provider bindings and saved
 artifact identities must still match. Unrelated catalog entries, standalone
 tests and notices do not invalidate execution compatibility. Legacy runs lacking
 the compatibility identity are rejected rather than guessed compatible.
+
+## Explicit execution choices
+
+Model names, family labels and marketing prose do not rank capabilities. Legacy
+T1/T2/T3 values describe verified capability/effort envelopes; quality remains
+unmeasured. Explicit embedded roles and supporting skills are advisory within the
+64 KiB guidance budget and cannot expand workflow tools. Omitted roles use defaults.
+The unused `task_intent`, `complexity_class` and `code_fallback` fields remain
+read-compatible during 0.x migration but are absent from new schemas; use workflow
+needs and `native_specimen` instead.
+
+`limits` sets `max_calls` (1–256), `max_completion_tokens` (4096–64000),
+`context_bytes` (32 KiB–1 MiB), and `token_reservation` (8192–64000000).
+Defaults are 256 calls, 8192 output tokens, 256 KiB active context and 8 million
+reserved tokens. Reservations conservatively count UTF-8 input bytes, image
+allowances and requested output, including failed attempts; they are not billing
+estimates. Provider-reported usage is retained separately, with unknowns explicit.
+Older observations retain their hashes and indices and can be recalled into active
+context; the complete trace remains the audit record. Resumption retains limits.
+
+`persistence` is `auto` by default (durable when agent-runtime is selected),
+`durable` to require checkpoints, or `ephemeral` to opt out. Ephemeral workers can
+still recall memory. Memory mode is independently `required`, `best_effort` or `off`.
+
+For a source-implementation assessment, `allow_already_satisfied: true` permits an
+unchanged outcome after complete source reads. It still produces a hash-bound host
+verification handoff; it cannot excuse a missing new artifact or a failed check.
+`host_review: true` also requires named host checks for other workflows, including
+separate design review. Host reports are evidence, not authenticated reviewer identity.
+Small static design reviews need composition and applicable axes; final interactive
+work still requires responsive/behavior checks, and motion requires motion checks.
+
+`workspace_search` provides bounded UTF-8 source discovery with line numbers and
+hashes. Literal matching is the default; select `mode: "regex"` explicitly for
+bounded regular expressions. Project-local `.gitignore` rules apply, including
+nested overrides. It skips symlinks, repository internals and common generated
+directories; global excludes and `.git/info/exclude` are outside its scope.
+Ignore files are bounded and hash-recorded. Narrow its path after truncation,
+and read exact files before editing or making completeness claims.
+
+Native `trim_whitespace` trims the whole input; `sort_lines` sorts lexically;
+`deduplicate_lines` preserves first-occurrence order. Line operations join with LF
+without a terminal newline. Other declared transformations use model inference and
+are not deterministic. `rename_file` is rejected: no implicit filesystem rename is
+provided by the structured-response workflow.
+
+Native in-memory operations return an immediate result without a resumable or host-review session. They reject explicit durable, required-recall or host-review requirements; use a source workflow when those requirements apply.
