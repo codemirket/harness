@@ -1,6 +1,7 @@
-# Mirket 0.0.1 release status
+# Mirket release status
 
-Mirket 0.0.1 is the new fresh-install baseline. The published GitHub release,
+Mirket 0.0.2 contains the post-0.0.1 workflow and runtime fixes.
+The 0.0.1 release established the fresh-install baseline. The published GitHub release,
 its `mirket-release.json` manifest and `SHA256SUMS` are authoritative for
 available downloads and checksums. A source commit or local build is not a
 published binary.
@@ -22,6 +23,25 @@ Excalidraw, Mem0 fact retrieval, LangGraph checkpoints, scoped worker tools,
 and explicit recovery and verification contracts. Bundled encoded-video
 production is absent. A package receipt or installed executable alone does not
 prove a live desktop connection or useful task outcome.
+
+## 0.0.2 release scope
+
+This release includes the changes in `ee17264` and `38f99b5`: bounded source
+search, explicit worker budgets and usage, simpler capability routing, no-change
+source outcomes, native text operations, advisory expertise, applicable design
+review, independent persistence and recall, immutable observation references,
+resumable activation, and separate execution identity. It also separates
+observational capture/export from design production, supports explicit image
+equality requirements, and retains inspection evidence for large images.
+
+The [implementation report](simplification-implementation-2026-10.md) records
+conditional decisions: LangGraph and the NLP dependency closure remain; comparative
+model-quality improvements are not claimed. Existing 0.0.1 installation and project
+data are preserved. Old checkpoint execution bindings remain enforced.
+
+Publication requires the native and contained gates below. The selected release's
+manifest, build receipts and acceptance artifact identify the exact published
+source and binaries; this source document does not predeclare passing CI.
 
 ## Published 0.0.1 baseline
 
@@ -50,7 +70,7 @@ All 23 public assets were downloaded without authentication and matched the
 verified bundle, GitHub SHA-256 digests, published sizes and `SHA256SUMS`. The
 public source archive matched all 707 tracked files at the release commit and
 the compiled-source fingerprint. The eight earlier GitHub releases and their
-tags were removed; `mirket-v0.0.1` is the only published Mirket release tag.
+tags were removed; `mirket-v0.0.1` was the only published Mirket release tag at that verification.
 
 On macOS ARM64, the verified release executable was installed at
 `~/.mirket/bin/mirket`; `doctor`, the design and agent-runtime package probes,

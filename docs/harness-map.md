@@ -1,6 +1,6 @@
 # Mirket system map
 
-This describes the 0.0.1 source baseline. The owning code and registries are authoritative; the [generated inventory](harness-map/inventory.json) records every declaration and source hash. A declared tool does not prove that a package is installed, a desktop has reconnected, or a task produced useful output.
+This describes the 0.0.2 source baseline. The owning code and registries are authoritative; the [generated inventory](harness-map/inventory.json) records every declaration and source hash. A declared tool does not prove that a package is installed, a desktop has reconnected, or a task produced useful output.
 
 | Detailed view | Contents |
 | --- | --- |

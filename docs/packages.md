@@ -1,6 +1,6 @@
 # Runtime packages
 
-> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 `design` supplies production tools. The internal `agent-runtime` package supplies
 Mem0 memory and LangGraph worker checkpoints through Mirket itself; see

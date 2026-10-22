@@ -1,6 +1,6 @@
 # Installation and updates
 
-> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 For guided setup, paste the [installation prompt](../website/public/install-prompt.txt)
 into your agent. The [agent execution guide](agent-installation.md) covers device
@@ -112,7 +112,11 @@ releases. Keep an older installation separate until its owner has explicitly
 chosen what data to retain or remove; do not silently bind its projects to a
 new installation.
 
-After 0.0.1, `mirket update --check` can inspect a newer published release.
+Mirket 0.0.2 preserves 0.0.1 registrations, task data, memory and saved setup.
+Existing worker checkpoints retain their original execution bindings; an update
+does not make an incompatible checkpoint resumable.
+
+`mirket update --check` can inspect a newer published release.
 `mirket update` verifies that release's manifest and executable hash before
 reapplying saved setup. The installed binary remains under `~/.mirket/bin` on
 all CLI platforms. Update keeps saved package selections and refuses modified

@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "scope": "Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
@@ -21,12 +21,12 @@
     {
       "path": "Cargo.lock",
       "bytes": 60048,
-      "sha256": "4a5b8802c6164a3d8fc4eb8a60b9091d215574ce8571b423ad049aaeb8a67350"
+      "sha256": "33fce668240c33dd978b4219049f7fd6775ef9e1b62edea39e6234d1ec645442"
     },
     {
       "path": "Cargo.toml",
       "bytes": 1647,
-      "sha256": "c9bbf0c37a1197b7622c1b0a8c1ed9a01c9797bb7162da9f6583e5da596bf2a4"
+      "sha256": "ca740dc685625b00a2c37f0d32549888570d2c944e4edee7658b78e345bf31a5"
     },
     {
       "path": "build.rs",
@@ -35,8 +35,8 @@
     },
     {
       "path": "docs/architecture.md",
-      "bytes": 22140,
-      "sha256": "ded5f0649eb1ad649af7c19aebd5b98e621bacb6b8318d610f6b1290a2eed460"
+      "bytes": 22163,
+      "sha256": "531dd65c087d011c4b3ff2c51acec517bb5bd67c4f34b1e8251bb495eaff124f"
     },
     {
       "path": "docs/licenses/rust-runtime/README.md",
@@ -18322,7 +18322,7 @@
     "rust_manifest": {
       "package": {
         "name": "mirket",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "edition": "2024",
         "rust-version": "1.99",
         "description": "A local agent harness for Codex and Claude",
@@ -19433,7 +19433,7 @@
       },
       {
         "name": "mirket",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "dependencies": [
           "anyhow",
           "clap",
@@ -34930,7 +34930,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "e622e5c79c2d882748ece79ede419186fd9e9d6a52688da98f9b9b675bf55b18",
+  "source_sha256": "429a2c3f2d4b4f1744ffc438ddefd6aa5e6ddcf6941bd07531d42d258bfbc4c9",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

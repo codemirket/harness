@@ -1,6 +1,6 @@
 # Local memory and durable workers
 
-> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 `agent-runtime` contains Mem0 OSS 2.2.1, LangGraph 1.2.16 and the SQLite
 checkpointer 3.1.2. It is an internal package behind the existing Mirket MCP

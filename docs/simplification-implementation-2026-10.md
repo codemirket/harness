@@ -44,8 +44,9 @@ claim better model quality, lower total cost, smaller images or client activatio
   durable, required-memory or host-review combinations are rejected; use a source
   workflow when those requirements apply.
 
-Final verification is recorded in the task evidence directory. No commit or live
-installation update is included in this implementation request.
+The implementation was committed in `38f99b5`, following `ee17264`, and is
+included in the 0.0.2 release scope. Release and live-installation evidence are
+separate from the original implementation checks.
 
 The fresh offline retrieval comparison used 26 synthetic facts and 20 queries.
 All four arms achieved answerable recall@3 of 1.0, but each returned nothing for

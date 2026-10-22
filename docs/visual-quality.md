@@ -1,6 +1,6 @@
 # Visual production
 
-> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket supplies visual guidance, scoped production tools and artifact checks.
 It does not certify aesthetic quality. A valid render, an AI review and user

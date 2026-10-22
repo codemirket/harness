@@ -1,6 +1,6 @@
 # Architecture
 
-> **Version scope:** Mirket 0.0.1 fresh baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket has one Rust command and orchestration surface. Optional specialist operations
 run through owned Python and Node adapters; the Rust host retains permission and

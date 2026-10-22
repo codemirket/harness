@@ -15,10 +15,10 @@ apply.
 
 [Website & usage guide](https://harness.mirket.dev) ·
 [Documentation](docs/README.md) ·
-[Release 0.0.1](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.1) ·
+[Release 0.0.2](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.2) ·
 [Contributing](CONTRIBUTING.md)
 
-See the [0.0.1 release status and fresh-install boundaries](docs/release-status.md).
+See the [release status and upgrade boundaries](docs/release-status.md).
 
 ## What it adds
 
@@ -46,7 +46,7 @@ settings and run setup checks.
 
 <!-- installation-prompt:start -->
 ```text
-Install Mirket 0.0.1 for the agent environment I am using on this device. Read
+Install Mirket 0.0.2 for the agent environment I am using on this device. Read
 https://raw.githubusercontent.com/codemirket/harness/main/docs/agent-installation.md
 and carry out the installation, rather than only explaining it.
 
@@ -54,8 +54,8 @@ Inspect my OS, architecture, available host and any existing Mirket setup.
 Use the official codemirket/harness release, verify its checksum before
 execution, and install the managed executable under my home’s .mirket/bin.
 Keep Mirket runtime data under the same .mirket root. Preserve unrelated
-host settings, credentials and project source files. Older Mirket data is
-not imported into 0.0.1; ask before removing any existing installation.
+host settings, credentials and project source files. Preserve existing 0.0.1 data when upgrading to 0.0.2. Pre-0.0.1 data is
+not imported; ask before removing any existing installation.
 Keep optional packages opt-in.
 
 Run setup and health checks, report the installed version and actual results,
