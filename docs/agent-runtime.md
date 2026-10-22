@@ -11,9 +11,10 @@ The [integration review](runtime-integration-review-2026-10.md) traces these
 libraries into actual worker execution, records contained test evidence, and
 assesses Graphiti and opportunistic Rust migration.
 
-Usage and billing belong in the selected provider's own panel. Mirket does not
-collect token usage, calculate costs or maintain an accounting command or probe
-ledger. Worker traces retain response hashes, elapsed time and bounded failure
+Billing belongs in the selected provider's own panel. Mirket retains available
+numeric provider-reported token usage in local worker observations; unknown
+usage and costs remain unknown. It does not calculate a billing ledger. Worker
+traces also retain response hashes, elapsed time and bounded failure
 diagnostics for execution troubleshooting. Vision conformance checks still run
 when needed to establish a model's capability. Existing saved records are left
 intact; removing the utility does not delete historical task evidence.
@@ -26,8 +27,8 @@ mirket package audit agent-runtime
 mirket package status
 ```
 
-Package installation replaces the saved package selection; include `design` to
-retain it. Setup/update own installation and preserve unrelated host settings.
+Package installation adds to the saved selection; use explicit `package set` to
+replace it. Setup/update own installation and preserve unrelated host settings.
 The current image targets Linux ARM64 on Mirket's registered private Podman
 engine. Serving never downloads dependencies or models and never starts the VM.
 
