@@ -19,6 +19,7 @@ Keep optional container support separate from core CLI platform support.
 | Review product boundaries and current release | [Release status](release-status.md) |
 | Develop and verify a change | [Contributing](../CONTRIBUTING.md) |
 | Inspect source reuse and licenses | [Source review](source-review.md) · [Third-party notices](third-party-notices.md) |
+| Read project privacy, licensing and contact information | [Legal information](legal-information.md) |
 
 ## Keep the checks separate
 

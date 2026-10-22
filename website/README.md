@@ -109,3 +109,21 @@ Rollback: under the deployment lock, create a new symlink to a verified previous
 directory in `/opt/harness.mirket.dev/releases/`, then rename it over `current`.
 Keep the current and preceding releases; remove older inactive releases only
 after successful verification. Never edit an active release in place.
+
+## Legal information
+
+`public/legal.html` presents the short [legal information document](../docs/legal-information.md)
+with a homepage footer link. Keep both copies aligned with confirmed practices.
+It covers the free project, local and provider data, website logs, licensing and
+private contact. It is informational, not a certification of compliance.
+
+Check the page using the same installed browser settings as the homepage:
+
+```sh
+node website/scripts/legal-browser-check.mjs http://127.0.0.1:8767/ /absolute/evidence/legal
+```
+
+The check exercises desktop and narrow layouts without JavaScript, navigation,
+keyboard access, enlarged text, contact links and unexpected requests/storage.
+Inspect the saved captures. Deployment uses the standard artifact integrity and
+rollback checks described above.

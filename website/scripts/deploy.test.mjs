@@ -42,6 +42,13 @@ test("deployment admits only exact committed artifact bytes", async () => {
     const build = () => run(process.execPath, ["website/scripts/build.mjs"]);
     const built = build();
     assert.equal(built.status, 0, built.stderr);
+    const legalPage = path.join(root, "website/public/legal.html");
+    const legalHtml = await fs.readFile(legalPage, "utf8");
+    await fs.writeFile(legalPage, legalHtml.replace('href="./legal.html"', 'href="./legal.html#missing-section"'));
+    assert.match(build().stderr, /broken target/);
+    await fs.writeFile(legalPage, legalHtml);
+    const deploy = () =>
+      run(process.execPath, ["website/scripts/deploy.mjs", "--dry-run"]);
     const homepage = path.join(root, "website/public/index.html");
     const html = await fs.readFile(homepage, "utf8");
     await fs.writeFile(homepage, html.replace(/(id="release-status"[\s\S]*?Mirket )\d+\.\d+\.\d+/, "$10.0.0"));
@@ -49,8 +56,6 @@ test("deployment admits only exact committed artifact bytes", async () => {
     await fs.writeFile(homepage, html.replace(/(id="release-status"[^>]*releases\/tag\/mirket-v)\d+\.\d+\.\d+/, "$10.0.0"));
     assert.match(build().stderr, /Release link differs/);
     await fs.writeFile(homepage, html);
-    const deploy = () =>
-      run(process.execPath, ["website/scripts/deploy.mjs", "--dry-run"]);
     const good = deploy();
     assert.equal(good.status, 0, good.stderr);
     const guide = path.join(root, "docs/visual-quality.md");

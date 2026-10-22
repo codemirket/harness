@@ -31,16 +31,23 @@ assert.ok(html.includes(`>${escapeHtml(prompt)}</textarea>`), "Website installat
 const readme = await fs.readFile(path.join(root, "../README.md"), "utf8");
 assert.ok(readme.includes(`<!-- installation-prompt:start -->\n\x60\x60\x60text\n${prompt}\n\x60\x60\x60\n<!-- installation-prompt:end -->`), "README installation prompt drifted");
 await fs.access(path.join(root, "../docs/agent-installation.md"));
-for (const [, file] of html.matchAll(/href="https:\/\/github\.com\/codemirket\/harness\/blob\/main\/([^"#?]+)"/g))
-  await fs.access(path.join(root, "..", file));
-assert.match(html, /<html lang="en">/);
-assert.equal((html.match(/<h1\b/g) || []).length, 1);
-const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
-assert.equal(new Set(ids).size, ids.length, "Duplicate DOM IDs");
-for (const [, id] of html.matchAll(/href="#([^"]+)"/g))
-  assert.ok(ids.includes(id), `Broken anchor: ${id}`);
-for (const [, file] of html.matchAll(/(?:src|href)="\.\/([^"]+)"/g))
-  await fs.access(path.join(root, "public", file));
+for (const page of (await fs.readdir(path.join(root, "public"))).filter(file => file.endsWith(".html"))) {
+  const content = await fs.readFile(path.join(root, "public", page), "utf8");
+  for (const [, file] of content.matchAll(/href="https:\/\/github\.com\/codemirket\/harness\/blob\/main\/([^"#?]+)"/g))
+    await fs.access(path.join(root, "..", file));
+  assert.match(content, /<html lang="en">/);
+  assert.equal((content.match(/<h1\b/g) || []).length, 1, `${page}: require one main heading`);
+  const ids = [...content.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(new Set(ids).size, ids.length, `${page}: duplicate DOM IDs`);
+  for (const [, id] of content.matchAll(/href="#([^"]+)"/g))
+    assert.ok(ids.includes(id), `${page}: broken anchor ${id}`);
+  for (const [, target] of content.matchAll(/(?:src|href)="((?:\.\/|\/)[^"]*)"/g)) {
+    const [file, fragment] = target.replace(/^\.\//, "").replace(/^\//, "").split("#");
+    const local = path.join(root, "public", file || "index.html");
+    await fs.access(local);
+    if (fragment) assert.ok((await fs.readFile(local, "utf8")).includes(`id="${fragment}"`), `${page}: broken target ${target}`);
+  }
+}
 const files = {};
 for (const entry of await fs.readdir(path.join(root, "public"), {
   withFileTypes: true,
