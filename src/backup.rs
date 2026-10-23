@@ -226,7 +226,12 @@ fn snapshot_runtime(source: &Path, target: &Path) -> Result<()> {
             [target.to_str().context("snapshot path")?],
         )?;
         private_file(target)?;
-        fs::File::open(target)?.sync_all()?;
+        // Windows FlushFileBuffers requires a writable handle, even after VACUUM.
+        fs::OpenOptions::new()
+            .write(true)
+            .open(target)?
+            .sync_all()
+            .context("flush native database snapshot")?;
     } else {
         copy_tree(source, target)?;
     }

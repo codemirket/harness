@@ -2195,8 +2195,8 @@
     },
     {
       "path": "src/backup.rs",
-      "bytes": 28644,
-      "sha256": "0bfa3fbc8d46ae83d361db15f7fed99018a45746caaf65d4c326685c00914b7a"
+      "bytes": 28846,
+      "sha256": "557483a7b3d75c9ede057ae46b059fafa40402d991c17b14c8ab1e63d40206b6"
     },
     {
       "path": "src/catalog/design_references/coverage.rs",
@@ -35619,7 +35619,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "0c65b99229ad4ccd34fc965532c5543c0e29bcb954077123a60ab43dbbfdbf68",
+  "source_sha256": "4d9d9c31294d278ab2675d22d887686709beeeec36d5bd1b8a389904fb48b9f4",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
