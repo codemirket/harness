@@ -20,11 +20,12 @@ def binary(archive, expected):
 
 
 if __name__ == "__main__":
+    pins = json.loads(Path(__file__).with_name("scanner.json").read_text())["targets"]
     parser = argparse.ArgumentParser()
-    parser.add_argument("--target", required=True, choices=["linux-amd64", "darwin-arm64"])
+    parser.add_argument("--target", required=True, choices=sorted(pins))
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    pin = json.loads(Path(__file__).with_name("scanner.json").read_text())["targets"][args.target]
+    pin = pins[args.target]
     with urllib.request.urlopen(pin["url"], timeout=120) as response:
         data = response.read(128 * 1024 * 1024 + 1)
     if len(data) > 128 * 1024 * 1024:

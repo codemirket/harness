@@ -80,8 +80,8 @@
     },
     {
       "path": "evals/dependency-audit/fetch_scanner.py",
-      "bytes": 1406,
-      "sha256": "b30aa907d549c9c534b2453e08e958ed7a36f242b3739b42a6fe5dd605543357"
+      "bytes": 1403,
+      "sha256": "9c548d438feb7a3366c7d77c499cd43ec30dca67c2c9cede90915c97cc7d0063"
     },
     {
       "path": "evals/dependency-audit/image_audit.py",
@@ -35566,7 +35566,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "a9b54f91ddcdb7c7828ee37c310e389ff4df5366dd226650469934b7321f9198",
+  "source_sha256": "6fd6cc0aeeea7e2ba826996f3addc0427432b78121f2b196b39fcc05060ba0b0",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
