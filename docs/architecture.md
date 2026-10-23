@@ -1,9 +1,9 @@
 # Architecture
 
-> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.1 clean baseline. Confirm published artifacts and support boundaries in the [release guide](release-status.md).
 
 Mirket has one Rust command and orchestration surface. Optional specialist operations
-run through owned Python and Node adapters; the Rust host retains permission and
+run through owned native and Node adapters; the Rust host retains permission and
 execution authority.
 The executable embeds the authored guidance and catalog. Target installers call
 the same CLI library; coordination MCP tools call the same catalog and state
@@ -291,10 +291,11 @@ retained-context budgets remain unchanged.
 `src/packages/agent.rs` owns the internal OCI recipe; `src/packages/oci.rs` owns
 shared image identity checks. `src/agent_runtime.rs` owns bounded private IPC and
 checks loaded versions/source hashes. `src/memory.rs` owns typed host memory
-requests; `src/router/durable.rs` binds LangGraph to actual worker dispatch and
-host verification. `runtime/agent` implements Mem0 storage/recall and the fixed
-LangGraph state machine. It has no host tool dispatcher, provider credentials or
-arbitrary-code interface. See [the runtime contract](agent-runtime.md) and
+requests; `src/router/durable.rs` binds the Rust execution journal to actual
+worker dispatch and host verification. `src/memory/store.rs` implements the
+native fact store and `runtime/agent/embed.rs` is the fixed contained embedding
+helper. It has no host tool dispatcher, provider credentials or arbitrary-code
+interface. See [the runtime contract](agent-runtime.md) and
 [version availability](release-status.md).
 
 ## Durable maintenance

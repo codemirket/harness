@@ -1,8 +1,9 @@
 # Mirket documentation
 
-Start with [versions and supported targets](release-status.md). These guides describe
-Mirket 0.0.2, which preserves 0.0.1 installations. Pre-0.0.1 formats are not migrated.
-Keep optional container support separate from core CLI platform support.
+Start with [version and support boundaries](release-status.md). These guides describe
+the clean Mirket 0.0.1 baseline. Earlier reports are historical evidence; no
+pre-0.0.1 formats are migrated. Keep optional container support separate from
+core CLI platform support.
 
 | Your task | Guide |
 | --- | --- |

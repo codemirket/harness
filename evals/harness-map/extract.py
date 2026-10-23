@@ -61,7 +61,7 @@ for facet in capabilities['team_facets']:
     for assignment in facet['assignments']:
         edges.append({'from': 'facet:' + facet['id'], 'relation': assignment['mode'], 'to': 'role:' + assignment['role']})
 refs = [file_record(p) for p in sorted((ROOT / 'skills').rglob('*')) if p.is_file() and 'references' in p.relative_to(ROOT).parts and p.name != '.DS_Store']
-inputs = ['registry/catalog.json', 'registry/capabilities.json', 'registry/harness.json', 'registry/design-stack.json', 'registry/agent-runtime.json', 'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'runtime/design/tools/package.json', 'runtime/design/tools/package-lock.json', 'runtime/design/tools/tool-policy.json', 'runtime/agent/requirements.in', 'runtime/agent/requirements.lock', 'runtime/agent/model.json', 'runtime/agent/bm25.json', 'src/mcp.rs']
+inputs = ['registry/catalog.json', 'registry/capabilities.json', 'registry/harness.json', 'registry/design-stack.json', 'registry/agent-runtime.json', 'Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', 'runtime/design/tools/package.json', 'runtime/design/tools/package-lock.json', 'runtime/design/tools/tool-policy.json', 'runtime/agent/model.json', 'runtime/agent/native.json', 'runtime/agent/native/Cargo.toml', 'runtime/agent/native/Cargo.lock', 'src/mcp.rs']
 mcp = re.findall(r'#\[tool\([\s\S]*?\)\]\s*async fn (\w+)', (ROOT / 'src/mcp.rs').read_text())
 inventory = {
  'schema_version': 3,
@@ -71,7 +71,7 @@ inventory = {
  'counts': {'skills': len(catalog['skills']), 'delivery': dict(collections.Counter(s['delivery'] for s in catalog['skills'])), 'profiles': len(catalog['profiles']), 'profile_kinds': dict(collections.Counter(p.get('kind') for p in catalog['profiles'].values())), 'roles': len(capabilities['capabilities']), 'facets': len(capabilities['team_facets']), 'workflows': len(capabilities['workflows']), 'sources': len(catalog['sources']), 'reference_files': len(refs), 'main_mcp_tools': len(mcp)},
  'catalog': catalog, 'capabilities': capabilities, 'global': read('registry/harness.json'),
  'packages': {'design': read('registry/design-stack.json'), 'agent-runtime': read('registry/agent-runtime.json')},
- 'dependencies': {'rust_manifest': cargo, 'rust_locked_packages': lock['package'], 'node_manifest': read('runtime/design/tools/package.json'), 'node_locked_packages': npm_lock['packages'], 'python_requirements': (ROOT / 'runtime/agent/requirements.in').read_text().splitlines(), 'python_locked_requirements': [s for s in (ROOT / 'runtime/agent/requirements.lock').read_text().splitlines() if s and not s.startswith('#')], 'embedding': read('runtime/agent/model.json'), 'bm25': read('runtime/agent/bm25.json')},
+ 'dependencies': {'rust_manifest': cargo, 'rust_locked_packages': lock['package'], 'node_manifest': read('runtime/design/tools/package.json'), 'node_locked_packages': npm_lock['packages'], 'embedding': read('runtime/agent/model.json'), 'native_embedding': read('runtime/agent/native.json'), 'native_manifest': (ROOT / 'runtime/agent/native/Cargo.toml').read_text(), 'native_lock': tomllib.loads((ROOT / 'runtime/agent/native/Cargo.lock').read_text())['package']},
  'main_mcp_tools': mcp, 'reference_files': refs, 'edges': edges,
  'test_files': [p.relative_to(ROOT).as_posix() for base in ['tests', 'runtime/design/tools/test', 'evals'] for p in sorted((ROOT / base).rglob('*')) if p.is_file() and p.suffix in ('.rs', '.py', '.cjs', '.mjs')],
 }
@@ -189,13 +189,8 @@ for t in pencil['tools']:
 if any(e['from'] not in nodes or e['to'] not in nodes for e in edges): raise ValueError('unresolved typed graph endpoint')
 inventory.update(nodes=sorted(nodes.values(),key=lambda n:n['id']), edges=sorted(edges,key=lambda e:(e['from'],e['relation'],e['to'])))
 
-python_wheels=[]
-for line in inventory['dependencies']['python_locked_requirements']:
-    name, rest=line.split(' @ ',1); url, sha=rest.split(' --hash=sha256:',1)
-    wheel=url.rsplit('/',1)[1]; parts=wheel.removesuffix('.whl').split('-')
-    python_wheels.append({'name':name,'version':parts[1],'url':url,'sha256':sha,'wheel':wheel,'python_tag':parts[-3],'abi_tag':parts[-2],'platform_tag':parts[-1]})
-inventory['dependencies'].update(python_wheels=python_wheels,
-    graph_limits='Cargo and npm records preserve their native dependency graph fields. The Python wheel lock is flat; Requires-Dist edges are unavailable and not inferred. Optional/platform npm records are not necessarily installed. OS inventories require separate image evidence.')
+inventory['dependencies'].update(
+    graph_limits='Cargo and npm records preserve their native dependency graph fields. The native helper lock is recorded separately. Optional/platform npm records are not necessarily installed. Native libraries, model assets and OS inventories require separate package/image evidence.')
 environment=collections.defaultdict(set)
 for path in source_files:
     if path.suffix not in ('.rs','.py','.mjs') or path.relative_to(ROOT).parts[0] not in ('src','runtime'): continue
@@ -207,7 +202,7 @@ inventory['counts'].update(global_skills=len(inventory['global']['global_skills'
     design_mcp_tools=len(design_tools),worker_tools=sum(node['kind']=='worker_tool' for node in nodes.values()),
     openpencil_operations=dict(collections.Counter(t['effect'] for t in pencil['tools'])),
     cargo_lock_records=len(lock['package']),npm_lock_records_including_root=len(inventory['dependencies']['node_locked_packages']),
-    python_locked_wheels=len(python_wheels),graph_nodes=len(nodes),graph_edges=len(edges))
+    native_locked_packages=len(inventory['dependencies']['native_lock']),graph_nodes=len(nodes),graph_edges=len(edges))
 
 def table(headers, rows):
     return ['| '+' | '.join(headers)+' |','| '+' | '.join(['---']*len(headers))+' |'] + ['| '+' | '.join(cell(v) for v in row)+' |' for row in rows]
@@ -247,11 +242,11 @@ depdoc += ['','## Resolved Rust packages','']+table(['Name','Version','Locked de
 depdoc += ['','## Direct design JavaScript requirements','']+table(['Name','Exact version'], d['node_manifest']['dependencies'].items())
 depdoc += ['','Overrides: '+cell(d['node_manifest'].get('overrides',{})), '', '## Resolved npm lock paths','','Root, nested duplicates and optional platform records are retained separately.','']
 depdoc += table(['Lock path','Actual name','Version','Optional','Platform'],([p or '<root>',v.get('name',p.split('node_modules/')[-1]),v.get('version',''),v.get('optional',False),{'os':v.get('os',[]),'cpu':v.get('cpu',[])}] for p,v in d['node_locked_packages'].items()))
-depdoc += ['','## Direct Python requirements','','```text',*d['python_requirements'],'```','','## Locked Python wheels','']
-depdoc += table(['Name','Version','Python / ABI','Platform'],([p['name'],p['version'],p['python_tag']+' / '+p['abi_tag'],p['platform_tag']] for p in python_wheels))
+depdoc += ['','## Native embedding helper','','The helper is a separate Rust package with a locked fastembed/ONNX closure. It receives native ONNX members from `runtime/agent/native.json`; no Python dependency lock is shipped.','']
+depdoc += table(['Package','Version'],([(p['name'],p['version']) for p in d['native_lock']]))
 depdoc += ['','## Pinned base and service images','']
-depdoc += table(['Consumer','Alias','Pin'], [['design',k,v] for k,v in inventory['packages']['design']['images'].items()]+[['agent-runtime','python',inventory['packages']['agent-runtime']['python_image']]])
-for kind in ['embedding','bm25']:
+depdoc += table(['Consumer','Alias','Pin'], [['design',k,v] for k,v in inventory['packages']['design']['images'].items()]+[['agent-runtime','build',inventory['packages']['agent-runtime']['build_image']], ['agent-runtime','runtime',inventory['packages']['agent-runtime']['runtime_image']]])
+for kind in ['embedding']:
     model=d[kind]
     depdoc += ['',f"### {kind}: {model['model']}",'',f"Revision `{model['revision']}`; {len(model['files'])} files; {sum(f['bytes'] for f in model['files'].values()):,} pinned bytes. This is asset size, not RAM or compressed transfer size.",'']
     depdoc += table(['File','Bytes','SHA-256'],([name,v['bytes'],v['sha256']] for name,v in model['files'].items()))

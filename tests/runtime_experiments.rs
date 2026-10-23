@@ -1,41 +1,57 @@
-//! Opt-in comparisons in an existing prepared runtime. Synthetic data only.
-use mirket::{packages::agent, paths::Paths};
-use std::{path::PathBuf, time::Duration};
+//! Native retrieval corpus checks.
+//!
+//! The former test launched a Python container and compared prototype
+//! retrieval arms. The production owner is now the Rust fact store, so this
+//! required gate exercises its multilingual corpus directly.
 
-#[test]
-#[ignore = "requires explicitly prepared agent-runtime and MIRKET_TEST_ENGINE_HOME"]
-fn multilingual_retrieval_ablation() {
-    let home =
-        PathBuf::from(std::env::var("MIRKET_TEST_ENGINE_HOME").expect("explicit engine home"));
-    let paths = Paths::new(home).unwrap();
-    let (engine, mut args, _) = agent::command(&paths, None).unwrap();
-    let image = args.pop().unwrap();
-    args.extend([
-        "--entrypoint=python".into(),
-        image,
-        "-B".into(),
-        "-c".into(),
-        include_str!("../evals/role-workflow/experiments/retrieval-ablation.py").into(),
-    ]);
-    let output = engine.run(&args, Duration::from_secs(600)).unwrap();
-    let value: serde_json::Value = serde_json::from_str(output.trim()).unwrap();
-    assert_eq!(value["private_data_mounted"], false);
-    assert_eq!(value["arms"].as_array().unwrap().len(), 4);
-    println!("{output}");
-    if let Ok(path) = std::env::var("MIRKET_EXPERIMENT_OUTPUT") {
-        use std::io::Write;
-        let path = PathBuf::from(path);
-        assert!(path.is_absolute());
-        std::fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(path)
-            .unwrap()
-            .write_all(output.as_bytes())
-            .unwrap();
-    }
+use mirket::memory::store::FactStore;
+use serde_json::{Value, json};
+
+fn vector(axis: usize) -> Vec<f32> {
+    let mut result = vec![0.0; 384];
+    result[axis] = 1.0;
+    result
 }
 
-mod journal {
-    include!("../evals/role-workflow/experiments/journal-prototype.rs");
+fn fact(key: &str, text: &str) -> Value {
+    json!({
+        "key": key,
+        "text": text,
+        "kind": "fact",
+        "provenance": "native corpus fixture",
+        "expires_at": null
+    })
+}
+
+#[test]
+fn native_multilingual_retrieval_corpus() {
+    let directory = tempfile::tempdir().unwrap();
+    let root = directory.path().canonicalize().unwrap();
+    let mut facts = FactStore::open(
+        &root.join("facts.sqlite"),
+        &"a".repeat(64),
+        "native-corpus-model",
+    )
+    .unwrap();
+    for (axis, (key, text)) in [
+        ("turkish", "Turkish offline behavior is required"),
+        ("german", "German financial reporting is required"),
+        ("english", "English installation instructions are current"),
+        ("journal", "Journal recovery preserves uncertain effects"),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        facts.put(&fact(key, text), &vector(axis), 100).unwrap();
+    }
+
+    for (query, key) in [
+        ("Turkish offline behavior", "turkish"),
+        ("German financial reporting", "german"),
+        ("English installation", "english"),
+        ("uncertain effects", "journal"),
+    ] {
+        let result = facts.search(query, None, 5, 100).unwrap();
+        assert_eq!(result["results"][0]["metadata"]["request_key"], key);
+    }
 }

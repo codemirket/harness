@@ -2275,7 +2275,34 @@
     {
       "id": "diagram",
       "design_production": true,
-      "when": "Produce flow, sequence, C4, Vega-Lite or Excalidraw diagram layouts.",
+      "when": "Produce architecture and system diagrams locally with D2 and bundled TALA.",
+      "role": "graphic-design",
+      "tools": [
+        "workspace_read",
+        "workspace_list",
+        "workspace_write",
+        "design/d2_render",
+        "inspect_image",
+        "workspace_search"
+      ],
+      "required_tools": [
+        "design/d2_render",
+        "inspect_image"
+      ],
+      "verification_tools": [
+        "inspect_image"
+      ],
+      "rule": "Default to local D2/TALA for architecture diagrams; no diagram service is required. Inspect graph structure, labels and layout. Use diagram-service only for explicitly requested other syntax or editable Excalidraw sketches.",
+      "min_tier": "T3_ARCHITECT",
+      "host_verification": false,
+      "budget_class": "static",
+      "interactive": false,
+      "motion": false
+    },
+    {
+      "id": "diagram-service",
+      "design_production": true,
+      "when": "Explicitly requested PlantUML, C4-PlantUML, Vega-Lite, Graphviz or editable Excalidraw diagrams using selected services.",
       "role": "graphic-design",
       "tools": [
         "workspace_read",
@@ -2292,7 +2319,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Use Kroki declarative layouts and the built-in SVGO/Playwright QA. Never replace graph layout with hand-positioned SVG coordinates.",
+      "rule": "Use explicitly selected Kroki services for their requested syntax. Select Excalidraw explicitly for editable sketches. Architecture diagrams default to the local diagram workflow and need no service.",
       "min_tier": "T3_ARCHITECT",
       "host_verification": false,
       "budget_class": "static",

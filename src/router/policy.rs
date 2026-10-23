@@ -34,6 +34,8 @@ pub struct Capabilities {
     pub reasoning_efforts: Vec<String>,
     #[serde(default)]
     pub thinking_modes: Vec<String>,
+    /// Combined input/output context limit reported by the adapter. None is unknown,
+    /// not an unlimited window. Adapters must not put an input-only limit here.
     pub context_window: Option<u64>,
     pub max_completion_tokens: Option<u64>,
     pub thinking_budget_max: Option<u64>,
@@ -175,10 +177,14 @@ pub enum Persistence {
 pub struct RunLimits {
     pub max_calls: usize,
     pub max_completion_tokens: u64,
-    /// Conservative reservation: UTF-8 input bytes + image allowance + requested output tokens.
-    /// This is not a provider billing estimate. Unknown usage is never treated as zero.
+    /// Cumulative admission reservations (estimated input tokens + admitted output cap).
+    /// Reservations survive failed inference and resume; they are not billed usage.
     pub token_reservation: u64,
+    /// Serialized textual context cap, independent of token admission.
     pub context_bytes: usize,
+    /// Conservative encoded request byte bound, including schema/image framing.
+    /// This is a transport/memory limit, not a token estimate or a wire-byte receipt.
+    pub transport_bytes: usize,
 }
 impl Default for RunLimits {
     fn default() -> Self {
@@ -187,6 +193,7 @@ impl Default for RunLimits {
             max_completion_tokens: 8192,
             token_reservation: 8_000_000,
             context_bytes: 256 * 1024,
+            transport_bytes: 16 * 1024 * 1024,
         }
     }
 }
@@ -196,7 +203,8 @@ impl RunLimits {
             (1..=256).contains(&self.max_calls)
                 && (4096..=64_000).contains(&self.max_completion_tokens)
                 && (8192..=64_000_000).contains(&self.token_reservation)
-                && (32 * 1024..=1024 * 1024).contains(&self.context_bytes),
+                && (32 * 1024..=1024 * 1024).contains(&self.context_bytes)
+                && (32 * 1024..=16 * 1024 * 1024).contains(&self.transport_bytes),
             "run limits exceed supported bounds"
         );
         Ok(())
@@ -235,13 +243,11 @@ pub struct SpawnRequest {
     #[serde(default)]
     pub memory_queries: Vec<String>,
     pub objective: String,
-    /// Legacy descriptive field, accepted for compatibility; workflows own routing floors.
+    /// Canonical descriptive field; workflows own routing floors.
     #[schemars(skip)]
-    #[serde(default = "legacy_intent")]
     pub task_intent: TaskIntent,
-    /// Legacy descriptive field, accepted for compatibility; use requested_tier to raise a floor.
+    /// Canonical descriptive field; use requested_tier to raise a floor.
     #[schemars(skip)]
-    #[serde(default = "legacy_complexity")]
     pub complexity_class: ComplexityClass,
     #[serde(default)]
     pub deterministic_operation: Option<DeterministicOperation>,
@@ -342,13 +348,6 @@ pub fn classify(model: &mut Model) {
         "policy: verified capability envelope; quality unmeasured; no model-name classification"
             .into(),
     );
-}
-
-fn legacy_intent() -> TaskIntent {
-    TaskIntent::Synthesis
-}
-fn legacy_complexity() -> ComplexityClass {
-    ComplexityClass::Synthesis
 }
 
 /// Resolve a task floor using only the request and its owned tool policies.
@@ -468,7 +467,8 @@ pub fn effort_for(model: &Model, resolution: &Resolution) -> Option<String> {
 }
 
 /// Provider ceiling, capped at 64k; the executor applies the smaller per-run limit.
-/// The executor must also subtract its actual input from the context window.
+/// The executor must also admit estimated input separately against the context window.
+/// None preserves unknown metadata; it must not be reported as a provider ceiling.
 /// A missing completion limit cannot establish a safe explicit token request.
 pub fn completion_tokens_for(model: &Model, _resolution: &Resolution) -> Option<u64> {
     model

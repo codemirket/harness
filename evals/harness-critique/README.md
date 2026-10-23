@@ -19,8 +19,8 @@ The historical feedback and dependency JSON reports retain their 20 October
 scope. Their one-off generators were retired: the feedback probe depended on
 superseded function bodies, and the old audit duplicated the maintained
 [dependency audit](../dependency-audit/README.md). Use that audit for current
-coordinates and advisory policy. Current recall regressions live in
-[the agent runtime suite](../../runtime/agent/test_runtime.py) and
+coordinates and advisory policy. Current recall and recovery regressions live in
+[the native fact/journal tests](../../tests/fact_store.rs) and
 [the remediation suite](../harness-remediation). The original generators remain
 available in Git history for historical reproduction; do not overwrite the dated
 evidence with current runs.

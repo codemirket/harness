@@ -1,41 +1,104 @@
-//! Explicit offline decision trials in the selected runtime; never mounts user facts.
-use mirket::{packages, paths::Paths};
-use std::{fs, path::PathBuf, time::Duration};
+//! Native simplification regression.
+//!
+//! The former ignored test launched a Python container and asserted the shape
+//! of a four-arm prototype report. Production retrieval and recovery now have
+//! Rust owners, so this required test exercises the two state boundaries
+//! together with a disposable native corpus.
+
+use mirket::{agent_runtime::journal::Journal, memory::store::FactStore};
+use serde_json::{Value, json};
+
+fn vector(axis: usize) -> Vec<f32> {
+    let mut result = vec![0.0; 384];
+    result[axis] = 1.0;
+    result
+}
+
+fn fact(key: &str, text: &str) -> Value {
+    json!({
+        "key": key,
+        "text": text,
+        "kind": "fact",
+        "provenance": "native simplification fixture",
+        "expires_at": null
+    })
+}
 
 #[test]
-#[ignore = "requires an explicitly selected prepared agent runtime"]
-fn retrieval_ablation_in_disposable_container() {
-    let home =
-        PathBuf::from(std::env::var("MIRKET_RUNTIME_TEST_HOME").expect("explicit runtime home"));
-    let paths = Paths::new(home).unwrap();
-    let (engine, mut args, _) = packages::agent::command(&paths, None).unwrap();
-    let image = args.pop().unwrap();
-    let stage = tempfile::Builder::new()
-        .prefix("retrieval-ablation-")
-        .tempdir_in(&engine.staging)
+fn native_retrieval_and_recovery_remain_distinct() {
+    let directory = tempfile::tempdir().unwrap();
+    let root = directory.path().canonicalize().unwrap();
+    let mut facts = FactStore::open(
+        &root.join("facts.sqlite"),
+        &"a".repeat(64),
+        "native-simplification-model",
+    )
+    .unwrap();
+    facts
+        .put(
+            &fact("turkish", "Turkish offline behavior is required"),
+            &vector(0),
+            100,
+        )
         .unwrap();
-    let source = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("evals/harness-remediation/retrieval-ablation.py");
-    fs::copy(&source, stage.path().join("trial.py")).unwrap();
-    args.extend([
-        format!("--volume={}:/trial:ro", stage.path().display()),
-        "--entrypoint=python".into(),
-        image,
-        "-B".into(),
-        "/trial/trial.py".into(),
-    ]);
-    let output = engine.run(&args, Duration::from_secs(300)).unwrap();
-    println!("{output}");
-    let report: serde_json::Value = serde_json::from_str(output.trim()).unwrap();
-    assert_eq!(report["arms"].as_array().unwrap().len(), 4);
-    assert_eq!(report["private_data_mounted"], false);
-    if let Ok(path) = std::env::var("MIRKET_TRIAL_REPORT") {
-        use std::io::Write;
-        let mut file = fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(path)
-            .unwrap();
-        file.write_all(output.as_bytes()).unwrap();
-    }
+    facts
+        .put(
+            &fact("german", "German financial reporting is required"),
+            &vector(1),
+            100,
+        )
+        .unwrap();
+    let retrieval = facts
+        .search("Turkish offline behavior", None, 5, 100)
+        .unwrap();
+    assert_eq!(
+        retrieval["results"][0]["metadata"]["request_key"],
+        "turkish"
+    );
+
+    let mut journal = Journal::open(&root.join("execution.sqlite"), &"a".repeat(64)).unwrap();
+    let started = journal
+        .execute(
+            "workflow_start",
+            &json!({
+                "run_id":"native-simplification",
+                "envelope":{"checkpoint_format_version":1},
+                "snapshot":{"turn":0},
+                "deadline":500
+            }),
+            100,
+            json!({}),
+        )
+        .unwrap();
+    let prepared = journal
+        .execute(
+            "workflow_resume",
+            &json!({
+                "run_id":"native-simplification",
+                "expected_checkpoint_id":started["checkpoint_id"],
+                "key":"prepare",
+                "reply":{"decision":"effect_prepared","snapshot":{"turn":1},"effect":{"tool":"remote_send"}}
+            }),
+            110,
+            Value::Null,
+        )
+        .unwrap();
+    let uncertain = journal
+        .execute(
+            "workflow_resume",
+            &json!({
+                "run_id":"native-simplification",
+                "expected_checkpoint_id":prepared["checkpoint_id"],
+                "key":"effect",
+                "reply":{"decision":"effect_uncertain","snapshot":{"turn":1},"effect":{"tool":"remote_send"}}
+            }),
+            111,
+            Value::Null,
+        )
+        .unwrap();
+    assert_eq!(uncertain["phase"], "effect_uncertain");
+    assert_eq!(
+        retrieval["results"][0]["memory"],
+        "Turkish offline behavior is required"
+    );
 }

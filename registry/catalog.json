@@ -8680,8 +8680,8 @@
         "index-freshness",
         "memory",
         "recall",
-        "mem0",
-        "langgraph",
+        "explicit-facts",
+        "execution-journal",
         "interrupted-worker",
         "project-decisions"
       ]

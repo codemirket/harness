@@ -1,58 +1,41 @@
-//! Opt-in integration: installed pinned image, disposable state, no user memories.
+//! Native backup integration: disposable state, real SQLite WAL and pending effects.
 use mirket::{backup, paths::Paths, state::State};
 use serde_json::{Value, json};
-use std::{
-    fs,
-    path::{Path, PathBuf},
-    process::Stdio,
-    time::Duration,
-};
-use tokio::io::AsyncWriteExt;
+use std::{fs, path::Path};
 
 async fn call(
-    engine_home: &Paths,
+    _engine_home: &Paths,
     fixture: &Paths,
     scope: &str,
     operation: &str,
     args: Value,
 ) -> Value {
-    let (engine, mut argv, name) =
-        mirket::packages::agent::command(engine_home, Some(scope)).unwrap();
-    // Keep production image/containment/engine settings, replacing only the synthetic data mount.
-    let empty = mirket::packages::agent::data(engine_home).join(scope);
-    assert!(fs::read_dir(&empty).unwrap().next().is_none());
-    fs::remove_dir(&empty).unwrap();
     let directory = mirket::packages::agent::data(fixture).join(scope);
     fs::create_dir_all(&directory).unwrap();
-    let volume = argv.iter().position(|a| a == "--volume").unwrap() + 1;
-    argv[volume] = format!("{}:/data/{scope}:rw", directory.display());
-    let mut command = tokio::process::Command::from(engine.command(&argv));
-    command
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::null())
-        .kill_on_drop(true);
-    let mut child = command.spawn().unwrap();
-    let mut input = child.stdin.take().unwrap();
-    let request = json!({"operation":operation,"scope":scope,"arguments":args});
-    input
-        .write_all(format!("{request}\n").as_bytes())
-        .await
+    let now = mirket::router::durable::now();
+    if operation.starts_with("workflow_") {
+        return mirket::agent_runtime::journal::Journal::open(
+            &directory.join("execution.sqlite"),
+            scope,
+        )
+        .unwrap()
+        .execute(operation, &args, now, json!({"results":[]}))
         .unwrap();
-    drop(input);
-    let result = tokio::time::timeout(Duration::from_secs(120), child.wait_with_output()).await;
-    // Cleanup the exact generated test container on failure; never another installation service.
-    let _ = engine.run(
-        &["rm".into(), "--force".into(), name],
-        Duration::from_secs(10),
-    );
-    let output = result.expect("contained fixture deadline").unwrap();
-    assert!(output.status.success());
-    let result: Value = serde_json::from_slice(&output.stdout).unwrap();
-    assert!(result.get("error").is_none(), "{result}");
-    assert_eq!(result["runtime"]["versions"]["mem0ai"], "2.2.1");
-    assert_eq!(result["runtime"]["versions"]["langgraph"], "1.2.16");
-    result["result"].clone()
+    }
+    let model = mirket::util::sha256(include_bytes!("../runtime/agent/model.json"));
+    let mut store =
+        mirket::memory::store::FactStore::open(&directory.join("facts.sqlite"), scope, &model)
+            .unwrap();
+    let mut vector = vec![0.; 384];
+    vector[0] = 1.;
+    match operation {
+        "memory_put" => store.put(&args, &vector, now).unwrap(),
+        "memory_read" => match args["query"].as_str() {
+            Some(q) => store.search(q, Some(&vector), 5, now).unwrap(),
+            None => store.read(None, None, 5, now).unwrap(),
+        },
+        _ => panic!("unsupported fixture operation"),
+    }
 }
 fn sqlite_rows(path: &Path, table: &str) -> i64 {
     let db = rusqlite::Connection::open(path).unwrap();
@@ -60,15 +43,9 @@ fn sqlite_rows(path: &Path, table: &str) -> i64 {
         .unwrap()
 }
 #[tokio::test]
-#[ignore = "explicit registered engine; exercises real pinned Mem0/LangGraph against disposable state"]
 async fn backup_runtime_recovers_history_pending_effect_and_relocated_memory() {
-    let home = std::env::var_os("MIRKET_TEST_ENGINE_HOME").expect("explicit test engine home");
-    let engine_home = Paths::new(PathBuf::from(home)).unwrap();
-    let staging = engine_home.root.join("execution/podman/staging");
-    let fixture = tempfile::Builder::new()
-        .prefix("backup-fixture-")
-        .tempdir_in(staging)
-        .unwrap();
+    let fixture = tempfile::tempdir().unwrap();
+    let engine_home = Paths::new(fixture.path().canonicalize().unwrap()).unwrap();
     let paths = Paths::new(fixture.path().canonicalize().unwrap()).unwrap();
     let project = paths.home.join("project");
     fs::create_dir(&project).unwrap();
@@ -79,14 +56,15 @@ async fn backup_runtime_recovers_history_pending_effect_and_relocated_memory() {
     let first=call(&engine_home,&paths,&scope,"memory_put",json!({"text":"The approved brand color is orange.","kind":"decision","provenance":"Synthetic backup fixture","key":"old"})).await["memory"].clone();
     let new=call(&engine_home,&paths,&scope,"memory_put",json!({"text":"The approved brand color is cobalt blue.","kind":"decision","provenance":"Synthetic backup fixture","key":"new","supersedes":{"id":first["id"],"sha256":first["sha256"]}})).await["memory"].clone();
     let run_id = "routed-backup-fixture";
-    let start=call(&engine_home,&paths,&scope,"workflow_start",json!({"run_id":run_id,"envelope":{"request":{"objective":"Exercise recovery","memory_recall":"off"},"project":project,"source_sha256":env!("MIRKET_SOURCE_SHA256"),"execution_sha256":env!("MIRKET_EXECUTION_SHA256"),"host_verification_required":true},"snapshot":{"turn":0},"deadline":mirket::router::durable::now()+3600})).await;
-    let pending=call(&engine_home,&paths,&scope,"workflow_resume",json!({"run_id":run_id,"expected_checkpoint_id":start["checkpoint_id"],"key":"effect","reply":{"decision":"effect","snapshot":{"turn":1},"effect":{"tool":"external-effect","may_mutate":true}}})).await;
+    let start=call(&engine_home,&paths,&scope,"workflow_start",json!({"run_id":run_id,"envelope":{"checkpoint_format_version":1,"request":{"objective":"Exercise recovery","memory_recall":"off"},"project":project,"source_sha256":env!("MIRKET_SOURCE_SHA256"),"execution_sha256":env!("MIRKET_EXECUTION_SHA256"),"host_verification_required":true},"snapshot":{"turn":0},"deadline":mirket::router::durable::now()+3600})).await;
+    let prepared=call(&engine_home,&paths,&scope,"workflow_resume",json!({"run_id":run_id,"expected_checkpoint_id":start["checkpoint_id"],"key":"effect","reply":{"decision":"effect_prepared","snapshot":{"turn":1},"effect":{"tool":"external-effect","may_mutate":true}}})).await;
+    let pending=call(&engine_home,&paths,&scope,"workflow_resume",json!({"run_id":run_id,"expected_checkpoint_id":prepared["checkpoint_id"],"key":"dispatch","reply":{"decision":"effect_uncertain","snapshot":{"turn":1},"effect":prepared["state"]["effect"]}})).await;
     let run = paths.root.join("runs").join(run_id);
     fs::create_dir_all(&run).unwrap();
     fs::write(run.join("trace.json"), b"synthetic pending-effect evidence").unwrap();
     let directory = mirket::packages::agent::data(&paths).join(&scope);
-    let history = sqlite_rows(&directory.join("history.sqlite"), "history");
-    let checkpoints = sqlite_rows(&directory.join("workflows.sqlite"), "checkpoints");
+    let history = sqlite_rows(&directory.join("facts.sqlite"), "facts");
+    let checkpoints = sqlite_rows(&directory.join("execution.sqlite"), "events");
     assert!(history >= 2 && checkpoints > 1);
     let archive = paths.home.join("recovery.tar");
     let receipt = backup::create(&paths, &archive).unwrap();
@@ -102,11 +80,11 @@ async fn backup_runtime_recovers_history_pending_effect_and_relocated_memory() {
     }
     backup::restore(&paths, &archive, hash).unwrap();
     assert_eq!(
-        sqlite_rows(&directory.join("history.sqlite"), "history"),
+        sqlite_rows(&directory.join("facts.sqlite"), "facts"),
         history
     );
     assert_eq!(
-        sqlite_rows(&directory.join("workflows.sqlite"), "checkpoints"),
+        sqlite_rows(&directory.join("execution.sqlite"), "events"),
         checkpoints
     );
     let restored = call(

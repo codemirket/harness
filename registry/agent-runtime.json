@@ -1,15 +1,35 @@
 {
   "schema_version": 1,
   "id": "agent-runtime",
-  "name": "Local memory and durable execution",
+  "name": "Native memory and durable execution",
   "host_connection": false,
-  "description": "Mem0 OSS project memory and LangGraph checkpoints behind Mirket's existing scoped MCP/CLI boundaries.",
-  "python_image": "docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641",
-  "tools": ["mem0", "langgraph"],
-  "versions": {"mem0ai": "2.2.1", "langgraph": "1.2.16", "langgraph-checkpoint-sqlite": "3.1.2", "fastembed": "0.9.0"},
-  "runtime": "On-demand rootless OCI process, Linux ARM64, network disabled, immutable code/models, only private project-scoped runtime data writable.",
-  "memory": "Explicit facts with provenance; multilingual local dense embeddings, local BM25 and English NLP; no hosted account, automatic transcript harvesting or provider credentials.",
-  "workflow": "LangGraph checkpoints, effect-intent boundaries, preserved budgets and host verification; Rust retains model and tool permission enforcement.",
-  "limits": {"memory_mib": 1536, "cpus": 2, "pids": 128, "project_storage_mib": 512, "request_bytes": 4194304},
-  "licenses": ["Apache-2.0: Mem0, FastEmbed and multilingual embedding/BM25 models", "MIT: LangGraph and spaCy"]
+  "description": "Rust-owned explicit facts and execution journal with a contained offline embedding helper.",
+  "tools": [
+    "sqlite",
+    "fastembed-rs"
+  ],
+  "versions": {
+    "facts": 1,
+    "journal": 1,
+    "embedding_protocol": 1,
+    "fastembed-rs": "7.2.0",
+    "ort": "2.0.0-rc.15",
+    "onnxruntime": "1.31.0"
+  },
+  "runtime": "Rust owns state on the host. Embedding alone runs in Linux ARM64 rootless OCI with no network, credentials or project-data mount.",
+  "memory": "Explicit versioned facts; SQLite FTS5 and exact multilingual dense retrieval over eligible records.",
+  "workflow": "Rust transition journal, bounded snapshot/delta replay and conservative effect recovery.",
+  "limits": {
+    "memory_mib": 1536,
+    "cpus": 2,
+    "pids": 128,
+    "project_storage_mib": 512,
+    "request_bytes": 4194304
+  },
+  "licenses": [
+    "Apache-2.0: fastembed-rs and multilingual MiniLM model",
+    "MIT: ONNX Runtime; see native ThirdPartyNotices.txt and generated Rust closure notices"
+  ],
+  "build_image": "docker.io/library/rust@sha256:8a2a102d089fbd151137b9473c01b1ed4519a64fb9c032a03609b815701615c8",
+  "runtime_image": "gcr.io/distroless/cc-debian12@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f"
 }

@@ -30,6 +30,7 @@ struct Manifest {
     version: String,
     source_sha256: String,
     runtime_recipe: String,
+    native_contracts: Value,
     roots: Vec<String>,
     files: BTreeMap<String, Entry>,
 }
@@ -46,6 +47,68 @@ fn destination(paths: &Paths, name: &str) -> PathBuf {
         "runtime" => crate::packages::agent::data(paths),
         _ => paths.root.join(name),
     }
+}
+fn native_contracts() -> Result<Value> {
+    Ok(
+        json!({"facts":1,"journal":1,"model":util::sha256(include_bytes!("../runtime/agent/model.json"))}),
+    )
+}
+fn validate_native(root: &Path) -> Result<()> {
+    if !root.exists() {
+        return Ok(());
+    }
+    for scope in fs::read_dir(root)? {
+        let scope = scope?;
+        let path = scope.path();
+        util::reject_symlink_components(&path)?;
+        ensure!(path.is_dir(), "native runtime scope must be a directory");
+        let scope_id = scope
+            .file_name()
+            .into_string()
+            .map_err(|_| anyhow::anyhow!("invalid scope name"))?;
+        ensure!(
+            scope_id.len() == 64 && scope_id.bytes().all(|b| b.is_ascii_hexdigit()),
+            "invalid native runtime scope"
+        );
+        for (name, application) in [
+            ("facts.sqlite", 0x4d464143),
+            ("execution.sqlite", 0x4d52554e),
+        ] {
+            let db = path.join(name);
+            if !db.exists() {
+                continue;
+            }
+            util::reject_symlink_components(&db)?;
+            let connection = rusqlite::Connection::open_with_flags(
+                db,
+                rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+            )?;
+            let version: i64 = connection.pragma_query_value(None, "user_version", |r| r.get(0))?;
+            let app: i64 = connection.pragma_query_value(None, "application_id", |r| r.get(0))?;
+            ensure!(
+                version == 1 && app == application,
+                "unsupported native backup database"
+            );
+            let integrity: String =
+                connection.pragma_query_value(None, "integrity_check", |r| r.get(0))?;
+            ensure!(integrity == "ok", "native backup database integrity failed");
+            let scope: String =
+                connection.query_row("SELECT scope FROM identity", [], |r| r.get(0))?;
+            ensure!(scope == scope_id, "native backup scope mismatch");
+            if name == "facts.sqlite" {
+                crate::memory::store::FactStore::validate_backup(&connection, &scope_id)?;
+                let model: String =
+                    connection.query_row("SELECT model FROM identity", [], |r| r.get(0))?;
+                ensure!(
+                    model == native_contracts()?["model"],
+                    "native backup embedding identity mismatch"
+                );
+            } else {
+                crate::agent_runtime::journal::Journal::validate_backup(&connection, &scope_id)?;
+            }
+        }
+    }
+    Ok(())
 }
 fn digest(path: &Path) -> Result<Entry> {
     util::reject_symlink_components(path)?;
@@ -131,6 +194,44 @@ fn copy_tree(source: &Path, target: &Path) -> Result<()> {
     }
     Ok(())
 }
+// The exclusive maintenance lease spans both stores and the artifact tree.
+// SQLite produces each database image; WAL/SHM are never archive members.
+fn snapshot_runtime(source: &Path, target: &Path) -> Result<()> {
+    util::reject_symlink_components(source)?;
+    if source.is_dir() {
+        private_directory(target)?;
+        for child in fs::read_dir(source)? {
+            let child = child?;
+            let name = child.file_name();
+            let name = name.to_str().context("runtime filename")?;
+            if ["facts.sqlite", "execution.sqlite"]
+                .iter()
+                .any(|db| name.starts_with(&format!("{db}-")) || name == format!("{db}.init.lock"))
+                || name == "operation.lock"
+            {
+                continue;
+            }
+            snapshot_runtime(&child.path(), &target.join(name))?;
+        }
+    } else if matches!(
+        source.file_name().and_then(|n| n.to_str()),
+        Some("facts.sqlite" | "execution.sqlite")
+    ) {
+        let connection = rusqlite::Connection::open_with_flags(
+            source,
+            rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+        )?;
+        connection.execute(
+            "VACUUM INTO ?1",
+            [target.to_str().context("snapshot path")?],
+        )?;
+        private_file(target)?;
+        fs::File::open(target)?.sync_all()?;
+    } else {
+        copy_tree(source, target)?;
+    }
+    Ok(())
+}
 fn private_directory(path: &Path) -> Result<()> {
     util::ensure_directory(path)?;
     #[cfg(unix)]
@@ -191,6 +292,7 @@ pub fn create(paths: &Paths, output: &Path) -> Result<Value> {
         version: env!("CARGO_PKG_VERSION").into(),
         source_sha256: env!("MIRKET_SOURCE_SHA256").into(),
         runtime_recipe: crate::packages::agent::recipe(),
+        native_contracts: native_contracts()?,
         roots: vec!["state.db".into()],
         files: BTreeMap::new(),
     };
@@ -224,10 +326,15 @@ pub fn create(paths: &Paths, output: &Path) -> Result<Value> {
                     .context("state name")?,
                 &mut check,
             )?;
-            copy_tree(&source, &stage.path().join(name))?;
+            if name == "runtime" {
+                snapshot_runtime(&source, &stage.path().join(name))?;
+            } else {
+                copy_tree(&source, &stage.path().join(name))?;
+            }
             manifest.roots.push(name.into());
         }
     }
+    validate_native(&stage.path().join("runtime"))?;
     for name in &manifest.roots {
         inventory(stage.path(), name, &mut manifest.files)?;
     }
@@ -312,6 +419,11 @@ fn unpack(archive: &Path, stage: &Path, expected: &str) -> Result<Manifest> {
         "unsupported backup format or size"
     );
     ensure!(
+        manifest.version == env!("CARGO_PKG_VERSION")
+            && manifest.native_contracts == native_contracts()?,
+        "backup is not this clean native format; no legacy conversion"
+    );
+    ensure!(
         !manifest.roots.is_empty() && manifest.roots.contains(&"state.db".into()),
         "backup database missing"
     );
@@ -369,6 +481,7 @@ fn unpack(archive: &Path, stage: &Path, expected: &str) -> Result<Manifest> {
     ensure!(seen == manifest.files, "incomplete backup archive");
     // Check the copy, never execute restored content or trust a healthy tar as a database check.
     crate::state::State::validate_backup(&stage.join("state.db"))?;
+    validate_native(&stage.join("runtime"))?;
     ensure!(
         archive_digest(archive)? == expected,
         "backup changed while validating"

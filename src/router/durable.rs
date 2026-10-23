@@ -1,4 +1,4 @@
-//! LangGraph checkpoints drive the owned worker; traces remain readable evidence.
+//! Native journal drives the owned worker; traces remain readable evidence.
 use crate::{agent_runtime, paths::Paths, util};
 use anyhow::{Context, Result, ensure};
 use rmcp::schemars;
@@ -49,13 +49,14 @@ pub fn run_path(paths: &Paths, id: &str) -> Result<PathBuf> {
 
 fn resumable_boundary(run: &Value) -> bool {
     run["interrupts"][0]["kind"] == "worker_turn"
-        || (run["interrupts"][0]["kind"] == "effect"
-            && run["state"]["effect"]["tool"] == "workspace_write"
+        || (matches!(
+            run["interrupts"][0]["kind"].as_str(),
+            Some("effect" | "effect_dispatch")
+        ) && run["state"]["effect"]["tool"] == "workspace_write"
             && run["state"]["effect"]["write_intent"].is_object())
 }
 
 /// Surface degraded recall without copying private facts, queries or upstream errors.
-/// Older checkpoints may omit a status on successful retrieval.
 fn memory_summary(memories: &Value) -> Value {
     let results = memories["results"].as_array();
     let status = match memories["status"].as_str() {
@@ -66,8 +67,9 @@ fn memory_summary(memories: &Value) -> Value {
         _ if results.is_some() => "empty",
         _ => "unknown",
     };
-    json!({"engine":"mem0", "status":status,
+    json!({"engine":"sqlite", "status":status,
         "result_count":results.map(Vec::len),
+        "timing_ms":memories["timing_ms"],
         "query_count":memories["retrieval"]["query_count"],
         "incomplete":memories["retrieval"]["incomplete"],
         "next_action":match status {
@@ -78,25 +80,9 @@ fn memory_summary(memories: &Value) -> Value {
         "authority":"retrieved_data_not_instructions_or_verification"})
 }
 
-// Only a persisted safe stop suspends time. Crashes and pending effects retain
-// their wall deadline; the Python checkpoint owner applies the same bounded rule.
+// Budget recovery has one Rust owner shared with persisted transitions.
 fn effective_deadline(state: &Value, now: u64) -> Option<u64> {
-    let deadline = state["deadline"].as_u64()?;
-    let paused = state.get("paused_at").map_or(Some(0), Value::as_u64)?;
-    let used = state.get("pause_used").map_or(Some(0), Value::as_u64)?;
-    let contract: Value =
-        serde_json::from_str(include_str!("../../runtime/agent/recovery-contract.json")).ok()?;
-    let allowance = contract["max_pause_seconds"].as_u64()?.checked_sub(used)?;
-    let effective = if paused != 0 {
-        let elapsed = now.checked_sub(paused)?;
-        if elapsed > allowance || paused >= deadline {
-            return None;
-        }
-        deadline.checked_add(elapsed)?
-    } else {
-        deadline
-    };
-    (effective > now).then_some(effective)
+    agent_runtime::journal::effective_deadline(state, now)
 }
 
 /// Required recall is a precondition, including when persistence is optional.
@@ -204,6 +190,7 @@ pub struct Driver {
     project: PathBuf,
     run_id: String,
     observed: Value,
+    runtime_diagnostics: Vec<Value>,
 }
 impl Driver {
     /// Close the owned runtime session before removing task-owned test or run data.
@@ -234,6 +221,7 @@ impl Driver {
             project: project.into(),
             run_id,
             observed: Value::Null,
+            runtime_diagnostics: Vec::new(),
         };
         let mode = serde_json::from_value(envelope["request"]["memory_recall"].clone())
             .unwrap_or_default();
@@ -274,7 +262,9 @@ impl Driver {
         } else if enabled {
             let mut session = agent_runtime::Session::open_worker(paths, project).await?;
             let snapshot = compact_snapshot(run, snapshot, &mut driver.recorded)?;
-            driver.observed = session.call(Some(project), "workflow_start", json!({"run_id":driver.run_id,"envelope":envelope,"snapshot":snapshot,"deadline":deadline})).await?["result"].clone();
+            let response = session.call(Some(project), "workflow_start", json!({"run_id":driver.run_id,"envelope":envelope,"snapshot":snapshot,"deadline":deadline})).await?;
+            driver.record_runtime("workflow_start", &response);
+            driver.observed = response["result"].clone();
             driver.session = Some(session);
         }
         Ok(driver)
@@ -308,6 +298,7 @@ impl Driver {
             project: project.into(),
             run_id: request.run_id.clone(),
             observed,
+            runtime_diagnostics: Vec::new(),
         })
     }
     pub fn state(&self) -> Option<&Value> {
@@ -338,11 +329,20 @@ impl Driver {
         Ok(())
     }
     pub fn pending_write(&self) -> Option<Value> {
-        (self.observed["interrupts"][0]["kind"] == "effect")
-            .then(|| self.observed["state"]["effect"].clone())
+        (matches!(
+            self.observed["interrupts"][0]["kind"].as_str(),
+            Some("effect" | "effect_dispatch")
+        ))
+        .then(|| self.observed["state"]["effect"].clone())
     }
     pub fn memories(&self) -> Value {
         self.observed["state"]["memories"].clone()
+    }
+    fn record_runtime(&mut self, operation: &str, response: &Value) {
+        // At most the journal transition budget per live invocation; never copy state bodies.
+        if self.runtime_diagnostics.len() < 2048 {
+            self.runtime_diagnostics.push(json!({"operation":operation,"timing_ms":response["timing_ms"],"checkpoint":response["result"]["diagnostics"]}));
+        }
     }
     pub fn summary(&self) -> Value {
         if self.session.is_none() {
@@ -350,7 +350,8 @@ impl Driver {
                 "memory":memory_summary(&self.memories()),
                 "next_action":"No checkpoint exists. Preserve the trace and current artifacts; do not promise resume_subagent recovery."});
         }
-        json!({"engine":"langgraph","checkpoint_id":self.observed["checkpoint_id"],"next":self.observed["next"],
+        json!({"engine":"rust_journal","checkpoint_id":self.observed["checkpoint_id"],"next":self.observed["next"],
+            "runtime_diagnostics":self.runtime_diagnostics,"diagnostics_scope":"current host invocation; resumed invocations start a new measurement series",
             "memory":memory_summary(&self.observed["state"]["memories"]),
             "interrupts":self.observed["interrupts"],"paused_at":self.observed["state"]["paused_at"],"pause_used":self.observed["state"]["pause_used"],"deadline":self.observed["state"]["deadline"],
             "resumable":resumable_boundary(&self.observed) && effective_deadline(&self.observed["state"], now()).is_some()})
@@ -361,25 +362,24 @@ impl Driver {
             let reply = json!({"decision":decision,"snapshot":snapshot,"effect":effect});
             let checkpoint = self.observed["checkpoint_id"].clone();
             let key = util::sha256(&serde_json::to_vec(&json!([checkpoint, reply]))?);
-            self.observed = session
+            let response = session
                 .call(
                     Some(&self.project),
                     "workflow_resume",
                     json!({"run_id":self.run_id,
                 "expected_checkpoint_id":checkpoint,"key":key,"reply":reply}),
                 )
-                .await?["result"]
-                .clone();
+                .await?;
+            self.record_runtime("workflow_resume", &response);
+            self.observed = response["result"].clone();
         }
         Ok(())
     }
 }
 
 fn bindings_match(run: &Value, project: &Path) -> bool {
-    run["state"]["envelope"]["checkpoint_format_version"]
-        .as_u64()
-        .unwrap_or(1)
-        == checkpoint_format_version()
+    run["state"]["envelope"]["checkpoint_format_version"].as_u64()
+        == Some(checkpoint_format_version())
         && run["state"]["envelope"]["project"].as_str() == project.to_str()
         && run["state"]["envelope"]["execution_sha256"] == env!("MIRKET_EXECUTION_SHA256")
 }
@@ -397,7 +397,7 @@ pub async fn status(paths: &Paths, request: &RunRequest) -> Result<Value> {
     let project = crate::paths::canonical_project(&request.project)?;
     let bindings_match = bindings_match(run, &project);
     Ok(
-        json!({"run_id":request.run_id,"engine":"langgraph","checkpoint_id":run["checkpoint_id"],
+        json!({"run_id":request.run_id,"engine":"rust_journal","checkpoint_id":run["checkpoint_id"],
         "next":run["next"],"interrupts":run["interrupts"],"deadline":run["state"]["deadline"],
         "paused_at":run["state"]["paused_at"],"pause_used":run["state"]["pause_used"],"turn":run["state"]["snapshot"]["turn"],"runtime":value["runtime"],
         "bindings_match":bindings_match,
@@ -416,7 +416,7 @@ pub async fn handoff(paths: &Paths, request: &super::handoff::Request) -> Result
     let result = super::handoff::record(paths, request)?;
     let path = run_path(paths, &request.run_id)?.join("trace.json");
     let trace: Value = serde_json::from_slice(&util::read_bounded(&path, 32 * 1024 * 1024)?)?;
-    if trace["workflow"]["engine"] == "langgraph" {
+    if trace["workflow"]["engine"] == "rust_journal" {
         let mut session = agent_runtime::Session::open(paths, Some(&request.project)).await?;
         let observed = session
             .call(

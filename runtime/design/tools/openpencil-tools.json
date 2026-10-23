@@ -1,5 +1,25 @@
 {
   "version": "0.16.0",
+  "contract_version": 1,
+  "batch": {
+    "input": "operations:[{tool,arguments}]",
+    "max_total_operations": 64,
+    "reserved_token_operations": 1,
+    "max_request_bytes": 1048576,
+    "max_readback_bytes": 1048576,
+    "max_output_bytes": 67108864,
+    "execution_timeout_ms": 90000,
+    "node_heap_mb": 512,
+    "memory_boundary": "Node heap limit is not a total RSS limit; contained execution requires the package memory cgroup.",
+    "publication": "One source load, validated in-memory operations, one save, one reopened tree, atomic publication. Failure before publication preserves the original.",
+    "ids": "Use reopened result IDs, not transient operation_results IDs."
+  },
+  "artifact_contract": {
+    "local_export": "Successful local serialization or rendering only",
+    "figma": "Unverified unless an independent Figma consumer fixture passes for the exact artifact hash",
+    "imports": "Distinct output required; original source is preserved",
+    "native_media": {"browser":"DOM/CSS","vector":"SVG","paged":"Typst/PDF"}
+  },
   "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5",
   "tools": [
     {

@@ -131,7 +131,7 @@ This rejection condition is directly visible in source; it was not exercised end
 
 ## F09 — Automatic recall uses a lossy objective prefix
 
-[`workflow.recall_node`](../runtime/agent/workflow.py) takes `request.objective[:256]`, then repeatedly halves that prefix if tokenizer overflow remains, and retrieves at most five facts. Task needs, later requirements and selected file context do not participate in that query.
+[`workflow.recall_node`](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/workflow.py) takes `request.objective[:256]`, then repeatedly halves that prefix if tokenizer overflow remains, and retrieves at most five facts. Task needs, later requirements and selected file context do not participate in that query.
 
 **Reproducer:** two tasks with the same 256-character preamble but different critical Turkish/offline and German/reporting requirements produce identical queries. The [exact-function probe](harness-critique/feedback-probes.json) uses a controlled tokenizer and recall function; it establishes query construction, not real retrieval quality.
 

@@ -1,6 +1,6 @@
 # Installation and updates
 
-> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.1 clean baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 For guided setup, paste the [installation prompt](../website/public/install-prompt.txt)
 into your agent. The [agent execution guide](agent-installation.md) covers device
@@ -112,10 +112,7 @@ releases. Keep an older installation separate until its owner has explicitly
 chosen what data to retain or remove; do not silently bind its projects to a
 new installation.
 
-Mirket 0.0.2 preserves 0.0.1 registrations, task data, memory and saved setup.
-Existing worker checkpoints retain their original execution bindings; an update
-does not make an incompatible checkpoint resumable.
-
+Future releases must publish an explicit migration contract; 0.0.1 does not preserve or reinterpret older runtime state.
 `mirket update --check` can inspect a newer published release.
 `mirket update` verifies that release's manifest and executable hash before
 reapplying saved setup. The installed binary remains under `~/.mirket/bin` on
@@ -153,3 +150,19 @@ separate project root for task evidence. Remove the disposable directories when
 finished; do not run test setup against your actual home by accident.
 The [contribution guide](../CONTRIBUTING.md#exercise-the-design-stack) describes
 disposable live acceptance and the separate JavaScript tool tests.
+
+An intentional release-number reset uses a local artifact with a verified digest:
+
+```sh
+MIRKET_DIRECT=1 /absolute/candidate/mirket update --plan \
+  --from /absolute/candidate/mirket --sha256 ARTIFACT_SHA256 \
+  --reset-version-from INSTALLED_VERSION
+```
+
+Inspect the plan, then replace `--plan` with `--activate`. The reset must name the
+exact installed version. Ordinary updates still reject older versions. The shared
+setup transaction retains managed-file drift checks, saved client choices and
+rollback; it does not translate or erase durable databases. An interrupted
+activation must resume with the identical artifact and reset options. After the
+candidate is installed, the same request remains resumable only while its exact
+bytes are still installed. Reconnect clients and verify their live identities.

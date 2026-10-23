@@ -313,7 +313,7 @@ mod tests {
         response.objective = "Satırları sırala".into();
         assert!(prepare(&mut response).is_ok());
         let mut export: SpawnRequest = serde_json::from_value(json!({
-            "objective":"Export the saved design unchanged", "project":"/project",
+            "objective":"Export the saved design unchanged", "task_intent":"synthesis", "complexity_class":"synthesis", "project":"/project",
             "task_needs":[{"workflow":"editable-export","reason":"Export an existing file"}], "assigned_tools":[]
         })).unwrap();
         let assignment = prepare(&mut export).unwrap();

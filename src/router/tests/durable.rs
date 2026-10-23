@@ -13,6 +13,22 @@ mod binding_tests {
         assert!(expand_snapshot(&root, compact).is_err());
     }
     #[test]
+    fn runtime_diagnostics_retain_measurements_without_fact_bodies() {
+        let mut driver = Driver { run: PathBuf::new(), recorded: Default::default(), session: None,
+            project: PathBuf::new(), run_id: "routed-fixture".into(), observed: Value::Null,
+            runtime_diagnostics: Vec::new() };
+        driver.record_runtime("workflow_resume", &json!({"timing_ms":{"lock_wait":1.5},
+            "result":{"diagnostics":{"checkpoint_serialized_bytes_appended":42},
+            "state":{"private_fact":"must not enter diagnostics"}}}));
+        assert_eq!(driver.runtime_diagnostics[0]["checkpoint"]["checkpoint_serialized_bytes_appended"],42);
+        assert_eq!(driver.runtime_diagnostics[0]["timing_ms"]["lock_wait"],1.5);
+        assert!(!serde_json::to_string(&driver.runtime_diagnostics).unwrap().contains("private_fact"));
+        let summary=memory_summary(&json!({"results":[{"text":"private fact"}],"status":"available",
+            "timing_ms":{"retrieval":2.5},"queries":["private query"]}));
+        assert_eq!(summary["timing_ms"]["retrieval"],2.5);
+        assert!(!summary.to_string().contains("private"));
+    }
+    #[test]
     fn shared_pause_contract_matches_rust() {
         let contract: Value =
             serde_json::from_str(include_str!("../../../runtime/agent/recovery-contract.json"))
@@ -73,7 +89,7 @@ mod binding_tests {
 
     #[test]
     fn relocated_or_old_generation_checkpoints_are_not_advertised_as_resumable() {
-        let run = json!({"state":{"envelope":{"checkpoint_format_version":2,"project":"/original","execution_sha256":env!("MIRKET_EXECUTION_SHA256")}}});
+        let run = json!({"state":{"envelope":{"checkpoint_format_version":1,"project":"/original","execution_sha256":env!("MIRKET_EXECUTION_SHA256")}}});
         assert!(bindings_match(&run, Path::new("/original")));
         let mut audit_only = run.clone();
         audit_only["state"]["envelope"]["source_sha256"] = json!("different audit source");

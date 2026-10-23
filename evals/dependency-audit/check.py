@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit every locked Cargo/npm/Python coordinate using public OSV metadata.
+"""Audit every locked Cargo/npm coordinate using public OSV metadata.
 
 No package code is imported or installed. Advisories are reported by default;
 query/inventory failures remain errors. Images require image_audit.py.
@@ -23,10 +23,8 @@ def coordinates(root):
     for path, item in json.loads((root / 'runtime/design/tools/package-lock.json').read_text())['packages'].items():
         if path and item.get('version'):
             packages.add(('npm', item.get('name', path.split('node_modules/')[-1]), item['version']))
-    for line in (root / 'runtime/agent/requirements.lock').read_text().splitlines():
-        if ' @ ' in line:
-            name, url = line.split(' @ ', 1)
-            packages.add(('PyPI', name, url.split(' ')[0].split('/')[-1].split('-')[1]))
+    # The 0.0.1 agent-runtime has no Python production closure. Native ONNX
+    # members and model assets are audited by the package/image receipts.
     return sorted(packages)
 
 
@@ -107,10 +105,10 @@ def main():
     report = audit(packages, keys, advisory_policy=args.advisory_policy)
     report['stale_reviews'] = stale
     report.update(date=today.isoformat(),
-                  coverage={'cargo':True,'owned_npm':True,'agent_python':True,
+                  coverage={'cargo':True,'owned_npm':True,'agent_python':False,
                             'openpencil_locked_coordinates':sum(1 for e,n,v in packages if n.startswith('@open-pencil/')),
                             'os_and_images':'separate image_audit.py receipts required'},
-                  limits='Report policy does not mean advisories are fixed or safe. Stale reviews never suppress findings. Advisory matching is not exploitability analysis. OpenPencil and transitive packages are covered by the design npm lock; native/WASM and OS payloads also require image scans.')
+                  limits='Report policy does not mean advisories are fixed or safe. Stale reviews never suppress findings. Advisory matching is not exploitability analysis. OpenPencil and transitive packages are covered by the design npm lock; native/WASM and OS payloads, including the ONNX members, require separate image and artifact scans.')
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
     return 0 if report['ok'] else 1

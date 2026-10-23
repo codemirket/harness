@@ -15,9 +15,12 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 BUILT = ("design-tools", "agent-runtime")
-REQUIRED_TYPES = {"design-tools": {"node-pkg"},
-
-                  "agent-runtime": {"python-pkg"}}
+REQUIRED_TYPES = {
+    "design-tools": {"node-pkg"},
+    # The 0.0.1 agent image ships native Rust and ONNX assets; it has no
+    # Python package inventory. OS package coverage remains mandatory.
+    "agent-runtime": set(),
+}
 
 
 def sha(path):
@@ -30,9 +33,7 @@ def sha(path):
 
 def inventory(root):
     design = json.loads((root / "registry/design-stack.json").read_text())
-    agent = json.loads((root / "registry/agent-runtime.json").read_text())
     images = dict(design["images"])
-    images["python-build"] = agent["python_image"]
     if not all(re.fullmatch(r"[^@\s]+@sha256:[0-9a-f]{64}", value) for value in images.values()):
         raise ValueError("all remote images must be digest pinned")
     return images

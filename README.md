@@ -15,10 +15,10 @@ apply.
 
 [Website & usage guide](https://harness.mirket.dev) ·
 [Documentation](docs/README.md) ·
-[Release 0.0.2](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.2) ·
+[Release 0.0.1](https://github.com/codemirket/harness/releases/tag/mirket-v0.0.1) ·
 [Contributing](CONTRIBUTING.md)
 
-See the [release status and upgrade boundaries](docs/release-status.md).
+See the [release status and support boundaries](docs/release-status.md).
 
 ## What it adds
 
@@ -46,17 +46,16 @@ settings and run setup checks.
 
 <!-- installation-prompt:start -->
 ```text
-Install Mirket 0.0.2 for the agent environment I am using on this device. Read
-https://raw.githubusercontent.com/codemirket/harness/mirket-v0.0.2/docs/agent-installation.md
+Install Mirket 0.0.1 for the agent environment I am using on this device. Read
+https://raw.githubusercontent.com/codemirket/harness/mirket-v0.0.1/docs/agent-installation.md
 and carry out the installation, rather than only explaining it.
 
 Inspect my OS, architecture, available host and any existing Mirket setup.
 Use the official codemirket/harness release, verify its checksum before
 execution, and install the managed executable under my home’s .mirket/bin.
 Keep Mirket runtime data under the same .mirket root. Preserve unrelated
-host settings, credentials and project source files. Preserve existing 0.0.1
-data when upgrading to 0.0.2. Pre-0.0.1 data is not imported; ask before removing any existing installation.
-Keep optional packages opt-in.
+host settings, credentials and project source files. Mirket 0.0.1 starts with
+fresh native state; pre-0.0.1 data is not imported. Keep optional packages opt-in.
 
 Run setup and health checks, report the installed version and actual results,
 and explain any fresh-session step needed to activate the tools. Do not claim
@@ -135,8 +134,8 @@ state layout and execution boundaries.
   video, documents, vectors and image processing. Its visual workflow starts with
   an inspected target and checks the actual output. See [packages](docs/packages.md)
   and [visual verification](docs/visual-quality.md).
-- **`agent-runtime`** adds explicit project memory through Mem0 and durable worker
-  checkpoints through LangGraph. See [memory and recovery](docs/agent-runtime.md).
+- **`agent-runtime`** adds native project facts, bounded retrieval and durable
+  worker recovery through Rust SQLite owners. See [memory and recovery](docs/agent-runtime.md).
 
 Both require a supported private Podman environment with Linux ARM64 containers.
 The core harness works without them. See [runtime prerequisites](docs/podman.md).

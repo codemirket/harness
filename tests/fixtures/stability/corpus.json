@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "scope": "Synthetic immutable acceptance inputs; not model execution or measured performance",
+  "now": 1800000000,
+  "facts": [
+    {
+      "key": "language-tr",
+      "text": "Yanıt dili Türkçe olmalı.",
+      "kind": "preference",
+      "provenance": "synthetic Turkish preference"
+    },
+    {
+      "key": "project-code",
+      "text": "The release identifier is MIRKET-4827.",
+      "kind": "fact",
+      "provenance": "synthetic exact identifier"
+    },
+    {
+      "key": "db",
+      "text": "The project database is SQLite.",
+      "kind": "decision",
+      "provenance": "synthetic current decision"
+    }
+  ],
+  "queries": [
+    {
+      "id": "turkish",
+      "query": "Hangi dilde yanıt vermelisin?",
+      "expected_keys": [
+        "language-tr"
+      ]
+    },
+    {
+      "id": "exact",
+      "query": "MIRKET-4827",
+      "expected_keys": [
+        "project-code"
+      ]
+    },
+    {
+      "id": "paraphrase",
+      "query": "Which storage engine does the project use?",
+      "expected_keys": [
+        "db"
+      ]
+    },
+    {
+      "id": "unanswerable",
+      "query": "What is the office door access code?",
+      "expected_keys": []
+    }
+  ],
+  "performance": {
+    "fact_counts": [
+      0,
+      100,
+      1000,
+      10000
+    ],
+    "stress_facts": 100000,
+    "clients": [
+      1,
+      2,
+      8
+    ],
+    "recall_p95_ratio_max": 0.75,
+    "checkpoint_bytes_ratio_max": 0.5,
+    "unaffected_median_ratio_max": 1.05
+  },
+  "required_failures": [
+    "stale-prefix-1000",
+    "supersession-crash",
+    "conflicting-idempotency-key",
+    "cross-project-read",
+    "quota-exhaustion",
+    "disk-full",
+    "effect-before-intent",
+    "effect-after-intent",
+    "effect-after-dispatch",
+    "verification-interruption",
+    "cancelled-queue",
+    "backup-with-pending-effect",
+    "rollback-after-new-write",
+    "openpencil-partial-batch",
+    "browser-reduced-motion",
+    "pdf-reading-order"
+  ]
+}

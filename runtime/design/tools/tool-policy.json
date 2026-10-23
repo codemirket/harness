@@ -15,6 +15,10 @@
     "min_tier": "T1_DETERMINISTIC",
     "requires_vision": false
   },
+  "d2_render": {
+    "min_tier": "T1_DETERMINISTIC",
+    "requires_vision": false
+  },
   "typst_compile": {
     "min_tier": "T1_DETERMINISTIC",
     "requires_vision": false

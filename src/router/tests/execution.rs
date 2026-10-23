@@ -2,14 +2,213 @@
 mod tests {
     use super::*;
 
+    fn admission_fixture() -> (Model, Resolution, policy::RunLimits) {
+        let model = serde_json::from_value(json!({"id":"fixture","target":"fixture",
+            "display_name":"Fixture","description":"","tier":"T2_SYNTHESIS",
+            "available":true,"capabilities":{"context_window":262144,
+            "max_completion_tokens":24000}})).unwrap();
+        let resolution = serde_json::from_value(json!({"min_tier":"T2_SYNTHESIS",
+            "requires_vision":false,"requires_structured_outputs":true,
+            "requires_tools":false,"effort_profile":"high","requested_effort":null,
+            "downgrade_rejected":false,"reasons":[]})).unwrap();
+        (model, resolution, policy::RunLimits::default())
+    }
+
     #[test]
-    fn compact_context_preserves_objective_and_identifies_exact_omissions() {
-        let entries = vec![json!({"objective":"keep this constraint"}), json!({"tool":"workspace_read","result":"x".repeat(1000)}), json!({"assistant":{"action":"complete"}})];
-        let context = active_context(&entries, 150).unwrap();
-        assert_eq!(context["observations"][0]["content"]["objective"], "keep this constraint");
-        assert_eq!(context["context_omissions"][0]["index"], 1);
-        assert_eq!(context["context_omissions"][0]["sha256"], util::sha256(&serde_json::to_vec(&entries[1]).unwrap()));
-        assert_eq!(entries.len(), 3);
+    fn admission_separates_utf8_transport_estimate_output_and_reservation() {
+        let (model, resolution, limits) = admission_fixture();
+        let prompt = "Türkçe 🙂";
+        let admitted = admit_request(&model, &resolution, prompt, &[], &limits, 32000, 123, None).unwrap();
+        assert_eq!(admitted.context_bytes, prompt.len());
+        assert_eq!(admitted.estimated_input_tokens,
+            prompt.len() as u64 + action_schema().to_string().len() as u64 + 4096);
+        assert_eq!(admitted.output_cap_tokens, limits.max_completion_tokens);
+        assert!(admitted.transport_bytes_upper_bound > admitted.estimated_input_tokens);
+        assert!(admitted.estimator_method.contains("conservative_utf8"));
+        assert_eq!(admitted.reservation_tokens, admitted.estimated_input_tokens + admitted.output_cap_tokens);
+        assert_eq!(admitted.cumulative_reservation_tokens, 123 + admitted.reservation_tokens);
+        assert_eq!(admitted.accounting, "conservative_admission_reservation_not_exact_usage_or_billing");
+    }
+
+    #[test]
+    fn preflight_names_independent_byte_and_token_limits() {
+        let (mut model, resolution, mut limits) = admission_fixture();
+        let prompt = "hello";
+        limits.context_bytes = 4;
+        let failed = admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).unwrap_err();
+        assert_eq!(failed.limit, "context_bytes");
+        assert_eq!((failed.required, failed.available), (Some(5), Some(4)));
+        limits.context_bytes = 100000;
+        limits.transport_bytes = 1;
+        assert_eq!(admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).unwrap_err().limit, "transport_bytes");
+        limits.transport_bytes = 16 * 1024 * 1024;
+        let admitted = admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).unwrap();
+        model.capabilities.context_window = Some(admitted.reservation_tokens);
+        assert!(admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).is_ok());
+        model.capabilities.context_window = Some(admitted.reservation_tokens - 1);
+        let failed = admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).unwrap_err();
+        assert_eq!(failed.limit, "provider_context_tokens");
+        assert_eq!(failed.required, Some(admitted.reservation_tokens));
+        // Output is not silently shrunk to squeeze an oversized input in.
+        model.capabilities.context_window = Some(262144);
+        limits.token_reservation = admitted.reservation_tokens;
+        assert!(admit_request(&model, &resolution, prompt, &[], &limits, 4096, 0, None).is_ok());
+        assert_eq!(admit_request(&model, &resolution, prompt, &[], &limits, 4096, 1, None).unwrap_err().limit, "cumulative_reservation_tokens");
+    }
+
+    #[test]
+    fn unknown_provider_metadata_is_not_an_unlimited_window_or_invented_output_cap() {
+        let (mut model, resolution, limits) = admission_fixture();
+        for unknown in [None, Some(0)] {
+            model.capabilities.context_window = unknown;
+            let failure = admit_request(&model, &resolution, "x", &[], &limits, 4096, 0, None).unwrap_err();
+            assert_eq!(failure.limit, "provider_context_unknown");
+            assert_eq!(failure.available, None);
+        }
+        model.capabilities.context_window = Some(262144);
+        for unknown in [None, Some(0)] {
+            model.capabilities.max_completion_tokens = unknown;
+            assert_eq!(admit_request(&model, &resolution, "x", &[], &limits, 4096, 0, None).unwrap_err().limit, "provider_output_limit_unknown");
+        }
+    }
+
+    #[test]
+    fn native_adapter_delegates_unknown_provider_limits_without_losing_local_bounds() {
+        let (mut model, resolution, limits) = admission_fixture();
+        model.capabilities.context_window = None;
+        model.capabilities.max_completion_tokens = None;
+        let image = tempfile::NamedTempFile::new().unwrap();
+        let mut image_bytes = vec![0u8; 24];
+        image_bytes[..8].copy_from_slice(b"\x89PNG\r\n\x1a\n");
+        image_bytes[16..20].copy_from_slice(&2u32.to_be_bytes());
+        image_bytes[20..24].copy_from_slice(&16u32.to_be_bytes());
+        std::fs::write(image.path(), image_bytes).unwrap();
+        let admitted = admit_request_with_provider(
+            &model,
+            &resolution,
+            "native prompt",
+            &[image.path().canonicalize().unwrap()],
+            &limits,
+            4096,
+            0,
+            None,
+            ProviderAdmission::NativeAdapter,
+        )
+        .unwrap();
+        assert_eq!(admitted.provider_context_tokens, None);
+        assert_eq!(admitted.output_cap_tokens, 4096);
+        assert_eq!(admitted.image_reservation_units, 32);
+        assert!(admitted.reservation_tokens >= admitted.image_reservation_units + admitted.output_cap_tokens);
+        assert!(admitted.accounting.contains("native_adapter_context_provider_enforced"));
+        assert!(admitted.estimator_method.contains("max_encoded_bytes_or_decoded_pixels"));
+    }
+
+    #[test]
+    fn native_adapter_rejects_local_context_overflow_before_dispatch() {
+        let (mut model, resolution, mut limits) = admission_fixture();
+        model.capabilities.context_window = None;
+        model.capabilities.max_completion_tokens = None;
+        limits.context_bytes = 32 * 1024;
+        let prompt = "x".repeat(limits.context_bytes + 1);
+        let failure = admit_request_with_provider(
+            &model,
+            &resolution,
+            &prompt,
+            &[],
+            &limits,
+            4096,
+            0,
+            None,
+            ProviderAdmission::NativeAdapter,
+        )
+        .unwrap_err();
+        assert_eq!(failure.limit, "context_bytes");
+
+        model.capabilities.context_window = Some(1);
+        let failure = admit_request_with_provider(
+            &model,
+            &resolution,
+            "native prompt",
+            &[],
+            &limits,
+            4096,
+            0,
+            None,
+            ProviderAdmission::NativeAdapter,
+        )
+        .unwrap_err();
+        assert_eq!(failure.limit, "provider_context_tokens");
+    }
+
+    #[test]
+    fn image_tokens_require_an_explicit_adapter_estimator_contract() {
+        let (model, resolution, limits) = admission_fixture();
+        let dir = tempfile::tempdir().unwrap();
+        let image = dir.path().join("fixture.png");
+        std::fs::write(&image, vision_fixture("abcd").unwrap().0).unwrap();
+        let images = [image];
+        assert_eq!(admit_request(&model, &resolution, "pixels", &images, &limits, 4096, 0, None).unwrap_err().limit, "image_token_estimator_unknown");
+        let estimate = || InputEstimate { tokens: 1234, method: "fixture_adapter_image_contract_v1".into(), includes_images: true };
+        let admitted = admit_request(&model, &resolution, "pixels", &images, &limits, 4096, 0, Some(estimate())).unwrap();
+        assert_eq!(admitted.estimated_input_tokens, 1234);
+        assert_eq!(admitted.estimator_method, "fixture_adapter_image_contract_v1");
+        assert_eq!(admitted.reservation_tokens, 1234 + 4096);
+        let mut invalid = estimate();
+        invalid.method.clear();
+        assert_eq!(admit_request(&model, &resolution, "pixels", &images, &limits, 4096, 0, Some(invalid)).unwrap_err().limit, "invalid_token_estimator");
+        std::fs::write(&images[0], vec![0; 4 * 1024 * 1024 + 1]).unwrap();
+        assert_eq!(admit_request(&model, &resolution, "pixels", &images, &limits, 4096, 0, Some(estimate())).unwrap_err().limit, "image_bytes");
+    }
+
+    #[test]
+    fn reservations_survive_failures_checkpoint_roundtrip_and_recovery() {
+        let (model, resolution, mut limits) = admission_fixture();
+        let request: SpawnRequest = serde_json::from_value(json!({"objective":"fixture",
+            "task_intent":"synthesis","complexity_class":"synthesis",
+            "assigned_tools":[],"task_needs":[],"project":"/project"})).unwrap();
+        let mut state = ExecutionState::new(&request, &design_gate::ExecutionPolicy::from_workflows(&[]));
+        state.assignment_prefix = "immutable prefix".into();
+        state.turn = 7;
+        let admitted = admit_request(&model, &resolution, "x", &[], &limits, 4096, 0, None).unwrap();
+        state.attempts.push(json!({"admission":admitted,"failure":{"code":"transport_failure"}}));
+        state.attempts.push(json!({"retry":"inference_transport"}));
+        state.attempts.push(json!({"preflight_rejected":{"limit":"context_bytes"},"dispatched":false}));
+        let restored: ExecutionState = serde_json::from_value(serde_json::to_value(&state).unwrap()).unwrap();
+        assert_eq!(restored.turn, 7);
+        assert_eq!(restored.deadline, state.deadline);
+        assert_eq!(restored.assignment_prefix, state.assignment_prefix);
+        assert_eq!(reserved_total(&restored.attempts), admitted.reservation_tokens);
+        limits.token_reservation = admitted.reservation_tokens * 2 - 1;
+        assert_eq!(admit_request(&model, &resolution, "x", &[], &limits, 4096, reserved_total(&restored.attempts), None).unwrap_err().limit, "cumulative_reservation_tokens");
+        let mut missing_prefix = serde_json::to_value(&state).unwrap();
+        missing_prefix.as_object_mut().unwrap().remove("assignment_prefix");
+        assert!(serde_json::from_value::<ExecutionState>(missing_prefix).is_err());
+    }
+
+    #[test]
+    fn compact_context_bounds_wrappers_and_identifies_exact_omissions() {
+        let entries = vec![json!({"objective":"keep this constraint"}), json!({"tool":"workspace_read","result":"x".repeat(10000)}), json!({"assistant":{"action":"complete"}})];
+        let original = entries.clone();
+        let context = active_context(&entries, 1000).unwrap();
+        assert!(serde_json::to_vec(&context).unwrap().len() <= 1000);
+        let omitted = context["context_omissions"].as_array().unwrap().iter().find(|v| v["index"] == 1).unwrap();
+        assert_eq!(omitted["sha256"], util::sha256(&serde_json::to_vec(&entries[1]).unwrap()));
+        assert_eq!(omitted["bytes"], serde_json::to_vec(&entries[1]).unwrap().len());
+        assert_eq!(entries, original);
+        assert!(active_context(&entries, 20).is_err());
+    }
+
+    #[test]
+    fn immutable_prefix_is_literal_and_repeated_on_each_stateless_turn() {
+        let prefix = r#"{"objective":"immutable","tools":[],"schema":{}}"#;
+        let first = turn_prompt(prefix, json!({"observations":[1]}), json!({"turn":1}), json!(null)).unwrap();
+        let second = turn_prompt(prefix, json!({"observations":[2]}), json!({"turn":2}), json!({"status":"disabled"})).unwrap();
+        for prompt in [&first, &second] {
+            assert_eq!(prompt.split_once('\n').unwrap().0, prefix);
+            assert!(prompt.starts_with(&format!("{prefix}\n")));
+            assert!(serde_json::from_str::<Value>(prompt.split_once('\n').unwrap().1).is_ok());
+        }
+        assert_ne!(first, second);
     }
     #[test]
     fn no_change_requires_complete_successful_source_receipts() {

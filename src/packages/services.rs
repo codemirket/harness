@@ -168,12 +168,14 @@ pub(super) fn definition() -> Result<Value> {
         "typst",
         "svgo",
         "odiff",
+        "axe-core",
+        "d2",
     ]
     .into_iter()
     .collect();
     ensure!(
-        actual == expected && value["tools"].as_array().unwrap().len() == 9,
-        "design registry requires the nine supported design domains"
+        actual == expected && value["tools"].as_array().unwrap().len() == expected.len(),
+        "design registry requires the supported design domains"
     );
     for alias in REMOTE.iter() {
         let image = value["images"][alias]
@@ -564,6 +566,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
             (
                 "tools/chromium-launcher",
                 include_bytes!("../../runtime/design/tools/chromium-launcher"),
+            ),
+            (
+                "tools/browser.json",
+                include_bytes!("../../runtime/design/tools/browser.json"),
             ),
             (
                 "Dockerfile",
@@ -2362,6 +2368,7 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
             "tools/package-lock.json",
             "tools/tool-policy.json",
             "tools/tool-budgets.json",
+            "tools/browser.json",
             "tools/NOTICE.md",
         ] {
             assert!(staged.contains(required), "missing build input: {required}");

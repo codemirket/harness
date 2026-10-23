@@ -5,6 +5,12 @@ use std::{
     path::Path,
 };
 
+// These fixtures deliberately race deadlines against OS process startup and
+// five-second termination grace periods. Serialize independent fixtures so
+// their artificial process/reaper load does not consume another test's 500 ms
+// startup budget. Concurrency within each fixture remains unchanged.
+static PROCESS_FIXTURES: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
+
 fn fixture_spec(root: &Path) -> LaunchSpec {
     LaunchSpec {
         startup_timeout: std::time::Duration::from_secs(30),
@@ -26,6 +32,7 @@ fn fixture_spec(root: &Path) -> LaunchSpec {
 
 #[tokio::test]
 async fn package_mcp_real_child_initializes_filters_and_executes_a_useful_call() {
+    let _fixture = PROCESS_FIXTURES.lock().await;
     let home = tempfile::tempdir().unwrap();
     let spec = fixture_spec(home.path());
     let observed = probe(spec.clone()).await.unwrap();
@@ -59,6 +66,7 @@ async fn package_mcp_real_child_initializes_filters_and_executes_a_useful_call()
 
 #[tokio::test]
 async fn package_mcp_relative_command_fails_before_spawn() {
+    let _fixture = PROCESS_FIXTURES.lock().await;
     let home = tempfile::tempdir().unwrap();
     let mut spec = fixture_spec(home.path());
     spec.command = "mirket".into();
@@ -159,6 +167,7 @@ mod unix {
 
     #[tokio::test]
     async fn package_mcp_startup_deadline_allows_parent_to_clean_its_native_job() {
+        let _fixture = PROCESS_FIXTURES.lock().await;
         let home = tempfile::tempdir().unwrap();
         let (mut spec, mut native) = graceful_native_fixture(home.path()).await;
         spec.startup_timeout = Duration::from_millis(250);
@@ -178,6 +187,7 @@ mod unix {
 
     #[tokio::test]
     async fn package_mcp_real_stdio_startup_deadline_covers_tools_list() {
+        let _fixture = PROCESS_FIXTURES.lock().await;
         let home = tempfile::tempdir().unwrap();
         let command = home.path().join("hanging-package");
         let script = concat!(
@@ -227,6 +237,7 @@ mod unix {
 
     #[tokio::test]
     async fn package_mcp_aborted_startup_allows_parent_to_clean_its_native_job() {
+        let _fixture = PROCESS_FIXTURES.lock().await;
         let home = tempfile::tempdir().unwrap();
         let (spec, mut native) = graceful_native_fixture(home.path()).await;
         let task = tokio::spawn(probe(spec));
@@ -255,6 +266,7 @@ mod unix {
 
     #[tokio::test]
     async fn package_mcp_unresponsive_startup_group_is_forcibly_reaped() {
+        let _fixture = PROCESS_FIXTURES.lock().await;
         let home = tempfile::tempdir().unwrap();
         let mut spec = fixture_spec(home.path());
         spec.command = "/bin/sh".into();
@@ -273,6 +285,7 @@ mod unix {
 
     #[test]
     fn package_mcp_aborted_reaper_does_not_block_executor_progress() {
+        let _fixture = PROCESS_FIXTURES.blocking_lock();
         let home = tempfile::tempdir().unwrap();
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_all()
@@ -313,6 +326,7 @@ mod unix {
 
     #[test]
     fn package_mcp_runtime_shutdown_waits_for_aborted_reaper() {
+        let _fixture = PROCESS_FIXTURES.blocking_lock();
         let home = tempfile::tempdir().unwrap();
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_all()

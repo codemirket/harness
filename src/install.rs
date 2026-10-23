@@ -19,35 +19,14 @@ const ABSENT_SETUP_TOKEN: &str = "absent";
 
 pub use crate::target::Target;
 
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct SetupOptions {
     pub targets: Vec<Target>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub packages: Vec<String>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub package_settings: BTreeMap<String, Value>,
-}
-impl<'de> Deserialize<'de> for SetupOptions {
-    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        // Accept only the retired receipt key, never a current setup option.
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        struct ReceiptOptions {
-            targets: Vec<Target>,
-            #[serde(default, rename = "microsoft_learn")]
-            _removed_documentation_selection: bool,
-            #[serde(default)]
-            packages: Vec<String>,
-            #[serde(default)]
-            package_settings: BTreeMap<String, Value>,
-        }
-        let options = ReceiptOptions::deserialize(deserializer)?;
-        Ok(Self {
-            targets: options.targets,
-            packages: options.packages,
-            package_settings: options.package_settings,
-        })
-    }
 }
 impl Default for SetupOptions {
     fn default() -> Self {
@@ -164,34 +143,6 @@ struct ReceiptSnapshot {
     token: String,
 }
 
-pub(crate) struct RemovedReplayChoices {
-    pub microsoft_learn: bool,
-    pub targets: Vec<Target>,
-}
-
-/// An updater may supply retired arguments, but only the exact saved generation
-/// can authorize their removal. No live configuration or receipt is changed here.
-pub(crate) fn removed_replay_choices(
-    paths: &Paths,
-    expected: &str,
-) -> Result<RemovedReplayChoices> {
-    expected_receipt(expected)?.context("update replay requires an existing receipt")?;
-    let (state, identity) =
-        read_state_snapshot(paths)?.context("update replay receipt is absent")?;
-    if identity != expected {
-        bail!("update replay receipt changed; run mirket setup with current saved choices");
-    }
-    let bytes = read_bounded(&paths.settings(), MAX_SETTINGS)?;
-    if sha256(&bytes) != identity {
-        bail!("update replay receipt changed while reading retired choices");
-    }
-    let receipt: Value = serde_json::from_slice(&bytes)?;
-    Ok(RemovedReplayChoices {
-        microsoft_learn: receipt["options"]["microsoft_learn"].as_bool() == Some(true),
-        targets: state.options.targets,
-    })
-}
-
 pub(crate) fn read_state_snapshot(paths: &Paths) -> Result<Option<(InstallState, String)>> {
     Ok(read_receipt_snapshot(paths)?.map(|snapshot| (snapshot.state, snapshot.token)))
 }
@@ -230,7 +181,7 @@ fn parse_receipt(bytes: &[u8]) -> Result<InstallState> {
     }
     for servers in state.servers.values() {
         if servers.keys().any(|name| {
-            !matches!(name.as_str(), "mirket" | "openai-docs" | "microsoft-learn")
+            !matches!(name.as_str(), "mirket" | "openai-docs")
                 && !name
                     .strip_prefix("mirket-package-")
                     .is_some_and(crate::packages::valid_id)
@@ -283,12 +234,25 @@ pub fn setup_checked(
     options: &SetupOptions,
     expected_state: Option<&str>,
 ) -> Result<SetupReport> {
+    setup_checked_with_version_reset(paths, catalog, options, expected_state, None)
+}
+pub fn setup_checked_with_version_reset(
+    paths: &Paths,
+    catalog: &Catalog,
+    options: &SetupOptions,
+    expected_state: Option<&str>,
+    reset_version_from: Option<&str>,
+) -> Result<SetupReport> {
+    if reset_version_from.is_some() && expected_state.is_none() {
+        bail!("version reset requires an exact setup generation");
+    }
     setup_from_binary_checked(
         paths,
         catalog,
         options,
         &std::env::current_exe()?,
         expected_state,
+        reset_version_from,
     )
 }
 pub fn setup_from_binary(
@@ -297,7 +261,7 @@ pub fn setup_from_binary(
     options: &SetupOptions,
     binary: &Path,
 ) -> Result<SetupReport> {
-    setup_from_binary_checked(paths, catalog, options, binary, None)
+    setup_from_binary_checked(paths, catalog, options, binary, None, None)
 }
 fn setup_from_binary_checked(
     paths: &Paths,
@@ -305,6 +269,7 @@ fn setup_from_binary_checked(
     options: &SetupOptions,
     binary: &Path,
     expected_state: Option<&str>,
+    reset_version_from: Option<&str>,
 ) -> Result<SetupReport> {
     if let Some(token) = expected_state {
         expected_receipt(token)?;
@@ -317,7 +282,14 @@ fn setup_from_binary_checked(
     check_setup_generation(paths, expected_state, "update or configuration")?;
     cleanup_retired_runtime(paths)?;
     let registry = crate::packages::Registry::embedded()?;
-    let (changes, report) = prepare(paths, catalog, options, &binary, &registry)?;
+    let (changes, report) = prepare_with_version_reset(
+        paths,
+        catalog,
+        options,
+        &binary,
+        &registry,
+        reset_version_from,
+    )?;
     crate::packages::prepare_with_registry(paths, &options.packages, &registry)?;
     check_setup_generation(paths, expected_state, "package preparation")?;
     apply_changes(paths, &changes)?;
@@ -479,12 +451,29 @@ fn prepare(
     binary: &[u8],
     registry: &crate::packages::Registry,
 ) -> Result<(Vec<Change>, SetupReport)> {
+    prepare_with_version_reset(paths, catalog, options, binary, registry, None)
+}
+fn prepare_with_version_reset(
+    paths: &Paths,
+    catalog: &Catalog,
+    options: &SetupOptions,
+    binary: &[u8],
+    registry: &crate::packages::Registry,
+    reset_version_from: Option<&str>,
+) -> Result<(Vec<Change>, SetupReport)> {
     validate_options(options)?;
     registry.validate_selection(&options.packages)?;
     reject_symlink_components(&paths.root)?;
     let receipt_snapshot = read_receipt_snapshot(paths)?;
     let prior = receipt_snapshot.as_ref().map(|snapshot| &snapshot.state);
+    if let Some(expected) = reset_version_from {
+        crate::update::parse_version(expected)?;
+        if prior.map(|state| state.version.as_str()) != Some(expected) {
+            bail!("version-reset source does not match the installed version");
+        }
+    }
     if let Some(state) = &prior
+        && reset_version_from.is_none()
         && crate::update::parse_version(&state.version)?
             > crate::update::parse_version(env!("CARGO_PKG_VERSION"))?
     {
@@ -718,27 +707,6 @@ fn desired_servers(
     servers.insert("openai-docs".into(), value);
     Ok(servers)
 }
-fn preserve_removed_server(
-    target: Target,
-    name: &str,
-    current: Option<&Value>,
-    previous: Option<&Value>,
-    wanted: Option<&Value>,
-) -> bool {
-    if wanted.is_some() {
-        return false;
-    }
-    if name == "microsoft-learn" {
-        let installed = match target {
-            Target::Codex => json!({"url":"https://learn.microsoft.com/api/mcp"}),
-            Target::Claude => json!({"type":"http","url":"https://learn.microsoft.com/api/mcp"}),
-        };
-        // Receipt equality and the exact owned contract are both necessary.
-        // A customized entry is left intact and omitted from the new receipt.
-        return previous != Some(&installed) || current != previous;
-    }
-    false
-}
 fn validate_server_change(
     name: &str,
     current: Option<&Value>,
@@ -784,9 +752,6 @@ fn merge_config(
             for name in names {
                 let current = servers.get(&name);
                 let desired = wanted.get(&name);
-                if preserve_removed_server(target, &name, current, old.get(&name), desired) {
-                    continue;
-                }
                 validate_server_change(&name, current, old.get(&name), desired)?;
                 if current != desired {
                     changed = true;
@@ -818,10 +783,6 @@ fn merge_config(
             for name in names {
                 let current = servers.get(&name).map(toml_to_json).transpose()?;
                 let desired = wanted.get(&name);
-                if preserve_removed_server(target, &name, current.as_ref(), old.get(&name), desired)
-                {
-                    continue;
-                }
                 validate_server_change(&name, current.as_ref(), old.get(&name), desired)?;
                 if current.as_ref() != desired {
                     changed = true;

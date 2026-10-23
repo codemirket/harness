@@ -27,12 +27,12 @@ distinct inventory, operating and historical roles.
 | Host verification | Rust host-check record → graph verification transition | A failed or stale check can revoke prior verified status. The graph cannot confer host permission or semantic acceptance. KEEP. |
 | Coordinate tasks | Existing task SQLite | Coordination/evidence remains separate from Mem0 facts and LangGraph execution checkpoints. Do not merge merely because all persist state. KEEP OPTIONAL. |
 
-Source owners: [memory.py](../runtime/agent/memory.py),
-[workflow.py](../runtime/agent/workflow.py),
+Source owners: [memory.py](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/memory.py),
+[workflow.py](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/workflow.py),
 [durable.rs](../src/router/durable.rs),
 [execution.rs](../src/router/execution.rs),
-[IPC](../src/agent_runtime.rs), [bridge](../runtime/agent/bridge.py), and
-[lifecycle](../runtime/agent/lifecycle.py).
+[IPC](../src/agent_runtime.rs), [bridge](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/bridge.py), and
+[lifecycle](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/lifecycle.py).
 
 The package is optional. Once selected, a runtime failure does not silently turn
 a durable worker into an ephemeral one. Without it, workers are explicitly

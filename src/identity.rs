@@ -56,7 +56,7 @@ pub fn status(paths: &Paths, catalog: &Catalog) -> Value {
             "expected_recipe":crate::packages::agent::recipe(),
             "expected_versions":crate::packages::agent::definition().ok().map(|v| v["versions"].clone()),
             "live_identity":"Call mirket package probe agent-runtime for live identity; it launches a contained process. memory_read additionally opens project storage. Selection alone is not readiness.",
-            "adoption":"When selected, use focused memory_read for relevant prior decisions and memory_put for verified stable facts. Mirket workers use LangGraph automatically; inspect workflow_status before resuming an interrupted run."},
+            "adoption":"When selected, use focused memory_read for relevant prior decisions and memory_put for verified stable facts. Mirket workers use the Rust journal automatically; inspect workflow_status before resuming an interrupted run."},
         "recommended_actions":actions,
         "inspection_scope":"Passive process, installed-binary and saved-selection inspection. Does not start a VM, probe providers, launch containers or reconcile managed files.",
         "activation": "This response observes this MCP/CLI process only; other desktop connections and design services require their own calls.",

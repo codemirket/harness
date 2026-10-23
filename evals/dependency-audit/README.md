@@ -1,13 +1,16 @@
 # Locked dependency reporting
 
 Run `python3 check.py --output /absolute/evidence/audit.json` with Python 3.11+.
-The script queries public OSV metadata for all Cargo registry packages, npm lock
-entries, pinned Python wheels and the OpenPencil transitive closure in the design npm lock. No package code is imported or installed.
+The script queries public OSV metadata for all Cargo registry packages and npm
+lock entries, including the OpenPencil transitive closure in the design lock. No
+package code is imported or installed; native agent and model artifacts are
+covered by image and package receipts.
 
 Source and image audits default to `--advisory-policy report`: findings stay visible
-without blocking ordinary changes. Fix compatible, low-effort issues; do not add
-costly rebuilds, dependency overrides or new layers solely to clear advisories.
-A reachable defect in Mirket's own tool or permission boundary still needs a fix.
+without blocking ordinary changes. Choose fixes for reachability, long-term
+stability and performance; do not add rebuilds, overrides or layers solely to
+clear advisory headlines. A reachable defect in Mirket's own tool or permission
+boundary still needs a fix.
 
 Incomplete/error responses, invalid inventory, malformed review records and
 identity mismatches remain errors. `exceptions.json` retains exact coordinates,
@@ -36,8 +39,10 @@ python3 evals/dependency-audit/fetch_scanner.py --target darwin-arm64 --output /
 python3 evals/dependency-audit/image_audit.py --scanner /absolute/new-trivy --remote-only --output /absolute/new-image-evidence
 ```
 
-CI uses the pinned Linux AMD64 scanner to inspect all four pinned ARM64
-base/service images. At the maintainer’s request, CI uses `--advisory-policy report`:
+CI uses the pinned Linux AMD64 scanner to inspect all three pinned ARM64
+design base/service images. The native agent image is scanned separately when a
+verified local candidate export is available; it has no retired Python package
+inventory. At the maintainer’s request, CI uses `--advisory-policy report`:
 image advisories remain in the evidence as non-blocking warnings rather than
 requiring costly upstream rebuilds. This does not declare them fixed or safe.
 Both command-line audits use the same report policy by default. Missing OS
@@ -60,9 +65,10 @@ with the complete receipts as values. Then supply it with `--exports` to a full
 scan (omit `--remote-only`). Archive hashes and scanned image IDs must match.
 For candidate scans, pass `--candidate-source-sha256` with the compiled source
 identity to reject old installed exports or exports from another build.
-Owned images also require their retained language inventories: Node packages for
-design and Python packages for agents. The removed esbuild payload no longer
-creates a Go inventory requirement. Any detected Go findings still appear.
+Owned images require their retained language inventories: Node packages for
+design and native artifact/image coverage for the agent. The removed esbuild
+payload no longer creates a Go inventory requirement. Any detected Go findings
+still appear.
 `--only ALIAS ...` supports bounded triage; it cannot establish complete coverage.
 The script uses a fresh evidence directory and retains failures. Full coverage
 requires all remote and built images and a usable inventory for each.

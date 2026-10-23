@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "product": "chrome-for-testing",
+  "version": "156.0.8078.4",
+  "revision": "1706539",
+  "provenance": {
+    "publisher": "Google Chrome for Testing",
+    "catalog": "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json",
+    "catalog_version": "156.0.8078.4",
+    "download_base": "https://storage.googleapis.com/chrome-for-testing-public"
+  },
+  "archives": {
+    "arm64": {
+      "platform": "linux-arm64",
+      "url": "https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.4/linux-arm64/chrome-linux-arm64.zip",
+      "archive": "chrome-linux-arm64.zip",
+      "sha256": "910a12fff6170202195f72ef3d353801c7063d301ab80b1f51b77d791fda60ce",
+      "bytes": 199750508,
+      "root": "chrome-linux-arm64",
+      "executable": "chrome-linux-arm64/chrome"
+    },
+    "amd64": {
+      "platform": "linux64",
+      "url": "https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.4/linux64/chrome-linux64.zip",
+      "archive": "chrome-linux64.zip",
+      "sha256": "43fd31766c7533a02dda2ded5ad50c2f861cd5400be7509c0abad71129f79d79",
+      "bytes": 200345244,
+      "root": "chrome-linux64",
+      "executable": "chrome-linux64/chrome"
+    }
+  }
+}

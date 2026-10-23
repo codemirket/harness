@@ -1,6 +1,14 @@
-//! Owned IPC boundary: third-party code gets private state, never host tools/keys.
+//! Owned embedding IPC boundary: the helper receives bounded text, never databases, tools or keys.
+pub(crate) mod database;
+pub mod journal;
+mod lifecycle;
+mod native;
+mod pool;
+pub mod queries;
+mod storage;
 use crate::{paths::Paths, process::OwnedChild, util};
 use anyhow::{Context, Result, ensure};
+pub use native::Session;
 use serde_json::{Value, json};
 use std::{path::Path, process::Stdio, time::Duration};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
@@ -11,9 +19,16 @@ const MAX: u64 = 4 * 1024 * 1024;
 // Keep this cross-process gate only through the identity handshake: desktop
 // clients share an engine, but established sessions must remain independent.
 async fn startup_lock(path: &Path, wait: Duration) -> Result<util::FileLock> {
+    operation_lock(path, wait, false).await
+}
+async fn operation_lock(path: &Path, wait: Duration, shared: bool) -> Result<util::FileLock> {
     tokio::time::timeout(wait, async {
         loop {
-            match util::FileLock::acquire(path) {
+            match if shared {
+                util::FileLock::shared(path)
+            } else {
+                util::FileLock::acquire(path)
+            } {
                 Ok(lock) => return Ok(lock),
                 Err(error)
                     if matches!(
@@ -29,12 +44,12 @@ async fn startup_lock(path: &Path, wait: Duration) -> Result<util::FileLock> {
     .context("agent runtime startup queue deadline exceeded; no request dispatched")?
 }
 
-// Separate short operations from long workers. Limits apply across desktop processes.
-async fn admission(paths: &Paths, worker: bool, wait: Duration) -> Result<util::FileLock> {
+// Two embedding processes per home. Native control operations need no helper permit.
+async fn admission(paths: &Paths, wait: Duration) -> Result<util::FileLock> {
     let directory = paths.root.join("execution/podman/agent-admission");
     util::ensure_directory(&directory)?;
-    let count = if worker { 2 } else { 1 };
-    let lane = if worker { "worker" } else { "operation" };
+    let count = 2;
+    let lane = "embedding";
     tokio::time::timeout(wait, async {
         loop {
             for slot in 0..count {
@@ -55,6 +70,38 @@ async fn admission(paths: &Paths, worker: bool, wait: Duration) -> Result<util::
     .context("agent runtime capacity queue expired; no request dispatched")?
 }
 
+// Bounded, cross-client waiting room. Locks disappear on process exit; no stale
+// queue counters or unbounded files survive crashes.
+fn waiting_ticket(paths: &Paths) -> Result<util::FileLock> {
+    let directory = paths.root.join("execution/podman/agent-admission");
+    util::ensure_directory(&directory)?;
+    for slot in 0..16 {
+        match util::FileLock::acquire(&directory.join(format!("waiting-{slot}.lock"))) {
+            Ok(ticket) => return Ok(ticket),
+            Err(error)
+                if matches!(
+                    error.downcast_ref::<std::fs::TryLockError>(),
+                    Some(std::fs::TryLockError::WouldBlock)
+                ) => {}
+            Err(error) => return Err(error),
+        }
+    }
+    anyhow::bail!("embedding waiting room is full; no request dispatched")
+}
+fn has_waiters(paths: &Paths) -> bool {
+    let directory = paths.root.join("execution/podman/agent-admission");
+    (0..16).any(|slot| {
+        util::FileLock::acquire(&directory.join(format!("waiting-{slot}.lock"))).is_err()
+    })
+}
+
+pub fn doctor(paths: &Paths) -> Value {
+    match storage::doctor(paths) {
+        Ok(report) => report,
+        Err(error) => json!({"ok":false,"error":format!("{error:#}")}),
+    }
+}
+
 pub fn enabled(paths: &Paths) -> Result<bool> {
     Ok(crate::install::saved_options(paths)?
         .is_some_and(|options| options.packages.iter().any(|id| id == "agent-runtime")))
@@ -63,10 +110,8 @@ pub fn scope(paths: &Paths, project: &Path) -> Result<String> {
     crate::state::State::open(paths)?.runtime_scope(project)
 }
 
-pub struct Session {
+pub(crate) struct EmbeddingSession {
     admission: Option<util::FileLock>,
-    maintenance: Option<util::FileLock>,
-    project_scope: Option<String>,
     project_root: Option<std::path::PathBuf>,
     child: OwnedChild,
     input: Option<tokio::process::ChildStdin>,
@@ -76,20 +121,15 @@ pub struct Session {
     container: String,
     stderr: Option<tokio::task::JoinHandle<()>>,
 }
-impl Session {
+impl EmbeddingSession {
     pub async fn open(paths: &Paths, project: Option<&Path>) -> Result<Self> {
-        Self::open_lane(paths, project, false).await
-    }
-    pub async fn open_worker(paths: &Paths, project: &Path) -> Result<Self> {
-        Self::open_lane(paths, Some(project), true).await
-    }
-    async fn open_lane(paths: &Paths, project: Option<&Path>, worker: bool) -> Result<Self> {
         ensure!(
             enabled(paths)?,
             "agent-runtime is not selected; use mirket package install design agent-runtime"
         );
-        let maintenance = crate::maintenance::shared(paths)?;
-        let permit = admission(paths, worker, Duration::from_secs(120)).await?;
+        let queued = waiting_ticket(paths)?;
+        let permit = admission(paths, Duration::from_secs(120)).await?;
+        drop(queued);
         let owned = paths.clone();
         let project_scope = project.map(|p| scope(paths, p)).transpose()?;
         let command_scope = project_scope.clone();
@@ -119,8 +159,6 @@ impl Session {
         });
         let mut session = Self {
             admission: Some(permit),
-            maintenance: Some(maintenance),
-            project_scope,
             project_root: project.map(crate::paths::canonical_project).transpose()?,
             child,
             input: Some(input),
@@ -147,10 +185,13 @@ impl Session {
                 "runtime session project changed"
             );
         }
-        let request = json!({"operation":operation,"scope":project.and(self.project_scope.as_ref()),"arguments":arguments});
+        let request = json!({"operation":operation,"texts":arguments["texts"].as_array().cloned().unwrap_or_default(),"fit_auto_queries":arguments["fit_auto_queries"].as_bool().unwrap_or(false)});
+        let serialization_started = std::time::Instant::now();
         let mut bytes = serde_json::to_vec(&request)?;
-        ensure!(bytes.len() < MAX as usize, "agent request exceeds 4 MiB");
+        let serialization_ms = serialization_started.elapsed().as_secs_f64() * 1000.0;
+        ensure!(bytes.len() < 64 * 1024, "embedding request exceeds 64 KiB");
         bytes.push(b'\n');
+        let request_bytes = bytes.len();
         let response = tokio::time::timeout(Duration::from_secs(120), async {
             let input = self.input.as_mut().context("agent runtime is closed")?;
             input.write_all(&bytes).await?;
@@ -172,27 +213,21 @@ impl Session {
                 };
                 anyhow::bail!("agent runtime ended before a complete response (process status: {status}); request was not replayed");
             }
-            let response: Value = serde_json::from_slice(&bytes)?;
+            let decode_started = std::time::Instant::now();
+            let mut response: Value = serde_json::from_slice(&bytes)?;
+            response["transport"] = json!({"serialization_ms":serialization_ms,"deserialization_ms":decode_started.elapsed().as_secs_f64()*1000.0,"response_bytes":bytes.len(),"request_bytes":request_bytes});
             ensure!(
                 response.get("error").is_none(),
                 "agent runtime: {}",
                 response["error"].as_str().unwrap_or("invalid result")
             );
-            ensure!(
-                response["runtime"]["versions"]
-                    == crate::packages::agent::definition()?["versions"],
-                "agent runtime version drift"
-            );
-            for (name, contents) in crate::packages::agent::files() {
-                if (name.ends_with(".py") && !name.contains('/'))
-                    || ["requirements.lock", "model.json", "bm25.json", "recovery-contract.json"].contains(&name)
-                {
-                    ensure!(
-                        response["runtime"]["files"][name] == util::sha256(contents),
-                        "agent runtime source drift: {name}"
-                    );
-                }
-            }
+            let expected: Value = serde_json::from_str(include_str!("../runtime/agent/model.json"))?;
+            let identity=&response["result"]["identity"];
+            ensure!(identity["protocol"]==1 && identity["version"]==env!("CARGO_PKG_VERSION")
+                && identity["fastembed"]=="7.2.0" && identity["revision"]==expected["revision"]
+                && identity["dimensions"]==expected["dimensions"]
+                && identity["model_manifest_sha256"]==util::sha256(include_bytes!("../runtime/agent/model.json")),
+                "embedding helper identity drift");
             ensure!(
                 response.get("result").is_some(),
                 "agent runtime omitted result"
@@ -220,7 +255,7 @@ impl Session {
         Ok(())
     }
 }
-impl Drop for Session {
+impl Drop for EmbeddingSession {
     fn drop(&mut self) {
         if self.closed {
             return;
@@ -229,12 +264,10 @@ impl Drop for Session {
             stderr.abort();
         }
         let admission = self.admission.take();
-        let maintenance = self.maintenance.take();
         let engine = self.engine.clone();
         let name = self.container.clone();
         crate::process::reap_on_drop(move || {
             let _admission = admission;
-            let _maintenance = maintenance;
             // The generated name is confined to this owned invocation. Check the
             // recipe label before cleanup so an unrelated replacement is retained.
             if crate::packages::agent::owned_session(&engine, &name).unwrap_or(false) {
@@ -266,40 +299,54 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn long_workers_preserve_operation_capacity_and_queue_is_bounded() {
-        let home = tempfile::tempdir().unwrap();
-        let paths = Paths::new(home.path().to_path_buf()).unwrap();
-        let first = admission(&paths, true, Duration::from_secs(1))
+    async fn readers_share_operation_lease_and_block_writers() {
+        let temp = tempfile::tempdir().unwrap();
+        let path = temp.path().canonicalize().unwrap().join("operation.lock");
+        let first = operation_lock(&path, Duration::from_secs(1), true)
             .await
             .unwrap();
-        let _second = admission(&paths, true, Duration::from_secs(1))
-            .await
-            .unwrap();
-        let operation = admission(&paths, false, Duration::from_secs(1))
+        let second = operation_lock(&path, Duration::from_secs(1), true)
             .await
             .unwrap();
         assert!(
-            admission(&paths, true, Duration::from_millis(60))
-                .await
-                .is_err()
-        );
-        assert!(
-            admission(&paths, false, Duration::from_millis(60))
+            operation_lock(&path, Duration::from_millis(40), false)
                 .await
                 .is_err()
         );
         drop(first);
-        drop(operation);
+        drop(second);
+        let writer = operation_lock(&path, Duration::from_secs(1), false)
+            .await
+            .unwrap();
         assert!(
-            admission(&paths, true, Duration::from_secs(1))
+            operation_lock(&path, Duration::from_millis(40), true)
+                .await
+                .is_err()
+        );
+        drop(writer);
+        assert!(
+            operation_lock(&path, Duration::from_secs(1), true)
                 .await
                 .is_ok()
         );
-        assert!(
-            admission(&paths, false, Duration::from_secs(1))
-                .await
-                .is_ok()
-        );
+    }
+
+    #[tokio::test]
+    async fn embedding_capacity_is_shared_bounded_and_released() {
+        let home = tempfile::tempdir().unwrap();
+        let paths = Paths::new(home.path().to_path_buf()).unwrap();
+        let first = admission(&paths, Duration::from_secs(1)).await.unwrap();
+        let _second = admission(&paths, Duration::from_secs(1)).await.unwrap();
+        assert!(admission(&paths, Duration::from_millis(60)).await.is_err());
+        drop(first);
+        assert!(admission(&paths, Duration::from_secs(1)).await.is_ok());
+        let tickets = (0..16)
+            .map(|_| waiting_ticket(&paths).unwrap())
+            .collect::<Vec<_>>();
+        assert!(has_waiters(&paths));
+        assert!(waiting_ticket(&paths).is_err());
+        drop(tickets);
+        assert!(!has_waiters(&paths));
     }
 
     #[test]

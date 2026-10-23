@@ -74,6 +74,42 @@ mod tests {
         assert!(RunLimits { max_calls: 0, ..Default::default() }.validate().is_err());
     }
     #[test]
+    fn byte_limits_are_independent_and_bounded_in_the_clean_contract() {
+        let defaults = RunLimits::default();
+        defaults.validate().unwrap();
+        assert_eq!(defaults.context_bytes, 256 * 1024);
+        assert_eq!(defaults.transport_bytes, 16 * 1024 * 1024);
+        for context_bytes in [0, 32 * 1024 - 1, 1024 * 1024 + 1] {
+            assert!(RunLimits { context_bytes, ..defaults.clone() }.validate().is_err());
+        }
+        for transport_bytes in [0, 32 * 1024 - 1, 16 * 1024 * 1024 + 1] {
+            assert!(RunLimits { transport_bytes, ..defaults.clone() }.validate().is_err());
+        }
+        for context_bytes in [32 * 1024, 1024 * 1024] {
+            for transport_bytes in [32 * 1024, 16 * 1024 * 1024] {
+                RunLimits { context_bytes, transport_bytes, ..defaults.clone() }.validate().unwrap();
+            }
+        }
+        let encoded = serde_json::to_value(&defaults).unwrap();
+        assert_eq!(encoded["transport_bytes"], defaults.transport_bytes);
+        assert!(serde_json::from_value::<RunLimits>(encoded).is_ok());
+    }
+
+    #[test]
+    fn completion_metadata_preserves_unknown_and_zero_limits() {
+        let mut candidate = model("Fixture", "metadata only");
+        let resolution = resolve(&request(TaskIntent::Synthesis, ComplexityClass::Synthesis), &[]).unwrap();
+        for unknown in [None, Some(0)] {
+            candidate.capabilities.max_completion_tokens = unknown;
+            assert_eq!(completion_tokens_for(&candidate, &resolution), None);
+        }
+        candidate.capabilities.max_completion_tokens = Some(24000);
+        candidate.capabilities.context_window = None;
+        assert_eq!(completion_tokens_for(&candidate, &resolution), Some(24000));
+        assert_eq!(candidate.capabilities.context_window, None);
+    }
+
+    #[test]
     fn prose_and_legacy_labels_do_not_override_the_owned_workflow_floor() {
         let mut task = request(
             TaskIntent::Architecture,

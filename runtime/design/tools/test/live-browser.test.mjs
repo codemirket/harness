@@ -8,8 +8,15 @@ test('shipped Chromium meets the reviewed security floor and retired video depen
   const {execFile} = await import('node:child_process');
   const {promisify} = await import('node:util');
   const run = promisify(execFile);
-  const {stdout} = await run('dpkg-query', ['-W', '-f=${Version}', 'chromium']);
-  await run('dpkg', ['--compare-versions', stdout.trim(), 'ge', '155.0.8059.79-1~deb12u1']);
+  const manifest = JSON.parse(await fs.readFile(new URL('../browser.json', import.meta.url), 'utf8'));
+  const key = process.arch === 'arm64' ? 'arm64' : 'amd64';
+  const {stdout} = await run(path.join('/opt/design/chrome', manifest.archives[key].executable), ['--version']);
+  assert.ok(stdout.includes(manifest.version), stdout);
+  const playwright = JSON.parse(await fs.readFile(new URL('../node_modules/playwright-core/package.json', import.meta.url), 'utf8'));
+  assert.equal(playwright.version, process.env.MIRKET_PLAYWRIGHT_VERSION);
+  const bundled = JSON.parse(await fs.readFile(new URL('../node_modules/playwright-core/browsers.json', import.meta.url), 'utf8')).browsers.find(x=>x.name==='chromium');
+  assert.equal(bundled.browserVersion, manifest.version);
+  assert.equal(bundled.revision, process.env.MIRKET_PLAYWRIGHT_CHROMIUM_REVISION);
   for (const name of ['esbuild','hyperframes']) {
     await assert.rejects(import(name), {code:'ERR_MODULE_NOT_FOUND'});
   }
@@ -106,4 +113,25 @@ test('scoped Chromium and file operations cannot read a sibling project', {skip:
     const result = await promisify(execFile)(process.execPath, ['--input-type=module','-e',script], {env:{...process.env,MIRKET_DESIGN_WORKSPACE:path.join(root,'own'),MIRKET_SCOPED_WORKER:'1'},timeout:75000,maxBuffer:1024*1024});
     assert.ok(result.stdout.includes('"sibling_blocked":true'));
   } finally { await fs.rm(root, {recursive:true,force:true}); }
+});
+
+
+test('actual axe checks captured interaction state, keyboard focus and reduced motion', {skip:process.env.MIRKET_LIVE_BROWSER_TEST!=='1', timeout:90000}, async()=>{
+  const {workspace}=await import('../paths.mjs');
+  const {browserScreenshot}=await import('../operations.mjs');
+  const relative=`qa/accessibility-${crypto.randomUUID()}`;
+  const root=path.join(workspace,relative);
+  await fs.mkdir(root,{recursive:true});
+  try {
+    await fs.writeFile(path.join(root,'index.html'), `<!doctype html><html lang="en"><head><title>Keyboard fixture</title><style>body{color:#111;background:#fff}button:focus{outline:3px solid #036}.orb{animation:move 1s infinite}@keyframes move{to{transform:translateX(100px)}}@media(prefers-reduced-motion:reduce){.orb{animation:none}}</style></head><body><main><h1>Keyboard fixture</h1><button id="control" onclick="this.removeAttribute('aria-label');this.textContent=''">Show details</button><p class="orb" id="motion">Motion fixture</p></main></body></html>`);
+    const good=await browserScreenshot({source:`${relative}/index.html`,output:`${relative}/good.png`,width:400,height:240,reduced_motion:'reduce',actions:[{kind:'press',selector:'body',key:'Tab'}],inspect_selectors:['#motion']});
+    assert.equal(good.evidence.active_element.id,'control');
+    assert.equal(good.evidence.selectors['#motion'].transform,'none');
+    assert.equal(good.evidence.accessibility.version,'4.14.0');
+    assert.deepEqual(good.evidence.accessibility.violations,[]);
+    const bad=await browserScreenshot({source:`${relative}/index.html`,output:`${relative}/bad.png`,width:400,height:240,actions:[{kind:'click',selector:'#control'}]});
+    assert.ok(bad.evidence.accessibility.violations.some(x=>x.id==='button-name'));
+    assert.equal(bad.qa.accessibility.status,'failed');
+    assert.equal(bad.qa.status,'failed');
+  } finally { await fs.rm(root,{recursive:true,force:true}); }
 });

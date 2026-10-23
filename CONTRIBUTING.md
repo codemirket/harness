@@ -335,13 +335,14 @@ those groups with the candidate. Never purge its data. The candidate's source
 identity must match the checkout tested by Cargo. Complete disposable setup,
 doctor and catalog checks as described above before updating the desktop.
 
-Acceptance reuses the shipped Python self-tests and Rust integration fixtures:
-typed MCP schemas and fresh executable/skill identities; actual paginated export
-and typed retention preview/apply; parallel memory/lifecycle calls; scoped design
-token compilation and SVG/PNG output; complete Mem0/LangGraph backup recovery and
-relocation. Fixtures contain synthetic data, use unique scopes, clean up their
-own files, and never register or read existing user projects. Missing prerequisites
-or stale package identities fail the gate rather than skipping checks.
+Acceptance reuses native Rust integration fixtures and the contained design
+checks: typed MCP schemas and fresh executable/skill identities; actual
+paginated export and typed retention preview/apply; parallel native memory and
+lifecycle calls; scoped design token compilation and SVG/PNG output; native
+fact-store and execution-journal recovery and relocation. Fixtures contain
+synthetic data, use unique scopes, clean up their own files, and never register
+or read existing user projects. Missing prerequisites or stale package
+identities fail the gate rather than skipping checks.
 
 This gate is an automated local release check. It does not claim that either
 already-running desktop connection has reconnected, or judge aesthetic quality.
@@ -351,10 +352,12 @@ substitute an installed binary or fresh SDK session for those observations.
 
 ## Dependency reporting
 
-CI queries OSV for every locked Cargo, design npm and agent Python coordinate.
-Source and image advisories are reported without blocking ordinary changes;
-apply low-effort compatible fixes and retain unresolved findings. Incomplete
-queries, invalid inventory, scanner failures and identity mismatches remain errors.
+CI queries OSV for every locked Cargo and design npm coordinate. Native agent
+artifacts and image contents are covered by their separate pinned inventories
+and receipts. Source and image advisories remain visible under the report
+policy; choose fixes for reachability, long-term stability and performance,
+while retaining unresolved findings. Incomplete queries, invalid inventory,
+scanner failures and identity mismatches remain errors.
 [Reachability reviews](evals/dependency-audit/exceptions.json) bind exact versions,
 advisories, source bytes, owner and expiry. Stale reviews become visible warnings
 and stop suppressing findings. Do not renew them merely to clear a check.

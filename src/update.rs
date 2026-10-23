@@ -23,6 +23,7 @@ const MANIFEST_URL: &str =
 
 #[derive(Debug, Clone, Default)]
 pub struct UpdateOptions {
+    pub reset_version_from: Option<String>,
     pub from: Option<PathBuf>,
     pub sha256: Option<String>,
     pub check: bool,
@@ -79,6 +80,12 @@ pub fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
 }
 
 fn install_update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport> {
+    if options.reset_version_from.is_some() && options.from.is_none() {
+        bail!("--reset-version-from requires a hash-bound local --from artifact");
+    }
+    if let Some(version) = &options.reset_version_from {
+        parse_version(version)?;
+    }
     if options.from.is_some() != options.sha256.is_some() {
         bail!("offline update requires both --from and --sha256");
     }
@@ -190,7 +197,15 @@ fn install_update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport
         .context("update artifact did not identify itself as mirket")?
         .to_string();
     let available_number = parse_version(&available_version)?;
-    if available_number < current_number {
+    let version_reset = options.reset_version_from.as_deref() == Some(current_version.as_str());
+    if options.reset_version_from.is_some()
+        && !version_reset
+        && !(available_version == current_version
+            && sha256(&read_bounded(&paths.binary(), MAX_BINARY)?) == expected_digest)
+    {
+        bail!("version-reset source does not match the installed version");
+    }
+    if available_number < current_number && !version_reset {
         bail!("artifact version {available_version} is older than installed {current_version}");
     }
     if expected_version
@@ -228,6 +243,9 @@ fn install_update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateReport
         "--expected-state",
         &expected_state,
     ]);
+    if version_reset && available_number < current_number {
+        command.args(["--reset-version-from", &current_version]);
+    }
     if let Some(plan) = &entrypoint {
         plan.recheck()
             .context("entrypoint changed before setup; installation was not changed")?;

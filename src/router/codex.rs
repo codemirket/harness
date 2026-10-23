@@ -334,6 +334,12 @@ fn child_event(frame: &Value) -> Result<ChildEvent> {
         // top-level error and turn.failed remain fatal. Disabled Code Mode
         // emits this item even though the isolated text turn is still valid.
         Some("item.completed") if frame["item"]["type"] == "error" => Ok(ChildEvent::Progress),
+        // A native client compaction event would mean the immutable assignment
+        // prefix was replaced or truncated. It is never an acceptable recovery
+        // path for a stateless Mirket turn.
+        Some("item.completed") if frame["item"]["type"] == "context_compaction" => {
+            bail!("Codex native client compacted immutable context")
+        }
         Some("turn.completed") => Ok(ChildEvent::Completed),
         _ => bail!("Codex child attempted native execution or failed"),
     }

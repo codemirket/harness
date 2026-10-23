@@ -84,7 +84,7 @@ quality gain or expanding guidance based on one.
 
 ## Bounded known pauses and rejected-transition recovery (F12)
 
-[LangGraph](../runtime/agent/workflow.py) can persist a known inactive pause only
+[LangGraph](https://github.com/codemirket/harness/blob/0293dce091771398520e6151a86906d0bb48f663/runtime/agent/workflow.py) can persist a known inactive pause only
 at a worker boundary with no pending effect. Resumption credits that interval
 once, up to 86,400 cumulative seconds across the run. Original active seconds,
 turn limits and design repair counts remain intact. Resume activates the clock

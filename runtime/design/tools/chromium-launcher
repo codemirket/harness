@@ -1,2 +1,11 @@
 #!/bin/sh
-exec /opt/design/runtime-guard run /usr/bin/chromium "$@"
+set -eu
+
+case "$(uname -m)" in
+  aarch64) browser=/opt/design/chrome/chrome-linux-arm64/chrome ;;
+  x86_64) browser=/opt/design/chrome/chrome-linux64/chrome ;;
+  *) echo "unsupported Chrome-for-Testing architecture: $(uname -m)" >&2; exit 64 ;;
+esac
+
+test -x "$browser"
+exec /opt/design/runtime-guard run "$browser" "$@"

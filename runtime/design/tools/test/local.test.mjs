@@ -9,10 +9,21 @@ const workspace = await fs.mkdtemp(path.join(os.tmpdir(), 'mirket-design-test-')
 process.env.MIRKET_DESIGN_WORKSPACE = workspace;
 const {publish, readFile, run, readBoundedFile, regularOutput, sha256} = await import('../paths.mjs');
 const {compileTokens} = await import('../tokens.mjs');
-const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, optimizeSvgBytes, typstCompile, readBoundedProjectAsset, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams} = await import('../operations.mjs');
+const {svgOptimize, staticRender, prepareSatoriTree, odiffCompare, imageBatchBudget, optimizeSvgBytes, typstCompile, readBoundedProjectAsset, browserInspectCaptureOptions, screenshotPixelPlan, verifyScreenshotPixels, fullPageCaptureParams, accessibilityQa} = await import('../operations.mjs');
 const {withRequest} = await import('../request.mjs');
 
 test.after(async () => fs.rm(workspace, {recursive: true, force: true}));
+
+test('axe accessibility evidence fails on violations and preserves incomplete review state', () => {
+  assert.deepEqual(accessibilityQa({engine:'axe-core', violations:[], incomplete:[{id:'color-contrast'}]}), {status:'passed', violations:0, incomplete:1, requires_human_review:true});
+  assert.equal(accessibilityQa({engine:'axe-core', violations:[{id:'button-name'}], incomplete:[]}).status, 'failed');
+  assert.equal(accessibilityQa({engine:'other'}).status, 'unverified');
+});
+
+test('D2 producer refuses non-D2 inputs before invoking a renderer', async () => {
+  const {d2Render} = await import('../operations.mjs');
+  await assert.rejects(d2Render({source:'diagram.txt', output:'diagram.svg'}), /D2 input/);
+});
 
 test('simultaneous absent-output publication has one atomic winner', async () => {
   const results = await Promise.allSettled([
@@ -154,6 +165,13 @@ test('malicious imported SVG is rejected before publication', async () => {
   await fs.writeFile(path.join(workspace, 'unsafe.svg'), '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>');
   await assert.rejects(svgOptimize({source: 'unsafe.svg', output: 'clean.svg', tokens: 'design/tokens.json'}), /Unsafe SVG/);
   await assert.rejects(fs.stat(path.join(workspace, 'clean.svg')), {code: 'ENOENT'});
+});
+
+test('parsed SVG custom properties still reject external resources', () => {
+  const svg = css => `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><style>${css}</style><rect width="20" height="20"/></svg>`;
+  assert.throws(() => optimizeSvgBytes(svg(':root {--font: url(https://example.invalid/font.woff)}')), /external/);
+  assert.throws(() => optimizeSvgBytes(svg('@import "https://example.invalid/style.css";')), /external/);
+  assert.ok(optimizeSvgBytes(svg(':root {--ink: #123456} rect {fill:var(--ink)}')).length > 0);
 });
 
 test('standard Graphviz SVG 1.1 header is stripped without resolving arbitrary DTDs', () => {

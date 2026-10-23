@@ -20,11 +20,9 @@ not required for device installation.
 
 If the selected release is already installed, run `mirket info --json` and
 `mirket doctor --json`; a healthy matching installation needs no replacement.
-Mirket 0.0.2 upgrades an existing 0.0.1 installation through `mirket update`,
-preserving saved choices and data. A pre-0.0.1 home is a separate installation:
-those receipts and state are not imported. Follow the
-[update contract](installation.md#update) and do not delete existing data without
-the owner's authorization.
+Mirket 0.0.1 is a clean baseline. It initializes native state in a fresh
+Mirket home and does not import pre-0.0.1 receipts, databases or package data.
+Preserve any existing home unless the owner explicitly authorizes its removal.
 
 ## 2. Obtain and verify the official release
 
@@ -36,7 +34,9 @@ match. Validate that the binary URL belongs to that repository's GitHub release,
 uses HTTPS, and refers to the selected release. Never execute a downloaded file
 before verification.
 
-This guide covers 0.0.2 and upgrades from the 0.0.1 baseline. Resolve the latest stable or explicitly requested release at installation time and use its manifest throughout. See [version availability](release-status.md). The intended native release targets are:
+This guide covers 0.0.1. Resolve that exact release and use its manifest
+throughout. See [version availability](release-status.md). The intended native
+release targets are:
 
 | Device | Manifest target |
 | --- | --- |

@@ -52,6 +52,21 @@ mod tests {
         ] {
             assert!(child_event(&frame).is_err());
         }
+        assert!(child_event(&json!({"type":"item.completed","item":{"type":"context_compaction"}})).is_err());
+    }
+
+    #[test]
+    fn provider_context_or_image_refusal_is_not_treated_as_a_successful_turn() {
+        for frame in [
+            &br#"data: {"type":"response.failed","response":{"status":"failed","error":{"code":"context_length_exceeded"}}}
+
+"#[..],
+            &br#"data: {"type":"response.failed","response":{"status":"failed","error":{"code":"image_too_large"}}}
+
+"#[..],
+        ] {
+            assert!(validate_stream(frame, "selected", &mut json!({"response_sha256":null})).is_err());
+        }
     }
 
     #[test]

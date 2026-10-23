@@ -3,12 +3,12 @@
 These tests complement the owned Rust and contained runtime suites. Run with
 Python 3.11+: `python3 -m unittest discover -s evals/harness-remediation`.
 
-`test_feedback.py` executes selected unchanged function bodies from the owning
-runtime files with controlled fakes. It proves that an all-empty retriever fails
-the frozen baseline, and that late requirements and explicit recall queries are
-preserved. It does not measure embedding quality. The separate contained runtime
-suite runs actual Mem0/FastEmbed retrieval; the standard Rust suite exercises
-synthetic provider calls and actual worker file/verification behavior.
+`tests/remediation_feedback.rs` exercises the native fact-store and journal
+owners directly. It retains the late-requirement, explicit-query, empty-recall,
+multilingual retrieval, pause-budget and uncertain-effect cases from the old
+feedback suite. It does not measure embedding quality. The contained package
+gate owns helper numerical/parity checks; the standard Rust suite exercises
+native retrieval and worker recovery behavior.
 
 The original dated critique probes intentionally reproduce the old defects.
 They remain historical evidence and should not be relabeled as passing regression

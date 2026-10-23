@@ -12,6 +12,7 @@ pub const CHECKS: &[&str] = &[
     "parallel-runtime",
     "design-output",
     "backup-recovery",
+    "native-fault-injection",
 ];
 pub fn require_new(path: &Path) -> Result<()> {
     util::reject_symlink_components(path)?;

@@ -24,18 +24,18 @@ upstream license files; their exact-source supplements and provenance are kept i
 These notices accompany Mirket binaries independently of the optional packages
 below. Publish each native distribution's notice file alongside its executables.
 
-## Local memory and workflow runtime
+## Native agent runtime
 
-The optional `agent-runtime` contains Mem0 OSS 2.2.1 (Apache-2.0), LangGraph
-1.2.16 and its SQLite checkpointer 3.1.2 (MIT), FastEmbed 0.9.0 (Apache-2.0),
-spaCy 3.8.13 and en_core_web_sm 3.8.0 (MIT), local Qdrant client and their
-locked Python dependency closure. Full Mem0/LangGraph licenses are retained in
-[`runtime/agent/licenses`](../runtime/agent/licenses/) and copied into its image;
-Python distributions retain their own licenses/metadata. The immutable model
-manifests retain multilingual MiniLM and BM25 provenance (Apache-2.0). See the
-[package notice](../runtime/agent/NOTICE.md) and
-[locked binary distributions](../runtime/agent/requirements.lock). No hosted
-Mem0, LangSmith, LangGraph Agent Server or provider credentials are included.
+The optional `agent-runtime` contains Mirket's native Rust fact store and
+execution journal plus a contained `fastembed-rs 7.2.0` helper. The helper
+ships the pinned ONNX Runtime 1.31.0 native libraries and the multilingual
+MiniLM model manifest; the model is Apache-2.0. FastEmbed and ONNX Runtime
+retain their upstream licenses and notices. Exact native member hashes are in
+[`runtime/agent/native.json`](../runtime/agent/native.json), and the package
+notice is [`runtime/agent/NOTICE.md`](../runtime/agent/NOTICE.md). No Python,
+Mem0, Qdrant, LangGraph, spaCy, hosted service or provider credentials are
+included. Historical reports can retain old license references as evidence,
+but they are not current package contents.
 
 ## Runtime packages
 

@@ -60,6 +60,7 @@ pub(super) fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateRep
         "--expected-entrypoint-sha256 requires --entrypoint"
     );
     let entrypoint_request = json!({"path":options.entrypoint,
+        "reset_version_from": options.reset_version_from,
         "expected_sha256":options.expected_entrypoint_sha256.as_ref().map(|v| v.to_ascii_lowercase())});
     ensure!(
         sha256(&read_bounded(source, MAX_BINARY)?) == expected,

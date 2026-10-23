@@ -54,250 +54,6 @@ fn claude() -> SetupOptions {
     }
 }
 
-// Removal fixtures model exact receipts/configuration from installed clients.
-// They never contact the documentation endpoint or write to the real home.
-fn documentation_server(target: Target) -> serde_json::Value {
-    match target {
-        Target::Codex => serde_json::json!({"url":"https://learn.microsoft.com/api/mcp"}),
-        Target::Claude => {
-            serde_json::json!({"type":"http","url":"https://learn.microsoft.com/api/mcp"})
-        }
-    }
-}
-
-fn write_documentation_entry(fixture: &Fixture, target: Target, customized: bool) {
-    match target {
-        Target::Codex => {
-            let mut config = String::from_utf8(fixture.read(".codex/config.toml"))
-                .unwrap()
-                .parse::<toml_edit::DocumentMut>()
-                .unwrap();
-            let mut server = toml_edit::Table::new();
-            server.insert(
-                "url",
-                toml_edit::value("https://learn.microsoft.com/api/mcp"),
-            );
-            if customized {
-                server.insert("enabled", toml_edit::value(false));
-            }
-            config["mcp_servers"]["microsoft-learn"] = toml_edit::Item::Table(server);
-            fixture.write(".codex/config.toml", config.to_string());
-        }
-        Target::Claude => {
-            let mut config: serde_json::Value =
-                serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
-            config["mcpServers"]["microsoft-learn"] = documentation_server(target);
-            if customized {
-                config["mcpServers"]["microsoft-learn"]["headers"] =
-                    serde_json::json!({"x-personal":"keep-private"});
-            }
-            fixture.write(".claude.json", serde_json::to_vec_pretty(&config).unwrap());
-        }
-    }
-}
-
-fn record_documentation_ownership(fixture: &Fixture, target: Target, customized: bool) {
-    let mut receipt: serde_json::Value =
-        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
-    receipt["options"]["microsoft_learn"] = serde_json::json!(true);
-    let mut owned = documentation_server(target);
-    if customized {
-        owned["headers"] = serde_json::json!({"x-personal":"keep-private"});
-    }
-    receipt["servers"][target.to_string()]["microsoft-learn"] = owned;
-    fixture.write(
-        ".mirket/setup.json",
-        serde_json::to_vec_pretty(&receipt).unwrap(),
-    );
-}
-
-fn documentation_entry(fixture: &Fixture, target: Target) -> Option<serde_json::Value> {
-    match target {
-        Target::Codex => {
-            let config = String::from_utf8(fixture.read(".codex/config.toml"))
-                .unwrap()
-                .parse::<toml_edit::DocumentMut>()
-                .unwrap();
-            config["mcp_servers"]
-                .as_table_like()
-                .unwrap()
-                .get("microsoft-learn")
-                .map(|entry| serde_json::json!({"toml":entry.to_string()}))
-        }
-        Target::Claude => {
-            let config: serde_json::Value =
-                serde_json::from_slice(&fixture.read(".claude.json")).unwrap();
-            config["mcpServers"].get("microsoft-learn").cloned()
-        }
-    }
-}
-
-#[test]
-fn removed_documentation_setup_removes_only_exact_owned_entries_and_receipt_choice() {
-    let fixture = Fixture::new();
-    fixture.setup(&SetupOptions::default()).unwrap();
-    for target in [Target::Codex, Target::Claude] {
-        write_documentation_entry(&fixture, target, false);
-        record_documentation_ownership(&fixture, target, false);
-    }
-    fixture.write("documents/design.md", "private document stays");
-    fixture.write(
-        ".mirket/packages/data/personal/index.db",
-        "private index stays",
-    );
-    assert_eq!(
-        install::saved_options(&fixture.paths).unwrap(),
-        Some(SetupOptions::default())
-    );
-    assert!(
-        !install::doctor(&fixture.paths, &fixture.catalog)
-            .unwrap()
-            .ok
-    );
-    fixture.setup(&SetupOptions::default()).unwrap();
-    for target in [Target::Codex, Target::Claude] {
-        assert!(documentation_entry(&fixture, target).is_none());
-    }
-    let receipt: serde_json::Value =
-        serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
-    assert!(receipt["options"].get("microsoft_learn").is_none());
-    for target in ["codex", "claude"] {
-        assert!(receipt["servers"][target].get("microsoft-learn").is_none());
-    }
-    assert_eq!(
-        fixture.read("documents/design.md"),
-        b"private document stays"
-    );
-    assert_eq!(
-        fixture.read(".mirket/packages/data/personal/index.db"),
-        b"private index stays"
-    );
-    assert!(
-        install::doctor(&fixture.paths, &fixture.catalog)
-            .unwrap()
-            .ok
-    );
-    assert_eq!(fixture.setup(&SetupOptions::default()).unwrap().changed, 0);
-}
-
-#[test]
-fn removed_documentation_preserves_customized_and_unmanaged_entries() {
-    for owned in [false, true] {
-        let fixture = Fixture::new();
-        fixture.setup(&SetupOptions::default()).unwrap();
-        for target in [Target::Codex, Target::Claude] {
-            write_documentation_entry(&fixture, target, owned);
-            if owned {
-                record_documentation_ownership(&fixture, target, false);
-            }
-        }
-        let configs = [
-            fixture.read(".codex/config.toml"),
-            fixture.read(".claude.json"),
-        ];
-        fixture.setup(&SetupOptions::default()).unwrap();
-        assert_eq!(
-            configs,
-            [
-                fixture.read(".codex/config.toml"),
-                fixture.read(".claude.json")
-            ]
-        );
-        let receipt: serde_json::Value =
-            serde_json::from_slice(&fixture.read(".mirket/setup.json")).unwrap();
-        for target in ["codex", "claude"] {
-            assert!(receipt["servers"][target].get("microsoft-learn").is_none());
-        }
-        assert!(
-            install::doctor(&fixture.paths, &fixture.catalog)
-                .unwrap()
-                .ok
-        );
-    }
-}
-
-#[test]
-fn removed_documentation_does_not_delete_a_customized_receipt_contract() {
-    let fixture = Fixture::new();
-    fixture.setup(&claude()).unwrap();
-    write_documentation_entry(&fixture, Target::Claude, true);
-    record_documentation_ownership(&fixture, Target::Claude, true);
-    let original = fixture.read(".claude.json");
-    fixture.setup(&claude()).unwrap();
-    assert_eq!(original, fixture.read(".claude.json"));
-    assert!(
-        install::doctor(&fixture.paths, &fixture.catalog)
-            .unwrap()
-            .ok
-    );
-}
-
-#[test]
-fn removed_documentation_cleanup_is_preflighted_before_any_target_changes() {
-    let fixture = Fixture::new();
-    fixture.setup(&SetupOptions::default()).unwrap();
-    write_documentation_entry(&fixture, Target::Codex, false);
-    record_documentation_ownership(&fixture, Target::Codex, false);
-    fixture.write(".claude.json", "{malformed-settings");
-    let before = fixture.read(".codex/config.toml");
-    let receipt = fixture.read(".mirket/setup.json");
-    assert!(fixture.setup(&SetupOptions::default()).is_err());
-    assert_eq!(before, fixture.read(".codex/config.toml"));
-    assert_eq!(receipt, fixture.read(".mirket/setup.json"));
-    assert_eq!(fixture.read(".claude.json"), b"{malformed-settings");
-}
-
-#[test]
-fn removed_documentation_receipt_migration_remains_strict() {
-    for invalid in [
-        serde_json::json!({"targets":["codex"],"microsoft_learn":"true"}),
-        serde_json::json!({"targets":["codex"],"unexpected_option":true}),
-    ] {
-        assert!(serde_json::from_value::<SetupOptions>(invalid).is_err());
-    }
-    for removed in [false, true] {
-        let options: SetupOptions = serde_json::from_value(serde_json::json!({
-            "targets":["codex"],"microsoft_learn":removed
-        }))
-        .unwrap();
-        assert_eq!(
-            serde_json::to_value(options).unwrap(),
-            serde_json::json!({"targets":["codex"]})
-        );
-    }
-}
-
-#[test]
-fn removed_documentation_saved_choice_update_replays_without_removed_cli_flag() {
-    let fixture = Fixture::new();
-    fixture.setup(&SetupOptions::default()).unwrap();
-    for target in [Target::Codex, Target::Claude] {
-        write_documentation_entry(&fixture, target, false);
-        record_documentation_ownership(&fixture, target, false);
-    }
-    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
-        .canonicalize()
-        .unwrap();
-    let report = update::update(
-        &fixture.paths,
-        &UpdateOptions {
-            sha256: Some(sha256(&fs::read(&artifact).unwrap())),
-            from: Some(artifact),
-            ..UpdateOptions::default()
-        },
-    )
-    .unwrap();
-    assert!(report.updated && report.reconfigured);
-    for target in [Target::Codex, Target::Claude] {
-        assert!(documentation_entry(&fixture, target).is_none());
-    }
-    assert!(
-        install::doctor(&fixture.paths, &fixture.catalog)
-            .unwrap()
-            .ok
-    );
-}
-
 #[test]
 fn package_setup_rejects_conflicts_before_downloading_or_changing_state() {
     let fixture = Fixture::new();
@@ -1137,4 +893,77 @@ fn activation_plan_is_read_only_and_installed_phase_resumes_without_reinstalling
     pending["candidate_sha256"] = serde_json::json!("0".repeat(64));
     fs::write(&journal, serde_json::to_vec(&pending).unwrap()).unwrap();
     assert!(update::update(&fixture.paths, &options).is_err());
+}
+
+#[test]
+fn explicit_version_reset_preserves_data_and_guards_generation_and_owned_files() {
+    let fixture = Fixture::new();
+    fixture.write(".codex/config.toml", "model = 'personal-choice'\n");
+    fixture.setup(&codex()).unwrap();
+    fixture.write(".mirket/private-state", b"retained data");
+    let mut receipt: serde_json::Value =
+        serde_json::from_slice(&fs::read(fixture.paths.settings()).unwrap()).unwrap();
+    receipt["version"] = "9.0.0".into();
+    fs::write(
+        fixture.paths.settings(),
+        serde_json::to_vec(&receipt).unwrap(),
+    )
+    .unwrap();
+    let before_receipt = fs::read(fixture.paths.settings()).unwrap();
+    let before_binary = fs::read(fixture.paths.binary()).unwrap();
+    let artifact = Path::new(env!("CARGO_BIN_EXE_mirket"))
+        .canonicalize()
+        .unwrap();
+    let mut options = UpdateOptions {
+        from: Some(artifact.clone()),
+        sha256: Some(sha256(&fs::read(&artifact).unwrap())),
+        ..Default::default()
+    };
+    assert!(
+        update::update(&fixture.paths, &options)
+            .unwrap_err()
+            .to_string()
+            .contains("older than installed")
+    );
+    options.reset_version_from = Some("8.0.0".into());
+    assert!(
+        update::update(&fixture.paths, &options)
+            .unwrap_err()
+            .to_string()
+            .contains("source does not match")
+    );
+    assert_eq!(fs::read(fixture.paths.settings()).unwrap(), before_receipt);
+    assert_eq!(fs::read(fixture.paths.binary()).unwrap(), before_binary);
+    options.reset_version_from = Some("9.0.0".into());
+    let instructions = fixture.read(".codex/AGENTS.md");
+    fixture.write(".codex/AGENTS.md", b"personal edit");
+    assert!(update::update(&fixture.paths, &options).is_err());
+    assert_eq!(fixture.read(".codex/AGENTS.md"), b"personal edit");
+    assert_eq!(fs::read(fixture.paths.settings()).unwrap(), before_receipt);
+    fixture.write(".codex/AGENTS.md", instructions);
+    let result = update::update(&fixture.paths, &options).unwrap();
+    assert_eq!(result.current_version, "9.0.0");
+    assert_eq!(result.available_version, env!("CARGO_PKG_VERSION"));
+    assert!(result.updated);
+    assert_eq!(fixture.read(".mirket/private-state"), b"retained data");
+    assert!(
+        String::from_utf8(fixture.read(".codex/config.toml"))
+            .unwrap()
+            .contains("personal-choice")
+    );
+    assert!(
+        install::doctor(&fixture.paths, &fixture.catalog)
+            .unwrap()
+            .ok
+    );
+    // Resuming the identical candidate after its install is idempotent.
+    assert!(update::update(&fixture.paths, &options).is_ok());
+    options.from = None;
+    options.sha256 = None;
+    assert!(
+        update::update(&fixture.paths, &options)
+            .unwrap_err()
+            .to_string()
+            .contains("hash-bound local")
+    );
 }

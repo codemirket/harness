@@ -34,7 +34,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Store and retrieve explicit project memories using local Mem0.
+    /// Store and retrieve explicit project memories using native project fact storage.
     Memory {
         #[command(subcommand)]
         command: MemoryCommand,
@@ -60,6 +60,9 @@ enum Command {
     },
     /// Update Mirket and reapply your saved environment setup.
     Update {
+        /// Explicitly reset release numbering from this installed version using a pinned local artifact.
+        #[arg(long, requires = "from")]
+        reset_version_from: Option<String>,
         #[arg(long)]
         check: bool,
         /// Preview candidate validation and the service/client activation checklist.
@@ -157,6 +160,8 @@ enum MemoryCommand {
         project: PathBuf,
         #[arg(long, conflicts_with = "id")]
         query: Option<String>,
+        #[arg(long, value_enum, default_value = "hybrid")]
+        mode: crate::memory::RetrievalMode,
         #[arg(long)]
         id: Option<String>,
         #[arg(long, default_value_t = 5)]
@@ -307,6 +312,13 @@ struct SetupArgs {
     dry_run: bool,
     #[arg(long, hide = true)]
     expected_state: Option<String>,
+    #[arg(
+        long,
+        hide = true,
+        requires = "expected_state",
+        conflicts_with = "dry_run"
+    )]
+    reset_version_from: Option<String>,
     /// Select an optional local MCP package; repeat to replace the saved selection.
     #[arg(long = "package", conflicts_with = "no_packages")]
     packages: Vec<String>,
@@ -859,16 +871,6 @@ pub fn entry(installer_target: Option<&str>) {
             }
         }
     }
-    let args = match reconcile_update_replay_args(
-        args,
-        std::env::var_os("MIRKET_DIRECT").is_some_and(|value| value == "1"),
-    ) {
-        Ok(args) => args,
-        Err(error) => {
-            eprintln!("mirket: update replay refused: {error:#}");
-            std::process::exit(1);
-        }
-    };
     let cli = Cli::parse_from(args);
     let as_json = cli.json;
     match dispatch(cli) {
@@ -882,68 +884,6 @@ pub fn entry(installer_target: Option<&str>) {
             std::process::exit(1);
         }
     }
-}
-
-fn reconcile_update_replay_args(
-    args: Vec<std::ffi::OsString>,
-    direct: bool,
-) -> Result<Vec<std::ffi::OsString>> {
-    if !direct {
-        return Ok(args);
-    }
-    let mut command = 1;
-    while command < args.len() {
-        match args[command].to_str().unwrap_or("") {
-            "--home" => command += 2,
-            "--json" => command += 1,
-            value if value.starts_with("--home=") => command += 1,
-            "setup" => break,
-            _ => return Ok(args),
-        }
-    }
-    if command >= args.len() {
-        return Ok(args);
-    }
-    let mut reconciled = Vec::with_capacity(args.len());
-    let mut removed_documentation = 0usize;
-    let mut index = 0;
-    while index < args.len() {
-        let argument = args[index].to_str().unwrap_or("");
-        if argument == "--microsoft-learn" || argument == "--microsoft-learn=true" {
-            removed_documentation += 1;
-            index += 1;
-            continue;
-        }
-        reconciled.push(args[index].clone());
-        index += 1;
-    }
-    if removed_documentation == 0 {
-        return Ok(args);
-    }
-    let parsed =
-        Cli::try_parse_from(&reconciled).context("invalid saved setup replay arguments")?;
-    let Command::Setup(setup) = parsed.command else {
-        bail!("retired arguments are only accepted for authenticated setup replay");
-    };
-    if !setup.yes || setup.dry_run || setup.no_packages || removed_documentation > 1 {
-        bail!("retired arguments require unattended saved setup replay");
-    }
-    let home = parsed
-        .home
-        .context("update replay requires an explicit --home")?;
-    let paths = Paths::new(home)?;
-    let token = setup
-        .expected_state
-        .as_deref()
-        .context("update replay requires --expected-state")?;
-    let saved = install::removed_replay_choices(&paths, token)?;
-    if setup.target.map(TargetChoice::targets).as_ref() != Some(&saved.targets) {
-        bail!("update replay targets do not match the saved receipt");
-    }
-    if removed_documentation != 0 && !saved.microsoft_learn {
-        bail!("retired documentation argument does not match the saved receipt");
-    }
-    Ok(reconciled)
 }
 
 fn emit(value: &impl serde::Serialize) -> Result<()> {
@@ -1087,7 +1027,13 @@ fn setup(paths: &Paths, catalog: &Catalog, args: SetupArgs, as_json: bool) -> Re
         }
     }
     let token = args.expected_state.as_deref().unwrap_or(&snapshot.token);
-    let report = install::setup_checked(paths, catalog, &options, Some(token))?;
+    let report = install::setup_checked_with_version_reset(
+        paths,
+        catalog,
+        &options,
+        Some(token),
+        args.reset_version_from.as_deref(),
+    )?;
     if as_json {
         emit(&report)?;
     } else {
@@ -1230,6 +1176,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 MemoryCommand::Read {
                     project,
                     query,
+                    mode,
                     id,
                     limit,
                     cursor,
@@ -1239,6 +1186,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
                         crate::memory::Read {
                             project,
                             query,
+                            mode,
                             id,
                             limit,
                             cursor,
@@ -1356,6 +1304,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
         Command::Doctor { project } => {
             let report = install::doctor(&paths, &catalog()?)?;
             let tools = crate::tools::doctor(&paths)?;
+            let native_storage = crate::agent_runtime::doctor(&paths);
             let package_checks = &report.packages;
             let project_report = project
                 .as_ref()
@@ -1374,13 +1323,14 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 json!({"ok":false,"status":"not_run","reason":"fix installation integrity checks first"})
             };
             let ok = report.ok
+                && native_storage["ok"] == true
                 && protocol["ok"] == true
                 && tools["ok"] == true
                 && package_checks["ok"] == true
                 && project_report.as_ref().is_none_or(|p| p["ok"] == true);
             if cli.json {
                 emit(
-                    &json!({"ok":ok,"installation":report,"mcp":protocol,"tools":tools,"packages":package_checks,"project":project_report}),
+                    &json!({"ok":ok,"installation":report,"mcp":protocol,"tools":tools,"packages":package_checks,"project":project_report,"native_storage":native_storage}),
                 )?;
             } else {
                 println!(
@@ -1396,6 +1346,9 @@ fn dispatch(cli: Cli) -> Result<i32> {
                     );
                 } else {
                     emit(&protocol)?;
+                }
+                if native_storage["ok"] != true {
+                    emit(&native_storage)?;
                 }
                 if tools["ok"] != true {
                     emit(&tools)?;
@@ -1414,6 +1367,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
             return Ok(if ok { 0 } else { 1 });
         }
         Command::Update {
+            reset_version_from,
             check,
             plan,
             activate,
@@ -1424,6 +1378,7 @@ fn dispatch(cli: Cli) -> Result<i32> {
         } => serde_json::to_value(crate::update::update(
             &paths,
             &crate::update::UpdateOptions {
+                reset_version_from,
                 from,
                 sha256,
                 check,
@@ -1913,42 +1868,6 @@ mod tests {
     }
 
     #[test]
-    fn removed_replay_is_scoped_to_setup_and_requires_an_explicit_home() {
-        let args = [
-            "mirket",
-            "tool",
-            "run",
-            "fixture",
-            "--",
-            "setup",
-            "--microsoft-learn",
-        ]
-        .map(std::ffi::OsString::from)
-        .to_vec();
-        assert_eq!(
-            reconcile_update_replay_args(args.clone(), true).unwrap(),
-            args
-        );
-        let args = [
-            "mirket",
-            "setup",
-            "--yes",
-            "--target",
-            "all",
-            "--expected-state",
-            &"0".repeat(64),
-            "--microsoft-learn",
-        ]
-        .map(std::ffi::OsString::from)
-        .to_vec();
-        assert!(reconcile_update_replay_args(args.clone(), true).is_err());
-        assert_eq!(
-            reconcile_update_replay_args(args.clone(), false).unwrap(),
-            args
-        );
-    }
-
-    #[test]
     fn cli_definitions_are_consistent() {
         use clap::CommandFactory;
         Cli::command().debug_assert();
@@ -1974,7 +1893,7 @@ mod tests {
                 .is_err()
         );
         assert!(Cli::try_parse_from(["mirket", "package", "configure"]).is_err());
-        assert!(Cli::try_parse_from(["mirket", "setup", "--microsoft-learn"]).is_err());
+        assert!(Cli::try_parse_from(["mirket", "setup", "--retired-option"]).is_err());
     }
 
     #[test]

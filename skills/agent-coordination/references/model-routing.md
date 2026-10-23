@@ -297,8 +297,8 @@ prevents that substitution. Neither route changes credentials or host settings.
 
 ## Durable execution and recovery
 
-With `agent-runtime` selected, actual owned workers use LangGraph checkpoints and
-retrieve explicit project facts from Mem0 as untrusted context. The runtime does
+With `agent-runtime` selected, actual owned workers use Rust journal checkpoints and
+retrieve explicit project facts from native fact storage as untrusted context. The runtime does
 not grant memory writes to workers or replace host permissions. Without the
 package, runs report ephemeral execution; a selected runtime failure never
 silently falls back.
@@ -324,7 +324,7 @@ also require checks against the real application through authorized host tools.
 Routed design paths, including editable OpenPencil documents, belong to the
 reported project design workspace. Host tools retain their shared workspace.
 `memory_recall` may be `best_effort` (default), `required`, or `off`; it does not disable
-LangGraph persistence or authorize a different provider.
+Rust journal persistence or authorize a different provider.
 
 Resume checks use a compiled execution-compatibility identity for owned runtime
 code and dependencies, while retaining the full source identity for audit.

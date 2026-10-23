@@ -1,6 +1,6 @@
 ---
 name: context-management
-description: Recall and retain stable project knowledge with Mem0, resume interrupted Mirket workers through LangGraph, and manage long-running context with bounded retrieval and source-linked handoffs.
+description: Recall and retain stable project knowledge with native fact storage, resume interrupted Mirket workers through Rust journal, and manage long-running context with bounded retrieval and source-linked handoffs.
 ---
 
 # Context management
@@ -51,7 +51,7 @@ leaving contradictory instructions active. Use a task-local note location alread
 established by the project. Do not silently turn transient discoveries into global
 policy, permanent memory, or instructions for unrelated work.
 
-When `agent-runtime` is selected, make Mem0 part of recurring project work:
+When `agent-runtime` is selected, make native fact storage part of recurring project work:
 
 - Before a decision that depends on earlier preferences, constraints or rationale,
   call `memory_read` with a focused query. Reuse relevant facts already retrieved
@@ -69,7 +69,7 @@ When `agent-runtime` is selected, make Mem0 part of recurring project work:
   best effort may proceed with an explicit unavailable/coverage disclosure.
   Required recall demands a working search, not a matching fact. Use `off` only
   when prior knowledge is irrelevant or the task requires an isolated context.
-- Selected workers checkpoint through LangGraph automatically. Inspect the returned
+- Selected workers checkpoint through Rust journal automatically. Inspect the returned
   workflow and memory summaries. On interruption, observe `workflow_status` and
   resume with its checkpoint ID within the original scope. Do not respawn to reset
   time, turns or repairs. Unselected workers are ephemeral; a trace is not a
@@ -81,7 +81,7 @@ launch contained processes and initialize private storage; `runtime_status` is
 configuration/identity inspection only. A runtime error needs explicit diagnosis,
 not a fabricated empty result or hidden VM startup.
 Use `memory_forget` with the observed digest to remove active memory/history;
-existing run checkpoints and backups remain. Mem0 is not an acceptance tracker. Use `runtime_data` to export complete paginated
+existing run checkpoints and backups remain. native fact storage is not an acceptance tracker. Use `runtime_data` to export complete paginated
 facts/latest snapshots or preview a retention policy. Apply only the reviewed
 batch with `runtime_data_apply`; unresolved workflows and evidence traces remain.
 An export is a logical record, not a restorable database backup. For authorized

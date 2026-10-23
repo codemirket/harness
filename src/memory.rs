@@ -1,4 +1,5 @@
 //! Typed host memory API. Project registration is enforced by the MCP caller.
+pub mod store;
 use crate::{agent_runtime, paths::Paths};
 use anyhow::{Result, ensure};
 use rmcp::schemars::{self, JsonSchema};
@@ -11,10 +12,20 @@ use std::path::PathBuf;
 pub struct Read {
     pub project: PathBuf,
     pub query: Option<String>,
+    /// Explicit lexical mode avoids model initialization; default is hybrid.
+    #[serde(default)]
+    pub mode: RetrievalMode,
     pub id: Option<String>,
     pub cursor: Option<String>,
     #[serde(default = "default_limit")]
     pub limit: usize,
+}
+#[derive(Clone, Default, Deserialize, Serialize, JsonSchema, clap::ValueEnum)]
+#[serde(rename_all = "snake_case")]
+pub enum RetrievalMode {
+    #[default]
+    Hybrid,
+    Lexical,
 }
 fn default_limit() -> usize {
     5

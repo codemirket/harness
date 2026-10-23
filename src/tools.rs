@@ -175,8 +175,7 @@ fn localized_podman(
 }
 
 /// Import the exact registered native Podman client and helpers into Mirket's
-/// owned dependency tree. A resumed call finishes an interrupted config-first
-/// migration without changing the selected client bytes.
+/// owned dependency tree.
 pub fn localize_podman(paths: &Paths) -> Result<Value> {
     let _lock = lock(paths)?;
     let mut tools = load(paths)?;
@@ -194,15 +193,8 @@ pub fn localize_podman(paths: &Paths) -> Result<Value> {
     let previous = if config.try_exists()? {
         let saved = crate::util::read_bounded(&config, 4096)?;
         let exact = crate::podman::helper_config(&old.executable)?;
-        let original_dir = old.executable.parent().context("Podman source directory")?;
-        let prior = format!(
-            "[engine]\nhelper_binaries_dir = [{}]\n",
-            serde_json::to_string(&original_dir.to_string_lossy())?
-        );
         ensure!(
-            saved == exact.as_bytes()
-                || saved == prior.as_bytes()
-                || saved == new_config.as_bytes(),
+            saved == exact.as_bytes() || saved == new_config.as_bytes(),
             "Mirket Podman helper configuration has drifted; no registry change"
         );
         Some(saved)

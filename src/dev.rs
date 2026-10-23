@@ -49,12 +49,21 @@ fn checkout(project: &Path) -> Result<PathBuf> {
 
 fn cargo(project: &Path, args: &[&str]) -> Result<()> {
     eprintln!("mirket dev: cargo {}", args.join(" "));
-    if !Command::new(cargo_program())
-        .args(args)
-        .current_dir(project)
-        .status()?
-        .success()
-    {
+    let mut command = Command::new(cargo_program());
+    command.args(args).current_dir(project);
+    // The contained helper has its own small lockfile; keep compiler output
+    // outside fingerprinted runtime source, as for the primary CLI.
+    if project.ends_with("runtime/agent/native") {
+        command.env(
+            "CARGO_TARGET_DIR",
+            project
+                .ancestors()
+                .nth(3)
+                .context("helper checkout")?
+                .join("target/embedding-standalone"),
+        );
+    }
+    if !command.status()?.success() {
         bail!("cargo {} failed", args.join(" "));
     }
     Ok(())
@@ -69,12 +78,16 @@ pub fn check(project: &Path) -> Result<Value> {
             "clippy",
             "--locked",
             "--all-targets",
+            "--all-features",
             "--",
             "-D",
             "warnings",
         ],
     )?;
-    cargo(&project, &["test", "--locked", "--all-targets"])?;
+    cargo(
+        &project,
+        &["test", "--locked", "--all-targets", "--all-features"],
+    )?;
     Ok(json!({"ok":true,"checks":["format","clippy","tests"],"source":project}))
 }
 
@@ -103,19 +116,19 @@ pub fn acceptance(project: &Path, engine_home: &Path, output: Option<&Path>) -> 
     }
     let paths = crate::paths::Paths::new(engine_home.to_path_buf())?;
     let runtime = crate::packages::agent::test(&paths)?;
-    for target in ["desktop_acceptance", "backup_runtime"] {
+    for (target, ignored) in [
+        ("desktop_acceptance", true),
+        ("backup_runtime", false),
+        ("native_faults", false),
+    ] {
         eprintln!("mirket acceptance: {target}");
-        let status = Command::new(cargo_program())
-            .args([
-                "test",
-                "--locked",
-                "--test",
-                target,
-                "--",
-                "--ignored",
-                "--test-threads=1",
-                "--nocapture",
-            ])
+        let mut command = Command::new(cargo_program());
+        command.args(["test", "--locked", "--test", target, "--"]);
+        if ignored {
+            command.arg("--ignored");
+        }
+        let status = command
+            .args(["--test-threads=1", "--nocapture"])
             .env("MIRKET_TEST_ENGINE_HOME", &paths.home)
             .env("MIRKET_TEST_BINARY", std::env::current_exe()?)
             .current_dir(&project)
@@ -208,10 +221,15 @@ pub fn build(project: &Path, release: bool, binary: Option<&str>) -> Result<Valu
     let project = checkout(project)?;
     let mut args = vec!["build", "--locked"];
     if let Some(binary) = binary {
-        if !BINARIES.contains(&binary) {
-            bail!("choose a Mirket binary: mirket, install-codex, install-claude, install-all");
+        if !BINARIES.contains(&binary) && binary != "mirket-embed" {
+            bail!(
+                "choose a Mirket binary: mirket, mirket-embed, install-codex, install-claude, install-all"
+            );
         }
         args.extend(["--bin", binary]);
+        if binary == "mirket-embed" {
+            args.extend(["--features", "embedding-helper"]);
+        }
     } else {
         args.push("--bins");
     }

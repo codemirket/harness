@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "baseline": "0293dce",
+  "main_mcp_tools": [
+    "capability_plan",
+    "catalog_search",
+    "catalog_show",
+    "memory_forget",
+    "memory_put",
+    "memory_read",
+    "model_registry",
+    "project_list",
+    "resume_subagent",
+    "route_task",
+    "runtime_data",
+    "runtime_data_apply",
+    "runtime_status",
+    "skill_read",
+    "spawn_subagent",
+    "task_checkpoint",
+    "task_evidence",
+    "task_finish",
+    "task_history",
+    "task_start",
+    "task_status",
+    "task_validate",
+    "team_facets",
+    "team_plan",
+    "verification_handoff",
+    "workflow_forget",
+    "workflow_status"
+  ],
+  "versions": {
+    "facts": 1,
+    "execution": 1,
+    "migration": 1,
+    "embedding_identity": 1
+  },
+  "fact": {
+    "memory": "Tercih: Türkçe yanıt ver.",
+    "metadata": {
+      "kind": "preference",
+      "provenance": "synthetic acceptance fixture",
+      "expires_at": null,
+      "assurance": "host_supplied_fact"
+    }
+  },
+  "fact_sha256": "42db67132fd16624731c8501b2e2373dd39ccf4a7bf34534956893644742f551",
+  "release": "0.0.1",
+  "scope": "Clean baseline public boundary and fact digest; no prior runtime/checkpoint compatibility"
+}

@@ -65,10 +65,10 @@ function svgBytes(source) {
   // exactly that header without resolving it; reject every other DTD or entity.
   source = source.replace(/^(\uFEFF?\s*(?:<\?xml\b[^>]*\?>\s*)?)<!DOCTYPE\s+svg\s+PUBLIC\s+"-\/\/W3C\/\/DTD SVG 1\.1\/\/EN"\s+"http:\/\/www\.w3\.org\/Graphics\/SVG\/1\.1\/DTD\/svg11\.dtd"\s*>/, '$1');
   if (/<!\s*(?:DOCTYPE|ENTITY)/i.test(source)) throw Error('SVG DTD and entity declarations are refused');
-  const safeResource = value => /^#[^\s]+$/.test(value) || /^data:(?:font\/(?:woff2?|ttf|otf)|image\/(?:png|jpeg|gif|webp|avif));base64,[a-zA-Z0-9+/=]+$/.test(value);
+  const safeResource = value => /^#[^\s]+$/.test(value) || /^data:(?:application\/font-woff|font\/(?:woff2?|ttf|otf)|image\/(?:png|jpeg|gif|webp|avif));base64,[a-zA-Z0-9+/=]+$/.test(value);
   const inspectCss = (value, context = 'stylesheet') => {
     if (/\\/.test(value)) throw Error('SVG external or escaped CSS resources are refused');
-    const ast = parseCss(value, {context, onParseError(error) { throw error; }});
+    const ast = parseCss(value, {context, parseCustomProperty: true, onParseError(error) { throw error; }});
     walkCss(ast, node => {
       if (node.type === 'Raw' || (node.type === 'Atrule' && node.name.toLowerCase() === 'import')) throw Error('SVG external or unparsed CSS resources are refused');
       if (node.type === 'Url' && !safeResource(node.value.trim())) throw Error('SVG external style resource is refused');
@@ -281,6 +281,27 @@ export async function krokiRender(args) {
   return {artifact, qa, service: 'kroki', svg_optimized: format === 'svg'};
 }
 
+export async function d2Render(args) {
+  await assertOutputReady(args);
+  if (!args.source?.endsWith('.d2')) throw Error('D2 input must be a .d2 file');
+  const format = args.format || (args.output?.endsWith('.png') ? 'png' : 'svg');
+  if (!['svg', 'png'].includes(format) || !args.output?.endsWith(`.${format}`)) throw Error('D2 format and output extension must match');
+  const source = await readFile(args.source, 256 * 1024);
+  const stage = await temporaryDirectory('d2');
+  try {
+    const input = path.join(stage, 'diagram.d2');
+    const generated = path.join(stage, `diagram.${format}`);
+    await fs.writeFile(input, source, {mode: 0o600});
+    await run('/usr/local/bin/d2', [input, generated, '--layout=tala'], {timeoutMs: 90000, maxStdout: 64 * 1024});
+    let bytes = await regularOutput(generated, 64 * 1024 * 1024);
+    if (format === 'svg') bytes = svgBytes(bytes.toString('utf8'));
+    else pngDimensions(bytes);
+    const artifact = await publish(args.output, bytes, outputOptions(args));
+    const qa = await inspectSaved(args.output, args.baseline);
+    return {artifact, qa, engine: 'd2', version: '0.9.0', layout: 'tala', license: 'MPL-2.0'};
+  } finally { await fs.rm(stage, {recursive: true, force: true}); }
+}
+
 export async function odiffCompare(args) {
   // Decode only stable, bounded PNG screenshots; input paths can change while a CLI runs.
   const leftBytes = await readFile(args.baseline), rightBytes = await readFile(args.candidate);
@@ -379,7 +400,13 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
   browserTmp = await fs.mkdtemp('/tmp/mk-browser-');
   return await withBrowserCaptureSession(async (_, options) => {
     ownedServer = await chromium.launchServer({...options, host: '127.0.0.1', port: 0});
-    return chromium.connect(ownedServer.wsEndpoint(), {timeout: 15000});
+    const browser = await chromium.connect(ownedServer.wsEndpoint(), {timeout: 15000});
+    const expected = process.env.MIRKET_PLAYWRIGHT_CHROMIUM_VERSION;
+    if (expected && browser.version() !== expected) {
+      await browser.close().catch(() => {});
+      throw Error(`Playwright Chromium mismatch: expected ${expected}, got ${browser.version()}`);
+    }
+    return browser;
   }, null, {
     executablePath: path.join(toolRoot, 'chromium-launcher'), headless: true,
     args: ['--no-sandbox', '--disable-dev-shm-usage', `--unsafely-treat-insecure-origin-as-secure=${new URL(url).origin}`],
@@ -425,6 +452,16 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
         }, animation_time_ms);
       }
 
+      // axe-core is loaded from the pinned package into the isolated page. It
+      // inspects the post-interaction DOM without changing persisted source
+      // or injecting styles. Keep violation/incomplete evidence for human review.
+      const {default: axe} = await import('axe-core');
+      await page.addScriptTag({content: axe.source});
+      const accessibility = await page.evaluate(async () => {
+        const result = await window.axe.run(document, {resultTypes: ['violations', 'incomplete', 'passes']});
+        const compact = items => items.map(item => ({id: item.id, impact: item.impact, help: item.help, helpUrl: item.helpUrl, nodes: item.nodes.slice(0, 16).map(node => ({target: node.target, html: node.html.slice(0, 512), failureSummary: node.failureSummary || null}))}));
+        return {engine: 'axe-core', version: window.axe.version, violations: compact(result.violations), incomplete: compact(result.incomplete), passes: result.passes.map(item => ({id: item.id, impact: item.impact, nodes: item.nodes.length}))};
+      });
       if (!Array.isArray(inspect_selectors) || inspect_selectors.length > 16 || inspect_selectors.some(item => typeof item !== 'string' || item.length > 256)) throw Error('Inspect selectors are invalid');
       const evidence = await page.evaluate(selectors => ({
         title: document.title.slice(0, 256),
@@ -438,6 +475,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
         selectors: Object.fromEntries(selectors.map(selector => { const element = document.querySelector(selector); if (!element) return [selector, null]; const box = element.getBoundingClientRect(); const style = getComputedStyle(element); return [selector, {opacity: style.opacity, transform: style.transform, expanded: element.getAttribute('aria-expanded'), hidden: element.hidden, ... {text: (element.innerText || '').slice(0, 1024), visible: box.width > 0 && box.height > 0, x: box.x, y: box.y, width: box.width, height: box.height}}]; })),
       }), inspect_selectors);
       evidence.actions = actions;
+      evidence.accessibility = accessibility;
       evidence.animation_time_ms = animation_time_ms ?? null;
       evidence.reduced_motion = reduced_motion;
       if (evidence.viewport.width !== width || evidence.viewport.height !== height || evidence.viewport.device_scale_factor !== 2) throw Error('Playwright page metrics do not match the requested viewport and 2x device scale');
@@ -506,7 +544,15 @@ export async function browserScreenshot(args) {
   const shot = await browserCapture(url, args);
   const artifact = await publish(args.output, shot.bytes, outputOptions(args));
   const diff = args.baseline ? await odiffCompare({baseline: args.baseline, candidate: args.output}) : null;
-  return {artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: diff ? {status: diff.match ? 'match' : 'changed_pixels', odiff: diff} : {status: 'captured', requires_visual_inspection: true}};
+  const accessibility = accessibilityQa(shot.evidence.accessibility);
+  const status = accessibility.status === 'failed' ? 'failed' : diff ? (diff.match ? 'match' : 'changed_pixels') : 'captured';
+  return {artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: {status, ...(diff ? {odiff:diff} : {requires_visual_inspection:true}), accessibility}};
+}
+export function accessibilityQa(result) {
+  if (!result || result.engine !== 'axe-core') return {status: 'unverified', reason: 'axe-core evidence missing'};
+  const violations = Array.isArray(result.violations) ? result.violations : [];
+  const incomplete = Array.isArray(result.incomplete) ? result.incomplete : [];
+  return {status: violations.length ? 'failed' : 'passed', violations: violations.length, incomplete: incomplete.length, requires_human_review: incomplete.length > 0};
 }
 export async function browserInspect(source, {baseline} = {}) {
   await workspacePath(source);
@@ -523,7 +569,8 @@ export async function browserInspect(source, {baseline} = {}) {
   await fs.mkdir(path.join(workspace, '.mirket-design/qa'), {recursive: true});
   const artifact = await publish(output, shot.bytes);
   const diff = baseline ? await odiffCompare({baseline, candidate: output}) : null;
-  return {status: diff ? diff.match ? 'match' : 'changed_pixels' : 'captured', screenshot: artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, odiff: diff};
+  const accessibility = /\.html?$/i.test(source) ? accessibilityQa(shot.evidence.accessibility) : {status:'not_applicable',reason:'native artwork is not an HTML accessibility fixture'};
+  return {status: accessibility.status === 'failed' ? 'failed' : diff ? diff.match ? 'match' : 'changed_pixels' : 'captured', screenshot: artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, accessibility, odiff: diff};
 }
 async function inspectSaved(source, baseline) {
   try { return await browserInspect(source, {baseline}); }
@@ -634,7 +681,8 @@ export async function typstCompile(args) {
     await fs.copyFile(await workspacePath(tokens.outputs['tokens.typ']), path.join(stage, tokenImport.slice(1)));
     await fs.writeFile(stageSource, `#import "${tokenImport}": tokens\n${typstSource}`);
     const pdf = path.join(stage, 'document.pdf');
-    await run('/usr/local/bin/typst', ['compile', '--root', stage, stageSource, pdf], {timeoutMs: 90000});
+    const pdfFlags = args.pdf_standard ? ['--pdf-standard', args.pdf_standard] : [];
+    await run('/usr/local/bin/typst', ['compile', '--root', stage, ...pdfFlags, stageSource, pdf], {timeoutMs: 90000});
     const bytes = await regularOutput(pdf);
     if (!bytes.subarray(0, 5).equals(Buffer.from('%PDF-'))) throw Error('Typst did not produce a PDF');
     const artifact = await publish(args.output, bytes, outputOptions(args));
@@ -652,6 +700,6 @@ export async function typstCompile(args) {
       checks.push(await inspectSaved(page.path, index === 0 ? args.baseline : undefined));
     }
     const qa = {status: checks.some(item => item.status === 'failed') ? 'failed' : checks.some(item => item.status === 'changed_pixels') ? 'changed_pixels' : 'captured', pages: checks};
-    return {tokens, artifact, pages, qa, engine: 'typst'};
+    return {tokens, artifact, pages, qa, engine: 'typst', pdf_standard: args.pdf_standard || null, accessibility: args.pdf_standard === 'ua-1' ? {requested: true, status: 'requires_semantic_fixture', checks: ['document language', 'heading structure', 'alternative text', 'reading order']} : {requested: false}};
   } finally { await fs.rm(stage, {recursive: true, force: true}); }
 }

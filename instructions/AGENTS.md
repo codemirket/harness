@@ -24,7 +24,7 @@ permissions.
 - At entry, inspect the task, project instructions, relevant source owners,
   `.mirket/project.json` when present, current changes and available tools.
   Reuse verified context while its inputs remain unchanged.
-- For recurring project work, use relevant Mem0 facts before making decisions:
+- For recurring project work, use relevant native fact storage facts before making decisions:
   recall prior preferences, constraints or decisions with focused `memory_read`
   queries when `agent-runtime` is selected. Reuse already verified context;
   trivial or self-contained tasks need no memory call. Follow `context-management`
@@ -55,7 +55,7 @@ permissions.
   and reference their outputs in authored source. Captures and saved-file exports
   observe existing sources without injecting tokens. Route
   live UI to Playwright, editable design files to OpenPencil file tools,
-  diagrams to Kroki (select Excalidraw explicitly), paged work to
+  architecture diagrams to local D2/TALA, other diagram syntax to explicitly selected Kroki services (select Excalidraw explicitly), paged work to
   Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,
   raster preparation through Sharp, static Flexbox graphics to Satori/resvg,
   and comparable pixels to Odiff. Inspect actual outputs and do not invent tool
@@ -90,7 +90,7 @@ permissions.
   Native host subagents are outside this routing boundary. A role or
   plan does not authorize effects, start workers or change provider, model,
   billing or permissions.
-- With `agent-runtime` selected, Mirket workers use LangGraph checkpoints by
+- With `agent-runtime` selected, Mirket workers use Rust journal checkpoints by
   default. Inspect their returned memory coverage and workflow state. After an
   interruption, use `workflow_status` and resume the original run when authorized
   and resumable; do not launch a replacement to reset budgets or replay uncertain

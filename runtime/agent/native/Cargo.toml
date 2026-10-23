@@ -1,0 +1,24 @@
+[package]
+name = "mirket"
+version = "0.0.1"
+edition = "2024"
+rust-version = "1.99"
+license = "MIT"
+description = "Mirket contained offline embedding helper"
+
+[dependencies]
+anyhow = "1.0"
+fastembed = { version = "=7.2.0", default-features = false, features = ["ort-load-dynamic"] }
+ort = { version = "=2.0.0-rc.15", default-features = false, features = ["std", "load-dynamic", "api-24"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+
+[[bin]]
+name = "mirket-embed"
+path = "../embed.rs"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

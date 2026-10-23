@@ -69,8 +69,9 @@ records now accept optional input/output tokens and human interventions; missing
 values remain unknown in aggregation. No automatic paid campaign is launched by
 validation.
 
-`experiments/retrieval-ablation.py` runs four offline retrieval arms on synthetic
-facts, including negation, multilingual queries, stale facts and unanswerables.
-Run the ignored `runtime_experiments` target through `mirket dev test` with an
-explicit prepared engine home. The no-NLP arm is controlled instrumentation, not
-a supported production dependency-removal configuration or migration proof.
+`experiments/retrieval-ablation.py` is a dated Python prototype that runs four
+offline retrieval arms on synthetic facts. It is retained as historical
+evidence and is not part of the required 0.0.1 gate. The required native
+multilingual corpus is exercised by `tests/runtime_experiments.rs` through
+`mirket dev test --project . --test runtime_experiments`; it uses the Rust fact
+store directly and does not launch a Python runtime.

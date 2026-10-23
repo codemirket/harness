@@ -1,6 +1,6 @@
 # Workflows and MCP
 
-> **Version scope:** Mirket 0.0.2; upgrades preserve the 0.0.1 baseline. Confirm published artifacts in the [release guide](release-status.md).
+> **Version scope:** Mirket 0.0.1 clean baseline. Confirm published artifacts in the [release guide](release-status.md).
 
 Mirket supplies focused expertise and consistent task state. The host chooses
 and executes actual tools under its permissions. All operations are available

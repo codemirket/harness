@@ -60,7 +60,7 @@ test('retired video and unselected Excalidraw fail explicitly without changing s
   try {
     await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace,MIRKET_DESIGN_GROUPS:'core,diagrams'},stderr:'pipe'}));
     const listed=await client.listTools();
-    assert.equal(listed.tools.length,13);
+    assert.equal(listed.tools.length,14);
     assert.ok(!listed.tools.some(t=>t.name==='hyperframes_render'));
     for (const name of ['constructor', '__proto__', 'toString', 'execute_code']) {
       const unknown=await client.callTool({name,arguments:{output:'absent.svg'}});

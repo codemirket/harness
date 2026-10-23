@@ -104,4 +104,4 @@ class ImageTests(unittest.TestCase):
         incomplete = evaluate(report, "pinned")
         self.assertFalse(incomplete["inventory_complete"])
         self.assertEqual(len(incomplete["findings"]), 1)
-        self.assertEqual(len(inventory(ROOT)), 4)
+        self.assertEqual(len(inventory(ROOT)), 3)

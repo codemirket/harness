@@ -1,0 +1,35 @@
+{
+  "version": "1.31.0",
+  "license": "MIT",
+  "source": "https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0",
+  "url": "https://files.pythonhosted.org/packages/8a/d0/3677fe93ec0fa3c637744aa4c3ae6ef89a93ee229cd3c5157820f267c7bd/onnxruntime-1.31.0-cp313-cp313-manylinux_2_28_aarch64.whl",
+  "bytes": 21420629,
+  "sha256": "ad663106f6eeff3d454f24a786450459d07f30e74863851104fc1b8b3f368127",
+  "files": {
+    "libonnxruntime.so": {
+      "member": "onnxruntime/capi/libonnxruntime.so.1.31.0",
+      "bytes": 25265040,
+      "sha256": "b79d2fcf36b8870f4b2da95784a6ad846c47f05511ffa7be409c79a44f9dc9a4"
+    },
+    "libonnxruntime_providers_shared.so": {
+      "member": "onnxruntime/capi/libonnxruntime_providers_shared.so",
+      "bytes": 198792,
+      "sha256": "3b6be288fbfb7dff8770d08a23defdde18e8f7e0f5a2b344a0e5e238c999ea88"
+    },
+    "LICENSE": {
+      "member": "onnxruntime/LICENSE",
+      "bytes": 1073,
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    "Privacy.md": {
+      "member": "onnxruntime/Privacy.md",
+      "bytes": 6571,
+      "sha256": "ea592b16d154ff2de759ba5210350c64593c378c1bbd0a2aa4ddef777edbf358"
+    },
+    "ThirdPartyNotices.txt": {
+      "member": "onnxruntime/ThirdPartyNotices.txt",
+      "bytes": 338088,
+      "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3"
+    }
+  }
+}

@@ -832,8 +832,8 @@ impl Catalog {
         Ok(
             json!({"primary":primary.id,"contracts":contracts,"read_sequence":reads,
             "worker_workflows":self.workflow_choices(None),
-            "role_workflows":self.workflow_choices(Some(&primary.id)).into_iter().map(|row|
-                json!({"id":row["id"],"explicit_role_can_replace_default":row["explicit_role_can_replace_default"]})
+            "role_workflows":self.workflows().iter().map(|workflow|
+                json!({"id":workflow.id,"explicit_role_can_replace_default":true})
             ).collect::<Vec<_>>(),
             "worker_request_defaults":{"primary_role":primary.id,"assigned_tools":[]},
             "worker_routing":"Declare bounded task_needs with workflow IDs and concrete reasons. The owned router loads the selected role and task-specialist skills, selects scoped default tools when assigned_tools is empty, and rejects tools outside those needs. A role never grants permissions or expands a workflow's tools.",

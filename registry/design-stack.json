@@ -74,6 +74,27 @@
       "source": "https://github.com/microsoft/playwright"
     },
     {
+      "id": "axe-core",
+      "name": "axe-core accessibility engine",
+      "execution": "tools-container",
+      "version": "4.14.0",
+      "license": "MPL-2.0",
+      "source": "https://github.com/dequelabs/axe-core"
+    },
+    {
+      "id": "d2",
+      "name": "D2 architecture diagrams with TALA",
+      "execution": "tools-container",
+      "version": "0.9.0",
+      "license": "MPL-2.0",
+      "source": "https://github.com/terrastruct/d2",
+      "layout": "tala",
+      "sha256": {
+        "linux-amd64": "5669ddc46b99e942cc96078f4a4e36d5e62103348f4c05179ede27802fdd87a9",
+        "linux-arm64": "ac2c028697199479acb321db1e3d68caee9f2ba492ed73caa3cd13f3829bf913"
+      }
+    },
+    {
       "id": "sharp",
       "name": "Sharp raster processing",
       "execution": "tools-container",
@@ -92,5 +113,10 @@
       "source": "runtime/design/tools",
       "base": "node-build"
     }
+  },
+  "browser": {
+    "playwright": "1.64.1",
+    "chromium_revision": "1248",
+    "chromium_version": "156.0.8078.4"
   }
 }

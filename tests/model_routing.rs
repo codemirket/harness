@@ -444,6 +444,9 @@ fn spawn_requires_post_write_verification_and_sends_high_effort() {
     let prompt: Value = serde_json::from_str(
         posts[0]["messages"][0]["content"][0]["text"]
             .as_str()
+            .unwrap()
+            .lines()
+            .next()
             .unwrap(),
     )
     .unwrap();
@@ -562,7 +565,9 @@ fn inspected_pixels_survive_intervening_read_only_turns() {
         "Inspect the image and record its color.",
     )
     .unwrap();
-    let selected = "frontier-vision";
+    // The adapter's image-token estimate is model-contract specific; use a
+    // documented OpenAI vision model for this integration path.
+    let selected = "gpt-4o";
     let mut visual_model = model(selected, "frontier model");
     visual_model["supports_vision"] = json!(true);
     let server = MockTarget::new(

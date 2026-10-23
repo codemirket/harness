@@ -114,18 +114,11 @@ impl Engine {
         let conf = helper_config(&binary)?;
         let config = root.join("containers.conf");
         if config.exists() {
-            let prior = format!(
-                "[engine]\nhelper_binaries_dir = [{}]\n",
-                serde_json::to_string(&helper.to_string_lossy())?
-            );
             let saved = util::read_bounded(&config, 4096)?;
             ensure!(
-                saved == conf.as_bytes() || saved == prior.as_bytes(),
+                saved == conf.as_bytes(),
                 "Mirket Podman helper configuration has drifted"
             );
-            if saved != conf.as_bytes() {
-                util::atomic_write(&config, conf.as_bytes())?;
-            }
         } else {
             util::atomic_write(&config, conf.as_bytes())?;
         }
@@ -1007,7 +1000,7 @@ mod tests {
 
     #[cfg(unix)]
     #[test]
-    fn selected_installation_helpers_migrate_only_the_exact_legacy_config() {
+    fn selected_installation_helpers_require_explicit_repair_for_config_changes() {
         use std::os::unix::fs::{PermissionsExt, symlink};
         let temporary = tempfile::tempdir_in(std::env::temp_dir().canonicalize().unwrap()).unwrap();
         let paths = Paths::new(temporary.path().to_owned()).unwrap();
@@ -1049,7 +1042,14 @@ mod tests {
             std::fs::write(&helper, b"fixture, never executed").unwrap();
             std::fs::set_permissions(helper, std::fs::Permissions::from_mode(0o700)).unwrap();
         }
-        Engine::resolve(&paths).unwrap();
+        let previous = std::fs::read(&config).unwrap();
+        assert!(
+            Engine::resolve(&paths)
+                .unwrap_err()
+                .to_string()
+                .contains("has drifted")
+        );
+        repair_helpers(&paths, &util::sha256(&previous)).unwrap();
         assert_eq!(
             helper_directories(&binary).unwrap(),
             [bin.clone(), libexec.clone()]
@@ -1061,6 +1061,12 @@ mod tests {
         assert_eq!(std::fs::read_to_string(&config).unwrap(), expected);
         let relocated = "[engine]\nhelper_binaries_dir = [\"/previous/installation/bin\"]\n";
         std::fs::write(&config, relocated).unwrap();
+        assert!(
+            Engine::resolve(&paths)
+                .unwrap_err()
+                .to_string()
+                .contains("has drifted")
+        );
         assert!(repair_helpers(&paths, &"0".repeat(64)).is_err());
         assert_eq!(std::fs::read_to_string(&config).unwrap(), relocated);
         let repaired = repair_helpers(&paths, &util::sha256(relocated.as_bytes())).unwrap();
