@@ -38,11 +38,10 @@ const definitions = [
   {name: 'tokens_compile', description: 'Compile one canonical DTCG token JSON into CSS, JavaScript, TypeScript, Typst and DTCG outputs with Style Dictionary.', inputSchema: schema([], {source: file})},
   {name: 'static_render', description: 'Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection.', inputSchema: schema(['tree', 'fonts', 'width', 'height', 'output'], {...common, tree: {type: 'object'}, fonts: {type: 'array', items: schema(['path'], {path: file, name: {type: 'string'}, weight: {type: 'integer'}, style: {type: 'string'}})}, width: {type: 'integer'}, height: {type: 'integer'}, format: {type: 'string', enum: ['png', 'svg']}, output})},
   {name: 'browser_screenshot', description: 'Observe the authored page without injecting styles or compiling tokens. Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison.', inputSchema: schema(['output'], {...observed, source: file, url: {type: 'string'}, width: {type: 'integer'}, height: {type: 'integer'}, wait_for: {type: 'string'}, inspect_selectors: {type: 'array', maxItems: 16, items: {type: 'string', maxLength: 256}}, actions: {type:'array',maxItems:8,items:schema(['kind','selector'],{kind:{type:'string',enum:['click','hover','focus','press']},selector:{type:'string',minLength:1,maxLength:256},key:{type:'string',enum:['Enter','Space','Tab','Escape','ArrowLeft','ArrowRight','ArrowUp','ArrowDown']}})}, animation_time_ms:{type:'integer',minimum:0,maximum:60000,description:'Seek CSS/WAAPI animations; authored JS timelines may implement window.__mirketSeek(milliseconds).'}, reduced_motion:{type:'string',enum:['reduce','no-preference']}, full_page: {type: 'boolean'}, output})},
-  {name: 'kroki_render', description: 'POST a diagram to Kroki and inspect its optimized SVG or PNG output. D2 architecture diagrams use the pinned local D2/TALA producer through d2_render.', inputSchema: schema(['source', 'diagram_type', 'output'], {...common, source: file, diagram_type: {type: 'string', enum: ['plantuml', 'c4plantuml', 'vegalite', 'excalidraw', 'd2', 'graphviz']}, format: {type: 'string', enum: ['svg', 'png']}, output})},
   {name: 'd2_render', description: 'Render a local D2 architecture diagram with the pinned D2 0.9.0/TALA producer. No network service is started; output is published atomically after bounded local compilation.', inputSchema: schema(['source','output'], {...common, source: file, output: {...output, pattern:'\\.(svg|png)$'}, format: {type:'string',enum:['svg','png']}})},
   {name: 'typst_compile', description: 'Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection. Set pdf_standard to ua-1 when PDF/UA-1 output is required.', inputSchema: schema(['source', 'output'], {...common, source: file, output, pdf_standard: {type:'string', enum:['pdf-1.7','pdf-a-2u','pdf-a-3u','ua-1']}})},
   {name: 'raster_transform', description: 'Preprocess a workspace raster through an isolated, bounded Sharp worker.', inputSchema: schema(['source', 'width', 'height', 'output'], {...common, source: file, width: {type: 'integer'}, height: {type: 'integer'}, mode: {type: 'string', enum: ['fit', 'fill', 'force']}, gravity: {type: 'string', enum: ['sm', 'ce', 'no', 'ea', 'so', 'we']}, quality: {type: 'integer', minimum: 1, maximum: 100}, enlarge: {type:'boolean',default:false}, format: {type: 'string', enum: ['png', 'jpeg', 'webp', 'avif']}, output})},
-  {name: 'vector_render', description: 'Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput, width: {type: 'integer', minimum:16, maximum:4096}, height:{type:'integer',minimum:16,maximum:4096}, fonts:{type:'array',maxItems:8,items:file}})},
+  {name: 'vector_render', description: 'Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Use D2/TALA for semantic architecture diagrams.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput, width: {type: 'integer', minimum:16, maximum:4096}, height:{type:'integer',minimum:16,maximum:4096}, fonts:{type:'array',maxItems:8,items:file}})},
   {name: 'svg_optimize', description: 'Optimize a generated or imported SVG with SVGO before publication.', inputSchema: schema(['source', 'output'], {...common, source: file, output: svgOutput})},
   {name: 'odiff_compare', description: 'Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ. Differences are reportable results unless expect_match is true.', inputSchema: schema(['baseline', 'candidate'], {baseline: file, candidate: file, expect_match:{type:'boolean',default:false,description:'Require equal pixels; a mismatch fails this explicit equality gate.'}, output, overwrite, expected_sha256: common.expected_sha256})},
 ];
@@ -58,7 +57,6 @@ const handlers = {
   tokens_compile: args => compileTokens(args.source),
   static_render: operation('staticRender'),
   browser_screenshot: operation('browserScreenshot'),
-  kroki_render: operation('krokiRender'),
   d2_render: operation('d2Render'),
   typst_compile: operation('typstCompile'),
   raster_transform: operation('rasterTransform'),
@@ -81,7 +79,6 @@ async function exclusive(fn, signal) {
 }
 
 let closing = false;
-const groups = new Set((process.env.MIRKET_DESIGN_GROUPS || 'core').split(','));
 const server = new Server({name: 'mirket-design-tools', version: `1.0.0+${runtimeIdentity.sha256.slice(0,12)}`}, {capabilities: {tools: {listChanged: false}}});
 function shutdown() {
   if (closing) return;
@@ -108,7 +105,7 @@ for (const event of ['end', 'close']) process.stdin.once(event, () => { void shu
 for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void shutdown(); });
 server.onclose = () => { void shutdown(); };
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {tools: definitions.map(tool => withPolicy(tool.name === 'kroki_render' ? {...tool, _meta: {'mirket/availability': {enabled: groups.has('diagrams'), group:'diagrams', start:'mirket package stop design; mirket package prepare design --group diagrams; mirket package start design --group diagrams'}}} : tool))};
+  return {tools: definitions.map(withPolicy)};
 });
 server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
   const signal = extra.signal;
@@ -122,8 +119,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request, extra) => {
       // Only this owned boundary can attest that the operation did not start.
       // Never attach this receipt to a handler or upstream operation error.
       const rejected = (code, message) => ({isError:true, content:[{type:'text', text:message}], structuredContent:{execution:{tool:name, state:'not_started', code}, message}});
-      if (name === 'kroki_render' && !groups.has('diagrams')) return rejected('disabled_group', 'Diagrams group is disabled; explicitly stop design, prepare design --group diagrams, then start design --group diagrams');
-      if (name === 'kroki_render' && args.diagram_type === 'excalidraw' && !groups.has('excalidraw')) return rejected('disabled_group', 'Excalidraw is not selected; explicitly stop design, prepare design --group excalidraw, then start design --group excalidraw. Existing artifacts are preserved.');
       if (!validators[name](args)) return rejected('invalid_arguments', `Invalid ${name} arguments: ${ajv.errorsText(validators[name].errors)}`);
       if (typeof args.output === 'string') {
         try { await assertOutputReady(args); }

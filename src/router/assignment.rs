@@ -62,7 +62,11 @@ impl Assignment {
         let svg_output = tool == "design/vector_render"
             || tool == "design/svg_optimize"
             || (tool == "design/static_render" && arguments["format"] == "svg")
-            || (tool == "design/kroki_render" && arguments["format"] != "png")
+            || (tool == "design/d2_render"
+                && arguments["format"] != "png"
+                && !arguments["output"]
+                    .as_str()
+                    .is_some_and(|path| path.ends_with(".png")))
             || (tool == "design/openpencil_export"
                 && arguments["output"]
                     .as_str()

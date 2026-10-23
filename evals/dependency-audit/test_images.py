@@ -105,7 +105,7 @@ class ImageTests(unittest.TestCase):
         incomplete = evaluate(report, "pinned")
         self.assertFalse(incomplete["inventory_complete"])
         self.assertEqual(len(incomplete["findings"]), 1)
-        self.assertEqual(len(inventory(ROOT)), 5)
+        self.assertEqual(len(inventory(ROOT)), 4)
 
     def test_findings_retain_artifact_paths_and_severity_provenance(self):
         report = self.fixture()

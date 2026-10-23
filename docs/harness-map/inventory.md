@@ -64,7 +64,6 @@ This is a declaration inventory, not an installed-capability or quality report. 
 | editable-export | web-design | worker | T3_ARCHITECT | workspace_read, workspace_list, design/openpencil_inspect, design/openpencil_export, inspect_image, workspace_search | design/openpencil_inspect, design/openpencil_export, inspect_image | inspect_image |
 | static-graphic | graphic-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/static_render, inspect_image, workspace_search | design/static_render, inspect_image | inspect_image |
 | diagram | graphic-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/d2_render, inspect_image, workspace_search | design/d2_render, inspect_image | inspect_image |
-| diagram-service | graphic-design | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/kroki_render, inspect_image, workspace_search | design/kroki_render, inspect_image | inspect_image |
 | motion | animation | host | T3_ARCHITECT |  |  |  |
 | interactive-motion | animation | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/browser_screenshot, inspect_image, workspace_search | workspace_write, workspace_read, design/browser_screenshot, inspect_image | workspace_read, inspect_image |
 | paged-media | office-production | worker | T3_ARCHITECT | workspace_read, workspace_list, workspace_write, design/typst_compile, inspect_image, workspace_search | design/typst_compile, inspect_image | inspect_image |
@@ -746,20 +745,20 @@ All files under authored skill `references/` directories, including data and spe
 | profile_kinds | {'starter': 8, 'specialist': 50, 'alternative': 5} |
 | roles | 41 |
 | facets | 37 |
-| workflows | 19 |
+| workflows | 18 |
 | sources | 47 |
 | reference_files | 139 |
 | main_mcp_tools | 27 |
 | global_skills | 14 |
 | runtime_packages | 2 |
-| design_mcp_tools | 14 |
-| worker_tools | 19 |
+| design_mcp_tools | 13 |
+| worker_tools | 18 |
 | openpencil_operations | {'read': 29, 'write': 58} |
 | cargo_lock_records | 305 |
 | npm_lock_records_including_root | 411 |
 | native_locked_packages | 120 |
-| graph_nodes | 884 |
-| graph_edges | 1347 |
+| graph_nodes | 882 |
+| graph_edges | 1336 |
 
 ## Global guidance
 
@@ -812,11 +811,10 @@ Outer per-call limits differ from child-process limits and whole-worker budgets.
 | tokens_compile | T1_DETERMINISTIC | False | 120 | Compile one canonical DTCG token JSON into CSS, JavaScript, TypeScript, Typst and DTCG outputs with Style Dictionary. |
 | static_render | T1_DETERMINISTIC | False | 600 | Render static Flexbox composition through Satori and resvg-js; optimize generated SVG with SVGO; return native raster pixels for inspection. |
 | browser_screenshot | T1_DETERMINISTIC | False | 240 | Observe the authored page without injecting styles or compiling tokens. Capture a local workspace page using local Playwright/Chromium at verified 2× device scale, including DOM/layout/console evidence, bounded local UI actions and animation-state sampling; optional Odiff baseline comparison. |
-| kroki_render | T1_DETERMINISTIC | False | 240 | POST a diagram to Kroki and inspect its optimized SVG or PNG output. D2 architecture diagrams use the pinned local D2/TALA producer through d2_render. |
 | d2_render | T1_DETERMINISTIC | False | 240 | Render a local D2 architecture diagram with the pinned D2 0.9.0/TALA producer. No network service is started; output is published atomically after bounded local compilation. |
 | typst_compile | T1_DETERMINISTIC | False | 1500 | Compile a paged document or deck with Typst, save PDF, render every page PNG and return native page PNGs for inspection. Set pdf_standard to ua-1 when PDF/UA-1 output is required. |
 | raster_transform | T1_DETERMINISTIC | False | 120 | Preprocess a workspace raster through an isolated, bounded Sharp worker. |
-| vector_render | T1_DETERMINISTIC | False | 180 | Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki. |
+| vector_render | T1_DETERMINISTIC | False | 180 | Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Use D2/TALA for semantic architecture diagrams. |
 | svg_optimize | T1_DETERMINISTIC | False | 120 | Optimize a generated or imported SVG with SVGO before publication. |
 | odiff_compare | T1_DETERMINISTIC | False | 120 | Compare two saved PNG screenshots (at most 16 Mi pixels each) with the actual Odiff CLI; retain diff PNG when pixels differ. Differences are reportable results unless expect_match is true. |
 

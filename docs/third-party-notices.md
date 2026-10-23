@@ -41,8 +41,8 @@ but they are not current package contents.
 
 The `design` package contains individually licensed upstream tools.
 [The design stack manifest](../registry/design-stack.json) records ten tool
- domains, source locations, pinned service images and source builds. Style
-Dictionary, Satori/resvg, Playwright, OpenPencil, Kroki,
+domains, source locations, pinned build images and source builds. Style
+Dictionary, Satori/resvg, Playwright, OpenPencil, D2/TALA,
 Typst, Sharp, SVGO and Odiff keep their own terms. Dependency and source notices
 accompany the selected runtime; Mirket's license does not replace upstream terms.
 

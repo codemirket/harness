@@ -93,21 +93,15 @@ and was exercised against the real restarted macOS ARM64 machine.
 The selected design package owns its local services and shared workspace. The
 host directory is the selected home's
 `.mirket/execution/podman/staging/design/workspace`, mounted read/write as
-`/workspace` in every design container. Direct design tool file paths are
-relative to that mount, including OpenPencil document sources and outputs. Project directories
-are not mounted or expanded implicitly. `package start` and `package status`
-report the host path and assigned loopback host ports. These host ports are
-allocated automatically and saved with the package state; callers use the
-reported values rather than the services' internal port numbers. If a saved
-host port is occupied while its service is absent, start assigns another free
-loopback port. An existing owned container keeps its recorded mapping.
+`/workspace` in the single design tools container. Direct design tool file paths
+are relative to that mount, including OpenPencil document sources and outputs.
+Project directories are not mounted or expanded implicitly. The design service
+has no host-published port. `package start`, `package status` and a useful tool
+call establish separate readiness levels.
 
-Core has no public browser or raster-processing service: Playwright and Sharp run
-as bounded owned processes in design-tools. The optional diagrams group uses Kroki
-on internal port 8000. OpenPencil runs headlessly in core without additional
-ports, services or persistent volumes. Only enabled groups
-start. `environment status`, package status and a useful tool call establish
-separate readiness levels.
+Playwright and Sharp run as bounded owned processes in design-tools. D2/TALA
+runs locally in the same container. OpenPencil runs headlessly without extra
+ports, services or persistent volumes.
 
 ## Platforms and provenance
 

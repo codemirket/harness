@@ -10,9 +10,7 @@ The design service retains the project workspace. Each browser job copies bounde
 inputs into a read-only snapshot, then runs Node and sandboxed Chromium inside
 private user, mount, PID, network, IPC and UTS namespaces. Only that job's files
 and explicitly referenced compiled tokens are served inside the worker. Scratch
-and output are bounded; the process guard owns cancellation and reaping. The
-shared service's HTTP listener serves health only. It does not serve project
-files to diagram companions.
+and output are bounded; the process guard owns cancellation and reaping. The shared service's HTTP listener serves health only.
 
 The outer design container retains read-only rootfs, dropped capabilities,
 resource limits and no-new-privileges. Its reviewed seccomp profile permits
@@ -22,30 +20,12 @@ the trusted parent process's proc visibility; untrusted browser jobs receive the
 own private PID/proc view. A failed nested sandbox is an error, never a reason to
 launch Chromium without its sandbox.
 
-Kroki and Excalidraw receive no project mounts or host-published ports. The internal
-Kroki gateway accepts only the six supported diagram types and health requests,
-with bounded request/response bodies and deadlines. The Java backend listens on
-container loopback. Secure mode and disabled companion discovery are explicit.
-The internal bridge has no external egress. These boundaries do not establish
-absence of parser defects; artifact scans and adversarial render checks remain
-required.
-
 Owned recipes use digest-pinned bases and dated Debian snapshots. D2 is built
 from checksum-verified upstream source with a pinned Go toolchain and reviewed
 module lock, retaining upstream licenses. The runtime image contains no Go
-compiler. Excalidraw retains upstream parser code and uses reviewed dependency
-locks. Temporary scoped overrides of lodash-es and nanoid repair exact pins in
-upstream Excalidraw/Chevrotain dependencies; remove them when the parent releases
-adopt compatible fixed versions. DOMPurify is updated through its parent range.
-Excalidraw starts on the first CPU in its container's allowed affinity set,
-matching its existing one-CPU quota and avoiding Chromium thread-pool expansion
-against the whole VM. Its 768 MiB and 256-task limits accommodate Chrome 156
-and the offline application bundle; the former 350 MiB/128-task envelope
-caused page-cache thrashing and thread-creation failures during real renders.
-The server has its own locked runtime dependency tree; browser build packages
-are retained only in the build stage. The browser bundle records its input
-modules for advisory reachability review. Kroki imports patched Jackson 2.22.3
-and 3.1.7 BOMs without modifying upstream parser source.
+compiler. The tools image carries the reviewed Node, Chromium, Typst and native
+codecs, with their locked inputs and payload inventory checked in candidate
+scans. Browser jobs have no general network access.
 No runtime package manager, compiler, development headers or build cache is
 required in the final renderer images.
 
@@ -91,8 +71,7 @@ justify changing embedding semantics or adopting a prerelease tokenizer.
 
 Weekly CI collects advisories and proposes browser/Node changes; monthly CI
 proposes an integrated refresh. Maintainers review base image digests, Debian
-snapshot dates, native artifacts (Go/D2, Typst, ONNX and image/WASM codecs), parent
-parser releases and support deadlines together. Proposals must identify exact
+snapshot dates, native artifacts (Go/D2, Typst, ONNX and image/WASM codecs), native codec releases and support deadlines together. Proposals must identify exact
 before/after pins, owner, affected recipes and verification gates. The intended
 response targets are one business day to triage reachable critical issues,
 72 hours for containment, and seven days for reachable high fixes or explicit

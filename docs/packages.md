@@ -69,16 +69,19 @@ Checkpoints bind their original source/tool generation. Inspect the workflow
 state before attempting a resume; no budget reset or tool/provider substitution
 is implied.
 
-Core starts only the tools container: tokens, raster/vector processing, static
-cards, local Playwright, OpenPencil, Typst and Odiff. Prepare/start ordinary
-diagrams with `--group diagrams`; this acquires Kroki alone for fresh selections.
-Use `mirket package prepare design --group excalidraw`, then
-`mirket package start design --group excalidraw` for Excalidraw input; this includes
-Kroki and core. `--group all` includes the companion too. Omitting groups reuses
-the saved selection. Preparation never enables a group. To change a running
-selection, stop it first; data and workspace are retained. Disabled groups do not
-block core readiness. Unsupported Excalidraw calls fail before rendering with an
-explicit preparation/selection instruction.
+The design package starts one tools container: tokens, raster/vector processing,
+static cards, local Playwright, OpenPencil, D2/TALA diagrams, Typst and Odiff.
+There are no optional diagram services or companion images. Preparation builds
+one immutable design receipt; startup never downloads or builds dependencies.
+Stop the service before changing its runtime generation; the workspace remains
+intact.
+
+Before updating an installation that has a prior multi-container design
+generation, stop and purge that generation with its installed `mirket` binary:
+`mirket package stop design --purge-data`. This removes its owned containers,
+network and service state while preserving the shared workspace and user files.
+Then update and prepare the single-container design package. Retired image cache
+entries can be removed after confirming no other container uses them.
 
 Stop the service with `mirket package stop design`. The explicit `--purge-data`
 option removes current service state and network. It leaves the shared
@@ -93,7 +96,7 @@ operations; a stopped service can retain its workspace and persisted design file
 | Static composition with exact text | Satori plus resvg | Use supported Flexbox layout and supplied TTF, OTF, WOFF or WOFF2 fonts. Inspect the saved output at its actual use size. |
 | Live web page and interaction | Playwright | Observe authored HTML without token injection; explicitly link compiled styles in production sources. Inspect full DOM, exercised states and screenshots at 2x device scale. A screenshot alone does not verify an action. |
 | Editable design file | OpenPencil 0.16.0 official CLI | Create/edit/reopen `.fig` files with validated upstream tools; export and inspect PNG pixels. Canonical DTCG tokens become document variables/styles during creation/editing; unchanged export needs no token source. |
-| Flow, C4, sequence, Vega-Lite or Excalidraw diagram | Kroki | Preserve source nodes, labels, relationships, direction, units and branches; inspect the rendered result. |
+| Architecture or system diagram | Local D2/TALA | Preserve source nodes, labels, relationships, direction and conditions in `.d2` source; inspect the saved SVG or PNG. Other diagram syntaxes require a separately chosen host tool. |
 | Encoded video | Explicitly selected host encoder | Mirket has no bundled encoder. Preserve editable source; inspect frames, playback, duration and audio where requested. |
 | Paged document or deck | Typst | Compile tokens first, then render and inspect every page. |
 | Raster input preparation | Sharp | Inspect dimensions, crop, color and transparency before downstream composition. |
@@ -283,28 +286,13 @@ inner compiler and page-image limits remain in force. This ceiling does not
 estimate job duration or guarantee that 64 complex pages fit the budget.
 
 
-## Selective diagram preparation
+## Diagram production
 
-A fresh design installation prepares the core image and its pinned build base.
-It does not pull Kroki or the Excalidraw companion. To add diagrams explicitly:
-
-```sh
-mirket package prepare design --group diagrams
-mirket package stop design
-mirket package start design --group diagrams
-```
-
-Preparation downloads missing pinned images but does not start services or change
-saved groups. Startup never downloads. Setup/update preserve saved diagram groups;
-a previously prepared full image receipt remains valid. Core and optional diagram
-receipts are immutable within a generation: preparation can finish after a failed
-pull, but conflicting or modified receipts require inspection, never overwrite.
-Prepared additions do not invalidate a running core. Changing enabled groups or
-runtime generations still requires stopping the owned services first. Existing
-images and user artifacts are not deleted by this change.
-
-The diagram group retains Excalidraw format support. Encoded-video production is not bundled; use explicitly selected host tooling
-when the deliverable requires it.
+`d2_render` compiles `.d2` source with the pinned local D2/TALA executable in
+the design tools image. It starts no diagram service and needs no separate
+preparation group. Preserve the semantic source and inspect the saved output.
+Other diagram syntaxes require an explicitly chosen host tool when needed.
+Encoded-video production also requires explicitly selected host tooling.
 
 Produced PNG/JPEG/WebP rasters larger than four MiB retain their original artifact
 and include an `inspection` receipt with a bounded overview and lossless PNG

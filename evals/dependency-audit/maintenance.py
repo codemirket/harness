@@ -51,7 +51,7 @@ def node_proposal(current, releases, image_digest):
     if reference==current:return None
     return {'owner':OWNER,'file':'registry/design-stack.json','field':'images.node-build','before':current,'after':reference,
             'version':version,'publisher_tag':tag,'security_release':selected.get('security',False),
-            'dependent_files':['runtime/design/tools/Dockerfile','runtime/design/kroki/Dockerfile','runtime/design/excalidraw/Dockerfile','.github/workflows/check.yml'],
+            'dependent_files':['runtime/design/tools/Dockerfile','.github/workflows/check.yml'],
             'gates':['native addons','design-check','three native CI targets','artifact security gate'],
             'activation':'human review and explicit deployment authorization required'}
 
@@ -86,8 +86,8 @@ def snapshot_proposal(current, today):
     if proposed<=current:return None
     return {'owner':OWNER,'component':'Debian snapshot','before':current,'after':proposed,
             'publisher':'https://snapshot.debian.org/archive/debian/'+proposed+'/',
-            'dependent_files':['runtime/design/tools/Dockerfile','runtime/design/kroki/Dockerfile','runtime/design/excalidraw/Dockerfile'],
-            'gates':['signed APT Release verification','four owned image builds','ABI/browser/rendering tests','artifact security gate'],
+            'dependent_files':['runtime/design/tools/Dockerfile'],
+            'gates':['signed APT Release verification','two owned image builds','ABI/browser/rendering tests','artifact security gate'],
             'activation':'proposal only; snapshot availability and signed metadata required before merge'}
 
 def main():
@@ -108,7 +108,7 @@ def main():
     if not snapshots:raise ValueError('reviewed Debian snapshot missing')
     proposals.append(snapshot_proposal(max(snapshots),datetime.datetime.now(datetime.timezone.utc).date()))
     result={'schema':1,'owner':OWNER,'proposals':[p for p in proposals if p],
-            'manual_review':['Distroless/Go image signature and lifecycle; use exact registry digest before merging','WASM/native codec package locks and upstream advisories','Kroki/Excalidraw parent locks and retirement of scoped overrides'],
+            'manual_review':['Distroless/Go image signature and lifecycle; use exact registry digest before merging','WASM/native codec package locks and upstream advisories'],
             'cadence':{'advisory_review':'weekly','integrated_refresh':'monthly'},
             'response_targets':{'reachable_critical_triage':'1 business day','reachable_critical_containment':'72 hours','reachable_high_fix_or_mitigation':'7 days'},
             'limits':'Update proposals are not installation, compatibility verification, or automatic acceptance.'}

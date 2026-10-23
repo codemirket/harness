@@ -28,7 +28,7 @@ flowchart TD
     Agent --> Memory[Native Rust facts and retrieval]
     Agent --> Graph[Rust execution journal]
     Design --> Tools[OpenPencil and production tools]
-    Tools --> Images[Optional Kroki and Excalidraw]
+    Tools --> D2[Local D2/TALA diagrams]
 ```
 
 The host owns permissions, session lifecycle, native tools and account access. Providers own usage and billing. Mirket owns installed guidance, selected packages, scoped worker dispatch and durable records. The main MCP cannot register arbitrary projects or grant host permissions. Design and agent-runtime are optional.
@@ -54,9 +54,9 @@ Selection begins with the task and project instructions. `catalog_search` and `c
 
 The main MCP exposes 27 tools for discovery, task coordination, routing, memory, recovery and runtime identity. The design MCP exposes 13 tools, including four lazy OpenPencil wrappers. OpenPencil has 29 read and 58 write operations behind those wrappers. Workers can select from 18 scoped native/design tools; each workflow narrows the actual set. See the [complete inventory](harness-map/inventory.md).
 
-The design image supplies OpenPencil, Style Dictionary, Satori/resvg/SVGO, Sharp, Playwright/Chromium, Typst and Odiff. Ordinary diagram selection adds Kroki; Excalidraw requires explicit selection. Encoded video is not bundled. The agent package supplies native Rust facts with hybrid retrieval and a Rust execution journal. Coordination state, facts and recovery have distinct ownership and deletion semantics. The main MCP opens coordination state only for state-dependent calls; catalog reads and runtime identity remain available if that database is broken.
+The single design image supplies OpenPencil, Style Dictionary, Satori/resvg/SVGO, Sharp, Playwright/Chromium, local D2/TALA, Typst and Odiff. Encoded video is not bundled. The agent package supplies native Rust facts with hybrid retrieval and a Rust execution journal. Coordination state, facts and recovery have distinct ownership and deletion semantics. The main MCP opens coordination state only for state-dependent calls; catalog reads and runtime identity remain available if that database is broken.
 
-The locked inventory has 306 Cargo records, 411 npm records including the root, and 120 native helper records. These are lock records, not installed services or independent capabilities. Native CLI builds target macOS ARM64, Linux x86-64 and Windows x86-64. The managed container controller is macOS ARM64 with Linux ARM64 images; native CLI portability does not establish container portability.
+The locked inventory has 305 Cargo records, 411 npm records including the root, and 120 native helper records. These are lock records, not installed services or independent capabilities. Native CLI builds target macOS ARM64, Linux x86-64 and Windows x86-64. The managed container controller is macOS ARM64 with Linux ARM64 images; native CLI portability does not establish container portability.
 
 Mirket-owned app data lives under the selected user's `~/.mirket` root (`%USERPROFILE%\.mirket` on Windows): executable, cache, dependencies, coordination database, package receipts, workspaces, container data, sockets and scratch. The selected Podman client and helpers are copied into `~/.mirket/dependencies`; the private VM and host socket tree stay below `~/.mirket`. Host-owned Codex/Claude configuration and project-local selection files remain at their host/project boundaries. Container-internal `/tmp` and build-time staging are not host application-data roots.
 

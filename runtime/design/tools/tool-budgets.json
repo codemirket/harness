@@ -3,7 +3,6 @@
     "tokens_compile": 120000,
     "static_render": 600000,
     "browser_screenshot": 240000,
-    "kroki_render": 240000,
     "d2_render": 240000,
     "typst_compile": 1500000,
     "raster_transform": 120000,

@@ -8,7 +8,7 @@ import {SaxesParser} from 'saxes';
 import {parse as parseCss, walk as walkCss} from 'css-tree';
 import {compileTokens} from './tokens.mjs';
 import {workspace, workspacePrefix, workspacePath, readFile, readJson, publish, run, temporaryDirectory, regularOutput, sha256, assertRelative, assertOutputReady, MAX_OUTPUT} from './paths.mjs';
-import {checkRequest, requestSignal, combinedSignal, redactSecrets} from './request.mjs';
+import {checkRequest, requestSignal, redactSecrets} from './request.mjs';
 
 const toolRoot = path.dirname(fileURLToPath(import.meta.url));
 const odiff = path.join(toolRoot, 'node_modules/.bin/odiff');
@@ -102,22 +102,6 @@ function svgBytes(source) {
   return Buffer.from(result.data);
 }
 export {svgBytes as optimizeSvgBytes};
-async function fetchBytes(url, {method = 'GET', body, headers = {}, max = MAX_OUTPUT, timeoutMs = 30000} = {}) {
-  checkRequest();
-  const response = await fetch(url, {method, body, headers, signal: combinedSignal(timeoutMs)});
-  const length = Number(response.headers.get('content-length'));
-  if (length > max) { await response.body?.cancel(); throw Error('Service response exceeds output bound'); }
-  const chunks = []; let size = 0;
-  for await (const chunk of response.body) {
-    size += chunk.length;
-    if (size > max) throw Error('Service response exceeds output bound');
-    chunks.push(chunk);
-  }
-  const data = Buffer.concat(chunks, size);
-  if (!response.ok) throw Error(`Service ${new URL(url).host} returned HTTP ${response.status}: ${data.toString('utf8').slice(0, 1000)}`);
-  if (!data.length || data.length > max) throw Error('Service response is empty or exceeds output bound');
-  return {bytes: data, content_type: response.headers.get('content-type') || ''};
-}
 export async function rasterBytes(args, max = MAX_OUTPUT) {
   const width = Number(args.width), height = Number(args.height);
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > 4096 || height > 4096) throw Error('Raster dimensions must be integers in 1..4096');
@@ -266,21 +250,6 @@ export async function vectorRender(args) {
     return {artifact, preview, qa, engine: 'svgo+resvg-js'};
   } finally { await fs.rm(temp, {recursive: true, force: true}); }
 }
-export async function krokiRender(args) {
-  await assertOutputReady(args);
-  const type = args.diagram_type;
-  if (!['plantuml', 'c4plantuml', 'vegalite', 'excalidraw', 'd2', 'graphviz'].includes(type)) throw Error('Unsupported Kroki diagram type');
-  const format = args.format || 'svg';
-  if (!['svg', 'png'].includes(format)) throw Error('Unsupported Kroki output format');
-  const source = await readFile(args.source, 256 * 1024);
-  const response = await fetchBytes(`http://kroki:8000/${type}/${format}`, {method: 'POST', body: source, headers: {'Content-Type': 'text/plain'}, max: 16 * 1024 * 1024, timeoutMs: 60000});
-  const bytes = format === 'svg' ? svgBytes(response.bytes.toString('utf8')) : response.bytes;
-  if (format === 'png') pngDimensions(bytes);
-  const artifact = await publish(args.output, bytes, outputOptions(args));
-  const qa = await inspectSaved(args.output, args.baseline);
-  return {artifact, qa, service: 'kroki', svg_optimized: format === 'svg'};
-}
-
 export async function d2Render(args) {
   await assertOutputReady(args);
   if (!args.source?.endsWith('.d2')) throw Error('D2 input must be a .d2 file');

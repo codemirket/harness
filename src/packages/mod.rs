@@ -13,12 +13,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const TOOLS: [&str; 11] = [
+const TOOLS: [&str; 10] = [
     "style-dictionary",
     "satori",
     "playwright",
     "openpencil",
-    "kroki",
     "typst",
     "sharp",
     "svgo",
@@ -255,7 +254,6 @@ pub async fn launch_scoped(paths: &Paths, scope: &std::path::Path) -> Result<Lau
             "vector_render",
             "svg_optimize",
             "raster_transform",
-            "kroki_render",
             "d2_render",
             "typst_compile",
             "odiff_compare",

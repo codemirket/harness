@@ -17,7 +17,7 @@ each animated property. Keep the editable static SVG meaningful by itself; the
 page's CSS/controller is a separate integration artifact. Text, navigation and
 calls to action normally remain semantic DOM rather than pixels or vector outlines.
 
-For a diagram, produce its semantic structure and layout through Kroki before
+For a diagram, produce its semantic structure and layout through local D2/TALA before
 adding any motion. The animation layer may emphasize a
 factual handoff, but it must preserve the complete static meaning and labels.
 For icons, logos and decorative vector sequences, follow the asset's own geometry

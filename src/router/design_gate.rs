@@ -232,7 +232,6 @@ impl Gate {
             "design/browser_screenshot"
                 | "design/openpencil_export"
                 | "design/static_render"
-                | "design/kroki_render"
                 | "design/typst_compile"
                 | "design/vector_render"
         ) {

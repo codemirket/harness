@@ -56,15 +56,15 @@ mod tests {
 
     #[test]
     fn disabled_assigned_design_tools_fail_preflight_without_blocking_other_work() {
-        let raw = json!({"name":"kroki_render","_meta":{"mirket/availability":{"enabled":false,"group":"diagrams","start":"mirket package start design --group diagrams"}}});
-        assert!(require_available(&raw, &["design/vector_render".into()]).is_ok());
-        let error = require_available(&raw, &["design/kroki_render".into()])
+        let raw = json!({"name":"vector_render","_meta":{"mirket/availability":{"enabled":false,"group":"core","start":"mirket package start design"}}});
+        assert!(require_available(&raw, &["design/d2_render".into()]).is_ok());
+        let error = require_available(&raw, &["design/vector_render".into()])
             .unwrap_err()
             .to_string();
-        assert!(error.contains("no model was dispatched") && error.contains("--group diagrams"));
+        assert!(error.contains("no model was dispatched") && error.contains("package start design"));
         let mut ready = raw.clone();
         ready["_meta"]["mirket/availability"]["enabled"] = json!(true);
-        assert!(require_available(&ready, &["design/kroki_render".into()]).is_ok());
+        assert!(require_available(&ready, &["design/vector_render".into()]).is_ok());
     }
 
     #[test]

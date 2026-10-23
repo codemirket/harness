@@ -62,7 +62,6 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           cc -O2 -Wall -Wextra -Werror runtime-guard.c -o runtime-guard
           npm test
-          node --test "$GITHUB_WORKSPACE/runtime/design/kroki/gateway.test.mjs"
   check:
     permissions:
       contents: read
@@ -146,7 +145,7 @@ jobs:
         env:
           MIRKET_DIRECT: '1'
         run: |
-          for image in design-tools kroki kroki-excalidraw agent-runtime; do
+          for image in design-tools agent-runtime; do
             mirket dev image-export --candidate --engine-home "$RUNNER_TEMP/oci-home" --image "$image" --output "$RUNNER_TEMP/oci-evidence/$image.tar" > "$RUNNER_TEMP/oci-evidence/$image-export.json"
           done
           python3 evals/dependency-audit/oci_bundle.py "$RUNNER_TEMP/oci-evidence"
@@ -157,7 +156,7 @@ jobs:
           python3 evals/dependency-audit/fetch_scanner.py --target linux-arm64 --output "$RUNNER_TEMP/trivy"
           source_id=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["source_sha256"])' "$RUNNER_TEMP/oci-evidence/design-tools-export.json")
           python3 evals/dependency-audit/image_audit.py --scanner "$RUNNER_TEMP/trivy" --exports "$RUNNER_TEMP/oci-evidence/exports.json" --candidate-source-sha256 "$source_id" --output "$RUNNER_TEMP/oci-evidence/audit"
-          for image in design-tools kroki kroki-excalidraw agent-runtime; do
+          for image in design-tools agent-runtime; do
             "$RUNNER_TEMP/trivy" convert --format cyclonedx --output "$RUNNER_TEMP/oci-evidence/$image-sbom.cdx.json" "$RUNNER_TEMP/oci-evidence/audit/$image.json"
           done
       - name: Sign OCI archive provenance

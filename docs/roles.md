@@ -131,7 +131,7 @@ These requirements are descriptive: they neither install a tool nor guarantee it
 can run. Native host tools and the project's existing runtime take precedence;
 optional Mirket packages are selected only when they fit the requested deliverable.
 For example, graphic work routes through the single `design` package: Satori plus
-resvg for static composition, Kroki for diagrams, OpenPencil file tools for editable
+resvg for static composition, local D2/TALA for system diagrams, OpenPencil file tools for editable
 files and Playwright plus Odiff for inspection. Select the tool from the output.
 Exact IDs remain directly searchable. Search ranks query relevance first:
 positive role/name/tag matches precede description-only matches;

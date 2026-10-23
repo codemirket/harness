@@ -131,8 +131,9 @@ primitive SVG, a diagram, a CSS sketch or an unexecuted generation prompt.
   OpenPencil file tools. [Design documents](references/design-documents.md) describes
   saved-file refinement and preview checks. Website implementation belongs in
   the project's frontend tools.
-- For flows, C4, sequence, Vega-Lite and Excalidraw diagrams, preserve nodes,
-  relationships, direction and conditions in source and render through Kroki.
+- For architecture and system diagrams, preserve nodes, relationships, direction
+  and conditions in `.d2` source and render with local D2/TALA. Other diagram
+  syntaxes need an explicitly selected host tool.
   Use [diagram semantics](references/diagram-semantics.md) for policy decisions,
   queues, provenance, lifecycles and architecture changes before styling the graph.
 - Use Satori plus resvg for static text/image compositions using supported

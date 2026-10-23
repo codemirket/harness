@@ -7,26 +7,22 @@ fn running_groups(status: &Value) -> Result<Vec<String>> {
     let services = status["services"]
         .as_array()
         .context("missing live service observations")?;
-    let mut groups = Vec::new();
-    for (service, group) in [
-        ("design-tools", "core"),
-        ("kroki", "diagrams"),
-        ("kroki-excalidraw", "excalidraw"),
-    ] {
-        if services
+    ensure!(
+        services
             .iter()
-            .any(|v| v["service"] == service && v["running"] == true)
-        {
-            groups.push(group.into());
-        }
+            .all(|v| v["service"] == "design-tools" || v["running"] == false),
+        "unrecognized design service is running; stop the prior generation before activation"
+    );
+    let mut groups = Vec::new();
+    if services
+        .iter()
+        .any(|v| v["service"] == "design-tools" && v["running"] == true)
+    {
+        groups.push("core".into());
     }
     ensure!(
         groups.is_empty() || groups[0] == "core",
         "partial service topology: inspect before update activation"
-    );
-    ensure!(
-        !groups.iter().any(|g| g == "excalidraw") || groups.iter().any(|g| g == "diagrams"),
-        "partial diagram topology: inspect before update activation"
     );
     Ok(groups)
 }
@@ -125,9 +121,7 @@ pub(super) fn update(paths: &Paths, options: &UpdateOptions) -> Result<UpdateRep
     }
     let groups: Vec<String> = serde_json::from_value(journal["groups"].clone())?;
     ensure!(
-        groups
-            .iter()
-            .all(|g| ["core", "diagrams", "excalidraw"].contains(&g.as_str())),
+        groups.iter().all(|g| ["core"].contains(&g.as_str())),
         "invalid activation groups"
     );
     save(&journal_path, &journal)?;
@@ -187,8 +181,16 @@ mod tests {
     use super::*;
     #[test]
     fn activation_preserves_only_observed_running_groups() {
-        assert_eq!(running_groups(&json!({"services":[{"service":"design-tools","running":true},{"service":"kroki","running":false}]})).unwrap(), ["core"]);
-        assert!(running_groups(&json!({"services":[{"service":"kroki","running":true}]})).is_err());
+        assert_eq!(
+            running_groups(&json!({"services":[{"service":"design-tools","running":true}]}))
+                .unwrap(),
+            ["core"]
+        );
+        assert_eq!(
+            running_groups(&json!({"services":[]})).unwrap(),
+            Vec::<String>::new()
+        );
+        assert!(running_groups(&json!({"services":[{"service":"other","running":true}]})).is_err());
         assert!(running_groups(&json!({"error":"VM stopped"})).is_err());
         assert!(running_groups(&json!({"services":[]})).unwrap().is_empty());
     }

@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 from image_audit import validate_export
 root=Path(sys.argv[1]).resolve()
-exports={alias:json.loads((root/(alias+'-export.json')).read_text()) for alias in ['design-tools','kroki','kroki-excalidraw','agent-runtime']}
+exports={alias:json.loads((root/(alias+'-export.json')).read_text()) for alias in ['design-tools','agent-runtime']}
 sources={r['source_sha256'] for r in exports.values()}
 if len(sources)!=1:raise ValueError('OCI candidates differ in compiled source')
 source=sources.pop()

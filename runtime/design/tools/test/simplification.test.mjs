@@ -51,16 +51,16 @@ test('paged output retains two pages rather than passing on a PDF header alone',
 });
 
 // Exercise the actual protocol boundary: no retired renderer or disabled format dispatch.
-test('retired video and unselected Excalidraw fail explicitly without changing saved artifacts',async()=>{
+test('retired video fails explicitly without changing saved artifacts',async()=>{
   const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
   await fs.writeFile(path.join(workspace,'retained-scene.html'),'user scene');
   await fs.writeFile(path.join(workspace,'retained.mp4'),'user output');
   const client=new Client({name:'retirement-test',version:'1'});
   try {
-    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace,MIRKET_DESIGN_GROUPS:'core,diagrams'},stderr:'pipe'}));
+    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace},stderr:'pipe'}));
     const listed=await client.listTools();
-    assert.equal(listed.tools.length,14);
+    assert.equal(listed.tools.length,13);
     assert.ok(!listed.tools.some(t=>t.name==='hyperframes_render'));
     for (const name of ['constructor', '__proto__', 'toString', 'execute_code']) {
       const unknown=await client.callTool({name,arguments:{output:'absent.svg'}});
@@ -70,11 +70,6 @@ test('retired video and unselected Excalidraw fail explicitly without changing s
     const retired=await client.callTool({name:'hyperframes_render',arguments:{project:'retained-scene.html',output:'retained.mp4'}});
     assert.equal(retired.isError,true);
     assert.match(JSON.stringify(retired),/retired.*host encoder/);
-    const companion=await client.callTool({name:'kroki_render',arguments:{source:'missing.excalidraw',diagram_type:'excalidraw',output:'absent.svg'}});
-    assert.equal(companion.isError,true);
-    assert.equal(companion.structuredContent.execution.state,'not_started');
-    assert.equal(companion.structuredContent.execution.code,'disabled_group');
-    assert.match(JSON.stringify(companion),/--group excalidraw/);
     assert.equal(await fs.readFile(path.join(workspace,'retained-scene.html'),'utf8'),'user scene');
     assert.equal(await fs.readFile(path.join(workspace,'retained.mp4'),'utf8'),'user output');
     await assert.rejects(fs.access(path.join(workspace,'absent.svg')));

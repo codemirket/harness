@@ -205,7 +205,7 @@
         "Indexability, ranking hypotheses and dashboard access distinguished"
       ],
       "professional": {
-        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience’s actual search surfaces.",
+        "perspective": "Diagnose how a useful answer becomes discoverable, eligible and attributable on the audience\u2019s actual search surfaces.",
         "priorities": [
           "Audience intent and useful landing content",
           "Observed crawl, index and citation barriers",
@@ -548,7 +548,7 @@
         ],
         "method": [
           "Establish the audience, offer, channel, next action and claims that must stay.",
-          "Build a message from benefit, mechanism, proof and the reader’s likely objections.",
+          "Build a message from benefit, mechanism, proof and the reader\u2019s likely objections.",
           "Edit for clarity and voice while preserving commitments and uncertainty.",
           "Deliver channel-ready copy and identify claims or variants needing evidence."
         ],
@@ -584,7 +584,7 @@
           "Explicit choices with reversal conditions"
         ],
         "method": [
-          "Frame the owner’s decision, horizon, obligations and scarce resources.",
+          "Frame the owner\u2019s decision, horizon, obligations and scarce resources.",
           "Compare viable options across customer fit, economics, cash, capacity and concentration.",
           "Stress the assumption most likely to reverse the ranking.",
           "Recommend an allocation and operating test with an owner, review point and stop conditions."
@@ -813,7 +813,7 @@
           "Triangulate consequential estimates and test the assumption that changes the opportunity."
         ],
         "decision_rule": "Reduce the opportunity estimate when buyer eligibility, channel reach or sales capacity constrains it; do not convert broad category spend into achievable revenue.",
-        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer’s current workaround or material offer terms.",
+        "challenge": "Challenge executive and venture forecasts built on arbitrary market share; challenge marketing comparisons that omit a buyer\u2019s current workaround or material offer terms.",
         "handoff": "Give strategy and venture owners buyer definitions, sourced ranges, reachable channels, competitive constraints and the largest unresolved commercial assumption."
       }
     },
@@ -876,7 +876,7 @@
         "Locale/register and unresolved ambiguity are recorded; native review claimed only if performed"
       ],
       "professional": {
-        "perspective": "Preserve the user’s meaning and commitments while making language natural and usable in the target locale.",
+        "perspective": "Preserve the user\u2019s meaning and commitments while making language natural and usable in the target locale.",
         "priorities": [
           "Semantic fidelity and consistent terminology",
           "Natural register and cultural context",
@@ -1032,7 +1032,7 @@
         ],
         "method": [
           "Identify reader, authoritative inputs, edit boundary and final format.",
-          "Organize content around the reader’s question or action.",
+          "Organize content around the reader\u2019s question or action.",
           "Verify claims, examples, links, units and obligations against their owners.",
           "Inspect the saved or rendered result and report material content or compatibility limits."
         ],
@@ -1302,7 +1302,7 @@
       ],
       "failure_probe": "Positive interview praise must not override observed task failure or be generalized into population demand.",
       "professional": {
-        "perspective": "Explain people’s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
+        "perspective": "Explain people\u2019s goals, behavior and barriers through contextual observation while preserving the limits of the sample.",
         "priorities": [
           "Observed behavior in realistic context",
           "Relevant participant variation and counterexamples",
@@ -1530,7 +1530,7 @@
       ],
       "failure_probe": "An attractive PDF export with lost editable charts, dropped comments, broken fields or overflow in the saved office file must fail delivery.",
       "professional": {
-        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient’s real workflow.",
+        "perspective": "Produce an editable document, deck or workbook whose argument, visual hierarchy and native behavior survive the recipient\u2019s real workflow.",
         "priorities": [
           "Readable structure at the intended viewing size",
           "Preserved editability and source meaning",
@@ -2292,34 +2292,7 @@
       "verification_tools": [
         "inspect_image"
       ],
-      "rule": "Default to local D2/TALA for architecture diagrams; no diagram service is required. Inspect graph structure, labels and layout. Use diagram-service only for explicitly requested other syntax or editable Excalidraw sketches.",
-      "min_tier": "T3_ARCHITECT",
-      "host_verification": false,
-      "budget_class": "static",
-      "interactive": false,
-      "motion": false
-    },
-    {
-      "id": "diagram-service",
-      "design_production": true,
-      "when": "Explicitly requested PlantUML, C4-PlantUML, Vega-Lite, Graphviz or editable Excalidraw diagrams using selected services.",
-      "role": "graphic-design",
-      "tools": [
-        "workspace_read",
-        "workspace_list",
-        "workspace_write",
-        "design/kroki_render",
-        "inspect_image",
-        "workspace_search"
-      ],
-      "required_tools": [
-        "design/kroki_render",
-        "inspect_image"
-      ],
-      "verification_tools": [
-        "inspect_image"
-      ],
-      "rule": "Use explicitly selected Kroki services for their requested syntax. Select Excalidraw explicitly for editable sketches. Architecture diagrams default to the local diagram workflow and need no service.",
+      "rule": "Render architecture and system diagrams with local D2/TALA. Inspect graph structure, labels and layout.",
       "min_tier": "T3_ARCHITECT",
       "host_verification": false,
       "budget_class": "static",

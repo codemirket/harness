@@ -5,8 +5,8 @@
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 8832,
-      "sha256": "d4f6831e932ec4f71c5884c425038914727410ec65f0f1a6b3b97a95444162d2"
+      "bytes": 8706,
+      "sha256": "15bd8b204dfa85d7213fe32efbaa9934bb820565de0af7e1915c6d1c8d97fba9"
     },
     {
       "path": "AGENTS.md",
@@ -15,8 +15,8 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "bytes": 21031,
-      "sha256": "4c074637422e3d747a6f2b0a5733b8e498a440985aed309120a56a49418c2e79"
+      "bytes": 21010,
+      "sha256": "748c043981373e10b4bf125e25a81120dc7730a085fd2bb22c227b3e4b002ea9"
     },
     {
       "path": "Cargo.lock",
@@ -60,8 +60,8 @@
     },
     {
       "path": "docs/third-party-notices.md",
-      "bytes": 50247,
-      "sha256": "8bc095bb249bebb4647ef23c430c0a24fae4002b8915ebe6a14bab70519b5b29"
+      "bytes": 50246,
+      "sha256": "203329d2e23069b9c4e977f4ea418d569e6a3204005b5250225f55520c27ea2e"
     },
     {
       "path": "evals/dependency-audit/README.md",
@@ -85,23 +85,23 @@
     },
     {
       "path": "evals/dependency-audit/image_audit.py",
-      "bytes": 13137,
-      "sha256": "05a238788ee5741315cfe1d9b17256542a818ab36c742f2df2a9a2e44ed34bcd"
+      "bytes": 13036,
+      "sha256": "6aa9dc5360bc98560f0121c68901c9798015b3988e57adf805a3ab722eb737c8"
     },
     {
       "path": "evals/dependency-audit/image_contents.py",
-      "bytes": 6920,
-      "sha256": "3d0432d9b9eb500ad2c1bc04311a3f0125484608a612dc867755dd82a9f67cce"
+      "bytes": 6218,
+      "sha256": "e0d7fad4b5a9eb8876cb44e4e0d6812fcf6054a23ff11d27e4a35423812fdaab"
     },
     {
       "path": "evals/dependency-audit/maintenance.py",
-      "bytes": 8192,
-      "sha256": "9dbdf78920904c6e589abb7353c9c7f52ceaf74526c611b80f58c9663403be6a"
+      "bytes": 7978,
+      "sha256": "156f2a9c419baf0a44940fd5511fbf923183b978288dd7a3455eb6635df28ef3"
     },
     {
       "path": "evals/dependency-audit/oci_bundle.py",
-      "bytes": 1222,
-      "sha256": "b51ff1fa2e8c3db7a5c4a31d1c41278752c6743d3e230aeb3510090aa369bcae"
+      "bytes": 1195,
+      "sha256": "cba04852e6474b4baef8d8ddfbbf056511398bf74edb85ba1deb7952c9c78405"
     },
     {
       "path": "evals/dependency-audit/scanner.json",
@@ -121,7 +121,7 @@
     {
       "path": "evals/dependency-audit/test_images.py",
       "bytes": 8649,
-      "sha256": "8b29598565a8e1f6a2a9b180452b4e66f2286fa090e91e9e069548945ad332fc"
+      "sha256": "b7801978f72188160dfd07fd54280fbbc9693ad822aed83c42b3c73883cc210e"
     },
     {
       "path": "evals/dependency-audit/test_maintenance.py",
@@ -750,8 +750,8 @@
     },
     {
       "path": "instructions/AGENTS.md",
-      "bytes": 8243,
-      "sha256": "7dba799a4d881e536c9fdc8e7973312173a282d446f33f1d7d0e157144fdba1c"
+      "bytes": 8163,
+      "sha256": "e31868ee921f0f1935ff5a11de9ba9d14ffeb99ec37fe1841f826af514e39777"
     },
     {
       "path": "registry/agent-runtime.json",
@@ -760,18 +760,18 @@
     },
     {
       "path": "registry/capabilities.json",
-      "bytes": 130204,
-      "sha256": "80689d62e40fdb0d1e2f591c742e15e166cbf6242f6b7a193d3e4a5036647404"
+      "bytes": 129153,
+      "sha256": "ce709b805e87d076f561aaa18200d59ad7783d99686525d6b7554ce529bf1098"
     },
     {
       "path": "registry/catalog.json",
-      "bytes": 710802,
-      "sha256": "d307fc24a4d4b809b500718268e405907173bee5a3d65b3b8c29888270ecfb7f"
+      "bytes": 711056,
+      "sha256": "e9ef297f7c70cab465bbd8970aa41feae673a92217edc76a440a0d02e26f7f0a"
     },
     {
       "path": "registry/design-stack.json",
-      "bytes": 3946,
-      "sha256": "d34da16e682754f7efbe9944ec539e0bfe49c0c548d4e741e2d2012e4eb2a802"
+      "bytes": 3420,
+      "sha256": "d5fb2a05bbd3f304282dc60df73ab46d145026fb7a840155036965178bb026d8"
     },
     {
       "path": "registry/harness.json",
@@ -817,56 +817,6 @@
       "path": "runtime/agent/recovery-contract.json",
       "bytes": 528,
       "sha256": "4f4a476b84aca83e1a75690a18b3486ac147a5c7ab9c09cc2d1b8117750bb69f"
-    },
-    {
-      "path": "runtime/design/excalidraw/Dockerfile",
-      "bytes": 3981,
-      "sha256": "99678b605426eb418ea49afca3dc4ee664373613ffed0de29bf31aa7ade15ea4"
-    },
-    {
-      "path": "runtime/design/excalidraw/entrypoint",
-      "bytes": 328,
-      "sha256": "f90488566e4f66dc607a9f0d65b0968633f512aad3e4bc28d76381e8595127df"
-    },
-    {
-      "path": "runtime/design/excalidraw/package-lock.json",
-      "bytes": 161823,
-      "sha256": "5f903451bc4b16a08136a8b66526794ede20863ff4302017d45263ab059eaa57"
-    },
-    {
-      "path": "runtime/design/excalidraw/package.json",
-      "bytes": 1301,
-      "sha256": "8705fe0ece8e3a9e7cc5fd288be36b8d46e6331e60b646b0dba9c5b32128d665"
-    },
-    {
-      "path": "runtime/design/excalidraw-server/package-lock.json",
-      "bytes": 26522,
-      "sha256": "8ed64303c505a841f2442a8315b0278f09021a74268a11e3333fae00598f7c75"
-    },
-    {
-      "path": "runtime/design/excalidraw-server/package.json",
-      "bytes": 275,
-      "sha256": "9ba48173b8634ab7a83e6bb2c814f101b083e75cc5c6a06ebc25a5b9dfc3143e"
-    },
-    {
-      "path": "runtime/design/kroki/Dockerfile",
-      "bytes": 3300,
-      "sha256": "e0c66b1714c2afa09bc12ef7c272e97284232bae5eefd9aca713fb8fb2b8da06"
-    },
-    {
-      "path": "runtime/design/kroki/gateway.mjs",
-      "bytes": 2208,
-      "sha256": "1e75cdd656907f6adb19a8046fc215b07c0e7d3d9592986ebe63772ea39dee69"
-    },
-    {
-      "path": "runtime/design/kroki/gateway.test.mjs",
-      "bytes": 662,
-      "sha256": "2fd9777d034223ca7059dcaf3cca1dd51211538cbfc9fc30491787dc9324045b"
-    },
-    {
-      "path": "runtime/design/kroki/jackson-boms.mjs",
-      "bytes": 772,
-      "sha256": "8d53b17785b6d290aa2e5e500ac39e69ea51fb653aa83ba1059bc00fafe0d587"
     },
     {
       "path": "runtime/design/tools/Dockerfile",
@@ -930,8 +880,8 @@
     },
     {
       "path": "runtime/design/tools/operations.mjs",
-      "bytes": 50611,
-      "sha256": "795b516e4d441280ef1e31db50913600498e8af9149cd0e1e9f784a1c710fd99"
+      "bytes": 48630,
+      "sha256": "be38a2c9f3568dec76ed861fd59916ac8d44424decdafc4fcff6fe5c8270caae"
     },
     {
       "path": "runtime/design/tools/package-lock.json",
@@ -965,8 +915,8 @@
     },
     {
       "path": "runtime/design/tools/server.mjs",
-      "bytes": 15425,
-      "sha256": "9038396f151b0089aaced306f96c72d361ccfc50a97293197c9342b7a9e0613d"
+      "bytes": 14083,
+      "sha256": "3efe9b5f8ecf5bd6a65542a03c77d0c9a313d58b8fc789ecd1ef98abda352697"
     },
     {
       "path": "runtime/design/tools/test/cleanup.test.mjs",
@@ -980,8 +930,8 @@
     },
     {
       "path": "runtime/design/tools/test/live-browser.test.mjs",
-      "bytes": 12965,
-      "sha256": "78957ccbc6eb56cd21371d882af84361ed9a7dc99a41a22f650e2c5908a1ee5f"
+      "bytes": 12978,
+      "sha256": "76e330e6a90495eea776c2bd939e440b25cb81019a9eb2affcaaa52f2aecdced"
     },
     {
       "path": "runtime/design/tools/test/local.test.mjs",
@@ -1000,8 +950,8 @@
     },
     {
       "path": "runtime/design/tools/test/openpencil.test.mjs",
-      "bytes": 14454,
-      "sha256": "9583296f7ad47d8cbbf07d566932cf4046bdf727e3d9a6327da8e9d536f357d2"
+      "bytes": 14398,
+      "sha256": "bea5f04a605990f1399f09d061d7ae363c867495abced5badd3a1fddd5e311fb"
     },
     {
       "path": "runtime/design/tools/test/operations-bounds.test.mjs",
@@ -1010,8 +960,8 @@
     },
     {
       "path": "runtime/design/tools/test/simplification.test.mjs",
-      "bytes": 8194,
-      "sha256": "13d4eda549ebe4a4c46d8c330fe66ccaa946d3f8be0caf57543642bd6731a168"
+      "bytes": 7716,
+      "sha256": "fbb88ce7ca14b2ea90cc1a0ea5477a03aec1f9681cc520efec3269ed102432ef"
     },
     {
       "path": "runtime/design/tools/test/workspace-http.test.mjs",
@@ -1025,13 +975,13 @@
     },
     {
       "path": "runtime/design/tools/tool-budgets.json",
-      "bytes": 447,
-      "sha256": "96be420798c214277b62c038818c2293b5cfc01a596c625bd1eec0c7cbfb2d89"
+      "bytes": 419,
+      "sha256": "106caa8e744eef14a6335df828f2ec4be7c133bac8030bc96d10ac3470d154c6"
     },
     {
       "path": "runtime/design/tools/tool-policy.json",
-      "bytes": 1287,
-      "sha256": "ee3fdf130d31cb3e3520994004f1e306f8a4d1dbd69611da2166199a8618fb3f"
+      "bytes": 1197,
+      "sha256": "e9fa9871a7066107ebe0421dcc577cc1131beed06b655d5ea448e3d56879268e"
     },
     {
       "path": "runtime/design/tools/vector-worker.mjs",
@@ -1175,8 +1125,8 @@
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 24149,
-      "sha256": "1d8293b44150bb194ad3a3297575c2de3289a27e79c5fa16f3abfd4c576fe382"
+      "bytes": 24151,
+      "sha256": "096109087a112543e96cea52c172126e0a1d0b3258467b3386a8f09547fe98e4"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -1850,8 +1800,8 @@
     },
     {
       "path": "skills/graphic-design/SKILL.md",
-      "bytes": 10875,
-      "sha256": "9c5090f4ab1e87bb55ffe343576cca1061aa129dcdb73f4c5bfa2fac1894fcca"
+      "bytes": 10928,
+      "sha256": "985a4328ef557b4dc0499162e85b8cdb5170daa941315e2330d1edea83b51afa"
     },
     {
       "path": "skills/graphic-design/references/art-direction-and-critique.md",
@@ -1870,8 +1820,8 @@
     },
     {
       "path": "skills/graphic-design/references/diagram-semantics.md",
-      "bytes": 5623,
-      "sha256": "4be5f9e3c09c6db2b52a0c57e27f31e4a67d210f4ddc043d124ce77153d4391f"
+      "bytes": 5658,
+      "sha256": "b712130b459517918b9f7e07862593e8bb91de8e8eed3bbb314de064045b38a0"
     },
     {
       "path": "skills/graphic-design/references/image-production.md",
@@ -1880,8 +1830,8 @@
     },
     {
       "path": "skills/graphic-design/references/production-and-proof.md",
-      "bytes": 7461,
-      "sha256": "26364fcb7d94b802a9c2d3f6fd508d0fdd5464a5a92e7463d1fd50d3c9300287"
+      "bytes": 7474,
+      "sha256": "780527c4a4924f80b3470d0414ecbbcd130c22d494608955656393980b54a7b1"
     },
     {
       "path": "skills/infrastructure-engineering/SKILL.md",
@@ -1895,8 +1845,8 @@
     },
     {
       "path": "skills/interface-design/SKILL.md",
-      "bytes": 10370,
-      "sha256": "dd0dd488c045e2ff60c3c14675aac1776b8731dbdec7ef6b373814a54837b149"
+      "bytes": 10385,
+      "sha256": "01676a65219a77e3976375f5e7f6014a04acb3cff9b9073e4edffa06f71d0ea1"
     },
     {
       "path": "skills/interface-design/references/application-composition.md",
@@ -1930,8 +1880,8 @@
     },
     {
       "path": "skills/interface-design/references/public-page-composition.md",
-      "bytes": 9218,
-      "sha256": "8db081bbf8db4c38b0c8feac45c51101c9d7bae7034b1b5699724a81c44271cf"
+      "bytes": 9226,
+      "sha256": "fdf765e4e06656b89f6cf6c1c34967eee80148ccde191f433f9411c096136eb0"
     },
     {
       "path": "skills/interface-design/references/typography-proof.md",
@@ -2145,8 +2095,8 @@
     },
     {
       "path": "skills/skill-catalog/references/task-routing.md",
-      "bytes": 21563,
-      "sha256": "2d92b700bb8c87e59624defd12fdfd7331c4c7547a54f11079bfb365fcf3cf3d"
+      "bytes": 21618,
+      "sha256": "0f1da6dcde334dfa6d3ff084a92885df87e035a02973460a9022f6c39cb0ab14"
     },
     {
       "path": "skills/spreadsheet-analysis/SKILL.md",
@@ -2160,8 +2110,8 @@
     },
     {
       "path": "skills/svg-animation/SKILL.md",
-      "bytes": 6299,
-      "sha256": "ccb5bd16594dd7121525a0c723151761c5fbf821c4ee9285a45b8565ab77cf3e"
+      "bytes": 6307,
+      "sha256": "1e6bee69b942aacf6c123e49efd0a1ac6a55fd8f8c84abf1fe3119aace76defa"
     },
     {
       "path": "skills/svg-animation/references/svg-motion-craft.md",
@@ -2315,8 +2265,8 @@
     },
     {
       "path": "src/cli.rs",
-      "bytes": 67371,
-      "sha256": "aadf176a77b8ee0408bcbdb2c75432489f1e39dcc196a535e20d9621290d6cdf"
+      "bytes": 67305,
+      "sha256": "d6a4f5aa35bc9d75746a1cdc7260fac43e2d4f518cd6ce1ba91bfb8929d4818e"
     },
     {
       "path": "src/craft.rs",
@@ -2340,8 +2290,8 @@
     },
     {
       "path": "src/dev/security_gate.rs",
-      "bytes": 20727,
-      "sha256": "98412b6a72a8ac750e87c66c52a4d7f132548c2df5e64d3f765c9f0c1d79cc98"
+      "bytes": 20855,
+      "sha256": "1cf3f8479b6a9699d20beb0a7ac2f412c8c8e75aae1bc15b892350c45ee7ea49"
     },
     {
       "path": "src/dev.rs",
@@ -2415,8 +2365,8 @@
     },
     {
       "path": "src/packages/mod.rs",
-      "bytes": 13560,
-      "sha256": "9d52f479165c3496e76ea2ce19b5edf1f84d1bb9986a17a643784ebf2a692771"
+      "bytes": 13519,
+      "sha256": "3919b54edef4ad8fd39c6d137f652f43d2c7ecf7349eb73d2b092d7bdfe6c4e5"
     },
     {
       "path": "src/packages/oci.rs",
@@ -2425,8 +2375,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 90440,
-      "sha256": "8f94866d690e6156946de5e9cf740b48c8e021b17e348bd596dc3d527fe1ead4"
+      "bytes": 73635,
+      "sha256": "78c8a9f54dded77e31da37f637730356ac4ed7cadeedc08a92d4a13e23965cf1"
     },
     {
       "path": "src/paths.rs",
@@ -2475,8 +2425,8 @@
     },
     {
       "path": "src/router/assignment.rs",
-      "bytes": 12309,
-      "sha256": "87e2632fe885df7289cd1434865e8750f8b32757390db3d3752ab5b65f98690e"
+      "bytes": 12456,
+      "sha256": "2307bce8e44f3918d966de8c57772dd4247b7cef227fbd0b294fd9b77541ad44"
     },
     {
       "path": "src/router/codex.rs",
@@ -2490,8 +2440,8 @@
     },
     {
       "path": "src/router/design_gate.rs",
-      "bytes": 13984,
-      "sha256": "aaa1edc3ef7074acb4c9353574b8eead77198dcee1b385155bba2d407e77f1e6"
+      "bytes": 13944,
+      "sha256": "ebb5ac5383480f0b82b05850b6e568d633d0abd5506726f768bc26c3b32cc2de"
     },
     {
       "path": "src/router/discovery.rs",
@@ -2585,8 +2535,8 @@
     },
     {
       "path": "src/router/tests/tools.rs",
-      "bytes": 22489,
-      "sha256": "1edd23bc34bab3555aaa43c3bd9c8dca3e1c162ef5677934d4b95b8298786793"
+      "bytes": 22471,
+      "sha256": "46d954ca7033ee37c503142f5e35a72d364d6741dec70dc4930b425beef762ad"
     },
     {
       "path": "src/router/tools.rs",
@@ -2630,8 +2580,8 @@
     },
     {
       "path": "src/update/activation.rs",
-      "bytes": 7769,
-      "sha256": "53aadccb660d00ee94428be39f2b32ef92dcf06864665477c1373aa5b1f12d92"
+      "bytes": 7737,
+      "sha256": "f1112a4ca1d9f0700028808e15c6924056fde42c7be40311921e9ea06e150e94"
     },
     {
       "path": "src/update.rs",
@@ -2880,14 +2830,14 @@
     },
     "roles": 41,
     "facets": 37,
-    "workflows": 19,
+    "workflows": 18,
     "sources": 47,
     "reference_files": 139,
     "main_mcp_tools": 27,
     "global_skills": 14,
     "runtime_packages": 2,
-    "design_mcp_tools": 14,
-    "worker_tools": 19,
+    "design_mcp_tools": 13,
+    "worker_tools": 18,
     "openpencil_operations": {
       "read": 29,
       "write": 58
@@ -2895,8 +2845,8 @@
     "cargo_lock_records": 305,
     "npm_lock_records_including_root": 411,
     "native_locked_packages": 120,
-    "graph_nodes": 884,
-    "graph_edges": 1347
+    "graph_nodes": 882,
+    "graph_edges": 1336
   },
   "catalog": {
     "schema_version": 1,
@@ -4515,7 +4465,7 @@
           "matt-domain-modeling"
         ],
         "executable_files": [],
-        "adaptation": "This is an explicitly selected project workflow. User instructions and project conventions take precedence. Registration alone does not authorize commits, pushes, external messages, publishing, deployment, destructive actions, or dependency installation. Reuse authorization already given for the task. Use available host tools and preserve the user-selected model; translate Skill/Subagent tool names to available equivalents. If delegation is unavailable, use sequential roles and disclose the limitation. Preserve unrelated work. HTML reference loads CDN scripts and uses loose Mermaid security. For Mirket diagram production, author semantic source and render through the design package Kroki route; treat the upstream Mermaid/CDN example as reference only and escape codebase-derived HTML. No performance claim without measurement.",
+        "adaptation": "This is an explicitly selected project workflow. User instructions and project conventions take precedence. Registration alone does not authorize commits, pushes, external messages, publishing, deployment, destructive actions, or dependency installation. Reuse authorization already given for the task. Use available host tools and preserve the user-selected model; translate Skill/Subagent tool names to available equivalents. If delegation is unavailable, use sequential roles and disclose the limitation. Preserve unrelated work. HTML reference loads CDN scripts and uses loose Mermaid security. For Mirket diagram production, author semantic source and render through the design package local D2/TALA route; treat the upstream Mermaid/CDN example as reference only and escape codebase-derived HTML. No performance claim without measurement.",
         "id": "matt-improve-codebase-architecture",
         "source": "matt",
         "scope": "project",
@@ -4524,7 +4474,7 @@
           "Project tools; no executable runs during registration."
         ],
         "caveats": [
-          "HTML reference loads CDN scripts and uses loose Mermaid security. For Mirket diagram production, author semantic source and render through the design package Kroki route; treat the upstream Mermaid/CDN example as reference only and escape codebase-derived HTML. No performance claim without measurement."
+          "HTML reference loads CDN scripts and uses loose Mermaid security. For Mirket diagram production, author semantic source and render through the design package local D2/TALA route; treat the upstream Mermaid/CDN example as reference only and escape codebase-derived HTML. No performance claim without measurement."
         ],
         "url": "https://github.com/mattpocock/skills/blob/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d/skills/engineering/improve-codebase-architecture/SKILL.md",
         "sha256": "5a4f928ef6c4dca8db242fd168b6c62f3179d44dff0220964fd7a3037dd6ac67",
@@ -8495,7 +8445,7 @@
       {
         "name": "archify",
         "path": "archify",
-        "description": "Reference diagram composition methods for architecture, workflows, sequences, data flow and state relationships. In Mirket, use the single design package Kroki route for production rendering, then optimize SVG with SVGO and inspect output; this upstream Archify package is a manual reference, not an alternate renderer or export path.",
+        "description": "Reference diagram composition methods for architecture, workflows, sequences, data flow and state relationships. Mirket renders architecture and system `.d2` source with local D2/TALA, then optimizes SVG with SVGO and inspects output. Other syntaxes need an explicitly selected host tool; this upstream Archify package is a manual reference.",
         "category": "diagrams",
         "license": "MIT",
         "license_files": [
@@ -8506,22 +8456,22 @@
           "archify",
           "archify"
         ],
-        "adaptation": "Use this upstream source only for diagram composition concepts and provenance. For Mirket production, render semantic flow, C4, sequence, Vega-Lite and Excalidraw source through the design package Kroki route, optimize SVG with SVGO and inspect actual output. Do not install or invoke the Archify renderer as an alternate design route.",
+        "adaptation": "Use this upstream source only for diagram composition concepts and provenance. For Mirket production, render architecture and system `.d2` source through the design package local D2/TALA route, optimize SVG with SVGO and inspect actual output. Do not install or invoke the Archify renderer as an alternate design route.",
         "asset_requirements": "Preserve the upstream source and license identity when quoting or analyzing this reference; production artifacts use the design package.",
         "id": "archify-archify",
         "source": "archify",
         "scope": "manual",
         "delivery": "reference",
         "dependencies": [
-          "No Archify runtime in the Mirket design stack; production diagrams require design package Kroki, SVGO and Playwright inspection."
+          "No Archify runtime in the Mirket design stack; architecture diagrams use local D2/TALA with SVG optimization and visual inspection."
         ],
         "caveats": [
           "Upstream finalize/deliver includes an update network check; do not run it as part of Mirket production.",
-          "Playwright inspection and visual review of Kroki output remain separate evidence.",
+          "Playwright inspection and visual review of D2/TALA output remain separate evidence.",
           "Upstream package asset licenses are separate from root MIT."
         ],
         "url": "https://github.com/tt-a1i/archify/blob/73aaa0696e8f72c232ea710e6fa94fd953f3e773/archify/SKILL.md",
-        "selection_reason": "Composition reference with preserved source identity; the Mirket production diagram route is Kroki."
+        "selection_reason": "Composition reference with preserved source identity; the Mirket architecture diagram route is local D2/TALA."
       },
       {
         "name": "android-clean-architecture",
@@ -14973,7 +14923,7 @@
           "claude"
         ],
         "dependencies": [
-          "The single design package routes authored SVG artwork to vector_render and native resvg previews, raster preprocessing to Sharp, generated/imported SVG through SVGO, diagrams through Kroki, static Flexbox composition through Satori plus resvg, editable design files through OpenPencil file tools, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
+          "The single design package routes authored SVG artwork to vector_render and native resvg previews, raster preprocessing to Sharp, generated/imported SVG through SVGO, architecture diagrams through D2/TALA, static Flexbox composition through Satori plus resvg, editable design files through OpenPencil file tools, and pixel comparison through Odiff. Compile Style Dictionary tokens before rendering.",
           "Skill registration supplies guidance; verify tool availability and invocation separately."
         ],
         "caveats": [
@@ -14995,7 +14945,6 @@
           "vector-art",
           "Sharp",
           "svgo",
-          "kroki",
           "satori",
           "resvg",
           "openpencil",
@@ -18122,34 +18071,7 @@
         "verification_tools": [
           "inspect_image"
         ],
-        "rule": "Default to local D2/TALA for architecture diagrams; no diagram service is required. Inspect graph structure, labels and layout. Use diagram-service only for explicitly requested other syntax or editable Excalidraw sketches.",
-        "min_tier": "T3_ARCHITECT",
-        "host_verification": false,
-        "budget_class": "static",
-        "interactive": false,
-        "motion": false
-      },
-      {
-        "id": "diagram-service",
-        "design_production": true,
-        "when": "Explicitly requested PlantUML, C4-PlantUML, Vega-Lite, Graphviz or editable Excalidraw diagrams using selected services.",
-        "role": "graphic-design",
-        "tools": [
-          "workspace_read",
-          "workspace_list",
-          "workspace_write",
-          "design/kroki_render",
-          "inspect_image",
-          "workspace_search"
-        ],
-        "required_tools": [
-          "design/kroki_render",
-          "inspect_image"
-        ],
-        "verification_tools": [
-          "inspect_image"
-        ],
-        "rule": "Use explicitly selected Kroki services for their requested syntax. Select Excalidraw explicitly for editable sketches. Architecture diagrams default to the local diagram workflow and need no service.",
+        "rule": "Render architecture and system diagrams with local D2/TALA. Inspect graph structure, labels and layout.",
         "min_tier": "T3_ARCHITECT",
         "host_verification": false,
         "budget_class": "static",
@@ -18411,15 +18333,6 @@
           "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5"
         },
         {
-          "id": "kroki",
-          "name": "Kroki",
-          "execution": "service",
-          "port": 8000,
-          "version": "0.33.0",
-          "license": "MIT",
-          "source": "https://github.com/yuzutech/kroki"
-        },
-        {
           "id": "typst",
           "name": "Typst",
           "execution": "tools-container",
@@ -18488,20 +18401,11 @@
       ],
       "images": {
         "node-build": "docker.io/library/node@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea",
-        "kroki-upstream": "docker.io/yuzutech/kroki@sha256:a4341ac44cd2590124da7142d13fdf5d83eadc2b94c023d018a2227695a30da1",
         "go-build": "docker.io/library/golang@sha256:fbb7ae40b62ff8afe31662df570d39b4f5052ac32b90dae8e60d7657a20a74f4"
       },
       "builds": {
         "tools": {
           "source": "runtime/design/tools",
-          "base": "node-build"
-        },
-        "kroki": {
-          "source": "runtime/design/kroki",
-          "base": "node-build"
-        },
-        "kroki-excalidraw": {
-          "source": "runtime/design/excalidraw",
           "base": "node-build"
         }
       },
@@ -28246,8 +28150,8 @@
     },
     {
       "path": "skills/agent-coordination/references/model-routing.md",
-      "bytes": 24149,
-      "sha256": "1d8293b44150bb194ad3a3297575c2de3289a27e79c5fa16f3abfd4c576fe382"
+      "bytes": 24151,
+      "sha256": "096109087a112543e96cea52c172126e0a1d0b3258467b3386a8f09547fe98e4"
     },
     {
       "path": "skills/agent-coordination/references/task-evidence.md",
@@ -28676,8 +28580,8 @@
     },
     {
       "path": "skills/graphic-design/references/diagram-semantics.md",
-      "bytes": 5623,
-      "sha256": "4be5f9e3c09c6db2b52a0c57e27f31e4a67d210f4ddc043d124ce77153d4391f"
+      "bytes": 5658,
+      "sha256": "b712130b459517918b9f7e07862593e8bb91de8e8eed3bbb314de064045b38a0"
     },
     {
       "path": "skills/graphic-design/references/image-production.md",
@@ -28686,8 +28590,8 @@
     },
     {
       "path": "skills/graphic-design/references/production-and-proof.md",
-      "bytes": 7461,
-      "sha256": "26364fcb7d94b802a9c2d3f6fd508d0fdd5464a5a92e7463d1fd50d3c9300287"
+      "bytes": 7474,
+      "sha256": "780527c4a4924f80b3470d0414ecbbcd130c22d494608955656393980b54a7b1"
     },
     {
       "path": "skills/infrastructure-engineering/references/environment-change.md",
@@ -28726,8 +28630,8 @@
     },
     {
       "path": "skills/interface-design/references/public-page-composition.md",
-      "bytes": 9218,
-      "sha256": "8db081bbf8db4c38b0c8feac45c51101c9d7bae7034b1b5699724a81c44271cf"
+      "bytes": 9226,
+      "sha256": "fdf765e4e06656b89f6cf6c1c34967eee80148ccde191f433f9411c096136eb0"
     },
     {
       "path": "skills/interface-design/references/typography-proof.md",
@@ -28836,8 +28740,8 @@
     },
     {
       "path": "skills/skill-catalog/references/task-routing.md",
-      "bytes": 21563,
-      "sha256": "2d92b700bb8c87e59624defd12fdfd7331c4c7547a54f11079bfb365fcf3cf3d"
+      "bytes": 21618,
+      "sha256": "0f1da6dcde334dfa6d3ff084a92885df87e035a02973460a9022f6c39cb0ab14"
     },
     {
       "path": "skills/spreadsheet-analysis/references/recalculation-evidence.md",
@@ -29320,11 +29224,6 @@
       "from": "package:design",
       "relation": "exposes",
       "to": "tool:design/d2_render"
-    },
-    {
-      "from": "package:design",
-      "relation": "exposes",
-      "to": "tool:design/kroki_render"
     },
     {
       "from": "package:design",
@@ -34912,56 +34811,6 @@
       "to": "tool:inspect_image"
     },
     {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:design/kroki_render"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:inspect_image"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:workspace_list"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:workspace_read"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:workspace_search"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "allows",
-      "to": "tool:workspace_write"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "default_role",
-      "to": "role:graphic-design"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "required_tools",
-      "to": "tool:design/kroki_render"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "required_tools",
-      "to": "tool:inspect_image"
-    },
-    {
-      "from": "workflow:diagram-service",
-      "relation": "verification_tools",
-      "to": "tool:inspect_image"
-    },
-    {
       "from": "workflow:editable-export",
       "relation": "allows",
       "to": "tool:design/openpencil_export"
@@ -35717,7 +35566,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "c3cd6804692f8a5567ac5c63b39bc0d7318890741c65110ac318d88409807cf1",
+  "source_sha256": "a9b54f91ddcdb7c7828ee37c310e389ff4df5366dd226650469934b7321f9198",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
@@ -35920,15 +35769,6 @@
       "outer_timeout_ms": 240000
     },
     {
-      "name": "kroki_render",
-      "description": "POST a diagram to Kroki and inspect its optimized SVG or PNG output. D2 architecture diagrams use the pinned local D2/TALA producer through d2_render.",
-      "policy": {
-        "min_tier": "T1_DETERMINISTIC",
-        "requires_vision": false
-      },
-      "outer_timeout_ms": 240000
-    },
-    {
       "name": "d2_render",
       "description": "Render a local D2 architecture diagram with the pinned D2 0.9.0/TALA producer. No network service is started; output is published atomically after bounded local compilation.",
       "policy": {
@@ -35957,7 +35797,7 @@
     },
     {
       "name": "vector_render",
-      "description": "Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Graph layouts belong to Kroki.",
+      "description": "Render authored vector artwork: preserve semantic SVG groups and IDs, optimize with SVGO and produce a bounded native resvg PNG preview for visual inspection. Previews use pinned DejaVu font fallbacks; supply local fonts for exact typography. Use D2/TALA for semantic architecture diagrams.",
       "policy": {
         "min_tier": "T1_DETERMINISTIC",
         "requires_vision": false
@@ -39691,8 +39531,8 @@
     {
       "id": "interface-design",
       "path": "skills/interface-design/SKILL.md",
-      "bytes": 10370,
-      "sha256": "dd0dd488c045e2ff60c3c14675aac1776b8731dbdec7ef6b373814a54837b149",
+      "bytes": 10385,
+      "sha256": "01676a65219a77e3976375f5e7f6014a04acb3cff9b9073e4edffa06f71d0ea1",
       "description": "Build and refine usable product screens and public pages with deliberate visual direction, real content, working states and inspected browser evidence. Use for UI design, redesign, visual polish and interaction work. Skip backend-only changes.",
       "headings": [
         "Professional stance",
@@ -39771,8 +39611,8 @@
     {
       "id": "svg-animation",
       "path": "skills/svg-animation/SKILL.md",
-      "bytes": 6299,
-      "sha256": "ccb5bd16594dd7121525a0c723151761c5fbf821c4ee9285a45b8565ab77cf3e",
+      "bytes": 6307,
+      "sha256": "1e6bee69b942aacf6c123e49efd0a1ac6a55fd8f8c84abf1fe3119aace76defa",
       "description": "Design, implement, or critique SVG animation, animated vector illustrations, logo reveals, path drawing, morphs, and SVG motion sequences. Use for vector choreography with editable geometry, reduced motion, playback and integration checks; ordinary UI transitions use motion-design.",
       "headings": [
         "Establish the motion contract",
@@ -40269,8 +40109,8 @@
     {
       "id": "graphic-design",
       "path": "skills/graphic-design/SKILL.md",
-      "bytes": 10875,
-      "sha256": "9c5090f4ab1e87bb55ffe343576cca1061aa129dcdb73f4c5bfa2fac1894fcca",
+      "bytes": 10928,
+      "sha256": "985a4328ef557b4dc0499162e85b8cdb5170daa941315e2330d1edea83b51afa",
       "description": "Create and refine visual identities, illustrations, posters, campaign graphics, diagrams and coherent asset families. Use for graphic composition, typography, visual storytelling and production exports for screen or print. Pair with interface-design for working UI and the available native document or media skill for its file format.",
       "headings": [
         "Professional stance",
@@ -43755,10 +43595,6 @@
       "kind": "worker_tool"
     },
     {
-      "id": "tool:design/kroki_render",
-      "kind": "worker_tool"
-    },
-    {
       "id": "tool:design/odiff_compare",
       "kind": "worker_tool"
     },
@@ -43832,10 +43668,6 @@
     },
     {
       "id": "workflow:diagram",
-      "kind": "workflow"
-    },
-    {
-      "id": "workflow:diagram-service",
       "kind": "workflow"
     },
     {
@@ -43919,12 +43751,6 @@
     ],
     "MIRKET_CODEX_TRANSPORT_CAPABILITY": [
       "src/router/codex.rs"
-    ],
-    "MIRKET_DESIGN_GROUPS": [
-      "runtime/design/tools/server.mjs",
-      "runtime/design/tools/test/openpencil.test.mjs",
-      "runtime/design/tools/test/simplification.test.mjs",
-      "src/packages/services.rs"
     ],
     "MIRKET_DESIGN_TOKENS": [
       "runtime/design/tools/openpencil.mjs",

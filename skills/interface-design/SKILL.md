@@ -114,7 +114,7 @@ the reference does not require another planning document.
 - Implement real state transitions: filters change results; save controls change
   saved state; dialogs open, close and restore focus. Include empty/error/loading
   states when the real data contract needs them, not as decorative screenshots.
-- Choose assets deliberately. Use source SVG for editable icons and marks, Kroki for diagrams,
+- Choose assets deliberately. Use source SVG for editable icons and marks, local D2/TALA for system diagrams,
   and vector illustration; use supplied/licensed/generated raster when the work
   needs photography or painterly imagery. Inspect the asset in its composition.
 - Let content wrap and reflow intentionally. Test long labels, narrow containers,

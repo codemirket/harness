@@ -33,15 +33,6 @@
       "source": "https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5"
     },
     {
-      "id": "kroki",
-      "name": "Kroki",
-      "execution": "service",
-      "port": 8000,
-      "version": "0.33.0",
-      "license": "MIT",
-      "source": "https://github.com/yuzutech/kroki"
-    },
-    {
       "id": "typst",
       "name": "Typst",
       "execution": "tools-container",
@@ -110,20 +101,11 @@
   ],
   "images": {
     "node-build": "docker.io/library/node@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea",
-    "kroki-upstream": "docker.io/yuzutech/kroki@sha256:a4341ac44cd2590124da7142d13fdf5d83eadc2b94c023d018a2227695a30da1",
     "go-build": "docker.io/library/golang@sha256:fbb7ae40b62ff8afe31662df570d39b4f5052ac32b90dae8e60d7657a20a74f4"
   },
   "builds": {
     "tools": {
       "source": "runtime/design/tools",
-      "base": "node-build"
-    },
-    "kroki": {
-      "source": "runtime/design/kroki",
-      "base": "node-build"
-    },
-    "kroki-excalidraw": {
-      "source": "runtime/design/excalidraw",
       "base": "node-build"
     }
   },

@@ -102,23 +102,6 @@ PAYLOADS = {
         'resvg': ('opt/design/node_modules/@resvg/*/*.node',),
         'canvaskit': ('opt/design/node_modules/canvaskit-wasm/bin/*.wasm',),
     },
-    'kroki': {
-        'node': ('usr/local/bin/node',),
-        'java': ('usr/lib/jvm/*/bin/java',),
-        'gateway': ('opt/kroki/kroki-server.jar',),
-        'd2': ('usr/bin/d2',),
-        'plantuml': ('usr/bin/plantuml',),
-        'plantuml-awt': ('usr/bin/libawt.so',),
-        'plantuml-fonts': ('usr/bin/libfontmanager.so',),
-        'plantuml-jvm': ('usr/bin/libjvm.so',),
-        'vega': ('usr/bin/vega',),
-    },
-    'kroki-excalidraw': {
-        'node': ('usr/local/bin/node',),
-        'chromium': ('opt/chrome/*/chrome',),
-        'application': ('opt/kroki/excalidraw/assets/index.bundle.js',),
-        'browser-bundle-inputs': ('opt/kroki/excalidraw/assets/bundle-inputs.json',),
-    },
     'agent-runtime': {
         'embedding-helper': ('opt/agent/mirket-embed',),
         'onnx-runtime': ('opt/native/libonnxruntime.so*', 'opt/native/*/libonnxruntime.so*'),

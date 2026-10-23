@@ -136,7 +136,7 @@ test('actual MCP discovery and calls expose the clean batch contract',async()=>{
   const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
   const client=new Client({name:'openpencil-integration-test',version:'1'});
-  const transport=new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace,MIRKET_DESIGN_GROUPS:'core'},stderr:'pipe'});
+  const transport=new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:workspace,MIRKET_DESIGN_WORKSPACE:workspace},stderr:'pipe'});
   try{
     await client.connect(transport);
     const listed=await client.listTools();
@@ -167,7 +167,7 @@ test('schema discovery writes nothing and remains available while the render slo
   const schemaRoot=await fs.mkdtemp(path.join(os.tmpdir(),'mirket-schema-'));
   async function connect(root){
     const client=new Client({name:'schema-inspection',version:'1'});
-    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:root,MIRKET_DESIGN_WORKSPACE:root,MIRKET_DESIGN_GROUPS:'core'},stderr:'pipe'}));
+    await client.connect(new StdioClientTransport({command:process.execPath,args:[new URL('../server.mjs',import.meta.url).pathname],env:{PATH:process.env.PATH,HOME:root,MIRKET_DESIGN_WORKSPACE:root},stderr:'pipe'}));
     return client;
   }
   let client=await connect(schemaRoot);

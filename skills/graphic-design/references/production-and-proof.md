@@ -9,8 +9,8 @@ requirements from the destination or provider before a costly final export.
 | --- | --- | --- |
 | Photography, texture, painterly illustration | Available host image generation/editing or supplied/licensed raster; Sharp for preparation | Subject construction, focal details, crop, resolution and artifact-free edges |
 | Logo, icon, scalable flat illustration | Editable vector source then SVGO | Real paths/text, silhouette, small-size detail and clean export |
-| System, flow, C4 or sequence explanation | Semantic diagram source rendered with Kroki | Every relationship, label, branch and direction against the source |
-| Quantitative chart | Source-backed Vega-Lite through Kroki, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |
+| Architecture or system explanation | Semantic `.d2` source rendered with local D2/TALA | Every relationship, label, branch and direction against the source |
+| Quantitative chart | Source-backed chart from the relevant project tool, or spreadsheet analysis for calculations | Data, scale, units, labels and visual interpretation |
 | Paged presentation or report | Typst with compiled tokens and linked or embedded assets | Every final page/slide at delivery size and exported output |
 | Animation or video | Explicitly selected host encoder; Mirket bundles no video renderer | Playback, key frames, timing, captions and final encoded artifact |
 

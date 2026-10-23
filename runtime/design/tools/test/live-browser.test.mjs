@@ -145,7 +145,7 @@ test('malicious HTML cannot read host files, contact companions or write job inp
   const relative=`qa/hostile-${crypto.randomUUID()}`;
   const root=path.join(workspace,relative);await fs.mkdir(root,{recursive:true});
   const html=`<!doctype html><html lang="en"><head><title>Isolation probe</title></head><body><div id="result">pending</div><script>
-    const urls=['file:///etc/passwd','http://kroki:8000/health','http://host.containers.internal/','http://127.0.0.1:8000/'];
+    const urls=['file:///etc/passwd','http://untrusted.internal:8000/health','http://host.containers.internal/','http://127.0.0.1:8000/'];
     Promise.all(urls.map(url=>fetch(url).then(r=>r.ok?'LEAK':'blocked').catch(()=>'blocked'))).then(async results=>{
       const write=await fetch(location.href,{method:'PUT',body:'MODIFIED'}).then(r=>r.ok?'WRITE':'blocked').catch(()=>'blocked');
       document.querySelector('#result').textContent=results.concat(write).join(',');document.querySelector('#result').dataset.done='yes';

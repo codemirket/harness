@@ -172,16 +172,38 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
     let inventory = images["images"]
         .as_object()
         .context("image inventory missing")?;
-    for alias in [
+    let expected_aliases: BTreeSet<&str> = [
         "design-tools",
         "agent-runtime",
-        "kroki",
-        "kroki-excalidraw",
         "node-build",
         "go-build",
         "agent-build",
         "agent-base",
-        "kroki-upstream",
+    ]
+    .into_iter()
+    .collect();
+    ensure!(
+        inventory
+            .keys()
+            .map(String::as_str)
+            .collect::<BTreeSet<_>>()
+            == expected_aliases,
+        "image inventory has missing or retired runtime aliases"
+    );
+    let refs = bundle["image_reports"]
+        .as_object()
+        .context("raw image report references missing")?;
+    ensure!(
+        refs.keys().map(String::as_str).collect::<BTreeSet<_>>() == expected_aliases,
+        "image reports have missing or retired runtime aliases"
+    );
+    for alias in [
+        "design-tools",
+        "agent-runtime",
+        "node-build",
+        "go-build",
+        "agent-build",
+        "agent-base",
     ] {
         let image = inventory
             .get(alias)
@@ -190,9 +212,6 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
             image["inventory_complete"] == true,
             "image inventory incomplete: {alias}"
         );
-        let refs = bundle["image_reports"]
-            .as_object()
-            .context("raw image report references missing")?;
         let raw = evidence(root, refs.get(alias).context("raw image report missing")?)?;
         ensure!(
             refs[alias]["sha256"] == image["report_sha256"],
@@ -218,7 +237,7 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
                 }
             }
         }
-        if ["design-tools", "agent-runtime", "kroki", "kroki-excalidraw"].contains(&alias) {
+        if ["design-tools", "agent-runtime"].contains(&alias) {
             ensure!(
                 image["payloads"]["inventory_complete"] == true,
                 "native/browser payload coverage missing"
@@ -233,20 +252,12 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
     for (name, bytes) in [
         ("Cargo.lock", include_bytes!("../../Cargo.lock").as_slice()),
         (
-            "runtime/design/excalidraw-server/package-lock.json",
-            include_bytes!("../../runtime/design/excalidraw-server/package-lock.json").as_slice(),
-        ),
-        (
             "runtime/agent/native/Cargo.lock",
             include_bytes!("../../runtime/agent/native/Cargo.lock").as_slice(),
         ),
         (
             "runtime/design/tools/package-lock.json",
             include_bytes!("../../runtime/design/tools/package-lock.json").as_slice(),
-        ),
-        (
-            "runtime/design/excalidraw/package-lock.json",
-            include_bytes!("../../runtime/design/excalidraw/package-lock.json").as_slice(),
         ),
     ] {
         ensure!(
@@ -297,7 +308,7 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
             required.insert(text(&Value::Object(binaries.clone()), name)?.to_owned());
         }
     }
-    for alias in ["design-tools", "agent-runtime", "kroki", "kroki-excalidraw"] {
+    for alias in ["design-tools", "agent-runtime"] {
         required.insert(text(&inventory[alias], "image_id")?.to_owned());
     }
     let mut seen = BTreeSet::new();
@@ -408,8 +419,8 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
         )?;
     }
     ensure!(
-        required.is_subset(&seen),
-        "artifact SBOM/provenance coverage incomplete"
+        required == seen,
+        "artifact SBOM/provenance coverage differs from reviewed runtime"
     );
     Ok(())
 }

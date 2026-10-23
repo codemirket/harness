@@ -17,11 +17,9 @@ import tempfile
 from image_contents import payload_inventory
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILT = ("design-tools", "agent-runtime", "kroki", "kroki-excalidraw")
+BUILT = ("design-tools", "agent-runtime")
 REQUIRED_TYPES = {
     "design-tools": {"node-pkg", "gobinary"},
-    "kroki": {"jar", "gobinary"},
-    "kroki-excalidraw": {"node-pkg"},
     # The 0.0.1 agent image ships native Rust and ONNX assets; it has no
     # Python package inventory. OS package coverage remains mandatory.
     "agent-runtime": set(),

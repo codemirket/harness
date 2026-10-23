@@ -55,7 +55,7 @@ permissions.
   and reference their outputs in authored source. Captures and saved-file exports
   observe existing sources without injecting tokens. Route
   live UI to Playwright, editable design files to OpenPencil file tools,
-  architecture diagrams to local D2/TALA, other diagram syntax to explicitly selected Kroki services (select Excalidraw explicitly), paged work to
+  architecture and system diagrams to local D2/TALA, paged work to
   Typst, vector artwork through SVG authoring and resvg previews, SVG hygiene through SVGO,
   raster preparation through Sharp, static Flexbox graphics to Satori/resvg,
   and comparable pixels to Odiff. Inspect actual outputs and do not invent tool

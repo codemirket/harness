@@ -267,7 +267,7 @@ mirket --home /absolute/test-home package probe design --schemas
 Place bounded fixtures in the reported shared workspace. Invoke the actual
 MCP tools with `package call` or a native SDK client: compile tokens, render a
 Satori card, capture a full-DOM page at 2x, create/edit/export an OpenPencil file,
-render Kroki diagrams with explicit Excalidraw selection when needed, compile a
+render architecture diagrams with local D2/TALA, compile a
 multi-page Typst PDF, transform a raster with Sharp, render editable vector art,
 and compare equal and changed pixels with Odiff. Exercise core alone and optional
 diagrams group and core OpenPencil tools, input and animation states, cancellation and memory bounds.

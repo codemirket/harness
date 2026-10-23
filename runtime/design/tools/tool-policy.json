@@ -11,10 +11,6 @@
     "min_tier": "T1_DETERMINISTIC",
     "requires_vision": false
   },
-  "kroki_render": {
-    "min_tier": "T1_DETERMINISTIC",
-    "requires_vision": false
-  },
   "d2_render": {
     "min_tier": "T1_DETERMINISTIC",
     "requires_vision": false

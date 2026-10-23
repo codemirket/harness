@@ -1,9 +1,10 @@
 # Design the relationship before the diagram
 
 Use for explanatory flows, architecture, provenance and state diagrams. The
-existing production-and-proof reference owns rendering and export. Kroki remains
-the route for supported declarative graph/sequence layouts; this method does not
-replace layout engines with manually positioned graph nodes.
+existing production-and-proof reference owns rendering and export. The design
+package uses local D2/TALA for architecture and system diagrams. Use an explicitly
+selected host tool for other syntax; do not replace layout with manually
+positioned graph nodes.
 
 ## Decide what the reader must infer
 
