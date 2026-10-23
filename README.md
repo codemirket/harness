@@ -54,8 +54,9 @@ Inspect my OS, architecture, available host and any existing Mirket setup.
 Use the official codemirket/harness release, verify its checksum before
 execution, and install the managed executable under my home’s .mirket/bin.
 Keep Mirket runtime data under the same .mirket root. Preserve unrelated
-host settings, credentials and project source files. Mirket 0.0.1 starts with
-fresh native state; pre-0.0.1 data is not imported. Keep optional packages opt-in.
+host settings, credentials and project source files. Preserve existing 0.0.1
+native state; pre-0.0.1 data is not imported. Ask before removing an existing
+installation. Keep optional packages opt-in.
 
 Run setup and health checks, report the installed version and actual results,
 and explain any fresh-session step needed to activate the tools. Do not claim
