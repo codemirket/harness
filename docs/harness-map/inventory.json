@@ -5,8 +5,8 @@
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 8790,
-      "sha256": "dca361e1b9142693e44f4988dc9cbbd04e55b280159225ae17c44082427423aa"
+      "bytes": 8832,
+      "sha256": "d4f6831e932ec4f71c5884c425038914727410ec65f0f1a6b3b97a95444162d2"
     },
     {
       "path": "AGENTS.md",
@@ -2340,8 +2340,8 @@
     },
     {
       "path": "src/dev/security_gate.rs",
-      "bytes": 20591,
-      "sha256": "24faa9c2b37c31fd29b48d4894f8b95c1bfba31c7a8ab565f11a01193bb362f0"
+      "bytes": 20727,
+      "sha256": "98412b6a72a8ac750e87c66c52a4d7f132548c2df5e64d3f765c9f0c1d79cc98"
     },
     {
       "path": "src/dev.rs",
@@ -2425,8 +2425,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 90352,
-      "sha256": "7ead2befd04fb2061d1aefdc700ce7099cddd4e520e6e0f65e9c1a5ff78de89f"
+      "bytes": 90440,
+      "sha256": "8f94866d690e6156946de5e9cf740b48c8e021b17e348bd596dc3d527fe1ead4"
     },
     {
       "path": "src/paths.rs",
@@ -35717,7 +35717,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "2e8ead5cea54684e4bc1633293cef3bdc6d79391f9827b029837db5d5c4b3df6",
+  "source_sha256": "c3cd6804692f8a5567ac5c63b39bc0d7318890741c65110ac318d88409807cf1",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

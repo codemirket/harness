@@ -748,6 +748,8 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
     let mut args = vec![
         "run".into(),
         "--rm".into(),
+        "--userns=keep-id:uid=1000,gid=1000".into(),
+        "--user=1000:1000".into(),
         "--network=none".into(),
         "--read-only".into(),
         "--cap-drop=ALL".into(),

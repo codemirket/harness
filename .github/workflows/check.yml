@@ -105,7 +105,7 @@ jobs:
           subject-path: |
             dist/mirket*
             dist/install-*
-          predicate-type: 'https://slsa.dev/provenance/v1'
+          predicate-type: 'https://github.com/codemirket/harness/provenance/v1'
           predicate-path: 'dist/mirket-provenance.json'
       - name: Retain signature bundle with candidate artifacts
         if: steps.provenance.outputs.bundle-path != ''
@@ -167,7 +167,7 @@ jobs:
           subject-path: |
             ${{ runner.temp }}/oci-evidence/*.tar
             ${{ runner.temp }}/oci-evidence/*-sbom.cdx.json
-          predicate-type: 'https://slsa.dev/provenance/v1'
+          predicate-type: 'https://github.com/codemirket/harness/provenance/v1'
           predicate-path: '${{ runner.temp }}/oci-evidence/provenance.json'
       - name: Retain OCI signature bundle
         run: cp '${{ steps.oci_provenance.outputs.bundle-path }}' "$RUNNER_TEMP/oci-evidence/sigstore.jsonl"

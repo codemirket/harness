@@ -103,3 +103,14 @@ platform checks, actual contained rendering, embedding/recall thresholds,
 backup/recovery and performance comparison remain mandatory. Stage installations
 in disposable homes. Live Codex activation and rollback require deployment
 authorization and are reported separately from predeployment evidence.
+
+### Provenance v1
+
+The signed in-toto predicate type is
+`https://github.com/codemirket/harness/provenance/v1`. It records the owned
+build type, exact compiled source digest, target/version parameters and OCI
+archive-to-image byproducts. This is Mirket's custom provenance contract, not
+an assertion of SLSA certification or GitHub's standard workflow build type.
+GitHub Actions signs artifacts and their SBOMs with this predicate; promotion
+verifies the certificate/workflow identity, predicate type, source digest and
+actual subject bytes. Local unsigned records do not satisfy that gate.
