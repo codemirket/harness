@@ -449,6 +449,23 @@ mod tests {
 
     #[test]
     fn recipe_covers_runtime_models_lock_and_notices() {
+        let manifest: toml_edit::DocumentMut =
+            include_str!("../../runtime/agent/native/Cargo.toml")
+                .parse()
+                .unwrap();
+        let lock: toml_edit::DocumentMut = include_str!("../../runtime/agent/native/Cargo.lock")
+            .parse()
+            .unwrap();
+        let version = env!("CARGO_PKG_VERSION");
+        assert_eq!(manifest["package"]["version"].as_str(), Some(version));
+        assert!(
+            lock["package"]
+                .as_array_of_tables()
+                .unwrap()
+                .iter()
+                .any(|package| package["name"].as_str() == Some("mirket")
+                    && package["version"].as_str() == Some(version))
+        );
         let files = files();
         for name in [
             "embed.rs",

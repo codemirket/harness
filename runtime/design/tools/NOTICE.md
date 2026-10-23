@@ -19,7 +19,7 @@ The fixed production dependency versions and transitive package integrity hashes
 | style-dictionary | 5.7.0 | Apache-2.0 |
 | svgo | 4.1.0 | MIT |
 
-The image also installs Typst 0.15.1 from its official release archive after SHA-256 verification, D2 0.9.0 built from checksum-verified upstream source with Go 1.27.3 and reviewed module locks (MPL-2.0), Chrome for Testing 156.0.8078.47 tested with Playwright 1.64.1, and Debian fonts packages. Typst is Apache-2.0; Debian package licenses are provided in `/usr/share/doc` inside the image. See each installed npm package's `LICENSE` file for complete license terms and notices.
+The image also installs Typst 0.15.1 from its official release archive after SHA-256 verification, D2 0.9.0 built from checksum-verified upstream source with Go 1.27.3 and reviewed module locks (MPL-2.0), Chrome for Testing 156.0.8078.47 tested with Playwright 1.64.1, and Debian fonts packages. Tini 0.19.0 (MIT) runs as the image-owned PID 1 to forward signals and reap children; its exact Debian build revision appears in the image SBOM and its notice is `/usr/share/doc/tini/copyright`. Typst is Apache-2.0; Debian package licenses are provided in `/usr/share/doc` inside the image. See each installed npm package's `LICENSE` file for complete license terms and notices.
 
 OpenPencil uses its official published CLI, engine, .fig/.pen codecs, CanvasKit and
 Yoga WASM dependencies, all pinned with integrity hashes in the npm lock. No

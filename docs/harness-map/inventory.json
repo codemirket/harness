@@ -60,8 +60,8 @@
     },
     {
       "path": "docs/third-party-notices.md",
-      "bytes": 50246,
-      "sha256": "203329d2e23069b9c4e977f4ea418d569e6a3204005b5250225f55520c27ea2e"
+      "bytes": 50259,
+      "sha256": "b7233e4ad0d7d0e0f080ea7fee07b6936a0c3781fb573be81c893a84e681c7bd"
     },
     {
       "path": "evals/dependency-audit/README.md",
@@ -786,7 +786,7 @@
     {
       "path": "runtime/agent/NOTICE.md",
       "bytes": 1228,
-      "sha256": "1360f84f591f3e86e94786a57f8a4b5fd838258c06742173ed767116c3fc9257"
+      "sha256": "7ef13b5b6491dcd2fd202ce50b664357a4381d50365bb0d99af85a98f8b6356d"
     },
     {
       "path": "runtime/agent/embed.rs",
@@ -801,12 +801,12 @@
     {
       "path": "runtime/agent/native/Cargo.lock",
       "bytes": 27761,
-      "sha256": "38d484266dbd4a53bfede9679da4ad851a4bad0a9c0af9c8c6533cd9dd63b594"
+      "sha256": "a194b4c77044d983a0e2aa4eb123cd288f7f81d77194454202e96d91b5d4b3f7"
     },
     {
       "path": "runtime/agent/native/Cargo.toml",
       "bytes": 593,
-      "sha256": "72028082087b8272d85b33223888356a91d4cd61b95879036d0357ee39fc2fe3"
+      "sha256": "4840fb2e8fae567fb0a47e86a1092d38cf116dcef139a495e1395f9584f4ebcf"
     },
     {
       "path": "runtime/agent/native.json",
@@ -820,13 +820,13 @@
     },
     {
       "path": "runtime/design/tools/Dockerfile",
-      "bytes": 8063,
-      "sha256": "d7738cf66ec3d9f5d84b6645d40dc7141f7fdd0e08c5855ec9b36ed902c83876"
+      "bytes": 8109,
+      "sha256": "d797e346eb82088474c4a99fd684ca132efa53fa079511464494a1d2a3fc87fb"
     },
     {
       "path": "runtime/design/tools/NOTICE.md",
-      "bytes": 15313,
-      "sha256": "9141c1dc5c59a5b349f1efa37b87f52df8e8f618f8bf13b4366ca7711983b7d1"
+      "bytes": 15508,
+      "sha256": "a391d5477f1e42f53681c0f9d8929d9dc186cf542026710c2f85f950fee964e0"
     },
     {
       "path": "runtime/design/tools/browser-seccomp.json",
@@ -880,8 +880,8 @@
     },
     {
       "path": "runtime/design/tools/operations.mjs",
-      "bytes": 48630,
-      "sha256": "be38a2c9f3568dec76ed861fd59916ac8d44424decdafc4fcff6fe5c8270caae"
+      "bytes": 48974,
+      "sha256": "3cdbae76442a1b7f08d7b974bd6240fe19b80d22b0a1e6e9d8bc79e2f5fe6019"
     },
     {
       "path": "runtime/design/tools/package-lock.json",
@@ -930,13 +930,13 @@
     },
     {
       "path": "runtime/design/tools/test/live-browser.test.mjs",
-      "bytes": 12978,
-      "sha256": "76e330e6a90495eea776c2bd939e440b25cb81019a9eb2affcaaa52f2aecdced"
+      "bytes": 14320,
+      "sha256": "dae4891fe2e1d138808e6cee38c08046d543d91a6b04851a7b6f24d5c4705fe4"
     },
     {
       "path": "runtime/design/tools/test/local.test.mjs",
-      "bytes": 26654,
-      "sha256": "326898cccd01f5c3fb7441b3c4d04b2de68596f46dd97053cc8257321b0a6a26"
+      "bytes": 26801,
+      "sha256": "d519d8c8faba5921a86ff72eea4918e24dcc4bacd25287c3eb1b1546e99e85ea"
     },
     {
       "path": "runtime/design/tools/test/native-media.test.mjs",
@@ -2350,8 +2350,8 @@
     },
     {
       "path": "src/packages/agent.rs",
-      "bytes": 25926,
-      "sha256": "183c14c4cf52d1297a7535da1e311ad230e02b4ee088513ac5faf6860e3b2636"
+      "bytes": 26644,
+      "sha256": "4c7af520e41d461163c6402bc7efb29e6783ba0f0fc1f3088603ea3401365cbc"
     },
     {
       "path": "src/packages/audit.rs",
@@ -2375,8 +2375,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 73635,
-      "sha256": "78c8a9f54dded77e31da37f637730356ac4ed7cadeedc08a92d4a13e23965cf1"
+      "bytes": 74087,
+      "sha256": "75779e05028d603e32304fa4bd8a5049d1fc31c3a08243c5cda6e54cd2cf47a5"
     },
     {
       "path": "src/paths.rs",
@@ -26990,7 +26990,7 @@
         }
       }
     },
-    "native_manifest": "[package]\nname = \"mirket\"\nversion = \"0.0.1\"\nedition = \"2024\"\nrust-version = \"1.99\"\nlicense = \"MIT\"\ndescription = \"Mirket contained offline embedding helper\"\n\n[dependencies]\nanyhow = \"1.0\"\nfastembed = { version = \"=7.2.0\", default-features = false, features = [\"ort-load-dynamic\"] }\nort = { version = \"=2.0.0-rc.15\", default-features = false, features = [\"std\", \"load-dynamic\", \"api-24\"] }\nserde = { version = \"1.0\", features = [\"derive\"] }\nserde_json = \"1.0\"\nsha2 = \"0.10\"\n\n[[bin]]\nname = \"mirket-embed\"\npath = \"../embed.rs\"\n\n[profile.release]\nlto = \"thin\"\ncodegen-units = 1\nstrip = \"symbols\"\n",
+    "native_manifest": "[package]\nname = \"mirket\"\nversion = \"0.0.3\"\nedition = \"2024\"\nrust-version = \"1.99\"\nlicense = \"MIT\"\ndescription = \"Mirket contained offline embedding helper\"\n\n[dependencies]\nanyhow = \"1.0\"\nfastembed = { version = \"=7.2.0\", default-features = false, features = [\"ort-load-dynamic\"] }\nort = { version = \"=2.0.0-rc.15\", default-features = false, features = [\"std\", \"load-dynamic\", \"api-24\"] }\nserde = { version = \"1.0\", features = [\"derive\"] }\nserde_json = \"1.0\"\nsha2 = \"0.10\"\n\n[[bin]]\nname = \"mirket-embed\"\npath = \"../embed.rs\"\n\n[profile.release]\nlto = \"thin\"\ncodegen-units = 1\nstrip = \"symbols\"\n",
     "native_lock": [
       {
         "name": "ahash",
@@ -27431,7 +27431,7 @@
       },
       {
         "name": "mirket",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "dependencies": [
           "anyhow",
           "fastembed",
@@ -35566,7 +35566,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "6fd6cc0aeeea7e2ba826996f3addc0427432b78121f2b196b39fcc05060ba0b0",
+  "source_sha256": "f538408306774d65089c5ed8335b55617c6b0c23151de77e0bb69e38e9bfb357",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

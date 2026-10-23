@@ -50,7 +50,7 @@ OpenPencil 0.16.0 (MIT) is installed from the npm lock, including its published
 CLI, engine, file codecs and transitive MCP package. Only the headless CLI is
 invoked. Upstream license files remain in node_modules; CanvasKit, Yoga and bundled
 fonts retain their own notices. Source: https://github.com/open-pencil/open-pencil/tree/ffe2fc5798468988a5943c5f5737905c3c7a28b5.
-Playwright and Sharp are Apache-2.0; Chromium, libvips, codecs, fonts and diagram
+Playwright and Sharp are Apache-2.0; Tini is MIT; Chromium, libvips, codecs, fonts and diagram
 engines retain their individual notices. No model checkpoint or local neural
 inference runtime is distributed by the design package.
 

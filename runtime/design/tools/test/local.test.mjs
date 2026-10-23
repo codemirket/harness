@@ -18,6 +18,7 @@ test('axe accessibility evidence fails on violations and preserves incomplete re
   assert.deepEqual(accessibilityQa({engine:'axe-core', violations:[], incomplete:[{id:'color-contrast'}]}), {status:'passed', violations:0, incomplete:1, requires_human_review:true});
   assert.equal(accessibilityQa({engine:'axe-core', violations:[{id:'button-name'}], incomplete:[]}).status, 'failed');
   assert.equal(accessibilityQa({engine:'other'}).status, 'unverified');
+  assert.deepEqual(accessibilityQa({status:'not_applicable', reason:'non-HTML document'}), {status:'not_applicable', reason:'non-HTML document'});
 });
 
 test('D2 producer refuses non-D2 inputs before invoking a renderer', async () => {

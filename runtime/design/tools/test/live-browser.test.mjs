@@ -48,6 +48,30 @@ if (process.env.MIRKET_ISOLATED_TEST === '1') {
 }
 
 // Opt in only inside a running tools service with its real workspace HTTP server.
+test('D2 SVG renders and receives visual QA without an HTML accessibility claim', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1', timeout: 90000}, async () => {
+  const {workspace} = await import('../paths.mjs');
+  const {d2Render} = await import('../operations.mjs');
+  const relative = `qa/d2-svg-${crypto.randomUUID()}`;
+  const root = path.join(workspace, relative);
+  let screenshot;
+  await fs.mkdir(root, {recursive:true});
+  try {
+    await fs.writeFile(path.join(root, 'diagram.d2'), 'codex -> mirket: routes\nmirket -> design: renders\n');
+    const result = await d2Render({source:`${relative}/diagram.d2`, output:`${relative}/diagram.svg`});
+    assert.equal(result.qa.status, 'captured');
+    assert.equal(result.qa.accessibility.status, 'not_applicable');
+    assert.equal(result.qa.evidence.accessibility.status, 'not_applicable');
+    const svg = await fs.readFile(path.join(root, 'diagram.svg'), 'utf8');
+    assert.match(svg, /codex/);
+    assert.match(svg, /design/);
+    screenshot = result.qa.screenshot.path;
+    assert.equal(crypto.createHash('sha256').update(await fs.readFile(path.join(workspace, screenshot))).digest('hex'), result.qa.screenshot.sha256);
+  } finally {
+    if (screenshot) await fs.rm(path.join(workspace, screenshot), {force:true});
+    await fs.rm(root, {recursive:true,force:true});
+  }
+});
+
 test('real Chromium captures viewport and full page at exactly 2x and seeks reproducibly', {skip: process.env.MIRKET_LIVE_BROWSER_TEST !== '1', timeout: 90000}, async () => {
   const {workspace} = await import('../paths.mjs');
   const {browserScreenshot, odiffCompare} = await import('../operations.mjs');

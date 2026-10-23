@@ -487,16 +487,20 @@ export async function browserCaptureLocal(url, {width = 1280, height = 720, wait
         }, animation_time_ms);
       }
 
-      // axe-core is loaded from the pinned package into the isolated page. It
-      // inspects the post-interaction DOM without changing persisted source
-      // or injecting styles. Keep violation/incomplete evidence for human review.
-      const {default: axe} = await import('axe-core');
-      await page.addScriptTag({content: axe.source});
-      const accessibility = await page.evaluate(async () => {
-        const result = await window.axe.run(document, {resultTypes: ['violations', 'incomplete', 'passes']});
-        const compact = items => items.map(item => ({id: item.id, impact: item.impact, help: item.help, helpUrl: item.helpUrl, nodes: item.nodes.slice(0, 16).map(node => ({target: node.target, html: node.html.slice(0, 512), failureSummary: node.failureSummary || null}))}));
-        return {engine: 'axe-core', version: window.axe.version, violations: compact(result.violations), incomplete: compact(result.incomplete), passes: result.passes.map(item => ({id: item.id, impact: item.impact, nodes: item.nodes.length}))};
-      });
+      // SVG and other non-HTML documents have no body for Playwright's script
+      // injection. Keep visual evidence without claiming an axe audit.
+      const htmlDocument = await page.evaluate(() => document.documentElement?.namespaceURI === 'http://www.w3.org/1999/xhtml');
+      let accessibility = {status: 'not_applicable', reason: 'non-HTML document'};
+      if (htmlDocument) {
+        // axe-core inspects the post-interaction DOM without changing source.
+        const {default: axe} = await import('axe-core');
+        await page.addScriptTag({content: axe.source});
+        accessibility = await page.evaluate(async () => {
+          const result = await window.axe.run(document, {resultTypes: ['violations', 'incomplete', 'passes']});
+          const compact = items => items.map(item => ({id: item.id, impact: item.impact, help: item.help, helpUrl: item.helpUrl, nodes: item.nodes.slice(0, 16).map(node => ({target: node.target, html: node.html.slice(0, 512), failureSummary: node.failureSummary || null}))}));
+          return {engine: 'axe-core', version: window.axe.version, violations: compact(result.violations), incomplete: compact(result.incomplete), passes: result.passes.map(item => ({id: item.id, impact: item.impact, nodes: item.nodes.length}))};
+        });
+      }
       if (!Array.isArray(inspect_selectors) || inspect_selectors.length > 16 || inspect_selectors.some(item => typeof item !== 'string' || item.length > 256)) throw Error('Inspect selectors are invalid');
       const evidence = await page.evaluate(selectors => ({
         title: document.title.slice(0, 256),
@@ -585,6 +589,7 @@ export async function browserScreenshot(args) {
   return {artifact, width: shot.width, height: shot.height, scale: 2, evidence: shot.evidence, qa: {status, ...(diff ? {odiff:diff} : {requires_visual_inspection:true}), accessibility}};
 }
 export function accessibilityQa(result) {
+  if (result?.status === 'not_applicable' && result.reason === 'non-HTML document') return result;
   if (!result || result.engine !== 'axe-core') return {status: 'unverified', reason: 'axe-core evidence missing'};
   const violations = Array.isArray(result.violations) ? result.violations : [];
   const incomplete = Array.isArray(result.incomplete) ? result.incomplete : [];

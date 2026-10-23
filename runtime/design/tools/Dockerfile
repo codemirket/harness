@@ -69,7 +69,7 @@ RUN node -e 'require("node:fs").writeFileSync("/tmp/node-root-ca.pem", require("
     && apt-get -o Acquire::https::CaInfo=/tmp/node-root-ca.pem update \
     && apt-get -o Acquire::https::CaInfo=/tmp/node-root-ca.pem upgrade -y \
     && apt-get -o Acquire::https::CaInfo=/tmp/node-root-ca.pem install -y --no-install-recommends \
-       bubblewrap ca-certificates fonts-dejavu-core fonts-liberation \
+       bubblewrap tini ca-certificates fonts-dejavu-core fonts-liberation \
        libasound2t64 libatk-bridge2.0-0t64 libatk1.0-0t64 libatspi2.0-0t64 \
        libcairo2 libcups2t64 libdbus-1-3 libdrm2 libgbm1 libglib2.0-0t64 \
        libgtk-3-0t64 libnspr4 libnss3 libpango-1.0-0 libwayland-client0 \
@@ -112,4 +112,5 @@ USER node
 RUN node --check /opt/design/workspace-server.mjs \
     && node -e 'const policy = JSON.parse(require("node:fs").readFileSync("/opt/design/tool-policy.json", "utf8")); if (!Object.keys(policy).length) throw Error("Design tool policy is empty")'
 WORKDIR /workspace
+ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["node", "/opt/design/workspace-server.mjs"]

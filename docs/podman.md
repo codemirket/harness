@@ -101,7 +101,9 @@ call establish separate readiness levels.
 
 Playwright and Sharp run as bounded owned processes in design-tools. D2/TALA
 runs locally in the same container. OpenPencil runs headlessly without extra
-ports, services or persistent volumes.
+ports, services or persistent volumes. The image-owned Tini entrypoint forwards
+termination and reaps children; the container retains the confined browser
+SELinux domain without Podman's `/run/podman-init` mount.
 
 ## Platforms and provenance
 

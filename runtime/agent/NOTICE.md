@@ -1,6 +1,6 @@
-# Mirket agent-runtime 0.0.1 notices
+# Mirket agent-runtime 0.0.3 notices
 
-The 0.0.1 agent-runtime package is a native Rust runtime. Its durable fact
+The 0.0.3 agent-runtime package is a native Rust runtime. Its durable fact
 store and execution journal are implemented by Mirket and use the pinned Rust
 and SQLite dependency closure described by the release notice. The contained
 embedding helper uses `fastembed-rs 7.2.0`, ONNX Runtime `1.31.0`, and the

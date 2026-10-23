@@ -376,6 +376,14 @@ fn security_options(alias: &str, work: &Path) -> Vec<String> {
     }
     options
 }
+fn inspected_security_options(alias: &str, work: &Path) -> Vec<String> {
+    // Podman applies unmask to the OCI proc mounts but does not retain it in
+    // HostConfig.SecurityOpt. The contained browser check exercises that mount.
+    security_options(alias, work)
+        .into_iter()
+        .filter(|option| !option.starts_with("unmask="))
+        .collect()
+}
 fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) -> Result<()> {
     let config = &value["Config"];
     let host = &value["HostConfig"];
@@ -407,7 +415,7 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
     ensure!(
         host["ReadonlyRootfs"] == true
             && host["Privileged"] == false
-            && host["SecurityOpt"] == json!(security_options(alias, work)),
+            && host["SecurityOpt"] == json!(inspected_security_options(alias, work)),
         "container root/security policy drift: {alias}"
     );
     let dropped: BTreeSet<_> = host["CapDrop"]
@@ -439,13 +447,15 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
         "container lifecycle/port policy drift: {alias}"
     );
     ensure!(
-        if alias == "design-tools" {
-            host["Init"] == true
-        } else {
-            host["Init"].is_null() || host["Init"] == false
-        },
+        host["Init"].is_null() || host["Init"] == false,
         "container process reaping policy drift: {alias}"
     );
+    if alias == "design-tools" {
+        ensure!(
+            config["Entrypoint"] == json!(["/usr/bin/tini", "-g", "--"]),
+            "container process reaping entrypoint drift: {alias}"
+        );
+    }
     let mut expected = serde_json::Map::new();
     for mapping in published_mappings(state, alias) {
         let fields: Vec<_> = mapping.split(':').collect();
@@ -1292,7 +1302,6 @@ fn create_container(
     }
     if alias == "design-tools" {
         args.extend([
-            "--init".into(),
             "--volume".into(),
             format!("{}:/workspace:rw", work.display()),
         ]);
