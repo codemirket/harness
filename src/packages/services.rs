@@ -582,6 +582,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
         "kroki" => vec![
             (
+                "jackson-boms.mjs",
+                include_bytes!("../../runtime/design/kroki/jackson-boms.mjs"),
+            ),
+            (
                 "Dockerfile",
                 include_bytes!("../../runtime/design/kroki/Dockerfile"),
             ),
@@ -591,6 +595,14 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
             ),
         ],
         "kroki-excalidraw" => vec![
+            (
+                "server-package.json",
+                include_bytes!("../../runtime/design/excalidraw-server/package.json"),
+            ),
+            (
+                "server-package-lock.json",
+                include_bytes!("../../runtime/design/excalidraw-server/package-lock.json"),
+            ),
             (
                 "entrypoint",
                 include_bytes!("../../runtime/design/excalidraw/entrypoint"),
@@ -1226,7 +1238,9 @@ fn limits(alias: &str) -> (&'static str, &'static str, &'static str) {
         // Leave headroom for a real render alongside their retained sessions.
         "design-tools" => ("2048m", "2", "512"),
         "kroki" => ("512m", "1", "128"),
-        _ => ("350m", "1", "128"),
+        // Chrome 156 plus the offline Excalidraw bundle thrashes at 350 MiB
+        // and transiently exceeds 128 tasks during a real render.
+        _ => ("768m", "1", "256"),
     }
 }
 fn validate_group_memory(groups: &BTreeSet<String>, available_bytes: u64) -> Result<()> {

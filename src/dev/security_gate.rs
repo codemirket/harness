@@ -233,6 +233,10 @@ pub fn validate(path: &Path, source: &Value, builds: &[Value]) -> Result<()> {
     for (name, bytes) in [
         ("Cargo.lock", include_bytes!("../../Cargo.lock").as_slice()),
         (
+            "runtime/design/excalidraw-server/package-lock.json",
+            include_bytes!("../../runtime/design/excalidraw-server/package-lock.json").as_slice(),
+        ),
+        (
             "runtime/agent/native/Cargo.lock",
             include_bytes!("../../runtime/agent/native/Cargo.lock").as_slice(),
         ),

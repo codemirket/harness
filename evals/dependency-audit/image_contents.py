@@ -117,7 +117,7 @@ PAYLOADS = {
         'node': ('usr/local/bin/node',),
         'chromium': ('opt/chrome/*/chrome',),
         'application': ('opt/kroki/excalidraw/assets/index.bundle.js',),
-        'sanitizer': ('opt/kroki/excalidraw/node_modules/dompurify/dist/purify.cjs.js',),
+        'browser-bundle-inputs': ('opt/kroki/excalidraw/assets/bundle-inputs.json',),
     },
     'agent-runtime': {
         'embedding-helper': ('opt/agent/mirket-embed',),

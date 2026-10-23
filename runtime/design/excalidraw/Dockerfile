@@ -9,9 +9,14 @@ RUN curl -fLsS https://codeload.github.com/yuzutech/kroki/tar.gz/refs/tags/v0.33
 WORKDIR /source/excalidraw
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts --no-audit --no-fund \
-    && node node_modules/esbuild/bin/esbuild assets/index.js --bundle --minify --outfile=assets/index.bundle.js \
+    && node node_modules/esbuild/bin/esbuild assets/index.js --bundle --minify --outfile=assets/index.bundle.js --metafile=assets/bundle-inputs.json \
     && cp -R node_modules/@excalidraw/excalidraw/dist/prod/fonts/. assets/fonts/ \
-    && npm prune --omit=dev --ignore-scripts --no-audit --no-fund
+    && mkdir -p /licenses/dompurify && cp node_modules/dompurify/LICENSE /licenses/dompurify/LICENSE
+WORKDIR /runtime
+COPY server-package.json package.json
+COPY server-package-lock.json package-lock.json
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+    && mkdir -p node_modules/@kroki && ln -s ../../../lib/browser-instance node_modules/@kroki/browser-instance
 FROM ${DESIGN_IMAGE} AS browser
 FROM docker.io/library/node@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea
 RUN node -e 'require("fs").writeFileSync("/tmp/ca.pem",require("tls").rootCertificates.join("\n"))' \
@@ -22,9 +27,10 @@ RUN node -e 'require("fs").writeFileSync("/tmp/ca.pem",require("tls").rootCertif
 COPY --from=browser /opt/design/chrome /opt/chrome
 COPY --from=build /source/excalidraw/src /opt/kroki/excalidraw/src
 COPY --from=build /source/excalidraw/assets /opt/kroki/excalidraw/assets
-COPY --from=build /source/excalidraw/node_modules /opt/kroki/excalidraw/node_modules
+COPY --from=build /runtime/node_modules /opt/kroki/excalidraw/node_modules
 COPY --from=build /source/lib/browser-instance /opt/kroki/lib/browser-instance
-COPY --from=build --chmod=0644 /source/excalidraw/package.json /opt/kroki/excalidraw/package.json
+COPY --from=build --chmod=0644 /runtime/package.json /opt/kroki/excalidraw/package.json
+COPY --from=build /licenses /opt/kroki/licenses
 COPY --from=build /source/LICENSE /opt/kroki/LICENSE
 RUN ln -s "/opt/chrome/$(test "$(dpkg --print-architecture)" = arm64 && echo chrome-linux-arm64 || echo chrome-linux64)/chrome" /usr/local/bin/chromium
 ENV KROKI_EXCALIDRAW_PAGE_URL=http://127.0.0.1:8004/public/index.html KROKI_EXCALIDRAW_ASSET_PATH=/public PUPPETEER_EXECUTABLE_PATH=/usr/local/bin/chromium LEVEL=info XDG_CONFIG_HOME=/tmp/config XDG_CACHE_HOME=/tmp/cache

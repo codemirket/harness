@@ -223,19 +223,21 @@ impl Engine {
     }
     pub fn ready(&self) -> Result<Value> {
         ensure_controller_supported()?;
-        self.inspect_ready()
+        self.inspect_ready(true)
     }
     /// Development-only builds and tests may use native rootless Linux ARM64.
     /// Installation and runtime activation retain the managed-controller guard.
     pub(crate) fn candidate_ready(&self) -> Result<Value> {
         if cfg!(all(target_os = "linux", target_arch = "aarch64")) {
-            self.inspect_ready()
+            self.inspect_ready(false)
         } else {
             self.ready()
         }
     }
-    fn inspect_ready(&self) -> Result<Value> {
-        self.require_local_client()?;
+    fn inspect_ready(&self, require_localized: bool) -> Result<Value> {
+        if require_localized {
+            self.require_local_client()?;
+        }
         self.validate_machine()?;
         let value: Value = serde_json::from_str(&self.run(&["info".into(), "--format=json".into()], Duration::from_secs(8))
             .context("Mirket Podman environment is absent or stopped; run mirket environment init, then mirket environment start")?)?;

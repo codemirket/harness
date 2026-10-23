@@ -39,7 +39,13 @@ upstream Excalidraw/Chevrotain dependencies; remove them when the parent release
 adopt compatible fixed versions. DOMPurify is updated through its parent range.
 Excalidraw starts on the first CPU in its container's allowed affinity set,
 matching its existing one-CPU quota and avoiding Chromium thread-pool expansion
-against the whole VM. Its 350 MiB and 128-task limits remain unchanged.
+against the whole VM. Its 768 MiB and 256-task limits accommodate Chrome 156
+and the offline application bundle; the former 350 MiB/128-task envelope
+caused page-cache thrashing and thread-creation failures during real renders.
+The server has its own locked runtime dependency tree; browser build packages
+are retained only in the build stage. The browser bundle records its input
+modules for advisory reachability review. Kroki imports patched Jackson 2.22.3
+and 3.1.7 BOMs without modifying upstream parser source.
 No runtime package manager, compiler, development headers or build cache is
 required in the final renderer images.
 
@@ -47,7 +53,10 @@ required in the final renderer images.
 
 Run the native checks and dependency audits through the documented development
 workflow. Export owned OCI candidates with `mirket dev image-export --candidate`;
-this builds and exports without selecting or activating a generation. Retain
+this builds and exports without selecting or activating a generation. Native
+rootless Linux ARM64 may run these development checks with an explicitly
+registered system Podman binary (preserving its distribution AppArmor profile).
+Production managed-controller activation remains limited to macOS ARM64. Retain
 export receipts and archives together. The image audit checks archive hashes,
 image identities, package inventory and native/browser payload coverage. Image
 header packages are not evidence about the running VM kernel.

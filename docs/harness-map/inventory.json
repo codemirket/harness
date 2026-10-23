@@ -5,8 +5,8 @@
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 8773,
-      "sha256": "536f6d713fb8a8f1824580328c57520749bf631d1c10684fb6398a0903cddf30"
+      "bytes": 8559,
+      "sha256": "e9df5bbb17b6df5860214f2c041690c9fcfddbc2d6ad606f33bc270f8b6b5ee3"
     },
     {
       "path": "AGENTS.md",
@@ -90,8 +90,8 @@
     },
     {
       "path": "evals/dependency-audit/image_contents.py",
-      "bytes": 6924,
-      "sha256": "e1dc7146d1c01b354e6f17856b5d1648efe309d7d18120d519065012ad73f0d4"
+      "bytes": 6920,
+      "sha256": "3d0432d9b9eb500ad2c1bc04311a3f0125484608a612dc867755dd82a9f67cce"
     },
     {
       "path": "evals/dependency-audit/maintenance.py",
@@ -820,8 +820,8 @@
     },
     {
       "path": "runtime/design/excalidraw/Dockerfile",
-      "bytes": 3604,
-      "sha256": "d16d85f3e8d7d25fa265607662b7d527a6bcd1432cca05b50d9e4a95568e267a"
+      "bytes": 3981,
+      "sha256": "99678b605426eb418ea49afca3dc4ee664373613ffed0de29bf31aa7ade15ea4"
     },
     {
       "path": "runtime/design/excalidraw/entrypoint",
@@ -839,9 +839,19 @@
       "sha256": "8705fe0ece8e3a9e7cc5fd288be36b8d46e6331e60b646b0dba9c5b32128d665"
     },
     {
+      "path": "runtime/design/excalidraw-server/package-lock.json",
+      "bytes": 26522,
+      "sha256": "8ed64303c505a841f2442a8315b0278f09021a74268a11e3333fae00598f7c75"
+    },
+    {
+      "path": "runtime/design/excalidraw-server/package.json",
+      "bytes": 275,
+      "sha256": "9ba48173b8634ab7a83e6bb2c814f101b083e75cc5c6a06ebc25a5b9dfc3143e"
+    },
+    {
       "path": "runtime/design/kroki/Dockerfile",
-      "bytes": 3225,
-      "sha256": "e040fbff1eb6d748082a2b0bde5c5d1d38900dd8c63569c3670e07fd2f80176c"
+      "bytes": 3300,
+      "sha256": "e0c66b1714c2afa09bc12ef7c272e97284232bae5eefd9aca713fb8fb2b8da06"
     },
     {
       "path": "runtime/design/kroki/gateway.mjs",
@@ -852,6 +862,11 @@
       "path": "runtime/design/kroki/gateway.test.mjs",
       "bytes": 662,
       "sha256": "2fd9777d034223ca7059dcaf3cca1dd51211538cbfc9fc30491787dc9324045b"
+    },
+    {
+      "path": "runtime/design/kroki/jackson-boms.mjs",
+      "bytes": 772,
+      "sha256": "8d53b17785b6d290aa2e5e500ac39e69ea51fb653aa83ba1059bc00fafe0d587"
     },
     {
       "path": "runtime/design/tools/Dockerfile",
@@ -2325,8 +2340,8 @@
     },
     {
       "path": "src/dev/security_gate.rs",
-      "bytes": 20405,
-      "sha256": "67ca22dad3bd874c86c37cde58b9f40078e64b9524d7758f0fd455eb17ae35c2"
+      "bytes": 20591,
+      "sha256": "24faa9c2b37c31fd29b48d4894f8b95c1bfba31c7a8ab565f11a01193bb362f0"
     },
     {
       "path": "src/dev.rs",
@@ -2410,8 +2425,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 89744,
-      "sha256": "3533254d9ab09f8ad361d0824c541295b080d5ee4a32101adee1f5152cac41b3"
+      "bytes": 90352,
+      "sha256": "7ead2befd04fb2061d1aefdc700ce7099cddd4e520e6e0f65e9c1a5ff78de89f"
     },
     {
       "path": "src/paths.rs",
@@ -2420,8 +2435,8 @@
     },
     {
       "path": "src/podman.rs",
-      "bytes": 47267,
-      "sha256": "9f536505405dcfa467f17a7d6abd91d89b3fc1168f5d58df5f45162256cbfb0b"
+      "bytes": 47346,
+      "sha256": "497b6d6c9dd7e9984e1a083e687c8dd1072c04bc238f705d809394b88c1b85f5"
     },
     {
       "path": "src/process/unix.rs",
@@ -35702,7 +35717,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "41f3a3864a1239fbef2b0049de41c859e84fa66fb1a5fe7534d560dcb398a982",
+  "source_sha256": "d5568245cb6d5c2440010f75a3b727041429f2ac333e3ec43b515bee4be11f46",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

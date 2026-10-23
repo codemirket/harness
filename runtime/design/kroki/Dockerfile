@@ -6,6 +6,8 @@ RUN node -e 'require("fs").writeFileSync("/tmp/ca.pem",require("tls").rootCertif
 RUN curl -fLsS https://codeload.github.com/yuzutech/kroki/tar.gz/refs/tags/v0.33.0 -o /tmp/source.tar.gz \
     && echo '62bc12c863d4f6ff05fa835bd5ed2fd42f4134438c85c65fb923cc79397e88ee  /tmp/source.tar.gz' | sha256sum -c - \
     && mkdir /source && tar -xzf /tmp/source.tar.gz --strip-components=1 -C /source
+COPY jackson-boms.mjs /tmp/jackson-boms.mjs
+RUN node /tmp/jackson-boms.mjs
 WORKDIR /source
 RUN mvn --batch-mode --no-transfer-progress -pl server -am package -DskipTests -Dmaven.gitcommitid.skip=true
 
