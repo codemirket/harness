@@ -1,12 +1,12 @@
 {
   "schema_version": 3,
   "scope": "Working-tree source declarations and relationships; not an installed SBOM, adoption result or runtime readiness probe.",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 4239,
-      "sha256": "345483d003decb81aa4e015b07a30b5683072e61f05382722ddcc3c630a63c46"
+      "bytes": 8559,
+      "sha256": "e9df5bbb17b6df5860214f2c041690c9fcfddbc2d6ad606f33bc270f8b6b5ee3"
     },
     {
       "path": "AGENTS.md",
@@ -15,18 +15,18 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "bytes": 20987,
-      "sha256": "c4fde61fb66a2804aa4f37d3461d832e2625045224a0530e3548033c2e0ce716"
+      "bytes": 21031,
+      "sha256": "4c074637422e3d747a6f2b0a5733b8e498a440985aed309120a56a49418c2e79"
     },
     {
       "path": "Cargo.lock",
-      "bytes": 74577,
-      "sha256": "3c82e556fae6b48cb4ab0a9610f7e47685236b329b85533a6a8436be33fa6a19"
+      "bytes": 74289,
+      "sha256": "50c4194e0158f704e9dfabb4ced08b9ecf351dfa00e19fa611967a0829451dfc"
     },
     {
       "path": "Cargo.toml",
-      "bytes": 2223,
-      "sha256": "841a79f3b2b13644b7c216a2ec9a937490c81b4da8ca9578504bb17db552fb05"
+      "bytes": 2227,
+      "sha256": "51ddf6c7ca26dfd11effc1f5e9c36b4ed51a917c985c6860077b5de53c1b3a1b"
     },
     {
       "path": "build.rs",
@@ -70,13 +70,13 @@
     },
     {
       "path": "evals/dependency-audit/check.py",
-      "bytes": 6094,
-      "sha256": "eda7e72ee380e3c8c580186cb596f100467024733c30fbf1c5f60942bf14815d"
+      "bytes": 8186,
+      "sha256": "cdd9c01d327499b86b7dbcd91ba26f5c288dfb7f0be596694f829720aa7ecd19"
     },
     {
       "path": "evals/dependency-audit/exceptions.json",
-      "bytes": 1935,
-      "sha256": "fa19cf48028c2ef6b5c3aa736ac3deaa3934f87939ed3c93f03082e04a42bfc0"
+      "bytes": 702,
+      "sha256": "9708bd2c89c99c0260ec7624a871a511f78496af9490ab1c5ecc803b005a5c3a"
     },
     {
       "path": "evals/dependency-audit/fetch_scanner.py",
@@ -85,18 +85,28 @@
     },
     {
       "path": "evals/dependency-audit/image_audit.py",
-      "bytes": 10568,
-      "sha256": "eedfda5463d1d8bc8d280d6aeb7d7b1aba33d3568a31537b16420f4e5081fb24"
+      "bytes": 13137,
+      "sha256": "05a238788ee5741315cfe1d9b17256542a818ab36c742f2df2a9a2e44ed34bcd"
     },
     {
       "path": "evals/dependency-audit/image_contents.py",
-      "bytes": 4256,
-      "sha256": "f9f52b36e0870ee382453086806254873922a8e1178d853d7c82c2f260fa94c6"
+      "bytes": 6924,
+      "sha256": "e1dc7146d1c01b354e6f17856b5d1648efe309d7d18120d519065012ad73f0d4"
+    },
+    {
+      "path": "evals/dependency-audit/maintenance.py",
+      "bytes": 8192,
+      "sha256": "9dbdf78920904c6e589abb7353c9c7f52ceaf74526c611b80f58c9663403be6a"
+    },
+    {
+      "path": "evals/dependency-audit/oci_bundle.py",
+      "bytes": 1222,
+      "sha256": "b51ff1fa2e8c3db7a5c4a31d1c41278752c6743d3e230aeb3510090aa369bcae"
     },
     {
       "path": "evals/dependency-audit/scanner.json",
-      "bytes": 612,
-      "sha256": "ddf7b5db0fb5258f3bc9dcc718f110fd46648737ada2d707d3f942d3a6f26bec"
+      "bytes": 835,
+      "sha256": "b28a2bc20558dd003c9e1bfb61f26c762d3d11a622e17c08d9251f8cc21bca71"
     },
     {
       "path": "evals/dependency-audit/test_check.py",
@@ -110,8 +120,13 @@
     },
     {
       "path": "evals/dependency-audit/test_images.py",
-      "bytes": 6297,
-      "sha256": "cd1b0991f83a9acfd4f329b4cedbaf662bd352e13e922003312a6ddb5e229eaa"
+      "bytes": 8649,
+      "sha256": "8b29598565a8e1f6a2a9b180452b4e66f2286fa090e91e9e069548945ad332fc"
+    },
+    {
+      "path": "evals/dependency-audit/test_maintenance.py",
+      "bytes": 2184,
+      "sha256": "7cff3b3b98360561ca186791edef8bc47fcf1e1cf8b139502e152fb8d4569de0"
     },
     {
       "path": "evals/design-coverage/README.md",
@@ -741,7 +756,7 @@
     {
       "path": "registry/agent-runtime.json",
       "bytes": 1375,
-      "sha256": "b4257e09c58d22115e2740ce57b9c20c78a922c23edd0483ea852087d6d095be"
+      "sha256": "75125eb4e577e217a03f4e0064037bdb31457e4673579f3b3ef2de33d2212802"
     },
     {
       "path": "registry/capabilities.json",
@@ -755,8 +770,8 @@
     },
     {
       "path": "registry/design-stack.json",
-      "bytes": 3677,
-      "sha256": "8ad28a7f81eea901d1b82e248876c8254d9134667bb568cafe0c2b388386d058"
+      "bytes": 3946,
+      "sha256": "d34da16e682754f7efbe9944ec539e0bfe49c0c548d4e741e2d2012e4eb2a802"
     },
     {
       "path": "registry/harness.json",
@@ -766,7 +781,7 @@
     {
       "path": "runtime/agent/Dockerfile",
       "bytes": 678,
-      "sha256": "e4553691187a3d329c5b3ef04cc10a51dc6c10caa5b9ffea55ac8cb9d233646e"
+      "sha256": "87997a12fdf7fc2cc49725b8de867f7a087f412ff24007bf8888d4f282d986f8"
     },
     {
       "path": "runtime/agent/NOTICE.md",
@@ -804,24 +819,79 @@
       "sha256": "4f4a476b84aca83e1a75690a18b3486ac147a5c7ab9c09cc2d1b8117750bb69f"
     },
     {
+      "path": "runtime/design/excalidraw/Dockerfile",
+      "bytes": 3604,
+      "sha256": "d16d85f3e8d7d25fa265607662b7d527a6bcd1432cca05b50d9e4a95568e267a"
+    },
+    {
+      "path": "runtime/design/excalidraw/entrypoint",
+      "bytes": 328,
+      "sha256": "f90488566e4f66dc607a9f0d65b0968633f512aad3e4bc28d76381e8595127df"
+    },
+    {
+      "path": "runtime/design/excalidraw/package-lock.json",
+      "bytes": 161823,
+      "sha256": "5f903451bc4b16a08136a8b66526794ede20863ff4302017d45263ab059eaa57"
+    },
+    {
+      "path": "runtime/design/excalidraw/package.json",
+      "bytes": 1301,
+      "sha256": "8705fe0ece8e3a9e7cc5fd288be36b8d46e6331e60b646b0dba9c5b32128d665"
+    },
+    {
+      "path": "runtime/design/kroki/Dockerfile",
+      "bytes": 3225,
+      "sha256": "e040fbff1eb6d748082a2b0bde5c5d1d38900dd8c63569c3670e07fd2f80176c"
+    },
+    {
+      "path": "runtime/design/kroki/gateway.mjs",
+      "bytes": 2208,
+      "sha256": "1e75cdd656907f6adb19a8046fc215b07c0e7d3d9592986ebe63772ea39dee69"
+    },
+    {
+      "path": "runtime/design/kroki/gateway.test.mjs",
+      "bytes": 662,
+      "sha256": "2fd9777d034223ca7059dcaf3cca1dd51211538cbfc9fc30491787dc9324045b"
+    },
+    {
       "path": "runtime/design/tools/Dockerfile",
-      "bytes": 7866,
-      "sha256": "a04de3881d348bd75aade4478544c8f3291675c27ee8d8c35abbd384df9ebeca"
+      "bytes": 8063,
+      "sha256": "d7738cf66ec3d9f5d84b6645d40dc7141f7fdd0e08c5855ec9b36ed902c83876"
     },
     {
       "path": "runtime/design/tools/NOTICE.md",
-      "bytes": 3020,
-      "sha256": "a99bc59248c73757423bad2cf9a9e96a886f5113fe5e3f28a60f5fa3daf927c7"
+      "bytes": 15313,
+      "sha256": "9141c1dc5c59a5b349f1efa37b87f52df8e8f618f8bf13b4366ca7711983b7d1"
+    },
+    {
+      "path": "runtime/design/tools/browser-seccomp.json",
+      "bytes": 21263,
+      "sha256": "83c1a1a2726c01fdeebcbf28019a6b421a33f7e3b44830fa93ccc361f72e3422"
+    },
+    {
+      "path": "runtime/design/tools/browser-worker.mjs",
+      "bytes": 2186,
+      "sha256": "f1038d50c4b92b35111e47041c759ff121feba879befc6adafb2d509a55ee934"
     },
     {
       "path": "runtime/design/tools/browser.json",
-      "bytes": 1237,
-      "sha256": "eb9757807f96d7e5f29fbeb8098b81d7e45b5f5962df99280e7794400d589a02"
+      "bytes": 1241,
+      "sha256": "53e050c26e4e3bc7257c9fd31de95ea595f849af0cf95e6f9998bc8b9aec5c81"
     },
     {
       "path": "runtime/design/tools/chromium-launcher",
       "bytes": 331,
       "sha256": "5b6514b064a6f053ad876f039da39e9dbdd6265d097f48374041ccc85214c0f6"
+    },
+    {
+      "path": "runtime/design/tools/d2.go.mod",
+      "bytes": 1635,
+      "sha256": "a115b114454c028e83ed0645f0892af60a3432b60d48a7fb8123a57737ef934b"
+    },
+    {
+      "path": "runtime/design/tools/d2.go.sum",
+      "bytes": 9588,
+      "sha256": "242f81dc93934e308215627e0b307c4cf1459703d9d631edcea3b93730d395b5"
     },
     {
       "path": "runtime/design/tools/inspection.mjs",
@@ -845,18 +915,18 @@
     },
     {
       "path": "runtime/design/tools/operations.mjs",
-      "bytes": 45942,
-      "sha256": "cf9e78747b7d0cbfbfb47f53640692320b3cb8bdd04b14929abebef66917ad7a"
+      "bytes": 50611,
+      "sha256": "795b516e4d441280ef1e31db50913600498e8af9149cd0e1e9f784a1c710fd99"
     },
     {
       "path": "runtime/design/tools/package-lock.json",
-      "bytes": 190172,
-      "sha256": "771ff21d562cc314afc66a283ff04c5530b8dccceb8ce860c03713d75a24ef98"
+      "bytes": 190177,
+      "sha256": "939bcc6a63229f8ca49912e47f8f03d7de97e49979480284f3022017bb356cb5"
     },
     {
       "path": "runtime/design/tools/package.json",
-      "bytes": 688,
-      "sha256": "3aff47ed78673846e0df4203d8677515104588befefb58f1e7a293164eb834be"
+      "bytes": 693,
+      "sha256": "10d510274524414048f5dbe652b88bfffef3f275da8a15d326492e65fcbb7735"
     },
     {
       "path": "runtime/design/tools/paths.mjs",
@@ -895,8 +965,8 @@
     },
     {
       "path": "runtime/design/tools/test/live-browser.test.mjs",
-      "bytes": 10929,
-      "sha256": "2e3cd1c52a62c99bd3a6ce67706a9b0025f4ced89cc817d20dc5c7f6435af363"
+      "bytes": 12965,
+      "sha256": "78957ccbc6eb56cd21371d882af84361ed9a7dc99a41a22f650e2c5908a1ee5f"
     },
     {
       "path": "runtime/design/tools/test/local.test.mjs",
@@ -955,8 +1025,8 @@
     },
     {
       "path": "runtime/design/tools/workspace-server.mjs",
-      "bytes": 5218,
-      "sha256": "02b2e051c34807f31aea4e4c7c2f07b91e3dc6ceefe72942649b7fd4b6880d52"
+      "bytes": 5696,
+      "sha256": "f090bcaa33d06308fcd28411205780b22c017458faaee153d9590b237169257f"
     },
     {
       "path": "rust-toolchain.toml",
@@ -2225,13 +2295,13 @@
     },
     {
       "path": "src/catalog.rs",
-      "bytes": 77019,
-      "sha256": "5612c96d021302884e5fcc8b25545d77711ed2ca3879ef5289b9ab602d4b1df8"
+      "bytes": 81042,
+      "sha256": "35cdc5e6e60c32fa7bcf33b3185f7d69bbae39d5fb56a78320021fc847d9b618"
     },
     {
       "path": "src/cli.rs",
-      "bytes": 67286,
-      "sha256": "4e780d6f4f00177c2666e2cd2abfdb2ba79bb56cab9e92472ed127bfe680e73c"
+      "bytes": 67371,
+      "sha256": "aadf176a77b8ee0408bcbdb2c75432489f1e39dcc196a535e20d9621290d6cdf"
     },
     {
       "path": "src/craft.rs",
@@ -2245,13 +2315,23 @@
     },
     {
       "path": "src/dev/release_gate.rs",
-      "bytes": 5740,
-      "sha256": "24d538954f9960fe7b33cd20934281a37e7483ac10a053c71f415dd0f823e5e2"
+      "bytes": 5871,
+      "sha256": "f29efa87f8bae93e1838d4c4977f04b025b1e1e9b415d52b392473ab1dba4840"
+    },
+    {
+      "path": "src/dev/sbom.rs",
+      "bytes": 3549,
+      "sha256": "76ea41c7eacdd9d71e41c46af6ca7ba1256a6dedf6a9775d7cf1cdc130e06879"
+    },
+    {
+      "path": "src/dev/security_gate.rs",
+      "bytes": 20405,
+      "sha256": "67ca22dad3bd874c86c37cde58b9f40078e64b9524d7758f0fd455eb17ae35c2"
     },
     {
       "path": "src/dev.rs",
-      "bytes": 35996,
-      "sha256": "ca5ac3924deed71537cc8148dee2e894d660bbd828d97d8237db3995038e5dbe"
+      "bytes": 36361,
+      "sha256": "444054cd6e42eb1ef68192612a03c2606532e64029235028cf8d324f88a52db0"
     },
     {
       "path": "src/identity.rs",
@@ -2305,13 +2385,13 @@
     },
     {
       "path": "src/packages/agent.rs",
-      "bytes": 25288,
-      "sha256": "a1cff8f1f879ba703948fccc0586556da9bee532c19c9796b444bb8e06f2e896"
+      "bytes": 25781,
+      "sha256": "52a560c19a4634cea7713aa922076fb17ba462cd61acee11bd7e5ec56005a65f"
     },
     {
       "path": "src/packages/audit.rs",
-      "bytes": 2815,
-      "sha256": "202863d35898a0193d77d446af929edcb8db12d11cd34fd4ac691af6f0833940"
+      "bytes": 2839,
+      "sha256": "3f3a50f960fbaed716e447ac9c537a72bc0784b5eca21ed249fa5fe8da6e0c8f"
     },
     {
       "path": "src/packages/machine.rs",
@@ -2330,8 +2410,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 88020,
-      "sha256": "b64146a34744aba8fff3aaf3760d4ff7c487ac041e69f91e8287e0daec0dfa44"
+      "bytes": 89724,
+      "sha256": "9deae1dd736d62e70f721f408826f59800d5f9dfc4d36422eb5cc90e2bf19b0c"
     },
     {
       "path": "src/paths.rs",
@@ -2745,8 +2825,8 @@
     },
     {
       "path": "tests/stability_contracts.rs",
-      "bytes": 1763,
-      "sha256": "d9dc120a52331d2419adcdeab0020412023138e0bda2405f43d7eb0bb687cda4"
+      "bytes": 1945,
+      "sha256": "4bd7b6321e39903603bb2f2af10c92c24eb81d99ef98d20afca1d13ecfdf68f7"
     },
     {
       "path": "tests/task_contracts.rs",
@@ -2797,7 +2877,7 @@
       "read": 29,
       "write": 58
     },
-    "cargo_lock_records": 306,
+    "cargo_lock_records": 305,
     "npm_lock_records_including_root": 411,
     "native_locked_packages": 120,
     "graph_nodes": 884,
@@ -18320,7 +18400,7 @@
           "name": "Kroki",
           "execution": "service",
           "port": 8000,
-          "version": "0.32.0",
+          "version": "0.33.0",
           "license": "MIT",
           "source": "https://github.com/yuzutech/kroki"
         },
@@ -18372,9 +18452,14 @@
           "license": "MPL-2.0",
           "source": "https://github.com/terrastruct/d2",
           "layout": "tala",
-          "sha256": {
-            "linux-amd64": "5669ddc46b99e942cc96078f4a4e36d5e62103348f4c05179ede27802fdd87a9",
-            "linux-arm64": "ac2c028697199479acb321db1e3d68caee9f2ba492ed73caa3cd13f3829bf913"
+          "source_archive_sha256": "1256ad3907bceb4fcee7ed40d17c5726f8b602eea900e94500ba3352e96febbc",
+          "build": {
+            "go": "1.27.3",
+            "x/net": "0.60.0",
+            "locks": [
+              "runtime/design/tools/d2.go.mod",
+              "runtime/design/tools/d2.go.sum"
+            ]
           }
         },
         {
@@ -18387,20 +18472,28 @@
         }
       ],
       "images": {
-        "kroki": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
-        "kroki-excalidraw": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
-        "node-build": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd"
+        "node-build": "docker.io/library/node@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea",
+        "kroki-upstream": "docker.io/yuzutech/kroki@sha256:a4341ac44cd2590124da7142d13fdf5d83eadc2b94c023d018a2227695a30da1",
+        "go-build": "docker.io/library/golang@sha256:fbb7ae40b62ff8afe31662df570d39b4f5052ac32b90dae8e60d7657a20a74f4"
       },
       "builds": {
         "tools": {
           "source": "runtime/design/tools",
+          "base": "node-build"
+        },
+        "kroki": {
+          "source": "runtime/design/kroki",
+          "base": "node-build"
+        },
+        "kroki-excalidraw": {
+          "source": "runtime/design/excalidraw",
           "base": "node-build"
         }
       },
       "browser": {
         "playwright": "1.64.1",
         "chromium_revision": "1248",
-        "chromium_version": "156.0.8078.4"
+        "chromium_version": "156.0.8078.47"
       }
     },
     "agent-runtime": {
@@ -18436,14 +18529,14 @@
         "MIT: ONNX Runtime; see native ThirdPartyNotices.txt and generated Rust closure notices"
       ],
       "build_image": "docker.io/library/rust@sha256:8a2a102d089fbd151137b9473c01b1ed4519a64fb9c032a03609b815701615c8",
-      "runtime_image": "gcr.io/distroless/cc-debian12@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f"
+      "runtime_image": "gcr.io/distroless/cc-debian13@sha256:83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf"
     }
   },
   "dependencies": {
     "rust_manifest": {
       "package": {
         "name": "mirket",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "edition": "2024",
         "rust-version": "1.99",
         "description": "A local agent harness for Codex and Claude",
@@ -18546,7 +18639,7 @@
         },
         "toml_edit": "0.23",
         "zip": {
-          "version": "6",
+          "version": "9.0.5",
           "default-features": false,
           "features": [
             "deflate"
@@ -18694,15 +18787,6 @@
         "version": "1.0.104",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
         "checksum": "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
-      },
-      {
-        "name": "arbitrary",
-        "version": "1.5.0",
-        "source": "registry+https://github.com/rust-lang/crates.io-index",
-        "checksum": "3bc62ac97cc33321f50863d514c3bc38a453947a8f9e781137e47c7401020aed",
-        "dependencies": [
-          "derive_arbitrary"
-        ]
       },
       {
         "name": "atomic-waker",
@@ -19036,17 +19120,6 @@
         "checksum": "8b1e3a325bc115f096c8b77bbf027a7c2592230e70be2d985be950d3d5e60ebe",
         "dependencies": [
           "serde"
-        ]
-      },
-      {
-        "name": "derive_arbitrary",
-        "version": "1.5.0",
-        "source": "registry+https://github.com/rust-lang/crates.io-index",
-        "checksum": "1b034bd7d5f032402a2479444dcc6f74e36a03f31854d41680fb240ef682a1ac",
-        "dependencies": [
-          "proc-macro2",
-          "quote",
-          "syn 3.0.7"
         ]
       },
       {
@@ -19832,7 +19905,7 @@
       },
       {
         "name": "mirket",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "dependencies": [
           "anyhow",
           "clap",
@@ -21001,6 +21074,12 @@
         "checksum": "e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b"
       },
       {
+        "name": "typed-path",
+        "version": "0.12.4",
+        "source": "registry+https://github.com/rust-lang/crates.io-index",
+        "checksum": "54ec2755506471f54baf5e4bb5499d8e510cc1caf271270e778a736bd2d7336c"
+      },
+      {
         "name": "typenum",
         "version": "1.20.1",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
@@ -21538,15 +21617,16 @@
       },
       {
         "name": "zip",
-        "version": "6.0.0",
+        "version": "9.0.5",
         "source": "registry+https://github.com/rust-lang/crates.io-index",
-        "checksum": "eb2a05c7c36fde6c09b08576c9f7fb4cda705990f73b58fe011abf7dfb24168b",
+        "checksum": "6e04976da629d3b04204ba8105b396a193af8ad2583b2c79bfb3ab8af580a11e",
         "dependencies": [
-          "arbitrary",
           "crc32fast",
           "flate2",
           "indexmap",
           "memchr",
+          "nix",
+          "typed-path",
           "zopfli"
         ]
       },
@@ -21577,11 +21657,11 @@
     ],
     "node_manifest": {
       "name": "mirket-design-tools",
-      "version": "0.0.1",
+      "version": "0.0.3",
       "private": true,
       "type": "module",
       "engines": {
-        "node": ">=22 <23"
+        "node": ">=24.22.1 <25"
       },
       "scripts": {
         "test": "node --test test/*.test.mjs"
@@ -21610,7 +21690,7 @@
     "node_locked_packages": {
       "": {
         "name": "mirket-design-tools",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "dependencies": {
           "@modelcontextprotocol/sdk": "1.32.1",
           "@open-pencil/cli": "0.16.0",
@@ -21628,7 +21708,7 @@
           "svgo": "4.1.0"
         },
         "engines": {
-          "node": ">=22 <23"
+          "node": ">=24.22.1 <25"
         }
       },
       "node_modules/@acemir/cssom": {
@@ -35587,9 +35667,12 @@
     "evals/dependency-audit/fetch_scanner.py",
     "evals/dependency-audit/image_audit.py",
     "evals/dependency-audit/image_contents.py",
+    "evals/dependency-audit/maintenance.py",
+    "evals/dependency-audit/oci_bundle.py",
     "evals/dependency-audit/test_check.py",
     "evals/dependency-audit/test_image_contents.py",
     "evals/dependency-audit/test_images.py",
+    "evals/dependency-audit/test_maintenance.py",
     "evals/design-coverage/check-artifact.cjs",
     "evals/design-coverage/prepare.py",
     "evals/design-quality/analyze.py",
@@ -35619,7 +35702,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "4d9d9c31294d278ab2675d22d887686709beeeec36d5bd1b8a389904fb48b9f4",
+  "source_sha256": "856de4005b60783c20b9436315a64896e2d971844748eb0364e1d1541800b80a",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",
@@ -43811,6 +43894,14 @@
     "MIRKET_BASELINE_AGENT_IMAGE": [
       "src/packages/agent.rs"
     ],
+    "MIRKET_BROWSER_JOB_PREFIX": [
+      "runtime/design/tools/browser-worker.mjs",
+      "runtime/design/tools/operations.mjs"
+    ],
+    "MIRKET_BROWSER_TOKEN_PATHS": [
+      "runtime/design/tools/browser-worker.mjs",
+      "runtime/design/tools/operations.mjs"
+    ],
     "MIRKET_CODEX_TRANSPORT_CAPABILITY": [
       "src/router/codex.rs"
     ],
@@ -43826,6 +43917,7 @@
       "runtime/design/tools/tokens.mjs"
     ],
     "MIRKET_DESIGN_WORKSPACE": [
+      "runtime/design/tools/operations.mjs",
       "runtime/design/tools/paths.mjs",
       "runtime/design/tools/test/cleanup.test.mjs",
       "runtime/design/tools/test/inspection.test.mjs",
@@ -43866,7 +43958,8 @@
       "runtime/design/tools/test/live-browser.test.mjs"
     ],
     "MIRKET_PLAYWRIGHT_CHROMIUM_VERSION": [
-      "runtime/design/tools/operations.mjs"
+      "runtime/design/tools/operations.mjs",
+      "runtime/design/tools/test/live-browser.test.mjs"
     ],
     "MIRKET_PLAYWRIGHT_VERSION": [
       "runtime/design/tools/test/live-browser.test.mjs"

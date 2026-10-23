@@ -4,7 +4,7 @@ COPY native/Cargo.toml native/Cargo.lock ./native/
 COPY embed.rs model.json ./
 RUN cargo install --locked --path native --bin mirket-embed --root /out
 
-FROM gcr.io/distroless/cc-debian12@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f
+FROM gcr.io/distroless/cc-debian13@sha256:83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf
 COPY --from=build /out/bin/mirket-embed /opt/agent/mirket-embed
 COPY model /opt/models
 COPY native-libs /opt/native

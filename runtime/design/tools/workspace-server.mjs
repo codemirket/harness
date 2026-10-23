@@ -88,7 +88,15 @@ export async function handleWorkspaceRequest(request, response, hooks = {}) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-const server = http.createServer(handleWorkspaceRequest);
+// Browser jobs serve their read-only snapshots in a private network namespace.
+// The shared service exposes readiness only; diagram companions cannot retrieve
+// project files through HTTP even though they share the owned bridge.
+const server = http.createServer((request,response) => {
+  if (request.method === 'GET' && request.url === '/health') {
+    response.writeHead(200,{'Content-Type':'application/json'});
+    response.end(JSON.stringify({runtime:true,files:false}));
+  } else { response.writeHead(404);response.end(); }
+});
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, () => server.close(() => process.exit(0)));
 server.listen(9002, '0.0.0.0', () => process.stderr.write('Workspace server listening on 9002\n'));
 }

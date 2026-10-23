@@ -296,7 +296,7 @@ is missing. It does not publish. Native CI runners test and package their target
 Combine their manifests through the CLI:
 
 ```sh
-mirket dev manifest --input /absolute/macos/mirket-release.json --input /absolute/windows/mirket-release.json --acceptance /absolute/evidence/acceptance.json --output /absolute/release/mirket-release.json
+mirket dev manifest --input /absolute/macos/mirket-release.json --input /absolute/windows/mirket-release.json --acceptance /absolute/evidence/acceptance.json --security /absolute/evidence/security.json --output /absolute/release/mirket-release.json
 ```
 
 The command verifies the listed local binaries against their checksums, requires

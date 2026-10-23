@@ -13,10 +13,9 @@ pub(crate) fn export(paths: &Paths, alias: &str, output: &Path, candidate: bool)
     );
     let image = if candidate && alias != "agent-runtime" {
         super::services::candidate_image(paths, alias)?
+    } else if alias == "agent-runtime" && candidate {
+        super::agent::candidate_image(paths)?
     } else if alias == "agent-runtime" {
-        if candidate {
-            super::agent::prepare(paths)?;
-        }
         super::agent::verify(paths)?["receipt"]["image"]
             .as_str()
             .context("agent image missing")?

@@ -261,6 +261,24 @@ pub fn prepare(paths: &Paths) -> Result<()> {
         verify(paths)?;
         return Ok(());
     }
+    let image = candidate_image(paths)?;
+    util::ensure_directory(&data(paths))?;
+    util::ensure_directory(receipt_path(paths).parent().context("receipt parent")?)?;
+    util::atomic_write_with_mode(
+        &receipt_path(paths),
+        &serde_json::to_vec_pretty(
+            &json!({"schema_version":1,"owner":owner(paths),"recipe":recipe(),"image":image}),
+        )?,
+        Some(0o600),
+    )
+}
+/// Build reviewed bytes in the engine cache without installing a receipt,
+/// replacing a generation, starting a session or changing saved selection.
+pub(crate) fn candidate_image(paths: &Paths) -> Result<String> {
+    let engine = engine(paths)?;
+    let build_root = engine.staging.join("agent-runtime/build");
+    util::ensure_directory(&build_root)?;
+    let _build_lock = util::FileLock::acquire(&build_root.join("build.lock"))?;
     let definition = definition()?;
     for key in ["build_image", "runtime_image"] {
         let base = definition[key].as_str().context("base image")?;
@@ -305,15 +323,7 @@ pub fn prepare(paths: &Paths) -> Result<()> {
         "agent image recipe drift"
     );
     let image = image_id(&engine, &tag)?;
-    util::ensure_directory(&data(paths))?;
-    util::ensure_directory(receipt_path(paths).parent().context("receipt parent")?)?;
-    util::atomic_write_with_mode(
-        &receipt_path(paths),
-        &serde_json::to_vec_pretty(
-            &json!({"schema_version":1,"owner":owner(paths),"recipe":recipe(),"image":image}),
-        )?,
-        Some(0o600),
-    )
+    Ok(image)
 }
 pub fn verify(paths: &Paths) -> Result<Value> {
     let receipt: Value = serde_json::from_slice(&util::read_bounded(&receipt_path(paths), 4096).context("agent-runtime is not installed for this release; run mirket package install design agent-runtime")?)?;

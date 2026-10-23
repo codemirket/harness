@@ -13,6 +13,8 @@ use std::{
 
 pub mod linux;
 pub mod release_gate;
+mod sbom;
+mod security_gate;
 
 const BINARIES: [&str; 4] = ["mirket", "install-codex", "install-claude", "install-all"];
 const MAX_CARGO_MESSAGE: u64 = 4 * 1024 * 1024;
@@ -265,11 +267,22 @@ pub fn dist(project: &Path, output: &Path) -> Result<Value> {
     let rust_notices = dependency_notices(&project, &source)?;
     let info = executable_info(&binaries["mirket"].path, &source.version)?;
     let manifest = package_binaries(stage.path(), &binaries, &info)?;
+    let artifact_hashes: BTreeMap<String, String> = binaries
+        .iter()
+        .map(|(name, binary)| (name.clone(), binary.sha256.clone()))
+        .collect();
+    sbom::write(
+        &project,
+        stage.path(),
+        &artifact_hashes,
+        &info.target,
+        &info.source_sha256,
+    )?;
     util::atomic_write(
         &stage.path().join("mirket-build.json"),
         &serde_json::to_vec_pretty(&json!({
             "schema":1,"version":info.version,"target":info.target,"source_sha256":info.source_sha256,
-            "binary_sha256":manifest.assets[0].sha256,"accepted":false
+            "binary_sha256":manifest.assets[0].sha256,"artifacts":artifact_hashes,"accepted":false
         }))?,
     )?;
     util::atomic_write(

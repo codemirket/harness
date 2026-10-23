@@ -89,3 +89,56 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
+# Coverage is independent of vulnerability database recognition. Paths are final
+# overlay paths, never archive layers that may have been removed by a whiteout.
+PAYLOADS = {
+    'design-tools': {
+        'node': ('usr/local/bin/node',),
+        'chromium': ('opt/design/chrome/*/chrome',),
+        'd2': ('usr/local/bin/d2',),
+        'typst': ('usr/local/bin/typst',),
+        'native-codecs': ('opt/design/node_modules/@img/*/lib/*.so*',),
+        'resvg': ('opt/design/node_modules/@resvg/*/*.node',),
+        'canvaskit': ('opt/design/node_modules/canvaskit-wasm/bin/*.wasm',),
+    },
+    'kroki': {
+        'node': ('usr/local/bin/node',),
+        'java': ('usr/lib/jvm/*/bin/java',),
+        'gateway': ('opt/kroki/kroki-server.jar',),
+        'd2': ('usr/bin/d2',),
+        'plantuml': ('usr/bin/plantuml',),
+        'plantuml-awt': ('usr/bin/libawt.so',),
+        'plantuml-fonts': ('usr/bin/libfontmanager.so',),
+        'plantuml-jvm': ('usr/bin/libjvm.so',),
+        'vega': ('usr/bin/vega',),
+    },
+    'kroki-excalidraw': {
+        'node': ('usr/local/bin/node',),
+        'chromium': ('opt/chrome/*/chrome',),
+        'application': ('opt/kroki/excalidraw/assets/index.bundle.js',),
+        'sanitizer': ('opt/kroki/excalidraw/node_modules/dompurify/dist/purify.cjs.js',),
+    },
+    'agent-runtime': {
+        'embedding-helper': ('opt/agent/mirket-embed',),
+        'onnx-runtime': ('opt/native/libonnxruntime.so*', 'opt/native/*/libonnxruntime.so*'),
+        'embedding-model': ('opt/models/*.onnx', 'opt/models/*/*.onnx'),
+    },
+}
+
+
+def payload_inventory(archive, alias):
+    """Hash actual executable/native/WASM bytes without executing upstream code."""
+    from fnmatch import fnmatchcase
+    requirements = PAYLOADS[alias]
+    prefixes = sorted({str(PurePosixPath(pattern.split('*')[0]).parent) if not pattern.split('*')[0].endswith('/') else pattern.split('*')[0].rstrip('/') for patterns in requirements.values() for pattern in patterns})
+    entries = contents(archive, prefixes)
+    components = {}
+    for component, patterns in requirements.items():
+        matches = {path: value for path, value in entries.items()
+                   if value['type'] == 'file' and any(fnmatchcase(path, pattern) for pattern in patterns)}
+        components[component] = {'covered': bool(matches), 'files': matches}
+    missing = [key for key, value in components.items() if not value['covered']]
+    return {'schema': 1, 'inventory_complete': not missing, 'missing': missing,
+            'components': components,
+            'limits': 'File identity and presence only; runtime versions, linkage and advisory applicability require separate evidence.'}

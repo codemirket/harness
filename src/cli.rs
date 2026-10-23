@@ -786,6 +786,8 @@ enum DevCommand {
     Manifest {
         #[arg(long)]
         acceptance: PathBuf,
+        #[arg(long)]
+        security: PathBuf,
         #[arg(long = "input", required = true)]
         inputs: Vec<PathBuf>,
         #[arg(long)]
@@ -1832,7 +1834,8 @@ fn dispatch(cli: Cli) -> Result<i32> {
                 inputs,
                 output,
                 acceptance,
-            } => crate::dev::release_gate::promote(&inputs, &output, &acceptance)?,
+                security,
+            } => crate::dev::release_gate::promote(&inputs, &output, &acceptance, &security)?,
         },
         Command::Benchmark { iterations } => crate::dev::benchmark(&catalog()?, iterations)?,
         Command::Mcp { .. } | Command::Models { .. } | Command::Agent { .. } => unreachable!(),

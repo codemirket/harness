@@ -8,7 +8,6 @@ use serde_json::{Value, json};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
-    io::Read,
     net::TcpListener,
     path::{Path, PathBuf},
     time::{Duration, Instant},
@@ -19,8 +18,8 @@ const OWNER_LABEL: &str = "org.mirket.design-owner";
 const BUILD_LABEL: &str = "org.mirket.design-build";
 const ALIASES: [&str; 3] = ["kroki-excalidraw", "kroki", "design-tools"];
 const VOLUMES: [&str; 0] = [];
-const PUBLISHED: [(&str, &str, u16); 1] = [("kroki", "kroki", 8000)];
-const REMOTE: [&str; 3] = ["kroki-excalidraw", "kroki", "node-build"];
+const PUBLISHED: [(&str, &str, u16); 0] = [];
+const REMOTE: [&str; 3] = ["go-build", "kroki-upstream", "node-build"];
 const BUILD_TIMEOUT: Duration = Duration::from_secs(1800);
 
 fn selected_groups(groups: &[String]) -> Result<BTreeSet<String>> {
@@ -137,7 +136,9 @@ fn owner(paths: &Paths) -> String {
 }
 fn registry_hash() -> String {
     let mut bytes = REGISTRY.as_bytes().to_vec();
-    bytes.extend_from_slice(recipe_id(&build_files("design-tools")).as_bytes());
+    for kind in ALIASES {
+        bytes.extend_from_slice(recipe_id(&build_files(kind)).as_bytes());
+    }
     util::sha256(&bytes)
 }
 fn name(owner: &str, alias: &str) -> String {
@@ -360,6 +361,40 @@ fn service_command(alias: &str) -> Option<Vec<&'static str>> {
         _ => None,
     }
 }
+const BROWSER_SECCOMP: &[u8] = include_bytes!("../../runtime/design/tools/browser-seccomp.json");
+fn browser_seccomp_path(work: &Path) -> PathBuf {
+    work.parent().expect("owned workspace parent").join(format!(
+        "browser-seccomp-{}.json",
+        util::sha256(BROWSER_SECCOMP)
+    ))
+}
+fn ensure_browser_seccomp(work: &Path) -> Result<()> {
+    let path = browser_seccomp_path(work);
+    util::reject_symlink_components(&path)?;
+    if path.exists() {
+        ensure!(
+            util::read_bounded(&path, 65536)? == BROWSER_SECCOMP,
+            "browser seccomp policy drift"
+        );
+    } else {
+        util::atomic_write(&path, BROWSER_SECCOMP)?;
+    }
+    Ok(())
+}
+fn security_options(alias: &str, work: &Path) -> Vec<String> {
+    let mut options = vec!["no-new-privileges".into()];
+    if alias == "design-tools" {
+        // The confined SELinux domain permits nested proc mounts; the kernel
+        // requires removal of outer locked proc submounts for private PID proc.
+        // Seccomp permits chroot for Chromium's own user namespace, not SYS_ADMIN.
+        options.extend([
+            "label=type:container_engine_t".into(),
+            "unmask=/proc/*".into(),
+            format!("seccomp={}", browser_seccomp_path(work).display()),
+        ]);
+    }
+    options
+}
 fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) -> Result<()> {
     let config = &value["Config"];
     let host = &value["HostConfig"];
@@ -391,7 +426,7 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
     ensure!(
         host["ReadonlyRootfs"] == true
             && host["Privileged"] == false
-            && host["SecurityOpt"] == json!(["no-new-privileges"]),
+            && host["SecurityOpt"] == json!(security_options(alias, work)),
         "container root/security policy drift: {alias}"
     );
     let dropped: BTreeSet<_> = host["CapDrop"]
@@ -461,19 +496,21 @@ fn validate_container(value: &Value, state: &State, alias: &str, work: &Path) ->
         .context("container mount metadata missing")?;
     let expected_volumes = volumes(state, alias);
     ensure!(
-        mounts.len() == expected_volumes.len() + 1,
+        mounts.len() == expected_volumes.len() + usize::from(alias == "design-tools"),
         "container mount count drift: {alias}"
     );
-    let workspace_mount = mounts
-        .iter()
-        .find(|v| v["Destination"] == "/workspace")
-        .context("shared design workspace is not mounted")?;
-    ensure!(
-        workspace_mount["Source"] == work.to_string_lossy().as_ref()
-            && workspace_mount["RW"] == true
-            && workspace_mount["Type"] == "bind",
-        "container workspace mount drift: {alias}"
-    );
+    if alias == "design-tools" {
+        let workspace_mount = mounts
+            .iter()
+            .find(|v| v["Destination"] == "/workspace")
+            .context("shared design workspace is not mounted")?;
+        ensure!(
+            workspace_mount["Source"] == work.to_string_lossy().as_ref()
+                && workspace_mount["RW"] == true
+                && workspace_mount["Type"] == "bind",
+            "container workspace mount drift: {alias}"
+        );
+    }
     for (volume, target, writable) in expected_volumes {
         ensure!(
             mounts.iter().any(|v| v["Type"] == "volume"
@@ -533,12 +570,54 @@ fn recipe_id(files: &[(&str, &[u8])]) -> String {
     }
     util::sha256(&bytes)
 }
-fn build_recipe(_registry: &Value, kind: &str) -> Result<String> {
-    Ok(util::sha256(recipe_id(&build_files(kind)).as_bytes()))
+fn build_recipe(registry: &Value, kind: &str) -> Result<String> {
+    let mut bytes = recipe_id(&build_files(kind)).into_bytes();
+    bytes.extend_from_slice(serde_json::to_string(&registry["images"])?.as_bytes());
+    if kind != "design-tools" {
+        bytes.extend_from_slice(recipe_id(&build_files("design-tools")).as_bytes());
+    }
+    Ok(util::sha256(&bytes))
 }
 fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
     match kind {
+        "kroki" => vec![
+            (
+                "Dockerfile",
+                include_bytes!("../../runtime/design/kroki/Dockerfile"),
+            ),
+            (
+                "gateway.mjs",
+                include_bytes!("../../runtime/design/kroki/gateway.mjs"),
+            ),
+        ],
+        "kroki-excalidraw" => vec![
+            (
+                "entrypoint",
+                include_bytes!("../../runtime/design/excalidraw/entrypoint"),
+            ),
+            (
+                "Dockerfile",
+                include_bytes!("../../runtime/design/excalidraw/Dockerfile"),
+            ),
+            (
+                "package.json",
+                include_bytes!("../../runtime/design/excalidraw/package.json"),
+            ),
+            (
+                "package-lock.json",
+                include_bytes!("../../runtime/design/excalidraw/package-lock.json"),
+            ),
+        ],
         "design-tools" => vec![
+            (
+                "tools/d2.go.mod",
+                include_bytes!("../../runtime/design/tools/d2.go.mod"),
+            ),
+            (
+                "tools/d2.go.sum",
+                include_bytes!("../../runtime/design/tools/d2.go.sum"),
+            ),
+            ("tools/browser-seccomp.json", BROWSER_SECCOMP),
             (
                 "tools/inspection.mjs",
                 include_bytes!("../../runtime/design/tools/inspection.mjs"),
@@ -608,6 +687,10 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
                 include_bytes!("../../runtime/design/tools/tokens.mjs"),
             ),
             (
+                "tools/browser-worker.mjs",
+                include_bytes!("../../runtime/design/tools/browser-worker.mjs"),
+            ),
+            (
                 "tools/operations.mjs",
                 include_bytes!("../../runtime/design/tools/operations.mjs"),
             ),
@@ -633,7 +716,7 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
     let engine = Engine::resolve(paths)?;
     engine.ready()?;
     let registry = definition()?;
-    let image = prepare_build(paths, &engine, &registry, "design-tools")?;
+    let image = prepare_build(&engine, &registry, "design-tools")?;
     let tests = project.join("runtime/design/tools/test").canonicalize()?;
     let payload = crate::catalog::read_payload_directory(&tests, &[])?;
     let stage = tempfile::Builder::new()
@@ -649,6 +732,7 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
         }
     }
     ensure!(!names.is_empty(), "no design tests found");
+    ensure_browser_seccomp(stage.path())?;
     let mut args = vec![
         "run".into(),
         "--rm".into(),
@@ -656,6 +740,12 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
         "--read-only".into(),
         "--cap-drop=ALL".into(),
         "--security-opt=no-new-privileges".into(),
+        "--security-opt=label=type:container_engine_t".into(),
+        "--security-opt=unmask=/proc/*".into(),
+        format!(
+            "--security-opt=seccomp={}",
+            browser_seccomp_path(stage.path()).display()
+        ),
         "--pids-limit=512".into(),
         "--memory=2g".into(),
         "--memory-swap=2g".into(),
@@ -678,16 +768,13 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
 }
 
 pub(crate) fn candidate_image(paths: &Paths, kind: &str) -> Result<String> {
-    ensure!(
-        ["design-tools"].contains(&kind),
-        "unknown reviewed design build"
-    );
+    ensure!(ALIASES.contains(&kind), "unknown reviewed design build");
     let engine = Engine::resolve(paths)?;
     engine.ready()?;
-    prepare_build(paths, &engine, &definition()?, kind)
+    prepare_build(&engine, &definition()?, kind)
 }
 
-fn prepare_build(_paths: &Paths, engine: &Engine, registry: &Value, kind: &str) -> Result<String> {
+fn prepare_build(engine: &Engine, registry: &Value, kind: &str) -> Result<String> {
     let files = build_files(kind);
     let recipe = build_recipe(registry, kind)?;
     let tag = format!("localhost/mirket-design-{kind}:{}", &recipe[..16]);
@@ -699,7 +786,16 @@ fn prepare_build(_paths: &Paths, engine: &Engine, registry: &Value, kind: &str) 
         );
         return Ok(id);
     }
-    let bases = &["node-build"];
+    let design_image = if kind != "design-tools" {
+        Some(prepare_build(engine, registry, "design-tools")?)
+    } else {
+        None
+    };
+    let bases: &[&str] = if kind == "kroki" {
+        &["node-build", "kroki-upstream"]
+    } else {
+        &["node-build", "go-build"]
+    };
     for base in bases {
         let reference = registry["images"][base].as_str().context("build base")?;
         if image_id(engine, reference).is_err() {
@@ -728,25 +824,25 @@ fn prepare_build(_paths: &Paths, engine: &Engine, registry: &Value, kind: &str) 
         util::ensure_directory(destination.parent().context("build file parent")?)?;
         util::atomic_write(&destination, contents)?;
     }
-    run(
-        engine,
-        vec![
-            "build".into(),
-            "--jobs=1".into(),
-            "--force-rm".into(),
-            "--memory=2g".into(),
-            "--memory-swap=2g".into(),
-            "--ulimit=nproc=512:512".into(),
-            "--pull=never".into(),
-            "--platform=linux/arm64".into(),
-            "--label".into(),
-            format!("{BUILD_LABEL}={recipe}"),
-            "--tag".into(),
-            tag.clone(),
-            stage.to_string_lossy().into_owned(),
-        ],
-        BUILD_TIMEOUT,
-    )?;
+    let mut build_args = vec![
+        "build".into(),
+        "--jobs=1".into(),
+        "--force-rm".into(),
+        "--memory=2g".into(),
+        "--memory-swap=2g".into(),
+        "--ulimit=nproc=512:512".into(),
+        "--pull=never".into(),
+        "--platform=linux/arm64".into(),
+        "--label".into(),
+        format!("{BUILD_LABEL}={recipe}"),
+        "--tag".into(),
+        tag.clone(),
+    ];
+    if let Some(image) = design_image {
+        build_args.extend(["--build-arg".into(), format!("DESIGN_IMAGE={image}")]);
+    }
+    build_args.push(stage.to_string_lossy().into_owned());
+    run(engine, build_args, BUILD_TIMEOUT)?;
     let id = image_id(engine, &tag)?;
     ensure!(
         inspect(engine, "image", &tag)?["Labels"][BUILD_LABEL] == recipe,
@@ -915,8 +1011,8 @@ fn prepare_on_engine(
         // Validate first: never repair a drifted receipt by overwriting it.
         let saved = local_receipt(paths)?;
         for (alias, expected) in &saved.images {
-            let actual = if alias == "design-tools" {
-                prepare_build(paths, engine, registry, alias)?
+            let actual = if ALIASES.contains(&alias.as_str()) {
+                prepare_build(engine, registry, alias)?
             } else {
                 prepare_remote(engine, registry, alias)?
             };
@@ -931,7 +1027,7 @@ fn prepare_on_engine(
             ),
             (
                 "design-tools".into(),
-                prepare_build(paths, engine, registry, "design-tools")?,
+                prepare_build(engine, registry, "design-tools")?,
             ),
         ]);
         publish_receipt(
@@ -956,7 +1052,7 @@ fn prepare_on_engine(
     ] {
         let installed = local_receipt(paths)?;
         if selected.contains(group) && !installed.images.contains_key(alias) {
-            let images = BTreeMap::from([(alias.into(), prepare_remote(engine, registry, alias)?)]);
+            let images = BTreeMap::from([(alias.into(), prepare_build(engine, registry, alias)?)]);
             publish_receipt(
                 paths,
                 &path,
@@ -998,7 +1094,7 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
     let references: Vec<_> = aliases
         .iter()
         .map(|alias| {
-            if alias.as_str() == "design-tools" {
+            if ALIASES.contains(&alias.as_str()) {
                 value.images[*alias].clone()
             } else {
                 registry["images"][*alias].as_str().unwrap().to_owned()
@@ -1011,7 +1107,7 @@ fn receipt(paths: &Paths, engine: &Engine) -> Result<Receipt> {
             inspected_image_id(inspection, image)? == value.images[*alias],
             "design image drift: {alias}"
         );
-        if alias.as_str() == "design-tools" {
+        if ALIASES.contains(&alias.as_str()) {
             ensure!(
                 inspection["Labels"][BUILD_LABEL] == build_recipe(&registry, alias)?,
                 "design build recipe drift: {alias}"
@@ -1099,9 +1195,13 @@ fn env_for(state: &State, alias: &str) -> BTreeMap<String, String> {
         env.insert(key.to_owned(), value);
     };
     match alias {
-        "kroki" if state.groups.contains("excalidraw") => {
-            put("KROKI_EXCALIDRAW_HOST", "kroki-excalidraw".into());
-            put("KROKI_EXCALIDRAW_PORT", "8004".into());
+        "kroki" => {
+            put("KROKI_SAFE_MODE", "SECURE".into());
+            put("KROKI_ENABLE_COMPANION_DISCOVERY", "false".into());
+            if state.groups.contains("excalidraw") {
+                put("KROKI_EXCALIDRAW_HOST", "kroki-excalidraw".into());
+                put("KROKI_EXCALIDRAW_PORT", "8004".into());
+            }
         }
         "design-tools" => {
             put(
@@ -1354,11 +1454,19 @@ fn create_container(
         "/tmp:rw,nosuid,nodev,size=256m,mode=1777".into(),
         "--tmpfs".into(),
         "/run:rw,nosuid,nodev,size=64m,mode=1777".into(),
-        "--volume".into(),
-        format!("{}:/workspace:rw", work.display()),
     ];
     if alias == "design-tools" {
-        args.push("--init".into());
+        ensure_browser_seccomp(work)?;
+    }
+    for option in security_options(alias, work).into_iter().skip(1) {
+        args.push(format!("--security-opt={option}"));
+    }
+    if alias == "design-tools" {
+        args.extend([
+            "--init".into(),
+            "--volume".into(),
+            format!("{}:/workspace:rw", work.display()),
+        ]);
     }
     for (volume, target, writable) in volumes(state, alias) {
         args.extend([
@@ -1386,35 +1494,6 @@ fn create_container(
 fn running(value: &Value) -> bool {
     value["State"]["Running"] == true
 }
-fn readiness_json(reader: impl Read, alias: &str) -> Result<Value> {
-    let mut bytes = Vec::new();
-    reader.take(65537).read_to_end(&mut bytes)?;
-    ensure!(
-        bytes.len() <= 65536,
-        "{alias} readiness response is oversized"
-    );
-    serde_json::from_slice(&bytes).context("invalid readiness JSON")
-}
-fn http_ready(alias: &str, state: &State, timeout: Duration) -> Result<()> {
-    if alias != "kroki" {
-        return Ok(());
-    }
-    let response = reqwest::blocking::Client::builder()
-        .timeout(timeout)
-        .build()?
-        .get(format!(
-            "http://127.0.0.1:{}/health",
-            state.published_ports["kroki"]
-        ))
-        .send()?;
-    ensure!(
-        response.status().is_success(),
-        "{alias} HTTP readiness failed ({})",
-        response.status()
-    );
-    let _ = readiness_json(response, alias)?;
-    Ok(())
-}
 fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
     let n = name(&state.owner, alias);
     let cmd = match alias {
@@ -1433,11 +1512,11 @@ fn probe_container(engine: &Engine, state: &State, alias: &str) -> Result<()> {
         let value = inspect(engine, "container", &n)?;
         ensure!(running(&value), "{alias} has exited");
     }
-    http_ready(
-        alias,
-        state,
-        engine.remaining_budget(Duration::from_secs(3))?,
-    )?;
+    if alias == "kroki" {
+        run(engine, vec!["exec".into(), name(&state.owner,"kroki"),
+            "node".into(), "-e".into(),
+            "fetch('http://127.0.0.1:8000/health',{signal:AbortSignal.timeout(3000)}).then(async r=>{if(!r.ok)throw Error('unhealthy');await r.json()}).catch(()=>process.exit(1))".into()], Duration::from_secs(5))?;
+    }
     Ok(())
 }
 fn startup_diagnostic(_state: &State, value: &str) -> String {
@@ -1880,13 +1959,16 @@ mod tests {
 
     #[cfg(unix)]
     #[test]
-    fn core_preparation_never_requests_diagrams_and_failed_optional_pull_is_recoverable() {
+    fn core_preparation_never_requests_diagrams_and_failed_optional_build_is_recoverable() {
         use std::os::unix::fs::PermissionsExt;
         let home = tempfile::tempdir().unwrap();
         let paths = Paths::new(home.path().canonicalize().unwrap()).unwrap();
         let binary = paths.home.join("podman-fixture");
         let registry = definition().unwrap();
-        let recipe = build_recipe(&registry, "design-tools").unwrap();
+        let recipes: BTreeMap<_, _> = ALIASES
+            .into_iter()
+            .map(|alias| (alias, build_recipe(&registry, alias).unwrap()))
+            .collect();
         let fixture = format!(
             r#"#!/usr/bin/python3
 import json,sys,pathlib
@@ -1895,23 +1977,27 @@ args=sys.argv[1:]
 if args[:1]==['--connection']:args=args[2:]
 with (root/'calls').open('a') as f:f.write(json.dumps(args)+'\n')
 images={images}
-recipe={recipe}
-if args[:2]==['container','ls']:print('');sys.exit(0)
+recipes={recipes}
+ids={{'design-tools':'sha256:'+'a'*64,'kroki':'sha256:'+'b'*64,'kroki-excalidraw':'sha256:'+'c'*64}}
+if args[:1]==['build']:
+ tag=args[args.index('--tag')+1]
+ kind=next(k for k in recipes if tag.startswith('localhost/mirket-design-'+k+':'))
+ if kind=='kroki-excalidraw' and (root/'fail-build').exists():sys.exit(1)
+ (root/('built-'+kind)).touch();print('built');sys.exit(0)
 if args[:1]==['pull']:
- name=args[-1]
- if 'kroki-excalidraw' in name and (root/'fail-pull').exists():sys.exit(1)
- (root/('pulled-'+('excalidraw' if 'excalidraw' in name else 'kroki'))).touch()
- print('pulled');sys.exit(0)
+ (root/'pulled-kroki').touch();print('pulled');sys.exit(0)
 assert args[:2]==['image','inspect'],args
 refs=args[2:args.index('--format')] if '--format' in args else args[2:]
 result=[]
 for ref in refs:
- if 'kroki' in ref and not (root/('pulled-'+('excalidraw' if 'excalidraw' in ref else 'kroki'))).exists():sys.exit(1)
- result.append({{'Id':'sha256:'+'a'*64,'Architecture':'arm64','Os':'linux','RepoDigests':list(images.values()),'Labels':{{'org.mirket.design-build':recipe}}}})
+ kind=next((k for k in recipes if ref==ids[k] or ref.startswith('localhost/mirket-design-'+k+':')),None)
+ if kind and kind!='design-tools' and not (root/('built-'+kind)).exists():sys.exit(1)
+ if not kind and 'yuzutech/kroki@' in ref and not (root/'pulled-kroki').exists():sys.exit(1)
+ result.append({{'Id':ids[kind] if kind else 'sha256:'+'d'*64,'Architecture':'arm64','Os':'linux','RepoDigests':list(images.values()),'Labels':{{'org.mirket.design-build':recipes.get(kind,'')}}}})
 print(json.dumps(result[0] if '--format' in args else result))
 "#,
             images = serde_json::to_string(&registry["images"]).unwrap(),
-            recipe = serde_json::to_string(&recipe).unwrap()
+            recipes = serde_json::to_string(&recipes).unwrap()
         );
         fs::write(&binary, fixture).unwrap();
         fs::set_permissions(&binary, fs::Permissions::from_mode(0o700)).unwrap();
@@ -1932,7 +2018,7 @@ print(json.dumps(result[0] if '--format' in args else result))
             "ordinary diagrams requested companion: {calls}"
         );
         let diagram_bytes = fs::read(diagrams_receipt_path(&paths)).unwrap();
-        fs::write(paths.home.join("fail-pull"), "").unwrap();
+        fs::write(paths.home.join("fail-build"), "").unwrap();
         assert!(prepare_on_engine(&paths, &["excalidraw".into()], &engine, &registry).is_err());
         assert!(!excalidraw_receipt_path(&paths).exists());
         assert_eq!(
@@ -1940,14 +2026,14 @@ print(json.dumps(result[0] if '--format' in args else result))
             diagram_bytes
         );
         assert_eq!(fs::read(receipt_path(&paths)).unwrap(), base);
-        fs::remove_file(paths.home.join("fail-pull")).unwrap();
+        fs::remove_file(paths.home.join("fail-build")).unwrap();
         prepare_on_engine(&paths, &["excalidraw".into()], &engine, &registry).unwrap();
         assert_eq!(local_receipt(&paths).unwrap().images.len(), 4);
-        // Preparation restores a missing pinned remote image without rewriting receipts.
+        // Preparation rebuilds a missing owned image without rewriting receipts.
         let optional = fs::read(diagrams_receipt_path(&paths)).unwrap();
-        fs::remove_file(paths.home.join("pulled-kroki")).unwrap();
+        fs::remove_file(paths.home.join("built-kroki")).unwrap();
         prepare_on_engine(&paths, &[], &engine, &registry).unwrap();
-        assert!(paths.home.join("pulled-kroki").exists());
+        assert!(paths.home.join("built-kroki").exists());
         assert_eq!(fs::read(diagrams_receipt_path(&paths)).unwrap(), optional);
         assert!(
             !state_path(&paths).exists(),
@@ -1960,7 +2046,7 @@ print(json.dumps(result[0] if '--format' in args else result))
             engine_owner: engine.owner(),
             registry_sha256: registry_hash(),
             images: local_receipt(&paths).unwrap().images,
-            published_ports: BTreeMap::from([("kroki".into(), 23456)]),
+            published_ports: BTreeMap::new(),
             groups: selected_groups(&["diagrams".into()]).unwrap(),
         };
         save_private(
@@ -2251,20 +2337,6 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
     }
 
     #[test]
-    fn readiness_rejects_an_unbounded_body_without_buffering_it() {
-        let error = readiness_json(std::io::repeat(b'a'), "probe").unwrap_err();
-        assert!(
-            error
-                .to_string()
-                .contains("readiness response is oversized")
-        );
-        assert_eq!(
-            readiness_json(std::io::Cursor::new(b"{\"ok\":true}"), "probe").unwrap(),
-            json!({"ok": true})
-        );
-    }
-
-    #[test]
     fn occupied_host_port_is_reported_before_startup_effects() {
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
         let mapping = format!("{}:3000", listener.local_addr().unwrap());
@@ -2275,53 +2347,8 @@ print(json.dumps([{{'Name':{container},'Config':{{'Labels':{{'org.mirket.design-
     }
 
     #[test]
-    fn missing_service_gets_a_free_port_without_reassigning_existing_service() {
-        let occupied = TcpListener::bind("127.0.0.1:0").unwrap();
-        let port = occupied.local_addr().unwrap().port();
-        let mut ports = allocate_published_ports().unwrap();
-        ports.insert("kroki".into(), port);
-        validate_published_ports(&ports).unwrap();
-        let before = ports.clone();
-        let (inactive, changed) = reserve_start_ports(
-            &mut ports,
-            &BTreeSet::from(["kroki"]),
-            &BTreeSet::new(),
-            &BTreeSet::from(["design-tools"]),
-        )
-        .unwrap();
-        assert!(inactive.is_empty());
-        assert!(!changed);
-        assert_eq!(ports, before);
-        assert!(
-            reserve_start_ports(
-                &mut ports,
-                &BTreeSet::from(["kroki"]),
-                &BTreeSet::new(),
-                &ALIASES.into_iter().collect()
-            )
-            .is_err()
-        );
-        assert_eq!(ports, before);
-        let (mut reservations, changed) = reserve_start_ports(
-            &mut ports,
-            &BTreeSet::new(),
-            &BTreeSet::new(),
-            &ALIASES.into_iter().collect(),
-        )
-        .unwrap();
-        assert!(changed);
-        assert_ne!(ports["kroki"], port);
-        for (key, value) in before {
-            if key != "kroki" {
-                assert_eq!(ports[&key], value);
-            }
-        }
-        assert_eq!(reservations.len(), PUBLISHED.len());
-        validate_published_ports(&ports).unwrap();
-        assert!(TcpListener::bind(("127.0.0.1", ports["kroki"])).is_err());
-        release_service_ports(&mut reservations, "kroki");
-        let claimed = TcpListener::bind(("127.0.0.1", ports["kroki"])).unwrap();
-        drop(claimed);
+    fn renderers_publish_no_host_ports() {
+        assert!(allocate_published_ports().unwrap().is_empty());
     }
 
     #[test]

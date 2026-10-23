@@ -37,7 +37,7 @@
       "name": "Kroki",
       "execution": "service",
       "port": 8000,
-      "version": "0.32.0",
+      "version": "0.33.0",
       "license": "MIT",
       "source": "https://github.com/yuzutech/kroki"
     },
@@ -89,9 +89,14 @@
       "license": "MPL-2.0",
       "source": "https://github.com/terrastruct/d2",
       "layout": "tala",
-      "sha256": {
-        "linux-amd64": "5669ddc46b99e942cc96078f4a4e36d5e62103348f4c05179ede27802fdd87a9",
-        "linux-arm64": "ac2c028697199479acb321db1e3d68caee9f2ba492ed73caa3cd13f3829bf913"
+      "source_archive_sha256": "1256ad3907bceb4fcee7ed40d17c5726f8b602eea900e94500ba3352e96febbc",
+      "build": {
+        "go": "1.27.3",
+        "x/net": "0.60.0",
+        "locks": [
+          "runtime/design/tools/d2.go.mod",
+          "runtime/design/tools/d2.go.sum"
+        ]
       }
     },
     {
@@ -104,19 +109,27 @@
     }
   ],
   "images": {
-    "kroki": "docker.io/yuzutech/kroki@sha256:29ef705ee66fc1d8c13d6e068e8ab756cd6fccf035b2b7af504944eb7d83bcfe",
-    "kroki-excalidraw": "docker.io/yuzutech/kroki-excalidraw@sha256:e001f20ea0487fdf0a463e1a0aac3ccec3161857ee4da6c96b7a1b7c61d0784c",
-    "node-build": "docker.io/library/node@sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd"
+    "node-build": "docker.io/library/node@sha256:43b9ba1142b8dcf33fa8f922ca1be85714adc444e0586c7cf7726daaeabc1bea",
+    "kroki-upstream": "docker.io/yuzutech/kroki@sha256:a4341ac44cd2590124da7142d13fdf5d83eadc2b94c023d018a2227695a30da1",
+    "go-build": "docker.io/library/golang@sha256:fbb7ae40b62ff8afe31662df570d39b4f5052ac32b90dae8e60d7657a20a74f4"
   },
   "builds": {
     "tools": {
       "source": "runtime/design/tools",
+      "base": "node-build"
+    },
+    "kroki": {
+      "source": "runtime/design/kroki",
+      "base": "node-build"
+    },
+    "kroki-excalidraw": {
+      "source": "runtime/design/excalidraw",
       "base": "node-build"
     }
   },
   "browser": {
     "playwright": "1.64.1",
     "chromium_revision": "1248",
-    "chromium_version": "156.0.8078.4"
+    "chromium_version": "156.0.8078.47"
   }
 }

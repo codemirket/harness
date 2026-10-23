@@ -88,7 +88,12 @@ fn validate(receipt: &Value, builds: &[Value]) -> Result<()> {
     );
     Ok(())
 }
-pub fn promote(inputs: &[PathBuf], output: &Path, acceptance: &Path) -> Result<Value> {
+pub fn promote(
+    inputs: &[PathBuf],
+    output: &Path,
+    acceptance: &Path,
+    security: &Path,
+) -> Result<Value> {
     let receipt = read(acceptance)?;
     let mut builds = Vec::new();
     for input in inputs {
@@ -113,6 +118,7 @@ pub fn promote(inputs: &[PathBuf], output: &Path, acceptance: &Path) -> Result<V
         builds.push(build);
     }
     validate(&receipt, &builds)?;
+    super::security_gate::validate(security, &receipt["identity"]["source_sha256"], &builds)?;
     // Existing verifier checks every local asset byte before atomic publication.
     crate::release::manifest(inputs, output)
 }

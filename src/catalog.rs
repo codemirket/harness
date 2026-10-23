@@ -1235,6 +1235,9 @@ fn member_targets(relative: &str, skill: &Skill) -> Vec<String> {
 
 fn select_archive(bytes: &[u8], skill: &Skill) -> Result<BTreeMap<String, Vec<u8>>> {
     let mut archive = zip::ZipArchive::new(Cursor::new(bytes)).context("invalid ZIP archive")?;
+    archive
+        .validate_header_consistency()
+        .context("inconsistent ZIP headers")?;
     ensure!(
         archive.len() <= MAX_ARCHIVE_FILES,
         "archive has too many entries"
@@ -1253,7 +1256,8 @@ fn select_archive(bytes: &[u8], skill: &Skill) -> Result<BTreeMap<String, Vec<u8
             expanded <= MAX_EXPANDED,
             "archive expanded size exceeds limit"
         );
-        let raw = file.name().trim_end_matches('/');
+        let member_name = file.name().context("invalid ZIP member name")?;
+        let raw = member_name.trim_end_matches('/');
         safe_path(raw)?;
         ensure!(
             seen.insert(raw.to_owned()),
@@ -2016,6 +2020,91 @@ mod tests {
             .unwrap();
         let bytes = writer.finish().unwrap().into_inner();
         assert!(select_archive(&bytes, skill).is_err());
+    }
+
+    // Independent stored-ZIP fixture builder: permits malicious names and duplicate
+    // central entries that the patched writer intentionally refuses to create.
+    fn hostile_zip(entries: &[(&str, &[u8], u32)]) -> Vec<u8> {
+        fn crc(bytes: &[u8]) -> u32 {
+            let mut crc = !0u32;
+            for byte in bytes {
+                crc ^= u32::from(*byte);
+                for _ in 0..8 {
+                    crc = (crc >> 1) ^ (0xedb88320 & 0u32.wrapping_sub(crc & 1));
+                }
+            }
+            !crc
+        }
+        let mut out = Vec::new();
+        let mut directory = Vec::new();
+        for (name, data, mode) in entries {
+            let offset = out.len() as u32;
+            let sum = crc(data);
+            let size = data.len() as u32;
+            out.extend_from_slice(&[0x50, 0x4b, 3, 4, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            for n in [sum, size, size] {
+                out.extend_from_slice(&n.to_le_bytes());
+            }
+            out.extend_from_slice(&(name.len() as u16).to_le_bytes());
+            out.extend_from_slice(&0u16.to_le_bytes());
+            out.extend_from_slice(name.as_bytes());
+            out.extend_from_slice(data);
+            directory.extend_from_slice(&[0x50, 0x4b, 1, 2, 20, 3, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            for n in [sum, size, size] {
+                directory.extend_from_slice(&n.to_le_bytes());
+            }
+            directory.extend_from_slice(&(name.len() as u16).to_le_bytes());
+            directory.extend_from_slice(&[0; 8]);
+            directory.extend_from_slice(&(mode << 16).to_le_bytes());
+            directory.extend_from_slice(&offset.to_le_bytes());
+            directory.extend_from_slice(name.as_bytes());
+        }
+        let start = out.len() as u32;
+        let size = directory.len() as u32;
+        out.extend(directory);
+        out.extend_from_slice(&[0x50, 0x4b, 5, 6, 0, 0, 0, 0]);
+        for _ in 0..2 {
+            out.extend_from_slice(&(entries.len() as u16).to_le_bytes());
+        }
+        out.extend_from_slice(&size.to_le_bytes());
+        out.extend_from_slice(&start.to_le_bytes());
+        out.extend_from_slice(&0u16.to_le_bytes());
+        out
+    }
+    #[test]
+    fn patched_zip_preserves_bounded_reads_against_malicious_members() {
+        let catalog = Catalog::embedded().unwrap();
+        let skill = catalog.skill("matt-domain-modeling").unwrap();
+        let name = format!("root/{}/SKILL.md", skill.path);
+        let data = b"selected marker";
+        let valid = hostile_zip(&[(&name, data, 0o100777)]);
+        let files = select_archive(&valid, skill).unwrap();
+        assert!(files.values().any(|v| v == data));
+        for malicious in ["../escape", "/absolute", "C:/absolute", "root/../escape"] {
+            assert!(
+                select_archive(&hostile_zip(&[(malicious, data, 0o100644)]), skill).is_err(),
+                "{malicious}"
+            );
+        }
+        assert!(
+            select_archive(
+                &hostile_zip(&[(&name, data, 0o100644), (&name, data, 0o100644)]),
+                skill
+            )
+            .is_err()
+        );
+        assert!(select_archive(&hostile_zip(&[(&name, b"/outside", 0o120777)]), skill).is_err());
+        let mut bad_crc = valid.clone();
+        let offset = 30 + name.len();
+        bad_crc[offset] ^= 1;
+        assert!(select_archive(&bad_crc, skill).is_err());
+        assert!(select_archive(&valid[..valid.len() / 2], skill).is_err());
+        let mut bomb = valid;
+        let declared = (MAX_EXPANDED + 1) as u32;
+        bomb[22..26].copy_from_slice(&declared.to_le_bytes());
+        let central = bomb.windows(4).position(|w| w == b"PK\x01\x02").unwrap();
+        bomb[central + 24..central + 28].copy_from_slice(&declared.to_le_bytes());
+        assert!(select_archive(&bomb, skill).is_err());
     }
 
     #[test]

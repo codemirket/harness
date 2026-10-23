@@ -31,5 +31,5 @@
     "MIT: ONNX Runtime; see native ThirdPartyNotices.txt and generated Rust closure notices"
   ],
   "build_image": "docker.io/library/rust@sha256:8a2a102d089fbd151137b9473c01b1ed4519a64fb9c032a03609b815701615c8",
-  "runtime_image": "gcr.io/distroless/cc-debian12@sha256:9dac0a79194e45a7da0158a9c6da57b217585af0786db3845d1f0ec1a0dd182f"
+  "runtime_image": "gcr.io/distroless/cc-debian13@sha256:83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf"
 }

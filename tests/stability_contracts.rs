@@ -1,4 +1,4 @@
-//! Clean 0.0.1 public boundaries and embedding identity.
+//! Published baseline boundaries and unchanged embedding identity.
 use mirket::{catalog::Catalog, mcp::MirketServer, paths::Paths, util};
 use rmcp::ServiceExt;
 use serde_json::Value;
@@ -40,5 +40,11 @@ fn stability_freezes_model_and_release_identity() {
     );
     assert_eq!(model["max_tokens"], 128);
     assert_eq!(model["dimensions"], 384);
-    assert_eq!(env!("CARGO_PKG_VERSION"), baseline["release"]);
+    assert_eq!(baseline["release"], "0.0.1");
+    assert_eq!(env!("CARGO_PKG_VERSION"), "0.0.3");
+    assert_ne!(
+        env!("CARGO_PKG_VERSION"),
+        baseline["release"],
+        "remediation cannot reuse published bytes"
+    );
 }

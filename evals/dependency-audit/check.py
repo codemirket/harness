@@ -11,18 +11,21 @@ import json
 from pathlib import Path
 import tomllib
 import urllib.request
+import urllib.parse
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 def coordinates(root):
     packages = set()
-    for item in tomllib.loads((root / 'Cargo.lock').read_text())['package']:
-        if item.get('source', '').startswith('registry+'):
-            packages.add(('crates.io', item['name'], item['version']))
-    for path, item in json.loads((root / 'runtime/design/tools/package-lock.json').read_text())['packages'].items():
-        if path and item.get('version'):
-            packages.add(('npm', item.get('name', path.split('node_modules/')[-1]), item['version']))
+    for lock in (root / 'Cargo.lock', root / 'runtime/agent/native/Cargo.lock'):
+        for item in tomllib.loads(lock.read_text())['package']:
+            if item.get('source', '').startswith('registry+'):
+                packages.add(('crates.io', item['name'], item['version']))
+    for lock in sorted((root / 'runtime/design').glob('*/package-lock.json')):
+        for path, item in json.loads(lock.read_text())['packages'].items():
+            if path and item.get('version') and not path.startswith('../'):
+                packages.add(('npm', item.get('name', path.split('node_modules/')[-1]), item['version']))
     # The 0.0.1 agent-runtime has no Python production closure. Native ONNX
     # members and model assets are audited by the package/image receipts.
     return sorted(packages)
@@ -39,15 +42,23 @@ def validate_exceptions(entries, root, today, stale=None):
         if not entry['owner'] or not entry['reason']:
             raise ValueError('missing owner/reason')
         expired = datetime.date.fromisoformat(entry['expires']) <= today
-        source = (root / entry['source']).resolve()
-        if not source.is_relative_to(root.resolve()):
-            raise ValueError('exception source outside repository')
-        changed = not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != entry['source_sha256']
+        if 'package_checksum' in entry:
+            if entry['ecosystem'] != 'crates.io':
+                raise ValueError('checksum disposition requires registry crate')
+            selected = [p for lock in (root / 'Cargo.lock', root / 'runtime/agent/native/Cargo.lock')
+                        for p in tomllib.loads(lock.read_text())['package']
+                        if p['name'] == entry['name'] and p['version'] == entry['version']]
+            changed = not selected or any(p.get('checksum') != entry['package_checksum'] for p in selected)
+        else:
+            source = (root / entry['source']).resolve()
+            if not source.is_relative_to(root.resolve()):
+                raise ValueError('exception source outside repository')
+            changed = not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != entry['source_sha256']
         if expired or changed:
             reason = 'exception expired' if expired else 'exception source changed; repeat reachability review'
             if stale is None:
                 raise ValueError(reason)
-            stale.append({'advisory': entry['advisory'], 'source': entry['source'], 'reason': reason})
+            stale.append({'advisory': entry['advisory'], 'source': entry.get('source', 'registry artifact checksum'), 'reason': reason})
         else:
             keys.add(key)
     return keys
@@ -103,6 +114,25 @@ def main():
     keys = validate_exceptions(entries, ROOT, today, stale if args.advisory_policy == 'report' else None)
     packages = coordinates(ROOT)
     report = audit(packages, keys, advisory_policy=args.advisory_policy)
+    # Batch results only contain IDs. Preserve the primary advisory documents
+    # and publisher severity instead of silently treating every ID as equivalent.
+    advisories = {}
+    for advisory_id in sorted({f['advisory'] for f in report['findings']}):
+        url = 'https://api.osv.dev/v1/vulns/' + urllib.parse.quote(advisory_id, safe='')
+        with urllib.request.urlopen(url, timeout=45) as response:
+            advisory = json.load(response)
+        if advisory.get('id') != advisory_id:
+            raise ValueError('advisory identity mismatch')
+        advisories[advisory_id] = advisory
+    report['advisories'] = advisories
+    for finding in report['findings']:
+        advisory = advisories[finding['advisory']]
+        severity = advisory.get('database_specific', {}).get('severity', 'UNKNOWN').upper()
+        finding['severity'] = severity if severity in ('LOW', 'MODERATE', 'MEDIUM', 'HIGH', 'CRITICAL') else 'UNKNOWN'
+        if finding['severity'] == 'MODERATE': finding['severity'] = 'MEDIUM'
+    report['lockfiles'] = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                         for p in [ROOT/'Cargo.lock', ROOT/'runtime/agent/native/Cargo.lock',
+                                   *sorted((ROOT/'runtime/design').glob('*/package-lock.json'))]}
     report['stale_reviews'] = stale
     report.update(date=today.isoformat(),
                   coverage={'cargo':True,'owned_npm':True,'agent_python':False,

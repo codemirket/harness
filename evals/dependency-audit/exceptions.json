@@ -1,35 +1,12 @@
 [
   {
     "ecosystem": "crates.io",
-    "name": "zip",
-    "version": "6.0.0",
-    "advisory": "RUSTSEC-2026-0367",
-    "owner": "Mirket maintainers",
-    "expires": "2026-11-20",
-    "source": "src/catalog.rs",
-    "source_sha256": "d97114a9e48825b1667105e2e21dd7ece449aba4c44c9b5dbb1b2e05439f9082",
-    "reason": "Re-reviewed 2026-10-23 against the current source identity. select_archive still manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
-  },
-  {
-    "ecosystem": "crates.io",
-    "name": "zip",
-    "version": "6.0.0",
-    "advisory": "RUSTSEC-2026-0368",
-    "owner": "Mirket maintainers",
-    "expires": "2026-11-20",
-    "source": "src/catalog.rs",
-    "source_sha256": "d97114a9e48825b1667105e2e21dd7ece449aba4c44c9b5dbb1b2e05439f9082",
-    "reason": "Re-reviewed 2026-10-23 against the current source identity. select_archive still manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
-  },
-  {
-    "ecosystem": "crates.io",
-    "name": "zip",
-    "version": "6.0.0",
-    "advisory": "RUSTSEC-2026-0369",
-    "owner": "Mirket maintainers",
-    "expires": "2026-11-20",
-    "source": "src/catalog.rs",
-    "source_sha256": "d97114a9e48825b1667105e2e21dd7ece449aba4c44c9b5dbb1b2e05439f9082",
-    "reason": "Re-reviewed 2026-10-23 against the current source identity. select_archive still manually reads bounded regular members into memory; it never invokes extract/extract_unwrapped or preserves archive permission modes. Migrate ZIP major version in a separate compatibility change before expiry; re-review if this owner changes."
+    "name": "paste",
+    "version": "1.0.15",
+    "advisory": "RUSTSEC-2024-0436",
+    "owner": "Mirket agent-runtime maintainers",
+    "expires": "2026-11-22",
+    "package_checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+    "reason": "Informational unmaintained compile-time macro. Registry metadata for stable tokenizers 0.23.2 and fastembed 7.3.1 still requires paste; upstream release-note pastey claim is not reflected in these published manifests. Do not adopt tokenizers 1.0 RC or patch package identity silently. Revisit at the next stable tokenizer release or before expiry; model and vector formats remain unchanged."
   }
 ]

@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 7 * * 1'
+    - cron: '47 7 1 * *'
 permissions:
   contents: read
 concurrency:
@@ -23,11 +24,16 @@ jobs:
           python3 evals/harness-map/extract.py --check
       - name: Inventory locked dependencies and report advisories
         run: python3 evals/dependency-audit/check.py --advisory-policy report --output "$RUNNER_TEMP/dependency-audit.json"
+      - name: Propose reviewed runtime security pins
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: python3 evals/dependency-audit/maintenance.py --output "$RUNNER_TEMP/maintenance-proposals.json"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: dependency-audit
-          path: ${{ runner.temp }}/dependency-audit.json
+          path: |
+            ${{ runner.temp }}/dependency-audit.json
+            ${{ runner.temp }}/maintenance-proposals.json
   image_dependencies:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -48,7 +54,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          node-version: '22'
+          node-version: '24.22.1'
       - name: Test locked owned design tools in an isolated dependency directory
         run: |
           cp -R runtime/design/tools "$RUNNER_TEMP/design-tools"
@@ -56,7 +62,12 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           cc -O2 -Wall -Wextra -Werror runtime-guard.c -o runtime-guard
           npm test
+          node --test "$GITHUB_WORKSPACE/runtime/design/kroki/gateway.test.mjs"
   check:
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
     needs: [javascript, dependencies]
     # Preserve every prerequisite gate while collecting native evidence even
     # when a dependency scan or JavaScript failure would otherwise skip Windows.
@@ -86,6 +97,20 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Mirket checks failed' }
       - name: Package unaccepted native candidates
         run: mirket dev dist --project . --output dist
+      - name: Sign candidate provenance (does not publish a release)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        id: provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            dist/mirket*
+            dist/install-*
+          predicate-type: 'https://slsa.dev/provenance/v1'
+          predicate-path: 'dist/mirket-provenance.json'
+      - name: Retain signature bundle with candidate artifacts
+        if: steps.provenance.outputs.bundle-path != ''
+        shell: pwsh
+        run: Copy-Item '${{ steps.provenance.outputs.bundle-path }}' dist/mirket-sigstore.jsonl
       - name: Verify native packaged runtime, installers and MCP with retained receipts
         run: python evals/harness-remediation/native_validate.py --dist dist --output native-evidence
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -96,3 +121,54 @@ jobs:
             dist/
             native-check.log
             native-evidence/
+  contained_candidates:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Bootstrap candidate and isolated engine registration
+        run: |
+          cargo install --locked --debug --path . --bin mirket --root "$RUNNER_TEMP/bootstrap"
+          echo "$RUNNER_TEMP/bootstrap/bin" >> "$GITHUB_PATH"
+          mkdir "$RUNNER_TEMP/oci-home" "$RUNNER_TEMP/oci-evidence"
+          "$RUNNER_TEMP/bootstrap/bin/mirket" --home "$RUNNER_TEMP/oci-home" tool register podman --executable "$(command -v podman)"
+      - name: Build and export owned OCI candidates without activation
+        env:
+          MIRKET_DIRECT: '1'
+        run: |
+          for image in design-tools kroki kroki-excalidraw agent-runtime; do
+            mirket dev image-export --candidate --engine-home "$RUNNER_TEMP/oci-home" --image "$image" --output "$RUNNER_TEMP/oci-evidence/$image.tar" > "$RUNNER_TEMP/oci-evidence/$image-export.json"
+          done
+          python3 evals/dependency-audit/oci_bundle.py "$RUNNER_TEMP/oci-evidence"
+      - name: Exercise actual sandboxed design runtime
+        run: mirket dev design-check --project . --engine-home "$RUNNER_TEMP/oci-home" > "$RUNNER_TEMP/oci-evidence/design-check.json"
+      - name: Scan exact OCI outputs and retain artifact SBOMs
+        run: |
+          python3 evals/dependency-audit/fetch_scanner.py --target linux-arm64 --output "$RUNNER_TEMP/trivy"
+          source_id=$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1]))["source_sha256"])' "$RUNNER_TEMP/oci-evidence/design-tools-export.json")
+          python3 evals/dependency-audit/image_audit.py --scanner "$RUNNER_TEMP/trivy" --exports "$RUNNER_TEMP/oci-evidence/exports.json" --candidate-source-sha256 "$source_id" --output "$RUNNER_TEMP/oci-evidence/audit"
+          for image in design-tools kroki kroki-excalidraw agent-runtime; do
+            "$RUNNER_TEMP/trivy" convert --format cyclonedx --output "$RUNNER_TEMP/oci-evidence/$image-sbom.cdx.json" "$RUNNER_TEMP/oci-evidence/audit/$image.json"
+          done
+      - name: Sign OCI archive provenance
+        id: oci_provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            ${{ runner.temp }}/oci-evidence/*.tar
+            ${{ runner.temp }}/oci-evidence/*-sbom.cdx.json
+          predicate-type: 'https://slsa.dev/provenance/v1'
+          predicate-path: '${{ runner.temp }}/oci-evidence/provenance.json'
+      - name: Retain OCI signature bundle
+        run: cp '${{ steps.oci_provenance.outputs.bundle-path }}' "$RUNNER_TEMP/oci-evidence/sigstore.jsonl"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: contained-candidates
+          retention-days: 7
+          path: ${{ runner.temp }}/oci-evidence/

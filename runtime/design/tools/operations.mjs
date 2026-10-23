@@ -325,6 +325,11 @@ export async function odiffCompare(args) {
 }
 
 export function scopedWorkspaceUrlAllowed(value, prefix = workspacePrefix) {
+  if (process.env.MIRKET_BROWSER_JOB_PREFIX) {
+    const target = new URL(value);
+    const tokens = JSON.parse(process.env.MIRKET_BROWSER_TOKEN_PATHS || '[]');
+    return target.origin === 'http://design-tools:9002' && (target.pathname.startsWith(process.env.MIRKET_BROWSER_JOB_PREFIX) || tokens.includes(target.pathname));
+  }
   if (!prefix) return true;
   try {
     const target = new URL(value);
@@ -387,13 +392,65 @@ export function validateBrowserActions(actions, time, reducedMotion) {
   if (time != null && (!Number.isInteger(time) || time < 0 || time > 60000)) throw Error('Animation inspection time must be in 0..60000 ms');
   if (!['reduce', 'no-preference'].includes(reducedMotion)) throw Error('Invalid reduced motion preference');
 }
-async function browserCapture(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], actions = [], animation_time_ms, reduced_motion = 'no-preference'} = {}) {
+async function browserCapture(url, options = {}) {
+  const parsed = new URL(url);
+  if (!scopedWorkspaceUrlAllowed(url)) throw Error('Browser input is outside the assigned project');
+  const relative = parsed.pathname.slice(('/files/' + (workspacePrefix ? workspacePrefix + '/' : '')).length).split('/').map(decodeURIComponent).join('/');
+  const source = await workspacePath(relative);
+  const stage = await temporaryDirectory('browser-job');
+  const inputs = path.join(stage, 'inputs'), output = path.join(stage, 'output');
+  try {
+    await fs.mkdir(inputs); await fs.mkdir(output);
+    const jobPrefix = path.posix.dirname(parsed.pathname) + '/';
+    const jobInputs = path.join(inputs,decodeURIComponent(jobPrefix.slice('/files/'.length)));
+    await fs.mkdir(jobInputs,{recursive:true});
+    const tokenPaths = new Set();
+    await copyBoundedProjectTree(path.dirname(source), jobInputs, {label:'Browser job', onFile:async ({dest, bytes}) => {
+      await fs.writeFile(dest,bytes,{mode:0o400});
+      if (['.html','.css'].includes(path.extname(dest))) {
+        for (const match of bytes.toString().matchAll(/\/files\/[^\s"'<>]*\.mirket-design\/tokens\/[a-f0-9]{64}\/tokens\.css/g)) {
+          const tokenUrl = new URL(match[0],'http://design-tools:9002');
+          if (!scopedWorkspaceUrlAllowed(tokenUrl.href)) throw Error('Token asset is outside assigned project');
+          tokenPaths.add(tokenUrl.pathname);
+        }
+      }
+    }});
+    if(tokenPaths.size>8)throw Error('Too many token assets');
+    for(const token of tokenPaths) {
+      const relativeToken = decodeURIComponent(token.slice(('/files/' + (workspacePrefix ? workspacePrefix + '/' : '')).length));
+      const bytes = await readFile(relativeToken,4*1024*1024);
+      const dest = path.join(inputs,decodeURIComponent(token.slice('/files/'.length)));
+      await fs.mkdir(path.dirname(dest),{recursive:true});await fs.writeFile(dest,bytes,{mode:0o400});
+    }
+    const request = path.join(stage, 'request.json');
+    await fs.writeFile(request, JSON.stringify({url,options,jobPrefix,tokenPaths:[...tokenPaths]}), {mode:0o400});
+    const args = ['--unshare-all','--die-with-parent','--new-session','--cap-drop','ALL',
+      '--ro-bind','/usr','/usr','--symlink','usr/bin','/bin','--symlink','usr/lib','/lib',
+      '--ro-bind-try','/lib64','/lib64','--ro-bind','/opt/design','/opt/design',
+      '--ro-bind','/etc/fonts','/etc/fonts','--ro-bind','/etc/ld.so.cache','/etc/ld.so.cache',
+      '--ro-bind','/sys/devices/system/cpu','/sys/devices/system/cpu',
+      '--proc','/proc','--dev','/dev','--size','268435456','--tmpfs','/tmp',
+      '--size','134217728','--tmpfs','/workspace', '--dir','/run',
+      '--ro-bind',inputs,'/inputs','--ro-bind',request,'/request.json',
+      '--chdir','/workspace','--clearenv','--setenv','PATH','/usr/local/bin:/usr/bin:/bin',
+      '--setenv','HOME','/tmp','--setenv','MIRKET_DESIGN_WORKSPACE','/workspace',
+      '--setenv','MIRKET_PLAYWRIGHT_CHROMIUM_VERSION',process.env.MIRKET_PLAYWRIGHT_CHROMIUM_VERSION || '',
+      '/usr/local/bin/node','--max-old-space-size=384','/opt/design/browser-worker.mjs'];
+    const started = performance.now();
+    const result = await run('/usr/bin/bwrap',args,{timeoutMs:120000,maxStdout:96*1024*1024});
+    const evidence = JSON.parse(result.stdout);
+    const bytes = Buffer.from(evidence.bytes,'base64');
+    if (!bytes.length || bytes.length > MAX_OUTPUT) throw Error('Browser worker output exceeds budget');
+    return {...evidence,bytes,evidence:{...evidence.evidence,worker_elapsed_ms:performance.now()-started,isolation:'private-user-mount-pid-network-namespaces'}};
+  } finally { await fs.rm(stage,{recursive:true,force:true}); }
+}
+export async function browserCaptureLocal(url, {width = 1280, height = 720, wait_for, full_page = false, inspect_selectors = [], actions = [], animation_time_ms, reduced_motion = 'no-preference'} = {}) {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 64 || height < 64 || width > 1920 || height > 1920) throw Error('Browser viewport out of range');
   validateBrowserActions(actions, animation_time_ms, reduced_motion);
   if ((actions.length || animation_time_ms != null) && new URL(url).host !== 'design-tools:9002') throw Error('Interactive QA is limited to owned workspace pages');
   const {chromium} = await import('playwright-core');
   const scratch = await temporaryDirectory('browser');
-  let ownedServer, browserTmp;
+  let ownedServer, browserTmp, sandboxEvidence;
   try {
   // Chromium singleton sockets must fit Unix path limits even in deeply nested
   // project workspaces. HOME/artifact staging remain project-scoped.
@@ -406,10 +463,19 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
       await browser.close().catch(() => {});
       throw Error(`Playwright Chromium mismatch: expected ${expected}, got ${browser.version()}`);
     }
+    const diagnostics = await browser.newPage();
+    try {
+      await diagnostics.goto('chrome://sandbox', {waitUntil:'domcontentloaded',timeout:10000});
+      sandboxEvidence = (await diagnostics.locator('body').innerText()).slice(0,8192);
+      if (!/Layer 1 Sandbox\s+Namespace/.test(sandboxEvidence) || !/Seccomp-BPF sandbox\s+Yes/.test(sandboxEvidence)) {
+        throw Error('Chromium namespace/seccomp sandbox did not initialize: '+sandboxEvidence);
+      }
+    } finally { await diagnostics.close(); }
     return browser;
   }, null, {
     executablePath: path.join(toolRoot, 'chromium-launcher'), headless: true,
-    args: ['--no-sandbox', '--disable-dev-shm-usage', `--unsafely-treat-insecure-origin-as-secure=${new URL(url).origin}`],
+    chromiumSandbox: true,
+    args: ['--disable-dev-shm-usage', '--host-resolver-rules=MAP design-tools 127.0.0.1', `--unsafely-treat-insecure-origin-as-secure=${new URL(url).origin}`],
     env: {PATH: process.env.PATH, HOME: scratch, TMPDIR: browserTmp, LANG: 'C.UTF-8'}, timeout: 15000,
   }, async browser => {
     const context = await browser.newContext({viewport: {width, height}, deviceScaleFactor: 2, javaScriptEnabled: true, acceptDownloads: false, serviceWorkers: 'block', reducedMotion: reduced_motion, permissions: []});
@@ -474,6 +540,7 @@ async function browserCapture(url, {width = 1280, height = 720, wait_for, full_p
         client_height: document.documentElement.clientHeight,
         selectors: Object.fromEntries(selectors.map(selector => { const element = document.querySelector(selector); if (!element) return [selector, null]; const box = element.getBoundingClientRect(); const style = getComputedStyle(element); return [selector, {opacity: style.opacity, transform: style.transform, expanded: element.getAttribute('aria-expanded'), hidden: element.hidden, ... {text: (element.innerText || '').slice(0, 1024), visible: box.width > 0 && box.height > 0, x: box.x, y: box.y, width: box.width, height: box.height}}]; })),
       }), inspect_selectors);
+      evidence.sandbox = sandboxEvidence;
       evidence.actions = actions;
       evidence.accessibility = accessibility;
       evidence.animation_time_ms = animation_time_ms ?? null;

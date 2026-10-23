@@ -755,7 +755,7 @@ All files under authored skill `references/` directories, including data and spe
 | design_mcp_tools | 14 |
 | worker_tools | 19 |
 | openpencil_operations | {'read': 29, 'write': 58} |
-| cargo_lock_records | 306 |
+| cargo_lock_records | 305 |
 | npm_lock_records_including_root | 411 |
 | native_locked_packages | 120 |
 | graph_nodes | 884 |

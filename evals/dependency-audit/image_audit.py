@@ -5,6 +5,8 @@ Never pulls into the runtime engine, starts containers, upgrades packages or
 executes image contents. Raw reports and scanner provenance stay in output.
 """
 import argparse
+import datetime
+import time
 import hashlib
 import json
 import os
@@ -12,11 +14,14 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+from image_contents import payload_inventory
 
 ROOT = Path(__file__).resolve().parents[2]
-BUILT = ("design-tools", "agent-runtime")
+BUILT = ("design-tools", "agent-runtime", "kroki", "kroki-excalidraw")
 REQUIRED_TYPES = {
-    "design-tools": {"node-pkg"},
+    "design-tools": {"node-pkg", "gobinary"},
+    "kroki": {"jar", "gobinary"},
+    "kroki-excalidraw": {"node-pkg"},
     # The 0.0.1 agent image ships native Rust and ONNX assets; it has no
     # Python package inventory. OS package coverage remains mandatory.
     "agent-runtime": set(),
@@ -34,6 +39,8 @@ def sha(path):
 def inventory(root):
     design = json.loads((root / "registry/design-stack.json").read_text())
     images = dict(design["images"])
+    agent = json.loads((root / "registry/agent-runtime.json").read_text())
+    images.update({"agent-build": agent["build_image"], "agent-base": agent["runtime_image"]})
     if not all(re.fullmatch(r"[^@\s]+@sha256:[0-9a-f]{64}", value) for value in images.values()):
         raise ValueError("all remote images must be digest pinned")
     return images
@@ -54,7 +61,7 @@ def validate_export(receipt, alias, expected_source=None):
     return archive
 
 
-def evaluate(report, identity, local=False, required_types=(), advisory_policy="report"):
+def evaluate(report, identity, local=False, required_types=(), advisory_policy="report", architecture="arm64", role="runtime"):
     if advisory_policy not in ("fail", "report"):
         raise ValueError("unknown advisory policy")
     metadata = report.get("Metadata", {})
@@ -66,8 +73,10 @@ def evaluate(report, identity, local=False, required_types=(), advisory_policy="
     elif report.get("ArtifactName") != identity:
         raise ValueError("scanner target differs from pinned reference")
     config = metadata.get("ImageConfig", {})
-    if config.get("architecture") != "arm64" or config.get("os") != "linux":
-        raise ValueError("image scan is not Linux ARM64")
+    if architecture not in ("arm64", "amd64") or config.get("architecture") != architecture or config.get("os") != "linux":
+        raise ValueError("image scan platform differs from selected Linux architecture")
+    if role not in ("runtime", "build"):
+        raise ValueError("invalid artifact role")
     coverage_errors = []
     if not metadata.get("OS", {}).get("Family") or metadata["OS"].get("EOSL") is True:
         coverage_errors.append("OS is missing, unsupported or end of life")
@@ -80,23 +89,34 @@ def evaluate(report, identity, local=False, required_types=(), advisory_policy="
         raise ValueError("scanner result list missing")
     findings = []
     counts = {}
+    packages = []
     for item in results:
         kind = item.get("Type", "unknown")
         counts[kind] = counts.get(kind, 0) + len(item.get("Packages") or [])
+        for package in item.get("Packages") or []:
+            packages.append({k: package.get(k) for k in (
+                "ID", "Name", "Version", "SrcName", "SrcVersion", "Arch", "FilePath",
+                "Identifier", "Digest", "Licenses", "Layer"
+            )} | {"target": item.get("Target"), "type": kind, "class": item.get("Class"),
+                  "artifact": identity, "architecture": architecture, "role": role})
         for vulnerability in item.get("Vulnerabilities") or []:
             if not vulnerability.get("VulnerabilityID") or not vulnerability.get("PkgName"):
                 raise ValueError("malformed vulnerability")
             findings.append({k: vulnerability.get(k) for k in (
                 "VulnerabilityID", "PkgName", "InstalledVersion", "FixedVersion", "Severity",
-                "Status", "SeveritySource", "PrimaryURL", "Title"
-            )} | {"type": kind})
+                "Status", "SeveritySource", "PrimaryURL", "Title", "PkgID", "PkgPath",
+                "PkgIdentifier", "Layer", "DataSource", "VendorSeverity", "CVSS", "References"
+            )} | {"type": kind, "target": item.get("Target"), "class": item.get("Class"),
+                  "artifact": identity, "architecture": architecture, "role": role})
     for kind in sorted(set(required_types)):
         if not counts.get(kind):
             coverage_errors.append(f"required shipped language inventory missing: {kind}")
     return {"ok": not coverage_errors and (advisory_policy == "report" or not findings),
             "advisory_policy": advisory_policy, "advisories_present": bool(findings),
             "inventory_complete": not coverage_errors, "coverage_errors": coverage_errors,
-            "packages_by_type": counts, "findings": findings,
+            "packages_by_type": counts, "packages": packages, "findings": findings,
+            "architecture": architecture, "role": role,
+            "kernel_coverage": "not_measured_image_headers_are_not_the_running_kernel",
             "os": metadata.get("OS"), "image_id": metadata.get("ImageID"),
             "limits": "Detected packages only; an image digest or zero findings cannot prove scanner language coverage or exploitability."}
 
@@ -139,15 +159,24 @@ def run(args):
                 command = [str(scanner), "--cache-dir", cache.name, "image", "--quiet", "--config", str(folder / "trivy.yaml"),
                            "--ignorefile", str(folder / "ignore"), "--scanners", "vuln",
                            "--vuln-type", "os,library", "--severity", "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL",
-                           "--ignore-unfixed=false", "--list-all-pkgs", "--platform", "linux/arm64",
+                           "--ignore-unfixed=false", "--list-all-pkgs", "--platform", "linux/" + args.architecture,
                            "--timeout", "10m", "--format", "json", "--output", str(report_path), *target]
                 with (args.output / (name + ".log")).open("wb") as log:
                     result = subprocess.run(command, env=env, cwd=clean, stdout=log, stderr=log, timeout=660)
                 if result.returncode:
                     raise ValueError("scanner failed; inspect bounded target log")
             records[name] = evaluate(json.loads(report_path.read_text()), identity, local,
-                                     REQUIRED_TYPES.get(name, ()), args.advisory_policy)
+                                     REQUIRED_TYPES.get(name, ()), args.advisory_policy, args.architecture,
+                                     "build" if not local else "runtime")
             records[name].update(report_sha256=sha(report_path), target=identity)
+            if local:
+                payloads = payload_inventory(archive, name)
+                records[name]["payloads"] = payloads
+                records[name]["archive_sha256"] = receipt["archive_sha256"]
+                if not payloads["inventory_complete"]:
+                    records[name]["coverage_errors"].append("missing executable/native payloads: " + ", ".join(payloads["missing"]))
+                    records[name]["inventory_complete"] = False
+                    records[name]["ok"] = False
         except (KeyError, ValueError, OSError, subprocess.SubprocessError) as error:
             records[name] = {"ok": False, "error": str(error)}
         print(json.dumps({"image": name, "ok": records[name]["ok"],
@@ -155,6 +184,9 @@ def run(args):
                           "error": records[name].get("error")}), flush=True)
     after = subprocess.check_output(version_args, env=env, timeout=30)
     (args.output / "scanner-after.json").write_bytes(after)
+    scanner_metadata = json.loads(after)
+    database_updated_unix = {key: int(datetime.datetime.fromisoformat(value['UpdatedAt'].replace('Z','+00:00')).timestamp())
+                             for key, value in scanner_metadata.items() if key in ('VulnerabilityDB','JavaDB')}
     missing = sorted(set(required) - records.keys())
     registries_unchanged = all(sha(ROOT / name) == digest for name, digest in registry_hashes.items())
     summary = {"schema": 1, "ok": not missing and all(v["ok"] for v in records.values()) and sha(scanner) == before and registries_unchanged,
@@ -163,6 +195,8 @@ def run(args):
                "unscanned_built_images": sorted(set(BUILT) - records.keys()),
                "missing": missing, "images": records, "scanner_sha256": before,
                "scanner_unchanged": sha(scanner) == before,
+               "created_unix": int(time.time()), "scanner_metadata": scanner_metadata,
+               "database_updated_unix": database_updated_unix,
                "registry_sha256": registry_hashes, "registries_unchanged": registries_unchanged,
                "candidate_source_sha256": args.candidate_source_sha256,
                "advisory_policy": args.advisory_policy,
@@ -175,6 +209,7 @@ def run(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--architecture", choices=("arm64", "amd64"), default="arm64")
     parser.add_argument("--scanner", type=Path, required=True)
     parser.add_argument("--exports", type=Path, help="Alias to mirket dev image-export receipt map")
     parser.add_argument("--candidate-source-sha256", help="Require candidate exports from this exact compiled source; installed or stale receipts fail")

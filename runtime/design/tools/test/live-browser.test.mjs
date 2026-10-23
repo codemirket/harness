@@ -15,7 +15,9 @@ test('shipped Chromium meets the reviewed security floor and retired video depen
   const playwright = JSON.parse(await fs.readFile(new URL('../node_modules/playwright-core/package.json', import.meta.url), 'utf8'));
   assert.equal(playwright.version, process.env.MIRKET_PLAYWRIGHT_VERSION);
   const bundled = JSON.parse(await fs.readFile(new URL('../node_modules/playwright-core/browsers.json', import.meta.url), 'utf8')).browsers.find(x=>x.name==='chromium');
-  assert.equal(bundled.browserVersion, manifest.version);
+  assert.deepEqual(bundled.browserVersion.split('.').slice(0,3), manifest.version.split('.').slice(0,3));
+  assert.ok(Number(manifest.version.split('.')[3]) >= Number(bundled.browserVersion.split('.')[3]), 'Never downgrade a security patch to the SDK bundled revision');
+  assert.equal(manifest.version, process.env.MIRKET_PLAYWRIGHT_CHROMIUM_VERSION);
   assert.equal(bundled.revision, process.env.MIRKET_PLAYWRIGHT_CHROMIUM_REVISION);
   for (const name of ['esbuild','hyperframes']) {
     await assert.rejects(import(name), {code:'ERR_MODULE_NOT_FOUND'});
@@ -134,4 +136,27 @@ test('actual axe checks captured interaction state, keyboard focus and reduced m
     assert.equal(bad.qa.accessibility.status,'failed');
     assert.equal(bad.qa.status,'failed');
   } finally { await fs.rm(root,{recursive:true,force:true}); }
+});
+
+
+test('malicious HTML cannot read host files, contact companions or write job inputs', {skip:process.env.MIRKET_LIVE_BROWSER_TEST !== '1',timeout:90000}, async()=>{
+  const {workspace}=await import('../paths.mjs');
+  const {browserScreenshot}=await import('../operations.mjs');
+  const relative=`qa/hostile-${crypto.randomUUID()}`;
+  const root=path.join(workspace,relative);await fs.mkdir(root,{recursive:true});
+  const html=`<!doctype html><html lang="en"><head><title>Isolation probe</title></head><body><div id="result">pending</div><script>
+    const urls=['file:///etc/passwd','http://kroki:8000/health','http://host.containers.internal/','http://127.0.0.1:8000/'];
+    Promise.all(urls.map(url=>fetch(url).then(r=>r.ok?'LEAK':'blocked').catch(()=>'blocked'))).then(async results=>{
+      const write=await fetch(location.href,{method:'PUT',body:'MODIFIED'}).then(r=>r.ok?'WRITE':'blocked').catch(()=>'blocked');
+      document.querySelector('#result').textContent=results.concat(write).join(',');document.querySelector('#result').dataset.done='yes';
+    });
+  </script></body></html>`;
+  await fs.writeFile(path.join(root,'index.html'),html);
+  try {
+    const result=await browserScreenshot({source:`${relative}/index.html`,output:`${relative}/result.png`,width:400,height:240,wait_for:'#result[data-done]',inspect_selectors:['#result']});
+    assert.equal(result.evidence.selectors['#result'].text,'blocked,blocked,blocked,blocked,blocked');
+    assert.match(result.evidence.sandbox,/Layer 1 Sandbox\s+Namespace/);
+    assert.match(result.evidence.sandbox,/Seccomp-BPF sandbox\s+Yes/);
+    assert.equal(await fs.readFile(path.join(root,'index.html'),'utf8'),html);
+  } finally {await fs.rm(root,{recursive:true,force:true});}
 });

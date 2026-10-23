@@ -17,10 +17,11 @@ class ImageTests(unittest.TestCase):
         self.assertIn("gobinary",str(result["coverage_errors"]))
         report["Results"].append({"Type":"gobinary","Packages":[{"Name":"stdlib","Version":"v1.27.3"}]})
         self.assertTrue(evaluate(report,"pinned",required_types={"node-pkg","gobinary"})["ok"])
-    def test_current_design_inventory_requires_node_without_retired_go_payload(self):
+    def test_current_design_inventory_requires_node_and_owned_d2_metadata(self):
         report = self.fixture()
         self.assertFalse(evaluate(report, 'pinned', required_types=REQUIRED_TYPES['design-tools'])['ok'])
         report['Results'].append({'Type': 'node-pkg', 'Packages': [{'Name': '@open-pencil/cli'}]})
+        report['Results'].append({'Type':'gobinary','Packages':[{'Name':'stdlib','Version':'v1.27.3'}]})
         self.assertTrue(evaluate(report, 'pinned', required_types=REQUIRED_TYPES['design-tools'])['ok'])
 
     def test_candidate_scan_rejects_old_installed_and_wrong_source_archives(self):
@@ -104,4 +105,35 @@ class ImageTests(unittest.TestCase):
         incomplete = evaluate(report, "pinned")
         self.assertFalse(incomplete["inventory_complete"])
         self.assertEqual(len(incomplete["findings"]), 1)
-        self.assertEqual(len(inventory(ROOT)), 3)
+        self.assertEqual(len(inventory(ROOT)), 5)
+
+    def test_findings_retain_artifact_paths_and_severity_provenance(self):
+        report = self.fixture()
+        report['Results'][0].update(Target='Debian 13', Packages=[{
+            'Name':'linux-libc-dev','Version':'6.12','SrcName':'linux','SrcVersion':'6.12', 'Arch':'arm64'}],
+            Vulnerabilities=[{'VulnerabilityID':'CVE-fixture','PkgName':'linux-libc-dev',
+                'PkgPath':'usr/include/linux','Severity':'CRITICAL','SeveritySource':'nvd',
+                'VendorSeverity':{'debian':1,'nvd':4},'DataSource':{'ID':'debian'}}])
+        result = evaluate(report, 'pinned')
+        self.assertEqual(result['packages'][0]['SrcName'], 'linux')
+        self.assertEqual(result['findings'][0]['PkgPath'], 'usr/include/linux')
+        self.assertEqual(result['findings'][0]['VendorSeverity'], {'debian':1,'nvd':4})
+        self.assertEqual(result['findings'][0]['artifact'], 'pinned')
+        self.assertIn('not_measured', result['kernel_coverage'])
+
+    def test_missing_native_and_browser_bytes_fail_independently_of_scanner(self):
+        from unittest.mock import patch
+        from image_contents import payload_inventory
+        file = {'type':'file','sha256':'a'*64,'size':10}
+        entries = {'usr/local/bin/node':file,'usr/local/bin/d2':file,'usr/local/bin/typst':file,
+                   'opt/design/chrome/chrome-linux-arm64/chrome':file,
+                   'opt/design/node_modules/@img/sharp-libvips-linux-arm64/lib/libvips-cpp.so.42':file,
+                   'opt/design/node_modules/@resvg/resvg-js-linux-arm64-gnu/resvgjs.linux-arm64-gnu.node':file,
+                   'opt/design/node_modules/canvaskit-wasm/bin/canvaskit.wasm':file}
+        with patch('image_contents.contents',return_value=entries):
+            self.assertTrue(payload_inventory('unused','design-tools')['inventory_complete'])
+        del entries['opt/design/chrome/chrome-linux-arm64/chrome']
+        with patch('image_contents.contents',return_value=entries):
+            self.assertIn('chromium', payload_inventory('unused','design-tools')['missing'])
+        with patch('image_contents.contents',return_value={'opt/agent/mirket-embed':file}):
+            self.assertIn('onnx-runtime', payload_inventory('unused','agent-runtime')['missing'])
