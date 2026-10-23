@@ -275,7 +275,11 @@ pub fn prepare(paths: &Paths) -> Result<()> {
 /// Build reviewed bytes in the engine cache without installing a receipt,
 /// replacing a generation, starting a session or changing saved selection.
 pub(crate) fn candidate_image(paths: &Paths) -> Result<String> {
-    let engine = engine(paths)?;
+    let engine = Engine::resolve(paths)?;
+    ensure!(
+        engine.candidate_ready()?["host"]["arch"] == "arm64",
+        "candidate builds require native Linux ARM64"
+    );
     let build_root = engine.staging.join("agent-runtime/build");
     util::ensure_directory(&build_root)?;
     let _build_lock = util::FileLock::acquire(&build_root.join("build.lock"))?;

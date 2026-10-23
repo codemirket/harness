@@ -714,7 +714,7 @@ fn build_files(kind: &str) -> Vec<(&'static str, &'static [u8])> {
 /// receipts or running services. The normal reviewed recipe supplies dependencies.
 pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
     let engine = Engine::resolve(paths)?;
-    engine.ready()?;
+    engine.candidate_ready()?;
     let registry = definition()?;
     let image = prepare_build(&engine, &registry, "design-tools")?;
     let tests = project.join("runtime/design/tools/test").canonicalize()?;
@@ -770,7 +770,7 @@ pub(crate) fn test_tools(paths: &Paths, project: &Path) -> Result<Value> {
 pub(crate) fn candidate_image(paths: &Paths, kind: &str) -> Result<String> {
     ensure!(ALIASES.contains(&kind), "unknown reviewed design build");
     let engine = Engine::resolve(paths)?;
-    engine.ready()?;
+    engine.candidate_ready()?;
     prepare_build(&engine, &definition()?, kind)
 }
 

@@ -5,8 +5,8 @@
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 8559,
-      "sha256": "e9df5bbb17b6df5860214f2c041690c9fcfddbc2d6ad606f33bc270f8b6b5ee3"
+      "bytes": 8773,
+      "sha256": "536f6d713fb8a8f1824580328c57520749bf631d1c10684fb6398a0903cddf30"
     },
     {
       "path": "AGENTS.md",
@@ -2385,13 +2385,13 @@
     },
     {
       "path": "src/packages/agent.rs",
-      "bytes": 25781,
-      "sha256": "52a560c19a4634cea7713aa922076fb17ba462cd61acee11bd7e5ec56005a65f"
+      "bytes": 25926,
+      "sha256": "183c14c4cf52d1297a7535da1e311ad230e02b4ee088513ac5faf6860e3b2636"
     },
     {
       "path": "src/packages/audit.rs",
-      "bytes": 2839,
-      "sha256": "3f3a50f960fbaed716e447ac9c537a72bc0784b5eca21ed249fa5fe8da6e0c8f"
+      "bytes": 2916,
+      "sha256": "af976dd02a0df3e8beeed3b1e639c0eebde259a96d52d3dad133455528316f15"
     },
     {
       "path": "src/packages/machine.rs",
@@ -2410,8 +2410,8 @@
     },
     {
       "path": "src/packages/services.rs",
-      "bytes": 89724,
-      "sha256": "9deae1dd736d62e70f721f408826f59800d5f9dfc4d36422eb5cc90e2bf19b0c"
+      "bytes": 89744,
+      "sha256": "3533254d9ab09f8ad361d0824c541295b080d5ee4a32101adee1f5152cac41b3"
     },
     {
       "path": "src/paths.rs",
@@ -2420,8 +2420,8 @@
     },
     {
       "path": "src/podman.rs",
-      "bytes": 46776,
-      "sha256": "d48835ef4c6f9598680d9e5b7c927a66332646ece894da0af8ab90267b9bacda"
+      "bytes": 47267,
+      "sha256": "9f536505405dcfa467f17a7d6abd91d89b3fc1168f5d58df5f45162256cbfb0b"
     },
     {
       "path": "src/process/unix.rs",
@@ -35702,7 +35702,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "856de4005b60783c20b9436315a64896e2d971844748eb0364e1d1541800b80a",
+  "source_sha256": "41f3a3864a1239fbef2b0049de41c859e84fa66fb1a5fe7534d560dcb398a982",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

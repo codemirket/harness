@@ -153,7 +153,7 @@ impl Engine {
             "TMPDIR".into(),
             short.join("t").to_string_lossy().into_owned(),
         );
-        if short == unified_runtime(paths) {
+        if short == unified_runtime(paths) || cfg!(target_os = "linux") {
             let runtime = short.join("r");
             util::ensure_directory(&runtime)?;
             #[cfg(unix)]
@@ -223,6 +223,18 @@ impl Engine {
     }
     pub fn ready(&self) -> Result<Value> {
         ensure_controller_supported()?;
+        self.inspect_ready()
+    }
+    /// Development-only builds and tests may use native rootless Linux ARM64.
+    /// Installation and runtime activation retain the managed-controller guard.
+    pub(crate) fn candidate_ready(&self) -> Result<Value> {
+        if cfg!(all(target_os = "linux", target_arch = "aarch64")) {
+            self.inspect_ready()
+        } else {
+            self.ready()
+        }
+    }
+    fn inspect_ready(&self) -> Result<Value> {
         self.require_local_client()?;
         self.validate_machine()?;
         let value: Value = serde_json::from_str(&self.run(&["info".into(), "--format=json".into()], Duration::from_secs(8))

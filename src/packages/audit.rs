@@ -27,7 +27,11 @@ pub(crate) fn export(paths: &Paths, alias: &str, output: &Path, candidate: bool)
             .to_owned()
     };
     let engine = Engine::resolve(paths)?;
-    engine.ready()?;
+    if candidate {
+        engine.candidate_ready()?;
+    } else {
+        engine.ready()?;
+    }
     ensure!(
         super::oci::image_id(&engine, &image)? == image,
         "image identity changed"
