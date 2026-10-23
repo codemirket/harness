@@ -131,6 +131,11 @@ jobs:
       attestations: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Prepare the ephemeral runner's rootless cgroup session
+        run: |
+          sudo loginctl enable-linger "$(id -u)"
+          sudo systemctl start "user@$(id -u).service"
+          test -S "/run/user/$(id -u)/bus"
       - name: Bootstrap candidate and isolated engine registration
         run: |
           cargo install --locked --debug --path . --bin mirket --root "$RUNNER_TEMP/bootstrap"

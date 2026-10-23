@@ -5,8 +5,8 @@
   "input_files": [
     {
       "path": ".github/workflows/check.yml",
-      "bytes": 8559,
-      "sha256": "e9df5bbb17b6df5860214f2c041690c9fcfddbc2d6ad606f33bc270f8b6b5ee3"
+      "bytes": 8790,
+      "sha256": "dca361e1b9142693e44f4988dc9cbbd04e55b280159225ae17c44082427423aa"
     },
     {
       "path": "AGENTS.md",
@@ -2435,8 +2435,8 @@
     },
     {
       "path": "src/podman.rs",
-      "bytes": 47346,
-      "sha256": "497b6d6c9dd7e9984e1a083e687c8dd1072c04bc238f705d809394b88c1b85f5"
+      "bytes": 48319,
+      "sha256": "6538d2469bcb614419f8f3af4bc0d1541161f968471f4b7652a40098cc40f047"
     },
     {
       "path": "src/process/unix.rs",
@@ -35717,7 +35717,7 @@
     "evals/role-workflow/experiments/journal-prototype.rs",
     "evals/role-workflow/experiments/retrieval-ablation.py"
   ],
-  "source_sha256": "d5568245cb6d5c2440010f75a3b727041429f2ac333e3ec43b515bee4be11f46",
+  "source_sha256": "2e8ead5cea54684e4bc1633293cef3bdc6d79391f9827b029837db5d5c4b3df6",
   "main_mcp_contracts": [
     {
       "name": "runtime_data",

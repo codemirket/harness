@@ -169,6 +169,27 @@ impl Engine {
         if cfg!(target_os = "macos") {
             env.insert("CONTAINERS_MACHINE_PROVIDER".into(), "applehv".into());
         }
+        #[cfg(target_os = "linux")]
+        {
+            // Rootless cgroup delegation belongs to the logged-in user's bus.
+            // Keep storage/config/runroot private; never inherit an arbitrary
+            // DBUS address or a root session from the calling environment.
+            use std::os::unix::fs::{FileTypeExt, MetadataExt};
+            let uid = std::fs::metadata("/proc/self")?.uid();
+            let bus = PathBuf::from(format!("/run/user/{uid}/bus"));
+            if bus.exists() {
+                util::reject_symlink_components(&bus)?;
+                let metadata = std::fs::metadata(&bus)?;
+                ensure!(
+                    metadata.uid() == uid && metadata.file_type().is_socket(),
+                    "invalid user session bus"
+                );
+                env.insert(
+                    "DBUS_SESSION_BUS_ADDRESS".into(),
+                    format!("unix:path={}", bus.display()),
+                );
+            }
+        }
         Ok(Self {
             root: paths.root.clone(),
             binary,
