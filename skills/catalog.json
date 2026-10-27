@@ -9,7 +9,7 @@
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "f8a8aeb7929e1b8e5e04db2809dc3a6789b3d7a4cc180aa7194acf23c2acc651"
+      "sha256": "980bdb4e7c85d60c099efaecd0b586e6993de821eeb0b9c7b95b08daf487c3b9"
     },
     {
       "path": "planning/references.md",
@@ -2430,8 +2430,8 @@
         },
         {
           "path": "references/storyboard-and-transitions.md",
-          "sha256": "3e533cf0003235972c11ca68b2b747e7d5c22a5cb823b2cab66badb48a2045c8",
-          "bytes": 2986
+          "sha256": "141d90d0d503d5c56b3a28a8adaa8f0a55011a259c2354baab8e80fd0650917c",
+          "bytes": 3427
         }
       ]
     },

@@ -903,6 +903,21 @@ without claiming that backend success proves it. This waives the GUI test as a
 release gate; it does not authorize publication or modification of the user's
 existing installation.
 
+## Decision 104 — Focus motion work exclusively on HyperFrames
+
+On 2026-10-27 the user dropped Remotion from the plan and selected HyperFrames
+as the only motion/video option. Cancel Remotion comparator trials, production
+admission, separate host-runtime integration and migration proposals. Retain
+prior research and licensing findings as historical evidence only. No Remotion
+runtime dependency was added to the production closure.
+
+Continue HyperFrames feedback-loop work: author-visible preview, saved-pixel
+review, targeted repair and decoded-export verification with editable sources.
+Codex owns model choice and agents; one shared review/repair budget applies.
+The redistribution and permitted direct-vendor/host-acquisition requirements
+remain applicable to the selected dependencies. This decision does not change
+the live installation or qualify untested output/platform paths.
+
 ## Current step
 
 The user approved the [consolidated implementation plan](implementation-plan.md) on 2026-10-25 and authorized execution. Decisions 102–103 narrow the core, set first-release platform scope and waive GUI acceptance. The [working simplification review](codex-native-simplification-review.md) records earlier alternatives; the revised plan owns current scope. Local and CLI passing tests do not establish Windows support, Desktop GUI activation or a complete distribution. No commit, push or publication is authorized by plan approval.

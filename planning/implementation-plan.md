@@ -21,6 +21,25 @@ The version number `0.0.1` does not waive any selected capability. When a candid
 
 ## Runtime and installation topology
 
+**Distribution constraint clarified by the user, 2026-10-27:** Mirket may ship
+third-party components only with established redistribution rights and their
+required notices/source materials. A separately installed host dependency or
+direct acquisition from its publisher is also acceptable when its terms permit
+the intended use. Moving an installation outside the release archive does not
+waive use, recipient licensing, attribution or payment obligations. Do not
+mirror restricted packages, native binaries, caches or generated bundles that
+contain their code. Bind an explicitly selected, verified runtime; refuse
+missing or changed dependencies without PATH search or first-use downloads.
+This packaging choice does not admit a new production dependency.
+
+**Motion direction confirmed by the user, 2026-10-27:** HyperFrames is the sole
+selected motion/video engine. Drop Remotion adoption, host-runtime integration,
+comparator trials and migration work. Prior research remains historical
+evidence, not an active candidate. Focus on HyperFrames author-visible preview,
+saved-frame inspection, targeted repair and decoded-export verification, with
+editable project source and Codex-owned model selection. Keep one task-level
+review/repair budget and qualify the existing browser/FFmpeg closure and rights.
+
 ```mermaid
 flowchart LR
   C[Codex Desktop: models, agents, permissions, shell, documents, browser, SQL] --> G[Global AGENTS + nine Mirket method skills]

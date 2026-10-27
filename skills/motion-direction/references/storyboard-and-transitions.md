@@ -37,6 +37,13 @@ when input interrupts, reverses, cancels or finishes. Review the complete
 sequence at normal speed and inspect the acceptance frames from the saved
 artifact, not just a storyboard or whole-frame hash.
 
+When text or an action changes both foreground and background color, inspect
+intermediate frames as well as the endpoints: two readable endpoint palettes
+can interpolate through an unreadable middle. Preserve contrast during the
+handoff, for example by keeping a stable text surface or switching the paired
+colors together while animating a separate emphasis cue. Choose the remedy
+for the composition; a smooth color fade is not required.
+
 ## Output and evidence
 
 Return the shot card, the editable source, and either a playable specimen or a
