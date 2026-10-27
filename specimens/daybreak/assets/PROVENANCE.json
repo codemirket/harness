@@ -1,0 +1,31 @@
+{
+  "assets": {
+    "track.png": {
+      "kind": "AI-generated original image",
+      "source": "Codex imagegen, generated 2026-10-28 for this concept",
+      "generation_file": "exec-b126966b-688d-43f1-a8fc-9110cd0f9cc1.png",
+      "direction": "Editorial close-up of anonymous adult runner calves and lime unbranded shoes on a plum track; left side quiet for copy; warm raking sunlight; no text, logo, or reference image.",
+      "sha256": "a1148b5c018172747a4198c3a0369e86aeea1af51e9ebc32aa86e1a3ad4120e1"
+    },
+    "club.png": {
+      "kind": "AI-generated original image",
+      "source": "Codex imagegen, generated 2026-10-28 for this concept",
+      "generation_file": "exec-8a1d77da-52db-4dc0-b2ab-b10cc02c4727.png",
+      "direction": "Four fictional adult friends running beside city park steps at sunrise; plum, charcoal, cream and lime clothing; editorial photographic treatment; no text, logo, or reference image.",
+      "sha256": "a2544dfd4394de3cc675c40e71c742daf406a42ebbdfa52af2a7d4ebb88b7690"
+    },
+    "NotoSans.ttf": {
+      "kind": "third-party font",
+      "source": "Existing admitted Noto Sans asset from the harness design runtime qualification fixture",
+      "license": "SIL Open Font License 1.1; see OFL.txt",
+      "note": "Unmodified font, no new dependency admission.",
+      "sha256": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d"
+    }
+  },
+  "reference": {
+    "url": "https://dribbble.com/shots/26361206-Granger-Landing-page-Animation",
+    "author": "One Week Wonders",
+    "use": "Visual direction analysis only. No source media, artwork, branding, copy, or audio redistributed."
+  },
+  "disclosure": "Daybreak, its sessions, and pictured people are fictional. Image outputs are not licensed stock photographs or evidence of actual events. No external source-image reuse is claimed."
+}

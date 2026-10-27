@@ -88,3 +88,15 @@ checks optional declared animated properties; native motion resources explain
 the demonstrated failures. One shared repair was used, with no further
 creative retries. This does not reopen D4, rank models, establish premium art
 quality, or complete D5/D6/platform/distribution gates.
+
+## User-selected visual target — 2026-10-28
+
+The user supplied One Week Wonders' Granger landing-page animation as a concrete
+example of the desired craft. The [reference analysis and next specimen
+contract](granger-design-target.md) shift the next quality trial to an original,
+art-directed landing page plus its presentation reel. This replaces the proposed
+use of the small Foldway icon as the next aesthetic benchmark. HyperFrames and
+the accepted ownership boundary remain. Reference inspection and the first bounded production specimen are now recorded
+in [Daybreak production](../docs/daybreak-production-20261028.md). The original
+page, actual30fps export, independent critique and one repair are retained. This
+does not establish Granger-level craft or reopen/complete the broader gates.
