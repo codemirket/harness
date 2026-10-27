@@ -9,7 +9,7 @@
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "554a19c1202a7ff0a225580ebb637479965cbe059952dd7528fc4c356590db8d"
+      "sha256": "f8a8aeb7929e1b8e5e04db2809dc3a6789b3d7a4cc180aa7194acf23c2acc651"
     },
     {
       "path": "planning/references.md",
@@ -282,8 +282,8 @@
       "path": "skills/agent-coordination-strategy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "86998292cbb329a146c033cbdf333e57f81a4cb13d93662ce96253d1da9190b3",
-      "source_bytes": 1791,
+      "source_sha256": "131da727242a9c37e5203eedd2644368e8861ac19da2f576ed9e2a6c073014d3",
+      "source_bytes": 2696,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#agent-coordination-strategy",
@@ -1532,8 +1532,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "0591e59891f86d82ad37820128160283ceb47b21850f65b43317564bbf7411dd",
-      "source_bytes": 4170,
+      "source_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
+      "source_bytes": 4430,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#art-direction",
@@ -1992,8 +1992,8 @@
         "design.vector"
       ],
       "conditional_capabilities": [],
-      "source_sha256": "aae88372ac39cde534946e42a0af3bac4ec78c74c575605d9829834601328403",
-      "source_bytes": 1731,
+      "source_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+      "source_bytes": 1963,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#vector-art",
@@ -4214,7 +4214,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / superpowers",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4224,7 +4224,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / matt",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4234,7 +4234,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ecc",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4244,7 +4244,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / openai",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4254,7 +4254,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / anthropic",
       "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4264,7 +4264,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / google",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4274,7 +4274,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ponytail",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4284,7 +4284,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / adhd",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4294,7 +4294,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / gstack",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4304,7 +4304,7 @@
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / archify",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4314,7 +4314,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4324,7 +4324,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / serena",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4334,7 +4334,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / cua",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4344,7 +4344,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4354,7 +4354,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4364,7 +4364,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4374,7 +4374,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4384,7 +4384,7 @@
       ],
       "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4394,7 +4394,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / hallmark",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4404,7 +4404,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / taste",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4414,7 +4414,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / emil",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4424,7 +4424,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / impeccable",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4434,7 +4434,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / gsap-official",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4444,7 +4444,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / diagram-design",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4454,7 +4454,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / canvas-ui",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4464,7 +4464,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / kyle-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4474,7 +4474,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4484,7 +4484,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / owl-concepts",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4494,7 +4494,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4504,7 +4504,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / scroll-craft",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4514,7 +4514,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion-primitives",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4524,7 +4524,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / better-design",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4534,7 +4534,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / design-anatomy",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4544,7 +4544,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / anime",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4554,7 +4554,7 @@
       ],
       "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4564,7 +4564,7 @@
       ],
       "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / marketing",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4574,7 +4574,7 @@
       ],
       "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / wondel",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4584,7 +4584,7 @@
       ],
       "selection_locator": "planning/references.md / E — Additional design resources / animate.css",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4594,7 +4594,7 @@
       ],
       "selection_locator": "planning/references.md / E — Additional design resources / react-bits",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4604,7 +4604,7 @@
       ],
       "selection_locator": "planning/references.md / E — Additional design resources / remotion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4614,7 +4614,7 @@
       ],
       "selection_locator": "planning/references.md / F — Additional documented references / karpathy",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4624,7 +4624,7 @@
       ],
       "selection_locator": "planning/references.md / F — Additional documented references / codex-practices",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4634,7 +4634,7 @@
       ],
       "selection_locator": "planning/references.md / F — Additional documented references / kingy-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4646,7 +4646,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / geist-code",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4659,7 +4659,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / atlassian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4670,7 +4670,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / fluent",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4681,7 +4681,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / reshaped",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4692,7 +4692,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / apple-liquid-glass",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4704,7 +4704,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / govuk",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4715,7 +4715,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / vanilla-publishing",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4727,7 +4727,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / guardian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4738,7 +4738,7 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / spectrum",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4750,7 +4750,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / agent-skills",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4761,7 +4761,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits",
       "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4771,7 +4771,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / qmd-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4782,7 +4782,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / sentry-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4792,7 +4792,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / statistical-analysis",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4802,7 +4802,7 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / wcag",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     }
   ],

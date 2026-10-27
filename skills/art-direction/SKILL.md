@@ -7,6 +7,8 @@ description: "Establish a distinct visual concept for a page, campaign or visual
 
 Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.
 
+For external assets actually incorporated into the artifact, retain the creator, source, applicable license and required attribution/notices with the deliverable. A reference library's prose license does not license its fonts, photographs or branded artwork.
+
 Choose a coherent direction across composition, type, color, image treatment, density and motion where requested. Explain the few choices that make it distinct and suited to the content. Use real copy and available assets early. Produce a minimal native specimen or permitted raster composition and inspect its rendered result before expanding the system.
 
 Rendering a PNG, validating SVG/XML or checking dimensions does not show the pixels to the reviewer. Claim visual inspection only after an image-capable tool actually displays the saved render at the target size. If that view is unavailable, report visual QA as untested and keep composition, legibility and clipping judgments provisional; do not infer them from source or a successful render command.

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "record_count": 100000,
+  "platform": "macos/aarch64",
+  "profile": "cargo test debug",
+  "seed_and_index_seconds": 538.700818792,
+  "validated_coverage_seconds": 1.585206125,
+  "warm_search_p95_ms": 1959.679625,
+  "warm_lexical_p95_ms": 125.3085,
+  "argv": "MIRKET_SCALE_COUNT=100000 MIRKET_SCALE_REPORT=/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/memory/scale-100k.json cargo test --locked --offline --test memory_scale measure_scoped_semantic_recall -- --ignored --nocapture",
+  "limits": ["synthetic one-chunk stored vectors", "one scope and sequential requests", "debug build", "no model quality, concurrency, backup, pressure, or RSS claim"]
+}

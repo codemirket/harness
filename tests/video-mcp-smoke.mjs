@@ -16,8 +16,9 @@ for (let i = 2; i < process.argv.length; i += 2) {
 const developmentRequired = ["--mirket", "--node", "--video-adapter", "--chromium", "--ffmpeg", "--ffprobe", "--fixture"];
 const installed = flags.has("--home");
 const required = installed ? ["--home", "--fixture"] : developmentRequired;
-assert.ok([...flags.keys()].every((flag) => required.includes(flag) || ["--format", "--scenario"].includes(flag)));
-assert.equal(flags.size, required.length + Number(flags.has("--format")) + Number(flags.has("--scenario")));
+assert.ok([...flags.keys()].every((flag) => required.includes(flag) || ["--format", "--scenario", "--retain-fixture"].includes(flag)));
+assert.equal(flags.size, required.length + Number(flags.has("--format")) + Number(flags.has("--scenario")) + Number(flags.has("--retain-fixture")));
+if (flags.has("--retain-fixture")) assert.equal(flags.get("--retain-fixture"), "yes");
 for (const flag of required) assert.ok(isAbsolute(flags.get(flag)), `Expected absolute ${flag}`);
 assert.ok((await stat(flags.get("--fixture"))).isDirectory());
 let installedRelease;
@@ -377,6 +378,6 @@ try {
   child.stdin.end();
   const timer = setTimeout(() => child.kill("SIGKILL"), 2000);
   await exited; clearTimeout(timer);
-  if (passed) await rm(temp, { recursive: true, force: true });
-  else console.error(`Retained failed video MCP fixture: ${temp}`);
+  if (passed && !flags.has("--retain-fixture")) await rm(temp, { recursive: true, force: true });
+  else console.error(`Retained ${passed ? "passed" : "failed"} video MCP fixture: ${temp}`);
 }

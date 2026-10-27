@@ -907,4 +907,12 @@ existing installation.
 
 The user approved the [consolidated implementation plan](implementation-plan.md) on 2026-10-25 and authorized execution. Decisions 102–103 narrow the core, set first-release platform scope and waive GUI acceptance. The [working simplification review](codex-native-simplification-review.md) records earlier alternatives; the revised plan owns current scope. Local and CLI passing tests do not establish Windows support, Desktop GUI activation or a complete distribution. No commit, push or publication is authorized by plan approval.
 
+Subsequent state on 2026-10-27: the former installation was retired and the
+rewrite installed under the user's separate authorization; this repository is
+now the current `harness` checkout. The deep-review task permits focused local
+commits after verification and requires preserving the live installation. It
+does not authorize pushes or publication. Earlier decisions above retain their
+historical authorization boundaries rather than describing the current
+installation as still coexisting with its predecessor.
+
 Historical reviews and their baseline manifests remain unchanged. Implementation progress and temporary coordination records live outside shipped source under the task-state directory.

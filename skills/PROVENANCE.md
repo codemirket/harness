@@ -7,8 +7,10 @@ workflow, asset or font has been copied or adapted into these bodies.
 
 The original text is covered by the repository [MIT license](../LICENSE).
 External source selection is a discovery/comparison record, not permission to
-redistribute. This authoring pass inspected the local approved plans and stale
-drafts; it did not fetch, audit or license-clear every external source body.
+redistribute. The 2026-10-27 retrieval and body review is retained in
+`planning/reviews/2026-10-27/`; its receipts and focused source analyses record
+what was actually fetched, which source file/section was inspected, and which
+license evidence remains unverified.
 
 ## Scope revision (2026-10-26)
 
@@ -683,7 +685,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / superpowers.
 - [Retained source 1](https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-matt"></a>
@@ -692,7 +694,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / matt.
 - [Retained source 1](https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-ecc"></a>
@@ -701,7 +703,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / ecc.
 - [Retained source 1](https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-openai"></a>
@@ -710,7 +712,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / openai.
 - [Retained source 1](https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-anthropic"></a>
@@ -719,7 +721,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: link-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / anthropic.
 - [Retained source 1](https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-google"></a>
@@ -728,7 +730,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / google.
 - [Retained source 1](https://github.com/google/skills/tree/d6eee396ed6a51871cc3f0979c5ff1be26d35d10).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-ponytail"></a>
@@ -737,7 +739,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / ponytail.
 - [Retained source 1](https://github.com/DietrichGebert/ponytail/tree/09c434ab73ca43761c5d8b0c5d341926c2fba710).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-adhd"></a>
@@ -746,7 +748,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / adhd.
 - [Retained source 1](https://github.com/ayghri/i-have-adhd/tree/839872f9d1cd634fed642b4589ce7226199cc15f).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-gstack"></a>
@@ -755,7 +757,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / gstack.
 - [Retained source 1](https://github.com/garrytan/gstack/tree/c285d88b90d39116ccfa2b901f80ea0fce0b26eb).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-archify"></a>
@@ -764,7 +766,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / A — Engineering, agent workflows and host integration / archify.
 - [Retained source 1](https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-crawl4ai"></a>
@@ -773,7 +775,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai.
 - [Retained source 1](https://github.com/unclecode/crawl4ai/tree/30165f1ee1fb61f6cce1477feed2acc5e2181e25).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-serena"></a>
@@ -782,7 +784,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / serena.
 - [Retained source 1](https://github.com/oraios/serena/tree/abb0a0f01b94bc8050086f0fb860077d17730324).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-cua"></a>
@@ -791,7 +793,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / cua.
 - [Retained source 1](https://github.com/trycua/cua/tree/27d8da9fd94056bd73892183531579396aafb2f9).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-stagehand"></a>
@@ -800,7 +802,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand.
 - [Retained source 1](https://github.com/browserbase/stagehand/tree/0f93c295deabce3cd7b14cdbdeacb1771f93378d).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-skyvern"></a>
@@ -809,7 +811,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern.
 - [Retained source 1](https://github.com/Skyvern-AI/skyvern/tree/eccc1c60b225105c3281cf2cc5e76b4170099fbb).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-langchain"></a>
@@ -818,7 +820,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain.
 - [Retained source 1](https://github.com/langchain-ai/langchain/tree/fa35b519a3a72fb4ccba7935f4c8e9e90a12ccca).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-langgraph"></a>
@@ -827,7 +829,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph.
 - [Retained source 1](https://github.com/langchain-ai/langgraph/tree/eb066bd31a2bf01fc0cd58256df4800a3695c233).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-promptfoo"></a>
@@ -836,7 +838,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo.
 - [Retained source 1](https://github.com/promptfoo/promptfoo/tree/c2f6a848aca5f7e01491d2533f3fb1122bc63c50).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-hallmark"></a>
@@ -845,7 +847,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / hallmark.
 - [Retained source 1](https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-taste"></a>
@@ -854,7 +856,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / taste.
 - [Retained source 1](https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-emil"></a>
@@ -863,7 +865,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / emil.
 - [Retained source 1](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-impeccable"></a>
@@ -872,7 +874,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / impeccable.
 - [Retained source 1](https://github.com/pbakaus/impeccable/tree/4e8504f10106a1cd7a99e37a401aa368d1d55576).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-gsap-official"></a>
@@ -881,7 +883,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / gsap-official.
 - [Retained source 1](https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-diagram-design"></a>
@@ -890,7 +892,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / diagram-design.
 - [Retained source 1](https://github.com/cathrynlavery/diagram-design/tree/550fd66edff058bc73056c3416b76d69cfe865ba).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-canvas-ui"></a>
@@ -899,7 +901,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / canvas-ui.
 - [Retained source 1](https://github.com/DavidHDev/canvas-ui/tree/a04a99b235299ee79a123a16ccb2e6cf9da74b6b).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-kyle-motion"></a>
@@ -908,7 +910,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / kyle-motion.
 - [Retained source 1](https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-lottiefiles-motion"></a>
@@ -917,7 +919,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion.
 - [Retained source 1](https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-owl-concepts"></a>
@@ -926,7 +928,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / owl-concepts.
 - [Retained source 1](https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-mengto-inspiration"></a>
@@ -935,7 +937,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration.
 - [Retained source 1](https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-scroll-craft"></a>
@@ -944,7 +946,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / scroll-craft.
 - [Retained source 1](https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-motion-primitives"></a>
@@ -953,7 +955,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / motion-primitives.
 - [Retained source 1](https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-better-design"></a>
@@ -962,7 +964,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / better-design.
 - [Retained source 1](https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-design-anatomy"></a>
@@ -971,7 +973,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / design-anatomy.
 - [Retained source 1](https://github.com/wheresryan22/anatomy/tree/1482e8469b0a9e0d8cc18ea2740a01423d29ae80).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-anime"></a>
@@ -980,7 +982,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / anime.
 - [Retained source 1](https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-motion"></a>
@@ -989,7 +991,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / motion.
 - [Retained source 1](https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-marketing"></a>
@@ -998,7 +1000,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / D — Marketing, discovery and positioning / marketing.
 - [Retained source 1](https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-wondel"></a>
@@ -1007,7 +1009,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / D — Marketing, discovery and positioning / wondel.
 - [Retained source 1](https://github.com/wondelai/skills/tree/c172996495bed0fcd26896a9416b2093fd7073f0).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-animatecss"></a>
@@ -1016,7 +1018,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / E — Additional design resources / animate.css.
 - [Retained source 1](https://github.com/animate-css/animate.css/tree/3f8ab233dbbd9d2fe577528d2296382954be3d1a).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-react-bits"></a>
@@ -1025,7 +1027,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / E — Additional design resources / react-bits.
 - [Retained source 1](https://github.com/DavidHDev/react-bits/tree/e12c22192ac7b4b452c5e2feb9b586d74765d696).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-remotion"></a>
@@ -1034,7 +1036,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / E — Additional design resources / remotion.
 - [Retained source 1](https://github.com/remotion-dev/remotion/tree/7ea5ab594e0d8c5aa93640ee84b7ed32925b545e).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-karpathy"></a>
@@ -1043,7 +1045,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / F — Additional documented references / karpathy.
 - [Retained source 1](https://github.com/multica-ai/andrej-karpathy-skills/tree/2c606141936f1eeef17fa3043a72095b4765b9c2).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-codex-practices"></a>
@@ -1052,7 +1054,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / F — Additional documented references / codex-practices.
 - [Retained source 1](https://learn.chatgpt.com/guides/best-practices).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-kingy-motion"></a>
@@ -1061,7 +1063,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / F — Additional documented references / kingy-motion.
 - [Retained source 1](https://kingy.ai/blog/astra-codex-motion-graphics-guide-prompts/).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-geist-code"></a>
@@ -1072,7 +1074,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - [Retained source 1](https://vercel.com/geist/typography).
 - [Retained source 2](https://vercel.com/geist/code-block).
 - [Retained source 3](https://github.com/vercel/geist-font/blob/main/LICENSE.txt).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-atlassian"></a>
@@ -1084,7 +1086,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - [Retained source 2](https://support.atlassian.com/confluence-cloud/docs/add-or-remove-page-restrictions/).
 - [Retained source 3](https://support.atlassian.com/confluence-cloud/docs/share-confluence-content/).
 - [Retained source 4](https://support.atlassian.com/confluence-cloud/docs/create-edit-and-publish-a-page/).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-fluent"></a>
@@ -1094,7 +1096,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / G — Visual-reference library / fluent.
 - [Retained source 1](https://fluent2.microsoft.design/motion).
 - [Retained source 2](https://fluent2.microsoft.design/material).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-reshaped"></a>
@@ -1104,7 +1106,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / G — Visual-reference library / reshaped.
 - [Retained source 1](https://www.reshaped.so/docs/getting-started/overview).
 - [Retained source 2](https://www.reshaped.so/docs/getting-started/principles).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-apple-liquid-glass"></a>
@@ -1114,7 +1116,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / G — Visual-reference library / apple-liquid-glass.
 - [Retained source 1](https://developer.apple.com/videos/play/wwdc2025/219/).
 - [Retained source 2](https://developer.apple.com/design/human-interface-guidelines/materials).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-govuk"></a>
@@ -1125,7 +1127,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - [Retained source 1](https://design-system.service.gov.uk/patterns/check-answers/).
 - [Retained source 2](https://design-system.service.gov.uk/patterns/complete-multiple-tasks/).
 - [Retained source 3](https://design-system.service.gov.uk/styles/typeface/).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-vanilla-publishing"></a>
@@ -1135,7 +1137,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / G — Visual-reference library / vanilla-publishing.
 - [Retained source 1](https://vanillaframework.io/docs/layouts/brochure).
 - [Retained source 2](https://vanillaframework.io/docs/patterns/strip).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-guardian"></a>
@@ -1146,7 +1148,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - [Retained source 1](https://raw.githubusercontent.com/guardian/csnx/main/libs/@guardian/source/src/foundations/typography/stories/typography.mdx).
 - [Retained source 2](https://www.theguardian.com/international).
 - [Retained source 3](https://github.com/guardian/fonts).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-spectrum"></a>
@@ -1156,7 +1158,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / G — Visual-reference library / spectrum.
 - [Retained source 1](https://spectrum.adobe.com/page/bi-directionality/).
 - [Retained source 2](https://www.w3.org/International/articles/inline-bidi-markup/).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-agent-skills"></a>
@@ -1167,7 +1169,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - [Retained source 1](https://agentskills.io/specification).
 - [Retained source 2](https://agentskills.io/skill-creation/evaluating-skills).
 - [Retained source 3](https://agentskills.io/skill-creation/optimizing-descriptions).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-trail-of-bits"></a>
@@ -1177,7 +1179,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits.
 - [Retained source 1](https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/property-based-testing/skills/property-based-testing/SKILL.md).
 - [Retained source 2](https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/differential-review/skills/differential-review/SKILL.md).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-qmd-methods"></a>
@@ -1186,7 +1188,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / H — Focused methods added by the independent-review fixes / qmd-methods.
 - [Retained source 1](https://github.com/tobi/qmd/blob/86d2365d17fc682e491c2c53d1e4a884aee8682a/skills/qmd/SKILL.md).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-sentry-methods"></a>
@@ -1196,7 +1198,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Source selection: planning/references.md / H — Focused methods added by the independent-review fixes / sentry-methods.
 - [Retained source 1](https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/skill-scanner/SKILL.md).
 - [Retained source 2](https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/find-bugs/SKILL.md).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-statistical-analysis"></a>
@@ -1205,7 +1207,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / H — Focused methods added by the independent-review fixes / statistical-analysis.
 - [Retained source 1](https://github.com/K-Dense-AI/scientific-agent-skills/blob/593377bb048752abb0152deab9fbb1083a6087df/skills/statistical-analysis/SKILL.md).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
 <a id="reference-wcag"></a>
@@ -1214,5 +1216,10 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification: comparison-only; retained comparison locator, no adapted section.
 - Source selection: planning/references.md / H — Focused methods added by the independent-review fixes / wcag.
 - [Retained source 1](https://www.w3.org/WAI/WCAG22/quickref/).
-- Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.
+- Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
+
+<!-- skill-reference-audit:begin -->
+Generated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in planning/reviews/2026-10-27/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream material was adapted into shipped skill bodies.
+Audit artifact: planning/reviews/2026-10-27/reference-audit.json; fetch receipts: planning/reviews/2026-10-27/reference-fetches.json
+<!-- skill-reference-audit:end -->
