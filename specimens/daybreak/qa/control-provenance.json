@@ -1,0 +1,12 @@
+{
+  "kind": "independent unmasked counterfactual export",
+  "frame_time_seconds": 0.7,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "sha256": "68e6a1e372c18a8a06b280a8736ee9ccf101533ef27d1c9981c404aafa44e35f",
+  "method": "Copy candidate source, replace only opening clipPath values with none; same actual Mirket export route; decode0.7s.",
+  "evidence": "/Users/nazmiyilmaz/.codex/task-state/harness-daybreak-video-review-20261028/export-control",
+  "rights": "Original Daybreak text; existing admitted OFL font. No third-party reference imagery."
+}

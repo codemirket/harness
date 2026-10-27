@@ -1,5 +1,10 @@
 # Daybreak production record — 2026-10-28
 
+Subsequent user-reported clipping and spacing defects were corrected in the
+[follow-up video review](daybreak-video-review-20261028.md). The original
+production evidence below remains historical; the specimen contains the newer
+export.
+
 Built an original responsive landing page and an editable HyperFrames reel
 against the [user-selected Granger target](../planning/granger-design-target.md).
 The [source and exported MP4](../specimens/daybreak/README.md) share artwork,

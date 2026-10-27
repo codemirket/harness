@@ -10,7 +10,8 @@ function track(selector,keys){
  const animation=node.animate(keys.map(([time,values,easing])=>({offset:time/DURATION,...values,easing:easing||OUT})),{duration:DURATION,fill:'both',iterations:1,easing:'linear'});animation.id=node.id;return animation;
 }
 track('#intro',[[0,{opacity:1}],[750,{opacity:1}],[1450,{opacity:0}],[12000,{opacity:0}]]);
-track('#intro-word',[[0,{clipPath:'inset(0 100% 0 0)',transform:'translateY(18px)'}],[650,{clipPath:'inset(0 0% 0 0)',transform:'translateY(0px)'}],[1200,{clipPath:'inset(0 0% 0 0)',transform:'translateY(-10px)'}],[12000,{clipPath:'inset(0 0% 0 0)',transform:'translateY(-10px)'}]]);
+// Reveal horizontally; glyph ink extends below the line box and past its right edge.
+track('#intro-word',[[0,{clipPath:'inset(-30% 100% -40% -5%)',transform:'translateY(18px)'}],[650,{clipPath:'inset(-30% -5% -40% -5%)',transform:'translateY(0px)'}],[1200,{clipPath:'inset(-30% -5% -40% -5%)',transform:'translateY(-10px)'}],[12000,{clipPath:'inset(-30% -5% -40% -5%)',transform:'translateY(-10px)'}]]);
 track('#intro-label',[[0,{opacity:0}],[250,{opacity:0}],[600,{opacity:1}],[12000,{opacity:1}]]);
 track('#intro-rule',[[0,{transform:'scaleX(0)'}],[600,{transform:'scaleX(1)'}],[12000,{transform:'scaleX(1)'}]]);
 track('#shot-hero',[[0,{opacity:0,transform:'translate(0px,48px) scale(.86)',clipPath:'inset(12% 18% 12% 18% round 24px)'}],[850,{opacity:0,transform:'translate(0px,48px) scale(.86)',clipPath:'inset(12% 18% 12% 18% round 24px)'}],[1750,{opacity:1,transform:'translate(0px,0px) scale(1)',clipPath:'inset(0% 0% 0% 0% round 0px)'}],[12000,{opacity:1,transform:'translate(0px,0px) scale(1)',clipPath:'inset(0% 0% 0% 0% round 0px)'}]]);

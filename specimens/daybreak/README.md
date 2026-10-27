@@ -42,7 +42,10 @@ dependency or renderer was added.
 
 ## Quality evidence and limits
 
-See [the production record](../../docs/daybreak-production-20261028.md).
+See [the production record](../../docs/daybreak-production-20261028.md) and
+[subsequent video defect review](../../docs/daybreak-video-review-20261028.md).
+The current export includes the repaired title mask and hero spacing;
+`qa/check-export.mjs` retains discriminating pixel regressions.
 Initial artifacts, one independent critique, one targeted repair batch and
 final checks were retained. The result is still less compositionally varied
 and typographically distinctive than the selected reference. It is not a
