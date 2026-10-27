@@ -34,3 +34,23 @@ same pass does not restore budget. Preserve the original frozen contract and
 append dated scope amendments or overruns rather than rewriting its history.
 
 For motion, name only the timing/easing/spacing/type controls relevant to the sequence and their owner. Retain the first frame, anticipation, hold, settle and final resting state where they matter; interactive mobile/reduced-motion variants should preserve meaning and controls when applicable. Do not infer smoothness, codec support, or visual quality from a successful render, file hash, receipt or model self-report.
+
+## Optional sampled-motion fields
+
+When a packet makes a preview/export parity claim, add one frozen `motion` object
+and include its canonical SHA-256 as `contract.motion_sha256`. Keep timing
+explicit and unit-bearing: `fps` is a positive rational object with only
+`numerator` and `denominator`, and `frame_count` is a positive integer. Name
+each sampled `beat` with an integer `frame` in `[0, frame_count)`, its expected
+state, and the existing state id. The frozen `contract.states_sha256` binds the
+route, viewport and state expectations; `contract.motion_sha256` binds the
+sample names and expected beat states.
+
+Motion captures extend the ordinary hashed capture with `beat_id`, the matching
+`frame`, and `capture_kind` (`preview` or `decoded_export`). With
+`parity_claim: true`, every beat needs both kinds, matched by the same beat and
+frame; a missing counterpart or changed expectation is a refusal. A static
+packet need not include these fields. These records distinguish correspondence
+and file integrity only: they do not certify that pixels or playback were
+visually inspected, and they cannot prove that an honestly authored packet was
+not later rewritten in full.

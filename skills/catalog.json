@@ -1712,7 +1712,8 @@
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks"
+          "docs/design-review-20261027.md / recent research and local outcome checks",
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
         ],
         "reference_families": [
           "impeccable",
@@ -1761,8 +1762,8 @@
       "resources": [
         {
           "path": "references/review-packet.md",
-          "sha256": "2be5625cd41505034c46a2dfd4e299115194a2d880f85666201472d226cfabe7",
-          "bytes": 3632
+          "sha256": "b79ae1fadc1e6bf3ae4dd5bb58ecfd6755e23dca616dde623e16aebcfedeb5e2",
+          "bytes": 4812
         }
       ]
     },
@@ -2362,8 +2363,8 @@
       "conditional_capabilities": [
         "video"
       ],
-      "source_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
-      "source_bytes": 4227,
+      "source_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+      "source_bytes": 5143,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
@@ -2373,7 +2374,8 @@
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks"
+          "docs/design-review-20261027.md / recent research and local outcome checks",
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
         ],
         "reference_families": [
           "emil",
@@ -2420,6 +2422,11 @@
         ]
       },
       "resources": [
+        {
+          "path": "references/editable-motion.md",
+          "sha256": "48f1eb60808c8eae97ef0a27b7655d7bdde13be55c36251c3909338310c7a0b6",
+          "bytes": 8458
+        },
         {
           "path": "references/storyboard-and-transitions.md",
           "sha256": "3e533cf0003235972c11ca68b2b747e7d5c22a5cb823b2cab66badb48a2045c8",
@@ -2631,8 +2638,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
-      "source_bytes": 2125,
+      "source_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
+      "source_bytes": 2917,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
@@ -2642,7 +2649,8 @@
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks"
+          "docs/design-review-20261027.md / recent research and local outcome checks",
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
         ],
         "reference_families": [
           "remotion",
@@ -2689,8 +2697,13 @@
       "resources": [
         {
           "path": "references/hyperframes-0.8.197-authoring.md",
-          "sha256": "a21bbaf661d15f18af7ff8fdbdbbbe26932ae9381663be19c65efce79101f1e3",
-          "bytes": 6711
+          "sha256": "10bc57812b0c8c6d73b14ecdb632d08f9dfbb9d472f3e3ba93a816f07fdf5fa0",
+          "bytes": 7057
+        },
+        {
+          "path": "references/preview-and-beats.md",
+          "sha256": "9c47dada99cd6e8e95784002c453e4390068b605ceee35ceef4aa5efa7722eb4",
+          "bytes": 4012
         }
       ]
     },

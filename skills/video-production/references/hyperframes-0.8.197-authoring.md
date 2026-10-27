@@ -108,8 +108,13 @@ Anime instance can leave the intended object frozen while unrelated CSS/WAAPI
 content still changes. Inspect the intended object's first, middle and final
 decoded frames; whole-frame hashes, status and a moving neighbor are not enough.
 
-CSS/WAAPI-only motion may use `data-no-timeline`, but still needs a normal-speed
-playback or decoded-frame check. Preserve interruption, reduced-motion and
+CSS/WAAPI motion may use `data-no-timeline`, but still needs a normal-speed
+playback and decoded-frame check. This pinned runtime has separate CSS and
+WAAPI adapters; native `element.animate()` handles are sought through the
+WAAPI adapter. Do not confuse them with unregistered Anime instances. A
+finite native-WAAPI translation was independently checked at five decoded
+frames; arbitrary timers/canvas or another animation library do not inherit
+that result. Preserve interruption, reduced-motion and
 reading-hold decisions from `motion-direction`; this reference does not impose
 a universal timing curve, scene count or transition.
 

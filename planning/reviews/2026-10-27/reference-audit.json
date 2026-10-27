@@ -3731,7 +3731,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -4642,7 +4642,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -4785,7 +4785,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -7214,7 +7214,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
+          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7540,7 +7540,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -7558,7 +7558,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
+          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -9789,7 +9789,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
           "source_mapping": "Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -10020,7 +10020,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
+          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
           "source_mapping": "HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }

@@ -36,6 +36,7 @@ SEVERITIES = {"info", "minor", "major", "blocking"}
 BLOCKING_RESOLVED = {"resolved", "closed"}
 RESET_FIELDS = {"budget", "repair_limit", "repairs_used"}
 PIXEL_CLAIM_FIELDS = {"pixels_seen", "saw_pixels", "pixel_inspection"}
+MOTION_CAPTURE_KINDS = {"preview", "decoded_export"}
 
 
 class EvidenceError(ValueError):
@@ -88,6 +89,13 @@ def _parse_time(value: Any, label: str) -> datetime:
 def _nonnegative_int(value: Any, label: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise EvidenceError(f"{label} must be a non-negative integer")
+    return value
+
+
+def _positive_int(value: Any, label: str) -> int:
+    value = _nonnegative_int(value, label)
+    if value == 0:
+        raise EvidenceError(f"{label} must be positive")
     return value
 
 
@@ -169,6 +177,45 @@ def _validate_artifact(root: Path, item: Any, label: str, states: dict[str, dict
             raise EvidenceError(f"{label}.viewport differs from its state")
         _parse_time(item.get("captured_at"), f"{label}.captured_at")
     return {"id": artifact_id, "path": path.as_posix(), "sha256": actual}
+
+
+def _validate_motion(packet: dict[str, Any], contract: dict[str, Any], states: dict[str, dict[str, Any]]) -> tuple[dict[str, Any] | None, dict[str, dict[str, Any]]]:
+    raw_motion = packet.get("motion")
+    if raw_motion is None:
+        return None, {}
+    motion = _map(raw_motion, "motion")
+    if any(field in motion for field in RESET_FIELDS):
+        raise EvidenceError("motion cannot reset the shared budget")
+    fps = _map(motion.get("fps"), "motion.fps")
+    numerator = _positive_int(fps.get("numerator"), "motion.fps.numerator")
+    denominator = _positive_int(fps.get("denominator"), "motion.fps.denominator")
+    if set(fps) != {"numerator", "denominator"}:
+        raise EvidenceError("motion.fps must be a rational numerator and denominator")
+    frame_count = _positive_int(motion.get("frame_count"), "motion.frame_count")
+    parity_claim = motion.get("parity_claim")
+    if not isinstance(parity_claim, bool):
+        raise EvidenceError("motion.parity_claim must be boolean")
+    beats = _list(motion.get("beats"), "motion.beats")
+    beat_map: dict[str, dict[str, Any]] = {}
+    for index, raw_beat in enumerate(beats):
+        beat = _map(raw_beat, f"motion.beats[{index}]")
+        beat_id = _text(beat.get("id"), f"motion.beats[{index}].id")
+        if beat_id in beat_map:
+            raise EvidenceError("motion beats contain duplicate ids")
+        frame = beat.get("frame")
+        if isinstance(frame, bool) or not isinstance(frame, int) or not 0 <= frame < frame_count:
+            raise EvidenceError(f"motion.beats[{index}].frame is outside frame_count")
+        state_id = _text(beat.get("state_id"), f"motion.beats[{index}].state_id")
+        if state_id not in states:
+            raise EvidenceError(f"motion beat {beat_id} references an unknown state")
+        expected = _text(beat.get("expected"), f"motion.beats[{index}].expected")
+        beat_map[beat_id] = {"frame": frame, "state_id": state_id, "expected": expected}
+    if contract.get("motion_sha256") != _canonical_sha(motion):
+        raise EvidenceError("motion expectations changed or have a stale hash")
+    # Keep these reads explicit so a future caller cannot accidentally treat the
+    # rational timing fields as a float or infer units from a label.
+    _ = (numerator, denominator, parity_claim)
+    return motion, beat_map
 
 
 def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
@@ -274,6 +321,7 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
     states_sha = _canonical_sha(states_list)
     if contract.get("states_sha256") != states_sha:
         raise EvidenceError("frozen state expectations changed or have a stale hash")
+    motion, beat_map = _validate_motion(packet, contract, states)
 
     candidates = _list(packet.get("candidates"), "candidates")
     candidate_ids: set[str] = set()
@@ -301,14 +349,36 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
             snapshot_ids.add(data["id"])
         capture_ids: set[str] = set()
         capture_states: set[str] = set()
+        beat_captures: dict[str, dict[str, list[str]]] = {}
         for cap_index, capture in enumerate(captures):
             data = _validate_artifact(root, capture, f"candidate {candidate_id}.captures[{cap_index}]", states, True)
             if data["id"] in capture_ids:
                 raise EvidenceError(f"candidate {candidate_id} has duplicate capture ids")
             capture_ids.add(data["id"])
             capture_states.add(capture["state_id"])
+            if "beat_id" in capture or "frame" in capture or "capture_kind" in capture:
+                if motion is None:
+                    raise EvidenceError(f"candidate {candidate_id} has motion capture metadata without motion")
+                beat_id = _text(capture.get("beat_id"), f"candidate {candidate_id}.captures[{cap_index}].beat_id")
+                if beat_id not in beat_map:
+                    raise EvidenceError(f"candidate {candidate_id} references an unknown motion beat")
+                frame = capture.get("frame")
+                if isinstance(frame, bool) or not isinstance(frame, int) or frame != beat_map[beat_id]["frame"]:
+                    raise EvidenceError(f"candidate {candidate_id} capture frame does not match its beat")
+                kind = _text(capture.get("capture_kind"), f"candidate {candidate_id}.captures[{cap_index}].capture_kind")
+                if kind not in MOTION_CAPTURE_KINDS:
+                    raise EvidenceError(f"candidate {candidate_id} has an invalid motion capture kind")
+                if capture["state_id"] != beat_map[beat_id]["state_id"]:
+                    raise EvidenceError(f"candidate {candidate_id} capture state does not match its beat")
+                beat_captures.setdefault(beat_id, {}).setdefault(kind, []).append(data["id"])
         if capture_states != set(states):
             raise EvidenceError(f"candidate {candidate_id} does not capture every expected state")
+        if motion is not None:
+            if set(beat_captures) != set(beat_map):
+                raise EvidenceError(f"candidate {candidate_id} is missing a motion beat capture")
+            for beat_id, by_kind in beat_captures.items():
+                if motion["parity_claim"] and not MOTION_CAPTURE_KINDS.issubset(by_kind):
+                    raise EvidenceError(f"candidate {candidate_id} is missing a motion capture counterpart for beat {beat_id}")
 
         findings = candidate.get("findings")
         if not isinstance(findings, list):

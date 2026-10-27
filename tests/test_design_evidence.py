@@ -87,6 +87,21 @@ class DesignEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.EvidenceError, message or ".+"):
             MODULE.validate_packet(packet or self.packet, self.root)
 
+    def add_motion_evidence(self) -> None:
+        motion = {
+            "fps": {"numerator": 30, "denominator": 1},
+            "frame_count": 90,
+            "parity_claim": True,
+            "beats": [{"id": "intro", "frame": 0, "state_id": "desktop", "expected": "intro illustration is legible"}],
+        }
+        self.packet["motion"] = motion
+        self.packet["contract"]["motion_sha256"] = MODULE._canonical_sha(motion)
+        preview = self.packet["candidates"][0]["captures"][0]
+        preview.update({"beat_id": "intro", "frame": 0, "capture_kind": "preview"})
+        export = json.loads(json.dumps(preview))
+        export.update({"id": "capture-export", "capture_kind": "decoded_export"})
+        self.packet["candidates"][0]["captures"].append(export)
+
     def test_valid_packet_reports_visual_attestation_without_certifying_pixels(self) -> None:
         result = MODULE.validate_packet(self.packet, self.root)
         self.assertTrue(result["valid"])
@@ -181,6 +196,36 @@ class DesignEvidenceTests(unittest.TestCase):
     def test_frozen_state_expectation_hash_rejects_mutation(self) -> None:
         self.packet["states"][0]["expected"] = "different expected pixels"
         self.assert_refused(message="state expectations changed")
+
+    def test_motion_parity_requires_explicit_paired_samples(self) -> None:
+        self.add_motion_evidence()
+        self.assertTrue(MODULE.validate_packet(self.packet, self.root)["valid"])
+        self.packet["candidates"][0]["captures"].pop()
+        self.assert_refused(message="capture counterpart")
+
+    def test_motion_capture_frame_must_match_frozen_beat(self) -> None:
+        self.add_motion_evidence()
+        self.packet["candidates"][0]["captures"][0]["frame"] = 1
+        self.assert_refused(message="frame does not match")
+
+    def test_motion_rejects_invalid_units_and_bounds(self) -> None:
+        self.add_motion_evidence()
+        self.packet["motion"]["fps"]["denominator"] = 0
+        self.assert_refused(message="fps.denominator")
+        self.packet = self.make_packet()
+        self.add_motion_evidence()
+        self.packet["motion"]["beats"][0]["frame"] = 90
+        self.packet["contract"]["motion_sha256"] = MODULE._canonical_sha(self.packet["motion"])
+        self.assert_refused(message="outside frame_count")
+
+    def test_motion_expectations_and_budget_cannot_be_rewritten(self) -> None:
+        self.add_motion_evidence()
+        self.packet["motion"]["beats"][0]["expected"] = "changed expectation"
+        self.assert_refused(message="motion expectations changed")
+        self.packet = self.make_packet()
+        self.add_motion_evidence()
+        self.packet["motion"]["repair_limit"] = 99
+        self.assert_refused(message="reset the shared budget")
 
     def test_selected_candidate_cannot_be_regressed_or_ambiguous(self) -> None:
         self.packet["candidates"][0]["regressed"] = True

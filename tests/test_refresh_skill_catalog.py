@@ -61,12 +61,12 @@ class RefreshSkillCatalogTests(unittest.TestCase):
         self.assertTrue(all("No upstream material was adapted" not in item["reuse_boundary"] for item in audit["sources"]))
 
         for skill_id, expected in {
-            "vector-art": "references/illustration-craft.md",
-            "motion-direction": "references/storyboard-and-transitions.md",
-            "video-production": "references/hyperframes-0.8.197-authoring.md",
+            "vector-art": ["references/illustration-craft.md"],
+            "motion-direction": ["references/editable-motion.md", "references/storyboard-and-transitions.md"],
+            "video-production": ["references/hyperframes-0.8.197-authoring.md", "references/preview-and-beats.md"],
         }.items():
             entry = next(x for x in catalog["project"] if x["id"] == skill_id)
-            self.assertEqual([x["path"] for x in entry["resources"]], [expected])
+            self.assertEqual([x["path"] for x in entry["resources"]], expected)
 
     def test_fetch_collector_discovers_extension_license_in_pinned_tree(self):
         spec = importlib.util.spec_from_file_location(
