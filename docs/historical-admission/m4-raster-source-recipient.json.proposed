@@ -1,0 +1,1231 @@
+{
+  "schema": 1,
+  "status": "disposable_raster_recipient_MCP_qualified_not_release_admitted",
+  "observed_utc": "2026-10-26T00:01:41.156457+00:00",
+  "release_admitted": false,
+  "target": "aarch64-apple-darwin",
+  "platform_executed": "macOS 26.5.2 ARM64",
+  "minimum_os_declared": "macOS 11.0; execution untested",
+  "native_derivative_version": "1.3.4-mirket-raster-qualification",
+  "sharp_version": "0.35.5",
+  "libvips_version": "8.18.7",
+  "baseline_library": {
+    "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+    "bytes": 14631104,
+    "sha256": "1801c6f1cb12363a8d1815d224840001031ed96f6f986e9e91e03dce35ee453a"
+  },
+  "unchanged_addon": {
+    "bytes": 280256,
+    "sha256": "791921f975371be33aed727e06283282cc001c960792eb52505b579fdaaf1b55",
+    "upstream_source_src_files_matching": 14
+  },
+  "module": "runtime/design/raster/node_modules/sharp/dist/index.mjs",
+  "runtime_inventory": {
+    "regular_files": 124,
+    "regular_bytes": 16087960,
+    "files": [
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/LICENSE.md",
+        "bytes": 4433,
+        "sha256": "e2eaa4603c14cb26f301e88648c12a853fa3f0f5da6d4b0972958c666e7f2ab8"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/README.md",
+        "bytes": 562,
+        "sha256": "be7edf3bc6467f761168cef3bb2b9b3def2532c98a86249848376ea00338ad1d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/color.cjs",
+        "bytes": 45136,
+        "sha256": "f7c3efcf482624007f2019fffee3e1dec56b8cb893faa9a420b2832805888dce"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/index.cjs",
+        "bytes": 49,
+        "sha256": "e6e93e7fb209420a20fdf2ec676e9c67413be8d5ace99eec64f9468480f0368d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/index.d.ts",
+        "bytes": 21569,
+        "sha256": "2467b00d963828f540f4acd7910f4c04cfe4b489550e6bb682212f65583bca5b"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/colour/package.json",
+        "bytes": 1515,
+        "sha256": "bc38c5097693ed53b91c32f35fb0a52569736c7854ba2eb6d080f3252071f75c"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-darwin-arm64/LICENSE",
+        "bytes": 10273,
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-darwin-arm64/README.md",
+        "bytes": 699,
+        "sha256": "ef448bf7ac130f0c6b51dbfbadc617b046a200d082de8648ab090784c5db0c3d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-darwin-arm64/index.cjs",
+        "bytes": 141,
+        "sha256": "779fece1ac73b7136281d9767b90267f19d3a296e850ecf474d9c89a8ef1968c"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+        "bytes": 280256,
+        "sha256": "791921f975371be33aed727e06283282cc001c960792eb52505b579fdaaf1b55"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-darwin-arm64/package.json",
+        "bytes": 862,
+        "sha256": "157996706c751e9a3608f35811f156238fa4ad1f367abfd4facec30883747f5e"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/README.md",
+        "bytes": 266,
+        "sha256": "6b35d930b25c9ce68a96daa087b7db71403b2447ce893b52cb02c2b45eca1b40"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/lib/index.js",
+        "bytes": 28,
+        "sha256": "516a08c06660cddb50d5f30ccac29a0514b05724956a11e8a7e6b799f2e1ab72"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+        "bytes": 14631104,
+        "sha256": "1801c6f1cb12363a8d1815d224840001031ed96f6f986e9e91e03dce35ee453a"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/package.json",
+        "bytes": 1048,
+        "sha256": "02948013718523b4d386f81671d5d71202c6e6c30c726987f3c97c332e6b1ed6"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/@img/sharp-libvips-darwin-arm64/versions.json",
+        "bytes": 349,
+        "sha256": "fd7f57c08322d6639d3035843c8a0129310465fb69df616346134db78607d0ad"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/LICENSE",
+        "bytes": 11357,
+        "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/README.md",
+        "bytes": 3215,
+        "sha256": "51a97449c443889155bc872522e6de5a91a5fa73edeffa03d749e186bf0eebca"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/index.d.ts",
+        "bytes": 436,
+        "sha256": "9500090533aafe039c41d8d368a44959f04482bb75636d96bc843c06f3d6a348"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/lib/detect-libc.js",
+        "bytes": 7503,
+        "sha256": "5de6a1c1abec8bba5ea1261cf819d83a73c92ebe72b879ae48c59ca12320a462"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/lib/elf.js",
+        "bytes": 982,
+        "sha256": "0e8820f00ee11d179d94894d4f97a6e87c34ab59e5dd4d3a571dfabcecf043af"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/lib/filesystem.js",
+        "bytes": 1097,
+        "sha256": "5c98fb66b559d0b4fa82c7a3e39d9ab6840f022c4c73e6b1a73ac6d16ec13fd7"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/lib/process.js",
+        "bytes": 569,
+        "sha256": "f37dd0ead9f70b50c6f5529c600e1cdf076e3c3bc8e6b4a0a9820a8d65244628"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/detect-libc/package.json",
+        "bytes": 1278,
+        "sha256": "ee88e5b954fdf3a8480b1d01ef767d68d8ca2c6da269f58c5cf1c5550e9aa2a7"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/LICENSE",
+        "bytes": 765,
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/README.md",
+        "bytes": 25669,
+        "sha256": "f1a789dcec285150be24db2ea04dd3175031554fa9834ec92fab83fb5e025a57"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/bin/semver.js",
+        "bytes": 4957,
+        "sha256": "bd6c871026985937dc945011fc54b74b47f5998154216d7b8d40d5ed782e4402"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/classes/comparator.js",
+        "bytes": 3631,
+        "sha256": "054202956430d63d5ff4599fae09760ce465b489e4f0b5ef5ce7cc7ac21157ac"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/classes/index.js",
+        "bytes": 143,
+        "sha256": "3bb69280c2a788d0eb16f915bb9df4dbe812075182024c753dca2283bcea1b17"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/classes/range.js",
+        "bytes": 15647,
+        "sha256": "a6544485aa8575aa9854c67e2caa67726815de18a482d0ceb8a1003244de3bc1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/classes/semver.js",
+        "bytes": 9891,
+        "sha256": "813b2c185512d30c9b931c2fed8140889d9d7490ceeeedc370da30337dc8ca57"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/clean.js",
+        "bytes": 205,
+        "sha256": "4eadb0892844cf3ae295121a86163a66c73f89acd1b7f0b114ec115b4539512f"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/cmp.js",
+        "bytes": 961,
+        "sha256": "a63d74e87b73788e78e9ce0a4892b5333d6b809c0de88b31e4ed76cbf17f94b3"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/coerce.js",
+        "bytes": 2004,
+        "sha256": "28a251c5ab210ddf9e97551b9f37a53329fcce91f0c3943dcbc02de1a1de915a"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/compare-build.js",
+        "bytes": 281,
+        "sha256": "5ab651d5b40af289bd85c645a92b6d8cfe1a986dc413c797cfcc8d623d7c844c"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/compare-loose.js",
+        "bytes": 132,
+        "sha256": "07b6a3a1db0a5210ceb784c1708bd4679f3a94fc73a9c9eb349349e7070a6f78"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/compare.js",
+        "bytes": 170,
+        "sha256": "d404b5aa48aaddc8a654c5da8fb7d4443404b7948589b21ac4b045d1cee4e34c"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/diff.js",
+        "bytes": 1423,
+        "sha256": "7a11fd39b987cdf06c65e928cb1aca49bec583feb86fb5c8fe47a6fd61d7de31"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/eq.js",
+        "bytes": 126,
+        "sha256": "b6e30a7168e52723216fc163d300e2bbabf92ec0251f9ac5438bb6ccf57c8936"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/gt.js",
+        "bytes": 124,
+        "sha256": "135523704aa48cd98834dd170ee9f74f0e68043b379f32d021db11e6304c5c93"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/gte.js",
+        "bytes": 127,
+        "sha256": "991c5bbe48ecb210a562646872f05862ad9fc0d42186d85aa60bdc6fa323eb9d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/inc.js",
+        "bytes": 478,
+        "sha256": "952069fc8690b7d3af0fe9d55f7c54fe2ac067b48c5e74f6a54f9ce19a334493"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/lt.js",
+        "bytes": 124,
+        "sha256": "1c897a9bc849320e2e9dc0f6c09555c01ee3ddf30734515d717b88ad7740ea25"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/lte.js",
+        "bytes": 127,
+        "sha256": "3a8d0b1d00423f60cc7cb810b36ab77b61330831ad237dbe73eb5cecfa412800"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/major.js",
+        "bytes": 136,
+        "sha256": "5c678480d882f511200fed2c16ec3847dfedb08a1d70328dc2f031d35d825276"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/minor.js",
+        "bytes": 136,
+        "sha256": "1b051794f1713adec2a236517196691687c35f82e0b596ff3316a78b3cc10ae6"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/neq.js",
+        "bytes": 128,
+        "sha256": "a662883751918822c162183b46b9e20d09489132f82686c92ab78bee67f3a127"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/parse.js",
+        "bytes": 331,
+        "sha256": "29a69e15b6d02fe381d573f861881a89590e9d0f0f0ca740c5f85eaf0234c4ad"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/patch.js",
+        "bytes": 136,
+        "sha256": "f02d3c1b059fe3d96ce124886f7eef321d381a95638fd3c4a8d5ccd8e76ffadd"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/prerelease.js",
+        "bytes": 234,
+        "sha256": "baedbf503d5610ad041bfb56071efa48feb331ca278295c399537d35d3ffb593"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/rcompare.js",
+        "bytes": 132,
+        "sha256": "84fa5e88adf08d15c993cac8cdec6d1a65045b7e95a9c55184230a7f807f4dc0"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/rsort.js",
+        "bytes": 163,
+        "sha256": "6ec659ce3b6c2b173c719286caab04409adba046c0917874ec3b5e36ddfbc7e3"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/satisfies.js",
+        "bytes": 247,
+        "sha256": "8cf5e122b757251671ed6c9d9680904b71cd375845853f05312e608cf2cc2946"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/sort.js",
+        "bytes": 161,
+        "sha256": "c2fe2d3ed0be8a4e9de8f02abdfd5d9c0d3bcc510d88e87af84185592882c4b8"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/truncate.js",
+        "bytes": 1021,
+        "sha256": "e145833a250311927c92f424f56498c52f1b7bb1271ce6afbf006db87773ff43"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/functions/valid.js",
+        "bytes": 176,
+        "sha256": "0de7ea736cb7807179d46dfac09c830a9338e02b6a07db12d7040cde2def6025"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/index.js",
+        "bytes": 2691,
+        "sha256": "4b3e57d3d40e29e0706002eba113d09f35aea593578376bbeec83b777b9912ab"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/constants.js",
+        "bytes": 873,
+        "sha256": "38a112baf27ceca0260082ff26ac2fd7a9861cab1af12dd65e720277f68e6ce9"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/debug.js",
+        "bytes": 240,
+        "sha256": "8a9f420572260f3cf944463b5090d62a60f0730589dc23a7ec4ca25e2ee41bb3"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/identifiers.js",
+        "bytes": 525,
+        "sha256": "b4916b09dc7869ae0eb05e71c855c942a3a7365f7e6e89185d59a9e45a2451d7"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/lrucache.js",
+        "bytes": 802,
+        "sha256": "14d087c87da87b6f5c36fc4cdd7d2d14077874b14a68e20fce5b6138fa2ca34f"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/parse-options.js",
+        "bytes": 338,
+        "sha256": "fdf51d0de8d5442c35a997ef58cd530d239ce206f961d14c5121354451b01d01"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/internal/re.js",
+        "bytes": 8139,
+        "sha256": "5833262888e2b5d843a69193f83c05e374818dbe55379b497819b5bf58e48cd8"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/package.json",
+        "bytes": 1661,
+        "sha256": "7c94cb7f2a53c27b20d76386ec144c062894dbcc909cfabd0f728c37874b1776"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/preload.js",
+        "bytes": 83,
+        "sha256": "edb6808911bebcb324b2df57e5c9935149e56984ff083b74c6cfe215f5b710ba"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/range.bnf",
+        "bytes": 702,
+        "sha256": "15d0baf9b7b98e6d862c0cb9e822d2533d2bc23e136bb75314d802ca1fcb0392"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/gtr.js",
+        "bytes": 231,
+        "sha256": "8fadad28e36d28e93d498ac7ac20badba2a407312845eabc18e82e90a0732b19"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/intersects.js",
+        "bytes": 224,
+        "sha256": "fe87ac5d3020010ad3ec00636dadbf0c669ff07d0f57e0a8165a8264f79a676f"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/ltr.js",
+        "bytes": 227,
+        "sha256": "e5186fcc03018acf9be6d968755d4c49727aeb0d981d179eb568ae5fbe983038"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/max-satisfying.js",
+        "bytes": 593,
+        "sha256": "e1a2c0d6144cc772cd20bbc8ecb9e8a3a4074e9172a3d8e794838b591cdeb416"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/min-satisfying.js",
+        "bytes": 591,
+        "sha256": "2681abf54098aa670f12826b76a6ec77a2441186ae4243afde3be8ae4908f7ca"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/min-version.js",
+        "bytes": 1514,
+        "sha256": "fefba0a88c2bf74d5cede504b5ae50a8dc3edfd69cf0174a491e2cf3e442614b"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/outside.js",
+        "bytes": 2204,
+        "sha256": "3a2b0b23593d2f49419c06af2af75450cab103b0c25d665d48fe5bca495a21ca"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/simplify.js",
+        "bytes": 1355,
+        "sha256": "7b78581c13322bc68ece2088685386b2a9b51c15b94d0a2063bdf2546bd41934"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/subset.js",
+        "bytes": 7478,
+        "sha256": "ceb9eb6ed5bfc6c7ac7af7f47e5c3535444a4e66a0e2b58cdad4bd02a35d454d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/to-comparators.js",
+        "bytes": 282,
+        "sha256": "6c5e966210cff270fa2850668aaf8460fac7759f8d99f282521ef7a78f4564e9"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/semver/ranges/valid.js",
+        "bytes": 326,
+        "sha256": "5ef6f995af801868925940cf8df5735d565ebabb090b068695cae65218bcd3ac"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/LICENSE",
+        "bytes": 10273,
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/README.md",
+        "bytes": 3162,
+        "sha256": "89772961fcf195b976573874555f2902bfe04a3e57be61af261ac65ce9348735"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/channel.cjs",
+        "bytes": 5383,
+        "sha256": "7445567e8001f4be3126374e4c17e282777ed14c718acca875c91bec69a2d7a1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/channel.mjs",
+        "bytes": 5376,
+        "sha256": "6067b0ba5ebcc9682a01d0b450a12b54849a95c8ed017f8485bddb5fd0b9db91"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/colour.cjs",
+        "bytes": 5622,
+        "sha256": "da760186e75d4fd8b6da0a617ecf122deec2fa6d95fdcc194bbee0cb1c5e4605"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/colour.mjs",
+        "bytes": 5610,
+        "sha256": "760e7fa8161432a9cc97f0a3d9f3e0b757e66089c967e6b36f3131c9fdafa1b5"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/composite.cjs",
+        "bytes": 9332,
+        "sha256": "6e0837309d25c2b642d42b557f3e1292c2b057af09746647a3a6d54de772a157"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/composite.mjs",
+        "bytes": 9325,
+        "sha256": "16eadc26ba57417e90e4bb73aff1116b56ad26766088793ab0b7c4bbdd2bc9fc"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/constructor.cjs",
+        "bytes": 20364,
+        "sha256": "6b8978e0f1614d83a219cbbd455e3eed7922bc4212a5b3b99c5d37c3af3b3226"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/constructor.mjs",
+        "bytes": 20340,
+        "sha256": "8be8da679d2a028d0f53b02ce52f07f295134a297caf3068944cd8d0b57ab3d1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/index.cjs",
+        "bytes": 620,
+        "sha256": "d69f275bc49fcd2a6188b26b35c986d4db32a1b008653fef88adb4598688232a"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/index.d.cts",
+        "bytes": 92885,
+        "sha256": "24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/index.d.mts",
+        "bytes": 87987,
+        "sha256": "b837d41bb8d39398690458f45cc445160dad36ec0db5ba0463d114e560d49d85"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/index.mjs",
+        "bytes": 573,
+        "sha256": "0e8f955c68a1b0bccf0ba5343c924dbfa6a46a76a0d491ec27fe6b328311363e"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/input.cjs",
+        "bytes": 33741,
+        "sha256": "e5eb5c891c0893098dbe8bc0358a2f2c7e800581018923a7956732fe1a5ddf8f"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/input.mjs",
+        "bytes": 33729,
+        "sha256": "4b0a51e678f9022cec06a1ffb34e17ea3498cfb707492b54de87541ccac54125"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/is.cjs",
+        "bytes": 3042,
+        "sha256": "46fa32e93964d8a31d6e851dc3bb7f3ec36935f9e8323b59603ff6cd84a7faa7"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/is.mjs",
+        "bytes": 3040,
+        "sha256": "96a3b1b82d389b7b57569332fed93e46cf9b5aa79f2babb82cbb15fe1581a409"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/libvips.cjs",
+        "bytes": 5833,
+        "sha256": "3419f6cb4303feaf4a76abe122ce1caf5dc755f9f17fa013afd5561827b61062"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/libvips.mjs",
+        "bytes": 5828,
+        "sha256": "d9984601b0aafe44c393b29ce4b0712b1c40890c3d740d4fda49842a4ea5873d"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/operation.cjs",
+        "bytes": 32930,
+        "sha256": "11eb4921f37e4e06c0b349f55e186852cdd094203cc3c5651681801eea5d80f8"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/operation.mjs",
+        "bytes": 32923,
+        "sha256": "a3b14c3a13305dbe8fde48a263d13b0a104dcb97afc65fe5f55b8e556d054be1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/output.cjs",
+        "bytes": 65469,
+        "sha256": "4c2878241a264095b661fb321accf86fa9be033bfe541d5a70ac2f8d80150893"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/output.mjs",
+        "bytes": 65452,
+        "sha256": "d1be82aace2d7f96bfc29e6e76538521fc8dfe6d4e90f7eda71a8f4c2a1597ba"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/resize.cjs",
+        "bytes": 22840,
+        "sha256": "e03dce87aaee233fecf191ec3c713a9f856e13d0d9ccd7b0a7dbf35b65e36538"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/resize.mjs",
+        "bytes": 22833,
+        "sha256": "e3d26f31cf391e28f3f96e708ccb96745cf016e18f8ef4486c837e5efcb3c922"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/sharp.cjs",
+        "bytes": 6262,
+        "sha256": "76120d3971051fcc469c0bfa36e7b23d3c388b6a2f5785bf1491bbdb90ff0176"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/sharp.mjs",
+        "bytes": 6357,
+        "sha256": "d0c3ce3837636a140e8363850823e3b8dc2b000928303664cc9fc1aa2ba326ee"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/utility.cjs",
+        "bytes": 9786,
+        "sha256": "0f7a14858dfa8ebd01b2c6c2272297f7a34c4af3d84f0c0b926146c49a2655b1"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/dist/utility.mjs",
+        "bytes": 9862,
+        "sha256": "761566e165bc1fc90bc6dd67a3b560c1a63e6cfe98009b726d35288606d629b9"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/install/build.js",
+        "bytes": 860,
+        "sha256": "fea92e0d55cce8692413c479021173aa1512304e1b849039949cbee9d6ceb1de"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/lib/index.d.ts",
+        "bytes": 92885,
+        "sha256": "24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/package.json",
+        "bytes": 8115,
+        "sha256": "ad4a2535d72eb638053a38867b1abf43c328cd1c1dbae5cf4172d498365a8b97"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/binding.gyp",
+        "bytes": 10818,
+        "sha256": "aa0750bba07e0de556ccdf1463e148a21e373ea43ac0ee622d23ad287890e658"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/common.cc",
+        "bytes": 41483,
+        "sha256": "c3c56a37bb780dfd97ee53d3556d9ba3d674b1b9cf7d57caf94248f982207a75"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/common.h",
+        "bytes": 10988,
+        "sha256": "70a4f13f5e56a956edd8340066240865e39d3039157bd511930de2bf5aa17ba9"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/metadata.cc",
+        "bytes": 15320,
+        "sha256": "a127c134c9e537db9c63962ff1aa1d0762a8d517d746a844e6b43b299e11a581"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/metadata.h",
+        "bytes": 1878,
+        "sha256": "5e02c25ec821a525b0caf31161b1e8675ff32cfd098c17cda0b888440362b057"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/operations.cc",
+        "bytes": 17412,
+        "sha256": "a61e6545cde7d2f2ae508b4eceeeec9db9ef711211d5cba1ed470f9325f914fb"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/operations.h",
+        "bytes": 3625,
+        "sha256": "6f41d329634471dff8e093d12e38ff356293079e2aeecc5b922fc23ba99799e6"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/pipeline.cc",
+        "bytes": 92059,
+        "sha256": "445ed9aa726806dc01188cf13a2866ee47ccd38504cddd049e4e639703edc0e9"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/pipeline.h",
+        "bytes": 10131,
+        "sha256": "e09c3dbd873071a373e6d95679b470a6fe1be5fc2ef781b00fd87958b5ab5e98"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/sharp.cc",
+        "bytes": 1529,
+        "sha256": "9f407b50bb2d02e5eb711b769f05d3e6659028430e055c4271e5ab1593f5a257"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/stats.cc",
+        "bytes": 6756,
+        "sha256": "72f8f2ad0e4315951c88b115511eb96741fd0479385ed094141f7bd254739791"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/stats.h",
+        "bytes": 1267,
+        "sha256": "db854f0c3c4a0db1751021ed676413c6d5ca00becc08bdc13258b29047450b8c"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/utilities.cc",
+        "bytes": 9522,
+        "sha256": "91c164bb740529156e15dedbfcb4236dd2b5fbf94c7a3a4f1639929d034f700e"
+      },
+      {
+        "path": "runtime/design/raster/node_modules/sharp/src/utilities.h",
+        "bytes": 741,
+        "sha256": "0b126ab63cf1aedf8e71e6cb8179899d3ef02c46419100e847b2ca4284b8901b"
+      }
+    ]
+  },
+  "notices": {
+    "regular_files": 71,
+    "regular_bytes": 2151327,
+    "files": [
+      {
+        "path": "notices/raster/GPL-3.0.txt",
+        "bytes": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      {
+        "path": "notices/raster/LGPL-3.0.txt",
+        "bytes": 7652,
+        "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+      },
+      {
+        "path": "notices/raster/linked-copyright-index.json",
+        "bytes": 194121,
+        "sha256": "cba78dd98b77954e1f22460d55efcc880df23cf3cb472ae45d6689fc584c978b"
+      },
+      {
+        "path": "notices/raster/linked-source-preambles.json",
+        "bytes": 1330880,
+        "sha256": "14feaf56fc64df15a001c273da0f333b84b4e18e20a8bd4083028b261ba98c58"
+      },
+      {
+        "path": "notices/raster/notice-inventory.json",
+        "bytes": 14327,
+        "sha256": "da1bd5040baf1028a9fe699444ae2167ea7e4d43045f4c03155eaf6cd19a7ae3"
+      },
+      {
+        "path": "notices/raster/npm/@img/colour/LICENSE.md",
+        "bytes": 4433,
+        "sha256": "e2eaa4603c14cb26f301e88648c12a853fa3f0f5da6d4b0972958c666e7f2ab8"
+      },
+      {
+        "path": "notices/raster/npm/@img/sharp-darwin-arm64/LICENSE",
+        "bytes": 10273,
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "notices/raster/npm/detect-libc/LICENSE",
+        "bytes": 11357,
+        "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+      },
+      {
+        "path": "notices/raster/npm/semver/LICENSE",
+        "bytes": 765,
+        "sha256": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+      },
+      {
+        "path": "notices/raster/npm/sharp/LICENSE",
+        "bytes": 10273,
+        "sha256": "73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68"
+      },
+      {
+        "path": "notices/raster/upstream/aom/AUTHORS",
+        "bytes": 13178,
+        "sha256": "c31b80ca48fde06ca03aef2f3dec15413fe0c2661fe6b56e86ccd69dbc6f9a1d"
+      },
+      {
+        "path": "notices/raster/upstream/aom/LICENSE",
+        "bytes": 1316,
+        "sha256": "4764a286d8b2faeaf42f4418e7d7a28d58fc8fd4d00a3d0a7f44b0a4099de7f2"
+      },
+      {
+        "path": "notices/raster/upstream/aom/PATENTS",
+        "bytes": 5701,
+        "sha256": "661fb8e504744e95587b556b94a58343448300606a41bea8c7a9b97125696e61"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/fastfeat/LICENSE",
+        "bytes": 1504,
+        "sha256": "499041ddee5227b6f29ca06c17803e5fe24d60f243c69635cd76b7ba08d0ddd5"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/googletest/src/LICENSE",
+        "bytes": 1475,
+        "sha256": "9702de7e4117a8e2b20dafab11ffda58c198aede066406496bef670d40a22138"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/highway/LICENSE-BSD3",
+        "bytes": 1515,
+        "sha256": "d25e82e26acd42ca3ccc9993622631163425b869b9e16284226d534cff6470f2"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/libwebm/AUTHORS.TXT",
+        "bytes": 137,
+        "sha256": "3edb5f5496bfff3d6d4a62fa75fe996b814920d0d6e348c2e65c589e7ac5d177"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/libwebm/LICENSE.TXT",
+        "bytes": 1496,
+        "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/libwebm/PATENTS.TXT",
+        "bytes": 1436,
+        "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/libyuv/LICENSE",
+        "bytes": 1506,
+        "sha256": "2b2cc1180c7e6988328ad2033b04b80117419db9c4c584918bbb3cfec7e9364f"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/vector/LICENSE",
+        "bytes": 1084,
+        "sha256": "ff6c857ce2708e87701323078aef115c1872a1f80a9649f86dc899b48083bc60"
+      },
+      {
+        "path": "notices/raster/upstream/aom/third_party/x86inc/LICENSE",
+        "bytes": 936,
+        "sha256": "719d8fa235f2068e0ae6d6a7dceb0a7720d7840f0f0ebed29957989e6ded3cd8"
+      },
+      {
+        "path": "notices/raster/upstream/exif/AUTHORS",
+        "bytes": 240,
+        "sha256": "a19ef6f43014fc57829658087d0c2bf59d97482e015cf553d7a68124603cbc44"
+      },
+      {
+        "path": "notices/raster/upstream/exif/COPYING",
+        "bytes": 26434,
+        "sha256": "36b6d3fa47916943fd5fec313c584784946047ec1337a78b440e5992cb595f89"
+      },
+      {
+        "path": "notices/raster/upstream/expat/AUTHORS",
+        "bytes": 142,
+        "sha256": "59f14371c6b75912cfebb46e6247ee5146766e803a0365b124e5d3011e7d0877"
+      },
+      {
+        "path": "notices/raster/upstream/expat/COPYING",
+        "bytes": 1144,
+        "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87"
+      },
+      {
+        "path": "notices/raster/upstream/ffi/LICENSE",
+        "bytes": 1132,
+        "sha256": "17b64dc60f3b6897a60f971e288b973f655c2edcdf08b25f3c3dd5549857881c"
+      },
+      {
+        "path": "notices/raster/upstream/ffi/LICENSE-BUILDTOOLS",
+        "bytes": 18698,
+        "sha256": "e67978cd18816c0cb7d29aaaacde7b7447402c2fb321a051698890a8eaedda94"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/AFL-2.0.txt",
+        "bytes": 8987,
+        "sha256": "7ecc7db84298adb05d2cf10339c63a5315a1c5c270a68d97d7d40a53b508ccde"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/Apache-2.0.txt",
+        "bytes": 10280,
+        "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/CC-BY-SA-3.0.txt",
+        "bytes": 22240,
+        "sha256": "3f941b3b89cf7b8370ceb83cc76d2120d471b58735d8ca60238a751a48d7f72f"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/CC0-1.0.txt",
+        "bytes": 7048,
+        "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/GPL-2.0-or-later.txt",
+        "bytes": 17337,
+        "sha256": "aaf135472f81c5b4a0dca9367e5bb5e9750032b5bebe5442b36e4c0a47430df3"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/LGPL-2.1-only.txt",
+        "bytes": 25967,
+        "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/LGPL-2.1-or-later.txt",
+        "bytes": 25967,
+        "sha256": "fa6f36630bb1e0c571d34b2bbdf188d08495c9dbf58f28cac112f303fc1f58fb"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/LLVM-exception.txt",
+        "bytes": 919,
+        "sha256": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/LicenseRef-old-glib-tests.txt",
+        "bytes": 841,
+        "sha256": "fb261b2d5dbe76c4850f90da763210bc385e52428df6bbfd7b06295ac8a32914"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/MIT.txt",
+        "bytes": 1078,
+        "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0"
+      },
+      {
+        "path": "notices/raster/upstream/glib/LICENSES/MPL-1.1.txt",
+        "bytes": 23669,
+        "sha256": "6214f8b1300bb9f37b16ebc146f8f61af0187e0025042ff95c8b3030744a8795"
+      },
+      {
+        "path": "notices/raster/upstream/glib/docs/reference/AUTHORS",
+        "bytes": 122,
+        "sha256": "b4f60a02b2b1f82764f8295b2eafbfcd4c33f596d70abcf5cb3c3623b1cfbc6d"
+      },
+      {
+        "path": "notices/raster/upstream/glib/docs/reference/COPYING",
+        "bytes": 1698,
+        "sha256": "b1ec1d0e5947f81e815d8771f7d4d90671a94bb10a42dc687fb566de461a57aa"
+      },
+      {
+        "path": "notices/raster/upstream/glib/gmodule/AUTHORS",
+        "bytes": 25,
+        "sha256": "28073c8c65c072387b778ba00b6c24a2ff1b573ca4415e151aa91fab5a6454be"
+      },
+      {
+        "path": "notices/raster/upstream/glib/subprojects/gvdb/COPYING",
+        "bytes": 26445,
+        "sha256": "bdbcdaa7858872393e9d6b216bbdc8a23e99d98dd6cdb7cda19458025b9e19fc"
+      },
+      {
+        "path": "notices/raster/upstream/glib/subprojects/gvdb/LICENSES/LGPL-2.1-or-later.txt",
+        "bytes": 26001,
+        "sha256": "5749785c8bdefafcb5d798270ed0a967036fe2ca63dcedade1627565dfef81d2"
+      },
+      {
+        "path": "notices/raster/upstream/heif/COPYING",
+        "bytes": 44366,
+        "sha256": "fa81ce652315b013359d6e8e4744335f31a50c7c192907176d3632f78a3b4596"
+      },
+      {
+        "path": "notices/raster/upstream/heif/examples/COPYING",
+        "bytes": 1066,
+        "sha256": "278ee9bbb13ecb080a131c68927bd589a6a56fd5449ce25e8e594c858864830d"
+      },
+      {
+        "path": "notices/raster/upstream/imagequant/COPYRIGHT",
+        "bytes": 1851,
+        "sha256": "7391bfbcde4404cefb9849553362c3ab436f929f5cc1abb57071ec045590ee99"
+      },
+      {
+        "path": "notices/raster/upstream/lcms/AUTHORS",
+        "bytes": 1010,
+        "sha256": "4847d97cd41e980794939b1d2694bd8f67b92856ec80e95c2fcfc34066f0df93"
+      },
+      {
+        "path": "notices/raster/upstream/lcms/LICENSE",
+        "bytes": 1080,
+        "sha256": "6dbd60437f8ef91d8de1f08ad75882547fd4931bfcc3566a0735f28db1484d31"
+      },
+      {
+        "path": "notices/raster/upstream/lcms/plugins/fast_float/COPYING.GPL3",
+        "bytes": 35146,
+        "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271"
+      },
+      {
+        "path": "notices/raster/upstream/lcms/plugins/threaded/COPYING.GPL3",
+        "bytes": 35146,
+        "sha256": "c53a65c2fd561c87eaabf1072ef5dcab8653042bc15308465f52413585eb6271"
+      },
+      {
+        "path": "notices/raster/upstream/lcms/utils/jpgicc/LICENSE_iccjpeg",
+        "bytes": 3234,
+        "sha256": "8baac37d14eed89b82ffcb041677dd701164eb5cc0f26e165fe47eb11afa0dca"
+      },
+      {
+        "path": "notices/raster/upstream/mozjpeg/LICENSE.md",
+        "bytes": 5620,
+        "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430"
+      },
+      {
+        "path": "notices/raster/upstream/mozjpeg/README.ijg",
+        "bytes": 12715,
+        "sha256": "f4a85f8677ca4e41b185c0a9f7c31a30ddb9ce43c561483ee92ef12db37c2a10"
+      },
+      {
+        "path": "notices/raster/upstream/mozjpeg/java/doc/legal/LICENSE",
+        "bytes": 19274,
+        "sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726"
+      },
+      {
+        "path": "notices/raster/upstream/mozjpeg/release/License.rtf",
+        "bytes": 2172,
+        "sha256": "933e1427ec78050c76396182fd9819a23fef58c17e997b67581852167be971db"
+      },
+      {
+        "path": "notices/raster/upstream/png/AUTHORS",
+        "bytes": 1773,
+        "sha256": "0c777e9f2a67bd4058ab91050eb7a56106c92ed038ba8fe5f54c83344f2d93ca"
+      },
+      {
+        "path": "notices/raster/upstream/png/LICENSE",
+        "bytes": 5345,
+        "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+      },
+      {
+        "path": "notices/raster/upstream/png/ci/LICENSE_MIT.txt",
+        "bytes": 1036,
+        "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+      },
+      {
+        "path": "notices/raster/upstream/png/contrib/gregbook/COPYING",
+        "bytes": 18097,
+        "sha256": "d6cb0e9e560f51085556949a84af12b79a00f10ab8b66c752537faf7cd665572"
+      },
+      {
+        "path": "notices/raster/upstream/png/contrib/gregbook/LICENSE",
+        "bytes": 2373,
+        "sha256": "b6a03c1803eb58ffb1f1278d5c7d4096c4c116e66dce8a7553e8c77d163c3438"
+      },
+      {
+        "path": "notices/raster/upstream/png/contrib/pngexif/LICENSE_MIT.txt",
+        "bytes": 1036,
+        "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+      },
+      {
+        "path": "notices/raster/upstream/png/contrib/pngminus/LICENSE.txt",
+        "bytes": 1164,
+        "sha256": "1806f1f10d393e9e377b3a8d1b968452b54f1a90378f14eeef45426946ace330"
+      },
+      {
+        "path": "notices/raster/upstream/png/scripts/cmake/AUTHORS.md",
+        "bytes": 862,
+        "sha256": "50633b976f0133862c921aa67d56de2c0b42eb344c8ca3853686efb092a447db"
+      },
+      {
+        "path": "notices/raster/upstream/proxy-libintl/COPYING",
+        "bytes": 25292,
+        "sha256": "d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5"
+      },
+      {
+        "path": "notices/raster/upstream/vips/LICENSE",
+        "bytes": 26530,
+        "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+      },
+      {
+        "path": "notices/raster/upstream/vips/libvips/foreign/libnsgif/COPYING",
+        "bytes": 1133,
+        "sha256": "1469b759cf18e43c6e1b4ff892307d3962cbbb337ac497620d6690a219fad10c"
+      },
+      {
+        "path": "notices/raster/upstream/webp/AUTHORS",
+        "bytes": 3279,
+        "sha256": "f251be89fd442bd9d701360730aea163cc8e2076ff03528f59267dc2c4f8b60a"
+      },
+      {
+        "path": "notices/raster/upstream/webp/COPYING",
+        "bytes": 1496,
+        "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+      },
+      {
+        "path": "notices/raster/upstream/webp/PATENTS",
+        "bytes": 1436,
+        "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c"
+      },
+      {
+        "path": "notices/raster/upstream/zlib-ng/LICENSE.md",
+        "bytes": 867,
+        "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee"
+      }
+    ],
+    "original_upstream_notice_files": 61,
+    "linked_source_preambles": 1220,
+    "source_notice_semantics": "Original component grants and unchanged notice bytes govern; proposed applicable later-version LGPLv3 election is retained, final conveyance election/uncombined-work designation and effective delivery terms remain unqualified."
+  },
+  "source_kit": {
+    "path": "source/sharp-raster-darwin-arm64-source-kit-20261026.tar.gz",
+    "bytes": 104893453,
+    "sha256": "a3e271a5ce2702bb3d195673cec3a43cc0367eb329b44244d900356613a14d24",
+    "manifest_inputs_reverified": 368,
+    "archive_files_including_manifest": 369,
+    "native_archive_count": 15,
+    "named_native_components": 14,
+    "fresh_full_native_stack_compile_repeated": true,
+    "prior_full_source_compile_and_offline_materialization_passed": true,
+    "actual_public_or_durable_recipient_access_verified": false,
+    "source_control_edits_required_after_unpack": false,
+    "full_build_seconds": 349.898,
+    "full_build_commands": 42
+  },
+  "development_installed_release_wiring_remaining": [
+    "Review and bind corrected source-kit and recipient-instruction pins in the owning compiled candidate while retaining closed admission",
+    "Implement explicit recipient-selected library import/rollback under normal installed release integrity rules",
+    "Exercise exact disposable installed release setup, changed library output and rollback through the compiled owner after its gates are resolved"
+  ],
+  "public_recipient_admission_remaining": [
+    "Verify actual intended same-release recipient delivery/access with exact runtime/source/notice identities",
+    "Record final native-library conveyance election and accompanying uncombined-work designation/notice if using LGPLv3 section5",
+    "Preserve modification and reverse-engineering/debugging rights in all effective delivery terms and supply applicable Installation Information",
+    "Complete final artifact authentication, private build-path and current dependency review",
+    "Complete required native client, minimum macOS and signing/notarization/platform qualification",
+    "Keep Chromium/HyperFrames and combined-runtime obligations separate"
+  ],
+  "external_evidence_roots": [
+    "sharp-source-followup-20261026/raster-qualification",
+    "sharp-recipient-journey-20261026",
+    "m4-raster-recipient-closure-20261026/recipient-v2"
+  ],
+  "documentation": "docs/m4-raster-recipient-closure-20261026.md",
+  "historical_recipient_MCP_proof": {
+    "complete_fixture_manifest_files": 207,
+    "complete_fixture_manifest": {
+      "bytes": 39331,
+      "sha256": "aca03a1afb68ce611f4b82f3d97ced1eaa427b5722a952d1e674c53c133eb48d"
+    },
+    "corrupt_replacement_refused_before_write": true,
+    "replacement_library_sha256": "40ca6321841f21b5ac4e44b5ca03ce999d16cd613fca36ea44e50bf5a3ee5060",
+    "replacement_library_bytes": 14631104,
+    "replacement_patch": "libvips/resample/reduceh.cpp: three-band uchar horizontal reduction subtracts 16, clipped at zero, from the first channel",
+    "defined_exported_symbols_identical": 11331,
+    "replacement_build_jobs": 1,
+    "replacement_compile_seconds": 60.683,
+    "memory_pressure_levels_observed": [
+      1
+    ],
+    "archive_member_multiset_unchanged": 1259,
+    "unchanged_reused_static_dependencies": true,
+    "MCP_operation": "design_prepare/design_start/job_status raster_transform via unchanged Rust owner and Node adapter, explicit development raster module",
+    "MCP_jobs_each_phase": 5,
+    "phases": [
+      "baseline",
+      "replacement",
+      "rollback"
+    ],
+    "all_15_jobs_succeeded_and_scratch_cleanup_complete": true,
+    "lossless_RGB_PNG_change": {
+      "every_red_value_decreased": 16,
+      "green_blue_unchanged": true,
+      "baseline_sha256": "05bbfe652cfe488d3872860b69f91b18b1f9e3a1fb2435c2257c5279e1b45488",
+      "replacement_sha256": "328ddac36d45ef7e345a4efa75c9a214de6f986826c7bca5a521b34a5c78505e"
+    },
+    "RGBA_control_encoded_and_decoded_bytes_unchanged": true,
+    "all_five_rollback_encoded_and_decoded_results_match_baseline": true,
+    "restored_library_sha256": "1801c6f1cb12363a8d1815d224840001031ed96f6f986e9e91e03dce35ee453a",
+    "OS_loader_paths_observed": true,
+    "raster_process_network_and_outside_writes_denied": true,
+    "loader_observer_ran_outside_sandbox": true,
+    "remaining_owned_server_or_adapter_processes": 0,
+    "normal_release_integrity_rules_changed": false,
+    "admitted_release_install_import_tested": false,
+    "user_install_or_config_changed": false,
+    "frozen_fixture": {
+      "bytes": 123568262,
+      "sha256": "6ae5a0202786cc9230d62d10d77b7dec07eb3bb928d4f9c2d428c15e86912bbe",
+      "regular_files": 209,
+      "all_files_match_restored_fixture": true
+    },
+    "scope": "Earlier frozen 209-file fixture and development MCP proof; not the corrected198-file source-kit delivery or normal installed import."
+  },
+  "local_recipient_proof": {
+    "corrected_candidate_regular_files": 198,
+    "corrected_candidate_regular_bytes": 123139141,
+    "all_198_paths_sizes_hashes_modes_verified": true,
+    "candidate_inventory": {
+      "path": "m4-raster-recipient-closure-20261026/recipient-v2/candidate-198-inventory.json",
+      "bytes": 41481,
+      "sha256": "8e7929380b2c0c93bab9a4a355eca4925697383171561387793f0a17b38bba49"
+    },
+    "candidate_archive": {
+      "path": "m4-raster-recipient-closure-20261026/recipient-v2/corrected-raster-candidate-198-files.tar.gz",
+      "bytes": 111438046,
+      "sha256": "d500d16faa6015e24cc1e01fb2db4826478c42752f6151cb01142ec5c438bc43"
+    },
+    "independent_corrupt_notice_refused": true,
+    "independent_corrupt_native_source_refused_before_materialization": true,
+    "independent_monitor_error_child_terminated_and_reaped": true,
+    "missing_explicit_module_input_refused_before_staging": true,
+    "fresh_unmodified_sourcekit_build_succeeded": true,
+    "source_archive_sha256": "a3e271a5ce2702bb3d195673cec3a43cc0367eb329b44244d900356613a14d24",
+    "baseline_archive_member_multiset_matches_original": 1259,
+    "source_only_relink": {
+      "baseline": {
+        "bytes": 14632592,
+        "sha256": "02f44e08802fc0ef1457b059e0c0dc0b934c5dbae995188d62a0a622b2c9caa4"
+      },
+      "modified": {
+        "bytes": 14632592,
+        "sha256": "255ad238f8bb3f7d3a7447c1e82448245eee35ddf78d715d3712adc219c810d4"
+      },
+      "defined_exported_symbols_equal": 11331,
+      "baseline_archive_member_multiset_matches_original": 1259,
+      "all_exact_documented_commands_passed": true,
+      "retained_wrapper_failure": "outer sandbox-exec incorrectly nested the recipe sandbox; sandbox_apply refused before Ninja; exact documented top-level retry passed",
+      "relink_check": {
+        "passed": true,
+        "RGB_red_change": -16,
+        "green_blue_unchanged": true,
+        "RGBA_control_unchanged": true,
+        "baseline_reselection_restores_encoded_and_raw": true,
+        "phases": {
+          "baseline": {
+            "outputs": [
+              {
+                "name": "rgb",
+                "channels": 3,
+                "encoded_sha256": "9918e0a2449a61f1f9daf2a950dac0437c63193c9409e5488cda31d58aefe85e",
+                "raw_sha256": "76fe3dda07fb4698e2a38a64f042ed70caa3e3cdd2aee511da62a94d324516ea"
+              },
+              {
+                "name": "rgba",
+                "channels": 4,
+                "encoded_sha256": "ccc905202885acd92f44592168f1165fd1537e29e3ee177756c30c05d37b566a",
+                "raw_sha256": "0589472071f58c18ab27acfe770813b226ada0610a52a625f9f6a0906c90659f"
+              }
+            ],
+            "loaded_native_files": [
+              "rebuilt-baseline/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+              "rebuilt-baseline/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib"
+            ]
+          },
+          "modified": {
+            "outputs": [
+              {
+                "name": "rgb",
+                "channels": 3,
+                "encoded_sha256": "c0053856c13930b20046320e3af2a56a20dd6be5031843d90ed7e220e94a607b",
+                "raw_sha256": "b6996bc19f846c692527154a66175405d8f5c588eab115691ce73fc8c0f5b41a"
+              },
+              {
+                "name": "rgba",
+                "channels": 4,
+                "encoded_sha256": "ccc905202885acd92f44592168f1165fd1537e29e3ee177756c30c05d37b566a",
+                "raw_sha256": "0589472071f58c18ab27acfe770813b226ada0610a52a625f9f6a0906c90659f"
+              }
+            ],
+            "loaded_native_files": [
+              "rebuilt-modified/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+              "rebuilt-modified/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib"
+            ]
+          },
+          "rollback": {
+            "outputs": [
+              {
+                "name": "rgb",
+                "channels": 3,
+                "encoded_sha256": "9918e0a2449a61f1f9daf2a950dac0437c63193c9409e5488cda31d58aefe85e",
+                "raw_sha256": "76fe3dda07fb4698e2a38a64f042ed70caa3e3cdd2aee511da62a94d324516ea"
+              },
+              {
+                "name": "rgba",
+                "channels": 4,
+                "encoded_sha256": "ccc905202885acd92f44592168f1165fd1537e29e3ee177756c30c05d37b566a",
+                "raw_sha256": "0589472071f58c18ab27acfe770813b226ada0610a52a625f9f6a0906c90659f"
+              }
+            ],
+            "loaded_native_files": [
+              "rebuilt-baseline/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+              "rebuilt-baseline/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib"
+            ]
+          }
+        },
+        "installed_release_changed": false
+      },
+      "no_candidate_payload_or_installed_release_modified": true,
+      "free_bytes": 49870131200
+    },
+    "all_documented_sourcekit_commands_passed": true,
+    "actual_installed_recipient_import_rollback_tested": false,
+    "candidate_payload_changed_by_relink": false,
+    "normal_release_integrity_rules_changed": false,
+    "release_admitted": false
+  },
+  "recipient_delivery_controls": {
+    "installed": [
+      "SHARP-SOURCE-AND-MODIFICATION.md",
+      "MIRKET-HELPERS-LICENSE.txt",
+      "source/sharp-raster-darwin-arm64-source-kit-20261026.tar.gz",
+      "notices/raster/"
+    ],
+    "source_only": [
+      "prepare-raster.py",
+      "build-raster.py",
+      "install-private-sharp.py",
+      "recipient-resize.patch",
+      "recipient-resize-source-change.json",
+      "recipient-relink-check.py",
+      "recipient-rights.md",
+      "MIRKET-HELPERS-LICENSE.txt"
+    ],
+    "no_missing_fixture_only_helper_commands_promised": true,
+    "separate_local_module_layouts_only": true,
+    "no_parallel_installed_state_authority": true
+  }
+}

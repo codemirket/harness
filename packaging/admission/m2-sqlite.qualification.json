@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-24",
+  "authorization": "User granted further necessary actions within approved rewrite; no additional dependency approval needed. No publication/host installation/client changes.",
+  "platform": "macOS 26.5.2 ARM64 only",
+  "native_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+    "compiler_command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+      "-O2",
+      "-fPIC",
+      "-arch",
+      "arm64",
+      "-mmacosx-version-min=15.0",
+      "-DSQLITE_THREADSAFE=1",
+      "-DSQLITE_DEFAULT_FOREIGN_KEYS=1",
+      "-DSQLITE_ENABLE_API_ARMOR",
+      "-DSQLITE_ENABLE_FTS5",
+      "-DSQLITE_OMIT_LOAD_EXTENSION",
+      "-c",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-source/sqlite3.c",
+      "-o",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-aarch64-apple-darwin/sqlite3.o"
+    ],
+    "archiver_command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar",
+      "rcs",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-aarch64-apple-darwin/libsqlite3.a",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-aarch64-apple-darwin/sqlite3.o"
+    ],
+    "compiler_stderr": "",
+    "archive_sha256": "d38346b1bbb5d9ea2ac2540228e5ae94080e6b5942766258ef0b74827e974e75",
+    "archive_bytes": 1884880,
+    "object_sha256": "15df6c383eac15b1a344800fad59e920fb02d1ae85fb83c34b6adf05ea26a209",
+    "platform": "macOS ARM64 only"
+  },
+  "cargo_run": {
+    "command": [
+      "cargo",
+      "+1.99.1",
+      "run",
+      "--locked",
+      "--offline",
+      "--manifest-path",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/resolver/Cargo.toml",
+      "--",
+      "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/qualification-data"
+    ],
+    "environment": {
+      "SQLITE3_LIB_DIR": "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-aarch64-apple-darwin",
+      "SQLITE3_INCLUDE_DIR": "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/native-source",
+      "SQLITE3_STATIC": "1",
+      "SQLITE3_NO_PKG_CONFIG": "1",
+      "LIBSQLITE3_SYS_USE_PKG_CONFIG": "0",
+      "CARGO_TARGET_DIR": "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite/target"
+    },
+    "exit": 0
+  },
+  "stdout": "SQLite 3.54.1; source 2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76; FTS5 Unicode and U+FFFE/U+FFFF regression, extension loading omission, transaction rollback, stale revision rejection, 400-record stepped backup, snapshot independence and reopened integrity: PASS\n",
+  "qualification_source_sha256": "f1047d6c1736baa8b69a3d61d94d54da9522573cac863816a8408aaa186c4963",
+  "qualification_executable_sha256": "e9fee1cf1996639c3f30591ed1b578d3280220f6e2e7e210f8acf1a33b684b0b",
+  "dynamic_libraries": [
+    "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)"
+  ],
+  "not_qualified": [
+    "Native Windows ARM64/x64 build, CRT, runtime and ABI",
+    "macOS15 minimum-floor execution",
+    "Production memory schema, forgetting/backup interleavings, restore policy and hybrid retrieval",
+    "Native host-client activation"
+  ],
+  "evidence_directory": "/Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/dependencies/sqlite"
+}

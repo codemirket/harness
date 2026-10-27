@@ -1,0 +1,83 @@
+{
+  "url": "https://sqlite.org/2026/sqlite-amalgamation-3540100.zip",
+  "bytes": 2990966,
+  "sha256": "0a9c8e34352dad46006aa82836d5383bff9dc6bc9ce5a60553c05aa30e6ad1f9",
+  "files": [
+    {
+      "path": "sqlite-amalgamation-3540100/sqlite3.c",
+      "bytes": 9582521,
+      "sha256": "0c657666d819f261cc4007526ad57e1669de9949df7a8ea847aa284a2bf0ee52",
+      "sha3_256": "e2b869d3003b33c942b7dd7063604fbc53553e1b66609570df39b9b7b558ee81"
+    },
+    {
+      "path": "sqlite-amalgamation-3540100/sqlite3.h",
+      "bytes": 695729,
+      "sha256": "d6c84557261893439b341d2e6c35187ae3ea24fbfd843ad94616f72d89242b8c",
+      "sha3_256": "15ef3f5dbc4a7a980f828fa0d1e473cee5a124e7bb77e9bc70fc0bfa3f9a2af8"
+    },
+    {
+      "path": "sqlite-amalgamation-3540100/sqlite3ext.h",
+      "bytes": 39547,
+      "sha256": "48963abfefb41ac329ef9d706acb5eadba952a99a748285c9ded6b5e0942721b",
+      "sha3_256": "5e113c4c0442f2f1b3345d44cbe4b82fad45f2fc0c35f0ed4eef27fb8f1cb394"
+    }
+  ],
+  "status": "reviewed-under-approved-rewrite-authorization-2026-10-24",
+  "sqlite_version": "3.54.1",
+  "sqlite_source_id": "2026-10-16 14:45:20 555e07ef33f69a0957d24d8e555b702464a131d6f1607f4c3c1e4551e8e6ca76",
+  "source_selection": [
+    "sqlite-amalgamation-3540100/sqlite3.c",
+    "sqlite-amalgamation-3540100/sqlite3.h"
+  ],
+  "omitted": [
+    "shell.c",
+    "sqlite3ext.h"
+  ],
+  "source_modifications": "none",
+  "license": "SQLite public-domain dedication; retain original source copyright/license text",
+  "required_defines": [
+    "SQLITE_THREADSAFE=1",
+    "SQLITE_DEFAULT_FOREIGN_KEYS=1",
+    "SQLITE_ENABLE_API_ARMOR",
+    "SQLITE_ENABLE_FTS5",
+    "SQLITE_OMIT_LOAD_EXTENSION"
+  ],
+  "cargo_child_environment": {
+    "SQLITE3_LIB_DIR": "ABSOLUTE_VERIFIED_TARGET_NATIVE_LIB_DIR",
+    "SQLITE3_INCLUDE_DIR": "ABSOLUTE_VERIFIED_3540100_SOURCE_DIR",
+    "SQLITE3_STATIC": "1",
+    "SQLITE3_NO_PKG_CONFIG": "1",
+    "LIBSQLITE3_SYS_USE_PKG_CONFIG": "0"
+  },
+  "macos": {
+    "target": "aarch64-apple-darwin",
+    "compiler": "Apple Clang, explicit resolved path; compiler/version must be recorded after approval",
+    "compiler_flags": [
+      "-O2",
+      "-fPIC",
+      "-arch",
+      "arm64",
+      "-mmacosx-version-min=15.0"
+    ],
+    "archive": "libsqlite3.a",
+    "archiver": "Apple ar, explicit resolved path"
+  },
+  "windows": {
+    "targets": [
+      "aarch64-pc-windows-msvc",
+      "x86_64-pc-windows-msvc"
+    ],
+    "compiler": "Native target MSVC cl.exe from explicit installed toolchain; target/version must be recorded after approval",
+    "compiler_flags": [
+      "/nologo",
+      "/O2",
+      "/MT",
+      "/c"
+    ],
+    "archive": "sqlite3.lib",
+    "archiver": "MSVC lib.exe, explicit resolved path",
+    "rust_target_flag": "-C target-feature=+crt-static",
+    "qualification": "Native target build and runtime required; /MT matches Rust static CRT choice; inspect final PE imports."
+  },
+  "rust_bindings": "rusqlite0.41.0 modern_sqlite selects libsqlite3-sys0.39.0 pre-generated3.54.0 bindings; patch-level3.54.1 C ABI used, version checked at runtime; no buildtime bindgen, bundled C, or source overlay."
+}

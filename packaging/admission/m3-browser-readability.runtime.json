@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "component": "browser-readability",
+  "recorded": "2026-10-26",
+  "package": "@mozilla/readability",
+  "version": "0.6.0",
+  "source_url": "https://registry.npmjs.org/@mozilla/readability/-/readability-0.6.0.tgz",
+  "upstream_git_commit": "4d5dd0bbe0bfbc44e219dc86865131e79639e30b",
+  "archive_bytes": 43359,
+  "archive_sha256": "6d3c3cc50dad51b543925deadc66d5b58cd2262d1d585f2ae0a44975627ad919",
+  "archive_integrity": "sha512-juG5VWh4qAivzTAeMzvY9xs9HY5rAcr2E4I7tiSSCokRFi7XIZCAu92ZkSTsIj1OPceCifL3cpfteP3pDT9/QQ==",
+  "license": "Apache-2.0",
+  "runtime_dependencies": [],
+  "lifecycle_install_scripts": [],
+  "upstream_helpers_executed": false,
+  "source_lock": "adapters/package-lock.json",
+  "compiled_adapter_files": [
+    "adapters/browser-main.js",
+    "adapters/browser-session.js",
+    "adapters/browser-article.js"
+  ],
+  "files": [
+    {
+      "source": "adapters/node_modules/@mozilla/readability/.prettierrc.js",
+      "destination": "adapters/node_modules/@mozilla/readability/.prettierrc.js",
+      "bytes": 351,
+      "sha256": "e9f238735c8bbce66d69f5a7671559eea70cdb006b28420d124caa287d41bc16"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/index.js",
+      "destination": "adapters/node_modules/@mozilla/readability/index.js",
+      "bytes": 192,
+      "sha256": "00c5999c65b775f6c3f88e66f6fcd7868a76f362e540567dabc90516d25b4885"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/JSDOMParser.js",
+      "destination": "adapters/node_modules/@mozilla/readability/JSDOMParser.js",
+      "bytes": 37140,
+      "sha256": "6b8eae46939f187ef4565c67f452a9098211daea80e50c9aea74d72015b73680"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/Readability-readerable.js",
+      "destination": "adapters/node_modules/@mozilla/readability/Readability-readerable.js",
+      "bytes": 4271,
+      "sha256": "a98d28805804c1986ceed470678a3f409f150ee7f1d227f8c8239c005d21de65"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/Readability.js",
+      "destination": "adapters/node_modules/@mozilla/readability/Readability.js",
+      "bytes": 89980,
+      "sha256": "34dcab3d0832d0019f02990eed6b6124e029e8c32b9f0c6f2550544ff8dff174"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/package.json",
+      "destination": "adapters/node_modules/@mozilla/readability/package.json",
+      "bytes": 1159,
+      "sha256": "03c0d0f4786f73f1928024baa179f7e5a363da9f819368253de4c3d712ddf632"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/CHANGELOG.md",
+      "destination": "adapters/node_modules/@mozilla/readability/CHANGELOG.md",
+      "bytes": 5667,
+      "sha256": "ce224a1cdb6ab025c44220beedb3c90db5bd422a765686d650bf8d0b63adb84f"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/CODE_OF_CONDUCT.md",
+      "destination": "adapters/node_modules/@mozilla/readability/CODE_OF_CONDUCT.md",
+      "bytes": 691,
+      "sha256": "902d5357af363426631d907e641e220b3ec89039164743f8442b3f120479b7cf"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/CONTRIBUTING.md",
+      "destination": "adapters/node_modules/@mozilla/readability/CONTRIBUTING.md",
+      "bytes": 3086,
+      "sha256": "21e802ccdfa38fda4f6a2cb52f8ef4ea90e7779d42fdcbcc2dfb4e05a0e1019f"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/LICENSE.md",
+      "destination": "adapters/node_modules/@mozilla/readability/LICENSE.md",
+      "bytes": 553,
+      "sha256": "a5b1e8181751ce05b85b7bfaa832b785e87086250a5148e679d17ca9bdcfa958"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/README.md",
+      "destination": "adapters/node_modules/@mozilla/readability/README.md",
+      "bytes": 7376,
+      "sha256": "0b9299bbc294dcabca728f5063bb8720f8dcc87b7a498f31b218d7bdafa3fc23"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/SECURITY.md",
+      "destination": "adapters/node_modules/@mozilla/readability/SECURITY.md",
+      "bytes": 1134,
+      "sha256": "396651239c8a8c101420e7c82478ec81d288cc75b5ecfcb41dcec41376919f60"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/eslint.config.mjs",
+      "destination": "adapters/node_modules/@mozilla/readability/eslint.config.mjs",
+      "bytes": 1109,
+      "sha256": "f564fc70590fd5a4ca2b6ccf3a1d52b81320fde7257fdc85d8c38baa6f400144"
+    },
+    {
+      "source": "adapters/node_modules/@mozilla/readability/index.d.ts",
+      "destination": "adapters/node_modules/@mozilla/readability/index.d.ts",
+      "bytes": 1865,
+      "sha256": "ef3a3588dd92d72b25d7dbc4ddfd8bf9d7cef747becdfde0faa1f6bce8082e13"
+    }
+  ],
+  "notices": [
+    {
+      "source": "packaging/notices/readability/Apache-2.0.txt",
+      "destination": "notices/readability/Apache-2.0.txt",
+      "bytes": 10279,
+      "sha256": "c274f80372d90c012937370f0e1f15087d22e308ef98b27cea5dc0d2d088366c"
+    },
+    {
+      "source": "packaging/notices/readability/LICENSE.md",
+      "destination": "notices/readability/LICENSE.md",
+      "bytes": 553,
+      "sha256": "a5b1e8181751ce05b85b7bfaa832b785e87086250a5148e679d17ca9bdcfa958"
+    }
+  ],
+  "total_package_bytes": 154574,
+  "limitations": [
+    "This exact npm package inventory does not admit Chromium or establish browser redistribution, native platform qualification or actual Codex activation.",
+    "Only the fixed live main-document text/metadata extraction is selected. No JSDOMParser, jsdom or caller-supplied JavaScript extraction route is used.",
+    "Apache license/attribution and all upstream source headers remain in the unchanged package."
+  ],
+  "lock_package": {
+    "version": "0.6.0",
+    "resolved": "https://registry.npmjs.org/@mozilla/readability/-/readability-0.6.0.tgz",
+    "integrity": "sha512-juG5VWh4qAivzTAeMzvY9xs9HY5rAcr2E4I7tiSSCokRFi7XIZCAu92ZkSTsIj1OPceCifL3cpfteP3pDT9/QQ==",
+    "license": "Apache-2.0",
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }
+}

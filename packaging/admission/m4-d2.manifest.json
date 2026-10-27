@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "component": "d2",
+  "version": "0.9.0",
+  "source_commit": "d5a51743b6d5c00f1ec6f8340003f5d5a6ba4eda",
+  "license": "MPL-2.0",
+  "target": "aarch64-apple-darwin",
+  "archive": {
+    "name": "d2-v0.9.0-macos-arm64.tar.gz",
+    "url": "https://github.com/terrastruct/d2/releases/download/v0.9.0/d2-v0.9.0-macos-arm64.tar.gz",
+    "bytes": 17133891,
+    "sha256": "eaf6c0c143e56dd9fa97bfb6df25ea9c1ebce40245f056a0768cf1a6c15d3064"
+  },
+  "selected_files": [
+    {
+      "archive_path": "d2-v0.9.0/bin/d2",
+      "destination": "runtime/d2/d2",
+      "bytes": 40035522,
+      "sha256": "e8ba501a413bac33a4d93014c475b804de10fb2863a391583e23a8d88160e311",
+      "mode": "0755"
+    },
+    {
+      "archive_path": "d2-v0.9.0/LICENSE.txt",
+      "destination": "runtime/d2/LICENSE.txt",
+      "bytes": 16758,
+      "sha256": "97933e571f92c0b21e09a59fe67d7ce9a77d3eac5efe5f341756d5f93d191775",
+      "mode": "0644"
+    },
+    {
+      "archive_path": "d2-v0.9.0/THIRD_PARTY_NOTICES.txt",
+      "destination": "runtime/d2/THIRD_PARTY_NOTICES.txt",
+      "bytes": 45571,
+      "sha256": "b5543d14ae949663052296904c0f2f3b1521150dda871f693a67dddadcefb3be",
+      "mode": "0644"
+    }
+  ],
+  "allowed_archive_members": [
+    {"path": "d2-v0.9.0", "kind": "directory", "bytes": 0},
+    {"path": "d2-v0.9.0/LICENSE.txt", "kind": "file", "bytes": 16758},
+    {"path": "d2-v0.9.0/Makefile", "kind": "file", "bytes": 250},
+    {"path": "d2-v0.9.0/README.md", "kind": "file", "bytes": 502},
+    {"path": "d2-v0.9.0/THIRD_PARTY_NOTICES.txt", "kind": "file", "bytes": 45571},
+    {"path": "d2-v0.9.0/bin", "kind": "directory", "bytes": 0},
+    {"path": "d2-v0.9.0/bin/d2", "kind": "file", "bytes": 40035522},
+    {"path": "d2-v0.9.0/man", "kind": "directory", "bytes": 0},
+    {"path": "d2-v0.9.0/man/d2.1", "kind": "file", "bytes": 7929},
+    {"path": "d2-v0.9.0/scripts", "kind": "directory", "bytes": 0},
+    {"path": "d2-v0.9.0/scripts/install.sh", "kind": "file", "bytes": 396},
+    {"path": "d2-v0.9.0/scripts/lib.sh", "kind": "file", "bytes": 8308},
+    {"path": "d2-v0.9.0/scripts/uninstall.sh", "kind": "file", "bytes": 285}
+  ],
+  "notices": {
+    "spdx_name": "d2.spdx.json",
+    "spdx_destination": "runtime/d2/d2.spdx.json",
+    "spdx_bytes": 24264,
+    "spdx_sha256": "efaf407d3142ee52de4f3e90864f3023110dd9f430f8220143d6f3d9de86e689",
+    "spdx_license": "MPL-2.0",
+    "source_license_sha256": "97933e571f92c0b21e09a59fe67d7ce9a77d3eac5efe5f341756d5f93d191775",
+    "third_party_sha256": "b5543d14ae949663052296904c0f2f3b1521150dda871f693a67dddadcefb3be",
+    "policy": "ship the selected license and third-party notice files beside the private executable"
+  },
+  "runtime": {
+    "layouts": ["dagre", "elk", "tala"],
+    "network": "offline-only",
+    "execution": "caller-owned process supervision; this assembler never executes the binary",
+    "qualification": "macOS ARM64 only; Windows targets remain unqualified"
+  }
+}

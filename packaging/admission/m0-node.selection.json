@@ -1,0 +1,170 @@
+{
+  "status": "approved-for-disposable-m0-qualification-2026-10-24",
+  "version": "24.22.1",
+  "authenticity": {
+    "verification": "gpgv 2.5.24 succeeded; VALID/GOOD signature",
+    "fingerprint": "5BE8A3F6C8A5C01D106C0AD820B1A390B168D356",
+    "signing_date": "2026-10-21",
+    "keyring_commit": "481637f813e912c4aa3622d7964ab426c97b8e8d",
+    "keyring_sha256": "610b8d249da3d5733f5a128def2dd0294dbbf5b5713e6ca2529db8db419dee00",
+    "shasums_sha256": "fdfbffc969c0f604beff0124d409b33a43b53f5c681d6220f80023e0d6df9dc4",
+    "signature_sha256": "4e8fc0160f74781e90e3faf3f8218a72f4cee84d3ac80b9b6d448cec5b8bb7ad",
+    "trust_basis": "Node official release-keys repository over HTTPS, pinned keyring bytes and commit; same signer fingerprint in exact tagged Node README."
+  },
+  "targets": [
+    {
+      "target": "aarch64-apple-darwin",
+      "archive": "node-v24.22.1-darwin-arm64.tar.gz",
+      "archive_url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-darwin-arm64.tar.gz",
+      "archive_sha256": "89c682593d76cd44233fa53b1563264e7de9cbb189cad169135c5b4fadfbc0a7",
+      "archive_bytes": 53062778,
+      "selected_file_bytes": 122703465,
+      "selected_files": [
+        {
+          "path": "node-v24.22.1-darwin-arm64/bin/node",
+          "bytes": 122545856,
+          "sha256": "6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329",
+          "destination_relative": "runtime/node/bin/node",
+          "mode": "0755",
+          "content_transform": "none"
+        },
+        {
+          "path": "node-v24.22.1-darwin-arm64/LICENSE",
+          "bytes": 157609,
+          "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace",
+          "destination_relative": "runtime/node/LICENSE",
+          "mode": "0644",
+          "content_transform": "none"
+        }
+      ],
+      "native_binary": {
+        "path": "node-v24.22.1-darwin-arm64/bin/node",
+        "bytes": 122545856,
+        "sha256": "6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329",
+        "native": {
+          "format": "Mach-O",
+          "minimum_macos": "13.5",
+          "sdk": "15.0",
+          "load_libraries": [
+            "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+            "/System/Library/Frameworks/Security.framework/Versions/A/Security",
+            "/usr/lib/libc++.1.dylib",
+            "/usr/lib/libSystem.B.dylib"
+          ],
+          "codesign_verification": "valid on disk; satisfies designated requirement",
+          "signing_team": "HX7739G8FX",
+          "signing_authority": "Developer ID Application: Node.js Foundation (HX7739G8FX)",
+          "notarization_gatekeeper": "not assessed"
+        }
+      },
+      "selection": "Exact two regular archive members only. No wildcard directory copy. No npm/npx/Corepack, headers, package-manager libraries, shell scripts, installers or symlinks.",
+      "requires_runtime_qualification": true
+    },
+    {
+      "target": "aarch64-pc-windows-msvc",
+      "archive": "node-v24.22.1-win-arm64.zip",
+      "archive_url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-arm64.zip",
+      "archive_sha256": "a0c807319fede24c4a0d8f84564c82a619bd313b16b10c007c383c2609e99171",
+      "archive_bytes": 33786263,
+      "selected_file_bytes": 82311283,
+      "selected_files": [
+        {
+          "path": "node-v24.22.1-win-arm64/node.exe",
+          "bytes": 82150728,
+          "sha256": "8bea91dc437fe01e7d92ef0efc6c9eaf654369aaba9b2d3e9841552ea7b95a00",
+          "destination_relative": "runtime/node/node.exe",
+          "mode": "0644",
+          "content_transform": "none"
+        },
+        {
+          "path": "node-v24.22.1-win-arm64/LICENSE",
+          "bytes": 160555,
+          "sha256": "ed34dd8e3f0a78dbaf00d0444ce8e285b015b765379c2e17880455f70370f8e9",
+          "destination_relative": "runtime/node/LICENSE",
+          "mode": "0644",
+          "content_transform": "none"
+        }
+      ],
+      "native_binary": {
+        "path": "node-v24.22.1-win-arm64/node.exe",
+        "bytes": 82150728,
+        "sha256": "8bea91dc437fe01e7d92ef0efc6c9eaf654369aaba9b2d3e9841552ea7b95a00",
+        "native": {
+          "format": "PE32+",
+          "machine": "0xaa64",
+          "imports": [
+            "CRYPT32.dll",
+            "WS2_32.dll",
+            "USER32.dll",
+            "dbghelp.dll",
+            "ADVAPI32.dll",
+            "IPHLPAPI.DLL",
+            "USERENV.dll",
+            "SHELL32.dll",
+            "ole32.dll",
+            "WINMM.dll",
+            "KERNEL32.dll"
+          ],
+          "delay_imports": [],
+          "authenticode_certificate_table_bytes": 15688,
+          "subsystem": 3
+        }
+      },
+      "selection": "Exact two regular archive members only. No wildcard directory copy. No npm/npx/Corepack, headers, package-manager libraries, shell scripts, installers or symlinks.",
+      "requires_runtime_qualification": true
+    },
+    {
+      "target": "x86_64-pc-windows-msvc",
+      "archive": "node-v24.22.1-win-x64.zip",
+      "archive_url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip",
+      "archive_sha256": "d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5",
+      "archive_bytes": 37748064,
+      "selected_file_bytes": 94076019,
+      "selected_files": [
+        {
+          "path": "node-v24.22.1-win-x64/node.exe",
+          "bytes": 93915464,
+          "sha256": "d702daa815eabbff763c7d3808e235cf031cf2ca70211b56847bc72f51e240e5",
+          "destination_relative": "runtime/node/node.exe",
+          "mode": "0644",
+          "content_transform": "none"
+        },
+        {
+          "path": "node-v24.22.1-win-x64/LICENSE",
+          "bytes": 160555,
+          "sha256": "ed34dd8e3f0a78dbaf00d0444ce8e285b015b765379c2e17880455f70370f8e9",
+          "destination_relative": "runtime/node/LICENSE",
+          "mode": "0644",
+          "content_transform": "none"
+        }
+      ],
+      "native_binary": {
+        "path": "node-v24.22.1-win-x64/node.exe",
+        "bytes": 93915464,
+        "sha256": "d702daa815eabbff763c7d3808e235cf031cf2ca70211b56847bc72f51e240e5",
+        "native": {
+          "format": "PE32+",
+          "machine": "0x8664",
+          "imports": [
+            "CRYPT32.dll",
+            "WS2_32.dll",
+            "USER32.dll",
+            "dbghelp.dll",
+            "ADVAPI32.dll",
+            "IPHLPAPI.DLL",
+            "USERENV.dll",
+            "SHELL32.dll",
+            "ole32.dll",
+            "WINMM.dll",
+            "KERNEL32.dll"
+          ],
+          "delay_imports": [],
+          "authenticode_certificate_table_bytes": 15688,
+          "subsystem": 3
+        }
+      },
+      "selection": "Exact two regular archive members only. No wildcard directory copy. No npm/npx/Corepack, headers, package-manager libraries, shell scripts, installers or symlinks.",
+      "requires_runtime_qualification": true
+    }
+  ]
+}

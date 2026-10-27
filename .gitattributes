@@ -1,0 +1,2 @@
+# Keep third-party notice bytes and their original formatting intact.
+packaging/notices/** -text -whitespace

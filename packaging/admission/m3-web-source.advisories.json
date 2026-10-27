@@ -1,0 +1,29 @@
+{
+  "reviewed": "2026-10-25",
+  "provider": "npm audit registry advisory endpoint",
+  "command": "npm audit --omit=dev --json",
+  "exact_package_count": 8,
+  "report": {
+    "auditReportVersion": 2,
+    "vulnerabilities": {},
+    "metadata": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "dependencies": {
+        "prod": 9,
+        "dev": 0,
+        "optional": 0,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 8
+      }
+    }
+  },
+  "limit": "Exact-version advisory lookup returned no records on review date; not proof of absence or a source/security audit."
+}

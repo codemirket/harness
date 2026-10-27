@@ -1,0 +1,96 @@
+{
+  "rusqlite": {
+    "crate_version": "0.41.0",
+    "vcs": {
+      "git": {
+        "sha1": "a60e76b5e86ee60442213efe79758a6c2ca8cf3d"
+      },
+      "path_in_vcs": ""
+    },
+    "files": {
+      "Cargo.toml": {
+        "sha256": "4b02eb3da6bb6e3614e58f8c414c88b88908ba19d061388f0dd9f43cd53ac9dc",
+        "bytes": 7544
+      },
+      "Cargo.toml.orig": {
+        "sha256": "ffc2689860e377fcdef0b169d2df50dc835b543d80555591c874d28b767f6565",
+        "bytes": 7364
+      },
+      "LICENSE": {
+        "sha256": "c10c1f27337546471e5f7e4e97fdd398b35b9d4e126115dcd22de8d8e65abf6f",
+        "bytes": 1067
+      },
+      "src/backup.rs": {
+        "sha256": "5f43b7679fc278f8ef80bc32855f4a4bea0dabe79eb8158d08a3ffbdc1289948",
+        "bytes": 15135
+      },
+      "src/transaction.rs": {
+        "sha256": "f31c1bdcf6f968bcf0992a66084517c599acf5ece0c11aceddef58f520756053",
+        "bytes": 27044
+      },
+      "src/config.rs": {
+        "sha256": "3f6cbf6d462a27a5e96c2302cf19a59bc85425a3ea3c39e42f9feb727394a4cf",
+        "bytes": 7499
+      }
+    }
+  },
+  "libsqlite3-sys": {
+    "crate_version": "0.39.0",
+    "vcs": {
+      "git": {
+        "sha1": "a60e76b5e86ee60442213efe79758a6c2ca8cf3d"
+      },
+      "path_in_vcs": "libsqlite3-sys"
+    },
+    "files": {
+      "Cargo.toml": {
+        "sha256": "7a53a310feb9dccdbb88c8ba80e12037a4228624a56fb14425e82b64913db0ea",
+        "bytes": 2641
+      },
+      "Cargo.toml.orig": {
+        "sha256": "c45dbb3753c77b5f00c49fd6c8648a037c1ce4bac43644a53783362ae2b2d09b",
+        "bytes": 2211
+      },
+      "LICENSE": {
+        "sha256": "c10c1f27337546471e5f7e4e97fdd398b35b9d4e126115dcd22de8d8e65abf6f",
+        "bytes": 1067
+      },
+      "build.rs": {
+        "sha256": "769b31370a41aa722e1d5a530012432c985bb142eab34d095481ffd1a3436e1b",
+        "bytes": 35413
+      },
+      "sqlite3/sqlite3.c": {
+        "sha256": "2da161e310ef0aba3465f22a4d12b8a43723236f0942fa76e8aac523c3317243",
+        "bytes": 9580800
+      },
+      "sqlite3/sqlite3.h": {
+        "sha256": "cd20a2877bc82b94e36c1093b727dd87cfa3c1d581aac6e240925535cbd90166",
+        "bytes": 695737
+      },
+      "sqlite3/bindgen_bundled_version.rs": {
+        "sha256": "1809a4e0b2ee69c5a507d39c1dbf5f8a03d776ff64c24b9591124eeaf1c5e9a7",
+        "bytes": 126718
+      }
+    }
+  },
+  "sqlite-release-3.54.0": {
+    "url": "https://sqlite.org/releaselog/3_54_0.html",
+    "sha256": "4d165141db6131282bdca42ed9092008585b09d0e553420e13dbd12b98d3c4ed",
+    "bytes": 10105
+  },
+  "sqlite-release-3.54.1": {
+    "url": "https://sqlite.org/releaselog/3_54_1.html",
+    "sha256": "69bf98f8cb8730c88b01414cdc4436fb3c65443dae405957b40efab9976f1e12",
+    "bytes": 10612
+  },
+  "sqlite-patch-timeline": {
+    "url": "https://sqlite.org/src/timeline?from=version-3.54.0&to=version-3.54.1&y=ci",
+    "sha256": "b8c900a8fa517cbb48a3c331b2701a32e422ecff211fcf65d3181cda942ae01d",
+    "bytes": 77456
+  },
+  "sqlite-copyright": {
+    "url": "https://sqlite.org/copyright.html",
+    "sha256": "44ca9f793055c8e32fc65f65a4f5bcf813a33f5bdaaa084067dd617a4ed3cc70",
+    "bytes": 8351
+  }
+}

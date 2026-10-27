@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "name": "pypdf",
+  "version": "6.21.2",
+  "artifact": {
+    "wheel": "pypdf-6.21.2-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/1b/4d/c9d2d67f204eff463237a1a8f5e25a6923b7b1043982b91fcaf104c8ef60/pypdf-6.21.2-py3-none-any.whl",
+    "bytes": 407766,
+    "sha256": "1d44d1a3a200f25062adff0085b02040e4646431ac2ccac22e42679e91466084",
+    "uncompressed_bytes": 1770719,
+    "requires_python": ">=3.9",
+    "requires_dist": [
+      "typing_extensions>=4.0; python_version < \"3.11\"",
+      "brotli>=1.2.0; extra == \"brotli\"",
+      "cryptography>3.0; extra == \"crypto\"",
+      "PyCryptodome; extra == \"cryptodome\"",
+      "flit; extra == \"dev\"",
+      "pip-tools; extra == \"dev\"",
+      "pre-commit; extra == \"dev\"",
+      "pytest-cov; extra == \"dev\"",
+      "pytest-socket; extra == \"dev\"",
+      "pytest-timeout; extra == \"dev\"",
+      "pytest-xdist; extra == \"dev\"",
+      "wheel; extra == \"dev\"",
+      "myst_parser; extra == \"docs\"",
+      "sphinx; extra == \"docs\"",
+      "sphinx_rtd_theme; extra == \"docs\"",
+      "fonttools; extra == \"fonts\"",
+      "arabic-reshaper; extra == \"full\"",
+      "brotli>=1.2.0; extra == \"full\"",
+      "cryptography>3.0; extra == \"full\"",
+      "fonttools; extra == \"full\"",
+      "Pillow>=8.0.0; extra == \"full\"",
+      "python-bidi; extra == \"full\"",
+      "Pillow>=8.0.0; extra == \"image\"",
+      "arabic-reshaper; extra == \"rtl-text\"",
+      "python-bidi; extra == \"rtl-text\""
+    ],
+    "native_members": []
+  },
+  "source_commit": "37d05f6916262371f01460d9c1705ab48c9e3a45",
+  "selected_extras": [],
+  "runtime_features": "Base pure-Python wheel only on the existing selected CPython3.13; no mandatory third-party dependency on this interpreter, no pip/site installation, crypto/image/font/brotli extras or PDFium.",
+  "license": {
+    "spdx": "BSD-3-Clause",
+    "source_member": "pypdf-6.21.2.dist-info/licenses/LICENSE",
+    "destination": "notices/python-documents/LICENSE.pypdf.txt",
+    "bytes": 1605,
+    "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524",
+    "text": "Copyright (c) 2006-2008, Mathieu Fenniak\nSome contributions copyright (c) 2007, Ashish Kulkarni <kulkarni.ashish@gmail.com>\nSome contributions copyright (c) 2014, Steve Witham <switham_github@mac-guyver.com>\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:\n\n* Redistributions of source code must retain the above copyright notice,\nthis list of conditions and the following disclaimer.\n* Redistributions in binary form must reproduce the above copyright notice,\nthis list of conditions and the following disclaimer in the documentation\nand/or other materials provided with the distribution.\n* The name of the author may not be used to endorse or promote products\nderived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE\nLIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF\nSUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS\nINTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN\nCONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE\nPOSSIBILITY OF SUCH DAMAGE.\n"
+  },
+  "authorization": "User full permission for rewrite integration; root selected this exact locally qualified candidate. No publication authorization.",
+  "qualification": {
+    "platform": "macOS26.5.2 ARM64",
+    "runtime": "selected private CPython3.13.17",
+    "machine_report_sha256": "172b90c4829a2667083e79a24752b89a491be0a040703bc9eb9242ce1153ac4a",
+    "visual_review_sha256": "e84d9ce36556ec0f068dcdc91a142fe48b5c4e79714827881e1eb966745f7c5a",
+    "cases": [
+      "page selection/order/rotation and metadata",
+      "encrypted refusal",
+      "malformed refusal",
+      "input byte limit",
+      "existing destination refusal",
+      "source drift refusal"
+    ],
+    "visual_review": "five authored original/saved pages inspected by root",
+    "installed_release": false,
+    "native_windows": false,
+    "limits": "Narrow authored baseline only; no general PDF fidelity, text editing, forms, sanitizer or production-hostile-input qualification."
+  },
+  "security_review": {
+    "evidence_sha256": "f32cd43380077bf0adb136d8617748d4209015dc5968b08b0aca5699d620345e",
+    "observation": "Recorded maintainer affected ranges exclude6.21.2; includes the6.21.2 missing-object repeated-reference fix. Not a complete vulnerability guarantee."
+  }
+}

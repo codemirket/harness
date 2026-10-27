@@ -1,0 +1,10 @@
+{
+  "m2-sqlite.Cargo.lock.proposed": "62e944499a6558fce10dd3200a12626b397e81410b3f4f3a035972f8885b2145",
+  "m2-sqlite.Cargo.toml.proposed": "5acba5f2db3e2c79bfd40bc781a622b1e6800922c0840bc724d7ea608cbf8d1f",
+  "m2-sqlite.advisories.json": "4679222151492fff3dd797e5f08fe0fb51106082ea13f9923241aa4eae33a802",
+  "m2-sqlite.inventory.json": "408a757c060f6a8c4669fe105ade96f61fd3dfc28ab2e21d9fda1a2e71b392fe",
+  "m2-sqlite.md": "36012a8aef5ac4aba2a1e8cf19d10b1bbb5b29f35e0fca6f5071e7d7f57f36ac",
+  "m2-sqlite.native-build.json": "d5c59349a13c18e4258f962c1657fb9d6f22be4070009eefc9dea3fd6dcc3787",
+  "m2-sqlite.qualification.json": "11444bc14f3447f7da7f6294b76c7fc1634d18a018900edb3fe2e1dfda56d455",
+  "m2-sqlite.sources.json": "5daebea2f9a99e46f16b6befd2f4805a3db8e7cf952a3288615ee1208230c274"
+}

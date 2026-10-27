@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "authorization": "User granted full permission for further local implementation actions on 2026-10-25; no publication or existing-installation change.",
+  "purpose": "Borrow exact original JSON value slices for revision-bound structural inspection without numeric reserialization.",
+  "package_set_unchanged": true,
+  "dependency_edges_unchanged": true,
+  "new_packages": [],
+  "feature_diff": [
+    {
+      "package": "registry+https://github.com/rust-lang/crates.io-index#serde_json@1.0.154",
+      "before": [
+        "alloc",
+        "default",
+        "std"
+      ],
+      "after": [
+        "alloc",
+        "default",
+        "raw_value",
+        "std"
+      ]
+    }
+  ],
+  "lock_sha256": "f07a74ffd0d7370400aef9f3294b4545f9ca2ade9cd31fe74eafccf5f4c5d5aa"
+}

@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-25",
+  "admission_basis": "User standing approval for dependency installation, confirmed by integrating parent; no publication or host configuration.",
+  "direct_dependency": {
+    "name": "saphyr-parser",
+    "version": "=0.2.2",
+    "default_features": false,
+    "features": []
+  },
+  "purpose": "Read-only bounded YAML event structure; qualify parser character offsets and convert them to original UTF-8 byte ranges; no value construction or alias expansion.",
+  "packages": [
+    {
+      "name": "saphyr-parser",
+      "version": "0.2.2",
+      "new": true,
+      "license": "MIT OR Apache-2.0",
+      "features": [],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 74856,
+      "crate_sha256": "6c6220586c3dacac54bfddec87af86ddb31862d29666e7e35cf4baf70a25d387",
+      "dependencies": [
+        "arraydeque 0.5.1",
+        "thiserror 2.0.21"
+      ],
+      "build_script": false
+    },
+    {
+      "name": "arraydeque",
+      "version": "0.5.1",
+      "new": true,
+      "license": "MIT OR Apache-2.0",
+      "features": [],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 17671,
+      "crate_sha256": "7d902e3d592a523def97af8f317b08ce16b7ab854c1985a0c671e6f15cebc236",
+      "dependencies": [],
+      "build_script": false
+    },
+    {
+      "name": "thiserror",
+      "version": "2.0.21",
+      "new": false,
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "std"
+      ],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 29021,
+      "crate_sha256": "09e52cb86a36cede5cb101bf8908837b3e4c6e5e59fe7fd85c23fb56200d189e",
+      "dependencies": [
+        "thiserror-impl 2.0.21"
+      ],
+      "build_script": true
+    },
+    {
+      "name": "thiserror-impl",
+      "version": "2.0.21",
+      "new": false,
+      "license": "MIT OR Apache-2.0",
+      "features": [],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 21637,
+      "crate_sha256": "fe5197923287db20a58125f0bc85c062f7f2c892de97b18c356f9efb14b28524",
+      "dependencies": [
+        "proc-macro2 1.0.107",
+        "quote 1.0.47",
+        "syn 3.0.9"
+      ],
+      "build_script": false
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.107",
+      "new": false,
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro"
+      ],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 59588,
+      "crate_sha256": "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9",
+      "dependencies": [
+        "unicode-ident 1.0.27"
+      ],
+      "build_script": true
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.27",
+      "new": false,
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "features": [],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 48807,
+      "crate_sha256": "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563",
+      "dependencies": [],
+      "build_script": false
+    },
+    {
+      "name": "quote",
+      "version": "1.0.47",
+      "new": false,
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "default",
+        "proc-macro"
+      ],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 31622,
+      "crate_sha256": "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001",
+      "dependencies": [
+        "proc-macro2 1.0.107"
+      ],
+      "build_script": true
+    },
+    {
+      "name": "syn",
+      "version": "3.0.9",
+      "new": false,
+      "license": "MIT OR Apache-2.0",
+      "features": [
+        "clone-impls",
+        "default",
+        "derive",
+        "extra-traits",
+        "full",
+        "parsing",
+        "printing",
+        "proc-macro",
+        "visit",
+        "visit-mut"
+      ],
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "archive_bytes": 313970,
+      "crate_sha256": "d78c8dee4c7bf0e14673097256fed6142ce9d3b85a408189d07482442145823b",
+      "dependencies": [
+        "proc-macro2 1.0.107",
+        "quote 1.0.47",
+        "unicode-ident 1.0.27"
+      ],
+      "build_script": false
+    }
+  ],
+  "advisories": {
+    "query": {
+      "queries": [
+        {
+          "package": {
+            "name": "saphyr-parser",
+            "ecosystem": "crates.io"
+          },
+          "version": "0.2.2"
+        },
+        {
+          "package": {
+            "name": "arraydeque",
+            "ecosystem": "crates.io"
+          },
+          "version": "0.5.1"
+        },
+        {
+          "package": {
+            "name": "thiserror",
+            "ecosystem": "crates.io"
+          },
+          "version": "2.0.21"
+        },
+        {
+          "package": {
+            "name": "thiserror-impl",
+            "ecosystem": "crates.io"
+          },
+          "version": "2.0.21"
+        },
+        {
+          "package": {
+            "name": "proc-macro2",
+            "ecosystem": "crates.io"
+          },
+          "version": "1.0.107"
+        },
+        {
+          "package": {
+            "name": "quote",
+            "ecosystem": "crates.io"
+          },
+          "version": "1.0.47"
+        },
+        {
+          "package": {
+            "name": "syn",
+            "ecosystem": "crates.io"
+          },
+          "version": "3.0.9"
+        },
+        {
+          "package": {
+            "name": "unicode-ident",
+            "ecosystem": "crates.io"
+          },
+          "version": "1.0.27"
+        }
+      ]
+    },
+    "response": {
+      "results": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    }
+  },
+  "advisory_limit": "OSV exact-version query returned no records on review date; not proof of absence or a source/security audit.",
+  "source_inspection": [
+    "New crate manifests have no build.rs/custom build target and no network/native dependency.",
+    "Streaming Parser::next_event avoids recursive Parser::load; events expose alias references without expanding them.",
+    "Explicit tags are data in parser events and are refused by the inspector.",
+    "Despite Marker documentation saying bytes, scanner increments by input characters. Inspector selects Parser::new_from_iter(source.chars()) and converts every marker through one bounded original UTF-8 character-index table. Unicode/CRLF tests caught and fixed the initial direct-byte interpretation."
+  ],
+  "qualification_limits": [
+    "Development macOS ARM64 only; no Windows, native Codex activation or final release assembly evidence.",
+    "Source-span tests do not establish semantic navigation or complete YAML schemas."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "path": "@hyperframes/producer/dist/index.js",
+      "sha256": "df852030f493cb3e514e87c7c1bf277e39c493931442ab3232b9a7edeb52cd25",
+      "fetch": 2,
+      "launch": 0,
+      "pages": false,
+      "detached": false,
+      "server": true
+    },
+    {
+      "path": "@hyperframes/engine/dist/services/frameCapture.js",
+      "sha256": "3c0a142d4a04089eb5f13d46216f1ebb8a79f25191c1936bea662c81ef599e20",
+      "fetch": 1,
+      "launch": 0,
+      "pages": true,
+      "detached": false
+    },
+    {
+      "path": "@hyperframes/engine/dist/services/browserManager.js",
+      "sha256": "99691a4aeb96f9ebc8bf655acccac505e99ac579b61fdc8f21ed428a63cb9f31",
+      "fetch": 0,
+      "launch": 3,
+      "pages": false,
+      "detached": false
+    },
+    {
+      "path": "@hyperframes/engine/dist/utils/urlDownloader.js",
+      "sha256": "a7467f2a3b8cc9c59cc8e7060837229ad44f1e6a5ab4cac54cbe1fd962406099",
+      "fetch": 1,
+      "launch": 0,
+      "pages": false,
+      "detached": false
+    },
+    {
+      "path": "@hyperframes/engine/dist/utils/ffprobe.js",
+      "sha256": "bbccac1df4c9ef4a6f192951679aa1e3bea61d81b71f8dce531f1c2951b4cfdb",
+      "fetch": 1,
+      "launch": 0,
+      "pages": false,
+      "detached": false
+    },
+    {
+      "path": "@puppeteer/browsers/lib/launch.js",
+      "sha256": "0a312a04f0ad77e1494d1d82b894f2aac71ebe8a00b60404af28792b344549d5",
+      "fetch": 0,
+      "launch": 0,
+      "pages": false,
+      "detached": true
+    },
+    {
+      "path": "@hyperframes/core/dist/fonts/deterministicFonts.js",
+      "sha256": "1a733e7c429b33f450616566b6cdb956aedc2c9e5e10ec41d9fa38e9707c795f",
+      "fontFetch": true
+    },
+    {
+      "path": "@hyperframes/engine/dist/services/threeDProjection.js",
+      "sha256": "7e2cac625553b49c5f13ad696da9ad6546c97df3c7f936a524979b7c00beba47",
+      "fetch": 1
+    }
+  ]
+}

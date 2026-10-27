@@ -1,0 +1,220 @@
+{
+  "schema": 2,
+  "component": "browser-source-evidence",
+  "recorded": "2026-10-25",
+  "complete_source_bundle": false,
+  "playwright_archive": {
+    "url": "https://codeload.github.com/microsoft/playwright/tar.gz/cfe490d941f992655948eee8fd4fd94e1c4234bf",
+    "bytes": 40648067,
+    "sha256": "9921c254154c53edbc6c97ee5b8a611f22bc1b2084e5308f92103f98aa0d4717",
+    "commit": "cfe490d941f992655948eee8fd4fd94e1c4234bf"
+  },
+  "upstream_helpers_executed": false,
+  "chromium_notice_generator": {
+    "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/tools/licenses/licenses.py",
+    "bytes": 56132,
+    "sha256": "21cf9a04d9330b957950438c2e1c470153bc8c4c522b7db9997c8149199c2007",
+    "required_inputs_not_established": [
+      "full exact DEPS checkout",
+      "binary build configuration",
+      "all relevant third-party notices and source delivery obligations"
+    ]
+  },
+  "blockers": [
+    "Chromium 1706546 embeds placeholder credits; complete exact third-party notice closure is unverified.",
+    "Complete Chromium/Blink and other required reciprocal-source/build/relink materials and recipient source delivery are unverified; the recovered FFmpeg source archive alone does not close this gate."
+  ],
+  "evidence_record": "external task-state: browser-rights-2026-10-25",
+  "playwright_root_notice_files": [
+    {
+      "path": "LICENSE",
+      "bytes": 11601,
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 254,
+      "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+    }
+  ],
+  "complete_chromium_source_retrieved": false,
+  "chromium_source": "https://chromium.googlesource.com/chromium/src/+/0295c61ffd3fd108222e972cddf11d048524c39b",
+  "recovered_partial_source": {
+    "component": "chromium-ffmpeg",
+    "source_revision": "9db86ce5b5b454dfc96c435f9f0723012980c37f",
+    "archive": {
+      "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+archive/9db86ce5b5b454dfc96c435f9f0723012980c37f.tar.gz",
+      "source_revision": "9db86ce5b5b454dfc96c435f9f0723012980c37f",
+      "bytes": 18928317,
+      "sha256": "45ec64490c2f6da763d3f364c481d1241b4ccf0d630daab133f07a46e632c7f1",
+      "file": "ffmpeg-9db86ce5b5b454dfc96c435f9f0723012980c37f.tar.gz"
+    },
+    "inventory": {
+      "entries": 11438,
+      "regular_files": 11114,
+      "regular_bytes": 97656731,
+      "gitmodules_present": false,
+      "pinned_source_members_match": true,
+      "source_executed": false,
+      "archive_extracted": false
+    },
+    "complete_chromium_corresponding_source": false,
+    "recipient_source_offer": false
+  },
+  "remediation_evidence": {
+    "record": "external task-state: chromium-rights-remediation-20261025",
+    "sources": [
+      {
+        "file": "components_resources_BUILD.gn",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/components/resources/BUILD.gn",
+        "bytes": 6368,
+        "sha256": "1d06064122da27e753b0da6e3fce990ba6cc13f179fbf19a309420fe657cafb9"
+      },
+      {
+        "file": "components_resources_sample_credits.html",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/components/resources/sample_credits.html",
+        "bytes": 401,
+        "sha256": "c2a338c4f1f5f5e19d3020a25f8dc47e394ba4fed1ec2d8dc5b2a915170e02bc"
+      },
+      {
+        "file": "components_webui_about_resources_about_credits_reciprocal.tmpl",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/components/webui/about/resources/about_credits_reciprocal.tmpl",
+        "bytes": 147,
+        "sha256": "f64fdd35eda1dfb424f243d313869564ac6b9026fff505070be8066719105e93"
+      },
+      {
+        "file": "third_party_blink_LICENSE_FOR_ABOUT_CREDITS",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/third_party/blink/LICENSE_FOR_ABOUT_CREDITS",
+        "bytes": 51483,
+        "sha256": "a661d10f8f194b1963a75bb4d308f17b078cc064624313a556902d89705f6876"
+      },
+      {
+        "file": "infra_archive_config_mac-arm64-archive-rel.json",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/infra/archive_config/mac-arm64-archive-rel.json",
+        "bytes": 2918,
+        "sha256": "d9cb6c809ff9554c7ec4997a5f4d96fcd7927e4f972d7184337537f5e590abc4"
+      },
+      {
+        "file": "docs_mac_build_instructions.md",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/docs/mac_build_instructions.md",
+        "bytes": 13370,
+        "sha256": "cf4dbb63b048b98bea3fa9055390d816144113f3cbfbad37bef3be1678f4b52e"
+      },
+      {
+        "file": "build_find_depot_tools.py",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/build/find_depot_tools.py",
+        "bytes": 2299,
+        "sha256": "7da9dda9c6cf8f657fe37ff7566399cc114224e08efda5fbb35e1270a838592a"
+      },
+      {
+        "file": "media_ffmpeg_README.md",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/media/ffmpeg/README.md",
+        "bytes": 3315,
+        "sha256": "b9cc0d90692745ac60da41b0fb41eaaac672e4a2af156d850f9a3978c57183c8"
+      },
+      {
+        "file": "ffmpeg_README.chromium",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/README.chromium?format=TEXT",
+        "bytes": 1267,
+        "sha256": "78cb962e613ae190194e1632533ad5cf85bbe15635ee5152781b2ac63dbf8232",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_CREDITS.chromium",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/CREDITS.chromium?format=TEXT",
+        "bytes": 47960,
+        "sha256": "903a6faa336b60d419bc6eb2bcffe4ca8bd9446735e5de4fcc901c80e9f22327",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_COPYING.LGPLv2.1",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/COPYING.LGPLv2.1?format=TEXT",
+        "bytes": 26517,
+        "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_BUILD.gn",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/BUILD.gn?format=TEXT",
+        "bytes": 16479,
+        "sha256": "23753f7fc167adf7387e796b5345c5f3cd812ed0f446b09fe251927a22771989",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_ffmpeg_options.gni",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/ffmpeg_options.gni?format=TEXT",
+        "bytes": 2483,
+        "sha256": "5e4192356f0efac34f8ebfa0e789bc5a862ddf631acf22e57e3455de9876a736",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_chromium_config_Chromium_mac_arm64_config.h",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/chromium/config/Chromium/mac/arm64/config.h?format=TEXT",
+        "bytes": 26719,
+        "sha256": "ad3aa0b8d861227b47bdc05857dceb858bd19284534ef309da7c6d1b6c42e960",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "ffmpeg_chromium_config_Chromium_mac_arm64_config_components.h",
+        "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+/9db86ce5b5b454dfc96c435f9f0723012980c37f/chromium/config/Chromium/mac/arm64/config_components.h?format=TEXT",
+        "bytes": 76392,
+        "sha256": "f9411729b8c2bce3b4adb477893205900f04e1574fc25ede7502e4b830e5eee6",
+        "representation": "base64-decoded source"
+      },
+      {
+        "file": "snapshot_objects.json",
+        "url": "https://storage.googleapis.com/storage/v1/b/chromium-browser-snapshots/o?prefix=Mac_Arm%2F1706546%2F",
+        "bytes": 9341,
+        "sha256": "ebe99a121aa4df10df89dc12693aeb2b0d165106e1b13337f6cefd73289d729c"
+      },
+      {
+        "file": "REVISIONS",
+        "url": "https://storage.googleapis.com/chromium-browser-snapshots/Mac_Arm/1706546/REVISIONS",
+        "bytes": 660,
+        "sha256": "979a6ae3a7841c48ed270753110cb14bbc7573b93016b91fba5587e55b7c9167"
+      },
+      {
+        "file": "infra_config_generated_builders_ci_mac-arm64-archive-rel_properties.json",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/infra/config/generated/builders/ci/mac-arm64-archive-rel/properties.json",
+        "bytes": 2109,
+        "sha256": "4d5719158e2f3a57248f6a443530e9b8eabdd79c425c91958e6dc8d7bd5928ac"
+      },
+      {
+        "file": "third_party_blink_README.md",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/third_party/blink/README.md",
+        "bytes": 787,
+        "sha256": "d9a2d79204c5de9441dfde80ea4be0d36c9bf0032d3782ab223356639ea4ed8d"
+      },
+      {
+        "file": "build_config_compiler_BUILD.gn",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/build/config/compiler/BUILD.gn",
+        "bytes": 119458,
+        "sha256": "5fd8410dce79947067a656feb24d150bb838269f3f934f3028b00a62fc56b859"
+      },
+      {
+        "file": "build_toolchain_apple_toolchain.gni",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/build/toolchain/apple/toolchain.gni",
+        "bytes": 42395,
+        "sha256": "5d16d98655b6cf10e1b17b8361cabd8cae17b2c7d2c6896a92725b56d7e9f874"
+      },
+      {
+        "file": "infra_config_generated_builders_ci_mac-arm64-archive-rel_gn-args.json",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/infra/config/generated/builders/ci/mac-arm64-archive-rel/gn-args.json",
+        "bytes": 289,
+        "sha256": "54ef55fce4f9d4d4dbabed3df84a138da0fcc45b90b81da43cd57fb3d779e4cb"
+      },
+      {
+        "file": "tools_mb_mb_config.pyl",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/tools/mb/mb_config.pyl",
+        "bytes": 41791,
+        "sha256": "5c97d5103576a0679559ce6548c02ac1b4fda4866e53d5b5210f4b9e1feff487"
+      },
+      {
+        "file": "build_config_mac_mac_sdk.gni",
+        "url": "https://raw.githubusercontent.com/chromium/chromium/0295c61ffd3fd108222e972cddf11d048524c39b/build/config/mac/mac_sdk.gni",
+        "bytes": 6534,
+        "sha256": "c8d20392804889087b6737bd1ffc10fdc1845e2a7d9a4218856ef248771bc8e9"
+      }
+    ]
+  }
+}

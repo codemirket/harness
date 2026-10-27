@@ -1,0 +1,20 @@
+{
+  "source": {
+    "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.31.0/docs/Privacy.md",
+    "sha256": "ea592b16d154ff2de759ba5210350c64593c378c1bbd0a2aa4ddef777edbf358",
+    "bytes": 6571
+  },
+  "discovery": "A later pipe-only leaf qualification observed a timestamp/UUID .ses artifact in the private job directory. API telemetry(false) alone is insufficient for ORT 1.31 1DS initialization.",
+  "required_control": {
+    "child_environment": {
+      "ORT_DISABLE_TELEMETRY": "1"
+    },
+    "set_before": "any native library loading or initialization",
+    "loader_guard": "EmbeddingModel::load refuses absent or nonexact value before its tree check/native initialization",
+    "api_telemetry": false,
+    "process_environment_mutation": "none; environment is supplied on the fresh leaf Command"
+  },
+  "prior_measurements": "Recorded FP32 and INT8 inference probes used API telemetry(false), CPU-only selection and OS network denial. Their successful inference establishes offline operation under denial, not complete telemetry suppression or absence of local telemetry artifacts.",
+  "corrected_native_qualification": "Corrected actual pipe qualification passed inference and live cancellation in 10.38 seconds; the private job directory was empty afterward. This establishes the tested process behavior, not a network-capture result. No model/source pins or numeric identity changed.",
+  "unchanged": "All source/runtime/model pins and numeric model identity remain unchanged; no custom ORT build or new dependency."
+}

@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-24",
+  "platform": "Darwin arm64",
+  "result": "passed",
+  "final_input_hashes": {
+    "planning/implementation-plan.md": "dcbff94e14321febedf0fd433344e1499f447075ea9a774f8dbd71b47bd7994f",
+    "planning/proposal.md": "33975fd1d7c275619b7b7bed1b4b3db946b85fc5be958a3addd167fc183b1dcb",
+    "planning/decisions.md": "fa3817ddb0e06b43c5f2b3749e62f0c57b1180f9e334f1108acf388fddc1323a",
+    "planning/toolchain-proposal.md": "0d1ba5752d266e2fc24f6c005107b7daa18fcc7db3618c6c98ba101e4a192c8a",
+    "planning/platform-qualification.md": "63ef46dcb12ca0de8f23bab1475683f44898d99c59902be29e8d5887f709ad30",
+    "planning/references.md": "45b78012c9075c46c74da796a7a46ca79ab070b20e63c2fc0139290083709ad3"
+  },
+  "final_files_verified": 6,
+  "frozen_inputs_verified": 6,
+  "pre_edit_inputs_verified": 6,
+  "first_pass_reports_unchanged": 5,
+  "accepted_decisions_1_through_76": "unchanged",
+  "original_source_memberships_preserved": 53,
+  "reference_unique_entries": 58,
+  "reference_memberships": 59,
+  "markdown_files_checked": 11,
+  "local_links_and_anchors_checked": 62,
+  "unavailable_historical_links": [],
+  "errors": [],
+  "runtime_tests": "not run; planning and source review only",
+  "rendering": "source/structure inspected; no screenshot-based rendering claim"
+}

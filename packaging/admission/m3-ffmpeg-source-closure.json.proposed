@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-25T22:19:44.888987+00:00",
+  "status": "private_source_recipient_candidate_not_admitted",
+  "release_admitted": false,
+  "scope": "FFmpeg-only source/notice/recipient evidence; no app integration or combined runtime admission",
+  "platform_observed": "macOS 26.5.2 ARM64",
+  "minimum_os_declared": "macOS 15.0; execution untested",
+  "license": "GPL-2.0-or-later",
+  "nonfree": false,
+  "upstream_source_changes": [],
+  "selected_binaries": [
+    {
+      "name": "ffmpeg",
+      "bytes": 9647448,
+      "sha256": "8374f88f171b233c072da4acbf9058e9b563ce048d9300edabbe6036f616505e"
+    },
+    {
+      "name": "ffprobe",
+      "bytes": 9454392,
+      "sha256": "8c6f1213081e3805be3e2d69b9db85ff291235771b76b4f35bd64bf5ad280a1c"
+    }
+  ],
+  "complete_source_archives": [
+    {
+      "path": "archives/ffmpeg-9.0.2.tar.xz",
+      "bytes": 12040788,
+      "sha256": "8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e"
+    },
+    {
+      "path": "archives/opus-1.6.1.tar.gz",
+      "bytes": 10472813,
+      "sha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1"
+    },
+    {
+      "path": "archives/v1.17.0.tar.gz",
+      "bytes": 5670546,
+      "sha256": "1020f184046187baa2985dbde38e0691f49c44088bca7a1842b0236c6081dc0a"
+    },
+    {
+      "path": "archives/x264-b35605ace3ddf7c1a5d67a2eb553f034aef41d55.tar.gz",
+      "bytes": 1040327,
+      "sha256": "cd71a7515b0e9a012e1ac9b1f8415bebcaf6fc97d4db32286642ac4c0fbe24f9"
+    }
+  ],
+  "source_kit": {
+    "name": "ffmpeg-9.0.2-darwin-arm64-recipient-source-20261026.tar.gz",
+    "bytes": 29434536,
+    "sha256": "f420e0ea8e047fa01a3ae0bcc0d4df29f97a87712ee6f72e338c49ae83c616ba",
+    "manifest_inputs": 65,
+    "original_notices_unchanged": 22,
+    "notice_files_including_supplement_and_provenance": 24,
+    "archives_helpers_configuration_selected_identity_unchanged_from_prior_final_kit": true,
+    "actual_recipient_delivery_tested": false
+  },
+  "authentication": {
+    "ffmpeg_release_signature_reverified": true,
+    "ffmpeg_current_official_key_matches_retained": true,
+    "ffmpeg_key_fingerprint": "FCF986EA15E6E293A5644F10B4322F04D67658D8",
+    "opus_official_download_checksum_matches": true,
+    "x264_official_stable_head_matches": true,
+    "libvpx_archive_tag_commit_matches": true,
+    "independent_signature_claim_for_other_archives": false
+  },
+  "recipient_checks": {
+    "prior_full_rebuild_passed": true,
+    "prior_full_rebuild_seconds": 96.729,
+    "regular_upstream_source_files_unchanged_after_build": 12409,
+    "exact_generated_component_configuration_matches": true,
+    "known_path_normalized_generated_header_matches": true,
+    "small_H264_setparams_RGB_PCM_float_AAC_ipod_fixture_outputs_match": true,
+    "whole_binary_reproducibility_claim": false,
+    "current_OS_network_and_outside_write_denied_fresh_extraction_passed": true,
+    "current_extraction_regular_files_match_prior_build": 12409,
+    "corrupt_recipe_rejected_before_extraction": true,
+    "refreshed_kit_manifest_and_exact_inventory_verified": true,
+    "local_binary_source_notice_delivery_fixture_passed": true,
+    "actual_distribution_channel_or_written_offer_tested": false,
+    "native_compile_repeated_for_notice_refresh": false
+  },
+  "selected_capability_limit": {
+    "mov_text_configure_spelling_retained": true,
+    "MOVTEXT_encoder_enabled": false,
+    "MOVTEXT_decoder_enabled": false,
+    "older_subtitle_qualification_inherited": false
+  },
+  "advisory_review": {
+    "source": "https://ffmpeg.org/security.html",
+    "scope": "current master and 9.0 index sections, captured 2026-10-25 UTC / 2026-10-26 Europe/Istanbul",
+    "release_commit": "946fcce07b6dcd0331c8cc609192aeff5e1924f8",
+    "distinct_CVEs": 11,
+    "fix_commit_IDs": 17,
+    "direct_ancestor_IDs": 14,
+    "mainline_aliases_with_identified_ancestor_backports": 3,
+    "affected_source_files_matching_release_tag": 10,
+    "absence_of_vulnerabilities_claim": false
+  },
+  "external_evidence_roots": [
+    "ffmpeg-qualification-20261025",
+    "ffmpeg-recipient-final-20261025",
+    "ffmpeg-source-review-20261026"
+  ],
+  "remaining_release_gates": [
+    "Actual GPLv2 section 3 recipient route and final binary/source/notice delivery access",
+    "Final aggregation and recipient rights/terms review",
+    "Codec patent/grant-condition review for actual distributor/use/jurisdictions",
+    "Authentication and privacy review of final distributable artifacts",
+    "Current advisory/component recheck at final payload freeze",
+    "Intended Mirket/HyperFrames media path, required capabilities and failure/resource qualification; MOVTEXT remains disabled",
+    "macOS 15 execution, signing/notarization and native Windows 11 x64/ARM64",
+    "Separate Chromium/Sharp and combined product release gates"
+  ],
+  "documentation": "docs/ffmpeg-recipient-source-closure.md"
+}

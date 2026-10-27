@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "reviewed": "2026-10-25",
+  "packages": [
+    {
+      "name": "css-tree",
+      "version": "3.2.1",
+      "new": false,
+      "license": "MIT",
+      "dependencies": {
+        "mdn-data": "2.27.1",
+        "source-map-js": "^1.2.1"
+      },
+      "scripts": {
+        "watch": "npm run build -- --watch",
+        "build": "npm run bundle && npm run esm-to-cjs --",
+        "build-and-test": "npm run build && npm run test:dist && npm run test:cjs",
+        "bundle": "node scripts/bundle",
+        "bundle-and-test": "npm run bundle && npm run test:dist",
+        "esm-to-cjs": "node scripts/esm-to-cjs.cjs",
+        "esm-to-cjs-and-test": "npm run esm-to-cjs && npm run test:cjs",
+        "lint": "eslint lib scripts && node scripts/review-syntax-patch --lint && node scripts/update-docs --lint",
+        "lint-and-test": "npm run lint && npm test",
+        "update:docs": "node scripts/update-docs",
+        "review:syntax-patch": "node scripts/review-syntax-patch",
+        "test": "mocha lib/__tests --require lib/__tests/helpers/setup.js --reporter progress",
+        "test:cjs": "mocha cjs/__tests --require lib/__tests/helpers/setup.js --reporter progress",
+        "test:dist": "mocha dist/__tests --reporter progress",
+        "coverage": "c8 --exclude lib/__tests --reporter=lcovonly npm test",
+        "prepublishOnly": "npm run lint-and-test && npm run build-and-test"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/css-tree/-/css-tree-3.2.1.tgz",
+      "integrity": "sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==",
+      "archive_sha256": "4c06bfe733d006103a4c070dcf8e0a3b2eb6b6a83e20e21c32d2d3b9c3ffae0a",
+      "archive_bytes": 316943,
+      "unpacked_bytes": 1362649,
+      "files": 278,
+      "embedded_notices": [
+        {
+          "path": "LICENSE",
+          "bytes": 1065,
+          "sha256": "719a251ceca49c057ea90a1152af6546b767ec88e6d573bb6324454267b32c22"
+        }
+      ],
+      "git_head": "8a6caba481be4cae4b0e8690af643ff8e59271f2"
+    },
+    {
+      "name": "mdn-data",
+      "version": "2.27.1",
+      "new": false,
+      "license": "CC0-1.0",
+      "dependencies": {},
+      "scripts": {
+        "lint": "node test/lint",
+        "test": "npm run lint"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/mdn-data/-/mdn-data-2.27.1.tgz",
+      "integrity": "sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==",
+      "archive_sha256": "63985bd4ce64e9a0142d70465c3a7f54c488f3ef6da3f9512d54a728cde46870",
+      "archive_bytes": 102934,
+      "unpacked_bytes": 732388,
+      "files": 25,
+      "embedded_notices": [
+        {
+          "path": "LICENSE",
+          "bytes": 6555,
+          "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+        }
+      ],
+      "git_head": "8b1079528c02bd3eb6f180e47011cf2075849961"
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.2",
+      "new": false,
+      "license": "BSD-3-Clause",
+      "dependencies": {},
+      "scripts": {
+        "test": "npm run build && node test/run-tests.js",
+        "build": "webpack --color",
+        "toc": "doctoc --title '## Table of Contents' README.md && doctoc --title '## Table of Contents' CONTRIBUTING.md"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
+      "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==",
+      "archive_sha256": "05c8cf8e7c3a6b56cada7668fe9342b10f4b625efc92aba9ba05b9e8fe4d71a3",
+      "archive_bytes": 36349,
+      "unpacked_bytes": 142723,
+      "files": 18,
+      "embedded_notices": [
+        {
+          "path": "LICENSE",
+          "bytes": 1526,
+          "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
+        }
+      ],
+      "git_head": "0a1d334fd1e55a47df97fcd60a7915d46df3b08a"
+    },
+    {
+      "name": "vscode-html-languageservice",
+      "version": "5.6.2",
+      "new": true,
+      "license": "MIT",
+      "dependencies": {
+        "@vscode/l10n": "^0.0.18",
+        "vscode-languageserver-textdocument": "^1.0.12",
+        "vscode-languageserver-types": "^3.17.5",
+        "vscode-uri": "^3.1.0"
+      },
+      "scripts": {
+        "prepack": "npm run clean && npm run compile-esm && npm run test && npm run remove-sourcemap-refs",
+        "compile": "tsc -p ./src && npm run copy-jsbeautify",
+        "compile-esm": "tsc -p ./src/tsconfig.esm.json",
+        "watch": "tsc -w -p ./src && npm run copy-jsbeautify",
+        "clean": "rimraf lib",
+        "remove-sourcemap-refs": "node ./build/remove-sourcemap-refs.js",
+        "test": "npm run compile && mocha --timeout 5000 ./lib/umd/test/*.js && npm run lint",
+        "lint": "eslint src/**/*.ts",
+        "install-types-next": "npm i vscode-languageserver-types@next -f -S && npm i vscode-languageserver-textdocument@next -f -S",
+        "copy-jsbeautify": "node ./build/copy-jsbeautify.js",
+        "update-jsbeautify": "npm i js-beautify && node ./build/update-jsbeautify.js",
+        "update-jsbeautify-next": "npm i js-beautify@next && node ./build/update-jsbeautify.js",
+        "update-data": "npm i @vscode/web-custom-data -D && node ./build/generateData.js"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/vscode-html-languageservice/-/vscode-html-languageservice-5.6.2.tgz",
+      "integrity": "sha512-ulCrSnFnfQ16YzvwnYUgEbUEl/ZG7u2eV27YhvLObSHKkb8fw1Z9cgsnUwjTEeDIdJDoTDTDpxuhQwoenoLNMg==",
+      "archive_sha256": "a519e4029da8cf4d7d4cf6d882307038635f203c505862a4ef68f18fa194322a",
+      "archive_bytes": 279402,
+      "unpacked_bytes": 2003649,
+      "files": 75,
+      "embedded_notices": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1092,
+          "sha256": "c3a24c02d678e5f0711623dcf3ab3f243b273c2633f638a1fa8e35fb7c7f8e4d"
+        },
+        {
+          "path": "thirdpartynotices.txt",
+          "bytes": 2961,
+          "sha256": "6fac688548f02e656a57234c7f0cb4a74bd8645b4ef2c7a33f5117861b9f3de0"
+        }
+      ],
+      "git_head": null
+    },
+    {
+      "name": "vscode-languageserver-textdocument",
+      "version": "1.0.16",
+      "new": true,
+      "license": "MIT",
+      "dependencies": {},
+      "scripts": {
+        "prepublishOnly": "npm run all:publish",
+        "prepack": "npm run all:publish",
+        "compile": "tsc -b ./tsconfig.json",
+        "clean": "rimraf lib",
+        "watch": "tsc -b ./tsconfig.watch.json -w",
+        "lint": "eslint src",
+        "test": "node ../node_modules/mocha/bin/_mocha",
+        "all": "npm run clean && npm run compile && npm run lint && npm run test",
+        "compile:esm": "tsc -b ./tsconfig.esm.publish.json && node ../build/bin/fix-esm",
+        "compile:umd": "tsc -b ./tsconfig.umd.publish.json",
+        "all:publish": "git clean -xfd . && npm install && npm run compile:esm && npm run compile:umd && npm run lint && npm run test",
+        "preversion": "npm test"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/vscode-languageserver-textdocument/-/vscode-languageserver-textdocument-1.0.16.tgz",
+      "integrity": "sha512-qeNEuOi9a3qkqRf7Gfez2WL2VwlBTLCNekHBGO9kxPVUp9XuY15yfTJ9jwvOwKI0I2MhUUfZq95NSp+LK1CLQg==",
+      "archive_sha256": "3d00e3f62041ffb10b220a14b057116a9812ee41e04cc7eef12a78ca46302599",
+      "archive_bytes": 8576,
+      "unpacked_bytes": 46534,
+      "files": 10,
+      "embedded_notices": [
+        {
+          "path": "License.txt",
+          "bytes": 1095,
+          "sha256": "ec9ee83580841e8eb687aca9867f221503809ba6426c7f876ede17d91b9fcfd0"
+        },
+        {
+          "path": "thirdpartynotices.txt",
+          "bytes": 623,
+          "sha256": "a89123562fe364dc8e969e85614eb6c1f8452afe131d6e42bd1314bb2d092b04"
+        }
+      ],
+      "git_head": null
+    },
+    {
+      "name": "vscode-languageserver-types",
+      "version": "3.17.5",
+      "new": true,
+      "license": "MIT",
+      "dependencies": {},
+      "scripts": {
+        "prepublishOnly": "echo \"\u26d4 Can only publish from a secure pipeline \u26d4\" && node ../build/npm/fail",
+        "prepack": "npm run all:publish",
+        "compile": "node ../build/bin/tsc -b ./tsconfig.json",
+        "clean": "node ../node_modules/.bin/rimraf lib",
+        "watch": "node ../build/bin/tsc -b ./tsconfig.watch.json -w",
+        "lint": "node ../node_modules/eslint/bin/eslint.js --ext ts src",
+        "test": "node ../node_modules/mocha/bin/_mocha",
+        "all": "npm run clean && npm run compile && npm run lint && npm run test",
+        "compile:esm": "node ../build/bin/tsc -b ./tsconfig.esm.publish.json && node ../build/bin/fix-esm",
+        "compile:umd": "node ../build/bin/tsc -b ./tsconfig.umd.publish.json",
+        "all:publish": "git clean -xfd . && npm install && npm run compile:esm && npm run compile:umd && npm run lint && npm run test",
+        "preversion": "npm test"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.17.5.tgz",
+      "integrity": "sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==",
+      "archive_sha256": "d673f9e7f8bbe51351be51c58f32d4dcfa97a670ebb86bc633368394c609cac0",
+      "archive_bytes": 71382,
+      "unpacked_bytes": 376701,
+      "files": 9,
+      "embedded_notices": [
+        {
+          "path": "License.txt",
+          "bytes": 1095,
+          "sha256": "ec9ee83580841e8eb687aca9867f221503809ba6426c7f876ede17d91b9fcfd0"
+        },
+        {
+          "path": "thirdpartynotices.txt",
+          "bytes": 623,
+          "sha256": "a89123562fe364dc8e969e85614eb6c1f8452afe131d6e42bd1314bb2d092b04"
+        }
+      ],
+      "git_head": null
+    },
+    {
+      "name": "vscode-uri",
+      "version": "3.2.0",
+      "new": true,
+      "license": "MIT",
+      "dependencies": {},
+      "scripts": {
+        "clean": "rimraf lib",
+        "pack-production": "webpack --mode=production",
+        "pack-dev": "webpack",
+        "compile": "tsc -p ./src",
+        "prepublish": "npm run pack-production",
+        "test": "tsc -p ./src && npm run pack-dev && mocha"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/vscode-uri/-/vscode-uri-3.2.0.tgz",
+      "integrity": "sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==",
+      "archive_sha256": "12fa4a47728ca404c3a679e351eda6c54030c8ed3dd9bc6762ab0be1bf04014b",
+      "archive_bytes": 59281,
+      "unpacked_bytes": 204769,
+      "files": 17,
+      "embedded_notices": [
+        {
+          "path": "LICENSE.md",
+          "bytes": 1070,
+          "sha256": "c669138cb1eb01fbb745e8e460b291e4f2869c14a40061390b6095d845ed4c82"
+        }
+      ],
+      "git_head": null
+    },
+    {
+      "name": "@vscode/l10n",
+      "version": "0.0.18",
+      "new": true,
+      "license": "MIT",
+      "dependencies": {},
+      "scripts": {
+        "clean": "rimraf dist && rimraf lib",
+        "compile": "npm run clean && tsc --emitDeclarationOnly --outDir lib && node .esbuild.config.js",
+        "lint": "eslint src --ext ts",
+        "watch": "node .esbuild.config.js --watch",
+        "test": "jest --preset ts-jest",
+        "prepublishOnly": "npm run lint && npm run compile && npm run test"
+      },
+      "install_lifecycle_scripts": {},
+      "resolved": "https://registry.npmjs.org/@vscode/l10n/-/l10n-0.0.18.tgz",
+      "integrity": "sha512-KYSIHVmslkaCDyw013pphY+d7x1qV8IZupYfeIfzNA+nsaWHbn5uPuQRvdRFsa9zFzGeudPuoGoZ1Op4jrJXIQ==",
+      "archive_sha256": "f1c2dc897488595f6bb42121869f525c6c6a5f7c8dca550754199c3251ed7c5c",
+      "archive_bytes": 4548,
+      "unpacked_bytes": 16419,
+      "files": 6,
+      "embedded_notices": [],
+      "git_head": null
+    }
+  ]
+}

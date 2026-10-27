@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "status": "local-evaluation-only",
+  "runtime_version": "1.31.0",
+  "provider": "CPUExecutionProvider",
+  "telemetry": false,
+  "model": {
+    "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+    "license": "Apache-2.0 as declared in pinned upstream model card; retain full card; no separate LICENSE or NOTICE file exists in the pinned repository",
+    "selected": [
+      {
+        "path": "onnx/tokenizer.json",
+        "bytes": 9081518,
+        "sha256": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/tokenizer.json"
+      },
+      {
+        "path": "onnx/tokenizer_config.json",
+        "bytes": 526,
+        "sha256": "5036ea374ffedd706e3bef33e2e0d6953cb868ef8a490e76e32ba0faa37a6b9b",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/tokenizer_config.json"
+      },
+      {
+        "path": "onnx/special_tokens_map.json",
+        "bytes": 239,
+        "sha256": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/special_tokens_map.json"
+      },
+      {
+        "path": "onnx/config.json",
+        "bytes": 645,
+        "sha256": "6300193cb75e01cf80c96decef7187dfb33094d97cc1490b7ead6ff134476e4e",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/config.json"
+      },
+      {
+        "path": "1_Pooling/config.json",
+        "bytes": 190,
+        "sha256": "4be450dde3b0273bb9787637cfbd28fe04a7ba6ab9d36ac48e92b11e350ffc23",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/1_Pooling/config.json"
+      },
+      {
+        "path": "sentence_bert_config.json",
+        "bytes": 53,
+        "sha256": "70f4448f31320443fe3557cacea5abf2dcc4915dda8c80646bec9f3bb0aa5a1f",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/sentence_bert_config.json"
+      },
+      {
+        "path": "README.md",
+        "bytes": 3888,
+        "sha256": "1e98ea05b0de579fcaad3d625b62ea55647142ed674d5f5ebf1440e4bbbb6f23",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/README.md"
+      },
+      {
+        "path": "onnx/model_qint8_arm64.onnx",
+        "bytes": 118412398,
+        "sha256": "783fea82d71a58179b830a4dbd2d58447e640609e98eedf9ffa12622d375a672",
+        "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/onnx/model_qint8_arm64.onnx"
+      }
+    ],
+    "contract": {
+      "dimensions": 384,
+      "max_tokens": 128,
+      "pooling": "attention-mask mean",
+      "normalization": "L2",
+      "query_prefix": "",
+      "passage_prefix": "",
+      "precision": "dynamic int8",
+      "batch_contract": "one plain text per embed call; FastEmbed QuantizationMode::Dynamic, explicit max_length128; content windows 126 tokens plus special tokens",
+      "offline": "verified local files only; hf-hub and runtime download features absent"
+    },
+    "selected_bytes": 127499457
+  },
+  "targets": {
+    "aarch64-apple-darwin": {
+      "assembly_complete": true,
+      "archive": {
+        "name": "onnxruntime-osx-arm64-1.31.0.tgz",
+        "bytes": 36549009,
+        "sha256": "1031b36dd3bdaa8d976a6130d9cf2a05e9be320b93ae804f8427b91dc3432afc",
+        "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.31.0/onnxruntime-osx-arm64-1.31.0.tgz"
+      },
+      "files": [
+        {
+          "member": "./onnxruntime-osx-arm64-1.31.0/ThirdPartyNotices.txt",
+          "path": "onnxruntime/ThirdPartyNotices.txt",
+          "bytes": 338088,
+          "sha256": "143764b952fdb1a7c69ce653bfba74a7744d6a8a573bfb73e235fba356c83de3"
+        },
+        {
+          "member": "./onnxruntime-osx-arm64-1.31.0/LICENSE",
+          "path": "onnxruntime/LICENSE",
+          "bytes": 1073,
+          "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+        },
+        {
+          "member": "./onnxruntime-osx-arm64-1.31.0/lib/libonnxruntime.1.31.0.dylib",
+          "path": "onnxruntime/libonnxruntime.1.31.0.dylib",
+          "bytes": 44830288,
+          "sha256": "2a50a63e7f41f8d4d551d3ee47248df3864f6540109fce8ad520ca3b51af4b70"
+        }
+      ],
+      "allowed_omitted_symlinks": {
+        "onnxruntime-osx-arm64-1.31.0/lib/libonnxruntime.1.dylib": "libonnxruntime.1.31.0.dylib"
+      },
+      "incomplete_reason": null
+    },
+    "aarch64-pc-windows-msvc": {
+      "assembly_complete": false,
+      "archive": {
+        "name": "onnxruntime-win-arm64-1.31.0.zip",
+        "bytes": 85806468,
+        "sha256": "ef6206fa8d6975878d93a97035d280240ce5764c126a7430e5427e18923316d5",
+        "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.31.0/onnxruntime-win-arm64-1.31.0.zip"
+      },
+      "files": [
+        {
+          "member": "onnxruntime-win-arm64-1.31.0/lib/onnxruntime.dll",
+          "path": "onnxruntime/onnxruntime.dll",
+          "bytes": 17507640,
+          "sha256": "b6da671624bce049c13c34a3b48b7ddfd1b521dbf07d20e83ff9af4441110641"
+        },
+        {
+          "member": "onnxruntime-win-arm64-1.31.0/LICENSE",
+          "path": "onnxruntime/LICENSE",
+          "bytes": 1094,
+          "sha256": "c250d6278f0b47a6439fb7592b08b58a55eb9f535aa49a1db63211c3f982b674"
+        },
+        {
+          "member": "onnxruntime-win-arm64-1.31.0/ThirdPartyNotices.txt",
+          "path": "onnxruntime/ThirdPartyNotices.txt",
+          "bytes": 344457,
+          "sha256": "c53a76501ef60db6f865f20599f220761201ac4057683acefdab37d861b86622"
+        }
+      ],
+      "allowed_omitted_symlinks": {},
+      "incomplete_reason": "Exact licensed app-local VC CRT closure is not admitted; host CRT fallback is forbidden."
+    },
+    "x86_64-pc-windows-msvc": {
+      "assembly_complete": false,
+      "archive": {
+        "name": "onnxruntime-win-x64-1.31.0.zip",
+        "bytes": 82887349,
+        "sha256": "3958d8a44984160692c1b4ffd0de3cb48f8c39f9d34bb31e433db06e30b82195",
+        "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.31.0/onnxruntime-win-x64-1.31.0.zip"
+      },
+      "files": [
+        {
+          "member": "onnxruntime-win-x64-1.31.0/lib/onnxruntime.dll",
+          "path": "onnxruntime/onnxruntime.dll",
+          "bytes": 17253176,
+          "sha256": "0c42dc4e278f0968fdf9ebf1b1e54a74c657a9942e70803e453c91993451cf4c"
+        },
+        {
+          "member": "onnxruntime-win-x64-1.31.0/LICENSE",
+          "path": "onnxruntime/LICENSE",
+          "bytes": 1094,
+          "sha256": "c250d6278f0b47a6439fb7592b08b58a55eb9f535aa49a1db63211c3f982b674"
+        },
+        {
+          "member": "onnxruntime-win-x64-1.31.0/ThirdPartyNotices.txt",
+          "path": "onnxruntime/ThirdPartyNotices.txt",
+          "bytes": 344457,
+          "sha256": "c53a76501ef60db6f865f20599f220761201ac4057683acefdab37d861b86622"
+        }
+      ],
+      "allowed_omitted_symlinks": {},
+      "incomplete_reason": "Exact licensed app-local VC CRT closure is not admitted; host CRT fallback is forbidden."
+    }
+  }
+}
