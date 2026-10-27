@@ -510,11 +510,14 @@ def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condi
     started = time.monotonic()
     proc = subprocess.Popen(args, cwd=trial / "project", env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
     out, err = b"", b""
+    interrupted = False
     try:
         out, err = proc.communicate(prompt.encode(), timeout=seconds)
         timed_out = False
-    except subprocess.TimeoutExpired as exc:
-        out = exc.output or b""; err = exc.stderr or b""; timed_out = True
+    except (subprocess.TimeoutExpired, KeyboardInterrupt) as exc:
+        out = getattr(exc, "output", None) or b""; err = getattr(exc, "stderr", None) or b""
+        timed_out = isinstance(exc, subprocess.TimeoutExpired)
+        interrupted = isinstance(exc, KeyboardInterrupt)
         try:
             os.killpg(proc.pid, signal.SIGTERM)
         except ProcessLookupError:
@@ -539,12 +542,15 @@ def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condi
     approval, blocked = failure_signals(out, err)
     usage = {"input_tokens": 0, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 0, "reasoning_output_tokens": 0}
     usage_observed = False
+    turn_completed = False
     for line in out.decode(errors="replace").splitlines():
         try: value = json.loads(line)
         except ValueError: continue
+        if not isinstance(value, dict): continue
+        turn_completed = turn_completed or value.get("type") == "turn.completed"
         for key, number in (value.get("usage") or {}).items():
             if key in usage and isinstance(number, int): usage[key] += number; usage_observed = True
-    return {"phase": phase, "condition": condition, "model": ready["model"], "reasoning_effort": ready["reasoning_effort"], "command": args, "elapsed_seconds": round(time.monotonic() - started, 3), "timed_out": timed_out, "exit_code": proc.returncode, "events_sha256": sha(events), "stderr_sha256": sha(stderr), "approval_signals": approval, "blocked_signals": blocked, "usage": usage if usage_observed else None, "usage_observed": usage_observed}
+    return {"phase": phase, "condition": condition, "model": ready["model"], "reasoning_effort": ready["reasoning_effort"], "command": args, "elapsed_seconds": round(time.monotonic() - started, 3), "timed_out": timed_out, "interrupted": interrupted, "exit_code": proc.returncode, "turn_completed": turn_completed, "events_sha256": sha(events), "stderr_sha256": sha(stderr), "approval_signals": approval, "blocked_signals": blocked, "usage": usage if usage_observed else None, "usage_observed": usage_observed}
 
 
 def snapshot(trial: Path, label: str) -> dict[str, str]:
@@ -692,6 +698,11 @@ def finalize_cell(root: Path, ready_path: Path, cell: str) -> None:
 
 
 def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] == "matched":
+        # Separate study definition; reuse this runner's native Codex process
+        # and snapshot helpers without changing the historical feedback pilot.
+        import matched_design_study
+        return matched_design_study.main(sys.argv[2:])
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
     prep = sub.add_parser("prepare")
