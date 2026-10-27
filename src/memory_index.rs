@@ -34,8 +34,9 @@ pub struct IndexBatch {
 pub struct IndexCoverage {
     pub model_identity: ModelIdentity,
     pub current_heads: u64,
-    /// Structurally complete expected-model rows, not a full vector-integrity
-    /// audit or a semantic-quality measurement. Recall must use validated chunks.
+    /// Current heads with a fully validated expected-model index. This checks
+    /// the source digest, chunk coverage and normalized finite vectors using
+    /// the same reader as semantic recall; it is still not a quality measure.
     pub indexed_heads: u64,
     pub missing_heads: u64,
 }
@@ -232,21 +233,28 @@ impl MemoryStore {
             [],
             |row| unsigned(row, 0),
         )?;
-        let indexed_heads: u64 = tx.query_row(
-            "SELECT count(*) FROM semantic_revisions s JOIN revisions r ON r.row_id=s.revision_row_id
-             JOIN records h ON h.record_id=r.record_id AND h.head_revision=r.revision
-             WHERE r.is_current=1 AND s.model_identity=?1 AND s.input_bytes=length(CAST(r.content AS BLOB))
-             AND (SELECT count(*) FROM semantic_chunks c WHERE c.revision_row_id=s.revision_row_id)=s.chunk_count
-             AND (SELECT min(ordinal) FROM semantic_chunks c WHERE c.revision_row_id=s.revision_row_id)=0
-             AND (SELECT max(ordinal) FROM semantic_chunks c WHERE c.revision_row_id=s.revision_row_id)=s.chunk_count-1
-             AND (SELECT start_byte FROM semantic_chunks c WHERE c.revision_row_id=s.revision_row_id AND ordinal=0)=0
-             AND (SELECT end_byte FROM semantic_chunks c WHERE c.revision_row_id=s.revision_row_id AND ordinal=s.chunk_count-1)=s.input_bytes
-             AND NOT EXISTS(SELECT 1 FROM semantic_chunks c JOIN semantic_chunks p
-                 ON p.revision_row_id=c.revision_row_id AND p.ordinal=c.ordinal-1
-                 WHERE c.revision_row_id=s.revision_row_id AND
-                 (c.start_byte>p.end_byte OR c.start_byte<p.start_byte OR c.end_byte<=p.end_byte))",
-            [serde_json::to_string(&identity)?], |row| unsigned(row, 0),
+        // Do not count a merely well-shaped row as indexed. The SQL shape
+        // check used to over-report corrupted digests and non-normalized
+        // vectors, while semantic recall correctly ignored those rows. Keep
+        // the coverage metric aligned with the actual retrieval reader.
+        let mut statement = tx.prepare(
+            "SELECT r.row_id,r.content FROM revisions r JOIN records h
+             ON h.record_id=r.record_id AND h.head_revision=r.revision
+             WHERE r.is_current=1 ORDER BY r.row_id",
         )?;
+        let mut rows = statement.query([])?;
+        let mut reader = ChunkReader::new(&tx, &identity)?;
+        let mut indexed_heads = 0u64;
+        while let Some(row) = rows.next()? {
+            let row_id: i64 = row.get(0)?;
+            let content: String = row.get(1)?;
+            if reader.read(row_id, &content)?.is_some() {
+                indexed_heads += 1;
+            }
+        }
+        drop(rows);
+        drop(statement);
+        drop(reader);
         tx.commit()?;
         Ok(IndexCoverage {
             model_identity: identity,
@@ -818,6 +826,31 @@ mod tests {
             1
         );
         assert_eq!(store.index_coverage().unwrap().indexed_heads, 0);
+    }
+
+    #[test]
+    fn coverage_excludes_corrupt_digest_even_when_row_shape_is_complete() {
+        let fixture = Fixture::new();
+        let mut store = fixture.open();
+        let record = store
+            .create(&operation(), input("coverage source"), None)
+            .unwrap();
+        publish(&mut store, &record);
+        assert_eq!(store.index_coverage().unwrap().indexed_heads, 1);
+
+        // Simulate a damaged restored index whose row shape and vector bytes
+        // remain valid but no longer bind to canonical UTF-8 content.
+        store
+            .connection
+            .execute(
+                "UPDATE semantic_revisions SET source_sha256=?1 WHERE revision_row_id=(SELECT row_id FROM revisions WHERE record_id=?2)",
+                params!["0".repeat(64), record.record_id],
+            )
+            .unwrap();
+        let coverage = store.index_coverage().unwrap();
+        assert_eq!(coverage.current_heads, 1);
+        assert_eq!(coverage.indexed_heads, 0);
+        assert_eq!(coverage.missing_heads, 1);
     }
 
     #[test]

@@ -29,7 +29,7 @@ const REQUIRED_TOOLS = ["runtime_status", "code_inspect", "code_navigate",
   "memory_index_refresh"];
 
 class Client {
-  constructor(stateDir, releaseId) {
+  constructor(stateDir, releaseId, extraArgs = []) {
     this.releaseId = releaseId;
     this.pending = new Map();
     this.ignored = new Set();
@@ -40,7 +40,7 @@ class Client {
     this.failure = null;
     this.closed = false;
     this.child = spawn(flags.get("--mirket"), ["dev", "serve", "--state-dir", stateDir,
-      "--release-id", releaseId, "--node", flags.get("--node")],
+      "--release-id", releaseId, "--node", flags.get("--node"), ...extraArgs],
       { stdio: ["pipe", "pipe", "pipe"] });
     this.exited = new Promise((resolve) => this.child.on("close", (code, signal) => {
       this.closed = true;
@@ -153,15 +153,16 @@ async function rejected(client, name, args, reason) {
 
 
 const temporary = await mkdtemp(join(tmpdir(), "mirket-mcp-smoke-"));
-const project = join(temporary, "project"), state = join(temporary, "state");
+const project = join(temporary, "project"), state = join(temporary, "state"), configuredState = join(temporary, "configured-state");
 await mkdir(project, { mode: 0o700 });
 await mkdir(state, { mode: 0o700 });
+await mkdir(configuredState, { mode: 0o700 });
 if (process.platform !== "win32") assert.equal((await stat(state)).mode & 0o777, 0o700);
 const source = join(project, "diagram.d2");
 await writeFile(source, "a -> b\n");
 const clients = [];
-const connect = async (release) => {
-  const client = new Client(state, release);
+const connect = async (release, extraArgs = []) => {
+  const client = new Client(extraArgs.length ? configuredState : state, release, extraArgs);
   clients.push(client);
   return client.initialize();
 };
@@ -182,7 +183,19 @@ try {
   const runtime = await success(client, "runtime_status");
   assert.equal(runtime.release_id, RELEASE_A);
   assert.equal(runtime.video.configured, false);
+  assert.equal(runtime.design.configured, false);
+  assert.equal(runtime.diagrams.configured, false);
+  assert.equal(runtime.code_source_inspection.configured, false);
   assert.deepEqual(runtime.code_navigation.languages, ["js", "ts", "jsx", "tsx", "ts_declaration"]);
+  assert.deepEqual(runtime.skill_capabilities, [],
+    "An unqualified development server must not advertise project skill capabilities");
+  assert.deepEqual(runtime.capabilities, [
+    "javascript_typescript_source_inspection", "selected_source_code_navigation",
+    "operation_receipts", "scoped_canonical_memory", "bounded_lexical_recall",
+    "canonical_memory_pagination", "explicit_memory_forgetting",
+    "optional_managed_memory_backups", "maintenance_memory_restore",
+    "explicit_derived_index_refresh", "design_prepare_start", "finite_video_jobs",
+  ], "MCP capability surface must remain stable while readiness is reported separately");
   assert.ok(runtime.limits.includes("Codex Desktop GUI activation untested by user waiver"));
   assert.ok(!runtime.capabilities.includes("bounded_utf8_read"));
   assert.ok(!runtime.capabilities.includes("text_replace_new_copy"));
@@ -199,6 +212,27 @@ try {
       format: "mp4", captions_path: null } }, /private video runtime is not configured/i);
   await rejected(client, "job_status", { ...scope(RELEASE_A), operation_id: "unknown" }, /operation|receipt|unknown|id/i);
   console.log("PASS stale release, absent private payloads and unknown job refusal");
+
+  // A configured private payload still binds the source revision. A stale
+  // revision is refused before a job receipt or destination can be created.
+  const designAdapter = join(temporary, "design-main.js");
+  const designFont = join(temporary, "font.ttf");
+  await writeFile(designAdapter, "// disposable adapter sentinel\n");
+  await writeFile(designFont, "font sentinel\n");
+  const configured = await connect(RELEASE_A, ["--design-adapter", designAdapter, "--design-font", designFont]);
+  const configuredRuntime = await success(configured, "runtime_status");
+  assert.equal(configuredRuntime.design.configured, true);
+  assert.deepEqual(configuredRuntime.skill_capabilities, ["navigation.js-ts", "design.tokens", "design.vector"]);
+  const staleDestination = join(project, "stale.css");
+  await writeFile(join(project, "tokens.json"), JSON.stringify({ color: { brand: { value: "#123456" } } }));
+  await rejected(configured, "design_prepare", {
+    ...scope(RELEASE_A), source_path: join(project, "tokens.json"),
+    expected_revision: "sha256:" + "0".repeat(64), destination_path: staleDestination,
+    operation: { kind: "tokens_compile", format: "css" },
+  }, /revision changed/i);
+  await assert.rejects(stat(staleDestination), { code: "ENOENT" });
+  console.log("PASS configured payload reports exact skill pairing and refuses stale source revision");
+  await configured.stop();
 
   const next = await connect(RELEASE_B);
   assert.equal((await success(next, "runtime_status")).release_id, RELEASE_B);

@@ -17,6 +17,34 @@ use rmcp::{
 };
 use serde_json::{Value, json};
 use std::{borrow::Cow, sync::Arc};
+
+/// Return catalog capability IDs whose private payload is configured in this
+/// server instance. Each operation still revalidates payload identity at use.
+/// The MCP operation catalog remains stable; these IDs are the readiness
+/// signal consumed by project-skill pairing.
+fn available_skill_capabilities(payload: &crate::release::AdapterPayload) -> Vec<&'static str> {
+    let mut skills = Vec::new();
+    if payload.design.is_some() {
+        skills.extend(["navigation.js-ts", "design.tokens", "design.vector"]);
+        if payload
+            .design
+            .as_ref()
+            .is_some_and(|design| design.raster_module.is_some())
+        {
+            skills.push("design.raster");
+        }
+    }
+    if payload.openpencil.is_some() {
+        skills.push("design.openpencil");
+    }
+    if payload.diagram.is_some() {
+        skills.push("design.diagrams");
+    }
+    if payload.video.is_some() {
+        skills.push("video");
+    }
+    skills
+}
 #[derive(Clone)]
 pub struct Server {
     engine: Arc<Engine>,
@@ -61,11 +89,14 @@ impl Server {
         annotations(read_only_hint = true)
     )]
     async fn runtime_status(&self) -> CallToolResponse {
+        let resources = self.memory.resource_status();
+        let skill_capabilities = available_skill_capabilities(&self.engine.payload);
         result(Ok(json!({
             "release_id":self.engine.release.as_str(), "version":env!("CARGO_PKG_VERSION"),
             "stage":"implementation-qualification",
             "capabilities":["javascript_typescript_source_inspection","selected_source_code_navigation","operation_receipts","scoped_canonical_memory","bounded_lexical_recall","canonical_memory_pagination","explicit_memory_forgetting","optional_managed_memory_backups","maintenance_memory_restore","explicit_derived_index_refresh","design_prepare_start","finite_video_jobs"],
-            "memory_resources":self.memory.resource_status(),
+            "skill_capabilities":skill_capabilities,
+            "memory_resources":resources,
             "code_source_inspection":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx"],"coverage":"revision-bound TypeScript 5.9.3 syntax structure with explicit incomplete/refused locations; no semantic navigation"},
             "code_navigation":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx","ts_declaration"],"coverage":"revision-bound TypeScript 5.9.3 selected-source definitions/references with explicit import bindings and declaration snapshots; no project discovery or whole-project completeness claim"},
             "diagrams":{"configured":self.engine.payload.diagram.is_some(),"coverage":"revision-bound local D2 to self-contained SVG with Dagre, ELK or TALA on macOS ARM64"},
@@ -367,5 +398,68 @@ impl ServerHandler for Server {
     }
     fn supported_protocol_versions(&self) -> Cow<'static, [ProtocolVersion]> {
         Cow::Borrowed(ProtocolVersion::known_up_to(&ProtocolVersion::V_2025_11_25))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::available_skill_capabilities;
+    use crate::{design::DesignPayload, release::AdapterPayload};
+    use std::path::PathBuf;
+
+    fn payload() -> AdapterPayload {
+        AdapterPayload {
+            node: PathBuf::from("/private/node"),
+            diagram: None,
+            design: None,
+            openpencil: None,
+            video: None,
+        }
+    }
+
+    #[test]
+    fn runtime_status_only_advertises_configured_skill_capabilities() {
+        let skills = available_skill_capabilities(&payload());
+        assert!(skills.is_empty());
+
+        let mut design = payload();
+        design.design = Some(DesignPayload {
+            node: PathBuf::from("/private/node"),
+            adapter: PathBuf::from("/private/design.js"),
+            font: PathBuf::from("/private/font.ttf"),
+            raster_module: None,
+        });
+        let skills = available_skill_capabilities(&design);
+        assert!(skills.contains(&"navigation.js-ts"));
+        assert!(skills.contains(&"design.tokens"));
+        assert!(!skills.contains(&"design.raster"));
+
+        design.design.as_mut().unwrap().raster_module = Some(PathBuf::from("/private/sharp.mjs"));
+        design.diagram = Some(PathBuf::from("/private/d2"));
+        design.video = Some(crate::video::VideoPayload {
+            node: PathBuf::from("/private/node"),
+            adapter: PathBuf::from("/private/video.js"),
+            chromium: PathBuf::from("/private/chrome"),
+            ffmpeg: PathBuf::from("/private/ffmpeg"),
+            ffprobe: PathBuf::from("/private/ffprobe"),
+        });
+        let skills = available_skill_capabilities(&design);
+        assert!(skills.contains(&"design.raster"));
+        assert!(skills.contains(&"design.diagrams"));
+        assert!(skills.contains(&"video"));
+    }
+
+    #[test]
+    fn openpencil_is_available_without_standard_design_payload() {
+        let mut value = payload();
+        value.openpencil = Some(crate::openpencil::OpenPencilPayload {
+            node: PathBuf::from("/private/node"),
+            adapter: PathBuf::from("/private/openpencil.js"),
+            runtime_root: PathBuf::from("/private/openpencil"),
+            runtime_sha256: "a".repeat(64),
+        });
+        let skills = available_skill_capabilities(&value);
+        assert!(skills.contains(&"design.openpencil"));
+        assert!(!skills.contains(&"design.tokens"));
     }
 }

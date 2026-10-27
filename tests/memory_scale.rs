@@ -131,6 +131,12 @@ fn measure_scoped_semantic_recall() -> Result<(), Box<dyn std::error::Error>> {
                 seed_end = Some(started.elapsed());
             }
         }
+        let coverage_started = Instant::now();
+        let coverage = store.index_coverage()?;
+        let coverage_seconds = coverage_started.elapsed().as_secs_f64();
+        assert_eq!(coverage.current_heads, count as u64);
+        assert_eq!(coverage.indexed_heads, count as u64);
+        assert_eq!(coverage.missing_heads, 0);
         let request = SearchRequest {
             query: query_text.into(),
             limit: 5,
@@ -188,6 +194,7 @@ fn measure_scoped_semantic_recall() -> Result<(), Box<dyn std::error::Error>> {
             "architecture": env::consts::ARCH,
             "profile": "test (debug)",
             "seed_and_index_seconds": seed_end.unwrap().as_secs_f64(),
+            "validated_coverage_seconds": coverage_seconds,
             "model_load_seconds": model_load_seconds,
             "database_bytes": database_bytes,
             "warm_search_samples_ms": samples_ms,
