@@ -19,7 +19,27 @@ export function validateMotion(value) {
     ids.add(b.id);
     return { id: b.id, frame: b.frame, expected: b.expected };
   });
-  return { fps: { ...value.fps }, frame_count: value.frame_count, beats };
+  const expected = value.expected_properties === undefined ? [] : value.expected_properties;
+  if (!Array.isArray(expected) || expected.length > 128) throw Error('Invalid expected motion properties');
+  const propertyIds = new Set();
+  const expected_properties = expected.map(p => {
+    if (!p || typeof p.target !== 'string' || !p.target.trim() || p.target.length > 120
+      || typeof p.property !== 'string' || p.property.length > 80
+      || !/^(?:--[\w-]+|[a-zA-Z][a-zA-Z0-9]*)$/.test(p.property)) throw Error('Invalid expected motion property');
+    const key = JSON.stringify([p.target, p.property]);
+    if (propertyIds.has(key)) throw Error('Duplicate expected motion property');
+    propertyIds.add(key);
+    return { target: p.target, property: p.property };
+  });
+  return { fps: { ...value.fps }, frame_count: value.frame_count, beats, expected_properties };
+}
+
+export function assertExpectedProperties(owners, expected) {
+  for (const { target, property } of expected) {
+    if (!owners.some(owner => owner.target === target && owner.property === property)) {
+      throw Error(`Missing accepted animation property: ${target}/${property}; inspect CSS values and target ownership`);
+    }
+  }
 }
 
 export function assertSeekStable(animations, milliseconds) {
@@ -33,7 +53,7 @@ export function assertSeekStable(animations, milliseconds) {
 
 // This function is serialized into the generated project page, not imported
 // into the composition. Controls never become part of the exported film.
-function installPreview(config, verifySeek) {
+function installPreview(config, verifySeek, verifyProperties) {
   const $ = id => document.getElementById(id);
   const stage = $('stage'), slider = $('frame'), status = $('status'), details = $('details');
   const fps = config.motion.fps.numerator / config.motion.fps.denominator;
@@ -48,7 +68,7 @@ function installPreview(config, verifySeek) {
   }
   function inspect() {
     const animations = stageDocument.getAnimations();
-    const owners = new Map();
+    const owners = new Map(), accepted = [];
     for (const a of animations) {
       if (a instanceof stage.contentWindow.CSSTransition || a.timeline !== stageDocument.timeline) throw Error('Only document-timeline CSS/WAAPI tracks are supported; transitions and scroll timelines need a separate test');
       const target = a.effect?.target;
@@ -57,15 +77,17 @@ function installPreview(config, verifySeek) {
       if (a.effect.composite && a.effect.composite !== 'replace') throw Error('Additive animation is outside this preview profile');
       const props = new Set(a.effect.getKeyframes().flatMap(k => Object.keys(k)).filter(k => !['offset','computedOffset','easing','composite'].includes(k)));
       for (const prop of props) {
-        const key = `${target.id}/${prop}`;
+        const key = JSON.stringify([target.id, prop]);
         if (owners.has(key)) throw Error(`Overlapping property owners: ${key}`);
         owners.set(key, a.animationName || a.id || 'WAAPI');
+        accepted.push({ target: target.id, property: prop, animation: a.animationName || a.id || 'WAAPI' });
       }
     }
     if (!animations.length) throw Error('No native animation handles found');
+    verifyProperties(accepted, config.motion.expected_properties ?? []);
     if (handles.length && (handles.length !== animations.length || handles.some(a => !animations.includes(a)))) throw Error('Animation handles changed; reload after source edits');
     handles = animations;
-    return [...owners].map(([property, animation]) => ({ property, animation }));
+    return accepted;
   }
   function seek(value) {
     if (!ready) throw Error('Preview is not ready');
@@ -79,7 +101,8 @@ function installPreview(config, verifySeek) {
     status.textContent = `Frame ${frame} / ${last} · ${(ms / 1000).toFixed(3)} s${beat ? ` · ${beat.id}: ${beat.expected}` : ''}`;
     details.textContent = JSON.stringify({ entry: config.entry, entry_sha256_at_generation: config.entry_sha256, frame, milliseconds: ms, owners,
       tracks: handles.map(a => ({ name: a.animationName || a.id || 'WAAPI', effectTiming: a.effect.getTiming(), keyframes: a.effect.getKeyframes(), playbackRate: a.playbackRate })),
-      coverage: 'Native CSS/WAAPI handles only; timers, canvas, media and arbitrary JS are not synchronized. Compare decoded exports.' }, null, 2);
+      expected_properties: config.motion.expected_properties,
+      coverage: 'Native CSS/WAAPI handles only. Declared properties must survive browser parsing; presence does not prove visible movement, timing or quality. An empty expected_properties list leaves intended-property coverage untested. Timers, canvas, media and arbitrary JS are not synchronized. Compare decoded exports.' }, null, 2);
     return { frame, milliseconds: ms, owners };
   }
   const safely = fn => { try { fn(); } catch (error) { fail(error); } };
@@ -148,7 +171,7 @@ export function previewHtml(config) {
 <label>Frame <input id="frame" type="range" min="0" max="${config.motion.frame_count - 1}" value="0" disabled></label>
 <label>Beat <select id="beats" disabled></select></label></nav>
 <p id="status" role="status">Loading local composition…</p><details><summary>Source and property owners</summary><pre id="details"></pre></details></main>
-<script>(${installPreview.toString()})(${encoded}, ${assertSeekStable.toString()});</script></html>`;
+<script>(${installPreview.toString()})(${encoded}, ${assertSeekStable.toString()}, ${assertExpectedProperties.toString()});</script></html>`;
 }
 
 export async function createPreview({ project, entry, motion: motionPath, output }) {

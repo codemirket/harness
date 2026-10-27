@@ -51,6 +51,16 @@ not an installed Mirket tool or a file promised in other projects. A project
 with an existing preview should use that instead where it can expose the same
 timing and source context.
 
+For a subject whose motion matters, the utility's motion JSON can declare
+`"expected_properties": [{"target": "heart", "property": "transform"}]`.
+Use stable target IDs and the browser's camelCase keyframe property names.
+The preview refuses a declared property absent from the accepted keyframes,
+including transforms silently dropped for invalid CSS syntax while a neighbour
+or the same target's opacity still animates. Without declarations, intended
+property coverage remains untested. This check establishes presence only:
+constant values, occlusion, bad timing and weak art direction still require
+saved-pixel and playback review.
+
 ## Compare corresponding states
 
 Seek forward, backward and back to the same beat; inspect the visible subject,

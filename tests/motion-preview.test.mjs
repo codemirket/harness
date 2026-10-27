@@ -4,7 +4,7 @@ import { mkdtemp, writeFile, readFile, rm, symlink, realpath } from 'node:fs/pro
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
-import { createPreview, validateMotion, previewHtml, assertSeekStable } from '../scripts/create-motion-preview.mjs';
+import { createPreview, validateMotion, previewHtml, assertSeekStable, assertExpectedProperties } from '../scripts/create-motion-preview.mjs';
 
 const motion = () => ({ fps: { numerator: 12, denominator: 1 }, frame_count: 36,
   beats: [{ id: 'start', frame: 0, expected: 'rest' }, { id: 'hold', frame: 24, expected: 'readable' }] });
@@ -67,3 +67,28 @@ test('a competing source clock cannot pass the frame stability check', () => {
     assert.throws(() => assertSeekStable([animation], 1000), /source clock changed/);
   }
 });
+
+test('moving neighbours and surviving opacity cannot hide a dropped intended transform', () => {
+  const intended = [{ target: 'heart', property: 'transform' }];
+  const parsed = [{ target: 'flap', property: 'transform' }, { target: 'heart', property: 'opacity' }];
+  assert.throws(() => assertExpectedProperties(parsed, intended), /heart\/transform/);
+  assertExpectedProperties([...parsed, { target: 'heart', property: 'transform' }], intended);
+  assert.throws(() => assertExpectedProperties([], intended), /Missing accepted/);
+  // Presence is deliberately narrower than variation or visual success.
+  assertExpectedProperties(parsed, []);
+});
+
+test('expected properties are optional, bounded, unique and retained through page generation', async () => fixture(async opts => {
+  assert.deepEqual(validateMotion(motion()).expected_properties, []);
+  const value = { ...motion(), expected_properties: [{ target: 'heart', property: 'transform' }] };
+  await writeFile(opts.motion, JSON.stringify(value));
+  await createPreview(opts);
+  const script = (await readFile(opts.output, 'utf8')).match(/<script>([\s\S]*)<\/script>/)[1];
+  new vm.Script(script);
+  assert.deepEqual(validateMotion(value).expected_properties, value.expected_properties);
+  for (const expected_properties of [false, {}, [null], [{ target: '', property: 'transform' }],
+    [{ target: 'heart', property: 'transform()' }], [...value.expected_properties, ...value.expected_properties],
+    Array.from({ length: 129 }, (_, i) => ({ target: `heart-${i}`, property: 'opacity' }))]) {
+    assert.throws(() => validateMotion({ ...motion(), expected_properties }), /[Ii]nvalid|Duplicate/);
+  }
+}));

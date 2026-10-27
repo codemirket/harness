@@ -2364,8 +2364,8 @@
       "conditional_capabilities": [
         "video"
       ],
-      "source_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
-      "source_bytes": 5143,
+      "source_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+      "source_bytes": 5584,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
@@ -2425,8 +2425,8 @@
       "resources": [
         {
           "path": "references/editable-motion.md",
-          "sha256": "48f1eb60808c8eae97ef0a27b7655d7bdde13be55c36251c3909338310c7a0b6",
-          "bytes": 8458
+          "sha256": "375d28c5d9da71c13960bfb4305af998951ae0023d47a5bfdc86359f5cc67542",
+          "bytes": 9829
         },
         {
           "path": "references/storyboard-and-transitions.md",
@@ -2704,8 +2704,8 @@
         },
         {
           "path": "references/preview-and-beats.md",
-          "sha256": "9c47dada99cd6e8e95784002c453e4390068b605ceee35ceef4aa5efa7722eb4",
-          "bytes": 4012
+          "sha256": "80689eb99eb03d6867067b2abd864e69820188852dc742ff01ea1175602e3384",
+          "bytes": 4649
         }
       ]
     },

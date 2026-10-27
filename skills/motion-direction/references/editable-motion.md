@@ -25,6 +25,29 @@ For live DOM UI, create WAAPI animations paused at `currentTime = 0`. For finite
 
 At minimum inspect the first, an informative intermediate, and the final/resting time. For interaction, inspect reversal or cancellation from a mid-progress state. For type or line work, check the actual path/text geometry at the target size. If the runtime or image-capable inspection is unavailable, report that evidence as untested.
 
+### Browser acceptance and beat timing
+
+SVG attributes and CSS keyframes use different transform grammars. For example,
+`transform="translate(0 10)"` is valid SVG, but a WAAPI transform value should
+use CSS syntax such as `translate(0px, 10px)`. JavaScript syntax checking cannot
+detect this mistake: a browser can discard the transform while retaining
+opacity, leaving a successful export with a stationary subject. Check suspect
+values with `CSS.supports('transform', value)` and inspect the target's accepted
+`effect.getKeyframes()` properties, then verify the subject in decoded frames.
+Accepted properties alone do not prove visible movement or correct occlusion.
+
+If offsets describe absolute beat times, use a linear **effect** clock and put
+the desired easing on each outgoing keyframe segment. A nonlinear
+`effect.getTiming().easing` warps the entire timeline, so an offset of `.75`
+does not necessarily occur at 75% of wall-clock duration. Whole-effect easing
+can be intentional; document that choice rather than reporting unwarped beat
+times. Check opening, hold and closure against the actual sampled export.
+
+For moving artwork, inspect the whole travel path against the draw order.
+A border correct in the closed still can cut across an emerging foreground
+object. Fix the responsible layer or mask; adding easing cannot repair that
+geometry relationship.
+
 ## Original copyable examples
 
 The snippets are intentionally small and use no package, remote asset, redistributed font or SVGator/Remotion source. The live-UI example uses a paused WAAPI animation; the vector and type examples use finite CSS `@keyframes` tracks so a CSS-based export adapter can discover them through `getAnimations()`. Each exposes external seek through `Animation.currentTime`.

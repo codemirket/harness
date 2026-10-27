@@ -75,3 +75,16 @@ D1 ends with tested code, an actual artifact packet, a rejection probe and a
 short implementation report. Later rows stay planned until their own evidence
 exists. Do not promote catalog `planned-not-run` acceptance, claim broad design
 quality or mark the original six-area audit complete from this plan.
+
+## User-directed artwork/motion diagnosis — 2026-10-28
+
+After D4, the user questioned whether disappointing work originated in SVG
+creation or animation and authorized a controlled diagnostic. The [retained
+comparison and corrections](../docs/art-motion-diagnostic-20261028.md) separate
+static art judgment, choreography and implementation. Four actual exports
+(initial/final for two treatments) exposed dropped CSS transforms, warped beat
+timing and an incorrect moving-layer relationship. The existing preview now
+checks optional declared animated properties; native motion resources explain
+the demonstrated failures. One shared repair was used, with no further
+creative retries. This does not reopen D4, rank models, establish premium art
+quality, or complete D5/D6/platform/distribution gates.

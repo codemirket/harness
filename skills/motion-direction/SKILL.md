@@ -7,6 +7,8 @@ description: "Define a motion language or choreography when purpose, sequence, t
 
 Identify what motion should communicate: state change, continuity, hierarchy, feedback or authored narrative. Inspect the static composition and content before adding movement. Define the viewer's focus and the relationship between the first frame, key beats and final resting state.
 
+When quality is disappointing, separate static art direction, motion staging and implementation faults. Compare a still before changing timing; hold geometry fixed when comparing choreography. A technically valid SVG can still be generic, and a successful export can hide a dropped transform behind a moving neighbour. A reference's beat sequence must fit the actual rig's layers and space; more motion is not evidence of better direction.
+
 Specify trigger, sequence, duration, delay, easing, overlap, repeat and interruption behavior in terms production can implement. Use contrast and restraint to preserve reading/action priority. Design reduced-motion alternatives that retain meaning and access, not merely a universal zero-duration switch.
 
 Give each major beat a job and a resting state. Decide which element leads attention, which follows and when reading or input becomes possible. Distinguish a response to input from a sequence the viewer watches. Feedback should follow the user's current action; an authored sequence can use anticipation and pauses when they support comprehension. Repeated identical entrances can flatten hierarchy even when each transition looks polished alone.

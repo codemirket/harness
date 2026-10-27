@@ -3731,7 +3731,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -4642,7 +4642,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -4785,7 +4785,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -7540,7 +7540,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -9789,7 +9789,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "805234a781f5ca8afc8bf35430abec81648df13f29121dec74fbda06b61fa9ed",
+          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
           "source_mapping": "Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
