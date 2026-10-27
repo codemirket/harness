@@ -71,6 +71,39 @@ test("accepts a bounded D2-like SVG with styles, text, markers and internal URLs
   assert.ok(result.element_count >= 5);
 });
 
+test("preserves local ARIA label and description ID references during optimization", () => {
+  const input = bytes(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-labelledby="title desc">
+    <title id="title">Accessible mark</title>
+    <desc id="desc">A small accessible vector mark.</desc>
+    <circle cx="10" cy="10" r="8" fill="#1463ff"/>
+  </svg>`);
+  const result = optimizeSvg(input);
+  const output = new TextDecoder().decode(result.output);
+  assert.match(output, /aria-labelledby="title desc"/u);
+  assert.match(output, /<title id="title">Accessible mark<\/title>/u);
+  assert.match(output, /<desc id="desc">A small accessible vector mark\.<\/desc>/u);
+});
+
+test("retains referenced standard descriptions and empty ID targets", () => {
+  const input = bytes(`<svg xmlns="http://www.w3.org/2000/svg" aria-describedby="desc extra">
+    <desc id="desc">Created with an approved local fixture.</desc>
+    <g id="extra"/>
+  </svg>`);
+  const output = new TextDecoder().decode(optimizeSvg(input).output);
+  assert.match(output, /aria-describedby="desc extra"/u);
+  assert.match(output, /<desc id="desc">Created with an approved local fixture\.<\/desc>/u);
+  assert.match(output, /<g id="extra"\/>/u);
+});
+
+test("accepts local ARIA reference tokens but rejects external or malformed references", () => {
+  const valid = bytes('<svg xmlns="http://www.w3.org/2000/svg" aria-describedby="desc extra"><desc id="desc">Description</desc><g id="extra"/></svg>');
+  assert.doesNotThrow(() => optimizeSvg(valid));
+  for (const value of ["https://example.test/desc", "desc#extra", "desc,extra", "desc\u0000extra"]) {
+    const input = bytes(`<svg xmlns="http://www.w3.org/2000/svg" aria-labelledby="${value}"/>`);
+    assert.throws(() => optimizeSvg(input), (error) => errorCode(error) === "svg_rejected");
+  }
+});
+
 test("refuses active, external and structurally unsafe SVG features", () => {
   const unsafe = [
     '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',

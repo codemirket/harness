@@ -62,6 +62,14 @@ class MatchedStudyTests(unittest.TestCase):
         self.assertEqual(*configs)
         self.assertNotIn('secret-test-credential', ''.join(p.read_text(errors='replace') for p in (self.root/'frozen').rglob('*') if p.is_file()))
 
+    def test_prompt_and_production_agree_on_editable_output_location(self):
+        trial = self.root/'trials'/self.a['id']
+        self.assertIn('editable files at the project root', (trial/'prompt.txt').read_text())
+        self.assertIn('Required deliverables at the project root: illustration.svg',
+                      (trial/'project/PRODUCTION.md').read_text())
+        result = self.run_cell()
+        self.assertEqual(result['project_check']['missing_outputs'], [])
+
     def test_external_seal_detects_rewritten_protocol_and_seal(self):
         p = self.root / "frozen/protocol.json"; p.write_text(p.read_text()+' ')
         with self.assertRaisesRegex(SystemExit, 'frozen study changed'):
@@ -221,10 +229,23 @@ class MatchedStudyTests(unittest.TestCase):
         self.run_cell()
         dest=S.review_pack(self.root,self.seal,self.seal_sha,self.ready_path,self.a['id'])
         files=set(S.tree(dest))
-        self.assertEqual(files,{'BRIEF.md','RUBRIC.md','NotoSans.ttf','illustration.svg','.evidence/preview.png','review-template.json'})
+        self.assertEqual(files,{'BRIEF.md','PRODUCTION.md','RUBRIC.md','NotoSans.ttf','illustration.svg','.evidence/preview.png','review-template.json'})
         self.assertNotIn('condition',S.read(dest/'review-template.json'))
         with self.assertRaisesRegex(SystemExit,'already exists'):
             S.review_pack(self.root,self.seal,self.seal_sha,self.ready_path,self.a['id'])
+
+    def test_neutral_pack_keeps_editable_svg_asset_but_not_author_reports(self):
+        self.run_cell()
+        snapshot = self.root/'trials'/self.a['id']/'initial-project-snapshot'
+        evidence = snapshot/'.evidence'
+        (evidence/'library-art.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h1"/></svg>')
+        (evidence/'review.md').write_text('Author says verified; condition labels must stay masked')
+        (evidence/'checks.json').write_text('{"author_claim":"passed"}')
+        S.P.write_json(snapshot.parent/'initial-project-manifest.json',S.tree(snapshot))
+        dest = S.review_pack(self.root,self.seal,self.seal_sha,self.ready_path,self.a['id'])
+        self.assertEqual((dest/'.evidence/library-art.svg').read_bytes(),(evidence/'library-art.svg').read_bytes())
+        self.assertFalse((dest/'.evidence/review.md').exists())
+        self.assertFalse((dest/'.evidence/checks.json').exists())
 
     def test_review_pack_refuses_changed_snapshot_and_expired_window(self):
         self.run_cell()

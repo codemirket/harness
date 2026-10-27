@@ -349,7 +349,7 @@ const allowedSvgAttributes = new Set([
   "patternTransform", "preserveAspectRatio", "id", "class", "style", "type", "href", "xlink:href",
   "marker-start", "marker-mid", "marker-end", "refX", "refY", "orient", "markerWidth", "markerHeight",
   "font-family", "font-size", "font-weight", "text-anchor", "dominant-baseline", "alignment-baseline",
-  "letter-spacing", "word-spacing", "aria-label", "role", "xml:space", "xml:lang",
+  "letter-spacing", "word-spacing", "aria-label", "aria-labelledby", "aria-describedby", "role", "xml:space", "xml:lang",
 ]);
 
 function svgFail(message: string): never {
@@ -416,6 +416,14 @@ function validateSvg(source: string): number {
       // The sole admitted namespace URI is the SVG namespace itself.
     } else if (attribute.name === "href" || attribute.name === "xlink:href") {
       if (!/^#[A-Za-z_][A-Za-z0-9_.:-]*$/u.test(attribute.value)) svgFail("SVG href must be an internal fragment.");
+    } else if (attribute.name === "aria-labelledby" || attribute.name === "aria-describedby") {
+      // Accessibility references may name local elements only. Keep the
+      // token form explicit so URL-like, whitespace/control and external
+      // values cannot enter the closed SVG subset.
+      const references = attribute.value.trim().split(/\s+/u);
+      if (!references.length || references.some((reference) => !/^[A-Za-z_][A-Za-z0-9_.:-]*$/u.test(reference))) {
+        svgFail("SVG accessibility references must name local IDs.");
+      }
     } else {
       checkSvgResourceValue(attribute.value);
     }
@@ -482,7 +490,18 @@ export function optimizeSvg(input: Uint8Array): OptimizeResult {
   validateSvg(source);
   let optimized: string;
   try {
-    optimized = optimize(source, { multipass: false, plugins: ["preset-default"] }).data;
+    // SVGO's cleanupIds does not understand ARIA IDREF attributes. When an
+    // accessible name or description points at local title/desc elements,
+    // preserve the IDs so optimization cannot leave dangling references.
+    const hasAccessibilityReferences = /\baria-(?:labelledby|describedby)\s*=\s*(?:"[^"]+"|'[^']+')/iu.test(source);
+    const plugins: NonNullable<Parameters<typeof optimize>[1]>["plugins"] = hasAccessibilityReferences
+      ? [{ name: "preset-default", params: { overrides: {
+        cleanupIds: false,
+        removeDesc: false,
+        removeEmptyContainers: false,
+      } } }]
+      : ["preset-default"];
+    optimized = optimize(source, { multipass: false, plugins }).data;
   } catch {
     fail("svg_invalid", "SVG could not be parsed by the optimizer.");
   }

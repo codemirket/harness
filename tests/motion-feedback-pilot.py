@@ -487,12 +487,44 @@ def reserve_phase_budget(root: Path, cell: str, phase: str, seconds: int) -> Non
 
 
 def failure_signals(stdout: bytes, stderr: bytes) -> tuple[list[str], list[str]]:
-    """Retain host refusals from either stream; these are signals, not verdicts."""
-    lines = (stdout + b"\n" + stderr).decode(errors="replace").splitlines()
-    approvals = ("approval_required", "approval denied", "permission denied", "approval_denied", "blocked by approval", "requires approval", "require approval")
+    """Retain refusals from host errors, not echoed commands or author prose.
+
+    Generic OS permission diagnostics (for example Chrome's updater) are not
+    approval-review denials. Raw traces remain available for those diagnostics.
+    """
+    candidates: list[tuple[str, bool]] = []
+    for line in (stdout + b"\n" + stderr).decode(errors="replace").splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            candidates.append((line, "mcp tool call" in line.lower()))
+            continue
+        if not isinstance(event, dict):
+            continue
+        item = event.get("item") or {}
+        if event.get("type") == "item.completed" and isinstance(item, dict):
+            kind = item.get("type")
+            result = item.get("result") or {}
+            failed = item.get("status") == "failed" or bool(item.get("error")) or (isinstance(result, dict) and result.get("isError") is True)
+            if kind == "mcp_tool_call" and failed:
+                candidates.append((json.dumps(item.get("error") or result), True))
+            # Even a failed command can print source, fixtures or arbitrary
+            # prose. Its output is not a host approval decision.
+        elif event.get("type") in {"error", "turn.failed"}:
+            text = json.dumps(event.get("error") or event.get("message") or {})
+            candidates.append((text, "mcp tool call" in text.lower()))
+    approvals = ("approval_required", "approval denied", "approval_denied", "blocked by approval", "requires approval", "require approval")
     unavailable = ("mcp server failed", "mcp startup failed", "required mcp servers failed", "mcp unavailable", "tool unavailable", "runtime unavailable")
-    return ([line[:1000] for line in lines if any(token in line.lower() for token in approvals)],
-            [line[:1000] for line in lines if any(token in line.lower() for token in unavailable)])
+    def matching(tokens: tuple[str, ...], *, tool_permission: bool = False) -> list[str]:
+        matches = []
+        for text, tool_failure in candidates:
+            terms = tokens + (("permission denied",) if tool_permission and tool_failure else ())
+            positions = [text.lower().find(token) for token in terms if token in text.lower()]
+            if positions:
+                start = max(0, min(positions) - 160)
+                matches.append(text[start:start + 1000])
+        return matches
+    return matching(approvals, tool_permission=True), matching(unavailable)
 
 
 def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condition: str, seconds: int) -> dict[str, Any]:

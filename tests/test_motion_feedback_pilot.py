@@ -236,6 +236,44 @@ for n in range(1, 4): target.with_name(target.name.replace('%02d', f'{n:02d}')).
         self.assertFalse(approval)
         self.assertTrue(blocked)
 
+    def test_updater_permission_warning_and_echoed_denials_are_not_host_refusals(self):
+        events = [
+            {'type':'item.completed','item':{'type':'command_execution','status':'failed',
+             'command':'chrome --headless','aggregated_output':'mkdir /Library/GoogleUpdater/Crashpad: Permission denied (13)'}},
+            {'type':'item.started','item':{'type':'command_execution',
+             'command':'echo "MCP tool call requires approval"'}},
+            {'type':'item.completed','item':{'type':'agent_message',
+             'text':'No approval denied; runtime unavailable is a negative fixture string.'}},
+            {'type':'item.completed','item':{'type':'command_execution','status':'completed',
+             'command':'cat fixture.py','aggregated_output':'requires approval'}},
+            {'type':'item.completed','item':{'type':'command_execution','status':'failed',
+             'aggregated_output':'echo "MCP tool call requires approval"'}},
+        ]
+        self.assertEqual(PILOT.failure_signals('\n'.join(map(json.dumps,events)).encode(),b''),([],[]))
+
+    def test_failed_native_tool_permission_and_unavailable_errors_remain_visible(self):
+        for error, expected in [('Permission denied',(True,False)),
+                                ('MCP tool call requires approval, but approval policy is never',(True,False)),
+                                ('runtime unavailable',(False,True))]:
+            event={'type':'item.completed','item':{'type':'mcp_tool_call','status':'failed',
+                    'arguments':{'text':'not evidence'},'error':{'message':error},'result':None}}
+            signals=PILOT.failure_signals(json.dumps(event).encode(),b'')
+            self.assertEqual(tuple(map(bool,signals)),expected)
+
+    def test_success_status_does_not_hide_mcp_error_result(self):
+        event={'type':'item.completed','item':{'type':'mcp_tool_call','status':'completed',
+                'result':{'isError':True,'content':[{'type':'text','text':'approval denied'}]}}}
+        approval,blocked=PILOT.failure_signals(json.dumps(event).encode(),b'')
+        self.assertTrue(approval)
+        self.assertFalse(blocked)
+
+    def test_top_level_mcp_permission_error_is_not_lost(self):
+        for value in [b'MCP tool call failed: Permission denied',
+                      json.dumps({'type':'error','message':'MCP tool call failed: Permission denied'}).encode()]:
+            approval,blocked=PILOT.failure_signals(value,b'')
+            self.assertTrue(approval)
+            self.assertFalse(blocked)
+
     def test_total_model_budget_stops_future_cells(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

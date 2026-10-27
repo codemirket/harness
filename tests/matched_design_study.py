@@ -35,7 +35,8 @@ LIMITS = {"initial_seconds": 240, "repair_seconds": 180, "max_repairs": 4,
 SHUTDOWN_RESERVE_SECONDS = 15  # Existing process helper allows two five-second waits.
 PROMPT = """Work only in this disposable project. Read BRIEF.md and PRODUCTION.md.
 Use relevant project-local skills when present. Preserve every supplied input.
-Deliver the requested editable files and evidence under .evidence/. Use the
+Deliver the requested editable files at the project root; put additional
+evidence only under .evidence/. Use the
 configured Mirket route for design/video effects; Codex owns shell, editing,
 browser, model selection and approvals. Do not use agents, install dependencies,
 fetch external assets, read other projects, change configuration, commit or send
@@ -138,7 +139,7 @@ def config(ready: dict[str, Any], trial: Path, font: Path) -> str:
 
 def production(case: dict[str, Any], ready: dict[str, Any]) -> str:
     return f"""# Common producer contract
-Required deliverables: {', '.join(case['outputs'])}. Additional evidence belongs
+Required deliverables at the project root: {', '.join(case['outputs'])}. Additional evidence belongs
 only under .evidence/. Preserve BRIEF.md, PRODUCTION.md, RUBRIC.md, NotoSans.ttf
 and any supplied .agents/ files. Use only local editable source and the supplied
 font. No new packages, network assets, fallback renderer, agents or extra trials.
@@ -481,11 +482,12 @@ def review_pack(root: Path, seal: Path, seal_sha: str, ready_path: Path, cid: st
         if dest.exists(): raise SystemExit("review pack already exists")
         dest.mkdir(parents=True)
         case = protocol["cases"][cell["task"]]
-        for name in ["BRIEF.md", "RUBRIC.md", *case["outputs"], "NotoSans.ttf"]:
+        for name in ["BRIEF.md", "PRODUCTION.md", "RUBRIC.md", *case["outputs"], "NotoSans.ttf"]:
             if (snapshot / name).is_file(): shutil.copy2(snapshot / name, dest / name)
-        # Retain saved pixels/exports, not reports, guidance, trace or author claims.
+        # Retain visual assets/exports (including SVG referenced by a page),
+        # not reports, guidance, trace or author claims.
         for path in (snapshot / ".evidence").rglob("*") if (snapshot / ".evidence").is_dir() else []:
-            if path.is_file() and path.suffix.lower() in {".png", ".jpg", ".webp", ".mp4", ".webm"}:
+            if path.is_file() and path.suffix.lower() in {".svg", ".png", ".jpg", ".webp", ".mp4", ".webm"}:
                 target = dest / path.relative_to(snapshot); target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, target)
         P.write_json(dest / "review-template.json", {"artifact_id": cid, "phase": phase, "manifest_sha256": canonical(saved),
