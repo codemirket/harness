@@ -26,6 +26,11 @@ METHOD_ADOPTIONS={
     "video-production": {"families":["hyperframes-authoring"], "note":"HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md"},
 }
 
+# This later research pass informs local review/context procedures, not a new
+# admitted reference family or permission to copy third-party skill bodies.
+DESIGN_REVIEW_BASIS = "docs/design-review-20261027.md / recent research and local outcome checks"
+DESIGN_REVIEW_SKILLS = {"art-direction", "design-critique", "motion-direction", "video-production"}
+
 # These are the only newly admitted families in the 2026-10-27 adoption pass.
 # Their classification is source-level permission to adapt a reviewed method,
 # not proof that any body faithfully reproduced the source.
@@ -126,6 +131,8 @@ def update_provenance_records(provenance,catalog):
         section=re.sub(r"- Classification/terms: .*", "- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.", section, count=1)
         section=re.sub(r"- (?:Comparison/link-only|Reviewed method) families: .*", "- Reviewed method families: "+", ".join(f"[{x}](#reference-{x})" for x in adoption["families"])+".", section, count=1)
         mapping=f"- Method mapping: {adoption['note']}; no upstream prose, code or assets copied."
+        if skill["id"] in DESIGN_REVIEW_SKILLS:
+            mapping += " Later original review/context synthesis: " + DESIGN_REVIEW_BASIS + "."
         if "- Method mapping:" in section:
             section=re.sub(r"- Method mapping: .*", mapping, section, count=1)
         else:
@@ -244,6 +251,8 @@ def refresh(write):
             adoption_basis="planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
             if adoption_basis not in basis:
                 basis.append(adoption_basis); changed.append("basis:"+skill["id"])
+            if skill["id"] in DESIGN_REVIEW_SKILLS and DESIGN_REVIEW_BASIS not in basis:
+                basis.append(DESIGN_REVIEW_BASIS); changed.append("review-basis:"+skill["id"])
             terms="repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
             if provenance.get("reuse_terms")!=terms:
                 provenance["reuse_terms"]=terms; changed.append("terms:"+skill["id"])

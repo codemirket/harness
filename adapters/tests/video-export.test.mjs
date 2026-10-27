@@ -43,7 +43,7 @@ async function fixture(){
   const sources=[['index.html',html],['font.ttf',Buffer.from('qualified elsewhere')],['image.png',Buffer.from('asset')]];
   for(const [name,bytes]of sources)await fs.writeFile(path.join(directory,'source',name),bytes);
   const request={protocol_version:1,release_id:'test:video',job_id:'video-1',job_root:directory,input_root:path.join(directory,'source'),entry_file:'index.html',sources:sources.map(([name,bytes])=>({path:name,revision:digest(bytes),bytes:bytes.length})),output_path:path.join(directory,'result.mp4'),profile:{width:640,height:360,fps:{numerator:12,denominator:1},frame_count:24,format:'mp4',captions_path:null},timeout_ms:30000,max_output_bytes:20*1024*1024};
-  return {directory,request,async html(text){const bytes=Buffer.from(text);await fs.writeFile(path.join(directory,'source/index.html'),bytes);request.sources[0]={path:'index.html',revision:digest(bytes),bytes:bytes.length};}};
+  return {directory,request,async html(text){const bytes=Buffer.from(text);await fs.writeFile(path.join(directory,'source/index.html'),bytes);request.sources[0]={path:'index.html',revision:digest(bytes),bytes:bytes.length};},async select(name,bytes){const file=path.join(directory,'source',name);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,bytes);request.sources.push({path:name,revision:digest(bytes),bytes:bytes.length});}};
 }
 test('selected source preflight refuses missing, network, dynamic and stale inputs before renderer import',async()=>{
   const f=await fixture();try{
@@ -56,6 +56,29 @@ test('selected source preflight refuses missing, network, dynamic and stale inpu
     }
     await f.html(base.replace('</body>','<script>fetch("/api")</script></body>'));await assert.rejects(preflight(f.request),/unsupported_dynamic_dependency_or_effect/);
   }finally{await fs.rm(f.directory,{recursive:true,force:true});}
+});
+test('font preflight requires a selected local URL font and rejects host/data fallbacks',async()=>{
+  const f=await fixture();
+  try{
+    const base=await fs.readFile(path.join(f.directory,'source/index.html'),'utf8');
+    await f.select('styles/theme.css',Buffer.from('@font-face{font-family:External;src:url("../font.ttf") format("truetype")}'));
+    const external=base.replace(/<style>.*?<\/style>/,'<link rel="stylesheet" href="./styles/theme.css">');
+    await f.html(external);assert.ok((await preflight(f.request)).entry.length);
+  }finally{await fs.rm(f.directory,{recursive:true,force:true});}
+  const negative=await fixture();
+  try{
+    const base=await fs.readFile(path.join(negative.directory,'source/index.html'),'utf8');
+    for(const replacement of [
+      '<style>@font-face{font-family:Local;src:local("Helvetica")}</style>',
+      '<style>@font-face{font-family:Local;src:url(data:font/woff2;base64,AA==)}</style>',
+      '<style>@font-face{font-family:Local;src:url("./image.png")}</style>',
+      '<style>@font-face{font-family:Good;src:url("./font.ttf")}@font-face{font-family:Bad;src:local("Helvetica")}</style>',
+      '<style>/* @font-face{font-family:Comment;src:url("./font.ttf")} */</style>',
+    ]){
+      await negative.html(base.replace(/<style>.*?<\/style>/,replacement));
+      await assert.rejects(preflight(negative.request),/explicit_local_font_required/);
+    }
+  }finally{await fs.rm(negative.directory,{recursive:true,force:true});}
 });
 test('wire request binds finite work to the owned source/output and exact profile',async()=>{
   const f=await fixture(),previous=process.cwd();try{process.chdir(f.directory);assert.equal(validateRequest(f.request,'test:video').profile.frame_count,24);

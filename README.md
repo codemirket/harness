@@ -19,6 +19,8 @@ A disposable installed MCP release passes the selected-source TypeScript graph a
 
 The focused design, D2 and bounded editable OpenPencil file payloads have local qualification evidence. The current Design package selection excludes Playwright; the [earlier Design selection](docs/m4-design-chromium-file-selection.md) and installed browser journey are historical evidence. A [native vector-skill model turn](docs/m4-codex-design-skill-tool-qualification.md) read the installed skill but Codex denied its first design write under the host's `never` approval policy; the installed renderer passed an independent preflight.
 
+The [recent design research and review corrections](docs/design-review-20261027.md) connect dated practitioner articles, Reddit/HN/X discussions and design case studies to focused native guidance, an optional repository evidence checker and stricter video font preflight. Hallmark, Taste and HyperFrames remain; successful export, evidence integrity and visual quality are qualified separately.
+
 The active [Raster prebuilt candidate](docs/m4-raster-prebuilt-qualification.md) is reproducible from six pinned Sharp archives. The current Mac build accepts the exact private Raster tree for local installation, and disposable installed PNG, JPEG, WebP and AVIF jobs passed. A changed archive was refused before an update while the prior installed release stayed healthy. Public redistribution still requires the upstream native source and notice route; Windows execution is a separate later gate. The earlier custom-build and recipient path is historical evidence.
 
 The [selected Mac native Sharp archives](docs/m4-raster-prebuilt-provenance-20261027.md)

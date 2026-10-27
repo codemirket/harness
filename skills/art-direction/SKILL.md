@@ -7,6 +7,8 @@ description: "Establish a distinct visual concept for a page, campaign or visual
 
 Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.
 
+When references would materially improve a direction, assemble a small project-owned context pack on demand. Use task-specific annotated crops rather than a moodboard: record the desired property, where it applies, the source/revision and rights, and an explicit do-not-copy/prohibited-copy note. Add the existing product tokens, components and constraints that the direction must preserve, plus owned good/bad cases when they clarify the target. Explain positive subject, material, typography and motion relationships; do not turn a reference into arbitrary style bans or copied source prose.
+
 For an existing project, name the route, component, token, font, copy and asset owners you will preserve, and state the exact files or artifacts in scope before editing. Honor a user-authorized scope without asking again; ask only when a new deletion, broader replacement or other destructive scope is ambiguous.
 
 Keep generated previews, logs, browser profiles and caches inside the project or explicitly authorized scratch directory. A temporary path is still a write destination; do not assume `/tmp` is in scope. If a permitted renderer cannot run within the host's permissions, retain the source and report the untested view rather than widening the write scope.

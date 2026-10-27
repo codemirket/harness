@@ -98,6 +98,35 @@ function references(text: string, ext: string): string[] {
   for (const pattern of patterns) for (const match of text.matchAll(pattern)) refs.push(match[1]!);
   return refs;
 }
+const fontExtensions = /\.(?:ttf|otf|woff2?)$/i;
+function requireSelectedFontUrl(selected: Map<string, Buffer>, decoder: TextDecoder): void {
+  let faceCount = 0;
+  for (const [name, bytes] of selected) {
+    const ext = path.extname(name).toLowerCase(); if (ext !== ".html" && ext !== ".css") continue;
+    // This is deliberately a bounded literal @font-face check, not a CSS
+    // parser. Comments cannot establish or invalidate a font face.
+    const text = decoder.decode(bytes).replace(/\/\*[\s\S]*?\*\//g, "");
+    for (const block of text.matchAll(/@font-face\s*\{([^{}]*)\}/gis)) {
+      faceCount++;
+      const body = block[1]!;
+      const source = body.match(/\bsrc\s*:\s*([^;}]+)/i)?.[1] ?? "";
+      if (!source || /\blocal\s*\(/i.test(source) || /\bdata\s*:/i.test(source)) fail("explicit_local_font_required");
+      let blockFont = false;
+      for (const match of source.matchAll(/url\(\s*(?:"([^"]*)"|'([^']*)'|([^\s)]+))\s*\)/gi)) {
+        const ref = match[1] ?? match[2] ?? match[3] ?? "";
+        if (!ref || /^(?:data:|[a-z][a-z0-9+.-]*:|\/)/i.test(ref) || /[?#]/.test(ref)) continue;
+        let decoded = ref;
+        try { decoded = decodeURIComponent(ref); } catch { fail("invalid_asset_reference"); }
+        const local = path.posix.normalize(path.posix.join(path.posix.dirname(name), decoded));
+        if (!relative(local) || !selected.has(local)) fail("missing_or_unselected_asset");
+        if (!fontExtensions.test(local)) fail("explicit_local_font_required");
+        blockFont = true;
+      }
+      if (!blockFont) fail("explicit_local_font_required");
+    }
+  }
+  if (!faceCount) fail("explicit_local_font_required");
+}
 interface Cue { start_frame: number; end_frame: number; text: string }
 export function cues(value: unknown, frames: number): Cue[] {
   if (!Array.isArray(value) || value.length > 1000) fail("invalid_caption_cues");
@@ -143,7 +172,7 @@ export async function preflight(request: VideoRequest): Promise<{ entry: Buffer;
   const attr = (name: string) => root?.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`,"i"))?.[1];
   const duration = p.frame_count*p.fps.denominator/p.fps.numerator;
   if (!root || !/\bdata-no-timeline(?:\s|=|>)/i.test(root) || Number(attr("data-width"))!==p.width || Number(attr("data-height"))!==p.height || Math.abs(Number(attr("data-duration"))-duration)>1e-6) fail("authored_root_profile_mismatch");
-  if (![...selected.keys()].some((name)=>/\.(ttf|otf|woff2?)$/.test(name)) || !/@font-face\s*\{/.test([...selected].filter(([n])=>/\.(html|css)$/.test(n)).map(([,b])=>decoder.decode(b)).join("\n"))) fail("explicit_local_font_required");
+  requireSelectedFontUrl(selected, decoder);
   let captions: Cue[] = [];
   if (p.captions_path !== null) { try { captions = cues(JSON.parse(decoder.decode(selected.get(p.captions_path)!)),p.frame_count); } catch (error) { if(error instanceof VideoError)throw error; fail("invalid_caption_cues"); } }
   return {entry,captions,sources_revision:digest(Buffer.from(JSON.stringify(request.sources))),expected_audio:/<audio\b[^>]*\bsrc\s*=/i.test(html)};

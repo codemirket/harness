@@ -1699,7 +1699,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -3315,7 +3315,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
           "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -3333,7 +3333,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
           "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -3544,7 +3544,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
           "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -3731,7 +3731,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -3946,7 +3946,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
           "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -4642,7 +4642,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -4785,7 +4785,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -4927,7 +4927,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -4936,7 +4936,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -5133,7 +5133,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -5826,7 +5826,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -5980,7 +5980,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         }
@@ -7540,7 +7540,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -9789,7 +9789,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "skill_body_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
           "source_mapping": "Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }

@@ -1557,8 +1557,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
-      "source_bytes": 5897,
+      "source_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+      "source_bytes": 6492,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#art-direction",
@@ -1567,7 +1567,8 @@
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
           "hallmark",
@@ -1700,8 +1701,8 @@
       "conditional_capabilities": [
         "design.openpencil"
       ],
-      "source_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
-      "source_bytes": 3542,
+      "source_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+      "source_bytes": 3969,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#design-critique",
@@ -1710,7 +1711,8 @@
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
           "impeccable",
@@ -1756,7 +1758,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/review-packet.md",
+          "sha256": "2be5625cd41505034c46a2dfd4e299115194a2d880f85666201472d226cfabe7",
+          "bytes": 3632
+        }
+      ]
     },
     {
       "id": "design-systems",
@@ -2354,8 +2362,8 @@
       "conditional_capabilities": [
         "video"
       ],
-      "source_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
-      "source_bytes": 3744,
+      "source_sha256": "0cf74fa52a0f658c67211313b637c8410af5b7bee924a4ee473f338ab1b3de29",
+      "source_bytes": 4227,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
@@ -2364,7 +2372,8 @@
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
           "emil",
@@ -2632,7 +2641,8 @@
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
           "remotion",
@@ -2679,8 +2689,8 @@
       "resources": [
         {
           "path": "references/hyperframes-0.8.197-authoring.md",
-          "sha256": "9c98b59777505c8fa6af4d0e13cf4dcb37a124f23418657006fa3f9aa4a6e5c9",
-          "bytes": 5550
+          "sha256": "a21bbaf661d15f18af7ff8fdbdbbbe26932ae9381663be19c65efce79101f1e3",
+          "bytes": 6711
         }
       ]
     },

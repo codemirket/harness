@@ -13,6 +13,8 @@ The current Mirket route requires the selected entry file to contain a
 composition root whose dimensions and duration match the requested profile:
 
 ```html
+<!doctype html>
+<html><head></head><body>
 <div
   data-composition-id="demo"
   data-no-timeline
@@ -20,6 +22,7 @@ composition root whose dimensions and duration match the requested profile:
   data-height="360"
   data-duration="2"
 ></div>
+</body></html>
 ```
 
 For a CSS/WAAPI or other non-GSAP composition, `data-no-timeline` is the
@@ -57,6 +60,29 @@ bundled project font, and does not satisfy this contract. A source can therefore
 be previewable on the authoring host yet be refused by Mirket with
 `explicit_local_font_required`. Keep any fictional/font fixture local and
 record its provenance rather than silently substituting a host font.
+
+## Caption source and safe area
+
+When `profile.captions_path` is selected, that JSON file is an array of cues,
+not a document containing FPS, dimensions or scene metadata. Each cue has
+exactly `start_frame`, `end_frame` and `text`. Frame ranges are zero-based,
+end-exclusive, ordered, non-overlapping and inside the requested frame count:
+
+```json
+[
+  {"start_frame": 0, "end_frame": 12, "text": "Opening message"},
+  {"start_frame": 12, "end_frame": 24, "text": "Closing message"}
+]
+```
+
+This example matches 24 frames; retain the real scene text and timing. Select
+the caption file as a revision-bound asset. The adapter burns the captions into
+the HTML and emits editable SRT/VTT sidecars. Include an explicit closing
+`</body>` so insertion succeeds; browser repair of a fragment is insufficient.
+Reserve the lower caption region in the composition, then inspect the decoded
+captioned export for collision with footer copy or controls. A source preview
+without the burned captions cannot establish that safe area. These are Mirket
+adapter requirements, not defects or universal rules of HyperFrames.
 
 ## Anime and other authored motion
 

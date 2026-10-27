@@ -334,7 +334,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: host-browser, design.openpencil, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: art-direction-positive-1, art-direction-positive-2, art-direction-negative-1, art-direction-negative-2, art-direction-mixed-1. Not run.
 
-- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### interface-composition
 
@@ -356,7 +356,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: design-critique-positive-1, design-critique-positive-2, design-critique-negative-1, design-critique-negative-2, design-critique-mixed-1. Not run.
 
-- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### design-systems
 
@@ -447,7 +447,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: host-browser, video; use only when the actual task needs them.
 - Planned acceptance IDs: motion-direction-positive-1, motion-direction-positive-2, motion-direction-negative-1, motion-direction-negative-2, motion-direction-mixed-1. Not run.
 
-- Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+- Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### ui-motion
 
@@ -489,7 +489,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
-- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### customer-research
 
