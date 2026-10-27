@@ -1,6 +1,8 @@
 """Source-to-release skill inventory refuses changed or extra skill bytes."""
 
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import shutil
 import tempfile
@@ -34,9 +36,19 @@ class SkillAssemblyTests(unittest.TestCase):
 
     def test_exact_catalog_assembles_once(self):
         result = ASSEMBLER.assemble(self.output, self.source)
-        self.assertEqual(result["files"], 69)
+        catalog = json.loads((self.source / "catalog.json").read_text())
+        resources = [
+            (entry["id"], resource)
+            for entry in [*catalog["global"], *catalog["project"]]
+            for resource in entry.get("resources", [])
+        ]
+        self.assertEqual(result["files"], 69 + len(resources))
         self.assertEqual((self.output / "skills/catalog.json").read_bytes(), (self.source / "catalog.json").read_bytes())
         self.assertEqual(len(list((self.output / "skills").rglob("SKILL.md"))), 67)
+        for skill_id, resource in resources:
+            output = self.output / "skills" / skill_id / resource["path"]
+            self.assertEqual(output.stat().st_size, resource["bytes"])
+            self.assertEqual(hashlib.sha256(output.read_bytes()).hexdigest(), resource["sha256"])
         with self.assertRaises(ASSEMBLER.AssemblyError):
             ASSEMBLER.assemble(self.output, self.source)
 
@@ -63,6 +75,57 @@ class SkillAssemblyTests(unittest.TestCase):
         skill.unlink()
         skill.symlink_to(self.source / "task-planning/SKILL.md")
         with self.assertRaises(ASSEMBLER.AssemblyError):
+            ASSEMBLER.assemble(self.output, self.source)
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_unlisted_nested_reference_refuses_before_output(self):
+        reference_dir = self.source / "vector-art/references"
+        reference_dir.mkdir(parents=True, exist_ok=True)
+        (reference_dir / "unlisted.md").write_text("not in the catalog\n")
+        with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "unknown or missing resources"):
+            ASSEMBLER.assemble(self.output, self.source)
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_empty_unlisted_directory_and_parent_symlink_refuse(self):
+        reference_dir = self.source / "vector-art/references"
+        reference_dir.mkdir(parents=True, exist_ok=True)
+        (reference_dir / "empty").mkdir()
+        with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "unknown or missing resources"):
+            ASSEMBLER.assemble(self.output, self.source)
+        (reference_dir / "empty").rmdir()
+        moved = self.source / "vector-art/references-real"
+        reference_dir.rename(moved)
+        reference_dir.symlink_to(moved, target_is_directory=True)
+        with self.assertRaises(ASSEMBLER.AssemblyError):
+            ASSEMBLER.assemble(self.output, self.source)
+
+    def test_versioned_resource_filename_is_admitted_by_path_grammar(self):
+        self.assertEqual(
+            ASSEMBLER.resource_records(
+                {
+                    "resources": [
+                        {
+                            "path": "references/hyperframes-0.8.197-authoring.md",
+                            "sha256": "0" * 64,
+                            "bytes": 0,
+                        }
+                    ]
+                },
+                "video-production",
+            )[0]["path"],
+            "references/hyperframes-0.8.197-authoring.md",
+        )
+
+    def test_listed_resource_drift_refuses_before_output(self):
+        catalog = json.loads((self.source / "catalog.json").read_text())
+        entries = [*catalog["global"], *catalog["project"]]
+        entry = next((entry for entry in entries if entry.get("resources")), None)
+        if entry is None:
+            self.skipTest("catalog has no admitted supporting resource yet")
+        resource = entry["resources"][0]
+        path = self.source / entry["id"] / resource["path"]
+        path.write_bytes(path.read_bytes() + b"drift")
+        with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "resource differs from catalog"):
             ASSEMBLER.assemble(self.output, self.source)
         self.assertEqual(list(self.output.iterdir()), [])
 

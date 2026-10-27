@@ -31,6 +31,9 @@ LICENSE_OVERRIDES={
     "motion":["LICENSE.md"],
     "motion-primitives":["LICENCE.md"],
     "statistical-analysis":[],
+    "mengto-inspiration":["LICENSE"],
+    "huashu-storyboard":["LICENSE"],
+    "hyperframes-authoring":["LICENSE"],
 }
 
 def refs():
@@ -40,7 +43,7 @@ def refs():
         if len(p)<3 or tick not in p[1]: continue
         ident=p[1].split(tick)[1]; urls=re.findall(r"https?://[^) ·]+",p[2])
         if urls and ident not in seen: seen.add(ident); rows.append((ident,urls))
-    if len(rows)!=58: raise SystemExit(f"expected 58 references, found {len(rows)}")
+    if not rows: raise SystemExit("reference plan has no selected references")
     return rows
 
 def get(url):
@@ -105,10 +108,24 @@ def github_evidence(ident,url,page):
         v=get(license_url); receipts.append(receipt(license_url,v,RAW/f"{ident}-license-{hashlib.sha256(license_url.encode()).hexdigest()[:12]}.bin"))
     return {"source_file":source,"license_file":licenses,"sections":sections,"receipts":receipts}
 
-def collect():
+def collect(only=None):
     OUT.mkdir(parents=True,exist_ok=True); RAW.mkdir(parents=True,exist_ok=True)
+    planned=dict(refs())
+    selected_ids=set(only or planned)
+    unknown=selected_ids-set(planned)
+    if unknown: raise SystemExit(f"unknown reference IDs: {', '.join(sorted(unknown))}")
+    existing={}
+    fetch_path=OUT/"reference-fetches.json"
+    if fetch_path.is_file():
+        prior=json.loads(fetch_path.read_text())
+        existing={record["id"]:record for record in prior.get("records",[]) if record.get("id") in planned}
+    missing=set(planned)-selected_ids-set(existing)
+    if missing:
+        raise SystemExit("partial fetch requires retained receipts for: " + ", ".join(sorted(missing)))
     records=[]
-    for ident,urls in refs():
+    for ident,urls in planned.items():
+        if ident not in selected_ids and ident in existing:
+            records.append(existing[ident]); continue
         url_receipts=[]; selected={"source_file":None,"license_file":None,"sections":[],"receipts":[]}; selected_sources=[]; extra_urls=set()
         for index,url in enumerate(urls):
             v=get(url); page=receipt(url,v,RAW/f"{ident}-page-{index}.bin")
@@ -134,11 +151,11 @@ def collect():
                     selected["license_file"]=evidence["license_file"]
         records.append({"id":ident,"urls":urls,"retrieved_at":datetime.now(timezone.utc).isoformat(),"url_receipts":url_receipts,"selected":selected,"selected_sources":selected_sources})
     obj={"schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),"source_plan":"planning/references.md","source_count":len(records),"records":records}
-    (OUT/"reference-fetches.json").write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
+    fetch_path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
     print(json.dumps({"records":len(records),"failed":sum(1 for r in records for x in r["url_receipts"] if x["status"]!=200),"path":str(OUT/"reference-fetches.json")},indent=2))
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser(); p.add_argument("--write",action="store_true"); a=p.parse_args()
+    p=argparse.ArgumentParser(); p.add_argument("--write",action="store_true"); p.add_argument("--only",action="append",default=[]); a=p.parse_args()
     if not a.write: raise SystemExit("pass --write to perform network fetches")
-    collect()
+    collect(a.only or None)
 

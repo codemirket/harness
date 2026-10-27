@@ -2,6 +2,13 @@
 
 **Planning revision, 2026-10-25.** This replaces the earlier one-global/27-project draft. It records the authoring and selection specification behind the [consolidated plan](implementation-plan.md). The resulting nine global and 58 project `SKILL.md` files are authored in the current source tree; disposable macOS ARM64 Codex-native installation and selected skill discovery passed. Matched-baseline model outcome evaluation remains open. All thirteen previously accepted subject outcomes remain covered, with clearer boundaries.
 
+**Accepted follow-up, 2026-10-27:** eight project skills now record reviewed
+method adaptations, with three bounded on-demand references included in the
+catalog, release manifest and native skill receipts. The nine/global and
+58/project split is unchanged. See the [source mapping](reviews/2026-10-27/source-design-adoption.md)
+and [implementation/evidence](../docs/design-adoption-20261027.md). General
+quality uplift and catalog-wide acceptance remain unqualified.
+
 ## Review findings
 
 I reviewed the 58 unique retained [reference entries](references.md), the original harness's 54 specialist skill names as a gap inventory, pinned skill-file trees and decision-relevant bodies from representative A–D sources, the [independent capability review](reviews/2026-10-24/capability.md), and official [Codex skills](https://learn.chatgpt.com/docs/build-skills) and [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) documentation. The original inventory checks coverage; it is not a template to copy. Upstream tree counts include host copies, fixtures and orchestration variants, so they are not expertise counts.

@@ -13,6 +13,8 @@ import tempfile
 SOURCE = Path(__file__).resolve().parents[1] / "skills"
 ID = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 SHA = re.compile(r"[0-9a-f]{64}\Z")
+RESOURCE_COMPONENT = r"[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?)*"
+RESOURCE = re.compile(r"references/(?:" + RESOURCE_COMPONENT + r"/)*" + RESOURCE_COMPONENT + r"\.md\Z")
 
 
 class AssemblyError(ValueError):
@@ -31,6 +33,48 @@ def bounded_file(path: Path, limit: int) -> bytes:
     if len(data) > limit:
         raise AssemblyError(f"source changed or exceeded its bound: {path}")
     return data
+
+
+def resource_records(entry: dict, id_: str) -> list[dict]:
+    resources = entry.get("resources", [])
+    if not isinstance(resources, list) or len(resources) > 16:
+        raise AssemblyError(f"invalid or oversized skill resources: {id_}")
+    seen = set()
+    for resource in resources:
+        if not isinstance(resource, dict) or set(resource) != {"path", "sha256", "bytes"}:
+            raise AssemblyError(f"invalid skill resource record: {id_}")
+        path, digest, size = resource["path"], resource["sha256"], resource["bytes"]
+        if (
+            not isinstance(path, str)
+            or not RESOURCE.fullmatch(path)
+            or not path.startswith("references/")
+            or path in seen
+            or not isinstance(digest, str)
+            or not SHA.fullmatch(digest)
+            or not isinstance(size, int)
+            or isinstance(size, bool)
+            or size < 0
+            or size > 128 * 1024
+        ):
+            raise AssemblyError(f"invalid skill resource record: {id_}")
+        seen.add(path)
+    return resources
+
+
+def skill_files(folder: Path, id_: str) -> tuple[dict[str, Path], set[str]]:
+    files = {}
+    directories = set()
+    for candidate in folder.rglob("*"):
+        if candidate.is_symlink():
+            raise AssemblyError(f"skill resource is a symlink: {id_}")
+        if candidate.is_dir():
+            directories.add(candidate.relative_to(folder).as_posix())
+            continue
+        if not candidate.is_file():
+            raise AssemblyError(f"skill resource is not a regular file: {id_}")
+        relative = candidate.relative_to(folder).as_posix()
+        files[relative] = candidate
+    return files, directories
 
 
 def inventory(source: Path) -> dict[str, bytes]:
@@ -81,10 +125,18 @@ def inventory(source: Path) -> dict[str, bytes]:
         relative = f"{id_}/SKILL.md"
         if entry.get("path") != f"skills/{relative}":
             raise AssemblyError(f"skill path differs from ID: {id_}")
+        resources = resource_records(entry, id_)
         folder = source / id_
         real_directory(folder)
-        if {p.name for p in folder.iterdir()} != {"SKILL.md"}:
-            raise AssemblyError(f"skill directory contains unknown entries: {id_}")
+        expected = {"SKILL.md", *(r["path"] for r in resources)}
+        actual, actual_directories = skill_files(folder, id_)
+        expected_directories = {
+            "/".join(resource["path"].split("/")[:index])
+            for resource in resources
+            for index in range(1, len(resource["path"].split("/")))
+        }
+        if set(actual) != expected or actual_directories != expected_directories:
+            raise AssemblyError(f"skill directory contains unknown or missing resources: {id_}")
         body = bounded_file(folder / "SKILL.md", 128 * 1024)
         digest = entry.get("source_sha256")
         if not isinstance(digest, str) or not SHA.fullmatch(digest):
@@ -92,6 +144,12 @@ def inventory(source: Path) -> dict[str, bytes]:
         if entry.get("source_bytes") != len(body) or hashlib.sha256(body).hexdigest() != digest:
             raise AssemblyError(f"skill bytes differ from catalog: {id_}")
         files[relative] = body
+        for resource in resources:
+            resource_path = f"{id_}/{resource['path']}"
+            data = bounded_file(folder / resource["path"], 128 * 1024)
+            if len(data) != resource["bytes"] or hashlib.sha256(data).hexdigest() != resource["sha256"]:
+                raise AssemblyError(f"skill resource differs from catalog: {resource_path}")
+            files[resource_path] = data
     if {p.name for p in source.iterdir()} != {"catalog.json", "PROVENANCE.md", *seen}:
         raise AssemblyError("skill root contains unknown entries")
     return files

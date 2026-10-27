@@ -712,6 +712,31 @@ fn safe_relative(path: &str) -> bool {
             .all(|part| matches!(part, Component::Normal(_)))
 }
 
+fn valid_skill_resource_path(path: &str) -> bool {
+    if !safe_relative(path) || !path.starts_with("references/") || !path.ends_with(".md") {
+        return false;
+    }
+    path.split('/').all(|part| {
+        if part == "references" {
+            return true;
+        }
+        part.split('.').all(|segment| {
+            let bytes = segment.as_bytes();
+            !bytes.is_empty()
+                && (bytes[0].is_ascii_lowercase() || bytes[0].is_ascii_digit())
+                && bytes.iter().all(|byte| {
+                    byte.is_ascii_lowercase()
+                        || byte.is_ascii_digit()
+                        || *byte == b'-'
+                        || *byte == b'_'
+                })
+                && bytes
+                    .last()
+                    .is_some_and(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit())
+        })
+    })
+}
+
 fn valid_digest(digest: &str) -> bool {
     digest.len() == 64
         && digest
@@ -1367,6 +1392,26 @@ fn layout_with_skill_sources(
                     pin: Some((entry.source_bytes, entry.source_sha256.clone())),
                 },
             );
+            if entry.resources.len() > 16 {
+                return Err(DistributionError::InvalidManifest);
+            }
+            for resource in &entry.resources {
+                let path = format!("skills/{}/{}", entry.id, resource.path);
+                if !valid_skill_resource_path(&resource.path)
+                    || resource.bytes > 128 * 1024
+                    || !valid_digest(&resource.sha256)
+                    || result.files.contains_key(&path)
+                {
+                    return Err(DistributionError::InvalidManifest);
+                }
+                result.files.insert(
+                    path,
+                    ExpectedFile {
+                        mode: 0o600,
+                        pin: Some((resource.bytes, resource.sha256.clone())),
+                    },
+                );
+            }
         }
     }
     finish_layout(&mut result, target, components)?;
@@ -2487,6 +2532,24 @@ mod tests {
             finish_layout(&mut selected, MAC_TARGET, &[]),
             Err(DistributionError::InvalidManifest)
         ));
+    }
+
+    #[test]
+    fn skill_resource_layout_accepts_versions_and_rejects_alias_paths() {
+        assert!(valid_skill_resource_path(
+            "references/hyperframes-0.8.197-authoring.md"
+        ));
+        for path in [
+            "references/../outside.md",
+            "references\\outside.md",
+            "references/UPPER.md",
+            "references-other/method.md",
+        ] {
+            assert!(
+                !valid_skill_resource_path(path),
+                "accepted unsafe resource: {path}"
+            );
+        }
     }
 
     #[test]

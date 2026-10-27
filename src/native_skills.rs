@@ -14,6 +14,7 @@ use std::{
 
 const MAX_CATALOG_BYTES: u64 = 2 * 1024 * 1024;
 const MAX_SKILL_BYTES: u64 = 128 * 1024;
+const MAX_RESOURCE_COUNT: usize = 16;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -47,8 +48,18 @@ pub struct SkillEntry {
     pub conditional_capabilities: Vec<String>,
     pub source_sha256: String,
     pub source_bytes: u64,
+    #[serde(default)]
+    pub resources: Vec<SkillResource>,
     pub provenance: serde_json::Value,
     pub evaluation: serde_json::Value,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SkillResource {
+    pub path: String,
+    pub sha256: String,
+    pub bytes: u64,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -85,7 +96,8 @@ impl QualifiedCatalog {
             || catalog.status.len() > 256
             || catalog.status.chars().any(char::is_control)
             || catalog.authoring_basis.is_empty()
-            || catalog.reference_sources.len() != 58
+            || catalog.reference_sources.is_empty()
+            || catalog.reference_sources.len() > 128
         {
             return Err("skill catalog provenance/evaluation status is incomplete".into());
         }
@@ -216,6 +228,7 @@ impl QualifiedCatalog {
                 if parent_meta.file_type().is_symlink() || !parent_meta.is_dir() {
                     return Err(format!("skill directory is not real: {}", entry.id));
                 }
+                validate_skill_resources(&root, entry)?;
                 let body = read_regular(&path, MAX_SKILL_BYTES)?;
                 validate_frontmatter(&body, &entry.id, &entry.description)?;
                 if body.len() as u64 != entry.source_bytes || sha256(&body) != entry.source_sha256 {
@@ -324,7 +337,7 @@ fn validate_reference_sources(sources: &[serde_json::Value]) -> Result<BTreeSet<
         let classification = required_text(object, "classification", "reference source")?;
         if !matches!(
             classification,
-            "adaptable" | "comparison-only" | "link-only" | "rejected"
+            "adaptable" | "comparison-only" | "link-only" | "rejected" | "method-adapted"
         ) {
             return Err(format!(
                 "reference source has an invalid classification: {id}"
@@ -367,6 +380,8 @@ fn validate_provenance(
     )?;
     if required_text(object, "classification", &format!("skill provenance: {id}"))?
         != "independently-authored"
+        && required_text(object, "classification", &format!("skill provenance: {id}"))?
+            != "method-adapted"
     {
         return Err(format!(
             "skill provenance has an invalid classification: {id}"
@@ -516,6 +531,145 @@ fn read_regular(path: &Path, max: u64) -> Result<Vec<u8>, String> {
         return Err("catalog file changed or exceeded size limit".into());
     }
     Ok(bytes)
+}
+
+fn validate_skill_resources(root: &Path, entry: &SkillEntry) -> Result<(), String> {
+    if entry.resources.len() > MAX_RESOURCE_COUNT {
+        return Err(format!("skill has too many resources: {}", entry.id));
+    }
+    let skill_dir = root.join("skills").join(&entry.id);
+    let skill_meta = fs::symlink_metadata(&skill_dir).map_err(str_error)?;
+    if skill_meta.file_type().is_symlink() || !skill_meta.is_dir() {
+        return Err(format!("skill directory is not real: {}", entry.id));
+    }
+    let mut expected_files = BTreeSet::from(["SKILL.md".to_owned()]);
+    let mut expected_dirs = BTreeSet::new();
+    for resource in &entry.resources {
+        validate_resource_path(&resource.path)?;
+        if !expected_files.insert(resource.path.clone()) {
+            return Err(format!("duplicate skill resource: {}", entry.id));
+        }
+        let mut prefix = String::new();
+        let components = resource.path.split('/').collect::<Vec<_>>();
+        for component in &components[..components.len() - 1] {
+            if !prefix.is_empty() {
+                prefix.push('/');
+            }
+            prefix.push_str(component);
+            expected_dirs.insert(prefix.clone());
+        }
+    }
+    let mut actual_files = BTreeSet::new();
+    let mut actual_dirs = BTreeSet::new();
+    collect_skill_paths(&skill_dir, &skill_dir, &mut actual_files, &mut actual_dirs)?;
+    if actual_files != expected_files || actual_dirs != expected_dirs {
+        return Err(format!("skill resources differ from catalog: {}", entry.id));
+    }
+    for resource in &entry.resources {
+        let path = skill_dir.join(&resource.path);
+        let bytes = read_regular(&path, MAX_SKILL_BYTES)?;
+        if bytes.len() as u64 != resource.bytes || sha256(&bytes) != resource.sha256 {
+            return Err(format!(
+                "skill resource digest differs from catalog: {}",
+                entry.id
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn collect_skill_paths(
+    root: &Path,
+    path: &Path,
+    files: &mut BTreeSet<String>,
+    directories: &mut BTreeSet<String>,
+) -> Result<(), String> {
+    for item in fs::read_dir(path).map_err(str_error)? {
+        let item = item.map_err(str_error)?;
+        let candidate = item.path();
+        let meta = fs::symlink_metadata(&candidate).map_err(str_error)?;
+        if meta.file_type().is_symlink() {
+            return Err(format!(
+                "skill resource is a symlink: {}",
+                candidate.display()
+            ));
+        }
+        let relative = candidate
+            .strip_prefix(root)
+            .map_err(str_error)?
+            .to_str()
+            .ok_or("skill resource path is not UTF-8")?
+            .replace(std::path::MAIN_SEPARATOR, "/");
+        if meta.is_dir() {
+            validate_resource_directory(&relative)?;
+            directories.insert(relative);
+            collect_skill_paths(root, &candidate, files, directories)?;
+        } else if meta.is_file() {
+            if relative != "SKILL.md" {
+                validate_resource_path(&relative)?;
+            }
+            files.insert(relative);
+        } else {
+            return Err(format!(
+                "skill resource is not regular: {}",
+                candidate.display()
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn validate_resource_directory(path: &str) -> Result<(), String> {
+    if path.is_empty()
+        || path.len() > 512
+        || (path != "references" && !path.starts_with("references/"))
+        || path.contains('\\')
+        || path.split('/').any(|part| {
+            part.is_empty()
+                || part == "."
+                || part == ".."
+                || part.contains(':')
+                || part.chars().any(char::is_control)
+                || !valid_resource_component(part)
+        })
+    {
+        return Err(format!("invalid skill resource directory: {path}"));
+    }
+    Ok(())
+}
+
+fn validate_resource_path(path: &str) -> Result<(), String> {
+    if path.is_empty()
+        || path.len() > 512
+        || !path.starts_with("references/")
+        || !path.ends_with(".md")
+        || path.contains('\\')
+        || path.split('/').any(|part| {
+            part.is_empty()
+                || part == "."
+                || part == ".."
+                || part.contains(':')
+                || part.chars().any(char::is_control)
+                || (part != "references" && !valid_resource_component(part))
+        })
+    {
+        return Err(format!("invalid skill resource path: {path}"));
+    }
+    Ok(())
+}
+
+fn valid_resource_component(component: &str) -> bool {
+    component.split('.').all(|part| {
+        let bytes = part.as_bytes();
+        !bytes.is_empty()
+            && (bytes[0].is_ascii_lowercase() || bytes[0].is_ascii_digit())
+            && bytes.iter().all(|byte| {
+                byte.is_ascii_lowercase() || byte.is_ascii_digit() || *byte == b'-' || *byte == b'_'
+            })
+            && bytes
+                .last()
+                .is_some_and(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit())
+    })
 }
 
 fn str_error(error: impl std::fmt::Display) -> String {
@@ -679,5 +833,24 @@ mod tests {
         assert!(QualifiedCatalog::open(&fixture.0).is_err());
         fixture.write("../outside", "../outside");
         assert!(QualifiedCatalog::open(&fixture.0).is_err());
+    }
+
+    #[test]
+    fn resource_paths_allow_versioned_markdown_and_reject_escapes() {
+        assert!(validate_resource_path("references/hyperframes-0.8.197-authoring.md").is_ok());
+        for path in [
+            "references/../outside.md",
+            "references\\outside.md",
+            "references/UPPER.md",
+            "references/foo.md/escape",
+        ] {
+            assert!(
+                validate_resource_path(path).is_err(),
+                "accepted unsafe path: {path}"
+            );
+        }
+        assert!(validate_resource_directory("references/0.8").is_ok());
+        assert!(validate_resource_directory("references\\alias").is_err());
+        assert!(validate_resource_directory("references-other").is_err());
     }
 }

@@ -5,7 +5,7 @@
   "authoring_basis": [
     {
       "path": "planning/skill-catalog-design.md",
-      "sha256": "76d63178b7acc92296a3ac9c252d80fdabd557d791febd9c2b5dd61f6fa4e124"
+      "sha256": "a9858a5f32a8ae0b5452711918aea8bea2f231eceecc6643269919b5d7605809"
     },
     {
       "path": "planning/implementation-plan.md",
@@ -13,7 +13,7 @@
     },
     {
       "path": "planning/references.md",
-      "sha256": "53bcb093560dce530ce0d643dc1f5b3ab6a6de8fb19489c2225ecea6a67d1283"
+      "sha256": "507695472996c57e49e0e56a01fb39c31925885aaaa30eb096dc0db56735e7de"
     },
     {
       "path": "LICENSE",
@@ -95,7 +95,8 @@
             "expected": "Establish actual capability and scope; reconcile the known operation without blind replay. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "project-memory",
@@ -153,7 +154,8 @@
             "expected": "Use scoped source-linked facts, preserve corrections and report recall or lifecycle limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "evidence-research",
@@ -213,7 +215,8 @@
             "expected": "Preserve source identity/currentness and distinguish supported claims, inference and unavailable evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "task-planning",
@@ -274,7 +277,8 @@
             "expected": "Produce a bounded dependency sequence with ownership, evidence gates, continuity and a concrete next action. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "agent-coordination-strategy",
@@ -333,7 +337,8 @@
             "expected": "Delegate only useful authorized boundaries with suitable capability; integrate and verify actual outputs. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "code-change",
@@ -394,7 +399,8 @@
             "expected": "Change the owning behavior completely, preserve consumers and verify a discriminating failure case. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "root-cause-debugging",
@@ -453,7 +459,8 @@
             "expected": "Produce a controlled failure, discriminating causal evidence and verification of the owning fix. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "critical-review",
@@ -513,7 +520,8 @@
             "expected": "Report current, contextual, consequential findings with reproducible impact and honest review limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "outcome-verification",
@@ -573,7 +581,8 @@
             "expected": "Observe the actual saved outcome, use a discriminating failure case and state unverified boundaries. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     }
   ],
   "project": [
@@ -635,7 +644,8 @@
             "expected": "Ground a minimal structural decision in ownership, tradeoffs, migration and failure evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "api-integration",
@@ -695,7 +705,8 @@
             "expected": "Verify the actual producer/consumer contract and malformed, denied or uncertain request behavior. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "frontend-engineering",
@@ -755,7 +766,8 @@
             "expected": "Verify actual component lifecycle, accessible states and a stale/interrupted/failure case. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "backend-engineering",
@@ -814,7 +826,8 @@
             "expected": "Verify canonical state transitions, concurrent ownership and meaningful replay/cancellation/recovery cases. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "database-migrations",
@@ -873,7 +886,8 @@
             "expected": "Preserve representative data and verify forward, interrupted/repeated and recovery behavior. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "test-design",
@@ -932,7 +946,8 @@
             "expected": "Demonstrate that the oracle catches a plausible wrong result and preserves the intended contract. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "performance",
@@ -991,7 +1006,8 @@
             "expected": "Produce controlled baseline/profile/comparison and preserve correctness with explicit variability limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "ci-release",
@@ -1050,7 +1066,8 @@
             "expected": "Verify exact-revision delivery and failure/recovery behavior without weakening gates or touching user state. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "infrastructure",
@@ -1109,7 +1126,8 @@
             "expected": "Preserve configuration ownership and verify bounded rollout, actual health and recovery. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "native-desktop",
@@ -1168,7 +1186,8 @@
             "expected": "Verify real installed native lifecycle/permission behavior and report platform-specific gaps. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "dependency-admission",
@@ -1226,7 +1245,8 @@
             "expected": "Establish exact closure, rights, effects and qualification separately from authorization and installation. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "js-ts-navigation",
@@ -1285,7 +1305,8 @@
             "expected": "Return original revision-bound spans with explicit graph/construct limits and stale-source refusal. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "sql-navigation",
@@ -1342,7 +1363,8 @@
             "expected": "Use Codex or established project SQL tools; return verified source locations and revisions, with exact byte spans only when established and explicit dialect/schema/unsupported limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "browser-research",
@@ -1400,7 +1422,8 @@
             "expected": "Use the available Codex browser or established project tool and preserve bounded page/state evidence, citations and extraction limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "browser-automation",
@@ -1460,7 +1483,8 @@
             "expected": "Ground scoped actions in observed state and verify the effect without blind submission replay. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "browser-qa",
@@ -1520,7 +1544,8 @@
             "expected": "Exercise the actual journey and a failure case, preserve responsive/state evidence and report limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "art-direction",
@@ -1532,16 +1557,17 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
-      "source_bytes": 4430,
+      "source_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+      "source_bytes": 5897,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#art-direction",
         "local_basis": [
           "planning/skill-catalog-design.md / Design and visual artifacts — 12",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "hallmark",
@@ -1550,7 +1576,7 @@
           "mengto-inspiration",
           "better-design"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1586,7 +1612,8 @@
             "expected": "Produce a brief-linked visual direction and inspected target with lawful asset/reference use. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "interface-composition",
@@ -1599,16 +1626,17 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
-      "source_bytes": 3573,
+      "source_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+      "source_bytes": 4229,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#interface-composition",
         "local_basis": [
           "planning/skill-catalog-design.md / Design and visual artifacts — 12",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "hallmark",
@@ -1625,7 +1653,7 @@
           "guardian",
           "spectrum"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1661,7 +1689,8 @@
             "expected": "Deliver real-content responsive composition with inspected states, hierarchy and working interactions. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "design-critique",
@@ -1671,24 +1700,26 @@
       "conditional_capabilities": [
         "design.openpencil"
       ],
-      "source_sha256": "0e3441fef6e4154f195774c2260a2b740792a6a0f0f4e319f06490d984c85ff6",
-      "source_bytes": 3141,
+      "source_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+      "source_bytes": 3542,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#design-critique",
         "local_basis": [
           "planning/skill-catalog-design.md / Design and visual artifacts — 12",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "impeccable",
           "design-anatomy",
           "gstack",
-          "owl-concepts"
+          "owl-concepts",
+          "hallmark"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1724,7 +1755,8 @@
             "expected": "Rank observed task-relevant defects and verify focused repairs with comparable before/after evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "design-systems",
@@ -1791,7 +1823,8 @@
             "expected": "Deliver compiled token sources consumed by a real component, with state/theme and alias-failure evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "typography",
@@ -1855,7 +1888,8 @@
             "expected": "Deliver an inspected real-content hierarchy with font/glyph/fallback and wrapping evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "accessibility",
@@ -1915,7 +1949,8 @@
             "expected": "Provide criterion-linked observed evidence and verify semantics, interaction and reflow after repair. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "openpencil",
@@ -1982,36 +2017,39 @@
             "expected": "Verify saved-source editability through reopen/change and inspect the changed export. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "vector-art",
-      "description": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system.",
+      "description": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system.",
       "path": "skills/vector-art/SKILL.md",
       "required_capabilities": [
         "design.vector"
       ],
       "conditional_capabilities": [],
-      "source_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
-      "source_bytes": 1963,
+      "source_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+      "source_bytes": 5400,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#vector-art",
         "local_basis": [
           "planning/skill-catalog-design.md / Design and visual artifacts — 12",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
           "docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "diagram-design",
           "react-bits",
           "geist-code",
           "fluent",
-          "spectrum"
+          "spectrum",
+          "mengto-inspiration"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2047,7 +2085,14 @@
             "expected": "Deliver editable optimized vectors with inspected rendering and actual sprite/consumer behavior. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "path": "references/illustration-craft.md",
+          "sha256": "161957bdc006056c45d372a168d6e87c8a0ae7ce52a6a1b397dffd5d3b4857bc",
+          "bytes": 7686
+        }
+      ]
     },
     {
       "id": "raster-art",
@@ -2109,7 +2154,8 @@
             "expected": "Preserve sources and inspect saved dimensions, focal crop, color, alpha and decoded quality. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "diagrams",
@@ -2175,7 +2221,8 @@
             "expected": "Verify entity/edge semantics and inspect a saved readable D2 export. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "data-visualization",
@@ -2235,7 +2282,8 @@
             "expected": "Deliver an inspected source-linked chart with truthful units, scale, denominators and uncertainty. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "localization",
@@ -2295,7 +2343,8 @@
             "expected": "Preserve message semantics and verify locale, expansion, direction and glyph behavior in the affected UI. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "motion-direction",
@@ -2305,24 +2354,26 @@
       "conditional_capabilities": [
         "video"
       ],
-      "source_sha256": "f1013fafb291986a123bd436b0ecc21c8a587a281f1dcdc176a1aea53de13d83",
-      "source_bytes": 3354,
+      "source_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+      "source_bytes": 3744,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
         "local_basis": [
           "planning/skill-catalog-design.md / Motion and video — 5",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "emil",
           "kyle-motion",
           "lottiefiles-motion",
-          "kingy-motion"
+          "kingy-motion",
+          "huashu-storyboard"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2358,7 +2409,14 @@
             "expected": "Deliver purposeful choreography with explicit timing/lifecycle and inspected motion evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "path": "references/storyboard-and-transitions.md",
+          "sha256": "3e533cf0003235972c11ca68b2b747e7d5c22a5cb823b2cab66badb48a2045c8",
+          "bytes": 2986
+        }
+      ]
     },
     {
       "id": "ui-motion",
@@ -2366,16 +2424,17 @@
       "path": "skills/ui-motion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
-      "source_bytes": 3468,
+      "source_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+      "source_bytes": 3715,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#ui-motion",
         "local_basis": [
           "planning/skill-catalog-design.md / Motion and video — 5",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "anime",
@@ -2383,9 +2442,10 @@
           "gsap-official",
           "animate.css",
           "motion-primitives",
-          "canvas-ui"
+          "canvas-ui",
+          "emil"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2421,7 +2481,8 @@
             "expected": "Verify state-owned animation under interruption, repeated trigger, cleanup and reduced motion. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "scroll-motion",
@@ -2429,16 +2490,17 @@
       "path": "skills/scroll-motion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "bbff96d98f3b7efd14423c12e564f8138092d9b4c9b72edde0388f9cab629668",
-      "source_bytes": 3165,
+      "source_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+      "source_bytes": 3336,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#scroll-motion",
         "local_basis": [
           "planning/skill-catalog-design.md / Motion and video — 5",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "scroll-craft",
@@ -2446,7 +2508,7 @@
           "emil",
           "kingy-motion"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2482,7 +2544,8 @@
             "expected": "Verify mapped scroll states across jumps, reverse, reload, resize and reduced motion. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "svg-lottie",
@@ -2545,7 +2608,8 @@
             "expected": "Preserve editable timing/vector source and verify the actual player feature subset and export parity. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "video-production",
@@ -2558,22 +2622,24 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "d45ddc961d1b67e39fd4c2f849086218765ce1bae5938acdabc61d8d9b160e09",
-      "source_bytes": 1746,
+      "source_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
+      "source_bytes": 2125,
       "provenance": {
-        "classification": "independently-authored",
+        "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
         "local_basis": [
           "planning/skill-catalog-design.md / Motion and video — 5",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "remotion",
-          "kingy-motion"
+          "kingy-motion",
+          "hyperframes-authoring"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2609,7 +2675,14 @@
             "expected": "Deliver editable local composition and verify decoded frames, timing, playback, supplied audio and captions. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "path": "references/hyperframes-0.8.197-authoring.md",
+          "sha256": "9c98b59777505c8fa6af4d0e13cf4dcb37a124f23418657006fa3f9aa4a6e5c9",
+          "bytes": 5550
+        }
+      ]
     },
     {
       "id": "customer-research",
@@ -2668,7 +2741,8 @@
             "expected": "Preserve consent, segment/source identity, observed versus inferred claims and decision uncertainty. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "jobs-to-be-done",
@@ -2726,7 +2800,8 @@
             "expected": "Ground customer-progress and competing-alternative framing in traceable circumstances and evidence. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "product-strategy",
@@ -2785,7 +2860,8 @@
             "expected": "Produce a concrete comparative choice with assumptions, opportunity cost and a measurable review/stop gate. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "prototype-test",
@@ -2846,7 +2922,8 @@
             "expected": "Use a minimal faithful prototype and predeclared observation to make an evidence-linked decision. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "positioning",
@@ -2904,7 +2981,8 @@
             "expected": "Deliver segment-specific differentiated value and message hierarchy with a claim/evidence boundary. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "marketing-copy",
@@ -2963,7 +3041,8 @@
             "expected": "Deliver audience-fit usable copy with defensible claims, coherent hierarchy and a clear action. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "content-search",
@@ -3023,7 +3102,8 @@
             "expected": "Make an intent-led verifiable content/architecture change and distinguish observation from ranking claims. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "conversion",
@@ -3082,7 +3162,8 @@
             "expected": "Tie an observed funnel problem to a verified flow change and predeclared measure/guardrails. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "experiments-launch",
@@ -3141,7 +3222,8 @@
             "expected": "Preserve a predeclared hypothesis/exposure/measurement contract and distinguish preparation from observed launch. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "data-analysis",
@@ -3198,7 +3280,8 @@
             "expected": "Preserve data grain, keys, units and missingness with reproducible transformation and independent reconciliation. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "statistical-inference",
@@ -3256,7 +3339,8 @@
             "expected": "Match inference to design/dependence and report effect, uncertainty, assumptions and multiplicity limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "sql-analysis",
@@ -3313,7 +3397,8 @@
             "expected": "Verify query semantics, grain/null/join behavior and independently reconciled results. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "data-pipelines",
@@ -3372,7 +3457,8 @@
             "expected": "Verify lineage, committed checkpoints and duplicate/late/partial-failure replay invariants. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "financial-models",
@@ -3431,7 +3517,8 @@
             "expected": "Deliver a recalculated reopened editable model with explicit units, assumptions, scenarios and reconciliation. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "ai-tool-design",
@@ -3492,7 +3579,8 @@
             "expected": "Verify bounded model/application authority and meaningful ambiguous, malicious or uncertain-effect failure cases. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "ai-evaluation",
@@ -3553,7 +3641,8 @@
             "expected": "Use matched representative tasks, independent outcomes and variability/cost/latency evidence without overclaiming. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "retrieval-evaluation",
@@ -3613,7 +3702,8 @@
             "expected": "Separate relevance, index coverage and downstream correctness with stale/conflict/scope/no-answer probes. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "technical-docs",
@@ -3672,7 +3762,8 @@
             "expected": "Produce task-oriented source-accurate documentation with checked examples/links and honest untested paths. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "document-artifacts",
@@ -3732,7 +3823,8 @@
             "expected": "Preserve originals and verify saved/reopened artifacts through page inspection and source-linked semantic checks. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "workbook-authoring",
@@ -3790,7 +3882,8 @@
             "expected": "Verify editable formulas, recalculation, saved-sheet visuals and an independent changed-input result. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "slide-deck-authoring",
@@ -3849,7 +3942,8 @@
             "expected": "Verify every saved slide, editable structure and material source values with explicit feature limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "threat-model",
@@ -3908,7 +4002,8 @@
             "expected": "Ground attacker/misuse paths in actual trust flow and pair material mitigations with enforceable negative tests. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "security-review",
@@ -3968,7 +4063,8 @@
             "expected": "Produce contextual, reachable findings and negative-test evidence without treating a scan as security proof. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "privacy-data",
@@ -4026,7 +4122,8 @@
             "expected": "Verify governed data copies, consent/scope and deletion/restore behavior with explicit residual limits. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     },
     {
       "id": "reliability-incident",
@@ -4086,7 +4183,8 @@
             "expected": "Reconcile effect state and verify causal repair/recovery without destructive guessing or duplicate effects. Apply this method only to its affected boundary; preserve the stated exclusions."
           }
         ]
-      }
+      },
+      "resources": []
     }
   ],
   "profiles": {
@@ -4208,373 +4306,25 @@
   },
   "reference_sources": [
     {
-      "id": "superpowers",
-      "urls": [
-        "https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / superpowers",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "matt",
-      "urls": [
-        "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / matt",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "ecc",
-      "urls": [
-        "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ecc",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "openai",
-      "urls": [
-        "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / openai",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "anthropic",
-      "urls": [
-        "https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / anthropic",
-      "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "google",
-      "urls": [
-        "https://github.com/google/skills/tree/d6eee396ed6a51871cc3f0979c5ff1be26d35d10"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / google",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "ponytail",
-      "urls": [
-        "https://github.com/DietrichGebert/ponytail/tree/09c434ab73ca43761c5d8b0c5d341926c2fba710"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ponytail",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
       "id": "adhd",
       "urls": [
         "https://github.com/ayghri/i-have-adhd/tree/839872f9d1cd634fed642b4589ce7226199cc15f"
       ],
       "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / adhd",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "gstack",
+      "id": "agent-skills",
       "urls": [
-        "https://github.com/garrytan/gstack/tree/c285d88b90d39116ccfa2b901f80ea0fce0b26eb"
+        "https://agentskills.io/specification",
+        "https://agentskills.io/skill-creation/evaluating-skills",
+        "https://agentskills.io/skill-creation/optimizing-descriptions"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / gstack",
+      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / agent-skills",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "archify",
-      "urls": [
-        "https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773"
-      ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / archify",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "crawl4ai",
-      "urls": [
-        "https://github.com/unclecode/crawl4ai/tree/30165f1ee1fb61f6cce1477feed2acc5e2181e25"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "serena",
-      "urls": [
-        "https://github.com/oraios/serena/tree/abb0a0f01b94bc8050086f0fb860077d17730324"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / serena",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "cua",
-      "urls": [
-        "https://github.com/trycua/cua/tree/27d8da9fd94056bd73892183531579396aafb2f9"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / cua",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "stagehand",
-      "urls": [
-        "https://github.com/browserbase/stagehand/tree/0f93c295deabce3cd7b14cdbdeacb1771f93378d"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "skyvern",
-      "urls": [
-        "https://github.com/Skyvern-AI/skyvern/tree/eccc1c60b225105c3281cf2cc5e76b4170099fbb"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "langchain",
-      "urls": [
-        "https://github.com/langchain-ai/langchain/tree/fa35b519a3a72fb4ccba7935f4c8e9e90a12ccca"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "langgraph",
-      "urls": [
-        "https://github.com/langchain-ai/langgraph/tree/eb066bd31a2bf01fc0cd58256df4800a3695c233"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "promptfoo",
-      "urls": [
-        "https://github.com/promptfoo/promptfoo/tree/c2f6a848aca5f7e01491d2533f3fb1122bc63c50"
-      ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "hallmark",
-      "urls": [
-        "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / hallmark",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "taste",
-      "urls": [
-        "https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / taste",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "emil",
-      "urls": [
-        "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / emil",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "impeccable",
-      "urls": [
-        "https://github.com/pbakaus/impeccable/tree/4e8504f10106a1cd7a99e37a401aa368d1d55576"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / impeccable",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "gsap-official",
-      "urls": [
-        "https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / gsap-official",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "diagram-design",
-      "urls": [
-        "https://github.com/cathrynlavery/diagram-design/tree/550fd66edff058bc73056c3416b76d69cfe865ba"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / diagram-design",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "canvas-ui",
-      "urls": [
-        "https://github.com/DavidHDev/canvas-ui/tree/a04a99b235299ee79a123a16ccb2e6cf9da74b6b"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / canvas-ui",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "kyle-motion",
-      "urls": [
-        "https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / kyle-motion",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "lottiefiles-motion",
-      "urls": [
-        "https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "owl-concepts",
-      "urls": [
-        "https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / owl-concepts",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "mengto-inspiration",
-      "urls": [
-        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "scroll-craft",
-      "urls": [
-        "https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / scroll-craft",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "motion-primitives",
-      "urls": [
-        "https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion-primitives",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "better-design",
-      "urls": [
-        "https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / better-design",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "design-anatomy",
-      "urls": [
-        "https://github.com/wheresryan22/anatomy/tree/1482e8469b0a9e0d8cc18ea2740a01423d29ae80"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / design-anatomy",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "anime",
-      "urls": [
-        "https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / anime",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "motion",
-      "urls": [
-        "https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058"
-      ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "marketing",
-      "urls": [
-        "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
-      ],
-      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / marketing",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "wondel",
-      "urls": [
-        "https://github.com/wondelai/skills/tree/c172996495bed0fcd26896a9416b2093fd7073f0"
-      ],
-      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / wondel",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4584,69 +4334,48 @@
       ],
       "selection_locator": "planning/references.md / E — Additional design resources / animate.css",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "react-bits",
+      "id": "anime",
       "urls": [
-        "https://github.com/DavidHDev/react-bits/tree/e12c22192ac7b4b452c5e2feb9b586d74765d696"
+        "https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77"
       ],
-      "selection_locator": "planning/references.md / E — Additional design resources / react-bits",
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / anime",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "remotion",
+      "id": "anthropic",
       "urls": [
-        "https://github.com/remotion-dev/remotion/tree/7ea5ab594e0d8c5aa93640ee84b7ed32925b545e"
+        "https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202"
       ],
-      "selection_locator": "planning/references.md / E — Additional design resources / remotion",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / anthropic",
+      "classification": "link-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "karpathy",
+      "id": "apple-liquid-glass",
       "urls": [
-        "https://github.com/multica-ai/andrej-karpathy-skills/tree/2c606141936f1eeef17fa3043a72095b4765b9c2"
+        "https://developer.apple.com/videos/play/wwdc2025/219/",
+        "https://developer.apple.com/design/human-interface-guidelines/materials"
       ],
-      "selection_locator": "planning/references.md / F — Additional documented references / karpathy",
+      "selection_locator": "planning/references.md / G — Visual-reference library / apple-liquid-glass",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "codex-practices",
+      "id": "archify",
       "urls": [
-        "https://learn.chatgpt.com/guides/best-practices"
+        "https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773"
       ],
-      "selection_locator": "planning/references.md / F — Additional documented references / codex-practices",
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / archify",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "kingy-motion",
-      "urls": [
-        "https://kingy.ai/blog/astra-codex-motion-graphics-guide-prompts/"
-      ],
-      "selection_locator": "planning/references.md / F — Additional documented references / kingy-motion",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
-      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
-    },
-    {
-      "id": "geist-code",
-      "urls": [
-        "https://vercel.com/geist/typography",
-        "https://vercel.com/geist/code-block",
-        "https://github.com/vercel/geist-font/blob/main/LICENSE.txt"
-      ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / geist-code",
-      "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4659,8 +4388,98 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / atlassian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "better-design",
+      "urls": [
+        "https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / better-design",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "canvas-ui",
+      "urls": [
+        "https://github.com/DavidHDev/canvas-ui/tree/a04a99b235299ee79a123a16ccb2e6cf9da74b6b"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / canvas-ui",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "codex-practices",
+      "urls": [
+        "https://learn.chatgpt.com/guides/best-practices"
+      ],
+      "selection_locator": "planning/references.md / F — Additional documented references / codex-practices",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "crawl4ai",
+      "urls": [
+        "https://github.com/unclecode/crawl4ai/tree/30165f1ee1fb61f6cce1477feed2acc5e2181e25"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "cua",
+      "urls": [
+        "https://github.com/trycua/cua/tree/27d8da9fd94056bd73892183531579396aafb2f9"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / cua",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "design-anatomy",
+      "urls": [
+        "https://github.com/wheresryan22/anatomy/tree/1482e8469b0a9e0d8cc18ea2740a01423d29ae80"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / design-anatomy",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "diagram-design",
+      "urls": [
+        "https://github.com/cathrynlavery/diagram-design/tree/550fd66edff058bc73056c3416b76d69cfe865ba"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / diagram-design",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "ecc",
+      "urls": [
+        "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ecc",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "emil",
+      "urls": [
+        "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / emil",
+      "classification": "adaptable",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
       "id": "fluent",
@@ -4670,29 +4489,29 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / fluent",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "reshaped",
+      "id": "geist-code",
       "urls": [
-        "https://www.reshaped.so/docs/getting-started/overview",
-        "https://www.reshaped.so/docs/getting-started/principles"
+        "https://vercel.com/geist/typography",
+        "https://vercel.com/geist/code-block",
+        "https://github.com/vercel/geist-font/blob/main/LICENSE.txt"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / reshaped",
+      "selection_locator": "planning/references.md / G — Visual-reference library / geist-code",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "apple-liquid-glass",
+      "id": "google",
       "urls": [
-        "https://developer.apple.com/videos/play/wwdc2025/219/",
-        "https://developer.apple.com/design/human-interface-guidelines/materials"
+        "https://github.com/google/skills/tree/d6eee396ed6a51871cc3f0979c5ff1be26d35d10"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / apple-liquid-glass",
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / google",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4704,18 +4523,27 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / govuk",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "vanilla-publishing",
+      "id": "gsap-official",
       "urls": [
-        "https://vanillaframework.io/docs/layouts/brochure",
-        "https://vanillaframework.io/docs/patterns/strip"
+        "https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / vanilla-publishing",
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / gsap-official",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "gstack",
+      "urls": [
+        "https://github.com/garrytan/gstack/tree/c285d88b90d39116ccfa2b901f80ea0fce0b26eb"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / gstack",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4727,41 +4555,199 @@
       ],
       "selection_locator": "planning/references.md / G — Visual-reference library / guardian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "spectrum",
+      "id": "hallmark",
       "urls": [
-        "https://spectrum.adobe.com/page/bi-directionality/",
-        "https://www.w3.org/International/articles/inline-bidi-markup/"
+        "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / spectrum",
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / hallmark",
+      "classification": "adaptable",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
+    },
+    {
+      "id": "huashu-storyboard",
+      "urls": [
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md"
+      ],
+      "selection_locator": "planning/references.md / selected source / huashu-storyboard",
+      "classification": "adaptable",
+      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "MIT at the pinned revision; independently worded method notes only; no Huashu runtime, renderer, assets or installer redistributed"
+    },
+    {
+      "id": "hyperframes-authoring",
+      "urls": [
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx"
+      ],
+      "selection_locator": "planning/references.md / selected source / hyperframes-authoring",
+      "classification": "adaptable",
+      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "Apache-2.0 at the pinned revision; independently worded authoring notes only; no HyperFrames runtime or package text redistributed"
+    },
+    {
+      "id": "impeccable",
+      "urls": [
+        "https://github.com/pbakaus/impeccable/tree/4e8504f10106a1cd7a99e37a401aa368d1d55576"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / impeccable",
+      "classification": "adaptable",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
+    },
+    {
+      "id": "karpathy",
+      "urls": [
+        "https://github.com/multica-ai/andrej-karpathy-skills/tree/2c606141936f1eeef17fa3043a72095b4765b9c2"
+      ],
+      "selection_locator": "planning/references.md / F — Additional documented references / karpathy",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "agent-skills",
+      "id": "kingy-motion",
       "urls": [
-        "https://agentskills.io/specification",
-        "https://agentskills.io/skill-creation/evaluating-skills",
-        "https://agentskills.io/skill-creation/optimizing-descriptions"
+        "https://kingy.ai/blog/astra-codex-motion-graphics-guide-prompts/"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / agent-skills",
+      "selection_locator": "planning/references.md / F — Additional documented references / kingy-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
-      "id": "trail-of-bits",
+      "id": "kyle-motion",
       "urls": [
-        "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/property-based-testing/skills/property-based-testing/SKILL.md",
-        "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/differential-review/skills/differential-review/SKILL.md"
+        "https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits",
-      "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / kyle-motion",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "langchain",
+      "urls": [
+        "https://github.com/langchain-ai/langchain/tree/fa35b519a3a72fb4ccba7935f4c8e9e90a12ccca"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "langgraph",
+      "urls": [
+        "https://github.com/langchain-ai/langgraph/tree/eb066bd31a2bf01fc0cd58256df4800a3695c233"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "lottiefiles-motion",
+      "urls": [
+        "https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "marketing",
+      "urls": [
+        "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
+      ],
+      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / marketing",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "matt",
+      "urls": [
+        "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / matt",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "mengto-inspiration",
+      "urls": [
+        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration",
+      "classification": "adaptable",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
+    },
+    {
+      "id": "motion",
+      "urls": [
+        "https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "motion-primitives",
+      "urls": [
+        "https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion-primitives",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "openai",
+      "urls": [
+        "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / openai",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "owl-concepts",
+      "urls": [
+        "https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / owl-concepts",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "ponytail",
+      "urls": [
+        "https://github.com/DietrichGebert/ponytail/tree/09c434ab73ca43761c5d8b0c5d341926c2fba710"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ponytail",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "promptfoo",
+      "urls": [
+        "https://github.com/promptfoo/promptfoo/tree/c2f6a848aca5f7e01491d2533f3fb1122bc63c50"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4771,7 +4757,48 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / qmd-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "react-bits",
+      "urls": [
+        "https://github.com/DavidHDev/react-bits/tree/e12c22192ac7b4b452c5e2feb9b586d74765d696"
+      ],
+      "selection_locator": "planning/references.md / E — Additional design resources / react-bits",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "remotion",
+      "urls": [
+        "https://github.com/remotion-dev/remotion/tree/7ea5ab594e0d8c5aa93640ee84b7ed32925b545e"
+      ],
+      "selection_locator": "planning/references.md / E — Additional design resources / remotion",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "reshaped",
+      "urls": [
+        "https://www.reshaped.so/docs/getting-started/overview",
+        "https://www.reshaped.so/docs/getting-started/principles"
+      ],
+      "selection_locator": "planning/references.md / G — Visual-reference library / reshaped",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "scroll-craft",
+      "urls": [
+        "https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / scroll-craft",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4782,7 +4809,48 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / sentry-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "serena",
+      "urls": [
+        "https://github.com/oraios/serena/tree/abb0a0f01b94bc8050086f0fb860077d17730324"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / serena",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "skyvern",
+      "urls": [
+        "https://github.com/Skyvern-AI/skyvern/tree/eccc1c60b225105c3281cf2cc5e76b4170099fbb"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "spectrum",
+      "urls": [
+        "https://spectrum.adobe.com/page/bi-directionality/",
+        "https://www.w3.org/International/articles/inline-bidi-markup/"
+      ],
+      "selection_locator": "planning/references.md / G — Visual-reference library / spectrum",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "stagehand",
+      "urls": [
+        "https://github.com/browserbase/stagehand/tree/0f93c295deabce3cd7b14cdbdeacb1771f93378d"
+      ],
+      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4792,7 +4860,49 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / statistical-analysis",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "superpowers",
+      "urls": [
+        "https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d"
+      ],
+      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / superpowers",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "taste",
+      "urls": [
+        "https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246"
+      ],
+      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / taste",
+      "classification": "adaptable",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
+    },
+    {
+      "id": "trail-of-bits",
+      "urls": [
+        "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/property-based-testing/skills/property-based-testing/SKILL.md",
+        "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/differential-review/skills/differential-review/SKILL.md"
+      ],
+      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits",
+      "classification": "link-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "vanilla-publishing",
+      "urls": [
+        "https://vanillaframework.io/docs/layouts/brochure",
+        "https://vanillaframework.io/docs/patterns/strip"
+      ],
+      "selection_locator": "planning/references.md / G — Visual-reference library / vanilla-publishing",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4802,7 +4912,17 @@
       ],
       "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / wcag",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=6f54d04aa8138e4b39682deec51f2d07cb3179cdb2a14b4cd513e93d0717bcfb; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
+    },
+    {
+      "id": "wondel",
+      "urls": [
+        "https://github.com/wondelai/skills/tree/c172996495bed0fcd26896a9416b2093fd7073f0"
+      ],
+      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / wondel",
+      "classification": "comparison-only",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     }
   ],

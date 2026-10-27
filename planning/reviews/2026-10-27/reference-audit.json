@@ -1,16 +1,17 @@
 {
   "body_review_documents": [
+    "planning/reviews/2026-10-27/source-design-adoption.md",
     "planning/reviews/2026-10-27/source-methods.md",
     "planning/reviews/2026-10-27/source-product.md",
     "planning/reviews/2026-10-27/source-visual.md"
   ],
-  "generated_at": "2026-10-27T12:06:05.678372+00:00",
-  "plan_memberships": 59,
+  "generated_at": "2026-10-27T13:12:03.175389+00:00",
+  "plan_memberships": 61,
   "schema": 2,
   "shared_ids": [
     "ponytail"
   ],
-  "source_count": 58,
+  "source_count": 60,
   "source_plan": "planning/references.md",
   "sources": [
     {
@@ -30,7 +31,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:26.351519+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect the intended outcome, project instructions, affected owners, current changes and available tools. Resolve routine implementation choices from evidence. Ask only for a missing decision or authorization that changes the work; advance useful independent work while it remains unresolved.",
@@ -263,7 +264,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:27.929245+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Recall focused facts before making a consequential project decision when retained context could change it. Select the canonical project or separately selected shared-preference scope explicitly; linked worktrees and unrelated clones must not be conflated. Search narrowly, inspect coverage and expand only useful source-linked hits. Distinguish no match, incomplete indexing, stale source, conflict and unavailable evidence.",
@@ -461,7 +462,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:29.753483+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Find the owning implementation and the consumers that depend on its behavior. Read nearby contracts, current changes and project gates before editing. Describe the concrete before/after behavior and the failure that would make a plausible implementation wrong.",
@@ -711,7 +712,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:31.309319+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Turn the decision into answerable questions and identify what evidence could change the conclusion. Inspect supplied and connected sources before requesting information already available. Prefer primary sources for technical behavior and the relevant authority for rules. Verify time-sensitive claims against current material; record publication, event and access dates when they differ.",
@@ -917,7 +918,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:32.955630+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Turn the decision into answerable questions and identify what evidence could change the conclusion. Inspect supplied and connected sources before requesting information already available. Prefer primary sources for technical behavior and the relevant authority for rules. Verify time-sensitive claims against current material; record publication, event and access dates when they differ.",
@@ -1089,7 +1090,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:34.640687+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Turn the decision into answerable questions and identify what evidence could change the conclusion. Inspect supplied and connected sources before requesting information already available. Prefer primary sources for technical behavior and the relevant authority for rules. Verify time-sensitive claims against current material; record publication, event and access dates when they differ.",
@@ -1296,7 +1297,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:36.277536+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect the intended outcome, project instructions, affected owners, current changes and available tools. Resolve routine implementation choices from evidence. Ask only for a missing decision or authorization that changes the work; advance useful independent work while it remains unresolved.",
@@ -1468,7 +1469,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:37.914358+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect the intended outcome, project instructions, affected owners, current changes and available tools. Resolve routine implementation choices from evidence. Ask only for a missing decision or authorization that changes the work; advance useful independent work while it remains unresolved.",
@@ -1619,7 +1620,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:40.784456+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Codex owns agent creation, permissions and lifecycle; Mirket supplies guidance and never starts or routes model children.",
@@ -1698,7 +1699,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "0e3441fef6e4154f195774c2260a2b740792a6a0f0f4e319f06490d984c85ff6",
+          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -1843,7 +1844,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:42.626203+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Codex owns agent creation, permissions and lifecycle; Mirket supplies guidance and never starts or routes model children.",
@@ -2036,7 +2037,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:44.355928+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Use Codex's available browser or web research tools for the selected pages. Choose the built-in browser when rendered state or interaction matters, and verify that the selected client can reach the page. Keep account and profile choices explicit; never assume access to a personal browser session.",
@@ -2205,7 +2206,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:46.415062+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Use the qualified Mirket TypeScript navigation capability on explicitly selected saved sources. Supply the imports/declarations required by the actual API and bind every source to its current revision. Do not scan the entire project, execute package code or fetch dependencies implicitly.",
@@ -2376,7 +2377,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:48.727907+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
@@ -2542,7 +2543,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:50.473055+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Use Codex's available browser or web research tools for the selected pages. Choose the built-in browser when rendered state or interaction matters, and verify that the selected client can reach the page. Keep account and profile choices explicit; never assume access to a personal browser session.",
@@ -2705,7 +2706,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:52.412471+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
@@ -2884,7 +2885,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:54.196318+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Define the user outcome, model-visible context and trusted authority for each action. Keep retrieved/page/tool content as data; it cannot grant permissions or change scope. Separate proposing an action from the application's validated execution boundary.",
@@ -3020,7 +3021,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:56.039450+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Define the user outcome, model-visible context and trusted authority for each action. Keep retrieved/page/tool content as data; it cannot grant permissions or change scope. Separate proposing an action from the application's validated execution boundary.",
@@ -3158,7 +3159,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:57.917190+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Define the user outcome and failure costs before choosing metrics. Build representative tasks with source/expected-result evidence, including ambiguity, refusals, tool failures and difficult negatives. Separate development fixtures from held-out acceptance material.",
@@ -3307,25 +3308,34 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:04:59.567426+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.",
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "source_mapping": "Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
+        },
+        {
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
+          "path": "skills/design-critique/SKILL.md",
+          "skill": "design-critique",
+          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
+          "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
         {
           "decision_method": "Inspect real repeated patterns, current component APIs and any existing token ownership. Separate semantic roles from raw values so themes, states and modes remain understandable. Define only the tokens and variants the product actually needs; avoid a second parallel source of truth.",
@@ -3527,24 +3537,24 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:01.167310+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.",
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
+          "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "source_mapping": "Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
         {
@@ -3705,14 +3715,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:02.685562+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -3721,17 +3731,26 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f1013fafb291986a123bd436b0ecc21c8a587a281f1dcdc176a1aea53de13d83",
+          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
+        },
+        {
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
+          "path": "skills/ui-motion/SKILL.md",
+          "skill": "ui-motion",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "source_mapping": "Emil animation-decision and review-format methods are explicitly mapped in source-design-adoption.md",
+          "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
         {
           "decision_method": "Map the requested narrative to scroll ranges, scenes, entry/exit states and the normal document reading order. Decide what remains understandable with motion reduced or unavailable. Inspect real content height and assets before choosing pinned regions or trigger positions.",
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "bbff96d98f3b7efd14423c12e564f8138092d9b4c9b72edde0388f9cab629668",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+          "source_mapping": "Emil animation-decision methods are explicitly mapped for scroll context in source-design-adoption.md",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
       ],
@@ -3902,7 +3921,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:04.431437+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect component ownership, state sources, routes, data contracts and existing UI patterns. Separate derived state from persisted/user state. Define loading, empty, error, success and interrupted transitions before wiring the happy path.",
@@ -3927,8 +3946,8 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "0e3441fef6e4154f195774c2260a2b740792a6a0f0f4e319f06490d984c85ff6",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
+          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
+          "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
         {
@@ -4126,14 +4145,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:05.983952+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
@@ -4142,7 +4161,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "bbff96d98f3b7efd14423c12e564f8138092d9b4c9b72edde0388f9cab629668",
+          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
@@ -4278,16 +4297,16 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:07.816610+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
-          "local_output_evidence": "Deliver editable SVG/sprite source, optimized artifact, previews and consumer evidence. Unless the task sets another budget, share 15 minutes and two final repairs across vector production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when requested variants and fidelity checks pass or report unsupported features and remaining visual defects at the limit. Preserve originals on failed optimization.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system."
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
         {
           "decision_method": "Clarify the question the diagram should answer and verify entities, relationships, direction, containment and labels from source evidence. Choose the smallest diagram that preserves those meanings. Separate conceptual structure from deployment detail rather than mixing incompatible levels.",
@@ -4470,23 +4489,23 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:09.464104+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -4616,14 +4635,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:11.247998+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify what motion should communicate: state change, continuity, hierarchy, feedback or authored narrative. Inspect the static composition and content before adding movement. Define the viewer's focus and the relationship between the first frame, key beats and final resting state.",
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f1013fafb291986a123bd436b0ecc21c8a587a281f1dcdc176a1aea53de13d83",
+          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -4759,14 +4778,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:12.907513+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify what motion should communicate: state change, continuity, hierarchy, feedback or authored narrative. Inspect the static composition and content before adding movement. Define the viewer's focus and the relationship between the first frame, key beats and final resting state.",
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f1013fafb291986a123bd436b0ecc21c8a587a281f1dcdc176a1aea53de13d83",
+          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -4901,14 +4920,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:14.506361+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.",
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
+          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -4917,7 +4936,7 @@
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "0e3441fef6e4154f195774c2260a2b740792a6a0f0f4e319f06490d984c85ff6",
+          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -5095,21 +5114,37 @@
           "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/83a47fee32f0b6349bff1fede99257a5ef03dc93/LICENSE",
           "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
           "status": 200
+        },
+        {
+          "bytes": 1064,
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-license-8fe9b7a62664.bin",
+          "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+          "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
+          "status": 200
         }
       ],
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
-      "retrieved_at": "2026-10-27T12:05:17.257063+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "retrieved_at": "2026-10-27T13:11:57.390377+00:00",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.",
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
+          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
+        },
+        {
+          "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
+          "path": "skills/vector-art/SKILL.md",
+          "skill": "vector-art",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "source_mapping": "MengTo pinned illustration-body construction methods are explicitly mapped in source-design-adoption.md",
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
       ],
       "source_evidence": {
@@ -5127,13 +5162,79 @@
             "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/83a47fee32f0b6349bff1fede99257a5ef03dc93/agent-skills/codex/video-to-superprompt/SKILL.md",
             "sha256": "2b0db0096fb715f9e5c6be419f2be5caf0df5e1991ac019308185e2d72c2f950",
             "status": 200
+          },
+          {
+            "bytes": 19516,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"462e3c05e919ccb8831245d8ff69ff3e3646f2284d737b5fa349f1a2d27481c3\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-d990f17706c1.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+            "sha256": "a9b06cd733a2e5f8429747f12816057377faf2ecbf55940ea23d213577c30744",
+            "status": 200
+          },
+          {
+            "bytes": 22253,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"698dfc516d4c5efeabcf62e409a7b5e7b7aac5cfa1f5415ac347933f7721146b\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-1c23bf163ff5.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+            "sha256": "b5333635a651587a9b4bdc8d75f82f2f510257bff280ad567248a3a30d502102",
+            "status": 200
+          },
+          {
+            "bytes": 7467,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"1205d26735c534b6eb2f3430a573019bda2a0d99da50188fbef03d382e9cb4b5\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-7fcb2d4e9736.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+            "sha256": "ca1ea516ab3a32c40e3e2c5b05251e4696f1d4674cf80cf4e0d2dc1012e65188",
+            "status": 200
           }
         ],
         "page_receipts": [
           {
-            "bytes": 373896,
+            "bytes": 373885,
             "requested_url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
-            "sha256": "7307bd135933d724040ef77eb8646a9d48ae8dff8a1c898204a28c702ce937e0",
+            "sha256": "c89e7537e4e0b5109446673bcfd31ea3881475c2c2955325b309ddeeca886291",
+            "status": 200
+          },
+          {
+            "bytes": 276054,
+            "requested_url": "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+            "sha256": "804bf1053027df39862ec5b2f56e717b6b762a76b36d6254e3908c770c7ff0d4",
+            "status": 200
+          },
+          {
+            "bytes": 349885,
+            "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+            "sha256": "6e71a0b1e0628cf41d6232a2d8a43f4bc9480a0bbed6126ad22e902ccaba4d16",
+            "status": 200
+          },
+          {
+            "bytes": 394047,
+            "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+            "sha256": "9c43390f9176803983c040c01a1cb2477ebaeaed31874f98336d4ed84510c338",
+            "status": 200
+          },
+          {
+            "bytes": 279092,
+            "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+            "sha256": "b864853449b4d9256dcaba93a66716eb394d94ac0b26800dbcb4f4575a47443c",
             "status": 200
           }
         ],
@@ -5189,28 +5290,230 @@
               "References"
             ],
             "source_file": "agent-skills/codex/video-to-superprompt/SKILL.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 19516,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"462e3c05e919ccb8831245d8ff69ff3e3646f2284d737b5fa349f1a2d27481c3\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-d990f17706c1.bin",
+                "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+                "sha256": "a9b06cd733a2e5f8429747f12816057377faf2ecbf55940ea23d213577c30744",
+                "status": 200
+              },
+              {
+                "bytes": 1064,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"fcb468c808193723486978a0484ab7eaeaf6e5d019b8314f16357ec0679676b0\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-license-8fe9b7a62664.bin",
+                "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+                "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "Illustration: Flat",
+              "The look in one sentence",
+              "Palette",
+              "Line and fill",
+              "Characters",
+              "Decor and props",
+              "Composition",
+              "Techniques",
+              "Failure modes",
+              "Examples",
+              "Workflow",
+              "Verify"
+            ],
+            "source_file": "agent-skills/illustration/illustration-flat/SKILL.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 22253,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"698dfc516d4c5efeabcf62e409a7b5e7b7aac5cfa1f5415ac347933f7721146b\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-1c23bf163ff5.bin",
+                "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+                "sha256": "b5333635a651587a9b4bdc8d75f82f2f510257bff280ad567248a3a30d502102",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "Illustration: Framed panel",
+              "The look in one sentence",
+              "Palette",
+              "Line and fill",
+              "Characters",
+              "Decor and props",
+              "Composition",
+              "Techniques",
+              "Failure modes",
+              "Examples",
+              "Workflow",
+              "Verify"
+            ],
+            "source_file": "agent-skills/illustration/illustration-framed-panel/SKILL.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [],
+            "sections": [
+              "Illustration: Flat",
+              "The look in one sentence",
+              "Palette",
+              "Line and fill",
+              "Characters",
+              "Decor and props",
+              "Composition",
+              "Techniques",
+              "Failure modes",
+              "Examples",
+              "Workflow",
+              "Verify"
+            ],
+            "source_file": "agent-skills/illustration/illustration-flat/SKILL.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 7467,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"1205d26735c534b6eb2f3430a573019bda2a0d99da50188fbef03d382e9cb4b5\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-7fcb2d4e9736.bin",
+                "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+                "sha256": "ca1ea516ab3a32c40e3e2c5b05251e4696f1d4674cf80cf4e0d2dc1012e65188",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "Iterate Until Verified",
+              "Choose the mode",
+              "1. Lock the original task",
+              "2. Convert ambition into gates",
+              "3. Decompose and assign",
+              "4. Separate making from judging",
+              "5. Match proof to the work",
+              "6. Run the loop",
+              "7. Stop honestly",
+              "Compose mode template",
+              "Completion checks"
+            ],
+            "source_file": "agent-skills/codex/iterate-until-verified/SKILL.md"
           }
         ],
         "source_file": "agent-skills/codex/video-to-superprompt/SKILL.md"
       },
       "url_receipts": [
         {
-          "bytes": 373896,
+          "bytes": 373885,
           "error": null,
           "final_url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
           "headers": {
             "content_type": "text/html; charset=utf-8",
-            "etag": "W/\"a18001f51486accee9e08894ea58fa6a\"",
+            "etag": "W/\"aee2fff678db7e82ed7e9c3c250cddeb\"",
             "last_modified": null
           },
           "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-0.bin",
           "requested_url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
-          "sha256": "7307bd135933d724040ef77eb8646a9d48ae8dff8a1c898204a28c702ce937e0",
+          "sha256": "c89e7537e4e0b5109446673bcfd31ea3881475c2c2955325b309ddeeca886291",
+          "status": 200
+        },
+        {
+          "bytes": 276054,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"93326f9a287df222e906902189016f45\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-1.bin",
+          "requested_url": "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+          "sha256": "804bf1053027df39862ec5b2f56e717b6b762a76b36d6254e3908c770c7ff0d4",
+          "status": 200
+        },
+        {
+          "bytes": 349885,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"66ea0f666ae2fbe89d3f30071ea8a197\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-2.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+          "sha256": "6e71a0b1e0628cf41d6232a2d8a43f4bc9480a0bbed6126ad22e902ccaba4d16",
+          "status": 200
+        },
+        {
+          "bytes": 394047,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"9692466db70c016b91640873769e9f13\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-3.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+          "sha256": "9c43390f9176803983c040c01a1cb2477ebaeaed31874f98336d4ed84510c338",
+          "status": 200
+        },
+        {
+          "bytes": 279092,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"621120de9ef7f2d8681fc5cad093a98d\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-4.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+          "sha256": "b864853449b4d9256dcaba93a66716eb394d94ac0b26800dbcb4f4575a47443c",
           "status": 200
         }
       ],
       "urls": [
-        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93"
+        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
+        "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md"
       ],
       "verification": "verified-retrieval"
     },
@@ -5231,14 +5534,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:18.860370+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Map the requested narrative to scroll ranges, scenes, entry/exit states and the normal document reading order. Decide what remains understandable with motion reduced or unavailable. Inspect real content height and assets before choosing pinned regions or trigger positions.",
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "bbff96d98f3b7efd14423c12e564f8138092d9b4c9b72edde0388f9cab629668",
+          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
@@ -5380,14 +5683,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:20.455131+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
@@ -5516,14 +5819,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:22.064868+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify audience, message, medium, content hierarchy and the response the artifact should evoke. Inspect supplied references and assets; distinguish the qualities to learn from their protected brands, fonts and artwork. Do not substitute a generic visual trend for the actual brief.",
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "6f42d61f144460613b086aab20a52ccb2b6a1f276a41acffa062d16606370ac8",
+          "skill_body_sha256": "dc2bdfbbc476e4b22b4df0c8cd7a037fd7fc34daf04d06261b11ddc42b418d2a",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -5670,14 +5973,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:24.561820+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "0e3441fef6e4154f195774c2260a2b740792a6a0f0f4e319f06490d984c85ff6",
+          "skill_body_sha256": "dcdaac4cc3dfe41e4940fc9bec5fe6268c52892a141cf9dc2b1a2f4486df04b0",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         }
@@ -5807,14 +6110,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:26.351858+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -5942,14 +6245,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:28.178494+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -6101,7 +6404,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:29.848327+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Frame the decision, participant segment and research questions before interpreting material. Inventory source dates, recruitment, consent/use limits and sample bias. Existing analytics, interviews and support evidence answer different questions; keep those sources distinct.",
@@ -6352,7 +6655,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:31.805520+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Frame the decision, participant segment and research questions before interpreting material. Inventory source dates, recruitment, consent/use limits and sample bias. Existing analytics, interviews and support evidence answer different questions; keep those sources distinct.",
@@ -6621,14 +6924,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:33.422871+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
+          "decision_method": "Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.",
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "ebc3ac36e22d64af77a4acca2184b83338f6d2f705555f00a4b18472276bc153",
+          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -6758,25 +7061,25 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:35.260221+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
         {
           "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
-          "local_output_evidence": "Deliver editable SVG/sprite source, optimized artifact, previews and consumer evidence. Unless the task sets another budget, share 15 minutes and two final repairs across vector production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when requested variants and fidelity checks pass or report unsupported features and remaining visual defects at the limit. Preserve originals on failed optimization.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system."
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
       ],
       "source_evidence": {
@@ -6904,14 +7207,14 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:36.807386+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Establish duration, aspect ratio, frame rate, narrative beats, output formats and playback targets. Keep an editable project-owned HyperFrames HTML/CSS/JS composition, local vector/Lottie/media assets, supplied audio and independently editable caption sources. Inspect a short native specimen before expanding.",
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "d45ddc961d1b67e39fd4c2f849086218765ce1bae5938acdabc61d8d9b160e09",
+          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7029,7 +7332,7 @@
       "license_status": "license-not-established",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:38.035594+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Find the owning implementation and the consumers that depend on its behavior. Read nearby contracts, current changes and project gates before editing. Describe the concrete before/after behavior and the failure that would make a plausible implementation wrong.",
@@ -7156,7 +7459,7 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:38.374202+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Select the operation from the requested outcome and explicit project scope. For a qualified Mirket-owned operation, use Mirket first. Inspect the running runtime's release identity and the specific platform capability after setup, reconnect, a relevant failure or a changed installation. Reuse verified readiness while its inputs remain unchanged. Installation, registered paths, process startup and a useful result establish different facts.",
@@ -7230,14 +7533,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:38.761294+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify what motion should communicate: state change, continuity, hierarchy, feedback or authored narrative. Inspect the static composition and content before adding movement. Define the viewer's focus and the relationship between the first frame, key beats and final resting state.",
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f1013fafb291986a123bd436b0ecc21c8a587a281f1dcdc176a1aea53de13d83",
+          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -7246,7 +7549,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "bbff96d98f3b7efd14423c12e564f8138092d9b4c9b72edde0388f9cab629668",
+          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         },
@@ -7255,7 +7558,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "d45ddc961d1b67e39fd4c2f849086218765ce1bae5938acdabc61d8d9b160e09",
+          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7312,14 +7615,14 @@
       "license_status": "license-receipt",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:40.891999+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7343,12 +7646,12 @@
         },
         {
           "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
-          "local_output_evidence": "Deliver editable SVG/sprite source, optimized artifact, previews and consumer evidence. Unless the task sets another budget, share 15 minutes and two final repairs across vector production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when requested variants and fidelity checks pass or report unsupported features and remaining visual defects at the limit. Preserve originals on failed optimization.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system."
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
       ],
       "source_evidence": {
@@ -7461,14 +7764,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:44.532458+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7598,7 +7901,7 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:46.902916+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify the exact supported OS/architecture, app identity, installation topology and native integration owner. Verify relevant platform API behavior against the current SDK/docs. Keep permissions, trust prompts, process ownership and user settings explicit.",
@@ -7610,11 +7913,11 @@
           "trigger": "Implement macOS or Windows desktop integration when permissions, application lifecycle and installed GUI behavior must be verified natively. Skip browser-only interfaces."
         },
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7638,12 +7941,12 @@
         },
         {
           "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
-          "local_output_evidence": "Deliver editable SVG/sprite source, optimized artifact, previews and consumer evidence. Unless the task sets another budget, share 15 minutes and two final repairs across vector production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when requested variants and fidelity checks pass or report unsupported features and remaining visual defects at the limit. Preserve originals on failed optimization.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system."
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
         {
           "decision_method": "Identify supported locales, scripts, direction, fallback and the task-critical messages. Preserve meaning, variables, plurals, gender/context where relevant and error/action relationships. Separate translatable text from stable identifiers; avoid sentence fragments that cannot be ordered naturally.",
@@ -7720,14 +8023,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:47.669064+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7815,7 +8118,7 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:49.274759+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify the exact supported OS/architecture, app identity, installation topology and native integration owner. Verify relevant platform API behavior against the current SDK/docs. Keep permissions, trust prompts, process ownership and user settings explicit.",
@@ -7892,14 +8195,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:51.015473+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8026,14 +8329,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:51.822476+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8112,14 +8415,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:54.108507+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8246,14 +8549,14 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:54.771815+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
-          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
+          "decision_method": "Inspect the existing product, supplied target and real content before composing. Establish the primary user task, reading/action hierarchy, viewport range and required states. Identify the route, component, token, font, copy and asset owners that remain in scope, and state the files or artifacts to change; honor an already authorized scope and ask only when a new destructive expansion is ambiguous. Use an inspected target suited to the medium: reference image, minimal DOM, vector specimen or editable design source.",
+          "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "3b89bf4f5ee400b84c44650030e53675e09eeccdd74d80a1ab5e595656c979a2",
+          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8268,12 +8571,12 @@
         },
         {
           "decision_method": "Inspect the target medium, view box, display sizes, stroke/fill language and existing icon/asset system. Start with a minimal rendered SVG specimen or supplied reference. Preserve editable geometry and meaningful grouping; do not substitute an embedded bitmap for requested vector source.",
-          "local_output_evidence": "Deliver editable SVG/sprite source, optimized artifact, previews and consumer evidence. Unless the task sets another budget, share 15 minutes and two final repairs across vector production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when requested variants and fidelity checks pass or report unsupported features and remaining visual defects at the limit. Preserve originals on failed optimization.",
+          "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "c6553035942e1cd50cac7d99560decf45bcf7970d7e51389006d22e316889d12",
+          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Author or refine editable SVG artwork, icons or sprites with optimized rendered fidelity and export checks. Skip raster-only cropping or code icons already covered by an existing asset system."
+          "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
         {
           "decision_method": "Clarify the question the diagram should answer and verify entities, relationships, direction, containment and labels from source evidence. Choose the smallest diagram that preserves those meanings. Separate conceptual structure from deployment detail rather than mixing incompatible levels.",
@@ -8368,7 +8671,7 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:05:56.216354+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Select the operation from the requested outcome and explicit project scope. For a qualified Mirket-owned operation, use Mirket first. Inspect the running runtime's release identity and the specific platform capability after setup, reconnect, a relevant failure or a changed installation. Reuse verified readiness while its inputs remain unchanged. Installation, registered paths, process startup and a useful result establish different facts.",
@@ -8492,7 +8795,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:05:59.196156+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Bind the review to the actual revision, diff or saved artifact and its intended contract. Inspect affected consumers and enough unchanged context to understand the boundary. Prioritize defects that change correctness, user outcomes, security, recovery or maintainability at realistic scale.",
@@ -8762,7 +9065,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:06:00.728389+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Recall focused facts before making a consequential project decision when retained context could change it. Select the canonical project or separately selected shared-preference scope explicitly; linked worktrees and unrelated clones must not be conflated. Search narrowly, inspect coverage and expand only useful source-linked hits. Distinguish no match, incomplete indexing, stale source, conflict and unavailable evidence.",
@@ -8935,7 +9238,7 @@
       "license_status": "license-receipt",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:06:03.933575+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Bind the review to the actual revision, diff or saved artifact and its intended contract. Inspect affected consumers and enough unchanged context to understand the boundary. Prioritize defects that change correctness, user outcomes, security, recovery or maintainability at realistic scale.",
@@ -9181,7 +9484,7 @@
       "license_status": "license-not-established",
       "pin_status": "immutable-git-pin",
       "retrieved_at": "2026-10-27T12:06:05.259709+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Identify the comparison or decision the viewer needs to make. Audit the source grain, denominators, units, missingness, transformation and date range before selecting an encoding. Keep calculated values reproducible and traceable to the supplied data.",
@@ -9381,7 +9684,7 @@
       "license_status": "license-not-established",
       "pin_status": "moving-or-unpinned-url",
       "retrieved_at": "2026-10-27T12:06:05.678353+00:00",
-      "reuse_boundary": "No upstream material was adapted into shipped skill bodies. Any future adaptation requires a separate rights review against these receipts.",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
           "decision_method": "Translate the requested outcome into observable evidence at the consumer boundary. Verify the actual saved output or running behavior at the current revision; a prior capture becomes stale when its source changes. Keep required project gates intact.",
@@ -9461,6 +9764,476 @@
       ],
       "urls": [
         "https://www.w3.org/WAI/WCAG22/quickref/"
+      ],
+      "verification": "verified-retrieval"
+    },
+    {
+      "body_review_documents": [],
+      "id": "huashu-storyboard",
+      "license_evidence": [
+        {
+          "bytes": 1086,
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-license-dabccf2e8d38.bin",
+          "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+          "sha256": "6d6a2a9caf2e6d2b76974050427053b2892d8aa4c33fd168ce63a537fcee9d96",
+          "status": 200
+        }
+      ],
+      "license_status": "license-receipt",
+      "pin_status": "immutable-git-pin",
+      "retrieved_at": "2026-10-27T13:12:00.485687+00:00",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
+      "skill_contracts": [
+        {
+          "decision_method": "Identify what motion should communicate: state change, continuity, hierarchy, feedback or authored narrative. Inspect the static composition and content before adding movement. Define the viewer's focus and the relationship between the first frame, key beats and final resting state.",
+          "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
+          "path": "skills/motion-direction/SKILL.md",
+          "skill": "motion-direction",
+          "skill_body_sha256": "98aa2cefedbb7026bf144438bef4bae31d1d841726c314b715a63d396b93710e",
+          "source_mapping": "Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md",
+          "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
+        }
+      ],
+      "source_evidence": {
+        "body_receipts": [
+          {
+            "bytes": 23987,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"8ebc76df32901da54909cc8d7e303f4a3063f3144cc046e8e588b7eb9204a1e7\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-2868a5c59eb6.bin",
+            "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+            "sha256": "b8775952ae96bbe3e99f080520896fa9d853d324733c771da5f45da865b6f884",
+            "status": 200
+          },
+          {
+            "bytes": 7480,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"a89b209ade8510327d9f19c8d8ee0530a1126ca476f534791b7ec9e04b66cd04\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-f3caaca9b175.bin",
+            "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+            "sha256": "aad0356ea5f1c98c5ad11e7ef238b8e56d357165de7117d6702a946e69d79bdc",
+            "status": 200
+          }
+        ],
+        "page_receipts": [
+          {
+            "bytes": 386524,
+            "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+            "sha256": "d369782e8d976dc89a1a5c38c50cc5604f571ed9e235c6d4eed3c6bbed0d9eb3",
+            "status": 200
+          },
+          {
+            "bytes": 284282,
+            "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+            "sha256": "15e55e6e3f8815a6d85691126c95636b293541f6fea1ce3a06abbe415f9ffb0e",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "Storyboard Basics · 轻量分镜与画面构图",
+          "0 · 定位：与 launch-film 导演稿的分工",
+          "1 · 核心立论：每一镜先是一张会动的封面",
+          "2 · 定格帧十一律",
+          "律一 · 封面测试（S1）",
+          "律二 · zoom 终点必须是具象锚点（S2）",
+          "律三 · 视线与箭头 = 镜头运动脚本（S3）",
+          "律四 · 字画分工，两条轨（S4 + 配图库 C 系列）",
+          "律五 · 百分比空间语言（S5）",
+          "律六 · 前中后景 = parallax 三层（S6）",
+          "律七 · setup → payoff，开场帧摆悬念（S7）",
+          "律八 · 物化 + 过程感选意象（S8）",
+          "律九 · 风格 × 构图正交（S9）",
+          "律十 · 禁区继承（S10）",
+          "律十一 · 3 米测试（S11）",
+          "3 · 景别体系：五档 zoom 映射",
+          "相邻镜头的景别节奏",
+          "4 · 能量骨架：先划走 hold 预算，再排动效",
+          "5 · 轻量分镜卡：本文件的交付物",
+          "示例：12s 产品动画完整分镜表",
+          "6 · Thumbnail Pass：动手写正式代码前的灰盒验证",
+          "7 · 转场决策表：按叙事关系选型",
+          "8 · 开工 checklist（分镜完成的定义）"
+        ],
+        "selected_sources": [
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 23987,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"8ebc76df32901da54909cc8d7e303f4a3063f3144cc046e8e588b7eb9204a1e7\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-2868a5c59eb6.bin",
+                "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+                "sha256": "b8775952ae96bbe3e99f080520896fa9d853d324733c771da5f45da865b6f884",
+                "status": 200
+              },
+              {
+                "bytes": 1086,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"70d78a868f5a048f29ddf0ade7dc1e7f4233a278d3c24ec3a7b485837fd2c631\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-license-dabccf2e8d38.bin",
+                "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+                "sha256": "6d6a2a9caf2e6d2b76974050427053b2892d8aa4c33fd168ce63a537fcee9d96",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "Storyboard Basics · 轻量分镜与画面构图",
+              "0 · 定位：与 launch-film 导演稿的分工",
+              "1 · 核心立论：每一镜先是一张会动的封面",
+              "2 · 定格帧十一律",
+              "律一 · 封面测试（S1）",
+              "律二 · zoom 终点必须是具象锚点（S2）",
+              "律三 · 视线与箭头 = 镜头运动脚本（S3）",
+              "律四 · 字画分工，两条轨（S4 + 配图库 C 系列）",
+              "律五 · 百分比空间语言（S5）",
+              "律六 · 前中后景 = parallax 三层（S6）",
+              "律七 · setup → payoff，开场帧摆悬念（S7）",
+              "律八 · 物化 + 过程感选意象（S8）",
+              "律九 · 风格 × 构图正交（S9）",
+              "律十 · 禁区继承（S10）",
+              "律十一 · 3 米测试（S11）",
+              "3 · 景别体系：五档 zoom 映射",
+              "相邻镜头的景别节奏",
+              "4 · 能量骨架：先划走 hold 预算，再排动效",
+              "5 · 轻量分镜卡：本文件的交付物",
+              "示例：12s 产品动画完整分镜表",
+              "6 · Thumbnail Pass：动手写正式代码前的灰盒验证",
+              "7 · 转场决策表：按叙事关系选型",
+              "8 · 开工 checklist（分镜完成的定义）"
+            ],
+            "source_file": "references/storyboard-basics.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 7480,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"a89b209ade8510327d9f19c8d8ee0530a1126ca476f534791b7ec9e04b66cd04\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-f3caaca9b175.bin",
+                "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+                "sha256": "aad0356ea5f1c98c5ad11e7ef238b8e56d357165de7117d6702a946e69d79bdc",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "HyperFrames 渲染后端 · 选型边界与操作手册",
+              "选型边界（先看这张表再开工）",
+              "项目脚手架",
+              "合成契约速查（完整版读 hyperframes-core）",
+              "老 demo 迁移 · 适配器配方（实测 20-30 分钟/个）",
+              "校验与渲染",
+              "透明通道（overlay花字/贴片直接叠剪辑轨）",
+              "音频",
+              "pitfalls 增量（相对自研管线）"
+            ],
+            "source_file": "references/hyperframes-backend.md"
+          }
+        ],
+        "source_file": "references/storyboard-basics.md"
+      },
+      "url_receipts": [
+        {
+          "bytes": 386524,
+          "error": null,
+          "final_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"6d6e4570d9b8f6d4a01dba28733f93c9\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-page-0.bin",
+          "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+          "sha256": "d369782e8d976dc89a1a5c38c50cc5604f571ed9e235c6d4eed3c6bbed0d9eb3",
+          "status": 200
+        },
+        {
+          "bytes": 284282,
+          "error": null,
+          "final_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"e5f005bc9d81f23746714ce381d090ff\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-page-1.bin",
+          "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+          "sha256": "15e55e6e3f8815a6d85691126c95636b293541f6fea1ce3a06abbe415f9ffb0e",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md"
+      ],
+      "verification": "verified-retrieval"
+    },
+    {
+      "body_review_documents": [],
+      "id": "hyperframes-authoring",
+      "license_evidence": [
+        {
+          "bytes": 10763,
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-license-d67436b56d03.bin",
+          "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+          "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+          "status": 200
+        }
+      ],
+      "license_status": "license-receipt",
+      "pin_status": "immutable-git-pin",
+      "retrieved_at": "2026-10-27T13:12:03.175357+00:00",
+      "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
+      "skill_contracts": [
+        {
+          "decision_method": "Establish duration, aspect ratio, frame rate, narrative beats, output formats and playback targets. Keep an editable project-owned HyperFrames HTML/CSS/JS composition, local vector/Lottie/media assets, supplied audio and independently editable caption sources. Inspect a short native specimen before expanding.",
+          "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
+          "path": "skills/video-production/SKILL.md",
+          "skill": "video-production",
+          "skill_body_sha256": "6aed1fdaee325c4a8e65db58c8c0352d5c9909d7e5c03d33c3bcf8818115ac7c",
+          "source_mapping": "HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md",
+          "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
+        }
+      ],
+      "source_evidence": {
+        "body_receipts": [
+          {
+            "bytes": 12428,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"d3a59c504f9fd75974ac7c9cbb85c7da0056ca0e6d64d6dc02c4fd5b642710db\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-49b6a5b438b1.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+            "sha256": "2678de13c99544304935b0089dd8d0775ff41094b03dbda4c5708a3850ebb9fd",
+            "status": 200
+          },
+          {
+            "bytes": 9617,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"82fea28685d2f9d7956610e48ea8253cc54d6f3c1c5c1676bf2b6d5441ec3edb\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-4569052b8d6d.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+            "sha256": "69bcc7d581d4dd6b3c22bed94dc2ad835c394026f884515f15d382fcad5bb018",
+            "status": 200
+          }
+        ],
+        "page_receipts": [
+          {
+            "bytes": 342387,
+            "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+            "sha256": "ab18f86d71713934ec6a14b98461cebc518f62a9be6c36be6c507298fe3f583a",
+            "status": 200
+          },
+          {
+            "bytes": 340132,
+            "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+            "sha256": "4b877c825a23ef31f82ed91ace166848e46e5dc6a1d5125591a063600dc66985",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "@hyperframes/producer",
+          "Install",
+          "Usage",
+          "Render a video",
+          "Run as an HTTP server",
+          "Configuration",
+          "Transparent Video Output",
+          "Example",
+          "What \"transparent background\" means here",
+          "Caveats",
+          "Authoring transparent compositions",
+          "HLS Output",
+          "Distributed rendering",
+          "How it works",
+          "Where each step lives",
+          "Documentation",
+          "Related packages"
+        ],
+        "selected_sources": [
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 12428,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"d3a59c504f9fd75974ac7c9cbb85c7da0056ca0e6d64d6dc02c4fd5b642710db\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-49b6a5b438b1.bin",
+                "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+                "sha256": "2678de13c99544304935b0089dd8d0775ff41094b03dbda4c5708a3850ebb9fd",
+                "status": 200
+              },
+              {
+                "bytes": 10763,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"b7d47e289471cc8970f711c0845844eb3153408adc3b1a5592fc6a106219f507\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-license-d67436b56d03.bin",
+                "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+                "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "@hyperframes/producer",
+              "Install",
+              "Usage",
+              "Render a video",
+              "Run as an HTTP server",
+              "Configuration",
+              "Transparent Video Output",
+              "Example",
+              "What \"transparent background\" means here",
+              "Caveats",
+              "Authoring transparent compositions",
+              "HLS Output",
+              "Distributed rendering",
+              "How it works",
+              "Where each step lives",
+              "Documentation",
+              "Related packages"
+            ],
+            "source_file": "packages/producer/README.md"
+          },
+          {
+            "license_file": [
+              "LICENSE"
+            ],
+            "receipts": [
+              {
+                "bytes": 9617,
+                "error": null,
+                "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+                "headers": {
+                  "content_type": "text/plain; charset=utf-8",
+                  "etag": "\"82fea28685d2f9d7956610e48ea8253cc54d6f3c1c5c1676bf2b6d5441ec3edb\"",
+                  "last_modified": null
+                },
+                "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-4569052b8d6d.bin",
+                "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+                "sha256": "69bcc7d581d4dd6b3c22bed94dc2ad835c394026f884515f15d382fcad5bb018",
+                "status": 200
+              }
+            ],
+            "sections": [
+              "Start here",
+              "Project and environment problems",
+              "\"No composition found\"",
+              "\"FFmpeg not found\"",
+              "Download a 64-bit Windows build from:",
+              "https://ffmpeg.org/download.html#build-windows",
+              "Then add its bin directory to PATH.",
+              "Docker render will not start",
+              "Preview checks an unexpected port range",
+              "Media problems",
+              "Video is black in preview but renders",
+              "Video, image, or audio is missing",
+              "Preview stutters",
+              "Animation and composition mistakes",
+              "A video freezes while its box animates",
+              "Media plays out of sync",
+              "The composition ends too early",
+              "A timed element is always visible",
+              "Animation is static",
+              "Changing root duration from a variable does nothing",
+              "Render problems",
+              "The render looks different from preview",
+              "Every render takes about 45 seconds longer than expected",
+              "The render is slow",
+              "The render is slow under WSL2",
+              "then, in Windows PowerShell:",
+              "Expected HDR but received SDR",
+              "Still stuck?",
+              "Related topics"
+            ],
+            "source_file": "docs/guides/troubleshooting.mdx"
+          }
+        ],
+        "source_file": "packages/producer/README.md"
+      },
+      "url_receipts": [
+        {
+          "bytes": 342387,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"fd0c9218f26c24e77049f35c96cabaf2\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-page-0.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+          "sha256": "ab18f86d71713934ec6a14b98461cebc518f62a9be6c36be6c507298fe3f583a",
+          "status": 200
+        },
+        {
+          "bytes": 340132,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"49f12bbcf511661922fdf7241ab76423\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-page-1.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+          "sha256": "4b877c825a23ef31f82ed91ace166848e46e5dc6a1d5125591a063600dc66985",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx"
       ],
       "verification": "verified-retrieval"
     }

@@ -5,9 +5,10 @@ their exact pinned revisions. It checks one or more decision-relevant sections
 of each source, its license file, and the local skills that name it in
 `skills/catalog.json`. Raw source bodies are retained outside the repository in
 `/tmp/mirket-reference-raw-2026-10-27`; only hashes, section names, and
-independent summaries are recorded here. No upstream material was adapted into
-the shipped skills; the private raw downloads were not executed, and no source
-asset, font, launcher, registry, MCP server, or runtime was admitted.
+independent summaries are recorded here. No upstream prose, code or assets were copied. Subsequent independently
+worded method adaptations are recorded in [source-design-adoption.md](source-design-adoption.md).
+The private raw downloads were not executed, and no source asset, font,
+launcher, registry, MCP server, or runtime was admitted.
 
 The source hashes below are SHA-256 of the fetched pinned source file; the
 license hashes are SHA-256 of the fetched pinned license file. A source body

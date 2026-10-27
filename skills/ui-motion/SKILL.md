@@ -5,7 +5,7 @@ description: "Implement interactive animation with tested lifecycle, interruptio
 
 # UI motion
 
-Bind movement to real UI state and a purpose such as feedback or continuity. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.
+Bind movement to real UI state and a purpose such as feedback or continuity. Decide how often the user will encounter it before adding it; do not animate a frequent keyboard-initiated action merely for polish. Define initial/final state, trigger, repeated trigger, interruption and unmount/cleanup before implementation. Keep keyboard focus, semantics and layout usable independently of animation.
 
 Prefer the project's existing CSS, Web Animations or animation library for the required lifecycle. Verify the actual installed library/version before using framework-specific APIs. A catalog reference does not authorize a dependency or another animation engine. Avoid multiple owners competing for the same property.
 
@@ -15,7 +15,7 @@ Define how the current state responds while motion is running. Rapid toggles sho
 
 Inspect actual playback in Codex's available browser. Test first load, rapid reversal/retrigger, navigation/unmount, resize and reduced-motion mode. Confirm that an interrupted animation reaches the correct logical state and leaves no listeners, stale transforms or hidden interactive controls. Profile when there is a demonstrated frame-budget problem rather than claiming smoothness from code shape.
 
-Inspect normal speed and representative intermediate frames. Include content extremes and delayed fonts/media when they affect geometry. A compositor-friendly property can still produce poor pacing, excessive motion or dropped frames under real workload. Retain the reduced-motion journey's information and access, and check that disabling a decorative sequence does not prevent completion callbacks or leave content hidden.
+Inspect normal speed and representative intermediate frames. Include content extremes and delayed fonts/media when they affect geometry. A compositor-friendly property can still produce poor pacing, excessive motion or dropped frames under real workload. Retain the reduced-motion journey's information and access; opacity or color feedback may remain when it aids comprehension, while travel and decorative movement can be removed. Check that disabling a decorative sequence does not prevent completion callbacks or leave content hidden.
 
 For framework-specific questions, select only the approved source matching the existing project: pinned [Motion](https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058), [Anime](https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77) or [GSAP guidance](https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760). These are optional comparison locators; inspect compatibility and exact reuse rights before adopting material.
 

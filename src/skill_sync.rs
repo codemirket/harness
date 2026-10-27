@@ -1008,6 +1008,22 @@ impl SkillSync {
                     "skill source differs from the qualified catalog: {id}"
                 ));
             }
+            if package.record.files.len() != entry.resources.len() + 1 {
+                return Err(format!(
+                    "skill resource set differs from the qualified catalog: {id}"
+                ));
+            }
+            for resource in &entry.resources {
+                let file = package.record.files.get(&resource.path).ok_or_else(|| {
+                    format!("skill resource is missing from the qualified catalog: {id}")
+                })?;
+                if file.sha256 != resource.sha256 || file.bytes != resource.bytes {
+                    return Err(format!(
+                        "skill resource differs from the qualified catalog: {id}/{}",
+                        resource.path
+                    ));
+                }
+            }
             let destination = self.destination.join(&id);
             if path_present(&destination)?
                 && !before
@@ -1890,7 +1906,9 @@ mod tests {
             let entry = |id: &str, description: &str, required: &[&str]| {
                 serde_json::json!({
                     "id": id, "description": description, "path": format!("skills/{id}/SKILL.md"),
-                    "required_capabilities": required, "conditional_capabilities": [], "source_sha256": "", "source_bytes": 0, "provenance": {}, "evaluation": {}
+                    "required_capabilities": required, "conditional_capabilities": [], "source_sha256": "", "source_bytes": 0,
+                    "resources": if id == "task-planning" { serde_json::json!([{"path":"references/method.md","sha256":"132f8d299c10ff14e01a4540f7a186d770b9c358c1d3d8493cbcf4c75b5ec414","bytes":34}]) } else { serde_json::json!([]) },
+                    "provenance": {}, "evaluation": {}
                 })
             };
             let catalog = serde_json::json!({
@@ -2661,6 +2679,34 @@ mod tests {
             fs::read_to_string(manager.destination.join("task-planning/SKILL.md")).unwrap(),
             "Unknown concurrent edit."
         );
+    }
+
+    #[test]
+    fn resource_hash_and_allowlist_are_rechecked_before_staging() {
+        let fixture = Fixture::new();
+        let resource = fixture
+            .0
+            .join("release/skills/task-planning/references/method.md");
+        fs::write(&resource, b"changed reference\n").unwrap();
+        let manager = fixture.global();
+        let error = manager
+            .plan("release:a", None, &BTreeSet::new())
+            .unwrap_err();
+        assert!(error.contains("skill resource differs from the qualified catalog"));
+
+        fs::write(&resource, "Reference with a distinct source.\n").unwrap();
+        fs::write(
+            fixture
+                .0
+                .join("release/skills/task-planning/references/unlisted.md"),
+            b"not catalogued\n",
+        )
+        .unwrap();
+        let error = fixture
+            .global()
+            .plan("release:a", None, &BTreeSet::new())
+            .unwrap_err();
+        assert!(error.contains("skill resource set differs from the qualified catalog"));
     }
 
     #[test]

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T12:06:05.678372+00:00",
+  "generated_at": "2026-10-27T13:12:03.175389+00:00",
   "records": [
     {
       "id": "superpowers",
@@ -3677,7 +3677,7 @@
     },
     {
       "id": "mengto-inspiration",
-      "retrieved_at": "2026-10-27T12:05:17.257063+00:00",
+      "retrieved_at": "2026-10-27T13:11:57.390377+00:00",
       "selected": {
         "license_file": [
           "LICENSE"
@@ -3709,6 +3709,62 @@
             "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-license-1aafaedda824.bin",
             "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/83a47fee32f0b6349bff1fede99257a5ef03dc93/LICENSE",
             "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
+            "status": 200
+          },
+          {
+            "bytes": 19516,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"462e3c05e919ccb8831245d8ff69ff3e3646f2284d737b5fa349f1a2d27481c3\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-d990f17706c1.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+            "sha256": "a9b06cd733a2e5f8429747f12816057377faf2ecbf55940ea23d213577c30744",
+            "status": 200
+          },
+          {
+            "bytes": 1064,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"fcb468c808193723486978a0484ab7eaeaf6e5d019b8314f16357ec0679676b0\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-license-8fe9b7a62664.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+            "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
+            "status": 200
+          },
+          {
+            "bytes": 22253,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"698dfc516d4c5efeabcf62e409a7b5e7b7aac5cfa1f5415ac347933f7721146b\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-1c23bf163ff5.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+            "sha256": "b5333635a651587a9b4bdc8d75f82f2f510257bff280ad567248a3a30d502102",
+            "status": 200
+          },
+          {
+            "bytes": 7467,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"1205d26735c534b6eb2f3430a573019bda2a0d99da50188fbef03d382e9cb4b5\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-7fcb2d4e9736.bin",
+            "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+            "sha256": "ca1ea516ab3a32c40e3e2c5b05251e4696f1d4674cf80cf4e0d2dc1012e65188",
             "status": 200
           }
         ],
@@ -3766,26 +3822,228 @@
             "References"
           ],
           "source_file": "agent-skills/codex/video-to-superprompt/SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 19516,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"462e3c05e919ccb8831245d8ff69ff3e3646f2284d737b5fa349f1a2d27481c3\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-d990f17706c1.bin",
+              "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+              "sha256": "a9b06cd733a2e5f8429747f12816057377faf2ecbf55940ea23d213577c30744",
+              "status": 200
+            },
+            {
+              "bytes": 1064,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"fcb468c808193723486978a0484ab7eaeaf6e5d019b8314f16357ec0679676b0\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-license-8fe9b7a62664.bin",
+              "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/LICENSE",
+              "sha256": "b2a071ba22fefd803f4e9d1f5c777dd79c62d191695586a1a73fd4d0ebd051c6",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Illustration: Flat",
+            "The look in one sentence",
+            "Palette",
+            "Line and fill",
+            "Characters",
+            "Decor and props",
+            "Composition",
+            "Techniques",
+            "Failure modes",
+            "Examples",
+            "Workflow",
+            "Verify"
+          ],
+          "source_file": "agent-skills/illustration/illustration-flat/SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 22253,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"698dfc516d4c5efeabcf62e409a7b5e7b7aac5cfa1f5415ac347933f7721146b\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-1c23bf163ff5.bin",
+              "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+              "sha256": "b5333635a651587a9b4bdc8d75f82f2f510257bff280ad567248a3a30d502102",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Illustration: Framed panel",
+            "The look in one sentence",
+            "Palette",
+            "Line and fill",
+            "Characters",
+            "Decor and props",
+            "Composition",
+            "Techniques",
+            "Failure modes",
+            "Examples",
+            "Workflow",
+            "Verify"
+          ],
+          "source_file": "agent-skills/illustration/illustration-framed-panel/SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [],
+          "sections": [
+            "Illustration: Flat",
+            "The look in one sentence",
+            "Palette",
+            "Line and fill",
+            "Characters",
+            "Decor and props",
+            "Composition",
+            "Techniques",
+            "Failure modes",
+            "Examples",
+            "Workflow",
+            "Verify"
+          ],
+          "source_file": "agent-skills/illustration/illustration-flat/SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 7467,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"1205d26735c534b6eb2f3430a573019bda2a0d99da50188fbef03d382e9cb4b5\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-source-7fcb2d4e9736.bin",
+              "requested_url": "https://raw.githubusercontent.com/MengTo/Skills/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+              "sha256": "ca1ea516ab3a32c40e3e2c5b05251e4696f1d4674cf80cf4e0d2dc1012e65188",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Iterate Until Verified",
+            "Choose the mode",
+            "1. Lock the original task",
+            "2. Convert ambition into gates",
+            "3. Decompose and assign",
+            "4. Separate making from judging",
+            "5. Match proof to the work",
+            "6. Run the loop",
+            "7. Stop honestly",
+            "Compose mode template",
+            "Completion checks"
+          ],
+          "source_file": "agent-skills/codex/iterate-until-verified/SKILL.md"
         }
       ],
       "url_receipts": [
         {
-          "bytes": 373896,
+          "bytes": 373885,
           "error": null,
           "final_url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
           "headers": {
             "content_type": "text/html; charset=utf-8",
-            "etag": "W/\"a18001f51486accee9e08894ea58fa6a\"",
+            "etag": "W/\"aee2fff678db7e82ed7e9c3c250cddeb\"",
             "last_modified": null
           },
           "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-0.bin",
           "requested_url": "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
-          "sha256": "7307bd135933d724040ef77eb8646a9d48ae8dff8a1c898204a28c702ce937e0",
+          "sha256": "c89e7537e4e0b5109446673bcfd31ea3881475c2c2955325b309ddeeca886291",
+          "status": 200
+        },
+        {
+          "bytes": 276054,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"93326f9a287df222e906902189016f45\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-1.bin",
+          "requested_url": "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+          "sha256": "804bf1053027df39862ec5b2f56e717b6b762a76b36d6254e3908c770c7ff0d4",
+          "status": 200
+        },
+        {
+          "bytes": 349885,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"66ea0f666ae2fbe89d3f30071ea8a197\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-2.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+          "sha256": "6e71a0b1e0628cf41d6232a2d8a43f4bc9480a0bbed6126ad22e902ccaba4d16",
+          "status": 200
+        },
+        {
+          "bytes": 394047,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"9692466db70c016b91640873769e9f13\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-3.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+          "sha256": "9c43390f9176803983c040c01a1cb2477ebaeaed31874f98336d4ed84510c338",
+          "status": 200
+        },
+        {
+          "bytes": 279092,
+          "error": null,
+          "final_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"621120de9ef7f2d8681fc5cad093a98d\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/mengto-inspiration-page-4.bin",
+          "requested_url": "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md",
+          "sha256": "b864853449b4d9256dcaba93a66716eb394d94ac0b26800dbcb4f4575a47443c",
           "status": 200
         }
       ],
       "urls": [
-        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93"
+        "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93",
+        "https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md",
+        "https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md"
       ]
     },
     {
@@ -6630,9 +6888,435 @@
       "urls": [
         "https://www.w3.org/WAI/WCAG22/quickref/"
       ]
+    },
+    {
+      "id": "huashu-storyboard",
+      "retrieved_at": "2026-10-27T13:12:00.485687+00:00",
+      "selected": {
+        "license_file": [
+          "LICENSE"
+        ],
+        "receipts": [
+          {
+            "bytes": 23987,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"8ebc76df32901da54909cc8d7e303f4a3063f3144cc046e8e588b7eb9204a1e7\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-2868a5c59eb6.bin",
+            "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+            "sha256": "b8775952ae96bbe3e99f080520896fa9d853d324733c771da5f45da865b6f884",
+            "status": 200
+          },
+          {
+            "bytes": 1086,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"70d78a868f5a048f29ddf0ade7dc1e7f4233a278d3c24ec3a7b485837fd2c631\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-license-dabccf2e8d38.bin",
+            "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+            "sha256": "6d6a2a9caf2e6d2b76974050427053b2892d8aa4c33fd168ce63a537fcee9d96",
+            "status": 200
+          },
+          {
+            "bytes": 7480,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"a89b209ade8510327d9f19c8d8ee0530a1126ca476f534791b7ec9e04b66cd04\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-f3caaca9b175.bin",
+            "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+            "sha256": "aad0356ea5f1c98c5ad11e7ef238b8e56d357165de7117d6702a946e69d79bdc",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "Storyboard Basics \u00b7 \u8f7b\u91cf\u5206\u955c\u4e0e\u753b\u9762\u6784\u56fe",
+          "0 \u00b7 \u5b9a\u4f4d\uff1a\u4e0e launch-film \u5bfc\u6f14\u7a3f\u7684\u5206\u5de5",
+          "1 \u00b7 \u6838\u5fc3\u7acb\u8bba\uff1a\u6bcf\u4e00\u955c\u5148\u662f\u4e00\u5f20\u4f1a\u52a8\u7684\u5c01\u9762",
+          "2 \u00b7 \u5b9a\u683c\u5e27\u5341\u4e00\u5f8b",
+          "\u5f8b\u4e00 \u00b7 \u5c01\u9762\u6d4b\u8bd5\uff08S1\uff09",
+          "\u5f8b\u4e8c \u00b7 zoom \u7ec8\u70b9\u5fc5\u987b\u662f\u5177\u8c61\u951a\u70b9\uff08S2\uff09",
+          "\u5f8b\u4e09 \u00b7 \u89c6\u7ebf\u4e0e\u7bad\u5934 = \u955c\u5934\u8fd0\u52a8\u811a\u672c\uff08S3\uff09",
+          "\u5f8b\u56db \u00b7 \u5b57\u753b\u5206\u5de5\uff0c\u4e24\u6761\u8f68\uff08S4 + \u914d\u56fe\u5e93 C \u7cfb\u5217\uff09",
+          "\u5f8b\u4e94 \u00b7 \u767e\u5206\u6bd4\u7a7a\u95f4\u8bed\u8a00\uff08S5\uff09",
+          "\u5f8b\u516d \u00b7 \u524d\u4e2d\u540e\u666f = parallax \u4e09\u5c42\uff08S6\uff09",
+          "\u5f8b\u4e03 \u00b7 setup \u2192 payoff\uff0c\u5f00\u573a\u5e27\u6446\u60ac\u5ff5\uff08S7\uff09",
+          "\u5f8b\u516b \u00b7 \u7269\u5316 + \u8fc7\u7a0b\u611f\u9009\u610f\u8c61\uff08S8\uff09",
+          "\u5f8b\u4e5d \u00b7 \u98ce\u683c \u00d7 \u6784\u56fe\u6b63\u4ea4\uff08S9\uff09",
+          "\u5f8b\u5341 \u00b7 \u7981\u533a\u7ee7\u627f\uff08S10\uff09",
+          "\u5f8b\u5341\u4e00 \u00b7 3 \u7c73\u6d4b\u8bd5\uff08S11\uff09",
+          "3 \u00b7 \u666f\u522b\u4f53\u7cfb\uff1a\u4e94\u6863 zoom \u6620\u5c04",
+          "\u76f8\u90bb\u955c\u5934\u7684\u666f\u522b\u8282\u594f",
+          "4 \u00b7 \u80fd\u91cf\u9aa8\u67b6\uff1a\u5148\u5212\u8d70 hold \u9884\u7b97\uff0c\u518d\u6392\u52a8\u6548",
+          "5 \u00b7 \u8f7b\u91cf\u5206\u955c\u5361\uff1a\u672c\u6587\u4ef6\u7684\u4ea4\u4ed8\u7269",
+          "\u793a\u4f8b\uff1a12s \u4ea7\u54c1\u52a8\u753b\u5b8c\u6574\u5206\u955c\u8868",
+          "6 \u00b7 Thumbnail Pass\uff1a\u52a8\u624b\u5199\u6b63\u5f0f\u4ee3\u7801\u524d\u7684\u7070\u76d2\u9a8c\u8bc1",
+          "7 \u00b7 \u8f6c\u573a\u51b3\u7b56\u8868\uff1a\u6309\u53d9\u4e8b\u5173\u7cfb\u9009\u578b",
+          "8 \u00b7 \u5f00\u5de5 checklist\uff08\u5206\u955c\u5b8c\u6210\u7684\u5b9a\u4e49\uff09"
+        ],
+        "source_file": "references/storyboard-basics.md"
+      },
+      "selected_sources": [
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 23987,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"8ebc76df32901da54909cc8d7e303f4a3063f3144cc046e8e588b7eb9204a1e7\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-2868a5c59eb6.bin",
+              "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+              "sha256": "b8775952ae96bbe3e99f080520896fa9d853d324733c771da5f45da865b6f884",
+              "status": 200
+            },
+            {
+              "bytes": 1086,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"70d78a868f5a048f29ddf0ade7dc1e7f4233a278d3c24ec3a7b485837fd2c631\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-license-dabccf2e8d38.bin",
+              "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/LICENSE",
+              "sha256": "6d6a2a9caf2e6d2b76974050427053b2892d8aa4c33fd168ce63a537fcee9d96",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Storyboard Basics \u00b7 \u8f7b\u91cf\u5206\u955c\u4e0e\u753b\u9762\u6784\u56fe",
+            "0 \u00b7 \u5b9a\u4f4d\uff1a\u4e0e launch-film \u5bfc\u6f14\u7a3f\u7684\u5206\u5de5",
+            "1 \u00b7 \u6838\u5fc3\u7acb\u8bba\uff1a\u6bcf\u4e00\u955c\u5148\u662f\u4e00\u5f20\u4f1a\u52a8\u7684\u5c01\u9762",
+            "2 \u00b7 \u5b9a\u683c\u5e27\u5341\u4e00\u5f8b",
+            "\u5f8b\u4e00 \u00b7 \u5c01\u9762\u6d4b\u8bd5\uff08S1\uff09",
+            "\u5f8b\u4e8c \u00b7 zoom \u7ec8\u70b9\u5fc5\u987b\u662f\u5177\u8c61\u951a\u70b9\uff08S2\uff09",
+            "\u5f8b\u4e09 \u00b7 \u89c6\u7ebf\u4e0e\u7bad\u5934 = \u955c\u5934\u8fd0\u52a8\u811a\u672c\uff08S3\uff09",
+            "\u5f8b\u56db \u00b7 \u5b57\u753b\u5206\u5de5\uff0c\u4e24\u6761\u8f68\uff08S4 + \u914d\u56fe\u5e93 C \u7cfb\u5217\uff09",
+            "\u5f8b\u4e94 \u00b7 \u767e\u5206\u6bd4\u7a7a\u95f4\u8bed\u8a00\uff08S5\uff09",
+            "\u5f8b\u516d \u00b7 \u524d\u4e2d\u540e\u666f = parallax \u4e09\u5c42\uff08S6\uff09",
+            "\u5f8b\u4e03 \u00b7 setup \u2192 payoff\uff0c\u5f00\u573a\u5e27\u6446\u60ac\u5ff5\uff08S7\uff09",
+            "\u5f8b\u516b \u00b7 \u7269\u5316 + \u8fc7\u7a0b\u611f\u9009\u610f\u8c61\uff08S8\uff09",
+            "\u5f8b\u4e5d \u00b7 \u98ce\u683c \u00d7 \u6784\u56fe\u6b63\u4ea4\uff08S9\uff09",
+            "\u5f8b\u5341 \u00b7 \u7981\u533a\u7ee7\u627f\uff08S10\uff09",
+            "\u5f8b\u5341\u4e00 \u00b7 3 \u7c73\u6d4b\u8bd5\uff08S11\uff09",
+            "3 \u00b7 \u666f\u522b\u4f53\u7cfb\uff1a\u4e94\u6863 zoom \u6620\u5c04",
+            "\u76f8\u90bb\u955c\u5934\u7684\u666f\u522b\u8282\u594f",
+            "4 \u00b7 \u80fd\u91cf\u9aa8\u67b6\uff1a\u5148\u5212\u8d70 hold \u9884\u7b97\uff0c\u518d\u6392\u52a8\u6548",
+            "5 \u00b7 \u8f7b\u91cf\u5206\u955c\u5361\uff1a\u672c\u6587\u4ef6\u7684\u4ea4\u4ed8\u7269",
+            "\u793a\u4f8b\uff1a12s \u4ea7\u54c1\u52a8\u753b\u5b8c\u6574\u5206\u955c\u8868",
+            "6 \u00b7 Thumbnail Pass\uff1a\u52a8\u624b\u5199\u6b63\u5f0f\u4ee3\u7801\u524d\u7684\u7070\u76d2\u9a8c\u8bc1",
+            "7 \u00b7 \u8f6c\u573a\u51b3\u7b56\u8868\uff1a\u6309\u53d9\u4e8b\u5173\u7cfb\u9009\u578b",
+            "8 \u00b7 \u5f00\u5de5 checklist\uff08\u5206\u955c\u5b8c\u6210\u7684\u5b9a\u4e49\uff09"
+          ],
+          "source_file": "references/storyboard-basics.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 7480,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"a89b209ade8510327d9f19c8d8ee0530a1126ca476f534791b7ec9e04b66cd04\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-source-f3caaca9b175.bin",
+              "requested_url": "https://raw.githubusercontent.com/alchaincyf/huashu-design/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+              "sha256": "aad0356ea5f1c98c5ad11e7ef238b8e56d357165de7117d6702a946e69d79bdc",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "HyperFrames \u6e32\u67d3\u540e\u7aef \u00b7 \u9009\u578b\u8fb9\u754c\u4e0e\u64cd\u4f5c\u624b\u518c",
+            "\u9009\u578b\u8fb9\u754c\uff08\u5148\u770b\u8fd9\u5f20\u8868\u518d\u5f00\u5de5\uff09",
+            "\u9879\u76ee\u811a\u624b\u67b6",
+            "\u5408\u6210\u5951\u7ea6\u901f\u67e5\uff08\u5b8c\u6574\u7248\u8bfb hyperframes-core\uff09",
+            "\u8001 demo \u8fc1\u79fb \u00b7 \u9002\u914d\u5668\u914d\u65b9\uff08\u5b9e\u6d4b 20-30 \u5206\u949f/\u4e2a\uff09",
+            "\u6821\u9a8c\u4e0e\u6e32\u67d3",
+            "\u900f\u660e\u901a\u9053\uff08overlay\u82b1\u5b57/\u8d34\u7247\u76f4\u63a5\u53e0\u526a\u8f91\u8f68\uff09",
+            "\u97f3\u9891",
+            "pitfalls \u589e\u91cf\uff08\u76f8\u5bf9\u81ea\u7814\u7ba1\u7ebf\uff09"
+          ],
+          "source_file": "references/hyperframes-backend.md"
+        }
+      ],
+      "url_receipts": [
+        {
+          "bytes": 386524,
+          "error": null,
+          "final_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"6d6e4570d9b8f6d4a01dba28733f93c9\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-page-0.bin",
+          "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+          "sha256": "d369782e8d976dc89a1a5c38c50cc5604f571ed9e235c6d4eed3c6bbed0d9eb3",
+          "status": 200
+        },
+        {
+          "bytes": 284282,
+          "error": null,
+          "final_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"e5f005bc9d81f23746714ce381d090ff\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/huashu-storyboard-page-1.bin",
+          "requested_url": "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md",
+          "sha256": "15e55e6e3f8815a6d85691126c95636b293541f6fea1ce3a06abbe415f9ffb0e",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
+        "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md"
+      ]
+    },
+    {
+      "id": "hyperframes-authoring",
+      "retrieved_at": "2026-10-27T13:12:03.175357+00:00",
+      "selected": {
+        "license_file": [
+          "LICENSE"
+        ],
+        "receipts": [
+          {
+            "bytes": 12428,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"d3a59c504f9fd75974ac7c9cbb85c7da0056ca0e6d64d6dc02c4fd5b642710db\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-49b6a5b438b1.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+            "sha256": "2678de13c99544304935b0089dd8d0775ff41094b03dbda4c5708a3850ebb9fd",
+            "status": 200
+          },
+          {
+            "bytes": 10763,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"b7d47e289471cc8970f711c0845844eb3153408adc3b1a5592fc6a106219f507\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-license-d67436b56d03.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+            "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+            "status": 200
+          },
+          {
+            "bytes": 9617,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"82fea28685d2f9d7956610e48ea8253cc54d6f3c1c5c1676bf2b6d5441ec3edb\"",
+              "last_modified": null
+            },
+            "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-4569052b8d6d.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+            "sha256": "69bcc7d581d4dd6b3c22bed94dc2ad835c394026f884515f15d382fcad5bb018",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "@hyperframes/producer",
+          "Install",
+          "Usage",
+          "Render a video",
+          "Run as an HTTP server",
+          "Configuration",
+          "Transparent Video Output",
+          "Example",
+          "What \"transparent background\" means here",
+          "Caveats",
+          "Authoring transparent compositions",
+          "HLS Output",
+          "Distributed rendering",
+          "How it works",
+          "Where each step lives",
+          "Documentation",
+          "Related packages"
+        ],
+        "source_file": "packages/producer/README.md"
+      },
+      "selected_sources": [
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 12428,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"d3a59c504f9fd75974ac7c9cbb85c7da0056ca0e6d64d6dc02c4fd5b642710db\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-49b6a5b438b1.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+              "sha256": "2678de13c99544304935b0089dd8d0775ff41094b03dbda4c5708a3850ebb9fd",
+              "status": 200
+            },
+            {
+              "bytes": 10763,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"b7d47e289471cc8970f711c0845844eb3153408adc3b1a5592fc6a106219f507\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-license-d67436b56d03.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/LICENSE",
+              "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "@hyperframes/producer",
+            "Install",
+            "Usage",
+            "Render a video",
+            "Run as an HTTP server",
+            "Configuration",
+            "Transparent Video Output",
+            "Example",
+            "What \"transparent background\" means here",
+            "Caveats",
+            "Authoring transparent compositions",
+            "HLS Output",
+            "Distributed rendering",
+            "How it works",
+            "Where each step lives",
+            "Documentation",
+            "Related packages"
+          ],
+          "source_file": "packages/producer/README.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 9617,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"82fea28685d2f9d7956610e48ea8253cc54d6f3c1c5c1676bf2b6d5441ec3edb\"",
+                "last_modified": null
+              },
+              "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-source-4569052b8d6d.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+              "sha256": "69bcc7d581d4dd6b3c22bed94dc2ad835c394026f884515f15d382fcad5bb018",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Start here",
+            "Project and environment problems",
+            "\"No composition found\"",
+            "\"FFmpeg not found\"",
+            "Download a 64-bit Windows build from:",
+            "https://ffmpeg.org/download.html#build-windows",
+            "Then add its bin directory to PATH.",
+            "Docker render will not start",
+            "Preview checks an unexpected port range",
+            "Media problems",
+            "Video is black in preview but renders",
+            "Video, image, or audio is missing",
+            "Preview stutters",
+            "Animation and composition mistakes",
+            "A video freezes while its box animates",
+            "Media plays out of sync",
+            "The composition ends too early",
+            "A timed element is always visible",
+            "Animation is static",
+            "Changing root duration from a variable does nothing",
+            "Render problems",
+            "The render looks different from preview",
+            "Every render takes about 45 seconds longer than expected",
+            "The render is slow",
+            "The render is slow under WSL2",
+            "then, in Windows PowerShell:",
+            "Expected HDR but received SDR",
+            "Still stuck?",
+            "Related topics"
+          ],
+          "source_file": "docs/guides/troubleshooting.mdx"
+        }
+      ],
+      "url_receipts": [
+        {
+          "bytes": 342387,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"fd0c9218f26c24e77049f35c96cabaf2\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-page-0.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+          "sha256": "ab18f86d71713934ec6a14b98461cebc518f62a9be6c36be6c507298fe3f583a",
+          "status": 200
+        },
+        {
+          "bytes": 340132,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"49f12bbcf511661922fdf7241ab76423\"",
+            "last_modified": null
+          },
+          "raw_path": "/tmp/mirket-reference-raw-2026-10-27/hyperframes-authoring-page-1.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx",
+          "sha256": "4b877c825a23ef31f82ed91ace166848e46e5dc6a1d5125591a063600dc66985",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
+        "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx"
+      ]
     }
   ],
   "schema": 1,
-  "source_count": 58,
+  "source_count": 60,
   "source_plan": "planning/references.md"
 }

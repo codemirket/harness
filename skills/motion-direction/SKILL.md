@@ -15,6 +15,8 @@ Describe timing in milliseconds or seconds and anchor beats to events or a timel
 
 Create a small playable specimen or timed storyboard with the actual type/assets. Inspect pacing at normal speed and representative frames; test whether the sequence remains understandable when interrupted, replayed, resized or reduced. Use qualified runtime capabilities for any Mirket playback/export claim.
 
+For a multi-beat sequence, read [storyboard and transition direction](references/storyboard-and-transitions.md) before implementation. Use its compact shot card when it clarifies focal subject, setup/payoff, reading holds, motivated camera movement or continuity between scenes. It is a decision aid, not a requirement for three directions, fixed quotas, hard-cut bans or extra approvals.
+
 A storyboard specifies a sequence but cannot prove its feel at playback speed. Retain that distinction if playback is unavailable. Check reading time, focus continuity, loop seams and whether motion hides an actionable or task-critical element. A reduced-motion version may use immediate state changes, static composition or a restrained transition; preserve the same information and controls.
 
 For a concrete unresolved choreography question, consult only the relevant portion of the approved pinned [LottieFiles motion](https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772) or [Kyle motion principles](https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3) source. These are comparison locators, not installed players, adopted prose or authority to add a dependency.

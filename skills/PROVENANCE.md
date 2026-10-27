@@ -1,9 +1,9 @@
 # Native skill provenance
 
-All 67 native skill bodies and their 335 public development cases are independently
-authored for this repository. The approved local catalog and implementation
-contracts supply the outcome/authority boundaries; no external prose, code,
-workflow, asset or font has been copied or adapted into these bodies.
+All 67 native skill bodies and their 335 public development cases are authored
+for this repository. Eight project bodies are classified method-adapted because
+they retain independently worded techniques from reviewed source families; no
+external prose, code, workflow, asset or font has been copied into these bodies.
 
 The original text is covered by the repository [MIT license](../LICENSE).
 External source selection is a discovery/comparison record, not permission to
@@ -73,9 +73,10 @@ model behavior by themselves.
 
 ## Rights and adaptation boundary
 
-Every current body is classified independently-authored. The reference index below
-preserves all 58 retained families and URLs from the local plan solely for
-comparison or link-only review. URLs with moving revisions are not source pins.
+Most bodies are independently-authored; eight project bodies are explicitly
+classified method-adapted with reviewed, independently worded mappings. The
+reference index preserves all selected families and URLs for comparison or
+focused method review. URLs with moving revisions are not source pins.
 No framework, executable, package, account, provider or runtime is adopted by a
 skill or a reference. Runtime availability must be qualified independently.
 
@@ -326,30 +327,36 @@ Their accepted outcomes remain covered by these native boundaries:
 
 ### art-direction
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [hallmark](#reference-hallmark), [taste](#reference-taste), [owl-concepts](#reference-owl-concepts), [mengto-inspiration](#reference-mengto-inspiration), [better-design](#reference-better-design).
+- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser, design.openpencil, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: art-direction-positive-1, art-direction-positive-2, art-direction-negative-1, art-direction-negative-2, art-direction-mixed-1. Not run.
 
+- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+
 ### interface-composition
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [hallmark](#reference-hallmark), [taste](#reference-taste), [emil](#reference-emil), [react-bits](#reference-react-bits), [canvas-ui](#reference-canvas-ui), [geist-code](#reference-geist-code), [atlassian](#reference-atlassian), [fluent](#reference-fluent), [reshaped](#reference-reshaped), [govuk](#reference-govuk), [vanilla-publishing](#reference-vanilla-publishing), [guardian](#reference-guardian), [spectrum](#reference-spectrum).
+- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser, design.openpencil, design.tokens, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: interface-composition-positive-1, interface-composition-positive-2, interface-composition-negative-1, interface-composition-negative-2, interface-composition-mixed-1. Not run.
 
+- Method mapping: Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+
 ### design-critique
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [impeccable](#reference-impeccable), [design-anatomy](#reference-design-anatomy), [gstack](#reference-gstack), [owl-concepts](#reference-owl-concepts).
+- Reviewed method families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: design-critique-positive-1, design-critique-positive-2, design-critique-negative-1, design-critique-negative-2, design-critique-mixed-1. Not run.
+
+- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### design-systems
 
@@ -389,11 +396,13 @@ Their accepted outcomes remain covered by these native boundaries:
 
 ### vector-art
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [diagram-design](#reference-diagram-design), [react-bits](#reference-react-bits), [geist-code](#reference-geist-code), [fluent](#reference-fluent), [spectrum](#reference-spectrum).
+- Reviewed method families: [mengto-inspiration](#reference-mengto-inspiration).
 - Required qualified capabilities: design.vector.
 - Planned acceptance IDs: vector-art-positive-1, vector-art-positive-2, vector-art-negative-1, vector-art-negative-2, vector-art-mixed-1. Not run.
+
+- Method mapping: MengTo pinned illustration-body construction methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### raster-art
 
@@ -431,30 +440,36 @@ Their accepted outcomes remain covered by these native boundaries:
 
 ### motion-direction
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [emil](#reference-emil), [kyle-motion](#reference-kyle-motion), [lottiefiles-motion](#reference-lottiefiles-motion), [kingy-motion](#reference-kingy-motion).
+- Reviewed method families: [huashu-storyboard](#reference-huashu-storyboard).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser, video; use only when the actual task needs them.
 - Planned acceptance IDs: motion-direction-positive-1, motion-direction-positive-2, motion-direction-negative-1, motion-direction-negative-2, motion-direction-mixed-1. Not run.
 
+- Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+
 ### ui-motion
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [anime](#reference-anime), [motion](#reference-motion), [gsap-official](#reference-gsap-official), [animate.css](#reference-animatecss), [motion-primitives](#reference-motion-primitives), [canvas-ui](#reference-canvas-ui).
+- Reviewed method families: [emil](#reference-emil).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: ui-motion-positive-1, ui-motion-positive-2, ui-motion-negative-1, ui-motion-negative-2, ui-motion-mixed-1. Not run.
 
+- Method mapping: Emil animation-decision and review-format methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+
 ### scroll-motion
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [scroll-craft](#reference-scroll-craft), [gsap-official](#reference-gsap-official), [emil](#reference-emil), [kingy-motion](#reference-kingy-motion).
+- Reviewed method families: [emil](#reference-emil).
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: scroll-motion-positive-1, scroll-motion-positive-2, scroll-motion-negative-1, scroll-motion-negative-2, scroll-motion-mixed-1. Not run.
+
+- Method mapping: Emil animation-decision methods are explicitly mapped for scroll context in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### svg-lottie
 
@@ -467,12 +482,14 @@ Their accepted outcomes remain covered by these native boundaries:
 
 ### video-production
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [remotion](#reference-remotion), [kingy-motion](#reference-kingy-motion).
+- Reviewed method families: [hyperframes-authoring](#reference-hyperframes-authoring).
 - Required qualified capabilities: video.
 - Conditional operation boundaries: design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
+
+- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### customer-research
 
@@ -844,7 +861,7 @@ Their accepted outcomes remain covered by these native boundaries:
 <a id="reference-hallmark"></a>
 ### Reference: hallmark
 
-- Classification: comparison-only; retained comparison locator, no adapted section.
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / hallmark.
 - [Retained source 1](https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690).
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
@@ -853,7 +870,7 @@ Their accepted outcomes remain covered by these native boundaries:
 <a id="reference-taste"></a>
 ### Reference: taste
 
-- Classification: comparison-only; retained comparison locator, no adapted section.
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / taste.
 - [Retained source 1](https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246).
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
@@ -862,7 +879,7 @@ Their accepted outcomes remain covered by these native boundaries:
 <a id="reference-emil"></a>
 ### Reference: emil
 
-- Classification: comparison-only; retained comparison locator, no adapted section.
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / emil.
 - [Retained source 1](https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d).
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
@@ -871,7 +888,7 @@ Their accepted outcomes remain covered by these native boundaries:
 <a id="reference-impeccable"></a>
 ### Reference: impeccable
 
-- Classification: comparison-only; retained comparison locator, no adapted section.
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / impeccable.
 - [Retained source 1](https://github.com/pbakaus/impeccable/tree/4e8504f10106a1cd7a99e37a401aa368d1d55576).
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
@@ -934,7 +951,7 @@ Their accepted outcomes remain covered by these native boundaries:
 <a id="reference-mengto-inspiration"></a>
 ### Reference: mengto-inspiration
 
-- Classification: comparison-only; retained comparison locator, no adapted section.
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
 - Source selection: planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration.
 - [Retained source 1](https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93).
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
@@ -1219,7 +1236,28 @@ Their accepted outcomes remain covered by these native boundaries:
 - Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.
 - Removed assumptions: no upstream orchestration, bootstrap/helper execution, provider/account choice, package installation or branded asset/font adoption.
 
+<a id="reference-huashu-storyboard"></a>
+### Reference: huashu-storyboard
+
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
+- Source selection: planning/references.md / focused design and video method adoption / huashu-storyboard.
+- Retained source 1: https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md.
+- Retained source 2: https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md.
+- Terms/currentness: pinned retrieval and license receipts are retained in planning/reviews/2026-10-27/reference-audit.json; exact source/section rights govern future use.
+- Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
+
+<a id="reference-hyperframes-authoring"></a>
+### Reference: hyperframes-authoring
+
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
+- Source selection: planning/references.md / focused design and video method adoption / hyperframes-authoring.
+- Retained source 1: https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md.
+- Retained source 2: https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx.
+- Terms/currentness: pinned retrieval and license receipts are retained in planning/reviews/2026-10-27/reference-audit.json; exact source/section rights govern future use.
+- Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
+
+
 <!-- skill-reference-audit:begin -->
-Generated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in planning/reviews/2026-10-27/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream material was adapted into shipped skill bodies.
+Generated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in planning/reviews/2026-10-27/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.
 Audit artifact: planning/reviews/2026-10-27/reference-audit.json; fetch receipts: planning/reviews/2026-10-27/reference-fetches.json
 <!-- skill-reference-audit:end -->

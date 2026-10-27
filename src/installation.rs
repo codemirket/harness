@@ -1784,7 +1784,7 @@ mod tests {
         fs::remove_file(root.join(crate::distribution::MANIFEST_NAME)).unwrap();
         let sources = Path::new(env!("CARGO_MANIFEST_DIR"));
         let catalog = QualifiedCatalog::open(sources).unwrap();
-        for relative in [
+        let catalog_files = [
             "skills/catalog.json".to_owned(),
             "skills/PROVENANCE.md".to_owned(),
         ]
@@ -1795,8 +1795,16 @@ mod tests {
                 .global
                 .iter()
                 .chain(&catalog.catalog.project)
-                .map(|entry| entry.path.clone()),
-        ) {
+                .flat_map(|entry| {
+                    std::iter::once(entry.path.clone()).chain(
+                        entry
+                            .resources
+                            .iter()
+                            .map(|resource| format!("skills/{}/{}", entry.id, resource.path)),
+                    )
+                }),
+        );
+        for relative in catalog_files {
             let destination = root.join(&relative);
             fs::create_dir_all(destination.parent().unwrap()).unwrap();
             fs::copy(sources.join(&relative), &destination).unwrap();
@@ -1890,7 +1898,7 @@ mod tests {
         create_private_directory(&project).unwrap();
         let catalog = QualifiedCatalog::open(Path::new(env!("CARGO_MANIFEST_DIR"))).unwrap();
         let selection =
-            ProjectSelection::resolve(&catalog, &[], &["architecture".into()], &[]).unwrap();
+            ProjectSelection::resolve(&catalog, &[], &["motion-direction".into()], &[]).unwrap();
         selection.save(&project, &catalog).unwrap();
         let home = fixture.0.join("home");
         let result =
@@ -1901,7 +1909,12 @@ mod tests {
         );
         assert!(
             project
-                .join(".agents/skills/architecture/SKILL.md")
+                .join(".agents/skills/motion-direction/SKILL.md")
+                .is_file()
+        );
+        assert!(
+            project
+                .join(".agents/skills/motion-direction/references/storyboard-and-transitions.md")
                 .is_file()
         );
         assert_eq!(
@@ -1923,7 +1936,7 @@ mod tests {
         create_private_directory(&project).unwrap();
         let catalog = QualifiedCatalog::open(Path::new(env!("CARGO_MANIFEST_DIR"))).unwrap();
         let selection =
-            ProjectSelection::resolve(&catalog, &[], &["architecture".into()], &[]).unwrap();
+            ProjectSelection::resolve(&catalog, &[], &["motion-direction".into()], &[]).unwrap();
         selection.save(&project, &catalog).unwrap();
         let home = fixture.0.join("home");
         let error = Installation::setup_codex_inner_with_project(
@@ -1948,6 +1961,11 @@ mod tests {
         assert_eq!(
             project_inspection.release_id.as_deref(),
             Some(release_id.as_str())
+        );
+        assert!(
+            project
+                .join(".agents/skills/motion-direction/references/storyboard-and-transitions.md")
+                .is_file()
         );
         assert_eq!(Installation::doctor_codex(&home, &user).status, "healthy");
     }

@@ -2,7 +2,7 @@
 
 Status: **original source selection and focused review additions approved by the user on 2026-10-24** (decision 77). Architecture, dependencies and implementation remain proposals until separately agreed.
 
-**58 unique selected entries across 59 group memberships:** 52 original sources plus six focused method references in H. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active rewrite catalog. The original harness retains its historical provenance.
+**60 unique selected entries across 61 group memberships:** 52 original sources plus six focused method references in H and two focused design/video method families in I. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active rewrite catalog. The original harness retains its historical provenance.
 
 Selecting a source permits reference review and focused synthesis. It does not adopt its full workflow, code, runtime, dependencies, service or licensing terms. Existing source pins below are inherited evidence locators, not newly validated dependency versions. No upstream content has been copied into this repository.
 
@@ -58,7 +58,7 @@ Selecting a source permits reference review and focused synthesis. It does not a
 | `kyle-motion` | [kylezantos/design-motion-principles](https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3) · `4a9ca879f24a` | Keep |
 | `lottiefiles-motion` | [LottieFiles/motion-design-skill](https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772) · `f9a8a041b851` | Keep |
 | `owl-concepts` | [Owl-Listener/designer-skills](https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224) · `9a6930cf84a8` | Keep |
-| `mengto-inspiration` | [MengTo/Skills](https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93) · `83a47fee32f0` | Keep |
+| `mengto-inspiration` | [MengTo/Skills](https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93) · `83a47fee32f0`; focused illustration bodies at [illustration](https://github.com/MengTo/Skills/tree/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration), [framed-panel](https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-framed-panel/SKILL.md), [flat](https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/illustration/illustration-flat/SKILL.md), and [iterate](https://github.com/MengTo/Skills/blob/a45892d2fdadab75b31fb16abecc02f101b31c43/agent-skills/codex/iterate-until-verified/SKILL.md) · `a45892d2fdad` | Keep |
 | `scroll-craft` | [nateherkai/scroll-craft](https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579) · `75d81f74e836` | Keep |
 | `motion-primitives` | [ibelick/motion-primitives](https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda) · `120f64f6ca60` | Keep |
 | `better-design` | [marvkr/better-design](https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15) · `e146625f3041` | Keep |
@@ -115,6 +115,18 @@ The user's instruction to apply the reviewers’ recommendations authorizes thes
 | `sentry-methods` | [Skill scanner](https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/skill-scanner/SKILL.md), [find bugs](https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/find-bugs/SKILL.md) | Apache-2.0 method reference for contextual verification and support-file/effect review. No scanner execution or uv prerequisite adopted. |
 | `statistical-analysis` | [K-Dense method](https://github.com/K-Dense-AI/scientific-agent-skills/blob/593377bb048752abb0152deab9fbb1083a6087df/skills/statistical-analysis/SKILL.md) | MIT-declared selected method only: design, dependence, missingness, uncertainty and multiplicity. Independently validate examples; no scientific runtime suite or entire catalog. |
 | `wcag` | [WCAG 2.2 quick reference](https://www.w3.org/WAI/WCAG22/quickref/) | Primary criterion-linked accessibility reference, including keyboard/focus/labels/reflow. Link to applicable criteria; follow W3C terms if reproducing text. Automated results alone cannot establish conformance. |
+
+## I — Focused design and video methods added by the 2026-10-27 adoption review
+
+These two families are method references for the existing bounded design/video
+routes. They do not add a renderer, browser, agent runner, installer or global
+skill. Their exact pinned files and licenses are recorded in the focused source
+review and the retained fetch receipts.
+
+| ID | Selected evidence locator | Use and rights boundary |
+| --- | --- | --- |
+| `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
+| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/m3-video-recipient-closure.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
 
 ## Source-to-guide reuse contract
 
