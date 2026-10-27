@@ -9,6 +9,16 @@ never certifies that a person or model actually saw pixels. This is a
 trust-based record-integrity check: a malicious author who rewrites the whole
 packet cannot be detected by this utility.
 
+An optional frozen ``artifact_scope`` limits files below the evidence root.
+Without it, scope is explicitly unrecorded. The resulting inventory observes
+that root only; it does not audit writes elsewhere or establish a sandbox.
+Scope entries permit outputs; they do not require optional outputs to exist.
+
+Recorded repairs require candidate source manifests, preserved snapshots and
+source-bound captures linked through one shared ledger. Resolved/rejected
+findings require explicit dispositions and review references; these establish
+record relationships, not the semantic truth of the reported judgment.
+
 Example::
 
     python3 scripts/check-design-evidence.py --packet review.json --root ./review
@@ -33,7 +43,7 @@ ISO = re.compile(r"^\d{4}-\d{2}-\d{2}T")
 VISUAL_REPORT = "visual_report"
 CHECK_KINDS = {"file", "automated", VISUAL_REPORT}
 SEVERITIES = {"info", "minor", "major", "blocking"}
-BLOCKING_RESOLVED = {"resolved", "closed"}
+FINDING_STATUSES = {"open", "resolved", "rejected"}
 RESET_FIELDS = {"budget", "repair_limit", "repairs_used"}
 PIXEL_CLAIM_FIELDS = {"pixels_seen", "saw_pixels", "pixel_inspection"}
 MOTION_CAPTURE_KINDS = {"preview", "decoded_export"}
@@ -156,6 +166,87 @@ def _digest(path: Path) -> str:
         return digest.hexdigest()
 
 
+def _within_window(moment: datetime, label: str, started: datetime, deadline: datetime) -> None:
+    if not started <= moment <= deadline:
+        raise EvidenceError(f"{label} falls outside the shared budget window")
+
+
+def _validate_scope(packet: dict[str, Any], contract: dict[str, Any], root: Path,
+                    packet_path: Path | None) -> list[dict[str, str]] | None:
+    scope = packet.get("artifact_scope")
+    if scope is None:
+        if "artifact_scope_sha256" in contract:
+            raise EvidenceError("frozen artifact scope is missing")
+        return None
+    scope = _map(scope, "artifact_scope")
+    if set(scope) != {"files", "directories"}:
+        raise EvidenceError("artifact_scope must contain only files and directories")
+    for kind in ("files", "directories"):
+        values = scope[kind]
+        if not isinstance(values, list):
+            raise EvidenceError(f"artifact_scope.{kind} must be an array")
+        seen: set[str] = set()
+        for value in values:
+            value = _text(value, f"artifact_scope.{kind}")
+            if (Path(value).is_absolute() or "\\" in value or ":" in value
+                    or any(part in {"", ".", ".."} for part in value.split("/"))):
+                raise EvidenceError("artifact_scope requires portable relative paths without traversal")
+            if value in seen:
+                raise EvidenceError("artifact_scope contains duplicate paths")
+            seen.add(value)
+    files, directories = set(scope["files"]), set(scope["directories"])
+    if not files and not directories:
+        raise EvidenceError("artifact_scope must permit at least one file or directory")
+    if files & directories:
+        raise EvidenceError("artifact_scope cannot name a path as both file and directory")
+    if contract.get("artifact_scope_sha256") != _canonical_sha(scope):
+        raise EvidenceError("artifact scope changed or has a stale hash")
+
+    # Only the caller's actual packet file is excluded, never a packet-declared
+    # filename that could hide an unrelated output from the inventory.
+    excluded = None
+    if packet_path is not None:
+        try:
+            excluded = packet_path.absolute().relative_to(root).as_posix()
+        except ValueError:
+            pass
+        else:
+            _safe_file(root, excluded, "packet_path")
+
+    def inside_directory(relative: str) -> bool:
+        return any(relative.startswith(directory + "/") for directory in directories)
+
+    def walk_error(error: OSError) -> None:
+        raise EvidenceError(f"cannot enumerate artifact root: {error}") from error
+
+    inventory: list[dict[str, str]] = []
+    for current, child_dirs, child_files in os.walk(root, followlinks=False, onerror=walk_error):
+        for name in sorted(child_dirs + child_files):
+            path = Path(current) / name
+            relative = path.relative_to(root).as_posix()
+            metadata = path.lstat()
+            if stat.S_ISLNK(metadata.st_mode):
+                raise EvidenceError(f"artifact scope traverses a symlink: {relative}")
+            if stat.S_ISDIR(metadata.st_mode):
+                if relative in files:
+                    raise EvidenceError(f"artifact scope declares a directory as a file: {relative}")
+                allowed_parent = any(value.startswith(relative + "/") for value in files | directories)
+                packet_parent = excluded is not None and excluded.startswith(relative + "/")
+                if not (relative in directories or inside_directory(relative) or allowed_parent or packet_parent):
+                    raise EvidenceError(f"directory outside artifact scope: {relative}")
+            elif stat.S_ISREG(metadata.st_mode):
+                if relative in directories:
+                    raise EvidenceError(f"artifact scope declares a file as a directory: {relative}")
+                if relative == excluded:
+                    continue
+                if relative not in files and not inside_directory(relative):
+                    raise EvidenceError(f"file outside artifact scope: {relative}")
+                inventory.append({"path": relative, "sha256": _digest(path)})
+            else:
+                raise EvidenceError(f"artifact scope contains a non-regular entry: {relative}")
+    return sorted(inventory, key=lambda item: item["path"])
+
+
 def _validate_artifact(root: Path, item: Any, label: str, states: dict[str, dict[str, Any]], require_state: bool) -> dict[str, Any]:
     item = _map(item, label)
     artifact_id = _text(item.get("id"), f"{label}.id")
@@ -218,7 +309,192 @@ def _validate_motion(packet: dict[str, Any], contract: dict[str, Any], states: d
     return motion, beat_map
 
 
-def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
+def _validate_lineage(packet: dict[str, Any], root: Path, started: datetime,
+                      deadline: datetime, selected: str) -> dict[str, Any]:
+    """Check record relationships, never the truth of a reported resolution."""
+    candidates = {item["id"]: item for item in packet["candidates"]}
+    repairs = {item["id"]: item for item in packet["budget"]["repairs"]}
+    contract = packet["contract"]
+    parents: dict[str, str] = {}
+    events: dict[str, dict[str, Any]] = {}
+    addressed: dict[str, set[tuple[str, str]]] = {}
+    used: set[str] = set()
+    manifests: dict[str, str] = {}
+    captures = {cid: {cap["id"]: cap for cap in c["captures"]} for cid, c in candidates.items()}
+    findings = {cid: {f["id"]: f for f in c["findings"]} for cid, c in candidates.items()}
+    enabled = bool(repairs) or any("lineage" in c or "source_manifest" in c for c in candidates.values())
+
+    for cid, candidate in candidates.items():
+        if "lineage" not in candidate:
+            continue
+        edge = _map(candidate["lineage"], f"candidate {cid}.lineage")
+        parent = _text(edge.get("parent_candidate_id"), "lineage.parent_candidate_id")
+        if parent not in candidates or parent == cid:
+            raise EvidenceError("lineage has an unknown or self parent")
+        ref = _text(edge.get("repair_ref"), "lineage.repair_ref")
+        if ref not in repairs or ref in used:
+            raise EvidenceError("lineage has an unknown or reused repair event")
+        event = repairs[ref]
+        result_id = event.get("candidate_id") if event["scope"] == "candidate" else event.get("result_candidate_id")
+        if result_id != cid:
+            raise EvidenceError("repair event does not name its derived candidate")
+        parents[cid], events[cid] = parent, event
+        used.add(ref)
+    if used != set(repairs):
+        raise EvidenceError("repair ledger contains an event without candidate lineage")
+
+    def ancestry(cid: str) -> list[str]:
+        chain: list[str] = []
+        while True:
+            if cid in chain:
+                raise EvidenceError("candidate lineage contains a cycle")
+            chain.append(cid)
+            if cid not in parents:
+                return chain
+            cid = parents[cid]
+
+    chains = {cid: ancestry(cid) for cid in candidates}
+    if enabled:
+        for cid, candidate in candidates.items():
+            manifest = _list(candidate.get("source_manifest"), f"candidate {cid}.source_manifest")
+            entries: list[dict[str, str]] = []
+            seen: set[str] = set()
+            for raw in manifest:
+                item = _map(raw, "candidate source entry")
+                path = _text(item.get("path"), "candidate source path")
+                if path in seen:
+                    raise EvidenceError("candidate source manifest has duplicate paths")
+                seen.add(path)
+                digest = _sha(item.get("sha256"), "candidate source sha256")
+                if _digest(_safe_file(root, path, "candidate source")) != digest:
+                    raise EvidenceError("stale candidate source manifest hash")
+                entries.append({"path": path, "sha256": digest})
+            manifest_sha = _canonical_sha(sorted(entries, key=lambda item: item["path"]))
+            if candidate.get("source_manifest_sha256") != manifest_sha:
+                raise EvidenceError("candidate source manifest reference changed")
+            manifests[cid] = manifest_sha
+            if cid not in parents and manifest_sha != contract["source_manifest_sha256"]:
+                raise EvidenceError("root candidate must retain the frozen initial source manifest")
+            snapshots = {s["path"]: s for s in candidate["snapshots"]}
+            if len(snapshots) != len(candidate["snapshots"]):
+                raise EvidenceError("candidate has duplicate source snapshot paths")
+            latest_snapshot = started
+            for entry in entries:
+                snap = snapshots.get(entry["path"])
+                if snap is None or snap["sha256"] != entry["sha256"]:
+                    raise EvidenceError("candidate source lacks its preserved snapshot")
+                moment = _parse_time(snap.get("captured_at"), "source snapshot.captured_at")
+                _within_window(moment, "source snapshot", started, deadline)
+                latest_snapshot = max(latest_snapshot, moment)
+                if cid in events and moment <= _parse_time(events[cid]["at"], "repair.at"):
+                    raise EvidenceError("derived source snapshot must follow its repair event")
+            for capture in candidate["captures"]:
+                if capture.get("source_manifest_sha256") != manifest_sha:
+                    raise EvidenceError("capture is not bound to its candidate source manifest")
+                captured_at = _parse_time(capture["captured_at"], "capture.captured_at")
+                if cid in parents and captured_at <= latest_snapshot:
+                    raise EvidenceError("derived capture must follow its source snapshot")
+                if captured_at < latest_snapshot:
+                    raise EvidenceError("capture predates its source snapshot")
+
+        for cid, parent in parents.items():
+            edge = candidates[cid]["lineage"]
+            if edge.get("parent_source_manifest_sha256") != manifests[parent]:
+                raise EvidenceError("lineage parent source reference changed")
+            moment = _parse_time(events[cid]["at"], "repair.at")
+            for capture in candidates[parent]["captures"]:
+                if moment <= _parse_time(capture["captured_at"], "parent capture.captured_at"):
+                    raise EvidenceError("repair must follow its parent captures")
+            ancestor_paths = {cap["path"] for ancestor in chains[cid][1:]
+                              for cap in candidates[ancestor]["captures"]}
+            if any(cap["path"] in ancestor_paths for cap in candidates[cid]["captures"]):
+                raise EvidenceError("derived candidate reuses an ancestor capture path")
+            refs: set[tuple[str, str]] = set()
+            for raw in _list(edge.get("finding_refs"), "lineage.finding_refs"):
+                ref = _map(raw, "lineage finding reference")
+                owner = _text(ref.get("candidate_id"), "finding reference.candidate_id")
+                fid = _text(ref.get("finding_id"), "finding reference.finding_id")
+                if owner not in chains[cid][1:] or fid not in findings[owner]:
+                    raise EvidenceError("repair finding must belong to an ancestor candidate")
+                if (owner, fid) in refs:
+                    raise EvidenceError("repair contains duplicate finding references")
+                refs.add((owner, fid))
+                finding = findings[owner][fid]
+                if moment <= _parse_time(finding["observed_at"], "finding.observed_at"):
+                    raise EvidenceError("repair must follow its addressed finding")
+                disposition = finding.get("disposition")
+                if isinstance(disposition, dict) and moment >= _parse_time(disposition.get("at"), "disposition.at"):
+                    raise EvidenceError("repair cannot address an already dispositioned finding")
+            addressed[cid] = refs
+
+    resolutions: dict[tuple[str, str], str] = {}
+    disposition_count = 0
+    for owner, by_id in findings.items():
+        for fid, finding in by_id.items():
+            disposition = finding.get("disposition")
+            if finding["status"] == "open":
+                if disposition is not None:
+                    raise EvidenceError("open finding cannot carry a final disposition")
+                continue
+            disposition = _map(disposition, f"finding {fid}.disposition")
+            if disposition.get("kind") != finding["status"]:
+                raise EvidenceError("finding status differs from its disposition")
+            _text(disposition.get("reason"), "disposition.reason")
+            for key in ("brief_sha256", "rubric_sha256"):
+                if disposition.get(key) != contract[key]:
+                    raise EvidenceError("disposition changed its frozen criterion")
+            at = _parse_time(disposition.get("at"), "disposition.at")
+            _within_window(at, "disposition", started, deadline)
+            if at < _parse_time(finding["observed_at"], "finding.observed_at"):
+                raise EvidenceError("disposition predates its finding")
+            evidence = _map(disposition.get("evidence"), "disposition.evidence")
+            target = _text(evidence.get("candidate_id"), "disposition candidate_id")
+            cap_id = _text(evidence.get("capture_ref"), "disposition capture_ref")
+            if target not in candidates or cap_id not in captures[target]:
+                raise EvidenceError("disposition references unknown capture evidence")
+            cap = captures[target][cap_id]
+            check_id = _text(evidence.get("check_ref"), "disposition check_ref")
+            check = next((c for c in candidates[target]["checks"] if c["id"] == check_id), None)
+            if check is None or check.get("capture_ref") != cap_id:
+                raise EvidenceError("disposition review check is not tied to its capture")
+            if check["kind"] == VISUAL_REPORT:
+                review_at = _parse_time(check["reported_at"], "review.reported_at")
+            elif check["kind"] == "automated" and check["result"] == "passed":
+                review_at = _parse_time(check.get("checked_at"), "review.checked_at")
+            else:
+                raise EvidenceError("disposition requires a visual report or passing automated review")
+            _within_window(review_at, "disposition review", started, deadline)
+            if not _parse_time(cap["captured_at"], "capture.captured_at") <= review_at <= at:
+                raise EvidenceError("disposition review must follow capture and precede disposition")
+            before = captures[owner][finding["capture_ref"]]
+            if any(cap.get(key) != before.get(key) for key in ("state_id", "beat_id", "frame")):
+                raise EvidenceError("disposition evidence changes the finding state or beat")
+            if finding["status"] == "rejected":
+                if target != owner or cap_id != finding["capture_ref"]:
+                    raise EvidenceError("rejected finding must retain review of its original capture")
+            else:
+                if target not in parents or owner not in chains[target][1:]:
+                    raise EvidenceError("resolution requires a descendant repair candidate")
+                if (owner, fid) not in addressed[target]:
+                    raise EvidenceError("resolution repair did not address this finding")
+                if disposition.get("repair_ref") != events[target]["id"]:
+                    raise EvidenceError("resolution references the wrong repair event")
+                resolutions[(owner, fid)] = target
+            disposition_count += 1
+
+    remaining: list[dict[str, str]] = []
+    for owner in chains[selected]:
+        for fid, finding in findings[owner].items():
+            effective = finding["status"] == "rejected" or resolutions.get((owner, fid)) in chains[selected]
+            if not effective:
+                remaining.append({"candidate_id": owner, "finding_id": fid, "severity": finding["severity"]})
+                if finding["severity"] == "blocking":
+                    raise EvidenceError("selected lineage retains an unresolved blocking finding")
+    return {"repair_lineage": "checked" if enabled else "not_applicable_no_repairs",
+            "disposition_count": disposition_count, "remaining_findings": remaining}
+
+
+def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -> dict[str, Any]:
     packet = _map(packet, "packet")
     _scan_for_fake_verified(packet)
     if packet.get("schema_version") != 1:
@@ -240,6 +516,7 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
         raise EvidenceError("contract.task_id does not match task.id")
     if contract.get("brief_sha256") != hashlib.sha256(brief.encode("utf-8")).hexdigest():
         raise EvidenceError("frozen task brief hash does not match")
+    inventory = _validate_scope(packet, contract, root, packet_path)
 
     rubric = _map(packet.get("rubric"), "rubric")
     rubric_id = _text(rubric.get("id"), "rubric.id")
@@ -348,6 +625,7 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
                 raise EvidenceError(f"candidate {candidate_id} has duplicate snapshot ids")
             snapshot_ids.add(data["id"])
         capture_ids: set[str] = set()
+        capture_times: dict[str, datetime] = {}
         capture_states: set[str] = set()
         artifact_states: dict[str, str] = {}
         motion_artifacts: dict[str, dict[str, set[str]]] = {}
@@ -357,6 +635,9 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
             if data["id"] in capture_ids:
                 raise EvidenceError(f"candidate {candidate_id} has duplicate capture ids")
             capture_ids.add(data["id"])
+            captured = _parse_time(capture["captured_at"], f"capture {data['id']}.captured_at")
+            _within_window(captured, f"capture {data['id']}", started, deadline)
+            capture_times[data["id"]] = captured
             capture_states.add(capture["state_id"])
             prior_state = artifact_states.get(data["path"])
             if prior_state is not None and prior_state != capture["state_id"]:
@@ -405,19 +686,29 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
             if finding.get("capture_ref") not in capture_ids:
                 raise EvidenceError(f"finding {finding_id} is not tied to a capture")
             _text(finding.get("location"), f"finding {finding_id}.location")
-            _parse_time(finding.get("observed_at"), f"finding {finding_id}.observed_at")
+            observed = _parse_time(finding.get("observed_at"), f"finding {finding_id}.observed_at")
+            _within_window(observed, f"finding {finding_id}", started, deadline)
+            if observed < capture_times[finding["capture_ref"]]:
+                raise EvidenceError(f"finding {finding_id} predates its capture")
             _text(finding.get("consequence"), f"finding {finding_id}.consequence")
             severity = _text(finding.get("severity"), f"finding {finding_id}.severity")
             status = _text(finding.get("status"), f"finding {finding_id}.status")
             if severity not in SEVERITIES:
                 raise EvidenceError(f"finding {finding_id} has an unknown severity")
-            if severity == "blocking" and status not in BLOCKING_RESOLVED:
+            if status not in FINDING_STATUSES:
+                raise EvidenceError(f"finding {finding_id} has an unknown status; use open, resolved or rejected")
+            if severity == "blocking" and status == "open":
                 unresolved_blocking = True
 
         checks = _list(candidate.get("checks"), f"candidate {candidate_id}.checks")
         failed_check = False
+        check_ids: set[str] = set()
         for check_index, raw_check in enumerate(checks):
             check = _map(raw_check, f"candidate {candidate_id}.checks[{check_index}]")
+            check_id = _text(check.get("id"), "check.id")
+            if check_id in check_ids:
+                raise EvidenceError("candidate has duplicate check ids")
+            check_ids.add(check_id)
             kind = _text(check.get("kind"), f"candidate {candidate_id}.checks[{check_index}].kind")
             if kind not in CHECK_KINDS:
                 raise EvidenceError(f"candidate {candidate_id} has an unknown check kind")
@@ -427,7 +718,10 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
                 if check.get("capture_ref") not in capture_ids:
                     raise EvidenceError("visual_report must reference a capture")
                 _text(check.get("reported_by"), "visual_report.reported_by")
-                _parse_time(check.get("reported_at"), "visual_report.reported_at")
+                reported = _parse_time(check.get("reported_at"), "visual_report.reported_at")
+                _within_window(reported, "visual_report", started, deadline)
+                if reported < capture_times[check["capture_ref"]]:
+                    raise EvidenceError("visual_report predates its capture")
                 _text(check.get("statement"), "visual_report.statement")
                 if "result" in check or "evidence" in check:
                     raise EvidenceError("visual_report cannot masquerade as a file/automated pass")
@@ -449,7 +743,9 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
             raise EvidenceError(f"repair names an unknown candidate: {candidate_ref}")
     if len(selected) != 1:
         raise EvidenceError("exactly one candidate must be selected")
+    lineage = _validate_lineage(packet, root, started, deadline, selected[0])
     return {
+        **lineage,
         "valid": True,
         "packet_id": packet["packet_id"],
         "task_id": task_id,
@@ -461,13 +757,16 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
         "visual_inspection": "reported_only; pixels_seen_not_certified",
         "source_manifest_sha256": manifest_sha,
         "rubric_sha256": rubric_sha,
+        "artifact_scope": "unrecorded" if inventory is None else "checked_against_frozen_allowlist",
+        "artifact_inventory": inventory,
+        "artifact_inventory_sha256": None if inventory is None else _canonical_sha(inventory),
     }
 
 
-def validate_packet(packet: Any, root: Path) -> dict[str, Any]:
+def validate_packet(packet: Any, root: Path, *, packet_path: Path | None = None) -> dict[str, Any]:
     """Validate a loaded packet against files below ``root``."""
 
-    return _validate_packet(packet, Path(root))
+    return _validate_packet(packet, Path(root), packet_path)
 
 
 def main() -> None:
@@ -481,7 +780,7 @@ def main() -> None:
         packet = json.loads(args.packet.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise EvidenceError(f"cannot read packet: {exc}") from exc
-    result = validate_packet(packet, args.root)
+    result = validate_packet(packet, args.root, packet_path=args.packet)
     print(json.dumps(result, sort_keys=True))
 
 
