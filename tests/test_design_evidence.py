@@ -32,6 +32,7 @@ class DesignEvidenceTests(unittest.TestCase):
         (self.root / "artifacts").mkdir()
         (self.root / "artifacts" / "candidate.svg").write_text("<svg/>\n", encoding="utf-8")
         (self.root / "artifacts" / "candidate.png").write_bytes(b"candidate-pixels")
+        (self.root / "artifacts" / "candidate-export.png").write_bytes(b"candidate-pixels")
         self.packet = self.make_packet()
 
     def tearDown(self) -> None:
@@ -99,7 +100,11 @@ class DesignEvidenceTests(unittest.TestCase):
         preview = self.packet["candidates"][0]["captures"][0]
         preview.update({"beat_id": "intro", "frame": 0, "capture_kind": "preview"})
         export = json.loads(json.dumps(preview))
-        export.update({"id": "capture-export", "capture_kind": "decoded_export"})
+        export.update({
+            "id": "capture-export", "path": "artifacts/candidate-export.png",
+            "sha256": sha((self.root / "artifacts/candidate-export.png").read_bytes()),
+            "capture_kind": "decoded_export",
+        })
         self.packet["candidates"][0]["captures"].append(export)
 
     def test_valid_packet_reports_visual_attestation_without_certifying_pixels(self) -> None:
@@ -144,6 +149,15 @@ class DesignEvidenceTests(unittest.TestCase):
         self.packet = self.make_packet()
         self.packet["candidates"][0]["captures"][0]["route_intent"] = "/wrong"
         self.assert_refused(message="route_intent differs")
+
+    def test_distinct_states_cannot_reuse_one_artifact_path(self) -> None:
+        state = {"id": "mobile", "route_intent": "/empty", "viewport": {"width": 390, "height": 844}, "expected": "mobile empty illustration"}
+        self.packet["states"].append(state)
+        self.packet["contract"]["states_sha256"] = MODULE._canonical_sha(self.packet["states"])
+        reused = json.loads(json.dumps(self.packet["candidates"][0]["captures"][0]))
+        reused.update({"id": "capture-mobile", "state_id": "mobile", "viewport": state["viewport"], "captured_at": "2026-10-27T09:21:00+03:00"})
+        self.packet["candidates"][0]["captures"].append(reused)
+        self.assert_refused(message="reuses one artifact path across states")
 
     def test_fake_verified_enum_and_pixel_seen_claim_are_rejected(self) -> None:
         self.packet["candidates"][0]["status"] = "verified"
@@ -203,10 +217,30 @@ class DesignEvidenceTests(unittest.TestCase):
         self.packet["candidates"][0]["captures"].pop()
         self.assert_refused(message="capture counterpart")
 
+    def test_motion_parity_rejects_preview_export_path_reuse_but_allows_equal_hashes(self) -> None:
+        self.add_motion_evidence()
+        self.assertEqual(
+            self.packet["candidates"][0]["captures"][0]["sha256"],
+            self.packet["candidates"][0]["captures"][1]["sha256"],
+        )
+        self.assertTrue(MODULE.validate_packet(self.packet, self.root)["valid"])
+        self.packet["candidates"][0]["captures"][1]["path"] = "artifacts/candidate.png"
+        self.assert_refused(message="reuses one artifact path for preview and decoded_export")
+
     def test_motion_capture_frame_must_match_frozen_beat(self) -> None:
         self.add_motion_evidence()
         self.packet["candidates"][0]["captures"][0]["frame"] = 1
         self.assert_refused(message="frame does not match")
+
+    def test_motion_allows_multiple_distinct_captures_of_one_kind(self) -> None:
+        self.add_motion_evidence()
+        extra = dict(self.packet["candidates"][0]["captures"][0])
+        extra.update({"id": "preview-again", "path": "artifacts/preview-again.png"})
+        (self.root / extra["path"]).write_bytes((self.root / "artifacts/candidate.png").read_bytes())
+        self.packet["candidates"][0]["captures"].append(extra)
+        self.assertTrue(MODULE.validate_packet(self.packet, self.root)["valid"])
+        self.packet["candidates"][0]["captures"][1]["path"] = extra["path"]
+        self.assert_refused(message="reuses one artifact path for preview and decoded_export")
 
     def test_motion_rejects_invalid_units_and_bounds(self) -> None:
         self.add_motion_evidence()

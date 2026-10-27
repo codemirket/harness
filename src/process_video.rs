@@ -2,9 +2,7 @@
 //! owned group cleanup; publication belongs exclusively to ArtifactPlan.
 #[cfg(test)]
 use crate::engine::revision;
-use crate::process::{
-    AdapterError, OwnedChild, cancelled, drain_stderr, read_frame, validate_job_dir,
-};
+use crate::process::{OwnedChild, cancelled, drain_stderr, read_frame, validate_job_dir};
 use crate::video::*;
 use serde::Deserialize;
 use serde_json::Value;
@@ -150,13 +148,83 @@ enum Reply {
         job_id: Option<String>,
         code: String,
         output_may_exist: bool,
+        #[serde(default)]
+        diagnostics: Vec<VideoDiagnostic>,
     },
 }
-fn unknown(message: impl Into<String>) -> AdapterError {
-    AdapterError {
+
+#[derive(Debug)]
+pub struct VideoAdapterError {
+    pub message: String,
+    pub cleanup_confirmed: bool,
+    pub diagnostics: Vec<VideoDiagnostic>,
+}
+impl std::fmt::Display for VideoAdapterError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.message)
+    }
+}
+impl std::error::Error for VideoAdapterError {}
+impl From<String> for VideoAdapterError {
+    fn from(message: String) -> Self {
+        Self {
+            message,
+            cleanup_confirmed: true,
+            diagnostics: vec![],
+        }
+    }
+}
+impl From<&str> for VideoAdapterError {
+    fn from(message: &str) -> Self {
+        message.to_owned().into()
+    }
+}
+fn unknown(message: impl Into<String>) -> VideoAdapterError {
+    VideoAdapterError {
         message: message.into(),
         cleanup_confirmed: false,
+        diagnostics: vec![],
     }
+}
+
+fn validate_diagnostics(items: &[VideoDiagnostic], request: &VideoRequest) -> Result<(), String> {
+    let identifier = |value: &str, max: usize| {
+        !value.is_empty()
+            && value.len() <= max
+            && value
+                .bytes()
+                .all(|c| c.is_ascii_alphanumeric() || matches!(c, b'_' | b'-' | b'.'))
+    };
+    if items.len() > 16
+        || serde_json::to_vec(items)
+            .map_err(|_| "invalid video diagnostics")?
+            .len()
+            > 8192
+    {
+        return Err("video diagnostics exceed their bounded contract".into());
+    }
+    for item in items {
+        if !matches!(
+            item.phase.as_str(),
+            "source" | "reference" | "root" | "font" | "caption"
+        ) || !relative(&item.path)
+            || !request
+                .sources
+                .iter()
+                .any(|source| source.path == item.path)
+            || !identifier(&item.field, 64)
+            || !identifier(&item.reason, 100)
+            || item.expected.is_empty()
+            || item.expected.len() > 256
+            || item.expected.chars().any(char::is_control)
+            || item
+                .cue_index
+                .is_some_and(|index| index >= 1000 || item.phase != "caption")
+        {
+            return Err("video diagnostic location/shape differs from selected sources".into());
+        }
+    }
+    Ok(())
 }
 
 pub async fn run_video_adapter(
@@ -164,7 +232,7 @@ pub async fn run_video_adapter(
     request: &VideoRequest,
     cancel: Arc<AtomicBool>,
     deadline: tokio::time::Instant,
-) -> Result<VideoOutcome, AdapterError> {
+) -> Result<VideoOutcome, VideoAdapterError> {
     if !cfg!(target_os = "macos") {
         return Err("video descendant ownership is qualified only for the macOS development route; Windows admission remains blocked".into());
     }
@@ -295,18 +363,25 @@ pub async fn run_video_adapter(
                     job_id,
                     code,
                     output_may_exist,
+                    diagnostics,
                 } => {
                     if protocol_version != 1
                         || release_id != request.release_id
                         || job_id.as_deref() != Some(&request.job_id)
+                        || code.is_empty()
                         || code.len() > 100
                         || !code.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'_')
                     {
                         return Err("video error identity differs".into());
                     }
-                    return Err(format!(
-                        "video adapter refused ({code}); private stage may exist: {output_may_exist}"
-                    ));
+                    validate_diagnostics(&diagnostics, request)?;
+                    return Err(VideoAdapterError {
+                        message: format!(
+                            "video adapter refused ({code}); private stage may exist: {output_may_exist}"
+                        ),
+                        cleanup_confirmed: true,
+                        diagnostics,
+                    });
                 }
             };
             let mut trailing = [0u8; 1];
@@ -320,7 +395,9 @@ pub async fn run_video_adapter(
             }
             Ok(result)
         };
-        let (outcome, stderr) = tokio::try_join!(protocol, drain_stderr(stderr))?;
+        let (outcome, stderr) = tokio::try_join!(protocol, async {
+            drain_stderr(stderr).await.map_err(VideoAdapterError::from)
+        })?;
         if stderr > 16384 {
             return Err("video diagnostics exceed their private byte budget".into());
         }
@@ -328,7 +405,7 @@ pub async fn run_video_adapter(
         // must remain non-detached under the exact checked policy patch.
         Ok(outcome)
     };
-    let result: Result<VideoOutcome, String> = tokio::select! {biased;_ = cancelled(cancel.clone())=>Err("video cancelled".into()),value=tokio::time::timeout_at(deadline,exchange)=>value.unwrap_or_else(|_|Err("video deadline exceeded".into()))};
+    let result: Result<VideoOutcome, VideoAdapterError> = tokio::select! {biased;_ = cancelled(cancel.clone())=>Err("video cancelled".into()),value=tokio::time::timeout_at(deadline,exchange)=>value.unwrap_or_else(|_|Err("video deadline exceeded".into()))};
     if let Err(e) = child.terminate_and_reap().await {
         return Err(unknown(format!(
             "video owned-group cleanup unconfirmed: {e}"
@@ -840,7 +917,13 @@ mod tests {
         let Some(node) = std::env::var_os("MIRKET_TEST_NODE") else {
             return;
         };
-        for mode in ["malformed", "corrupt"] {
+        for mode in [
+            "malformed",
+            "corrupt",
+            "diagnostic",
+            "diagnostic-forged-path",
+            "diagnostic-over-budget",
+        ] {
             let root = std::env::temp_dir().join(format!(
                 "mirket-video-negative-{}-{}-{}",
                 std::process::id(),
@@ -858,7 +941,7 @@ mod tests {
             let script = r#"import fs from 'node:fs';import crypto from 'node:crypto';
 const release=process.argv[3];
 console.log(JSON.stringify({type:'ready',protocol_version:1,release_id:release,operation:'video.export',policy_version:1,max_frame_bytes:65536}));
-process.stdin.once('data',chunk=>{const r=JSON.parse(chunk);if(MODE==='malformed'){console.log('{not a valid result}');}else{const b=Buffer.from('corrupt media');fs.writeFileSync(r.output_path,b);console.log(JSON.stringify({type:'result',protocol_version:1,release_id:release,job_id:r.job_id,status:'staged',output_path:r.output_path,output_revision:'sha256:'+crypto.createHash('sha256').update(b).digest('hex'),output_bytes:b.length,evidence:{complete_decode:true}}));}process.stdin.destroy();process.stdout.end();});"#;
+process.stdin.once('data',chunk=>{const r=JSON.parse(chunk);if(MODE==='malformed'){console.log('{not a valid result}');}else if(MODE.startsWith('diagnostic')){const d={phase:'root',path:MODE==='diagnostic-forged-path'?'unselected.html':'index.html',field:'data-no-timeline',reason:'required',expected:'literal marker on the composition root'};console.log(JSON.stringify({type:'error',protocol_version:1,release_id:release,job_id:r.job_id,code:'authored_root_profile_mismatch',output_may_exist:false,diagnostics:MODE==='diagnostic-over-budget'?Array(17).fill(d):[d]}));}else{const b=Buffer.from('corrupt media');fs.writeFileSync(r.output_path,b);console.log(JSON.stringify({type:'result',protocol_version:1,release_id:release,job_id:r.job_id,status:'staged',output_path:r.output_path,output_revision:'sha256:'+crypto.createHash('sha256').update(b).digest('hex'),output_bytes:b.length,evidence:{complete_decode:true}}));}process.stdin.destroy();process.stdout.end();});"#;
             fs::write(&adapter, script.replace("MODE", &format!("'{mode}'"))).unwrap();
             let payload = VideoPayload {
                 node: fs::canonicalize(&node).unwrap(),
@@ -904,14 +987,21 @@ process.stdin.once('data',chunk=>{const r=JSON.parse(chunk);if(MODE==='malformed
             .await
             .unwrap_err();
             assert!(failure.cleanup_confirmed, "{mode}: {failure}");
-            assert!(
-                failure.message.contains(if mode == "malformed" {
-                    "invalid video completion"
-                } else {
-                    "container signature"
-                }),
-                "{mode}: {failure}"
-            );
+            let expected = match mode {
+                "malformed" => "invalid video completion",
+                "corrupt" => "container signature",
+                "diagnostic" => "authored_root_profile_mismatch",
+                "diagnostic-forged-path" => "diagnostic location/shape",
+                _ => "diagnostics exceed",
+            };
+            assert!(failure.message.contains(expected), "{mode}: {failure}");
+            if mode == "diagnostic" {
+                assert_eq!(failure.diagnostics.len(), 1);
+                assert_eq!(failure.diagnostics[0].field, "data-no-timeline");
+                assert!(!request.output_path.exists());
+            } else {
+                assert!(failure.diagnostics.is_empty());
+            }
             fs::remove_dir_all(root).unwrap();
         }
     }

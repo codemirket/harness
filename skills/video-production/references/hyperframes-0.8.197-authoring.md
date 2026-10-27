@@ -51,6 +51,7 @@ for example:
   src: url("./DriftSans.woff2") format("woff2");
   font-display: block;
 }
+body { font-family: "DriftSans"; }
 ```
 
 `DriftSans.woff2` must be included in the selected revision-bound assets passed
@@ -60,6 +61,12 @@ bundled project font, and does not satisfy this contract. A source can therefore
 be previewable on the authoring host yet be refused by Mirket with
 `explicit_local_font_required`. Keep any fictional/font fixture local and
 record its provenance rather than silently substituting a host font.
+
+Declaring a face does not apply it. Assign the selected family to the visible
+text; the injected caption overlay inherits the body's family unless authored
+CSS overrides it. The static preflight checks literal local font declarations,
+not computed font use or glyph fallback. Inspect the captioned export and
+verify the intended face/glyph coverage before claiming font fidelity.
 
 ## Caption source and safe area
 
@@ -77,7 +84,8 @@ end-exclusive, ordered, non-overlapping and inside the requested frame count:
 
 This example matches 24 frames; retain the real scene text and timing. Select
 the caption file as a revision-bound asset. The adapter burns the captions into
-the HTML and emits editable SRT/VTT sidecars. Include an explicit closing
+the HTML; PNG-sequence tar exports also retain editable SRT/VTT sidecars.
+Include an explicit closing
 `</body>` so insertion succeeds; browser repair of a fragment is insufficient.
 Reserve the lower caption region in the composition, then inspect the decoded
 captioned export for collision with footer copy or controls. A source preview
@@ -124,10 +132,25 @@ Keep HTML/CSS/JS, fonts, images, audio and captions in the selected project.
 Use relative local references without query strings/fragments. Select every
 referenced file and record its revision before `video_prepare`. The Mirket
 preflight refuses missing or unselected assets, absolute/remote URLs, dynamic
-fetch/import mechanisms, stale revisions and unsupported effects before a
-render slot is consumed. It also requires an explicit local font declaration
+fetch/import mechanisms, stale revisions and unsupported effects before media
+processes launch. It also requires an explicit local font declaration
 for the selected profile. Do not use a CDN or assume that setting `HOME` makes
 arbitrary page code private.
+
+Static refusals can include bounded `diagnostics` in `video_status` and
+`video_result`: selected relative path, phase, field, reason, expected bound,
+and zero-based cue index where applicable. Use those findings together; a
+missing root marker and invalid captions can coexist. The list is capped and
+is not an exhaustive review of the composition. Recheck after editing and
+refresh the selected source revisions explicitly; do not replay an old intent.
+
+In the harness checkout, the optional repository utilities
+`scripts/create-video-seed.mjs` and `scripts/check-video-source.mjs` provide an
+editable starting point with a caller-selected local font/notice and a read-only
+check using the same compiled adapter validator. The checker accepts an explicit
+revision-bound source manifest, starts no renderer, and writes no project files.
+These utilities are not installed MCP tools or files promised in other
+projects. A static pass is not an export, motion, font-rendering or visual pass.
 
 An asset refusal is evidence of the Mirket source policy, not an upstream
 HyperFrames defect. Conversely, a prepared receipt or successful export does

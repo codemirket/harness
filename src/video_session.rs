@@ -61,6 +61,8 @@ struct Receipt {
     queue_wait_ms: Option<u64>,
     evidence: Option<Value>,
     error: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    diagnostics: Vec<VideoDiagnostic>,
 }
 impl Receipt {
     fn issued(&self) -> Self {
@@ -73,6 +75,7 @@ impl Receipt {
         r.queue_wait_ms = None;
         r.evidence = None;
         r.error = None;
+        r.diagnostics.clear();
         r
     }
 }
@@ -186,7 +189,7 @@ impl VideoManager {
             "destination_path":r.intent.destination_path,"profile":r.intent.profile,"sources":r.intent.sources,
             "status":state.status,"effect":state.effect,"artifact_revision":r.artifact_revision,
             "artifact_bytes":r.artifact_bytes,"queue_wait_ms":r.queue_wait_ms,"scratch_path":r.scratch_path,
-            "scratch_cleanup":r.scratch_cleanup,"output_budget_bytes":MAX_OUTPUT_BYTES,"scratch_budget_bytes":MAX_WORK_BYTES,"evidence":r.evidence,"error":r.error,"expires_at":r.expires_at})
+            "scratch_cleanup":r.scratch_cleanup,"output_budget_bytes":MAX_OUTPUT_BYTES,"scratch_budget_bytes":MAX_WORK_BYTES,"evidence":r.evidence,"error":r.error,"diagnostics":r.diagnostics,"expires_at":r.expires_at})
     }
     pub fn prepare(&self, a: VideoPrepareArgs) -> Result<Value, String> {
         self.engine.guard(&a.expected_release_id)?;
@@ -334,6 +337,7 @@ impl VideoManager {
             queue_wait_ms: None,
             evidence: None,
             error: None,
+            diagnostics: vec![],
         };
         let id = self
             .store()?
@@ -621,7 +625,10 @@ impl VideoManager {
             r.scratch_cleanup = Some("children_stopped".into());
             self.save(id, r)?;
         }
-        let outcome = outcome.map_err(err)?;
+        let outcome = outcome.map_err(|error| {
+            r.diagnostics = error.diagnostics.clone();
+            error.to_string()
+        })?;
         if !outcome.cleanup_confirmed {
             return Err("video process cleanup unconfirmed; admission marker retained".into());
         }
@@ -873,6 +880,7 @@ mod tests {
             queue_wait_ms: None,
             evidence: None,
             error: None,
+            diagnostics: vec![],
         };
         let id = manager
             .store()

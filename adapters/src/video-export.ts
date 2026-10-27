@@ -14,8 +14,70 @@ export interface Profile { width: number; height: number; fps: { numerator: numb
 interface Source { path: string; revision: string; bytes: number }
 export interface VideoRequest { protocol_version: number; release_id: string; job_id: string; job_root: string; input_root: string; entry_file: string; sources: Source[]; output_path: string; profile: Profile; timeout_ms: number; max_output_bytes: number }
 export interface Paths { chromium: string; ffmpeg: string; ffprobe: string }
-export class VideoError extends Error { constructor(public readonly code: string) { super(code); } }
+export type VideoDiagnosticPhase = "source" | "reference" | "root" | "font" | "caption";
+export interface VideoDiagnostic {
+  phase: VideoDiagnosticPhase;
+  path: string;
+  field: string;
+  reason: string;
+  expected: string;
+  cue_index?: number;
+}
+const MAX_DIAGNOSTICS = 16;
+const MAX_DIAGNOSTIC_BYTES = 8192;
+function appendDiagnostic(items: VideoDiagnostic[], item: VideoDiagnostic): void {
+  if (items.length < MAX_DIAGNOSTICS) items.push(item);
+}
+function boundedDiagnostics(items: readonly VideoDiagnostic[] | undefined): VideoDiagnostic[] | undefined {
+  if (!items?.length) return undefined;
+  const result: VideoDiagnostic[] = [];
+  for (const item of items) {
+    if (result.length >= MAX_DIAGNOSTICS) break;
+    const next = {...item};
+    const keys = Object.keys(next);
+    if (!keys.every((key) => ["phase", "path", "field", "reason", "expected", "cue_index"].includes(key))
+      || !(["source", "reference", "root", "font", "caption"] as const).includes(next.phase)
+      || typeof next.path !== "string" || next.path.length === 0 || next.path.length > 1024 || /[\\:\0]/.test(next.path) || next.path.split("/").some((part) => part === "" || part === "." || part === "..")
+      || !/^[A-Za-z0-9_.-]+$/.test(next.field) || !/^[A-Za-z0-9_.-]+$/.test(next.reason)
+      || typeof next.expected !== "string" || !next.expected.length || /[\u0000-\u001f\u007f]/.test(next.expected) || Buffer.byteLength(next.expected, "utf8") > 256
+      || next.field.length > 64 || next.reason.length > 100
+      || !Number.isSafeInteger(next.cue_index) && next.cue_index !== undefined
+      || (next.cue_index !== undefined && (next.phase !== "caption" || next.cue_index < 0 || next.cue_index > 999))) continue;
+    const candidate = [...result, next];
+    if (Buffer.byteLength(JSON.stringify(candidate), "utf8") > MAX_DIAGNOSTIC_BYTES) break;
+    result.push(next);
+  }
+  return result.length ? result : undefined;
+}
+export class VideoError extends Error {
+  public readonly diagnostics: VideoDiagnostic[] | undefined;
+  constructor(public readonly code: string, diagnostics?: readonly VideoDiagnostic[]) {
+    super(code);
+    this.diagnostics = boundedDiagnostics(diagnostics);
+  }
+}
 function fail(code: string): never { throw new VideoError(code); }
+function diagnostic(phase: VideoDiagnosticPhase, path: string, field: string, reason: string, expected: string, cue_index?: number): VideoDiagnostic {
+  return cue_index === undefined ? {phase, path, field, reason, expected} : {phase, path, field, reason, expected, cue_index};
+}
+function firstDiagnosticCode(d: VideoDiagnostic): string {
+  if (d.phase === "source") return "invalid_source_text";
+  if (d.phase === "reference") {
+    return d.reason === "unsupported_dynamic_dependency" ? "unsupported_dynamic_dependency_or_effect"
+      : d.reason === "query_or_fragment_reference" ? "asset_query_or_fragment_refused"
+        : d.reason === "invalid_reference_encoding" ? "invalid_asset_reference"
+          : d.reason === "remote_or_absolute_reference" ? "remote_or_absolute_asset_refused" : "missing_or_unselected_asset";
+  }
+  if (d.phase === "root") return "authored_root_profile_mismatch";
+  if (d.phase === "font") {
+    return d.reason === "invalid_reference_encoding" ? "invalid_asset_reference"
+      : d.reason === "missing_font_asset" ? "missing_or_unselected_asset" : "explicit_local_font_required";
+  }
+  return d.reason === "missing_caption_body" ? "caption_injection_requires_body" : "invalid_caption_cues";
+}
+function throwDiagnostics(diagnostics: VideoDiagnostic[]): never {
+  throw new VideoError(firstDiagnosticCode(diagnostics[0]!), diagnostics);
+}
 const record = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
 export function exact(value: unknown, keys: string[]): value is Record<string, unknown> { return record(value) && Object.keys(value).length === keys.length && keys.every((key) => Object.hasOwn(value,key)); }
 export const digest = (bytes: Uint8Array): string => "sha256:" + createHash("sha256").update(bytes).digest("hex");
@@ -86,56 +148,117 @@ export async function fileRevision(file: string, limit: number, signal?: AbortSi
 
 const textExtensions = new Set([".html",".css",".js",".mjs",".json",".svg",".vtt",".srt"]);
 const assetExtensions = new Set([...textExtensions,".png",".jpg",".jpeg",".webp",".gif",".ttf",".otf",".woff",".woff2",".wav",".mp3",".m4a",".aac",".opus",".mp4",".webm",".ogg"]);
-function references(text: string, ext: string): string[] {
+function references(text: string, ext: string): { refs: string[]; dynamic: boolean } {
   const refs: string[] = [];
   // These unsupported dynamic mechanisms are explicit refusals. JavaScript is
   // authored source, not hostile code executed inside a security sandbox.
-  if (/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|importScripts|SharedWorker)\s*\(|\bimport\s*\(|\bserviceWorker\b|\bsrcset\s*=|\bdata-requires-webgpu\b|\bdata-composition-src\b/i.test(text)) fail("unsupported_dynamic_dependency_or_effect");
+  const dynamic = [".html", ".svg", ".css", ".js", ".mjs"].includes(ext)
+    && /\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|importScripts|SharedWorker)\s*\(|\bimport\s*\(|\bserviceWorker\b|\bsrcset\s*=|\bdata-requires-webgpu\b|\bdata-composition-src\b/i.test(text);
   const patterns = ext === ".html" || ext === ".svg"
     ? [/(?:\bsrc|\bhref|\bposter|\bxlink:href)\s*=\s*["']([^"']+)["']/gi,/url\(\s*["']?([^'"\s)]+)["']?\s*\)/gi,/\bfrom\s*["']([^"']+)["']/g]
     : ext === ".css" ? [/url\(\s*["']?([^'"\s)]+)["']?\s*\)/gi,/@import\s*["']([^"']+)["']/gi]
     : ext === ".js" || ext === ".mjs" ? [/\b(?:from|import)\s*["']([^"']+)["']/g] : [];
   for (const pattern of patterns) for (const match of text.matchAll(pattern)) refs.push(match[1]!);
-  return refs;
+  return {refs, dynamic};
 }
 const fontExtensions = /\.(?:ttf|otf|woff2?)$/i;
-function requireSelectedFontUrl(selected: Map<string, Buffer>, decoder: TextDecoder): void {
+function collectFontDiagnostics(selected: Map<string, Buffer>, decoded: Map<string, string>): VideoDiagnostic[] {
+  const diagnostics: VideoDiagnostic[] = [];
   let faceCount = 0;
-  for (const [name, bytes] of selected) {
+  for (const [name, text] of decoded) {
     const ext = path.extname(name).toLowerCase(); if (ext !== ".html" && ext !== ".css") continue;
     // This is deliberately a bounded literal @font-face check, not a CSS
     // parser. Comments cannot establish or invalidate a font face.
-    const text = decoder.decode(bytes).replace(/\/\*[\s\S]*?\*\//g, "");
-    for (const block of text.matchAll(/@font-face\s*\{([^{}]*)\}/gis)) {
+    for (const block of text.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/@font-face\s*\{([^{}]*)\}/gis)) {
       faceCount++;
       const body = block[1]!;
       const source = body.match(/\bsrc\s*:\s*([^;}]+)/i)?.[1] ?? "";
-      if (!source || /\blocal\s*\(/i.test(source) || /\bdata\s*:/i.test(source)) fail("explicit_local_font_required");
+      if (!source) { appendDiagnostic(diagnostics, diagnostic("font", name, "font_src", "missing_font_source", "each font face must provide one selected local font URL")); continue; }
+      let sourceDiagnostic = false;
+      if (/\blocal\s*\(/i.test(source)) { appendDiagnostic(diagnostics, diagnostic("font", name, "font_src", "local_font_disallowed", "font faces must use a selected project-relative font URL")); sourceDiagnostic = true; }
+      if (/\bdata\s*:/i.test(source)) { appendDiagnostic(diagnostics, diagnostic("font", name, "font_src", "data_font_disallowed", "font faces must use a selected project-relative font URL")); sourceDiagnostic = true; }
+      if (sourceDiagnostic) continue;
       let blockFont = false;
       for (const match of source.matchAll(/url\(\s*(?:"([^"]*)"|'([^']*)'|([^\s)]+))\s*\)/gi)) {
         const ref = match[1] ?? match[2] ?? match[3] ?? "";
-        if (!ref || /^(?:data:|[a-z][a-z0-9+.-]*:|\/)/i.test(ref) || /[?#]/.test(ref)) continue;
+        if (!ref) continue;
+        if (/^(?:data:|[a-z][a-z0-9+.-]*:|\/)/i.test(ref) || /[?#]/.test(ref)) {
+          appendDiagnostic(diagnostics, diagnostic("font", name, "font_asset", "remote_or_absolute_font", "font faces must use a selected project-relative font URL"));
+          sourceDiagnostic = true;
+          continue;
+        }
         let decoded = ref;
-        try { decoded = decodeURIComponent(ref); } catch { fail("invalid_asset_reference"); }
+        try { decoded = decodeURIComponent(ref); } catch {
+          appendDiagnostic(diagnostics, diagnostic("font", name, "font_asset", "invalid_reference_encoding", "font URL must use valid percent encoding"));
+          sourceDiagnostic = true;
+          continue;
+        }
         const local = path.posix.normalize(path.posix.join(path.posix.dirname(name), decoded));
-        if (!relative(local) || !selected.has(local)) fail("missing_or_unselected_asset");
-        if (!fontExtensions.test(local)) fail("explicit_local_font_required");
+        if (!relative(local) || !selected.has(local)) {
+          appendDiagnostic(diagnostics, diagnostic("font", name, "font_asset", "missing_font_asset", "font URL must name a selected project-relative font"));
+          sourceDiagnostic = true;
+          continue;
+        }
+        if (!fontExtensions.test(local)) {
+          appendDiagnostic(diagnostics, diagnostic("font", name, "font_asset", "font_asset_type", "selected font URL must end in ttf, otf, woff, or woff2"));
+          sourceDiagnostic = true;
+          continue;
+        }
         blockFont = true;
       }
-      if (!blockFont) fail("explicit_local_font_required");
+      if (!blockFont && !sourceDiagnostic) appendDiagnostic(diagnostics, diagnostic("font", name, "font_asset", "missing_font_asset", "each font face must resolve to a selected local font URL"));
     }
   }
-  if (!faceCount) fail("explicit_local_font_required");
+  const firstPath = decoded.keys().next().value;
+  if (!faceCount && typeof firstPath === "string") appendDiagnostic(diagnostics, diagnostic("font", firstPath, "font_face", "missing_font_face", "at least one explicit local font face is required"));
+  return diagnostics;
 }
 interface Cue { start_frame: number; end_frame: number; text: string }
+interface CueIssue { field: string; reason: string; expected: string }
+function checkCue(value: unknown, previous: number, frames: number): { cue?: Cue; issues: CueIssue[] } {
+  if (!exact(value, ["start_frame", "end_frame", "text"])) {
+    return {issues: [{field: "cue_shape", reason: "caption_shape", expected: "each cue must contain start_frame, end_frame, and text"}]};
+  }
+  const start = value.start_frame;
+  const end = value.end_frame;
+  const text = value.text;
+  const issues: CueIssue[] = [];
+  if (!integer(start, previous, frames - 1)) {
+    issues.push({field: "start_frame", reason: "caption_start_frame", expected: `cue start_frame must be an integer from ${previous} through ${frames - 1} in order`});
+  }
+  const endMinimum = Number.isSafeInteger(start) && (start as number) >= previous && (start as number) < frames ? (start as number) + 1 : previous + 1;
+  if (!integer(end, endMinimum, frames)) {
+    issues.push({field: "end_frame", reason: "caption_end_frame", expected: `cue end_frame must be an integer from ${endMinimum} through ${frames} (end-exclusive)`});
+  }
+  if (typeof text !== "string" || !text.length || Buffer.byteLength(text) > 4096 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(text) || /[\uD800-\uDFFF]/u.test(text)) {
+    issues.push({field: "text", reason: "caption_text", expected: "cue text must be non-empty UTF-8 text without control characters"});
+  }
+  return issues.length ? {issues} : {cue: {start_frame: start as number, end_frame: end as number, text: text as string}, issues};
+}
 export function cues(value: unknown, frames: number): Cue[] {
   if (!Array.isArray(value) || value.length > 1000) fail("invalid_caption_cues");
   let previous = 0;
   return value.map((v): Cue => {
-    if (!exact(v,["start_frame","end_frame","text"]) || !integer(v.start_frame,previous,frames-1) || !integer(v.end_frame,(v.start_frame as number)+1,frames)
-      || typeof v.text !== "string" || !v.text.length || Buffer.byteLength(v.text)>4096 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(v.text) || /[\uD800-\uDFFF]/u.test(v.text)) fail("invalid_caption_cues");
-    previous = v.end_frame as number; return v as unknown as Cue;
+    const checked = checkCue(v, previous, frames);
+    if (!checked.cue) fail("invalid_caption_cues");
+    previous = checked.cue.end_frame; return checked.cue;
   });
+}
+function collectCueDiagnostics(value: unknown, frames: number, sourcePath: string): {items: Cue[]; diagnostics: VideoDiagnostic[]} {
+  const diagnostics: VideoDiagnostic[] = [];
+  if (!Array.isArray(value)) return {items: [], diagnostics: [diagnostic("caption", sourcePath, "caption_json", "caption_not_array", "caption JSON must be an array of ordered cue objects")]};
+  if (value.length > 1000) appendDiagnostic(diagnostics, diagnostic("caption", sourcePath, "caption_count", "caption_count_limit", "caption JSON may contain at most 1000 cues"));
+  const items: Cue[] = [];
+  let previous = 0;
+  for (let index = 0; index < Math.min(value.length, 1000); index++) {
+    const checked = checkCue(value[index], previous, frames);
+    if (!checked.cue) {
+      for (const issue of checked.issues) appendDiagnostic(diagnostics, diagnostic("caption", sourcePath, issue.field, issue.reason, issue.expected, index));
+      continue;
+    }
+    items.push(checked.cue); previous = checked.cue.end_frame;
+  }
+  return {items, diagnostics};
 }
 function timestamp(frame: number, fps: Profile["fps"], separator: string): string {
   const ms = Math.round(frame*fps.denominator*1000/fps.numerator), h = Math.floor(ms/3600000), m = Math.floor(ms/60000)%60, s = Math.floor(ms/1000)%60;
@@ -155,26 +278,67 @@ export async function preflight(request: VideoRequest): Promise<{ entry: Buffer;
     selected.set(source.path,bytes);
   }
   const decoder = new TextDecoder("utf-8",{fatal:true});
+  const decoded = new Map<string,string>(), diagnostics: VideoDiagnostic[] = [];
+  const captionPath = request.profile.captions_path;
   for (const [name,bytes] of selected) {
-    const ext = path.extname(name); if (!textExtensions.has(ext)) continue;
-    const text = decoder.decode(bytes); if (text.includes("\0")) fail("invalid_source_text");
-    for (let ref of references(text,ext)) {
+    const ext = path.extname(name).toLowerCase(); if (!textExtensions.has(ext)) continue;
+    let text: string;
+    try { text = decoder.decode(bytes); }
+    catch {
+      // Caption decoding is reported in the caption phase below, after the
+      // reference/root/font categories; never emit the same finding twice.
+      if (captionPath !== name) appendDiagnostic(diagnostics, diagnostic("source", name, "utf8", "invalid_utf8", "selected text source must be valid UTF-8"));
+      continue;
+    }
+    if (text.includes("\0") && captionPath !== name) { appendDiagnostic(diagnostics, diagnostic("source", name, "text", "nul_byte", "selected text source must not contain NUL bytes")); continue; }
+    decoded.set(name,text);
+  }
+  // Selected file scope, bytes, and revisions are a barrier: do not mix a
+  // source read/revision failure with format diagnostics or inspect an
+  // unselected referenced path.
+  if (diagnostics.some((item) => item.phase === "source")) throwDiagnostics(diagnostics.filter((item) => item.phase === "source"));
+  // Preserve the old first-failure category order while retaining independent
+  // findings: references, root profile, fonts, then captions.
+  for (const [name,text] of decoded) {
+    const ext = path.extname(name).toLowerCase(); if (!textExtensions.has(ext)) continue;
+    const found = references(text,ext);
+    if (found.dynamic) appendDiagnostic(diagnostics, diagnostic("reference", name, "dependency", "unsupported_dynamic_dependency", "source must use selected static assets without dynamic network or worker dependencies"));
+    for (let ref of found.refs) {
       if (ref.startsWith("#") || ref.startsWith("data:")) continue;
-      if (/[?#]/.test(ref)) fail("asset_query_or_fragment_refused");
-      try { ref = decodeURIComponent(ref); } catch { fail("invalid_asset_reference"); }
-      if (/^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(ref) || ref.includes("\\")) fail("remote_or_absolute_asset_refused");
+      if (/[?#]/.test(ref)) { appendDiagnostic(diagnostics, diagnostic("reference", name, "asset_reference", "query_or_fragment_reference", "asset references must be plain selected relative paths")); continue; }
+      try { ref = decodeURIComponent(ref); } catch { appendDiagnostic(diagnostics, diagnostic("reference", name, "asset_reference", "invalid_reference_encoding", "asset references must use valid percent encoding")); continue; }
+      if (/^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(ref) || ref.includes("\\")) { appendDiagnostic(diagnostics, diagnostic("reference", name, "asset_reference", "remote_or_absolute_reference", "asset references must be selected project-relative paths")); continue; }
       const local = path.posix.normalize(path.posix.join(path.posix.dirname(name),ref));
-      if (!relative(local) || !selected.has(local)) fail("missing_or_unselected_asset");
+      if (!relative(local) || !selected.has(local)) appendDiagnostic(diagnostics, diagnostic("reference", name, "asset_reference", "missing_or_unselected_reference", "asset references must name a selected project-relative source"));
     }
   }
-  const entry = selected.get(request.entry_file)!; const html = decoder.decode(entry), p = request.profile;
+  const entry = selected.get(request.entry_file)!; const html = decoded.get(request.entry_file)!; const p = request.profile;
   const root = html.match(/<[^>]*\bdata-composition-id\s*=\s*["'][^"']+["'][^>]*>/i)?.[0];
   const attr = (name: string) => root?.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`,"i"))?.[1];
   const duration = p.frame_count*p.fps.denominator/p.fps.numerator;
-  if (!root || !/\bdata-no-timeline(?:\s|=|>)/i.test(root) || Number(attr("data-width"))!==p.width || Number(attr("data-height"))!==p.height || Math.abs(Number(attr("data-duration"))-duration)>1e-6) fail("authored_root_profile_mismatch");
-  requireSelectedFontUrl(selected, decoder);
+  if (!root) appendDiagnostic(diagnostics, diagnostic("root", request.entry_file, "composition_root", "missing_composition_root", "one authored composition root with data-composition-id is required"));
+  else {
+    if (!/\bdata-no-timeline(?:\s|=|>)/i.test(root)) appendDiagnostic(diagnostics, diagnostic("root", request.entry_file, "data_no_timeline", "missing_no_timeline", "composition root must opt out of the producer timeline"));
+    const width = Number(attr("data-width")), height = Number(attr("data-height")), authoredDuration = Number(attr("data-duration"));
+    if (!Number.isFinite(width) || width !== p.width) appendDiagnostic(diagnostics, diagnostic("root", request.entry_file, "data_width", "width_mismatch", `root data-width must equal requested profile width ${p.width}`));
+    if (!Number.isFinite(height) || height !== p.height) appendDiagnostic(diagnostics, diagnostic("root", request.entry_file, "data_height", "height_mismatch", `root data-height must equal requested profile height ${p.height}`));
+    if (!Number.isFinite(authoredDuration) || Math.abs(authoredDuration-duration)>1e-6) appendDiagnostic(diagnostics, diagnostic("root", request.entry_file, "data_duration", "duration_mismatch", `root data-duration must equal requested profile duration ${duration}`));
+  }
+  for (const item of collectFontDiagnostics(selected,decoded)) appendDiagnostic(diagnostics, item);
   let captions: Cue[] = [];
-  if (p.captions_path !== null) { try { captions = cues(JSON.parse(decoder.decode(selected.get(p.captions_path)!)),p.frame_count); } catch (error) { if(error instanceof VideoError)throw error; fail("invalid_caption_cues"); } }
+  if (p.captions_path !== null) {
+    const captionText = decoded.get(p.captions_path);
+    if (captionText === undefined) appendDiagnostic(diagnostics, diagnostic("caption", p.captions_path, "utf8", "invalid_utf8", "caption JSON must be valid UTF-8"));
+    else {
+      try {
+        const parsed: unknown = JSON.parse(captionText);
+        const collected = collectCueDiagnostics(parsed,p.frame_count,p.captions_path);
+        captions = collected.items; for (const item of collected.diagnostics) appendDiagnostic(diagnostics, item);
+        if (captions.length && !/<\/body\s*>/i.test(html)) appendDiagnostic(diagnostics, diagnostic("caption", request.entry_file, "body", "missing_caption_body", "caption injection requires an authored closing body element"));
+      } catch { appendDiagnostic(diagnostics, diagnostic("caption", p.captions_path, "caption_json", "invalid_caption_json", "caption asset must contain valid UTF-8 JSON")); }
+    }
+  }
+  if (diagnostics.length) throwDiagnostics(diagnostics);
   return {entry,captions,sources_revision:digest(Buffer.from(JSON.stringify(request.sources))),expected_audio:/<audio\b[^>]*\bsrc\s*=/i.test(html)};
 }
 function burnedCaptions(html: string, items: Cue[], profile: Profile): string {

@@ -349,6 +349,8 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
             snapshot_ids.add(data["id"])
         capture_ids: set[str] = set()
         capture_states: set[str] = set()
+        artifact_states: dict[str, str] = {}
+        motion_artifacts: dict[str, dict[str, set[str]]] = {}
         beat_captures: dict[str, dict[str, list[str]]] = {}
         for cap_index, capture in enumerate(captures):
             data = _validate_artifact(root, capture, f"candidate {candidate_id}.captures[{cap_index}]", states, True)
@@ -356,6 +358,10 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
                 raise EvidenceError(f"candidate {candidate_id} has duplicate capture ids")
             capture_ids.add(data["id"])
             capture_states.add(capture["state_id"])
+            prior_state = artifact_states.get(data["path"])
+            if prior_state is not None and prior_state != capture["state_id"]:
+                raise EvidenceError(f"candidate {candidate_id} reuses one artifact path across states")
+            artifact_states[data["path"]] = capture["state_id"]
             if "beat_id" in capture or "frame" in capture or "capture_kind" in capture:
                 if motion is None:
                     raise EvidenceError(f"candidate {candidate_id} has motion capture metadata without motion")
@@ -370,6 +376,11 @@ def _validate_packet(packet: Any, root: Path) -> dict[str, Any]:
                     raise EvidenceError(f"candidate {candidate_id} has an invalid motion capture kind")
                 if capture["state_id"] != beat_map[beat_id]["state_id"]:
                     raise EvidenceError(f"candidate {candidate_id} capture state does not match its beat")
+                by_kind = motion_artifacts.setdefault(beat_id, {})
+                for other_kind, other_paths in by_kind.items():
+                    if other_kind != kind and data["path"] in other_paths:
+                        raise EvidenceError(f"candidate {candidate_id} reuses one artifact path for preview and decoded_export")
+                by_kind.setdefault(kind, set()).add(data["path"])
                 beat_captures.setdefault(beat_id, {}).setdefault(kind, []).append(data["id"])
         if capture_states != set(states):
             raise EvidenceError(f"candidate {candidate_id} does not capture every expected state")

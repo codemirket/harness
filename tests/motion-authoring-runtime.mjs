@@ -6,9 +6,12 @@ import { createHash } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
 import { copyFile, mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { buildVideoRequest, collectRevisionBoundSources, parseCaptionSelection, selectRevisionBoundSources, sourceManifest } from "./video-fixture.mjs";
 
-const [,, mirket, nodePath, adapter, chromium, ffmpeg, ffprobe, evidenceArg, sourceArg] = process.argv;
+const [,, mirket, nodePath, adapter, chromium, ffmpeg, ffprobe, evidenceArg, sourceArg, captionsFlag, captionsArg] = process.argv;
+assert.equal(captionsFlag, "--captions", "explicit --captions PATH|none|metadata-only is required");
+const captions = parseCaptionSelection(captionsArg);
 for (const value of [mirket, nodePath, adapter, chromium, ffmpeg, ffprobe, evidenceArg, sourceArg]) {
   assert.ok(typeof value === "string" && value.startsWith("/"), "all paths must be absolute");
 }
@@ -18,31 +21,11 @@ await mkdir(evidenceRoot, { recursive: true, mode: 0o700 });
 assert.deepEqual(await readdir(evidenceRoot), [], "evidence directory must be empty");
 assert.equal((await stat(sourceProject)).isDirectory(), true);
 const digest = (bytes) => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
-const supported = /\.(?:html|css|js|mjs|json|svg|vtt|srt|png|jpg|jpeg|webp|gif|ttf|otf|woff|woff2|wav|mp3|m4a|aac|opus|mp4|webm|ogg)$/i;
-const walk = async (root) => {
-  const output = [];
-  for (const item of await readdir(root, { withFileTypes: true })) {
-    const file = join(root, item.name);
-    if (item.isSymbolicLink()) throw new Error(`source symlink refused: ${file}`);
-    if (item.name === ".agents") continue;
-    if (item.isDirectory()) output.push(...await walk(file));
-    else if (item.isFile() && item.name !== "preview.html") output.push(file);
-  }
-  return output.sort();
-};
-const sourcePaths = await walk(sourceProject);
-const selected = [];
-for (const source of sourcePaths) {
-  const path = relative(sourceProject, source);
-  if (!supported.test(path)) continue;
-  const bytes = await readFile(source);
-  selected.push({ path, revision: digest(bytes), bytes: bytes.length, source, data: bytes });
-}
-assert.ok(selected.some((entry) => entry.path === "index.html"), "source project needs root index.html");
-const sourceManifest = selected.map(({ path, revision, bytes }) => ({ path, revision, bytes }));
-await writeFile(join(evidenceRoot, "source-manifest.json"), JSON.stringify({ source_project: sourceProject, files: sourceManifest }, null, 2));
+const allSources = await collectRevisionBoundSources(sourceProject);
+const { selectedSources: selected } = selectRevisionBoundSources(allSources, captions);
+await writeFile(join(evidenceRoot, "source-manifest.json"), JSON.stringify({ source_project: sourceProject, captions_selection: captions, all_source_files: sourceManifest(allSources), selected_source_files: sourceManifest(selected) }, null, 2));
 const evidenceSource = join(evidenceRoot, "source");
-for (const entry of selected) {
+for (const entry of allSources) {
   const destination = join(evidenceSource, entry.path);
   await mkdir(dirname(destination), { recursive: true, mode: 0o700 });
   await writeFile(destination, entry.data, { mode: 0o600 });
@@ -64,16 +47,8 @@ for (const entry of selected) {
 }
 
 const release = "motion-authoring-20261027";
-const profile = {
-  width: 640, height: 360, fps: { numerator: 12, denominator: 1 }, frame_count: 36,
-  format: "mp4", captions_path: selected.some((entry) => entry.path === "captions.json") ? "captions.json" : null,
-};
-const intent = {
-  expected_release_id: release, project_root: project, source_path: join(project, "index.html"),
-  expected_revision: selected.find((entry) => entry.path === "index.html").revision,
-  assets: selected.filter((entry) => entry.path !== "index.html").map(({ path, revision }) => ({ path, expected_revision: revision })),
-  destination_path: join(project, "result.mp4"), profile,
-};
+const intent = buildVideoRequest({ projectRoot: project, release, selectedSources: selected, captions });
+const profile = intent.profile;
 
 const child = spawn(mirket, ["dev", "serve", "--state-dir", state, "--release-id", release,
   "--node", nodePath, "--video-adapter", adapter, "--video-chromium", chromium,
@@ -131,7 +106,7 @@ const toolError = (value) => value?.error ?? value?.content?.find?.((item) => it
 const receipt = {
   platform: `${process.platform}-${process.arch}`, release, source_project: sourceProject,
   paths: { mirket, node: nodePath, adapter, chromium, ffmpeg, ffprobe },
-  source_manifest: sourceManifest, intent, runtime: null,
+  captions_selection: captions, source_manifest: { all: sourceManifest(allSources), selected: sourceManifest(selected) }, intent, runtime: null,
 };
 const stopChild = async () => {
   if (!closed) child.kill("SIGTERM");

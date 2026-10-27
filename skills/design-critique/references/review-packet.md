@@ -49,8 +49,11 @@ sample names and expected beat states.
 Motion captures extend the ordinary hashed capture with `beat_id`, the matching
 `frame`, and `capture_kind` (`preview` or `decoded_export`). With
 `parity_claim: true`, every beat needs both kinds, matched by the same beat and
-frame; a missing counterpart or changed expectation is a refusal. A static
-packet need not include these fields. These records distinguish correspondence
-and file integrity only: they do not certify that pixels or playback were
-visually inspected, and they cannot prove that an honestly authored packet was
-not later rewritten in full.
+frame, and each kind must point to a distinct saved artifact path for that
+beat. Equal SHA-256 values are allowed because identical pixels can be a
+legitimate result; a missing counterpart, reused path or changed expectation is
+a refusal. Across distinct states, captures must likewise use distinct saved
+artifact paths. A static packet need not include these fields. These records
+distinguish correspondence and file integrity only: they do not certify that
+pixels or playback were visually inspected, and they cannot prove that an
+honestly authored packet was not later rewritten in full.

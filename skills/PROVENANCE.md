@@ -356,7 +356,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: design-critique-positive-1, design-critique-positive-2, design-critique-negative-1, design-critique-negative-2, design-critique-mixed-1. Not run.
 
-- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence.
+- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
 
 ### design-systems
 
@@ -489,7 +489,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
-- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence.
+- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
 
 ### customer-research
 

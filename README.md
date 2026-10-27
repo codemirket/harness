@@ -23,6 +23,8 @@ The [recent design research and review corrections](docs/design-review-20261027.
 
 The [motion authoring follow-up](docs/motion-authoring-20261027.md) adds a project-owned CSS/WAAPI preview, original editable motion examples and beat-correspondence records around HyperFrames. Its helpers are repository utilities; installed skills do not promise a second editor or renderer.
 
+The [harness engineering research](docs/harness-engineering-research-20261027.md) led to [bounded video authoring diagnostics and review-integrity corrections](docs/video-authoring-diagnostics-20261027.md), with a read-only source checker and editable seed utility. Real MCP exports verify caption behavior in all four formats; the separate [matched authoring pilot](docs/video-authoring-pilot-20261027.md) records model outcomes and remaining limits. Static acceptance, exported pixels and intended motion remain separate checks.
+
 The active [Raster prebuilt candidate](docs/m4-raster-prebuilt-qualification.md) is reproducible from six pinned Sharp archives. The current Mac build accepts the exact private Raster tree for local installation, and disposable installed PNG, JPEG, WebP and AVIF jobs passed. A changed archive was refused before an update while the prior installed release stayed healthy. Public redistribution still requires the upstream native source and notice route; Windows execution is a separate later gate. The earlier custom-build and recipient path is historical evidence.
 
 The [selected Mac native Sharp archives](docs/m4-raster-prebuilt-provenance-20261027.md)

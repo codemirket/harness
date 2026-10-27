@@ -160,6 +160,20 @@ pub struct VideoOutcome {
     pub cleanup_confirmed: bool,
 }
 
+/// Bounded authoring feedback, never source bodies or caption text. The process
+/// boundary checks paths against the revision-bound selected source manifest.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct VideoDiagnostic {
+    pub phase: String,
+    pub path: PathBuf,
+    pub field: String,
+    pub reason: String,
+    pub expected: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cue_index: Option<u32>,
+}
+
 pub fn relative(path: &Path) -> bool {
     !path.as_os_str().is_empty()
         && !path.is_absolute()

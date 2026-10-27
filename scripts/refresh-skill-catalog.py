@@ -32,6 +32,8 @@ DESIGN_REVIEW_BASIS = "docs/design-review-20261027.md / recent research and loca
 DESIGN_REVIEW_SKILLS = {"art-direction", "design-critique", "motion-direction", "video-production"}
 MOTION_AUTHORING_BASIS = "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
 MOTION_AUTHORING_SKILLS = {"motion-direction", "video-production", "design-critique"}
+AUTHORING_DIAGNOSTICS_BASIS = "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
+AUTHORING_DIAGNOSTICS_SKILLS = {"video-production", "design-critique"}
 
 # These are the only newly admitted families in the 2026-10-27 adoption pass.
 # Their classification is source-level permission to adapt a reviewed method,
@@ -137,6 +139,8 @@ def update_provenance_records(provenance,catalog):
             mapping += " Later original review/context synthesis: " + DESIGN_REVIEW_BASIS + "."
         if skill["id"] in MOTION_AUTHORING_SKILLS:
             mapping += " Original motion authoring synthesis: " + MOTION_AUTHORING_BASIS + "."
+        if skill["id"] in AUTHORING_DIAGNOSTICS_SKILLS:
+            mapping += " Original authoring feedback and evidence checks: " + AUTHORING_DIAGNOSTICS_BASIS + "."
         if "- Method mapping:" in section:
             section=re.sub(r"- Method mapping: .*", mapping, section, count=1)
         else:
@@ -259,6 +263,8 @@ def refresh(write):
                 basis.append(DESIGN_REVIEW_BASIS); changed.append("review-basis:"+skill["id"])
             if skill["id"] in MOTION_AUTHORING_SKILLS and MOTION_AUTHORING_BASIS not in basis:
                 basis.append(MOTION_AUTHORING_BASIS); changed.append("motion-basis:"+skill["id"])
+            if skill["id"] in AUTHORING_DIAGNOSTICS_SKILLS and AUTHORING_DIAGNOSTICS_BASIS not in basis:
+                basis.append(AUTHORING_DIAGNOSTICS_BASIS); changed.append("diagnostics-basis:"+skill["id"])
             terms="repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
             if provenance.get("reuse_terms")!=terms:
                 provenance["reuse_terms"]=terms; changed.append("terms:"+skill["id"])

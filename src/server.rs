@@ -206,7 +206,7 @@ impl Server {
         result(self.video.cancel(a))
     }
     #[tool(
-        description = "Read the saved video job result or refusal for a known operation without replaying effects.",
+        description = "Read the saved video job result or refusal for a known operation without replaying effects. Static authoring refusals may include bounded selected-source diagnostics; these do not establish render or visual quality.",
         annotations(read_only_hint = true)
     )]
     async fn video_result(&self, Parameters(a): Parameters<VideoJobArgs>) -> CallToolResponse {

@@ -50,8 +50,11 @@ try{
   }finally{clearTimeout(timer);clearInterval(watch);}
 }catch(error){
   process.exitCode=1;
-  if(started)await fs.writeFile(path.join(process.cwd(),"failure.json"),JSON.stringify({code:error instanceof VideoError?error.code:"video_export_failed",diagnostic:error instanceof Error?String(error.stack).slice(0,8192):"unknown"})+"\n",{flag:"wx",mode:0o600}).catch(()=>{});
-  await emit({type:"error",protocol_version:1,release_id:release,job_id:job,code:error instanceof VideoError?error.code:"video_export_failed",output_may_exist:started}).catch(()=>{});
+  const code=error instanceof VideoError?error.code:"video_export_failed";
+  const diagnostics=error instanceof VideoError?error.diagnostics:undefined;
+  const extra=diagnostics?.length?{diagnostics}:{};
+  if(started)await fs.writeFile(path.join(process.cwd(),"failure.json"),JSON.stringify({code,...extra,diagnostic:error instanceof Error?String(error.stack).slice(0,8192):"unknown"})+"\n",{flag:"wx",mode:0o600}).catch(()=>{});
+  await emit({type:"error",protocol_version:1,release_id:release,job_id:job,code,output_may_exist:started,...extra}).catch(()=>{});
 }finally{
   process.stdin.destroy();
   process.stdout.end();

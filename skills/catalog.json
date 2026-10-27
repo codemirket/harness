@@ -1713,7 +1713,8 @@
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
           "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
         ],
         "reference_families": [
           "impeccable",
@@ -1762,8 +1763,8 @@
       "resources": [
         {
           "path": "references/review-packet.md",
-          "sha256": "b79ae1fadc1e6bf3ae4dd5bb58ecfd6755e23dca616dde623e16aebcfedeb5e2",
-          "bytes": 4812
+          "sha256": "89802c83269cb1b15e833f498c9c00578e394d4e5da7dcc58fdb6ad14223a9d3",
+          "bytes": 5067
         }
       ]
     },
@@ -2650,7 +2651,8 @@
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
           "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
         ],
         "reference_families": [
           "remotion",
@@ -2697,8 +2699,8 @@
       "resources": [
         {
           "path": "references/hyperframes-0.8.197-authoring.md",
-          "sha256": "10bc57812b0c8c6d73b14ecdb632d08f9dfbb9d472f3e3ba93a816f07fdf5fa0",
-          "bytes": 7057
+          "sha256": "5e9af8d840e925b451d8ddf5e05f6a4e49ac7bc5c783f5dbe2388d85957aafc3",
+          "bytes": 8488
         },
         {
           "path": "references/preview-and-beats.md",

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { captionSidecars, cues, digest, fileRevision, MAX_OUTPUT, MAX_WORK, preflight, tar, treeBytes, validateRequest, writeTar } from '../dist/video-export.js';
+import { captionSidecars, cues, digest, fileRevision, MAX_OUTPUT, MAX_WORK, preflight, tar, treeBytes, validateRequest, VideoError, writeTar } from '../dist/video-export.js';
 import { localUrl, mirketPreparePage, mirketSourceFile, mirketVideoFetch } from '../dist/video-policy.js';
 
 test('caption cue times derive from rational frame positions and preserve Unicode',()=>{
@@ -80,6 +80,120 @@ test('font preflight requires a selected local URL font and rejects host/data fa
     }
   }finally{await fs.rm(negative.directory,{recursive:true,force:true});}
 });
+
+test('static preflight aggregates independent root, reference, font, and cue findings without source data',async()=>{
+  const f=await fixture();
+  try{
+    const privateCaption='PRIVATE_CAPTION_TEXT_SHOULD_NEVER_ECHO';
+    await f.select('captions.json',Buffer.from(JSON.stringify([
+      {start_frame:99,end_frame:100,text:privateCaption},
+      {start_frame:4,end_frame:3,text:'second cue'}
+    ])));
+    f.request.profile.captions_path='captions.json';
+    const base=await fs.readFile(path.join(f.directory,'source/index.html'),'utf8');
+    await f.html(base
+      .replace('data-no-timeline data-width="640" data-height="360" data-duration="2"','data-width="320" data-height="180" data-duration="3"')
+      .replace('./font.ttf','./missing.woff2')
+      .replace('./image.png','./missing.png'));
+    let error;
+    try{await preflight(f.request);assert.fail('expected static diagnostics');}catch(value){error=value;}
+    assert.ok(error instanceof VideoError);
+    assert.equal(error.code,'missing_or_unselected_asset');
+    assert.ok(Array.isArray(error.diagnostics));
+    const phases=new Set(error.diagnostics.map((item)=>item.phase));
+    assert.deepEqual([...phases],['reference','root','font','caption']);
+    assert.ok(error.diagnostics.some((item)=>item.phase==='caption'&&item.cue_index===0));
+    assert.ok(error.diagnostics.some((item)=>item.phase==='caption'&&item.cue_index===1));
+    assert.match(error.diagnostics.find((item)=>item.field==='start_frame')?.expected??'',/0 through 23/);
+    const serialized=JSON.stringify(error.diagnostics);
+    assert.ok(Buffer.byteLength(serialized)<=8192);
+    assert.ok(!serialized.includes(privateCaption));
+    assert.ok(!serialized.includes('missing.png'));
+    for(const item of error.diagnostics){
+      assert.deepEqual(Object.keys(item).sort(),Object.keys(item).includes('cue_index')?['cue_index','expected','field','path','phase','reason'].sort():['expected','field','path','phase','reason'].sort());
+      assert.ok(item.field.length<=64&&/^[A-Za-z0-9_.-]+$/.test(item.field));
+      assert.ok(item.reason.length<=100&&/^[A-Za-z0-9_.-]+$/.test(item.reason));
+      assert.ok(item.expected.length>0&&Buffer.byteLength(item.expected)<=256);
+      assert.ok(item.path==='index.html'||item.path==='captions.json');
+    }
+  }finally{await fs.rm(f.directory,{recursive:true,force:true});}
+});
+
+test('root duration rejects absent and non-finite authored values with the requested profile bound',async()=>{
+  const f=await fixture();
+  try{
+    const base=await fs.readFile(path.join(f.directory,'source/index.html'),'utf8');
+    for(const replacement of ['data-duration="NaN"','data-duration="Infinity"','']){
+      await f.html(base.replace('data-duration="2"',replacement));
+      let error;
+      try{await preflight(f.request);assert.fail('expected root duration diagnostic');}catch(value){error=value;}
+      assert.ok(error instanceof VideoError);assert.equal(error.code,'authored_root_profile_mismatch');
+      const duration=error.diagnostics?.find((item)=>item.field==='data_duration');
+      assert.equal(duration?.reason,'duration_mismatch');assert.match(duration?.expected??'',/2/);
+    }
+  }finally{await fs.rm(f.directory,{recursive:true,force:true});}
+});
+
+test('static diagnostics are bounded and valid captions remain a control',async()=>{
+  const f=await fixture();
+  try{
+    await f.select('captions.json',Buffer.from(JSON.stringify(Array.from({length:1000},()=>({bad:true})))));
+    f.request.profile.captions_path='captions.json';
+    let error;
+    try{await preflight(f.request);assert.fail('expected caption diagnostics');}catch(value){error=value;}
+    assert.ok(error instanceof VideoError);
+    assert.equal(error.code,'invalid_caption_cues');
+    assert.ok(error.diagnostics&&error.diagnostics.length<=16);
+    assert.ok(Buffer.byteLength(JSON.stringify(error.diagnostics))<=8192);
+    for(const item of error.diagnostics){assert.equal(item.phase,'caption');assert.ok(item.cue_index===undefined||Number.isInteger(item.cue_index)&&item.cue_index>=0&&item.cue_index<=999);}
+  }finally{await fs.rm(f.directory,{recursive:true,force:true});}
+
+  const control=await fixture();
+  try{
+    const bytes=Buffer.from(JSON.stringify([{start_frame:0,end_frame:12,text:'fetch("/private")'}]));
+    await control.select('captions.json',bytes);control.request.profile.captions_path='captions.json';
+    const prepared=await preflight(control.request);
+    assert.deepEqual(prepared.captions,[{start_frame:0,end_frame:12,text:'fetch("/private")'}]);
+  }finally{await fs.rm(control.directory,{recursive:true,force:true});}
+});
+
+test('caption JSON and UTF-8 failures are actionable while stale selected sources remain a hard barrier',async()=>{
+  const invalidJson=await fixture();
+  try{
+    await invalidJson.select('captions.json',Buffer.from('{'));invalidJson.request.profile.captions_path='captions.json';
+    let error;
+    try{await preflight(invalidJson.request);assert.fail('expected invalid caption JSON');}catch(value){error=value;}
+    assert.ok(error instanceof VideoError);assert.equal(error.code,'invalid_caption_cues');
+    assert.deepEqual(error.diagnostics?.find((item)=>item.phase==='caption')?.reason,'invalid_caption_json');
+  }finally{await fs.rm(invalidJson.directory,{recursive:true,force:true});}
+
+  const invalidUtf8=await fixture();
+  try{
+    await invalidUtf8.select('captions.json',Buffer.from([0xff,0xfe]));invalidUtf8.request.profile.captions_path='captions.json';
+    let error;
+    try{await preflight(invalidUtf8.request);assert.fail('expected invalid caption UTF-8');}catch(value){error=value;}
+    assert.ok(error instanceof VideoError);assert.equal(error.code,'invalid_caption_cues');
+    assert.equal(error.diagnostics?.[0]?.reason,'invalid_utf8');
+    const html=await fs.readFile(path.join(invalidUtf8.directory,'source/index.html'),'utf8');
+    await invalidUtf8.html(html.replace('data-no-timeline',''));
+    await assert.rejects(preflight(invalidUtf8.request), error => {
+      assert.equal(error.code,'authored_root_profile_mismatch');
+      assert.equal(error.diagnostics.filter(d=>d.reason==='invalid_utf8').length,1);
+      assert.equal(error.diagnostics[0].phase,'root');
+      return true;
+    });
+  }finally{await fs.rm(invalidUtf8.directory,{recursive:true,force:true});}
+
+  const stale=await fixture();
+  try{
+    await stale.select('captions.json',Buffer.from('[{"bad":true}]'));stale.request.profile.captions_path='captions.json';
+    await fs.writeFile(path.join(stale.directory,'source/image.png'),'changed');
+    let error;
+    try{await preflight(stale.request);assert.fail('expected stale source refusal');}catch(value){error=value;}
+    assert.ok(error instanceof VideoError);assert.equal(error.code,'source_revision_changed');assert.equal(error.diagnostics,undefined);
+  }finally{await fs.rm(stale.directory,{recursive:true,force:true});}
+});
+
 test('wire request binds finite work to the owned source/output and exact profile',async()=>{
   const f=await fixture(),previous=process.cwd();try{process.chdir(f.directory);assert.equal(validateRequest(f.request,'test:video').profile.frame_count,24);
     for(const mutate of [r=>r.profile.fps.denominator=0,r=>r.output_path=path.join(f.directory,'outside.mp4'),r=>r.sources.push({...r.sources[0]})]){const value=structuredClone(f.request);mutate(value);assert.throws(()=>validateRequest(value,'test:video'));}

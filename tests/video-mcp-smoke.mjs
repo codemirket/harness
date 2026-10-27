@@ -49,8 +49,8 @@ if (installed) {
 const format = flags.get("--format") ?? "mp4";
 assert.ok(["mp4", "webm", "gif", "png_sequence_tar"].includes(format));
 const scenario = flags.get("--scenario") ?? "publish";
-assert.ok(["publish", "cancel", "large_png", "captions", "reedit", "audio", "remote_refusal"].includes(scenario));
-if (["large_png", "captions"].includes(scenario)) assert.equal(format, "png_sequence_tar");
+assert.ok(["publish", "cancel", "large_png", "captions", "reedit", "audio", "remote_refusal", "diagnostics"].includes(scenario));
+if (scenario === "large_png") assert.equal(format, "png_sequence_tar");
 if (["reedit", "audio"].includes(scenario)) assert.equal(format, "mp4");
 
 const sha = (bytes) => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -75,6 +75,14 @@ async function decodedCaptionStrip(png, root, name) {
   assert.equal(decoded.status, 0, decoded.stderr?.toString());
   assert.equal(decoded.stdout.length, 640 * 360 * 3);
   return decoded.stdout.subarray(300 * 640 * 3, 350 * 640 * 3);
+}
+async function decodedMediaCaptionStrip(file, seconds, root, name) {
+  const image = join(root, `decoded-${name}`);
+  const decoded = spawnSync(flags.get("--ffmpeg"), ["-v", "error", "-nostdin", "-i", file,
+    "-ss", String(seconds), "-frames:v", "1", "-f", "image2", "-c:v", "png", image],
+  { maxBuffer: 2 * 1024 * 1024, timeout: 10000 });
+  assert.equal(decoded.status, 0, decoded.stderr?.toString());
+  return decodedCaptionStrip(await readFile(image), root, name);
 }
 function changedPixels(left, right) {
   assert.equal(left.length, right.length);
@@ -222,6 +230,19 @@ try {
     names.push("captions.json");
     revisions.set("captions.json", sha(caption));
   }
+  if (scenario === "diagnostics") {
+    const original = await readFile(join(project, "index.html"), "utf8");
+    const edited = Buffer.from(original.replace(/\bdata-no-timeline(?:\s*=\s*["'][^"']*["'])?/gi, ""));
+    await writeFile(join(project, "index.html"), edited);
+    revisions.set("index.html", sha(edited));
+    const caption = Buffer.from(JSON.stringify([
+      { startFrame: 0, endFrame: 12, text: "private-caption-text-must-not-escape" },
+      { start_frame: 12, end_frame: 99999, text: "private-caption-text-must-not-escape" },
+    ]));
+    await writeFile(join(project, "captions.json"), caption);
+    names.push("captions.json");
+    revisions.set("captions.json", sha(caption));
+  }
   if (scenario === "remote_refusal") {
     const original = await readFile(join(project, "index.html"), "utf8");
     assert.match(original, /<\/head>/i);
@@ -257,7 +278,7 @@ try {
     expected_revision: revisions.get("index.html"), destination_path: destination,
     assets: names.slice(1).map((path) => ({ path, expected_revision: revisions.get(path) })),
     profile: { width: 640, height: 360, fps: { numerator: scenario === "large_png" ? 24 : 12, denominator: 1 }, frame_count: scenario === "large_png" ? 48 : 24,
-      format, captions_path: scenario === "captions" ? "captions.json" : null },
+      format, captions_path: ["captions", "diagnostics"].includes(scenario) ? "captions.json" : null },
   };
   const stale = await rpc("tools/call", { name: "video_prepare", arguments: { ...intent,
     destination_path: join(project, "stale.mp4"), expected_revision: `sha256:${"0".repeat(64)}` } });
@@ -266,7 +287,29 @@ try {
   assert.equal(prepared.status, "prepared");
   const job = { expected_release_id: release, project_root: project, operation_id: prepared.operation_id };
   await call("video_start", job);
-  if (scenario === "remote_refusal") {
+  if (scenario === "diagnostics") {
+    let refused = await terminal(prepared.operation_id);
+    const until = Date.now() + 10000;
+    while (refused.scratch_cleanup !== "removed_verified_owned_files" && Date.now() < until) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+      refused = await call("video_result", job);
+    }
+    assert.equal(refused.status, "failed", JSON.stringify(refused));
+    assert.match(refused.error, /authored_root_profile_mismatch/);
+    assert.equal(refused.effect, "not_attempted");
+    assert.equal(refused.scratch_cleanup, "removed_verified_owned_files");
+    assert.ok(refused.diagnostics.some(d => d.phase === "root" && d.path === "index.html"));
+    for (const cue_index of [0, 1]) assert.ok(refused.diagnostics.some(d => d.phase === "caption" && d.path === "captions.json" && d.cue_index === cue_index));
+    assert.ok(refused.diagnostics.length <= 16 && Buffer.byteLength(JSON.stringify(refused.diagnostics)) <= 8192);
+    assert.doesNotMatch(JSON.stringify(refused), /private-caption-text-must-not-escape/);
+    assert.deepEqual((await call("video_result", job)).diagnostics, refused.diagnostics);
+    await assert.rejects(readFile(destination), { code: "ENOENT" });
+    for (const name of names) assert.equal(sha(await readFile(join(project, name))), revisions.get(name));
+    passed = true;
+    console.log(JSON.stringify({ status: "pass", platform: process.platform, arch: process.arch,
+      release_id: release, scenario, diagnostics: refused.diagnostics,
+      checks: ["root and two cue failures in durable MCP result", "bounded diagnostics without caption contents", "no artifact publication", "all selected source bytes preserved", "verified owned cleanup"] }));
+  } else if (scenario === "remote_refusal") {
     const refused = await terminal(prepared.operation_id);
     assert.equal(refused.status, "failed", JSON.stringify(refused));
     assert.match(refused.error, /remote_or_absolute_asset_refused/);
@@ -318,7 +361,7 @@ try {
     if (format === "gif") assert.match(saved.subarray(0, 6).toString(), /^GIF8[79]a$/);
     if (format === "png_sequence_tar") assert.equal(saved.subarray(257, 263).toString(), "ustar\0");
     let captionPixels = null;
-    if (scenario === "captions") {
+    if (scenario === "captions" && format === "png_sequence_tar") {
       const srt = tarEntry(saved, "captions.srt").toString("utf8");
       const vtt = tarEntry(saved, "captions.vtt").toString("utf8");
       assert.match(srt, /00:00:00,250 --> 00:00:01,750/);
@@ -329,6 +372,13 @@ try {
       captionPixels = { within_cue: changedPixels(first, during), after_cue: changedPixels(first, after) };
       assert.ok(captionPixels.within_cue > 1000, "Burned cue must visibly change caption pixels");
       assert.ok(captionPixels.after_cue < 100, "Caption pixels must clear after the supplied cue");
+    } else if (scenario === "captions") {
+      const first = await decodedMediaCaptionStrip(destination, 0, project, "caption-before.png");
+      const during = await decodedMediaCaptionStrip(destination, 0.5, project, "caption-during.png");
+      const after = await decodedMediaCaptionStrip(destination, 1.9, project, "caption-after.png");
+      captionPixels = { within_cue: changedPixels(first, during), after_cue: changedPixels(first, after) };
+      assert.ok(captionPixels.within_cue > 1000, "Burned cue must visibly change decoded caption pixels");
+      assert.ok(captionPixels.after_cue < 100, "Decoded caption pixels must clear after the supplied cue");
     }
     let audioEvidence = null;
     if (scenario === "audio") {
@@ -372,7 +422,7 @@ try {
       ...(captionPixels ? { caption_pixels: captionPixels } : {}),
       ...(audioEvidence ? { audio_evidence: audioEvidence } : {}),
       ...(editEvidence ? { edit_evidence: editEvidence } : {}),
-      checks: ["Rust MCP preparation/start/receipt/publication", "selected Chromium and FFmpeg render", "stale source refusal", "source preservation", ...(scenario === "captions" ? ["supplied sidecar timing and Unicode", "burned cue visible only within frame range"] : []), ...(scenario === "audio" ? ["independent decoded PCM onset and end windows", "two-tone voice/music gain ratio"] : []), ...(scenario === "reedit" ? ["source edit changes decoded frame content", "independent revised receipt and source preservation"] : [])] }));
+      checks: ["Rust MCP preparation/start/receipt/publication", "selected Chromium and FFmpeg render", "stale source refusal", "source preservation", ...(scenario === "captions" ? [...(format === "png_sequence_tar" ? ["supplied sidecar timing and Unicode"] : []), "burned cue visible only within sampled frame range"] : []), ...(scenario === "audio" ? ["independent decoded PCM onset and end windows", "two-tone voice/music gain ratio"] : []), ...(scenario === "reedit" ? ["source edit changes decoded frame content", "independent revised receipt and source preservation"] : [])] }));
   }
 } finally {
   child.stdin.end();
