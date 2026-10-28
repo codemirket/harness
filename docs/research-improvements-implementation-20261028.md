@@ -5,6 +5,9 @@ The [approved plan](../planning/research-improvements.md) implements the
 [research recommendations](harness-research-recommendations-20261028.md).
 Implementation and local checks are distinct from model-effect qualification.
 The remaining native research/product comparisons are **not qualified**.
+The [continuation record](remaining-gaps-qualification-20261028.md) adds actual
+interactive browser and MCP boundary evidence, runner repairs, and the current
+authenticated native CLI routing prerequisite.
 
 ## Finding-to-change matrix
 
@@ -13,9 +16,9 @@ The remaining native research/product comparisons are **not qualified**.
 | R1 Research coverage | `skills/browser-research/SKILL.md`, `references/research-coverage.md` | Conditional query families, unfamiliar leads, lineage deduplication, atomic claims, contradiction and stopping rules. Host browsing remains primary. Live-web recall/uplift is not established by the synthetic trials. |
 | R2 Reviewer calibration | `tests/research-quality-trials.py`, `tests/test_research_quality_trials.py`; research reference | Frozen clean, swapped, stale, partial and missing-context review controls reject constant PASS, false clean-control findings and wrong source locators. These are deterministic controls; native reviewer calibration remains open. |
 | R3 Evidence joins | `scripts/check-design-evidence.py`, `tests/test_design_evidence.py` | Actual retained Mirket receipt/export/probe passes; project mismatch, export-revision mismatch and changed standalone rights-bound asset fail. Execution/rights fields remain recorded observations, not authentication or legal approval. |
-| R4 Activation versus outcome | research trial runner/tests | Exact scoped output, frozen inputs/runtime, completion/events/artifact joins, read versus activation versus outcome, persistent deadline, no standalone budget-reset route. The recorded native attempt was partial and procedurally invalid for matched acceptance; see its full ledger. Unnamed activation, near misses and actual stale/unavailable/wrong-project operation trials remain open. |
+| R4 Activation versus outcome | research trial runner/tests | Exact scoped output, frozen inputs/runtime, completion/events/artifact joins, read versus activation versus outcome, persistent deadline, no standalone budget-reset route. The recorded native attempt was partial and procedurally invalid for matched acceptance; see its full ledger. Unnamed activation and near misses remain open. The continuation runs actual absent-runtime/stale-release/stale-source, unsupported-tool and wrong-project refusals, with project no-effect checks. |
 | R5 Semantic motion | `scripts/check-motion-observations.mjs`, `tests/motion-observations*.mjs`, motion/video references | Actual browser measurements distinguish a midpoint jump with matching endpoints. Holds, settles, containment, position, overflow and overlap are numeric contracts. Frame timestamps, capture environment and actual export binding are checked. |
-| R6 Reusable visual QA | same motion checker/runtime fixture; existing browser-qa/review-packet guidance | Clean control passes; clipped text and 8px placement drift fail. Actual HyperFrames MP4 probed and decoded; lead viewed a decoded frame. Broader interactive focus/mobile/reduced-motion and aesthetic uplift remain unqualified by this fixture. |
+| R6 Reusable visual QA | same motion checker/runtime fixture; existing browser-qa/review-packet guidance | Clean control passes; clipped text and 8px placement drift fail. Actual HyperFrames MP4 probed and decoded; lead viewed a decoded frame. The continuation adds actual interactive focus/mobile/reduced-motion controls and viewed captures. Aesthetic uplift remains unqualified. |
 | R7 Product decisions | six product/marketing skill references; `scripts/check-product-learning.py` | Evidence type/derivation, contradictions, opportunity-assumption-test-decision links, rejected hypotheses and unknown assumptions. Tests reject empty/cyclic proof instead of requiring fabricated evidence. Native useful-output comparison timed out. |
 | R8 Marketing context | same resources/checker; `tests/test_product_learning.py` | Current alternatives versus future POV, saved-copy proof/expiry/consent, real metrics, funnel arithmetic and idempotent action records. Synthetic metrics, unsupported testimonials, stale metrics, duplicate stages/actions and boolean counts are refused. No launch, customer-demand or lift claim. |
 | R9 Measured delegation | `tests/codex-coordination-trials.mjs`, its tests | One-worker versus two-worker native comparison produced identical correct artifacts with disjoint writes and lead integration. Two workers were slower and used more host-reported tokens. No no-delegate baseline or general speedup claim. |
@@ -104,6 +107,7 @@ remain in the private logs rather than being silently overwritten.
 
 No live `.mirket` installation, unrelated client settings, package dependencies
 or external publication was changed. Windows, the macOS 15 floor and the waived
-Codex Desktop GUI check remain unverified. The provider rate limit prevents
-finishing the remaining native comparisons in this run; local checks cannot
-substitute for those outcomes.
+Codex Desktop GUI check remain unverified. The original attempt stopped on a provider rate limit. The continuation
+encountered authenticated network/workspace-routing timeouts instead; its
+ledger preserves the distinction. Local checks cannot substitute for native
+quality outcomes.

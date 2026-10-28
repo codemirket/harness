@@ -49,3 +49,13 @@ cost. Reevaluate on a relevant runtime/source change or failed held-out outcome,
 not through an unsolicited automatic job. Keep historical qualification distinct
 from current behavior and retain unresolved gates rather than marking all 335
 catalog development cases run.
+
+## Continuation checkpoint — 2026-10-28
+
+The [remaining-gap record](../docs/remaining-gaps-qualification-20261028.md)
+qualifies actual MCP scope refusals and a narrow host-browser interactive QA
+fixture. It also records frozen model-cache startup, budget/interruption repairs
+and the unsuccessful native attempts. Remaining model comparisons require a
+working authenticated disposable Codex CLI turn; thread creation alone is not
+that prerequisite. Preserve the failed attempts and shared budget when resuming.
+Do not mark R1/R2/R4 selection or R7/R8 quality complete from local tests.

@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -36,7 +37,9 @@ SOURCES = {
     "cinder": "# Cinder\nPublished: 2026-02-20\nCinder supports CSV import only. No export claim is made.\n",
 }
 
-# Hidden oracle facts are intentionally not copied into trial projects.
+# Oracle facts are withheld from the project and prompt. The host sandbox does
+# not establish read isolation from their sibling directory; audit native reads
+# and qualify this as trusted prompt compliance, not an access-isolated oracle.
 CASES: dict[str, dict[str, Any]] = {
     "current-counterexample": {
         "question": "Does Atlas support scheduled exports for paid workspaces? Cite the current source and mention the relevant limitation.",
@@ -102,7 +105,25 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
-def freeze(root: Path, codex: Path, skill: Path | None) -> None:
+def cohort_budget(root: Path) -> dict[str, Any]:
+    """Refuse drift in the original deadline instead of trusting mutable state."""
+    path = root / "cohort-state.json"
+    if digest(path) != (root / "cohort-state.sha256").read_text().strip():
+        raise SystemExit("cohort budget changed")
+    state = json.loads(path.read_text())
+    frozen = json.loads((root / "frozen/platform.json").read_text())
+    for key in ("started_at", "deadline_at"):
+        if type(state.get(key)) not in (int, float) or not math.isfinite(state[key]):
+            raise SystemExit("invalid cohort clock")
+    if (state.get("model") != frozen["model"] or state.get("reasoning_effort") != frozen["reasoning_effort"]
+            or state.get("repairs") != 0 or state.get("retries") != 0
+            or state["deadline_at"] - state["started_at"] > frozen["shared_wall_seconds"]
+            or state["deadline_at"] <= state["started_at"]):
+        raise SystemExit("cohort budget differs from freeze")
+    return state
+
+
+def freeze(root: Path, codex: Path, skill: Path | None, model_cache: Path | None = None) -> None:
     if root.exists():
         raise SystemExit(f"refusing existing trial root: {root}")
     if not codex.is_file():
@@ -111,8 +132,15 @@ def freeze(root: Path, codex: Path, skill: Path | None) -> None:
         raise SystemExit("the browser-research skill directory is required")
     if f"name: {SKILL_ID}\n" not in (skill / "SKILL.md").read_text():
         raise SystemExit("unexpected skill identity")
+    if model_cache is not None:
+        cache = json.loads(model_cache.read_text())
+        if not isinstance(cache, dict) or not isinstance(cache.get("models"), list):
+            raise SystemExit("invalid host model cache")
     root.mkdir(parents=True, mode=0o700)
     frozen = root / "frozen"; frozen.mkdir()
+    if model_cache is not None:
+        shutil.copyfile(model_cache, frozen / "models_cache.json")
+        (frozen / "models_cache.json").chmod(0o600)
     write_json(frozen / "cases.json", CASES)
     (frozen / "cases.sha256").write_text(digest(frozen / "cases.json") + "\n")
     corpus = frozen / "corpus"; corpus.mkdir()
@@ -242,12 +270,13 @@ def grade_trial(root: Path, case_id: str, condition: str) -> dict[str, Any]:
 
 
 def run_native(root: Path, case_id: str, condition: str, codex: Path, auth: Path) -> dict[str, Any]:
+    started = time.monotonic()
     verify_frozen(root, case_id, condition)
     trial = root / f"{case_id}-{condition}"; project = trial / "project"
     identity = json.loads((root / "frozen" / "platform.json").read_text())
     if str(codex) != identity["codex"] or digest(codex) != identity["codex_sha256"]:
         raise SystemExit("Codex executable differs from freeze")
-    state = json.loads((root / "cohort-state.json").read_text())
+    state = cohort_budget(root)
     remaining = state["deadline_at"] - time.time()
     if remaining <= 0: raise SystemExit("shared wall budget exhausted")
     if (project / "answer.json").exists(): raise SystemExit("answer exists before execution")
@@ -256,18 +285,30 @@ def run_native(root: Path, case_id: str, condition: str, codex: Path, auth: Path
         json.dump({"started_at": time.time()}, marker)
     auth_copy = trial / "codex-home" / "auth.json"
     env = {**os.environ, "HOME": str(trial / "user-home"), "CODEX_HOME": str(trial / "codex-home"), "TMPDIR": str(trial / "tmp"), "TMP": str(trial / "tmp")}
-    args = [str(codex), "exec", "--strict-config", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--skip-git-repo-check", "--sandbox", "workspace-write", "--color", "never", "--json", "--model", MODEL, "-C", str(project), "-c", f'model_reasoning_effort="{REASONING_EFFORT}"', "-"]
-    started = time.monotonic(); timed_out = False; process = None; stdout = b""; stderr = b""
+    args = [str(codex), "exec", "--strict-config", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--skip-git-repo-check", "--approve-for-me", "--color", "never", "--json", "--model", MODEL, "-C", str(project), "-c", f'model_reasoning_effort="{REASONING_EFFORT}"', "-"]
+    timed_out = False; interrupted = False; process = None; stdout = b""; stderr = b""
     try:
+        cache = root / "frozen/models_cache.json"
+        if cache.exists():
+            shutil.copyfile(cache, trial / "codex-home/models_cache.json")
+            (trial / "codex-home/models_cache.json").chmod(0o600)
         shutil.copy2(auth, auth_copy); auth_copy.chmod(0o600)
+        remaining = min(state["deadline_at"] - time.time(), PER_CELL_SECONDS - (time.monotonic() - started))
+        if remaining <= 0: raise SystemExit("cell budget exhausted during setup")
         process = subprocess.Popen(args, cwd=project, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
-        stdout, stderr = process.communicate((trial / "prompt.txt").read_bytes(), timeout=min(PER_CELL_SECONDS, remaining))
-    except subprocess.TimeoutExpired as exc:
-        timed_out = True; stdout = exc.output or b""; stderr = exc.stderr or b""
-        os.killpg(process.pid, signal.SIGTERM)
-        try: stdout, stderr = process.communicate(timeout=5)
-        except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL); stdout, stderr = process.communicate(timeout=5)
+        stdout, stderr = process.communicate((trial / "prompt.txt").read_bytes(), timeout=max(0.001, min(state["deadline_at"] - time.time(), PER_CELL_SECONDS - (time.monotonic() - started))))
+    except (subprocess.TimeoutExpired, KeyboardInterrupt) as exc:
+        timed_out = isinstance(exc, subprocess.TimeoutExpired)
+        interrupted = isinstance(exc, KeyboardInterrupt)
+        if timed_out: stdout = exc.output or b""; stderr = exc.stderr or b""
+        if process is not None:
+            try: os.killpg(process.pid, signal.SIGTERM)
+            except ProcessLookupError: pass
+            try: stdout, stderr = process.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                try: os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError: pass
+                stdout, stderr = process.communicate(timeout=5)
     finally:
         if process is not None and process.poll() is None:
             try: os.killpg(process.pid, signal.SIGKILL)
@@ -280,15 +321,17 @@ def run_native(root: Path, case_id: str, condition: str, codex: Path, auth: Path
         try:
             if json.loads(line).get("type") == "turn.completed": turn_completed = True
         except (json.JSONDecodeError, AttributeError): pass
-    result = {"case": case_id, "condition": condition, "model": MODEL, "reasoning_effort": REASONING_EFFORT, "timed_out": timed_out, "interrupted": False, "turn_completed": turn_completed, "exit_code": process.returncode if process is not None else None, "elapsed_seconds": round(time.monotonic() - started, 3), "events_sha256": digest(trial / "events.jsonl"), "stderr_sha256": digest(trial / "stderr.log"), "final_manifest": {str(p.relative_to(project)): digest(p) for p in project.rglob("*") if p.is_file()}}
+    result = {"case": case_id, "condition": condition, "model": MODEL, "reasoning_effort": REASONING_EFFORT, "timed_out": timed_out, "interrupted": interrupted, "turn_completed": turn_completed, "exit_code": process.returncode if process is not None else None, "elapsed_seconds": round(time.monotonic() - started, 3), "events_sha256": digest(trial / "events.jsonl"), "stderr_sha256": digest(trial / "stderr.log"), "final_manifest": {str(p.relative_to(project)): digest(p) for p in project.rglob("*") if p.is_file()}}
     write_json(trial / "result.json", result); return result
 
 
 def run_cohort(root: Path, codex: Path, auth: Path) -> list[dict[str, Any]]:
     """Run every frozen cell under one wall clock and zero-retry budget."""
     if (root / "cohort-state.json").exists(): raise SystemExit("cohort already started; refusing retry")
-    started = time.monotonic(); deadline_at = time.time() + SHARED_WALL_SECONDS; results = []
-    write_json(root / "cohort-state.json", {"started_at": time.time(), "deadline_at": deadline_at, "model": MODEL, "reasoning_effort": REASONING_EFFORT, "repairs": 0, "retries": 0})
+    started = time.monotonic(); started_at = time.time(); deadline_at = started_at + SHARED_WALL_SECONDS; results = []
+    with (root / "cohort-state.json").open("x") as output:
+        json.dump({"started_at": started_at, "deadline_at": deadline_at, "model": MODEL, "reasoning_effort": REASONING_EFFORT, "repairs": 0, "retries": 0}, output)
+    (root / "cohort-state.sha256").write_text(digest(root / "cohort-state.json") + "\n")
     for case_id in CASES:
         for condition in CONDITIONS:
             if time.monotonic() - started >= SHARED_WALL_SECONDS:
@@ -298,16 +341,20 @@ def run_cohort(root: Path, codex: Path, auth: Path) -> list[dict[str, Any]]:
             if "429" in stderr or "Too Many Requests" in stderr:
                 write_json(root / "cohort-result.json", {"status": "stopped-provider-rate-limit", "elapsed_seconds": round(time.monotonic()-started, 3), "results": results})
                 return results
+            latest = results[-1]
+            if latest["interrupted"] or latest["timed_out"] or latest["exit_code"] != 0 or not latest["turn_completed"]:
+                write_json(root / "cohort-result.json", {"status": "stopped-incomplete-execution", "elapsed_seconds": round(time.monotonic()-started, 3), "results": results})
+                return results
     write_json(root / "cohort-result.json", {"shared_wall_seconds": SHARED_WALL_SECONDS, "elapsed_seconds": round(time.monotonic() - started, 3), "repairs": 0, "retries": 0, "results": results})
     return results
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(); parser.add_argument("--mode", choices=("freeze", "cohort", "grade"), required=True); parser.add_argument("--root", type=Path, required=True); parser.add_argument("--case", choices=tuple(CASES)); parser.add_argument("--condition", choices=CONDITIONS); parser.add_argument("--codex", type=Path); parser.add_argument("--auth-file", type=Path); parser.add_argument("--skill", type=Path)
+    parser = argparse.ArgumentParser(); parser.add_argument("--mode", choices=("freeze", "cohort", "grade"), required=True); parser.add_argument("--root", type=Path, required=True); parser.add_argument("--case", choices=tuple(CASES)); parser.add_argument("--condition", choices=CONDITIONS); parser.add_argument("--codex", type=Path); parser.add_argument("--auth-file", type=Path); parser.add_argument("--skill", type=Path); parser.add_argument("--model-cache", type=Path, help="Optional current host catalog snapshot; frozen and shared equally by both conditions")
     args = parser.parse_args(); root = args.root.resolve()
     if args.mode == "freeze":
         if not args.codex: raise SystemExit("--codex required")
-        freeze(root, args.codex.resolve(), args.skill.resolve() if args.skill else None)
+        freeze(root, args.codex.resolve(), args.skill.resolve() if args.skill else None, args.model_cache.resolve() if args.model_cache else None)
     elif args.mode == "grade":
         if not args.case or not args.condition: raise SystemExit("--case and --condition required")
         print(json.dumps(grade_trial(root, args.case, args.condition), indent=2))

@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 import tempfile
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 SCRIPT = Path(__file__).with_name('research-quality-trials.py')
 SPEC = importlib.util.spec_from_file_location('research_quality_trials', SCRIPT)
@@ -58,6 +60,16 @@ class ResearchQualityTrialTests(unittest.TestCase):
             for condition in TRIALS.CONDITIONS:
                 TRIALS.verify_frozen(self.root, case, condition)
                 self.assertFalse((self.root / f'{case}-{condition}/project/AGENTS.md').exists())
+
+    def test_optional_model_cache_is_frozen_and_drift_is_rejected(self):
+        cache = self.root.parent / 'models_cache.json'
+        cache.write_text('{"models": []}')
+        root = self.root.parent / 'cached-trials'
+        TRIALS.freeze(root, Path('/bin/echo'), self.skill, cache)
+        TRIALS.verify_frozen(root, 'current-counterexample', 'no-skill')
+        (root / 'frozen/models_cache.json').write_text('{"models": [{"slug": "changed"}]}')
+        with self.assertRaisesRegex(SystemExit, 'frozen inputs changed'):
+            TRIALS.verify_frozen(root, 'current-counterexample', 'no-skill')
 
     def test_missing_or_wrong_skill_refused_before_creating_trial(self):
         for skill in (None, self.root):
@@ -141,10 +153,15 @@ class ResearchQualityTrialTests(unittest.TestCase):
 
     def test_deadline_runtime_identity_and_launch_cleanup(self):
         state = self.root / 'cohort-state.json'
-        TRIALS.write_json(state, {'deadline_at': time.time()-1})
+        def budget(deadline):
+            TRIALS.write_json(state, {'started_at': deadline-1200, 'deadline_at': deadline,
+                                     'model': TRIALS.MODEL, 'reasoning_effort': TRIALS.REASONING_EFFORT,
+                                     'repairs': 0, 'retries': 0})
+            (self.root / 'cohort-state.sha256').write_text(TRIALS.digest(state))
+        budget(time.time()-1)
         with self.assertRaisesRegex(SystemExit, 'budget exhausted'):
             TRIALS.run_native(self.root, 'stale-source', 'no-skill', Path('/bin/echo'), Path('/nonexistent'))
-        TRIALS.write_json(state, {'deadline_at': time.time()+60})
+        budget(time.time()+60)
         with self.assertRaisesRegex(SystemExit, 'differs from freeze'):
             TRIALS.run_native(self.root, 'stale-source', 'no-skill', Path('/bin/cat'), Path('/nonexistent'))
         auth = self.root.parent / 'fixture-auth'; auth.write_text('synthetic credential')
@@ -156,6 +173,68 @@ class ResearchQualityTrialTests(unittest.TestCase):
             TRIALS.run_native(self.root, 'stale-source', 'no-skill', Path('/bin/echo'), auth)
         with self.assertRaisesRegex(SystemExit, 'already started'):
             TRIALS.run_cohort(self.root, Path('/bin/echo'), auth)
+
+    def test_interruption_retains_output_cleans_auth_and_stops_cohort(self):
+        auth = self.root.parent / 'fixture-auth'; auth.write_text('synthetic credential')
+        process = Mock(pid=12345, returncode=-15)
+        process.communicate.side_effect = [KeyboardInterrupt(), (b'{"type":"turn.started"}\n', b'startup interrupted')]
+        process.poll.return_value = -15
+        with patch.object(TRIALS.subprocess, 'Popen', return_value=process) as launch, patch.object(TRIALS.os, 'killpg'):
+            results = TRIALS.run_cohort(self.root, Path('/bin/echo'), auth)
+        self.assertEqual(launch.call_count, 1)
+        self.assertEqual(len(results), 1)
+        self.assertTrue(results[0]['interrupted'])
+        self.assertFalse(results[0]['turn_completed'])
+        trial = self.root / 'current-counterexample-no-skill'
+        self.assertEqual((trial / 'stderr.log').read_text(), 'startup interrupted')
+        self.assertIn('turn.started', (trial / 'events.jsonl').read_text())
+        self.assertFalse((trial / 'codex-home/auth.json').exists())
+        self.assertEqual(json.loads((self.root / 'cohort-result.json').read_text())['status'], 'stopped-incomplete-execution')
+        self.assertFalse((self.root / 'current-counterexample-with-skill/started.json').exists())
+
+    def test_real_interrupted_child_retains_streams_and_leaves_no_auth(self):
+        executable = (self.root.parent / 'fake-codex').resolve()
+        executable.write_text(f'#!{sys.executable}\n' +
+            'import os,signal,time\n' +
+            "print('{\"type\":\"turn.started\"}',flush=True)\n" +
+            'time.sleep(0.2)\nos.kill(os.getppid(),signal.SIGINT)\ntime.sleep(60)\n')
+        executable.chmod(0o700)
+        root = self.root.parent / 'process-trial'
+        TRIALS.freeze(root, executable, self.skill)
+        auth = self.root.parent / 'process-auth'; auth.write_text('synthetic credential')
+        result = subprocess.run([sys.executable, str(SCRIPT), '--mode', 'cohort', '--root', str(root),
+                                 '--codex', str(executable), '--auth-file', str(auth)], capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr.decode())
+        record = json.loads((root / 'cohort-result.json').read_text())
+        self.assertEqual(record['status'], 'stopped-incomplete-execution')
+        self.assertEqual(len(record['results']), 1)
+        self.assertTrue(record['results'][0]['interrupted'])
+        self.assertIn('turn.started', (root / 'current-counterexample-no-skill/events.jsonl').read_text())
+        self.assertFalse(list(root.glob('*/codex-home/auth.json')))
+
+    def test_timeout_stops_before_spending_another_cell(self):
+        result = dict(interrupted=False, timed_out=True, exit_code=-15, turn_completed=False)
+        (self.root / 'current-counterexample-no-skill/stderr.log').write_text('routing timeout')
+        with patch.object(TRIALS, 'run_native', return_value=result) as run:
+            self.assertEqual(TRIALS.run_cohort(self.root, Path('/bin/echo'), Path('/unused')), [result])
+        self.assertEqual(run.call_count, 1)
+
+    def test_changed_deadline_and_budget_settings_are_refused(self):
+        path = self.root / 'cohort-state.json'
+        start = time.time()
+        original = {'started_at': start, 'deadline_at': start+1200, 'model': TRIALS.MODEL,
+                    'reasoning_effort': TRIALS.REASONING_EFFORT, 'repairs': 0, 'retries': 0}
+        TRIALS.write_json(path, original)
+        marker = self.root / 'cohort-state.sha256'
+        marker.write_text(TRIALS.digest(path))
+        self.assertEqual(TRIALS.cohort_budget(self.root), original)
+        TRIALS.write_json(path, {**original, 'deadline_at': start+2400})
+        with self.assertRaisesRegex(SystemExit, 'budget changed'):
+            TRIALS.cohort_budget(self.root)
+        for change in ({'deadline_at': start+2400}, {'retries': 1}, {'model': 'another'}, {'started_at': float('nan')}):
+            TRIALS.write_json(path, {**original, **change})
+            marker.write_text(TRIALS.digest(path))
+            with self.assertRaises(SystemExit): TRIALS.cohort_budget(self.root)
 
     def test_constant_support_answer_does_not_pass_every_case(self):
         # Same syntactically valid answer for all cases, not an invalid schema.

@@ -1,7 +1,8 @@
 // Real stdio integration fixture. No packages, host configuration or global tools.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtemp, mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { isAbsolute, join } from "node:path";
 
@@ -151,6 +152,24 @@ async function rejected(client, name, args, reason) {
   assert.match(JSON.stringify(result), reason);
 }
 
+async function treeSnapshot(root) {
+  const entries = [];
+  async function visit(directory, prefix = "") {
+    for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
+      const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) {
+        entries.push(`${relative}/`);
+        await visit(path, relative);
+      } else {
+        entries.push(`${relative}:${createHash("sha256").update(await readFile(path)).digest("hex")}`);
+      }
+    }
+  }
+  await visit(root);
+  return entries;
+}
+
 
 const temporary = await mkdtemp(join(tmpdir(), "mirket-mcp-smoke-"));
 const project = join(temporary, "project"), state = join(temporary, "state"), configuredState = join(temporary, "configured-state");
@@ -211,6 +230,13 @@ try {
     profile: { width: 640, height: 360, fps: { numerator: 24, denominator: 1 }, frame_count: 24,
       format: "mp4", captions_path: null } }, /private video runtime is not configured/i);
   await rejected(client, "job_status", { ...scope(RELEASE_A), operation_id: "unknown" }, /operation|receipt|unknown|id/i);
+  const unsupportedProjectBefore = await treeSnapshot(project);
+  const unsupportedStateBefore = await treeSnapshot(state);
+  await rejected(client, "file_read", { project_root: project, path: "diagram.d2" }, /tool|method|unknown|unsupported|not found/i);
+  assert.deepEqual(await treeSnapshot(project), unsupportedProjectBefore,
+    "unsupported tool must not write the selected project");
+  assert.deepEqual(await treeSnapshot(state), unsupportedStateBefore,
+    "unsupported tool must not create a receipt or state effect");
   console.log("PASS stale release, absent private payloads and unknown job refusal");
 
   // A configured private payload still binds the source revision. A stale
@@ -231,7 +257,37 @@ try {
     operation: { kind: "tokens_compile", format: "css" },
   }, /revision changed/i);
   await assert.rejects(stat(staleDestination), { code: "ENOENT" });
-  console.log("PASS configured payload reports exact skill pairing and refuses stale source revision");
+  const otherProject = join(temporary, "other-project");
+  await mkdir(otherProject, { mode: 0o700 });
+  const otherSource = join(otherProject, "tokens.json");
+  const otherDestination = join(otherProject, "foreign.css");
+  await writeFile(otherSource, JSON.stringify({ color: { foreign: { value: "#abcdef" } } }));
+  const otherBefore = await treeSnapshot(otherProject);
+  const projectBeforeWrongSource = await treeSnapshot(project);
+  const otherSourceRevision = "sha256:" + createHash("sha256").update(await readFile(otherSource)).digest("hex");
+  await rejected(configured, "design_prepare", {
+    ...scope(RELEASE_A), source_path: otherSource,
+    expected_revision: otherSourceRevision, destination_path: join(project, "wrong-source.css"),
+    operation: { kind: "tokens_compile", format: "css" },
+  }, /outside|project|scope/i);
+  assert.deepEqual(await treeSnapshot(project), projectBeforeWrongSource,
+    "wrong-project source must not write the selected project");
+  assert.deepEqual(await treeSnapshot(otherProject), otherBefore,
+    "wrong-project source must not write the source project");
+
+  const projectSourceRevision = "sha256:" + createHash("sha256").update(await readFile(join(project, "tokens.json"))).digest("hex");
+  const projectBeforeWrongDestination = await treeSnapshot(project);
+  await rejected(configured, "design_prepare", {
+    ...scope(RELEASE_A), source_path: join(project, "tokens.json"),
+    expected_revision: projectSourceRevision, destination_path: otherDestination,
+    operation: { kind: "tokens_compile", format: "css" },
+  }, /outside|project|scope/i);
+  assert.deepEqual(await treeSnapshot(project), projectBeforeWrongDestination,
+    "wrong-project destination must not write the selected project");
+  assert.deepEqual(await treeSnapshot(otherProject), otherBefore,
+    "wrong-project destination must not write the destination project");
+  await assert.rejects(stat(otherDestination), { code: "ENOENT" });
+  console.log("PASS configured payload reports exact skill pairing and refuses stale, unsupported and wrong-project operations");
   await configured.stop();
 
   const next = await connect(RELEASE_B);
