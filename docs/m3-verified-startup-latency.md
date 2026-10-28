@@ -3,7 +3,7 @@
 The installed startup path verifies the entire exact release before admitting
 MCP traffic or opening an engine. On 2026-10-25, profiling showed that the
 5.0–5.8-second startup recorded in
-[the Codex discovery investigation](m3-codex-live-remediation.md) was dominated
+[the Codex discovery investigation](retired-evidence.md#retired-docs-m3-codex-live-remediation-md) was dominated
 by byte hashing in a development build. An optimized build helps substantially,
 but its serial installed catalog still exceeded Codex's observed one-second
 optional-server catalog grace.

@@ -108,5 +108,5 @@ The retained final evidence is `enumeration-json-shutdown-native.log` and
 `enumeration-json-memory-final.log` under the implementation task-state evidence
 directory. No multilingual retrieval-quality, workload latency, archive or native
 client qualification is implied by these checks. See the
-[memory skill](../skills/memory/SKILL.md) for the surrounding save, inspection,
+[project memory skill](../skills/project-memory/SKILL.md) for the surrounding save, inspection,
 forgetting and continuation workflows.

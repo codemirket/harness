@@ -120,32 +120,6 @@ impl From<WireScope> for Scope {
     }
 }
 
-// Record itself permits unknown fields for internal compatibility. The external
-// representation is deliberately strict at every object boundary.
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct StrictRecord {
-    record_id: String,
-    revision: u64,
-    data: RecordInput,
-    recorded_at: u64,
-    is_current_revision: bool,
-    supersedes: Option<RecordRef>,
-    superseded_by: Option<RecordRef>,
-}
-impl From<Record> for StrictRecord {
-    fn from(r: Record) -> Self {
-        Self {
-            record_id: r.record_id,
-            revision: r.revision,
-            data: r.data,
-            recorded_at: r.recorded_at,
-            is_current_revision: r.is_current_revision,
-            supersedes: r.supersedes,
-            superseded_by: r.superseded_by,
-        }
-    }
-}
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
 enum Line {
@@ -155,7 +129,7 @@ enum Line {
     },
     Revision {
         head_revision: u64,
-        record: Box<StrictRecord>,
+        record: Box<Record>,
     },
     Footer {
         records: u64,
@@ -202,7 +176,7 @@ fn write_line(writer: &mut impl Write, line: &Line, stats: &mut TransferStats) -
     stats.bytes += bytes.len() as u64;
     Ok(())
 }
-fn validate_record(scope: &Scope, r: &StrictRecord, head: u64) -> Result<()> {
+fn validate_record(scope: &Scope, r: &Record, head: u64) -> Result<()> {
     validate_reference(&RecordRef {
         record_id: r.record_id.clone(),
         revision: r.revision,
@@ -292,7 +266,7 @@ fn validate_graph(tx: &Transaction<'_>, deadline: &Deadline) -> Result<(u64, u64
 
 // Same canonical fields as read_record; indexed temporary successor lookup
 // avoids its unindexed per-record reverse-link scan for million-revision exports.
-fn read_export_record(tx: &Transaction<'_>, id: &str, revision: u64) -> Result<StrictRecord> {
+fn read_export_record(tx: &Transaction<'_>, id: &str, revision: u64) -> Result<Record> {
     let body:String=tx.query_row("SELECT json_object(
         'record_id',v.record_id,'revision',v.revision,'recorded_at',v.recorded_at,
         'is_current_revision',json(CASE v.is_current WHEN 1 THEN 'true' ELSE 'false' END),
@@ -665,8 +639,7 @@ mod tests {
             let id = value["record"]["record_id"].as_str().unwrap();
             let rev = value["record"]["revision"].as_u64().unwrap();
             assert_eq!(
-                serde_json::to_value(StrictRecord::from(read_record(&tx, id, rev).unwrap()))
-                    .unwrap(),
+                serde_json::to_value(read_record(&tx, id, rev).unwrap()).unwrap(),
                 value["record"]
             );
         }
@@ -804,6 +777,15 @@ mod tests {
             );
             assert_eq!(stream(&mut target), bytes);
         }
+    }
+    #[test]
+    fn canonical_record_roundtrip_rejects_unknown_authority_fields() {
+        let value = values(&stream(&mut fixture()))[1]["record"].clone();
+        let record: Record = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(serde_json::to_value(record).unwrap(), value);
+        let mut changed = value;
+        changed["operation_id"] = json!("op-forged");
+        assert!(serde_json::from_value::<Record>(changed).is_err());
     }
     #[test]
     fn strict_objects_reject_unknown_fields_and_operation_authority() {

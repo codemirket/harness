@@ -2,8 +2,10 @@
 
 The first-release JS/TS/JSX/TSX **structure** route uses the unchanged
 `typescript@5.9.3` compiler API on Mirket's already private Node 24.22.1.
-This is a separate operation from the still unadmitted TypeScript 7 semantic
-analyzer. The exact npm lock entry has no registry runtime dependencies;
+The same selected compiler now also powers the bounded
+[semantic navigation route](../../docs/m3-typescript-semantic-navigation.md).
+The former TypeScript 7 analyzer candidate is not selected.
+The exact npm lock entry has no registry runtime dependencies;
 moving it from development-only to production changes only its lockfile
 classification, not the archive pin. The npm integrity string remains
 `sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==`.
@@ -22,7 +24,7 @@ The selected 9,163,213 bytes include Apache-2.0 terms and complete packaged
 third-party notices. The source archive, integrity and passive probe evidence
 are in [the TypeScript qualification](../../docs/m3-typescript-navigation-qualification.md)
 and its retained task-state inventory. No `tsc`, `tsserver`, default library,
-npm/npx or TypeScript binary is selected. The inventory preparer rejects any
+npm/npx or TypeScript binary is selected. The release assembler rejects any
 additional or altered TypeScript member; the release manifest pins every
 selected file. The fixed package import resolves only within the verified
 private release tree, not a project or host installation.

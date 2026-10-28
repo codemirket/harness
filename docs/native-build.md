@@ -4,6 +4,13 @@ Development and test profiles retain line-table debug information and disable
 incremental compilation to bound disposable build-cache growth. They remain
 unoptimized; their timings do not establish release-build performance.
 
+For build-cache cleanup, preserve `target/native`: it contains admitted inputs,
+not disposable Cargo outputs. Removing `target/debug`, `target/release`, old
+cross-target outputs and `adapters/dist` is safe after jobs stop; the next build
+regenerates them. A blanket `cargo clean` also removes the native input and
+requires preparing it again before the build guard can pass. Keep the locked
+development dependency tree when an offline rebuild is needed.
+
 Mirket's canonical store links the reviewed official SQLite 3.54.1 source as a private static library. Its store does not use the operating system's SQLite. The exact source archive, two retained source members, compile defines and target options are recorded in `packaging/admission/m2-sqlite.native-build.json`; Cargo uses rusqlite's `modern_sqlite` and `backup` features, never its outdated `bundled` C snapshot.
 
 Prepare the native input before any Cargo compilation. The build script accepts only an already downloaded archive and explicit existing compiler/archiver paths. It does not download, install, invoke upstream build helpers or run the resulting SQLite code.

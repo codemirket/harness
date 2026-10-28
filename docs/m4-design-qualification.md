@@ -1,20 +1,22 @@
 # Local design qualification
 
-> **Dated qualification scope.** The installed fixture below still included the
-> former `documents` component; document/Office work is now host-owned. The
-> described HTML/CSS inspection experiment and its package inventory do not
-> imply an admitted private browser. Current design-token consumer evidence is
-> in [the token qualification](m4-token-consumption-qualification.md), and the
-> later browser installation is in [browser acquisition](m3-browser-setup-acquisition.md).
+> **Historical fixture, superseded package inventory.** The fixture below used
+> the removed `documents`, HTML/CSS inspection and general-browser routes.
+> Its Playwright/web-inspection packages are absent from the current adapter
+> lock. The current Design selection is `packaging/admission/m4-design-chromium-macos.runtime.json`;
+> its historical filename does not add a browser operation. Codex owns general
+> browsing and documents; [setup-acquired Chrome](m3-browser-setup-acquisition.md)
+> is video-only. This record preserves the original design observations. Current
+> installation evidence is in [the simplification qualification](simplification-qualification-2026-10-27.md).
 
 The macOS ARM64 design component packages Style Dictionary 5.7.1, SVGO 4.1.0,
 SAX 1.6.1, an exact private Node 24.22.1 runtime and a private Noto Sans font.
 SVG-to-PNG rendering uses the Rust `resvg` 0.49.0 dependency in a bounded
 same-binary child. The native `@resvg/resvg-js` package is excluded because its
 published archive does not provide a reproducible native-source closure for this
-release. This fixture used the [original design inventory](../packaging/admission/m4-design-macos.runtime.json)
+release. This fixture used the [original design inventory](retired-evidence.md#retired-packaging-admission-m4-design-macos-runtime-json)
 of 6,128 production package files. The current
-[Chromium-only selection](m4-design-chromium-file-selection.md) retains 6,024
+[Chromium-only selection](retired-evidence.md#retired-docs-m4-design-chromium-file-selection-md) retains 6,024
 package files while preserving every non-Playwright pin, the font, notices and
 the [frozen design lock](../packaging/admission/m4-design-package-lock.json).
 [`assemble-design-runtime.py`](../scripts/assemble-design-runtime.py)
@@ -27,7 +29,7 @@ remain outside the admitted design component and require their own full
 inventory and rights check before a video release can include them.
 The shared adapter lock also includes `playwright-core` 1.64.1 and the pinned
 HTML/CSS inspection libraries, with their embedded and supplemental notices.
-The HTML/CSS MCP route passed its separate [installed qualification](m3-web-inspection-transport.md).
+The HTML/CSS MCP route passed its separate [installed qualification](retired-evidence.md#retired-docs-m3-web-inspection-transport-md).
 Packaging the browser adapter does not establish an admitted native browser engine.
 
 `design_prepare` binds an explicit project, saved source revision, finite
@@ -54,7 +56,7 @@ and rejected a stale release. The installed home and project were disposable;
 the user installation and client settings were unchanged.
 
 A later [token-consumption check](m4-token-consumption-qualification.md) compiled Style Dictionary CSS through the MCP route and used it in one unchanged responsive HTML component. Changing a source color changed saved browser pixels, while omitting that token produced a detected visible failure. The browser snapshot remains development-only and unadmitted.
-The [current Chromium-only Design selection](m4-design-chromium-file-selection.md)
+The [current Chromium-only Design selection](retired-evidence.md#retired-docs-m4-design-chromium-file-selection-md)
 also passed a separate disposable installed release on macOS 26.5.2 ARM64.
 Its manifest contains 6,024 selected package files and the unchanged installed
 Design and JS/TS navigation tests passed after guarded assembly, activation

@@ -199,7 +199,7 @@ retrieval quality report or qualify native desktop client activation.
 
 ## Source expansion and task continuation
 
-The revision-bound [source expansion integration](m2-source-expansion.md) passed
+The revision-bound [source expansion integration](retired-evidence.md#retired-docs-m2-source-expansion-md) passed
 on macOS ARM64 with the existing memory fixture, including its configured native
 model/backup/restore journey. Two caller-selected task keys in the same checkout
 resume independently after reconnect. Exact checkpoints preserve source revisions,

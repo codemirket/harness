@@ -8,8 +8,11 @@ confirmed that generated colors, spacing, typography and radii reached the
 rendered component. This closes one representative token-consumption check;
 it does not admit the private browser or establish full release/GUI behavior.
 
-The reusable check is [`token-consumption-smoke.mjs`](../tests/token-consumption-smoke.mjs).
-It requires explicit canonical absolute paths for `--mirket`, `--node`,
+The historical runner was `tests/token-consumption-smoke.mjs`; it was removed
+with the general Mirket browser route. The results below remain dated evidence,
+not a currently runnable browser contract. Current live UI checks belong to
+Codex or the project toolchain.
+That runner required explicit canonical absolute paths for `--mirket`, `--node`,
 `--adapter`, `--design-adapter`, `--font`, `--browser-adapter`,
 `--browser-executable` and an existing external `--evidence-root`.
 It copies the selected core before launch, creates its own private temporary

@@ -1,8 +1,8 @@
 # Rewrite planning decisions
 
-Status: the revised [consolidated plan](implementation-plan.md) is approved and implementation is active. Later decisions supersede historical entries where stated. Raster and video release gates remain closed until their native payloads and installed behavior qualify.
+Status: the revised [consolidated plan](implementation-plan.md) governs the current `/Users/nazmiyilmaz/Projects/harness` checkout. Later decisions supersede the chronological entries below. Decisions 101–102 assign SQL and general browsing to Codex/project tools, removing Mirket's Python/SQLGlot and general-browser routes. Current local Mac qualification does not close public distribution, OS-floor or Windows gates. The subsequent deep-review authorization permits focused verified local commits; pushes, publication and live installation changes remain excluded.
 
-## Agreed constraints
+## Initial constraints (historical)
 
 - Fresh repository: `/Users/nazmiyilmaz/Projects/harness-rewrite`.
 - Clean 0.0.1 with no legacy compatibility or migration burden. This is the intended capable product, not a deliberately reduced MVP; choose capabilities by user outcomes and engineering fit, not version number.
@@ -705,7 +705,7 @@ Preserve dated research and prior qualification evidence as clearly historical w
 
 The user requested additional SQL dialects beyond the original SQLite/PostgreSQL choice. On 2026-10-25, the existing pinned SQLGlot 30.24.0 route qualified explicit IDs `postgres`, `sqlite`, `mysql`, `tsql` and `duckdb` for bounded declared-schema navigation. This supersedes the two-dialect limit in decisions 51 and 81; their original choices remain recorded above. It adds no dependency, live database access, universal SQL contract or implicit alias.
 
-The additional MySQL, T-SQL and DuckDB fixtures verify original quoted/escaped Unicode and CRLF byte positions, namespace-bound declarations, aliases, joins and CTE/derived outputs, plus refusal cases. MySQL case mismatches and executable comments refuse; T-SQL server collation modes are not inferred; unproven dynamic/synthesized/external relations refuse. MariaDB and other dialects remain unqualified and are not exposed. Full dialect syntax, native Windows, oldest macOS, installed final payloads and Codex GUI/model behavior require their own evidence. The [SQL qualification](../docs/m0-sql-qualification.md#additional-bounded-dialects--2026-10-25) owns exact cases and limits.
+The additional MySQL, T-SQL and DuckDB fixtures verify original quoted/escaped Unicode and CRLF byte positions, namespace-bound declarations, aliases, joins and CTE/derived outputs, plus refusal cases. MySQL case mismatches and executable comments refuse; T-SQL server collation modes are not inferred; unproven dynamic/synthesized/external relations refuse. MariaDB and other dialects remain unqualified and are not exposed. Full dialect syntax, native Windows, oldest macOS, installed final payloads and Codex GUI/model behavior require their own evidence. The [SQL qualification](../docs/retired-evidence.md#retired-docs-m0-sql-qualification-md) owns exact cases and limits.
 
 ## Decision 83 — Chromium-only browser operations
 

@@ -301,7 +301,7 @@ Decision 81 supersedes the earlier broad language inventory. The exclusive first
 
 Package only selected, admitted components. Start analyzers only when needed, bound indexing and release idle resources. A parser producing a syntax tree does not establish complete project navigation, reference coverage or passive loading. Test same-name scopes, embedded regions, Unicode/CRLF spans, edits, branch changes, missing metadata and unsupported syntax. Read-only source access does not authorize builds, project plugins, generators, dependency downloads or scripts. Report each operation's implemented and qualified status independently.
 
-The [JSON inspection record](../docs/m3-json-inspection.md) establishes one structural slice. It does not establish the other target syntaxes or full semantic navigation. The [historical language research](reviews/2026-10-25/superseded-language-tooling.md) is preserved as evidence and does not expand the current language scope. The five SQL profiles retain their separate current [qualification](../docs/m0-sql-qualification.md).
+The [JSON inspection record](../docs/retired-evidence.md#retired-docs-m3-json-inspection-md) establishes one structural slice. It does not establish the other target syntaxes or full semantic navigation. The [historical language research](reviews/2026-10-25/superseded-language-tooling.md) is preserved as evidence and does not expand the current language scope. The five SQL profiles retain their separate current [qualification](../docs/retired-evidence.md#retired-docs-m0-sql-qualification-md).
 
 ### Agreed analysis-execution policy
 

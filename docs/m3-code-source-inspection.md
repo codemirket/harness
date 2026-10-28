@@ -1,11 +1,11 @@
 # Read-only JavaScript/TypeScript source structure
 
 `code_inspect` exposes one saved JavaScript, TypeScript, JSX or TSX source through
-the existing finite original-source worker. Its public language enum is exactly
-`js`, `ts`, `jsx`, `tsx`; `web_inspect` remains exactly `html`, `css`. The two
-public schemas share the same internal scope, snapshot, byte-only transport,
-owned-process cleanup, response validation and saved-source recheck. They do
-not create a second execution or installation path.
+the finite original-source worker. Its public language enum is exactly
+`js`, `ts`, `jsx`, `tsx`. The former HTML/CSS `web_inspect` route was removed.
+Source inspection and [bounded semantic navigation](m3-typescript-semantic-navigation.md)
+retain explicit scope, snapshots, owned-process cleanup, response validation
+and saved-source rechecks.
 
 ## Request and observed result
 

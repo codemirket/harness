@@ -134,6 +134,7 @@ pub struct RecordRef {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Record {
     pub record_id: String,
     pub revision: u64,
