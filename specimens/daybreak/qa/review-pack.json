@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "kind": "saved-review-pack",
+  "source_video": {
+    "path": "daybreak.mp4",
+    "sha256": "395f48430985797e6a56353f5e0946eb85791d81e9ccacb15b739494e523d2bb"
+  },
+  "profile": {
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "frames": 360,
+    "duration_seconds": 12,
+    "audio": "intentionally silent"
+  },
+  "composition_inputs": {
+    "film.html": "6ee85f5f7210898f3df7825c01834cea9d01262e61c66c37b3ad149442ea1e2f",
+    "film.css": "f9278368dba16f8794360bdb3a90362028c7c9c8f9d7c510e6ec565f7853e71b",
+    "film.js": "19fd102147dee07293bb0f6a8e147bc69f05511281dc97e3102ab850805a07ba",
+    "assets/track.png": "a1148b5c018172747a4198c3a0369e86aeea1af51e9ebc32aa86e1a3ad4120e1",
+    "assets/club.png": "a2544dfd4394de3cc675c40e71c742daf406a42ebbdfa52af2a7d4ebb88b7690",
+    "assets/NotoSans.ttf": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d",
+    "assets/OFL.txt": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a",
+    "site.css": "bed6cad3cbceebfc1ac79ab880ed7b9259f2cc20ced3f5449d7a91af7444edfe"
+  },
+  "frames": [
+    {
+      "path": "qa/review/opening.png",
+      "seconds": 0.7,
+      "sha256": "3cdf68cf0b45ef624f7eacb5b136c89604bd835bff8fd88efdc2afadd7e5bb89",
+      "source": "daybreak.mp4"
+    },
+    {
+      "path": "qa/review/hero.png",
+      "seconds": 3,
+      "sha256": "c1c065884e966c6f60d47955b5e1971805d9742a648e4e9523ae69563d7cb6fc",
+      "source": "daybreak.mp4"
+    },
+    {
+      "path": "qa/review/club.png",
+      "seconds": 5.9,
+      "sha256": "427ca7137ed36c440da0e81ca223b4f7cf8d651e7623986a00f741e572f8c2dd",
+      "source": "daybreak.mp4"
+    },
+    {
+      "path": "qa/review/runs.png",
+      "seconds": 8.8,
+      "sha256": "205f0c8189fcf24bb2aa62635846dbf64be50108e4df3314126f081f155ed5fc",
+      "source": "daybreak.mp4"
+    },
+    {
+      "path": "qa/review/return.png",
+      "seconds": 11.9,
+      "sha256": "8785d7b66e1e4a3224d4e8e9f0395f8d45f8b7e9c7ea0d3f7a63440c3d4815e4",
+      "source": "daybreak.mp4"
+    },
+    {
+      "path": "qa/review/opening-before.png",
+      "seconds": 0.7,
+      "sha256": "73cb42c0d49e18a0f22c4a88b839a05887b55fb17587f6a4a3d5ecf8e652f859",
+      "source": "preserved initial export; one-based decoded frame 022; daybreak-video-review-20261028"
+    }
+  ],
+  "limits": [
+    "Hashes establish snapshot identity, not visual quality.",
+    "Review frames are extracted from the saved MP4; no new composition render.",
+    "Before image is the retained defective export, not the current candidate."
+  ],
+  "human_review": {
+    "status": "direction-accepted",
+    "date": "2026-10-28",
+    "timezone": "Europe/Istanbul",
+    "source": "explicit user reply in this Codex conversation after opening the D6 review pack",
+    "decision": "Ready for this design direction",
+    "video_sha256": "395f48430985797e6a56353f5e0946eb85791d81e9ccacb15b739494e523d2bb",
+    "scope": "Current corrected Daybreak design direction; not release or platform approval, universal defect freedom, or a model comparison"
+  }
+}

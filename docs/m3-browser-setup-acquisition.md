@@ -1,8 +1,16 @@
 # Setup-acquired browser qualification — 2026-10-26
 
+Current scope, clarified 2026-10-28: Mirket's selected private Chrome is reserved
+for video rendering; Codex owns general browsing and live web review. Later
+local Mac installation/export checks are recorded in
+[the final Mac integration](simplification-qualification-2026-10-27.md#final-local-mac-integration).
+The earlier release-gate list below is historical: Desktop GUI activation was
+waived and remains untested. Windows and the proposed Mac OS floor still need
+actual native qualification; public redistribution remains separate.
+
 The browser build from Chromium source is stopped under the user's revised
-installation choice. Mirket will keep one browser for browser workflows and
-HyperFrames, but its release download need not contain the browser bytes.
+installation choice. Mirket keeps one private browser for HyperFrames
+rendering, but its release download need not contain the browser bytes.
 The first-party setup flow obtains an exact prebuilt browser archive, verifies
 its pinned size and SHA-256 before extraction, assembles it in a private staging
 directory, and submits the complete, manifest-verified release to Mirket's

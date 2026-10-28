@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Daybreak — Design review</title>
+  <link rel="stylesheet" href="./review.css">
+</head>
+<body>
+<a class="skip" href="#film">Skip to film</a>
+<main>
+  <header>
+    <a class="brand" href="./index.html">daybreak<span>↗</span></a>
+    <nav aria-label="Review sections"><a href="#stills">Saved frames</a><a href="#questions">Review prompts</a></nav>
+  </header>
+  <section class="intro" aria-labelledby="title">
+    <div><p class="eyebrow">DESIGN REVIEW / 28 OCTOBER 2026</p><h1 id="title">See the design.<br>Feel the rhythm.</h1></div>
+    <p class="summary">An original running-club concept and its corrected, twelve-second presentation. Watch once at normal speed, then pause on the moments that need a closer look.</p>
+  </section>
+  <section id="film" aria-label="Film playback">
+    <video id="reel" controls playsinline preload="metadata" poster="./poster.png" aria-label="Daybreak design film: hero, club, sessions, and return to hero">
+      <source src="./daybreak.mp4" type="video/mp4">
+      Your browser cannot play this film. <a href="./daybreak.mp4">Download the MP4.</a>
+    </video>
+    <div class="caption"><span>12 seconds · 30fps · Silent · No autoplay</span><a href="./daybreak.mp4" download>Download film ↗</a></div>
+    <div class="actions" aria-label="Playback and inspection">
+      <button id="play" type="button">Play from start</button>
+      <button type="button" data-time="0.7">Opening · 0.7s</button>
+      <button type="button" data-time="3">Hero · 3.0s</button>
+      <button type="button" data-time="5.9">Club · 5.9s</button>
+      <button type="button" data-time="8.8">Runs · 8.8s</button>
+      <button type="button" data-time="11.9">Return · 11.9s</button>
+    </div>
+    <p class="status" id="play-status" role="status">Ready. Chapter buttons pause the film for inspection.</p>
+  </section>
+  <section id="questions" class="review-section" aria-labelledby="questions-title">
+    <div class="section-heading"><p class="eyebrow">01 / YOUR JUDGMENT</p><h2 id="questions-title">Three things to decide.</h2></div>
+    <div class="questions">
+      <article><span class="number">01</span><h3>Art direction</h3><p>Do the imagery, scale, typography and section compositions feel distinctive and intentional enough for your target?</p><a href="./index.html">Explore the usable page ↗</a></article>
+      <article><span class="number">02</span><h3>Motion & reading time</h3><p>At 1× speed, can you follow one focal point and read what matters before the next transition? Name any moment that feels rushed or flat.</p><p class="muted">Watch the club-to-runs change around 6.65s and the return around 9.75s.</p></article>
+      <article><span class="number">03</span><h3>Overall craft</h3><p>How close is this to the quality you want from the Granger reference? A clean export alone does not answer that question.</p><a href="https://dribbble.com/shots/26361206-Granger-Landing-page-Animation" target="_blank" rel="noopener noreferrer">View your Granger reference ↗</a></article>
+    </div>
+    <p class="review-note">Design direction accepted by the project owner on 28 October 2026: “Ready for this design direction.” This applies to the corrected candidate shown here. For further feedback, reply in the chat with the moment and what you noticed.</p>
+  </section>
+  <section id="stills" class="review-section" aria-labelledby="stills-title">
+    <div class="section-heading"><p class="eyebrow">02 / SAVED PIXELS</p><h2 id="stills-title">Pause the movement.</h2><p>These are decoded frames from the saved exports, not live composition previews. Select an image to inspect its full 1280 × 720 pixels.</p></div>
+    <div class="frame-grid">
+      <figure><a href="./qa/review/opening-before.png"><img src="./qa/review/opening-before.png" width="1280" height="720" loading="lazy" alt="Earlier opening: the bottom of the y and right edge of the k are clipped."></a><figcaption><strong>Before correction · 0.7s</strong><span>Preserved earlier export. This is not the current film.</span></figcaption></figure>
+      <figure><a href="./qa/review/opening.png"><img src="./qa/review/opening.png" width="1280" height="720" loading="lazy" alt="Corrected opening: the y descender and right edge of the k are fully visible."></a><figcaption><strong>Current opening · 0.7s</strong><span>The expanded reveal mask preserves the glyph edges.</span></figcaption></figure>
+      <figure><a href="./qa/review/hero.png"><img src="./qa/review/hero.png" width="1280" height="720" loading="lazy" alt="Hero with runner imagery, call to action, and large Daybreak wordmark."></a><figcaption><strong>Hero · 3.0s</strong><span>Corrected separation between the button and the large wordmark.</span></figcaption></figure>
+      <figure><a href="./qa/review/club.png"><img src="./qa/review/club.png" width="1280" height="720" loading="lazy" alt="Club section with a group running photograph and editorial copy."></a><figcaption><strong>The club · 5.9s</strong><span>Judge crop, hierarchy and the time available to read.</span></figcaption></figure>
+      <figure><a href="./qa/review/runs.png"><img src="./qa/review/runs.png" width="1280" height="720" loading="lazy" alt="Sessions section with a list of running events and pace filters."></a><figcaption><strong>The runs · 8.8s</strong><span>The film presents the list; filters work on the separate live page.</span></figcaption></figure>
+      <figure><a href="./qa/review/return.png"><img src="./qa/review/return.png" width="1280" height="720" loading="lazy" alt="Closing return to the original runner hero composition."></a><figcaption><strong>The return · 11.9s</strong><span>Judge whether the close feels resolved rather than abrupt.</span></figcaption></figure>
+    </div>
+  </section>
+  <footer>
+    <h2>What this pack establishes</h2>
+    <p>The saved film decodes; the targeted title, spacing and stage-gap checks pass. Browser playback, pixel inspection and the owner's acceptance are separate evidence. Acceptance of this direction does not guarantee that every frame is free of defects.</p>
+    <p>Daybreak and the pictured people are fictional. Original generated imagery and an admitted Noto Sans font are used. Granger is linked for comparison; its artwork, media and soundtrack are not included.</p>
+    <p><a href="./qa/review-pack.json">Snapshot identities</a> · <a href="./assets/PROVENANCE.json">Asset provenance</a> · <a href="./assets/OFL.txt">Font license</a></p>
+  </footer>
+</main>
+<script src="./reel-player.js"></script>
+<script>
+  for (const control of document.querySelectorAll('.actions button')) {
+    control.addEventListener('click', () => document.getElementById('reel').scrollIntoView({block:'start',behavior:'instant'}));
+  }
+</script>
+</body>
+</html>

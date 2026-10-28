@@ -11,6 +11,13 @@ working page or `reel.html` for the actual exported film. The current task-local
 preview is at <http://127.0.0.1:8768/> while its server remains running.
 The standalone `daybreak.mp4` can also be opened directly.
 
+Open `review.html` for the D6 review pack: the same corrected film, chapter
+controls, before/current opening frames, representative decoded frames and
+three art-direction questions. Images link to their full-size PNGs. The project
+owner accepted this design direction on 2026-10-28 in the chat. That decision is
+recorded against this export in `qa/review-pack.json`; it is not a release
+approval or a general defect-freedom claim. The page submits no feedback itself.
+
 - `index.html`, `site.css`, `site.js`: responsive page, keyboard-operable pace
   filters and local-only booking dialog. No data is sent or retained.
 - `film.html`, `film.css`, `film.js`: editable 1280×720 composition, 12 seconds,
@@ -23,6 +30,16 @@ The standalone `daybreak.mp4` can also be opened directly.
   asset revisions. Do not use the live user installation for qualification.
 - `reel.html`, `reel-player.js`: non-autoplay MP4 player with chapter inspection
   buttons, download link and link back to the working page.
+- `review.html`, `review.css`, `qa/review/`: review presentation and six saved
+  export frames. `qa/review-pack.json` binds the film, composition inputs and
+  frame snapshots; run `PRIVATE_NODE qa/check-review-pack.mjs` after changes.
+  A mismatch means the pack needs refresh, not that the new artwork is bad.
+  This check establishes identity only; continue actual pixel/playback review.
+  To also verify the saved video's profile and each current frame's timestamp,
+  run `PRIVATE_NODE qa/check-review-pack.mjs ABS_DAYBREAK_DIR ABS_FFMPEG ABS_FFPROBE`.
+  The earlier defective frame remains historical evidence; it is not compared
+  against the current film. A changed candidate cannot inherit the recorded
+  human acceptance merely by replacing its source-video hash.
 
 The reel intentionally has different staging from the usable page. Its three
 beats are hero (0–3.45s), club (3.45–6.65s), sessions (6.65–9.75s), then a hero
