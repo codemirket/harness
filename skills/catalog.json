@@ -2699,8 +2699,8 @@
       "resources": [
         {
           "path": "references/hyperframes-0.8.197-authoring.md",
-          "sha256": "5e9af8d840e925b451d8ddf5e05f6a4e49ac7bc5c783f5dbe2388d85957aafc3",
-          "bytes": 8488
+          "sha256": "4ca39ec91637452ecea966b9fcc4a29c3faf06c96d64fc721824fb9126ae82bf",
+          "bytes": 9375
         },
         {
           "path": "references/preview-and-beats.md",

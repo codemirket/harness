@@ -126,6 +126,25 @@ that result. Preserve interruption, reduced-motion and
 reading-hold decisions from `motion-direction`; this reference does not impose
 a universal timing curve, scene count or transition.
 
+## Decode with the qualified build
+
+The currently qualified private FFmpeg build decodes saved exports with
+`-fps_mode passthrough`; it does not provide the old `-vsync` option or the
+`select`/`tile` filters. Use the exact runtime executable and a fresh output
+directory, for example:
+
+```text
+<ffmpeg> -v error -i <saved.mp4> -fps_mode passthrough -start_number 0 <frames>/frame-%04d.png
+```
+
+Create `<frames>` first. Decode the full export and inspect the saved frames
+with the host image tool, including adjacent frames around suspected defects.
+Do not spend the review budget rebuilding unavailable montage filters or
+installing another media stack. A contact sheet is optional; individual decoded
+frames are sufficient for frame-specific judgment. Check the selected build
+again if its identity changes. Decoding success is not visual inspection or
+normal-speed playback evidence.
+
 ## Local assets and refusal cases
 
 Keep HTML/CSS/JS, fonts, images, audio and captions in the selected project.

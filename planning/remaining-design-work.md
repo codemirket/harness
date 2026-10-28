@@ -129,3 +129,27 @@ the accepted ownership boundary remain. Reference inspection and the first bound
 in [Daybreak production](../docs/daybreak-production-20261028.md). The original
 page, actual30fps export, independent critique and one repair are retained. This
 does not establish Granger-level craft or reopen/complete the broader gates.
+
+## UI author-to-host handoff follow-up — 2026-10-28
+
+The next authorized continuation addresses the observed setup overhead without
+reopening Tidepool: isolated CLI UI authors have no configured Codex browser,
+so they deliver editable source/static checks and explicitly hand pixel and
+interaction review to the lead's Desktop browser. The common contract states
+this in both arms and supplies the verified private FFmpeg decoding syntax.
+A new Lantern repair-club brief freezes two 240-second author turns, 510 total
+model seconds including shutdown allowance, zero repairs/retries, and a single
+1200-second wall window including independent review. This tests the handoff,
+not whether a larger budget or another model would outperform the old one.
+The old four-minute failures remain failures. Missing required editable files
+now fail author completion even when the native turn exits successfully.
+
+Executed with limits: both Lantern authors followed the browser handoff but
+still timed out (480.060 model / 622.962 wall seconds total). Saved UIs passed
+the independently reviewed journeys; one author also exceeded the root-file
+scope. Missing required outputs now fail completion; review packs retain
+scope-failed visual assets without promoting the failed run. See the
+[continuation evidence](../docs/design-acceptance-sample-20261028.md#subsequent-ui-handoff-diagnostic-at-d13b633).
+This cohort is closed with zero repairs/retries. No reliable completion or
+specialist-benefit claim is established; the final scope wording has no new
+model compliance trial.

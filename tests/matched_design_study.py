@@ -79,6 +79,15 @@ CALIBRATION = {
     }
 }
 
+UI_HANDOFF = {
+    "responsive-ui": {
+        **CASES["responsive-ui"],
+        "brief": """# Lantern repair club
+Create an original responsive page for a fictional community repair club. Required copy: Lantern repair club; Give everyday things another chapter; Find a session. Facts: Sunday 10:00–14:00; free entry; three sessions named Lamp clinic, Jacket repair and Chair care, with categories Electrical, Textiles and Furniture respectively. Include keyboard-operable All/Electrical/Textiles/Furniture filters and search. An unmatched query shows a useful empty state. Refresh sessions deliberately fails once with an accessible error; Retry restores all three sessions. Preserve display-text descenders, usable narrow layouts and reduced-motion behavior. No invented attendance, ratings or testimonials, external assets or new packages.
+""",
+    },
+}
+
 ACCEPTANCE_SAMPLE = {
     "responsive-ui": {
         **CASES["responsive-ui"],
@@ -156,8 +165,9 @@ def config(ready: dict[str, Any], trial: Path, font: Path) -> str:
 
 def production(case: dict[str, Any], ready: dict[str, Any]) -> str:
     return f"""# Common producer contract
-Required deliverables at the project root: {', '.join(case['outputs'])}. Additional evidence belongs
-only under .evidence/. Preserve BRIEF.md, PRODUCTION.md, RUBRIC.md, NotoSans.ttf
+Required deliverables at the project root: {', '.join(case['outputs'])}. These are
+the only new root files allowed. Put supporting assets and evidence under
+.evidence/, or embed editable SVG in the HTML. Preserve BRIEF.md, PRODUCTION.md, RUBRIC.md, NotoSans.ttf
 and any supplied .agents/ files. Use only local editable source and the supplied
 font. No new packages, network assets, fallback renderer, agents or extra trials.
 Call runtime_status before design/video work; use its exact release identity
@@ -165,7 +175,11 @@ and this project's absolute root. Design uses design_prepare/design_start and
 job_status; video uses video_prepare/video_start/video_status/video_result.
 Revision tokens use `sha256:<lowercase hex digest>`, including expected_revision
 and selected video asset revisions. A bare shasum digest is not a revision token.
-Codex/project tools own UI browser interaction. Stop and report a missing route.
+Codex/project tools own UI browser interaction. This isolated CLI configuration
+has no host browser connection. For responsive UI, deliver source and static
+checks, then stop and explicitly hand browser/pixel QA to the lead in Codex
+Desktop. Do not discover or launch a browser, CDP session or local server here.
+This handoff is not visual verification; the lead must test the frozen artifact.
 Use exact Node {ready['node']}, FFmpeg {ready['ffmpeg']}, FFprobe {ready['ffprobe']}.
 
 For video only: HyperFrames HTML must have a composition root with stable
@@ -177,6 +191,11 @@ referenced asset by its current revision; do not change source during a job.
 The export is MP4 at 12fps/36 frames, without audio. captions.json, when required,
 is a top-level array with exactly start_frame, end_frame, text per cue; start is
 inclusive, end exclusive. Put output MP4 and decoded frames under .evidence/.
+For the qualified private FFmpeg build, decode with -fps_mode passthrough
+and -start_number 0, for example: <ffmpeg> -v error -i <output.mp4>
+-fps_mode passthrough -start_number 0 .evidence/frames/frame-%02d.png.
+Create that output directory first. This build lacks -vsync and select/tile
+filters; inspect the decoded PNGs individually instead of attempting a montage.
 SVG remains editable vector geometry; rendered previews do not replace source.
 
 Initial turn ceiling: 240 seconds; repairs require a later lead-issued finding.
@@ -187,9 +206,9 @@ missing image events in a CLI trace alone do not establish lack of inspection.
 """
 
 
-def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: bool = False, acceptance_sample: bool = False) -> str:
-    if calibration and acceptance_sample:
-        raise SystemExit("choose calibration or acceptance sample, not both")
+def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: bool = False, acceptance_sample: bool = False, ui_handoff: bool = False) -> str:
+    if sum((calibration, acceptance_sample, ui_handoff)) > 1:
+        raise SystemExit("choose only one study mode")
     root, seal = root.absolute(), seal.absolute()
     if root.exists() or seal.exists() or seal.is_relative_to(root) or root.is_relative_to(REPO):
         raise SystemExit("use a new disposable root outside the repository and a new external seal")
@@ -200,7 +219,7 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
     if ready.get("approval_review") != "auto_review":
         raise SystemExit("matched trials require the authorized automatic approval review")
     runtime = bindings(ready)
-    cases = CALIBRATION if calibration else ACCEPTANCE_SAMPLE if acceptance_sample else CASES
+    cases = CALIBRATION if calibration else UI_HANDOFF if ui_handoff else ACCEPTANCE_SAMPLE if acceptance_sample else CASES
     root.mkdir(parents=True, mode=0o700)
     frozen = root / "frozen"; frozen.mkdir()
     (frozen / "runner").mkdir()
@@ -216,6 +235,8 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
         limits.update(initial_seconds=120, max_repairs=0, model_seconds=270, wall_seconds=600)
     elif acceptance_sample:
         limits.update(max_repairs=1, model_seconds=1500, wall_seconds=1800)
+    elif ui_handoff:
+        limits.update(max_repairs=0, model_seconds=510, wall_seconds=1200)
     cells = []
     for index, (task, case) in enumerate(cases.items()):
         # Alternate condition order across briefs; random IDs mask labels from reviewers.
@@ -231,6 +252,8 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
                 common = common.replace("Initial turn ceiling: 240 seconds", "Initial turn ceiling: 120 seconds").replace("45 minutes including reviews, 2700 model seconds and\nfour 180-second repair turns", "10 minutes including reviews, 270 model seconds and\nzero repair turns")
             elif acceptance_sample:
                 common = common.replace("45 minutes including reviews, 2700 model seconds and\nfour 180-second repair turns", "30 minutes including reviews, 1500 model seconds and\none 180-second repair turn across all four cells")
+            elif ui_handoff:
+                common = common.replace("45 minutes including reviews, 2700 model seconds and\nfour 180-second repair turns", "20 minutes including reviews, 510 model seconds and\nzero repair turns")
             (project / "PRODUCTION.md").write_text(common)
             (project / "RUBRIC.md").write_text(case["rubric"] + "\n")
             shutil.copy2(frozen / "NotoSans.ttf", project / "NotoSans.ttf")
@@ -242,7 +265,7 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
             cells.append({"id": cid, "task": task, "condition": condition, "inputs": tree(project),
                           "prompt_sha256": P.sha(trial / "prompt.txt"),
                           "config_sha256": P.sha(trial / "codex-home/config.toml")})
-    protocol = {"schema_version": 1, "kind": "calibration" if calibration else "acceptance-sample" if acceptance_sample else "cohort", "cases": cases,
+    protocol = {"schema_version": 1, "kind": "calibration" if calibration else "ui-handoff" if ui_handoff else "acceptance-sample" if acceptance_sample else "cohort", "cases": cases,
                 "limits": limits, "cells": cells, "ready": {k: v for k, v in ready.items() if k != "auth_file"},
                 "runtime": runtime, "platform": platform.platform(), "tools": TOOLS,
                 "head": P.subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
@@ -461,9 +484,12 @@ def run(root: Path, seal: Path, seal_sha: str, ready_path: Path, cid: str, phase
                 result = P.run_model(trial, prompt, phase, ready, cell["condition"], seconds)
             finally:
                 model_elapsed = time.monotonic() - model_start
-            # Host completion, not output quality. Structural absence is checked separately.
+            # Native completion and required editable files are prerequisites,
+            # not output quality or independent visual acceptance.
             result["author_completed"] = result["exit_code"] == 0 and result.get("turn_completed", False) and not result["timed_out"] and not result.get("interrupted") and not result["approval_signals"] and not result["blocked_signals"]
             result["project_check"] = inspect_project(root, cell, case)
+            if result["project_check"]["missing_outputs"]:
+                result["author_completed"] = False
             verify(root, seal, seal_sha, ready_path)
         except (Exception, SystemExit, KeyboardInterrupt) as exc:
             result.update(author_completed=False, runner_error=f"{type(exc).__name__}: {exc}")
@@ -509,12 +535,19 @@ def review_pack(root: Path, seal: Path, seal_sha: str, ready_path: Path, cid: st
             if (snapshot / name).is_file(): shutil.copy2(snapshot / name, dest / name)
         # Retain visual assets/exports (including SVG referenced by a page),
         # not reports, guidance, trace or author claims.
-        for path in (snapshot / ".evidence").rglob("*") if (snapshot / ".evidence").is_dir() else []:
+        # A scope-failed author can still leave a referenced image elsewhere in
+        # its snapshot. Preserve those pixels for diagnosis instead of silently
+        # manufacturing a broken image in the review copy. Scope remains failed.
+        for path in snapshot.rglob("*"):
+            relative = path.relative_to(snapshot)
+            if ".agents" in relative.parts:
+                continue
             if path.is_file() and path.suffix.lower() in {".svg", ".png", ".jpg", ".webp", ".mp4", ".webm"}:
                 target = dest / path.relative_to(snapshot); target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, target)
         P.write_json(dest / "review-template.json", {"artifact_id": cid, "phase": phase, "manifest_sha256": canonical(saved),
                      "rubric_sha256": canonical(case["rubric"]), "findings": [],
+                     "author_completed": read(trial / (phase + "-result.json"))["author_completed"],
                      "status": "unreviewed", "inspected_artifacts": [],
                      "masking_limit": "source/comments/style may reveal guidance; not authenticated blindness"})
         (root / "review-packs").mkdir(exist_ok=True)
@@ -560,12 +593,13 @@ def main(argv: list[str]) -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--calibration", action="store_true")
     mode.add_argument("--acceptance-sample", action="store_true")
+    mode.add_argument("--ui-handoff", action="store_true")
     parser.add_argument("--cell")
     parser.add_argument("--phase", choices=("initial", "repair"), default="initial")
     args = parser.parse_args(argv)
     if args.command == "prepare":
         if args.font is None: parser.error("prepare requires --font")
-        print(json.dumps({"seal_sha256": prepare(args.root, args.ready_manifest, args.font, args.seal, args.calibration, args.acceptance_sample)}))
+        print(json.dumps({"seal_sha256": prepare(args.root, args.ready_manifest, args.font, args.seal, args.calibration, args.acceptance_sample, args.ui_handoff)}))
     else:
         if not args.seal_sha256: parser.error("retain and supply --seal-sha256 from preparation")
         if args.command == "verify":

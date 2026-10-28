@@ -95,6 +95,24 @@ class MatchedStudyTests(unittest.TestCase):
         result = self.run_cell()
         self.assertEqual(result['project_check']['missing_outputs'], [])
 
+    def test_ui_handoff_pair_preserves_equal_inputs_and_cannot_allocate_repair(self):
+        root, seal = self.base / 'handoff', self.base / 'handoff-seal.json'
+        S.prepare(root, self.ready_path, self.font, seal, ui_handoff=True)
+        protocol = S.read(root / 'frozen/protocol.json')
+        self.assertEqual(len(protocol['cells']), 2)
+        self.assertEqual(protocol['limits']['model_seconds'], 510)
+        self.assertEqual(protocol['limits']['wall_seconds'], 1200)
+        a, b = protocol['cells']
+        strip = lambda c: {k: v for k, v in c['inputs'].items() if not k.startswith('.agents/')}
+        self.assertEqual(strip(a), strip(b))
+        self.assertEqual(a['prompt_sha256'], b['prompt_sha256'])
+        with S.locked(root):
+            for cell in (a, b):
+                S.reserve(root, protocol, cell['id'], 'initial')
+                S.settle(root, cell['id'], 'initial', 1, {})
+            with self.assertRaisesRegex(SystemExit, 'shared repair budget exhausted'):
+                S.reserve(root, protocol, a['id'], 'repair')
+
     def test_external_seal_detects_rewritten_protocol_and_seal(self):
         p = self.root / "frozen/protocol.json"; p.write_text(p.read_text()+' ')
         with self.assertRaisesRegex(SystemExit, 'frozen study changed'):
@@ -153,7 +171,8 @@ class MatchedStudyTests(unittest.TestCase):
         def fake(*args): return dict(exit_code=0,turn_completed=True,timed_out=False,approval_signals=[],blocked_signals=[])
         with patch.object(S.P,'run_model',side_effect=fake): result=self.run_cell()
         self.assertEqual(result['project_check']['missing_outputs'],['illustration.svg'])
-        self.assertEqual(result['outcome'],'awaiting_independent_review')
+        self.assertEqual(result['outcome'],'failed_or_blocked')
+        self.assertFalse(result['author_completed'])
         self.assertNotIn('passed',result)
 
     def test_exit_zero_without_native_turn_completion_is_not_author_completion(self):
@@ -271,6 +290,22 @@ class MatchedStudyTests(unittest.TestCase):
         self.assertEqual((dest/'.evidence/library-art.svg').read_bytes(),(evidence/'library-art.svg').read_bytes())
         self.assertFalse((dest/'.evidence/review.md').exists())
         self.assertFalse((dest/'.evidence/checks.json').exists())
+
+    def test_scope_failed_asset_is_retained_for_review_without_promoting_completion(self):
+        def fake(trial, *args):
+            (trial/'project/illustration.svg').write_text('<svg/>')
+            (trial/'project/lantern.svg').write_text('<svg><circle r="4"/></svg>')
+            return dict(exit_code=0, turn_completed=True, timed_out=False,
+                        approval_signals=[], blocked_signals=[])
+        with patch.object(S.P, 'run_model', side_effect=fake):
+            result = self.run_cell()
+        self.assertFalse(result['author_completed'])
+        self.assertIn('out-of-scope output: lantern.svg', result['runner_error'])
+        dest = S.review_pack(self.root, self.seal, self.seal_sha, self.ready_path, self.a['id'])
+        self.assertEqual((dest/'lantern.svg').read_text(), '<svg><circle r="4"/></svg>')
+        self.assertFalse(S.read(dest/'review-template.json')['author_completed'])
+        self.assertFalse((dest/'.agents').exists())
+        self.assertFalse(S.read(self.root/'budget-ledger.json')['runs'][self.a['id']]['initial']['eligible_for_repair'])
 
     def test_review_pack_refuses_changed_snapshot_and_expired_window(self):
         self.run_cell()

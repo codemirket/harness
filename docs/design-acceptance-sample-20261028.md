@@ -84,3 +84,69 @@ The old sealed adapter/runner identities intentionally differ from the fixes
 made after finalization; do not rerun or reclassify that frozen cohort with new
 code. Native coordination evidence is documented in
 [the separate follow-up](coordination-followup-20261028.md).
+
+## Subsequent UI handoff diagnostic at `d13b633`
+
+The user authorized continuing. Trace review identified avoidable setup work:
+both isolated UI authors attempted to launch a host browser despite having no
+configured Codex browser connection, and both motion authors tried unsupported
+private FFmpeg options. These observations do not establish the full cause of
+the timeouts. The common trial contract now assigns isolated UI source/static
+checks to the author and Desktop browser/pixel checks to the lead. This is
+observed guidance, not interception of arbitrary host commands. Both comparison
+arms receive the same prerequisites. The video reference now supplies the
+verified `-fps_mode passthrough -start_number 0` recipe and explains that montage
+filters are absent. The recipe produced all 36 PNGs, byte-identical to the prior
+independent decode. Catalog resource hashes were refreshed using
+`scripts/refresh-skill-catalog.py --write`; reference rights/classifications did
+not change.
+
+A new Lantern repair-club pair froze two 240-second turns, 510 shared model
+seconds including shutdown allowance, zero repairs/retries and one 1200-second
+wall/review window. It closed after **480.060 model seconds / 622.962 wall
+seconds**. Both authors explicitly respected the browser handoff and neither
+launched a browser, but **both still timed out**. No reliable completion or
+causal speedup claim follows. The new brief, SVG runtime fix and contract changes
+also prevent interpreting this as a controlled timing comparison with Tidepool.
+
+| Artifact | Author outcome | Independent saved-artifact outcome |
+| --- | --- | --- |
+| `artifact-6dee41a8` / specialist | 240.030s timeout plus unallowed root `lantern.svg` | Desktop/mobile pixels, loaded illustration, Textiles filtering by Space, unmatched search, refresh error and Enter/Retry restoring all three sessions checked. 390px page bounds and no animations under reduced motion. Reviewer found no actionable visual issue. |
+| `artifact-ae6f7470` / no specialist | 240.029s timeout; saved checks and handoff but no native completion event before cutoff | Desktop/mobile pixels, Furniture filtering by Space, unmatched search, refresh error and Enter/Retry restoring all three sessions checked. 390px page bounds and no animations under reduced motion. Reviewer found no actionable visual issue. |
+
+The first neutral pack omitted the out-of-scope SVG even though the actual
+snapshot contained it. A labelled diagnostic copy restored that exact hashed
+asset for review; the original pack and failed author record remain unchanged.
+After closure, the collector was corrected to retain safe visual files from the
+snapshot outside `.agents`, including those outside the permitted output scope,
+and to carry `author_completed: false` in its review template. This preserves
+diagnostic fidelity without admitting unauthorized output or making a failed
+cell repair-eligible. New instructions explicitly limit root outputs and place
+supporting assets under `.evidence/` or inline. No author was rerun after this
+clarification, so its model compliance remains untested.
+
+A separate checker defect was reproduced: a native completed turn with no
+required editable output could previously enter the review stage as an
+`author_completed` result. Missing required outputs now force failure. Tests
+cover missing output, a scope-failed visual asset retained in the review pack,
+matched input equality, and refusal to allocate any repair in this pair.
+
+Fresh checks for this continuation: guarded locked/offline Rust build/tests
+(506 passed, five ignored), all-target Clippy with warnings denied, formatting,
+locked adapter compilation/tests (68 passed, one skipped), explicit private
+Node/current-binary MCP smoke, 57 affected Python tests and 14 catalog/assembly
+tests. The generic Skill Creator validator could not run because PyYAML was
+absent in both available Python runtimes; no dependency was installed to bypass
+that. Repository-owned catalog/resource checks passed. `SKILL.md` frontmatter
+was unchanged. The last collector/instruction edits affect Python only and were
+retested after the closed model pair; runtime gate results precede those edits.
+
+Evidence: `/Users/Shared/mirket-ui-handoff-20261028` holds frozen author inputs,
+events, snapshots, original neutral packs, ledger and finalized failed outcomes.
+`/Users/nazmiyilmaz/.codex/task-state/harness-ui-handoff-20261028` holds the external
+seal, current tested binary identity, host interactions/pixels, independent
+reviews, decoder replay and gate logs. Platform/model remain macOS 26.5.2 ARM64,
+Astra/high and the same Desktop-bundled CLI/private Node. No full-catalog,
+Windows, OS-floor, publication or Desktop GUI gate was promoted. The remaining
+completion problem needs a separately scoped timing investigation; repeated
+runs under the same ceiling would not establish its cause.
