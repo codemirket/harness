@@ -23,6 +23,8 @@ When the deliverable is editable SVG/DOM motion or needs deterministic handoff, 
 
 Expose only the named timing, easing, spacing and type controls that affect this sequence, with one owner for each. For an interactive target, review anticipation, hold and settle at sampled frames and recheck the same beats on mobile and in reduced-motion mode when those modes exist. For an exported video, scrub the normal decoded export when available; do not invent a reduced-motion requirement for an offline deliverable. A successful render or hash is not playback evidence.
 
+For a finite sequence with a plausible midpoint or transition defect, read [numeric motion observations](references/motion-observations.md) and use the repository checker only for source-bound geometry relations. It can fail a midpoint-only defect, hold/settle violation, containment failure or overlap; its passing receipt is not decoding, pixel inspection or aesthetic judgment.
+
 For a multi-beat sequence, read [storyboard and transition direction](references/storyboard-and-transitions.md) before implementation. Use its compact shot card when it clarifies focal subject, setup/payoff, reading holds, motivated camera movement or continuity between scenes. It is a decision aid, not a requirement for three directions, fixed quotas, hard-cut bans or extra approvals.
 
 A storyboard specifies a sequence but cannot prove its feel at playback speed. Retain that distinction if playback is unavailable. Check reading time, focus continuity, loop seams and whether motion hides an actionable or task-critical element. A reduced-motion version may use immediate state changes, static composition or a restrained transition; preserve the same information and controls.

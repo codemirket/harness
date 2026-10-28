@@ -12,3 +12,5 @@ Compare plausible options, including the current approach, against explicit crit
 Choose a bounded bet with an owner, expected outcome, leading/lagging measures and a review/stop condition. Explain what evidence would change the choice. Keep publication, pricing/account changes and spending within authorization.
 
 Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.
+
+For a material bet, load `references/opportunity-map.md` and keep the chain in a project-local `product/opportunity-map.json`: outcome, opportunity, assumption, test, and decision. Give tests a decision rule before they run; record contradictions and rejected hypotheses rather than silently promoting an inconclusive result. This is a planning contract, not evidence that the chosen outcome will occur.

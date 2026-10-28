@@ -17,4 +17,11 @@ Render a bounded sample, inspect typography/composition/pacing, then export the 
 
 When a sequence needs repeated timing or source revisions, read [preview and beat correspondence](references/preview-and-beats.md). Keep project preview controls outside the exported composition. A seekable browser preview and an export must demonstrate the same named states before claiming parity; an unmanaged animation can move in one and freeze in the other.
 
+When beat metadata alone cannot distinguish a clean motion from a midpoint,
+settle, containment or transition-overlap defect, read [HyperFrames observation
+handoff](references/motion-observations.md). Run the project-owned numeric
+checker only after the existing export/decode path and bind its source/export/
+font revisions. A passing observation packet remains narrower than visual QA;
+display saved pixels with an image-capable tool and retain the independent review.
+
 Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.

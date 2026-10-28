@@ -9,7 +9,7 @@
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "980bdb4e7c85d60c099efaecd0b586e6993de821eeb0b9c7b95b08daf487c3b9"
+      "sha256": "fc9155c95f8b506187df6bf80f6939b71742e58135d87e9d2f275601e28ea3c1"
     },
     {
       "path": "planning/references.md",
@@ -1372,15 +1372,16 @@
       "path": "skills/browser-research/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "ce0c293ea3862efa6536b2c35ea99ade312362e54da9cbceb433325cdac7f3e3",
-      "source_bytes": 1570,
+      "source_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
+      "source_bytes": 1848,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-research",
         "local_basis": [
           "planning/skill-catalog-design.md / Browser and web evidence — 3",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "crawl4ai",
@@ -1423,7 +1424,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/research-coverage.md",
+          "sha256": "fe120c2d97daa3cc880b0edf1a4344167b5a7ab2f7b4f5722a2ece06a510c79c",
+          "bytes": 5389
+        }
+      ]
     },
     {
       "id": "browser-automation",
@@ -2364,8 +2371,8 @@
       "conditional_capabilities": [
         "video"
       ],
-      "source_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
-      "source_bytes": 5584,
+      "source_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
+      "source_bytes": 5966,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
@@ -2376,7 +2383,8 @@
           "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
           "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
+          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "emil",
@@ -2427,6 +2435,11 @@
           "path": "references/editable-motion.md",
           "sha256": "375d28c5d9da71c13960bfb4305af998951ae0023d47a5bfdc86359f5cc67542",
           "bytes": 9829
+        },
+        {
+          "path": "references/motion-observations.md",
+          "sha256": "a808446b05c27f689e7dd6710b02131a11ef6de09780adda47add24830a6e080",
+          "bytes": 3021
         },
         {
           "path": "references/storyboard-and-transitions.md",
@@ -2639,8 +2652,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
-      "source_bytes": 2917,
+      "source_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
+      "source_bytes": 3389,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
@@ -2652,7 +2665,8 @@
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
           "docs/design-review-20261027.md / recent research and local outcome checks",
           "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
-          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
+          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "remotion",
@@ -2703,6 +2717,11 @@
           "bytes": 12002
         },
         {
+          "path": "references/motion-observations.md",
+          "sha256": "d08ac3af2d6abbf224ab4efbdee05c3041e46a8a446e12a207db5b07b321dbc9",
+          "bytes": 2194
+        },
+        {
           "path": "references/preview-and-beats.md",
           "sha256": "80689eb99eb03d6867067b2abd864e69820188852dc742ff01ea1175602e3384",
           "bytes": 4649
@@ -2715,15 +2734,16 @@
       "path": "skills/customer-research/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "1d4d462447ca7ac612e58646795021987fe0d704189909b4bfa87cc78dc2cd5b",
-      "source_bytes": 1452,
+      "source_sha256": "9e994bb6a4d1ac74c5970470c5433d1decafa749787f8e289af8fa2355f2d1bc",
+      "source_bytes": 1893,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#customer-research",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "marketing",
@@ -2767,7 +2787,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/evidence-register.md",
+          "sha256": "a9f68f29931d5864dcb69648e4a8889f63e328dbab6a604918ad5e1db17246c2",
+          "bytes": 1590
+        }
+      ]
     },
     {
       "id": "jobs-to-be-done",
@@ -2834,15 +2860,16 @@
       "path": "skills/product-strategy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "46f933bcafdc7f9852e91e2a59dd433c4aacc258b1aaa488b6a5bb3aeff8d926",
-      "source_bytes": 1302,
+      "source_sha256": "a69b436aae757c79c164f98d32e03351e6abfb045485a9af92ecc99d71409d22",
+      "source_bytes": 1707,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#product-strategy",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "wondel",
@@ -2886,7 +2913,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/opportunity-map.md",
+          "sha256": "8f362b4fcc841a752e556b8744b0dd8158762f9eb2dca936b6dd7f6c57916eae",
+          "bytes": 1562
+        }
+      ]
     },
     {
       "id": "prototype-test",
@@ -2956,15 +2989,16 @@
       "path": "skills/positioning/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "d45f6af074c3f07decd5c924b343ed45a88765db6dde1f2786dc75dff017f87b",
-      "source_bytes": 1322,
+      "source_sha256": "7e86c5c9c1a916fbbd3d5027602880daeef455c92139bf87fb1aa7a968f8c857",
+      "source_bytes": 1662,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#positioning",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "marketing",
@@ -3007,7 +3041,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/current-and-future-position.md",
+          "sha256": "13331a7126db5d13fb975899273c15bdc42f6d4e8f2b7fc8c29621dc8835fd81",
+          "bytes": 1135
+        }
+      ]
     },
     {
       "id": "marketing-copy",
@@ -3015,15 +3055,16 @@
       "path": "skills/marketing-copy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "26a70f515e8b770f1d5851adb9f763a547927a1fa1fce8316b678cb388d1b84c",
-      "source_bytes": 1344,
+      "source_sha256": "a02606b87e6d5902c4748543810200ace2229d8e25314bfdcae86794c5327aaa",
+      "source_bytes": 1770,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#marketing-copy",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "marketing",
@@ -3067,7 +3108,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/claim-proof-review.md",
+          "sha256": "c92b82bc842128602865753aca7728dff729b137d3ebb52508bf7b47a65c215a",
+          "bytes": 1492
+        }
+      ]
     },
     {
       "id": "content-search",
@@ -3136,15 +3183,16 @@
       "path": "skills/conversion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "f64d56855913d485cc16520e742788f9bd6f2c2c66f62ad0c2d9aafe569c5070",
-      "source_bytes": 1348,
+      "source_sha256": "a99cd34ee05d2c09816269c3c827672a824ab42fff9915b08b36c69a284959c1",
+      "source_bytes": 1719,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#conversion",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "marketing",
@@ -3188,7 +3236,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/bottleneck-diagnosis.md",
+          "sha256": "9feae92109326b4b99ce822bb52c6daf92bf10565d73c48817ef5de69b44bd96",
+          "bytes": 1092
+        }
+      ]
     },
     {
       "id": "experiments-launch",
@@ -3196,15 +3250,16 @@
       "path": "skills/experiments-launch/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "b1ceea017f339906e82bcdfee6461e75613bbb7b87df5f24b3fa9afa60dac353",
-      "source_bytes": 1413,
+      "source_sha256": "fea31c5a705eecc7dd00669047732ca649121eb056fa309b20f05acf8d957197",
+      "source_bytes": 1838,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#experiments-launch",
         "local_basis": [
           "planning/skill-catalog-design.md / Product, discovery and growth — 9",
           "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
         ],
         "reference_families": [
           "marketing",
@@ -3248,7 +3303,13 @@
           }
         ]
       },
-      "resources": []
+      "resources": [
+        {
+          "path": "references/loop-and-experiment-contract.md",
+          "sha256": "d80bfeca7d6c249d53a3d06327da72102c6d6800e9a3fed8dd7c9c0ed9ae42c2",
+          "bytes": 1211
+        }
+      ]
     },
     {
       "id": "data-analysis",

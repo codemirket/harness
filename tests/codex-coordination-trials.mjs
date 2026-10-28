@@ -19,10 +19,36 @@ export function observations(messages) {
   return {
     spawn_requests: items.filter((i) => i.type === 'collabAgentToolCall' && i.tool === 'spawnAgent'),
     resolved_children: items.filter((i) => i.type === 'subAgentActivity' && i.kind === 'started'),
-    commands: items.filter((i) => i.type === 'commandExecution'),
+    commands: messages.filter((m) => m.method === 'item/completed' && m.params?.item?.type === 'commandExecution')
+      .map((m) => ({ ...m.params.item, threadId: m.params.threadId ?? null, turnId: m.params.turnId ?? null })),
     completed_turns: messages.filter((m) => m.method === 'turn/completed').map((m) => m.params),
     approvals: messages.filter((m) => m.id != null && m.method?.endsWith('/requestApproval')),
+    token_usage: messages.filter((m) => m.method === 'thread/tokenUsage/updated').map((m) => m.params),
   };
+}
+
+export function tokenUsageByThread(messages) {
+  const latest = new Map();
+  for (const params of messages.filter((m) => m.method === 'thread/tokenUsage/updated').map((m) => m.params)) {
+    const total = params.tokenUsage?.total;
+    if (!params.threadId || !total || typeof total.totalTokens !== 'number') continue;
+    const prior = latest.get(params.threadId);
+    if (!prior || total.totalTokens >= prior.totalTokens) latest.set(params.threadId, {
+      totalTokens: total.totalTokens,
+      inputTokens: total.inputTokens ?? null,
+      cachedInputTokens: total.cachedInputTokens ?? null,
+      outputTokens: total.outputTokens ?? null,
+      reasoningOutputTokens: total.reasoningOutputTokens ?? null,
+    });
+  }
+  const by_thread = Object.fromEntries(latest);
+  const aggregate = [...latest.values()].reduce((sum, usage) => {
+    for (const key of ['totalTokens', 'inputTokens', 'cachedInputTokens', 'outputTokens', 'reasoningOutputTokens']) {
+      if (typeof usage[key] === 'number') sum[key] = (sum[key] ?? 0) + usage[key];
+    }
+    return sum;
+  }, {});
+  return { by_thread, aggregate };
 }
 
 export async function inventory(root, prefix = '') {
@@ -74,7 +100,14 @@ export function assessOutcome(spec, result, files) {
     preserved_project_scope: Array.isArray(result.out_of_scope_project_changes) && result.out_of_scope_project_changes.length === 0,
   };
   // The frozen input is [3,3,8,-2]. Count occurrences, not distinct values.
-  if (spec.id === 'mechanical-parallel' || spec.id === 'mechanical-single') {
+  if (spec.measurementMode) {
+    let integrated;
+    try { integrated = JSON.parse(files['result.json']); } catch { /* Missing or malformed is a failed output. */ }
+    checks.expected_native_children = children.length === (spec.measurementMode === 'serial' ? 1 : 2);
+    checks.sum_file = files['sum.txt']?.trim() === '12';
+    checks.count_file = files['count.txt']?.trim() === '4';
+    checks.integrated_result = integrated?.sum === 12 && integrated?.count === 4;
+  } else if (spec.id === 'mechanical-parallel' || spec.id === 'mechanical-single') {
     let integrated;
     try { integrated = JSON.parse(files['result.json']); } catch { /* Missing or malformed is a failed output. */ }
     checks.expected_native_children = children.length === (spec.id === 'mechanical-single' ? 1 : 2);
@@ -102,7 +135,7 @@ export function assessOutcome(spec, result, files) {
   } else if (spec.disabled) checks.no_native_children = children.length === 0;
   // Correct files plus spawned children do not establish which actor wrote
   // them. Mechanical ownership/integration needs the retained native trace.
-  const manualReview = spec.weakDefault || spec.denial || spec.disabled || spec.interrupt ||
+  const manualReview = spec.weakDefault || spec.denial || spec.disabled || spec.interrupt || spec.measurementMode ||
     ['mechanical-single', 'mechanical-parallel'].includes(spec.id);
   return {
     turn_status: status, checks,
@@ -262,6 +295,15 @@ async function runCase(ready, root, spec, deadline) {
     }
     result.thread_read = await s.request('thread/read', { threadId: id, includeTurns: true });
     result.observed = observations(s.messages);
+    result.token_usage = tokenUsageByThread(s.messages);
+    const rootThreadId = result.thread_start?.thread?.id;
+    result.integration = {
+      root_thread_id: rootThreadId ?? null,
+      root_commands: result.observed.commands.filter((item) => item.threadId === rootThreadId).length,
+      root_output_commands: result.observed.commands.filter((item) => item.threadId === rootThreadId &&
+        /(?:sum\.txt|count\.txt|result\.json)/.test(item.command ?? '')).length,
+      root_result_command: result.observed.commands.some((item) => item.threadId === rootThreadId && /result\.json/.test(item.command ?? '')),
+    };
     const children = new Set(result.observed.resolved_children.map((c) => c.agentThreadId));
     for (const c of result.observed.spawn_requests) for (const t of c.receiverThreadIds ?? []) children.add(t);
     result.children = [];
@@ -295,24 +337,29 @@ async function main() {
   for (let i = 2; i < process.argv.length; i += 2) {
     const [key, value] = process.argv.slice(i, i + 2);
     assert.ok(['--ready', '--output', '--initial-frame', '--final-frame', '--suite'].includes(key) && value && !flags.has(key));
-    assert.ok(key === '--suite' ? value === 'followup' : isAbsolute(value));
+    assert.ok(key === '--suite' ? ['followup', 'measure'].includes(value) : isAbsolute(value));
     flags.set(key, value);
   }
-  const followup = flags.get('--suite') === 'followup';
-  assert.ok(followup ? flags.size === 3 && flags.has('--ready') && flags.has('--output') : flags.size === 4,
-    'Supply --ready --output and either --suite followup or --initial-frame --final-frame');
-  const cases = followup ? FOLLOWUP_CASES : CASES, wallSeconds = followup ? 900 : 1500;
+  const suite = flags.get('--suite');
+  const followup = suite === 'followup', measure = suite === 'measure';
+  assert.ok((followup || measure) ? flags.size === 3 && flags.has('--ready') && flags.has('--output') : flags.size === 4,
+    'Supply --ready --output and either --suite followup, --suite measure, or --initial-frame --final-frame');
+  const measurementCases = [
+    { id: 'mechanical-measure-serial', measurementMode: 'serial', allowed: ['sum.txt', 'count.txt', 'result.json'], prompt: COMMON + `Use exactly one independent native worker. That worker owns both sum.txt and count.txt: sum the values in input.json into sum.txt and count all values including duplicates into count.txt. You alone verify both actual files and write result.json with integer keys sum and count. Do not add tests, retry, replace the worker or extend the shared deadline.` },
+    { id: 'mechanical-measure-parallel', measurementMode: 'parallel', allowed: ['sum.txt', 'count.txt', 'result.json'], prompt: COMMON + `Use exactly two independent native workers. One owns sum.txt containing the sum of input.json; the other owns count.txt containing the number of values including duplicates. Neither may write result.json or the other's file. You alone verify both actual files and write result.json with integer keys sum and count. Do not add tests, retry, replace a worker or extend the shared deadline.` },
+  ];
+  const cases = followup ? FOLLOWUP_CASES : measure ? measurementCases : CASES, wallSeconds = followup ? 900 : measure ? 600 : 1500;
   const ready = JSON.parse(await readFile(flags.get('--ready'), 'utf8'));
   assert.equal(ready.model, MODEL); assert.equal(ready.reasoning_effort, EFFORT);
   for (const k of ['codex', 'auth_file']) assert.ok(isAbsolute(ready[k]));
   const root = flags.get('--output');
   await mkdir(root, { mode: 0o700 }); // Exclusive creation: a new invocation cannot reset this trial's budget.
-  if (!followup) for (const [flag, name] of [['--initial-frame', 'initial.png'], ['--final-frame', 'final.png']]) await copyFile(flags.get(flag), join(root, name));
+  if (!followup && !measure) for (const [flag, name] of [['--initial-frame', 'initial.png'], ['--final-frame', 'final.png']]) await copyFile(flags.get(flag), join(root, name));
   const frozen = { schema: 1, frozen_at: new Date().toISOString(), platform: `${process.platform}-${process.arch}`,
     cli: { path: ready.codex, version: execFileSync(ready.codex, ['--version'], { encoding: 'utf8' }).trim(), sha256: hash(await readFile(ready.codex)) },
     runner_sha256: hash(await readFile(fileURLToPath(import.meta.url))), skill_sha256: hash(await readFile(join(REPO, 'skills/agent-coordination-strategy/SKILL.md'))),
-    images: followup ? {} : { initial: hash(await readFile(join(root, 'initial.png'))), final: hash(await readFile(join(root, 'final.png'))) },
-    suite: followup ? 'coordination-followup' : 'D5',
+    images: followup || measure ? {} : { initial: hash(await readFile(join(root, 'initial.png'))), final: hash(await readFile(join(root, 'final.png'))) },
+    suite: followup ? 'coordination-followup' : measure ? 'coordination-measurement' : 'D5',
     budget: { wall_seconds: wallSeconds, max_root_turns: cases.length, max_repairs: 0, max_retries: 0, per_case_seconds_including_children: 240 }, cases,
     limits: ['Host-reported resolved settings are not independently authenticated provider execution.', 'Project inventory is not a whole-machine write audit.', 'Controlled native denial uses the test client declining a real host request, not an automatic-review outcome.', 'CLI app-server is not Desktop GUI.'] };
   await writeFile(join(root, 'frozen.json'), json(frozen), { mode: 0o600 });

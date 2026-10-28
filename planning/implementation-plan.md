@@ -2,6 +2,10 @@
 
 **Approved for implementation, 2026-10-25; simplification accepted 2026-10-27.** This plan incorporates [decisions 84–100](decisions.md) and the 2026-10-27 simplification decision, including setup-acquired browser and semantic assets, narrower language tooling, and explicit external native tools when private packaging is costly. It replaces the earlier broad execution baseline, which remains in the [historical plan](implementation-plan-2026-10-24-historical.md) and verified private snapshots. It governs the current `harness` repository (previously developed as `harness-rewrite`), not a claim that its current source or packages are release-ready. The former installation was separately retired and replaced on 2026-10-27. Preserve that live installation and unrelated Codex settings during development. Plan approval alone does not authorize commits, pushes or publication; the subsequent deep-review task permits focused local commits after verification, but no push, publication or live installation changes.
 
+The user approved the [research-led improvements](research-improvements.md) on
+2026-10-28. That plan adds conditional skill resources and outcome qualification
+without expanding the ownership boundary or admitting new dependencies.
+
 ## Product boundary
 
 Mirket 0.0.1 is a capable local companion to **Codex Desktop only** on macOS ARM64. Windows 11 x64 and Windows 11 ARM64 remain planned targets, gated until native installation, ownership, Codex-client, design and video qualification can run on those devices. No Linux, VM, WSL or second client is a release target. The proposed qualification floors remain macOS 15 and Windows 11 25H2; actual native tests must establish each supported platform. Installation lives under the user's home `.mirket`, through thin platform scripts and a maintained installation prompt. Codex owns model selection, native subagents and their lifecycle, permissions, terminal commands, code editing, Git/worktrees, general file read/edit and host document tools. Mirket supplies the required managed route for its own operations and coordination strategy, not a second agent spawner or permission authority:

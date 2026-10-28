@@ -75,9 +75,13 @@ ownership and native-client lifecycle remain Rust/integration qualification gate
 
 From `adapters`, compile using the admitted local development compiler with
 `./node_modules/.bin/tsc -p tsconfig.json`, then run
-`node --test tests/*.test.mjs`. The package's runtime has no third-party
-dependencies. Compilation uses the locked TypeScript compiler and official
-`@types/node` development declarations.
+`node --test tests/*.test.mjs`. The original M0 text adapter described above uses
+Node built-ins. The current shared adapter package also contains the admitted
+navigation, design and HyperFrames dependencies listed in `adapters/package.json`
+and pinned by `adapters/package-lock.json`. Compilation uses that locked
+TypeScript compiler and the admitted development declarations. Qualification
+uses an explicit private Node path; do not install or run package hooks as a
+side effect of these checks.
 The tests launch the compiled adapter and inspect real disposable files.
 Compilation and these tests do not qualify a private distributed runtime,
 Windows behavior, native host activation, Office fidelity or PDF rendering.

@@ -62,8 +62,8 @@ class RefreshSkillCatalogTests(unittest.TestCase):
 
         for skill_id, expected in {
             "vector-art": ["references/illustration-craft.md"],
-            "motion-direction": ["references/editable-motion.md", "references/storyboard-and-transitions.md"],
-            "video-production": ["references/hyperframes-0.8.197-authoring.md", "references/preview-and-beats.md"],
+            "motion-direction": ["references/editable-motion.md", "references/motion-observations.md", "references/storyboard-and-transitions.md"],
+            "video-production": ["references/hyperframes-0.8.197-authoring.md", "references/motion-observations.md", "references/preview-and-beats.md"],
         }.items():
             entry = next(x for x in catalog["project"] if x["id"] == skill_id)
             self.assertEqual([x["path"] for x in entry["resources"]], expected)

@@ -34,6 +34,11 @@ MOTION_AUTHORING_BASIS = "docs/motion-authoring-20261027.md / original preview, 
 MOTION_AUTHORING_SKILLS = {"motion-direction", "video-production", "design-critique"}
 AUTHORING_DIAGNOSTICS_BASIS = "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
 AUTHORING_DIAGNOSTICS_SKILLS = {"video-production", "design-critique"}
+RESEARCH_IMPROVEMENTS_BASIS = "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
+RESEARCH_IMPROVEMENTS_SKILLS = {
+    "browser-research", "motion-direction", "video-production", "customer-research",
+    "product-strategy", "positioning", "marketing-copy", "conversion", "experiments-launch",
+}
 
 # These are the only newly admitted families in the 2026-10-27 adoption pass.
 # Their classification is source-level permission to adapt a reviewed method,
@@ -125,13 +130,22 @@ def update_provenance_records(provenance,catalog):
     """Keep the human-readable per-skill ledger aligned with the catalog."""
     for skill in catalog["global"]+catalog["project"]:
         adoption=adoption_record(skill)
-        if not adoption: continue
+        if not adoption and skill["id"] not in RESEARCH_IMPROVEMENTS_SKILLS: continue
         heading=f"### {skill['id']}"
         start=provenance.find(heading)
         if start<0: continue
         end=provenance.find("\n### ",start+len(heading))
         if end<0: end=len(provenance)
         section=provenance[start:end]
+        if skill["id"] in RESEARCH_IMPROVEMENTS_SKILLS:
+            synthesis="- Original procedural synthesis: "+RESEARCH_IMPROVEMENTS_BASIS+"; no external prose, code or assets copied; not a new runtime admission."
+            if "- Original procedural synthesis:" in section:
+                section=re.sub(r"- Original procedural synthesis: .*", synthesis, section, count=1)
+            else:
+                section=section.rstrip()+"\n"+synthesis+"\n"
+        if not adoption:
+            provenance=provenance[:start]+section+provenance[end:]
+            continue
         section=re.sub(r"- Classification/terms: .*", "- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.", section, count=1)
         section=re.sub(r"- (?:Comparison/link-only|Reviewed method) families: .*", "- Reviewed method families: "+", ".join(f"[{x}](#reference-{x})" for x in adoption["families"])+".", section, count=1)
         mapping=f"- Method mapping: {adoption['note']}; no upstream prose, code or assets copied."
@@ -247,6 +261,10 @@ def refresh(write):
         resources=resource_records(skill)
         if skill.get("resources")!=resources:
             changed.append("resources:"+skill["id"]); skill["resources"]=resources
+        if skill["id"] in RESEARCH_IMPROVEMENTS_SKILLS:
+            basis=skill.setdefault("provenance",{}).setdefault("local_basis",[])
+            if RESEARCH_IMPROVEMENTS_BASIS not in basis:
+                basis.append(RESEARCH_IMPROVEMENTS_BASIS); changed.append("research-basis:"+skill["id"])
         adoption=adoption_record(skill)
         if adoption:
             provenance=skill.setdefault("provenance",{})

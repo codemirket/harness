@@ -1349,7 +1349,7 @@
           "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
           "path": "skills/product-strategy/SKILL.md",
           "skill": "product-strategy",
-          "skill_body_sha256": "46f933bcafdc7f9852e91e2a59dd433c4aacc258b1aaa488b6a5bb3aeff8d926",
+          "skill_body_sha256": "a69b436aae757c79c164f98d32e03351e6abfb045485a9af92ecc99d71409d22",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
         }
@@ -2044,7 +2044,7 @@
           "local_output_evidence": "Deliver a claim-linked evidence summary with citations, material page excerpts or captures and extraction limits. Verify a decisive claim against its original context rather than only a snippet. Stop when the bounded questions are supported or inaccessible evidence makes the conclusion uncertain; identify any browser or account limitation that affected coverage.",
           "path": "skills/browser-research/SKILL.md",
           "skill": "browser-research",
-          "skill_body_sha256": "ce0c293ea3862efa6536b2c35ea99ade312362e54da9cbceb433325cdac7f3e3",
+          "skill_body_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Inspect and cite public or local web pages when rendered content, page state or bounded extraction is needed as evidence. Skip research fully answered by supplied source text."
         }
@@ -2550,7 +2550,7 @@
           "local_output_evidence": "Deliver a claim-linked evidence summary with citations, material page excerpts or captures and extraction limits. Verify a decisive claim against its original context rather than only a snippet. Stop when the bounded questions are supported or inaccessible evidence makes the conclusion uncertain; identify any browser or account limitation that affected coverage.",
           "path": "skills/browser-research/SKILL.md",
           "skill": "browser-research",
-          "skill_body_sha256": "ce0c293ea3862efa6536b2c35ea99ade312362e54da9cbceb433325cdac7f3e3",
+          "skill_body_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Inspect and cite public or local web pages when rendered content, page state or bounded extraction is needed as evidence. Skip research fully answered by supplied source text."
         },
@@ -3571,7 +3571,7 @@
           "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
           "path": "skills/marketing-copy/SKILL.md",
           "skill": "marketing-copy",
-          "skill_body_sha256": "26a70f515e8b770f1d5851adb9f763a547927a1fa1fce8316b678cb388d1b84c",
+          "skill_body_sha256": "a02606b87e6d5902c4748543810200ace2229d8e25314bfdcae86794c5327aaa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
         }
@@ -3731,7 +3731,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+          "skill_body_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -3973,7 +3973,7 @@
           "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
           "path": "skills/conversion/SKILL.md",
           "skill": "conversion",
-          "skill_body_sha256": "f64d56855913d485cc16520e742788f9bd6f2c2c66f62ad0c2d9aafe569c5070",
+          "skill_body_sha256": "a99cd34ee05d2c09816269c3c827672a824ab42fff9915b08b36c69a284959c1",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
         }
@@ -4642,7 +4642,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+          "skill_body_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -4785,7 +4785,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+          "skill_body_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -4954,7 +4954,7 @@
           "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
           "path": "skills/customer-research/SKILL.md",
           "skill": "customer-research",
-          "skill_body_sha256": "1d4d462447ca7ac612e58646795021987fe0d704189909b4bfa87cc78dc2cd5b",
+          "skill_body_sha256": "9e994bb6a4d1ac74c5970470c5433d1decafa749787f8e289af8fa2355f2d1bc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
         },
@@ -6411,7 +6411,7 @@
           "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
           "path": "skills/customer-research/SKILL.md",
           "skill": "customer-research",
-          "skill_body_sha256": "1d4d462447ca7ac612e58646795021987fe0d704189909b4bfa87cc78dc2cd5b",
+          "skill_body_sha256": "9e994bb6a4d1ac74c5970470c5433d1decafa749787f8e289af8fa2355f2d1bc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
         },
@@ -6429,7 +6429,7 @@
           "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
           "path": "skills/product-strategy/SKILL.md",
           "skill": "product-strategy",
-          "skill_body_sha256": "46f933bcafdc7f9852e91e2a59dd433c4aacc258b1aaa488b6a5bb3aeff8d926",
+          "skill_body_sha256": "a69b436aae757c79c164f98d32e03351e6abfb045485a9af92ecc99d71409d22",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
         },
@@ -6438,7 +6438,7 @@
           "local_output_evidence": "Return a positioning statement, claim/evidence map, message hierarchy and unresolved assumptions. Stop when the audience and defensible difference are clear enough for copy, or identify the missing evidence/decision. Do not publish or alter campaign accounts from a positioning brief.",
           "path": "skills/positioning/SKILL.md",
           "skill": "positioning",
-          "skill_body_sha256": "d45f6af074c3f07decd5c924b343ed45a88765db6dde1f2786dc75dff017f87b",
+          "skill_body_sha256": "7e86c5c9c1a916fbbd3d5027602880daeef455c92139bf87fb1aa7a968f8c857",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define audience, alternatives and differentiated value when product positioning or message hierarchy needs evidence. Skip sentence-level proofreading of approved messaging."
         },
@@ -6447,7 +6447,7 @@
           "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
           "path": "skills/marketing-copy/SKILL.md",
           "skill": "marketing-copy",
-          "skill_body_sha256": "26a70f515e8b770f1d5851adb9f763a547927a1fa1fce8316b678cb388d1b84c",
+          "skill_body_sha256": "a02606b87e6d5902c4748543810200ace2229d8e25314bfdcae86794c5327aaa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
         },
@@ -6465,7 +6465,7 @@
           "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
           "path": "skills/conversion/SKILL.md",
           "skill": "conversion",
-          "skill_body_sha256": "f64d56855913d485cc16520e742788f9bd6f2c2c66f62ad0c2d9aafe569c5070",
+          "skill_body_sha256": "a99cd34ee05d2c09816269c3c827672a824ab42fff9915b08b36c69a284959c1",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
         },
@@ -6474,7 +6474,7 @@
           "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
           "path": "skills/experiments-launch/SKILL.md",
           "skill": "experiments-launch",
-          "skill_body_sha256": "b1ceea017f339906e82bcdfee6461e75613bbb7b87df5f24b3fa9afa60dac353",
+          "skill_body_sha256": "fea31c5a705eecc7dd00669047732ca649121eb056fa309b20f05acf8d957197",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
@@ -6662,7 +6662,7 @@
           "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
           "path": "skills/customer-research/SKILL.md",
           "skill": "customer-research",
-          "skill_body_sha256": "1d4d462447ca7ac612e58646795021987fe0d704189909b4bfa87cc78dc2cd5b",
+          "skill_body_sha256": "9e994bb6a4d1ac74c5970470c5433d1decafa749787f8e289af8fa2355f2d1bc",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
         },
@@ -6680,7 +6680,7 @@
           "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
           "path": "skills/product-strategy/SKILL.md",
           "skill": "product-strategy",
-          "skill_body_sha256": "46f933bcafdc7f9852e91e2a59dd433c4aacc258b1aaa488b6a5bb3aeff8d926",
+          "skill_body_sha256": "a69b436aae757c79c164f98d32e03351e6abfb045485a9af92ecc99d71409d22",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
         },
@@ -6698,7 +6698,7 @@
           "local_output_evidence": "Return a positioning statement, claim/evidence map, message hierarchy and unresolved assumptions. Stop when the audience and defensible difference are clear enough for copy, or identify the missing evidence/decision. Do not publish or alter campaign accounts from a positioning brief.",
           "path": "skills/positioning/SKILL.md",
           "skill": "positioning",
-          "skill_body_sha256": "d45f6af074c3f07decd5c924b343ed45a88765db6dde1f2786dc75dff017f87b",
+          "skill_body_sha256": "7e86c5c9c1a916fbbd3d5027602880daeef455c92139bf87fb1aa7a968f8c857",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define audience, alternatives and differentiated value when product positioning or message hierarchy needs evidence. Skip sentence-level proofreading of approved messaging."
         },
@@ -6707,7 +6707,7 @@
           "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
           "path": "skills/marketing-copy/SKILL.md",
           "skill": "marketing-copy",
-          "skill_body_sha256": "26a70f515e8b770f1d5851adb9f763a547927a1fa1fce8316b678cb388d1b84c",
+          "skill_body_sha256": "a02606b87e6d5902c4748543810200ace2229d8e25314bfdcae86794c5327aaa",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
         },
@@ -6725,7 +6725,7 @@
           "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
           "path": "skills/conversion/SKILL.md",
           "skill": "conversion",
-          "skill_body_sha256": "f64d56855913d485cc16520e742788f9bd6f2c2c66f62ad0c2d9aafe569c5070",
+          "skill_body_sha256": "a99cd34ee05d2c09816269c3c827672a824ab42fff9915b08b36c69a284959c1",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
         },
@@ -6734,7 +6734,7 @@
           "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
           "path": "skills/experiments-launch/SKILL.md",
           "skill": "experiments-launch",
-          "skill_body_sha256": "b1ceea017f339906e82bcdfee6461e75613bbb7b87df5f24b3fa9afa60dac353",
+          "skill_body_sha256": "fea31c5a705eecc7dd00669047732ca649121eb056fa309b20f05acf8d957197",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
@@ -7214,7 +7214,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
+          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7540,7 +7540,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+          "skill_body_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         },
@@ -7558,7 +7558,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
+          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -9500,7 +9500,7 @@
           "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
           "path": "skills/experiments-launch/SKILL.md",
           "skill": "experiments-launch",
-          "skill_body_sha256": "b1ceea017f339906e82bcdfee6461e75613bbb7b87df5f24b3fa9afa60dac353",
+          "skill_body_sha256": "fea31c5a705eecc7dd00669047732ca649121eb056fa309b20f05acf8d957197",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
@@ -9789,7 +9789,7 @@
           "local_output_evidence": "Deliver the motion rationale, timing/state specification and inspected specimen. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop when the choreography is concrete and verified enough for implementation or report missing playback, assets and unresolved defects at the limit. A new sequence does not reset the budget.",
           "path": "skills/motion-direction/SKILL.md",
           "skill": "motion-direction",
-          "skill_body_sha256": "f5dfb89c3f8238533918b7fa0fd22d57ef6e485cd6327ee4b342ec374aef4d83",
+          "skill_body_sha256": "ceedf82d6df475b4a611c2e9b7b312d516a38b5edecd012684e740f40dfcb95b",
           "source_mapping": "Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Define a motion language or choreography when purpose, sequence, timing, interruption and reduced motion need a coherent specification. Skip implementing an already-specified isolated transition."
         }
@@ -10020,7 +10020,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "b0da8bf3cdf8eaf9a41eda4e3dd9eca18ab21d0982f66b666b4133e131f389ac",
+          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
           "source_mapping": "HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }

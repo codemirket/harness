@@ -30,6 +30,7 @@ import argparse
 from datetime import datetime
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -47,6 +48,13 @@ FINDING_STATUSES = {"open", "resolved", "rejected"}
 RESET_FIELDS = {"budget", "repair_limit", "repairs_used"}
 PIXEL_CLAIM_FIELDS = {"pixels_seen", "saw_pixels", "pixel_inspection"}
 MOTION_CAPTURE_KINDS = {"preview", "decoded_export"}
+MEDIA_PROFILE_KEYS = {"width", "height", "duration_seconds", "duration_tolerance_seconds"}
+EXECUTION_KEYS = {
+    "platform", "architecture", "codex_release_id", "mirket_release_id",
+    "model", "reasoning_effort", "catalog_sha256", "skills", "tools",
+    "runner_version",
+}
+REFERENCE_KINDS = {"asset", "reference"}
 
 
 class EvidenceError(ValueError):
@@ -76,6 +84,62 @@ def _sha(value: Any, label: str) -> str:
     if not SHA256.fullmatch(value):
         raise EvidenceError(f"{label} must be a lowercase SHA-256 digest")
     return value
+
+
+def _revision(value: Any, label: str) -> str:
+    value = _text(value, label)
+    if not value.startswith("sha256:") or not SHA256.fullmatch(value[7:]):
+        raise EvidenceError(f"{label} must be a sha256:<lowercase digest> revision")
+    return value
+
+
+def _absolute_path(value: Any, label: str) -> str:
+    value = _text(value, label)
+    path = Path(value)
+    if not path.is_absolute() or "\\" in value or any(part in {"", ".", ".."} for part in path.parts[1:]):
+        raise EvidenceError(f"{label} must be a canonical absolute path")
+    return value
+
+
+def _number(value: Any, label: str, *, positive: bool = False) -> float:
+    if isinstance(value, str):
+        try:
+            value = float(value)
+        except ValueError as exc:
+            raise EvidenceError(f"{label} must be a finite number") from exc
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise EvidenceError(f"{label} must be a finite number")
+    if positive and value <= 0:
+        raise EvidenceError(f"{label} must be positive")
+    if not positive and value < 0:
+        raise EvidenceError(f"{label} must be non-negative")
+    return float(value)
+
+
+def _rational(value: Any, label: str) -> tuple[int, int]:
+    value = _text(value, label)
+    parts = value.split("/")
+    if len(parts) != 2:
+        raise EvidenceError(f"{label} must be a rational numerator/denominator")
+    try:
+        numerator, denominator = (int(part) for part in parts)
+    except ValueError as exc:
+        raise EvidenceError(f"{label} must be a rational numerator/denominator") from exc
+    if numerator <= 0 or denominator <= 0:
+        raise EvidenceError(f"{label} must be positive")
+    return numerator, denominator
+
+
+def _count(value: Any, label: str) -> int:
+    if isinstance(value, bool) or isinstance(value, int):
+        result = value
+    elif isinstance(value, str) and value.isdigit():
+        result = int(value)
+    else:
+        raise EvidenceError(f"{label} must be a positive frame count")
+    if result <= 0:
+        raise EvidenceError(f"{label} must be a positive frame count")
+    return result
 
 
 def _canonical_sha(value: Any) -> str:
@@ -164,6 +228,16 @@ def _digest(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
         return digest.hexdigest()
+
+
+def _read_json(root: Path, relative: Any, label: str) -> tuple[Path, str, dict[str, Any]]:
+    path = _safe_file(root, relative, f"{label}.path")
+    digest = _digest(path)
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise EvidenceError(f"{label} must be a readable JSON object") from exc
+    return path, digest, _map(value, label)
 
 
 def _within_window(moment: datetime, label: str, started: datetime, deadline: datetime) -> None:
@@ -301,12 +375,251 @@ def _validate_motion(packet: dict[str, Any], contract: dict[str, Any], states: d
             raise EvidenceError(f"motion beat {beat_id} references an unknown state")
         expected = _text(beat.get("expected"), f"motion.beats[{index}].expected")
         beat_map[beat_id] = {"frame": frame, "state_id": state_id, "expected": expected}
+    media_profile = motion.get("media_profile")
+    if media_profile is not None:
+        media_profile = _map(media_profile, "motion.media_profile")
+        if set(media_profile) != MEDIA_PROFILE_KEYS:
+            raise EvidenceError("motion.media_profile has an unsupported field set")
+        width = media_profile.get("width")
+        height = media_profile.get("height")
+        if isinstance(width, bool) or not isinstance(width, int) or width <= 0:
+            raise EvidenceError("motion.media_profile.width must be positive")
+        if isinstance(height, bool) or not isinstance(height, int) or height <= 0:
+            raise EvidenceError("motion.media_profile.height must be positive")
+        duration = _number(media_profile.get("duration_seconds"), "motion.media_profile.duration_seconds", positive=True)
+        tolerance = _number(media_profile.get("duration_tolerance_seconds"), "motion.media_profile.duration_tolerance_seconds")
+        if tolerance > duration:
+            raise EvidenceError("motion.media_profile.duration_tolerance_seconds exceeds duration")
+        media_profile = {
+            "width": width, "height": height,
+            "duration_seconds": duration,
+            "duration_tolerance_seconds": tolerance,
+        }
     if contract.get("motion_sha256") != _canonical_sha(motion):
         raise EvidenceError("motion expectations changed or have a stale hash")
     # Keep these reads explicit so a future caller cannot accidentally treat the
     # rational timing fields as a float or infer units from a label.
     _ = (numerator, denominator, parity_claim)
     return motion, beat_map
+
+
+def _validate_execution(contract: dict[str, Any]) -> dict[str, Any] | None:
+    execution = contract.get("execution")
+    if execution is None:
+        if "execution_sha256" in contract:
+            raise EvidenceError("frozen execution identity is missing")
+        return None
+    execution = _map(execution, "contract.execution")
+    if set(execution) != EXECUTION_KEYS:
+        raise EvidenceError("contract.execution has an unsupported field set")
+    for key in ("platform", "architecture", "codex_release_id", "mirket_release_id", "model", "reasoning_effort", "runner_version"):
+        _text(execution.get(key), f"contract.execution.{key}")
+    _sha(execution.get("catalog_sha256"), "contract.execution.catalog_sha256")
+    skills = execution.get("skills")
+    if not isinstance(skills, dict):
+        raise EvidenceError("contract.execution.skills must be an object")
+    for name, digest in skills.items():
+        _text(name, "contract.execution.skills name")
+        _sha(digest, f"contract.execution.skills.{name}")
+    tools = execution.get("tools")
+    if not isinstance(tools, dict):
+        raise EvidenceError("contract.execution.tools must be an object")
+    for name, identity in tools.items():
+        _text(name, "contract.execution.tools name")
+        identity = _map(identity, f"contract.execution.tools.{name}")
+        if set(identity) != {"path", "sha256"}:
+            raise EvidenceError(f"contract.execution.tools.{name} has an unsupported field set")
+        _absolute_path(identity.get("path"), f"contract.execution.tools.{name}.path")
+        _sha(identity.get("sha256"), f"contract.execution.tools.{name}.sha256")
+    if contract.get("execution_sha256") != _canonical_sha(execution):
+        raise EvidenceError("frozen execution identity changed or has a stale hash")
+    return execution
+
+
+def _validate_references(packet: dict[str, Any], root: Path, contract: dict[str, Any]) -> str:
+    references = packet.get("references")
+    if references is None:
+        if "references_sha256" in contract:
+            raise EvidenceError("frozen reference rows are missing")
+        return "unrecorded"
+    references = _list(references, "references")
+    if contract.get("references_sha256") != _canonical_sha(references):
+        raise EvidenceError("reference rows changed or have a stale hash")
+    seen: set[str] = set()
+    for index, raw in enumerate(references):
+        reference = _map(raw, f"references[{index}]")
+        required = {"id", "kind", "source", "creator", "license", "attribution", "permitted_use"}
+        if set(reference) - required - {"revision", "artifact_paths", "artifact_sha256"}:
+            raise EvidenceError(f"references[{index}] has an unsupported field")
+        reference_id = _text(reference.get("id"), f"references[{index}].id")
+        if reference_id in seen:
+            raise EvidenceError("references contain duplicate ids")
+        seen.add(reference_id)
+        kind = _text(reference.get("kind"), f"references[{index}].kind")
+        if kind not in REFERENCE_KINDS:
+            raise EvidenceError(f"references[{index}].kind must be asset or reference")
+        for key in ("source", "creator", "license", "attribution", "permitted_use"):
+            _text(reference.get(key), f"references[{index}].{key}")
+        if "revision" in reference:
+            _text(reference.get("revision"), f"references[{index}].revision")
+        paths = reference.get("artifact_paths")
+        digests = reference.get("artifact_sha256")
+        if paths is not None:
+            if not isinstance(paths, list) or (kind == "asset" and not paths):
+                raise EvidenceError(f"references[{index}].artifact_paths must name asset files")
+            path_values = [
+                _text(path, f"references[{index}].artifact_paths[{path_index}]")
+                for path_index, path in enumerate(paths)
+            ]
+            if len(set(path_values)) != len(path_values):
+                raise EvidenceError(f"references[{index}].artifact_paths contains duplicates")
+            if not isinstance(digests, dict) or set(digests) != set(path_values):
+                raise EvidenceError(f"references[{index}] artifact_sha256 must cover every artifact path")
+            for path_index, path in enumerate(path_values):
+                artifact = _safe_file(root, path, f"references[{index}].artifact_paths[{path_index}]")
+                expected = _sha(digests[path], f"references[{index}].artifact_sha256.{path}")
+                if _digest(artifact) != expected:
+                    raise EvidenceError(f"stale referenced asset bytes: {path}")
+        elif digests is not None:
+            raise EvidenceError(f"references[{index}] artifact_sha256 needs artifact_paths")
+        elif kind == "asset":
+            raise EvidenceError(f"references[{index}] asset needs artifact_paths")
+    return "recorded"
+
+
+def _validate_media_probe(
+    root: Path, motion: dict[str, Any] | None,
+    candidate: dict[str, Any], captures: dict[str, dict[str, Any]],
+) -> dict[str, Any] | None:
+    raw_probe = candidate.get("media_probe")
+    if raw_probe is None:
+        return None
+    if motion is None or "media_profile" not in motion:
+        raise EvidenceError("media_probe requires frozen motion.media_profile")
+    probe = _map(raw_probe, f"candidate {candidate['id']}.media_probe")
+    required = {"id", "path", "sha256", "export_path", "export_sha256", "export_revision", "capture_refs", "decoder"}
+    if set(probe) != required:
+        raise EvidenceError(f"candidate {candidate['id']}.media_probe has an unsupported field set")
+    probe_id = _text(probe.get("id"), f"candidate {candidate['id']}.media_probe.id")
+    probe_path, probe_digest, raw = _read_json(root, probe.get("path"), f"candidate {candidate['id']}.media_probe")
+    if probe_digest != _sha(probe.get("sha256"), f"candidate {candidate['id']}.media_probe.sha256"):
+        raise EvidenceError("media probe has a stale hash")
+    export_path = _safe_file(root, probe.get("export_path"), f"candidate {candidate['id']}.media_probe.export_path")
+    export_digest = _digest(export_path)
+    if export_digest != _sha(probe.get("export_sha256"), f"candidate {candidate['id']}.media_probe.export_sha256"):
+        raise EvidenceError("media export has a stale hash")
+    export_revision = _revision(probe.get("export_revision"), f"candidate {candidate['id']}.media_probe.export_revision")
+    if export_revision != f"sha256:{export_digest}":
+        raise EvidenceError("media export revision does not match its bytes")
+    _text(probe.get("decoder"), f"candidate {candidate['id']}.media_probe.decoder")
+
+    refs = probe.get("capture_refs")
+    if not isinstance(refs, list) or not refs or len(set(refs)) != len(refs):
+        raise EvidenceError("media_probe.capture_refs must be a non-empty unique array")
+    for ref_index, capture_id in enumerate(refs):
+        capture_id = _text(capture_id, f"media_probe.capture_refs[{ref_index}]")
+        capture = captures.get(capture_id)
+        if capture is None:
+            raise EvidenceError("media_probe references an unknown capture")
+        if capture.get("capture_kind") != "decoded_export":
+            raise EvidenceError("media_probe capture_refs must point to decoded_export captures")
+        if capture.get("media_probe_id") != probe_id:
+            raise EvidenceError("decoded_export capture is not linked to its media probe")
+        if capture.get("path") == probe["export_path"]:
+            raise EvidenceError("media probe export cannot reuse a decoded capture path")
+
+    streams = raw.get("streams")
+    if not isinstance(streams, list):
+        raise EvidenceError("media probe JSON lacks streams")
+    videos = [stream for stream in streams if isinstance(stream, dict) and stream.get("codec_type") == "video"]
+    if len(videos) != 1:
+        raise EvidenceError("media probe JSON must contain exactly one video stream")
+    video = videos[0]
+    width = video.get("width")
+    height = video.get("height")
+    profile = motion["media_profile"]
+    if width != profile["width"] or height != profile["height"]:
+        raise EvidenceError("media probe dimensions differ from frozen media profile")
+    frame_count = _count(video.get("nb_read_frames", video.get("nb_frames")), "media probe frame count")
+    if frame_count != motion["frame_count"]:
+        raise EvidenceError("media probe frame count differs from frozen motion")
+    fps = video.get("avg_frame_rate", video.get("r_frame_rate"))
+    numerator, denominator = _rational(fps, "media probe frame rate")
+    if numerator != motion["fps"]["numerator"] or denominator != motion["fps"]["denominator"]:
+        raise EvidenceError("media probe frame rate differs from frozen motion")
+    fmt = raw.get("format")
+    if not isinstance(fmt, dict):
+        raise EvidenceError("media probe JSON lacks format")
+    duration = _number(fmt.get("duration"), "media probe duration", positive=True)
+    if abs(duration - profile["duration_seconds"]) > profile["duration_tolerance_seconds"]:
+        raise EvidenceError("media probe duration differs from frozen media profile")
+    return {"id": probe_id, "export_path": export_path.as_posix(), "export_revision": export_revision,
+            "probe_path": probe_path.as_posix(), "capture_refs": refs}
+
+
+def _validate_operation_binding(
+    contract: dict[str, Any], root: Path, selected_candidate: str,
+) -> dict[str, Any] | None:
+    raw_binding = contract.get("operation_binding")
+    if raw_binding is None:
+        if "operation_binding_sha256" in contract:
+            raise EvidenceError("operation binding is missing")
+        return None
+    binding = _map(raw_binding, "contract.operation_binding")
+    required = {"candidate_id", "receipt_path", "receipt_sha256", "operation_id", "release_id", "project_root", "destination_path", "artifact_path", "artifact_revision"}
+    if set(binding) != required:
+        raise EvidenceError("contract.operation_binding has an unsupported field set")
+    if binding["candidate_id"] != selected_candidate:
+        raise EvidenceError("operation binding must name the selected candidate")
+    if contract.get("operation_binding_sha256") != _canonical_sha(binding):
+        raise EvidenceError("operation binding changed or has a stale hash")
+    receipt_path, receipt_digest, stored_receipt = _read_json(root, binding["receipt_path"], "operation receipt")
+    if receipt_digest != _sha(binding["receipt_sha256"], "operation_binding.receipt_sha256"):
+        raise EvidenceError("operation receipt has a stale hash")
+    # The operation store persists an envelope whose UTF-8 payload is the
+    # engine receipt. Evidence runners may instead retain the already-decoded
+    # report returned by the host. Accept both representations, but authenticate
+    # the store payload digest when the envelope is present.
+    if "payload" in stored_receipt:
+        if stored_receipt.get("schema") != 2:
+            raise EvidenceError("operation receipt envelope schema is unsupported")
+        payload = _text(stored_receipt.get("payload"), "operation receipt.payload")
+        issued = _sha(stored_receipt.get("issued_payload_sha256"), "operation receipt.issued_payload_sha256")
+        if hashlib.sha256(payload.encode("utf-8")).hexdigest() != issued:
+            raise EvidenceError("operation receipt envelope payload fingerprint differs")
+        try:
+            receipt = _map(json.loads(payload), "operation receipt.payload")
+        except (UnicodeError, json.JSONDecodeError) as exc:
+            raise EvidenceError("operation receipt payload is not JSON") from exc
+    elif isinstance(stored_receipt.get("result"), dict):
+        # Retained qualification runs wrap the host report with runtime and
+        # probe observations. Bind only the nested engine report; the outer
+        # wrapper remains authenticated by receipt_sha256.
+        receipt = stored_receipt["result"]
+    else:
+        receipt = stored_receipt
+    for key in ("operation_id", "release_id", "project_root", "destination_path"):
+        _text(receipt.get(key), f"operation receipt.{key}")
+    if receipt["operation_id"] != binding["operation_id"]:
+        raise EvidenceError("operation receipt ID differs from the binding")
+    if receipt["release_id"] != binding["release_id"]:
+        raise EvidenceError("operation receipt release differs from the binding")
+    if receipt["project_root"] != binding["project_root"]:
+        raise EvidenceError("operation receipt project differs from the binding")
+    if receipt["destination_path"] != binding["destination_path"]:
+        raise EvidenceError("operation receipt destination differs from the binding")
+    _absolute_path(binding["project_root"], "operation_binding.project_root")
+    _absolute_path(binding["destination_path"], "operation_binding.destination_path")
+    if receipt.get("status") != "succeeded" or receipt.get("effect") != "confirmed":
+        raise EvidenceError("operation receipt is not a succeeded, confirmed effect")
+    receipt_revision = _revision(receipt.get("artifact_revision"), "operation receipt.artifact_revision")
+    if binding["artifact_revision"] != receipt_revision:
+        raise EvidenceError("operation receipt artifact revision differs from the binding")
+    artifact_path = _safe_file(root, binding["artifact_path"], "operation_binding.artifact_path")
+    if receipt_revision != f"sha256:{_digest(artifact_path)}":
+        raise EvidenceError("operation artifact bytes differ from its receipt revision")
+    return {"receipt_path": receipt_path.as_posix(), "artifact_path": artifact_path.as_posix(),
+            "artifact_revision": receipt_revision, "operation_id": binding["operation_id"]}
 
 
 def _validate_lineage(packet: dict[str, Any], root: Path, started: datetime,
@@ -599,11 +912,14 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
     if contract.get("states_sha256") != states_sha:
         raise EvidenceError("frozen state expectations changed or have a stale hash")
     motion, beat_map = _validate_motion(packet, contract, states)
+    execution = _validate_execution(contract)
+    references_status = _validate_references(packet, root, contract)
 
     candidates = _list(packet.get("candidates"), "candidates")
     candidate_ids: set[str] = set()
     selected: list[str] = []
     visual_reports = 0
+    media_probe_results: dict[str, dict[str, Any] | None] = {}
     for index, raw_candidate in enumerate(candidates):
         candidate = _map(raw_candidate, f"candidates[{index}]")
         candidate_id = _text(candidate.get("id"), f"candidates[{index}].id")
@@ -625,6 +941,7 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
                 raise EvidenceError(f"candidate {candidate_id} has duplicate snapshot ids")
             snapshot_ids.add(data["id"])
         capture_ids: set[str] = set()
+        capture_records: dict[str, dict[str, Any]] = {}
         capture_times: dict[str, datetime] = {}
         capture_states: set[str] = set()
         artifact_states: dict[str, str] = {}
@@ -635,6 +952,7 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
             if data["id"] in capture_ids:
                 raise EvidenceError(f"candidate {candidate_id} has duplicate capture ids")
             capture_ids.add(data["id"])
+            capture_records[data["id"]] = capture
             captured = _parse_time(capture["captured_at"], f"capture {data['id']}.captured_at")
             _within_window(captured, f"capture {data['id']}", started, deadline)
             capture_times[data["id"]] = captured
@@ -671,6 +989,7 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
             for beat_id, by_kind in beat_captures.items():
                 if motion["parity_claim"] and not MOTION_CAPTURE_KINDS.issubset(by_kind):
                     raise EvidenceError(f"candidate {candidate_id} is missing a motion capture counterpart for beat {beat_id}")
+        media_probe_results[candidate_id] = _validate_media_probe(root, motion, candidate, capture_records)
 
         findings = candidate.get("findings")
         if not isinstance(findings, list):
@@ -743,6 +1062,13 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
             raise EvidenceError(f"repair names an unknown candidate: {candidate_ref}")
     if len(selected) != 1:
         raise EvidenceError("exactly one candidate must be selected")
+    operation_binding = _validate_operation_binding(contract, root, selected[0])
+    selected_probe = media_probe_results[selected[0]]
+    if operation_binding is not None and selected_probe is not None:
+        if selected_probe["export_path"] != operation_binding["artifact_path"]:
+            raise EvidenceError("media probe export is not the operation artifact")
+        if selected_probe["export_revision"] != operation_binding["artifact_revision"]:
+            raise EvidenceError("media probe export revision differs from the operation receipt")
     lineage = _validate_lineage(packet, root, started, deadline, selected[0])
     return {
         **lineage,
@@ -760,6 +1086,12 @@ def _validate_packet(packet: Any, root: Path, packet_path: Path | None = None) -
         "artifact_scope": "unrecorded" if inventory is None else "checked_against_frozen_allowlist",
         "artifact_inventory": inventory,
         "artifact_inventory_sha256": None if inventory is None else _canonical_sha(inventory),
+        "provenance": {
+            "operation_receipt": "bound" if operation_binding is not None else "unbound",
+            "media_probe": "checked" if selected_probe is not None else "unbound",
+            "execution_identity": "frozen_record_only; provider_identity_not_authenticated" if execution is not None else "unbound",
+            "rights_references": references_status,
+        },
     }
 
 

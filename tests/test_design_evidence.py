@@ -113,6 +113,78 @@ class DesignEvidenceTests(unittest.TestCase):
         self.packet["artifact_scope"] = scope
         self.packet["contract"]["artifact_scope_sha256"] = MODULE._canonical_sha(scope)
 
+    def add_operation_binding(self, *, envelope=False, wrapper=False) -> None:
+        output = self.root / "artifacts" / "operation-output.svg"
+        output.write_text("<svg data-operation='confirmed'/>", encoding="utf-8")
+        receipt = {
+            "operation_id": "op-test-1", "release_id": "release-test",
+            "project_root": "/private/project", "destination_path": "/private/project/result.svg",
+            "status": "succeeded", "effect": "confirmed",
+            "artifact_revision": "sha256:" + sha(output.read_bytes()),
+        }
+        receipt_path = self.root / "receipts"
+        receipt_path.mkdir(exist_ok=True)
+        receipt_file = receipt_path / "op.json"
+        if envelope:
+            payload = json.dumps(receipt, separators=(",", ":"), ensure_ascii=False)
+            stored = {"schema": 2, "retention": {"state": "retirable", "completed_at": 1},
+                      "issued_payload_sha256": sha(payload.encode()), "payload": payload}
+        elif wrapper:
+            stored = {"runtime": {"release": "test-run"}, "result": receipt}
+        else:
+            stored = receipt
+        receipt_file.write_text(json.dumps(stored), encoding="utf-8")
+        binding = {
+            "candidate_id": "candidate-a", "receipt_path": "receipts/op.json", "receipt_sha256": sha(receipt_file.read_bytes()),
+            "operation_id": receipt["operation_id"], "release_id": receipt["release_id"],
+            "project_root": receipt["project_root"], "destination_path": receipt["destination_path"],
+            "artifact_path": "artifacts/operation-output.svg", "artifact_revision": receipt["artifact_revision"],
+        }
+        self.packet["contract"]["operation_binding"] = binding
+        self.packet["contract"]["operation_binding_sha256"] = MODULE._canonical_sha(binding)
+
+    def add_execution_identity(self) -> None:
+        execution = {
+            "platform": "macOS 26.5.2", "architecture": "arm64", "codex_release_id": "codex-test",
+            "mirket_release_id": "mirket-test", "model": "gpt-6-astra", "reasoning_effort": "high",
+            "catalog_sha256": "1" * 64, "skills": {"design-critique": "2" * 64},
+            "tools": {"mirket": {"path": "/private/bin/mirket", "sha256": "3" * 64}},
+            "runner_version": "test-runner-1",
+        }
+        self.packet["contract"]["execution"] = execution
+        self.packet["contract"]["execution_sha256"] = MODULE._canonical_sha(execution)
+
+    def add_media_probe(self) -> None:
+        motion = {
+            "fps": {"numerator": 12, "denominator": 1}, "frame_count": 36, "parity_claim": True,
+            "beats": [{"id": "intro", "frame": 0, "state_id": "desktop", "expected": "intro illustration is legible"}],
+            "media_profile": {"width": 640, "height": 360, "duration_seconds": 3.0, "duration_tolerance_seconds": 0.01},
+        }
+        self.packet["motion"] = motion
+        self.packet["contract"]["motion_sha256"] = MODULE._canonical_sha(motion)
+        preview = self.packet["candidates"][0]["captures"][0]
+        preview.update({"beat_id": "intro", "frame": 0, "capture_kind": "preview"})
+        export = json.loads(json.dumps(preview))
+        export.update({
+            "id": "capture-export", "path": "artifacts/candidate-export.png",
+            "sha256": sha((self.root / "artifacts/candidate-export.png").read_bytes()), "capture_kind": "decoded_export",
+        })
+        self.packet["candidates"][0]["captures"].append(export)
+        (self.root / "artifacts" / "result.mp4").write_bytes(b"measured export bytes")
+        probe = {"streams": [{"codec_type": "video", "width": 640, "height": 360,
+                              "nb_read_frames": "36", "avg_frame_rate": "12/1"}],
+                 "format": {"duration": "3.000000"}}
+        (self.root / "artifacts" / "probe.json").write_text(json.dumps(probe), encoding="utf-8")
+        probe_data = {
+            "id": "probe-1", "path": "artifacts/probe.json", "sha256": sha((self.root / "artifacts/probe.json").read_bytes()),
+            "export_path": "artifacts/result.mp4", "export_sha256": sha((self.root / "artifacts/result.mp4").read_bytes()),
+            "export_revision": "sha256:" + sha((self.root / "artifacts/result.mp4").read_bytes()),
+            "capture_refs": ["capture-export"], "decoder": "ffprobe-test",
+        }
+        export["media_probe_id"] = "probe-1"
+        self.packet["candidates"][0]["captures"][-1] = export
+        self.packet["candidates"][0]["media_probe"] = probe_data
+
     def add_repair(self) -> None:
         parent = self.packet["candidates"][0]
         parent["source_manifest"] = copy.deepcopy(self.packet["source_manifest"])
@@ -367,6 +439,149 @@ class DesignEvidenceTests(unittest.TestCase):
         self.assertNotIn("pixels_seen", result)
         self.assertEqual(result["artifact_scope"], "unrecorded")
         self.assertIsNone(result["artifact_inventory"])
+        self.assertEqual(result["provenance"], {
+            "operation_receipt": "unbound", "media_probe": "unbound",
+            "execution_identity": "unbound", "rights_references": "unrecorded",
+        })
+
+    def test_operation_binding_accepts_decoded_receipt_envelope_and_reports_bound(self) -> None:
+        self.add_operation_binding(envelope=True)
+        result = MODULE.validate_packet(self.packet, self.root)
+        self.assertEqual(result["provenance"]["operation_receipt"], "bound")
+
+    def test_operation_binding_accepts_retained_qualification_wrapper(self) -> None:
+        self.add_operation_binding(wrapper=True)
+        result = MODULE.validate_packet(self.packet, self.root)
+        self.assertEqual(result["provenance"]["operation_receipt"], "bound")
+
+    def test_operation_binding_rejects_mismatched_operation_project_destination_and_effect(self) -> None:
+        cases = [
+            ("operation_id", "op-other", "operation receipt ID"),
+            ("release_id", "release-other", "operation receipt release"),
+            ("project_root", "/private/other", "operation receipt project"),
+            ("destination_path", "/private/project/other.svg", "operation receipt destination"),
+        ]
+        for key, value, message in cases:
+            with self.subTest(key=key):
+                self.packet = self.make_packet()
+                self.add_operation_binding()
+                receipt = json.loads((self.root / "receipts/op.json").read_text())
+                receipt[key] = value
+                (self.root / "receipts/op.json").write_text(json.dumps(receipt))
+                self.packet["contract"]["operation_binding"]["receipt_sha256"] = sha((self.root / "receipts/op.json").read_bytes())
+                self.packet["contract"]["operation_binding_sha256"] = MODULE._canonical_sha(self.packet["contract"]["operation_binding"])
+                self.assert_refused(message=message)
+        self.packet = self.make_packet()
+        self.add_operation_binding()
+        receipt = json.loads((self.root / "receipts/op.json").read_text())
+        receipt["effect"] = "unknown"
+        (self.root / "receipts/op.json").write_text(json.dumps(receipt))
+        self.packet["contract"]["operation_binding"]["receipt_sha256"] = sha((self.root / "receipts/op.json").read_bytes())
+        self.packet["contract"]["operation_binding_sha256"] = MODULE._canonical_sha(self.packet["contract"]["operation_binding"])
+        self.assert_refused(message="succeeded, confirmed")
+
+    def test_operation_binding_rejects_changed_operation_artifact_even_with_stale_receipt(self) -> None:
+        self.add_operation_binding()
+        (self.root / "artifacts/operation-output.svg").write_text("<svg changed/>", encoding="utf-8")
+        self.assert_refused(message="artifact bytes differ")
+
+    def test_execution_identity_is_frozen_but_not_provider_or_visual_proof(self) -> None:
+        self.add_execution_identity()
+        result = MODULE.validate_packet(self.packet, self.root)
+        self.assertEqual(result["provenance"]["execution_identity"], "frozen_record_only; provider_identity_not_authenticated")
+        self.packet["contract"]["execution"]["model"] = "gpt-6.1-sol"
+        self.assert_refused(message="execution identity changed")
+
+    def test_media_probe_checks_raw_measurement_and_export_capture_link(self) -> None:
+        self.add_media_probe()
+        result = MODULE.validate_packet(self.packet, self.root)
+        self.assertEqual(result["provenance"]["media_probe"], "checked")
+        probe = json.loads((self.root / "artifacts/probe.json").read_text())
+        probe["streams"][0]["width"] = 639
+        (self.root / "artifacts/probe.json").write_text(json.dumps(probe))
+        self.packet["candidates"][0]["media_probe"]["sha256"] = sha((self.root / "artifacts/probe.json").read_bytes())
+        self.assert_refused(message="dimensions differ")
+
+    def test_media_probe_rejects_frame_rate_frame_count_and_duration_drift(self) -> None:
+        cases = [
+            ("streams", {"avg_frame_rate": "11/1"}, "frame rate"),
+            ("streams", {"nb_read_frames": "35"}, "frame count"),
+            ("format", {"duration": "2.0"}, "duration"),
+        ]
+        for section, changes, message in cases:
+            with self.subTest(section=section, changes=changes):
+                self.packet = self.make_packet()
+                self.add_media_probe()
+                probe = json.loads((self.root / "artifacts/probe.json").read_text())
+                if section == "streams":
+                    probe[section][0].update(changes)
+                else:
+                    probe[section].update(changes)
+                (self.root / "artifacts/probe.json").write_text(json.dumps(probe))
+                self.packet["candidates"][0]["media_probe"]["sha256"] = sha((self.root / "artifacts/probe.json").read_bytes())
+                self.assert_refused(message=message)
+
+    def test_media_probe_rejects_non_decoded_capture_and_stale_export_revision(self) -> None:
+        self.add_media_probe()
+        self.packet["candidates"][0]["media_probe"]["capture_refs"] = ["capture-a"]
+        self.assert_refused(message="decoded_export captures")
+        self.packet = self.make_packet()
+        self.add_media_probe()
+        self.packet["candidates"][0]["media_probe"]["export_revision"] = "sha256:" + "0" * 64
+        self.assert_refused(message="export revision")
+
+    def test_references_reject_unbound_asset_paths(self) -> None:
+        self.packet["references"] = [{
+            "id": "asset-1", "kind": "asset", "source": "https://example.test/mark.svg",
+            "creator": "Example Studio", "license": "CC BY 4.0", "attribution": "Example Studio",
+            "permitted_use": "Adapted in this project", "artifact_paths": ["artifacts/candidate.svg"],
+        }]
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        self.assert_refused(message="artifact_sha256 must cover")
+
+    def test_references_reject_stale_asset_digest_even_when_source_manifest_is_unchanged(self) -> None:
+        asset = self.root / "artifacts/reference-only.svg"
+        asset.write_text("<svg reference-only/>", encoding="utf-8")
+        self.packet["references"] = [{
+            "id": "asset-1", "kind": "asset", "source": "https://example.test/mark.svg",
+            "creator": "Example Studio", "license": "CC BY 4.0", "attribution": "Example Studio",
+            "permitted_use": "Adapted in this project", "artifact_paths": ["artifacts/reference-only.svg"],
+            "artifact_sha256": {"artifacts/reference-only.svg": sha(asset.read_bytes())},
+        }]
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        asset.write_text("<svg changed outside source manifest/>", encoding="utf-8")
+        self.assert_refused(message="stale referenced asset bytes")
+
+        self.packet["references"][0]["artifact_sha256"]["artifacts/reference-only.svg"] = sha(asset.read_bytes())
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        self.assertTrue(MODULE.validate_packet(self.packet, self.root)["valid"])
+
+    def test_references_require_license_after_asset_hash_binding(self) -> None:
+        self.packet["references"] = [{
+            "id": "asset-1", "kind": "asset", "source": "https://example.test/mark.svg",
+            "creator": "Example Studio", "attribution": "Example Studio",
+            "permitted_use": "Adapted in this project", "artifact_paths": ["artifacts/candidate.svg"],
+            "artifact_sha256": {"artifacts/candidate.svg": sha((self.root / "artifacts/candidate.svg").read_bytes())},
+        }]
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        self.assert_refused(message=r"references\[0\]\.license")
+
+    def test_references_require_explicit_rights_and_asset_file_link(self) -> None:
+        self.packet["references"] = [{
+            "id": "asset-1", "kind": "asset", "source": "https://example.test/mark.svg",
+            "creator": "Example Studio", "license": "CC BY 4.0", "attribution": "Example Studio",
+            "permitted_use": "Adapted in this project", "artifact_paths": ["artifacts/candidate.svg"],
+            "artifact_sha256": {"artifacts/candidate.svg": sha((self.root / "artifacts/candidate.svg").read_bytes())},
+        }, {
+            "id": "reference-1", "kind": "reference", "source": "https://example.test/guide",
+            "creator": "Example Studio", "license": "link-only", "attribution": "not required",
+            "permitted_use": "Method reference only",
+        }]
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        self.assertEqual(MODULE.validate_packet(self.packet, self.root)["provenance"]["rights_references"], "recorded")
+        self.packet["references"][0].pop("license")
+        self.packet["contract"]["references_sha256"] = MODULE._canonical_sha(self.packet["references"])
+        self.assert_refused(message=r"references\[0\]\.license")
 
     def test_frozen_scope_inventories_all_allowed_files_including_unreferenced_evidence(self) -> None:
         self.add_scope()

@@ -12,3 +12,5 @@ Choose a bounded experiment or staged launch that can discriminate the belief. S
 Prepare and verify the artifact, instrumentation and rollback path in the authorized environment. Launch, spending, external messages and production changes must stay within explicit authorization. Inspect an uncertain exposure/effect before replaying it.
 
 Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.
+
+For a repeated review or launch plan, load `references/loop-and-experiment-contract.md` and keep a project-local `product/experiment-contract.json`. Specify cadence, trigger, input digest, idempotency key, intended action, approval state, stop rule and rollback owner. Repeating the same input must be a no-op or staged result, never a duplicate external action; a new specimen or delegate does not reset the review budget.

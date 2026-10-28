@@ -55,6 +55,11 @@ The [Mac semantic setup route](docs/m2-semantic-setup-acquisition.md) now acquir
 
 Before a development build, run `python3 scripts/check-build-inputs.py`. The current source checks are `cargo test --locked --offline` and `cargo clippy --locked --offline --all-targets -- -D warnings`; the adapter package has its own locked build and tests. See [native build requirements](docs/native-build.md), [adapter contract](docs/m0-adapter-contract.md), [memory verification](docs/m2-memory-verification.md), [semantic two-client qualification](docs/m2-semantic-qualification.md), [TypeScript navigation](docs/m3-typescript-semantic-navigation.md), [design qualification](docs/m4-design-qualification.md), [FFmpeg source gate](docs/ffmpeg-recipient-source-closure.md), [video Chrome acquisition](docs/m3-browser-setup-acquisition.md) and [Windows status](docs/windows-qualification-status.md) for measured evidence and limits. Earlier experiments in `docs/` are historical qualification records, not supported product routes.
 
+The [2026-10-28 research-led improvements](docs/research-improvements-implementation-20261028.md)
+add conditional research/product resources and repository evidence checks. Their
+local checks and measured motion/delegation outcomes are recorded separately from
+the remaining, unqualified model-effect comparisons.
+
 Removed capability contracts, obsolete admission files and their notice bundles are listed in the [retired evidence index](docs/retired-evidence.md), with an immutable Git revision for retrieving their original bytes. They are historical evidence, not current setup inputs.
 
 Mirket-authored source is MIT licensed. Exact third-party runtime and redistribution admission is recorded under `packaging/admission`; the implementation plan governs what may be packaged. No release is published from this repository yet.

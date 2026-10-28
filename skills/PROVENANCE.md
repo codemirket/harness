@@ -308,6 +308,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [crawl4ai](#reference-crawl4ai), [stagehand](#reference-stagehand).
 - Host browser capability: Codex Desktop browser or project tool, checked at use.
 - Planned acceptance IDs: browser-research-positive-1, browser-research-positive-2, browser-research-negative-1, browser-research-negative-2, browser-research-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### browser-automation
 
@@ -448,6 +449,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Planned acceptance IDs: motion-direction-positive-1, motion-direction-positive-2, motion-direction-negative-1, motion-direction-negative-2, motion-direction-mixed-1. Not run.
 
 - Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### ui-motion
 
@@ -490,6 +492,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
 - Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### customer-research
 
@@ -498,6 +501,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [owl-concepts](#reference-owl-concepts).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: customer-research-positive-1, customer-research-positive-2, customer-research-negative-1, customer-research-negative-2, customer-research-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### jobs-to-be-done
 
@@ -514,6 +518,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [wondel](#reference-wondel), [marketing](#reference-marketing), [ponytail](#reference-ponytail).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: product-strategy-positive-1, product-strategy-positive-2, product-strategy-negative-1, product-strategy-negative-2, product-strategy-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### prototype-test
 
@@ -531,6 +536,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: positioning-positive-1, positioning-positive-2, positioning-negative-1, positioning-negative-2, positioning-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### marketing-copy
 
@@ -539,6 +545,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [taste](#reference-taste).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: marketing-copy-positive-1, marketing-copy-positive-2, marketing-copy-negative-1, marketing-copy-negative-2, marketing-copy-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### content-search
 
@@ -557,6 +564,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: conversion-positive-1, conversion-positive-2, conversion-negative-1, conversion-negative-2, conversion-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### experiments-launch
 
@@ -565,6 +573,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [statistical-analysis](#reference-statistical-analysis).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: experiments-launch-positive-1, experiments-launch-positive-2, experiments-launch-negative-1, experiments-launch-negative-2, experiments-launch-mixed-1. Not run.
+- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### data-analysis
 

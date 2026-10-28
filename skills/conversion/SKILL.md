@@ -12,3 +12,5 @@ Identify the obstruction to comprehension, trust or task completion. Preserve in
 Use Codex browser evidence for live flows. Verify relevant loading, validation, error and recovery states as well as the intended action. Test that the event fires with the correct identity and denominator without treating instrumentation success as causal improvement.
 
 Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.
+
+When funnel evidence exists, load `references/bottleneck-diagnosis.md` and record a project-local `product/funnel-diagnosis.json`. Use eligible and converted counts plus traffic context to identify the narrowest observed bottleneck (for example, strong acquisition but weak activation). Do not turn an instrumentation check or a selected stage into a causal lift claim.

@@ -39,6 +39,41 @@ python3 scripts/check-design-evidence.py --packet /absolute/review/review.json -
 
 The JSON schema and a minimal construction example are exercised in `tests/test_design_evidence.py`. Record the frozen brief/rubric/source/state/budget contract first, retain source snapshots and matched captures for each candidate, then add checks/findings and select a candidate. A `visual_report` records who reports inspecting which capture; success explicitly says `reported_only; pixels_seen_not_certified`. It cannot establish that the right screen was loaded, that somebody looked at it, or that an omitted defect is absent. The root is a trusted local qualification directory, not a hostile concurrent filesystem sandbox.
 
+### Optional provenance joins
+
+The packet may add frozen, hashed joins when the evidence root contains the
+corresponding records. `contract.operation_binding` points to a copied Mirket
+receipt (or its operation-store envelope) and to a copied output artifact. A
+retained qualification wrapper may be used when its nested `result` is the
+host report; the wrapper itself remains covered by `receipt_sha256`. The
+checker compares operation ID, release, canonical project root, destination,
+`succeeded`/`confirmed` effect and the receipt's `sha256:` artifact revision to
+the copied output bytes. It does not compare a decoded PNG capture digest to an
+MP4 revision, and a packet without this binding reports operation provenance as
+`unbound`.
+
+For motion, `motion.media_profile` freezes dimensions and duration alongside
+the existing FPS/frame-count contract. A candidate may provide a hashed
+`media_probe` JSON, an independently copied export, its `sha256:` export
+revision, a decoder identity and `capture_refs` that must point to linked
+`decoded_export` captures. The checker reads the saved probe JSON; it does not
+run ffprobe, decode media, inspect pixels, certify playback or certify visual
+quality. A mismatched probe is refused, while a missing probe remains
+`unbound` rather than becoming a quality claim.
+
+`contract.execution` can freeze platform/architecture, Codex and Mirket
+release IDs, model/effort settings, catalog and skill hashes, selected tool
+path identities and runner version. Its result is explicitly
+`frozen_record_only; provider_identity_not_authenticated`; the fields are
+provenance observations, not proof of provider-side execution. Optional
+`references` rows record creator, license, attribution, permitted use and
+asset-file links under `contract.references_sha256`. Every linked artifact path
+also needs an `artifact_sha256` entry; the checker hashes the saved bytes so a
+later asset replacement is refused even when the source manifest is unchanged.
+The checker does not fetch URLs or grant reuse rights. These joins remain
+record-integrity checks and do not promote packet-only records into visual,
+model or rights verification.
+
 ## Outcome evidence
 
 Private evidence root: `/Users/nazmiyilmaz/.codex/task-state/harness-design-research-round2-20261027/`.

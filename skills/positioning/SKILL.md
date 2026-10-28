@@ -12,3 +12,5 @@ Define the category/context that helps the audience understand the offer, the di
 Translate the choice into a message hierarchy: primary promise, supporting benefits, proof and appropriate next action. Keep wording coherent across the intended surface without forcing every possible audience into one statement.
 
 Return a positioning statement, claim/evidence map, message hierarchy and unresolved assumptions. Stop when the audience and defensible difference are clear enough for copy, or identify the missing evidence/decision. Do not publish or alter campaign accounts from a positioning brief.
+
+When the category is changing, load `references/current-and-future-position.md` and keep `product/positioning.json` split into substantiated current positioning and a future point of view. Current alternatives need buyer evidence; future competitors may inform strategy but must not be presented as current buyer choices without evidence.

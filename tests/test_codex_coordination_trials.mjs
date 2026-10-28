@@ -3,7 +3,7 @@ import test from 'node:test';
 import { mkdtemp, writeFile, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { observations, inventory, scopeDelta, assessOutcome, childLifecycle, stoppedCommandEvidence, CASES, FOLLOWUP_CASES } from './codex-coordination-trials.mjs';
+import { observations, inventory, scopeDelta, assessOutcome, childLifecycle, stoppedCommandEvidence, tokenUsageByThread, CASES, FOLLOWUP_CASES } from './codex-coordination-trials.mjs';
 
 test('requested models and agent prose cannot certify a resolved child', () => {
   const observed = observations([
@@ -119,4 +119,27 @@ test('single-child diagnostic still requires lead integration, not just child cr
   const spec = FOLLOWUP_CASES.find((s) => s.id === 'mechanical-single');
   assert.equal(assessOutcome(spec, result, { 'sum.txt': '12' }).outcome, 'failed-check');
   assert.equal(assessOutcome(spec, result, { 'sum.txt': '12', 'result.json': '{"sum":12}' }).outcome, 'requires-independent-review');
+});
+
+test('measurement cases keep the task constant while changing only worker count', () => {
+  const serial = { id: 'mechanical-measure-serial', measurementMode: 'serial' };
+  const parallel = { id: 'mechanical-measure-parallel', measurementMode: 'parallel' };
+  const files = { 'sum.txt': '12\n', 'count.txt': '4\n', 'result.json': '{"sum":12,"count":4}\n' };
+  const completed = { completion: { turn: { status: 'completed' } }, out_of_scope_project_changes: [] };
+  completed.observed = { resolved_children: [{ agentThreadId: 'one' }] };
+  assert.equal(assessOutcome(serial, completed, files).outcome, 'requires-independent-review');
+  completed.observed = { resolved_children: [{ agentThreadId: 'one' }, { agentThreadId: 'two' }] };
+  assert.equal(assessOutcome(parallel, completed, files).outcome, 'requires-independent-review');
+  assert.equal(assessOutcome(parallel, { ...completed, observed: { resolved_children: [{ agentThreadId: 'one' }] } }, files).outcome, 'failed-check');
+});
+
+test('token usage keeps the latest per-thread totals and exposes aggregate cost evidence', () => {
+  const usage = tokenUsageByThread([
+    { method: 'thread/tokenUsage/updated', params: { threadId: 'root', tokenUsage: { total: { totalTokens: 10, inputTokens: 8, outputTokens: 2 } } } },
+    { method: 'thread/tokenUsage/updated', params: { threadId: 'root', tokenUsage: { total: { totalTokens: 15, inputTokens: 12, outputTokens: 3 } } } },
+    { method: 'thread/tokenUsage/updated', params: { threadId: 'child', tokenUsage: { total: { totalTokens: 7, inputTokens: 6, outputTokens: 1 } } } },
+  ]);
+  assert.deepEqual(usage.by_thread.root, { totalTokens: 15, inputTokens: 12, cachedInputTokens: null, outputTokens: 3, reasoningOutputTokens: null });
+  assert.equal(usage.aggregate.totalTokens, 22);
+  assert.equal(usage.aggregate.outputTokens, 4);
 });
