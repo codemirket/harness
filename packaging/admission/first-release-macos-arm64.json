@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "version": "0.0.1",
+  "status": "prepared_first_release_candidate",
+  "source_commit": "5b03547105f9119694a3829dfc4d1779b26e8bb9",
+  "support_scope": {
+    "os": "macOS",
+    "version": "26.5.2",
+    "architecture": "arm64"
+  },
+  "release_id": "sha256:b76c544532e5cf16718c25155fbe19449922a5ce15faca75befa07c2ec078f73",
+  "manifest_sha256": "fd30c13cacf1c6e665e96e994ff22cc558ef90f259f47f2c2e2945edc14557d8",
+  "binary_sha256": "93e7e77e3f114665a89a6fefeb2f390c686036e96e2badb4ccac9e462913b58f",
+  "installer_sha256": "86e4f89c27578f4d5ea3487dcd519953e0c53531a870767168aef620c1b517e0",
+  "catalog": {
+    "global": 9,
+    "project": 52,
+    "profiles": 7,
+    "sha256": "01a30d7263b6fccb74cadd715ac1c74c516b83eefdf0106babf42a42dde52944"
+  },
+  "recipient_materials": {
+    "path": "video-recipient",
+    "manifest_sha256": "b6f82b8aba8d522334e04e0fff1768d918ea73c1d00381f8be166532ef25742d",
+    "source_index_sha256": "3bada023559205f11e32ea2aba3a573d42275cf0a543a0083131bc458c95a626",
+    "notice_index_sha256": "2569d7d79b37d18110286ea4076a8ca356461bf54b7af7fdd3b90125d03ce92a",
+    "delivery_rule": "Distribute the complete combined package with its corresponding FFmpeg source kit and original notices. Frozen component proposal flags remain historical; this record binds their bytes to the current candidate."
+  },
+  "setup_acquired_not_bundled": [
+    "Chrome for Testing",
+    "Sharp native closure",
+    "MiniLM model and ONNX runtime"
+  ],
+  "qualification_record": "docs/first-release-qualification-20261028.md",
+  "desktop_gui": "waived-untested",
+  "public_distribution_performed": false,
+  "publication_authorized": false,
+  "live_installation_changed": false
+}

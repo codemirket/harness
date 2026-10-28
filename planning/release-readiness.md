@@ -53,3 +53,14 @@ unauthorized action; Windows and Desktop GUI are not promoted by these results.
 
 Stop when those observable gates pass; no general aesthetic/model-superiority,
 Windows, earlier/newer macOS or waived Desktop GUI claim is required or allowed.
+
+### Final result
+
+All five finalization steps passed for source commit `5b03547` and the exact
+macOS 26.5.2 ARM64 package. The six-skill bundle is retired, source gates and
+current installed outcomes passed, and the complete combined recipient archive
+passed download/unpack verification. See the
+[first-release record](../docs/first-release-qualification-20261028.md) and
+[release admission](../packaging/admission/first-release-macos-arm64.json).
+No prerequisite remains for this accepted local release scope. Publication,
+push and live installation remain separate unperformed actions.
