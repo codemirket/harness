@@ -1,165 +1,120 @@
 # Remaining design work
 
-Created 2026-10-27 after user authorization to commit the current work, plan the
-remaining design work and start implementation. Baseline commit: `dba8873`.
-This is an execution detail of `implementation-plan.md`, not a replacement
-product plan or authorization to publish or change the live installation.
+Revised 2026-10-28 at the user's request to stop the repeated timeout-investigation
+cycle. Reviewed baseline: `a75dea2`. This replaces the active sequence in the
+previous version of this file; historical evidence and frozen trials remain
+unchanged. It is an execution detail of `implementation-plan.md`, not release
+approval or permission to modify the live installation.
 
-## Outcome and boundaries
+## Decision and practical outcome
 
-Make Codex's UI, editable vector/illustration and HyperFrames motion work
-reliably reviewable against the actual brief, then measure whether the selected
-skills improve representative results. Keep Hallmark/Taste reference adoption
-and HyperFrames. No new engine, model router, agent orchestrator, general Mirket
-browser, dependency or native editor attachment is planned.
+Finish one usable, repeatable local design-production path. Stop making a
+four-minute isolated author turn the prerequisite for using that path. The
+240-second limit belongs to closed experiments, not the product's definition
+of good design. Timeouts remain failed executions; independently reviewed
+artifacts retain their separate findings. Do not reclassify a failed cohort.
 
-Codex owns authors, model/reasoning choice, reviewers, browser interaction and
-permissions. Mirket owns its scoped design/video effects. The user permits a
-host-browser render route if private Chrome is demonstrably impractical; this
-is a conditional alternative to qualify, not a reason to change a working
-renderer during a frozen comparison.
+The [research and source comparison](../docs/design-workflow-reset-20261028.md)
+supports incremental work from saved artifacts, deterministic checks between
+creative steps, and a finite independent review/repair cycle. It does **not**
+establish the root cause of our creative latency or promise a particular speedup.
 
-The recent follow-up demonstrated two authors avoiding the observed contrast
-failure and one actual model repair, with independent decoded-frame review and
-1× host-browser playback. It did not establish broad aesthetic superiority,
-statistical skill benefit, continuous perceptual pacing, Windows or Desktop GUI
-coverage. Prior failed trials and exhausted budgets remain historical evidence.
+Keep HyperFrames 0.8.197, Hallmark/Taste, the accepted Daybreak direction and
+Codex Desktop ownership. Codex owns authoring, models, native agents, permissions,
+Git and live browser review. Mirket owns its scoped design/video operations.
+Use the existing private renderer; no evidence currently warrants changing it.
+Keep a capable creative lead and comparable reviewer. Preserve explicit user
+model/effort choices; do not add model routing or a second agent orchestrator.
 
-## Work order and acceptance
+## What stops now
 
-| ID / priority | Deliverable and owner | Acceptance / failure discriminator | Status |
+- No new Tidepool/Lantern-style paired cohort, timeout calibration, model ranking
+  or runner instrumentation work without a new demonstrated production blocker.
+- No full redesign, new aesthetic specimen, replacement renderer, framework,
+  new schema, generic QA engine or duplicated starter generator.
+- No repeated full exports while static art or a specific transition is still
+  unresolved. Reuse accepted art; inspect the smallest relevant preview first.
+- No recursive reviewer debate or cosmetic repairs after the agreed criteria
+  pass. Existing failures and catalog `planned-not-run` rows remain visible.
+
+These are prioritization decisions. They do not waive required release gates or
+convert incomplete high-risk skill qualification into a pass.
+
+## Production sequence using existing owners
+
+| Stage | Concrete input and owner | Saved result and decision |
+| --- | --- | --- |
+| 1. Direction and static composition | Codex lead reads the actual brief, selected UI/art skill and existing [motion shot card](../skills/motion-direction/references/storyboard-and-transitions.md). Reuse accepted Daybreak for this closure; no new mood-board search. | Exact copy, asset/font identities, dimensions, relevant UI states, beat times and at most five task-specific acceptance criteria. Inspect the still before moving it. Existing user acceptance need not be requested again. |
+| 2. Editable implementation | Codex lead edits one stage at a time in the same project. For new basic source, use [create-video-seed.mjs](../scripts/create-video-seed.mjs); for the accepted visual treatment, use a disposable Daybreak copy. Read the [pinned producer contract](../skills/video-production/references/hyperframes-0.8.197-authoring.md). | Saved source plus a short handoff in the existing project README: completed step, source revision, next operation, known defects and budget used. No new persistence service. A partial stage is not completed merely because a file exists. |
+| 3. Preflight and preview | Project tools own [source checking](../scripts/check-video-source.mjs); Codex's browser owns the existing [native-animation preview](../scripts/create-motion-preview.mjs) and live UI. | Fix concrete root/font/asset/timing/property failures before a full render. Preview covers CSS/WAAPI only; do not invent a universal seek API or assert export parity. UI journeys stay in the Desktop browser, not an unconfigured CLI author. |
+| 4. Export and independent QA | Mirket's existing finite video job; lead retains its operation ID and reconciles status instead of resubmitting. Project FFmpeg/FFprobe checks and one independent capable reviewer follow. | Actual decoded output, requested-profile check, saved-frame inspection, transition neighbours where relevant and playback evidence with honest limits. Use [Daybreak's checks](../specimens/daybreak/qa/README.md) and existing evidence/lineage tools; do not build another report format. |
+| 5. Repair or delivery | Lead integrates only findings tied to the brief and actual viewport/frame/interaction. | At most one repair batch across all stages/reviewers, then rerun the checks affected by it. Deliver source, checked output and remaining defects, or a specific blocked result. A changed film cannot inherit old human acceptance. |
+
+The stages are work boundaries, not five new subagents or five tiny timeout
+budgets. Use the current Desktop task; a phase handoff does not need a new CLI
+session. If an authorized task continues across turns, preserve the same source,
+remaining work and total budget. A timed-out frozen trial is never resumed under
+this production procedure.
+
+## Remaining implementation: one 60-minute closure window
+
+This is a **work cap**, not a prediction that all research/release questions can
+be solved in an hour. Start its clock with the next implementation action after
+this plan revision. All stages, tool waits, review and repair share it; a new
+turn, artifact or reviewer does not reset it. End with a result or an explicit
+remaining blocker. No automatic follow-up cohort.
+
+| Step / owner | Work and files | Acceptance | Allocation |
 | --- | --- | --- | --- |
-| D1 / implemented | Root: strengthen the existing repository evidence checker with frozen, condition-specific file/directory scope and capture/review chronology. | A repair packet can legitimately use `evidence/`; a fresh-author packet limited to `.feedback/` refuses it. Reject extra files, prefix lookalikes, symlinks, changed scope and observations before their captures or outside the shared window. Return unrecorded scope explicitly for historical packets. Validate a packet containing actual saved repair images; neither a hash nor a reviewer field certifies visual truth. | Passed bounded checks; [actual artifact evidence](../docs/design-evidence-scope-20261027.md) |
-| D2 / implemented | Root: add explicit finding disposition and repair lineage to the same record format; independent reviewer challenges negative cases. | Preserve initial source/captures; bind a repair to its parent, finding, budget event and revised captures. Rejected reviewer claims retain the original claim and a reason tied to the brief. A status word alone cannot prove resolution; unknown parent, stale source, changed criterion or uncharged repair refuses. | Passed bounded checks; [before/after artifact replay](../docs/design-evidence-lineage-20261027.md) |
-| D3 / implemented | Root: extend the existing disposable trial runner for a matched specialist-skill/no-specialist-skill comparison; independent capable reviewers score neutral artifact IDs in D4. | Freeze brief, common production contract, allowed outputs, model/effort, runtime, assets, rubric and shared budget before authoring. Both arms get equal tool access. No-skill omits the specialist guidance, not the format/runtime prerequisites. Prove both positive outputs and denied/missing/stale-route handling without treating a receipt as task success. | [Runner and two native calibration turns qualified](../docs/matched-design-study-20261027.md); current MCP missing/stale-route probes passed. Denial retention is regression-tested; native host-denial evidence remains historical and policy-specific. Creative scoring not run. |
-| D4 / executed with limits | Root and comparable creative reviewer: run one finite cohort covering responsive UI, editable illustration, multi-beat captioned motion and an editable vector transition. | Four briefs × two conditions, one initial turn per cell; inspect real UI interactions at desktop/mobile, exported SVG/full/detail pixels, and decoded video transition boundaries. Retain initial findings, bounded repairs, final artifacts and remaining defects. Expand only for a shared failure within the same budget; never silently retry a failed cell. | [Eight-cell evidence and fixes](../docs/design-cohort-20261028.md): 1,883.032 model seconds / 2,115.241 wall seconds, no retries or repairs. Timeout and harness confounds retained; independent pixel oracles rejected two major reviewer claims. Minor findings remain. No general skill-benefit claim. |
-| D5 / executed with limits | Root: qualify native host model/agent choices on the available Codex surface. | Record configured and observed lead/reviewer model and effort, weaker-creative-delegate attempt, explicit user override, interruption and approval denial. Distinguish CLI evidence from Desktop GUI; no claim of Mirket hard enforcement or provider identity from configuration alone. | [Seven native trials](../docs/native-coordination-qualification-20261028.md), 459.691 wall seconds, no retries/repairs: comparable role selected over a weak default, explicit override and controlled denial observed. Mechanical integration failed; interrupted command continued writing. Actual weak-child spawn rejection and GUI remain unverified. Effect checks and cancellation guidance corrected; the [authorized follow-up](../docs/coordination-followup-20261028.md) subsequently verified single/parallel integration and exact host-command termination. The original stall cause remains unknown. |
-| D6 / review pack delivered | Root: assemble a reviewable playback/art-direction pack and carry distribution/platform gates forward. | Actual saved videos, timed browser playback and decoded evidence remain separate from perceptual judgments. Ask for human timing/art-direction judgment only where the available observation surface cannot supply it. Release requires applicable source/notices; Windows and OS-floor support require actual native targets. | [Pack and gate handoff](../docs/design-review-pack-20261028.md) delivered; user accepted the current design direction on 2026-10-28. All five current review frames match decoded timestamps; wrong-timestamp and stale-snapshot cases refuse. No new render or creative repair. Public recipient delivery, Windows and Mac OS-floor qualification remain open; GUI stays waived/unverified. |
+| R1 / lead | Make one concise production entry in the existing video authoring reference and Daybreak README, linking the above tools in execution order. Reuse current shot-card/preview instructions; edit only a demonstrated missing or conflicting handoff. | A future author has a single route from saved source to checked output, explicit private-path inputs, failure handling and an example handoff. No extra global skill, dependency, runner or duplicated guide. | 15 min |
+| R2 / lead | Exercise one maintenance journey on a disposable copy of accepted Daybreak: change one short supplied heading/CTA, rebuild its composition and render through the already-qualified route. Freeze exact before/after text, paths and affected beats before editing. | Requested text is visibly present and unclipped in the actual changed export; unrelated composition is preserved. Original accepted specimen/export stay untouched. This tests editability and delivery, not new art direction or model superiority. | 20 min |
+| R3 / reviewer and lead | Inspect changed and neighbouring decoded frames, affected UI viewport/interaction if the shared page changed, and actual saved playback. Run the applicable existing positive/negative checks and verify stale acceptance is not transferred. | Separate execution status, scope/required-file validity, export integrity, visual findings and user acceptance in the existing report fields/prose. No single success flag substitutes for these observations. | 15 min |
+| R4 / lead | One evidence-based repair batch if needed, affected rechecks and final handoff. If none is needed, finish early. | Source/export links, measured time, exact defects resolved/remaining, tests and limitations. No speculative fix or fresh specimen. | 10 min reserve |
 
-D1 does not solve D2 or D3 by adding more metadata. Declared reviewer identity,
-capability and independence are attestations unless host evidence establishes
-otherwise; the checker must not turn them into authenticated claims. A complete
-file inventory describes the selected evidence root at check time, not writes
-elsewhere on the machine or an OS sandbox.
+If R2 exposes a runtime defect rather than a workflow gap, stop the maintenance
+journey, preserve the reproduction and name its owner. Do not expand this window
+into another engine investigation. A required external approval/asset/runtime
+prerequisite is reported immediately; continue independent documentation/checks
+within the remaining window. Automatic approval review remains a host choice,
+not permission bypass. No publication or live `~/.mirket` changes.
 
-## Cohort controls
+## Verification
 
-### Authorized follow-up after cleanup — 2026-10-28
-
-The user authorized continuing the remaining reliability work after cleanup
-commit `b109867`. D1–D6 and their exhausted trial budgets remain closed.
-First diagnose native coordination using three frozen cases: one mechanical
-child, two disjoint mechanical children, and turn interruption followed by an
-exact owner-command termination through Codex's supported host protocol. One
-900-second wall window, at most 240 seconds per case including children, zero
-repairs or retries. Record child turn/command progress separately; one successful
-single-worker case cannot establish the cause of an earlier parallel stall.
-Only the disposable test client invokes those host controls; Mirket gets no
-orchestrator, permission bypass or native agent interception.
-
-Next run the Tidepool acceptance sample: two new briefs (responsive UI and
-captioned object motion), each with matched specialist/no-specialist inputs.
-Freeze four author turns at 240 seconds each, 1500 aggregate author/repair
-seconds, one 180-second repair across all cells, and one 1800-second wall
-window including independent review. Keep failed/denied/timed-out cells without
-retries. Saved pixels and actual interactions/decoded frames determine findings;
-the catalog's authored case sets stay unqualified by this small sample. This
-is follow-up evidence, not permission to reset D4 or promote all acceptance.
-
-Follow-up executed: native coordination passed all three scoped probes. The
-[Tidepool sample](../docs/design-acceptance-sample-20261028.md) retained one
-completed and three timed-out author turns, with both actual motion exports
-reviewed. It demonstrated a dashed-SVG optimizer refusal and a failed-snapshot
-evidence-retention defect; both were corrected and replayed without retrying
-the frozen authors. No broad skill benefit or catalog acceptance is claimed.
-
-For D4, freeze at most eight author turns (240 seconds each), one shared
-45-minute wall window and 2700 aggregate model seconds, and at most four
-180-second repair turns across all conditions/specimens/delegates. These are
-ceilings, not an instruction to spend the entire budget. If reservations or
-review time leave insufficient room, mark remaining cells not run. Do not reset
-these limits by opening a new specimen or delegate. Start this distinct cohort
-only after D1–D3 acceptance passes and the frozen protocol is reviewable.
-
-A fresh reviewer receives the actual brief and neutral saved artifacts, without
-condition labels or the author's self-assessment where feasible. Review claims
-must name a concrete artifact/state/frame and user consequence. The lead checks
-suspect frames individually and against neighbours before repair; invented
-requirements such as changing a button's fill are not defects. Disagreement is
-resolved from saved behavior and the brief, not majority vote. Report masking
-limitations and do not present the small cohort as a statistical benchmark.
-
-## Verification and completion
-
-Use only disposable homes/projects and explicit private executable paths.
-Before any Rust compilation run `python3 scripts/check-build-inputs.py`.
-Changes to Rust/runtime/catalog inputs require the locked/offline Rust tests,
+Documentation/utility changes use affected repository checks, real artifact
+positive/negative journeys and diff/catalog integrity checks. If skill resources
+change, refresh hashes/provenance with repository tooling; no new third-party
+source adoption is implied by this research. Do not claim unchanged runtime gates
+were rerun. Before any Rust compilation run `python3 scripts/check-build-inputs.py`;
+changes to runtime/catalog inputs require the applicable locked/offline Rust,
 all-target Clippy with warnings denied, formatting, locked adapter build/tests
-and explicit-binary/private-Node MCP smoke as affected. Python/JS-only tooling
-changes require their discriminating regression tests, real positive/negative
-artifact journeys and diff/catalog integrity checks; prior unchanged runtime
-gates are retained rather than silently represented as fresh runs.
+and explicit-private-Node/current-binary MCP smoke. Required checks are not
+waived by the time cap: unfinished checks remain unverified.
 
-D1 ends with tested code, an actual artifact packet, a rejection probe and a
-short implementation report. Later rows stay planned until their own evidence
-exists. Do not promote catalog `planned-not-run` acceptance, claim broad design
-quality or mark the original six-area audit complete from this plan.
+## Closed work and retained limits
 
-## User-directed artwork/motion diagnosis — 2026-10-28
+| Work | Evidence and current disposition |
+| --- | --- |
+| D1–D2 scope and repair lineage | [Scope](../docs/design-evidence-scope-20261027.md) and [lineage](../docs/design-evidence-lineage-20261027.md) implemented and tested. Reuse them. |
+| D3–D4 matched design runner/cohort | [Runner](../docs/matched-design-study-20261027.md) and [eight-cell cohort](../docs/design-cohort-20261028.md): completed investigation with confounds/failures retained; no general skill-benefit claim. No new cohort in this closure. |
+| D5 coordination | [Initial qualification](../docs/native-coordination-qualification-20261028.md) retained failures; [follow-up](../docs/coordination-followup-20261028.md) verified scoped single/parallel integration and exact host-command termination. Original stall cause unknown; no hard spawn enforcement. |
+| Artwork/motion diagnosis and Granger target | [Controlled diagnosis](../docs/art-motion-diagnostic-20261028.md), [target](granger-design-target.md), [Daybreak production](../docs/daybreak-production-20261028.md) and [defect repair](../docs/daybreak-video-review-20261028.md) retained. Do not reopen accepted art direction. |
+| D6 | [Review pack](../docs/design-review-pack-20261028.md) delivered; user accepted the current candidate. Acceptance is bound to its exact export. |
+| Tidepool/Lantern and timing capture | [Acceptance sample and follow-ups](../docs/design-acceptance-sample-20261028.md): both cohorts closed; native timeouts remain failures. `a75dea2` timing capture qualified by tests and one readiness probe. No need for further timing infrastructure to complete R1–R4. |
 
-After D4, the user questioned whether disappointing work originated in SVG
-creation or animation and authorized a controlled diagnostic. The [retained
-comparison and corrections](../docs/art-motion-diagnostic-20261028.md) separate
-static art judgment, choreography and implementation. Four actual exports
-(initial/final for two treatments) exposed dropped CSS transforms, warped beat
-timing and an incorrect moving-layer relationship. The existing preview now
-checks optional declared animated properties; native motion resources explain
-the demonstrated failures. One shared repair was used, with no further
-creative retries. This does not reopen D4, rank models, establish premium art
-quality, or complete D5/D6/platform/distribution gates.
+## Separate backlog, not hidden completion claims
 
-## User-selected visual target — 2026-10-28
+- Broad skill benefit, catalog model acceptance and the remaining original
+  six-area audit are not established by this production closure. Keep their
+  unqualified cases; resume only for a concrete release decision or new defect.
+- Public recipient/source/notice delivery remains governed by the [D6 release
+  handoff](../docs/design-review-pack-20261028.md#current-gate-handoff).
+- macOS 15 floor and Windows x64/ARM64 require actual native target evidence.
+  Current local evidence is macOS 26.5.2 ARM64. Desktop GUI remains waived and
+  untested. These cannot be solved by more local design cohorts.
+- Generic glyph clipping, aesthetic excellence, full-frame continuity and
+  universal preview/export parity are not proven by bounding boxes or hashes.
+  Use targeted checks plus saved-pixel judgment and report sampling limits.
 
-The user supplied One Week Wonders' Granger landing-page animation as a concrete
-example of the desired craft. The [reference analysis and next specimen
-contract](granger-design-target.md) shift the next quality trial to an original,
-art-directed landing page plus its presentation reel. This replaces the proposed
-use of the small Foldway icon as the next aesthetic benchmark. HyperFrames and
-the accepted ownership boundary remain. Reference inspection and the first bounded production specimen are now recorded
-in [Daybreak production](../docs/daybreak-production-20261028.md). The original
-page, actual30fps export, independent critique and one repair are retained. This
-does not establish Granger-level craft or reopen/complete the broader gates.
-
-## UI author-to-host handoff follow-up — 2026-10-28
-
-The next authorized continuation addresses the observed setup overhead without
-reopening Tidepool: isolated CLI UI authors have no configured Codex browser,
-so they deliver editable source/static checks and explicitly hand pixel and
-interaction review to the lead's Desktop browser. The common contract states
-this in both arms and supplies the verified private FFmpeg decoding syntax.
-A new Lantern repair-club brief freezes two 240-second author turns, 510 total
-model seconds including shutdown allowance, zero repairs/retries, and a single
-1200-second wall window including independent review. This tests the handoff,
-not whether a larger budget or another model would outperform the old one.
-The old four-minute failures remain failures. Missing required editable files
-now fail author completion even when the native turn exits successfully.
-
-Executed with limits: both Lantern authors followed the browser handoff but
-still timed out (480.060 model / 622.962 wall seconds total). Saved UIs passed
-the independently reviewed journeys; one author also exceeded the root-file
-scope. Missing required outputs now fail completion; review packs retain
-scope-failed visual assets without promoting the failed run. See the
-[continuation evidence](../docs/design-acceptance-sample-20261028.md#subsequent-ui-handoff-diagnostic-at-d13b633).
-This cohort is closed with zero repairs/retries. No reliable completion or
-specialist-benefit claim is established; the final scope wording has no new
-model compliance trial.
-
-The subsequent [timing investigation](../docs/design-acceptance-sample-20261028.md#timing-investigation-after-the-closed-handoff-pair)
-rules against a long shutdown wait but cannot recover missing event timestamps
-from the closed cohorts. The shared runner now captures live raw output and
-monotonic event observations without extending its deadline. Real subprocess
-positive/failure cases and one bounded native readiness turn qualify capture;
-they do not establish creative completion performance. Keep the failed cohorts
-closed. Any future creative trial must use an explicit finite protocol and the
-timing trail to distinguish event/tool intervals before proposing a budget or
-model change; no new creative trial is started by this diagnostic correction.
+Closure means the documented local production route and maintenance journey
+were completed and honestly checked, or the cap produced a concrete blocker.
+It does not mean the entire harness or a public release is qualified.
