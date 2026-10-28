@@ -153,3 +153,13 @@ scope-failed visual assets without promoting the failed run. See the
 This cohort is closed with zero repairs/retries. No reliable completion or
 specialist-benefit claim is established; the final scope wording has no new
 model compliance trial.
+
+The subsequent [timing investigation](../docs/design-acceptance-sample-20261028.md#timing-investigation-after-the-closed-handoff-pair)
+rules against a long shutdown wait but cannot recover missing event timestamps
+from the closed cohorts. The shared runner now captures live raw output and
+monotonic event observations without extending its deadline. Real subprocess
+positive/failure cases and one bounded native readiness turn qualify capture;
+they do not establish creative completion performance. Keep the failed cohorts
+closed. Any future creative trial must use an explicit finite protocol and the
+timing trail to distinguish event/tool intervals before proposing a budget or
+model change; no new creative trial is started by this diagnostic correction.

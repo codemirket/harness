@@ -528,10 +528,126 @@ def failure_signals(stdout: bytes, stderr: bytes) -> tuple[list[str], list[str]]
     return matching(approvals, tool_permission=True), matching(unavailable)
 
 
+def capture_model_process(proc: subprocess.Popen, prompt: str, seconds: int, started: float,
+                          events: Path, stderr: Path, timeline: Path) -> tuple[bytes, bytes, dict[str, Any]]:
+    """Observe cumulative communicate() output without changing the frozen deadline.
+
+    Times are collector observations, not provider execution/TTFT measurements;
+    relative stdout/stderr ordering within one observation is not established.
+    Polling bounds normal observation lag to 100ms plus scheduling/I/O delay.
+    Keep raw output live and put only lifecycle metadata in the timing sidecar.
+    """
+    summary: dict[str, Any] = {
+        "observation_interval_seconds": 0.1, "deadline_seconds": seconds,
+        "first_stdout_seconds": None, "first_stderr_seconds": None,
+        "turn_completed_seconds": None, "stop_requested_seconds": None,
+        "timed_out": False, "interrupted": False, "capture_incomplete": False,
+    }
+    out, err, pending = b"", b"", b""
+    line_number = 0
+    with events.open("xb") as output, stderr.open("xb") as errors, timeline.open("x") as trace:
+        def record(kind: str, **fields: Any) -> float:
+            elapsed = round(time.monotonic() - started, 6)
+            trace.write(json.dumps({"kind": kind, "elapsed_seconds": elapsed, **fields}) + "\n")
+            trace.flush()
+            return elapsed
+
+        def event_line(line: bytes, terminated: bool) -> None:
+            nonlocal line_number
+            line_number += 1
+            try:
+                value = json.loads(line)
+            except ValueError:
+                value = None
+            metadata: dict[str, Any] = {"line": line_number, "newline_terminated": terminated}
+            if isinstance(value, dict):
+                if isinstance(value.get("type"), str):
+                    metadata["event_type"] = value["type"]
+                item = value.get("item")
+                if isinstance(item, dict):
+                    for key in ("id", "type", "status"):
+                        if isinstance(item.get(key), str):
+                            metadata[f"item_{key}"] = item[key]
+            elapsed = record("stdout.line", **metadata)
+            if metadata.get("event_type") == "turn.completed" and summary["turn_completed_seconds"] is None:
+                summary["turn_completed_seconds"] = elapsed
+
+        def observe(stdout: bytes | None, stderr_bytes: bytes | None) -> None:
+            nonlocal out, err, pending
+            if stdout is not None:
+                added = stdout[len(out):]
+                if added:
+                    output.write(added); output.flush()
+                    elapsed = record("stdout.bytes", offset=len(out), length=len(added))
+                    if summary["first_stdout_seconds"] is None:
+                        summary["first_stdout_seconds"] = elapsed
+                    pending += added
+                    lines = pending.split(b"\n")
+                    pending = lines.pop()
+                    for line in lines:
+                        event_line(line, True)
+                out = stdout
+            if stderr_bytes is not None:
+                added = stderr_bytes[len(err):]
+                if added:
+                    errors.write(added); errors.flush()
+                    elapsed = record("stderr.bytes", offset=len(err), length=len(added))
+                    if summary["first_stderr_seconds"] is None:
+                        summary["first_stderr_seconds"] = elapsed
+                err = stderr_bytes
+
+        def receive(deadline: float, input_bytes: bytes | None = None) -> None:
+            while True:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise subprocess.TimeoutExpired(proc.args, seconds, output=out, stderr=err)
+                try:
+                    stdout, stderr_bytes = proc.communicate(input_bytes, timeout=min(0.1, remaining))
+                except subprocess.TimeoutExpired as exc:
+                    observe(exc.output, exc.stderr)
+                    input_bytes = None  # communicate retains any partially sent stdin.
+                else:
+                    observe(stdout, stderr_bytes)
+                    return
+
+        def stop(sig: int) -> None:
+            record("process.signal", signal=sig)
+            try:
+                os.killpg(proc.pid, sig)
+            except ProcessLookupError:
+                pass
+
+        record("process.spawned")
+        try:
+            receive(started + seconds, prompt.encode())
+        except (subprocess.TimeoutExpired, KeyboardInterrupt) as exc:
+            summary["timed_out"] = isinstance(exc, subprocess.TimeoutExpired)
+            summary["interrupted"] = isinstance(exc, KeyboardInterrupt)
+            summary["stop_requested_seconds"] = record("process.stop_requested", reason="deadline" if summary["timed_out"] else "interrupt")
+            stop(signal.SIGTERM)
+            try:
+                receive(time.monotonic() + 5)
+            except subprocess.TimeoutExpired:
+                stop(signal.SIGKILL)
+                try:
+                    receive(time.monotonic() + 5)
+                except subprocess.TimeoutExpired:
+                    summary["capture_incomplete"] = True
+                    proc.stdout.close()
+                    proc.stderr.close()
+        if pending:
+            event_line(pending, False)
+        summary["capture_finished_seconds"] = record("process.capture_finished", exit_code=proc.returncode)
+        stop_at = summary["stop_requested_seconds"]
+        summary["shutdown_seconds"] = None if stop_at is None else round(summary["capture_finished_seconds"] - stop_at, 6)
+    return out, err, summary
+
+
 def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condition: str, seconds: int) -> dict[str, Any]:
     events = trial / f"{phase}-events.jsonl"
     stderr = trial / f"{phase}-stderr.log"
-    if events.exists() or stderr.exists():
+    timeline = trial / f"{phase}-timeline.jsonl"
+    if any(os.path.lexists(path) for path in (events, stderr, timeline)):
         raise SystemExit(f"refusing retry: {trial}/{phase}")
     codex_home = trial / "codex-home"
     env = {**os.environ, "CODEX_HOME": str(codex_home), "HOME": str(trial / "user-home"), "TMPDIR": str(trial / "tmp"), "TMP": str(trial / "tmp"), "TEMP": str(trial / "tmp")}
@@ -542,36 +658,21 @@ def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condi
         args.insert(2, "--approve-for-me")
     started = time.monotonic()
     proc = subprocess.Popen(args, cwd=trial / "project", env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
-    out, err = b"", b""
-    interrupted = False
+    captured = False
     try:
-        out, err = proc.communicate(prompt.encode(), timeout=seconds)
-        timed_out = False
-    except (subprocess.TimeoutExpired, KeyboardInterrupt) as exc:
-        out = getattr(exc, "output", None) or b""; err = getattr(exc, "stderr", None) or b""
-        timed_out = isinstance(exc, subprocess.TimeoutExpired)
-        interrupted = isinstance(exc, KeyboardInterrupt)
-        try:
-            os.killpg(proc.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            pass
-        try:
-            out, err = proc.communicate(timeout=5)
-        except subprocess.TimeoutExpired as tail:
-            out, err = tail.output or out, tail.stderr or err
+        out, err, timing = capture_model_process(proc, prompt, seconds, started, events, stderr, timeline)
+        captured = True
+    finally:
+        # Includes failures opening/flushing capture files and repeated interrupts.
+        # The collector must not leave its owned process group running.
+        if not captured or proc.poll() is None:
             try:
                 os.killpg(proc.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
-            try:
-                out, err = proc.communicate(timeout=5)
-            except subprocess.TimeoutExpired as last:
-                out, err = last.output or out, last.stderr or err
-                proc.stdout.close()
-                proc.stderr.close()
-        # communicate() returns cumulative output after a timeout; appending
-        # the earlier exception output would duplicate events and usage.
-    events.write_bytes(out); stderr.write_bytes(err)
+            proc.wait(timeout=5)
+        for stream in (proc.stdin, proc.stdout, proc.stderr):
+            stream.close()
     approval, blocked = failure_signals(out, err)
     usage = {"input_tokens": 0, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 0, "reasoning_output_tokens": 0}
     usage_observed = False
@@ -583,7 +684,7 @@ def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condi
         turn_completed = turn_completed or value.get("type") == "turn.completed"
         for key, number in (value.get("usage") or {}).items():
             if key in usage and isinstance(number, int): usage[key] += number; usage_observed = True
-    return {"phase": phase, "condition": condition, "model": ready["model"], "reasoning_effort": ready["reasoning_effort"], "command": args, "elapsed_seconds": round(time.monotonic() - started, 3), "timed_out": timed_out, "interrupted": interrupted, "exit_code": proc.returncode, "turn_completed": turn_completed, "events_sha256": sha(events), "stderr_sha256": sha(stderr), "approval_signals": approval, "blocked_signals": blocked, "usage": usage if usage_observed else None, "usage_observed": usage_observed}
+    return {"phase": phase, "condition": condition, "model": ready["model"], "reasoning_effort": ready["reasoning_effort"], "command": args, "elapsed_seconds": round(time.monotonic() - started, 3), "timed_out": timing["timed_out"], "interrupted": timing["interrupted"], "exit_code": proc.returncode, "turn_completed": turn_completed, "events_sha256": sha(events), "stderr_sha256": sha(stderr), "timeline_sha256": sha(timeline), "timing": timing, "approval_signals": approval, "blocked_signals": blocked, "usage": usage if usage_observed else None, "usage_observed": usage_observed}
 
 
 def snapshot(trial: Path, label: str) -> dict[str, str]:

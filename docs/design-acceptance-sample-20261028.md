@@ -150,3 +150,61 @@ Astra/high and the same Desktop-bundled CLI/private Node. No full-catalog,
 Windows, OS-floor, publication or Desktop GUI gate was promoted. The remaining
 completion problem needs a separately scoped timing investigation; repeated
 runs under the same ceiling would not establish its cause.
+
+## Timing investigation after the closed handoff pair
+
+The retained chronology narrows the failure without explaining all of it.
+The specialist saved its main UI files around 192.6 seconds after phase
+reservation; the other author saved `.evidence/HANDOFF.md` at 239.325 seconds.
+Neither emitted `turn.completed`, and both exited with SIGTERM at roughly
+240.03 seconds. This is evidence against a long post-deadline shutdown wait.
+File modification times are only supporting chronology: they cannot partition
+the interval into model, service, approval or tool time. No causal timing or
+model-ranking conclusion follows from the old buffered event files.
+
+`tests/motion-feedback-pilot.py` now retains raw stdout/stderr during execution
+and writes an adjacent `initial-timeline.jsonl` (or repair timeline). It records
+monotonic collector observations of stream bytes, native event/item lifecycle,
+termination requests and capture completion. The result binds the timeline hash
+and distinguishes first output, native turn completion and shutdown time.
+This uses Codex's existing [JSONL event stream](https://learn.chatgpt.com/docs/non-interactive-mode#make-output-machine-readable),
+not a Mirket agent controller. Observation granularity is 100ms plus scheduling
+and I/O delay; stdout/stderr ordering within a poll and provider execution time
+are not established. Raw output remains exact, including split UTF-8 and an
+unterminated final line. Existing files refuse retry, capture errors reap the
+owned process group, and the original absolute deadline and termination grace
+remain. A native completion followed by a hung process still fails the trial.
+
+One separately frozen, noncreative native readiness probe requested only
+`TIMING_READY`, with Astra/high, automatic approval review, a 45-second ceiling,
+no MCP configuration, and zero retries/repairs. It returned the exact requested
+text: first stdout at **0.616486s**, native completion at **7.052181s**, process
+capture complete/exit 0 at **7.943941s**. No tool or project write was requested;
+the project remained empty and the disposable credential copy was removed.
+This establishes native capture interoperability, not design latency, Mirket
+tool startup performance, motion quality or a fix for the earlier author
+timeouts. The frozen native runner precedes a subsequent exceptional-cleanup
+strengthening; that error path is covered by real subprocess tests rather than
+another native model run.
+
+Fresh verification on macOS 26.5.2 ARM64: 36 motion-runner and 29 matched-study
+tests, plus 14 catalog/skill-assembly tests; catalog refresh check reports no
+drift. New real subprocess cases cover delayed events/live files before exit,
+silent timeout, completed-turn/hung-exit, bidirectional pipe pressure, exact
+partial output, interruption, ignored SIGTERM, capture-file collision cleanup
+and retry refusal. Independent read-only review caught a scheduling-dependent
+interrupt-test assumption; the fixture now interrupts only after observing its
+readiness event. Runtime, adapter, skills and dependencies did not change, so
+the preceding Rust/Clippy/adapter/MCP gate results are retained, not represented
+as fresh. No catalog acceptance or platform gate is promoted.
+
+Evidence and source hashes:
+`/Users/nazmiyilmaz/.codex/task-state/harness-timing-investigation-20261028`
+(historical chronology, frozen native protocol/runner, result and cleanup,
+test logs); native raw streams and timeline:
+`/Users/Shared/mirket-timing-probe-20261028`.
+Both previous design cohorts remain closed and failed cells remain failed.
+The remaining unknown is the distribution of time within a real creative turn;
+there is no basis yet to increase the budget, change models or claim a design
+completion fix. Future authorized trials can use the new observation trail
+without silently resetting a closed cohort's budget.

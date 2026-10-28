@@ -3,6 +3,7 @@ import json
 import os
 import stat
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch, MagicMock
@@ -36,6 +37,156 @@ def ready_fixture(root: Path) -> tuple[dict, Path]:
 
 
 class MotionFeedbackPilotTests(unittest.TestCase):
+    def run_fake_model(self, root, source, seconds=2, prompt="test"):
+        ready, _ = ready_fixture(root)
+        for folder in ("project", "codex-home", "user-home", "tmp"):
+            (root / folder).mkdir()
+        executable = Path(ready["codex"])
+        executable.write_text(f"#!{sys.executable}\n" + source)
+        executable.chmod(0o700)
+        result = PILOT.run_model(root, prompt, "initial", ready, "source-only", seconds)
+        timeline = [json.loads(line) for line in (root / "initial-timeline.jsonl").read_text().splitlines()]
+        return result, timeline
+
+    def test_timing_distinguishes_delayed_events_and_preserves_live_output(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            result, timeline = self.run_fake_model(root, '''import time, pathlib
+time.sleep(0.2)
+print('{"type":"item.started","item":{"id":"work","type":"command_execution","command":"private payload"}}', flush=True)
+time.sleep(0.35)
+assert 'item.started' in pathlib.Path('../initial-events.jsonl').read_text()
+assert 'stdout.line' in pathlib.Path('../initial-timeline.jsonl').read_text()
+print('{"type":"item.completed","item":{"id":"work","type":"command_execution"}}', flush=True)
+print('{"type":"turn.completed","usage":{"output_tokens":7}}', flush=True)
+''')
+            self.assertFalse(result["timed_out"])
+            self.assertTrue(result["turn_completed"])
+            self.assertEqual(result["usage"]["output_tokens"], 7)
+            self.assertGreaterEqual(result["timing"]["first_stdout_seconds"], 0.2)
+            items = [row for row in timeline if row.get("item_id") == "work"]
+            self.assertEqual([row["event_type"] for row in items], ["item.started", "item.completed"])
+            self.assertGreater(items[1]["elapsed_seconds"] - items[0]["elapsed_seconds"], 0.15)
+            self.assertNotIn("private payload", json.dumps(timeline))
+            self.assertIsNone(result["timing"]["shutdown_seconds"])
+
+    def test_native_completion_before_hung_exit_is_still_a_timeout(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            result, _ = self.run_fake_model(Path(temporary), '''import time
+print('{"type":"turn.completed"}', flush=True)
+time.sleep(10)
+''', seconds=0.6)
+            self.assertTrue(result["turn_completed"])
+            self.assertTrue(result["timed_out"])
+            self.assertLess(result["timing"]["turn_completed_seconds"], result["timing"]["stop_requested_seconds"])
+            self.assertLess(result["timing"]["shutdown_seconds"], 1)
+            self.assertNotEqual(result["exit_code"], 0)
+
+    def test_silent_timeout_has_no_invented_native_or_stdout_timing(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            result, _ = self.run_fake_model(Path(temporary), 'import time\ntime.sleep(10)\n', seconds=0.3)
+            self.assertTrue(result["timed_out"])
+            self.assertFalse(result["turn_completed"])
+            self.assertIsNone(result["timing"]["turn_completed_seconds"])
+            self.assertIsNone(result["timing"]["first_stdout_seconds"])
+
+    def test_split_utf8_partial_line_and_stderr_pressure_preserve_exact_bytes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            raw = '{"type":"agent_message","text":"café"}\nnot-json\n{"type":"turn.completed"}'.encode()
+            split = raw.index(b'\xc3') + 1
+            source = f'''import os, sys, time
+os.write(1, {raw[:split]!r})
+os.write(2, b'e' * 200000)
+time.sleep(0.2)
+os.write(1, {raw[split:]!r})
+assert len(sys.stdin.buffer.read()) == 300000
+'''
+            result, timeline = self.run_fake_model(root, source, prompt="x" * 300000)
+            self.assertFalse(result["timed_out"])
+            self.assertEqual((root / "initial-events.jsonl").read_bytes(), raw)
+            self.assertEqual((root / "initial-stderr.log").read_bytes(), b"e" * 200000)
+            lines = [row for row in timeline if row["kind"] == "stdout.line"]
+            self.assertEqual([row["line"] for row in lines], [1, 2, 3])
+            self.assertFalse(lines[-1]["newline_terminated"])
+            self.assertTrue(result["turn_completed"])
+
+    def test_capture_open_failure_reaps_owned_process(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ready, _ = ready_fixture(root)
+            (root / "project").mkdir()
+            executable = Path(ready["codex"])
+            executable.write_text(f"#!{sys.executable}\nimport time\ntime.sleep(10)\n")
+            executable.chmod(0o700)
+            start = PILOT.subprocess.Popen
+            children = []
+            def launch(*args, **kwargs):
+                child = start(*args, **kwargs)
+                children.append(child)
+                # Simulate a destination appearing between preflight and open.
+                (root / "initial-timeline.jsonl").write_text("preserve")
+                return child
+            with patch.object(PILOT.subprocess, "Popen", side_effect=launch):
+                with self.assertRaises(FileExistsError):
+                    PILOT.run_model(root, "test", "initial", ready, "source-only", 1)
+            self.assertIsNotNone(children[0].returncode)
+            self.assertEqual((root / "initial-timeline.jsonl").read_text(), "preserve")
+
+    def test_existing_timeline_alone_prevents_retry(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            ready, _ = ready_fixture(root)
+            (root / "initial-timeline.jsonl").write_text("retained")
+            with patch.object(PILOT.subprocess, "Popen") as launch:
+                with self.assertRaises(SystemExit):
+                    PILOT.run_model(root, "test", "initial", ready, "source-only", 1)
+                launch.assert_not_called()
+
+    def test_real_process_interrupt_preserves_partial_events_and_reaps(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            start = PILOT.subprocess.Popen
+            children = []
+            def launch(*args, **kwargs):
+                child = start(*args, **kwargs)
+                children.append(child)
+                communicate = child.communicate
+                def interrupt_once(*args, **kwargs):
+                    try:
+                        return communicate(*args, **kwargs)
+                    except subprocess.TimeoutExpired as exc:
+                        if exc.output and b'turn.started' in exc.output:
+                            child.communicate = communicate
+                            raise KeyboardInterrupt()
+                        raise
+                child.communicate = interrupt_once
+                return child
+            with patch.object(PILOT.subprocess, "Popen", side_effect=launch):
+                result, timeline = self.run_fake_model(root, '''import time
+print('{"type":"turn.started"}', flush=True)
+time.sleep(10)
+''')
+            self.assertTrue(result["interrupted"])
+            self.assertFalse(result["timed_out"])
+            self.assertFalse(result["turn_completed"])
+            self.assertIsNotNone(children[0].returncode)
+            self.assertEqual((root / "initial-events.jsonl").read_text().count("turn.started"), 1)
+            self.assertEqual([row["reason"] for row in timeline if row["kind"] == "process.stop_requested"], ["interrupt"])
+
+    def test_term_ignoring_process_is_killed_without_deadline_reset(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            result, timeline = self.run_fake_model(Path(temporary), '''import signal, time
+signal.signal(signal.SIGTERM, signal.SIG_IGN)
+print('{"type":"turn.started"}', flush=True)
+time.sleep(30)
+''', seconds=0.4)
+            self.assertTrue(result["timed_out"])
+            self.assertLess(result["timing"]["stop_requested_seconds"], 1)
+            self.assertLess(result["elapsed_seconds"], 8)
+            self.assertEqual(result["exit_code"], -PILOT.signal.SIGKILL)
+            self.assertEqual([row["signal"] for row in timeline if row["kind"] == "process.signal"], [PILOT.signal.SIGTERM, PILOT.signal.SIGKILL])
+
     def test_matrix_is_twelve_cells_and_shared_repair_budget_is_four(self):
         self.assertEqual(len(PILOT.TASKS) * len(PILOT.CONDITIONS) * len(PILOT.REPEATS), 12)
         self.assertEqual(PILOT.SHARED_MAX_REPAIRS, 4)
