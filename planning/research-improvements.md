@@ -59,3 +59,19 @@ and the unsuccessful native attempts. Remaining model comparisons require a
 working authenticated disposable Codex CLI turn; thread creation alone is not
 that prerequisite. Preserve the failed attempts and shared budget when resuming.
 Do not mark R1/R2/R4 selection or R7/R8 quality complete from local tests.
+
+### User-directed deferral and local distribution closure
+
+The user asked to skip native CLI connectivity/authentication for now. Defer its
+dependent R1/R2/R4-selection/R7/R8 model comparisons without marking them passed;
+a fresh login is not itself a required implementation step. Preserve all prior
+attempt records. No further model calls belong to the closed cohorts.
+
+The actual disposable install/reinstall journey now verifies delivery of 11
+references in nine selected project skills, idempotent synchronization,
+preservation of edited resources, unavailable selection refusal and unrelated
+skill preservation. Canonical memory recall and forgetting also survive that
+journey. See the continuation in the existing qualification record. With the
+native comparisons deferred, no further local implementation defect is
+currently demonstrated by these acceptance checks. Native platform gates remain
+separate; this checkpoint does not authorize publication or live installation.

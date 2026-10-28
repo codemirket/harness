@@ -80,3 +80,54 @@ The local R4 boundary and R6 interactive fixture outcomes above are narrower
 claims. No universal uplift, additional creative acceptance, Windows, macOS 15
 floor or waived Desktop GUI qualification is asserted. No live `.mirket`
 installation, user configuration, production dependency or publication changed.
+
+## Continuation after deferring native CLI work
+
+The user deferred CLI connectivity/authentication and dependent native model
+comparisons. Reauthentication is not a demonstrated requirement: observed
+failures were connection/routing timeouts, not an authentication rejection.
+No further login, model or provider calls were made in this continuation. The
+failed cohorts remain closed and their costs remain recorded; deferral is not
+acceptance or a budget reset.
+
+The existing `tests/reinstall-installed-smoke.py` now exercises actual installed
+project references in addition to its canonical-memory reinstall journey. A
+fresh source-built binary and repository skill assembler produced a disposable
+core/Node/skills release. The source Node bytes matched the admitted base-release
+manifest before copying. Actual installed CLI and MCP outcomes on macOS 26.5.2
+ARM64 were:
+
+- Nine opted-in project skills delivered all 11 catalogued Markdown references;
+  all nine global skill copies remained lean and matched their source bodies.
+- Repeated project sync returned unchanged and preserved the project files.
+- An edited research reference was reported drifted. Both sync and removal
+  refused it, preserving the edited bytes, other skills and receipt files.
+- Selecting video production against this deliberately core-only release failed
+  without creating any files or directories in that project.
+- Uninstall/reinstall preserved project skill resources, selection and receipts.
+  Project doctor reported managed, and subsequent sync was unchanged.
+- MCP recalled the retained canonical fact after reinstall, while the forgotten
+  fact remained unavailable; 17 canonical state/backup files were preserved.
+- Managed project removal subsequently removed its owned skills while retaining
+  an unrelated project skill. Personal skills, instructions and model settings
+  in the disposable user home also survived.
+
+This closes the installed resource-delivery/preservation check for these skills;
+it does not establish native skill discovery, selection or output quality. No
+production source or dependency correction was needed. The vector/video
+resources require their qualified payloads and are outside this core-only
+fixture; prior installed runtime evidence remains separate.
+
+Evidence:
+`/Users/nazmiyilmaz/.codex/task-state/harness-gap-closure-20261028/same-home-reinstall-21iw1_fn/`.
+The summary, CLI responses and actual MCP requests/results are retained there.
+Release ID: `sha256:143d87d0465230c72cfdc54b25a0282496565e0df31a91f84fe2d65cd486f806`.
+Core SHA-256: `5a5a98f5fd48e9a21672ee3b10449f8052ee74562608f10995c2e015e0bbe6a7`.
+
+The build-input guard and locked/offline build passed before this journey. The
+explicit-binary/private-Node MCP smoke passed again with that built binary;
+catalog tooling reported no changes. Rust and adapter source were unchanged,
+so their passing full gates above were retained rather than repeated. The
+extended integration fixture passed end to end. Native model comparisons remain
+deferred; Windows, macOS 15 floor, Desktop GUI and broad quality uplift remain
+unqualified. No live installation, push or publication occurred.

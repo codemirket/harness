@@ -1,4 +1,4 @@
-"""Actual disposable setup/uninstall/reinstall with canonical MCP recall.
+"""Disposable setup/reinstall, installed skill resources and canonical MCP recall.
 
 Supply explicit current core, an existing admitted base release, and an external
 evidence parent. Original inputs and the real user installation are untouched.
@@ -59,6 +59,8 @@ def main():
                       seconds=time.monotonic() - began, stdout=result.stdout, stderr=result.stderr)
         (evidence / (name + ".json")).write_text(json.dumps(record, ensure_ascii=False, indent=2))
         assert result.returncode == expected, record
+        if expected != 0:
+            return record
         return json.loads(result.stdout) if result.stdout.strip().startswith("{") else result.stdout
 
     class Client:
@@ -120,6 +122,64 @@ def main():
     run([binary, "setup", "--home", home, "--source", source, "--user-home", user], "setup")
     project = evidence / "project İ"
     project.mkdir(mode=0o700)
+    catalog = json.loads((source / "skills/catalog.json").read_text())
+    selected = [entry for entry in catalog["project"]
+                if entry.get("resources") and not entry["required_capabilities"]]
+    assert {entry["id"] for entry in selected} >= {
+        "browser-research", "customer-research", "product-strategy", "positioning",
+        "marketing-copy", "conversion", "experiments-launch"}
+    project_personal = project / ".agents/skills/project-personal/SKILL.md"
+    project_personal.parent.mkdir(parents=True)
+    project_personal.write_text("Keep this project-owned method.\n")
+
+    def snapshot(directory):
+        return {str(path.relative_to(directory)): digest(path)
+                for path in directory.rglob("*") if path.is_file()}
+
+    def skill_command(operation, *extra, target=project):
+        return [home / "bin/mirket", "skills", operation, "--home", home,
+                "--project-root", target, *extra]
+
+    def verify_copies(entries, destination):
+        count = 0
+        for entry in entries:
+            folder = destination / entry["id"]
+            expected = {"SKILL.md", *(item["path"] for item in entry["resources"])}
+            assert {str(p.relative_to(folder)) for p in folder.rglob("*") if p.is_file()} == expected
+            for relative in expected:
+                assert (folder / relative).read_bytes() == (source / "skills" / entry["id"] / relative).read_bytes()
+            count += len(entry["resources"])
+        return count
+
+    # Selection must deliver real optional references, not merely a receipt.
+    options = [value for entry in selected for value in ("--include", entry["id"])]
+    run(skill_command("project-select", *options), "project-select")
+    resource_count = verify_copies(selected, project / ".agents/skills")
+    assert verify_copies(catalog["global"], user / ".agents/skills") == 0
+    project_before = snapshot(project)
+    assert run(skill_command("project-sync"), "project-idempotent-sync")["status"] == "unchanged"
+    assert snapshot(project) == project_before
+
+    edited = project / ".agents/skills/browser-research/references/research-coverage.md"
+    original = edited.read_bytes()
+    edited.write_bytes(original + b"\nUser-owned research note.\n")
+    drifted = snapshot(project)
+    assert run(skill_command("project-doctor"), "project-drift-doctor")["status"] == "drifted"
+    refused = run(skill_command("project-sync"), "project-refuse-edited-reference", expected=1)
+    assert "managed skill copy has drifted" in refused["stderr"]
+    assert snapshot(project) == drifted
+    refused = run(skill_command("project-remove"), "project-refuse-edited-removal", expected=1)
+    assert "managed skill copy has drifted" in refused["stderr"]
+    assert snapshot(project) == drifted
+    edited.write_bytes(original)  # Restore only this fixture's deliberate edit.
+    assert run(skill_command("project-sync"), "project-restored-sync")["status"] == "unchanged"
+
+    unavailable_project = evidence / "unavailable-project"
+    unavailable_project.mkdir(mode=0o700)
+    refused = run(skill_command("project-select", "--include", "video-production", target=unavailable_project),
+                  "project-unavailable-video", expected=1)
+    assert "selected skills require unavailable private capabilities" in refused["stderr"]
+    assert not list(unavailable_project.iterdir()), "Unavailable selection must leave no project files or directories"
     client = Client(home)
     release = client.tool("runtime_status", {})["release_id"]
     common = dict(expected_release_id=release, scope=dict(kind="project", project_root=str(project)))
@@ -149,6 +209,11 @@ def main():
     assert result["status"] == "reinstalled"
     assert all((home / name).is_file() and digest(home / name) == value for name, value in before.items())
     assert run([home / "bin/mirket", "doctor", "--home", home, "--user-home", user, "--json"], "doctor")["status"] == "healthy"
+    assert snapshot(project) == project_before, "Reinstall must preserve project skills, selection and receipts"
+    assert verify_copies(selected, project / ".agents/skills") == resource_count
+    assert verify_copies(catalog["global"], user / ".agents/skills") == 0
+    assert run(skill_command("project-doctor"), "project-reinstall-doctor")["status"] == "managed"
+    assert run(skill_command("project-sync"), "project-reinstall-sync")["status"] == "unchanged"
     assert run([binary, "reinstall-status", "--home", home, "--user-home", user], "status")["status"] == "reinstalled"
     assert run([binary, "reinstall-reconcile", "--home", home, "--user-home", user, "--source", source], "completed-reconcile")["status"] == "reinstalled"
     client = Client(home)
@@ -158,6 +223,9 @@ def main():
     unavailable = client.tool("memory_read", dict(**common, record_id=forgotten["record_id"], revision=None), error=True)
     assert any(word in json.dumps(unavailable).lower() for word in ["forgot", "found", "excluded"])
     client.close()
+    run(skill_command("project-remove"), "project-remove")
+    assert all(not (project / ".agents/skills" / entry["id"]).exists() for entry in selected)
+    assert project_personal.read_text() == "Keep this project-owned method.\n"
     assert (personal / "SKILL.md").read_text() == "Preserve this personal skill.\n"
     assert (user / ".codex/AGENTS.md").read_text().startswith("Preserve this personal instruction.\n")
     assert "model = 'chosen-model'" in (user / ".codex/config.toml").read_text()
@@ -166,6 +234,9 @@ def main():
     summary = dict(status="passed", platform=os.uname().sysname, machine=os.uname().machine,
                    release_id=release, manifest=manifest, core_sha256=digest(binary),
                    source_manifest_sha256=digest(source / "manifest.json"),
+                   selected_project_skills=len(selected), installed_reference_files=resource_count,
+                   edited_reference_sync_and_removal_refused=True, unavailable_selection_no_effect=True,
+                   project_resources_preserved_through_reinstall=True, unmanaged_project_skill_preserved=True,
                    retained_state_backup_files=len(before), actual_canonical_recall=True,
                    forgetting_preserved=True, completed_reconcile_without_replay=True,
                    user_installation_untouched=True, evidence=str(evidence))
