@@ -4,12 +4,16 @@ User approval: 2026-10-28. Baseline: `7da476b55873e1b104bde2944c9ac63b0d299273`.
 The [approved plan](../planning/research-improvements.md) implements the
 [research recommendations](harness-research-recommendations-20261028.md).
 Implementation and local checks are distinct from model-effect qualification.
-The remaining native research/product comparisons are **not qualified**.
+The [post-connectivity evaluation](model-evaluation-20261028.md) completed twelve
+corpus turns: both conditions passed all six questions in independent semantic
+review, without demonstrated skill uplift. It exposed and corrected evaluator
+defects. Native live-web, reviewer-control, product/marketing, near-miss and
+no-delegate comparisons remain **not qualified** after a supplemental CLI flag
+conflict ended that batch before a model turn.
 The [continuation record](remaining-gaps-qualification-20261028.md) adds actual
 interactive browser and MCP boundary evidence, runner repairs, and the current
 earlier native CLI failures. Connectivity was subsequently resolved with a
-process-local CA-bundle setting and one completed minimal turn; quality
-comparisons remain unqualified. The continuation also verifies actual delivery
+process-local CA-bundle setting and one completed minimal turn. The continuation also verifies actual delivery
 and preservation of the new project references through disposable reinstall.
 
 ## Finding-to-change matrix

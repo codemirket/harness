@@ -16,6 +16,7 @@ import math
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import signal
 import subprocess
@@ -28,7 +29,7 @@ PER_CELL_SECONDS = 90
 CONDITIONS = ("no-skill", "with-skill")
 MODEL = "gpt-6-astra"
 REASONING_EFFORT = "high"
-SKILL_ID = "browser-research"
+RESEARCH_SKILLS = {"browser-research", "evidence-research"}
 
 SOURCES = {
     "atlas-v1": "# Atlas v1\nPublished: 2025-05-10\nAtlas supports CSV export. It does not support scheduled exports.\n",
@@ -55,7 +56,7 @@ CASES: dict[str, dict[str, Any]] = {
     },
     "partial-claim": {
         "question": "Does Atlas support both CSV import and CSV export? State exactly what the sources establish.",
-        "required": {"verdict": "insufficient", "sources": ["atlas-v2"], "missing": "CSV import"},
+        "required": {"verdict": "insufficient", "sources": ["atlas-v2"], "optional_sources": ["atlas-v1"], "missing": "CSV import"},
     },
     "unavailable-source": {
         "question": "A referenced vendor page is unavailable. Can the corpus establish that Atlas has a mobile app? Abstain if it cannot.",
@@ -67,7 +68,7 @@ CASES: dict[str, dict[str, Any]] = {
     },
 }
 
-PROMPT_SUFFIX = """\nReturn only a JSON object in answer.json with exactly these keys: verdict (supported|contradicted|insufficient|unavailable), subject, route_status (available|unavailable), project_scope, sources (array of source IDs), counterexamples (array of source IDs), and explanation. Use exact source IDs from the corpus. Explain any missing fact when the verdict is insufficient or unavailable. Do not invent facts, silently substitute products, or treat a missing source as evidence. Preserve all supplied files. No network, agents, dependencies, credentials, commits, messages, or external effects.\n"""
+PROMPT_SUFFIX = """\nReturn only a JSON object in answer.json with exactly these keys: verdict (supported|contradicted|insufficient|unavailable), subject, route_status (available|unavailable), project_scope, sources (array of source IDs), counterexamples (array of source IDs), and explanation. For subject and project_scope use only the exact product name, without versions or capability descriptions; put those qualifications in explanation. Use unavailable when referenced evidence is unavailable and the corpus cannot resolve the claim; use insufficient when the accessible corpus establishes only part of a compound claim. In sources include exact corpus IDs supporting the established claim or its supported part, not every source consulted. Discuss consulted but non-supporting sources in explanation. Explain any missing fact when the verdict is insufficient or unavailable. Do not invent facts, silently substitute products, or treat a missing source as evidence. Preserve all supplied files. No network, agents, dependencies, credentials, commits, messages, or external effects.\n"""
 
 # Independent review controls: findings must locate a concrete claim and its
 # decisive source. These are development controls, not native judge results.
@@ -105,6 +106,26 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, indent=2) + "\n")
 
 
+def provider_rate_limited(events_text: str, stderr: str) -> bool:
+    """Inspect diagnostic messages, never token totals or ordinary tool output."""
+    message = re.compile(r"\btoo many requests\b|\brate[_ -]limit(?:[_ -]exceeded|ing)?\b|\b(?:http(?:/\d(?:\.\d)?)?|status(?: code)?)\s*[:=]?\s*429\b", re.I)
+    if message.search(stderr):
+        return True
+    for line in events_text.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(event, dict):
+            continue
+        if event.get("type") not in ("error", "turn.failed") and not event.get("error"):
+            continue
+        payload = json.dumps(event)
+        if message.search(payload) or re.search(r'"(?:code|status|status_code)"\s*:\s*(?:429|"429")(?:[,}\s])', payload):
+            return True
+    return False
+
+
 def cohort_budget(root: Path) -> dict[str, Any]:
     """Refuse drift in the original deadline instead of trusting mutable state."""
     path = root / "cohort-state.json"
@@ -128,9 +149,9 @@ def freeze(root: Path, codex: Path, skill: Path | None, model_cache: Path | None
         raise SystemExit(f"refusing existing trial root: {root}")
     if not codex.is_file():
         raise SystemExit(f"missing Codex executable: {codex}")
-    if skill is None or skill.name != SKILL_ID or not (skill / "SKILL.md").is_file():
-        raise SystemExit("the browser-research skill directory is required")
-    if f"name: {SKILL_ID}\n" not in (skill / "SKILL.md").read_text():
+    if skill is None or skill.name not in RESEARCH_SKILLS or not (skill / "SKILL.md").is_file():
+        raise SystemExit("a supported research skill directory is required")
+    if f"name: {skill.name}\n" not in (skill / "SKILL.md").read_text():
         raise SystemExit("unexpected skill identity")
     if model_cache is not None:
         cache = json.loads(model_cache.read_text())
@@ -146,7 +167,7 @@ def freeze(root: Path, codex: Path, skill: Path | None, model_cache: Path | None
     corpus = frozen / "corpus"; corpus.mkdir()
     for source_id, text in SOURCES.items():
         (corpus / f"{source_id}.md").write_text(text)
-    write_json(frozen / "platform.json", {"codex": str(codex), "codex_sha256": digest(codex), "platform": platform.platform(), "model": MODEL, "reasoning_effort": REASONING_EFFORT, "shared_wall_seconds": SHARED_WALL_SECONDS, "per_cell_seconds": PER_CELL_SECONDS})
+    write_json(frozen / "platform.json", {"codex": str(codex), "codex_sha256": digest(codex), "platform": platform.platform(), "skill_id": skill.name, "model": MODEL, "reasoning_effort": REASONING_EFFORT, "shared_wall_seconds": SHARED_WALL_SECONDS, "per_cell_seconds": PER_CELL_SECONDS})
     if skill is not None:
         if not skill.is_dir(): raise SystemExit(f"missing skill directory: {skill}")
         shutil.copytree(skill, root / "frozen-skill")
@@ -201,6 +222,11 @@ def verify_frozen(root: Path, case_id: str, condition: str) -> None:
 
 
 def grade_answer(case_id: str, answer: dict[str, Any], oracle: dict[str, Any]) -> dict[str, Any]:
+    """Check schema, attribution and lexical coverage, not prose entailment.
+
+    A negated or unrelated mention can satisfy the lexical checks. Independent
+    semantic review of the saved answer is required before claiming usefulness.
+    """
     required = oracle[case_id]; failures: list[str] = []
     expected_keys = {"verdict", "subject", "route_status", "project_scope", "sources", "counterexamples", "explanation"}
     if not isinstance(answer, dict):
@@ -215,7 +241,11 @@ def grade_answer(case_id: str, answer: dict[str, Any], oracle: dict[str, Any]) -
     source_names = {**{name: name for name in SOURCES}, **{name + ".md": name for name in SOURCES}}
     sources = [source_names.get(source, "unknown") if isinstance(source, str) else "unknown" for source in raw_sources]
     if not isinstance(answer.get("sources"), list): failures.append("sources type")
-    if sorted(sources) != sorted(required.get("sources", [])): failures.append("source attribution")
+    required_sources = set(required.get("sources", []))
+    allowed_sources = required_sources | set(required.get("optional_sources", []))
+    if (len(sources) != len(set(sources)) or not required_sources.issubset(sources)
+            or not set(sources).issubset(allowed_sources)):
+        failures.append("source attribution")
     for source in required.get("reject_sources", []):
         if source in sources: failures.append(f"rejected source used: {source}")
     if required.get("subject") and answer.get("subject") != required["subject"]: failures.append("subject attribution")
@@ -264,7 +294,8 @@ def grade_trial(root: Path, case_id: str, condition: str) -> dict[str, Any]:
     bound = events_path.is_file() and (trial / "stderr.log").is_file() and native.get("events_sha256") == digest(events_path) and native.get("stderr_sha256") == digest(trial / "stderr.log") and native.get("final_manifest") == final_manifest
     execution = bound and any(event.get("type") == "turn.completed" for event in events) and native.get("exit_code") == 0 and native.get("turn_completed") is True and native.get("timed_out") is False and native.get("interrupted") is False
     contaminated = condition == "no-skill" and read_observed
-    result.update(condition=condition, status="graded", selection_observed=None, skill_read_observed=read_observed, condition_contaminated=contaminated, execution_observed=execution, outcome_observed=(execution and result["passed"] and not contaminated), reviewer_claim=answer.get("review"), reviewer_consistent=(not claimed_pass or result["passed"]), limits="trusted local records; skill read is not native activation or causal benefit")
+    mechanical = execution and result["passed"] and not contaminated
+    result.update(condition=condition, status="graded", selection_observed=None, skill_read_observed=read_observed, condition_contaminated=contaminated, execution_observed=execution, mechanical_checks_passed=mechanical, semantic_review_required=True, outcome_observed=None if mechanical else False, reviewer_claim=answer.get("review"), reviewer_consistent=(not claimed_pass or result["passed"]), limits="trusted local records; lexical checks do not establish prose entailment; skill read is not native activation or causal benefit")
     write_json(trial / "grade.json", result)
     return result
 
@@ -338,7 +369,8 @@ def run_cohort(root: Path, codex: Path, auth: Path) -> list[dict[str, Any]]:
                 raise SystemExit("shared wall budget exhausted before cohort completion")
             results.append(run_native(root, case_id, condition, codex, auth))
             stderr = (root / f"{case_id}-{condition}" / "stderr.log").read_text(errors="replace")
-            if "429" in stderr or "Too Many Requests" in stderr:
+            events = (root / f"{case_id}-{condition}" / "events.jsonl").read_text(errors="replace")
+            if provider_rate_limited(events, stderr):
                 write_json(root / "cohort-result.json", {"status": "stopped-provider-rate-limit", "elapsed_seconds": round(time.monotonic()-started, 3), "results": results})
                 return results
             latest = results[-1]

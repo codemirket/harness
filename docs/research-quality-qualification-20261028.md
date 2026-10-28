@@ -1,7 +1,11 @@
 # Research-quality calibration
 
-Status: protocol and deterministic calibration implemented; native attempts are
-partial and rate-limited. Three disposable roots were created while correcting
+Historical status: the native attempts below were partial and rate-limited.
+The later [post-connectivity evaluation](model-evaluation-20261028.md) completed
+twelve corpus turns, with 12/12 independent semantic passes and only 6/12 under
+the original mechanical schema. It preserves these earlier attempts and records
+the separate evaluator defects and terminal supplemental CLI invocation failure.
+Three disposable roots were created while correcting
 the protocol; they are one evidence ledger, not independent cohorts or budget
 resets. This record is not live-web coverage or a catalog acceptance result.
 
@@ -34,7 +38,11 @@ execution even if an answer file exists. Host metadata is not provider identity.
 The deterministic grader checks verdict, exact source attribution, stale and
 wrong-project exclusions, required counterexamples and abstention. It reports
 `skill_read_observed`, `selection_observed` (unknown), `execution_observed`,
-control contamination and `outcome_observed` independently. Separate frozen
+control contamination and `outcome_observed` independently. The current runner
+now keeps a lexical/mechanical pass pending independent semantic review rather
+than claiming that keyword coverage establishes a correct answer. Its corpus
+pairing can use `evidence-research`; `browser-research` skips questions already
+answered by supplied text. Separate frozen
 review controls reject constant PASS, false findings against a clean artifact,
 and findings with the wrong source locator. Those controls test the evaluator;
 they do not constitute a native model-reviewer calibration result.

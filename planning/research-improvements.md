@@ -87,3 +87,23 @@ No fresh login or live configuration change was required. The native quality
 cohorts remain unqualified and closed; a subsequent matched protocol must retain
 prior attempt costs and freeze its explicit environment. Connectivity is no
 longer their blocker on this tested host.
+
+### Bounded model evaluation and remaining work
+
+The user requested model evaluation after connectivity recovered. The
+[new evaluation record](../docs/model-evaluation-20261028.md) preserves twelve
+completed Astra/high corpus turns and a condition-blinded semantic review:
+6/6 correct with skills and 6/6 without, with no demonstrated uplift. It also
+records strict-grader false negatives, evaluator corrections under the original
+deadline, and a terminal local CLI invocation failure before the supplemental
+model call. No cell was repeated; the remaining ten lead cells and three
+coordination child turns were not started. The batch is closed.
+
+The next execution work is still native reviewer controls, product/marketing,
+browser near misses, live-web research, and the no-delegate coordination
+comparison. Their corrected private invocation has no native outcome evidence.
+A subsequent explicit protocol must preserve the full attempt ledger and use
+only `--approve-for-me` for automatic review/workspace-write; combining it with
+`--sandbox` is invalid on the tested CLI. Do not rerun the successful corpus
+merely to obtain a cleaner mechanical score, and do not mark the planned catalog
+acceptance cases complete from these representative answers.

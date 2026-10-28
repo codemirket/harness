@@ -61,6 +61,17 @@ class ResearchQualityTrialTests(unittest.TestCase):
                 TRIALS.verify_frozen(self.root, case, condition)
                 self.assertFalse((self.root / f'{case}-{condition}/project/AGENTS.md').exists())
 
+    def test_corpus_can_use_evidence_research_with_frozen_identity(self):
+        skill = self.skill.parent / 'evidence-research'
+        root = self.root.parent / 'evidence-research-trials'
+        TRIALS.freeze(root, Path('/bin/echo'), skill)
+        self.assertEqual(json.loads((root / 'frozen/platform.json').read_text())['skill_id'], 'evidence-research')
+        for condition in TRIALS.CONDITIONS:
+            TRIALS.verify_frozen(root, 'stale-source', condition)
+        self.assertEqual((root / 'stale-source-with-skill/project/.agents/skills/evidence-research/SKILL.md').read_bytes(),
+                         (skill / 'SKILL.md').read_bytes())
+        self.assertFalse((root / 'stale-source-with-skill/project/.agents/skills/browser-research').exists())
+
     def test_optional_model_cache_is_frozen_and_drift_is_rejected(self):
         cache = self.root.parent / 'models_cache.json'
         cache.write_text('{"models": []}')
@@ -110,6 +121,17 @@ class ResearchQualityTrialTests(unittest.TestCase):
             self.assertFalse(TRIALS.grade_answer('current-counterexample', answer, self.oracle)['passed'])
         self.assertFalse(TRIALS.grade_answer('stale-source', [], self.oracle)['passed'])
 
+    def test_partial_claim_allows_relevant_history_without_replacing_current_source(self):
+        answer = self.answer('partial-claim')
+        answer['sources'] = ['atlas-v1.md', 'atlas-v2.md']
+        self.assertTrue(TRIALS.grade_answer('partial-claim', answer, self.oracle)['passed'])
+        for sources in (['atlas-v1'], ['atlas-v2', 'beacon'], ['atlas-v2', 'atlas-v2']):
+            answer['sources'] = sources
+            self.assertFalse(TRIALS.grade_answer('partial-claim', answer, self.oracle)['passed'])
+        answer = self.answer('stale-source')
+        answer['sources'] = ['atlas-v1', 'atlas-v2']
+        self.assertFalse(TRIALS.grade_answer('stale-source', answer, self.oracle)['passed'])
+
     def test_skill_read_is_not_activation_and_control_contamination_is_reported(self):
         for condition in TRIALS.CONDITIONS:
             self.native_fixture(condition=condition)
@@ -118,7 +140,20 @@ class ResearchQualityTrialTests(unittest.TestCase):
             self.assertIsNone(result['selection_observed'])
             self.assertTrue(result['execution_observed'])
             self.assertEqual(result['condition_contaminated'], condition == 'no-skill')
-            self.assertEqual(result['outcome_observed'], condition == 'with-skill')
+            self.assertEqual(result['mechanical_checks_passed'], condition == 'with-skill')
+            self.assertIsNone(result['outcome_observed']) if condition == 'with-skill' else self.assertFalse(result['outcome_observed'])
+
+    def test_negated_limitation_cannot_establish_semantic_outcome(self):
+        trial, native = self.native_fixture()
+        answer = self.answer('current-counterexample')
+        answer['explanation'] = 'Scheduling is not limited to paid workspaces; free workspaces have it too.'
+        TRIALS.write_json(trial / 'project/answer.json', answer)
+        native['final_manifest']['answer.json'] = TRIALS.digest(trial / 'project/answer.json')
+        TRIALS.write_json(trial / 'result.json', native)
+        grade = TRIALS.grade_trial(self.root, 'current-counterexample', 'with-skill')
+        self.assertTrue(grade['mechanical_checks_passed'])
+        self.assertTrue(grade['semantic_review_required'])
+        self.assertIsNone(grade['outcome_observed'])
 
     def test_command_string_alone_does_not_prove_read(self):
         trial, result = self.native_fixture(read=False)
@@ -215,9 +250,25 @@ class ResearchQualityTrialTests(unittest.TestCase):
     def test_timeout_stops_before_spending_another_cell(self):
         result = dict(interrupted=False, timed_out=True, exit_code=-15, turn_completed=False)
         (self.root / 'current-counterexample-no-skill/stderr.log').write_text('routing timeout')
+        (self.root / 'current-counterexample-no-skill/events.jsonl').write_text('')
         with patch.object(TRIALS, 'run_native', return_value=result) as run:
             self.assertEqual(TRIALS.run_cohort(self.root, Path('/bin/echo'), Path('/unused')), [result])
         self.assertEqual(run.call_count, 1)
+
+    def test_rate_limit_detector_uses_errors_not_tokens_or_retrieved_text(self):
+        for event in (
+            {'type': 'turn.completed', 'usage': {'input_tokens': 62429}},
+            {'type': 'item.completed', 'item': {'type': 'command_execution', 'aggregated_output': 'HTTP 429 Too Many Requests'}},
+        ):
+            self.assertFalse(TRIALS.provider_rate_limited(json.dumps(event), ''))
+        self.assertFalse(TRIALS.provider_rate_limited('', 'warning at line 429'))
+        for event in (
+            {'type': 'error', 'message': 'HTTP 429'},
+            {'type': 'turn.failed', 'error': {'code': 'rate_limit_exceeded'}},
+            {'type': 'error', 'error': {'status_code': 429}},
+        ):
+            self.assertTrue(TRIALS.provider_rate_limited(json.dumps(event), ''))
+        self.assertTrue(TRIALS.provider_rate_limited('', 'sampling_error=exceeded retry limit, last status: 429 Too Many Requests'))
 
     def test_changed_deadline_and_budget_settings_are_refused(self):
         path = self.root / 'cohort-state.json'
