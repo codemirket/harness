@@ -9,9 +9,11 @@ const MAC_SELECTION: &[u8] =
 const WINDOWS_SELECTION: &[u8] =
     include_bytes!("../../packaging/admission/m3-browser-cft-windows-x64.json");
 const MAC_SELECTION_SHA256: &str =
-    "351f1921ac62f03ee2054ee6d3a3036dd054f2205c4dabe716729a259f28d84b";
+    "6bf296fb0bb28d67fc3f23030edd642b22be84ce8670a21e7a21197ec8358ddc";
 const WINDOWS_SELECTION_SHA256: &str =
     "47ee79c7d649d333c01aea0510dff14337c5aa752dd89119fa185d398cb80185";
+const MAC_VERSION: &str = "156.0.8078.73";
+const WINDOWS_VERSION: &str = "156.0.8078.47";
 const MAC_EXECUTABLE: &str = "runtime/browser/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing";
 const WINDOWS_EXECUTABLE: &str = "runtime/browser/chrome-win64/chrome.exe";
 
@@ -59,26 +61,35 @@ pub(super) fn executable(target: &str) -> &'static str {
 }
 
 pub(super) fn extend(result: &mut Layout, target: &str) -> Result<(), DistributionError> {
-    let (source, source_digest, expected_target, archive_name, archive_size, archive_digest) =
-        match target {
-            MAC_TARGET => (
-                MAC_SELECTION,
-                MAC_SELECTION_SHA256,
-                MAC_TARGET,
-                "chrome-mac-arm64.zip",
-                194_932_023,
-                "ad7f2b49a4dc679af286b1b1b386670d93ca7868079f69012d21ba0ac8293df3",
-            ),
-            WINDOWS_X64_TARGET | WINDOWS_ARM64_TARGET => (
-                WINDOWS_SELECTION,
-                WINDOWS_SELECTION_SHA256,
-                WINDOWS_X64_TARGET,
-                "chrome-win64.zip",
-                209_154_801,
-                "a4e0d57245e167e98a9d465af1e3774d2b4ec9f04e483d19bcd97a6f63cf46dd",
-            ),
-            _ => return Err(DistributionError::UnsupportedTarget),
-        };
+    let (
+        source,
+        source_digest,
+        expected_target,
+        expected_version,
+        archive_name,
+        archive_size,
+        archive_digest,
+    ) = match target {
+        MAC_TARGET => (
+            MAC_SELECTION,
+            MAC_SELECTION_SHA256,
+            MAC_TARGET,
+            MAC_VERSION,
+            "chrome-mac-arm64.zip",
+            194_963_618,
+            "a46be48ee2e33b3edc1a98a39668b9f0abb8f23f031bc4df195e2388e6de28d1",
+        ),
+        WINDOWS_X64_TARGET | WINDOWS_ARM64_TARGET => (
+            WINDOWS_SELECTION,
+            WINDOWS_SELECTION_SHA256,
+            WINDOWS_X64_TARGET,
+            WINDOWS_VERSION,
+            "chrome-win64.zip",
+            209_154_801,
+            "a4e0d57245e167e98a9d465af1e3774d2b4ec9f04e483d19bcd97a6f63cf46dd",
+        ),
+        _ => return Err(DistributionError::UnsupportedTarget),
+    };
     if hex(&Sha256::digest(source)) != source_digest {
         return Err(DistributionError::InvalidManifest);
     }
@@ -87,14 +98,15 @@ pub(super) fn extend(result: &mut Layout, target: &str) -> Result<(), Distributi
     if selected.schema != 1
         || selected.component != "browser"
         || selected.vendor != "Google Chrome for Testing"
-        || selected.version != "156.0.8078.47"
+        || selected.version != expected_version
         || selected.target != expected_target
         || selected.archive.name != archive_name
         || selected.archive.bytes != archive_size
         || selected.archive.sha256 != archive_digest
         || selected.archive.url
             != format!(
-                "https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.47/{}/{}",
+                "https://storage.googleapis.com/chrome-for-testing-public/{}/{}/{}",
+                expected_version,
                 if target == MAC_TARGET {
                     "mac-arm64"
                 } else {

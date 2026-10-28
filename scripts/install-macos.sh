@@ -122,11 +122,11 @@ if [ "$action" != uninstall-reconcile ]; then
         /usr/bin/curl --fail --silent --show-error --location --proto '=https' --proto-redir '=https' --tlsv1.2 \
           --connect-timeout 20 --max-time 600 \
           --output "$video_chrome_archive" \
-          'https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.47/mac-arm64/chrome-mac-arm64.zip' \
+          'https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.73/mac-arm64/chrome-mac-arm64.zip' \
           || fail 'cannot acquire the pinned Chrome for Testing archive'
       fi
-      [ "$(/usr/bin/stat -f %z "$video_chrome_archive")" -eq 194932023 ] || fail 'video Chrome archive size mismatch'
-      require_hash "$video_chrome_archive" ad7f2b49a4dc679af286b1b1b386670d93ca7868079f69012d21ba0ac8293df3
+      [ "$(/usr/bin/stat -f %z "$video_chrome_archive")" -eq 194963618 ] || fail 'video Chrome archive size mismatch'
+      require_hash "$video_chrome_archive" a46be48ee2e33b3edc1a98a39668b9f0abb8f23f031bc4df195e2388e6de28d1
       /bin/mkdir -m 700 "$install_source/runtime/browser" || fail 'cannot create private video Chrome staging'
       /usr/bin/ditto -x -k "$video_chrome_archive" "$install_source/runtime/browser" || fail 'cannot extract pinned video Chrome archive'
       # Mirket verifies the complete extracted tree, adapter and runtime

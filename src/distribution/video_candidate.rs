@@ -6,6 +6,11 @@ use super::*;
 
 pub(super) const ROOT: &str = "runtime/video";
 const ADAPTER: &str = "runtime/video/dist/video-main.js";
+pub(super) const ADAPTER_FILES: [&str; 3] = [
+    ADAPTER,
+    "runtime/video/dist/video-export.js",
+    "runtime/video/dist/video-policy.js",
+];
 const FFMPEG: &str = "runtime/video/bin/ffmpeg";
 const FFPROBE: &str = "runtime/video/bin/ffprobe";
 const PROPOSAL_SHA256: &str = "5dec75ef3e1750af716d4bc196c2f5975d5359584492f8516bf7e6b7360c1a8c";
@@ -148,15 +153,17 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
 }
 
 fn insert(result: &mut Layout, entry: DesignFile, mode: u32) -> Result<(), DistributionError> {
+    // These are Mirket-authored adapters, like adapters/design-main.js. Their
+    // current bytes are bound by the release manifest, not an older vendor
+    // admission snapshot. Every third-party file retains its compiled pin.
+    let pin = if ADAPTER_FILES.contains(&entry.path.as_str()) {
+        None
+    } else {
+        Some((entry.bytes, entry.sha256))
+    };
     if result
         .files
-        .insert(
-            entry.path,
-            ExpectedFile {
-                mode,
-                pin: Some((entry.bytes, entry.sha256)),
-            },
-        )
+        .insert(entry.path, ExpectedFile { mode, pin })
         .is_some()
     {
         return Err(DistributionError::InvalidManifest);
@@ -244,6 +251,18 @@ mod tests {
                 .any(|package| path.starts_with(&format!("{ROOT}/node_modules/{package}/")))
         }));
         assert_eq!(candidate.files[FFMPEG].mode, 0o700);
+        for path in ADAPTER_FILES {
+            assert!(candidate.files[path].pin.is_none());
+            assert_eq!(
+                candidate
+                    .file_byte_limit(path, &candidate.files[path])
+                    .unwrap(),
+                UnpinnedFileRole::JavaScriptAdapter.byte_limit()
+            );
+        }
+        assert!(candidate.files.iter().all(|(path, file)| {
+            !path.starts_with(ROOT) || ADAPTER_FILES.contains(&path.as_str()) || file.pin.is_some()
+        }));
         assert_eq!(
             candidate.files["runtime/video/node_modules/puppeteer/install.mjs"].mode,
             0o600

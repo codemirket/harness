@@ -9,16 +9,37 @@
   "license": "GPL-2.0-or-later",
   "nonfree": false,
   "upstream_source_changes": [],
+  "historical_predecessor": {
+    "status": "superseded_by_neutral_successor",
+    "selected_binaries": [
+      {
+        "name": "ffmpeg",
+        "bytes": 9647448,
+        "sha256": "8374f88f171b233c072da4acbf9058e9b563ce048d9300edabbe6036f616505e"
+      },
+      {
+        "name": "ffprobe",
+        "bytes": 9454392,
+        "sha256": "8c6f1213081e3805be3e2d69b9db85ff291235771b76b4f35bd64bf5ad280a1c"
+      }
+    ],
+    "source_kit": {
+      "name": "ffmpeg-9.0.2-darwin-arm64-recipient-source-20261026.tar.gz",
+      "bytes": 29434536,
+      "sha256": "f420e0ea8e047fa01a3ae0bcc0d4df29f97a87712ee6f72e338c49ae83c616ba"
+    },
+    "reason": "The predecessor remains retained historical evidence; it is not the binary selected by the current Sharp-free Video candidate."
+  },
   "selected_binaries": [
     {
       "name": "ffmpeg",
-      "bytes": 9647448,
-      "sha256": "8374f88f171b233c072da4acbf9058e9b563ce048d9300edabbe6036f616505e"
+      "bytes": 9630936,
+      "sha256": "9415ba4acee04dadb45b06878a528bb529819ce009b621e702a847fa78a4c7d8"
     },
     {
       "name": "ffprobe",
-      "bytes": 9454392,
-      "sha256": "8c6f1213081e3805be3e2d69b9db85ff291235771b76b4f35bd64bf5ad280a1c"
+      "bytes": 9437880,
+      "sha256": "6554f4a4223e41acdcd83ba92c2139d678068e2e953d9220cd9631a7c034b392"
     }
   ],
   "complete_source_archives": [
@@ -44,13 +65,15 @@
     }
   ],
   "source_kit": {
-    "name": "ffmpeg-9.0.2-darwin-arm64-recipient-source-20261026.tar.gz",
-    "bytes": 29434536,
-    "sha256": "f420e0ea8e047fa01a3ae0bcc0d4df29f97a87712ee6f72e338c49ae83c616ba",
-    "manifest_inputs": 65,
-    "original_notices_unchanged": 22,
+    "name": "ffmpeg-9.0.2-darwin-arm64-neutral-successor-source-20261026.tar.gz",
+    "bytes": 29939250,
+    "sha256": "f40269afa8a45026f7051fce0b78ef5e314122d436ecea7eed9f101d084f61c3",
+    "manifest_inputs": 64,
+    "original_notices_unchanged": 24,
     "notice_files_including_supplement_and_provenance": 24,
     "archives_helpers_configuration_selected_identity_unchanged_from_prior_final_kit": true,
+    "neutral_successor_build_observed": true,
+    "neutral_successor_build_seconds": 87.948,
     "actual_recipient_delivery_tested": false
   },
   "authentication": {
@@ -76,7 +99,8 @@
     "refreshed_kit_manifest_and_exact_inventory_verified": true,
     "local_binary_source_notice_delivery_fixture_passed": true,
     "actual_distribution_channel_or_written_offer_tested": false,
-    "native_compile_repeated_for_notice_refresh": false
+    "native_compile_repeated_for_notice_refresh": false,
+    "neutral_successor_runtime_fixture_matches_selected_binaries": true
   },
   "selected_capability_limit": {
     "mov_text_configure_spelling_retained": true,
@@ -98,7 +122,8 @@
   "external_evidence_roots": [
     "ffmpeg-qualification-20261025",
     "ffmpeg-recipient-final-20261025",
-    "ffmpeg-source-review-20261026"
+    "ffmpeg-source-review-20261026",
+    "ffmpeg-private-path-successor-20261026"
   ],
   "remaining_release_gates": [
     "Actual GPLv2 section 3 recipient route and final binary/source/notice delivery access",
@@ -110,5 +135,5 @@
     "macOS 15 execution, signing/notarization and native Windows 11 x64/ARM64",
     "Separate Chromium/Sharp and combined product release gates"
   ],
-  "documentation": "docs/ffmpeg-recipient-source-closure.md"
+  "documentation": "docs/m3-ffmpeg-neutral-successor-qualification.md"
 }

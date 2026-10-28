@@ -371,8 +371,22 @@ impl Installation {
         fail: Option<NativeStep>,
     ) -> Result<CodexSetupResult, String> {
         let paths = CodexPaths::resolve(user_home, home)?;
-        require_empty_home(home)?;
         let source_release = VerifiedRelease::open(source).map_err(io_message)?;
+        let existing = match Self::open(home) {
+            Ok(installation) => {
+                let report = Self::doctor(installation.home());
+                if report.status != "ready" {
+                    return Err(
+                        "Codex setup refuses an existing complete or drifted installation".into(),
+                    );
+                }
+                Some(installation)
+            }
+            Err(_) => {
+                require_empty_home(home)?;
+                None
+            }
+        };
         let catalog = release_catalog(&source_release)?;
         let qualified = qualified_capabilities(source_release.manifest());
         // These owners inspect the exact real files. A private temporary
@@ -389,7 +403,10 @@ impl Installation {
             &qualified,
         )?;
         paths.create_directory()?;
-        let installation = Self::initialize(home)?;
+        let installation = match existing {
+            Some(installation) => installation,
+            None => Self::initialize(home)?,
+        };
         let staged = installation.stage(source)?;
         let _orchestration = installation.codex_operation_lock()?;
         let maintenance = MaintenanceGuard::try_acquire(&installation.home.join("state"))
@@ -1886,6 +1903,118 @@ mod tests {
         assert!(
             installation.skill_catalog().unwrap().2.is_empty(),
             "Skills-only release must not claim a missing TypeScript runtime"
+        );
+    }
+
+    #[test]
+    fn codex_setup_resumes_owned_staged_home_after_activation_interruption() {
+        let fixture = Fixture::new();
+        let source = codex_payload(&fixture, "core");
+        let user = codex_user(&fixture, false);
+        let home = fixture.0.join("home");
+        let interrupted = Installation::initialize(&home).unwrap();
+        let staged = interrupted.stage(&source).unwrap();
+        assert_eq!(staged.status, "staged");
+        assert!(!home.join("active.json").exists());
+        assert!(home.join("staged.json").is_file());
+
+        let resumed = Installation::setup_codex(&home, &source, &user).unwrap();
+        assert_eq!(resumed.core.activation.status, "active");
+        assert_eq!(resumed.core.activation.release_id, staged.release_id);
+        assert_eq!(Installation::doctor_codex(&home, &user).status, "healthy");
+    }
+
+    #[test]
+    fn codex_setup_resumes_same_candidate_after_launcher_publish_before_active_pointer() {
+        use sha2::{Digest, Sha256};
+
+        let fixture = Fixture::new();
+        let source = codex_payload(&fixture, "core");
+        let original_source = fixture.0.join("original-source");
+        fs::rename(&source, &original_source).unwrap();
+        let different_source = codex_payload(&fixture, "different");
+        let user = codex_user(&fixture, false);
+        let home = fixture.0.join("home");
+        let interrupted = Installation::initialize(&home).unwrap();
+        let staged = interrupted.stage(&original_source).unwrap();
+        let candidate = home
+            .join("releases")
+            .join(format!(
+                "r-{}",
+                staged.release_id.trim_start_matches("sha256:")
+            ))
+            .join(if cfg!(windows) {
+                "bin/mirket.exe"
+            } else {
+                "bin/mirket"
+            });
+        let launcher = interrupted.launcher_path();
+        create_private_directory(launcher.parent().unwrap()).unwrap();
+        fs::copy(&candidate, &launcher).unwrap();
+        let digest = Sha256::digest(fs::read(&candidate).unwrap());
+        let digest = format!(
+            "sha256:{}",
+            digest
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<String>()
+        );
+        let journal = serde_json::json!({
+            "schema_version": 1,
+            "candidate_release_id": staged.release_id,
+            "previous_release_id": null,
+            "launcher_path": launcher,
+            "backup_path": home.join("state/launcher.previous"),
+            "temporary_path": home.join("bin/.mirket-launcher-next-test"),
+            "old_launcher_present": false,
+            "old_launcher_digest": null,
+            "candidate_launcher_digest": digest,
+            "phase": "launcher_replaced"
+        });
+        fs::write(
+            home.join("state/activation.pending.json"),
+            serde_json::to_vec(&journal).unwrap(),
+        )
+        .unwrap();
+        assert!(!home.join("active.json").exists());
+        assert!(home.join("state/activation.pending.json").is_file());
+
+        let journal_before = fs::read(home.join("state/activation.pending.json")).unwrap();
+        let launcher_before = fs::read(&launcher).unwrap();
+        let error = Installation::setup_codex(&home, &different_source, &user)
+            .err()
+            .unwrap();
+        assert!(error.contains("different candidate"), "{error}");
+        assert!(!home.join("active.json").exists());
+        assert_eq!(
+            fs::read(home.join("state/activation.pending.json")).unwrap(),
+            journal_before
+        );
+        assert_eq!(fs::read(&launcher).unwrap(), launcher_before);
+
+        let resumed = Installation::setup_codex(&home, &original_source, &user).unwrap();
+        assert_eq!(resumed.core.activation.status, "active");
+        assert_eq!(Installation::doctor_codex(&home, &user).status, "healthy");
+        assert!(!home.join("state/activation.pending.json").exists());
+    }
+
+    #[test]
+    fn codex_setup_does_not_reopen_a_healthy_home_as_fresh() {
+        let fixture = Fixture::new();
+        let source = codex_payload(&fixture, "core");
+        let user = codex_user(&fixture, false);
+        let home = fixture.0.join("home");
+        Installation::setup_codex(&home, &source, &user).unwrap();
+        let config_before = fs::read(user.join(".codex/config.toml")).unwrap();
+
+        let error = Installation::setup_codex(&home, &source, &user)
+            .err()
+            .unwrap();
+        assert!(error.contains("complete or drifted"), "{error}");
+        assert_eq!(Installation::doctor_codex(&home, &user).status, "healthy");
+        assert_eq!(
+            fs::read(user.join(".codex/config.toml")).unwrap(),
+            config_before
         );
     }
 

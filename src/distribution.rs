@@ -520,6 +520,9 @@ impl Layout {
                 | "adapters/openpencil-operations.js"
                 | "adapters/openpencil-runtime.js"
                 | "adapters/openpencil-inventory.js" => UnpinnedFileRole::JavaScriptAdapter,
+                path if video_candidate::ADAPTER_FILES.contains(&path) => {
+                    UnpinnedFileRole::JavaScriptAdapter
+                }
                 "runtime/node/LICENSE" => UnpinnedFileRole::LicenseNotice,
                 "runtime/semantic/package-receipt.json" => UnpinnedFileRole::ComponentReceipt,
                 _ => return Err(DistributionError::InvalidManifest),
