@@ -36,8 +36,7 @@ AUTHORING_DIAGNOSTICS_BASIS = "docs/video-authoring-diagnostics-20261027.md / or
 AUTHORING_DIAGNOSTICS_SKILLS = {"video-production", "design-critique"}
 RESEARCH_IMPROVEMENTS_BASIS = "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
 RESEARCH_IMPROVEMENTS_SKILLS = {
-    "browser-research", "motion-direction", "video-production", "customer-research",
-    "product-strategy", "positioning", "marketing-copy", "conversion", "experiments-launch",
+    "browser-research", "motion-direction", "video-production",
 }
 
 # These are the only newly admitted families in the 2026-10-27 adoption pass.
@@ -125,6 +124,26 @@ def resource_records(skill):
 
 def adoption_record(skill):
     return METHOD_ADOPTIONS.get(skill["id"])
+
+def reconcile_provenance_inventory(provenance, catalog):
+    """Retire current ledger entries without rewriting historical evidence."""
+    entries = catalog["global"] + catalog["project"]
+    current = {entry["id"] for entry in entries}
+    cases = sum(len(entry["evaluation"]["cases"]) for entry in entries)
+    provenance = re.sub(
+        r"\A# Native skill provenance\n\nAll \d+ native skill bodies and their \d+ public development cases",
+        f"# Native skill provenance\n\nAll {len(entries)} native skill bodies and their {cases} public development cases",
+        provenance, count=1,
+    )
+    start = provenance.index("## Per-skill records\n")
+    end = provenance.index("## Retained reference locators\n", start)
+    ledger = provenance[start:end]
+    ledger = re.sub(
+        r"^### ([a-z0-9-]+)\n.*?(?=^### |\Z)",
+        lambda match: match.group(0) if match.group(1) in current else "",
+        ledger, flags=re.M | re.S,
+    )
+    return provenance[:start] + ledger + provenance[end:]
 
 def update_provenance_records(provenance,catalog):
     """Keep the human-readable per-skill ledger aligned with the catalog."""
@@ -338,6 +357,7 @@ def refresh(write):
     provenance=PROVENANCE.read_text()
     provenance=provenance.replace("All 67 native skill bodies and their 335 public development cases are independently\nauthored for this repository. The approved local catalog and implementation\ncontracts supply the outcome/authority boundaries; no external prose, code,\nworkflow, asset or font has been copied or adapted into these bodies.","All 67 native skill bodies and their 335 public development cases are authored\nfor this repository. Eight project bodies are classified method-adapted because\nthey retain independently worded techniques from reviewed source families; no\nexternal prose, code, workflow, asset or font has been copied into these bodies.")
     provenance=provenance.replace("Every current body is classified independently-authored. The reference index below\npreserves all 58 retained families and URLs from the local plan solely for\ncomparison or link-only review.","Most bodies are independently-authored; eight project bodies are explicitly\nclassified method-adapted with reviewed, independently worded mappings. The\nreference index preserves all selected families and URLs for comparison or\nfocused method review.")
+    provenance=reconcile_provenance_inventory(provenance,catalog)
     provenance=update_provenance_records(provenance,catalog)
     provenance=append_new_reference_records(provenance,plans)
     provenance=update_reference_records(provenance)

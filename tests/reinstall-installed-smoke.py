@@ -125,9 +125,7 @@ def main():
     catalog = json.loads((source / "skills/catalog.json").read_text())
     selected = [entry for entry in catalog["project"]
                 if entry.get("resources") and not entry["required_capabilities"]]
-    assert {entry["id"] for entry in selected} >= {
-        "browser-research", "customer-research", "product-strategy", "positioning",
-        "marketing-copy", "conversion", "experiments-launch"}
+    assert "browser-research" in {entry["id"] for entry in selected}
     project_personal = project / ".agents/skills/project-personal/SKILL.md"
     project_personal.parent.mkdir(parents=True)
     project_personal.write_text("Keep this project-owned method.\n")
@@ -150,6 +148,20 @@ def main():
                 assert (folder / relative).read_bytes() == (source / "skills" / entry["id"] / relative).read_bytes()
             count += len(entry["resources"])
         return count
+
+    # Retired product guidance must refuse selection without project writes.
+    retired = ("customer-research", "product-strategy", "positioning",
+               "marketing-copy", "conversion", "experiments-launch")
+    before_retired = snapshot(project)
+    for skill_id in retired:
+        refused = run(skill_command("project-select", "--include", skill_id),
+                      "retired-" + skill_id, expected=1)
+        assert "unknown project skill" in refused["stderr"], refused
+        assert snapshot(project) == before_retired
+    refused = run(skill_command("project-select", "--profile", "content-growth"),
+                  "retired-content-growth", expected=1)
+    assert "unknown skill profile" in refused["stderr"], refused
+    assert snapshot(project) == before_retired
 
     # Selection must deliver real optional references, not merely a receipt.
     options = [value for entry in selected for value in ("--include", entry["id"])]

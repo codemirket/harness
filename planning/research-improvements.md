@@ -136,3 +136,14 @@ affected locked/offline Rust, adapter, Python, formatting, Clippy and explicit
 MCP smoke gates passed. Windows, macOS 15 floor, waived Desktop GUI and broad
 creative/research uplift remain unqualified. No live installation or dependency
 changed; no push or publication is authorized by this closure.
+
+### First-release disposition
+
+The user subsequently authorized dropping non-contributing skills. The failed
+six-skill product/marketing bundle and content-growth profile are removed from
+v0.0.1; R7/R8 model usefulness remains a failed historical result rather than a
+release blocker for a route no longer shipped. Codex owns those workflows.
+No new trial is needed to relabel that result. The remaining research, design,
+coordination and operational guidance retains narrowly stated evidence and no
+general uplift claim. The current inventory is 9 global / 52 project / 7 profiles.
+The user also selected exact macOS 26.5.2 ARM64 support for this first release.

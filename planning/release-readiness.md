@@ -13,7 +13,7 @@ maintenance trial and earlier frozen cohorts remain closed.
 | Redistribution materials | Independent audit, lead integration: use current candidate pins, not superseded historical receipts | Source/notices mapped to exact shipped bytes; prepared recipient materials and explicit unresolved delivery/terms decisions |
 | Native skill acceptance | Independent audit, lead integration: map existing evidence before adding tests | All skills statically reviewed/paired; finite held-out high-risk outcomes with independent oracles; failures/unrun cases retained |
 | Security/dependency gates | Lead: current advisory/authenticity checks of the selected closure | Dated official/source findings and exact affected versions; no unapproved dependency upgrade |
-| macOS floor | User prerequisite requested; continue all independent local work | Actual macOS 15 ARM64 qualification, or an explicit revised first-release support scope |
+| macOS scope | User accepted exact macOS 26.5.2 ARM64 | First-party installer refuses other versions; no macOS 15 or Windows support claim |
 | Final candidate | Lead: required locked source gates and installed tests against exact candidate | Traceable package/source/notice checksums, measured outcomes, remaining blockers; no publication |
 
 The live installation is intentionally not a test target. Desktop GUI activation
@@ -28,5 +28,28 @@ recovery, Mac Chrome security patch, source/notice assembly and local recipient
 rehearsal are implemented and verified. Required source gates and the final
 installed operation matrix passed on macOS 26.5.2 ARM64; failures and trial
 limits are retained in [the release record](../docs/release-readiness-20261028.md).
-The macOS floor is the remaining product decision. Publication is a separate
+The macOS scope decision is now resolved to 26.5.2 ARM64. Publication is a separate
 unauthorized action; Windows and Desktop GUI are not promoted by these results.
+
+## Finalization at current source — 2026-10-28
+
+1. Lead: retire the failed six-skill product bundle and content-growth profile;
+   keep host workflows and remaining independently scoped guides. Refresh catalog
+   and provenance using repository tooling; test retired selection/no-effect and
+   current installed resources. Record the retention rule in AGENTS.md.
+2. Independent packaging lane: enforce/document exact tested Mac support scope.
+   Lead: run required guarded locked/offline source gates and build the current
+   optimized binary. Preserve prior failures and avoid new exploratory cohorts.
+3. Lead: rebuild the full candidate and lean recipient delivery from verified
+   existing vendor inputs, current first-party code/skills/installer and complete
+   source/notices. Verify exact bytes; do not claim historical package hashes.
+4. Lead: install the lean candidate into disposable state; exercise current
+   installed memory/navigation/design/video and skill selection, reinstall and
+   failure/no-effect cases. Independently review saved visual output if changed.
+5. Independent review of current package/source/notice bindings; lead records
+   exact release identities and remaining exclusions, then focused local commits.
+   Ready means locally qualified for the accepted platform with complete
+   recipient materials. Publication, push and live installation remain separate.
+
+Stop when those observable gates pass; no general aesthetic/model-superiority,
+Windows, earlier/newer macOS or waived Desktop GUI claim is required or allowed.

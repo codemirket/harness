@@ -5,11 +5,11 @@
   "authoring_basis": [
     {
       "path": "planning/skill-catalog-design.md",
-      "sha256": "a9858a5f32a8ae0b5452711918aea8bea2f231eceecc6643269919b5d7605809"
+      "sha256": "7186e21796030d7c4697cf944b02d63b421211b5b94b935f6378b8f5a5dd7401"
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "fc9155c95f8b506187df6bf80f6939b71742e58135d87e9d2f275601e28ea3c1"
+      "sha256": "e3cd83fb26df69122daa3ec8a7d72502d85eff2197ede9ee56690e90ebe42427"
     },
     {
       "path": "planning/references.md",
@@ -2729,73 +2729,6 @@
       ]
     },
     {
-      "id": "customer-research",
-      "description": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach.",
-      "path": "skills/customer-research/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "731cca3eba8553f16a9667e2821ef5a8cea282261a68745b8ea161c664c83723",
-      "source_bytes": 2072,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#customer-research",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "marketing",
-          "wondel",
-          "owl-concepts"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "customer-research-positive-1",
-            "kind": "positive",
-            "prompt": "Synthesize these consented interviews to decide which onboarding friction to address.",
-            "expected": "Preserve consent, segment/source identity, observed versus inferred claims and decision uncertainty."
-          },
-          {
-            "id": "customer-research-positive-2",
-            "kind": "positive",
-            "prompt": "Compare support evidence across novice and expert customer segments.",
-            "expected": "Preserve consent, segment/source identity, observed versus inferred claims and decision uncertainty."
-          },
-          {
-            "id": "customer-research-negative-1",
-            "kind": "negative",
-            "prompt": "Write clearly fictional dialogue for this novel, with no claims about real customers.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "customer-research-negative-2",
-            "kind": "negative",
-            "prompt": "Correct punctuation in the supplied interview transcript without interpreting it.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "customer-research-mixed-1",
-            "kind": "mixed",
-            "prompt": "Synthesize the supplied research and draft a future interview plan without contacting anyone.",
-            "expected": "Preserve consent, segment/source identity, observed versus inferred claims and decision uncertainty. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/evidence-register.md",
-          "sha256": "ea6e51944dcc4fd857a0ba3efd833edefdd66d7147c152f9f9c6ec2ec6219aa8",
-          "bytes": 1792
-        }
-      ]
-    },
-    {
       "id": "jobs-to-be-done",
       "description": "Frame a product problem around customer progress, circumstances and competing alternatives when existing evidence supports a jobs analysis. Skip generic persona generation.",
       "path": "skills/jobs-to-be-done/SKILL.md",
@@ -2853,73 +2786,6 @@
         ]
       },
       "resources": []
-    },
-    {
-      "id": "product-strategy",
-      "description": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting.",
-      "path": "skills/product-strategy/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "bda6dc88898bbcc26597057c112b8ede64c720ff64718884c8284943bf8116ff",
-      "source_bytes": 1886,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#product-strategy",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "wondel",
-          "marketing",
-          "ponytail"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "product-strategy-positive-1",
-            "kind": "positive",
-            "prompt": "Choose between expanding the segment and improving activation using the supplied evidence.",
-            "expected": "Produce a concrete comparative choice with assumptions, opportunity cost and a measurable review/stop gate."
-          },
-          {
-            "id": "product-strategy-positive-2",
-            "kind": "positive",
-            "prompt": "Compare pricing options with explicit assumptions, economics and a reversible test.",
-            "expected": "Produce a concrete comparative choice with assumptions, opportunity cost and a measurable review/stop gate."
-          },
-          {
-            "id": "product-strategy-negative-1",
-            "kind": "negative",
-            "prompt": "Sort this approved backlog alphabetically.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "product-strategy-negative-2",
-            "kind": "negative",
-            "prompt": "Apply the exact roadmap dates already decided.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "product-strategy-mixed-1",
-            "kind": "mixed",
-            "prompt": "Recommend a product bet and experiment design without changing live pricing.",
-            "expected": "Produce a concrete comparative choice with assumptions, opportunity cost and a measurable review/stop gate. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/opportunity-map.md",
-          "sha256": "5710460c0225d095fe859cdbb21951e2eba1c7c44a5360fb1408dae5466ad5cf",
-          "bytes": 1764
-        }
-      ]
     },
     {
       "id": "prototype-test",
@@ -2984,139 +2850,6 @@
       "resources": []
     },
     {
-      "id": "positioning",
-      "description": "Define audience, alternatives and differentiated value when product positioning or message hierarchy needs evidence. Skip sentence-level proofreading of approved messaging.",
-      "path": "skills/positioning/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "583fab7b92d66f9aec16149bb728ae7a99c017e833924f62a0d1c3b583b86883",
-      "source_bytes": 1841,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#positioning",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "marketing",
-          "wondel"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "positioning-positive-1",
-            "kind": "positive",
-            "prompt": "Position this offline-first tool for a specific professional segment using the supplied evidence.",
-            "expected": "Deliver segment-specific differentiated value and message hierarchy with a claim/evidence boundary."
-          },
-          {
-            "id": "positioning-positive-2",
-            "kind": "positive",
-            "prompt": "Rework our differentiators against the alternatives customers actually use.",
-            "expected": "Deliver segment-specific differentiated value and message hierarchy with a claim/evidence boundary."
-          },
-          {
-            "id": "positioning-negative-1",
-            "kind": "negative",
-            "prompt": "Correct punctuation in this approved headline.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "positioning-negative-2",
-            "kind": "negative",
-            "prompt": "Replace this exact product name everywhere.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "positioning-mixed-1",
-            "kind": "mixed",
-            "prompt": "Define positioning for the chosen segment and draft claims only where proof exists.",
-            "expected": "Deliver segment-specific differentiated value and message hierarchy with a claim/evidence boundary. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/current-and-future-position.md",
-          "sha256": "58a2b142733e822892952d3ada563af82ff5132f34fd50b9a43bac1d7f04a5e0",
-          "bytes": 1337
-        }
-      ]
-    },
-    {
-      "id": "marketing-copy",
-      "description": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone.",
-      "path": "skills/marketing-copy/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "0fb5c09ab0332a4a15a6dd2e8cd1344f8305a5f9ea1762775f5be629f9480ec3",
-      "source_bytes": 2000,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#marketing-copy",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "marketing",
-          "wondel",
-          "taste"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "marketing-copy-positive-1",
-            "kind": "positive",
-            "prompt": "Rewrite this landing page for the chosen audience with a supported promise and clear signup action.",
-            "expected": "Deliver audience-fit usable copy with defensible claims, coherent hierarchy and a clear action."
-          },
-          {
-            "id": "marketing-copy-positive-2",
-            "kind": "positive",
-            "prompt": "Draft a launch email from the supplied product facts and customer language.",
-            "expected": "Deliver audience-fit usable copy with defensible claims, coherent hierarchy and a clear action."
-          },
-          {
-            "id": "marketing-copy-negative-1",
-            "kind": "negative",
-            "prompt": "Fix two commas without changing the approved messaging.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "marketing-copy-negative-2",
-            "kind": "negative",
-            "prompt": "Document the API error schema neutrally.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "marketing-copy-mixed-1",
-            "kind": "mixed",
-            "prompt": "Draft persuasive copy while preserving the supplied legal wording and flagging unverified metrics.",
-            "expected": "Deliver audience-fit usable copy with defensible claims, coherent hierarchy and a clear action. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/claim-proof-review.md",
-          "sha256": "51807daf76cc26fd36ad82c4f080f0fad1b07c976f8fe6241b97e99918404138",
-          "bytes": 1694
-        }
-      ]
-    },
-    {
       "id": "content-search",
       "description": "Plan or improve content for search intent and organic discovery with verifiable information architecture and page changes. Skip unrelated web research or keyword stuffing.",
       "path": "skills/content-search/SKILL.md",
@@ -3176,140 +2909,6 @@
         ]
       },
       "resources": []
-    },
-    {
-      "id": "conversion",
-      "description": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence.",
-      "path": "skills/conversion/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "361102ca6b4fc3f2afa04fa557e99f35f557b33d82de170e9ddf9b69da94716f",
-      "source_bytes": 1898,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#conversion",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "marketing",
-          "wondel",
-          "impeccable"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "conversion-positive-1",
-            "kind": "positive",
-            "prompt": "Diagnose the measured signup drop-off and change the confusing step with a predeclared measure.",
-            "expected": "Tie an observed funnel problem to a verified flow change and predeclared measure/guardrails."
-          },
-          {
-            "id": "conversion-positive-2",
-            "kind": "positive",
-            "prompt": "Improve checkout recovery after the observed address-validation failure.",
-            "expected": "Tie an observed funnel problem to a verified flow change and predeclared measure/guardrails."
-          },
-          {
-            "id": "conversion-negative-1",
-            "kind": "negative",
-            "prompt": "Polish a poster with no funnel or task context.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "conversion-negative-2",
-            "kind": "negative",
-            "prompt": "Apply this approved button color change without making a conversion or impact claim.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "conversion-mixed-1",
-            "kind": "mixed",
-            "prompt": "Repair the staging onboarding friction and specify measurement without launching a live experiment.",
-            "expected": "Tie an observed funnel problem to a verified flow change and predeclared measure/guardrails. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/bottleneck-diagnosis.md",
-          "sha256": "7d2f25523f7110a9d48ec2690649c96b5ab7a1a0c5ca0e87106b162588891736",
-          "bytes": 1294
-        }
-      ]
-    },
-    {
-      "id": "experiments-launch",
-      "description": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion.",
-      "path": "skills/experiments-launch/SKILL.md",
-      "required_capabilities": [],
-      "conditional_capabilities": [],
-      "source_sha256": "334c9c814e1833723d3bc89bf235e8be1f1845ebfc9ec8fea3cb90b828e637f5",
-      "source_bytes": 2017,
-      "provenance": {
-        "classification": "independently-authored",
-        "record": "skills/PROVENANCE.md#experiments-launch",
-        "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
-        ],
-        "reference_families": [
-          "marketing",
-          "wondel",
-          "statistical-analysis"
-        ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
-      },
-      "evaluation": {
-        "status": "planned-not-run",
-        "cases": [
-          {
-            "id": "experiments-launch-positive-1",
-            "kind": "positive",
-            "prompt": "Design a staged launch experiment with explicit assignment, measurement and rollback gates.",
-            "expected": "Preserve a predeclared hypothesis/exposure/measurement contract and distinguish preparation from observed launch."
-          },
-          {
-            "id": "experiments-launch-positive-2",
-            "kind": "positive",
-            "prompt": "Execute the authorized staging launch and verify the instrumentation and recovery path.",
-            "expected": "Preserve a predeclared hypothesis/exposure/measurement contract and distinguish preparation from observed launch."
-          },
-          {
-            "id": "experiments-launch-negative-1",
-            "kind": "negative",
-            "prompt": "Proofread this factual internal launch checklist; do not design or run a launch.",
-            "expected": "Do not select this skill; perform the narrow requested task without its workflow."
-          },
-          {
-            "id": "experiments-launch-negative-2",
-            "kind": "negative",
-            "prompt": "Edit one approved headline without measuring impact.",
-            "expected": "Do not select this skill; use the actual deliverable boundary."
-          },
-          {
-            "id": "experiments-launch-mixed-1",
-            "kind": "mixed",
-            "prompt": "Prepare the growth experiment and staging checks; do not send messages or launch to production.",
-            "expected": "Preserve a predeclared hypothesis/exposure/measurement contract and distinguish preparation from observed launch. Apply this method only to its affected boundary; preserve the stated exclusions."
-          }
-        ]
-      },
-      "resources": [
-        {
-          "path": "references/loop-and-experiment-contract.md",
-          "sha256": "8c33b82f419f22107a61fdb0ec6dc4ecfa43631b45d4434bb8b7d1638c61379b",
-          "bytes": 1413
-        }
-      ]
     },
     {
       "id": "data-analysis",
@@ -4285,7 +3884,6 @@
       ],
       "conditional": [
         "art-direction",
-        "conversion",
         "ui-motion",
         "localization",
         "content-search"
@@ -4359,21 +3957,6 @@
         "sql-analysis",
         "sql-navigation",
         "data-pipelines"
-      ]
-    },
-    "content-growth": {
-      "skills": [
-        "customer-research",
-        "jobs-to-be-done",
-        "positioning",
-        "marketing-copy",
-        "conversion",
-        "experiments-launch"
-      ],
-      "conditional": [
-        "product-strategy",
-        "content-search",
-        "prototype-test"
       ]
     },
     "documents": {

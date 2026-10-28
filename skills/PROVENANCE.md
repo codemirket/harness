@@ -1,6 +1,6 @@
 # Native skill provenance
 
-All 67 native skill bodies and their 335 public development cases are authored
+All 61 native skill bodies and their 305 public development cases are authored
 for this repository. Eight project bodies are classified method-adapted because
 they retain independently worded techniques from reviewed source families; no
 external prose, code, workflow, asset or font has been copied into these bodies.
@@ -112,7 +112,7 @@ Their accepted outcomes remain covered by these native boundaries:
 | Research | evidence-research; browser-research |
 | Interface design | art-direction; interface-composition; design-critique; design-systems; typography; accessibility; visual artifact specialists |
 | Motion | motion-direction; ui-motion; scroll-motion; svg-lottie; video-production |
-| Product and marketing | customer-research; jobs-to-be-done; product-strategy; prototype-test; positioning; marketing-copy; content-search; conversion; experiments-launch |
+| Product and marketing | Codex host workflows; jobs-to-be-done; prototype-test; content-search |
 | Documents | technical-docs; document-artifacts; workbook-authoring; slide-deck-authoring |
 | Memory | project-memory; retrieval-evaluation; privacy-data |
 | Security | threat-model; security-review; privacy-data; dependency-admission |
@@ -494,15 +494,6 @@ Their accepted outcomes remain covered by these native boundaries:
 - Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
 - Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
-### customer-research
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [owl-concepts](#reference-owl-concepts).
-- Required qualified capabilities: none (host-owned method).
-- Planned acceptance IDs: customer-research-positive-1, customer-research-positive-2, customer-research-negative-1, customer-research-negative-2, customer-research-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
-
 ### jobs-to-be-done
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
@@ -510,15 +501,6 @@ Their accepted outcomes remain covered by these native boundaries:
 - Comparison/link-only families: [wondel](#reference-wondel), [marketing](#reference-marketing).
 - Required qualified capabilities: none (host-owned method).
 - Planned acceptance IDs: jobs-to-be-done-positive-1, jobs-to-be-done-positive-2, jobs-to-be-done-negative-1, jobs-to-be-done-negative-2, jobs-to-be-done-mixed-1. Not run.
-
-### product-strategy
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [wondel](#reference-wondel), [marketing](#reference-marketing), [ponytail](#reference-ponytail).
-- Required qualified capabilities: none (host-owned method).
-- Planned acceptance IDs: product-strategy-positive-1, product-strategy-positive-2, product-strategy-negative-1, product-strategy-negative-2, product-strategy-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### prototype-test
 
@@ -529,24 +511,6 @@ Their accepted outcomes remain covered by these native boundaries:
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: prototype-test-positive-1, prototype-test-positive-2, prototype-test-negative-1, prototype-test-negative-2, prototype-test-mixed-1. Not run.
 
-### positioning
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel).
-- Required qualified capabilities: none (host-owned method).
-- Planned acceptance IDs: positioning-positive-1, positioning-positive-2, positioning-negative-1, positioning-negative-2, positioning-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
-
-### marketing-copy
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [taste](#reference-taste).
-- Required qualified capabilities: none (host-owned method).
-- Planned acceptance IDs: marketing-copy-positive-1, marketing-copy-positive-2, marketing-copy-negative-1, marketing-copy-negative-2, marketing-copy-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
-
 ### content-search
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
@@ -555,25 +519,6 @@ Their accepted outcomes remain covered by these native boundaries:
 - Required qualified capabilities: none (host-owned method).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: content-search-positive-1, content-search-positive-2, content-search-negative-1, content-search-negative-2, content-search-mixed-1. Not run.
-
-### conversion
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [impeccable](#reference-impeccable).
-- Required qualified capabilities: none (host-owned method).
-- Conditional operation boundaries: host-browser; use only when the actual task needs them.
-- Planned acceptance IDs: conversion-positive-1, conversion-positive-2, conversion-negative-1, conversion-negative-2, conversion-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
-
-### experiments-launch
-
-- Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [statistical-analysis](#reference-statistical-analysis).
-- Required qualified capabilities: none (host-owned method).
-- Planned acceptance IDs: experiments-launch-positive-1, experiments-launch-positive-2, experiments-launch-negative-1, experiments-launch-negative-2, experiments-launch-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### data-analysis
 

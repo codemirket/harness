@@ -18,6 +18,37 @@ SPEC.loader.exec_module(MODULE)
 
 
 class RefreshSkillCatalogTests(unittest.TestCase):
+    def test_retirement_reconciles_current_ledger_without_erasing_history(self):
+        original = """# Native skill provenance
+
+All 2 native skill bodies and their 10 public development cases are authored.
+
+Historical: removed had a failed outcome; retain this evidence.
+
+## Per-skill records
+
+### retained
+Rights for retained.
+
+### removed
+Current entry to retire.
+
+## Retained reference locators
+
+### Reference: removed
+Source rights remain available.
+"""
+        catalog = {"global": [], "project": [
+            {"id": "retained", "evaluation": {"cases": [1, 2, 3, 4, 5]}}
+        ]}
+        updated = MODULE.reconcile_provenance_inventory(original, catalog)
+        self.assertIn("All 1 native skill bodies and their 5 public", updated)
+        self.assertIn("Historical: removed had a failed outcome", updated)
+        self.assertIn("### retained\nRights for retained.", updated)
+        self.assertNotIn("### removed\n", updated)
+        self.assertIn("### Reference: removed\nSource rights remain available.", updated)
+        self.assertEqual(MODULE.reconcile_provenance_inventory(updated, catalog), updated)
+
     def test_current_catalog_has_all_pinned_reference_contracts(self):
         result = MODULE.refresh(False)
         self.assertEqual(result["changed"], [])

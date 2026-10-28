@@ -108,7 +108,7 @@ def inventory(source: Path) -> dict[str, bytes]:
     globals_, project, profiles = (catalog.get(key) for key in ("global", "project", "profiles"))
     if not isinstance(globals_, list) or not isinstance(project, list) or not isinstance(profiles, dict):
         raise AssemblyError("invalid skill catalog groups")
-    if (len(globals_), len(project), len(profiles)) != (9, 58, 8):
+    if (len(globals_), len(project), len(profiles)) != (9, 52, 7):
         raise AssemblyError("catalog does not have the agreed release shape")
     files = {
         "catalog.json": catalog_bytes,

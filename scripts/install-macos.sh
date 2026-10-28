@@ -51,6 +51,8 @@ done
 
 [ "$(/usr/bin/uname -s)" = Darwin ] || fail 'this script requires macOS'
 [ "$(/usr/bin/uname -m)" = arm64 ] || fail 'this release entry point requires macOS ARM64'
+host_version=$(/usr/bin/sw_vers -productVersion 2>/dev/null) || fail 'cannot determine macOS version'
+[ "$host_version" = 26.5.2 ] || fail 'this first release is qualified only for macOS 26.5.2 ARM64'
 [ -n "$source_dir" ] && [ -n "$manifest_hash" ] && [ -n "$binary_hash" ] || usage
 valid_hash "$manifest_hash" && valid_hash "$binary_hash" || fail 'expected hashes must be 64 lowercase hexadecimal characters'
 case "$source_dir" in /*) ;; *) fail 'source must be an absolute directory' ;; esac

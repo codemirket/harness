@@ -1,65 +1,83 @@
 # Mirket
 
-Mirket is a local companion for Codex Desktop. Codex owns its models, agents, permissions, shell, editing, Git, documents, general browsing and SQL work. Mirket owns scoped project memory and selected JS/TS navigation, design and video operations through one Rust MCP server and private runtimes. Memory uses SQLite/FTS, lazy MiniLM retrieval and bounded Rust cosine scoring; the sqlite-vec native extension is removed. Mirket no longer exposes general file read/range/text replacement tools. C/C++ language tooling remains with Codex and project toolchains. Chrome for Testing is selected only for private video rendering; it and the Mac semantic model/runtime may be acquired at setup into `.mirket` under exact pins. Mirket does not add another agent orchestrator or an OS sandbox.
+Mirket is a local companion for **Codex Desktop**. The first release, v0.0.1,
+is scoped to **macOS 26.5.2 on Apple Silicon (ARM64)**. Earlier and newer macOS
+versions and Windows are not qualified. Codex Desktop GUI activation was waived
+by the user and remains untested; native Codex backend and MCP checks are separate.
+No public release has been published yet.
 
-The [approved implementation plan](planning/implementation-plan.md) is the first-release product contract for macOS ARM64; Windows 11 x64 and ARM64 remain planned, gated targets. The [native skill catalog plan](planning/skill-catalog-design.md) defines nine concise global skills and 58 opt-in project skills. Skill IDs are descriptive and carry no `mirket-` prefix. The [path-contract audit](docs/m4-skill-path-contract-repair.md), [content review](docs/skill-catalog-content-review.md), [project selection audit](docs/codex-skill-surface-audit.md) and [latest disposable skill-guidance qualification](docs/m4-skill-guidance-local-qualification-20261027.md) record current guidance, installed checks and remaining limits. This is the current `harness` checkout. The former installation was retired and replaced on 2026-10-27; source changes here do not update the live installation. Reviews and integration tests use disposable homes and projects.
+Codex owns models, agents, permissions, shell, editing, Git, documents, general
+browsing and SQL. Mirket supplies scoped project memory, selected JavaScript and
+TypeScript navigation, design operations, HyperFrames video production and native
+skill distribution. It does not add another agent orchestrator or OS sandbox.
 
-The [sampled native skill outcome checks](docs/m4-skill-acceptance-sample-20261027.md)
-include matched Codex model turns, a checked test oracle and an eight-skill
-nontrigger plus a trivial screen across all 67 skill bodies. They also calibrate
-Codex CLI's omitted image-view events and record a host approval refusal for model-driven Video
-export; the separate installed Video runtime checks passed.
+## What it provides
 
-The [six-area deep review](docs/deep-review-20261027.md) records the current reference-body audit, skill/tool matrix, corrected semantic-index coverage, coordination trials, independently checked outputs and final integration gates. Its representative trials do not complete the catalog’s `planned-not-run` acceptance records.
+- **Memory:** canonical SQLite facts and FTS, corrections, supersession, expiry,
+  forgetting and recovery, with lazy local MiniLM semantic retrieval.
+- **JS/TS navigation:** inspection, definitions and references over explicitly
+  supplied, revision-bound sources. Unsupported or incomplete analysis is explicit.
+- **Design:** editable OpenPencil files, Style Dictionary tokens, SVG/SVGO/resvg,
+  Sharp raster operations and D2 diagrams. Codex owns source authoring and live UI
+  review; a successful export is not visual approval.
+- **Video:** editable HyperFrames HTML/CSS/JS compositions, local assets, audio and
+  captions, with checked MP4/WebM/GIF/PNG exports. Private Chrome is used only for
+  video rendering. HyperFrames is the sole video engine.
+- **Native guidance:** nine concise global skills and 52 opt-in project skills,
+  organized into seven profiles. Exact IDs remain selectable without a profile.
+  Names have no `mirket-` prefix. Project sync detects managed-copy drift and
+  preserves unrelated user files.
 
-This repository is **under implementation, not a published release**. The [2026-10-27 simplification and local Mac qualification](docs/simplification-qualification-2026-10-27.md) records the current narrow ownership, first-party disposable installation, all seven components and Codex CLI checks. The Rust core, finite job ownership, release verification, maintenance-window activation, source-backed hybrid memory and selected-source JS/TS navigation have passing macOS ARM64 checks. The former SQL navigator and general browser-session tools have been removed from the current source; their earlier qualification records are historical.
+The Hallmark/Taste design direction and user-accepted Daybreak specimen remain.
+See the [design production record](docs/design-production-closure-20261028.md)
+and [D6 review pack](specimens/daybreak/review.html) for their actual limits.
 
-A [release installation prompt](packaging/install-prompt.md) and thin local macOS/Windows entry points are in source. Disposable macOS [install](docs/m0-macos-installer-qualification.md), [uninstall](docs/uninstall-qualification.md) and [same-home reinstall](docs/m0-macos-reinstall-qualification.md) journeys passed; a [release-store review](docs/m4-macos-release-static-review.md) repaired two update-state defects and passed fresh installed CLI checks. A [Windows static review](docs/m4-windows-static-readiness.md) repaired a PowerShell 7 bootstrap failure; [native installation and runtime checks](docs/windows-qualification-status.md) remain open. No public release record or trusted installer hashes exist yet.
-A disposable installed MCP release passes the selected-source TypeScript graph and a [two-client semantic-memory idle check](docs/m2-semantic-qualification.md). Separate Codex model turns used installed Mirket for [checked navigation](docs/m3-typescript-codex-model-qualification.md) and [hybrid-memory recall](docs/m2-codex-model-memory-qualification.md), including an expired-fact exclusion and unsupported-answer abstention. A disposable Codex backend run verified native skill discovery, managed guidance and MCP registration; a later [default-policy model turn](docs/m3-verified-startup-latency.md#installed-deferred-catalog--2026-10-26) called an installed Mirket tool from the full catalog. An [explicit candidate-core update](docs/m4-skill-revision-installed-update.md) activated revised native skills, preserved a managed edit on refusal and passed a read-only Codex body/runtime turn. The [latest CLI model turn](docs/simplification-qualification-2026-10-27.md) called two installed Mirket tools against a frozen source. Desktop GUI activation remains untested and is no longer a release gate by the user's 2026-10-27 decision.
+## Skill retention
 
-The focused design, D2 and bounded editable OpenPencil file payloads have local qualification evidence. The current Design package selection excludes Playwright; the [earlier Design selection](docs/retired-evidence.md#retired-docs-m4-design-chromium-file-selection-md) and installed browser journey are historical evidence. A [native vector-skill model turn](docs/m4-codex-design-skill-tool-qualification.md) read the installed skill but Codex denied its first design write under the host's `never` approval policy; the installed renderer passed an independent preflight.
+Skills must justify their context and maintenance cost through a concrete routing
+contract, a non-obvious quality safeguard or measured useful-output benefit.
+Catalog size is not a goal. The six tested product/marketing skills and
+`content-growth` profile were removed from v0.0.1 after two valid enabled bundles
+timed out while both no-skill baselines produced independently correct artifacts.
+Codex continues to handle those workflows. This is a bundle-level release choice,
+not proof that each removed skill is harmful on every task.
 
-The [recent design research and review corrections](docs/design-review-20261027.md) connect dated practitioner articles, Reddit/HN/X discussions and design case studies to focused native guidance, an optional repository evidence checker and stricter video font preflight. Hallmark, Taste and HyperFrames remain; successful export, evidence integrity and visual quality are qualified separately.
+The [evaluation record](docs/supplemental-model-evaluation-20261028.md) preserves
+all attempts and costs. Research and reviewer controls passed in both conditions;
+no general quality uplift is claimed. The retained 305 catalog development cases
+are planned fixtures, not 305 completed acceptance trials.
 
-The [motion authoring follow-up](docs/motion-authoring-20261027.md) adds a project-owned CSS/WAAPI preview, original editable motion examples and beat-correspondence records around HyperFrames. Its helpers are repository utilities; installed skills do not promise a second editor or renderer.
+## Installation and distribution
 
-The [harness engineering research](docs/harness-engineering-research-20261027.md) led to [bounded video authoring diagnostics and review-integrity corrections](docs/video-authoring-diagnostics-20261027.md), with a read-only source checker and editable seed utility. Real MCP exports verify caption behavior in all four formats; the separate [matched authoring pilot](docs/video-authoring-pilot-20261027.md) records model outcomes and remaining limits. Static acceptance, exported pixels and intended motion remain separate checks.
+Use the [release installation prompt](packaging/install-prompt.md) and the exact
+installer, binary and manifest hashes from the release record. The first-party
+installer refuses unsupported host versions. Installation lives under `.mirket`;
+source changes in this checkout do not change an existing installation. The former
+installation was retired and replaced on 2026-10-27. Tests use disposable homes.
 
-The active [Raster prebuilt candidate](docs/m4-raster-prebuilt-qualification.md) is reproducible from six pinned Sharp archives. The current Mac build accepts the exact private Raster tree for local installation, and disposable installed PNG, JPEG, WebP and AVIF jobs passed. A changed archive was refused before an update while the prior installed release stayed healthy. Public redistribution still requires the upstream native source and notice route; Windows execution is a separate later gate. The earlier custom-build and recipient path is historical evidence.
+The lean package includes corresponding source and notices for its redistributed
+Video/FFmpeg closure. Chrome for Testing, Sharp native packages and the semantic
+model/ONNX runtime are acquired from their publishers during setup under exact
+pins and their own terms; they are not mirrored in the lean archive. First use
+does not download packages or search PATH for substitute executables.
 
-The [selected Mac native Sharp archives](docs/m4-raster-prebuilt-provenance-20261027.md)
-now have verified signed package-to-source provenance and a 28-component
-version match to the pinned recipe. Full corresponding-source delivery remains
-relevant if Mirket redistributes those native archives. The first-party installer
-acquires them directly from their publisher; the lean release excludes them.
-The [current release review](docs/release-readiness-20261028.md) separates that
-route from the source-delivery obligations for bundled FFmpeg.
+Mirket-authored source is MIT licensed. Third-party components retain their own
+licenses, notices and source obligations. Admission evidence lives under
+`packaging/admission`; historical proposals alone do not grant redistribution.
+See the [release plan](planning/release-readiness.md) and
+[first-release qualification](docs/first-release-qualification-20261028.md) for
+current package identities, recipient materials, tests and exclusions.
 
-The [Sharp-free Video candidate](docs/m3-video-installed-route-preparation.md) uses its private render-only Chrome and a pinned neutral FFmpeg pair. The current Mac build accepts the exact private Video tree for local installation. Disposable installed MP4, WebM, GIF and PNG-sequence jobs passed, along with reediting, audio, captions, cancellation, a large output and a remote-script refusal. Public redistribution still requires the combined [source and notice delivery](docs/m3-video-recipient-closure.md); Windows execution is a separate later gate.
+## Development
 
-HyperFrames remains the sole selected motion/video engine. The [author-visible feedback pilot](docs/hyperframes-feedback-qualification-20261027.md) exercised Codex automatic approval review and actual exports in disposable projects. It found a shared intermediate-frame contrast defect in both conditions, corrected four preserved-source copies and tightened motion review guidance; it does not establish general aesthetic quality or a model advantage.
+Run `python3 scripts/check-build-inputs.py` before Rust compilation. Required
+checks include `cargo test --locked --offline`,
+`cargo clippy --locked --offline --all-targets -- -D warnings`, `cargo fmt --check`,
+the locked adapter build/tests and MCP smoke with explicit private Node and binary
+paths. See [native build requirements](docs/native-build.md).
 
-The [revised-skill follow-up](docs/hyperframes-followup-qualification-20261027.md) observed two fresh authors avoid that defect and a model repair the preserved failure in one turn. All three saved exports passed independent frame review and completed 1× playback in Codex's browser; continuous perceptual quality and broader generalization remain unqualified.
-
-The [bounded design plan](planning/remaining-design-work.md) has completed its local [production closure](docs/design-production-closure-20261028.md): a saved-source maintenance edit, actual HyperFrames export, decoded-frame review and desktop/mobile interaction checks. The live-page CTA repair is now integrated into the maintained page and rechecked against the failing original control; the accepted film remains byte-identical. Further creative cohorts remain paused. The [research and stopping rationale](docs/design-workflow-reset-20261028.md) distinguish this usable route from native turn completion and broader model-quality evidence; failed frozen trials are not reclassified.
-
-The [matched-study runner](docs/matched-design-study-20261027.md) gives both conditions identical producer inputs and tool access, with isolated specialist guidance, an external freeze seal, neutral review packs and one shared budget. The [eight-cell creative cohort](docs/design-cohort-20261028.md) exercised UI interactions, editable illustrations and decoded HyperFrames exports. It retained a timeout, trial-harness confounds, minor visual findings and two rejected reviewer claims; it does not establish a general skill or model advantage. Reproduced output-location, review-pack, approval-classification and SVG accessibility defects were corrected after the freeze closed.
-
-[Seven native coordination trials](docs/native-coordination-qualification-20261028.md) observed a comparable creative reviewer despite a weak default, an explicit model/effort override and controlled approval denial. A mechanical worker stalled, and an interrupted turn left its command running. Outcome checks retain both failures; coordination guidance requires checking actual deliverables and stopped process/job state. Hard native enforcement, reliable cancellation and platform/distribution gates remain unqualified.
-
-The [D6 review pack](specimens/daybreak/review.html) presents the corrected Daybreak film, full-size decoded frames and before/current title evidence. The user accepted this design direction on 2026-10-28. [Its qualification and gate handoff](docs/design-review-pack-20261028.md) distinguish decoded frame correspondence, discrete browser playback and that candidate-specific acceptance from public redistribution and native platform support.
-
-A [current combined-load and 10,000-record scale check](docs/simplification-qualification-2026-10-27.md) passed semantic recall during large Design renders, explicit fallback when three consumers contended for two heavy-job slots, fresh semantic recovery afterward under Normal macOS pressure, and real-model warm hybrid recall p95 of 405 ms on a synthetic one-chunk store. A separate synthetic 100,000-record stress run passed but measured warm semantic search p95 at 1.92 seconds in a debug build. The Chromium source build is stopped in favor of [setup-acquired Chrome for Testing](docs/m3-browser-setup-acquisition.md) for video. Earlier disposable Mac browser and [combined component tests](docs/m4-combined-design-browser-video-raster-macos.md) are historical evidence for a superseded public browser surface. Public Raster/Video rights, skill outcomes, Mac OS-floor checks and Windows native execution remain separate gates.
-
-The [Mac semantic setup route](docs/m2-semantic-setup-acquisition.md) now acquires pinned model and ONNX Runtime files during installation. Offline supplied files and official HTTPS downloads both passed disposable setup; a changed model file was refused while the previous release stayed healthy.
-
-Before a development build, run `python3 scripts/check-build-inputs.py`. The current source checks are `cargo test --locked --offline` and `cargo clippy --locked --offline --all-targets -- -D warnings`; the adapter package has its own locked build and tests. See [native build requirements](docs/native-build.md), [adapter contract](docs/m0-adapter-contract.md), [memory verification](docs/m2-memory-verification.md), [semantic two-client qualification](docs/m2-semantic-qualification.md), [TypeScript navigation](docs/m3-typescript-semantic-navigation.md), [design qualification](docs/m4-design-qualification.md), [FFmpeg source gate](docs/ffmpeg-recipient-source-closure.md), [video Chrome acquisition](docs/m3-browser-setup-acquisition.md) and [Windows status](docs/windows-qualification-status.md) for measured evidence and limits. Earlier experiments in `docs/` are historical qualification records, not supported product routes.
-
-The [2026-10-28 research-led improvements](docs/research-improvements-implementation-20261028.md)
-add conditional research/product resources and repository evidence checks. Their
-local checks and measured motion/delegation outcomes are recorded separately from
-the remaining, unqualified model-effect comparisons. The [latest continuation](docs/remaining-gaps-qualification-20261028.md) adds interactive browser and MCP boundary evidence, repairs trial interruption handling, and verifies project-reference preservation through disposable reinstall. Native CLI connectivity now passes with an explicit process-local CA-bundle setting on the tested Mac; the separate model-quality comparisons remain unqualified.
-
-Removed capability contracts, obsolete admission files and their notice bundles are listed in the [retired evidence index](docs/retired-evidence.md), with an immutable Git revision for retrieving their original bytes. They are historical evidence, not current setup inputs.
-
-Mirket-authored source is MIT licensed. Exact third-party runtime and redistribution admission is recorded under `packaging/admission`; the implementation plan governs what may be packaged. No release is published from this repository yet.
+The [implementation plan](planning/implementation-plan.md) defines ownership and
+release constraints. The [catalog plan](planning/skill-catalog-design.md) and
+[provenance](skills/PROVENANCE.md) define current skill scope. Earlier qualification
+records in `docs/` preserve their original revisions and failed attempts; they do
+not independently qualify a newer package or unsupported platform.

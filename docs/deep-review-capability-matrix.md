@@ -1,21 +1,20 @@
 # Capability matrix review (2026-10-27)
 
-This is a traceability review of the current `skills/catalog.json` at HEAD
-(`678c3c6` before this review).  It describes the owner and the observation that
-would establish an outcome; a selected skill is not evidence that its route is
-available.  All 67 catalog entries have five authored development cases, but all
-67 currently carry `planned-not-run`.  The sampled installation checks in
-`docs/m4-project-skill-evaluation.md` and
-`docs/m4-skill-guidance-local-qualification-20261027.md` therefore do not close
-the catalog's held-out acceptance gate.
+Updated for v0.0.1 on 2026-10-28: 61 catalog entries (9 global / 52 project)
+and seven profiles. All 305 public development cases retain their recorded
+`planned-not-run` state; representative native outcomes are reported separately.
+The six product/marketing skills and content-growth profile were retired after
+their tested bundle failed to deliver within budget. Codex retains those host
+workflows. This matrix describes route/output contracts, not universal skill
+uplift. See the [first-release record](first-release-qualification-20261028.md).
 
 ## Workflow to owner, output, failure probe and evidence
 
 | Workflow / skills | Owner and route | Observable output | Discriminating failure case | Evidence required |
 | --- | --- | --- | --- | --- |
 | Discovery and web research — `browser-research`, `browser-automation`, `browser-qa`, `content-search`, `evidence-research` | Codex browser/web research and project sources; no Mirket crawler | Dated, bounded source notes, scoped interaction/final state and changed information architecture | Page state differs from fetched text, source is stale, interaction submits twice, or a claim has contradictory primary evidence | Reopen the cited page, record URL/date/section, and separate fact, inference and unknown; retain final-state reconciliation for actions |
-| Customer discovery and problem framing — `customer-research`, `jobs-to-be-done` | Host files and consented research | Segment/job synthesis with observations, alternatives and unknowns | Invented participant evidence, missing consent, or segment conclusion changes when one source is removed | Source inventory, consent/use limits, and an independent reviewer tracing each conclusion |
-| Product direction and growth — `product-strategy`, `positioning`, `marketing-copy`, `conversion`, `experiments-launch` | Host planning, analytics and Codex browser for the live journey | Decision options, defensible claims, revised flow/copy and precommitted measurement/rollback | Traffic mix or measurement defect masquerades as conversion lift; unsupported claim reaches copy; rollback leaves changed exposure | Dated evidence, baseline, changed-input/funnel check and retained experiment result |
+| Customer discovery and problem framing — `jobs-to-be-done` with Codex research | Host files and consented research | Segment/job synthesis with observations, alternatives and unknowns | Invented participant evidence, missing consent, or segment conclusion changes when one source is removed | Source inventory, consent/use limits, and an independent reviewer tracing each conclusion |
+| Product direction and growth — Codex host workflows (retired bundle) | Host planning, analytics and Codex browser for the live journey | Decision options, defensible claims, revised flow/copy and precommitted measurement/rollback | Traffic mix or measurement defect masquerades as conversion lift; unsupported claim reaches copy; rollback leaves changed exposure | Dated evidence, baseline, changed-input/funnel check and retained experiment result |
 | Architecture and planning — `task-planning`, `architecture` | Codex owns plan, source inspection and Git | Dependency sequence, ownership map, alternatives and failure tradeoffs | Plan claims completion without a gate or assigns overlapping ownership | Source-bound plan with observable next action and a reviewer checking each gate |
 | API and service implementation — `api-integration`, `backend-engineering`, `code-change` | Host code and project toolchain; Codex owns edits | Validated contract/state transition, consumer-compatible change and tests | Duplicate effect after retry, malformed input, or consumer sees an undocumented error | Consumer probe plus a replay/invalid-input test against the saved revision |
 | Client implementation — `frontend-engineering`, `interface-composition` | Host code and Codex browser; Mirket design only when explicitly qualified | Loading/empty/error/success/interrupted UI states rendered at target viewports | State is correct in source but focus, responsive layout or interrupted action fails in browser | Reopened build at required viewports and keyboard/failure journey evidence |
@@ -59,7 +58,7 @@ treated as output evidence.
 | Motion and video | [motion-direction](../skills/motion-direction/SKILL.md), [svg-lottie](../skills/svg-lottie/SKILL.md), [video-production](../skills/video-production/SKILL.md), [video contract](../planning/implementation-plan.md#concrete-capability-and-evidence-contracts) | [video qualification](m3-motion-video-qualification.md) and installed format smoke tests exist; decoded frame/audio/caption review and host approval-denial case remain required per task |
 | Documents and communication | [document-artifacts](../skills/document-artifacts/SKILL.md), [workbook-authoring](../skills/workbook-authoring/SKILL.md), [slide-deck-authoring](../skills/slide-deck-authoring/SKILL.md) | Codex host tools own Office/PDF/OCR; reopen/render and scanned-content uncertainty must be observed, not inferred from export success |
 | Data/AI and retrieval | [ai-tool-design](../skills/ai-tool-design/SKILL.md), [ai-evaluation](../skills/ai-evaluation/SKILL.md), [retrieval-evaluation](../skills/retrieval-evaluation/SKILL.md), [semantic qualification](m2-semantic-qualification.md) | Frozen bilingual/scale memory results exist; unseen answer quality, installed-client latency and cross-project distractors remain separate gates |
-| Release and native operations | [dependency-admission](../skills/dependency-admission/SKILL.md), [ci-release](../skills/ci-release/SKILL.md), [native-desktop](../skills/native-desktop/SKILL.md), [runtime-operations](../skills/runtime-operations/SKILL.md), [release static review](m4-macos-release-static-review.md) | Disposable Mac install/update checks exist; Windows native ownership, Mac OS 15 floor and Desktop GUI activation remain unqualified |
+| Release and native operations | [dependency-admission](../skills/dependency-admission/SKILL.md), [ci-release](../skills/ci-release/SKILL.md), [native-desktop](../skills/native-desktop/SKILL.md), [runtime-operations](../skills/runtime-operations/SKILL.md), [release static review](m4-macos-release-static-review.md) | Disposable Mac install/update checks exist; Windows native ownership, earlier/newer macOS and Desktop GUI activation remain unqualified |
 | Coordination and feedback | [agent-coordination-strategy](../skills/agent-coordination-strategy/SKILL.md), [coordination/feedback review](deep-review-coordination.md) | Existing evidence records the out-of-project retry and approval-blocked video; native Codex guidance is advisory; representative held-out comparisons are recorded, while catalog-wide acceptance remains open |
 
 ## Catalog coverage and profile comparison
@@ -70,7 +69,7 @@ a test of skill outcomes.
 
 | Area | Catalog IDs |
 | --- | --- |
-| Discovery/research/growth | `browser-research`, `browser-automation`, `browser-qa`, `content-search`, `evidence-research`, `customer-research`, `jobs-to-be-done`, `product-strategy`, `positioning`, `marketing-copy`, `conversion`, `experiments-launch` |
+| Discovery/research/growth | `browser-research`, `browser-automation`, `browser-qa`, `content-search`, `evidence-research`, `jobs-to-be-done` with Codex research, Codex host workflows (retired bundle) |
 | Planning/architecture | `task-planning`, `architecture` |
 | Implementation | `api-integration`, `backend-engineering`, `code-change`, `frontend-engineering`, `interface-composition`, `database-migrations`, `data-pipelines` |
 | Navigation/query/analysis | `js-ts-navigation`, `sql-navigation`, `sql-analysis`, `data-analysis`, `data-visualization` |
@@ -82,7 +81,7 @@ a test of skill outcomes.
 | Documents | `technical-docs`, `document-artifacts`, `workbook-authoring`, `slide-deck-authoring` |
 | Prototype/operations | `prototype-test`, `dependency-admission`, `infrastructure`, `ci-release`, `native-desktop`, `runtime-operations`, `agent-coordination-strategy` |
 
-The eight profiles are compared below as realistic mixed projects.  A profile is
+The seven profiles are compared below as realistic mixed projects.  A profile is
 a selection hint, not a capability receipt or dependency installer.  The
 `explicit additions` column records specialist skills that a real project must
 opt into; `omissions` records tempting skills that should remain unselected.
@@ -91,25 +90,25 @@ absent, while host-only entries continue through Codex/project tools.
 
 | Mixed project | Profile union | Explicit additions | Intentional omissions | Observable acceptance |
 | --- | --- | --- | --- | --- |
-| Multilingual SaaS with browser onboarding and a service API | `web-product` + `backend-service` + `browser-workflows` | `localization`, `accessibility`, `sql-analysis`, `privacy-data`, `conversion` | `video-production`, `openpencil`, `native-desktop` | Keyboard/RTL/reflow journey, API failure recovery, scoped analytics and changed funnel result |
+| Multilingual SaaS with browser onboarding and a service API | `web-product` + `backend-service` + `browser-workflows` | `localization`, `accessibility`, `sql-analysis`, `privacy-data` | `video-production`, `openpencil`, `native-desktop` | Keyboard/RTL/reflow journey, API failure recovery, scoped analytics and changed funnel result |
 | Billing and AI assistant platform | `backend-service` + `data-ai` + `library-cli` | `financial-models`, `ai-tool-design`, `ai-evaluation`, `retrieval-evaluation`, `threat-model`, `dependency-admission` | `browser-automation`, `art-direction`, `slide-deck-authoring` | Reconciled billing workbook, prompt/tool authority negative tests, stale retrieval refusal and reproducible package |
-| Design-led launch with authored video and campaign pages | `design-studio` + `content-growth` + `web-product` | `video-production`, `motion-direction`, `svg-lottie`, `conversion`, `marketing-copy`, `localization` | `sql-navigation`, `native-desktop`, `financial-models` | Reopened design source, inspected saved pixels, decoded frames/audio/captions and precommitted funnel measure |
-| Research and authorized browser operations team | `browser-workflows` + `content-growth` + `data-ai` | `browser-research`, `browser-automation`, `browser-qa`, `evidence-research`, `security-review` | `openpencil`, `video-production`, `database-migrations` | Page identity, scoped action reconciliation, source dates/disagreement and no account/scope escape |
-| Cross-platform desktop SDK and CLI | `library-cli` + `backend-service` | `native-desktop`, `dependency-admission`, `ci-release`, `performance`, `reliability-incident` | `browser-automation`, `conversion`, `openpencil` | Explicit executable identity, installed lifecycle/permission tests and rollback on a native target |
-| Analytics and experimentation group | `data-ai` + `backend-service` + `documents` | `sql-analysis`, `data-pipelines`, `statistical-inference`, `data-visualization`, `experiments-launch`, `workbook-authoring` | `openpencil`, `native-desktop`, `video-production` | Independent query/recompute, uncertainty/multiplicity review, editable workbook and changed-input chart |
-| Policy/document production team | `documents` + `data-ai` + `content-growth` | `technical-docs`, `document-artifacts`, `slide-deck-authoring`, `localization`, `accessibility`, `financial-models` | `browser-automation`, `video-production`, `openpencil` | Reopened pages/slides/sheets, source-consistent figures, locale/reflow checks and explicit scanned/OCR limits |
-| Conversion-focused web product | `web-product` + `content-growth` + `browser-workflows` | `interface-composition`, `design-critique`, `browser-qa`, `conversion`, `experiments-launch`, `accessibility` | `sql-navigation`, `openpencil`, `raster-art` | Rendered responsive journey, ranked defects, precommitted conversion metric and rollback evidence |
+| Design-led launch with authored video and campaign pages | `design-studio` + `web-product` | `video-production`, `motion-direction`, `svg-lottie`, `localization` | `sql-navigation`, `native-desktop`, `financial-models` | Reopened design source, inspected saved pixels, decoded frames/audio/captions and precommitted funnel measure |
+| Research and authorized browser operations team | `browser-workflows` + `data-ai` | `browser-research`, `browser-automation`, `browser-qa`, `evidence-research`, `security-review` | `openpencil`, `video-production`, `database-migrations` | Page identity, scoped action reconciliation, source dates/disagreement and no account/scope escape |
+| Cross-platform desktop SDK and CLI | `library-cli` + `backend-service` | `native-desktop`, `dependency-admission`, `ci-release`, `performance`, `reliability-incident` | `browser-automation`, `openpencil` | Explicit executable identity, installed lifecycle/permission tests and rollback on a native target |
+| Analytics and experimentation group | `data-ai` + `backend-service` + `documents` | `sql-analysis`, `data-pipelines`, `statistical-inference`, `data-visualization`, `workbook-authoring` | `openpencil`, `native-desktop`, `video-production` | Independent query/recompute, uncertainty/multiplicity review, editable workbook and changed-input chart |
+| Policy/document production team | `documents` + `data-ai` | `technical-docs`, `document-artifacts`, `slide-deck-authoring`, `localization`, `accessibility`, `financial-models` | `browser-automation`, `video-production`, `openpencil` | Reopened pages/slides/sheets, source-consistent figures, locale/reflow checks and explicit scanned/OCR limits |
+| Conversion-focused web product | `web-product` + `browser-workflows` | `interface-composition`, `design-critique`, `browser-qa`, `accessibility` | `sql-navigation`, `openpencil`, `raster-art` | Rendered responsive journey, ranked defects, precommitted conversion metric and rollback evidence |
 
 ## Findings and correction direction
 
 1. The matrix exposed no missing subject area relative to the approved thirteen
-   outcomes: all requested workflow domains have a distinct skill and owner.
+   outcomes: all requested workflow domains have an owner; ordinary product/marketing work stays with Codex without a dedicated Mirket skill.
    A static catalog check cannot establish that those skills trigger correctly
    or produce the stated outputs; that remains the planned held-out gate.
 2. The principal demonstrated gap is evidence state, not a missing skill:
    `catalog.json` marks every evaluation `planned-not-run`, while sampled
    installation documents can be mistaken for full acceptance.  This document
-   makes the distinction explicit; static coverage was checked against all 67
+   makes the distinction explicit; static coverage was checked against all 61
    catalog IDs. No prose-mirroring test is used to claim runtime qualification.
 3. Host ownership is preserved in the matrix: SQL, browser research/automation,
    documents, spreadsheets, slides, ordinary code and native agents are not

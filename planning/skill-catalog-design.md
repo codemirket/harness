@@ -1,13 +1,34 @@
 # Mirket skill catalog — proposed Codex-native design
 
-**Planning revision, 2026-10-25.** This replaces the earlier one-global/27-project draft. It records the authoring and selection specification behind the [consolidated plan](implementation-plan.md). The resulting nine global and 58 project `SKILL.md` files are authored in the current source tree; disposable macOS ARM64 Codex-native installation and selected skill discovery passed. Matched-baseline model outcome evaluation remains open. All thirteen previously accepted subject outcomes remain covered, with clearer boundaries.
+**Planning revision, 2026-10-25.** This replaces the earlier one-global/27-project draft. It records the authoring and selection specification behind the [consolidated plan](implementation-plan.md). The resulting nine global and 52 project `SKILL.md` files are authored in the current source tree; disposable macOS ARM64 Codex-native installation and selected skill discovery passed. Matched-baseline model outcome evaluation remains open. All thirteen previously accepted subject outcomes remain covered, with clearer boundaries.
 
 **Accepted follow-up, 2026-10-27:** eight project skills now record reviewed
 method adaptations, with three bounded on-demand references included in the
 catalog, release manifest and native skill receipts. The nine/global and
-58/project split is unchanged. See the [source mapping](reviews/2026-10-27/source-design-adoption.md)
+58/project split was unchanged in that pass. See the [source mapping](reviews/2026-10-27/source-design-adoption.md)
 and [implementation/evidence](../docs/design-adoption-20261027.md). General
 quality uplift and catalog-wide acceptance remain unqualified.
+
+## First-release retention decision — 2026-10-28
+
+The user authorized dropping skills that do not contribute quality or
+performance. v0.0.1 retains nine global and 52 opt-in project skills across seven
+profiles. The six tested product/marketing skills and `content-growth` profile
+are retired: `customer-research`, `product-strategy`, `positioning`,
+`marketing-copy`, `conversion`, and `experiments-launch`. Two valid enabled
+bundle trials timed out while both no-skill baselines produced independently
+correct artifacts. This is a bundle-level release decision, not attribution of
+harm to each member. Codex still owns those ordinary product workflows.
+`jobs-to-be-done`, `prototype-test` and `content-search` remain direct selections.
+
+Retain a skill for a concrete routing contract, non-obvious quality safeguard,
+or measured useful-output contribution that justifies context/maintenance cost.
+Do not protect a fixed catalog size or require a skill for work Codex already
+handles well. Preserve negative evidence; add or restore guidance only for a
+demonstrated gap. A small tied comparison is not proof of universal uselessness.
+The [evaluation](../docs/supplemental-model-evaluation-20261028.md) remains
+unchanged historical evidence; 305 retained public development cases are not
+relabeled as executed acceptance.
 
 ## Review findings
 
@@ -43,7 +64,7 @@ Global skills live in the Codex user's native skill location; project skills bec
 
 ## Fifty-eight opt-in project skills
 
-These are **catalog options**, not 58 entries loaded into every project. Every entry has a distinct trigger and observable output. A Mirket route requires a qualified private capability; a host route uses Codex/project tools. A method skill cannot advertise an unavailable operation as ready. Framework- and dialect-specific detail belongs in on-demand references rather than one top-level skill per upstream library.
+These are **catalog options**, not 52 entries loaded into every project. Every entry has a distinct trigger and observable output. A Mirket route requires a qualified private capability; a host route uses Codex/project tools. A method skill cannot advertise an unavailable operation as ready. Framework- and dialect-specific detail belongs in on-demand references rather than one top-level skill per upstream library.
 
 ### Engineering and delivery — 13
 
@@ -96,21 +117,15 @@ These are **catalog options**, not 58 entries loaded into every project. Every e
 | ui-motion | Interactive animation implemented; lifecycle-safe CSS/WAAPI/Anime/Motion/GSAP choice and playback proof. | Host project code + Codex browser; anime, motion, gsap-official, animate.css, motion-primitives, canvas-ui when relevant. |
 | scroll-motion | Scroll scene/page transition requested; trigger/state map and responsive/interruption checks. | Host project code + Codex browser; scroll-craft, gsap-official, emil, kingy-motion. |
 | svg-lottie | Vector/Lottie animation asset; editable source, tested feature subset and preview parity. | Host + qualified vector/video route; lottiefiles-motion, diagram-design, motion-primitives. |
-| video-production | Exported video requested; editable HyperFrames source, private Chromium/FFmpeg render and decoded-frame/audio/caption QA. | Qualified Mirket video; remotion and kingy-motion as comparisons. |
+| video-production | Exported video requested; editable HyperFrames source, private Chromium/FFmpeg render and decoded-frame/audio/caption QA. | Qualified Mirket video; pinned HyperFrames authoring and kingy-motion as comparisons. |
 
-### Product, discovery and growth — 9
+### Product, discovery and growth — 3
 
 | ID | Use when; expected output | Route; selected basis |
 | --- | --- | --- |
-| customer-research | Existing research/consented interviews inform a decision; segment synthesis and unknowns. | Host; marketing, wondel, owl-concepts. No unsolicited outreach. |
 | jobs-to-be-done | Product problem needs customer-progress framing; job/forces and evidence-linked alternatives. | Host; wondel, marketing. |
-| product-strategy | Priorities, market, pricing or roadmap choice; options, assumptions and measurable bet. | Host; wondel, marketing, ponytail. |
 | prototype-test | Idea/flow needs low-cost validation; prototype, task, observation and decision. | Host/design tools and Codex browser as available; wondel, owl-concepts, hallmark. |
-| positioning | Audience/differentiation explicit; claims, evidence and message hierarchy. | Host; marketing, wondel. |
-| marketing-copy | Persuasive page/email/product copy; audience-specific draft with claim and CTA review. | Host; marketing, wondel, taste. |
 | content-search | Content strategy/organic discovery; intent, information architecture and verifiable page change. | Host + Codex browser when inspecting; marketing, wondel, govuk, guardian. |
-| conversion | Signup/onboarding/checkout friction; observed funnel issue, changed flow and precommitted measure. | Host + Codex browser; marketing, wondel, impeccable. |
-| experiments-launch | Launch or growth experiment; hypothesis, exposure/measurement, launch and rollback criteria. | Host; marketing, wondel, statistical-analysis. |
 
 ### Data and AI systems — 8
 
@@ -166,13 +181,12 @@ Mirket proposes a **small selection** from explicit project purpose, declared fr
 
 | Profile | Initial skills to propose | Add only when the work calls for it |
 | --- | --- | --- |
-| web-product | frontend-engineering, interface-composition, accessibility, browser-qa, test-design, design-systems | art-direction, conversion, ui-motion, localization, content-search |
+| web-product | frontend-engineering, interface-composition, accessibility, browser-qa, test-design, design-systems | art-direction, ui-motion, localization, content-search |
 | design-studio | art-direction, design-critique, design-systems, openpencil, vector-art, raster-art | diagrams, video-production, svg-lottie, typography |
 | browser-workflows | browser-research, browser-automation, browser-qa | security-review |
 | backend-service | backend-engineering, api-integration, test-design, database-migrations, threat-model, reliability-incident | performance, sql-navigation, infrastructure, ci-release |
 | library-cli | architecture, api-integration, test-design, ci-release, dependency-admission | performance, js-ts-navigation, native-desktop |
 | data-ai | data-analysis, statistical-inference, ai-tool-design, ai-evaluation, retrieval-evaluation | sql-analysis, sql-navigation, data-pipelines |
-| content-growth | customer-research, jobs-to-be-done, positioning, marketing-copy, conversion, experiments-launch | product-strategy, content-search, prototype-test |
 | documents | technical-docs, document-artifacts, workbook-authoring, slide-deck-authoring | data-visualization, localization, financial-models |
 
 Profile values are exact, unbranded catalog IDs. Web extraction guidance remains an on-demand reference within browser-research. If several installed skills match one task, Codex selects one deliverable lead and only the specialists needed for genuinely separate boundaries; installation is not an instruction to stack every skill. Explicit inclusion/exclusion wins over a profile recipe. Mirket warns about a selected Mirket tool skill whose private capability has not passed the current platform gate; host browser and SQL skills check their actual tool availability at use.
@@ -187,4 +201,4 @@ Author one Mirket-native body per ID, using local contracts as authority and exa
 
 Every entry has discriminating frontmatter, a concise decision method, output/evidence rule and stop condition. The 69 authored files replace the thirteen stale guide drafts and their old guide-read references. Engineering, Verification, Research, Interface, Motion, Product, Documents, Memory, Security, Reliability, Data, AI evaluation and Planning/coordination remain represented across the new boundaries without repeating global text in specialists. Native activation and model-outcome gates are tracked in the [evaluation contract](../docs/m4-guide-evaluation.md).
 
-First validate frontmatter, IDs, links, hashes, rights, capability claims and profile resolution for all 67 skills. Keep two positive, two negative and one mixed authored development case per entry; run representative activation and nontrigger checks across the full catalog. Prioritize matched held-out, no-skill comparisons in clean Codex Desktop contexts for skills governing external effects, security, memory, coordination, and design/video or analytical quality. Independently inspect their saved outputs, retain failures and repeat variable cases. Expand deeper comparison when broad screening finds a defect. Measure unnecessary calls, description collisions and loaded context, not merely skill appearance. Mac activation is the first-release gate; Windows activation is a separate gate for its planned target.
+First validate frontmatter, IDs, links, hashes, rights, capability claims and profile resolution for all 61 skills. Keep two positive, two negative and one mixed authored development case per entry; run representative activation and nontrigger checks across the full catalog. Prioritize matched held-out, no-skill comparisons in clean Codex Desktop contexts for skills governing external effects, security, memory, coordination, and design/video or analytical quality. Independently inspect their saved outputs, retain failures and repeat variable cases. Expand deeper comparison when broad screening finds a defect. Measure unnecessary calls, description collisions and loaded context, not merely skill appearance. Mac activation is the first-release gate; Windows activation is a separate gate for its planned target.

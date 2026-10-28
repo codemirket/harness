@@ -1362,8 +1362,8 @@ fn layout_with_skill_sources(
             .map_err(|_| DistributionError::InvalidManifest)?;
         if catalog.schema_version != 1
             || catalog.global.len() != 9
-            || catalog.project.len() != 58
-            || catalog.profiles.len() != 8
+            || catalog.project.len() != 52
+            || catalog.profiles.len() != 7
         {
             return Err(DistributionError::InvalidManifest);
         }

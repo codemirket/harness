@@ -258,11 +258,11 @@ impl QualifiedCatalog {
 
     pub fn release_shape(&self) -> Result<(), String> {
         if self.catalog.global.len() != 9
-            || self.catalog.project.len() != 58
-            || self.catalog.profiles.len() != 8
+            || self.catalog.project.len() != 52
+            || self.catalog.profiles.len() != 7
         {
             return Err(
-                "release skill catalog must contain 9 global, 58 project and 8 profiles".into(),
+                "release skill catalog must contain 9 global, 52 project and 7 profiles".into(),
             );
         }
         Ok(())

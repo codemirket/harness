@@ -1,5 +1,12 @@
 # Research-led implementation and qualification
 
+**First-release disposition:** the tested six-skill product/marketing bundle
+and content-growth profile were subsequently removed under the user's retention
+rule. The remaining catalog is 9 global / 52 project / 7 profiles. This report
+preserves its implementation history; use the
+[first-release record](first-release-qualification-20261028.md) for shipped scope.
+
+
 User approval: 2026-10-28. Baseline: `7da476b55873e1b104bde2944c9ac63b0d299273`.
 The [approved plan](../planning/research-improvements.md) implements the
 [research recommendations](harness-research-recommendations-20261028.md).

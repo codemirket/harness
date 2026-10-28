@@ -615,7 +615,9 @@ for n in range(1, 4): target.with_name(target.name.replace('%02d', f'{n:02d}')).
             for folder in ("project", "codex-home", "user-home", "tmp"):
                 (root / folder).mkdir()
             executable = Path(ready["codex"])
-            executable.write_text("#!/usr/bin/env python3\nimport time\nprint('{\"type\":\"test-event\"}', flush=True)\ntime.sleep(10)\n")
+            # Use a shell builtin so this collector test does not spend its
+            # one-second deadline starting another Python under build load.
+            executable.write_text("#!/bin/sh\nprintf '%s\\n' '{\"type\":\"test-event\"}'\n/bin/sleep 10\n")
             executable.chmod(0o700)
             result = PILOT.run_model(root, "test", "initial", ready, "source-only", 1)
             self.assertTrue(result["timed_out"])

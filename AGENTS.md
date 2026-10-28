@@ -33,3 +33,12 @@ explicit binary/private Node paths. Run the build guard first. The user waived
 the Codex Desktop GUI check for this release; record it as untested. Windows
 ownership, packaging and capability fidelity have separate milestone gates;
 passing local source or protocol tests does not establish them.
+
+Skill retention is evidence-led: keep guidance only when a concrete workflow,
+quality safeguard or measured performance benefit justifies its context and
+maintenance cost. Remove redundant or non-contributing skills instead of
+preserving catalog size. A tied small trial does not prove universal uselessness;
+repeated failure can justify retiring the tested bundle without blaming each
+member. Preserve failed evidence and host-owned workflows when reducing scope.
+The first release is qualified only for macOS 26.5.2 ARM64, per the user's
+2026-10-28 decision; other platforms require separate native qualification.

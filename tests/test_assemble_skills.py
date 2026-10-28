@@ -42,9 +42,9 @@ class SkillAssemblyTests(unittest.TestCase):
             for entry in [*catalog["global"], *catalog["project"]]
             for resource in entry.get("resources", [])
         ]
-        self.assertEqual(result["files"], 69 + len(resources))
+        self.assertEqual(result["files"], 63 + len(resources))
         self.assertEqual((self.output / "skills/catalog.json").read_bytes(), (self.source / "catalog.json").read_bytes())
-        self.assertEqual(len(list((self.output / "skills").rglob("SKILL.md"))), 67)
+        self.assertEqual(len(list((self.output / "skills").rglob("SKILL.md"))), 61)
         for skill_id, resource in resources:
             output = self.output / "skills" / skill_id / resource["path"]
             self.assertEqual(output.stat().st_size, resource["bytes"])
@@ -56,6 +56,14 @@ class SkillAssemblyTests(unittest.TestCase):
         body = self.source / "runtime-operations/SKILL.md"
         body.write_bytes(body.read_bytes() + b"\nextra\n")
         with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "differ from catalog"):
+            ASSEMBLER.assemble(self.output, self.source)
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_retired_skill_cannot_leak_into_release_as_an_extra_directory(self):
+        retired = self.source / "product-strategy"
+        retired.mkdir()
+        (retired / "SKILL.md").write_text("Retired guidance must not ship.\n")
+        with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "unknown entries"):
             ASSEMBLER.assemble(self.output, self.source)
         self.assertEqual(list(self.output.iterdir()), [])
 

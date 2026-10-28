@@ -1,5 +1,12 @@
 # macOS release readiness — 2026-10-28
 
+**Historical candidate:** this record retains its original source revision and
+pending decisions. The user subsequently selected exact macOS 26.5.2 ARM64,
+and the current catalog was reduced to 9 global / 52 project / 7 profiles.
+Use the [first-release record](first-release-qualification-20261028.md) for the
+new package identities and readiness outcome.
+
+
 This advances the approved plan from `7ffe47a`; it does not authorize publication
 or changes to the user's installation. Qualification uses disposable homes on
 macOS 26.5.2 ARM64. The proposed macOS 15 floor remains untested; the requested

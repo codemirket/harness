@@ -1343,15 +1343,6 @@
           "skill_body_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Perform an authorized multi-step website interaction with observed state, scoped actions and reconciliation of uncertain submissions. Skip page reading without interaction."
-        },
-        {
-          "decision_method": "Clarify the decision, user/business objective, time horizon and binding constraints. Inspect available research, usage, economics and competitive evidence with dates and segment definitions. Separate facts from assumptions and distinguish a strategic choice from a list of desirable features.",
-          "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
-          "path": "skills/product-strategy/SKILL.md",
-          "skill": "product-strategy",
-          "skill_body_sha256": "bda6dc88898bbcc26597057c112b8ede64c720ff64718884c8284943bf8116ff",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
         }
       ],
       "source_evidence": {
@@ -3565,15 +3556,6 @@
           "skill_body_sha256": "fa958a4de75c7a96bbecc02481d9d676862e3fd5b17fd2fa34dc83b35a65419a",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Prepare raster assets through crop, resize, composite or web-image export with source-linked dimensions, color and alpha checks. Skip new image generation without a transformation task."
-        },
-        {
-          "decision_method": "Establish the audience, situation, offer, voice, surface and intended action. Read existing positioning and real product evidence before drafting. Use specific benefits the audience can understand; connect feature claims to what the person can accomplish.",
-          "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
-          "path": "skills/marketing-copy/SKILL.md",
-          "skill": "marketing-copy",
-          "skill_body_sha256": "0fb5c09ab0332a4a15a6dd2e8cd1344f8305a5f9ea1762775f5be629f9480ec3",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
         }
       ],
       "source_evidence": {
@@ -3967,15 +3949,6 @@
           "skill_body_sha256": "ab634fb97695789d550bd00a2662f927c712a118f4957c1e3041ae8ce01cbcbf",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or edit a deliverable that must remain editable as OpenPencil design source, with reopen/change and export proof. Skip screenshots or code-only UI requests."
-        },
-        {
-          "decision_method": "Define the conversion event, eligible population, funnel stages and data limitations. Inspect the actual journey and relevant research/analytics before diagnosing friction. Distinguish a measurement defect, traffic-mix change and user-flow problem.",
-          "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
-          "path": "skills/conversion/SKILL.md",
-          "skill": "conversion",
-          "skill_body_sha256": "361102ca6b4fc3f2afa04fa557e99f35f557b33d82de170e9ddf9b69da94716f",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
         }
       ],
       "source_evidence": {
@@ -4948,15 +4921,6 @@
           "skill_body_sha256": "ab634fb97695789d550bd00a2662f927c712a118f4957c1e3041ae8ce01cbcbf",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or edit a deliverable that must remain editable as OpenPencil design source, with reopen/change and export proof. Skip screenshots or code-only UI requests."
-        },
-        {
-          "decision_method": "Frame the decision, participant segment and research questions before interpreting material. Inventory source dates, recruitment, consent/use limits and sample bias. Existing analytics, interviews and support evidence answer different questions; keep those sources distinct.",
-          "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
-          "path": "skills/customer-research/SKILL.md",
-          "skill": "customer-research",
-          "skill_body_sha256": "731cca3eba8553f16a9667e2821ef5a8cea282261a68745b8ea161c664c83723",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
         },
         {
           "decision_method": "Identify the riskiest assumption and the observation that would support or reject it. Choose the smallest faithful prototype that can elicit that observation: content, interaction, layout or technical slice. Preserve real task constraints without pretending a simulation is production behavior.",
@@ -6407,15 +6371,6 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Frame the decision, participant segment and research questions before interpreting material. Inventory source dates, recruitment, consent/use limits and sample bias. Existing analytics, interviews and support evidence answer different questions; keep those sources distinct.",
-          "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
-          "path": "skills/customer-research/SKILL.md",
-          "skill": "customer-research",
-          "skill_body_sha256": "731cca3eba8553f16a9667e2821ef5a8cea282261a68745b8ea161c664c83723",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
-        },
-        {
           "decision_method": "Identify the situation that triggers a person to seek progress and the outcome they are trying to achieve. Ground the job in actual customer evidence rather than the product's feature vocabulary. Distinguish functional, social and emotional dimensions only where the sources support them.",
           "local_output_evidence": "Return an evidence-linked job/forces map, alternatives and the next consequential uncertainty. Stop when the framing clarifies a real decision or report that customer circumstances are missing. Do not invent purchase stories or claim validation from the phrasing alone.",
           "path": "skills/jobs-to-be-done/SKILL.md",
@@ -6425,33 +6380,6 @@
           "trigger": "Frame a product problem around customer progress, circumstances and competing alternatives when existing evidence supports a jobs analysis. Skip generic persona generation."
         },
         {
-          "decision_method": "Clarify the decision, user/business objective, time horizon and binding constraints. Inspect available research, usage, economics and competitive evidence with dates and segment definitions. Separate facts from assumptions and distinguish a strategic choice from a list of desirable features.",
-          "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
-          "path": "skills/product-strategy/SKILL.md",
-          "skill": "product-strategy",
-          "skill_body_sha256": "bda6dc88898bbcc26597057c112b8ede64c720ff64718884c8284943bf8116ff",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
-        },
-        {
-          "decision_method": "Identify the intended segment, buying/use situation and alternatives actually considered. Inspect customer language, product capabilities and competitor evidence with current dates. Separate desirable aspirations from claims the product can substantiate.",
-          "local_output_evidence": "Return a positioning statement, claim/evidence map, message hierarchy and unresolved assumptions. Stop when the audience and defensible difference are clear enough for copy, or identify the missing evidence/decision. Do not publish or alter campaign accounts from a positioning brief.",
-          "path": "skills/positioning/SKILL.md",
-          "skill": "positioning",
-          "skill_body_sha256": "583fab7b92d66f9aec16149bb728ae7a99c017e833924f62a0d1c3b583b86883",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Define audience, alternatives and differentiated value when product positioning or message hierarchy needs evidence. Skip sentence-level proofreading of approved messaging."
-        },
-        {
-          "decision_method": "Establish the audience, situation, offer, voice, surface and intended action. Read existing positioning and real product evidence before drafting. Use specific benefits the audience can understand; connect feature claims to what the person can accomplish.",
-          "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
-          "path": "skills/marketing-copy/SKILL.md",
-          "skill": "marketing-copy",
-          "skill_body_sha256": "0fb5c09ab0332a4a15a6dd2e8cd1344f8305a5f9ea1762775f5be629f9480ec3",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
-        },
-        {
           "decision_method": "Identify the audience question, user intent and page's place in the information architecture. Inspect existing content, internal links and available search/usage evidence. Verify current search behavior through qualified browsing when it matters; rankings are observations tied to date/context, not guarantees.",
           "local_output_evidence": "Return the intent/structure decision, changed content and verification/measurement plan. Stop when the page serves the stated intent and checks pass; report unavailable analytics/indexing evidence. No ranking guarantee, content farm, paid campaign or external publication is implied.",
           "path": "skills/content-search/SKILL.md",
@@ -6459,24 +6387,6 @@
           "skill_body_sha256": "cf8127e43996d66e8628b2fb4e23e73776b5b12096f888c6435bb9be9a7828c7",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Plan or improve content for search intent and organic discovery with verifiable information architecture and page changes. Skip unrelated web research or keyword stuffing."
-        },
-        {
-          "decision_method": "Define the conversion event, eligible population, funnel stages and data limitations. Inspect the actual journey and relevant research/analytics before diagnosing friction. Distinguish a measurement defect, traffic-mix change and user-flow problem.",
-          "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
-          "path": "skills/conversion/SKILL.md",
-          "skill": "conversion",
-          "skill_body_sha256": "361102ca6b4fc3f2afa04fa557e99f35f557b33d82de170e9ddf9b69da94716f",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
-        },
-        {
-          "decision_method": "Define the decision, hypothesis, eligible audience, assignment/exposure unit and meaningful outcome. Establish a baseline, guardrails and measurement validity before interpreting a change. Account for dependence, contamination, seasonality and multiple looks/comparisons where relevant.",
-          "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
-          "path": "skills/experiments-launch/SKILL.md",
-          "skill": "experiments-launch",
-          "skill_body_sha256": "334c9c814e1833723d3bc89bf235e8be1f1845ebfc9ec8fea3cb90b828e637f5",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
         {
           "decision_method": "Identify the decision, model horizon, currency/units, timing basis and scenario variables. Separate source facts, assumptions, calculated outputs and any external rates with dates. Use current authoritative evidence for time-sensitive financial claims; do not present an illustrative model as personalized regulated advice.",
@@ -6658,15 +6568,6 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Frame the decision, participant segment and research questions before interpreting material. Inventory source dates, recruitment, consent/use limits and sample bias. Existing analytics, interviews and support evidence answer different questions; keep those sources distinct.",
-          "local_output_evidence": "Return segment-linked findings, source trail, implications and uncertainty. Stop when the supplied evidence supports the decision to its requested confidence or the missing population/observation prevents it. State what would need to be learned next without claiming interviews or outreach occurred.",
-          "path": "skills/customer-research/SKILL.md",
-          "skill": "customer-research",
-          "skill_body_sha256": "731cca3eba8553f16a9667e2821ef5a8cea282261a68745b8ea161c664c83723",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Synthesize existing research or authorized participant evidence for a product decision, preserving segments, observations and unknowns. Skip invented interviews or unsolicited outreach."
-        },
-        {
           "decision_method": "Identify the situation that triggers a person to seek progress and the outcome they are trying to achieve. Ground the job in actual customer evidence rather than the product's feature vocabulary. Distinguish functional, social and emotional dimensions only where the sources support them.",
           "local_output_evidence": "Return an evidence-linked job/forces map, alternatives and the next consequential uncertainty. Stop when the framing clarifies a real decision or report that customer circumstances are missing. Do not invent purchase stories or claim validation from the phrasing alone.",
           "path": "skills/jobs-to-be-done/SKILL.md",
@@ -6674,15 +6575,6 @@
           "skill_body_sha256": "01c421f3d98044977f06c582a0baa88c795a4948ed860edb72f73543c5375bcd",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Frame a product problem around customer progress, circumstances and competing alternatives when existing evidence supports a jobs analysis. Skip generic persona generation."
-        },
-        {
-          "decision_method": "Clarify the decision, user/business objective, time horizon and binding constraints. Inspect available research, usage, economics and competitive evidence with dates and segment definitions. Separate facts from assumptions and distinguish a strategic choice from a list of desirable features.",
-          "local_output_evidence": "Return the selected option, tradeoffs, assumption map and measurable next action. Stop when the choice is reviewable and testable, or name the missing evidence/decision. Do not convert uncertainty into a confident roadmap simply to fill a template.",
-          "path": "skills/product-strategy/SKILL.md",
-          "skill": "product-strategy",
-          "skill_body_sha256": "bda6dc88898bbcc26597057c112b8ede64c720ff64718884c8284943bf8116ff",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Choose product priorities, pricing, market scope or roadmap bets when options, assumptions and measurable outcomes need comparison. Skip backlog formatting."
         },
         {
           "decision_method": "Identify the riskiest assumption and the observation that would support or reject it. Choose the smallest faithful prototype that can elicit that observation: content, interaction, layout or technical slice. Preserve real task constraints without pretending a simulation is production behavior.",
@@ -6694,24 +6586,6 @@
           "trigger": "Test a product idea or flow through a deliberately low-cost prototype, task observation and decision rule. Skip production delivery when feasibility is already established."
         },
         {
-          "decision_method": "Identify the intended segment, buying/use situation and alternatives actually considered. Inspect customer language, product capabilities and competitor evidence with current dates. Separate desirable aspirations from claims the product can substantiate.",
-          "local_output_evidence": "Return a positioning statement, claim/evidence map, message hierarchy and unresolved assumptions. Stop when the audience and defensible difference are clear enough for copy, or identify the missing evidence/decision. Do not publish or alter campaign accounts from a positioning brief.",
-          "path": "skills/positioning/SKILL.md",
-          "skill": "positioning",
-          "skill_body_sha256": "583fab7b92d66f9aec16149bb728ae7a99c017e833924f62a0d1c3b583b86883",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Define audience, alternatives and differentiated value when product positioning or message hierarchy needs evidence. Skip sentence-level proofreading of approved messaging."
-        },
-        {
-          "decision_method": "Establish the audience, situation, offer, voice, surface and intended action. Read existing positioning and real product evidence before drafting. Use specific benefits the audience can understand; connect feature claims to what the person can accomplish.",
-          "local_output_evidence": "Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.",
-          "path": "skills/marketing-copy/SKILL.md",
-          "skill": "marketing-copy",
-          "skill_body_sha256": "0fb5c09ab0332a4a15a6dd2e8cd1344f8305a5f9ea1762775f5be629f9480ec3",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Draft or improve persuasive page, email or product copy when audience fit, defensible claims and a clear next action matter. Skip neutral technical documentation and proofreading alone."
-        },
-        {
           "decision_method": "Identify the audience question, user intent and page's place in the information architecture. Inspect existing content, internal links and available search/usage evidence. Verify current search behavior through qualified browsing when it matters; rankings are observations tied to date/context, not guarantees.",
           "local_output_evidence": "Return the intent/structure decision, changed content and verification/measurement plan. Stop when the page serves the stated intent and checks pass; report unavailable analytics/indexing evidence. No ranking guarantee, content farm, paid campaign or external publication is implied.",
           "path": "skills/content-search/SKILL.md",
@@ -6719,24 +6593,6 @@
           "skill_body_sha256": "cf8127e43996d66e8628b2fb4e23e73776b5b12096f888c6435bb9be9a7828c7",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Plan or improve content for search intent and organic discovery with verifiable information architecture and page changes. Skip unrelated web research or keyword stuffing."
-        },
-        {
-          "decision_method": "Define the conversion event, eligible population, funnel stages and data limitations. Inspect the actual journey and relevant research/analytics before diagnosing friction. Distinguish a measurement defect, traffic-mix change and user-flow problem.",
-          "local_output_evidence": "Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.",
-          "path": "skills/conversion/SKILL.md",
-          "skill": "conversion",
-          "skill_body_sha256": "361102ca6b4fc3f2afa04fa557e99f35f557b33d82de170e9ddf9b69da94716f",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Diagnose signup, onboarding or checkout friction when an observed funnel issue needs a changed flow and a precommitted measure. Skip generic visual polish without conversion evidence."
-        },
-        {
-          "decision_method": "Define the decision, hypothesis, eligible audience, assignment/exposure unit and meaningful outcome. Establish a baseline, guardrails and measurement validity before interpreting a change. Account for dependence, contamination, seasonality and multiple looks/comparisons where relevant.",
-          "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
-          "path": "skills/experiments-launch/SKILL.md",
-          "skill": "experiments-launch",
-          "skill_body_sha256": "334c9c814e1833723d3bc89bf235e8be1f1845ebfc9ec8fea3cb90b828e637f5",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
         {
           "decision_method": "Identify the decision, model horizon, currency/units, timing basis and scenario variables. Separate source facts, assumptions, calculated outputs and any external rates with dates. Use current authoritative evidence for time-sensitive financial claims; do not present an illustrative model as personalized regulated advice.",
@@ -9494,15 +9350,6 @@
           "skill_body_sha256": "e9ecf65b31baa1595cd76455a942546a63e009974111960a9c790af0805d6866",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Encode data in a chart or visual explanation when comparison, uncertainty, units and source fidelity matter. Skip purely decorative graphics and a single unambiguous number."
-        },
-        {
-          "decision_method": "Define the decision, hypothesis, eligible audience, assignment/exposure unit and meaningful outcome. Establish a baseline, guardrails and measurement validity before interpreting a change. Account for dependence, contamination, seasonality and multiple looks/comparisons where relevant.",
-          "local_output_evidence": "Return the hypothesis, plan or executed exposure, measurement evidence and decision limits. Stop when the predeclared gate is reached or a guardrail fails; preserve null/negative outcomes. Do not silently extend exposure, change success criteria after results or claim an unrun launch succeeded.",
-          "path": "skills/experiments-launch/SKILL.md",
-          "skill": "experiments-launch",
-          "skill_body_sha256": "334c9c814e1833723d3bc89bf235e8be1f1845ebfc9ec8fea3cb90b828e637f5",
-          "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Design or execute an authorized growth experiment or launch with hypothesis, exposure, measurement and rollback criteria. Skip unsupported launch claims and unmeasured promotion."
         },
         {
           "decision_method": "Identify the question, source owners, capture dates, row grain, keys, units and population. Inspect schema and representative records before choosing transformations. Preserve originals and record filters, type conversions, joins and exclusions reproducibly.",

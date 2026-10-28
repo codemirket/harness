@@ -71,3 +71,9 @@ with `-Source`, `-ManifestSha256`, `-BinarySha256`, optional `-UserHome` and
 parse on macOS but no native Windows
 execution. Both Windows architectures require native qualification before this
 prompt may claim that target ready.
+
+The first 0.0.1 release is scoped to the qualified host `macOS 26.5.2 ARM64`.
+The macOS installer checks that exact platform and version before staging any
+release files; it refuses other macOS versions with an explicit support-scope
+message. macOS 15, later macOS versions, Windows and Codex Desktop GUI
+activation remain unqualified release paths.
