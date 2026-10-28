@@ -1,9 +1,0 @@
-{
-  "status": "failed_fixture_attempt",
-  "date": "2026-10-27",
-  "argv": "node tests/deep-review-semantic.mjs --mirket /Users/nazmiyilmaz/Projects/harness/target/debug/mirket --node /Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/simplification-20261027/local-mac-candidate-20261027/full-source/runtime/node/bin/node --embedding-package /Users/nazmiyilmaz/.codex/task-state/harness-rewrite-implementation/simplification-20261027/local-mac-candidate-20261027/full-source/runtime/semantic",
-  "platform": "darwin/arm64",
-  "failure": "One of six Promise.all semantic saves returned semantic_index.status=pending with warning: embedding session stopped during inference.",
-  "interpretation": "The first oracle attempt created concurrent inference demand and exposed the bounded session-capacity path. The retained oracle now saves sequentially so retrieval assertions are independent of scheduler contention.",
-  "source_revision": "working tree before sequential-save repair"
-}

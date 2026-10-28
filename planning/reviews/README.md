@@ -1,13 +1,12 @@
-# Historical planning reviews
+# Current reference provenance inputs
 
-The dated directories below are preserved research and review snapshots of the
-planning baseline inspected at the time. Their reports, baseline manifests,
-source pins and verification receipts remain unchanged. Statements about host
-targets, dependencies or implementation status in those snapshots are historical;
-they do not define the current product or authorize execution.
+`2026-10-27/` contains the pinned source/license retrieval receipts, focused
+source-to-method reviews and derived audit used by the current skill catalog.
+They are active provenance inputs to `scripts/refresh-skill-catalog.py`, not a
+backlog, runtime admission or evidence that every skill improves outcomes.
 
-Use the current [implementation plan](../implementation-plan.md),
-[decisions](../decisions.md) and [platform qualification](../platform-qualification.md)
-for active requirements. Decisions 80–81 make Codex Desktop the sole first-release
-host target and define its exclusive language scope, with the retained SQL dialects. Earlier multi-host recommendations and source comparisons remain
-historical evidence only.
+Use [the implementation contract](../implementation-plan.md),
+[skill contract](../skill-catalog-design.md) and
+[current qualification](../../docs/first-release-qualification-20261028.md)
+for product behavior and evidence. Completed architectural planning reviews
+and superseded proposals have been removed from the working tree.

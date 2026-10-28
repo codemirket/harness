@@ -12,9 +12,9 @@ redistribute. The 2026-10-27 retrieval and body review is retained in
 what was actually fetched, which source file/section was inspected, and which
 license evidence remains unverified.
 
-## Scope revision (2026-10-26)
+## Ownership
 
-General browsing and SQL navigation are Codex/project capabilities. The three browser guides and SQL navigation guide remain native project skills but no longer require a Mirket runtime capability. Mirket retains private Chrome only as a video-rendering input. Current source bodies and catalog metadata below supersede earlier Mirket-browser/SQL planning evidence.
+General browsing and SQL navigation are Codex/project capabilities. The three browser guides and SQL navigation guide remain native project skills but no longer require a Mirket runtime capability. Mirket retains private Chrome only as a video-rendering input. The current bodies and catalog metadata enforce that ownership boundary.
 
 ## Local source identity
 
@@ -22,54 +22,20 @@ The catalog manifest records the exact SHA-256 authoring snapshot of these files
 Later changes require checking the affected contracts; a hash establishes bytes,
 not user approval or semantic correctness.
 
-- [Catalog design](../planning/skill-catalog-design.md): Nine global skills; each project group; Authoring and acceptance.
+- [Catalog design](../planning/skill-catalog-design.md): Nine global skills; Project skills and pairing; Authoring, resources and rights; Evaluation and retention.
 - [Implementation plan](../planning/implementation-plan.md): Product boundary; Concrete capability and evidence contracts.
 - [Selected references](../planning/references.md): retained URLs/pins, family identity and Source-to-guide reuse contract.
 
-## Project-file contract clarification (2026-10-26)
+## Local contract and outcome basis
 
-The sampled Codex design turn was refused by the host before Mirket validation;
-its relative source and destination arguments are supported by the inspected
-design implementation. No downstream path failure was observed or established.
-The `runtime-operations` body now clarifies explicit project selection and the
-meaning of supported project-relative paths while preserving field-specific
-absolute/relative contracts and host permission authority. `vector-art` identifies
-SVG authoring as host file work followed by Mirket optimization/rendering.
-`openpencil` selects a project explicitly instead of assuming a reported workspace.
-
-All 67 bodies and their declared operation boundaries were reviewed. Only these
-three bodies changed; their catalog hashes/byte counts and local provenance
-were updated. The independently authored clarification follows current local
-schemas and scope/publication owners; no external text was adopted. The
-[audit record](../docs/m4-skill-path-contract-repair.md) retains source snapshot
-pins, checks and the remaining sampled model gate. The four original
-authoring-basis pins and all 335 planned development cases remain unchanged.
-This source clarification does not establish a successful skill-to-model-to-useful-
-design-mutation journey.
-
-## Content and standalone-use review (2026-10-26)
-
-A later focused review found two content gaps in the authored bodies: visual
-skills referred to undefined shared repair budgets, and installed design bodies
-had no optional locator to their approved comparison references. Eight project
-bodies now add task-specific composition, critique, typography, token-consumer
-or motion decisions; those and eight visual/paged bodies define the applicable
-review limits without relying on an uninstalled sibling skill. Seven of the
-deeper bodies expose selected approved reference URLs as optional comparison
-locators. The nine global bodies and all skill IDs/descriptions are unchanged.
-
-The additions are independently authored; no external body was fetched, copied
-or adapted in this review. Pinned URLs retain their approved revision; moving
-typography pages are identified as moving locators. A locator is not a rights
-review, executable dependency, package readiness claim or instruction to load
-every source. The original comparison/link-only classifications and source
-families remain unchanged. Body byte counts and SHA-256 values were refreshed;
-the four approved authoring-basis pins and the 335 planned case IDs remain.
-
-The [content review](../docs/skill-catalog-content-review.md) records scope,
-checks and remaining native-client/model-outcome gates. These content repairs
-do not supersede the historical sampled outcome evidence or establish useful
-model behavior by themselves.
+The current bodies follow the actual scoped APIs and distinguish host approval,
+source authoring, Mirket transformations and independently inspected outputs.
+Shared repair budgets and optional reference locators are defined in the affected
+bodies/resources. The per-skill records link the exact original research or
+review where it informed a method; those links are evidence, not current tasks.
+Current inventory and planned case counts are generated from the catalog.
+No source clarification, body read, hash or static check alone establishes a
+successful model-to-useful-output journey.
 
 ## Rights and adaptation boundary
 
@@ -100,27 +66,6 @@ No native Codex activation, matched no-skill baseline, desktop-platform outcome 
 tool-operation fidelity is claimed by this corpus. Structural checks cannot prove
 selection quality, rights, useful behavior or user acceptance.
 
-## Preserved subject coverage
-
-The thirteen retired draft names are not aliases or additional installed skills.
-Their accepted outcomes remain covered by these native boundaries:
-
-| Retired subject | Current owning boundaries |
-| --- | --- |
-| Engineering | code-change; architecture; api-integration; frontend-engineering; backend-engineering; navigation specialists |
-| Verification | outcome-verification; test-design; browser-qa; specialist saved-output checks |
-| Research | evidence-research; browser-research |
-| Interface design | art-direction; interface-composition; design-critique; design-systems; typography; accessibility; visual artifact specialists |
-| Motion | motion-direction; ui-motion; scroll-motion; svg-lottie; video-production |
-| Product and marketing | Codex host workflows; jobs-to-be-done; prototype-test; content-search |
-| Documents | technical-docs; document-artifacts; workbook-authoring; slide-deck-authoring |
-| Memory | project-memory; retrieval-evaluation; privacy-data |
-| Security | threat-model; security-review; privacy-data; dependency-admission |
-| Reliability | reliability-incident; ci-release; infrastructure; backend-engineering |
-| Data analysis | data-analysis; statistical-inference; sql-analysis; data-pipelines; financial-models; data-visualization |
-| AI evaluation | ai-tool-design; ai-evaluation; retrieval-evaluation |
-| Planning and coordination | task-planning; agent-coordination-strategy; runtime-operations |
-
 ## Per-skill records
 
 ### runtime-operations
@@ -128,7 +73,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [agent-skills](#reference-agent-skills), [codex-practices](#reference-codex-practices).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, navigation.js-ts, host-sql, design.tokens, design.openpencil, design.vector, design.raster, design.diagrams, video; use only when the actual task needs them.
 - Planned acceptance IDs: runtime-operations-positive-1, runtime-operations-positive-2, runtime-operations-negative-1, runtime-operations-negative-2, runtime-operations-mixed-1. Not run.
 
@@ -137,7 +82,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [qmd-methods](#reference-qmd-methods), [matt](#reference-matt).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: project-memory-positive-1, project-memory-positive-2, project-memory-negative-1, project-memory-negative-2, project-memory-mixed-1. Not run.
 
 ### evidence-research
@@ -145,7 +90,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [anthropic](#reference-anthropic), [google](#reference-google), [qmd-methods](#reference-qmd-methods).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: evidence-research-positive-1, evidence-research-positive-2, evidence-research-negative-1, evidence-research-negative-2, evidence-research-mixed-1. Not run.
 
 ### task-planning
@@ -153,7 +98,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [superpowers](#reference-superpowers), [matt](#reference-matt), [ponytail](#reference-ponytail), [codex-practices](#reference-codex-practices), [adhd](#reference-adhd).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: task-planning-positive-1, task-planning-positive-2, task-planning-negative-1, task-planning-negative-2, task-planning-mixed-1. Not run.
 
 ### agent-coordination-strategy
@@ -161,7 +106,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [superpowers](#reference-superpowers), [gstack](#reference-gstack), [archify](#reference-archify).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: agent-coordination-strategy-positive-1, agent-coordination-strategy-positive-2, agent-coordination-strategy-negative-1, agent-coordination-strategy-negative-2, agent-coordination-strategy-mixed-1. Not run.
 
 ### code-change
@@ -169,7 +114,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [matt](#reference-matt), [superpowers](#reference-superpowers), [ecc](#reference-ecc), [ponytail](#reference-ponytail), [karpathy](#reference-karpathy).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: code-change-positive-1, code-change-positive-2, code-change-negative-1, code-change-negative-2, code-change-mixed-1. Not run.
 
 ### root-cause-debugging
@@ -177,7 +122,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [superpowers](#reference-superpowers), [matt](#reference-matt), [gstack](#reference-gstack).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: root-cause-debugging-positive-1, root-cause-debugging-positive-2, root-cause-debugging-negative-1, root-cause-debugging-negative-2, root-cause-debugging-mixed-1. Not run.
 
 ### critical-review
@@ -185,7 +130,7 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [archify](#reference-archify), [sentry-methods](#reference-sentry-methods), [trail-of-bits](#reference-trail-of-bits).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: critical-review-positive-1, critical-review-positive-2, critical-review-negative-1, critical-review-negative-2, critical-review-mixed-1. Not run.
 
 ### outcome-verification
@@ -193,102 +138,102 @@ Their accepted outcomes remain covered by these native boundaries:
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Nine global skills; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [superpowers](#reference-superpowers), [agent-skills](#reference-agent-skills), [trail-of-bits](#reference-trail-of-bits), [wcag](#reference-wcag).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: outcome-verification-positive-1, outcome-verification-positive-2, outcome-verification-negative-1, outcome-verification-negative-2, outcome-verification-mixed-1. Not run.
 
 ### architecture
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [matt](#reference-matt), [archify](#reference-archify), [gstack](#reference-gstack), [ponytail](#reference-ponytail).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: architecture-positive-1, architecture-positive-2, architecture-negative-1, architecture-negative-2, architecture-mixed-1. Not run.
 
 ### api-integration
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [openai](#reference-openai), [google](#reference-google), [ponytail](#reference-ponytail).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: api-integration-positive-1, api-integration-positive-2, api-integration-negative-1, api-integration-negative-2, api-integration-mixed-1. Not run.
 
 ### frontend-engineering
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [matt](#reference-matt), [ecc](#reference-ecc), [impeccable](#reference-impeccable), [wcag](#reference-wcag).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: frontend-engineering-positive-1, frontend-engineering-positive-2, frontend-engineering-negative-1, frontend-engineering-negative-2, frontend-engineering-mixed-1. Not run.
 
 ### backend-engineering
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [matt](#reference-matt), [superpowers](#reference-superpowers).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: backend-engineering-positive-1, backend-engineering-positive-2, backend-engineering-negative-1, backend-engineering-negative-2, backend-engineering-mixed-1. Not run.
 
 ### database-migrations
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [matt](#reference-matt), [ecc](#reference-ecc), [trail-of-bits](#reference-trail-of-bits).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: database-migrations-positive-1, database-migrations-positive-2, database-migrations-negative-1, database-migrations-negative-2, database-migrations-mixed-1. Not run.
 
 ### test-design
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [superpowers](#reference-superpowers), [trail-of-bits](#reference-trail-of-bits), [sentry-methods](#reference-sentry-methods).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: test-design-positive-1, test-design-positive-2, test-design-negative-1, test-design-negative-2, test-design-mixed-1. Not run.
 
 ### performance
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [ecc](#reference-ecc), [codex-practices](#reference-codex-practices).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: performance-positive-1, performance-positive-2, performance-negative-1, performance-negative-2, performance-mixed-1. Not run.
 
 ### ci-release
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [ecc](#reference-ecc), [archify](#reference-archify).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: ci-release-positive-1, ci-release-positive-2, ci-release-negative-1, ci-release-negative-2, ci-release-mixed-1. Not run.
 
 ### infrastructure
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [gstack](#reference-gstack), [archify](#reference-archify).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: infrastructure-positive-1, infrastructure-positive-2, infrastructure-negative-1, infrastructure-negative-2, infrastructure-mixed-1. Not run.
 
 ### native-desktop
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [fluent](#reference-fluent), [apple-liquid-glass](#reference-apple-liquid-glass).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: native-desktop-positive-1, native-desktop-positive-2, native-desktop-negative-1, native-desktop-negative-2, native-desktop-mixed-1. Not run.
 
 ### dependency-admission
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [sentry-methods](#reference-sentry-methods).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: dependency-admission-positive-1, dependency-admission-positive-2, dependency-admission-negative-1, dependency-admission-negative-2, dependency-admission-mixed-1. Not run.
 
 ### js-ts-navigation
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [serena](#reference-serena).
 - Required qualified capabilities: navigation.js-ts.
 - Planned acceptance IDs: js-ts-navigation-positive-1, js-ts-navigation-positive-2, js-ts-navigation-negative-1, js-ts-navigation-negative-2, js-ts-navigation-mixed-1. Not run.
@@ -296,7 +241,7 @@ Their accepted outcomes remain covered by these native boundaries:
 ### sql-navigation
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Engineering and delivery — 13; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [serena](#reference-serena).
 - Host SQL capability: Codex or project tool, checked at use.
 - Planned acceptance IDs: sql-navigation-positive-1, sql-navigation-positive-2, sql-navigation-negative-1, sql-navigation-negative-2, sql-navigation-mixed-1. Not run.
@@ -304,16 +249,16 @@ Their accepted outcomes remain covered by these native boundaries:
 ### browser-research
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Browser and web evidence — 3; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [crawl4ai](#reference-crawl4ai), [stagehand](#reference-stagehand).
 - Host browser capability: Codex Desktop browser or project tool, checked at use.
 - Planned acceptance IDs: browser-research-positive-1, browser-research-positive-2, browser-research-negative-1, browser-research-negative-2, browser-research-mixed-1. Not run.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
+- Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### browser-automation
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Browser and web evidence — 3; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [stagehand](#reference-stagehand), [skyvern](#reference-skyvern), [cua](#reference-cua), [ponytail](#reference-ponytail).
 - Host browser capability: Codex Desktop browser or project tool, checked at use.
 - Planned acceptance IDs: browser-automation-positive-1, browser-automation-positive-2, browser-automation-negative-1, browser-automation-negative-2, browser-automation-mixed-1. Not run.
@@ -321,7 +266,7 @@ Their accepted outcomes remain covered by these native boundaries:
 ### browser-qa
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Browser and web evidence — 3; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [impeccable](#reference-impeccable), [stagehand](#reference-stagehand), [wcag](#reference-wcag).
 - Host browser capability: Codex Desktop browser or project tool, checked at use.
 - Planned acceptance IDs: browser-qa-positive-1, browser-qa-positive-2, browser-qa-negative-1, browser-qa-negative-2, browser-qa-mixed-1. Not run.
@@ -329,20 +274,20 @@ Their accepted outcomes remain covered by these native boundaries:
 ### art-direction
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: art-direction-positive-1, art-direction-positive-2, art-direction-negative-1, art-direction-negative-2, art-direction-mixed-1. Not run.
 
-- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks.
+- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### interface-composition
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil, design.tokens, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: interface-composition-positive-1, interface-composition-positive-2, interface-composition-negative-1, interface-composition-negative-2, interface-composition-mixed-1. Not run.
 
@@ -351,18 +296,18 @@ Their accepted outcomes remain covered by these native boundaries:
 ### design-critique
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: design-critique-positive-1, design-critique-positive-2, design-critique-negative-1, design-critique-negative-2, design-critique-mixed-1. Not run.
 
-- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
 
 ### design-systems
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable), [reshaped](#reference-reshaped), [geist-code](#reference-geist-code), [atlassian](#reference-atlassian), [fluent](#reference-fluent).
 - Required qualified capabilities: design.tokens.
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
@@ -371,25 +316,25 @@ Their accepted outcomes remain covered by these native boundaries:
 ### typography
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [geist-code](#reference-geist-code), [guardian](#reference-guardian), [govuk](#reference-govuk), [vanilla-publishing](#reference-vanilla-publishing), [reshaped](#reference-reshaped).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: typography-positive-1, typography-positive-2, typography-negative-1, typography-negative-2, typography-mixed-1. Not run.
 
 ### accessibility
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [wcag](#reference-wcag), [govuk](#reference-govuk), [spectrum](#reference-spectrum), [fluent](#reference-fluent).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: accessibility-positive-1, accessibility-positive-2, accessibility-negative-1, accessibility-negative-2, accessibility-mixed-1. Not run.
 
 ### openpencil
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable), [owl-concepts](#reference-owl-concepts).
 - Required qualified capabilities: design.openpencil.
 - Conditional operation boundaries: design.tokens, design.vector, design.raster; use only when the actual task needs them.
@@ -398,7 +343,7 @@ Their accepted outcomes remain covered by these native boundaries:
 ### vector-art
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [mengto-inspiration](#reference-mengto-inspiration).
 - Required qualified capabilities: design.vector.
 - Planned acceptance IDs: vector-art-positive-1, vector-art-positive-2, vector-art-negative-1, vector-art-negative-2, vector-art-mixed-1. Not run.
@@ -408,7 +353,7 @@ Their accepted outcomes remain covered by these native boundaries:
 ### raster-art
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [taste](#reference-taste), [hallmark](#reference-hallmark), [better-design](#reference-better-design).
 - Required qualified capabilities: design.raster.
 - Planned acceptance IDs: raster-art-positive-1, raster-art-positive-2, raster-art-negative-1, raster-art-negative-2, raster-art-mixed-1. Not run.
@@ -416,7 +361,7 @@ Their accepted outcomes remain covered by these native boundaries:
 ### diagrams
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [archify](#reference-archify), [diagram-design](#reference-diagram-design), [atlassian](#reference-atlassian), [guardian](#reference-guardian), [spectrum](#reference-spectrum).
 - Required qualified capabilities: design.diagrams.
 - Conditional operation boundaries: design.vector; use only when the actual task needs them.
@@ -425,38 +370,38 @@ Their accepted outcomes remain covered by these native boundaries:
 ### data-visualization
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [statistical-analysis](#reference-statistical-analysis), [guardian](#reference-guardian), [spectrum](#reference-spectrum), [diagram-design](#reference-diagram-design).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: data-visualization-positive-1, data-visualization-positive-2, data-visualization-negative-1, data-visualization-negative-2, data-visualization-mixed-1. Not run.
 
 ### localization
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Design and visual artifacts — 12; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [spectrum](#reference-spectrum), [govuk](#reference-govuk), [fluent](#reference-fluent), [wcag](#reference-wcag).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: localization-positive-1, localization-positive-2, localization-negative-1, localization-negative-2, localization-mixed-1. Not run.
 
 ### motion-direction
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [huashu-storyboard](#reference-huashu-storyboard).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, video; use only when the actual task needs them.
 - Planned acceptance IDs: motion-direction-positive-1, motion-direction-positive-2, motion-direction-negative-1, motion-direction-negative-2, motion-direction-mixed-1. Not run.
 
-- Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
+- Method mapping: Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence.
+- Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### ui-motion
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [emil](#reference-emil).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: ui-motion-positive-1, ui-motion-positive-2, ui-motion-negative-1, ui-motion-negative-2, ui-motion-mixed-1. Not run.
 
@@ -465,9 +410,9 @@ Their accepted outcomes remain covered by these native boundaries:
 ### scroll-motion
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [emil](#reference-emil).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: scroll-motion-positive-1, scroll-motion-positive-2, scroll-motion-negative-1, scroll-motion-negative-2, scroll-motion-mixed-1. Not run.
 
@@ -476,176 +421,176 @@ Their accepted outcomes remain covered by these native boundaries:
 ### svg-lottie
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [lottiefiles-motion](#reference-lottiefiles-motion), [diagram-design](#reference-diagram-design), [motion-primitives](#reference-motion-primitives).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: design.vector, video, host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: svg-lottie-positive-1, svg-lottie-positive-2, svg-lottie-negative-1, svg-lottie-negative-2, svg-lottie-mixed-1. Not run.
 
 ### video-production
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
-- Local basis: catalog design / Motion and video — 5; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Reviewed method families: [hyperframes-authoring](#reference-hyperframes-authoring).
 - Required qualified capabilities: video.
 - Conditional operation boundaries: design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
-- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
-- Original procedural synthesis: docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
+- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### jobs-to-be-done
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [wondel](#reference-wondel), [marketing](#reference-marketing).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: jobs-to-be-done-positive-1, jobs-to-be-done-positive-2, jobs-to-be-done-negative-1, jobs-to-be-done-negative-2, jobs-to-be-done-mixed-1. Not run.
 
 ### prototype-test
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [wondel](#reference-wondel), [owl-concepts](#reference-owl-concepts), [hallmark](#reference-hallmark).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: prototype-test-positive-1, prototype-test-positive-2, prototype-test-negative-1, prototype-test-negative-2, prototype-test-mixed-1. Not run.
 
 ### content-search
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Product, discovery and growth — 9; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [marketing](#reference-marketing), [wondel](#reference-wondel), [govuk](#reference-govuk), [guardian](#reference-guardian).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser; use only when the actual task needs them.
 - Planned acceptance IDs: content-search-positive-1, content-search-positive-2, content-search-negative-1, content-search-negative-2, content-search-mixed-1. Not run.
 
 ### data-analysis
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [statistical-analysis](#reference-statistical-analysis).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: data-analysis-positive-1, data-analysis-positive-2, data-analysis-negative-1, data-analysis-negative-2, data-analysis-mixed-1. Not run.
 
 ### statistical-inference
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [statistical-analysis](#reference-statistical-analysis), [trail-of-bits](#reference-trail-of-bits).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: statistical-inference-positive-1, statistical-inference-positive-2, statistical-inference-negative-1, statistical-inference-negative-2, statistical-inference-mixed-1. Not run.
 
 ### sql-analysis
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [statistical-analysis](#reference-statistical-analysis).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: sql-analysis-positive-1, sql-analysis-positive-2, sql-analysis-negative-1, sql-analysis-negative-2, sql-analysis-mixed-1. Not run.
 
 ### data-pipelines
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [ecc](#reference-ecc), [matt](#reference-matt), [trail-of-bits](#reference-trail-of-bits).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: data-pipelines-positive-1, data-pipelines-positive-2, data-pipelines-negative-1, data-pipelines-negative-2, data-pipelines-mixed-1. Not run.
 
 ### financial-models
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [wondel](#reference-wondel), [marketing](#reference-marketing), [statistical-analysis](#reference-statistical-analysis).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: financial-models-positive-1, financial-models-positive-2, financial-models-negative-1, financial-models-negative-2, financial-models-mixed-1. Not run.
 
 ### ai-tool-design
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [anthropic](#reference-anthropic), [google](#reference-google), [langchain](#reference-langchain), [langgraph](#reference-langgraph).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: ai-tool-design-positive-1, ai-tool-design-positive-2, ai-tool-design-negative-1, ai-tool-design-negative-2, ai-tool-design-mixed-1. Not run.
 
 ### ai-evaluation
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [promptfoo](#reference-promptfoo), [agent-skills](#reference-agent-skills), [openai](#reference-openai), [anthropic](#reference-anthropic), [google](#reference-google).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: ai-evaluation-positive-1, ai-evaluation-positive-2, ai-evaluation-negative-1, ai-evaluation-negative-2, ai-evaluation-mixed-1. Not run.
 
 ### retrieval-evaluation
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Data and AI systems — 8; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [promptfoo](#reference-promptfoo), [qmd-methods](#reference-qmd-methods), [langchain](#reference-langchain), [langgraph](#reference-langgraph).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: retrieval-evaluation-positive-1, retrieval-evaluation-positive-2, retrieval-evaluation-negative-1, retrieval-evaluation-negative-2, retrieval-evaluation-mixed-1. Not run.
 
 ### technical-docs
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Documents and communication — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [google](#reference-google), [wondel](#reference-wondel).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: technical-docs-positive-1, technical-docs-positive-2, technical-docs-negative-1, technical-docs-negative-2, technical-docs-mixed-1. Not run.
 
 ### document-artifacts
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Documents and communication — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [anthropic](#reference-anthropic), [google](#reference-google).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: document-artifacts-positive-1, document-artifacts-positive-2, document-artifacts-negative-1, document-artifacts-negative-2, document-artifacts-mixed-1. Not run.
 
 ### workbook-authoring
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Documents and communication — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [google](#reference-google).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: workbook-authoring-positive-1, workbook-authoring-positive-2, workbook-authoring-negative-1, workbook-authoring-negative-2, workbook-authoring-mixed-1. Not run.
 
 ### slide-deck-authoring
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Documents and communication — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [google](#reference-google).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: slide-deck-authoring-positive-1, slide-deck-authoring-positive-2, slide-deck-authoring-negative-1, slide-deck-authoring-negative-2, slide-deck-authoring-mixed-1. Not run.
 
 ### threat-model
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Trust and operations — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [ecc](#reference-ecc), [trail-of-bits](#reference-trail-of-bits).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: threat-model-positive-1, threat-model-positive-2, threat-model-negative-1, threat-model-negative-2, threat-model-mixed-1. Not run.
 
 ### security-review
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Trust and operations — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [sentry-methods](#reference-sentry-methods), [trail-of-bits](#reference-trail-of-bits), [ecc](#reference-ecc), [promptfoo](#reference-promptfoo).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: security-review-positive-1, security-review-positive-2, security-review-negative-1, security-review-negative-2, security-review-mixed-1. Not run.
 
 ### privacy-data
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Trust and operations — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [openai](#reference-openai), [google](#reference-google).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: privacy-data-positive-1, privacy-data-positive-2, privacy-data-negative-1, privacy-data-negative-2, privacy-data-mixed-1. Not run.
 
 ### reliability-incident
 
 - Classification/terms: independently-authored; MIT; no external section adopted.
-- Local basis: catalog design / Trust and operations — 4; implementation plan / Product boundary and Concrete capability and evidence contracts.
+- Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [archify](#reference-archify), [ecc](#reference-ecc), [matt](#reference-matt).
-- Required qualified capabilities: none (host-owned method).
+- Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Planned acceptance IDs: reliability-incident-positive-1, reliability-incident-positive-2, reliability-incident-negative-1, reliability-incident-negative-2, reliability-incident-mixed-1. Not run.
 
 ## Retained reference locators

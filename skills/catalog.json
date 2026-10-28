@@ -5,15 +5,15 @@
   "authoring_basis": [
     {
       "path": "planning/skill-catalog-design.md",
-      "sha256": "7186e21796030d7c4697cf944b02d63b421211b5b94b935f6378b8f5a5dd7401"
+      "sha256": "aa180ea769e255b26ac28e535c592aa99862e8148b118737568931bf84f11375"
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "e3cd83fb26df69122daa3ec8a7d72502d85eff2197ede9ee56690e90ebe42427"
+      "sha256": "e77ce20f9858ab325ba1ab55b8e21b81e07d192518eef8e6545bb9643cee9724"
     },
     {
       "path": "planning/references.md",
-      "sha256": "507695472996c57e49e0e56a01fb39c31925885aaaa30eb096dc0db56735e7de"
+      "sha256": "bcb5c3c31f117c06ed3c9b2c12abccf022830e2cae6af38997f6833b733b94e9"
     },
     {
       "path": "LICENSE",
@@ -53,7 +53,7 @@
           "planning/skill-catalog-design.md / Nine global skills",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)"
         ],
         "reference_families": [
           "agent-skills",
@@ -598,7 +598,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#architecture",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -659,7 +659,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#api-integration",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -720,7 +720,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#frontend-engineering",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -781,7 +781,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#backend-engineering",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -841,7 +841,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#database-migrations",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -901,7 +901,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#test-design",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -961,7 +961,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#performance",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1021,7 +1021,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ci-release",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1081,7 +1081,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#infrastructure",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1141,7 +1141,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#native-desktop",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1201,7 +1201,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#dependency-admission",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1262,7 +1262,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#js-ts-navigation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1320,7 +1320,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#sql-navigation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Engineering and delivery — 13",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1378,10 +1378,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-research",
         "local_basis": [
-          "planning/skill-catalog-design.md / Browser and web evidence — 3",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
         ],
         "reference_families": [
           "crawl4ai",
@@ -1444,7 +1444,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-automation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Browser and web evidence — 3",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1505,7 +1505,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-qa",
         "local_basis": [
-          "planning/skill-catalog-design.md / Browser and web evidence — 3",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1570,12 +1570,12 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#art-direction",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
           "hallmark",
@@ -1640,10 +1640,10 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#interface-composition",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
@@ -1714,14 +1714,14 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#design-critique",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
-          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
         ],
         "reference_families": [
           "impeccable",
@@ -1791,10 +1791,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#design-systems",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "hallmark",
@@ -1857,10 +1857,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#typography",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "geist-code",
@@ -1920,7 +1920,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#accessibility",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -1987,11 +1987,11 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#openpencil",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "hallmark",
@@ -2051,11 +2051,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#vector-art",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
@@ -2125,10 +2125,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#raster-art",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "taste",
@@ -2190,10 +2190,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#diagrams",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "archify",
@@ -2253,7 +2253,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-visualization",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2314,7 +2314,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#localization",
         "local_basis": [
-          "planning/skill-catalog-design.md / Design and visual artifacts — 12",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2377,14 +2377,14 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
         "local_basis": [
-          "planning/skill-catalog-design.md / Motion and video — 5",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
         ],
         "reference_families": [
           "emil",
@@ -2460,10 +2460,10 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#ui-motion",
         "local_basis": [
-          "planning/skill-catalog-design.md / Motion and video — 5",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
@@ -2526,10 +2526,10 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#scroll-motion",
         "local_basis": [
-          "planning/skill-catalog-design.md / Motion and video — 5",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
@@ -2592,10 +2592,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#svg-lottie",
         "local_basis": [
-          "planning/skill-catalog-design.md / Motion and video — 5",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "lottiefiles-motion",
@@ -2658,15 +2658,15 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
         "local_basis": [
-          "planning/skill-catalog-design.md / Motion and video — 5",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
           "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
-          "docs/design-review-20261027.md / recent research and local outcome checks",
-          "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
-          "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity",
-          "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity",
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
         ],
         "reference_families": [
           "remotion",
@@ -2740,7 +2740,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#jobs-to-be-done",
         "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2801,7 +2801,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#prototype-test",
         "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2861,7 +2861,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#content-search",
         "local_basis": [
-          "planning/skill-catalog-design.md / Product, discovery and growth — 9",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2922,7 +2922,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-analysis",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -2980,7 +2980,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#statistical-inference",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3039,7 +3039,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#sql-analysis",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3097,7 +3097,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-pipelines",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3157,7 +3157,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#financial-models",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3217,7 +3217,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ai-tool-design",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3279,7 +3279,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ai-evaluation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3341,7 +3341,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#retrieval-evaluation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Data and AI systems — 8",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3402,7 +3402,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#technical-docs",
         "local_basis": [
-          "planning/skill-catalog-design.md / Documents and communication — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3462,10 +3462,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#document-artifacts",
         "local_basis": [
-          "planning/skill-catalog-design.md / Documents and communication — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "openai",
@@ -3523,7 +3523,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#workbook-authoring",
         "local_basis": [
-          "planning/skill-catalog-design.md / Documents and communication — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3582,10 +3582,10 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#slide-deck-authoring",
         "local_basis": [
-          "planning/skill-catalog-design.md / Documents and communication — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts",
-          "docs/skill-catalog-content-review.md / Concrete gaps and repairs"
+          "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
           "openai",
@@ -3642,7 +3642,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#threat-model",
         "local_basis": [
-          "planning/skill-catalog-design.md / Trust and operations — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3702,7 +3702,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#security-review",
         "local_basis": [
-          "planning/skill-catalog-design.md / Trust and operations — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3763,7 +3763,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#privacy-data",
         "local_basis": [
-          "planning/skill-catalog-design.md / Trust and operations — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],
@@ -3822,7 +3822,7 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#reliability-incident",
         "local_basis": [
-          "planning/skill-catalog-design.md / Trust and operations — 4",
+          "planning/skill-catalog-design.md / Project skills and pairing",
           "planning/implementation-plan.md / Product boundary",
           "planning/implementation-plan.md / Concrete capability and evidence contracts"
         ],

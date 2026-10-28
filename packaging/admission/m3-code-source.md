@@ -3,7 +3,7 @@
 The first-release JS/TS/JSX/TSX **structure** route uses the unchanged
 `typescript@5.9.3` compiler API on Mirket's already private Node 24.22.1.
 The same selected compiler now also powers the bounded
-[semantic navigation route](../../docs/m3-typescript-semantic-navigation.md).
+[semantic navigation route](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m3-typescript-semantic-navigation.md).
 The former TypeScript 7 analyzer candidate is not selected.
 The exact npm lock entry has no registry runtime dependencies;
 moving it from development-only to production changes only its lockfile
@@ -22,7 +22,7 @@ Only these unchanged archive members are selected under
 
 The selected 9,163,213 bytes include Apache-2.0 terms and complete packaged
 third-party notices. The source archive, integrity and passive probe evidence
-are in [the TypeScript qualification](../../docs/m3-typescript-navigation-qualification.md)
+are in [the TypeScript qualification](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m3-typescript-navigation-qualification.md)
 and its retained task-state inventory. No `tsc`, `tsserver`, default library,
 npm/npx or TypeScript binary is selected. The release assembler rejects any
 additional or altered TypeScript member; the release manifest pins every

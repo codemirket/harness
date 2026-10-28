@@ -1,8 +1,8 @@
-# Selected references for the rewrite
+# Selected skill references
 
-Status: **original source selection and focused review additions approved by the user on 2026-10-24** (decision 77). Architecture, dependencies and implementation remain proposals until separately agreed.
+Status: **approved reference selection**, including the focused review additions. The [implementation contract](implementation-plan.md) governs the implemented product; reference selection does not grant runtime or dependency admission.
 
-**60 unique selected entries across 61 group memberships:** 52 original sources plus six focused method references in H and two focused design/video method families in I. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active rewrite catalog. The original harness retains its historical provenance.
+**60 unique selected entries across 61 group memberships:** 52 original sources plus six focused method references in H and two focused design/video method families in I. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active catalog.
 
 Selecting a source permits reference review and focused synthesis. It does not adopt its full workflow, code, runtime, dependencies, service or licensing terms. Existing source pins below are inherited evidence locators, not newly validated dependency versions. No upstream content has been copied into this repository.
 
@@ -126,7 +126,7 @@ review and the retained fetch receipts.
 | ID | Selected evidence locator | Use and rights boundary |
 | --- | --- | --- |
 | `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
-| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/m3-video-recipient-closure.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
+| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/first-release-qualification-20261028.md#package-and-source-delivery) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
 
 ## Source-to-guide reuse contract
 
@@ -134,7 +134,7 @@ For every adapted section, record exact source revision/file/section, retained t
 
 Anthropic's [DOCX license at the retained pin](https://github.com/anthropics/skills/blob/683bc88e56f3e09ba94f7055977f3d3aa499f202/skills/docx/LICENSE.txt) restricts derivatives/distribution. Keep it link-only absent separate permission and independently author Office guidance from reusable tool/format documentation. Treat visual brands/fonts/assets separately from guideline prose. Do not copy first-use launchers, broad mandatory activation, repeat-every-check rituals, remote-only project identity, telemetry or competing session/agent machinery from source workflows.
 
-The [capability review](reviews/2026-10-24/capability.md) records exact sampled source coverage and limits. Current observation pins in that report do not automatically replace the original A–G pins. Newly adapted portions must identify their actual reviewed revision; never silently substitute upstream HEAD.
+The [capability review](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/reviews/2026-10-24/capability.md) records exact sampled source coverage and limits. Current observation pins in that report do not automatically replace the original A–G pins. Newly adapted portions must identify their actual reviewed revision; never silently substitute upstream HEAD.
 
 ## Consequences for planning
 
@@ -148,10 +148,11 @@ The [capability review](reviews/2026-10-24/capability.md) records exact sampled 
 
 ## Separate toolset decision
 
-No dependency/tool selection was supplied for the previous group H. Current tool direction is recorded in the implementation/toolchain plans. Podman/VM execution is superseded; the old group H inventory did not authorize tools. This document’s new H contains method references only. No historical runtime approval transfers to an unrelated new dependency closure.
+No dependency/tool selection was supplied for the previous group H. Current tool direction is recorded in the [implementation contract](implementation-plan.md). Podman/VM execution is superseded; the old group H inventory did not authorize tools. This document’s new H contains method references only. No historical runtime approval transfers to an unrelated new dependency closure.
 
-## Historical inventory sources
+## Provenance
 
-- [Original reference ledger](/Users/nazmiyilmaz/.codex/worktrees/capability-runtime/harness/registry/reference-ledger.json)
-- [Original runtime review](/Users/nazmiyilmaz/.codex/worktrees/capability-runtime/harness/docs/runtime-reference-decisions.md)
-- [Original design-resource review](/Users/nazmiyilmaz/.codex/worktrees/capability-runtime/harness/docs/design-resource-sources.json)
+The current [provenance ledger](../skills/PROVENANCE.md) and
+[pinned review inputs](reviews/README.md) record selected sources and reuse limits.
+Earlier ledgers from a private development worktree are not portable repository
+inputs and do not authorize additional references or dependencies.

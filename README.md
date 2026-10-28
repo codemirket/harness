@@ -29,7 +29,7 @@ skill distribution. It does not add another agent orchestrator or OS sandbox.
   preserves unrelated user files.
 
 The Hallmark/Taste design direction and user-accepted Daybreak specimen remain.
-See the [design production record](docs/design-production-closure-20261028.md)
+See the [design production record](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-production-closure-20261028.md)
 and [D6 review pack](specimens/daybreak/review.html) for their actual limits.
 
 ## Skill retention
@@ -42,7 +42,7 @@ timed out while both no-skill baselines produced independently correct artifacts
 Codex continues to handle those workflows. This is a bundle-level release choice,
 not proof that each removed skill is harmful on every task.
 
-The [evaluation record](docs/supplemental-model-evaluation-20261028.md) preserves
+The [evaluation record](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/supplemental-model-evaluation-20261028.md) preserves
 all attempts and costs. Research and reviewer controls passed in both conditions;
 no general quality uplift is claimed. The retained 305 catalog development cases
 are planned fixtures, not 305 completed acceptance trials.
@@ -52,8 +52,7 @@ are planned fixtures, not 305 completed acceptance trials.
 Use the [release installation prompt](packaging/install-prompt.md) and the exact
 installer, binary and manifest hashes from the release record. The first-party
 installer refuses unsupported host versions. Installation lives under `.mirket`;
-source changes in this checkout do not change an existing installation. The former
-installation was retired and replaced on 2026-10-27. Tests use disposable homes.
+source changes in this checkout do not change an existing installation. Tests use disposable homes.
 
 The lean package includes corresponding source and notices for its redistributed
 Video/FFmpeg closure. Chrome for Testing, Sharp native packages and the semantic
@@ -78,6 +77,6 @@ paths. See [native build requirements](docs/native-build.md).
 
 The [implementation plan](planning/implementation-plan.md) defines ownership and
 release constraints. The [catalog plan](planning/skill-catalog-design.md) and
-[provenance](skills/PROVENANCE.md) define current skill scope. Earlier qualification
-records in `docs/` preserve their original revisions and failed attempts; they do
-not independently qualify a newer package or unsupported platform.
+[provenance](skills/PROVENANCE.md) define current skill scope. The [documentation index](docs/README.md) lists current contracts and evidence.
+Historical evidence linked at immutable Git revisions does not qualify a newer
+package or unsupported platform.

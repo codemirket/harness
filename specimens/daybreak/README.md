@@ -50,7 +50,7 @@ film has no speech to caption; this is not a captioning qualification.
 ## Focused maintenance
 
 This directory preserves the accepted film baseline. The subsequent
-[maintenance journey](../../docs/design-production-closure-20261028.md) found
+[maintenance journey](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-production-closure-20261028.md) found
 that the live page's absolute wordmark could cover the CTA at 1280×720. The
 verified repair is now integrated into the page head: the wordmark occupies
 normal flow below the CTA. The film builder supplies its own head, so the
@@ -96,8 +96,8 @@ dependency or renderer was added.
 
 ## Quality evidence and limits
 
-See [the production record](../../docs/daybreak-production-20261028.md) and
-[subsequent video defect review](../../docs/daybreak-video-review-20261028.md).
+See [the production record](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/daybreak-production-20261028.md) and
+[subsequent video defect review](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/daybreak-video-review-20261028.md).
 The current export includes the repaired title mask and hero spacing;
 `qa/check-export.mjs` retains discriminating pixel regressions.
 Initial artifacts, one independent critique, one targeted repair batch and

@@ -1,6 +1,8 @@
 # Mirket v0.0.1 first-release qualification
 
-Current source commit: `5b03547105f9119694a3829dfc4d1779b26e8bb9`.
+Qualified implementation commit: `5b03547105f9119694a3829dfc4d1779b26e8bb9`.
+The release record was recorded in repository commit `b3068a1`; later repository
+changes do not requalify this package.
 First-release scope: **Codex Desktop on macOS 26.5.2 ARM64**, explicitly accepted
 by the user on 2026-10-28. Publication, push and live installation are not part of
 this work. The current combined package is locally release-ready within this scope; all
@@ -24,7 +26,7 @@ This decision uses two valid matched comparisons: both enabled bundles timed
 out at 180 seconds without artifacts; their no-skill baselines independently
 scored 12/12. It does not attribute failure to any individual member or relabel
 the failed results as successes. No more model trials were run for this closure.
-The [original evaluation](supplemental-model-evaluation-20261028.md) retains all
+The [original evaluation](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/supplemental-model-evaluation-20261028.md) retains all
 attempts, budgets and limits. The remaining 9 global / 52 project / 7 profile
 catalog contains 305 planned development cases, not 305 completed acceptance
 trials. Broader causal quality uplift is not a release claim.

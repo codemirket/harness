@@ -460,7 +460,7 @@ The production-source MiniLM ARM64 payload passed all frozen observable gates on
 the same 122-query corpus, without changing its fixtures or thresholds. Hybrid
 Recall@5 was 0.9875 and nDCG@5 was 0.9448; identifier/path top-1 was 18/18,
 ambiguous evidence complete@5 was 8/8, and eligibility/coverage errors were
-zero. [The current qualification](m2-semantic-qualification.md) binds the exact
+zero. [The current qualification](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m2-semantic-qualification.md) binds the exact
 model, runner, package and measured memory cost. This supersedes the failed E5
 candidate for the macOS ARM64 private runtime. Unseen generalization,
 abstention and scale remain separate gates.

@@ -49,12 +49,9 @@ On actual Windows, supply `--target aarch64-pc-windows-msvc` or `x86_64-pc-windo
 After preparing a new native input, perform the version/source ID, FTS5, extension-loading-denial, transaction and backup checks described in `packaging/admission/m2-sqlite.md`, plus application tests. Library/hash validation alone cannot establish SQL correctness, memory semantics, supported OS-floor execution or native client acceptance.
 
 
-The repository route was qualified on macOS ARM64 on 2026-10-24 under the user's authorization for necessary work within the approved rewrite. Two consecutive native builds with `/usr/bin/clang` and `/usr/bin/ar` produced identical library SHA-256 `4c813989b7c239ac57ad45e5cef18dfc90500c2091decf368d9ef150db46e792` (1,884,880 bytes). The full pre-build guard and `cargo check --locked --offline` passed after root adopted the reviewed dependency delta. Direct checks of the compiled Rust guard accepted valid inputs and rejected ten concrete failures, including library/header drift, an added dylib, target/source-manifest mismatch, missing forced settings, wrong private paths, symlinked header, missing receipt and unsupported target. Corresponding Python receipt checks passed. The tests asserted the intended rejection reason; an initial temporary-path alias was corrected to a canonical path before assessing those cases. Evidence is retained in task-state `dependencies/sqlite/{repository-builder-checks.json,rust-native-guard-checks.json}`. The application executable was not rebuilt by these checks.
-
-
 ## Semantic source checks and private model/runtime assembly
 
-The semantic dependency batch is admitted for the macOS ARM64 private runtime; Windows release acceptance remains open. Mirket stores normalized embeddings as ordinary SQLite blobs and scores eligible rows with checked Rust cosine similarity. The removed sqlite-vec build admission is retained only in `docs/historical-admission/` for provenance. No vector extension or additional native build is required.
+The semantic dependency batch is admitted for the macOS ARM64 private runtime; Windows release acceptance remains open. Mirket stores normalized embeddings as ordinary SQLite blobs and scores eligible rows with checked Rust cosine similarity. No sqlite-vec extension or additional native vector build is required.
 
 Repository `.cargo/config.toml` also forces `RUSTONIG_SYSTEM_LIBONIG=0`, `RUSTONIG_DYNAMIC_LIBONIG=0`, `RUSTONIG_STATIC_LIBONIG=1`. The admitted Oniguruma source is compiled by its reviewed build script instead of discovering a host library. The pre-build checker now verifies exact FastEmbed/ort/ort-sys/tokenizers/onig/onig_sys/esaxx versions and features, hashes the registry archives, and compares every archived source file with its extracted source tree before compilation. In particular, ort-sys must retain `disable-linking`; download/model-hub/image/GPU features are absent. `build.rs` independently validates private SQLite inputs, target/source/header identity and forced Oniguruma settings. The pre-build dependency check must still run: a crate's own build script cannot run before every dependency build script in Cargo's graph.
 
@@ -76,4 +73,46 @@ Package verification checks every actual file against the authoritative source p
 
 Both Windows variants currently fail assembly completeness before creating output because their exact licensed private Visual C++ runtime payload is not admitted. Native Windows SQLite and semantic runtime behavior have not run here; they require a Windows host. No host CRT fallback, installation or cross-platform execution is substituted for Windows qualification.
 
-The assembled macOS MiniLM payload is 172,668,906 B excluding its receipt. The original native vector build evidence from 2026-10-24 remains historical; the current Rust cosine implementation passed the frozen 122-query retrieval gate on 2026-10-27. Package checks do not establish model memory lifecycle, oldest-platform compatibility or complete M2 acceptance; see [semantic qualification](m2-semantic-qualification.md).
+The assembled macOS MiniLM payload is 172,668,906 B excluding its receipt.
+Package checks do not establish model lifecycle, retrieval usefulness or other
+platform support. The [current qualification](first-release-qualification-20261028.md)
+records installed outcomes and actual resource measurements.
+
+## Locked source and adapter gates
+
+Use the existing admitted private Node executable and locked dependency tree.
+Do not invoke upstream install hooks or silently obtain another runtime. After
+preparing native inputs, run from the repository:
+
+```sh
+python3 scripts/check-build-inputs.py
+cargo test --locked --offline
+cargo clippy --locked --offline --all-targets -- -D warnings
+cargo fmt --check
+cargo build --locked --offline
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+Set `MIRKET_NODE` to the absolute verified private Node executable for the candidate
+being tested. Verify installed adapter package versions against `package-lock.json`
+before compilation; missing required or mismatched entries are a failure.
+From `adapters/`, use that executable to run the locked compiler and process tests:
+
+```sh
+"$MIRKET_NODE" node_modules/typescript/bin/tsc -p tsconfig.json
+"$MIRKET_NODE" --test tests/*.test.mjs
+```
+
+Then, from the repository root, pass explicit absolute executable paths to the
+real stdio fixture:
+
+```sh
+"$MIRKET_NODE" tests/mcp-smoke.mjs \
+  --mirket "$PWD/target/debug/mirket" --node "$MIRKET_NODE"
+```
+
+The fixture creates disposable state and projects. Installed integration tools
+under `tests/` require their documented explicit release/home/tool arguments;
+never point them at the user's existing `.mirket` installation. Model trial
+runners are optional evaluation tooling, not part of ordinary test discovery
+or permission to start new paid/model cohorts.

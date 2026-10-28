@@ -1,9 +1,0 @@
-{
-  "name": "mirket-m0-admission",
-  "version": "0.0.1",
-  "private": true,
-  "devDependencies": {
-    "typescript": "5.9.3",
-    "@types/node": "24.19.2"
-  }
-}

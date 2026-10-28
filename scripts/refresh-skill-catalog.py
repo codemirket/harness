@@ -28,13 +28,13 @@ METHOD_ADOPTIONS={
 
 # This later research pass informs local review/context procedures, not a new
 # admitted reference family or permission to copy third-party skill bodies.
-DESIGN_REVIEW_BASIS = "docs/design-review-20261027.md / recent research and local outcome checks"
+DESIGN_REVIEW_BASIS = "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks"
 DESIGN_REVIEW_SKILLS = {"art-direction", "design-critique", "motion-direction", "video-production"}
-MOTION_AUTHORING_BASIS = "docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
+MOTION_AUTHORING_BASIS = "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence"
 MOTION_AUTHORING_SKILLS = {"motion-direction", "video-production", "design-critique"}
-AUTHORING_DIAGNOSTICS_BASIS = "docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
+AUTHORING_DIAGNOSTICS_BASIS = "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
 AUTHORING_DIAGNOSTICS_SKILLS = {"video-production", "design-critique"}
-RESEARCH_IMPROVEMENTS_BASIS = "docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in planning/research-improvements.md"
+RESEARCH_IMPROVEMENTS_BASIS = "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
 RESEARCH_IMPROVEMENTS_SKILLS = {
     "browser-research", "motion-direction", "video-production",
 }
@@ -355,15 +355,10 @@ def refresh(write):
     marker,end="<!-- skill-reference-audit:begin -->","<!-- skill-reference-audit:end -->"
     block=marker+"\nGenerated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in planning/reviews/2026-10-27/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.\nAudit artifact: planning/reviews/2026-10-27/reference-audit.json; fetch receipts: planning/reviews/2026-10-27/reference-fetches.json\n"+end
     provenance=PROVENANCE.read_text()
-    provenance=provenance.replace("All 67 native skill bodies and their 335 public development cases are independently\nauthored for this repository. The approved local catalog and implementation\ncontracts supply the outcome/authority boundaries; no external prose, code,\nworkflow, asset or font has been copied or adapted into these bodies.","All 67 native skill bodies and their 335 public development cases are authored\nfor this repository. Eight project bodies are classified method-adapted because\nthey retain independently worded techniques from reviewed source families; no\nexternal prose, code, workflow, asset or font has been copied into these bodies.")
-    provenance=provenance.replace("Every current body is classified independently-authored. The reference index below\npreserves all 58 retained families and URLs from the local plan solely for\ncomparison or link-only review.","Most bodies are independently-authored; eight project bodies are explicitly\nclassified method-adapted with reviewed, independently worded mappings. The\nreference index preserves all selected families and URLs for comparison or\nfocused method review.")
     provenance=reconcile_provenance_inventory(provenance,catalog)
     provenance=update_provenance_records(provenance,catalog)
     provenance=append_new_reference_records(provenance,plans)
     provenance=update_reference_records(provenance)
-    provenance=provenance.replace("skills/reference-audit.json","planning/reviews/2026-10-27/reference-audit.json")
-    provenance=provenance.replace("Terms/currentness: not independently re-audited in this pass; exact source/section rights must be verified before adaptation.","Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.")
-    provenance=provenance.replace("Terms/currentness: audited at the pinned URL on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for the observed license and reuse classification. Exact source/section rights still govern any future adaptation.","Terms/currentness: reviewed from retained pinned-URL receipts on 2026-10-27; see planning/reviews/2026-10-27/reference-audit.json for license receipts and focused rights review. Exact source/section rights still govern any future adaptation.")
     provenance=re.sub(re.escape(marker)+r".*?"+re.escape(end),block,provenance,flags=re.S) if marker in provenance else provenance.rstrip()+"\n\n"+block+"\n"
     if PROVENANCE.read_text()!=provenance: changed.append("PROVENANCE.md")
     review="# Skill reference audit (2026-10-27)\n\n"+block.replace(marker+"\n","").replace("\n"+end,"")+f"\n\nThe audit contains {len(plans)} unique families and {plan_memberships()} plan memberships. It records exact URL receipts, pinned/moving status, selected raw source file and section headings, source/license body hashes, and local skill identities. It does not infer source-to-skill fidelity; that mapping is recorded only by the focused body-review documents. Any failed receipt remains unverified; an HTTP/tool receipt alone is not an operation or quality claim.\n"

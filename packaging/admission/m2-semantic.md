@@ -1,15 +1,26 @@
-# Semantic memory dependency admission
+# Local semantic dependency admission
 
-The macOS ARM64 path uses private SQLite 3.54.1, FastEmbed 7.5.0, ort/ort-sys 2.0.0-rc.15 and a verified ONNX Runtime 1.31.0 CPU dylib. Embeddings are stored as SQLite blobs and scored with checked Rust cosine similarity. The selected local model is dynamic-int8 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` at revision `e8f8c211226b894fcb81acc59f3b34ba3efd5f42`. Its graph is 118,412,398 bytes, SHA-256 `783fea82d71a58179b830a4dbd2d58447e640609e98eedf9ffa12622d375a672`. The [complete runtime manifest](m2-semantic-minilm.runtime.json) pins the model card, tokenizer/config files, graph, ORT license/notices and target-specific native runtime files. The full macOS package is 172,668,906 bytes excluding its small receipt. The model card declares Apache-2.0 and has no separate LICENSE file; retain the full card.
+The root [Cargo manifest](../../Cargo.toml) and [lock](../../Cargo.lock) select
+FastEmbed **7.5.0** with dynamic ONNX loading and ort **2.0.0-rc.15** with the
+admitted features. The [inventory](m2-semantic.inventory.json) remains an active
+input to `scripts/check-build-inputs.py`: versions, source archives, features and
+extracted native sources are checked before compilation. The explicit serde_json
+`raw_value` amendment is checked by that guard.
 
-The Rust dependency batch uses `fastembed =7.5.0` with `default-features=false` and `ort-load-dynamic`, and direct `ort =2.0.0-rc.15` with only `std`, `ndarray`, `load-dynamic`, `api-24`. Its [locked proposal](m2-semantic.Cargo.lock.proposed) and [full inventory](m2-semantic.inventory.json) record 176 external package identities, hashes, licenses, build scripts and feature reachability; the 72 additions did not change the prior 104 crate pins. Image, hub, HTTP/TLS download, GPU, Candle and model-fetch features are absent. `ort` is a prerelease and Oniguruma is an archived upstream dependency; those remain maintenance risks. The recorded [advisory snapshot](m2-semantic.advisories.json) is version-specific and does not prove future safety.
+The [model/runtime manifest](m2-semantic-minilm.runtime.json) pins the separately
+acquired private MiniLM model and ONNX runtime. Setup verifies exact publisher
+bytes; normal operation does not download a model or search ambient runtime
+paths. Canonical facts and lexical recall remain available when semantic
+retrieval is unavailable; report coverage and failure explicitly.
 
-The first-party macOS installer can [acquire these exact model and ONNX Runtime assets](../../docs/m2-semantic-setup-acquisition.md) before setup. Four upstream tokenizer/config URLs were corrected from nonexistent `onnx/` locations to the pinned repository root; their local package paths and bytes are unchanged. The receipt digest follows the corrected admission JSON. This acquisition changes delivery, not the private inference contract or the Windows gate.
+[Advisories](m2-semantic.advisories.json) and
+[telemetry review](m2-semantic.telemetry.json) retain the exact admission review;
+they are not a current assessment of all future versions. The original batch
+and rationale are recorded at the
+[immutable admission revision](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/packaging/admission/m2-semantic.md).
+No additional dependency or runtime is admitted by this summary.
 
-The removed sqlite-vec native build admission is retained in `docs/historical-admission/` for provenance. `ort-sys`'s selected `disable-linking` path avoids runtime download and host library discovery. Oniguruma uses its vendored C with explicit compiler/archiver and forced static settings. [`check-build-inputs.py`](../../scripts/check-build-inputs.py) checks these source/feature conditions before Cargo.
-
-The embedding leaf verifies every private file and its exact package receipt before calling `ort::init_from` with the explicit versioned dylib path. It requires `ORT_DISABLE_TELEMETRY=1` before native initialization, registers only CPU execution, and does not use an ambient model path. The model contract is 384 finite coordinates, 128 tokens per input, 126-token overlapping content windows, attention-mask mean pooling, L2 normalization, one text per inference call and no query/passage prefixes. Derived vectors carry the exact model identity, and canonical scope, revision, deletion and supersession checks remain authoritative.
-
-The [production-source qualification](../../docs/m2-semantic-qualification.md) passed the frozen 122-query English/Turkish/code retrieval gates and a disposable installed macOS ARM64 MCP journey. Windows DLLs require a licensed app-local Visual C++ CRT closure and native execution evidence; source inspection and PE machine checks alone do not qualify them. The macOS runtime's oldest supported OS floor, 10k/100k scale, idle RSS and actual Codex Desktop activation also remain open. No host model/runtime fallback or user installation change is authorized by this admission.
-
-Primary source pins: [FastEmbed 7.5.0](https://docs.rs/crate/fastembed/7.5.0/source/), [ort rc15](https://docs.rs/crate/ort/2.0.0-rc.15/source/), [ONNX Runtime 1.31.0](https://github.com/microsoft/onnxruntime/releases/tag/v1.31.0), [pinned MiniLM model](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/tree/e8f8c211226b894fcb81acc59f3b34ba3efd5f42), and [Microsoft CRT redistribution](https://learn.microsoft.com/cpp/windows/redistributing-visual-cpp-files).
+Use [native build instructions](../../docs/native-build.md) for source/package
+checks and the [release qualification](../../docs/first-release-qualification-20261028.md)
+for actual retrieval, memory-use, idle and platform evidence. Model receipts do
+not establish answer usefulness or low memory cost.

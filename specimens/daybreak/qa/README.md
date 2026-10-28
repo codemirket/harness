@@ -27,5 +27,5 @@ private video renderer; that failed comparison is retained in private evidence.
 The same-browser masked/unmasked pair independently has zero changed pixels
 after repair, versus 1084 before repair at the stated difference tolerance.
 
-See [the follow-up review](../../../docs/daybreak-video-review-20261028.md) for
+See [the follow-up review](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/daybreak-video-review-20261028.md) for
 visual inspection, playback evidence, source manifests and remaining limits.

@@ -1,66 +1,26 @@
-# macOS ARM64 release readiness
+# Release checklist
 
-Execution requested by the user on 2026-10-28 after `7ffe47a`. This records the
-remaining work under the approved `implementation-plan.md`; it does not
-authorize publication, a push, new production dependencies or live installation
-changes. Windows remains a separately gated later target. The completed R1–R4
-maintenance trial and earlier frozen cohorts remain closed.
+The v0.0.1 package for **macOS 26.5.2 ARM64** is locally qualified at implementation
+commit `5b03547`. The [qualification](../docs/first-release-qualification-20261028.md)
+and [release admission](../packaging/admission/first-release-macos-arm64.json)
+bind its exact bytes and recipient materials. Public release publication has not
+occurred. Source changes after that revision do not update or requalify its archive.
 
-| Gate | Owner / current action | Required evidence |
-| --- | --- | --- |
-| Maintained live-page CTA | Lead: integrate the already verified head-only layout repair | Desktop/mobile pixels and actual click, failing original control, unchanged accepted film and review-pack correspondence |
-| Exact current package | Lead: assemble current binary, skills and selected payloads in disposable state | Full source inventory, install/doctor, effects, maintenance/recovery and no live-user mutations |
-| Redistribution materials | Independent audit, lead integration: use current candidate pins, not superseded historical receipts | Source/notices mapped to exact shipped bytes; prepared recipient materials and explicit unresolved delivery/terms decisions |
-| Native skill acceptance | Independent audit, lead integration: map existing evidence before adding tests | All skills statically reviewed/paired; finite held-out high-risk outcomes with independent oracles; failures/unrun cases retained |
-| Security/dependency gates | Lead: current advisory/authenticity checks of the selected closure | Dated official/source findings and exact affected versions; no unapproved dependency upgrade |
-| macOS scope | User accepted exact macOS 26.5.2 ARM64 | First-party installer refuses other versions; no macOS 15 or Windows support claim |
-| Final candidate | Lead: required locked source gates and installed tests against exact candidate | Traceable package/source/notice checksums, measured outcomes, remaining blockers; no publication |
+Use this checklist when an authorized task creates a new candidate. It is not an
+instruction to rerun closed experiments or alter the user's installation.
 
-The live installation is intentionally not a test target. Desktop GUI activation
-remains waived and untested. Do not turn a local candidate, hash receipt or
-historical output into a public-release or supported-platform claim.
+| Gate | Observable evidence |
+| --- | --- |
+| Scope | Exact target host, source revision, changed outcomes and accepted exclusions. Windows and other macOS versions require native qualification; Desktop GUI remains waived and untested. |
+| Dependencies and rights | Approved exact closure, explicit executable identities, all required notices/source, setup acquisition pins and vendor terms. Preserve the full recipient delivery. |
+| Source | Build-input guard before compilation; locked/offline Rust tests, all-target Clippy with warnings denied, formatting, locked adapter build/process tests and affected repository checks. |
+| Protocol | Actual tested binary/private Node MCP smoke; configured and absent payloads, stale source/release, wrong project and unsupported operations. |
+| Installed outcomes | Disposable install/doctor; affected memory/navigation/design/video operations; source changes must affect saved output. Decode/inspect visual exports and verify editability where claimed. |
+| Lifecycle | Reinstall/update/rollback/uninstall, busy/staged state, drift/collision refusal, unrelated setting preservation and memory/forgetting recovery. |
+| Skills | Exact selected bodies/resources, hash/provenance refresh, retired-ID refusal and actual sampled outcomes. Do not convert planned development cases into completed acceptance. |
+| Delivery | Manifest, installer, archive and corresponding source/notices agree; download/unpack rehearsal; current failure limits and independent review. |
 
-
-## Local outcome
-
-The maintained CTA fix, exact current adapter packaging, owned interrupted-setup
-recovery, Mac Chrome security patch, source/notice assembly and local recipient
-rehearsal are implemented and verified. Required source gates and the final
-installed operation matrix passed on macOS 26.5.2 ARM64; failures and trial
-limits are retained in [the release record](../docs/release-readiness-20261028.md).
-The macOS scope decision is now resolved to 26.5.2 ARM64. Publication is a separate
-unauthorized action; Windows and Desktop GUI are not promoted by these results.
-
-## Finalization at current source — 2026-10-28
-
-1. Lead: retire the failed six-skill product bundle and content-growth profile;
-   keep host workflows and remaining independently scoped guides. Refresh catalog
-   and provenance using repository tooling; test retired selection/no-effect and
-   current installed resources. Record the retention rule in AGENTS.md.
-2. Independent packaging lane: enforce/document exact tested Mac support scope.
-   Lead: run required guarded locked/offline source gates and build the current
-   optimized binary. Preserve prior failures and avoid new exploratory cohorts.
-3. Lead: rebuild the full candidate and lean recipient delivery from verified
-   existing vendor inputs, current first-party code/skills/installer and complete
-   source/notices. Verify exact bytes; do not claim historical package hashes.
-4. Lead: install the lean candidate into disposable state; exercise current
-   installed memory/navigation/design/video and skill selection, reinstall and
-   failure/no-effect cases. Independently review saved visual output if changed.
-5. Independent review of current package/source/notice bindings; lead records
-   exact release identities and remaining exclusions, then focused local commits.
-   Ready means locally qualified for the accepted platform with complete
-   recipient materials. Publication, push and live installation remain separate.
-
-Stop when those observable gates pass; no general aesthetic/model-superiority,
-Windows, earlier/newer macOS or waived Desktop GUI claim is required or allowed.
-
-### Final result
-
-All five finalization steps passed for source commit `5b03547` and the exact
-macOS 26.5.2 ARM64 package. The six-skill bundle is retired, source gates and
-current installed outcomes passed, and the complete combined recipient archive
-passed download/unpack verification. See the
-[first-release record](../docs/first-release-qualification-20261028.md) and
-[release admission](../packaging/admission/first-release-macos-arm64.json).
-No prerequisite remains for this accepted local release scope. Publication,
-push and live installation remain separate unperformed actions.
+Keep failed attempts and unqualified paths visible. A successful receipt, hash or
+model verdict alone cannot close an outcome gate. No publication, purchase,
+credential change, commit, push or live installation change follows merely from
+passing this checklist.
