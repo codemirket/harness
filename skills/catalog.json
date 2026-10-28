@@ -286,8 +286,8 @@
       "path": "skills/agent-coordination-strategy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "131da727242a9c37e5203eedd2644368e8861ac19da2f576ed9e2a6c073014d3",
-      "source_bytes": 2696,
+      "source_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
+      "source_bytes": 2898,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#agent-coordination-strategy",

@@ -47,7 +47,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "131da727242a9c37e5203eedd2644368e8861ac19da2f576ed9e2a6c073014d3",
+          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },
@@ -1627,7 +1627,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "131da727242a9c37e5203eedd2644368e8861ac19da2f576ed9e2a6c073014d3",
+          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },
@@ -1851,7 +1851,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "131da727242a9c37e5203eedd2644368e8861ac19da2f576ed9e2a6c073014d3",
+          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },

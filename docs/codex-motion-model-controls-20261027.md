@@ -10,6 +10,12 @@ automatic approval review. Its successful exports extend execution evidence;
 they do not establish provider identity, creative superiority or native child
 model enforcement.
 
+The later [seven-case native qualification](native-coordination-qualification-20261028.md)
+adds actual role selection, per-turn override, interruption and controlled-denial
+evidence on the same bundled CLI. It retains a stalled worker and a command that
+continued after interruption. The config-only results below remain the dated
+scope of this earlier probe; Desktop GUI and hard enforcement remain unqualified.
+
 ## Executed identity and evidence
 
 The test used only the Desktop-bundled executable:
