@@ -1,5 +1,10 @@
 # Setup-acquired browser qualification — 2026-10-26
 
+The `.47` inventory and journeys below are historical. The current Mac security
+patch and exact candidate qualification are recorded in
+[release readiness](release-readiness-20261028.md); Windows remains separately
+unqualified.
+
 Current scope, clarified 2026-10-28: Mirket's selected private Chrome is reserved
 for video rendering; Codex owns general browsing and live web review. Later
 local Mac installation/export checks are recorded in

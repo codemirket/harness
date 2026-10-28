@@ -29,8 +29,11 @@ The active [Raster prebuilt candidate](docs/m4-raster-prebuilt-qualification.md)
 
 The [selected Mac native Sharp archives](docs/m4-raster-prebuilt-provenance-20261027.md)
 now have verified signed package-to-source provenance and a 28-component
-version match to the pinned recipe. The complete native recipient materials
-remain a public-release gate.
+version match to the pinned recipe. Full corresponding-source delivery remains
+relevant if Mirket redistributes those native archives. The first-party installer
+acquires them directly from their publisher; the lean release excludes them.
+The [current release review](docs/release-readiness-20261028.md) separates that
+route from the source-delivery obligations for bundled FFmpeg.
 
 The [Sharp-free Video candidate](docs/m3-video-installed-route-preparation.md) uses its private render-only Chrome and a pinned neutral FFmpeg pair. The current Mac build accepts the exact private Video tree for local installation. Disposable installed MP4, WebM, GIF and PNG-sequence jobs passed, along with reediting, audio, captions, cancellation, a large output and a remote-script refusal. Public redistribution still requires the combined [source and notice delivery](docs/m3-video-recipient-closure.md); Windows execution is a separate later gate.
 
@@ -38,7 +41,7 @@ HyperFrames remains the sole selected motion/video engine. The [author-visible f
 
 The [revised-skill follow-up](docs/hyperframes-followup-qualification-20261027.md) observed two fresh authors avoid that defect and a model repair the preserved failure in one turn. All three saved exports passed independent frame review and completed 1× playback in Codex's browser; continuous perceptual quality and broader generalization remain unqualified.
 
-The [bounded design plan](planning/remaining-design-work.md) has completed its local [production closure](docs/design-production-closure-20261028.md): a saved-source maintenance edit, actual HyperFrames export, decoded-frame review and desktop/mobile interaction checks. One live-page CTA overlap was repaired in the disposable variant; the original accepted film baseline stays preserved. Further creative cohorts remain paused. The [research and stopping rationale](docs/design-workflow-reset-20261028.md) distinguish this usable route from native turn completion and broader model-quality evidence; failed frozen trials are not reclassified.
+The [bounded design plan](planning/remaining-design-work.md) has completed its local [production closure](docs/design-production-closure-20261028.md): a saved-source maintenance edit, actual HyperFrames export, decoded-frame review and desktop/mobile interaction checks. The live-page CTA repair is now integrated into the maintained page and rechecked against the failing original control; the accepted film remains byte-identical. Further creative cohorts remain paused. The [research and stopping rationale](docs/design-workflow-reset-20261028.md) distinguish this usable route from native turn completion and broader model-quality evidence; failed frozen trials are not reclassified.
 
 The [matched-study runner](docs/matched-design-study-20261027.md) gives both conditions identical producer inputs and tool access, with isolated specialist guidance, an external freeze seal, neutral review packs and one shared budget. The [eight-cell creative cohort](docs/design-cohort-20261028.md) exercised UI interactions, editable illustrations and decoded HyperFrames exports. It retained a timeout, trial-harness confounds, minor visual findings and two rejected reviewer claims; it does not establish a general skill or model advantage. Reproduced output-location, review-pack, approval-classification and SVG accessibility defects were corrected after the freeze closed.
 

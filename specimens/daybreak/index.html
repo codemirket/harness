@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Daybreak — a fictional city running club. A design and motion concept."><title>Daybreak — Find your second wind</title><link rel="stylesheet" href="./site.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Daybreak — a fictional city running club. A design and motion concept."><title>Daybreak — Find your second wind</title><link rel="stylesheet" href="./site.css">
+<style>
+/* Live-page flow keeps the decorative wordmark clear of the CTA. The film
+   builder supplies its own head and preserves the accepted fixed-stage layout. */
+.hero{display:flex;flex-direction:column;height:auto}
+.hero>.nav{flex-shrink:0}
+.hero-bottom{position:relative;inset:auto;margin:0 40px 23px 35px;margin-top:auto;padding-top:32px}
+@media(max-width:900px){.hero-bottom{margin-left:26px;margin-right:26px}}
+@media(max-width:600px){.hero{max-height:none}.hero-bottom{margin:0 18px 25px;margin-top:auto}}
+</style></head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <main id="main">

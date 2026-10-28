@@ -51,10 +51,11 @@ film has no speech to caption; this is not a captioning qualification.
 
 This directory preserves the accepted film baseline. The subsequent
 [maintenance journey](../../docs/design-production-closure-20261028.md) found
-that its live page's absolute wordmark can cover the CTA at 1280×720. That
-defect was repaired and checked in the disposable variant; this historical
-source was deliberately not rewritten. Film acceptance does not qualify the
-live page at every viewport. Use the report's source/handoff for that variant.
+that the live page's absolute wordmark could cover the CTA at 1280×720. The
+verified repair is now integrated into the page head: the wordmark occupies
+normal flow below the CTA. The film builder supplies its own head, so the
+accepted film source/export and its review record remain unchanged. Film
+acceptance does not qualify the live page at every viewport.
 
 Use a disposable copy for qualification so the accepted candidate stays intact.
 For a copy/layout edit, change `index.html`, then run `python3 ABS_COPY/build-reel.py`;

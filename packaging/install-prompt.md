@@ -46,13 +46,16 @@ model root contains the eight selected files at their local package paths.
 For an admitted macOS Raster release, the installer accepts
 `--raster-archive-root /absolute/directory` with all six exact npm archives;
 otherwise it downloads the pinned archives. The current local Mac candidate
-admits only its exact pinned Raster payload. Public release still requires the
-recorded native source, notices and recipient route.
+admits only its exact pinned Raster payload. The lean Mirket archive excludes those six upstream packages; setup acquires
+them directly from the publisher or verifies the recipient's supplied copies.
+Rebundling the native archives would require their separate corresponding-source
+and notice delivery route.
 Before any Raster acquisition, present the selected
 [Sharp license](https://github.com/lovell/sharp/blob/v0.35.5/LICENSE) and
 [libvips third-party notices](https://github.com/lovell/sharp-libvips/blob/v1.3.4/THIRD-PARTY-NOTICES.md),
-including the listed LGPL components. The remaining source/notice delivery
-gate must be closed in the published release record.
+including the listed LGPL components. The release record must distinguish publisher acquisition from bundled
+components and retain the selected notices. Bundled FFmpeg must have its
+matching source and notices available alongside the runtime package.
 `--update` explicitly
 selects the update path. After a completed uninstall, `--reinstall` starts the
 exact-source same-home preservation path; `--reinstall-reconcile` resumes that

@@ -30,11 +30,12 @@ It stays in `index.html`'s head, which `build-reel.py` does not copy into the
 film. After rebuilding, all seven selected render inputs remained byte-identical
 to the exported inputs. No second export was needed and no repair budget reset.
 
-The historical page in `specimens/daybreak` still has the reproduced live-page
-limitation. It is explicitly labelled in its README; the approved task required
-preserving that source. The repaired working copy and a portable patch are in
-the local handoff below. Its success is not claimed as a fix to the historical
-baseline or as new human acceptance.
+At this trial's close, the historical page in `specimens/daybreak` retained the
+reproduced live-page limitation because the trial required preserving it. The
+subsequent [release-readiness work](release-readiness-20261028.md) integrated
+the head-only repair into the maintained page and rechecked desktop/mobile
+clicks and pixels against the original failing control. The accepted film bytes
+and this frozen trial's acceptance record remain unchanged.
 
 ## Actual artifact and review
 
