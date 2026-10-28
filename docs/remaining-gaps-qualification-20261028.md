@@ -131,3 +131,70 @@ so their passing full gates above were retained rather than repeated. The
 extended integration fixture passed end to end. Native model comparisons remain
 deferred; Windows, macOS 15 floor, Desktop GUI and broad quality uplift remain
 unqualified. No live installation, push or publication occurred.
+
+## Connectivity resumed and resolved — 2026-10-28
+
+The user subsequently requested completion of the deferred connectivity checks.
+This section supersedes the connectivity blocker above, while preserving the
+failed attempts. It does not resume or pass the deferred quality cohorts.
+
+The existing ChatGPT login was accepted: a read-only authenticated request to
+`https://chatgpt.com/backend-api/ps/plugins/installed?limit=200` returned HTTP 200
+in 0.327 seconds. No token value or response body was retained in that probe.
+DNS and TCP worked; curl also negotiated HTTP/2. No system proxy was configured.
+The native CLI's rate-limit request stalled with both an isolated HOME and the
+normal HOME, ruling out that directory difference as the immediate cause.
+
+A sample of the owned CLI process showed its native TLS handshake waiting in
+`SecTrustCopyPublicKey` / macOS Security framework's legacy certificate lookup
+and SecurityServer initialization. Setting only `CODEX_CA_CERTIFICATE` selected
+the CLI's rustls transport but still stalled while loading native root
+certificates (`rustls_native_certs::load_native_certs` and
+`SecTrustSettingsCopyCertificates`). The underlying reason for the macOS service
+wait is not established; no security service, keychain or system trust setting
+was changed.
+
+Setting **`SSL_CERT_FILE=/etc/ssl/cert.pem` for the disposable child process**
+resolved both paths using the existing system PEM trust bundle. Codex documents
+this environment variable as a supported CA-bundle input in its
+[authentication guidance](https://learn.chatgpt.com/docs/auth#custom-ca-bundles).
+The tested bundle contained 128 certificates, SHA-256
+`9dae8d76e55cb08991f2b672d58999ea15560d910759c16b544f843bdffbb994`.
+TLS verification remained enabled; this is an explicit local invocation setting,
+not a new Mirket network route or bundled certificate/dependency.
+
+Actual results on macOS 26.5.2 ARM64, Codex CLI 0.164.0-alpha.11.1:
+
+- The native `account/rateLimits/read` request succeeded in 0.796 seconds with
+  the process-local `SSL_CERT_FILE` setting and the existing credentials.
+- A deliberately invalid CA file caused the native request to fail immediately
+  with a certificate-loading error, rather than silently using another route.
+- One separately declared, 60-second connectivity-only turn requested
+  `gpt-6-astra` / `high` and automatic approval review. With a fresh disposable
+  HOME/CODEX_HOME and **no seeded model cache**, it completed in 6.281 seconds,
+  exit 0, emitted `turn.completed` and returned exactly `CONNECTIVITY_OK`.
+  Stderr was empty; no project files were created and no tools were called.
+- The copied auth file was removed. No copied auth files remain in this diagnostic
+  tree. No login renewal, credential reset or live configuration edit was needed.
+
+Evidence root:
+`/Users/nazmiyilmaz/.codex/task-state/harness-connectivity-resume-20261028/`.
+`http-probes.json`, the bounded app-server probe records and process samples
+retain the failing comparisons; `minimal-turn/protocol.json`, `events.jsonl`
+and `result.json` retain the successful native outcome. The one new model call
+was a connectivity check authorized by the resumed request, not a retry of a
+closed research or product cell. Requested model/effort are host settings, not
+independent provider identity attestation.
+
+For subsequent disposable trials on this qualified machine, supply the same
+explicit process-local CA setting to the CLI/runner; the runner already inherits
+its caller's environment. Freeze that bundle identity with the next trial
+protocol. Do not alter the live installation or silently introduce this as a
+cross-platform default. The earlier model-cache seed is no longer necessary for
+this observed clean-home startup. No production source fix is required.
+
+Native research/reviewer/selection/product comparisons remain unqualified;
+connectivity and minimal inference now pass. This does not establish tool-use
+approval, model-quality uplift, Windows, macOS 15 floor or Desktop GUI behavior.
+This continuation changes documentation only; no Rust/adapter implementation or
+dependency changed, so those earlier passing gates were not repeated.

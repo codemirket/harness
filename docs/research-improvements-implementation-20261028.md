@@ -7,9 +7,10 @@ Implementation and local checks are distinct from model-effect qualification.
 The remaining native research/product comparisons are **not qualified**.
 The [continuation record](remaining-gaps-qualification-20261028.md) adds actual
 interactive browser and MCP boundary evidence, runner repairs, and the current
-authenticated native CLI routing prerequisite. The user subsequently deferred
-that CLI work; the continuation also verifies actual delivery and preservation
-of the new project references through disposable install/reinstall.
+earlier native CLI failures. Connectivity was subsequently resolved with a
+process-local CA-bundle setting and one completed minimal turn; quality
+comparisons remain unqualified. The continuation also verifies actual delivery
+and preservation of the new project references through disposable reinstall.
 
 ## Finding-to-change matrix
 

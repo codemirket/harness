@@ -75,3 +75,15 @@ journey. See the continuation in the existing qualification record. With the
 native comparisons deferred, no further local implementation defect is
 currently demonstrated by these acceptance checks. Native platform gates remain
 separate; this checkpoint does not authorize publication or live installation.
+
+### Connectivity prerequisite resolved
+
+The user resumed connectivity investigation. The existing login was valid; a
+process-local `SSL_CERT_FILE=/etc/ssl/cert.pem` avoided the observed macOS native
+certificate lookup stall. A fresh, unseeded disposable CLI completed one
+Astra/high connectivity turn in 6.281 seconds. See the final section of the
+qualification record for the failing controls, bundle identity and exact limits.
+No fresh login or live configuration change was required. The native quality
+cohorts remain unqualified and closed; a subsequent matched protocol must retain
+prior attempt costs and freeze its explicit environment. Connectivity is no
+longer their blocker on this tested host.

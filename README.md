@@ -58,7 +58,7 @@ Before a development build, run `python3 scripts/check-build-inputs.py`. The cur
 The [2026-10-28 research-led improvements](docs/research-improvements-implementation-20261028.md)
 add conditional research/product resources and repository evidence checks. Their
 local checks and measured motion/delegation outcomes are recorded separately from
-the remaining, unqualified model-effect comparisons. The [latest continuation](docs/remaining-gaps-qualification-20261028.md) adds interactive browser and MCP boundary evidence, repairs trial interruption handling, and verifies project-reference preservation through disposable reinstall. Native CLI connectivity and dependent model comparisons are deferred at the user's request.
+the remaining, unqualified model-effect comparisons. The [latest continuation](docs/remaining-gaps-qualification-20261028.md) adds interactive browser and MCP boundary evidence, repairs trial interruption handling, and verifies project-reference preservation through disposable reinstall. Native CLI connectivity now passes with an explicit process-local CA-bundle setting on the tested Mac; the separate model-quality comparisons remain unqualified.
 
 Removed capability contracts, obsolete admission files and their notice bundles are listed in the [retired evidence index](docs/retired-evidence.md), with an immutable Git revision for retrieving their original bytes. They are historical evidence, not current setup inputs.
 
