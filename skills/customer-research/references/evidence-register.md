@@ -1,5 +1,7 @@
 # Evidence register
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 When a product decision depends on research, keep a project-local register at
 `product/evidence-register.json`. It is a working record, not a customer
 database. Store only the minimum context needed to re-check a claim.

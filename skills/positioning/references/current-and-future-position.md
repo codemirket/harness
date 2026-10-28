@@ -1,5 +1,7 @@
 # Current position and future point of view
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 Keep `product/positioning.json` split into `current` and
 `future_point_of_view`. Current positioning names the audience, use situation,
 real alternatives buyers consider, differentiated value, and proof. Every

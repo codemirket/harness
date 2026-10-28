@@ -1,5 +1,9 @@
 # Post-connectivity native model evaluation
 
+Later evidence: [supplemental evaluation](supplemental-model-evaluation-20261028.md).
+This record preserves its original cohort; the later report supplies current
+results and remaining qualification limits.
+
 The user requested this evaluation after the authenticated CLI connectivity
 prerequisite passed. Earlier timed-out, rate-limited and procedurally invalid
 cohorts remain closed and are retained in their qualification records. This is

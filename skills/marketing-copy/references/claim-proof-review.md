@@ -1,5 +1,7 @@
 # Claim-to-proof review
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 Before treating copy as ready, save the exact text under review and create a
 project-local `product/copy-review.json` containing its SHA-256, review date,
 and one record per material claim. A claim links to evidence ids and is marked

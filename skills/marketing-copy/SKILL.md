@@ -13,4 +13,6 @@ Review the draft as a user journey: what is offered, for whom, why trust it, wha
 
 Return usable copy and any claims requiring proof or a product decision. Stop when the draft fits the brief and its material claims are checked; name missing facts rather than publishing invented certainty. Sending, publication or campaign changes require their own authorization.
 
-Before calling copy ready, load `references/claim-proof-review.md` and review the exact saved artifact through a project-local `product/copy-review.json`. Record a digest and proof refs for each material claim. Fail closed on unsupported testimonials and expired metrics; unknown or rejected claims must be absent from saved copy. The checker verifies these boundaries only—it cannot prove persuasion or legal sufficiency.
+Use the caller's requested artifact and layout. The path below is a default, not an additional deliverable; combined work shares one evidence ledger without duplicating records.
+
+Before calling copy ready, load `references/claim-proof-review.md` and review the exact saved artifact through a project-local `product/copy-review.json`. Record a digest and proof refs for each material claim. Fail closed on unsupported testimonials and expired metrics; unknown or rejected claims must be absent from saved copy. When repository qualification tooling is available, its checker verifies these boundaries only; it cannot prove persuasion or legal sufficiency.

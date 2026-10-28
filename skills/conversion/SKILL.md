@@ -13,4 +13,6 @@ Use Codex browser evidence for live flows. Verify relevant loading, validation, 
 
 Return the observed issue, flow change, baseline/measurement definition and verification. Stop after the bounded hypothesis and journey checks; causal claims require an appropriate comparison and sufficient evidence. Do not launch an experiment or submit live transactions outside authorization.
 
+Use the caller's requested artifact and layout. The path below is a default, not an additional deliverable; combined work shares one evidence ledger without duplicating records.
+
 When funnel evidence exists, load `references/bottleneck-diagnosis.md` and record a project-local `product/funnel-diagnosis.json`. Use eligible and converted counts plus traffic context to identify the narrowest observed bottleneck (for example, strong acquisition but weak activation). Do not turn an instrumentation check or a selected stage into a causal lift claim.

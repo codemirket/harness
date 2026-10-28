@@ -1,5 +1,9 @@
 # R9 measured parallelism — 2026-10-28
 
+Later evidence: [supplemental evaluation](supplemental-model-evaluation-20261028.md).
+This record preserves its original cohort; the later report supplies current
+results and remaining qualification limits.
+
 This is a new, bounded measurement cohort. It does not reopen the closed D5 qualification or the existing follow-up cases.
 
 ## Invocation ledger

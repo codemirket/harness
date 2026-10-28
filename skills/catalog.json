@@ -2734,8 +2734,8 @@
       "path": "skills/customer-research/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "9e994bb6a4d1ac74c5970470c5433d1decafa749787f8e289af8fa2355f2d1bc",
-      "source_bytes": 1893,
+      "source_sha256": "731cca3eba8553f16a9667e2821ef5a8cea282261a68745b8ea161c664c83723",
+      "source_bytes": 2072,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#customer-research",
@@ -2790,8 +2790,8 @@
       "resources": [
         {
           "path": "references/evidence-register.md",
-          "sha256": "a9f68f29931d5864dcb69648e4a8889f63e328dbab6a604918ad5e1db17246c2",
-          "bytes": 1590
+          "sha256": "ea6e51944dcc4fd857a0ba3efd833edefdd66d7147c152f9f9c6ec2ec6219aa8",
+          "bytes": 1792
         }
       ]
     },
@@ -2860,8 +2860,8 @@
       "path": "skills/product-strategy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "a69b436aae757c79c164f98d32e03351e6abfb045485a9af92ecc99d71409d22",
-      "source_bytes": 1707,
+      "source_sha256": "bda6dc88898bbcc26597057c112b8ede64c720ff64718884c8284943bf8116ff",
+      "source_bytes": 1886,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#product-strategy",
@@ -2916,8 +2916,8 @@
       "resources": [
         {
           "path": "references/opportunity-map.md",
-          "sha256": "8f362b4fcc841a752e556b8744b0dd8158762f9eb2dca936b6dd7f6c57916eae",
-          "bytes": 1562
+          "sha256": "5710460c0225d095fe859cdbb21951e2eba1c7c44a5360fb1408dae5466ad5cf",
+          "bytes": 1764
         }
       ]
     },
@@ -2989,8 +2989,8 @@
       "path": "skills/positioning/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "7e86c5c9c1a916fbbd3d5027602880daeef455c92139bf87fb1aa7a968f8c857",
-      "source_bytes": 1662,
+      "source_sha256": "583fab7b92d66f9aec16149bb728ae7a99c017e833924f62a0d1c3b583b86883",
+      "source_bytes": 1841,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#positioning",
@@ -3044,8 +3044,8 @@
       "resources": [
         {
           "path": "references/current-and-future-position.md",
-          "sha256": "13331a7126db5d13fb975899273c15bdc42f6d4e8f2b7fc8c29621dc8835fd81",
-          "bytes": 1135
+          "sha256": "58a2b142733e822892952d3ada563af82ff5132f34fd50b9a43bac1d7f04a5e0",
+          "bytes": 1337
         }
       ]
     },
@@ -3055,8 +3055,8 @@
       "path": "skills/marketing-copy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "a02606b87e6d5902c4748543810200ace2229d8e25314bfdcae86794c5327aaa",
-      "source_bytes": 1770,
+      "source_sha256": "0fb5c09ab0332a4a15a6dd2e8cd1344f8305a5f9ea1762775f5be629f9480ec3",
+      "source_bytes": 2000,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#marketing-copy",
@@ -3111,8 +3111,8 @@
       "resources": [
         {
           "path": "references/claim-proof-review.md",
-          "sha256": "c92b82bc842128602865753aca7728dff729b137d3ebb52508bf7b47a65c215a",
-          "bytes": 1492
+          "sha256": "51807daf76cc26fd36ad82c4f080f0fad1b07c976f8fe6241b97e99918404138",
+          "bytes": 1694
         }
       ]
     },
@@ -3183,8 +3183,8 @@
       "path": "skills/conversion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "a99cd34ee05d2c09816269c3c827672a824ab42fff9915b08b36c69a284959c1",
-      "source_bytes": 1719,
+      "source_sha256": "361102ca6b4fc3f2afa04fa557e99f35f557b33d82de170e9ddf9b69da94716f",
+      "source_bytes": 1898,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#conversion",
@@ -3239,8 +3239,8 @@
       "resources": [
         {
           "path": "references/bottleneck-diagnosis.md",
-          "sha256": "9feae92109326b4b99ce822bb52c6daf92bf10565d73c48817ef5de69b44bd96",
-          "bytes": 1092
+          "sha256": "7d2f25523f7110a9d48ec2690649c96b5ab7a1a0c5ca0e87106b162588891736",
+          "bytes": 1294
         }
       ]
     },
@@ -3250,8 +3250,8 @@
       "path": "skills/experiments-launch/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "fea31c5a705eecc7dd00669047732ca649121eb056fa309b20f05acf8d957197",
-      "source_bytes": 1838,
+      "source_sha256": "334c9c814e1833723d3bc89bf235e8be1f1845ebfc9ec8fea3cb90b828e637f5",
+      "source_bytes": 2017,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#experiments-launch",
@@ -3306,8 +3306,8 @@
       "resources": [
         {
           "path": "references/loop-and-experiment-contract.md",
-          "sha256": "d80bfeca7d6c249d53a3d06327da72102c6d6800e9a3fed8dd7c9c0ed9ae42c2",
-          "bytes": 1211
+          "sha256": "8c33b82f419f22107a61fdb0ec6dc4ecfa43631b45d4434bb8b7d1638c61379b",
+          "bytes": 1413
         }
       ]
     },

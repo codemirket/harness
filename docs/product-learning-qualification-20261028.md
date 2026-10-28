@@ -1,5 +1,9 @@
 # Product-learning native qualification — 2026-10-28
 
+Later evidence: [supplemental evaluation](supplemental-model-evaluation-20261028.md).
+This record preserves its original cohort; the later report supplies current
+results and remaining qualification limits.
+
 This is an outcome trial for the R7/R8 product-learning resources. It is not
 the unit-test report and it does not claim a skill effect when the native host
 does not produce the requested artifacts.

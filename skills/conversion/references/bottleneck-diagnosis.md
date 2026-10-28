@@ -1,5 +1,7 @@
 # Bottleneck diagnosis
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 Keep a project-local `product/funnel-diagnosis.json` with the eligible and
 converted counts, reproducible rate, traffic context, measurement status, and
 one selected bottleneck. Diagnose the narrowest observed stage before changing

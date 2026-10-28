@@ -99,11 +99,40 @@ deadline, and a terminal local CLI invocation failure before the supplemental
 model call. No cell was repeated; the remaining ten lead cells and three
 coordination child turns were not started. The batch is closed.
 
-The next execution work is still native reviewer controls, product/marketing,
-browser near misses, live-web research, and the no-delegate coordination
-comparison. Their corrected private invocation has no native outcome evidence.
+At that checkpoint, native reviewer controls, product/marketing, browser near
+misses, live-web research and no-delegate coordination were still unexecuted.
+The continuation below records their subsequent outcomes.
 A subsequent explicit protocol must preserve the full attempt ledger and use
 only `--approve-for-me` for automatic review/workspace-write; combining it with
 `--sandbox` is invalid on the tested CLI. Do not rerun the successful corpus
 merely to obtain a cleaner mechanical score, and do not mark the planned catalog
 acceptance cases complete from these representative answers.
+
+### Supplemental evaluation closed with a remaining negative result
+
+The [supplemental report](../docs/supplemental-model-evaluation-20261028.md)
+records 15 lead attempts and three native children under one unchanged
+2,400-second deadline. Two declared addenda account for a fixture correction
+and one fresh held-out product pair after a guidance repair. No automatic retry
+or author-artifact repair occurred. Earlier attempts remain retained.
+
+Native reviewer controls, near misses and one live-web question produced
+independently correct artifacts in both conditions. A same-task no-delegate,
+one-worker and two-worker comparison produced correct outputs; no delegation
+was fastest and cheapest on that small mechanical task. These narrow outcomes
+do not establish general uplift or complete the catalog acceptance inventory.
+
+R7/R8 useful output remains unqualified: both valid enabled product trials
+timed out at 180 seconds without artifacts; their baselines scored 12/12.
+Six product skill bodies/resources now treat their default paths as optional
+when a caller requests another layout, sharing evidence in one artifact. The
+held-out timeout means this repair cannot be claimed as a latency fix. The
+observed traces do not establish the cause or justify a speculative model or
+runtime change. A future performance investigation must isolate bundle/resource
+loading and artifact size, freeze a finite comparison, and retain these costs.
+
+Catalog hashes/reference audit were refreshed through repository tooling. All
+affected locked/offline Rust, adapter, Python, formatting, Clippy and explicit
+MCP smoke gates passed. Windows, macOS 15 floor, waived Desktop GUI and broad
+creative/research uplift remain unqualified. No live installation or dependency
+changed; no push or publication is authorized by this closure.

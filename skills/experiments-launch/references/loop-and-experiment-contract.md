@@ -1,5 +1,7 @@
 # Experiment and recurring-loop contract
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 Keep a project-local `product/experiment-contract.json` with the decision,
 hypothesis, eligible population, exposure unit, primary outcome, guardrails,
 assignment, baseline, stop rule, rollback owner, review date, and approval

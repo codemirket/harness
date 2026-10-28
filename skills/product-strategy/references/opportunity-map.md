@@ -1,5 +1,7 @@
 # Opportunity and decision map
 
+Use the requested artifact/layout; the path below is a default when none is specified. Embed the relevant records and share evidence links in a combined deliverable instead of creating extra sidecars.
+
 For a non-trivial product decision, keep a project-local
 `product/opportunity-map.json` with this chain:
 
