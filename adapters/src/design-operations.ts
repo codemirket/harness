@@ -342,7 +342,8 @@ const allowedSvgTags = new Set([
 ]);
 const allowedSvgAttributes = new Set([
   "xmlns", "version", "width", "height", "viewBox", "fill", "fill-opacity", "fill-rule", "stroke",
-  "stroke-width", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "opacity",
+  "stroke-width", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity",
+  "stroke-dasharray", "stroke-dashoffset", "opacity",
   "color", "display", "visibility", "transform", "d", "x", "y", "x1", "x2", "y1", "y2", "cx", "cy",
   "r", "rx", "ry", "points", "offset", "stop-color", "stop-opacity", "gradientUnits", "gradientTransform",
   "spreadMethod", "clip-path", "clip-rule", "mask", "maskUnits", "patternUnits", "patternContentUnits",

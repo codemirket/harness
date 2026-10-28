@@ -71,6 +71,18 @@ test("accepts a bounded D2-like SVG with styles, text, markers and internal URLs
   assert.ok(result.element_count >= 5);
 });
 
+test("preserves dashed vector strokes while refusing external dash values", () => {
+  const source = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320"><circle cx="160" cy="160" r="143" fill="none" stroke="#f7e6bf" stroke-dasharray="2 8" stroke-dashoffset="3"/></svg>';
+  const output = new TextDecoder().decode(optimizeSvg(bytes(source)).output);
+  assert.match(output, /stroke-dasharray="2[ ,]8"/u);
+  assert.match(output, /stroke-dashoffset="3"/u);
+  assert.doesNotThrow(() => optimizeSvg(bytes(output)));
+  for (const attribute of ["stroke-dasharray", "stroke-dashoffset"]) {
+    const unsafe = `<svg xmlns="http://www.w3.org/2000/svg"><path d="M0 0h10" ${attribute}="url(https://example.test/style)"/></svg>`;
+    assert.throws(() => optimizeSvg(bytes(unsafe)), (error) => errorCode(error) === "svg_rejected");
+  }
+});
+
 test("preserves local ARIA label and description ID references during optimization", () => {
   const input = bytes(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-labelledby="title desc">
     <title id="title">Accessible mark</title>

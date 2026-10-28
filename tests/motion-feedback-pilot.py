@@ -16,6 +16,7 @@ import os
 import platform
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -587,9 +588,102 @@ def run_model(trial: Path, prompt: str, phase: str, ready: dict[str, Any], condi
 
 def snapshot(trial: Path, label: str) -> dict[str, str]:
     destination = trial / f"{label}-project-snapshot"
-    if destination.exists():
+    if os.path.lexists(destination):
         raise SystemExit(f"snapshot already exists: {destination}")
-    shutil.copytree(trial / "project", destination, symlinks=True)
+    source = trial / "project"
+    # Refuse a pre-existing (including broken) destination rather than ever
+    # opening through a path that could be redirected by a symlink.
+    destination.mkdir(parents=True)
+    rejected: list[dict[str, str]] = []
+    safe_files: dict[str, str] = {}
+    nofollow = getattr(os, "O_NOFOLLOW", 0)
+    cloexec = getattr(os, "O_CLOEXEC", 0)
+
+    def copy_tree(current_fd: int, relative_root: Path, target: Path) -> None:
+        # Every source lookup is relative to a held directory descriptor. The
+        # no-follow open closes the stat-then-open replacement race: a file
+        # swapped for a symlink after scandir is rejected at open time.
+        try:
+            entries = list(os.scandir(current_fd))
+        except OSError as exc:
+            rejected.append({"path": str(relative_root), "kind": "unreadable", "error": str(exc)})
+            return
+        for entry in entries:
+            relative = relative_root / entry.name
+            out = target / entry.name
+            try:
+                info = os.stat(entry.name, dir_fd=current_fd, follow_symlinks=False)
+            except OSError as exc:
+                rejected.append({"path": str(relative), "kind": "unstatable", "error": str(exc)})
+                continue
+            mode = info.st_mode
+            if stat.S_ISLNK(mode):
+                try:
+                    link_target = os.readlink(entry.name, dir_fd=current_fd)
+                except OSError as exc:
+                    link_target = f"<unreadable: {exc}>"
+                rejected.append({"path": str(relative), "kind": "symlink", "target": link_target})
+            elif stat.S_ISDIR(mode):
+                try:
+                    child_fd = os.open(entry.name, os.O_RDONLY | os.O_DIRECTORY | nofollow | cloexec, dir_fd=current_fd)
+                except OSError as exc:
+                    rejected.append({"path": str(relative), "kind": "directory_open_failed", "error": str(exc)})
+                    continue
+                try:
+                    out.mkdir()
+                    copy_tree(child_fd, relative, out)
+                except OSError as exc:
+                    rejected.append({"path": str(relative), "kind": "directory_copy_failed", "error": str(exc)})
+                finally:
+                    os.close(child_fd)
+            elif stat.S_ISREG(mode):
+                out.parent.mkdir(parents=True, exist_ok=True)
+                source_fd = None
+                destination_fd = None
+                try:
+                    source_fd = os.open(entry.name, os.O_RDONLY | os.O_NONBLOCK | nofollow | cloexec, dir_fd=current_fd)
+                    source_info = os.fstat(source_fd)
+                    if not stat.S_ISREG(source_info.st_mode):
+                        raise OSError("source changed to a non-regular file")
+                    destination_fd = os.open(out, os.O_WRONLY | os.O_CREAT | os.O_EXCL | cloexec, 0o600)
+                    digest = hashlib.sha256()
+                    while True:
+                        chunk = os.read(source_fd, 1024 * 1024)
+                        if not chunk:
+                            break
+                        offset = 0
+                        while offset < len(chunk):
+                            offset += os.write(destination_fd, chunk[offset:])
+                        digest.update(chunk)
+                    safe_files[str(relative)] = digest.hexdigest()
+                except OSError as exc:
+                    rejected.append({"path": str(relative), "kind": "copy_failed", "error": str(exc)})
+                    try:
+                        os.unlink(out)
+                    except FileNotFoundError:
+                        pass
+                finally:
+                    if source_fd is not None:
+                        os.close(source_fd)
+                    if destination_fd is not None:
+                        os.close(destination_fd)
+            else:
+                rejected.append({"path": str(relative), "kind": "special"})
+
+    try:
+        root_fd = os.open(source, os.O_RDONLY | os.O_DIRECTORY | nofollow | cloexec)
+    except OSError as exc:
+        rejected.append({"path": ".", "kind": "root_open_failed", "error": str(exc)})
+        root_fd = None
+    if root_fd is not None:
+        try:
+            copy_tree(root_fd, Path("."), destination)
+        finally:
+            os.close(root_fd)
+    if rejected:
+        failure = {"label": label, "source": str(source), "status": "rejected", "entries": rejected, "safe_files": safe_files}
+        write_json(trial / f"{label}-project-failure.json", failure)
+        raise SystemExit(f"snapshot refused unsafe entries: {len(rejected)}")
     value = manifest(destination)
     write_json(trial / f"{label}-project-manifest.json", value)
     return value

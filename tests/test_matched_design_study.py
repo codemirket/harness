@@ -62,6 +62,31 @@ class MatchedStudyTests(unittest.TestCase):
         self.assertEqual(*configs)
         self.assertNotIn('secret-test-credential', ''.join(p.read_text(errors='replace') for p in (self.root/'frozen').rglob('*') if p.is_file()))
 
+    def test_acceptance_sample_freezes_four_matched_cells_and_one_shared_repair(self):
+        root, seal = self.base / 'sample', self.base / 'sample-seal.json'
+        S.prepare(root, self.ready_path, self.font, seal, acceptance_sample=True)
+        protocol = S.read(root / 'frozen/protocol.json')
+        self.assertEqual(protocol['kind'], 'acceptance-sample')
+        self.assertEqual(len(protocol['cells']), 4)
+        self.assertEqual(protocol['limits']['max_repairs'], 1)
+        self.assertEqual(protocol['limits']['wall_seconds'], 1800)
+        for task in protocol['cases']:
+            a, b = [c for c in protocol['cells'] if c['task'] == task]
+            strip = lambda c: {k: v for k, v in c['inputs'].items() if not k.startswith('.agents/')}
+            self.assertEqual(strip(a), strip(b))
+            self.assertEqual(a['prompt_sha256'], b['prompt_sha256'])
+            text = (root / 'trials' / a['id'] / 'project/PRODUCTION.md').read_text()
+            self.assertIn('one 180-second repair turn across all four cells', text)
+        with S.locked(root):
+            a, b = protocol['cells'][:2]
+            for cell in (a, b):
+                S.reserve(root, protocol, cell['id'], 'initial')
+                S.settle(root, cell['id'], 'initial', 1, {})
+            S.reserve(root, protocol, a['id'], 'repair')
+            S.settle(root, a['id'], 'repair', 1, {})
+            with self.assertRaisesRegex(SystemExit, 'shared repair budget exhausted'):
+                S.reserve(root, protocol, b['id'], 'repair')
+
     def test_prompt_and_production_agree_on_editable_output_location(self):
         trial = self.root/'trials'/self.a['id']
         self.assertIn('editable files at the project root', (trial/'prompt.txt').read_text())

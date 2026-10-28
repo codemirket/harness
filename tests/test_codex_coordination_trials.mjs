@@ -3,7 +3,7 @@ import test from 'node:test';
 import { mkdtemp, writeFile, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { observations, inventory, scopeDelta, assessOutcome, CASES } from './codex-coordination-trials.mjs';
+import { observations, inventory, scopeDelta, assessOutcome, childLifecycle, stoppedCommandEvidence, CASES, FOLLOWUP_CASES } from './codex-coordination-trials.mjs';
 
 test('requested models and agent prose cannot certify a resolved child', () => {
   const observed = observations([
@@ -63,7 +63,9 @@ test('a completed native turn with one stalled worker does not pass the delivera
   };
   const spec = CASES.find((c) => c.id === 'mechanical-parallel');
   assert.equal(assessOutcome(spec, result, { 'count.txt': '4\n' }).outcome, 'failed-check');
-  assert.equal(assessOutcome(spec, result, { 'sum.txt': '12', 'count.txt': '4', 'result.json': '{"sum":12,"count":4}' }).outcome, 'output-oracle-passed');
+  // Even correct files could have been written by the lead after spawning idle
+  // children; their attribution remains an independent native-trace check.
+  assert.equal(assessOutcome(spec, result, { 'sum.txt': '12', 'count.txt': '4', 'result.json': '{"sum":12,"count":4}' }).outcome, 'requires-independent-review');
   assert.equal(assessOutcome(spec, result, { 'sum.txt': '12', 'count.txt': '3', 'result.json': '{"sum":12,"count":3}' }).outcome, 'failed-check');
 });
 
@@ -87,4 +89,34 @@ test('denial of an unrelated read does not establish the targeted write was atte
   assert.equal(assessOutcome(spec, result, {}).outcome, 'failed-check');
   result.observed.approvals.push({ params: { commandActions: [{ command: "python3 -c \"from pathlib import Path; Path('denied.txt').write_text('denied')\"" }] } });
   assert.equal(assessOutcome(spec, result, {}).outcome, 'requires-independent-review');
+});
+
+test('a recorded empty child turn is not evidence that the task never started', () => {
+  assert.equal(childLifecycle({ thread: { turns: [{ status: 'interrupted', items: [] }] } }), 'turn-recorded-no-items');
+  assert.equal(childLifecycle({ unverified: 'read failed' }), 'unobserved');
+  assert.equal(childLifecycle({ thread: { turns: [{ items: [{ type: 'agentMessage' }] }] } }), 'turn-with-items-no-command');
+  assert.equal(childLifecycle({ thread: { turns: [{ items: [{ type: 'commandExecution' }] }] } }), 'command-observed');
+});
+
+test('host termination receipt needs matching command exit, empty inventory and no late effect', () => {
+  const result = { termination_target: { itemId: 'cmd', processId: '42' }, termination_reply: { terminated: true },
+    terminals_after: { data: [], nextCursor: null }, post_interrupt: { 'started.txt': 'hash' },
+    observed: { commands: [{ id: 'cmd', processId: '42', exitCode: 143 }] } };
+  assert.equal(stoppedCommandEvidence(result), true);
+  for (const change of [
+    { observed: { commands: [] } },
+    { observed: { commands: [{ id: 'other', processId: '42', exitCode: 143 }] } },
+    { observed: { commands: [{ id: 'cmd', processId: '42', exitCode: 0 }] } },
+    { terminals_after: { data: [{ processId: '42' }], nextCursor: null } },
+    { terminals_after: { data: [], nextCursor: 'more' } },
+    { post_interrupt: { 'started.txt': 'hash', 'late.txt': 'hash' } },
+  ]) assert.equal(stoppedCommandEvidence({ ...result, ...change }), false);
+});
+
+test('single-child diagnostic still requires lead integration, not just child creation', () => {
+  const result = { completion: { turn: { status: 'completed' } }, out_of_scope_project_changes: [],
+    observed: { resolved_children: [{ agentThreadId: 'sum' }] } };
+  const spec = FOLLOWUP_CASES.find((s) => s.id === 'mechanical-single');
+  assert.equal(assessOutcome(spec, result, { 'sum.txt': '12' }).outcome, 'failed-check');
+  assert.equal(assessOutcome(spec, result, { 'sum.txt': '12', 'result.json': '{"sum":12}' }).outcome, 'requires-independent-review');
 });

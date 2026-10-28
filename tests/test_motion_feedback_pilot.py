@@ -118,6 +118,126 @@ class MotionFeedbackPilotTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 PILOT.manifest(root)
 
+    def test_snapshot_retains_regular_siblings_and_records_symlink_without_following(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "index.html").write_text("safe")
+            outside = trial / "outside.txt"
+            outside.write_text("secret")
+            (project / "linked.txt").symlink_to(outside)
+            with self.assertRaisesRegex(SystemExit, "snapshot refused unsafe entries"):
+                PILOT.snapshot(trial, "initial")
+            snapshot = trial / "initial-project-snapshot"
+            self.assertEqual((snapshot / "index.html").read_text(), "safe")
+            self.assertFalse((snapshot / "linked.txt").exists())
+            failure = json.loads((trial / "initial-project-failure.json").read_text())
+            self.assertEqual(failure["status"], "rejected")
+            self.assertEqual(failure["entries"][0]["kind"], "symlink")
+            self.assertEqual(failure["safe_files"]["index.html"], PILOT.sha(project / "index.html"))
+            self.assertFalse((trial / "initial-project-manifest.json").exists())
+
+    def test_snapshot_rejects_symlinked_directory_and_fifo_without_blocking(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "safe.txt").write_text("safe")
+            external = trial / "external"
+            external.mkdir()
+            (external / "secret.txt").write_text("secret")
+            (project / "linked-dir").symlink_to(external, target_is_directory=True)
+            fifo = project / "named-pipe"
+            os.mkfifo(fifo)
+            with self.assertRaises(SystemExit):
+                PILOT.snapshot(trial, "initial")
+            snapshot = trial / "initial-project-snapshot"
+            self.assertEqual((snapshot / "safe.txt").read_text(), "safe")
+            self.assertFalse((snapshot / "linked-dir").exists())
+            failure = json.loads((trial / "initial-project-failure.json").read_text())
+            self.assertEqual({entry["kind"] for entry in failure["entries"]}, {"symlink", "special"})
+            self.assertEqual((external / "secret.txt").read_text(), "secret")
+
+    def test_snapshot_no_follow_rejects_file_replaced_after_stat(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "race.txt").write_text("safe")
+            outside = trial / "outside.txt"
+            outside.write_text("secret")
+            original_stat = PILOT.os.stat
+            swapped = False
+
+            def stat_then_swap(path, *args, **kwargs):
+                nonlocal swapped
+                result = original_stat(path, *args, **kwargs)
+                if path == "race.txt" and kwargs.get("dir_fd") is not None and not swapped:
+                    swapped = True
+                    os.unlink(path, dir_fd=kwargs["dir_fd"])
+                    os.symlink(outside, path, dir_fd=kwargs["dir_fd"])
+                return result
+
+            with patch.object(PILOT.os, "stat", side_effect=stat_then_swap):
+                with self.assertRaises(SystemExit):
+                    PILOT.snapshot(trial, "initial")
+            failure = json.loads((trial / "initial-project-failure.json").read_text())
+            self.assertEqual(failure["entries"][0]["kind"], "copy_failed")
+            self.assertNotIn("race.txt", failure["safe_files"])
+            self.assertEqual((outside).read_text(), "secret")
+
+    def test_snapshot_no_follow_rejects_directory_replaced_after_stat(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "race-dir").mkdir()
+            (project / "race-dir/file.txt").write_text("safe")
+            outside = trial / "outside"
+            outside.mkdir()
+            original_stat = PILOT.os.stat
+            swapped = False
+
+            def stat_then_swap(path, *args, **kwargs):
+                nonlocal swapped
+                result = original_stat(path, *args, **kwargs)
+                if path == "race-dir" and kwargs.get("dir_fd") is not None and not swapped:
+                    swapped = True
+                    os.rmdir(path, dir_fd=kwargs["dir_fd"])
+                    os.symlink(outside, path, dir_fd=kwargs["dir_fd"], target_is_directory=True)
+                return result
+
+            with patch.object(PILOT.os, "stat", side_effect=stat_then_swap):
+                with self.assertRaises(SystemExit):
+                    PILOT.snapshot(trial, "initial")
+            failure = json.loads((trial / "initial-project-failure.json").read_text())
+            self.assertIn(failure["entries"][0]["kind"], {"directory_open_failed", "unstatable"})
+            self.assertFalse((trial / "initial-project-snapshot/race-dir").exists())
+
+    def test_snapshot_clean_tree_writes_manifest_once(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "nested").mkdir()
+            (project / "nested/file.txt").write_text("safe")
+            manifest = PILOT.snapshot(trial, "initial")
+            self.assertEqual(manifest, {"nested/file.txt": PILOT.sha(trial / "initial-project-snapshot/nested/file.txt")})
+            self.assertTrue((trial / "initial-project-manifest.json").is_file())
+            with self.assertRaises(SystemExit):
+                PILOT.snapshot(trial, "initial")
+
+    def test_snapshot_refuses_broken_destination_symlink(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            trial = Path(temporary)
+            project = trial / "project"
+            project.mkdir()
+            (project / "safe.txt").write_text("safe")
+            (trial / "initial-project-snapshot").symlink_to(trial / "missing-target")
+            with self.assertRaisesRegex(SystemExit, "snapshot already exists"):
+                PILOT.snapshot(trial, "initial")
+
     def test_feedback_evidence_is_not_inferred_from_static_oracle(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -79,6 +79,23 @@ CALIBRATION = {
     }
 }
 
+ACCEPTANCE_SAMPLE = {
+    "responsive-ui": {
+        **CASES["responsive-ui"],
+        "brief": """# Tidepool field station
+Create an original, art-directed responsive page for a fictional evening field station. Required copy: Tidepool; Stay curious after sunset; Reserve a place. Facts: Saturday 17:30–20:00; free entry; three sessions named Shore walk, Sky watch and Soil stories, with categories Shore, Sky and Soil respectively. Do not invent attendance, testimonials or ratings. Provide keyboard-operable All/Shore/Sky/Soil filters and session search; an unmatched search shows a useful empty state. Refresh sessions deliberately fails once with an accessible error; Retry restores the session list. Keep the interface usable without motion and protect lowercase descenders in large display text. No external assets or packages.
+""",
+        "rubric": "Score 0–2 each: distinctive hierarchy, legibility and intact display text; exact facts and working filter/search/empty/error/retry; keyboard operation, responsive bounds and reduced-motion usability at 1280×800 and 390×844. Use actual interactions and saved pixels. Do not score a different art direction as defective merely by preference.",
+    },
+    "captioned-motion": {
+        **CASES["captioned-motion"],
+        "brief": """# Tidepool night-watch film
+Create an original editable 640×360, 12fps, 36-frame MP4. Frames 0–11 introduce Tidepool with a small star; frames 12–23 move that star into the centre of a telescope lens, with a clearly visible contact pause before the next beat; frames 24–35 hold Stay curious. Captions in the three respective half-open frame ranges: Tidepool / Look a little closer / Stay curious. Keep caption and main-copy regions distinct, including during transitions. Use a coherent night-observation art direction, preserve the y descender and keep the star visually accounted for after contact. No audio, borrowed marks, remote assets or invented metrics.
+""",
+        "rubric": "Score 0–2 each: readable star approach/lens contact/pause and final hold; coherent hierarchy, intact descenders and captions without collisions through transitions; editable source and correct decoded 36-frame timing. Decode the entire export and inspect 0,6,10,11,12,13,18,22,23,24,25,30,35 plus neighbours of suspected defects. Do not infer object movement from whole-frame differences.",
+    },
+}
+
 
 def canonical(value: Any) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
@@ -170,7 +187,9 @@ missing image events in a CLI trace alone do not establish lack of inspection.
 """
 
 
-def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: bool = False) -> str:
+def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: bool = False, acceptance_sample: bool = False) -> str:
+    if calibration and acceptance_sample:
+        raise SystemExit("choose calibration or acceptance sample, not both")
     root, seal = root.absolute(), seal.absolute()
     if root.exists() or seal.exists() or seal.is_relative_to(root) or root.is_relative_to(REPO):
         raise SystemExit("use a new disposable root outside the repository and a new external seal")
@@ -181,7 +200,7 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
     if ready.get("approval_review") != "auto_review":
         raise SystemExit("matched trials require the authorized automatic approval review")
     runtime = bindings(ready)
-    cases = CALIBRATION if calibration else CASES
+    cases = CALIBRATION if calibration else ACCEPTANCE_SAMPLE if acceptance_sample else CASES
     root.mkdir(parents=True, mode=0o700)
     frozen = root / "frozen"; frozen.mkdir()
     (frozen / "runner").mkdir()
@@ -195,6 +214,8 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
     limits = dict(LIMITS)
     if calibration:
         limits.update(initial_seconds=120, max_repairs=0, model_seconds=270, wall_seconds=600)
+    elif acceptance_sample:
+        limits.update(max_repairs=1, model_seconds=1500, wall_seconds=1800)
     cells = []
     for index, (task, case) in enumerate(cases.items()):
         # Alternate condition order across briefs; random IDs mask labels from reviewers.
@@ -208,6 +229,8 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
             common = production(case, ready)
             if calibration:
                 common = common.replace("Initial turn ceiling: 240 seconds", "Initial turn ceiling: 120 seconds").replace("45 minutes including reviews, 2700 model seconds and\nfour 180-second repair turns", "10 minutes including reviews, 270 model seconds and\nzero repair turns")
+            elif acceptance_sample:
+                common = common.replace("45 minutes including reviews, 2700 model seconds and\nfour 180-second repair turns", "30 minutes including reviews, 1500 model seconds and\none 180-second repair turn across all four cells")
             (project / "PRODUCTION.md").write_text(common)
             (project / "RUBRIC.md").write_text(case["rubric"] + "\n")
             shutil.copy2(frozen / "NotoSans.ttf", project / "NotoSans.ttf")
@@ -219,7 +242,7 @@ def prepare(root: Path, ready_path: Path, font: Path, seal: Path, calibration: b
             cells.append({"id": cid, "task": task, "condition": condition, "inputs": tree(project),
                           "prompt_sha256": P.sha(trial / "prompt.txt"),
                           "config_sha256": P.sha(trial / "codex-home/config.toml")})
-    protocol = {"schema_version": 1, "kind": "calibration" if calibration else "cohort", "cases": cases,
+    protocol = {"schema_version": 1, "kind": "calibration" if calibration else "acceptance-sample" if acceptance_sample else "cohort", "cases": cases,
                 "limits": limits, "cells": cells, "ready": {k: v for k, v in ready.items() if k != "auth_file"},
                 "runtime": runtime, "platform": platform.platform(), "tools": TOOLS,
                 "head": P.subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
@@ -534,13 +557,15 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--seal", type=Path, required=True)
     parser.add_argument("--seal-sha256")
     parser.add_argument("--font", type=Path)
-    parser.add_argument("--calibration", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--calibration", action="store_true")
+    mode.add_argument("--acceptance-sample", action="store_true")
     parser.add_argument("--cell")
     parser.add_argument("--phase", choices=("initial", "repair"), default="initial")
     args = parser.parse_args(argv)
     if args.command == "prepare":
         if args.font is None: parser.error("prepare requires --font")
-        print(json.dumps({"seal_sha256": prepare(args.root, args.ready_manifest, args.font, args.seal, args.calibration)}))
+        print(json.dumps({"seal_sha256": prepare(args.root, args.ready_manifest, args.font, args.seal, args.calibration, args.acceptance_sample)}))
     else:
         if not args.seal_sha256: parser.error("retain and supply --seal-sha256 from preparation")
         if args.command == "verify":
