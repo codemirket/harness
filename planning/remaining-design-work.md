@@ -1,5 +1,11 @@
 # Remaining design work
 
+Status: **R1–R4 executed on 2026-10-28**, within the single shared closure
+window. The [outcome record](../docs/design-production-closure-20261028.md)
+contains the actual export, one live-page repair, positive/negative checks and
+remaining limits. The sequence below is retained as the approved protocol,
+not an instruction to start another trial. No new cohort is scheduled.
+
 Revised 2026-10-28 at the user's request to stop the repeated timeout-investigation
 cycle. Reviewed baseline: `a75dea2`. This replaces the active sequence in the
 previous version of this file; historical evidence and frozen trials remain

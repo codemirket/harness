@@ -163,19 +163,57 @@ missing root marker and invalid captions can coexist. The list is capped and
 is not an exhaustive review of the composition. Recheck after editing and
 refresh the selected source revisions explicitly; do not replay an old intent.
 
-In the harness checkout, the optional repository utilities
-`scripts/create-video-seed.mjs` and `scripts/check-video-source.mjs` provide an
-editable starting point with a caller-selected local font/notice and a read-only
-check using the same compiled adapter validator. The checker accepts an explicit
-revision-bound source manifest, starts no renderer, and writes no project files.
-These utilities are not installed MCP tools or files promised in other
-projects. A static pass is not an export, motion, font-rendering or visual pass.
-
 An asset refusal is evidence of the Mirket source policy, not an upstream
 HyperFrames defect. Conversely, a prepared receipt or successful export does
 not prove rights, visual intent, player compatibility or complete process
 cleanup. Save independent decoded frame/audio/caption evidence and disclose
 unexercised paths.
+
+## Saved source to checked export
+
+For an existing accepted composition, edit the saved project rather than
+reconstructing its artwork. Keep exact requested copy, affected beats and allowed
+files explicit. Finish a static composition before changing motion; use the
+existing `motion-direction` shot card when a new sequence needs direction.
+
+1. Check the selected runtime/release and freeze the source/profile. In this
+   harness checkout, `scripts/create-video-seed.mjs` can create new minimal
+   source with a caller-selected local font/notice; it is unnecessary for an
+   existing composition. Repository utilities are not installed MCP tools or
+   files promised in unrelated projects.
+2. Run `scripts/check-video-source.mjs` using an explicit private Node path,
+   `--project ABS_PROJECT --manifest ABS_MANIFEST`. Its manifest contains
+   `schema_version: 1`, a relative `entry_file`, the complete profile (including
+   `captions_path: null` when absent), and `sources` entries with relative
+   `path`, `sha256:`-prefixed `revision` and byte count `bytes`. Select the entry
+   and every referenced asset; regenerate revisions after an edit. This uses
+   the checkout's compiled adapter and reports static validity only.
+3. Inspect the affected source state in Codex's browser before a full render.
+   For CSS/WAAPI frame inspection in this checkout, the existing
+   `scripts/create-motion-preview.mjs --project ABS_PROJECT --entry ABS_HTML
+   --motion ABS_MOTION_JSON --output ABS_NEW_PREVIEW` uses the profile described
+   in [preview and beat correspondence](preview-and-beats.md). The HTML, motion
+   JSON and new preview must be inside that canonical project. Keep its controls
+   outside the selected render assets; other animation types need their own
+   qualified preview. A source preview is not saved-export inspection.
+4. Call `video_prepare` with those revisions, an explicit project root and a
+   fresh destination. Retain the returned operation ID before `video_start`.
+   Inspect `video_status`/`video_result` for that same job after a lost response;
+   do not submit a replacement render while the original effect is uncertain.
+   Report unavailable routes or host approval denial rather than bypassing them.
+5. Probe and decode the actual output using the selected private FFprobe/FFmpeg
+   paths and the recipe above. Inspect changed beats and their neighbours,
+   exercise affected UI separately in Codex's browser, and record playback
+   observations. Repair only a demonstrated defect within the shared task budget,
+   then repeat the affected checks. Preserve the previous artifact and findings.
+
+A short handoff in the existing project README is enough: `completed: CTA edit
+and static preflight; source: <manifest/revisions>; next: inspect frame 90 and
+start the prepared export; operation: <ID or not prepared>; defects: <known or
+none observed>; budget: <used/remaining and repairs used>`. Record native turn
+completion, scope validity, export checks, visual findings and human acceptance
+separately. A saved file after a timeout does not complete that author trial;
+a new export does not inherit the previous export's acceptance.
 
 ## Exact upstream boundary
 

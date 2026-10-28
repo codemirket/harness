@@ -47,6 +47,42 @@ return. Presentation wipes are not imposed on normal page navigation. Its
 opening starts on plum; the player uses a nonblank hero poster. The silent
 film has no speech to caption; this is not a captioning qualification.
 
+## Focused maintenance
+
+This directory preserves the accepted film baseline. The subsequent
+[maintenance journey](../../docs/design-production-closure-20261028.md) found
+that its live page's absolute wordmark can cover the CTA at 1280×720. That
+defect was repaired and checked in the disposable variant; this historical
+source was deliberately not rewritten. Film acceptance does not qualify the
+live page at every viewport. Use the report's source/handoff for that variant.
+
+Use a disposable copy for qualification so the accepted candidate stays intact.
+For a copy/layout edit, change `index.html`, then run `python3 ABS_COPY/build-reel.py`;
+the script resolves its own directory and rebuilds that copy's `film.html`.
+Keep `site.css`, `film.css`, `film.js` and the local assets unchanged unless the
+requested change needs them. Freeze the exact change and affected beats first.
+
+Follow [saved source to checked export](../../skills/video-production/references/hyperframes-0.8.197-authoring.md#saved-source-to-checked-export)
+from the harness checkout. Select `film.html`, `site.css`, `film.css`, `film.js`,
+`assets/track.png`, `assets/club.png` and `assets/NotoSans.ttf` for this silent
+1280×720, 30fps, 360-frame film. The generated preview, page controls and old
+exports are not render inputs. Supply explicit private executable paths and
+disposable state; do not use the live user installation for qualification.
+
+Inspect the modified page/preview before export. After export, run the existing
+`qa/check-export.mjs` against the new MP4, inspect the changed decoded frames and
+neighbours, and exercise any affected page interaction at desktop/mobile sizes.
+The frozen pixel checks do not verify arbitrary replacement copy; read its
+actual saved pixels. Run `qa/check-review-pack.mjs` on the original as a control.
+It should reject a copy whose film/source changed but whose old review manifest
+was retained. Do not rewrite that manifest to transfer the original acceptance.
+
+Keep the new export under its own name and record source revisions, the Mirket
+operation ID, checks, remaining defects and budget used in this copy's handoff.
+One targeted repair is the limit for the approved closure task. Its final report
+can establish a maintenance result without claiming new user art-direction
+acceptance or a general skill/model advantage.
+
 ## Assets and rights
 
 The two raster images were generated for this original concept using Codex
