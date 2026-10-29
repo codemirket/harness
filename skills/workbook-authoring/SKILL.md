@@ -5,7 +5,7 @@ description: "Create or revise an editable workbook with formulas, tables or cha
 
 # Workbook authoring
 
-Use the available Codex host spreadsheet tools and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.
+Use the project-installed spreadsheet authoring and recalculation commands through pi bash and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.
 
 Separate input assumptions, calculated cells and presentation. Keep units, date/number formats, ranges and error behavior explicit. Prefer formulas for values users should be able to change; do not replace live formulas with cached numbers merely to make an export look correct.
 

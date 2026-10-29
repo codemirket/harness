@@ -49,7 +49,7 @@ review; do not load it for a mechanical SVG optimization.
    where text is required. Do not copy a reference’s protected artwork, asset,
    font, or distinctive mark; learn its construction relationship instead.
 5. Render the saved source with the qualified Mirket resvg route, inspect the
-   displayed pixels with an image-capable tool, then use the qualified Mirket
+   displayed pixels with pi’s read tool with a vision-capable active model, then use the qualified Mirket
    SVGO route for hygiene/optimization and render again. Compare the intended
    size and at least one pressure size; zoom hands, faces, feet, overlaps,
    contacts, and any small text from the saved vector. A successful render,

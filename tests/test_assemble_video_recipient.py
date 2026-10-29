@@ -16,6 +16,23 @@ SPEC.loader.exec_module(MODULE)
 
 
 class VideoRecipientAssemblyTests(unittest.TestCase):
+    def test_layout_receipt_cannot_hide_a_changed_dependency(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            base, current, receipt = (root / name for name in ["base.json", "current.json", "receipt.json"])
+            base.write_text(json.dumps({"packages": {"": {"name": "old"}, "node_modules/demo": {"version": "1"}}}))
+            current.write_text(json.dumps({"packages": {"": {"name": "new"}, "node_modules/demo": {"version": "1"}}}))
+            def update_receipt():
+                receipt.write_text(json.dumps({"base_lock_sha256": MODULE.digest(base)[1], "current_lock_sha256": MODULE.digest(current)[1]}))
+            update_receipt()
+            MODULE.verify_pi_layout(base, current, receipt)
+            current.write_text(json.dumps({"packages": {"node_modules/demo": {"version": "2"}}}))
+            with self.assertRaisesRegex(MODULE.AssemblyError, "identity changed"):
+                MODULE.verify_pi_layout(base, current, receipt)
+            update_receipt()
+            with self.assertRaisesRegex(MODULE.AssemblyError, "dependency instances"):
+                MODULE.verify_pi_layout(base, current, receipt)
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name).resolve()

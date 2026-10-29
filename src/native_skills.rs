@@ -1,4 +1,4 @@
-//! Release-bound Codex-native skill catalog.
+//! Release-bound pi skill catalog.
 //!
 //! A catalog is descriptive data. Reading it never installs a skill, starts a
 //! tool, or grants a private capability. Setup and project selection use this
@@ -257,12 +257,12 @@ impl QualifiedCatalog {
     }
 
     pub fn release_shape(&self) -> Result<(), String> {
-        if self.catalog.global.len() != 9
-            || self.catalog.project.len() != 52
-            || self.catalog.profiles.len() != 7
+        if self.catalog.global.is_empty()
+            || self.catalog.global.len() + self.catalog.project.len() > 256
+            || self.catalog.profiles.len() > 64
         {
             return Err(
-                "release skill catalog must contain 9 global, 52 project and 7 profiles".into(),
+                "release skill catalog needs core guidance and must remain within 256 skills and 64 profiles".into(),
             );
         }
         Ok(())
@@ -764,7 +764,7 @@ mod tests {
             catalog.entry("task-planning").unwrap().description,
             "Plan work"
         );
-        assert!(catalog.release_shape().is_err());
+        assert!(catalog.release_shape().is_ok());
         fixture.write("task-planning", "other-name");
         assert!(QualifiedCatalog::open(&fixture.0).is_err());
     }

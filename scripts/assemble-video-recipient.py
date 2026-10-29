@@ -21,7 +21,7 @@ from pathlib import PurePosixPath
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_INVENTORY = REPO / "packaging/admission/m3-video-sharp-free-macos.runtime.json.proposed"
-DEFAULT_LOCK = REPO / "adapters/package-lock.json"
+DEFAULT_LOCK = REPO / "packaging/admission/pi-native-base-package-lock.json"
 TARGET = "aarch64-apple-darwin"
 VIDEO_PREFIX = "runtime/video/"
 FIRST_PARTY_VIDEO_FILES = frozenset(
@@ -402,6 +402,8 @@ def assemble(
         require_directory(supplemental_notice_root)
     if release_source_manifest is not None and release_source_root is None:
         release_source_root = release_source_manifest.parent
+    if strict_current:
+        verify_pi_layout(package_lock_path, REPO / "pi/package-lock.json", REPO / "packaging/admission/pi-native-layout.json")
     inventory = load_json(inventory_path)
     lock = load_json(package_lock_path)
     lock_sha = digest(package_lock_path)[1]
@@ -509,7 +511,10 @@ def assemble(
 
         provenance = stage / "provenance"
         copy_file(inventory_path, provenance / "m3-video-sharp-free-macos.runtime.json.proposed")
-        copy_file(package_lock_path, provenance / "adapters-package-lock.json")
+        copy_file(package_lock_path, provenance / "native-base-package-lock.json")
+        if strict_current:
+            copy_file(REPO / "pi/package-lock.json", provenance / "pi-package-lock.json")
+            copy_file(REPO / "packaging/admission/pi-native-layout.json", provenance / "pi-native-layout.json")
         if release_source_manifest is not None:
             copy_file(release_source_manifest, provenance / "current-release-manifest.json")
         source_manifest = {
@@ -602,6 +607,16 @@ def assemble(
         "current_release_manifest_sha256": release_manifest_sha,
         "ffmpeg_fixture": fixture_identity,
     }
+
+
+def verify_pi_layout(base: Path, current: Path, receipt: Path) -> None:
+    layout = load_json(receipt)
+    if digest(base)[1] != layout.get("base_lock_sha256") or digest(current)[1] != layout.get("current_lock_sha256"):
+        raise AssemblyError("pi layout lock identity changed")
+    before = {key: value for key, value in load_json(base)["packages"].items() if key}
+    after = {key: value for key, value in load_json(current)["packages"].items() if key}
+    if before != after:
+        raise AssemblyError("pi layout changed dependency instances")
 
 
 def main() -> None:

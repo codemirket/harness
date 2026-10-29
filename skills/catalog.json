@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "authoring_date": "2026-10-25",
-  "status": "authored; disposable macOS ARM64 activation passed; sampled matched outcome trials run with open acceptance defects",
+  "status": "pi port in progress; static body and route audit does not establish installed selection or held-out outcome qualification",
   "authoring_basis": [
     {
       "path": "planning/skill-catalog-design.md",
-      "sha256": "aa180ea769e255b26ac28e535c592aa99862e8148b118737568931bf84f11375"
+      "sha256": "49900f9f46168f74a93e133638c137097bd00001f73e10e6bc4856be5cdb1c60"
     },
     {
       "path": "planning/implementation-plan.md",
-      "sha256": "e77ce20f9858ab325ba1ab55b8e21b81e07d192518eef8e6545bb9643cee9724"
+      "sha256": "3165dd068b38081fa23f61fdcb8b5d55177179e0446514b891635526f4511578"
     },
     {
       "path": "planning/references.md",
@@ -44,8 +44,8 @@
         "design.diagrams",
         "video"
       ],
-      "source_sha256": "aed01511264ba4efd388668b38c0a97c80e75a968cbdd9cdcfa9bd1954d26157",
-      "source_bytes": 2071,
+      "source_sha256": "cdd94f063811ebbf22df9e60493e17fcc93ae11a2204d18a65b8a9f49a5e1688",
+      "source_bytes": 2359,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#runtime-operations",
@@ -163,8 +163,8 @@
       "path": "skills/evidence-research/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "348004e0a8118bbe6b838af3b91209bcd2fb00ad2886b5cb74a93cae9a3df494",
-      "source_bytes": 1656,
+      "source_sha256": "30fb3ce7b7f70db6599f683be9d61a002c74cd774e920149bfb46d0fac06fed8",
+      "source_bytes": 2168,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#evidence-research",
@@ -282,12 +282,12 @@
     },
     {
       "id": "agent-coordination-strategy",
-      "description": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work.",
+      "description": "Coordinate authorized bounded pi CLI children when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work.",
       "path": "skills/agent-coordination-strategy/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
-      "source_bytes": 2898,
+      "source_sha256": "53b9c50205758c2c545284eab851930f9ce2655860684c147d8aad73d512b91f",
+      "source_bytes": 3867,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#agent-coordination-strategy",
@@ -714,8 +714,8 @@
       "path": "skills/frontend-engineering/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "94fb94fae76cb85ceda4d2d0ba025df333a452be74df1fba5d774587f8de3098",
-      "source_bytes": 1407,
+      "source_sha256": "c31f6ae3904acb9e41a826e64216d6c081a98065981dd3171fd3333bcba27fe2",
+      "source_bytes": 1487,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#frontend-engineering",
@@ -1314,8 +1314,8 @@
       "path": "skills/sql-navigation/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "0b6a47e6ed90c4880f79e7c2f15e55e07ec23ba517b5a4d33f053f0ce9fb3618",
-      "source_bytes": 1507,
+      "source_sha256": "9dccfa9462731e3a9d5edfeea35987aae2a7467bf8334f046003a2c013eb60db",
+      "source_bytes": 1514,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#sql-navigation",
@@ -1372,8 +1372,8 @@
       "path": "skills/browser-research/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
-      "source_bytes": 1848,
+      "source_sha256": "d7b7941bbc16156c488f66b61a0f1be91ce035d618b7405f01eb2e7127507808",
+      "source_bytes": 2175,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-research",
@@ -1427,8 +1427,8 @@
       "resources": [
         {
           "path": "references/research-coverage.md",
-          "sha256": "fe120c2d97daa3cc880b0edf1a4344167b5a7ab2f7b4f5722a2ece06a510c79c",
-          "bytes": 5389
+          "sha256": "8135db7cb10334e1282f27ed5a743a6d3c7260927c52650f14af44fc52548c3c",
+          "bytes": 5565
         }
       ]
     },
@@ -1438,8 +1438,8 @@
       "path": "skills/browser-automation/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
-      "source_bytes": 1643,
+      "source_sha256": "b0506bba800fbbd40cab58c2d1eff91f76f4c5cdf48296fd6a33c4cb95c7c4e9",
+      "source_bytes": 1723,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-automation",
@@ -1499,8 +1499,8 @@
       "path": "skills/browser-qa/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "d2b22b66ae6003ba164667e548c652d03bad5b08c4a9d1d34ebeaad5bf8ca0b2",
-      "source_bytes": 1519,
+      "source_sha256": "d0a1f252dade669729ca8414977dbe86d633cdd8547530f79080f1a4a552f7c8",
+      "source_bytes": 1599,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-qa",
@@ -1564,8 +1564,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
-      "source_bytes": 6492,
+      "source_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
+      "source_bytes": 6573,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#art-direction",
@@ -1634,8 +1634,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
-      "source_bytes": 4229,
+      "source_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
+      "source_bytes": 4270,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#interface-composition",
@@ -1708,8 +1708,8 @@
       "conditional_capabilities": [
         "design.openpencil"
       ],
-      "source_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
-      "source_bytes": 3969,
+      "source_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
+      "source_bytes": 4049,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#design-critique",
@@ -1770,8 +1770,8 @@
       "resources": [
         {
           "path": "references/review-packet.md",
-          "sha256": "89802c83269cb1b15e833f498c9c00578e394d4e5da7dcc58fdb6ad14223a9d3",
-          "bytes": 5067
+          "sha256": "83df1715a4fdede90c46061dd72a7448d5216a31d1fc86cd3874c8d56b69133f",
+          "bytes": 5097
         }
       ]
     },
@@ -1914,8 +1914,8 @@
       "path": "skills/accessibility/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "945b485cf109e0cdae4be271e7b908d34c0bb6eae50c5c59fa5d6fe2db6b7e34",
-      "source_bytes": 1498,
+      "source_sha256": "9589abe547c458950301f3d83ad8d90e771599815e4e081d21871fe50687f37b",
+      "source_bytes": 1578,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#accessibility",
@@ -2045,8 +2045,8 @@
         "design.vector"
       ],
       "conditional_capabilities": [],
-      "source_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
-      "source_bytes": 5400,
+      "source_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
+      "source_bytes": 5430,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#vector-art",
@@ -2308,8 +2308,8 @@
       "path": "skills/localization/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "ffb971f202f6bda43e67b77d2b1ea441046e10e75132c720957dc91e7fbd6435",
-      "source_bytes": 1497,
+      "source_sha256": "3b2fdb267fcbe98476cc2cdccfe64403cd3070b0caadb4a2bef1cc3710979870",
+      "source_bytes": 1577,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#localization",
@@ -2438,8 +2438,8 @@
         },
         {
           "path": "references/motion-observations.md",
-          "sha256": "a808446b05c27f689e7dd6710b02131a11ef6de09780adda47add24830a6e080",
-          "bytes": 3021
+          "sha256": "a53af13fed8a0fdc8f5b8d2384229563e625cfdcbb4760fa4ca4cb0b4f21535c",
+          "bytes": 3051
         },
         {
           "path": "references/storyboard-and-transitions.md",
@@ -2454,8 +2454,8 @@
       "path": "skills/ui-motion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
-      "source_bytes": 3715,
+      "source_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
+      "source_bytes": 3795,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#ui-motion",
@@ -2520,8 +2520,8 @@
       "path": "skills/scroll-motion/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
-      "source_bytes": 3336,
+      "source_sha256": "f36fd3c76e4f24914e9ea2eb69d02b1a2120a47be4b9a1668983c394d85384b7",
+      "source_bytes": 3416,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#scroll-motion",
@@ -2652,8 +2652,8 @@
         "design.vector",
         "design.raster"
       ],
-      "source_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
-      "source_bytes": 3389,
+      "source_sha256": "37e4728dc513426483a925693f294d4531f4a693c704653ea22d20263c9a9e7b",
+      "source_bytes": 3419,
       "provenance": {
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
@@ -2713,8 +2713,8 @@
       "resources": [
         {
           "path": "references/hyperframes-0.8.197-authoring.md",
-          "sha256": "b711b19809af380ec85f8bd44340c03fe27f0efebc0bbc564e5c7374790b2dc8",
-          "bytes": 12002
+          "sha256": "c4d961d937fe5b91363eb7779f81859f02be582764a30f19629e045973cdef9e",
+          "bytes": 12214
         },
         {
           "path": "references/motion-observations.md",
@@ -2723,8 +2723,8 @@
         },
         {
           "path": "references/preview-and-beats.md",
-          "sha256": "80689eb99eb03d6867067b2abd864e69820188852dc742ff01ea1175602e3384",
-          "bytes": 4649
+          "sha256": "22247b88ef014aaf4514acf7c9aa4fe308b9bfdc53a005bd3b0152b944e5c5ee",
+          "bytes": 4722
         }
       ]
     },
@@ -2795,8 +2795,8 @@
       "conditional_capabilities": [
         "design.openpencil"
       ],
-      "source_sha256": "8f47c234351f59b0c7aad00656f716119e53e05273866926e45542010b607a76",
-      "source_bytes": 1374,
+      "source_sha256": "77cdcc9889f2066ef3afdae32c3397e0f3ccf015fb977b44d529cee6af353ca5",
+      "source_bytes": 1415,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#prototype-test",
@@ -3456,8 +3456,8 @@
       "path": "skills/document-artifacts/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "4618b10ca1c96dcfd52c6ced7c212f65d1abd5f17312c45858e2efe9756568a2",
-      "source_bytes": 1615,
+      "source_sha256": "d252e8882a0120c39b4c43876da495ecc9047c4d7e5390a86357c4a2149b8232",
+      "source_bytes": 1631,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#document-artifacts",
@@ -3517,8 +3517,8 @@
       "path": "skills/workbook-authoring/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "a5bb5689e887d9e9e7fdb66600ab6f765f6b627caf9a4e5daac2b7fa277e8593",
-      "source_bytes": 1361,
+      "source_sha256": "30e7fb5d50bd23c582d2625958fb0243bc2a02ca84a6279bd2fd1be099b58f6e",
+      "source_bytes": 1405,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#workbook-authoring",
@@ -3576,8 +3576,8 @@
       "path": "skills/slide-deck-authoring/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "06cad6a5661d638580c9f5bcb8c7c99d09f565c53716149046c56735bd55a03b",
-      "source_bytes": 1549,
+      "source_sha256": "a024c1848de1cf60e758fe57c1007ef16677ce0800359fbaea38dff1bb7aa082",
+      "source_bytes": 1582,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#slide-deck-authoring",

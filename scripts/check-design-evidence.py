@@ -50,7 +50,7 @@ PIXEL_CLAIM_FIELDS = {"pixels_seen", "saw_pixels", "pixel_inspection"}
 MOTION_CAPTURE_KINDS = {"preview", "decoded_export"}
 MEDIA_PROFILE_KEYS = {"width", "height", "duration_seconds", "duration_tolerance_seconds"}
 EXECUTION_KEYS = {
-    "platform", "architecture", "codex_release_id", "mirket_release_id",
+    "platform", "architecture", "pi_release_id", "mirket_release_id",
     "model", "reasoning_effort", "catalog_sha256", "skills", "tools",
     "runner_version",
 }
@@ -412,7 +412,7 @@ def _validate_execution(contract: dict[str, Any]) -> dict[str, Any] | None:
     execution = _map(execution, "contract.execution")
     if set(execution) != EXECUTION_KEYS:
         raise EvidenceError("contract.execution has an unsupported field set")
-    for key in ("platform", "architecture", "codex_release_id", "mirket_release_id", "model", "reasoning_effort", "runner_version"):
+    for key in ("platform", "architecture", "pi_release_id", "mirket_release_id", "model", "reasoning_effort", "runner_version"):
         _text(execution.get(key), f"contract.execution.{key}")
     _sha(execution.get("catalog_sha256"), "contract.execution.catalog_sha256")
     skills = execution.get("skills")

@@ -152,12 +152,18 @@ fn io_error(operation: &'static str, source: io::Error) -> DistributionError {
 // the shared adapter lock, but cannot silently replace an admitted design
 // package or its root dependency. Release layouts still gate their payloads.
 fn design_lock_preserved(admitted: &[u8], current: &[u8]) -> bool {
-    let (Ok(admitted), Ok(current)) = (
+    let (Ok(mut admitted), Ok(current)) = (
         serde_json::from_slice::<serde_json::Value>(admitted),
         serde_json::from_slice::<serde_json::Value>(current),
     ) else {
         return false;
     };
+    // The pi package name is an admitted metadata-only layout change. All
+    // dependency entries remain byte-for-value equal to their frozen closure.
+    if current.get("name").and_then(serde_json::Value::as_str) == Some("@codemirket/pi-harness") {
+        admitted["name"] = serde_json::json!("@codemirket/pi-harness");
+        admitted["packages"][""]["name"] = serde_json::json!("@codemirket/pi-harness");
+    }
     let (Some(old), Some(now)) = (admitted.as_object(), current.as_object()) else {
         return false;
     };
@@ -963,7 +969,7 @@ fn layout_with_skill_sources(
         ))
         .map_err(|_| DistributionError::InvalidManifest)?;
         let admitted_lock = include_bytes!("../packaging/admission/m4-design-package-lock.json");
-        let current_lock = include_bytes!("../adapters/package-lock.json");
+        let current_lock = include_bytes!("../pi/package-lock.json");
         if admission.schema != 1
             || admission.component != "design"
             || admission.target != MAC_TARGET
@@ -2025,7 +2031,7 @@ mod tests {
     #[test]
     fn design_lock_keeps_the_admitted_package_closure_exact() {
         let admitted = include_bytes!("../packaging/admission/m4-design-package-lock.json");
-        let current = include_bytes!("../adapters/package-lock.json");
+        let current = include_bytes!("../pi/package-lock.json");
         assert!(design_lock_preserved(admitted, admitted));
         assert!(design_lock_preserved(admitted, current));
         let mut changed: serde_json::Value = serde_json::from_slice(current).unwrap();

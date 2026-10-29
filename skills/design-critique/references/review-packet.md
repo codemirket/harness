@@ -13,7 +13,7 @@ Use this compact packet for a high-risk, matched visual or motion review, a hand
 
 For each baseline, candidate and final artifact, record the saved path or URL, hash when useful, timestamp, and the evidence kind:
 
-- **Pixel inspection:** an image-capable tool displayed the saved pixels at the target size. Record the view/tool and what was inspected (hierarchy, legibility, clipping, state, or motion frame).
+- **Pixel inspection:** pi’s read tool with a vision-capable active model displayed the saved pixels at the target size. Record the view/tool and what was inspected (hierarchy, legibility, clipping, state, or motion frame).
 - **Structural check:** source, DOM, dimensions, XML, hash or detector result. It supports only that structural claim and must not be reported as visual inspection.
 - **Runtime/playback observation:** the loaded route/state was exercised. For interactive motion, record normal-speed playback or sampled anticipation/hold/settle frames and mobile/reduced-motion observations when those modes exist. For exported video, scrub the normal decoded export when available; an offline deliverable is not automatically a reduced-motion target.
 

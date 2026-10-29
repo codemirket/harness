@@ -1,29 +1,24 @@
 # Mirket implementation contract
 
-The consolidated plan was approved on 2026-10-25; simplification and HyperFrames
-selection were accepted on 2026-10-27, and the evidence-led skill retention rule
-and exact first-release platform were accepted on 2026-10-28. This file retains
-the active requirements. Completed implementation sequences are not new work.
+The pi-only direction supersedes the earlier host contract. Execute the phases
+and exit gates in [the migration plan](pi-migration.md). The scoped local technical candidate is validated; see the
+[qualification record](../docs/pi-qualification-20261029.md). Public release, live
+installation and production browser admission remain outside this authorization.
+Earlier qualification records describe their original artifacts and must not be relabeled.
 
 ## Product boundary
 
-Mirket v0.0.1 is a local companion to **Codex Desktop on macOS 26.5.2 ARM64**.
-Other macOS versions and Windows are unqualified. Codex Desktop GUI activation
-was waived and remains untested; backend/MCP evidence does not establish it.
-The [current qualification](../docs/first-release-qualification-20261028.md)
-binds the tested package, implementation revision and limits.
+Pi is the sole supported agent host. The qualification target is macOS 26.5.2
+ARM64. Pi owns models, authentication, sessions, agent loop, compaction, native
+read/edit/write/shell tools, package resources and the MCP client. Mirket supplies
+scoped canonical memory, selected navigation, finite creative operations and
+bounded workflows. It does not implement another provider client or agent loop.
+Project toolchains own application builds, tests, SQL and format-specific exports.
+Browser and research access need their own admitted concrete integrations.
 
-| Owner | Responsibility |
-| --- | --- |
-| Codex | Model/reasoning choice, native agents, permissions, shell, source editing, Git/worktrees, general browser research and live UI review, documents, spreadsheets, presentations and SQL. |
-| Mirket | Scoped project memory, selected JS/TS navigation, finite design/video operations, native skill distribution, and its own process/install lifecycle. |
-| Project toolchain | Application builds, tests, database operations, browser tests, format-specific authoring and live animation libraries selected by the project. |
-
-Mirket has no general crawler, generic file editor, SQL executor, Office/PDF/OCR
-engine, model router or second agent orchestrator. Its owned processes are not
-an OS sandbox. Private Chrome is reserved for video rendering. Preserve the
-user's live installation and unrelated settings; use disposable homes/projects
-for qualification.
+Mirket-owned processes are not an OS sandbox. Private rendering Chrome is
+reserved for video. Preserve live installations and unrelated settings; use
+private disposable HOME, agent/session directories and project ancestry for tests.
 
 ## Concrete capability and evidence contracts
 
@@ -31,10 +26,10 @@ for qualification.
 | --- | --- | --- |
 | Memory | Canonical SQLite facts/FTS; lazy local multilingual MiniLM/ONNX index and bounded Rust cosine scoring. Explicit project/shared scope, source/revision, applicability, expiry, correction, supersession and forgetting. No passive transcript harvesting or remote vector store. | Independent retrieval and downstream answer oracle; cross-project distractors, concurrent corrections, stale vectors, incomplete indexes, absent model, restart and forgetting across managed backup restore. Report cold/warm and idle resource measurements at their actual observation times. |
 | Navigation | TypeScript 5.9.3 inspection/definitions/references over caller-selected JS/TS/JSX/TSX and declaration snapshots with explicit imports and revisions. No project/config/package discovery or execution. | Original UTF-8/CRLF spans, same-name scope distinctions, stale/missing/unsupported refusals and bounded output. Syntax inspection and semantic navigation have separate evidence. |
-| Design | Style Dictionary tokens, SVG/SVGO/resvg, Sharp transformations, D2, and separately configured editable OpenPencil subset. Codex authors source and owns creative judgment. | Reopened editable source, changed-source export, consumed tokens, actual glyph/alpha/layout checks and saved-pixel inspection. UI handoff also needs live responsive/accessibility/interaction checks. |
+| Design | Style Dictionary tokens, SVG/SVGO/resvg, Sharp transformations, D2, and separately configured editable OpenPencil subset. The pi author and capable reviewer own source and creative judgment. | Reopened editable source, changed-source export, consumed tokens, actual glyph/alpha/layout checks and saved-pixel inspection. UI handoff also needs live responsive/accessibility/interaction checks. |
 | Video | HyperFrames is the sole engine. Editable local HTML/CSS/JS and selected assets; supplied audio and captions. Exact private render-only Chrome and verified FFmpeg/ffprobe. | Requested MP4/WebM/GIF/PNG output, decoded frames/audio/captions, changed-source/changed-pixels, timing/playback, cancellation, remote-asset refusal and reconciled finalization. Success receipts do not establish visual quality. |
-| Native skills | Nine global and 52 opt-in project skills, seven selection profiles; descriptive IDs without a `mirket-` prefix. | Correct scope, required/conditional pairing, hash-bound bodies/resources, collision/drift refusal and rollback. All 305 catalog cases remain planned development cases until actually executed. |
-| Coordination | Codex native agents only; useful independent work, disjoint ownership and lead integration. Explicit user model/reasoning choices prevail. | Capable creative lead/comparable reviewer, actual artifact integration, denial/interruption handling and one shared review/repair budget. Observed compliance is not hard enforcement. |
+| Native skills | Evidence-led selected pi package resources; descriptive IDs without a `mirket-` prefix. Existing inventory is an audit input, not a retention target. | Correct scope, required/conditional pairing, hash-bound bodies/resources, native pi resource filtering, collision diagnosis and truthful prerequisites. All 305 catalog cases remain planned development cases until actually executed. |
+| Coordination | Optional bounded pi CLI children; useful independent work, disjoint ownership and lead integration. Explicit user model/reasoning choices prevail. | Capable creative lead/comparable reviewer, actual artifact integration, denial/interruption handling and one shared review/repair budget. Observed compliance is not hard enforcement. |
 
 Memory history and backup recovery are product behavior, not removable legacy
 compatibility. Known forgetting exclusions take precedence over restored older
@@ -44,7 +39,7 @@ observed retirement; retain the measured limits in the release record.
 
 ## Runtime and installation topology
 
-Keep one Rust crate and one compiled TypeScript adapter package. Rust owns
+Keep one Rust crate and one compiled TypeScript package under `pi/`, with extension and runtime modules. Rust owns
 project identity, canonical memory, operation/receipt state, finite jobs and
 installation. Node and native tools use explicit verified paths. No PATH search,
 silent substitute, first-use download, incidental upstream installer/hook or
@@ -62,15 +57,15 @@ components require their exact notices/source materials. New dependencies requir
 approval of the exact batch in `packaging/admission`; proposals and reference
 libraries do not grant admission. Preserve those active verification inputs.
 
-Setup owns only its manifest-bound installation, nine global skills, managed
-Codex guidance and one MCP registration. Project opt-in pins selection in
-`.mirket/project.json`; explicit activation copies selected bodies/resources to
-`.agents/skills`. Passive status does not synchronize project files. Detect
-collisions and drift, stage atomically and preserve unrelated configuration.
-Updates are explicit; busy installations remain staged until activation is
-requested again. Uninstall preserves canonical memory/recovery points unless
-data deletion is separately explicit. Managed backup policy retains seven daily,
-four weekly and protected migration points within a 5 GiB aggregate cap.
+State belongs under `<pi-agent-dir>/mirket/`, respecting `PI_CODING_AGENT_DIR`.
+Session storage does not define canonical memory scope. Native setup accepts an
+explicit verified payload and fresh private home. Existing installations are not
+imported. Pi owns package resources; profiles modify only Mirket's package object
+in pi settings with conflict detection. Do not copy skills into host directories
+or create a second selection database. Updates are explicit; busy installations
+remain staged. Preserve canonical memory unless deletion is explicitly authorized.
+Managed backup policy retains seven daily, four weekly and protected migration
+points within a 5 GiB aggregate cap.
 
 ## Skill quality and creative production
 
@@ -78,7 +73,7 @@ Keep guidance only when a concrete workflow, quality safeguard or measured
 performance benefit justifies its context and maintenance cost. Remove redundant
 or non-contributing guidance; a tied small trial does not prove universal
 uselessness. The failed six-skill product/marketing bundle and content-growth
-profile are retired. Codex continues to own those workflows.
+profile are retired. The host can perform those workflows without restoring the retired bundle.
 
 Hallmark/Taste remain selected design references. Reference methods, source code,
 fonts, artwork and runtime admission have separate rights. Preserve the accepted
@@ -107,9 +102,7 @@ model self-report cannot replace output checks. Preserve failed/unrun evidence;
 never weaken a gate to call work complete. Windows gates remain in the
 [platform status](../docs/windows-qualification-status.md).
 
-The selected first-release package is locally qualified; its immutable identity
-is in the [release record](../packaging/admission/first-release-macos-arm64.json).
-Future source/metadata changes do not silently requalify that archive. Publication,
-commits, pushes, new dependencies and live installation changes require their
-own authorization. The [release checklist](release-readiness.md) covers a future
-candidate without reopening completed work automatically.
+The earlier release record retains its original immutable identity. It does not
+qualify the pi product. Publication, commits, pushes, new dependencies and live
+installation changes require their own authorization. The migration plan defines
+the fresh candidate gates, including actual installed outcomes and held-out trials.

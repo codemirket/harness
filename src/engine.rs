@@ -404,7 +404,7 @@ impl Engine {
             return Ok(());
         }
         let store = if during_shutdown {
-            self.store.lock_for_shutdown()
+            self.store.lock_bounded()
         } else {
             self.store.lock()
         }
@@ -465,7 +465,9 @@ impl Engine {
         Ok(receipt)
     }
     fn save(&self, id: &str, r: &Receipt) -> Result<(), String> {
-        let store = self.store.lock().map_err(err)?;
+        // A status inspection must not turn a running owned job into cancellation.
+        // Wait only for bounded native lock contention; never replay a write.
+        let store = self.store.lock_bounded().map_err(err)?;
         let current: Receipt =
             serde_json::from_slice(&store.read(id).map_err(err)?).map_err(err)?;
         // A late cancellation must not erase terminal/publication evidence after
@@ -2233,6 +2235,32 @@ mod tests {
             assert!(!f.args.project_root.join("output.css").exists());
         }
     }
+    #[test]
+    fn running_progress_waits_for_transient_receipt_inspection() {
+        let fixture = Fixture::new();
+        let args = fixture.prepare_design();
+        let mut receipt = fixture.engine.load(&args).unwrap();
+        receipt.state.start().unwrap();
+        fixture.engine.save(&args.operation_id, &receipt).unwrap();
+        let held = fixture.engine.store.lock().unwrap();
+        let reader = std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_millis(60));
+            drop(held);
+        });
+        let result = fixture.engine.record_running(
+            &args.operation_id,
+            &mut receipt,
+            &AtomicBool::new(false),
+            1,
+        );
+        reader.join().unwrap();
+        result.expect("ordinary receipt inspection must not cancel the running worker");
+        assert_eq!(
+            fixture.engine.load(&args).unwrap().state.status,
+            Status::Running
+        );
+    }
+
     #[test]
     fn running_progress_persists_wait_but_never_regresses_cancellation() {
         for cancelled in [false, true] {

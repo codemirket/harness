@@ -5,7 +5,7 @@ description: "Create or revise DOCX, PDF or mixed paged artifacts when source pr
 
 # Paged document artifacts
 
-Select the available Codex host document/format tools and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.
+Select the project-installed document/format commands through pi bash and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.
 
 Inspect source structure, pages, tables, images and fonts before a fidelity-sensitive edit. Use the appropriate host format workflow; complex scans or uncertain extraction require explicit source-linked uncertainty. Do not infer text accuracy or table structure from a successful extraction alone.
 

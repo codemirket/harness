@@ -9,6 +9,6 @@ Identify the riskiest assumption and the observation that would support or rejec
 
 Define participant/context, task, success/failure evidence and decision rule before observing. Use existing authorized participants or supplied research; recruitment/outreach needs its own authorization. Avoid leading tasks and separate observed behavior from participant explanations and your inference.
 
-Build and inspect the prototype using appropriate host/design tools and Codex browser capabilities where used. Run the bounded task, retain relevant evidence and note fidelity/sample limits. A polished artifact or positive opinion alone does not validate task success or demand.
+Build and inspect the prototype using appropriate host/design tools and the admitted Playwright MCP peer or installed project browser tests where used. Run the bounded task, retain relevant evidence and note fidelity/sample limits. A polished artifact or positive opinion alone does not validate task success or demand.
 
 Return the prototype, task, observations, decision and remaining uncertainty. Stop when the assumption is discriminated to the agreed confidence or the test cannot observe it. Do not expand into full production or claim validation from an unrun test plan.

@@ -22,6 +22,6 @@ settle, containment or transition-overlap defect, read [HyperFrames observation
 handoff](references/motion-observations.md). Run the project-owned numeric
 checker only after the existing export/decode path and bind its source/export/
 font revisions. A passing observation packet remains narrower than visual QA;
-display saved pixels with an image-capable tool and retain the independent review.
+display saved pixels with pi’s read tool with a vision-capable active model and retain the independent review.
 
 Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.

@@ -8,7 +8,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const { digest, preflight } = await import("../adapters/dist/video-export.js");
+const { digest, preflight } = await import("../pi/dist/runtime/video-export.js");
 const repoRoot = process.cwd();
 const nativeFlag = process.argv.indexOf("--native");
 const evidenceFlag = process.argv.indexOf("--evidence-dir");
@@ -110,7 +110,7 @@ try {
     process.env.HYPERFRAMES_FFPROBE_PATH = ffprobe;
     process.env.MIRKET_VIDEO_POLICY_VERSION = "1";
     process.env.MIRKET_VIDEO_CHROMIUM = chromium;
-    const producer = await import(pathToFileURL(join(repoRoot, "adapters/node_modules/@hyperframes/producer/dist/index.js")).href);
+    const producer = await import(pathToFileURL(join(repoRoot, "pi/node_modules/@hyperframes/producer/dist/index.js")).href);
     const render = async (project, output) => {
       const job = producer.createRenderJob({
         fps: { num: 12, den: 1 }, quality: "standard", format: "mp4", strictness: "strict",

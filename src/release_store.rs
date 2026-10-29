@@ -16,7 +16,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const OWNER: &[u8] = b"{\"schema_version\":1,\"kind\":\"mirket-installation\"}\n";
+const OWNER: &[u8] = b"{\"schema_version\":2,\"kind\":\"mirket-pi-runtime\"}\n";
 const ACTIVATION_JOURNAL: &str = "activation.pending.json";
 const LAUNCHER_BACKUP: &str = "launcher.previous";
 const STAGING_JOURNAL: &str = "staging.pending.json";
@@ -160,7 +160,7 @@ impl ReleaseStore {
     }
     fn mutation_lock(&self) -> Result<FileLock, String> {
         let lock = self.acquire_mutation_lock()?;
-        self.require_not_uninstalling()?;
+
         Ok(lock)
     }
     fn acquire_mutation_lock(&self) -> Result<FileLock, String> {
@@ -193,86 +193,6 @@ impl ReleaseStore {
             }
         }
         Ok(file)
-    }
-    fn require_not_uninstalling(&self) -> Result<(), String> {
-        for name in [
-            "uninstall.json",
-            "uninstall.json.next",
-            "reinstall.json",
-            "reinstall.json.next",
-        ] {
-            if path_present(&self.state.join(name))? {
-                return Err("installation has a pending installation lifecycle record; inspect and explicitly reconcile uninstall or reinstall".into());
-            }
-        }
-        Ok(())
-    }
-
-    /// The uninstall owner retains both guards until its last removal. A
-    /// separate entry permits recovery while ordinary activation/staging are
-    /// disabled by the persisted uninstall marker.
-    pub(crate) fn lock_uninstall(
-        &self,
-        maintenance: &MaintenanceGuard,
-    ) -> Result<FileLock, String> {
-        if maintenance.state_root() != self.state {
-            return Err("uninstall maintenance belongs to another installation".into());
-        }
-        self.acquire_mutation_lock()
-    }
-
-    /// Observe only complete, referenced installed payloads. Partial staging or
-    /// activation belongs to its existing recovery owner and must finish first.
-    pub(crate) fn uninstall_releases(&self) -> Result<Vec<VerifiedRelease>, String> {
-        for name in [ACTIVATION_JOURNAL, STAGING_JOURNAL, STAGING_JOURNAL_NEXT] {
-            if path_present(&self.state.join(name))? {
-                return Err("finish pending release staging/activation before uninstalling".into());
-            }
-        }
-        for name in ["active.json.next", "staged.json.next"] {
-            if path_present(&self.home.join(name))? {
-                return Err(
-                    "pending release pointer must be reconciled before uninstalling".into(),
-                );
-            }
-        }
-        if fs::read_dir(self.home.join("staging"))
-            .map_err(err)?
-            .next()
-            .is_some()
-        {
-            return Err(
-                "staging is not empty; preserve it and finish its owning transaction".into(),
-            );
-        }
-        let active = self
-            .read_activation("active.json")?
-            .ok_or("uninstall requires an active release")?;
-        let mut expected = BTreeSet::from([active.release_id]);
-        expected.extend(active.previous_release_id);
-        if let Some(staged) = self.read_activation("staged.json")? {
-            expected.insert(staged.release_id);
-        }
-        let inventory = self
-            .release_inventory()?
-            .into_iter()
-            .collect::<BTreeSet<_>>();
-        if inventory != expected {
-            return Err(
-                "release inventory differs from active/previous/staged ownership; preserved".into(),
-            );
-        }
-        inventory
-            .into_iter()
-            .map(|id| {
-                let release =
-                    VerifiedRelease::open_installed(&self.release_path(&id)?).map_err(err)?;
-                if release.id().as_str() != id {
-                    return Err("uninstall release identity differs; preserved".into());
-                }
-                Ok(release)
-            })
-            .collect()
     }
     fn release_path(&self, id: &str) -> Result<PathBuf, String> {
         let hash = id
@@ -470,76 +390,10 @@ impl ReleaseStore {
         self.stage_verified(&source)
     }
 
-    /// A completed-uninstall intent authorizes only its exact verified candidate.
-    /// All copying and staging recovery remain in the normal release owner.
-    pub(crate) fn stage_reinstall(
-        &self,
-        source: &VerifiedRelease,
-        maintenance: &MaintenanceGuard,
-        permit: &crate::installation::ReinstallPermit,
-    ) -> Result<ActivationResult, String> {
-        if maintenance.state_root() != self.state {
-            return Err("reinstall maintenance belongs to another installation".into());
-        }
-        let _writer = self.acquire_mutation_lock()?;
-        permit.verify_stage(&self.home, source.id().as_str())?;
-        self.stage_verified(source)
-    }
-
-    pub(crate) fn activate_reinstall_held(
-        &self,
-        launcher: &Path,
-        maintenance: &MaintenanceGuard,
-        permit: &crate::installation::ReinstallPermit,
-    ) -> Result<ActivationResult, String> {
-        if maintenance.state_root() != self.state {
-            return Err("reinstall maintenance belongs to another installation".into());
-        }
-        let _writer = self.acquire_mutation_lock()?;
-        let expected = permit.candidate_release_id();
-        permit.verify_activation(&self.home, expected)?;
-        if let Some(staged) = self.read_activation("staged.json")?
-            && staged.release_id != expected
-        {
-            return Err("reinstall staged release differs from its bound candidate".into());
-        }
-        if let Some(journal) = read_activation_journal(&self.state)? {
-            if journal.candidate_release_id != expected {
-                return Err("reinstall activation journal belongs to a different candidate".into());
-            }
-            if let Some(result) = self.recover_activation_journal(launcher)? {
-                return Ok(result);
-            }
-        }
-        // Activation may have fully completed before the reinstall phase record
-        // was committed. Reconcile that exact pair instead of activating twice.
-        if self.read_activation("staged.json")?.is_none() {
-            let active = self
-                .read_activation("active.json")?
-                .ok_or("reinstall lost its staged and active candidate")?;
-            if active.release_id != expected || active.previous_release_id.is_some() {
-                return Err("reinstall active pointer differs from its exact candidate".into());
-            }
-            let candidate =
-                VerifiedRelease::open_installed(&self.release_path(expected)?).map_err(err)?;
-            if candidate.id().as_str() != expected
-                || launcher_snapshot(launcher)?.1 != Some(digest_file(&candidate.executable())?)
-            {
-                return Err("reinstall active candidate or launcher changed; preserved".into());
-            }
-            return Ok(ActivationResult {
-                status: "active",
-                release_id: expected.into(),
-                reason: None,
-            });
-        }
-        self.activate_with_launcher_locked(launcher, maintenance)
-    }
-
     /// Roll back only to the release retained by the just-committed active
     /// pointer. It was admitted when originally staged; verify its immutable
     /// installed manifest and bytes rather than applying the new source pins.
-    pub(crate) fn stage_retained_previous(&self, id: &str) -> Result<ActivationResult, String> {
+    pub fn stage_retained_previous(&self, id: &str) -> Result<ActivationResult, String> {
         let _mutation = self.mutation_lock()?;
         let active = self
             .read_activation("active.json")?
@@ -820,10 +674,10 @@ impl ReleaseStore {
         self.activate_with_launcher_locked(launcher_path, &maintenance)
     }
 
-    /// The Codex installer retains one maintenance window while committing
+    /// The native payload owner retains one maintenance window while committing
     /// the launcher, native skills, guidance, and registration. Sessions must
     /// not enter between these steps or observe a mixed release.
-    pub(crate) fn activate_with_launcher_held(
+    pub fn activate_with_launcher_held(
         &self,
         launcher_path: &Path,
         maintenance: &MaintenanceGuard,
@@ -1110,7 +964,7 @@ impl ReleaseStore {
     }
     pub fn bind_active(&self) -> Result<BoundActiveRelease, String> {
         let guard = SessionGuard::acquire(&self.state).map_err(err)?;
-        self.require_not_uninstalling()?;
+
         let active = self
             .read_activation("active.json")?
             .ok_or("home has no active release")?;
@@ -1136,7 +990,7 @@ impl ReleaseStore {
     }
     /// Verify the active payload for an operation already holding exclusive
     /// maintenance. Do not acquire a session guard under that exclusive lock,
-    /// or bypass pending installation lifecycle records through doctor access.
+    /// or change release pointers through doctor access.
     pub fn inspect_active_for_maintenance(
         &self,
         maintenance: &MaintenanceGuard,
@@ -1144,7 +998,7 @@ impl ReleaseStore {
         if maintenance.state_root() != self.state {
             return Err("active release maintenance belongs to another installation".into());
         }
-        self.require_not_uninstalling()?;
+
         self.inspect_active()
     }
     fn read_activation(&self, name: &str) -> Result<Option<Activation>, String> {
@@ -1867,7 +1721,7 @@ mod tests {
     }
 
     #[test]
-    fn maintenance_active_inspection_preserves_lifecycle_refusals_and_guard_binding() {
+    fn maintenance_active_inspection_preserves_guard_binding() {
         let fixture = Fixture::new();
         let store = ReleaseStore::initialize(&fixture.0.join("home")).unwrap();
         let (source, id) = payload(&fixture, "source");
@@ -1897,33 +1751,6 @@ mod tests {
                 .unwrap()
                 .is_none()
         );
-
-        let active_before = fs::read(store.home.join("active.json")).unwrap();
-        for name in [
-            "uninstall.json",
-            "uninstall.json.next",
-            "reinstall.json",
-            "reinstall.json.next",
-        ] {
-            let path = store.state.join(name);
-            let mut file = create_file(&path).unwrap();
-            file.write_all(b"preserved pending lifecycle").unwrap();
-            drop(file);
-            let error = store
-                .inspect_active_for_maintenance(&maintenance)
-                .err()
-                .expect("pending lifecycle record must refuse");
-            assert!(
-                error.contains("pending installation lifecycle record"),
-                "{error}"
-            );
-            assert_eq!(fs::read(&path).unwrap(), b"preserved pending lifecycle");
-            assert_eq!(
-                fs::read(store.home.join("active.json")).unwrap(),
-                active_before
-            );
-            fs::remove_file(path).unwrap();
-        }
     }
 
     fn interrupted_stage(
@@ -2820,6 +2647,24 @@ mod tests {
         symlink(fixture.0.join("missing"), &path).unwrap();
         assert!(store.mutation_lock().is_err());
         assert!(fs::symlink_metadata(path).unwrap().file_type().is_symlink());
+    }
+
+    #[test]
+    fn previous_product_home_is_refused_without_import_or_mutation() {
+        let fixture = Fixture::new();
+        let home = fixture.0.join("home");
+        ReleaseStore::initialize(&home).unwrap();
+        let old_owner = b"{\"schema_version\":1,\"kind\":\"mirket-installation\"}\n";
+        fs::write(home.join("installation.json"), old_owner).unwrap();
+        fs::write(home.join("state/user-data"), b"preserved").unwrap();
+        assert!(ReleaseStore::open(&home).is_err());
+        assert!(ReleaseStore::initialize(&home).is_err());
+        assert_eq!(fs::read(home.join("installation.json")).unwrap(), old_owner);
+        assert_eq!(
+            fs::read(home.join("state/user-data")).unwrap(),
+            b"preserved"
+        );
+        assert!(!home.join("active.json").exists());
     }
 
     #[test]

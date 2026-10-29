@@ -1,17 +1,14 @@
 use clap::{Arg, Command};
 use mirket::{
-    codex_config::CodexConfig,
     distribution,
     engine::Engine,
     installation::Installation,
     release::{AdapterPayload, ReleaseId},
     release_store::ReleaseStore,
     server::Server,
-    skill_sync::{ProjectSelection, SkillSync},
 };
 use rmcp::ServiceExt;
 use std::{
-    collections::BTreeSet,
     path::{Path, PathBuf},
     sync::Arc,
 };
@@ -145,220 +142,17 @@ fn memory_command() -> Command {
                 .arg(required("operation-id")),
         ))
 }
-fn skills_command() -> Command {
-    let global = |name: &'static str, about: &'static str| {
-        Command::new(name)
-            .about(about)
-            .arg(required("home"))
-            .arg(required("user-home"))
-    };
-    let project = |name: &'static str, about: &'static str| {
-        Command::new(name)
-            .about(about)
-            .arg(required("home"))
-            .arg(required("project-root"))
-    };
-    let selection = |command: Command| {
-        command
-            .arg(
-                Arg::new("profile")
-                    .long("profile")
-                    .num_args(1)
-                    .action(clap::ArgAction::Append),
-            )
-            .arg(
-                Arg::new("include")
-                    .long("include")
-                    .num_args(1)
-                    .action(clap::ArgAction::Append),
-            )
-            .arg(
-                Arg::new("exclude")
-                    .long("exclude")
-                    .num_args(1)
-                    .action(clap::ArgAction::Append),
-            )
-    };
-    Command::new("skills")
-        .about("Plan, install and inspect receipt-owned Codex native skills")
-        .subcommand_required(true)
-        .subcommand(global(
-            "global-plan",
-            "Preview the nine global skill copies",
-        ))
-        .subcommand(global(
-            "global-sync",
-            "Install or update the nine global skills",
-        ))
-        .subcommand(global(
-            "global-doctor",
-            "Inspect managed global skill copies",
-        ))
-        .subcommand(global(
-            "global-reconcile",
-            "Recover a known interrupted global sync",
-        ))
-        .subcommand(global(
-            "global-remove",
-            "Remove only unchanged managed global skills",
-        ))
-        .subcommand(selection(project(
-            "project-plan",
-            "Preview a project-local pinned skill selection without writing it",
-        )))
-        .subcommand(selection(project(
-            "project-select",
-            "Pin and automatically synchronize a new project skill selection",
-        )))
-        .subcommand(selection(project(
-            "project-update",
-            "Compare and replace an existing project skill selection, then synchronize",
-        )))
-        .subcommand(project(
-            "project-sync",
-            "Synchronize the saved project selection against the active release",
-        ))
-        .subcommand(project(
-            "project-doctor",
-            "Inspect managed project-local skill copies",
-        ))
-        .subcommand(project(
-            "project-reconcile",
-            "Recover a known interrupted project skill sync",
-        ))
-        .subcommand(project(
-            "project-remove",
-            "Remove only unchanged managed project-local skills",
-        ))
-}
 fn command() -> Command {
     Command::new("mirket")
         .version(env!("CARGO_PKG_VERSION"))
-        .about("Local tools for host-owned agents")
+        .about("Verified native capabilities for pi")
         .subcommand_required(true)
         .arg_required_else_help(true)
-        .subcommand(skills_command())
-        .subcommand(
-            Command::new("setup")
-                .about("Install a verified local release and its managed Codex integration")
-                .arg(required("home"))
-                .arg(required("source"))
-                .arg(required("user-home"))
-                .arg(
-                    Arg::new("project-root")
-                        .long("project-root")
-                        .num_args(1),
-                ),
-        )
-        .subcommand(
-            Command::new("update")
-                .about("Update the release and managed Codex integration when sessions are idle")
-                .arg(required("home"))
-                .arg(required("source"))
-                .arg(required("user-home"))
-                .arg(
-                    Arg::new("project-root")
-                        .long("project-root")
-                        .num_args(1),
-                ),
-        )
-        .subcommand(
-            Command::new("doctor")
-                .about("Inspect the selected release and managed Codex integration without writing")
-                .arg(required("home"))
-                .arg(required("user-home"))
-                .arg(
-                    Arg::new("json")
-                        .long("json")
-                        .action(clap::ArgAction::SetTrue),
-                ),
-        )
-        .subcommand(
-            Command::new("uninstall")
-                .about("Remove verified payloads and managed Codex integration; preserve durable data")
-                .arg(required("home"))
-                .arg(required("user-home")),
-        )
-        .subcommand(
-            Command::new("uninstall-status")
-                .about("Inspect the selected uninstall plan and progress without writing")
-                .arg(required("home"))
-                .arg(required("user-home")),
-        )
-        .subcommand(
-            Command::new("uninstall-reconcile")
-                .about("Explicitly finish the original interrupted uninstall; preserve unknown changes")
-                .arg(required("home"))
-                .arg(required("user-home")),
-        )
-        .subcommand(
-            Command::new("reinstall")
-                .about("Install an exact release after a completed same-home uninstall; preserve durable data")
-                .arg(required("home"))
-                .arg(required("user-home"))
-                .arg(required("source")),
-        )
-        .subcommand(
-            Command::new("reinstall-status")
-                .about("Inspect the original reinstall intent or completed receipt without writing")
-                .arg(required("home"))
-                .arg(required("user-home")),
-        )
-        .subcommand(
-            Command::new("reinstall-reconcile")
-                .about("Explicitly finish the original same-candidate reinstall")
-                .arg(required("home"))
-                .arg(required("user-home"))
-                .arg(required("source")),
-        )
-        .subcommand(
-            Command::new("codex-register")
-                .about("Register the active installation in an explicitly selected Codex config")
-                .arg(required("home"))
-                .arg(required("config")),
-        )
-        .subcommand(
-            Command::new("codex-remove")
-                .about("Remove Mirket's managed entry from an explicitly selected Codex config")
-                .arg(required("home"))
-                .arg(required("config")),
-        )
-        .subcommand(
-            Command::new("codex-reconcile")
-                .about("Reconcile an interrupted Codex config transaction")
-                .arg(required("home"))
-                .arg(required("config")),
-        )
-        .subcommand(
-            Command::new("codex-doctor")
-                .about("Inspect the managed Codex entry without changing it")
-                .arg(required("home"))
-                .arg(required("config")),
-        )
-        .subcommand(
-            Command::new("codex-guidance-install")
-                .about("Install only the managed section in an explicitly selected Codex AGENTS.md")
-                .arg(required("home"))
-                .arg(required("guidance")),
-        )
-        .subcommand(
-            Command::new("codex-guidance-remove")
-                .about("Remove only the unchanged managed Codex guidance section")
-                .arg(required("home"))
-                .arg(required("guidance")),
-        )
-        .subcommand(
-            Command::new("codex-guidance-doctor")
-                .about("Inspect the managed Codex guidance section without changing it")
-                .arg(required("home"))
-                .arg(required("guidance")),
-        )
-        .subcommand(
-            Command::new("codex-guidance-reconcile")
-                .about("Reconcile only a known interrupted Codex guidance edit")
-                .arg(required("home"))
-                .arg(required("guidance")),
-        )
+        .subcommand(Command::new("setup").about("Set up a verified native payload in a new pi-owned home").arg(required("home")).arg(required("source")))
+        .subcommand(Command::new("update").about("Stage and activate a verified native payload when idle").arg(required("home")).arg(required("source")))
+        .subcommand(Command::new("doctor").about("Inspect native payload integrity; pi integration requires its loaded-session doctor").arg(required("home")))
+        .subcommand(Command::new("verify-pi-host").about("Verify an explicit external pi closure without installing or executing it").arg(required("root")).arg(required("inventory")).arg(required("sha256")))
+        .subcommand(Command::new("verify").about("Verify an explicit native payload without installing or executing it").arg(required("source")))
         .subcommand(
             Command::new("serve")
                 .about(
@@ -480,16 +274,27 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     let args = command().get_matches();
     let (name, args) = args.subcommand().expect("required subcommand");
-    if name == "skills" {
-        run_skills(args).map_err(std::io::Error::other)?;
+    if name == "verify-pi-host" {
+        let report = mirket::pi_host::verify(
+            Path::new(value(args, "root")),
+            Path::new(value(args, "inventory")),
+            value(args, "sha256"),
+        )?;
+        println!("{}", serde_json::to_string(&report)?);
+        return Ok(());
+    }
+    if name == "verify" {
+        let release = distribution::VerifiedRelease::open(Path::new(value(args, "source")))?;
+        println!(
+            "{}",
+            serde_json::json!({"release_id": release.id().as_str(), "manifest": release.manifest()})
+        );
         return Ok(());
     }
     if name == "setup" {
-        let report = Installation::setup_codex_with_project(
+        let report = Installation::setup(
             Path::new(value(args, "home")),
             Path::new(value(args, "source")),
-            Path::new(value(args, "user-home")),
-            args.get_one::<String>("project-root").map(Path::new),
         )
         .map_err(std::io::Error::other)?;
         println!("{}", serde_json::to_string(&report)?);
@@ -498,132 +303,27 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     if name == "update" {
         let installation =
             Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let report = installation
-            .update_codex_with_project(
-                Path::new(value(args, "source")),
-                Path::new(value(args, "user-home")),
-                args.get_one::<String>("project-root").map(Path::new),
-            )
+        let health = Installation::doctor(installation.home());
+        if health.status != "healthy" {
+            return Err("native installation is not healthy; preserve and inspect it".into());
+        }
+        let staged = installation
+            .stage(Path::new(value(args, "source")))
             .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
+        let activation = installation
+            .activate_with_launcher()
+            .map_err(std::io::Error::other)?;
+        println!(
+            "{}",
+            serde_json::json!({"staged": staged, "activation": activation})
+        );
         return Ok(());
     }
     if name == "doctor" {
-        let report = Installation::doctor_codex(
-            Path::new(value(args, "home")),
-            Path::new(value(args, "user-home")),
-        );
+        let report = Installation::doctor(Path::new(value(args, "home")));
         println!("{}", serde_json::to_string(&report)?);
-        if !matches!(report.status, "healthy" | "uninstalled") {
-            return Err("Codex installation health check failed".into());
-        }
-        return Ok(());
-    }
-    if matches!(
-        name,
-        "uninstall" | "uninstall-status" | "uninstall-reconcile"
-    ) {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let user_home = Path::new(value(args, "user-home"));
-        let report = match name {
-            "uninstall" => installation.uninstall_codex(user_home),
-            "uninstall-status" => installation.uninstall_status(user_home),
-            _ => installation.reconcile_uninstall(user_home),
-        }
-        .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        return Ok(());
-    }
-    if matches!(
-        name,
-        "reinstall" | "reinstall-status" | "reinstall-reconcile"
-    ) {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let user_home = Path::new(value(args, "user-home"));
-        let report = match name {
-            "reinstall" => {
-                installation.reinstall_codex(Path::new(value(args, "source")), user_home)
-            }
-            "reinstall-status" => installation.reinstall_status(user_home),
-            _ => installation.reconcile_reinstall(Path::new(value(args, "source")), user_home),
-        }
-        .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        return Ok(());
-    }
-    if name == "codex-register" {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let report = installation
-            .register_codex(Path::new(value(args, "config")))
-            .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        return Ok(());
-    }
-    if name == "codex-remove" {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let report = installation
-            .remove_codex(Path::new(value(args, "config")))
-            .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        return Ok(());
-    }
-    if name == "codex-reconcile" {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let report = installation
-            .reconcile_codex(Path::new(value(args, "config")))
-            .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        return Ok(());
-    }
-    if name == "codex-doctor" {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let health = Installation::doctor(installation.home());
-        if health.status != "healthy" {
-            return Err(std::io::Error::other(format!(
-                "installation health check failed: {}",
-                health.errors.join("; ")
-            ))
-            .into());
-        }
-        let report = CodexConfig::open(
-            Path::new(value(args, "config")),
-            &installation.codex_receipt_path(),
-        )
-        .and_then(|config| config.inspect())
-        .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        if report.status == "drifted" || report.status == "conflict" {
-            return Err("managed Codex configuration requires explicit reconciliation".into());
-        }
-        return Ok(());
-    }
-    if matches!(
-        name,
-        "codex-guidance-install"
-            | "codex-guidance-remove"
-            | "codex-guidance-doctor"
-            | "codex-guidance-reconcile"
-    ) {
-        let installation =
-            Installation::open(Path::new(value(args, "home"))).map_err(std::io::Error::other)?;
-        let path = Path::new(value(args, "guidance"));
-        let report = match name {
-            "codex-guidance-install" => installation.install_codex_guidance(path),
-            "codex-guidance-remove" => installation.remove_codex_guidance(path),
-            "codex-guidance-doctor" => installation.inspect_codex_guidance(path),
-            "codex-guidance-reconcile" => installation.reconcile_codex_guidance(path),
-            _ => unreachable!(),
-        }
-        .map_err(std::io::Error::other)?;
-        println!("{}", serde_json::to_string(&report)?);
-        if matches!(report.status, "conflict" | "drifted" | "pending") {
-            return Err("managed Codex guidance needs inspection or reconciliation".into());
+        if report.status == "error" {
+            return Err("native payload integrity check failed".into());
         }
         return Ok(());
     }
@@ -992,83 +692,6 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     Ok(())
 }
-fn run_skills(args: &clap::ArgMatches) -> Result<(), String> {
-    let (operation, args) = args.subcommand().ok_or("skill operation is required")?;
-    let installation = Installation::open(Path::new(value(args, "home")))?;
-    let _operation_guard = if matches!(
-        operation,
-        "global-plan" | "global-doctor" | "project-plan" | "project-doctor"
-    ) {
-        None
-    } else {
-        Some(installation.lock_codex_operation()?)
-    };
-    let (release_id, catalog, qualified) = installation.skill_catalog()?;
-    let manager = if operation.starts_with("global-") {
-        SkillSync::global(
-            &catalog,
-            Path::new(value(args, "user-home")),
-            &installation.codex_skills_receipt_path(),
-        )?
-    } else {
-        SkillSync::project(&catalog, Path::new(value(args, "project-root")))?
-    };
-    let empty = BTreeSet::new();
-    match operation {
-        "global-plan" => print_json(&manager.plan(&release_id, None, &empty)?)?,
-        "global-sync" => print_json(&manager.sync(&release_id, None, &empty)?)?,
-        "global-doctor" => print_json(&manager.inspect()?)?,
-        "global-reconcile" => print_json(&manager.reconcile()?)?,
-        "global-remove" => print_json(&manager.remove_managed()?)?,
-        "project-plan" | "project-select" | "project-update" => {
-            let selection = ProjectSelection::resolve(
-                &catalog,
-                &selected_values(args, "profile"),
-                &selected_values(args, "include"),
-                &selected_values(args, "exclude"),
-            )?;
-            let plan = manager.plan(&release_id, Some(&selection), &qualified)?;
-            if operation == "project-plan" {
-                print_json(&plan)?;
-            } else {
-                if !plan.unavailable.is_empty() {
-                    return Err("selected skills require unavailable private capabilities".into());
-                }
-                print_json(&manager.select_and_sync(
-                    &release_id,
-                    &selection,
-                    &qualified,
-                    operation == "project-update",
-                )?)?;
-            }
-        }
-        "project-sync" => {
-            let selection = ProjectSelection::load(Path::new(value(args, "project-root")))?
-                .ok_or("project has no saved skill selection")?;
-            print_json(&manager.sync(&release_id, Some(&selection), &qualified)?)?;
-        }
-        "project-doctor" => print_json(&manager.inspect()?)?,
-        "project-reconcile" => print_json(&manager.reconcile()?)?,
-        "project-remove" => print_json(&manager.remove_managed()?)?,
-        _ => return Err(format!("unsupported skill operation: {operation}")),
-    }
-    Ok(())
-}
-
-fn print_json<T: serde::Serialize>(value: &T) -> Result<(), String> {
-    println!(
-        "{}",
-        serde_json::to_string(value).map_err(|error| error.to_string())?
-    );
-    Ok(())
-}
-
-fn selected_values(args: &clap::ArgMatches, name: &str) -> Vec<String> {
-    args.get_many::<String>(name)
-        .map(|values| values.cloned().collect())
-        .unwrap_or_default()
-}
-
 fn value<'a>(args: &'a clap::ArgMatches, name: &str) -> &'a str {
     args.get_one::<String>(name).expect("required CLI argument")
 }
@@ -1154,87 +777,16 @@ mod development_cli_tests {
     }
 
     #[test]
-    fn setup_and_update_accept_an_optional_project_root() {
-        for command_name in ["setup", "update"] {
-            let args = [
-                "mirket",
-                command_name,
-                "--home",
-                "/private/mirket",
-                "--source",
-                "/private/release",
-                "--user-home",
-                "/private/user",
-                "--project-root",
-                "/private/project",
-            ];
-            assert!(command().try_get_matches_from(args).is_ok());
-        }
-    }
-
-    #[test]
-    fn uninstall_commands_require_both_explicit_roots_and_offer_no_data_deletion_flag() {
-        for name in ["uninstall", "uninstall-status", "uninstall-reconcile"] {
-            assert!(
-                command()
-                    .try_get_matches_from(["mirket", name, "--home", "/private/mirket"])
-                    .is_err()
-            );
-            assert!(
-                command()
-                    .try_get_matches_from([
-                        "mirket",
-                        name,
-                        "--home",
-                        "/private/mirket",
-                        "--user-home",
-                        "/private/user"
-                    ])
-                    .is_ok()
-            );
-            assert!(
-                command()
-                    .try_get_matches_from([
-                        "mirket",
-                        name,
-                        "--home",
-                        "/private/mirket",
-                        "--user-home",
-                        "/private/user",
-                        "--remove-data"
-                    ])
-                    .is_err()
-            );
-        }
-    }
-
-    #[test]
-    fn reinstall_mutations_require_exact_source_and_status_is_read_only() {
-        for name in ["reinstall", "reinstall-reconcile"] {
-            let base = [
-                "mirket",
-                name,
-                "--home",
-                "/private/mirket",
-                "--user-home",
-                "/private/user",
-            ];
-            assert!(command().try_get_matches_from(base).is_err());
-            let mut complete = base.to_vec();
-            complete.extend(["--source", "/private/release"]);
-            assert!(command().try_get_matches_from(&complete).is_ok());
-            complete.push("--remove-data");
-            assert!(command().try_get_matches_from(complete).is_err());
-        }
+    fn native_setup_does_not_accept_host_configuration_or_legacy_commands() {
         assert!(
             command()
                 .try_get_matches_from([
                     "mirket",
-                    "reinstall-status",
+                    "setup",
                     "--home",
-                    "/private/mirket",
-                    "--user-home",
-                    "/private/user"
+                    "/private/pi/mirket",
+                    "--source",
+                    "/private/payload"
                 ])
                 .is_ok()
         );
@@ -1242,15 +794,26 @@ mod development_cli_tests {
             command()
                 .try_get_matches_from([
                     "mirket",
-                    "reinstall-status",
+                    "setup",
                     "--home",
-                    "/private/mirket",
-                    "--user-home",
-                    "/private/user",
+                    "/private/pi/mirket",
                     "--source",
-                    "/private/release"
+                    "/private/payload",
+                    "--user-home",
+                    "/private/user"
                 ])
                 .is_err()
         );
+        for removed in [
+            "codex-register",
+            "codex-remove",
+            "codex-doctor",
+            "codex-guidance-install",
+            "skills",
+            "uninstall",
+            "reinstall",
+        ] {
+            assert!(command().try_get_matches_from(["mirket", removed]).is_err());
+        }
     }
 }

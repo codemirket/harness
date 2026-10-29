@@ -138,7 +138,7 @@ directory, for example:
 ```
 
 Create `<frames>` first. Decode the full export and inspect the saved frames
-with the host image tool, including adjacent frames around suspected defects.
+with pi’s read tool with a vision-capable active model, including adjacent frames around suspected defects.
 Do not spend the review budget rebuilding unavailable montage filters or
 installing another media stack. A contact sheet is optional; individual decoded
 frames are sufficient for frame-specific judgment. Check the selected build
@@ -188,7 +188,7 @@ existing `motion-direction` shot card when a new sequence needs direction.
    `path`, `sha256:`-prefixed `revision` and byte count `bytes`. Select the entry
    and every referenced asset; regenerate revisions after an edit. This uses
    the checkout's compiled adapter and reports static validity only.
-3. Inspect the affected source state in Codex's browser before a full render.
+3. Inspect the affected source state in the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool before a full render.
    For CSS/WAAPI frame inspection in this checkout, the existing
    `scripts/create-motion-preview.mjs --project ABS_PROJECT --entry ABS_HTML
    --motion ABS_MOTION_JSON --output ABS_NEW_PREVIEW` uses the profile described
@@ -203,7 +203,7 @@ existing `motion-direction` shot card when a new sequence needs direction.
    Report unavailable routes or host approval denial rather than bypassing them.
 5. Probe and decode the actual output using the selected private FFprobe/FFmpeg
    paths and the recipe above. Inspect changed beats and their neighbours,
-   exercise affected UI separately in Codex's browser, and record playback
+   exercise affected UI separately in the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool, and record playback
    observations. Repair only a demonstrated defect within the shared task budget,
    then repeat the affected checks. Preserve the previous artifact and findings.
 

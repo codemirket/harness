@@ -49,7 +49,7 @@ It is a machine check of supplied measurements, not a claim that the measurement
 are truthful. `browser_frame_geometry` is an actual source-DOM measurement, not
 decoded-pixel evidence. Keep the source frame/geometry extractor independent from the
 authoring model and retain the original decoded frames. Pair this checker with
-saved-pixel display by an image-capable tool and an independent visual reviewer.
+saved-pixel display by pi’s read tool with a vision-capable active model and an independent visual reviewer.
 
 Do not use this checker to approve an aesthetic direction, infer easing from one
 rectangle, replace accessibility review, or certify an unmanaged Anime/timer/

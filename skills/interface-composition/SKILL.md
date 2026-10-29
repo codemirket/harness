@@ -13,7 +13,7 @@ Choose the composition for the task. An application screen needs clear navigatio
 
 Set a small hierarchy of type, space, surfaces and emphasis, then inspect their relationships as a whole. Give the main action priority without making every section compete for it. Let long labels, missing images, large values and repeated rows pressure the layout before propagation. Define which regions wrap, stack, scroll or change order; preserve useful information and reading/focus order when they do. Avoid hiding overflow to disguise an unresolved layout.
 
-Implement with project-owned code and Mirket design tools and Codex browser capabilities where used. Freeze an initial rendered specimen, then compare production against it for composition, wrapping, asset loading and responsive behavior. Check at a narrow size that pressures content and a wider size that exposes spacing decisions.
+Implement with project-owned code and Mirket design tools and the admitted Playwright MCP peer or installed project browser tests where used. Freeze an initial rendered specimen, then compare production against it for composition, wrapping, asset loading and responsive behavior. Check at a narrow size that pressures content and a wider size that exposes spacing decisions.
 
 Exercise the important controls in their real journey: a filter changes results, a save action reports its outcome, and a dialog closes with focus in a useful place. Inspect settled and transient states with the content and viewport recorded. Retain matched before/after evidence for a revision; repair the owning layout or component rule and inspect other affected instances. A pleasant isolated component does not establish the screen's task hierarchy.
 

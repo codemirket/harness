@@ -1,5 +1,10 @@
 # Mirket capability matrix — review edition
 
+> Historical pre-migration evidence. This record describes the former Codex
+> product and does not qualify the current pi package. See the
+> [pi migration plan](../planning/pi-migration.md) for the active scope and gates.
+
+
 Snapshot: **2026-10-28**, repository HEAD **`b3068a1`**, qualified implementation **`5b03547`**, v0.0.1. This replaces the earlier compact matrix. It describes **9 global skills, 52 opt-in project skills, 7 profiles and 25 public MCP tools**. Every skill has an individual row below, with its route, intended outcome, failure check and references.
 
 Mirket adds scoped execution and guidance to Codex. It does not supply a second general-purpose coding agent. The strongest demonstrated capabilities are bounded memory/navigation/design/video operations and disposable installation/recovery. The breadth of the skill catalog is broader than its measured benefit: **305 catalog development cases remain `planned-not-run`**. A retained skill is not a claim that it outperforms Codex without that skill.

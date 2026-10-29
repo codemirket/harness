@@ -1,9 +1,10 @@
 # Research coverage and claim review
 
 Use this procedure when a consequential decision needs discovery beyond known
-sources. Codex owns search, GitHub access and ordinary browser inspection;
-Mirket's video browser is not a research route. Use available connected sources
-before asking for information they may contain. No new service is required.
+sources. Discovery uses the configured admitted search/fetch route, or public search
+pages through the admitted isolated browser; open original sources for inspection. Mirket's video browser is not a research route. Use supplied
+sources first. If the needed route or credential is unavailable or a page blocks access, record the
+specific gap and continue only the source analysis that is actually possible.
 
 ## Freeze the question, then search adaptively
 

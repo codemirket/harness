@@ -9,21 +9,22 @@ whose counts or selected skills can drift.
 
 ## Installation and authority
 
-Setup installs the nine concise global methods and managed Codex guidance.
-Project skills are opt-in; `.mirket/project.json` pins selected IDs. Profiles add
-only their baseline `skills`; `conditional` entries need explicit selection.
-Sync does not reinterpret profile membership. Exact IDs are also selectable.
-No skill name gains a `mirket-` prefix.
+Pi loads skill resources from the assembled local package. The `global` and
+`project` groups are catalog selection groups, not copied host directories.
+Profiles union only their baseline `skills`; conditional entries require explicit
+selection. Exact IDs remain selectable, with no `mirket-` prefix. Pi settings are
+the sole active selection source. A project package object replaces the same
+global package object; `autoload:false` filtering uses pi's native delta semantics.
+An unfiltered package can load every manifest skill and must be reported honestly.
 
-Only Mirket-owned files are replaced. Validate source bodies and resource hashes,
-refuse unrelated collisions and modified managed copies, preserve rollback and
-show the selected changes. No passive tool call writes project skill files.
-More than 12 selected project skills produces a context-cost warning.
-
-Codex owns models, native subagents, permissions, shell, editing, Git, general
-browsing, documents and SQL. Mirket owns scoped memory, selected JS/TS navigation,
-design/video and skill distribution. No skill may imply an unavailable operation
-or provision a dependency/account merely by mentioning a reference.
+Validate body/resource hashes before assembly. Do not copy into `.agents/skills`,
+write a second profile database or alter unrelated package settings. Profile edits
+must bind the original settings bytes and refuse drift or duplicate ownership.
+Pi owns models/authentication, sessions and built-in read/edit/write/bash tools.
+Mirket owns scoped memory, selected JS/TS navigation and finite creative jobs.
+Browser/search and image generation require concrete admitted integrations;
+documents, recalculation, rendering and SQL use installed project commands.
+No skill can provision a dependency/account merely by mentioning a reference.
 
 ## Nine global skills
 
@@ -83,12 +84,12 @@ matched; inspect saved artifacts and actual effects independently.
 Skills must earn their context and maintenance cost through a concrete routing
 contract, non-obvious safeguard or measured usefulness. The six tested product/
 marketing bodies and content-growth profile were retired after repeated bundle
-failure; ordinary product/marketing work remains with Codex. A small tie does
+failure; ordinary product/marketing work remains with the host. A small tie does
 not prove a skill universally useless, and a failed bundle does not identify an
 individual causal culprit. The [release qualification](../docs/first-release-qualification-20261028.md)
 retains those outcomes and limits.
 
 Creative direction stays with a capable lead and comparable reviewer when useful.
 Respect explicit model/reasoning choices, disjoint ownership and lead integration.
-One task-level review/repair budget spans specialists and specimens. Guidance is
-advisory; Mirket cannot hard-enforce Codex spawning or bypass host approval.
+One task-level review/repair budget spans specialists and specimens. Managed delegation limits apply only to the optional Mirket entry point; they
+do not sandbox arbitrary shell processes or unrelated extensions.

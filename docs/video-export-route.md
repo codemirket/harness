@@ -1,11 +1,12 @@
 # Video export route
 
-The qualified v0.0.1 route uses **HyperFrames 0.8.197**, exact private render-only
-Chrome and verified FFmpeg/ffprobe on **macOS 26.5.2 ARM64**. See the
-[release qualification](first-release-qualification-20261028.md) for tested
-formats, runtime identity, installed outcomes and rights delivery. Codex owns
-source authoring, models, approvals and live UI review. No Remotion, personal
-browser fallback, first-use download or general Mirket browser route is selected.
+The pi candidate retains **HyperFrames 0.8.197**, exact private render-only
+Chrome and verified FFmpeg/ffprobe on **macOS 26.5.2 ARM64**. The
+[pi migration record](../planning/pi-migration.md) identifies the fresh installed
+export, changed-source, decoded audio, cancellation and saved-pixel evidence.
+Pi owns source authoring, models and host interaction. The assembled migration
+candidate is not yet release-qualified. No Remotion, personal-browser fallback
+or first-use download is selected.
 
 ## Author and prepare
 
@@ -34,7 +35,7 @@ must refuse instead of producing a misleading success.
 
 The five-minute preparation lifetime, installation-wide heavy-job admission,
 owned scratch, process cleanup and artifact transaction bound Mirket's effects.
-They are not an OS sandbox for arbitrary hostile code. Codex owns host approval;
+They are not an OS sandbox for arbitrary hostile code. The active pi workflow must obtain any required user authorization;
 a denied render stays unperformed. Continue only independent authorized work.
 
 ## Formats and bounds
@@ -77,14 +78,15 @@ receipt alone is insufficient.
 ## Implementation and distribution
 
 The [Rust video contract](../src/video.rs), [session owner](../src/video_session.rs),
-[export adapter](../adapters/src/video-export.ts) and
-[policy](../adapters/src/video-policy.ts) define the executable boundary.
+[export adapter](../pi/src/video-export.ts) and
+[policy](../pi/src/video-policy.ts) define the executable boundary.
 [Installed video tests](../tests/video-mcp-smoke.mjs) exercise actual exports,
 reediting, cancellation and refusal; the release record states which ran.
 
-Exact payload inventories and their historical admission decisions remain under
+Exact payload inventories and historical admission decisions remain under
 `packaging/admission` because the runtime/assembler consumes their hashes. A
-`.proposed` filename alone does not imply unused data. The current release-level
-record binds the accompanied source/notices. Chrome and native Sharp are exact
-publisher acquisitions at setup, not bundled lean-archive binaries. First use
-never substitutes a PATH executable or acquires another runtime.
+`.proposed` inventory does not itself grant admission. Current pi qualification
+uses a complete disposable offline payload; it does not authorize redistribution
+or changes to the user's installation. First use never substitutes a PATH
+executable or acquires another runtime. See the migration plan for remaining
+host admission, rights and release gates.

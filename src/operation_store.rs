@@ -234,10 +234,11 @@ impl OperationStore {
             _lock: file,
         })
     }
-    /// Retirement may wait briefly for another owner's ordinary receipt write.
+    /// Owned progress, finalization and retirement may wait briefly for another
+    /// owner's ordinary receipt read/write.
     /// Retry only native contention, on this one validated descriptor, for at
     /// most one second. No receipt operation or filesystem failure is retried.
-    pub(crate) fn lock_for_shutdown(&self) -> std::io::Result<LockedStore> {
+    pub(crate) fn lock_bounded(&self) -> std::io::Result<LockedStore> {
         let file = self.open_lock_file()?;
         let deadline = Instant::now() + Duration::from_secs(1);
         loop {
@@ -885,7 +886,7 @@ mod tests {
             std::thread::sleep(Duration::from_millis(60));
             drop(held);
         });
-        let acquired = store.lock_for_shutdown().unwrap();
+        let acquired = store.lock_bounded().unwrap();
         release.join().unwrap();
         assert_eq!(acquired.read(&id).unwrap(), b"unchanged evidence");
         assert_eq!(fs::read_dir(&store.root).unwrap().count(), 2);
@@ -898,10 +899,7 @@ mod tests {
         let store = OperationStore::open(&root).unwrap();
         let held = store.lock().unwrap();
         let start = Instant::now();
-        let failure = store
-            .lock_for_shutdown()
-            .err()
-            .expect("owner still holds lock");
+        let failure = store.lock_bounded().err().expect("owner still holds lock");
         let elapsed = start.elapsed();
         assert_eq!(failure.kind(), std::io::ErrorKind::WouldBlock);
         assert!(elapsed >= Duration::from_millis(950));
@@ -910,7 +908,7 @@ mod tests {
         assert!(elapsed < Duration::from_secs(2));
         assert_eq!(fs::read_dir(&store.root).unwrap().count(), 1);
         drop(held);
-        drop(store.lock_for_shutdown().unwrap());
+        drop(store.lock_bounded().unwrap());
         fs::remove_dir_all(root).unwrap();
     }
     #[test]
@@ -919,7 +917,7 @@ mod tests {
         let store = OperationStore::open(&root).unwrap();
         fs::remove_dir(&store.root).unwrap();
         let start = Instant::now();
-        let failure = store.lock_for_shutdown().err().expect("missing namespace");
+        let failure = store.lock_bounded().err().expect("missing namespace");
         assert_eq!(failure.kind(), std::io::ErrorKind::NotFound);
         assert!(start.elapsed() < Duration::from_millis(800));
         assert!(!store.root.exists());

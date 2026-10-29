@@ -567,7 +567,7 @@ impl MemoryService {
         // Closing clients may retire together. Retry only acquisition, before
         // inspecting or finalizing any intent; ordinary calls remain immediate.
         let locked = if expired_before.is_none() {
-            store.lock_for_shutdown()
+            store.lock_bounded()
         } else {
             store.lock()
         }

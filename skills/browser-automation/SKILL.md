@@ -5,7 +5,7 @@ description: "Perform an authorized multi-step website interaction with observed
 
 # Browser automation
 
-Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.
+Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.
 
 Observe the current page and available controls, perform one meaningful action or a safe bounded group, then verify the resulting state. Ground actions in current observations; re-observe after navigation or material DOM changes. Keep form data and credentials out of logs and captures unless the task requires them.
 

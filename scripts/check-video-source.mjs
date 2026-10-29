@@ -78,7 +78,7 @@ function parseManifest(value) {
 
 async function adapter() {
   try {
-    return await import(pathToFileURL(fileURLToPath(new URL('../adapters/dist/video-export.js', import.meta.url))).href);
+    return await import(pathToFileURL(fileURLToPath(new URL('../pi/dist/runtime/video-export.js', import.meta.url))).href);
   } catch {
     throw new StaticCheckError('adapter_unavailable');
   }

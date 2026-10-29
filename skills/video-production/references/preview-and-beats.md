@@ -1,7 +1,7 @@
 # Preview and beat correspondence
 
 Use a project-owned preview to locate changes, then verify the actual HyperFrames
-export. Codex's ordinary browser owns preview interaction. Mirket's private
+export. Preview interaction uses the admitted Playwright MCP peer or installed project browser tests. Mirket's private
 Chrome remains reserved for finite video capture. Do not install another
 renderer or make preview controls part of the exported film.
 
@@ -69,7 +69,7 @@ the intended source owner and output change. Review normal-speed playback
 separately: matching still frames cannot establish pacing or smoothness.
 
 Retain saved preview pixels and independently decoded export frames at the
-same named frame/state and viewport. Inspect both with an image-capable tool.
+same named frame/state and viewport. Inspect both with pi’s read tool with a vision-capable active model.
 Check geometry, type, clipping, caption safe area, loop seam and final/resting
 state as applicable. A missing comparison remains untested. Compare a suspected
 unmanaged track directly; a moving neighboring element can hide a frozen one.

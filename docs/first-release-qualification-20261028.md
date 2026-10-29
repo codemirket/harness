@@ -1,5 +1,10 @@
 # Mirket v0.0.1 first-release qualification
 
+> Historical pre-migration evidence. This record describes the former Codex
+> product and does not qualify the current pi package. See the
+> [pi migration plan](../planning/pi-migration.md) for the active scope and gates.
+
+
 Qualified implementation commit: `5b03547105f9119694a3829dfc4d1779b26e8bb9`.
 The release record was recorded in repository commit `b3068a1`; later repository
 changes do not requalify this package.

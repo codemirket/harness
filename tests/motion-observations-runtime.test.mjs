@@ -13,7 +13,7 @@ import { validateObservations } from "../scripts/check-motion-observations.mjs";
 const chromium = process.env.MIRKET_PRIVATE_CHROMIUM;
 const ffmpeg = process.env.MIRKET_PRIVATE_FFMPEG;
 const ffprobe = process.env.MIRKET_PRIVATE_FFPROBE;
-const producer = path.resolve("adapters/node_modules/@hyperframes/producer/dist/index.js");
+const producer = path.resolve("pi/node_modules/@hyperframes/producer/dist/index.js");
 const runtimeReady = [chromium, ffmpeg, ffprobe].every(value => typeof value === "string" && value.startsWith("/"));
 const sha = bytes => `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 const sourceHtml = `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -79,7 +79,7 @@ function packet({ id, sourceBytes, exportBytes = null, fontBytes, observations, 
 }
 
 test("real browser observations catch clean, midpoint, descender clipping and placement defects", { skip: !runtimeReady }, async () => {
-  const evidenceParent = process.env.MIRKET_MOTION_EVIDENCE_DIR ?? "/Users/nazmiyilmaz/.codex/task-state/motion-observations-runtime-20261028";
+  const evidenceParent = process.env.MIRKET_MOTION_EVIDENCE_DIR ?? path.join(tmpdir(), "mirket-motion-observations");
   await mkdir(evidenceParent, { recursive: true, mode: 0o700 });
   const root = await mkdtemp(path.join(evidenceParent, "trial-"));
   try {

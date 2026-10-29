@@ -43,13 +43,13 @@
           "trigger": "Plan dependent work, uncertain scope or a long execution window with owners, gates and observable completion. Skip short tasks with a clear single action."
         },
         {
-          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Codex owns agent creation, permissions and lifecycle; Mirket supplies guidance and never starts or routes model children.",
+          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Pi owns each child’s model/authentication and agent loop. Use Mirket’s optional bounded CLI delegation only when it is loaded and qualified; otherwise keep work with the lead and report unavailable delegation. Never substitute an ad-hoc recursive shell agent.",
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
+          "skill_body_sha256": "53b9c50205758c2c545284eab851930f9ce2655860684c147d8aad73d512b91f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
+          "trigger": "Coordinate authorized bounded pi CLI children when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },
         {
           "decision_method": "Find the owning implementation and the consumers that depend on its behavior. Read nearby contracts, current changes and project gates before editing. Describe the concrete before/after behavior and the failure that would make a plausible implementation wrong.",
@@ -316,7 +316,7 @@
           "local_output_evidence": "Return the behavior change, source and observed browser/state evidence. Stop when affected contracts and project gates pass, or state the specific untested runtime path. Keep visual direction with the design owner when separate from this behavior task.",
           "path": "skills/frontend-engineering/SKILL.md",
           "skill": "frontend-engineering",
-          "skill_body_sha256": "94fb94fae76cb85ceda4d2d0ba025df333a452be74df1fba5d774587f8de3098",
+          "skill_body_sha256": "c31f6ae3904acb9e41a826e64216d6c081a98065981dd3171fd3333bcba27fe2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement component or client-state behavior when rendering, accessibility and browser lifecycle affect correctness. Skip backend-only changes and mechanical CSS edits."
         },
@@ -487,7 +487,7 @@
           "local_output_evidence": "Return the behavior change, source and observed browser/state evidence. Stop when affected contracts and project gates pass, or state the specific untested runtime path. Keep visual direction with the design owner when separate from this behavior task.",
           "path": "skills/frontend-engineering/SKILL.md",
           "skill": "frontend-engineering",
-          "skill_body_sha256": "94fb94fae76cb85ceda4d2d0ba025df333a452be74df1fba5d774587f8de3098",
+          "skill_body_sha256": "c31f6ae3904acb9e41a826e64216d6c081a98065981dd3171fd3333bcba27fe2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement component or client-state behavior when rendering, accessibility and browser lifecycle affect correctness. Skip backend-only changes and mechanical CSS edits."
         },
@@ -719,7 +719,7 @@
           "local_output_evidence": "Deliver a decision-focused answer with nearby citations, material uncertainty and the evidence that would resolve it. Stop when the questions are supported to the requested confidence and further search is unlikely to change the decision, or report the specific unavailable source. Do not turn an evidence gap into a confident recommendation.",
           "path": "skills/evidence-research/SKILL.md",
           "skill": "evidence-research",
-          "skill_body_sha256": "348004e0a8118bbe6b838af3b91209bcd2fb00ad2886b5cb74a93cae9a3df494",
+          "skill_body_sha256": "30fb3ce7b7f70db6599f683be9d61a002c74cd774e920149bfb46d0fac06fed8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Research consequential claims, comparisons or uncertain facts using traceable sources, dates and disagreement. Skip pure rewriting when the supplied facts are sufficient."
         },
@@ -760,29 +760,29 @@
           "trigger": "Write or revise API, architecture or user documentation when commands, examples and a reader task need verification. Skip a simple typo or persuasive campaign copy."
         },
         {
-          "decision_method": "Select the available Codex host document/format tools and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
+          "decision_method": "Select the project-installed document/format commands through pi bash and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
           "local_output_evidence": "Return the editable/source artifact, requested export, page evidence and unsupported/untested features. Unless the task sets another budget, share 30 minutes and three final repairs across paged production and review, with one target repair; combined motion work uses 45 minutes/four, not an added budget. Stop at that limit or a concrete host capability gap; preserve sources and report unresolved defects. Restricted Anthropic DOCX instructions remain link-only and are not an execution prerequisite.",
           "path": "skills/document-artifacts/SKILL.md",
           "skill": "document-artifacts",
-          "skill_body_sha256": "4618b10ca1c96dcfd52c6ced7c212f65d1abd5f17312c45858e2efe9756568a2",
+          "skill_body_sha256": "d252e8882a0120c39b4c43876da495ecc9047c4d7e5390a86357c4a2149b8232",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise DOCX, PDF or mixed paged artifacts when source preservation, saved-file rendering and page inspection matter. Skip plain Markdown edits."
         },
         {
-          "decision_method": "Use the available Codex host spreadsheet tools and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.",
+          "decision_method": "Use the project-installed spreadsheet authoring and recalculation commands through pi bash and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.",
           "local_output_evidence": "Return the editable workbook, source/assumption links and recalculation/visual evidence. Stop when requested behavior and saved outputs are verified, or report the exact unavailable formula/host path. A formatted grid or cached result alone does not establish a working workbook.",
           "path": "skills/workbook-authoring/SKILL.md",
           "skill": "workbook-authoring",
-          "skill_body_sha256": "a5bb5689e887d9e9e7fdb66600ab6f765f6b627caf9a4e5daac2b7fa277e8593",
+          "skill_body_sha256": "30e7fb5d50bd23c582d2625958fb0243bc2a02ca84a6279bd2fd1be099b58f6e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise an editable workbook with formulas, tables or charts requiring recalculation and saved-file verification. Skip one-off arithmetic outside a workbook."
         },
         {
-          "decision_method": "Establish audience, purpose, duration, key claim and the decision/action expected. Inspect source figures, dates, assets and any existing deck/template. Use the actual available Codex host presentation tools; no Mirket Office runtime is implied.",
+          "decision_method": "Establish audience, purpose, duration, key claim and the decision/action expected. Inspect source figures, dates, assets and any existing deck/template. Use the project-installed presentation authoring and rendering commands through pi bash; no Mirket Office runtime is implied.",
           "local_output_evidence": "Return the editable deck, requested export, rendered-slide evidence and source/feature limits. Unless the task sets another budget, share 30 minutes and three final repairs across deck production and review, with one target repair; combined motion work uses 45 minutes/four, not an added budget. Stop at that limit or a concrete capability gap and report unresolved defects. A saved file or pleasing cover slide does not establish the deck's full usability or factual accuracy.",
           "path": "skills/slide-deck-authoring/SKILL.md",
           "skill": "slide-deck-authoring",
-          "skill_body_sha256": "06cad6a5661d638580c9f5bcb8c7c99d09f565c53716149046c56735bd55a03b",
+          "skill_body_sha256": "a024c1848de1cf60e758fe57c1007ef16677ce0800359fbaea38dff1bb7aa082",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise an editable slide deck when narrative hierarchy, source consistency and rendered slide review matter. Skip plain text outlines without a deck deliverable."
         },
@@ -925,7 +925,7 @@
           "local_output_evidence": "Deliver a decision-focused answer with nearby citations, material uncertainty and the evidence that would resolve it. Stop when the questions are supported to the requested confidence and further search is unlikely to change the decision, or report the specific unavailable source. Do not turn an evidence gap into a confident recommendation.",
           "path": "skills/evidence-research/SKILL.md",
           "skill": "evidence-research",
-          "skill_body_sha256": "348004e0a8118bbe6b838af3b91209bcd2fb00ad2886b5cb74a93cae9a3df494",
+          "skill_body_sha256": "30fb3ce7b7f70db6599f683be9d61a002c74cd774e920149bfb46d0fac06fed8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Research consequential claims, comparisons or uncertain facts using traceable sources, dates and disagreement. Skip pure rewriting when the supplied facts are sufficient."
         },
@@ -948,11 +948,11 @@
           "trigger": "Compare prompt, model or agent behavior with fixed representative tasks, matched conditions and independently checked outcomes. Skip judging a single response by style alone."
         },
         {
-          "decision_method": "Select the available Codex host document/format tools and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
+          "decision_method": "Select the project-installed document/format commands through pi bash and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
           "local_output_evidence": "Return the editable/source artifact, requested export, page evidence and unsupported/untested features. Unless the task sets another budget, share 30 minutes and three final repairs across paged production and review, with one target repair; combined motion work uses 45 minutes/four, not an added budget. Stop at that limit or a concrete host capability gap; preserve sources and report unresolved defects. Restricted Anthropic DOCX instructions remain link-only and are not an execution prerequisite.",
           "path": "skills/document-artifacts/SKILL.md",
           "skill": "document-artifacts",
-          "skill_body_sha256": "4618b10ca1c96dcfd52c6ced7c212f65d1abd5f17312c45858e2efe9756568a2",
+          "skill_body_sha256": "d252e8882a0120c39b4c43876da495ecc9047c4d7e5390a86357c4a2149b8232",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise DOCX, PDF or mixed paged artifacts when source preservation, saved-file rendering and page inspection matter. Skip plain Markdown edits."
         }
@@ -1097,7 +1097,7 @@
           "local_output_evidence": "Deliver a decision-focused answer with nearby citations, material uncertainty and the evidence that would resolve it. Stop when the questions are supported to the requested confidence and further search is unlikely to change the decision, or report the specific unavailable source. Do not turn an evidence gap into a confident recommendation.",
           "path": "skills/evidence-research/SKILL.md",
           "skill": "evidence-research",
-          "skill_body_sha256": "348004e0a8118bbe6b838af3b91209bcd2fb00ad2886b5cb74a93cae9a3df494",
+          "skill_body_sha256": "30fb3ce7b7f70db6599f683be9d61a002c74cd774e920149bfb46d0fac06fed8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Research consequential claims, comparisons or uncertain facts using traceable sources, dates and disagreement. Skip pure rewriting when the supplied facts are sufficient."
         },
@@ -1138,29 +1138,29 @@
           "trigger": "Write or revise API, architecture or user documentation when commands, examples and a reader task need verification. Skip a simple typo or persuasive campaign copy."
         },
         {
-          "decision_method": "Select the available Codex host document/format tools and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
+          "decision_method": "Select the project-installed document/format commands through pi bash and inspect their actual capabilities. Mirket does not supply an Office, general PDF or OCR engine. Preserve the original source and distinguish editable source, visual export and extraction-only output.",
           "local_output_evidence": "Return the editable/source artifact, requested export, page evidence and unsupported/untested features. Unless the task sets another budget, share 30 minutes and three final repairs across paged production and review, with one target repair; combined motion work uses 45 minutes/four, not an added budget. Stop at that limit or a concrete host capability gap; preserve sources and report unresolved defects. Restricted Anthropic DOCX instructions remain link-only and are not an execution prerequisite.",
           "path": "skills/document-artifacts/SKILL.md",
           "skill": "document-artifacts",
-          "skill_body_sha256": "4618b10ca1c96dcfd52c6ced7c212f65d1abd5f17312c45858e2efe9756568a2",
+          "skill_body_sha256": "d252e8882a0120c39b4c43876da495ecc9047c4d7e5390a86357c4a2149b8232",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise DOCX, PDF or mixed paged artifacts when source preservation, saved-file rendering and page inspection matter. Skip plain Markdown edits."
         },
         {
-          "decision_method": "Use the available Codex host spreadsheet tools and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.",
+          "decision_method": "Use the project-installed spreadsheet authoring and recalculation commands through pi bash and inspect the existing workbook before editing. Preserve sheets, formulas, names, formats, hidden/linked content and source identity relevant to the task. Mirket does not bundle an Office runtime.",
           "local_output_evidence": "Return the editable workbook, source/assumption links and recalculation/visual evidence. Stop when requested behavior and saved outputs are verified, or report the exact unavailable formula/host path. A formatted grid or cached result alone does not establish a working workbook.",
           "path": "skills/workbook-authoring/SKILL.md",
           "skill": "workbook-authoring",
-          "skill_body_sha256": "a5bb5689e887d9e9e7fdb66600ab6f765f6b627caf9a4e5daac2b7fa277e8593",
+          "skill_body_sha256": "30e7fb5d50bd23c582d2625958fb0243bc2a02ca84a6279bd2fd1be099b58f6e",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise an editable workbook with formulas, tables or charts requiring recalculation and saved-file verification. Skip one-off arithmetic outside a workbook."
         },
         {
-          "decision_method": "Establish audience, purpose, duration, key claim and the decision/action expected. Inspect source figures, dates, assets and any existing deck/template. Use the actual available Codex host presentation tools; no Mirket Office runtime is implied.",
+          "decision_method": "Establish audience, purpose, duration, key claim and the decision/action expected. Inspect source figures, dates, assets and any existing deck/template. Use the project-installed presentation authoring and rendering commands through pi bash; no Mirket Office runtime is implied.",
           "local_output_evidence": "Return the editable deck, requested export, rendered-slide evidence and source/feature limits. Unless the task sets another budget, share 30 minutes and three final repairs across deck production and review, with one target repair; combined motion work uses 45 minutes/four, not an added budget. Stop at that limit or a concrete capability gap and report unresolved defects. A saved file or pleasing cover slide does not establish the deck's full usability or factual accuracy.",
           "path": "skills/slide-deck-authoring/SKILL.md",
           "skill": "slide-deck-authoring",
-          "skill_body_sha256": "06cad6a5661d638580c9f5bcb8c7c99d09f565c53716149046c56735bd55a03b",
+          "skill_body_sha256": "a024c1848de1cf60e758fe57c1007ef16677ce0800359fbaea38dff1bb7aa082",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Create or revise an editable slide deck when narrative hierarchy, source consistency and rendered slide review matter. Skip plain text outlines without a deck deliverable."
         },
@@ -1336,11 +1336,11 @@
           "trigger": "Implement or revise HTTP, MCP or tool contracts when inputs, results, errors, authorization or retry behavior affect consumers. Skip isolated internal functions with no integration boundary."
         },
         {
-          "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
+          "decision_method": "Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
           "local_output_evidence": "Return the achieved state, relevant observation/action evidence and unresolved effects. Stop dependent interaction when authorization, page identity, current state or effect knowledge is uncertain. Report an unavailable browser or test tool as a concrete limit; choose another route only when it still satisfies the task's profile and permission constraints.",
           "path": "skills/browser-automation/SKILL.md",
           "skill": "browser-automation",
-          "skill_body_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
+          "skill_body_sha256": "b0506bba800fbbd40cab58c2d1eff91f76f4c5cdf48296fd6a33c4cb95c7c4e9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Perform an authorized multi-step website interaction with observed state, scoped actions and reconciliation of uncertain submissions. Skip page reading without interaction."
         }
@@ -1614,13 +1614,13 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Codex owns agent creation, permissions and lifecycle; Mirket supplies guidance and never starts or routes model children.",
+          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Pi owns each child’s model/authentication and agent loop. Use Mirket’s optional bounded CLI delegation only when it is loaded and qualified; otherwise keep work with the lead and report unavailable delegation. Never substitute an ad-hoc recursive shell agent.",
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
+          "skill_body_sha256": "53b9c50205758c2c545284eab851930f9ce2655860684c147d8aad73d512b91f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
+          "trigger": "Coordinate authorized bounded pi CLI children when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },
         {
           "decision_method": "Capture the failing input, exact revision, environment, expected behavior and actual result. Reproduce with the smallest case that preserves the failure. If reproduction is unavailable, label observations and hypotheses separately instead of inventing a local success.",
@@ -1677,20 +1677,20 @@
           "trigger": "Change deployment or environment configuration when ownership, drift, rollout and recovery affect a running system. Skip application-only changes and passive configuration reading."
         },
         {
-          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use Codex's available browser for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
+          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
           "local_output_evidence": "Return observed results, reproducible defects, captures bound to viewports/states and untested boundaries. Recheck evidence affected by repairs. Stop after the required journey and cases pass or the agreed repair budget is reached; report remaining defects and any unavailable client or project browser capability.",
           "path": "skills/browser-qa/SKILL.md",
           "skill": "browser-qa",
-          "skill_body_sha256": "d2b22b66ae6003ba164667e548c652d03bad5b08c4a9d1d34ebeaad5bf8ca0b2",
+          "skill_body_sha256": "d0a1f252dade669729ca8414977dbe86d633cdd8547530f79080f1a4a552f7c8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a live web journey, responsive layout or stateful interaction using rendered evidence and failure cases. Skip backend-only tests or a static source review."
         },
         {
-          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+          "skill_body_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -1838,13 +1838,13 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Codex owns agent creation, permissions and lifecycle; Mirket supplies guidance and never starts or routes model children.",
+          "decision_method": "Decide whether useful independent work justifies coordination. A title, complex-sounding task or extra available slot is not enough. Honor explicit user choices about provider, model, reasoning, workflow and delegation. Pi owns each child’s model/authentication and agent loop. Use Mirket’s optional bounded CLI delegation only when it is loaded and qualified; otherwise keep work with the lead and report unavailable delegation. Never substitute an ad-hoc recursive shell agent.",
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/agent-coordination-strategy/SKILL.md",
           "skill": "agent-coordination-strategy",
-          "skill_body_sha256": "6f412decd1642afc72edcd460e9f3d9131f6e347497e9a2bdbe56d82886508ea",
+          "skill_body_sha256": "53b9c50205758c2c545284eab851930f9ce2655860684c147d8aad73d512b91f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
-          "trigger": "Coordinate authorized native Codex agents when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
+          "trigger": "Coordinate authorized bounded pi CLI children when independent deliverables materially help. Use disjoint ownership, suitable expertise and lead-owned integration; skip routine single-owner work."
         },
         {
           "decision_method": "Bind the review to the actual revision, diff or saved artifact and its intended contract. Inspect affected consumers and enough unchanged context to understand the boundary. Prioritize defects that change correctness, user outcomes, security, recovery or maintainability at realistic scale.",
@@ -2031,11 +2031,11 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Use Codex's available browser or web research tools for the selected pages. Choose the built-in browser when rendered state or interaction matters, and verify that the selected client can reach the page. Keep account and profile choices explicit; never assume access to a personal browser session.",
+          "decision_method": "Use the configured, admitted research route for discovery. If it supplies search results or fetched source text, open decisive sources in their original context. Use the admitted Playwright MCP peer with an explicit isolated profile when rendered state or interaction matters; public search pages can provide discovery when that route is configured. Pi has no built-in browser or search service. Report the specific missing route or credential instead of assuming one. Treat login, CAPTCHA and rate limits as access limits; do not bypass them or claim browsing from a URL or snippet. Never assume a personal browser session.",
           "local_output_evidence": "Deliver a claim-linked evidence summary with citations, material page excerpts or captures and extraction limits. Verify a decisive claim against its original context rather than only a snippet. Stop when the bounded questions are supported or inaccessible evidence makes the conclusion uncertain; identify any browser or account limitation that affected coverage.",
           "path": "skills/browser-research/SKILL.md",
           "skill": "browser-research",
-          "skill_body_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
+          "skill_body_sha256": "d7b7941bbc16156c488f66b61a0f1be91ce035d618b7405f01eb2e7127507808",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Inspect and cite public or local web pages when rendered content, page state or bounded extraction is needed as evidence. Skip research fully answered by supplied source text."
         }
@@ -2209,11 +2209,11 @@
           "trigger": "Find definitions or references in supplied JS, TS, JSX or TSX sources using bounded revision-linked navigation. Skip unsupported languages and full-project completeness claims."
         },
         {
-          "decision_method": "Use Codex source inspection and the project's existing SQL parser, language server or database tooling when available. Identify the dialect and version from project configuration or explicit user context. Select the actual query, migration and schema sources before resolving names; do not infer a complete deployed schema from a partial repository snapshot.",
+          "decision_method": "Use pi read/bash source inspection and the project's existing SQL parser, language server or database tooling when available. Identify the dialect and version from project configuration or explicit user context. Select the actual query, migration and schema sources before resolving names; do not infer a complete deployed schema from a partial repository snapshot.",
           "local_output_evidence": "Return the resolved source locations, dialect/schema basis, coverage and unresolved references. Stop at the supported evidence boundary or a concrete missing schema/tool. Query execution is a separate effect under host permissions; do not let navigation silently become a database mutation or credential search.",
           "path": "skills/sql-navigation/SKILL.md",
           "skill": "sql-navigation",
-          "skill_body_sha256": "0b6a47e6ed90c4880f79e7c2f15e55e07ec23ba517b5a4d33f053f0ce9fb3618",
+          "skill_body_sha256": "9dccfa9462731e3a9d5edfeea35987aae2a7467bf8334f046003a2c013eb60db",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Trace SQL definitions and references through project queries, migrations and schema sources. Skip database execution unless the task explicitly calls for it."
         }
@@ -2371,11 +2371,11 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
+          "decision_method": "Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
           "local_output_evidence": "Return the achieved state, relevant observation/action evidence and unresolved effects. Stop dependent interaction when authorization, page identity, current state or effect knowledge is uncertain. Report an unavailable browser or test tool as a concrete limit; choose another route only when it still satisfies the task's profile and permission constraints.",
           "path": "skills/browser-automation/SKILL.md",
           "skill": "browser-automation",
-          "skill_body_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
+          "skill_body_sha256": "b0506bba800fbbd40cab58c2d1eff91f76f4c5cdf48296fd6a33c4cb95c7c4e9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Perform an authorized multi-step website interaction with observed state, scoped actions and reconciliation of uncertain submissions. Skip page reading without interaction."
         }
@@ -2537,29 +2537,29 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Use Codex's available browser or web research tools for the selected pages. Choose the built-in browser when rendered state or interaction matters, and verify that the selected client can reach the page. Keep account and profile choices explicit; never assume access to a personal browser session.",
+          "decision_method": "Use the configured, admitted research route for discovery. If it supplies search results or fetched source text, open decisive sources in their original context. Use the admitted Playwright MCP peer with an explicit isolated profile when rendered state or interaction matters; public search pages can provide discovery when that route is configured. Pi has no built-in browser or search service. Report the specific missing route or credential instead of assuming one. Treat login, CAPTCHA and rate limits as access limits; do not bypass them or claim browsing from a URL or snippet. Never assume a personal browser session.",
           "local_output_evidence": "Deliver a claim-linked evidence summary with citations, material page excerpts or captures and extraction limits. Verify a decisive claim against its original context rather than only a snippet. Stop when the bounded questions are supported or inaccessible evidence makes the conclusion uncertain; identify any browser or account limitation that affected coverage.",
           "path": "skills/browser-research/SKILL.md",
           "skill": "browser-research",
-          "skill_body_sha256": "7edb8488d1d8fb4b3a7c38db565426f9691b7cd7f1f79f574a0a33939f0f1838",
+          "skill_body_sha256": "d7b7941bbc16156c488f66b61a0f1be91ce035d618b7405f01eb2e7127507808",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Inspect and cite public or local web pages when rendered content, page state or bounded extraction is needed as evidence. Skip research fully answered by supplied source text."
         },
         {
-          "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
+          "decision_method": "Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
           "local_output_evidence": "Return the achieved state, relevant observation/action evidence and unresolved effects. Stop dependent interaction when authorization, page identity, current state or effect knowledge is uncertain. Report an unavailable browser or test tool as a concrete limit; choose another route only when it still satisfies the task's profile and permission constraints.",
           "path": "skills/browser-automation/SKILL.md",
           "skill": "browser-automation",
-          "skill_body_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
+          "skill_body_sha256": "b0506bba800fbbd40cab58c2d1eff91f76f4c5cdf48296fd6a33c4cb95c7c4e9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Perform an authorized multi-step website interaction with observed state, scoped actions and reconciliation of uncertain submissions. Skip page reading without interaction."
         },
         {
-          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use Codex's available browser for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
+          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
           "local_output_evidence": "Return observed results, reproducible defects, captures bound to viewports/states and untested boundaries. Recheck evidence affected by repairs. Stop after the required journey and cases pass or the agreed repair budget is reached; report remaining defects and any unavailable client or project browser capability.",
           "path": "skills/browser-qa/SKILL.md",
           "skill": "browser-qa",
-          "skill_body_sha256": "d2b22b66ae6003ba164667e548c652d03bad5b08c4a9d1d34ebeaad5bf8ca0b2",
+          "skill_body_sha256": "d0a1f252dade669729ca8414977dbe86d633cdd8547530f79080f1a4a552f7c8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a live web journey, responsive layout or stateful interaction using rendered evidence and failure cases. Skip backend-only tests or a static source review."
         }
@@ -2700,11 +2700,11 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Use Codex's available browser for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
+          "decision_method": "Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for interactive pages, or a project's established browser test tool when the task calls for reproducible automation. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.",
           "local_output_evidence": "Return the achieved state, relevant observation/action evidence and unresolved effects. Stop dependent interaction when authorization, page identity, current state or effect knowledge is uncertain. Report an unavailable browser or test tool as a concrete limit; choose another route only when it still satisfies the task's profile and permission constraints.",
           "path": "skills/browser-automation/SKILL.md",
           "skill": "browser-automation",
-          "skill_body_sha256": "1982344c4e052b00544db8b8c65b5457e8f512d98fb398e417767de80d2ae416",
+          "skill_body_sha256": "b0506bba800fbbd40cab58c2d1eff91f76f4c5cdf48296fd6a33c4cb95c7c4e9",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Perform an authorized multi-step website interaction with observed state, scoped actions and reconciliation of uncertain submissions. Skip page reading without interaction."
         }
@@ -3306,7 +3306,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+          "skill_body_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
           "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -3315,16 +3315,16 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
         {
-          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+          "skill_body_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
           "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -3360,7 +3360,7 @@
           "local_output_evidence": "Return the prototype, task, observations, decision and remaining uncertainty. Stop when the assumption is discriminated to the agreed confidence or the test cannot observe it. Do not expand into full production or claim validation from an unrun test plan.",
           "path": "skills/prototype-test/SKILL.md",
           "skill": "prototype-test",
-          "skill_body_sha256": "8f47c234351f59b0c7aad00656f716119e53e05273866926e45542010b607a76",
+          "skill_body_sha256": "77cdcc9889f2066ef3afdae32c3397e0f3ccf015fb977b44d529cee6af353ca5",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a product idea or flow through a deliberately low-cost prototype, task observation and decision rule. Skip production delivery when feasibility is already established."
         }
@@ -3535,7 +3535,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+          "skill_body_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
           "source_mapping": "Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -3544,7 +3544,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -3704,7 +3704,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -3722,7 +3722,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "Emil animation-decision and review-format methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
@@ -3731,7 +3731,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+          "skill_body_sha256": "f36fd3c76e4f24914e9ea2eb69d02b1a2120a47be4b9a1668983c394d85384b7",
           "source_mapping": "Emil animation-decision methods are explicitly mapped for scroll context in source-design-adoption.md",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
@@ -3910,25 +3910,25 @@
           "local_output_evidence": "Return the behavior change, source and observed browser/state evidence. Stop when affected contracts and project gates pass, or state the specific untested runtime path. Keep visual direction with the design owner when separate from this behavior task.",
           "path": "skills/frontend-engineering/SKILL.md",
           "skill": "frontend-engineering",
-          "skill_body_sha256": "94fb94fae76cb85ceda4d2d0ba025df333a452be74df1fba5d774587f8de3098",
+          "skill_body_sha256": "c31f6ae3904acb9e41a826e64216d6c081a98065981dd3171fd3333bcba27fe2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement component or client-state behavior when rendering, accessibility and browser lifecycle affect correctness. Skip backend-only changes and mechanical CSS edits."
         },
         {
-          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use Codex's available browser for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
+          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
           "local_output_evidence": "Return observed results, reproducible defects, captures bound to viewports/states and untested boundaries. Recheck evidence affected by repairs. Stop after the required journey and cases pass or the agreed repair budget is reached; report remaining defects and any unavailable client or project browser capability.",
           "path": "skills/browser-qa/SKILL.md",
           "skill": "browser-qa",
-          "skill_body_sha256": "d2b22b66ae6003ba164667e548c652d03bad5b08c4a9d1d34ebeaad5bf8ca0b2",
+          "skill_body_sha256": "d0a1f252dade669729ca8414977dbe86d633cdd8547530f79080f1a4a552f7c8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a live web journey, responsive layout or stateful interaction using rendered evidence and failure cases. Skip backend-only tests or a static source review."
         },
         {
-          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+          "skill_body_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
           "source_mapping": "Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -4125,7 +4125,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
@@ -4134,7 +4134,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+          "skill_body_sha256": "f36fd3c76e4f24914e9ea2eb69d02b1a2120a47be4b9a1668983c394d85384b7",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
@@ -4277,7 +4277,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
@@ -4469,7 +4469,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -4478,7 +4478,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -4900,16 +4900,16 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+          "skill_body_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
         {
-          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+          "skill_body_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         },
@@ -4927,7 +4927,7 @@
           "local_output_evidence": "Return the prototype, task, observations, decision and remaining uncertainty. Stop when the assumption is discriminated to the agreed confidence or the test cannot observe it. Do not expand into full production or claim validation from an unrun test plan.",
           "path": "skills/prototype-test/SKILL.md",
           "skill": "prototype-test",
-          "skill_body_sha256": "8f47c234351f59b0c7aad00656f716119e53e05273866926e45542010b607a76",
+          "skill_body_sha256": "77cdcc9889f2066ef3afdae32c3397e0f3ccf015fb977b44d529cee6af353ca5",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a product idea or flow through a deliberately low-cost prototype, task observation and decision rule. Skip production delivery when feasibility is already established."
         }
@@ -5097,7 +5097,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+          "skill_body_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -5106,7 +5106,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "MengTo pinned illustration-body construction methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
@@ -5505,7 +5505,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+          "skill_body_sha256": "f36fd3c76e4f24914e9ea2eb69d02b1a2120a47be4b9a1668983c394d85384b7",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         }
@@ -5654,7 +5654,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         },
@@ -5790,7 +5790,7 @@
           "local_output_evidence": "Stop once the direction is concrete enough to guide production, or report the missing asset/decision that prevents it. Unless the task sets another budget, share 15 minutes/two final repairs for static or vector work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion. Combined work uses the largest limit, not their sum; allow one target repair and report defects at the limit. A new specimen does not reset it.",
           "path": "skills/art-direction/SKILL.md",
           "skill": "art-direction",
-          "skill_body_sha256": "646c5e69d6e3a696b8580b1573ce204382aae193d04a53727c8cb81dd82918dc",
+          "skill_body_sha256": "cf3b2bb2bc72c5f37bec20e7fb6c8ac7cd1da736dd809526bace4424b062731f",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Establish a distinct visual concept for a page, campaign or visual artifact through a brief, references and an inspected specimen. Skip mechanical styling within an approved direction."
         },
@@ -5940,11 +5940,11 @@
       "reuse_boundary": "No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md.",
       "skill_contracts": [
         {
-          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
+          "decision_method": "Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.",
           "local_output_evidence": "Return ranked findings, the repaired source when requested, and paired evidence showing what changed. Unless the task sets another budget, share 15 minutes/two final repairs for static work, 30 minutes/three for interfaces or paged work, and 45 minutes/four for motion across production and critique; use the largest applicable limit. Report unresolved issues at the limit. Avoid an endless polish loop or a checklist that invents defects in already effective design.",
           "path": "skills/design-critique/SKILL.md",
           "skill": "design-critique",
-          "skill_body_sha256": "d7953e77b8351c2a3035e93f7de5e6876e43161cf41b4cb252e4331a0ba4491d",
+          "skill_body_sha256": "ac290e909c2622f9e61a0a32c56cab83330560946519594b62e643a4fdcfeca4",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Diagnose and polish an existing visual interface or artifact using ranked observed defects and before/after evidence. Skip creating a new art direction from an empty brief."
         }
@@ -6081,7 +6081,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -6216,7 +6216,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -6581,7 +6581,7 @@
           "local_output_evidence": "Return the prototype, task, observations, decision and remaining uncertainty. Stop when the assumption is discriminated to the agreed confidence or the test cannot observe it. Do not expand into full production or claim validation from an unrun test plan.",
           "path": "skills/prototype-test/SKILL.md",
           "skill": "prototype-test",
-          "skill_body_sha256": "8f47c234351f59b0c7aad00656f716119e53e05273866926e45542010b607a76",
+          "skill_body_sha256": "77cdcc9889f2066ef3afdae32c3397e0f3ccf015fb977b44d529cee6af353ca5",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a product idea or flow through a deliberately low-cost prototype, task observation and decision rule. Skip production delivery when feasibility is already established."
         },
@@ -6787,7 +6787,7 @@
           "local_output_evidence": "Return source, tested lifecycle states and playback evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop after the requested behavior/access checks pass or report missing runtime/assets and unresolved defects at the limit. Do not claim exported codec support from a browser preview.",
           "path": "skills/ui-motion/SKILL.md",
           "skill": "ui-motion",
-          "skill_body_sha256": "85371f9b92038e85bd55e340e05c7415116e81ca1f3e722780a18ba1146c45aa",
+          "skill_body_sha256": "970beb779ef38768c4391ea674f22d5a31743ae265a01e96e67ec1d5d1326257",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement interactive animation with tested lifecycle, interruption and reduced-motion behavior in existing UI code. Skip static styling or exported-video production."
         }
@@ -6924,7 +6924,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -6933,7 +6933,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
@@ -7070,7 +7070,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
+          "skill_body_sha256": "37e4728dc513426483a925693f294d4531f4a693c704653ea22d20263c9a9e7b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7322,7 +7322,7 @@
           "local_output_evidence": "Return the observed release/platform, selected scope, actual result and verification limits. A healthy doctor result alone does not establish client activation or artifact correctness.",
           "path": "skills/runtime-operations/SKILL.md",
           "skill": "runtime-operations",
-          "skill_body_sha256": "aed01511264ba4efd388668b38c0a97c80e75a968cbdd9cdcfa9bd1954d26157",
+          "skill_body_sha256": "cdd94f063811ebbf22df9e60493e17fcc93ae11a2204d18a65b8a9f49a5e1688",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Select, invoke or recover a Mirket-owned memory, JS/TS navigation, design or video operation when scope, runtime readiness or an uncertain effect matters. Skip ordinary host commands."
         },
@@ -7405,7 +7405,7 @@
           "local_output_evidence": "Return the trigger/state map, source and observed responsive/interruption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop at the requested checks or that limit and report remaining defects. Do not add scroll theater to an unrequested ordinary reading surface.",
           "path": "skills/scroll-motion/SKILL.md",
           "skill": "scroll-motion",
-          "skill_body_sha256": "232e49600a213e096916b46173d4010e70ad131446067cebd2466d2d065626e4",
+          "skill_body_sha256": "f36fd3c76e4f24914e9ea2eb69d02b1a2120a47be4b9a1668983c394d85384b7",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement requested scroll-linked scenes or page transitions with trigger/state maps, responsive behavior and interruption checks. Skip ordinary document scrolling."
         },
@@ -7414,7 +7414,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
+          "skill_body_sha256": "37e4728dc513426483a925693f294d4531f4a693c704653ea22d20263c9a9e7b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }
@@ -7478,7 +7478,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7505,7 +7505,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         }
@@ -7627,7 +7627,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7773,7 +7773,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -7787,11 +7787,11 @@
           "trigger": "Create or evolve repeated UI tokens and components when a coherent reusable design language is required. Skip a one-off style change that needs no shared system."
         },
         {
-          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use Codex's available browser for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
+          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
           "local_output_evidence": "Return criterion-linked findings or changes, reproduction conditions and manual/automated evidence. Stop when the affected access requirements pass within the agreed surface, or report the concrete unavailable assistive technology or capability. Do not claim universal accessibility from a clean scanner report.",
           "path": "skills/accessibility/SKILL.md",
           "skill": "accessibility",
-          "skill_body_sha256": "945b485cf109e0cdae4be271e7b908d34c0bb6eae50c5c59fa5d6fe2db6b7e34",
+          "skill_body_sha256": "9589abe547c458950301f3d83ad8d90e771599815e4e081d21871fe50687f37b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review interaction and visual access using criterion-linked keyboard, focus, labels, reflow and motion evidence. Skip unrelated code changes without an access boundary."
         },
@@ -7800,7 +7800,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
@@ -7809,7 +7809,7 @@
           "local_output_evidence": "Return changed resources, locale/direction coverage, inspected evidence and linguistic uncertainty requiring review. Stop when required messages and UI paths preserve meaning and use, or report the exact missing translation/font/platform check. Do not invent fluent human approval.",
           "path": "skills/localization/SKILL.md",
           "skill": "localization",
-          "skill_body_sha256": "ffb971f202f6bda43e67b77d2b1ea441046e10e75132c720957dc91e7fbd6435",
+          "skill_body_sha256": "3b2fdb267fcbe98476cc2cdccfe64403cd3070b0caadb4a2bef1cc3710979870",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review multilingual or bidirectional UI where message meaning, expansion and rendered layout must survive locale changes. Skip isolated translation without a product/UI boundary."
         }
@@ -7886,7 +7886,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8058,7 +8058,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8072,11 +8072,11 @@
           "trigger": "Refine type hierarchy or a substantial reading surface when legibility, rhythm and text behavior need a rendered specimen. Skip an exact isolated font-size instruction."
         },
         {
-          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use Codex's available browser for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
+          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
           "local_output_evidence": "Return criterion-linked findings or changes, reproduction conditions and manual/automated evidence. Stop when the affected access requirements pass within the agreed surface, or report the concrete unavailable assistive technology or capability. Do not claim universal accessibility from a clean scanner report.",
           "path": "skills/accessibility/SKILL.md",
           "skill": "accessibility",
-          "skill_body_sha256": "945b485cf109e0cdae4be271e7b908d34c0bb6eae50c5c59fa5d6fe2db6b7e34",
+          "skill_body_sha256": "9589abe547c458950301f3d83ad8d90e771599815e4e081d21871fe50687f37b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review interaction and visual access using criterion-linked keyboard, focus, labels, reflow and motion evidence. Skip unrelated code changes without an access boundary."
         },
@@ -8085,7 +8085,7 @@
           "local_output_evidence": "Return changed resources, locale/direction coverage, inspected evidence and linguistic uncertainty requiring review. Stop when required messages and UI paths preserve meaning and use, or report the exact missing translation/font/platform check. Do not invent fluent human approval.",
           "path": "skills/localization/SKILL.md",
           "skill": "localization",
-          "skill_body_sha256": "ffb971f202f6bda43e67b77d2b1ea441046e10e75132c720957dc91e7fbd6435",
+          "skill_body_sha256": "3b2fdb267fcbe98476cc2cdccfe64403cd3070b0caadb4a2bef1cc3710979870",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review multilingual or bidirectional UI where message meaning, expansion and rendered layout must survive locale changes. Skip isolated translation without a product/UI boundary."
         },
@@ -8192,7 +8192,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8278,7 +8278,7 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
@@ -8412,16 +8412,16 @@
           "local_output_evidence": "Return the saved source/artifact, inspected states/viewports, claim/proof notes when relevant and remaining defects. Unless the task sets another budget, share 30 minutes and three final repairs across interface production and review; combined motion work uses 45 minutes/four. Allow one target repair and do not restart the budget for another screen or specimen. Stop after required behavior and visual evidence pass or report the precise missing capability, asset or unresolved defect. Do not claim completion from a source diff or screenshot alone.",
           "path": "skills/interface-composition/SKILL.md",
           "skill": "interface-composition",
-          "skill_body_sha256": "096e120e7a6742d8ab5e565097265da85ab8f7a1d5f416fee367aded43ed9dbc",
+          "skill_body_sha256": "73cba1ff90f4ee1243a0f0bbe52f5e953bbc854a76ef34bf28c7b04eb36360eb",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Design and implement screens or components whose content hierarchy, visual states and responsive composition need rendered inspection. Skip backend-only behavior and mechanical text edits."
         },
         {
-          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use Codex's available browser for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
+          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
           "local_output_evidence": "Return criterion-linked findings or changes, reproduction conditions and manual/automated evidence. Stop when the affected access requirements pass within the agreed surface, or report the concrete unavailable assistive technology or capability. Do not claim universal accessibility from a clean scanner report.",
           "path": "skills/accessibility/SKILL.md",
           "skill": "accessibility",
-          "skill_body_sha256": "945b485cf109e0cdae4be271e7b908d34c0bb6eae50c5c59fa5d6fe2db6b7e34",
+          "skill_body_sha256": "9589abe547c458950301f3d83ad8d90e771599815e4e081d21871fe50687f37b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review interaction and visual access using criterion-linked keyboard, focus, labels, reflow and motion evidence. Skip unrelated code changes without an access boundary."
         },
@@ -8430,7 +8430,7 @@
           "local_output_evidence": "Return the brief/style decision, editable SVG, optimized artifact, preview paths, inspected sizes/regions, and remaining defects. If the qualified Mirket render or image-capable view is unavailable, report visual QA as untested rather than claiming illustration fidelity.",
           "path": "skills/vector-art/SKILL.md",
           "skill": "vector-art",
-          "skill_body_sha256": "af7ef4491f44281ad6b56de7723413a579bea862f94a4ade51cd01405810d1c9",
+          "skill_body_sha256": "64c180ba063ed2f45026dd4fd847f7e703658bba30a1ece37b963816267fac48",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Author or refine editable SVG artwork, artful spot illustrations, icons or sprites with optimized rendered fidelity and export checks. Use the illustration mode for character or scene cards; skip raster-only cropping or code icons already covered by an existing asset system."
         },
@@ -8457,7 +8457,7 @@
           "local_output_evidence": "Return changed resources, locale/direction coverage, inspected evidence and linguistic uncertainty requiring review. Stop when required messages and UI paths preserve meaning and use, or report the exact missing translation/font/platform check. Do not invent fluent human approval.",
           "path": "skills/localization/SKILL.md",
           "skill": "localization",
-          "skill_body_sha256": "ffb971f202f6bda43e67b77d2b1ea441046e10e75132c720957dc91e7fbd6435",
+          "skill_body_sha256": "3b2fdb267fcbe98476cc2cdccfe64403cd3070b0caadb4a2bef1cc3710979870",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review multilingual or bidirectional UI where message meaning, expansion and rendered layout must survive locale changes. Skip isolated translation without a product/UI boundary."
         }
@@ -8534,7 +8534,7 @@
           "local_output_evidence": "Return the observed release/platform, selected scope, actual result and verification limits. A healthy doctor result alone does not establish client activation or artifact correctness.",
           "path": "skills/runtime-operations/SKILL.md",
           "skill": "runtime-operations",
-          "skill_body_sha256": "aed01511264ba4efd388668b38c0a97c80e75a968cbdd9cdcfa9bd1954d26157",
+          "skill_body_sha256": "cdd94f063811ebbf22df9e60493e17fcc93ae11a2204d18a65b8a9f49a5e1688",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Select, invoke or recover a Mirket-owned memory, JS/TS navigation, design or video operation when scope, runtime readiness or an uncertain effect matters. Skip ordinary host commands."
         },
@@ -8937,7 +8937,7 @@
           "local_output_evidence": "Deliver a decision-focused answer with nearby citations, material uncertainty and the evidence that would resolve it. Stop when the questions are supported to the requested confidence and further search is unlikely to change the decision, or report the specific unavailable source. Do not turn an evidence gap into a confident recommendation.",
           "path": "skills/evidence-research/SKILL.md",
           "skill": "evidence-research",
-          "skill_body_sha256": "348004e0a8118bbe6b838af3b91209bcd2fb00ad2886b5cb74a93cae9a3df494",
+          "skill_body_sha256": "30fb3ce7b7f70db6599f683be9d61a002c74cd774e920149bfb46d0fac06fed8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Research consequential claims, comparisons or uncertain facts using traceable sources, dates and disagreement. Skip pure rewriting when the supplied facts are sufficient."
         },
@@ -9547,25 +9547,25 @@
           "local_output_evidence": "Return the behavior change, source and observed browser/state evidence. Stop when affected contracts and project gates pass, or state the specific untested runtime path. Keep visual direction with the design owner when separate from this behavior task.",
           "path": "skills/frontend-engineering/SKILL.md",
           "skill": "frontend-engineering",
-          "skill_body_sha256": "94fb94fae76cb85ceda4d2d0ba025df333a452be74df1fba5d774587f8de3098",
+          "skill_body_sha256": "c31f6ae3904acb9e41a826e64216d6c081a98065981dd3171fd3333bcba27fe2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement component or client-state behavior when rendering, accessibility and browser lifecycle affect correctness. Skip backend-only changes and mechanical CSS edits."
         },
         {
-          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use Codex's available browser for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
+          "decision_method": "Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.",
           "local_output_evidence": "Return observed results, reproducible defects, captures bound to viewports/states and untested boundaries. Recheck evidence affected by repairs. Stop after the required journey and cases pass or the agreed repair budget is reached; report remaining defects and any unavailable client or project browser capability.",
           "path": "skills/browser-qa/SKILL.md",
           "skill": "browser-qa",
-          "skill_body_sha256": "d2b22b66ae6003ba164667e548c652d03bad5b08c4a9d1d34ebeaad5bf8ca0b2",
+          "skill_body_sha256": "d0a1f252dade669729ca8414977dbe86d633cdd8547530f79080f1a4a552f7c8",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Test a live web journey, responsive layout or stateful interaction using rendered evidence and failure cases. Skip backend-only tests or a static source review."
         },
         {
-          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use Codex's available browser for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
+          "decision_method": "Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.",
           "local_output_evidence": "Return criterion-linked findings or changes, reproduction conditions and manual/automated evidence. Stop when the affected access requirements pass within the agreed surface, or report the concrete unavailable assistive technology or capability. Do not claim universal accessibility from a clean scanner report.",
           "path": "skills/accessibility/SKILL.md",
           "skill": "accessibility",
-          "skill_body_sha256": "945b485cf109e0cdae4be271e7b908d34c0bb6eae50c5c59fa5d6fe2db6b7e34",
+          "skill_body_sha256": "9589abe547c458950301f3d83ad8d90e771599815e4e081d21871fe50687f37b",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review interaction and visual access using criterion-linked keyboard, focus, labels, reflow and motion evidence. Skip unrelated code changes without an access boundary."
         },
@@ -9574,7 +9574,7 @@
           "local_output_evidence": "Return changed resources, locale/direction coverage, inspected evidence and linguistic uncertainty requiring review. Stop when required messages and UI paths preserve meaning and use, or report the exact missing translation/font/platform check. Do not invent fluent human approval.",
           "path": "skills/localization/SKILL.md",
           "skill": "localization",
-          "skill_body_sha256": "ffb971f202f6bda43e67b77d2b1ea441046e10e75132c720957dc91e7fbd6435",
+          "skill_body_sha256": "3b2fdb267fcbe98476cc2cdccfe64403cd3070b0caadb4a2bef1cc3710979870",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement or review multilingual or bidirectional UI where message meaning, expansion and rendered layout must survive locale changes. Skip isolated translation without a product/UI boundary."
         }
@@ -9867,7 +9867,7 @@
           "local_output_evidence": "Return editable sources/assets, checked exports and frame/playback/audio/caption evidence. Unless the task sets another budget, share 45 minutes and four final repairs across motion production and review, with one target repair. Stop on a material capability/rights gap or at that limit and report unresolved defects. Reconcile uncertain finalization before rerendering or overwriting output.",
           "path": "skills/video-production/SKILL.md",
           "skill": "video-production",
-          "skill_body_sha256": "22c54bdce8c36c85f587846e361821c1925ccedc8c73cd569694a734e32e750d",
+          "skill_body_sha256": "37e4728dc513426483a925693f294d4531f4a693c704653ea22d20263c9a9e7b",
           "source_mapping": "HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md",
           "trigger": "Produce or edit an exported video from editable HyperFrames composition source with qualified private rendering and decoded frame, audio and caption QA. Skip live UI animation without video export."
         }

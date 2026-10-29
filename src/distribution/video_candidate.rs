@@ -45,7 +45,11 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
     }
     let candidate: Candidate =
         serde_json::from_slice(source).map_err(|_| DistributionError::InvalidManifest)?;
-    if candidate.schema != 1
+    let admitted_lock =
+        include_bytes!("../../packaging/admission/pi-native-base-package-lock.json");
+    let current_lock = include_bytes!("../../pi/package-lock.json");
+    if !design_lock_preserved(admitted_lock, current_lock)
+        || candidate.schema != 1
         || candidate.status != "sharp_absent_four_format_development_candidate_not_release_admitted"
         || candidate.release_admitted
         || candidate.target != MAC_TARGET
@@ -53,7 +57,7 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
         || candidate.package_instances != 82
         || candidate.package_lock_sha256
             != hex(&Sha256::digest(include_bytes!(
-                "../../adapters/package-lock.json"
+                "../../packaging/admission/pi-native-base-package-lock.json"
             )))
         || candidate.source_manifest_sha256
             != "589fba4abecfd7d80966e22330cb914ddf01c2abc6025c58ed3467f64de6c012"

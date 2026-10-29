@@ -4,17 +4,16 @@ import { spawn, execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { chmod, copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, isAbsolute, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { isAbsolute, join } from "node:path";
 
 const paths = new Map();
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i], value = process.argv[i + 1];
-  assert.ok(["--mirket", "--node", "--node-license", "--codex"].includes(key) && value && isAbsolute(value) && !paths.has(key));
+  assert.ok(["--mirket", "--node", "--node-license"].includes(key) && value && isAbsolute(value) && !paths.has(key));
   paths.set(key, value);
 }
-assert.ok([3, 4].includes(paths.size) && ["--mirket", "--node", "--node-license"].every((key) => paths.has(key)),
-  "Supply absolute --mirket, --node and --node-license paths; --codex is optional");
+assert.ok(paths.size === 3 && ["--mirket", "--node", "--node-license"].every((key) => paths.has(key)),
+  "Supply absolute --mirket, --node and --node-license paths");
 assert.equal(process.platform, "darwin", "This fixture currently qualifies the macOS installed layout");
 assert.equal(process.arch, "arm64", "This fixture currently qualifies macOS ARM64 only");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -120,19 +119,12 @@ try {
   assert.equal(doctor.active_release_id, b.id);
   assert.equal(doctor.launcher_healthy, true);
   assert.equal(hash(await readFile(join(home, "bin/mirket"))), originalLauncher);
-  if (paths.has("--codex")) {
-    const smoke = join(dirname(fileURLToPath(import.meta.url)), "codex-app-server-smoke.mjs");
-    execFileSync(paths.get("--node"), [smoke, "--codex", paths.get("--codex"),
-      "--mirket", join(home, "bin/mirket"), "--home", home,
-      "--registration-mode", "managed"], { stdio: "inherit", timeout: 90_000 });
-  }
   const launcher = join(home, "bin/mirket");
   await writeFile(launcher, Buffer.from("changed managed launcher\n"));
   await chmod(launcher, 0o700);
   assert.throws(() => cli("dev", "update-core", "--home", home, "--source", a.directory),
     /existing core installation is not healthy/);
-  assert.throws(() => cli("codex-doctor", "--home", home, "--config", join(root, "config.toml")),
-    /installation health check failed/);
+  assert.throws(() => cli("doctor", "--home", home), /native payload integrity check failed/);
   assert.equal((await readFile(launcher)).toString(), "changed managed launcher\n");
   assert.equal(JSON.parse(await readFile(join(home, "active.json"), "utf8")).release_id, b.id);
   passed = true;

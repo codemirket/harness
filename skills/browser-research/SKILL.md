@@ -5,7 +5,14 @@ description: "Inspect and cite public or local web pages when rendered content, 
 
 # Browser research
 
-Use Codex's available browser or web research tools for the selected pages. Choose the built-in browser when rendered state or interaction matters, and verify that the selected client can reach the page. Keep account and profile choices explicit; never assume access to a personal browser session.
+Use the configured, admitted research route for discovery. If it supplies search
+results or fetched source text, open decisive sources in their original context.
+Use the admitted Playwright MCP peer with an explicit isolated profile when
+rendered state or interaction matters; public search pages can provide discovery
+when that route is configured. Pi has no built-in browser or search service.
+Report the specific missing route or credential instead of assuming one. Treat
+login, CAPTCHA and rate limits as access limits; do not bypass them or claim
+browsing from a URL or snippet. Never assume a personal browser session.
 
 For open-ended comparisons, unfamiliar topics or consequential recommendations, load [research coverage and claim review](references/research-coverage.md). Use its coverage map to choose sources and its claim ledger to test the answer; do not load it for a simple page lookup.
 

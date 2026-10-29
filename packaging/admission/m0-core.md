@@ -1,8 +1,8 @@
 # Core dependency admission
 
 The active dependency selections are [Cargo.toml](../../Cargo.toml),
-[Cargo.lock](../../Cargo.lock), [adapter package.json](../../adapters/package.json)
-and [adapter lock](../../adapters/package-lock.json). Do not copy an earlier
+[Cargo.lock](../../Cargo.lock), [TypeScript package.json](../../pi/package.json)
+and [TypeScript lock](../../pi/package-lock.json). Do not copy an earlier
 proposed manifest or treat an old inventory as the complete current closure.
 
 The original approved core batch is documented at

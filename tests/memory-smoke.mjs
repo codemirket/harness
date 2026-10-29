@@ -693,7 +693,7 @@ async function continuationJourney() {
     assert.equal(exact.record.data.applicability.task_key, keys[i]);
     exactRecords.push(exact.record);
   }
-  // Codex reads project files directly; memory retains the original source
+  // Pi reads project files directly; memory retains the original source
   // revision and does not mutate canonical records when a source later changes.
   for (let i = 0; i < paths.length; i++) {
     assert.equal(await readFile(join(root, paths[i]), "utf8"), evidence[i]);

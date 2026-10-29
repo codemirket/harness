@@ -112,7 +112,7 @@ impl VideoManager {
         OperationStore::open_existing(self.engine.state_root()).map_err(err)
     }
     fn save(&self, id: &str, r: &Receipt) -> Result<(), String> {
-        let s = self.store()?.lock().map_err(err)?;
+        let s = self.store()?.lock_bounded().map_err(err)?;
         let current: Receipt = serde_json::from_slice(&s.read(id).map_err(err)?).map_err(err)?;
         if (current.state.terminal() && current.state != r.state)
             || (current.state.effect == Effect::Confirmed && r.state.effect != Effect::Confirmed)

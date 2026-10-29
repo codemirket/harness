@@ -6,7 +6,7 @@ unoptimized; their timings do not establish release-build performance.
 
 For build-cache cleanup, preserve `target/native`: it contains admitted inputs,
 not disposable Cargo outputs. Removing `target/debug`, `target/release`, old
-cross-target outputs and `adapters/dist` is safe after jobs stop; the next build
+cross-target outputs and `pi/dist/runtime` is safe after jobs stop; the next build
 regenerates them. A blanket `cargo clean` also removes the native input and
 requires preparing it again before the build guard can pass. Keep the locked
 development dependency tree when an offline rebuild is needed.
@@ -96,10 +96,10 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 Set `MIRKET_NODE` to the absolute verified private Node executable for the candidate
 being tested. Verify installed adapter package versions against `package-lock.json`
 before compilation; missing required or mismatched entries are a failure.
-From `adapters/`, use that executable to run the locked compiler and process tests:
+From `pi/`, use that executable to run the locked compiler and process tests:
 
 ```sh
-"$MIRKET_NODE" node_modules/typescript/bin/tsc -p tsconfig.json
+MIRKET_PI_PEERS="/absolute/admitted-pi-node_modules" "$MIRKET_NODE" scripts/build.mjs
 "$MIRKET_NODE" --test tests/*.test.mjs
 ```
 
@@ -116,3 +116,10 @@ under `tests/` require their documented explicit release/home/tool arguments;
 never point them at the user's existing `.mirket` installation. Model trial
 runners are optional evaluation tooling, not part of ordinary test discovery
 or permission to start new paid/model cohorts.
+
+The host peer tree must be the exact offline-development batch in
+`packaging/admission/pi-p0.md`. The build leaves pi and TypeBox external.
+`assemble-pi-package.py` copies a selected verified native payload and compiled
+extension into a local package; it neither downloads nor installs dependencies.
+Native payload paths called `adapters/` are manifest storage, not a second source
+or build package. Pi release qualification remains incomplete.

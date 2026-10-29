@@ -5,7 +5,7 @@ description: "Diagnose and polish an existing visual interface or artifact using
 
 # Design critique
 
-Inspect the actual target at its intended size and in the states relevant to the user task. Use Codex's available browser for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.
+Inspect the actual target at its intended size and in the states relevant to the user task. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for live web targets. Capture the current evidence before editing; distinguish a reproducible usability defect from a subjective preference.
 
 Evaluate task hierarchy, content density, alignment, typography, spacing, contrast, assets, controls and responsive behavior as one composition. For public-facing claims, treat absent or unsupported proof as a content-truth finding when observed, not as a visual preference. Identify the small set of changes with the greatest effect on comprehension or use. Explain each issue by what the user misses, misunderstands or cannot do, using a precise location/state.
 

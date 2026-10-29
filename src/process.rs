@@ -109,6 +109,12 @@ pub(crate) async fn cancelled(cancel: Arc<AtomicBool>) {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum GroupCleanup {
+    Signalled,
+    ConfirmAfterReap,
+}
+
 pub(crate) struct OwnedChild {
     pub(crate) child: Child,
     pid: u32,
@@ -145,9 +151,9 @@ impl OwnedChild {
         }
     }
 
-    fn kill_owned_group(&mut self) -> Result<(), String> {
+    fn kill_owned_group(&mut self) -> Result<GroupCleanup, String> {
         if self.reaped {
-            return Ok(());
+            return Ok(GroupCleanup::Signalled);
         }
         if !self.identity_held {
             return Err("child identity is no longer proven; do not signal a numeric PID".into());
@@ -167,20 +173,11 @@ impl OwnedChild {
             if unsafe { libc::kill(-pid, libc::SIGKILL) } == -1 {
                 let error = std::io::Error::last_os_error();
                 if error.raw_os_error() == Some(libc::EPERM) {
-                    // Darwin reports EPERM for a group containing only its
-                    // exited, unreaped leader. Reap that direct child first,
-                    // then confirm the group disappeared. A live descendant
-                    // or an uncertain group still retains the admission.
-                    if self.child.try_wait().ok().flatten().is_some() {
-                        self.reaped = true;
-                        self.identity_held = false;
-                        if unsafe { libc::kill(-pid, 0) } == -1
-                            && std::io::Error::last_os_error().raw_os_error() == Some(libc::ESRCH)
-                        {
-                            return Ok(());
-                        }
-                        return Err("owned process group remains after direct-child reap".into());
-                    }
+                    // On Darwin stdout can close while the exited leader's
+                    // SIGCHLD notification is not yet visible to try_wait().
+                    // Await the owned Child within the existing reap deadline;
+                    // only then probe (never signal) the old group for absence.
+                    return Ok(GroupCleanup::ConfirmAfterReap);
                 }
                 if error.raw_os_error() != Some(libc::ESRCH) {
                     return Err(format!("owned process-group termination failed: {error}"));
@@ -188,7 +185,7 @@ impl OwnedChild {
             }
         }
         match self.child.start_kill() {
-            Ok(()) => Ok(()),
+            Ok(()) => Ok(GroupCleanup::Signalled),
             Err(error) => {
                 // A finite leaf can exit between the group signal and the
                 // direct-child signal. Reap proof, rather than the signal's
@@ -197,7 +194,7 @@ impl OwnedChild {
                     Ok(Some(_)) => {
                         self.reaped = true;
                         self.identity_held = false;
-                        Ok(())
+                        Ok(GroupCleanup::Signalled)
                     }
                     _ => Err(format!("adapter termination failed: {error}")),
                 }
@@ -206,7 +203,7 @@ impl OwnedChild {
     }
 
     pub(crate) async fn terminate_and_reap(&mut self) -> Result<(), String> {
-        self.kill_owned_group()?;
+        let cleanup = self.kill_owned_group()?;
         if self.reaped {
             return Ok(());
         }
@@ -220,6 +217,26 @@ impl OwnedChild {
         }
         self.reaped = true;
         self.identity_held = false;
+        if cleanup == GroupCleanup::ConfirmAfterReap {
+            self.confirm_group_absent()?;
+        }
+        Ok(())
+    }
+
+    fn confirm_group_absent(&self) -> Result<(), String> {
+        #[cfg(unix)]
+        {
+            let pid: i32 = self.pid.try_into().map_err(|_| "invalid child identity")?;
+            // SAFETY: signal zero is an existence probe, not termination. After
+            // reaping we must never send a signal to a possibly recycled PGID.
+            if unsafe { libc::kill(-pid, 0) } != -1
+                || std::io::Error::last_os_error().raw_os_error() != Some(libc::ESRCH)
+            {
+                return Err(
+                    "owned process group remains or cannot be confirmed absent after reap".into(),
+                );
+            }
+        }
         Ok(())
     }
 }
@@ -256,6 +273,38 @@ mod tests {
                 .await
                 .is_err()
         );
+    }
+
+    #[cfg(unix)]
+    #[tokio::test]
+    async fn a_live_group_cannot_be_reported_absent() {
+        use std::os::unix::process::CommandExt;
+        let mut command = tokio::process::Command::new("/bin/sleep");
+        command.arg("10").as_std_mut().process_group(0);
+        let mut child = OwnedChild::new(command.spawn().unwrap()).unwrap();
+        assert!(child.confirm_group_absent().is_err());
+        assert!(!child.is_reaped());
+        child.terminate_and_reap().await.unwrap();
+        assert!(child.confirm_group_absent().is_ok());
+    }
+
+    #[cfg(unix)]
+    #[tokio::test(flavor = "current_thread")]
+    async fn closing_stdout_does_not_require_exit_notification_to_be_ready() {
+        use std::os::unix::process::CommandExt;
+        use std::process::Stdio;
+        for iteration in 0..256 {
+            let mut command = tokio::process::Command::new("/usr/bin/true");
+            command.as_std_mut().process_group(0);
+            command.stdout(Stdio::piped());
+            let mut child = OwnedChild::new(command.spawn().unwrap()).unwrap();
+            let mut stdout = child.child.stdout.take().unwrap();
+            stdout.read_to_end(&mut Vec::new()).await.unwrap();
+            child.terminate_and_reap().await.unwrap_or_else(|error| {
+                panic!("stdout closed before cleanup, iteration {iteration}: {error}")
+            });
+            assert!(child.is_reaped());
+        }
     }
 
     #[cfg(unix)]

@@ -145,7 +145,7 @@ class DesignEvidenceTests(unittest.TestCase):
 
     def add_execution_identity(self) -> None:
         execution = {
-            "platform": "macOS 26.5.2", "architecture": "arm64", "codex_release_id": "codex-test",
+            "platform": "macOS 26.5.2", "architecture": "arm64", "pi_release_id": "pi-test",
             "mirket_release_id": "mirket-test", "model": "gpt-6-astra", "reasoning_effort": "high",
             "catalog_sha256": "1" * 64, "skills": {"design-critique": "2" * 64},
             "tools": {"mirket": {"path": "/private/bin/mirket", "sha256": "3" * 64}},

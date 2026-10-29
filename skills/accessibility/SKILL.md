@@ -5,7 +5,7 @@ description: "Implement or review interaction and visual access using criterion-
 
 # Accessibility
 
-Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use Codex's available browser for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.
+Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure; use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for web checks. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.
 
 Exercise keyboard navigation, visible/unobscured focus, accessible names and relationships, error identification, reading order, zoom/reflow and reduced motion where relevant. Include content pressure and state transitions such as a modal opening, a validation error or dynamic status. Check contrast against the real rendered background. Automated scans can locate candidates but cannot establish complete conformance.
 

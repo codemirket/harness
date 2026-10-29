@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { preflight } from "../adapters/dist/video-export.js";
+import { preflight } from "../pi/dist/runtime/video-export.js";
 import { buildVideoRequest, collectRevisionBoundSources, MAX_SOURCE_BYTES, MAX_SOURCE_FILES, parseCaptionSelection, retainVideoTrialFailure, selectRevisionBoundSources, writeVideoTrialEvidence } from "./video-fixture.mjs";
 
 async function fixture() {

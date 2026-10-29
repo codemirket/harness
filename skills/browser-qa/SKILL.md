@@ -5,7 +5,7 @@ description: "Test a live web journey, responsive layout or stateful interaction
 
 # Browser QA
 
-Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use Codex's available browser for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.
+Bind the test to the actual source revision, application build, URL, account/data state and intended journey. Use the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool for rendered inspection; run project-owned browser tests when they are the established reproducible check. Keep personal profiles and test data separate.
 
 Choose representative viewport sizes and the states that can invalidate the journey: empty, loading, error, success, overflow and interrupted/repeated action when applicable. Exercise keyboard access, visible focus, labels and reduced-motion behavior alongside pointer interaction. Inspect captures for clipping, wrapping, missing assets and hierarchy; screenshots alone do not establish behavior.
 

@@ -66,6 +66,9 @@ def copy_exact(source: Path, destination: Path, expected: tuple[int, str]) -> No
 def design_lock_preserved(admitted: Path, current: Path) -> bool:
     old = json.loads(admitted.read_text(encoding="utf-8"))
     now = json.loads(current.read_text(encoding="utf-8"))
+    if now.get("name") == "@codemirket/pi-harness":
+        old["name"] = "@codemirket/pi-harness"
+        old["packages"][""]["name"] = "@codemirket/pi-harness"
     if old.keys() != now.keys() or any(old[key] != now[key] for key in old if key != "packages"):
         return False
     old_packages, now_packages = old.get("packages"), now.get("packages")
@@ -92,7 +95,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
     data = json.loads(SELECTION.read_text(encoding="utf-8"))
     if data.get("schema") != 1 or data.get("component") != "design" or data.get("target") != "aarch64-apple-darwin":
         raise AssemblyError("unexpected design selection")
-    lock = REPO / "adapters/package-lock.json"
+    lock = REPO / "pi/package-lock.json"
     expected_lock = data["source_lock_sha256"]
     if (digest(FROZEN_LOCK)[1] != expected_lock
             or digest(tree.parent / "package-lock.json") != digest(lock)
@@ -114,7 +117,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
     if font.is_symlink() or not font.is_file() or digest(font) != (font_entry["bytes"], font_entry["sha256"]):
         raise AssemblyError("private font differs from admission")
     for name in adapter_names:
-        source = REPO / "adapters/dist" / name
+        source = REPO / "pi/dist/runtime" / name
         if source.is_symlink() or not source.is_file() or source.stat().st_size > 1024 * 1024:
             raise AssemblyError("compiled design adapter is missing or oversize")
     for notice in data["notices"]:
@@ -143,7 +146,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
         # File members are installed first, then the complete tree appears atomically.
         stage.rename(release / "adapters/node_modules")
     for name in adapter_names:
-        source = REPO / "adapters/dist" / name
+        source = REPO / "pi/dist/runtime" / name
         if source.is_symlink() or not source.is_file() or source.stat().st_size > 1024 * 1024:
             raise AssemblyError("compiled design adapter is missing or oversize")
         copy_exact(source, release / "adapters" / name, digest(source))

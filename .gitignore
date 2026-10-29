@@ -1,6 +1,6 @@
 /target/
-/adapters/node_modules/
-/adapters/dist/
+/pi/node_modules/
+/pi/dist/
 .DS_Store
 __pycache__/
 *.pyc

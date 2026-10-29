@@ -14,7 +14,7 @@ license evidence remains unverified.
 
 ## Ownership
 
-General browsing and SQL navigation are Codex/project capabilities. The three browser guides and SQL navigation guide remain native project skills but no longer require a Mirket runtime capability. Mirket retains private Chrome only as a video-rendering input. The current bodies and catalog metadata enforce that ownership boundary.
+Pi owns native source/shell tools. SQL and document formats use installed project commands. Browser/research require explicitly admitted integrations and configured credentials; no browser/search route is implied by a skill. Mirket private Chrome remains a video-rendering input. The pi port changes execution prerequisites while retaining the original method and rights evidence.
 
 ## Local source identity
 
@@ -62,7 +62,7 @@ unverified, keep the material comparison-only/link-only rather than claiming ado
 
 [catalog.json](catalog.json) contains two positive, two negative and one mixed
 planned case per skill. These are public authoring fixtures, not held-out results.
-No native Codex activation, matched no-skill baseline, desktop-platform outcome or
+No pi skill activation, matched no-skill baseline, platform outcome or
 tool-operation fidelity is claimed by this corpus. Structural checks cannot prove
 selection quality, rights, useful behavior or user acceptance.
 

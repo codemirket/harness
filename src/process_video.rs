@@ -1029,7 +1029,7 @@ process.stdin.once('data',chunk=>{const r=JSON.parse(chunk);if(MODE==='malformed
             node: fs::canonicalize(&paths[0]).unwrap(),
             adapter: fs::canonicalize(
                 std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                    .join("adapters/dist/video-main.js"),
+                    .join("pi/dist/runtime/video-main.js"),
             )
             .unwrap(),
             chromium: fs::canonicalize(&paths[1]).unwrap(),

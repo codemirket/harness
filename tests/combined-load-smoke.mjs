@@ -80,7 +80,7 @@ report.payload_verification = { design_inventory_sha256: hash(designInventoryByt
 report.adapter_modules = {};
 for (const name of ["design-main.js", "design-operations.js", "code-navigation-main.js", "code-navigation.js"]) {
   const selected = await readFile(join(dirname(flags.get("--design-adapter")), name));
-  assert.equal(hash(selected), hash(await readFile(join(repository, "adapters/dist", name))), `Selected adapter is stale: ${name}`);
+  assert.equal(hash(selected), hash(await readFile(join(repository, "pi/dist/runtime", name))), `Selected adapter is stale: ${name}`);
   report.adapter_modules[name] = hash(selected);
 }
 

@@ -1,82 +1,50 @@
 # Mirket
 
-Mirket is a local companion for **Codex Desktop**. The first release, v0.0.1,
-is scoped to **macOS 26.5.2 on Apple Silicon (ARM64)**. Earlier and newer macOS
-versions and Windows are not qualified. Codex Desktop GUI activation was waived
-by the user and remains untested; native Codex backend and MCP checks are separate.
-No public release has been published yet.
+Mirket is a **pi-only harness** for product development. Pi owns
+models, authentication, sessions, native tools and MCP lifecycle. Mirket supplies
+scoped project memory, selected JavaScript/TypeScript navigation, finite design
+and HyperFrames video operations, and selected workflow guidance.
 
-Codex owns models, agents, permissions, shell, editing, Git, documents, general
-browsing and SQL. Mirket supplies scoped project memory, selected JavaScript and
-TypeScript navigation, design operations, HyperFrames video production and native
-skill distribution. It does not add another agent orchestrator or OS sandbox.
+The scoped local candidate is validated on **macOS 26.5.2 ARM64** with the exact
+external pi 1.4.0 / Undici 8.12.2 host. It is not published or installed into the
+user's live environment. See the [qualification record](docs/pi-qualification-20261029.md)
+for package identity, reproducible checks, measured limits and unsupported paths.
+The [migration plan](planning/pi-migration.md) retains decisions and failed evidence.
 
-## What it provides
+Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
+forgetting and recovery, with lazy local MiniLM retrieval. Navigation operates on
+explicit revision-bound sources. Design supports tokens, editable vectors,
+raster operations and diagrams. Video uses HyperFrames with verified private
+rendering Chrome and FFmpeg/ffprobe. Successful exports require separate visual
+and decoded-output review.
 
-- **Memory:** canonical SQLite facts and FTS, corrections, supersession, expiry,
-  forgetting and recovery, with lazy local MiniLM semantic retrieval.
-- **JS/TS navigation:** inspection, definitions and references over explicitly
-  supplied, revision-bound sources. Unsupported or incomplete analysis is explicit.
-- **Design:** editable OpenPencil files, Style Dictionary tokens, SVG/SVGO/resvg,
-  Sharp raster operations and D2 diagrams. Codex owns source authoring and live UI
-  review; a successful export is not visual approval.
-- **Video:** editable HyperFrames HTML/CSS/JS compositions, local assets, audio and
-  captions, with checked MP4/WebM/GIF/PNG exports. Private Chrome is used only for
-  video rendering. HyperFrames is the sole video engine.
-- **Native guidance:** nine concise global skills and 52 opt-in project skills,
-  organized into seven profiles. Exact IDs remain selectable without a profile.
-  Names have no `mirket-` prefix. Project sync detects managed-copy drift and
-  preserves unrelated user files.
+The package uses one Rust crate and one compiled TypeScript package. Pi's native
+MCP client owns the verified Rust service. Native tools use explicit verified
+paths; loading an extension must not download dependencies or launch heavy
+workers. Mirket-owned processes are not an OS sandbox.
 
-The Hallmark/Taste design direction and user-accepted Daybreak specimen remain.
-See the [design production record](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-production-closure-20261028.md)
-and [D6 review pack](specimens/daybreak/review.html) for their actual limits.
+The candidate's `/mirket-research QUESTION` command uses provider-native search
+through pi's existing `openai/gpt-6-astra` authentication. It enables one research
+turn, retains search actions and citation spans, and displays clickable sources.
+Missing provider access fails explicitly; it does not install a search service.
+The installed research/vision preflight passed at Medium effort. Browser automation is qualified only for disposable local-fixture testing;
+no production browser dependency is admitted. Broader providers remain unsupported.
+The [bounded comparison](docs/pi-heldout-comparison-20261029.md) found no general
+quality or speed advantage, and preserves its failed/budget-limited runs.
 
-## Skill retention
+Fresh pi state belongs under `<pi-agent-dir>/mirket/`. Existing installations and
+unrelated settings are preserved; no old configuration or skill-copy migration
+is supported. The local package and disposable setup procedure are recorded in the qualification
+record. Current source changes do not update a live installation.
 
-Skills must justify their context and maintenance cost through a concrete routing
-contract, a non-obvious quality safeguard or measured useful-output benefit.
-Catalog size is not a goal. The six tested product/marketing skills and
-`content-growth` profile were removed from v0.0.1 after two valid enabled bundles
-timed out while both no-skill baselines produced independently correct artifacts.
-Codex continues to handle those workflows. This is a bundle-level release choice,
-not proof that each removed skill is harmful on every task.
+Skills must justify retention with a concrete useful workflow, safeguard or
+measured benefit. Existing catalog cases are planned fixtures, not completed
+acceptance trials. Source methods, code, fonts and runtime assets retain separate
+licensing obligations. See [provenance](skills/PROVENANCE.md) and exact records in
+`packaging/admission`; a proposed inventory is not dependency admission.
 
-The [evaluation record](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/supplemental-model-evaluation-20261028.md) preserves
-all attempts and costs. Research and reviewer controls passed in both conditions;
-no general quality uplift is claimed. The retained 305 catalog development cases
-are planned fixtures, not 305 completed acceptance trials.
-
-## Installation and distribution
-
-Use the [release installation prompt](packaging/install-prompt.md) and the exact
-installer, binary and manifest hashes from the release record. The first-party
-installer refuses unsupported host versions. Installation lives under `.mirket`;
-source changes in this checkout do not change an existing installation. Tests use disposable homes.
-
-The lean package includes corresponding source and notices for its redistributed
-Video/FFmpeg closure. Chrome for Testing, Sharp native packages and the semantic
-model/ONNX runtime are acquired from their publishers during setup under exact
-pins and their own terms; they are not mirrored in the lean archive. First use
-does not download packages or search PATH for substitute executables.
-
-Mirket-authored source is MIT licensed. Third-party components retain their own
-licenses, notices and source obligations. Admission evidence lives under
-`packaging/admission`; historical proposals alone do not grant redistribution.
-See the [release plan](planning/release-readiness.md) and
-[first-release qualification](docs/first-release-qualification-20261028.md) for
-current package identities, recipient materials, tests and exclusions.
-
-## Development
-
-Run `python3 scripts/check-build-inputs.py` before Rust compilation. Required
-checks include `cargo test --locked --offline`,
-`cargo clippy --locked --offline --all-targets -- -D warnings`, `cargo fmt --check`,
-the locked adapter build/tests and MCP smoke with explicit private Node and binary
-paths. See [native build requirements](docs/native-build.md).
-
-The [implementation plan](planning/implementation-plan.md) defines ownership and
-release constraints. The [catalog plan](planning/skill-catalog-design.md) and
-[provenance](skills/PROVENANCE.md) define current skill scope. The [documentation index](docs/README.md) lists current contracts and evidence.
-Historical evidence linked at immutable Git revisions does not qualify a newer
-package or unsupported platform.
+For development, run `python3 scripts/check-build-inputs.py` before Rust
+compilation, then the locked offline Rust tests/clippy, formatting, locked
+TypeScript/process tests and explicit-binary MCP smoke. Use disposable private
+homes and projects. See [native build requirements](docs/native-build.md) and
+[implementation contract](planning/implementation-plan.md).

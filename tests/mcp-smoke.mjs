@@ -215,10 +215,10 @@ try {
     "optional_managed_memory_backups", "maintenance_memory_restore",
     "explicit_derived_index_refresh", "design_prepare_start", "finite_video_jobs",
   ], "MCP capability surface must remain stable while readiness is reported separately");
-  assert.ok(runtime.limits.includes("Codex Desktop GUI activation untested by user waiver"));
+  assert.ok(runtime.limits.includes("pi product release qualification pending"));
   assert.ok(!runtime.capabilities.includes("bounded_utf8_read"));
   assert.ok(!runtime.capabilities.includes("text_replace_new_copy"));
-  console.log("PASS Codex-only MCP inventory and runtime status");
+  console.log("PASS pi-facing MCP inventory and runtime status");
 
   await rejected(client, "diagram_render_prepare", diagram("stale-release"), /release/i);
   await rejected(client, "diagram_render_prepare", diagram(RELEASE_A), /private D2 runtime is not configured/i);

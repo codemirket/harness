@@ -1,0 +1,348 @@
+{
+  "schema": 1,
+  "status": "P0 offline host-contract proof passed; not release qualification",
+  "date": "2026-10-29",
+  "authorization": "User explicitly approved disposable offline P0 testing with hooks and telemetry disabled in this chat on 2026-10-29",
+  "head": "37dfffa2bd51905fd214e115704cf64835afa571",
+  "platform": {
+    "os": "macOS",
+    "version": "26.5.2",
+    "build": "25F84",
+    "arch": "arm64"
+  },
+  "pi": {
+    "version": "1.4.0",
+    "commit": "4a080252f06caf63a525d7873c5d94d3c23887e0",
+    "lock_sha256": "0d66252383c476049e04e90b2a84d8d21f1ad19909d9e5e132002734ae4e6bec"
+  },
+  "installed_bytes": {
+    "archives": 122,
+    "matchedRegularFiles": 15247,
+    "archiveLinks": [],
+    "lockSha256": "0d66252383c476049e04e90b2a84d8d21f1ad19909d9e5e132002734ae4e6bec"
+  },
+  "runtime": {
+    "node": "24.22.1",
+    "node_sha256": "6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329",
+    "mirket_sha256": "ecd56d14f486c188d4d3fe6e50fc152773ab7da8438a51e527ed308c7c1ccef1",
+    "release_id": "pi-p0",
+    "build_profile": "dev"
+  },
+  "integration": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.22.1",
+    "results": [
+      {
+        "id": "P0-01/02 SDK",
+        "detail": "External peers, factory zero workers, direct status, one Rust child"
+      },
+      {
+        "id": "P0-03",
+        "detail": "Deferred discovery then real prepare/commit/read"
+      },
+      {
+        "id": "P0-04",
+        "detail": "Codemode persistence and resolved MCP isError inspected"
+      },
+      {
+        "id": "P0-06 reload",
+        "detail": "Old service exited; new service reads saved fact"
+      },
+      {
+        "id": "P0-10 two clients",
+        "detail": "Two distinct processes read same canonical record"
+      },
+      {
+        "id": "P0-05/restart/resume",
+        "detail": "Committed receipt reconciled without replay; original saved fact survives"
+      },
+      {
+        "id": "P0-09",
+        "detail": "Independent session directory and cross-project read refusal"
+      },
+      {
+        "id": "P0-08 filter",
+        "detail": "Excluded commit unreachable through codemode"
+      },
+      {
+        "id": "P0-08 override",
+        "detail": "File origin overrides extension and cannot be attested; no writes"
+      },
+      {
+        "id": "P0 shutdown",
+        "detail": "No remaining owned Rust service"
+      }
+    ],
+    "timings": [
+      {
+        "firstToolMs": 226.94504099999995
+      }
+    ],
+    "processes": [],
+    "finalProcesses": []
+  },
+  "cli": {
+    "coldProcessStarts": [
+      {
+        "iteration": 0,
+        "firstUsefulToolMs": 490.25595805142075,
+        "exitMs": 507.8601660206914
+      },
+      {
+        "iteration": 1,
+        "firstUsefulToolMs": 476.80075000971556,
+        "exitMs": 495.32904103398323
+      },
+      {
+        "iteration": 2,
+        "firstUsefulToolMs": 483.5164579562843,
+        "exitMs": 500.5084170261398
+      }
+    ],
+    "CLI_codemode_memory": "pass",
+    "alternate_session_dir": "/private/tmp/mirket-pi-p0-h8opn582/alternate-session-dir",
+    "caveat": "Fresh processes with warm filesystem caches; no cache flush or paid provider"
+  },
+  "rpc_passes": [
+    "CLI RPC direct status",
+    "loaded /mcp",
+    "/reload",
+    "fork",
+    "resume switch_session",
+    "abort running codemode and recovery"
+  ],
+  "resource_cases": [
+    "global-only",
+    "project replaces global",
+    "autoload false delta",
+    "unfiltered",
+    "missing Mirket extension with provider still loaded",
+    "collision",
+    "untrusted project resources ignored"
+  ],
+  "idle": {
+    "firstToolMs": 192.90441699999997,
+    "samples": [
+      {
+        "requestedSeconds": 0,
+        "observedSeconds": 0.03443408299999999,
+        "tree": [
+          {
+            "pid": 50505,
+            "ppid": 50503,
+            "rssKiB": 349216,
+            "command": "/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node /Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029/proof/performance.mjs"
+          },
+          {
+            "pid": 50506,
+            "ppid": 50505,
+            "rssKiB": 14352,
+            "command": "/Users/nazmiyilmaz/Projects/harness/target/debug/mirket dev serve --state-dir /private/tmp/mirket-pi-p0-h8opn582/agent/mirket --release-id pi-p0 --node /Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node"
+          }
+        ],
+        "aggregateRssKiB": 363568,
+        "nodeResourceUsage": {
+          "userCPUTime": 641213,
+          "systemCPUTime": 150804,
+          "maxRSS": 349248,
+          "sharedMemorySize": 0,
+          "unsharedDataSize": 0,
+          "unsharedStackSize": 0,
+          "minorPageFault": 22041,
+          "majorPageFault": 90,
+          "swappedOut": 0,
+          "fsRead": 0,
+          "fsWrite": 0,
+          "ipcSent": 4,
+          "ipcReceived": 5,
+          "signalsCount": 0,
+          "voluntaryContextSwitches": 868,
+          "involuntaryContextSwitches": 1336
+        }
+      },
+      {
+        "requestedSeconds": 30,
+        "observedSeconds": 30.057897957999998,
+        "tree": [
+          {
+            "pid": 50505,
+            "ppid": 50503,
+            "rssKiB": 349280,
+            "command": "/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node /Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029/proof/performance.mjs"
+          },
+          {
+            "pid": 50506,
+            "ppid": 50505,
+            "rssKiB": 14352,
+            "command": "/Users/nazmiyilmaz/Projects/harness/target/debug/mirket dev serve --state-dir /private/tmp/mirket-pi-p0-h8opn582/agent/mirket --release-id pi-p0 --node /Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node"
+          }
+        ],
+        "aggregateRssKiB": 363632,
+        "nodeResourceUsage": {
+          "userCPUTime": 645427,
+          "systemCPUTime": 153477,
+          "maxRSS": 349280,
+          "sharedMemorySize": 0,
+          "unsharedDataSize": 0,
+          "unsharedStackSize": 0,
+          "minorPageFault": 22046,
+          "majorPageFault": 90,
+          "swappedOut": 0,
+          "fsRead": 0,
+          "fsWrite": 0,
+          "ipcSent": 4,
+          "ipcReceived": 7,
+          "signalsCount": 0,
+          "voluntaryContextSwitches": 868,
+          "involuntaryContextSwitches": 1374
+        }
+      },
+      {
+        "requestedSeconds": 60,
+        "observedSeconds": 60.058347666,
+        "tree": [
+          {
+            "pid": 50505,
+            "ppid": 50503,
+            "rssKiB": 349296,
+            "command": "/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node /Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029/proof/performance.mjs"
+          },
+          {
+            "pid": 50506,
+            "ppid": 50505,
+            "rssKiB": 14352,
+            "command": "/Users/nazmiyilmaz/Projects/harness/target/debug/mirket dev serve --state-dir /private/tmp/mirket-pi-p0-h8opn582/agent/mirket --release-id pi-p0 --node /Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node"
+          }
+        ],
+        "aggregateRssKiB": 363648,
+        "nodeResourceUsage": {
+          "userCPUTime": 648083,
+          "systemCPUTime": 156811,
+          "maxRSS": 349296,
+          "sharedMemorySize": 0,
+          "unsharedDataSize": 0,
+          "unsharedStackSize": 0,
+          "minorPageFault": 22048,
+          "majorPageFault": 90,
+          "swappedOut": 0,
+          "fsRead": 0,
+          "fsWrite": 0,
+          "ipcSent": 4,
+          "ipcReceived": 9,
+          "signalsCount": 0,
+          "voluntaryContextSwitches": 869,
+          "involuntaryContextSwitches": 1401
+        }
+      },
+      {
+        "requestedSeconds": 120,
+        "observedSeconds": 120.053760666,
+        "tree": [
+          {
+            "pid": 50505,
+            "ppid": 50503,
+            "rssKiB": 317152,
+            "command": "/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node /Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029/proof/performance.mjs"
+          },
+          {
+            "pid": 50506,
+            "ppid": 50505,
+            "rssKiB": 14352,
+            "command": "/Users/nazmiyilmaz/Projects/harness/target/debug/mirket dev serve --state-dir /private/tmp/mirket-pi-p0-h8opn582/agent/mirket --release-id pi-p0 --node /Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/release-source/runtime/node/bin/node"
+          }
+        ],
+        "aggregateRssKiB": 331504,
+        "nodeResourceUsage": {
+          "userCPUTime": 711901,
+          "systemCPUTime": 169952,
+          "maxRSS": 350816,
+          "sharedMemorySize": 0,
+          "unsharedDataSize": 0,
+          "unsharedStackSize": 0,
+          "minorPageFault": 22149,
+          "majorPageFault": 90,
+          "swappedOut": 0,
+          "fsRead": 0,
+          "fsWrite": 0,
+          "ipcSent": 4,
+          "ipcReceived": 11,
+          "signalsCount": 0,
+          "voluntaryContextSwitches": 869,
+          "involuntaryContextSwitches": 1486
+        }
+      }
+    ]
+  },
+  "tui": {
+    "method": "actual interactive CLI in PTY",
+    "passed": [
+      "/mcp shows connected 25 tools and extension origin",
+      "details show explicit executable/state/node",
+      "/reload completes",
+      "Ctrl-D exits 0"
+    ],
+    "saved_pixel_visual_qa": false
+  },
+  "negative_cases": [
+    "stale release produces isError inside resolved codemode",
+    "wrong project read refused",
+    "excluded commit inaccessible through codemode",
+    "same-name file override detected without writes",
+    "configured disabled server",
+    "--no-mcp",
+    "third-party /mcp replacement",
+    "missing Mirket extension with provider still loaded",
+    "untrusted project resources",
+    "duplicate skill diagnostic"
+  ],
+  "network": {
+    "PI_OFFLINE": "1",
+    "PI_TELEMETRY": "0",
+    "PI_SKIP_VERSION_CHECK": "1",
+    "enableInstallTelemetry": false,
+    "node_network_trap_selftest": "passed",
+    "unexpected_trapped_attempts": 0,
+    "os_sandbox_claim": false
+  },
+  "remaining_owned_processes": [],
+  "evidence": {
+    "root": "/Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029",
+    "manifest": "proof/evidence-manifest.json",
+    "manifest_sha256": "ff392a56b6b94fe952971fa6d46a04dbcca739dc866cb2ae65ff4c29fa855e2d"
+  },
+  "limits": [
+    "Offline deterministic provider only; no paid model or model-quality evaluation",
+    "Existing Rust dev service, not assembled pi product release",
+    "Caller-side response discard tests uncertainty reconciliation; not TCP packet-loss qualification",
+    "Abort exercised running codemode and cleanup; native creative-job cancellation remains P4",
+    "Fresh-process timings have warm filesystem caches; Node high-water RSS plus sampled Rust RSS, not continuous aggregate peak",
+    "TUI command/protocol evidence only; image delivery and saved-pixel visual QA remain untested",
+    "Undici advisories, redistribution/notice closure, native/networked release admission remain unresolved",
+    "Full Rust tests/clippy were not rerun for fixture-only work; no production source changed"
+  ],
+  "frozen_P2_core_budgets": {
+    "scope": "Same macOS ARM64 machine/toolchain, status-only core, before optimization",
+    "three_fresh_process_first_tool_each_ms_max": 1000,
+    "aggregate_idle_rss_mib_max": 450,
+    "rust_idle_rss_mib_max": 32,
+    "idle_growth_30_to_120_seconds_mib_max": 16,
+    "shutdown_no_owned_children_seconds_max": 3
+  },
+  "reproduction": {
+    "launcher": "/Users/nazmiyilmaz/.codex/task-state/pi-p0-20261029/proof/run.py",
+    "node_scripts": [
+      "integration.mjs",
+      "filters.mjs",
+      "resources-negative.mjs",
+      "disabled.mjs",
+      "performance.mjs"
+    ],
+    "python_scripts": [
+      "rpc.py",
+      "cli-proof.py",
+      "negative.py"
+    ],
+    "note": "Run from the retained evidence tree with the exact admitted node_modules and compiled package; launcher builds an allowlisted environment and targets active-root.txt. TUI transcript records manual PTY commands. Failed diagnostic scripts/logs are retained but are not passing suites."
+  }
+}
