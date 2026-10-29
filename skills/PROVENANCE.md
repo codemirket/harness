@@ -5,7 +5,6 @@ for this repository. Eight project bodies are classified method-adapted because
 they retain independently worded techniques from reviewed source families; no
 external prose, code, workflow, asset or font has been copied into these bodies.
 
-The original text is covered by the repository [MIT license](../LICENSE).
 External source selection is a discovery/comparison record, not permission to
 redistribute. The 2026-10-27 retrieval and body review is retained in
 `packaging/provenance/skills/`; its receipts and focused source analyses record

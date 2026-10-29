@@ -47,7 +47,7 @@ export async function videoJourney({session,call,save,cwd,release,root,fixture})
  await fs.writeFile(join(work,'decoded-evidence.json'),JSON.stringify({release,destination,probe,frames,audio,limits:['Pixel inspection, caption accuracy and playback require separate review.']},null,2));
  await save('actual pi video export decodes to 24 frames; independent PCM oracle verifies audio timing/gain; editable sources are preserved');
  const source=await fs.readFile(join(work,'index.html'),'utf8');assert.match(source,/<\/head>/i);
- const changed=source.replace('background:white','background:#dce9ff').replace('Mirket revised','Mirket updated');assert.notEqual(changed,source);
+ const changed=source.replace(/<\/h1>/i,' · updated</h1>');assert.notEqual(changed,source);
  const changedPath=join(work,'changed.html');await fs.writeFile(changedPath,changed);
  const staleAt=session.session.messages.length;
  await session.session.prompt(JSON.stringify({tool:'mcp__mirket__video_prepare',args:{...intent,source_path:changedPath,expected_revision:revisions['index.html'],destination_path:join(work,'stale.mp4')}}));

@@ -63,8 +63,8 @@ The [reference selection](references.md), [provenance ledger](../skills/PROVENAN
 and [focused adoption mapping](../packaging/provenance/skills/source-design-adoption.md)
 separate comparison/link-only sources from the eight reviewed method adaptations.
 Reference rights never grant rights to unrelated artwork, fonts or executable
-packages. Hallmark/Taste and HyperFrames remain selected; Remotion is historical
-comparison evidence only, excluded from adoption.
+packages. Hallmark/Taste and HyperFrames remain selected; Remotion is excluded
+from adoption.
 
 Run `python3 scripts/refresh-skill-catalog.py --write` after changing a body,
 resource or authoring basis, then run the same command without `--write` to verify

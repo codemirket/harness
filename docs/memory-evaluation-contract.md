@@ -1,11 +1,11 @@
 # Synthetic memory retrieval evaluation contract
 
-Status: root accepted the numeric qualification gates before any model scores
-on 2026-10-24. Corpus SHA-256 is frozen as
+The numeric qualification gates were fixed before model scores on 2026-10-24.
+Corpus SHA-256 is
 `cc56a0141c41fec880bd8b528d3cd81c496e193719d5ec1dc6687bd6751d3a4c`.
-Root independently reviewed 25 selected gold/context/confounder cases with no
-annotation defect found. The evaluator was frozen and the first authorized native
-model run failed three hybrid gate groups; measured evidence appears below. These
+An independent review found no annotation defect in 25 selected
+gold/context/confounder cases. The first native alternative-model run failed
+three hybrid gate groups; the selected MiniLM result appears below. These
 gates qualify this public synthetic corpus, not unseen generalization or
 abstention behavior. No answer generator or abstention classifier was evaluated.
 
@@ -101,7 +101,7 @@ Hybrid is the qualifying shipped mode. Lexical and semantic-only pipelines are
 measured diagnostic baselines, not separate required ranking passes. Every
 pipeline must pass canonical eligibility and critical-coverage checks.
 
-Root accepted the following numeric gates before the first model result. Freeze
+The following numeric gates were fixed before the first model result. Freeze
 the runner and pipeline parameters by digest before authorized execution. Do not weaken a threshold or rewrite gold to accommodate a failed
 model. A justified annotation repair requires a new corpus version, recorded
 reason and rerun of every compared pipeline.

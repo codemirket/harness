@@ -5,19 +5,15 @@
   "authoring_basis": [
     {
       "path": "docs/skills.md",
-      "sha256": "291abcc41891f9682798d11c5e1cd5a23f600910b66a183c890f07836adf2c41"
+      "sha256": "814f47d403a49444012b65e78423e861f61e8a1f1e68adac274a630cc80b1e9f"
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "53de73bff031f68b7a459b40e51447706547b01c5a1a3cfe29e0a889a7bd256c"
+      "sha256": "cf93927e2710bad2986124823ad3c0fba2114d0d7c334ed845f705e1cb6f16d6"
     },
     {
       "path": "docs/references.md",
-      "sha256": "dcf3c88118cfa635572842fcb73b5cb4265206073142718256e75fe5b04764cc"
-    },
-    {
-      "path": "LICENSE",
-      "sha256": "9cbab4d82092e2f762b8a1eea7e1c6b69cb966af4b64a534ea8d883d743ea66a"
+      "sha256": "bc11e1a78e89d8ebcdb583dfa32d28986efb4b46b1abec115898feccf92c060b"
     }
   ],
   "capability_vocabulary": [
@@ -59,7 +55,7 @@
           "agent-skills",
           "codex-practices"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -118,7 +114,7 @@
           "qmd-methods",
           "matt"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -179,7 +175,7 @@
           "google",
           "qmd-methods"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -241,7 +237,7 @@
           "codex-practices",
           "adhd"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -301,7 +297,7 @@
           "gstack",
           "archify"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -363,7 +359,7 @@
           "ponytail",
           "karpathy"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -423,7 +419,7 @@
           "matt",
           "gstack"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -484,7 +480,7 @@
           "sentry-methods",
           "trail-of-bits"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -545,7 +541,7 @@
           "trail-of-bits",
           "wcag"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -608,7 +604,7 @@
           "gstack",
           "ponytail"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -669,7 +665,7 @@
           "google",
           "ponytail"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -730,7 +726,7 @@
           "impeccable",
           "wcag"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -790,7 +786,7 @@
           "matt",
           "superpowers"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -850,7 +846,7 @@
           "ecc",
           "trail-of-bits"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -910,7 +906,7 @@
           "trail-of-bits",
           "sentry-methods"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -970,7 +966,7 @@
           "ecc",
           "codex-practices"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1030,7 +1026,7 @@
           "ecc",
           "archify"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1090,7 +1086,7 @@
           "gstack",
           "archify"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1150,7 +1146,7 @@
           "fluent",
           "apple-liquid-glass"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1209,7 +1205,7 @@
           "ecc",
           "sentry-methods"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1269,7 +1265,7 @@
         "reference_families": [
           "serena"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1327,7 +1323,7 @@
         "reference_families": [
           "serena"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1387,7 +1383,7 @@
           "crawl4ai",
           "stagehand"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1454,7 +1450,7 @@
           "cua",
           "ponytail"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1515,7 +1511,7 @@
           "stagehand",
           "wcag"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1584,7 +1580,7 @@
           "mengto-inspiration",
           "better-design"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1661,7 +1657,7 @@
           "guardian",
           "spectrum"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1730,7 +1726,7 @@
           "owl-concepts",
           "hallmark"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1804,7 +1800,7 @@
           "atlassian",
           "fluent"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1869,7 +1865,7 @@
           "vanilla-publishing",
           "reshaped"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1930,7 +1926,7 @@
           "spectrum",
           "fluent"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -1998,7 +1994,7 @@
           "impeccable",
           "owl-concepts"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2066,7 +2062,7 @@
           "spectrum",
           "mengto-inspiration"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2135,7 +2131,7 @@
           "hallmark",
           "better-design"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2202,7 +2198,7 @@
           "guardian",
           "spectrum"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2263,7 +2259,7 @@
           "spectrum",
           "diagram-design"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2324,7 +2320,7 @@
           "fluent",
           "wcag"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2393,7 +2389,7 @@
           "kingy-motion",
           "huashu-storyboard"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2475,7 +2471,7 @@
           "canvas-ui",
           "emil"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2538,7 +2534,7 @@
           "emil",
           "kingy-motion"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2602,7 +2598,7 @@
           "diagram-design",
           "motion-primitives"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2673,7 +2669,7 @@
           "kingy-motion",
           "hyperframes-authoring"
         ],
-        "reuse_terms": "repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
+        "reuse_terms": "Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2748,7 +2744,7 @@
           "wondel",
           "marketing"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2810,7 +2806,7 @@
           "owl-concepts",
           "hallmark"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2871,7 +2867,7 @@
           "govuk",
           "guardian"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2929,7 +2925,7 @@
         "reference_families": [
           "statistical-analysis"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -2988,7 +2984,7 @@
           "statistical-analysis",
           "trail-of-bits"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3046,7 +3042,7 @@
         "reference_families": [
           "statistical-analysis"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3106,7 +3102,7 @@
           "matt",
           "trail-of-bits"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3166,7 +3162,7 @@
           "marketing",
           "statistical-analysis"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3228,7 +3224,7 @@
           "langchain",
           "langgraph"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3290,7 +3286,7 @@
           "anthropic",
           "google"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3351,7 +3347,7 @@
           "langchain",
           "langgraph"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3411,7 +3407,7 @@
           "google",
           "wondel"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3472,7 +3468,7 @@
           "anthropic",
           "google"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3531,7 +3527,7 @@
           "openai",
           "google"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3591,7 +3587,7 @@
           "openai",
           "google"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3651,7 +3647,7 @@
           "ecc",
           "trail-of-bits"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3712,7 +3708,7 @@
           "ecc",
           "promptfoo"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3771,7 +3767,7 @@
           "openai",
           "google"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",
@@ -3832,7 +3828,7 @@
           "ecc",
           "matt"
         ],
-        "reuse_terms": "MIT; repository LICENSE applies to original skill prose; no upstream prose/code/assets adopted"
+        "reuse_terms": "Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
       },
       "evaluation": {
         "status": "planned-not-run",

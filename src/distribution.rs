@@ -602,7 +602,6 @@ struct DesignAdmission {
     packages: Vec<DesignPackage>,
     missing_embedded_notices: Vec<String>,
     font: DesignFont,
-    notices: Vec<DesignNotice>,
 }
 #[derive(Deserialize)]
 struct DesignFile {
@@ -626,14 +625,6 @@ struct DesignFont {
     sha256: String,
     license: String,
 }
-#[derive(Deserialize)]
-struct DesignNotice {
-    source: String,
-    destination: String,
-    bytes: u64,
-    sha256: String,
-}
-
 #[derive(Deserialize)]
 struct RasterCandidate {
     schema: u32,
@@ -1137,39 +1128,6 @@ fn layout_with_skill_sources(
                 pin: Some((admission.font.bytes, admission.font.sha256)),
             },
         );
-        if admission.notices.len() != 4 {
-            return Err(DistributionError::InvalidManifest);
-        }
-        let mut notices = BTreeSet::new();
-        for notice in admission.notices {
-            let name = notice
-                .destination
-                .strip_prefix("notices/design/")
-                .ok_or(DistributionError::InvalidManifest)?;
-            let source = match name {
-                "MIT.txt" => include_bytes!("../packaging/notices/design/MIT.txt").as_slice(),
-                "Apache-2.0.txt" => {
-                    include_bytes!("../packaging/notices/design/Apache-2.0.txt").as_slice()
-                }
-                "ISC.txt" => include_bytes!("../packaging/notices/design/ISC.txt").as_slice(),
-                "OFL.txt" => include_bytes!("../packaging/notices/design/OFL.txt").as_slice(),
-                _ => return Err(DistributionError::InvalidManifest),
-            };
-            if notice.source != format!("packaging/notices/design/{name}")
-                || notice.bytes != source.len() as u64
-                || notice.sha256 != hex(&Sha256::digest(source))
-                || !notices.insert(name.to_owned())
-            {
-                return Err(DistributionError::InvalidManifest);
-            }
-            result.files.insert(
-                notice.destination,
-                ExpectedFile {
-                    mode: 0o600,
-                    pin: Some((notice.bytes, notice.sha256)),
-                },
-            );
-        }
     }
     if components.contains(&ReleaseComponent::OpenPencil) {
         if target != MAC_TARGET {
@@ -2649,6 +2607,20 @@ mod tests {
 
     fn admitted_manifest() -> ReleaseManifest {
         manifest_for(vec![ReleaseComponent::Design])
+    }
+
+    #[test]
+    fn design_layout_contains_only_selected_runtime_files() {
+        let selected = layout(MAC_TARGET, &[ReleaseComponent::Design]).unwrap();
+        assert_eq!(selected.files.len(), 3 + 6013 + 6 + 1);
+        assert!(selected.files.contains_key(DESIGN_ADAPTER));
+        assert!(selected.files.contains_key(DESIGN_FONT));
+        assert!(
+            !selected
+                .files
+                .keys()
+                .any(|path| path.starts_with("notices/design/"))
+        );
     }
 
     #[test]

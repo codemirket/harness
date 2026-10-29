@@ -17,7 +17,7 @@
     "NotoSans.ttf": {
       "kind": "third-party font",
       "source": "Existing admitted Noto Sans asset from the harness design runtime qualification fixture",
-      "license": "SIL Open Font License 1.1; see OFL.txt",
+      "license": "SIL Open Font License 1.1",
       "note": "Unmodified font, no new dependency admission.",
       "sha256": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d"
     }

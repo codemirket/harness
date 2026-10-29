@@ -110,8 +110,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
             raise AssemblyError("release path has a symlink ancestor")
     adapter_names = ("design-main.js", "design-operations.js", "code-inspect-main.js", "code-source-inspect.js", "code-navigation.js", "code-navigation-main.js")
     destinations = [release / "adapters/node_modules", *(release / "adapters" / name for name in adapter_names), release / data["font"]["path"]]
-    destinations += [release / item["destination"] for item in data["notices"]]
-    if any(path.exists() or path.is_symlink() for path in destinations):
+    if any(path.exists() or path.is_symlink() for path in (*destinations, release / "notices/design")):
         raise AssemblyError("design destination already exists")
     font_entry = data["font"]
     if font.is_symlink() or not font.is_file() or digest(font) != (font_entry["bytes"], font_entry["sha256"]):
@@ -120,10 +119,6 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
         source = REPO / "pi/dist/runtime" / name
         if source.is_symlink() or not source.is_file() or source.stat().st_size > 1024 * 1024:
             raise AssemblyError("compiled design adapter is missing or oversize")
-    for notice in data["notices"]:
-        source = REPO / notice["source"]
-        if source.is_symlink() or not source.is_file() or digest(source) != (notice["bytes"], notice["sha256"]):
-            raise AssemblyError("design notice differs from admission")
     files = data["files"]
     if data["file_count"] != len(files) or len(files) > 7000:
         raise AssemblyError("invalid selected package file count")
@@ -151,10 +146,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
             raise AssemblyError("compiled design adapter is missing or oversize")
         copy_exact(source, release / "adapters" / name, digest(source))
     copy_exact(font, release / font_entry["path"], (font_entry["bytes"], font_entry["sha256"]))
-    for notice in data["notices"]:
-        source = REPO / notice["source"]
-        copy_exact(source, release / notice["destination"], (notice["bytes"], notice["sha256"]))
-    return {"component": "design", "files": len(files) + 1 + len(adapter_names) + len(data["notices"]), "package_bytes": total, "target": data["target"]}
+    return {"component": "design", "files": len(files) + 1 + len(adapter_names), "package_bytes": total, "target": data["target"]}
 
 
 def main() -> None:

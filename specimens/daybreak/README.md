@@ -89,7 +89,7 @@ acceptance or a general skill/model advantage.
 The two raster images were generated for this original concept using Codex
 imagegen with no Granger images as inputs. The people and events are fictional.
 `assets/PROVENANCE.json` records origins and hashes. Noto Sans is an unmodified,
-already admitted font; its SIL Open Font License is retained in `assets/OFL.txt`.
+already admitted font recorded there.
 No Granger branding, imagery, source code or soundtrack is redistributed.
 SVG is used for small editable symbols and the route drawing. No new runtime
 dependency or renderer was added.

@@ -1,25 +1,27 @@
 {
   "schema": 1,
-  "status": "sharp_absent_four_format_development_candidate_not_release_admitted",
+  "status": "fresh_current_local_video_candidate_not_release_admitted",
   "release_admitted": false,
   "target": "aarch64-apple-darwin",
   "hyperframes_version": "0.8.197",
   "package_lock_sha256": "8b0b9d37209f48645a590ccb988e24d0fd0d610f2983a2b67beb642d87f5b057",
-  "source_manifest_sha256": "589fba4abecfd7d80966e22330cb914ddf01c2abc6025c58ed3467f64de6c012",
+  "source_manifest_sha256": null,
+  "prior_source_manifest_sha256": "589fba4abecfd7d80966e22330cb914ddf01c2abc6025c58ed3467f64de6c012",
+  "source_manifest_status": "current recipient source manifest and rights packet unrun; local candidate only",
   "package_instances": 82,
   "runtime_inventory": {
     "regular_files": 5892,
-    "regular_bytes": 65459967,
+    "regular_bytes": 65473567,
     "files": [
       {
         "path": "runtime/video/dist/video-export.js",
-        "bytes": 30006,
-        "sha256": "efa4b6861878e3a7a1edac631f8769bb9810873c680820cfa3df8a1778190474"
+        "bytes": 43357,
+        "sha256": "223735d4cf2f44365464e6cb42e85f4567138f758d9173648bee1a927228ff95"
       },
       {
         "path": "runtime/video/dist/video-main.js",
-        "bytes": 6673,
-        "sha256": "8fad5adccd0d54b984a37e8c3e3b475bed995d40ecb1b718e0a6ab774887d6a0"
+        "bytes": 6791,
+        "sha256": "3fe3aa62d987aadacb0c5fafc9fc8366cbfcaf927593bde433fd90ef04fc3bbc"
       },
       {
         "path": "runtime/video/dist/video-policy.js",
@@ -29468,27 +29470,27 @@
       },
       {
         "path": "runtime/video/package.json",
-        "bytes": 512,
-        "sha256": "9664a944d4175927aff6a5a948b07fdfeeeb55d83902300e1eaf7ba623f5f2dc"
+        "bytes": 643,
+        "sha256": "b65b0d7b8c08c7fd4a044085ed25340e312845ae3b4ec4660de0b7d7f9d6300d"
       }
     ]
   },
   "media_files": [
     {
       "path": "runtime/video/bin/ffmpeg",
-      "bytes": 9630936,
-      "sha256": "9415ba4acee04dadb45b06878a528bb529819ce009b621e702a847fa78a4c7d8"
+      "bytes": 25195464,
+      "sha256": "bc48284aaf2b8ab0c9f10ff7f69615c466b7dd2936e759d3b80bfffbdc7793fb"
     },
     {
       "path": "runtime/video/bin/ffprobe",
-      "bytes": 9437880,
-      "sha256": "6554f4a4223e41acdcd83ba92c2139d678068e2e953d9220cd9631a7c034b392"
+      "bytes": 24986456,
+      "sha256": "5415fb2de73341a37a46e236e5c992e5914d2d73328c992352014df8c55037c8"
     }
   ],
   "shared_node_selection": "packaging/admission/m0-node.selection.json",
   "shared_chromium": "requires separately admitted and verified shared BrowserPayload; no Chromium selected by this proposal",
   "remaining_gates": [
-    "Setup-acquired private Chrome for Testing shared BrowserPayload and exact installed Video inventory",
+    "Fresh installed private Chrome for Testing, exact Video inventory and consumer outcomes",
     "Offline installed MP4, WebM, GIF and PNG-sequence exports with total Sharp denial, local assets, supplied audio and captions",
     "Cancellation, source preservation, owned cleanup and meaningful saved-output checks",
     "Complete combined npm/native source, notices, redistribution and recipient delivery",

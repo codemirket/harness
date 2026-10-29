@@ -13,6 +13,6 @@
 | Video production | [Video route](video-export-route.md) |
 | Accepted visual reference | [Daybreak](../specimens/daybreak/README.md) |
 
-Implementation history and completed experiment logs belong in Git or private
-qualification evidence, not current product instructions. Admission identities,
-license receipts and accepted reference artifacts remain active verification inputs.
+Private experiment receipts supplement the [current qualification](qualification.md).
+Admission identities and [source provenance](references.md) remain active
+verification inputs.

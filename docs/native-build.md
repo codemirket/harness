@@ -122,4 +122,5 @@ The host peer tree must be the exact offline-development batch in
 `assemble-pi-package.py` copies a selected verified native payload and compiled
 extension into a local package; it neither downloads nor installs dependencies.
 Native payload paths called `adapters/` are manifest storage, not a second source
-or build package. Pi release qualification remains incomplete.
+or build package. The [qualification record](qualification.md) states the exact
+local candidate results and remaining release limits.

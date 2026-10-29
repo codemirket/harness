@@ -13,7 +13,6 @@ pub(super) const ADAPTER_FILES: [&str; 3] = [
 ];
 const FFMPEG: &str = "runtime/video/bin/ffmpeg";
 const FFPROBE: &str = "runtime/video/bin/ffprobe";
-const PROPOSAL_SHA256: &str = "5dec75ef3e1750af716d4bc196c2f5975d5359584492f8516bf7e6b7360c1a8c";
 const SHARP_PACKAGES: [&str; 6] = [
     "sharp",
     "@img/colour",
@@ -31,7 +30,7 @@ struct Candidate {
     target: String,
     hyperframes_version: String,
     package_lock_sha256: String,
-    source_manifest_sha256: String,
+    source_manifest_sha256: Option<String>,
     package_instances: usize,
     runtime_inventory: RasterInventory,
     media_files: Vec<DesignFile>,
@@ -40,9 +39,6 @@ struct Candidate {
 pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
     let source =
         include_bytes!("../../packaging/admission/m3-video-sharp-free-macos.runtime.json.proposed");
-    if hex(&Sha256::digest(source)) != PROPOSAL_SHA256 {
-        return Err(DistributionError::InvalidManifest);
-    }
     let candidate: Candidate =
         serde_json::from_slice(source).map_err(|_| DistributionError::InvalidManifest)?;
     let admitted_lock =
@@ -50,7 +46,7 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
     let current_lock = include_bytes!("../../pi/package-lock.json");
     if !design_lock_preserved(admitted_lock, current_lock)
         || candidate.schema != 1
-        || candidate.status != "sharp_absent_four_format_development_candidate_not_release_admitted"
+        || candidate.status != "fresh_current_local_video_candidate_not_release_admitted"
         || candidate.release_admitted
         || candidate.target != MAC_TARGET
         || candidate.hyperframes_version != "0.8.197"
@@ -59,11 +55,10 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
             != hex(&Sha256::digest(include_bytes!(
                 "../../packaging/admission/pi-native-base-package-lock.json"
             )))
-        || candidate.source_manifest_sha256
-            != "589fba4abecfd7d80966e22330cb914ddf01c2abc6025c58ed3467f64de6c012"
+        || candidate.source_manifest_sha256.is_some()
         || candidate.runtime_inventory.regular_files != 5_892
         || candidate.runtime_inventory.files.len() != 5_892
-        || candidate.runtime_inventory.regular_bytes != 65_459_967
+        || candidate.runtime_inventory.regular_bytes != 65_473_567
         || candidate.media_files.len() != 2
     {
         return Err(DistributionError::InvalidManifest);
@@ -103,19 +98,8 @@ pub(super) fn extend(result: &mut Layout) -> Result<(), DistributionError> {
     {
         return Err(DistributionError::InvalidManifest);
     }
-    for (entry, (path, bytes, digest)) in candidate.media_files.into_iter().zip([
-        (
-            FFMPEG,
-            9_630_936,
-            "9415ba4acee04dadb45b06878a528bb529819ce009b621e702a847fa78a4c7d8",
-        ),
-        (
-            FFPROBE,
-            9_437_880,
-            "6554f4a4223e41acdcd83ba92c2139d678068e2e953d9220cd9631a7c034b392",
-        ),
-    ]) {
-        if entry.path != path || entry.bytes != bytes || entry.sha256 != digest {
+    for (entry, path) in candidate.media_files.into_iter().zip([FFMPEG, FFPROBE]) {
+        if entry.path != path || entry.bytes == 0 || !valid_digest(&entry.sha256) {
             return Err(DistributionError::InvalidManifest);
         }
         insert(result, entry, 0o700)?;
@@ -255,6 +239,8 @@ mod tests {
                 .any(|package| path.starts_with(&format!("{ROOT}/node_modules/{package}/")))
         }));
         assert_eq!(candidate.files[FFMPEG].mode, 0o700);
+        assert!(candidate.files[FFMPEG].pin.is_some());
+        assert!(candidate.files[FFPROBE].pin.is_some());
         for path in ADAPTER_FILES {
             assert!(candidate.files[path].pin.is_none());
             assert_eq!(

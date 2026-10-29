@@ -28,11 +28,10 @@ private disposable HOME, agent/session directories and project ancestry for test
 | Native skills | Evidence-led selected pi package resources; descriptive IDs without a `mirket-` prefix. Existing inventory is an audit input, not a retention target. | Correct scope, required/conditional pairing, hash-bound bodies/resources, native pi resource filtering, collision diagnosis and truthful prerequisites. All 305 catalog cases remain planned development cases until actually executed. |
 | Coordination | Optional bounded pi CLI children; useful independent work, disjoint ownership and lead integration. Explicit user model/reasoning choices prevail. | Capable creative lead/comparable reviewer, actual artifact integration, denial/interruption handling and one shared review/repair budget. Observed compliance is not hard enforcement. |
 
-Memory history and backup recovery are product behavior, not removable legacy
-compatibility. Known forgetting exclusions take precedence over restored older
+Known forgetting exclusions take precedence over restored older
 managed data. External copies and forensic erasure remain outside that guarantee.
-The 60-second semantic idle policy does not itself prove low resource use or
-observed retirement; retain the measured limits in the release record.
+The 60-second semantic idle policy does not establish low resource use or
+observed retirement; see the [measured limits](qualification.md).
 
 ## Runtime and installation topology
 
@@ -71,11 +70,10 @@ performance benefit justifies its context and maintenance cost. Remove redundant
 or non-contributing guidance; a tied small trial does not prove universal
 uselessness. The host owns workflows that do not need a selected Mirket skill.
 
-Hallmark/Taste remain selected design references. Reference methods, source code,
-fonts, artwork and runtime admission have separate rights. Preserve the accepted
-Daybreak direction; changes to an export cannot inherit its human acceptance.
-Remotion is excluded from adoption. Do not restart closed model comparisons or
-creative experiments without a new task or demonstrated production blocker.
+Hallmark/Taste are selected design references. Reference methods, source code,
+fonts, artwork and runtime admission have separate provenance. The accepted
+[Daybreak reference](../specimens/daybreak/README.md) does not confer acceptance
+on changed exports. HyperFrames is the video engine; Remotion is reference only.
 
 For a new visual task, freeze the brief, real content, scoped outputs, rubric and
 shared review/repair budget. Inspect static art before changing motion. Produce

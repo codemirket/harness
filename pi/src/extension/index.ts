@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { prepareProfile, applyProfile } from './profiles.js';
 import { verifyHost } from './host.js';
 import { readBinding, configuredOverride, verifyRuntime, type VerifiedRuntime } from './runtime.js';
-import { needsAuthorization, authorized, grant } from './authorization.js';
+import { classifyMirketTool, needsAuthorization, authorized, grant } from './authorization.js';
 import { registerResearch } from './research.js';
 import { registerWorkflow } from './workflow.js';
 
@@ -72,6 +72,7 @@ export default function mirket(pi: ExtensionAPI): void {
   pi.on('tool_call', async (event, ctx) => {
     if (!event.toolName.startsWith('mcp__mirket__')) return;
     try {
+      classifyMirketTool(event.toolName);
       if (!runtime || realpathSync(ctx.cwd) !== runtime.cwd) throw new Error('No runtime bound to this project');
       const override = configuredOverride(getAgentDir(), runtime.cwd);
       if (override) throw new Error(`Same-name MCP configuration: ${override}`);

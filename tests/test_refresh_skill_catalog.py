@@ -80,6 +80,9 @@ Source rights remain available.
             self.assertEqual(len(source["source_evidence"]["selected_sources"]), 2)
 
         catalog = json.loads((ROOT / "skills/catalog.json").read_text())
+        self.assertNotIn("LICENSE", {pin["path"] for pin in catalog["authoring_basis"]})
+        self.assertTrue(all("repository LICENSE" not in entry["provenance"]["reuse_terms"]
+                            for entry in [*catalog["global"], *catalog["project"]]))
         methods = {x["id"]: x for x in [*catalog["global"], *catalog["project"]] if x["id"] in MODULE.METHOD_ADOPTIONS}
         self.assertEqual(set(methods), set(MODULE.METHOD_ADOPTIONS))
         self.assertTrue(all(x["provenance"]["classification"] == "method-adapted" for x in methods.values()))
@@ -150,7 +153,7 @@ Source rights remain available.
             root = Path(name)
             shutil.copytree(ROOT / "skills", root / "skills")
             (root / "planning").mkdir()
-            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
+            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "packaging/provenance/skills/reference-fetches.json"):
                 destination = root / pin
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / pin, destination)
@@ -167,6 +170,13 @@ Source rights remain available.
                 # File creation order must not change generated evidence order.
                 for name in ("source-z.md", "source-a.md"):
                     (MODULE.REVIEW_DIR / name).write_text("Fixture review: `skyvern`\n")
+                self.assertFalse((root / "LICENSE").exists())
+                old_catalog = json.loads(MODULE.CATALOG.read_text())
+                old_catalog["authoring_basis"].append({"path": "LICENSE", "sha256": "0" * 64})
+                MODULE.CATALOG.write_text(json.dumps(old_catalog))
+                self.assertIn("basis:LICENSE", MODULE.refresh(False)["changed"])
+                MODULE.refresh(True)
+                self.assertNotIn("LICENSE", {pin["path"] for pin in json.loads(MODULE.CATALOG.read_text())["authoring_basis"]})
                 body = root / "skills/runtime-operations/SKILL.md"
                 body.write_bytes(body.read_bytes() + b"\nControlled test drift.\n")
                 self.assertIn("runtime-operations", MODULE.refresh(False)["changed"])
@@ -214,7 +224,7 @@ Source rights remain available.
             root = Path(name)
             shutil.copytree(ROOT / "skills", root / "skills")
             (root / "planning").mkdir()
-            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
+            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "packaging/provenance/skills/reference-fetches.json"):
                 destination = root / pin
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / pin, destination)
@@ -245,7 +255,7 @@ Source rights remain available.
                 root = Path(name)
                 shutil.copytree(ROOT / "skills", root / "skills")
                 (root / "planning").mkdir()
-                for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
+                for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "packaging/provenance/skills/reference-fetches.json"):
                     destination = root / pin
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(ROOT / pin, destination)

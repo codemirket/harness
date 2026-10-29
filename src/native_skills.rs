@@ -416,10 +416,7 @@ fn validate_provenance(
             "skill provenance.reference_families is unmapped or duplicated: {id}"
         ));
     }
-    let reuse_terms = required_text(object, "reuse_terms", &format!("skill provenance: {id}"))?;
-    if !reuse_terms.contains("repository LICENSE") {
-        return Err(format!("skill provenance.reuse_terms is incomplete: {id}"));
-    }
+    required_text(object, "reuse_terms", &format!("skill provenance: {id}"))?;
     Ok(())
 }
 
@@ -741,7 +738,7 @@ mod tests {
                 "status": "authored; sampled evaluation in progress",
                 "authoring_basis": [{"path":"docs/skills.md","sha256":"0".repeat(64)}],
                 "capability_vocabulary": [],
-                "global": [{"id":id,"description":"Plan work","path":"skills/task-planning/SKILL.md","required_capabilities":[],"conditional_capabilities":[],"source_sha256":sha256(body.as_bytes()),"source_bytes":body.len(),"provenance":{"classification":"independently-authored","record":format!("skills/PROVENANCE.md#{id}"),"local_basis":["fixture basis"],"reference_families":["fixture-reference-0"],"reuse_terms":"repository LICENSE applies to fixture prose"},"evaluation":{"status":"planned-not-run","cases":cases}}],
+                "global": [{"id":id,"description":"Plan work","path":"skills/task-planning/SKILL.md","required_capabilities":[],"conditional_capabilities":[],"source_sha256":sha256(body.as_bytes()),"source_bytes":body.len(),"provenance":{"classification":"independently-authored","record":format!("skills/PROVENANCE.md#{id}"),"local_basis":["fixture basis"],"reference_families":["fixture-reference-0"],"reuse_terms":"Independently authored fixture prose; source reference retained"},"evaluation":{"status":"planned-not-run","cases":cases}}],
                 "project": [],
                 "profiles": {},
                 "reference_sources": references,
@@ -770,7 +767,7 @@ mod tests {
     }
 
     #[test]
-    fn rejects_unmapped_reference_families_and_incomplete_reuse_terms() {
+    fn rejects_unmapped_reference_families_and_empty_reuse_terms() {
         let fixture = Fixture::new();
         fixture.write("task-planning", "task-planning");
         let path = fixture.0.join("skills/catalog.json");
@@ -784,8 +781,7 @@ mod tests {
         fixture.write("task-planning", "task-planning");
         let mut catalog: serde_json::Value =
             serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
-        catalog["global"][0]["provenance"]["reuse_terms"] =
-            serde_json::Value::String("missing rights record".into());
+        catalog["global"][0]["provenance"]["reuse_terms"] = serde_json::Value::String("   ".into());
         fs::write(&path, serde_json::to_vec(&catalog).unwrap()).unwrap();
         assert!(QualifiedCatalog::open(&fixture.0).is_err());
     }

@@ -302,9 +302,19 @@ def refresh(write):
                 basis.append(MOTION_AUTHORING_BASIS); changed.append("motion-basis:"+skill["id"])
             if skill["id"] in AUTHORING_DIAGNOSTICS_SKILLS and AUTHORING_DIAGNOSTICS_BASIS not in basis:
                 basis.append(AUTHORING_DIAGNOSTICS_BASIS); changed.append("diagnostics-basis:"+skill["id"])
-            terms="repository LICENSE applies to independently worded local method; exact upstream terms/notices are retained per family in reference-audit receipts; no upstream prose/code/assets copied"
-            if provenance.get("reuse_terms")!=terms:
-                provenance["reuse_terms"]=terms; changed.append("terms:"+skill["id"])
+    for skill in catalog["global"]+catalog["project"]:
+        provenance=skill["provenance"]
+        if adoption_record(skill):
+            terms="Independently worded local method; upstream source receipts and focused method mapping are retained; no upstream prose/code/assets copied"
+        else:
+            terms="Independently authored local skill prose; reference families are retained as source locators; no upstream prose/code/assets adopted"
+        if provenance.get("reuse_terms")!=terms:
+            provenance["reuse_terms"]=terms; changed.append("terms:"+skill["id"])
+    # The removed repository license is not a skill authoring input. Retain
+    # the remaining hash-bound design and reference documents.
+    basis=catalog["authoring_basis"]
+    catalog["authoring_basis"]=[pin for pin in basis if pin["path"]!="LICENSE"]
+    if len(catalog["authoring_basis"])!=len(basis): changed.append("basis:LICENSE")
     for pin in catalog["authoring_basis"]:
         h=hashlib.sha256((ROOT/pin["path"]).read_bytes()).hexdigest()
         if pin["sha256"]!=h: changed.append("basis:"+pin["path"]); pin["sha256"]=h

@@ -174,7 +174,7 @@ def package_instances(inventory: dict, lock: dict, strict_current: bool) -> tupl
         inventory.get("schema") != 1
         or inventory.get("target") != TARGET
         or inventory.get("release_admitted") is not False
-        or inventory.get("status") != "sharp_absent_four_format_development_candidate_not_release_admitted"
+        or inventory.get("status") != "fresh_current_local_video_candidate_not_release_admitted"
     ):
         raise AssemblyError("Video inventory is not the current unadmitted Sharp-free candidate")
     runtime = inventory.get("runtime_inventory")
@@ -226,7 +226,7 @@ def package_instances(inventory: dict, lock: dict, strict_current: bool) -> tupl
     if strict_current and (
         inventory.get("package_instances") != 82
         or runtime.get("regular_files") != 5892
-        or runtime.get("regular_bytes") != 65459967
+        or runtime.get("regular_bytes") != 65473567
         or len(unique) != 80
     ):
         raise AssemblyError("not the current 82-instance Sharp-free inventory")

@@ -74,7 +74,7 @@ class VideoRecipientAssemblyTests(unittest.TestCase):
             json.dumps(
                 {
                     "schema": 1,
-                    "status": "sharp_absent_four_format_development_candidate_not_release_admitted",
+                    "status": "fresh_current_local_video_candidate_not_release_admitted",
                     "release_admitted": False,
                     "target": "aarch64-apple-darwin",
                     "package_lock_sha256": hashlib.sha256(self.lock.read_bytes()).hexdigest(),

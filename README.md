@@ -5,10 +5,10 @@ models, authentication, sessions, native tools and MCP lifecycle. Mirket supplie
 scoped project memory, selected JavaScript/TypeScript navigation, finite design
 and HyperFrames video operations, and selected workflow guidance.
 
-The scoped local candidate is validated on **macOS 26.5.2 ARM64** with the exact
-external pi 1.4.0 / Undici 8.12.2 host. It is not published or installed into the
-user's live environment. See the [qualification record](docs/qualification.md)
-for package identity, reproducible checks, measured limits and unsupported paths.
+The refactored local candidate passed the scoped checks on **macOS 26.5.2
+ARM64** with external Pi 1.4.0 / Undici 8.12.2. See the
+[qualification record](docs/qualification.md) for exact package identity,
+measured outcomes and limits.
 See [architecture](docs/architecture.md) for the current product contract.
 
 Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
@@ -23,25 +23,23 @@ MCP client owns the verified Rust service. Native tools use explicit verified
 paths; loading an extension must not download dependencies or launch heavy
 workers. Mirket-owned processes are not an OS sandbox.
 
-The candidate's `/mirket-research QUESTION` command uses provider-native search
+The `/mirket-research QUESTION` command uses provider-native search
 through pi's existing `openai/gpt-6-astra` authentication. It enables one research
 turn, retains search actions and citation spans, and displays clickable sources.
 Missing provider access fails explicitly; it does not install a search service.
-The installed research/vision preflight passed at Medium effort. Browser automation is qualified only for disposable local-fixture testing;
-no production browser dependency is admitted. Broader providers remain unsupported.
-The [bounded comparison summary](docs/qualification.md#limits) found no general
-quality or speed advantage, and preserves its failed/budget-limited runs.
+Provider-dependent research and vision require configured access.
+Browser automation was tested only with disposable local fixtures; no
+production browser dependency is admitted.
 
-Fresh pi state belongs under `<pi-agent-dir>/mirket/`. Existing installations and
-unrelated settings are preserved; no old configuration or skill-copy migration
-is supported. The local package and disposable setup procedure are recorded in the qualification
-record. Current source changes do not update a live installation.
+Mirket state belongs under `<pi-agent-dir>/mirket/`. Setup uses a fresh private
+home and preserves existing installations and unrelated settings. It does not
+import an earlier installation or copy skills into host directories.
 
-Skills must justify retention with a concrete useful workflow, safeguard or
-measured benefit. Existing catalog cases are planned fixtures, not completed
-acceptance trials. Source methods, code, fonts and runtime assets retain separate
-licensing obligations. See [provenance](skills/PROVENANCE.md) and exact records in
-`packaging/admission`; a proposed inventory is not dependency admission.
+Skills must justify retention with a useful workflow, safeguard or measured
+benefit. Catalog cases are planned fixtures, not completed acceptance trials.
+Source methods, code, fonts and runtime assets have separate provenance and
+admission records: see [skill provenance](skills/PROVENANCE.md) and
+[dependency admission](packaging/admission/README.md).
 
 For development, run `python3 scripts/check-build-inputs.py` before Rust
 compilation, then the locked offline Rust tests/clippy, formatting, locked

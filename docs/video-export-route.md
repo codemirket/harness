@@ -4,8 +4,8 @@ The pi candidate retains **HyperFrames 0.8.197**, exact private render-only
 Chrome and verified FFmpeg/ffprobe on **macOS 26.5.2 ARM64**. The
 [qualification record](qualification.md) identifies the fresh installed
 export, changed-source, decoded audio, cancellation and saved-pixel evidence.
-Pi owns source authoring, models and host interaction. The scoped local candidate is validated; publication remains separate. No Remotion, personal-browser fallback
-or first-use download is selected.
+Pi owns source authoring, models and host interaction. No Remotion,
+personal-browser fallback or first-use download is selected.
 
 ## Author and prepare
 
@@ -82,10 +82,11 @@ The [Rust video contract](../src/video.rs), [session owner](../src/video_session
 [Installed video tests](../tests/video-mcp-smoke.mjs) exercise actual exports,
 reediting, cancellation and refusal; the release record states which ran.
 
-Exact payload inventories and historical admission decisions remain under
+Exact payload inventories and admission decisions remain under
 `packaging/admission` because the runtime/assembler consumes their hashes. A
 `.proposed` inventory does not itself grant admission. Current pi qualification
 uses a complete disposable offline payload; it does not authorize redistribution
 or changes to the user's installation. First use never substitutes a PATH
-executable or acquires another runtime. See the migration plan for remaining
-host admission, rights and release gates.
+executable or acquires another runtime. See [qualification](qualification.md)
+for current evidence and limits, and [admission records](../packaging/admission/README.md)
+for exact payload decisions.

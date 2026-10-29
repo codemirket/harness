@@ -6,16 +6,19 @@ import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { isAbsolute, join } from "node:path";
 
-const usage = "Usage: node tests/mcp-smoke.mjs --mirket /absolute/mirket --node /absolute/node";
+const usage = "Usage: node tests/mcp-smoke.mjs --mirket /absolute/mirket --node /absolute/node [--catalog-out /absolute/new.json]";
 const flags = new Map();
 for (let i = 2; i < process.argv.length; i += 2) {
   const flag = process.argv[i], value = process.argv[i + 1];
-  assert.ok(["--mirket", "--node"].includes(flag) && value && !flags.has(flag), usage);
+  assert.ok(["--mirket", "--node", "--catalog-out"].includes(flag) && value && !flags.has(flag), usage);
   assert.ok(isAbsolute(value), usage);
   flags.set(flag, value);
 }
-assert.equal(flags.size, 2, usage);
-for (const path of flags.values()) assert.ok((await stat(path)).isFile(), `Expected an existing file: ${path}`);
+assert.ok(flags.has("--mirket") && flags.has("--node"), usage);
+for (const flag of ["--mirket", "--node"]) {
+  const path = flags.get(flag);
+  assert.ok((await stat(path)).isFile(), `Expected an existing file: ${path}`);
+}
 
 const MAX_FRAME = 1024 * 1024;
 const MAX_STREAM = 4 * 1024 * 1024;
@@ -28,6 +31,28 @@ const REQUIRED_TOOLS = ["runtime_status", "code_inspect", "code_navigate",
   "memory_search", "memory_read", "memory_history", "memory_list",
   "memory_forget_prepare", "memory_forget_commit", "memory_forget_reconcile",
   "memory_index_refresh"];
+// Current explicit tool-effect table. N deliberately omits destructiveHint.
+const ANNOTATION_GROUPS = {
+  RO: ["runtime_status", "code_inspect", "code_navigate", "video_status", "video_result",
+    "job_status", "memory_status", "memory_search", "memory_list", "memory_read", "memory_history"],
+  W: ["diagram_render_prepare", "diagram_render_start", "design_prepare", "design_start",
+    "video_prepare", "video_start", "video_cancel", "memory_prepare", "memory_commit",
+    "memory_index_refresh", "memory_forget_prepare"],
+  D: ["memory_forget_commit", "memory_forget_reconcile"],
+  N: ["job_cancel"],
+};
+const ANNOTATIONS = {
+  RO: { readOnlyHint: true },
+  W: { readOnlyHint: false, destructiveHint: false },
+  D: { readOnlyHint: false, destructiveHint: true },
+  N: { readOnlyHint: false },
+};
+const annotationRows = Object.entries(ANNOTATION_GROUPS).flatMap(([code, names]) =>
+  names.map((name) => [name, ANNOTATIONS[code]]));
+const expectedAnnotations = new Map(annotationRows);
+assert.equal(expectedAnnotations.size, annotationRows.length, "Duplicate frozen annotation route");
+assert.deepEqual([...expectedAnnotations.keys()].sort(), [...REQUIRED_TOOLS].sort(),
+  "Frozen annotation routes differ from frozen MCP names");
 
 class Client {
   constructor(stateDir, releaseId, extraArgs = []) {
@@ -71,6 +96,9 @@ class Client {
           if (this.ignored.delete(message.id)) continue; // Deliberately lost response.
           const waiter = this.pending.get(message.id);
           if (!waiter) throw new Error(`Unexpected server response ID: ${message.id}`);
+          if (waiter.method === "tools/list" && flags.has("--catalog-out")) {
+            this.catalogFrame = Buffer.from(frame);
+          }
           this.pending.delete(message.id);
           clearTimeout(waiter.timer);
           if (message.error) waiter.reject(new Error(JSON.stringify(message.error)));
@@ -104,7 +132,7 @@ class Client {
         reject(error);
         this.fail(error);
       }, RPC_TIMEOUT_MS);
-      this.pending.set(id, { resolve, reject, timer });
+      this.pending.set(id, { resolve, reject, timer, method });
       try { this.send({ id, method, params }); }
       catch (error) { clearTimeout(timer); this.pending.delete(id); reject(error); }
     });
@@ -192,8 +220,29 @@ const diagram = (release) => ({ ...scope(release), source_path: source,
 try {
   const client = await connect(RELEASE_A);
   const inventory = await client.rpc("tools/list", {});
-  assert.deepEqual(inventory.tools.map((tool) => tool.name).sort(), [...REQUIRED_TOOLS].sort(),
+  if (flags.has("--catalog-out")) {
+    // Preserve the raw public catalog response, never the disposable state or project.
+    assert.ok(client.catalogFrame, "Missing raw tools/list response frame");
+    await writeFile(flags.get("--catalog-out"), Buffer.concat([client.catalogFrame, Buffer.from("\n")]),
+      { flag: "wx", mode: 0o600 });
+  }
+  const actualTools = inventory.tools.map((tool) => tool.name);
+  assert.equal(new Set(actualTools).size, actualTools.length, "Duplicate Rust MCP tool name");
+  assert.equal(new Set(REQUIRED_TOOLS).size, REQUIRED_TOOLS.length, "Duplicate frozen MCP tool name");
+  assert.deepEqual([...actualTools].sort(), [...REQUIRED_TOOLS].sort(),
     "Unexpected public capability surface");
+  for (const tool of inventory.tools) {
+    assert.deepEqual(tool.annotations, expectedAnnotations.get(tool.name),
+      `${tool.name}: emitted annotations differ from declared effects`);
+  }
+  // Exercise the compiled extension registry against the emitted Rust tools/list,
+  // rather than counting TypeScript source entries or trusting the frozen list alone.
+  const { MIRKET_TOOL_CLASSES } = await import(new URL("../pi/dist/extension/authorization.js", import.meta.url));
+  assert.ok(MIRKET_TOOL_CLASSES && typeof MIRKET_TOOL_CLASSES === "object" &&
+    !Array.isArray(MIRKET_TOOL_CLASSES), "Compiled Mirket classification registry is missing");
+  const classifiedTools = Object.keys(MIRKET_TOOL_CLASSES);
+  assert.deepEqual(classifiedTools.sort(), actualTools.map((name) => `mcp__mirket__${name}`).sort(),
+    "Compiled Mirket classification registry differs from actual Rust MCP tools/list");
   for (const removed of ["file_read", "file_read_ranges", "artifact_read", "text_replace_prepare",
     "text_replace_start", "job_result", "sql_navigate"]) {
     assert.ok(!inventory.tools.some((tool) => tool.name === removed), `${removed} remains public`);

@@ -1,18 +1,24 @@
 # Selected skill references
 
-Status: **approved reference selection**, including the focused review additions. The [implementation contract](architecture.md) governs the implemented product; reference selection does not grant runtime or dependency admission.
+This is the selected reference set for skill authoring. The
+[implementation contract](architecture.md) governs the product; selecting a
+reference does not admit a runtime or dependency.
 
-**60 unique selected entries across 61 group memberships:** 52 original sources plus six focused method references in H and two focused design/video method families in I. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active catalog.
+There are **60 unique entries across 61 group memberships**. Ponytail appears
+in A and B for two uses. The [catalog](../skills/catalog.json) identifies
+active skills; this list supplies their source locators and reuse boundaries.
 
-Selecting a source permits reference review and focused synthesis. It does not adopt its full workflow, code, runtime, dependencies, service or licensing terms. Existing source pins below are inherited evidence locators, not newly validated dependency versions. No upstream content has been copied into this repository.
+Selection permits reference review and focused synthesis, not wholesale
+adoption of a workflow, code, runtime, service or terms. Source pins are
+evidence locators, not dependency versions.
 
 ## Name interpretation
 
 - `pomptfoo` → `promptfoo`.
 - `wondel`, `anime` and `motion` refer to wondelai/skills, juliangarnier/anime and motiondivision/motion.
-- `karpathy` means Multica’s andrej-karpathy-skills repository, not an assertion of Karpathy authorship. The user’s selection supersedes its previous exclusion.
-- `fluent` is interpreted as Fluent 2 (the previous fluent-spatial example); the separate Fluent Emoji example is excluded. This interpretation can be corrected without changing the other selections.
-- Atlassian, GOV.UK, Guardian and Spectrum map to their corresponding previous example families.
+- `karpathy` means Multica’s andrej-karpathy-skills repository; it does not
+  assert Karpathy authorship.
+- `fluent` means Fluent 2; Fluent Emoji is outside this selection.
 - `reshaped` is newly added from its official documentation. It is link-only; no implementation revision or asset/package license has been admitted.
 
 ## A — Engineering, agent workflows and host integration
@@ -103,9 +109,10 @@ Selecting a source permits reference review and focused synthesis. It does not a
 | `guardian` | [Guardian Source: Typography stories in csnx](https://raw.githubusercontent.com/guardian/csnx/main/libs/@guardian/source/src/foundations/typography/stories/typography.mdx); [The Guardian: International front](https://www.theguardian.com/international); [Guardian fonts: Usage restrictions](https://github.com/guardian/fonts) | Keep |
 | `spectrum` | [Spectrum Bi-directionality](https://spectrum.adobe.com/page/bi-directionality/); [W3C Inline markup and bidirectional text in HTML](https://www.w3.org/International/articles/inline-bidi-markup/) | Keep |
 
-## H — Focused methods added by the independent-review fixes
+## H — Focused methods
 
-The user's instruction to apply the reviewers’ recommendations authorizes these six focused reference additions. They supplement the focused guide set; no upstream runtime, whole workflow, asset bundle or helper is adopted. Conditional Vercel/Pi/Hermes/agent-browser suggestions remain comparison evidence in the review, not additional selected catalog entries.
+These six entries provide focused methods. They do not add upstream runtimes,
+whole workflows, asset bundles or helpers.
 
 | ID | Selected evidence locator | Use and rights boundary |
 | --- | --- | --- |
@@ -116,7 +123,7 @@ The user's instruction to apply the reviewers’ recommendations authorizes thes
 | `statistical-analysis` | [K-Dense method](https://github.com/K-Dense-AI/scientific-agent-skills/blob/593377bb048752abb0152deab9fbb1083a6087df/skills/statistical-analysis/SKILL.md) | MIT-declared selected method only: design, dependence, missingness, uncertainty and multiplicity. Independently validate examples; no scientific runtime suite or entire catalog. |
 | `wcag` | [WCAG 2.2 quick reference](https://www.w3.org/WAI/WCAG22/quickref/) | Primary criterion-linked accessibility reference, including keyboard/focus/labels/reflow. Link to applicable criteria; follow W3C terms if reproducing text. Automated results alone cannot establish conformance. |
 
-## I — Focused design and video methods added by the 2026-10-27 adoption review
+## I — Focused design and video methods
 
 These two families are method references for the existing bounded design/video
 routes. They do not add a renderer, browser, agent runner, installer or global
@@ -126,7 +133,7 @@ review and the retained fetch receipts.
 | ID | Selected evidence locator | Use and rights boundary |
 | --- | --- | --- |
 | `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
-| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/qualification.md#package-and-source-delivery) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
+| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [admission records](../packaging/admission/README.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
 
 ## Source-to-guide reuse contract
 
@@ -134,25 +141,24 @@ For every adapted section, record exact source revision/file/section, retained t
 
 Anthropic's [DOCX license at the retained pin](https://github.com/anthropics/skills/blob/683bc88e56f3e09ba94f7055977f3d3aa499f202/skills/docx/LICENSE.txt) restricts derivatives/distribution. Keep it link-only absent separate permission and independently author Office guidance from reusable tool/format documentation. Treat visual brands/fonts/assets separately from guideline prose. Do not copy first-use launchers, broad mandatory activation, repeat-every-check rituals, remote-only project identity, telemetry or competing session/agent machinery from source workflows.
 
-The [capability review](https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/reviews/2026-10-24/capability.md) records exact sampled source coverage and limits. Current observation pins in that report do not automatically replace the original A–G pins. Newly adapted portions must identify their actual reviewed revision; never silently substitute upstream HEAD.
+Adapted portions must identify their reviewed revision; do not substitute upstream HEAD for the pins above.
 
-## Consequences for planning
+## Using the selection
 
-- A supplies focused engineering and host-integration methods. We will author one coherent default workflow rather than install every retained framework together.
-- B supplies runtime design references and candidate approaches. CUA desktop automation, framework adoption, autonomous workers and additional services require explicit scope decisions; none is implied by keeping these sources.
-- C, E and G support distinct interface, illustration and motion work. Reference libraries remain separate from installed rendering tools.
-- D supplies product discovery, positioning and marketing guidance.
-- F is retained as requested; prior exclusion decisions do not override this selection.
-- The 293 legacy individual reference entries are not carried forward wholesale. New skills must map to a retained source or independently authored methods, and only the needed source portions are reviewed.
-- Any new third-party skill/design reference outside this selection returns for a user decision. Primary API/protocol documentation used to verify an implementation choice is technical evidence, not an automatic addition to the skill catalog.
+A and B supply engineering, host integration and runtime design methods. C,
+E, G and I supply interface, illustration, motion and video references; their
+libraries remain separate from installed rendering tools. D supplies product
+discovery and positioning guidance. H supplies focused authoring and evaluation
+methods.
 
-## Separate toolset decision
-
-No dependency/tool selection was supplied for the previous group H. Current tool direction is recorded in the [implementation contract](architecture.md). Podman/VM execution is superseded; the old group H inventory did not authorize tools. This document’s new H contains method references only. No historical runtime approval transfers to an unrelated new dependency closure.
+New skills must map to a selected source or independently authored method,
+with only the needed source portions reviewed. Primary API/protocol documentation
+used to verify an implementation is technical evidence, not an automatic
+addition to the skill catalog.
 
 ## Provenance
 
 The current [provenance ledger](../skills/PROVENANCE.md) and
 [pinned review inputs](../packaging/provenance/skills/README.md) record selected sources and reuse limits.
-Earlier ledgers from a private development worktree are not portable repository
-inputs and do not authorize additional references or dependencies.
+Reference selection does not authorize additional dependencies; use the exact
+[admission records](../packaging/admission/README.md).

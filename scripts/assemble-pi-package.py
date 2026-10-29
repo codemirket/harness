@@ -53,7 +53,6 @@ def assemble(verifier, source, output):
     shutil.copytree(extension, output / 'dist/extension')
     (output / 'scripts').mkdir()
     shutil.copyfile(ROOT / 'pi/scripts/setup.mjs', output / 'scripts/setup.mjs')
-    shutil.copyfile(ROOT / 'LICENSE', output / 'LICENSE')
     package = {'name': '@codemirket/pi-harness', 'version': manifest['version'], 'private': True,
                'type': 'module', 'engines': {'node': '>=22.19.0'},
                'peerDependencies': {'@earendil-works/pi-coding-agent': '1.4.0', 'typebox': '1.3.27'},

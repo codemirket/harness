@@ -26,7 +26,6 @@ class SkillAssemblyTests(unittest.TestCase):
             "docs/skills.md",
             "docs/architecture.md",
             "docs/references.md",
-            "LICENSE",
         ):
             destination = self.root / pin
             destination.parent.mkdir(parents=True, exist_ok=True)

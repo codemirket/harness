@@ -38,7 +38,9 @@ for (const [source,destination,mode] of [[binary,'bin/mirket',0o700],[node,'runt
 }
 const cli=(...args)=>JSON.parse(execFileSync(binary,args,{encoding:'utf8',timeout:60000}));
 const release=cli('dev','manifest','--directory',native).release_id;
-execFileSync('/usr/bin/python3',[resolve('scripts/assemble-pi-package.py'),'--mirket',binary,'--source',native,'--output',packed],{stdio:'pipe',timeout:60000});
+// A complete native package includes Chrome and selected model/runtime files;
+// copying and hashing it can exceed one minute before Pi starts.
+execFileSync('/usr/bin/python3',[resolve('scripts/assemble-pi-package.py'),'--mirket',binary,'--source',native,'--output',packed],{stdio:'pipe',timeout:600000});
 const setup=()=>JSON.parse(execFileSync(node,[join(packed,'scripts/setup.mjs'),'--agent-dir',agentDir],{encoding:'utf8',timeout:660000,stdio:['ignore','pipe','pipe']}));
 const extensionPath=join(packed,'dist/extension/index.js'),extensionBytes=await fs.readFile(extensionPath);
 await fs.appendFile(extensionPath,'\n// altered after assembly\n');assert.throws(setup,/differs from inventory/);
@@ -96,13 +98,50 @@ try {
  const saved=await call(e,'mcp__mirket__memory_commit',{...common,operation_id:disposable.operation_id});
  const forget=await call(e,'mcp__mirket__memory_forget_prepare',{...common,record_id:saved.record.record_id,expected_revision:saved.record.revision});
  const forgetArgs={...common,operation_id:forget.operation_id};
- const deniedAt=e.session.messages.length;await e.session.prompt(JSON.stringify({tool:'mcp__mirket__memory_forget_commit',args:forgetArgs}));
- const denied=e.session.messages.slice(deniedAt).findLast(m=>m.role==='toolResult');assert.equal(denied.isError,true);assert.match(JSON.stringify(denied),/Explicit authorization required/);
+ const canonicalCount=recordId=>Number(execFileSync('/usr/bin/python3',['-c',`
+import pathlib, sqlite3, sys
+count = 0
+for file in pathlib.Path(sys.argv[1]).glob('*.sqlite3'):
+    db = sqlite3.connect(file.as_uri() + '?mode=ro', uri=True)
+    try:
+        count += db.execute('select count(*) from records where record_id=?', (sys.argv[2],)).fetchone()[0]
+    finally:
+        db.close()
+print(count)
+`,join(agentDir,'mirket/state/memory'),recordId],{encoding:'utf8',timeout:5000}).trim());
+ const settingsBeforeAuthorization=createHash('sha256').update(await fs.readFile(join(agentDir,'settings.json'))).digest('hex');
+ assert.equal(canonicalCount(saved.record.record_id),1);
+ const denialEvidence=[];
+ async function deniedForget(args,reason){
+  const before=e.session.messages.length;
+  await e.session.prompt(JSON.stringify({tool:'mcp__mirket__memory_forget_commit',args}));
+  const result=e.session.messages.slice(before).findLast(m=>m.role==='toolResult'&&m.toolName==='mcp__mirket__memory_forget_commit');
+  assert.ok(result,JSON.stringify(e.errors));assert.equal(result.isError,true);
+  assert.match(JSON.stringify(result),reason);
+  const rows=canonicalCount(saved.record.record_id);assert.equal(rows,1,'Denied forgetting changed the target record row');
+  denialEvidence.push({reason:String(reason),targetRecordRows:rows});
+ }
+ await deniedForget(forgetArgs,/Explicit authorization required/);
  assert.equal((await call(e,'mcp__mirket__memory_read',{...common,record_id:saved.record.record_id})).record.data.content,'Explicitly disposable authorization test record');
  const nestedDenied=await call(e,'codemode',{code:`try{await tools.mcp__mirket__memory_forget_commit(${JSON.stringify(forgetArgs)});text({blocked:false});}catch(error){text({blocked:true,error:String(error)});}`});assert.match(JSON.stringify(nestedDenied),/Explicit authorization required/);
+ assert.equal(canonicalCount(saved.record.record_id),1,'Nested denial changed canonical rows');
+ await deniedForget({...forgetArgs,expected_release_id:'wrong-release'},/Operation release differs/);
+ await deniedForget({...forgetArgs,scope:{kind:'project',project_root:other}},/Operation project differs/);
+ await e.session.prompt('/mirket-authorize '+JSON.stringify({tool:'mcp__mirket__memory_forget_commit',args:{...forgetArgs,operation_id:'different-intent'}}));
+ await deniedForget(forgetArgs,/Explicit authorization required/);
+ const grantFile=join(agentDir,'mirket/authorizations.json');
+ await e.session.prompt('/mirket-authorize '+JSON.stringify({tool:'mcp__mirket__memory_forget_commit',args:forgetArgs}));
+ const expired=JSON.parse(await fs.readFile(grantFile,'utf8'));
+ expired.grants=expired.grants.map(grant=>({...grant,expires:Date.now()-1}));
+ await fs.writeFile(grantFile,JSON.stringify(expired)+'\n');
+ await deniedForget(forgetArgs,/Explicit authorization required/);
  await e.session.prompt('/mirket-authorize '+JSON.stringify({tool:'mcp__mirket__memory_forget_commit',args:forgetArgs}));
  const forgotten=await call(e,'mcp__mirket__memory_forget_commit',forgetArgs);assert.equal(forgotten.status,'forgotten');
- await save('headless destructive forgetting denied direct and nested; exact explicit command authorizes only its intent');
+ assert.equal(canonicalCount(saved.record.record_id),0,'Accepted forgetting left the target record row');
+ assert.equal(createHash('sha256').update(await fs.readFile(join(agentDir,'settings.json'))).digest('hex'),settingsBeforeAuthorization,'Authorization changed unrelated Pi settings');
+ report.authorization={denials:denialEvidence,acceptedTargetRecordRows:0,settingsUnchanged:true,
+  unrun:['scope-wide canonical/lifecycle effect snapshot','exact repeat','reconcile','full native effect classes and platform gates']};
+ await save('headless forgetting: denied direct/nested/wrong release/project/args/expiry; exact command removes target row');
 
  await e.session.reload();await e.session.setModel(e.session.modelRuntime.getModel('offline-fixture','deterministic'));
  await call(e,'tool_search',{query:'memory_read',limit:8});assert.equal((await call(e,'mcp__mirket__memory_read',read)).record.data.content,record.content);

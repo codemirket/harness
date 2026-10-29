@@ -31336,31 +31336,5 @@
     "bytes": 2049096,
     "sha256": "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d",
     "license": "OFL-1.1"
-  },
-  "notices": [
-    {
-      "source": "packaging/notices/design/MIT.txt",
-      "destination": "notices/design/MIT.txt",
-      "bytes": 1077,
-      "sha256": "c3b1b78bc8bd3ea13aa4bc9778442d16560270afa235006d816e5e88cef24db4"
-    },
-    {
-      "source": "packaging/notices/design/Apache-2.0.txt",
-      "destination": "notices/design/Apache-2.0.txt",
-      "bytes": 10279,
-      "sha256": "c274f80372d90c012937370f0e1f15087d22e308ef98b27cea5dc0d2d088366c"
-    },
-    {
-      "source": "packaging/notices/design/ISC.txt",
-      "destination": "notices/design/ISC.txt",
-      "bytes": 822,
-      "sha256": "f2ff9e66e9a9acdbffbcbf2ae4ff184d923325ce1a98d20ac64f3dd450263f3a"
-    },
-    {
-      "source": "packaging/notices/design/OFL.txt",
-      "destination": "notices/design/OFL.txt",
-      "bytes": 4396,
-      "sha256": "cee9892f9f0cc8fe882c9e9537ee6a89621d86ee7ceaf70b02e2b2b1c25c061a"
-    }
-  ]
+  }
 }

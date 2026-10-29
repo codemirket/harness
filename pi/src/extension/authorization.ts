@@ -4,8 +4,42 @@ import { join } from 'node:path';
 import { regularBytes, type VerifiedRuntime } from './runtime.js';
 interface Grant { key: string; expires: number }
 interface Grants { schema: 1; grants: Grant[] }
+// Maximum effects from the explicit MCP taxonomy. A new native route must
+// be classified here before the Pi extension will dispatch it.
+export const MIRKET_TOOL_CLASSES = Object.freeze({
+  mcp__mirket__runtime_status: 'O0',
+  mcp__mirket__code_inspect: 'O1',
+  mcp__mirket__code_navigate: 'O1',
+  mcp__mirket__diagram_render_prepare: 'P1',
+  mcp__mirket__diagram_render_start: 'F1',
+  mcp__mirket__design_prepare: 'P1',
+  mcp__mirket__design_start: 'F1',
+  mcp__mirket__video_prepare: 'P1',
+  mcp__mirket__video_start: 'F1',
+  mcp__mirket__video_status: 'O2',
+  mcp__mirket__video_cancel: 'K1',
+  mcp__mirket__video_result: 'O2',
+  mcp__mirket__job_status: 'O2',
+  mcp__mirket__job_cancel: 'K1',
+  mcp__mirket__memory_prepare: 'P2',
+  mcp__mirket__memory_commit: 'M1',
+  mcp__mirket__memory_index_refresh: 'I1',
+  mcp__mirket__memory_status: 'O3',
+  mcp__mirket__memory_forget_prepare: 'P3',
+  mcp__mirket__memory_forget_commit: 'X1',
+  mcp__mirket__memory_forget_reconcile: 'X2',
+  mcp__mirket__memory_search: 'O4',
+  mcp__mirket__memory_list: 'O3',
+  mcp__mirket__memory_read: 'O3',
+  mcp__mirket__memory_history: 'O3',
+} as const);
+export function classifyMirketTool(tool: string): (typeof MIRKET_TOOL_CLASSES)[keyof typeof MIRKET_TOOL_CLASSES] {
+  if (!Object.prototype.hasOwnProperty.call(MIRKET_TOOL_CLASSES, tool)) throw new Error(`Unclassified Mirket tool: ${tool}`);
+  return MIRKET_TOOL_CLASSES[tool as keyof typeof MIRKET_TOOL_CLASSES];
+}
 const restricted = new Set(['mcp__mirket__memory_forget_commit','mcp__mirket__memory_forget_reconcile']);
 export function needsAuthorization(tool: string, args: Record<string, unknown>): boolean {
+  classifyMirketTool(tool);
   const scope = args.scope as {kind?:string} | undefined;
   return restricted.has(tool) || (tool.startsWith('mcp__mirket__memory_') && scope?.kind === 'shared_preferences');
 }
