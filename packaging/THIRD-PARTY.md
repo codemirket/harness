@@ -68,6 +68,17 @@ apply to the executable. The exact archive includes a proprietary Widevine modul
 whose license requires a separate Google agreement for distribution; Mirket does
 not bundle or mirror it. The installed binding is checked at each job.
 
+The optional browser QA peer is acquired directly by the recipient from the
+exact pinned `@playwright/mcp` 0.0.83 and `playwright-core`
+1.64.0-alpha-1790635538000 publisher archives, or bound to an explicitly
+selected installed tree. Their roots are
+[Apache-2.0](https://github.com/microsoft/playwright-mcp/blob/v0.0.83/LICENSE),
+but the required `utilsBundle.js` embeds `proxy-agent-negotiate@1.1.0` with
+an MIT declaration and no supplied license text. The missing notice is not
+inferred from another package. Mirket's default package contains no Playwright
+or browser bytes; the user's acquisition remains subject to publisher terms.
+The QA browser has a separate binding from video Chrome.
+
 Sharp/libvips Raster is excluded while its LGPL/MPL native closure and recipient
 source/replacement obligations remain unresolved. [Sharp's Apache license](https://github.com/lovell/sharp/blob/v0.35.5/LICENSE)
 does not cover that entire binary closure; [the exact libvips build's notices](https://github.com/lovell/sharp-libvips/blob/v1.3.4/THIRD-PARTY-NOTICES.md)

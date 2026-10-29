@@ -47,6 +47,10 @@ The seven optional capability IDs are `navigation.js-ts`, `design.tokens`,
 capabilities make skill activation refuse. Conditional capabilities must be
 checked before the particular operation. Host-only guidance still requires
 actual available pi/project tools.
+The default package does not include Playwright MCP or browser bytes. Browser
+guidance uses project-installed tests or the separately onboarded optional Pi
+peer, with a confirmed `/mirket-browser open` grant for one local origin. The
+disposable [browser pilot](tool-pilots-20261029.md) alone is not qualification.
 
 A stable MCP tool list is not readiness. Use `runtime_status` to inspect configured
 payloads and revalidate operation identity/scope at use. Standard design readiness
@@ -63,8 +67,9 @@ The [reference selection](references.md), [provenance ledger](../skills/PROVENAN
 and [focused adoption mapping](../packaging/provenance/skills/source-design-adoption.md)
 separate comparison/link-only sources from the eight reviewed method adaptations.
 Reference rights never grant rights to unrelated artwork, fonts or executable
-packages. Hallmark/Taste and HyperFrames remain selected; Remotion is excluded
-from adoption.
+packages. Hallmark, Taste and Impeccable are the selected design guidance;
+HyperFrames remains the selected video engine and Remotion is excluded from
+runtime adoption.
 
 Run `python3 scripts/refresh-skill-catalog.py --write` after changing a body,
 resource or authoring basis, then run the same command without `--write` to verify

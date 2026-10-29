@@ -78,12 +78,14 @@ class PiPackageAssemblyTests(unittest.TestCase):
             put("packaging/notices/README.md", b"fixture notice attribution")
             put("packaging/THIRD-PARTY.md", b"fixture notice scope")
             put("packaging/runtime/chrome-macos.json", b'{"version":"156.0.8078.73","target":"aarch64-apple-darwin","archive":{},"executable":"runtime/browser/chrome", "files":[], "links":[]}')
+            put("packaging/runtime/playwright-mcp-external.json", b'{"id":"playwright-mcp","version":"0.0.83","target":"aarch64-apple-darwin","archives":[],"files":[],"externalOnly":true}')
             put("scripts/assemble-skills.py", b"def inventory(root):\n    return {'catalog.json': b'{}\\n'}\n")
             license_bytes = b"fixture project license\n"
             put("LICENSE", license_bytes)
 
             verified = {
                 "release_id": "sha256:synthetic-release",
+                "build": {"debug_assertions": False},
                 "manifest": {
                     "version": "0.1.0",
                     "files": [
@@ -93,6 +95,11 @@ class PiPackageAssemblyTests(unittest.TestCase):
                 },
             }
             output = root / "package"
+            debug = {**verified, "build": {"debug_assertions": True}}
+            with patch.object(ASSEMBLER.subprocess, "check_output", return_value=json.dumps(debug).encode()):
+                with self.assertRaisesRegex(ValueError, "release build"):
+                    ASSEMBLER.assemble(verifier, source, output)
+            self.assertFalse(output.exists())
             with patch.object(ASSEMBLER, "ROOT", root), \
                  patch.object(ASSEMBLER.subprocess, "check_output", return_value=json.dumps(verified).encode()) as verify, \
                  patch.object(ASSEMBLER.subprocess, "run") as copied_verify:
@@ -112,8 +119,9 @@ class PiPackageAssemblyTests(unittest.TestCase):
             self.assertIn("scripts/setup.mjs", paths)
             self.assertIn("runtime-setup.json", paths)
             setup = json.loads((output / "runtime-setup.json").read_text())
-            self.assertEqual([tool["id"] for tool in setup["tools"]], ["chromium"])
-            self.assertEqual([tool["id"] for tool in setup["tools"] if "archive" in tool], ["chromium"])
+            self.assertEqual([tool["id"] for tool in setup["tools"]], ["chromium", "browser-chromium", "playwright-mcp"])
+            self.assertEqual([tool["id"] for tool in setup["tools"] if "archive" in tool], ["chromium", "browser-chromium"])
+            self.assertTrue(setup["tools"][2]["externalOnly"])
             self.assertIn("dist/extension/index.js", paths)
             for entry in inventory["files"]:
                 payload = (output / entry["path"]).read_bytes()

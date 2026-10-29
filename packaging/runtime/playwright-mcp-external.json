@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "playwright-mcp",
+  "target": "aarch64-apple-darwin",
+  "title": "Optional Playwright browser server",
+  "version": "0.0.83",
+  "terms": "Optional external-only acquisition for your own use. Publisher terms/notices: https://github.com/microsoft/playwright-mcp/blob/v0.0.83/LICENSE . The selected Playwright core bundle records a missing proxy-agent-negotiate MIT notice; redistribution clearance is incomplete. Mirket ships no publisher bytes and does not redistribute this server. Downloading is an explicit user choice; no upstream installer, hook or package manager runs. A separate browser executable and scoped browser authorization are required. Installed binding requires the exact selected tree: only the 12 manifest files and their parent directories. Extra files or nested dependencies are refused to prevent module shadowing.",
+  "format": "tar.gz",
+  "archives": [
+    {
+      "url": "https://registry.npmjs.org/@playwright/mcp/-/mcp-0.0.83.tgz",
+      "sha256": "f0014a13361b1ee2d8607a4e187868ab9a6e8ac637dbcd66e4af43f738d0c8cb",
+      "bytes": 24095,
+      "prefix": "node_modules/@playwright/mcp/"
+    },
+    {
+      "url": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.64.0-alpha-1790635538000.tgz",
+      "sha256": "54ad1d38174d6ef56d1f165e52547ece8e6c24b865f2a072d9ebaacfbad1ca47",
+      "bytes": 3156699,
+      "prefix": "node_modules/playwright-core/"
+    }
+  ],
+  "executable": "node_modules/@playwright/mcp/cli.js",
+  "files": [
+    {
+      "path": "node_modules/@playwright/mcp/cli.js",
+      "bytes": 1192,
+      "sha256": "70dab09ab9a5bc1943fb78e2655f00af7349f9931073833919f19c5d7d786ad6",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/@playwright/mcp/package.json",
+      "bytes": 1539,
+      "sha256": "624f0ba4d387028bbc734520142fbebb7075a88da8b623f4760adf76aa212f8b",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/@playwright/mcp/LICENSE",
+      "bytes": 11552,
+      "sha256": "9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/package.json",
+      "bytes": 896,
+      "sha256": "2bd07b7443af06d1b836219e64f7fb40b722ee7764c9e1b1cc11147a601083fb",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/browsers.json",
+      "bytes": 1137,
+      "sha256": "f8a818e27de670929765493bb92715c0253336b5b99fd59918318305e84ef17c",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/LICENSE",
+      "bytes": 11601,
+      "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/NOTICE",
+      "bytes": 254,
+      "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/ThirdPartyNotices.txt",
+      "bytes": 676,
+      "sha256": "a549d329bad8806fe279f0ecae0fc0270dec7e7c2dc8ec10f90e394f7c32b144",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/lib/coreBundle.js",
+      "bytes": 3573451,
+      "sha256": "cd6730be1bbcff00771a0fc1390f200306d28428ce68e305420ca623cb39cdeb",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/lib/utilsBundle.js",
+      "bytes": 3063951,
+      "sha256": "04d045bf5693937b95327fb031714536019a74472a7bd71bf1ea10a9ef112b3a",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/lib/utilsBundle.js.LICENSE",
+      "bytes": 106591,
+      "sha256": "bbdb64d9b0d1e22e44c3371557b36e7c592386dbfa966dedd493ee8b871070f2",
+      "mode": 384
+    },
+    {
+      "path": "node_modules/playwright-core/lib/webp_codec.LICENSE",
+      "bytes": 8841,
+      "sha256": "995c7ee35aceb7666829b7a501ca89c0864e12b493c1174b155774ab1e03d831",
+      "mode": 384
+    }
+  ],
+  "externalOnly": true
+}

@@ -1149,9 +1149,16 @@ async fn run_d2_leaf(
         if bytes.len() != metadata.len() as usize {
             return Err("D2 output changed or exceeds its byte limit".into());
         }
-        let text = std::str::from_utf8(&bytes).map_err(|_| "D2 SVG is not UTF-8")?;
-        if !accepted_d2_svg(text) {
-            return Err("D2 output is not an accepted self-contained SVG".into());
+        match request.output_format {
+            crate::diagram::D2OutputFormat::Svg => {
+                let text = std::str::from_utf8(&bytes).map_err(|_| "D2 SVG is not UTF-8")?;
+                if !accepted_d2_svg(text) {
+                    return Err("D2 output is not an accepted self-contained SVG".into());
+                }
+            }
+            crate::diagram::D2OutputFormat::Png => {
+                crate::diagram::validate_png(&bytes).map_err(str::to_owned)?;
+            }
         }
         let output_revision = crate::engine::revision(&bytes);
         let result = crate::diagram::D2RenderResult::Staged {
@@ -1159,6 +1166,7 @@ async fn run_d2_leaf(
             output_revision,
             output_bytes: bytes.len(),
             layout: request.layout,
+            output_format: request.output_format,
         };
         crate::diagram::validate_result(request, &result).map_err(|error| error.to_string())?;
         Ok(crate::diagram::D2RenderOutcome {

@@ -15,7 +15,8 @@ See [architecture](docs/architecture.md) for the current product contract.
 Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
 forgetting and recovery, with lazy local MiniLM retrieval. Navigation operates on
 explicit revision-bound sources. Design supplies tokens, editable vectors and
-diagrams. Raster/Sharp is omitted while native rights obligations remain open.
+D2 diagrams with SVG or bounded direct PNG output. Raster/Sharp is omitted
+while native rights obligations remain open.
 Video bundles HyperFrames and FFmpeg/ffprobe with source/notices; Chrome is an
 explicit onboarding choice with verified installation or executable binding.
 Successful exports require separate visual
@@ -31,8 +32,11 @@ through pi's existing `openai/gpt-6-astra` authentication. It enables one resear
 turn, retains search actions and citation spans, and displays clickable sources.
 Missing provider access fails explicitly; it does not install a search service.
 Provider-dependent research and vision require configured access.
-Browser automation was tested only with disposable local fixtures. The selected
-Chrome binding is reserved for video rendering.
+Optional browser QA uses an external-only Playwright MCP peer and a separately
+selected browser executable. Neither is in the default package. Pi TUI grants
+one scoped local origin through `/mirket-browser open`; the selected video Chrome
+binding is never reused silently. See [setup](docs/setup.md) for the choices and
+[qualification](docs/qualification.md) for the exact tested scope.
 
 Mirket state belongs under `<pi-agent-dir>/mirket/`. Setup uses a fresh private
 home and preserves existing installations and unrelated settings. It does not
@@ -46,6 +50,9 @@ rights: see [skill provenance](skills/PROVENANCE.md), the short
 [runtime table](packaging/README.md#runtime-choices) and delivered
 [third-party scope](packaging/THIRD-PARTY.md). Historical review evidence remains
 recoverable via [history](docs/history.md).
+The [tool landscape](docs/tool-landscape-20261029.md) and
+[bounded pilots](docs/tool-pilots-20261029.md) record candidate comparisons
+without turning them into package admissions.
 
 For development, run `python3 scripts/check-build-inputs.py` before Rust
 compilation, then the locked offline Rust tests/clippy, formatting, locked

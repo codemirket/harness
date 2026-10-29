@@ -11,6 +11,8 @@ pub struct DiagramPrepareArgs {
     pub expected_revision: String,
     pub destination_path: PathBuf,
     pub layout: D2Layout,
+    #[serde(default)]
+    pub output_format: diagram::D2OutputFormat,
 }
 
 impl Engine {
@@ -28,9 +30,9 @@ impl Engine {
                 .destination_path
                 .extension()
                 .and_then(|part| part.to_str())
-                != Some("svg")
+                != Some(args.output_format.extension())
         {
-            return Err("D2 input must end in .d2 and new output in .svg".into());
+            return Err("D2 input must end in .d2 and new output extension must match output_format (svg or png)".into());
         }
         let scope = ProjectScope::open(&args.project_root).map_err(err)?;
         let source = scope
@@ -74,7 +76,7 @@ impl Engine {
             source_revision,
             intent_revision: revision(
                 &serde_json::to_vec(
-                    &json!({"layout":args.layout,"destination":plan.destination()}),
+                    &json!({"layout":args.layout,"output_format":args.output_format,"destination":plan.destination()}),
                 )
                 .map_err(err)?,
             ),
@@ -86,6 +88,28 @@ impl Engine {
             scratch_cleanup: None,
             queue_wait_ms: None,
         };
-        self.issue_preparation(plan, PendingOperation::Diagram(args.layout), receipt)
+        self.issue_preparation(
+            plan,
+            PendingOperation::Diagram(args.layout, args.output_format),
+            receipt,
+        )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn diagram_prepare_defaults_to_svg_and_rejects_unknown_format() {
+        let mut value = serde_json::json!({
+            "expected_release_id":"release", "project_root":"/private/project",
+            "source_path":"source.d2", "expected_revision":"revision",
+            "destination_path":"result.svg", "layout":"elk"
+        });
+        let args: DiagramPrepareArgs = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(args.output_format, diagram::D2OutputFormat::Svg);
+        value["output_format"] = serde_json::json!("pdf");
+        assert!(serde_json::from_value::<DiagramPrepareArgs>(value).is_err());
     }
 }

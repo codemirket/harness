@@ -274,34 +274,34 @@ selection quality, rights, useful behavior or user acceptance.
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
+- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste), [impeccable](#reference-impeccable).
 - Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: art-direction-positive-1, art-direction-positive-2, art-direction-negative-1, art-direction-negative-2, art-direction-mixed-1. Not run.
 
-- Method mapping: Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks.
+- Method mapping: Hallmark structure, Taste brief-to-direction and Impeccable rendered anti-pattern methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks.
 
 ### interface-composition
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste).
+- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste), [impeccable](#reference-impeccable).
 - Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil, design.tokens, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: interface-composition-positive-1, interface-composition-positive-2, interface-composition-negative-1, interface-composition-negative-2, interface-composition-mixed-1. Not run.
 
-- Method mapping: Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
+- Method mapping: Hallmark macrostructure, Taste real-content composition and Impeccable rendered audit methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### design-critique
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Reviewed method families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable).
+- Reviewed method families: [hallmark](#reference-hallmark), [taste](#reference-taste), [impeccable](#reference-impeccable).
 - Required qualified capabilities: none (no optional Mirket capability prerequisite).
 - Conditional operation boundaries: host-browser, design.openpencil; use only when the actual task needs them.
 - Planned acceptance IDs: design-critique-positive-1, design-critique-positive-2, design-critique-negative-1, design-critique-negative-2, design-critique-mixed-1. Not run.
 
-- Method mapping: Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Method mapping: Hallmark structure review, Taste brief/inspector gate and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
 
 ### design-systems
 
@@ -364,6 +364,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Comparison/link-only families: [archify](#reference-archify), [diagram-design](#reference-diagram-design), [atlassian](#reference-atlassian), [guardian](#reference-guardian), [spectrum](#reference-spectrum).
 - Required qualified capabilities: design.diagrams.
 - Conditional operation boundaries: design.vector; use only when the actual task needs them.
+- Local retention evidence: the [2026-10-29 D2 method pilot](../docs/tool-pilots-20261029.md) found that an initial simplification visually orphaned terminal outcomes. The skill's guard/connection safeguard is local wording from that observed failure; no diagram-design section or runtime was adopted.
 - Planned acceptance IDs: diagrams-positive-1, diagrams-positive-2, diagrams-negative-1, diagrams-negative-2, diagrams-mixed-1. Not run.
 
 ### data-visualization
@@ -436,6 +437,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
 - Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Local timing evidence: the [2026-10-29 actual Anime/HyperFrames pilot](../docs/tool-pilots-20261029.md) found that an animation `delay` did not preserve an opening hold during frame seeking; the local authoring reference records the tested explicit-timeline repair and decoded-position check. This does not add Anime.js to the shipped package.
 - Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### jobs-to-be-done

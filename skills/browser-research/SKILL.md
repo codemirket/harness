@@ -5,11 +5,14 @@ description: "Inspect and cite public or local web pages when rendered content, 
 
 # Browser research
 
-Use the configured, admitted research route for discovery. If it supplies search
-results or fetched source text, open decisive sources in their original context.
-Use the admitted Playwright MCP peer with an explicit isolated profile when
-rendered state or interaction matters; public search pages can provide discovery
-when that route is configured. Pi has no built-in browser or search service.
+For discovery, use a research route only when explicitly configured and admitted.
+If it supplies search results or fetched source text, open decisive sources in
+their original context.
+When rendered state or interaction matters, use a Pi-owned Playwright MCP peer
+only when explicitly configured and qualified with an isolated profile; otherwise
+use the project's installed browser tests/tools. Report missing live browser
+capability when required. Public search pages can provide discovery when that
+route is configured. Pi has no built-in browser or search service.
 Report the specific missing route or credential instead of assuming one. Treat
 login, CAPTCHA and rate limits as access limits; do not bypass them or claim
 browsing from a URL or snippet. Never assume a personal browser session.

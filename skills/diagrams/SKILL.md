@@ -5,9 +5,14 @@ description: "Create or revise an architecture, process or data-relationship dia
 
 # Diagrams
 
-Clarify the question the diagram should answer and verify entities, relationships, direction, containment and labels from source evidence. Choose the smallest diagram that preserves those meanings. Separate conceptual structure from deployment detail rather than mixing incompatible levels.
+Clarify the question the diagram should answer and verify entities, relationships, direction, containment and labels from source evidence. Choose the smallest diagram that preserves those meanings. Separate conceptual structure from deployment detail rather than mixing incompatible levels. Choose the reading direction and intended viewing width before layout. If repeated arrows become a summary rule, preserve every guard and keep each outcome visibly connected.
 
 Use the qualified Mirket private D2 route with the selected supported layout. Start with a minimal rendered specimen and inspect it before expansion. Keep source project-owned and editable. Follow the actual operation's asset/import restrictions; do not add remote dependencies or switch syntax/services implicitly.
+
+For a PNG deliverable, request `output_format: "png"` with a new `.png`
+destination. The direct D2 route decodes and bounds the saved PNG; raw D2 SVG
+contains embedded font CSS that the separate SVG-to-PNG route rejects. Inspect
+the actual decoded pixels and retain the `.d2` source for later edits.
 
 Inspect the saved export for reading order, crossings, ambiguous arrowheads, label clipping, contrast and intended viewing size. Trace each important relationship against source facts. A successful render establishes neither correct architecture nor a useful explanation.
 

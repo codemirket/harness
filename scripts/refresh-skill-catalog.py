@@ -16,9 +16,9 @@ REVIEW=REVIEW_DIR/"skill-reference-audit.md"
 # fidelity from a URL, body hash, or family name; the focused review names the
 # reviewed sections and independently worded local technique.
 METHOD_ADOPTIONS={
-    "art-direction": {"families":["hallmark","taste"], "note":"Hallmark design-flow and Taste run/gate methods are explicitly mapped in source-design-adoption.md"},
-    "design-critique": {"families":["hallmark","impeccable"], "note":"Hallmark review discipline and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md"},
-    "interface-composition": {"families":["hallmark","taste"], "note":"Hallmark macrostructure and Taste brief-to-direction methods are explicitly mapped in source-design-adoption.md"},
+    "art-direction": {"families":["hallmark","taste","impeccable"], "note":"Hallmark structure, Taste brief-to-direction and Impeccable rendered anti-pattern methods are explicitly mapped in source-design-adoption.md"},
+    "design-critique": {"families":["hallmark","taste","impeccable"], "note":"Hallmark structure review, Taste brief/inspector gate and Impeccable anti-pattern review are explicitly mapped in source-design-adoption.md"},
+    "interface-composition": {"families":["hallmark","taste","impeccable"], "note":"Hallmark macrostructure, Taste real-content composition and Impeccable rendered audit methods are explicitly mapped in source-design-adoption.md"},
     "motion-direction": {"families":["huashu-storyboard"], "note":"Huashu storyboard shot-card and energy/hold methods are explicitly mapped in source-design-adoption.md"},
     "scroll-motion": {"families":["emil"], "note":"Emil animation-decision methods are explicitly mapped for scroll context in source-design-adoption.md"},
     "ui-motion": {"families":["emil"], "note":"Emil animation-decision and review-format methods are explicitly mapped in source-design-adoption.md"},

@@ -287,7 +287,14 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
         let release = distribution::VerifiedRelease::open(Path::new(value(args, "source")))?;
         println!(
             "{}",
-            serde_json::json!({"release_id": release.id().as_str(), "manifest": release.manifest()})
+            serde_json::json!({
+                "release_id": release.id().as_str(),
+                "manifest": release.manifest(),
+                // Assembly already binds this verifier's bytes to the payload
+                // core. Report the compiler cfg instead of guessing from a
+                // filename or executable size; performance still needs timing.
+                "build": {"debug_assertions": cfg!(debug_assertions)},
+            })
         );
         return Ok(());
     }

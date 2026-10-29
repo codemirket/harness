@@ -1,5 +1,102 @@
 # Local candidate qualification
 
+## Browser onboarding and direct D2 PNG candidate, 2026-10-30
+
+This is fresh installed-product evidence for the **parser-fixed final package**
+on macOS **26.5.2 (25F84), ARM64**, external Pi **1.4.0**, Rust **1.99.1**
+and private Node **24.22.1** (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`).
+Two independent installations used new disposable HOME, Pi agent/session and
+project directories under `/private/tmp`; neither imported an earlier Mirket
+installation or touched the user's live settings. Superseded package trials and
+failed test-harness attempts remain in separate scratch evidence, not as passes
+for this artifact.
+
+- Native release: `sha256:f7d5ca0b43729d222db840bba0b7e2e2c0192f0f9a763a7e119ee48f728d1800`.
+- Native core SHA-256: `404bec4d75f68f91fec45b61a583d6902492fa1f88287b93663e4527bf27d97a`; release verification reports `debug_assertions: false`.
+- Assembled package inventory SHA-256: `275e91c346e6a80225735892b0c1cfc0fb4acdfe62eba72e37b34fe4d0592973`, **13,350 files**. Its compiled extension and native/source/notice inputs were independently matched to the frozen source. No Playwright, Chrome or Raster publisher runtime bytes are in the default package.
+
+The build-input guard ran before Rust compilation. Locked offline Rust tests
+passed (**441 library pass, 2 ignored; 3 binary pass; 1 fixture pass, 1
+ignored; manual scale test ignored**), as did all-target clippy with warnings
+denied, formatting, the release build and explicit-release MCP smoke. The
+locked TypeScript build and full process suite passed (**108 pass, 1 existing
+skip**); the Python suite passed **124 tests**. A new Rust regression covers a
+ready video Chrome alongside the two optional browser choices and bounded
+browser tree metadata. The package assembler rejects debug-assertions builds.
+
+Fresh setup of the exact package preserved unrelated seeded Pi settings. Actual
+Pi CLI/RPC/TUI passed doctor, MCP, reload, fork/resume, running RPC abort and
+recovery, and Ctrl-D shutdown. Five installed tamper cases refused changes and
+returned healthy after exact restoration. With **all three optional tools
+skipped**, the native runtime status reported video Chrome missing rather than
+changed; bundled navigation, design, memory and D2 remained usable. D2 produced
+decoded Dagre, ELK and TALA PNGs without Chrome onboarding. Pi editing changed
+**24,894 decoded pixels**; saved images retained legible Turkish labels and a
+connected arrow. Pi delivered the exact PNG to an offline image-capable provider
+fixture. Stale input and a running native D2 cancellation published no failed
+output; a fresh job recovered. This proves image transport, not a live model's
+visual interpretation.
+
+The video-only choice with both browser tools skipped passed actual Pi
+`video_prepare`, directly exercising the prior Rust choice-parser failure. With
+independent browser and peer trees also bound, all three choices reported ready
+and an actual Pi video export decoded to **24 H.264 frames at 640×360 over two
+seconds**, with AAC audio. Independent PCM checks covered timing and a roughly
+2:1 voice/music gain ratio; a changed source changed **30,839 decoded pixels**
+and the inspected heading. Stale revision and remote asset requests refused,
+and a running video cancellation cleaned up without publishing an output.
+
+The separate browser fixture passed **24/24 actual packaged Pi CLI/TUI cases**.
+TUI `/mirket setup` exercised **Skip**, **Use installed tool** with an exact
+selected Playwright tree and separate browser app, and **Install pinned
+version** using user-confirmed publisher URLs, sizes, hashes and terms. The
+pinned private output was independently checked against the twelve selected
+Playwright files and the browser's 344 regular files/five links. Both ready
+choices navigated a real local page; the installed path checked accessible
+Turkish text, reduced motion, keyboard state change, wide/narrow layouts,
+viewport PNGs, Pi image delivery and isolated browser storage. The pinned path
+also produced a fresh snapshot and PNG. Explicit TUI authorization, denial,
+revoke, origin/redirect/CONNECT/POST/attachment refusals, hidden extra tools,
+full-page screenshot refusal, namespace aliases, changed bytes/resources and
+same-byte alternate path refusal passed. No PATH trap ran. An actual Pi
+**Escape** interruption ended all **eight** observed old MCP/browser process
+identities in **181.859 ms**, before the held HTTP response was released or a
+replacement registered; a fresh authorized grant then navigated. Zero owned
+survivors were observed at the end. Pi added only its own
+`lastChangelogVersion` setting; pre-existing client fields were preserved.
+
+**Startup timing still fails.** The quiet final-package first-tool samples
+were **4.097, 1.911 and 1.839 seconds**, all above the unchanged **1.5-second**
+gate. Every sample is retained. This package is a functional local candidate,
+not a performance-qualified release; no gate was waived. The optional browser
+route was exercised only against a synthetic loopback HTTP app and seven
+selected tools. The application proxy and owned-process cleanup are not an OS
+sandbox. No live provider/token benefit, remote or authenticated browsing,
+whole-app codesign, or other-platform result is claimed.
+
+The browser peer stays **external-only**: its `proxy-agent-negotiate@1.1.0`
+bundle declares MIT but supplies no license text, so redistribution clearance
+has not been established. Raster/Sharp remains excluded. The delivered FFmpeg
+source packet and replay recipe were checked as package inputs, but the replay
+has not been freshly executed; generated wrapper/source correspondence remains
+conservatively scoped. Windows and other native platforms require their own
+packaging, ownership and capability tests.
+
+Raw final receipts are outside shipped source at
+`/private/tmp/mirket-combined-pi-qualification-20261030-vxddb7xe/` and
+`/private/tmp/mirket-browser-candidate-20261030-h-n4xz1ic4/`.
+The core `REPORT.md` has SHA-256
+`fb866f32c4d40ff5d01f3b7181710b68aa24e9b2454be207a88a1c1bae1ffbef`;
+its `SUMMARY.json` has SHA-256
+`f7c644fb2c43252eb3a639da38890c3093dd275655f6460140ba85c5731d81e0`.
+The browser `REPORT.md` has SHA-256
+`c34cd3a7988af518a7150dd88fa0efaa74fa7aecab3dbc443f46296929218439`;
+its 24-case `report.json` has SHA-256
+`4f9826db79ad7ace04cb82174c47dbec1b8b9210eb1585a0ecb8897f4b67e078`.
+Earlier candidate packages and their failures are retained in their own roots;
+their outcomes do not qualify this package.
+
 ## Packaging and onboarding candidate, 2026-10-29
 
 This records fresh evidence for the packaging/onboarding change set on macOS

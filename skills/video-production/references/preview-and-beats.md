@@ -1,9 +1,11 @@
 # Preview and beat correspondence
 
 Use a project-owned preview to locate changes, then verify the actual HyperFrames
-export. Preview interaction uses the admitted Playwright MCP peer or installed project browser tests. Mirket's private
-Chrome remains reserved for finite video capture. Do not install another
-renderer or make preview controls part of the exported film.
+export. Preview interaction uses installed project browser tests or a Pi-owned
+Playwright MCP peer only when explicitly configured and qualified with an
+isolated profile. Mirket's private Chrome remains reserved for finite video
+capture. Do not install another renderer or make preview controls part of the
+exported film.
 
 ## A finite clock with visible units
 

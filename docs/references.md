@@ -52,6 +52,10 @@ evidence locators, not dependency versions.
 
 ## C — Interface, illustration, motion and visual quality
 
+Hallmark, Taste and Impeccable are the selected design guidance for structure,
+brief-led direction and rendered critique. The other entries remain focused
+references; selection alone does not install their tools or clear their assets.
+
 | ID | Source / retained evidence locator | Selection |
 | --- | --- | --- |
 | `hallmark` | [Nutlope/hallmark](https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690) · `13ac0ec7e148` | Keep |

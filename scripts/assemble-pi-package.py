@@ -26,12 +26,18 @@ def sha(file):
 def runtime_setup():
     """Describe only tools supported by the first-party setup implementation."""
     chrome = json.loads((ROOT / 'packaging/runtime/chrome-macos.json').read_text())
+    peer = json.loads((ROOT / 'packaging/runtime/playwright-mcp-external.json').read_text())
+    browser = {'id': 'browser-chromium', 'title': 'Optional Chrome for browser operations', 'version': chrome['version'],
+               'target': chrome['target'], 'terms': 'Separate optional browser binding; never selects the video Chrome binding. Download directly from Google for your own use or select an independently obtained browser. Google terms: https://www.google.com/chrome/terms/ . This archive includes proprietary Widevine. Mirket does not redistribute Chrome.',
+               'archive': chrome['archive'], 'format': 'zip', 'executable': chrome['executable'],
+               'files': chrome['files'], 'links': chrome['links']}
     return {'schema': 1, 'tools': [
         {'id': 'chromium', 'title': 'Chrome for video rendering', 'version': chrome['version'],
          'target': chrome['target'],
          'terms': 'Download directly from Google for your own use or select your independently obtained executable. Google terms apply: https://www.google.com/chrome/terms/ . This exact archive includes proprietary Widevine; Mirket does not redistribute Chrome.',
          'archive': chrome['archive'], 'format': 'zip', 'executable': chrome['executable'],
          'files': chrome['files'], 'links': chrome['links']},
+        browser, peer,
     ]}
 
 
@@ -124,6 +130,8 @@ def assemble(verifier, source, output, ffmpeg_source_root=None, video_source_roo
     if output.exists():
         raise ValueError('Output must not exist')
     verified = json.loads(subprocess.check_output([str(verifier), 'verify', '--source', str(source)], timeout=60))
+    if verified.get('build', {}).get('debug_assertions') is not False:
+        raise ValueError('Package assembly requires a native release build with debug assertions disabled')
     manifest = verified['manifest']
     files = {entry['relative_path']: entry for entry in manifest['files']}
     if any(path.startswith('runtime/design/raster/') for path in files):

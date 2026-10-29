@@ -121,6 +121,13 @@ The host peer tree must match `packaging/runtime/host-lock.json` and
 `packaging/runtime/host-files.json`. The build leaves pi and TypeBox external.
 `assemble-pi-package.py` copies a selected verified native payload and compiled
 extension into a local package; it neither downloads nor installs dependencies.
+For package assembly, build the native core with
+`cargo build --release --locked --offline`, create the native manifest with
+`target/release/mirket`, and pass that exact executable to
+`assemble-pi-package.py --mirket`. The assembler rejects a core built with
+debug assertions; the `target/debug/mirket` command above is for local MCP
+smoke only. A release build is a packaging prerequisite, not a startup timing
+qualification.
 Native payload paths called `adapters/` are manifest storage, not a second source
 or build package. The [qualification record](qualification.md) states the exact
 local candidate results and remaining release limits.

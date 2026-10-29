@@ -1,5 +1,5 @@
 import type { ExtensionCommandContext, ExtensionAPI } from '@earendil-works/pi-coding-agent';
-import { readRuntimeSpecs, runtimeToolStatus, bindRuntime, installRuntime, skipRuntime, type ToolSpec } from './runtime-tools.js';
+import { readRuntimeSpecs, runtimeToolStatus, bindRuntime, installRuntime, skipRuntime, privateRuntimeNode, type ToolSpec } from './runtime-tools.js';
 import type { VerifiedRuntime } from './runtime.js';
 /** One Pi-native flow; only the user command can change runtime selections. */
 export function createOnboarding(pi: ExtensionAPI, packageRoot: string, current: () => VerifiedRuntime | undefined) {
@@ -32,8 +32,11 @@ export function createOnboarding(pi: ExtensionAPI, packageRoot: string, current:
                     controller.signal.throwIfAborted();
                     const status = runtimeToolStatus(runtime.home, runtime.binding.releaseId, [spec])[0]!;
                     ctx.ui.setWidget('mirket-setup', [`${spec.title}: ${String(status.status)}`, spec.terms, 'Select a choice. Existing tools and unrelated Pi settings are preserved.']);
-                    const install = `Install pinned ${spec.version}${spec.archive ? '' : ' (unavailable)'}`;
-                    const choice = await ctx.ui.select(spec.title, [install, 'Use an installed executable', 'Skip', 'Cancel setup'], { signal: controller.signal });
+                    const archives = spec.archives ?? (spec.archive ? [spec.archive] : []);
+                    const available = archives.length > 0;
+                    const installedLabel = spec.id === 'playwright-mcp' ? 'Use an installed exact selected tool tree' : 'Use an installed executable';
+                    const install = `Install pinned ${spec.version}${available ? '' : ' (unavailable)'}`;
+                    const choice = await ctx.ui.select(spec.title, [install, installedLabel, 'Skip', 'Cancel setup'], { signal: controller.signal });
                     if (choice === undefined || choice === 'Cancel setup') {
                         controller.abort(new Error('Setup cancelled'));
                         controller.signal.throwIfAborted();
@@ -45,21 +48,23 @@ export function createOnboarding(pi: ExtensionAPI, packageRoot: string, current:
                     }
                     try {
                         if (choice === install) {
-                            if (!spec.archive)
+                            if (!available)
                                 throw new Error(spec.unavailable ?? 'No verified publisher archive is configured. Select an installed executable or Skip.');
-                            const accepted = await ctx.ui.confirm(`Install ${spec.title}?`, `${spec.terms}\n\nDownload: ${spec.archive.url}\nBytes: ${spec.archive.bytes}\nSHA-256: ${spec.archive.sha256}\nScope: private runtime files under ${runtime.home}; then an isolated local capability test. No upstream installer or hook runs.`, { signal: controller.signal });
+                            const accepted = await ctx.ui.confirm(`Install ${spec.title}?`, `${spec.terms}\n\n${archives.map(archive => `Download: ${archive.url}\nBytes: ${archive.bytes}\nSHA-256: ${archive.sha256}`).join('\n\n')}\nScope: private runtime files under ${runtime.home}; then an isolated local capability test. No upstream installer or hook runs.`, { signal: controller.signal });
                             if (!accepted)
                                 continue;
-                            await installRuntime(runtime.home, runtime.binding.releaseId, spec, controller.signal, progress);
+                            await installRuntime(runtime.home, runtime.binding.releaseId, spec, controller.signal, progress, undefined, spec.id === 'playwright-mcp' ? privateRuntimeNode(runtime) : undefined);
                         }
                         else {
-                            const file = await ctx.ui.input(`Absolute path to ${spec.title}`, undefined, { signal: controller.signal });
+                            const file = await ctx.ui.input(`Absolute ${spec.id === 'playwright-mcp' ? 'exact selected tree root containing node_modules' : 'executable path'} for ${spec.title}`, undefined, { signal: controller.signal });
                             if (!file)
                                 continue;
-                            const accepted = await ctx.ui.confirm(`Bind ${spec.title}?`, `${spec.terms}\n\nSelected executable: ${file}\nMirket will execute this tool in a disposable private test directory, record its bytes and recheck them before jobs. The tool is not sandboxed. This grants no project output operation.`, { signal: controller.signal });
+                            const treeRoot = spec.id === 'browser-chromium' ? await ctx.ui.input('Absolute browser .app tree root containing this executable', undefined, { signal: controller.signal }) : undefined;
+                            if (spec.id === 'browser-chromium' && !treeRoot) continue;
+                            const accepted = await ctx.ui.confirm(`Bind ${spec.title}?`, `${spec.terms}\n\nSelected ${spec.id === 'playwright-mcp' ? 'tree' : 'executable'}: ${file}${treeRoot ? `\nSelected browser tree: ${treeRoot}` : ''}\nMirket will execute this tool in a disposable private test directory, record ${spec.id === 'chromium' ? 'its executable bytes' : 'all selected tree members and bytes'} and recheck them before jobs.${spec.id === 'playwright-mcp' ? ' The check starts the separately selected browser on a disposable loopback page and verifies JavaScript plus an MCP snapshot.' : ''} The tool is not sandboxed. This grants no project output operation.`, { signal: controller.signal });
                             if (!accepted)
                                 continue;
-                            await bindRuntime(runtime.home, runtime.binding.releaseId, spec, file, controller.signal, progress);
+                            await bindRuntime(runtime.home, runtime.binding.releaseId, spec, file, controller.signal, progress, { ...(treeRoot ? { treeRoot } : {}), ...(spec.id === 'playwright-mcp' ? { node: privateRuntimeNode(runtime) } : {}) });
                         }
                         complete = true;
                         ctx.ui.notify(`${spec.title} is ready. Reload Pi to reconnect the runtime.`, 'info');

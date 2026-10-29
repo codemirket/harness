@@ -73,7 +73,7 @@ enum OperationKind {
 }
 
 enum PendingOperation {
-    Diagram(crate::diagram::D2Layout),
+    Diagram(crate::diagram::D2Layout, crate::diagram::D2OutputFormat),
     Design(crate::design::DesignOperation),
 }
 
@@ -445,7 +445,12 @@ impl Engine {
         Ok(())
     }
     fn report(id: &str, r: &Receipt) -> Value {
-        json!({"operation_id":id,"kind":r.kind,"release_id":r.release_id,"project_root":r.project_root,"source_path":r.source_path,"destination_path":r.destination_path,"source_revision":r.source_revision,"status":r.state.status,"effect":r.state.effect,"artifact_revision":r.artifact_revision,"error":r.error,"expires_at":r.expires_at,"scratch_cleanup":r.scratch_cleanup,"queue_wait_ms":r.queue_wait_ms})
+        let mut report = json!({"operation_id":id,"kind":r.kind,"release_id":r.release_id,"project_root":r.project_root,"source_path":r.source_path,"destination_path":r.destination_path,"source_revision":r.source_revision,"status":r.state.status,"effect":r.state.effect,"artifact_revision":r.artifact_revision,"error":r.error,"expires_at":r.expires_at,"scratch_cleanup":r.scratch_cleanup,"queue_wait_ms":r.queue_wait_ms});
+        if r.kind == OperationKind::Diagram {
+            report["output_format"] =
+                json!(r.destination_path.extension().and_then(|v| v.to_str()));
+        }
+        report
     }
     fn load(&self, args: &JobArgs) -> Result<Receipt, String> {
         let scope = ProjectScope::open(&args.project_root).map_err(err)?;
@@ -695,8 +700,8 @@ impl Engine {
         owned: &mut Option<JobScratch>,
     ) -> Result<(), String> {
         *owned = Some(match &pending.operation {
-            PendingOperation::Diagram(_) => {
-                JobScratch::create_named(&self.state_root, id, "source.d2", "result.svg")?
+            PendingOperation::Diagram(_, format) => {
+                JobScratch::create_named(&self.state_root, id, "source.d2", format.stage_name())?
             }
             PendingOperation::Design(operation) => {
                 let (source_name, output_name) = match operation {
@@ -754,7 +759,7 @@ impl Engine {
         let source_revision = r.source_revision.clone();
         let mut on_running = |wait_ms| self.record_running(id, r, &cancel, wait_ms);
         let (expected_revision, output_limit) = match &pending.operation {
-            PendingOperation::Diagram(layout) => {
+            PendingOperation::Diagram(layout, format) => {
                 let executable = self
                     .payload
                     .diagram
@@ -774,7 +779,7 @@ impl Engine {
                             source_revision: source_revision.clone(),
                             output_path: output.clone(),
                             layout: *layout,
-                            output_format: crate::diagram::D2OutputFormat::Svg,
+                            output_format: *format,
                             timeout_ms: 30_000,
                             max_output_bytes: crate::diagram::MAX_OUTPUT_BYTES,
                         },
@@ -1059,6 +1064,7 @@ impl JobScratch {
                 (source_name, output_name),
                 ("source.txt", "result.txt")
                     | ("source.d2", "result.svg")
+                    | ("source.d2", "result.png")
                     | ("source.json", "result.css")
                     | ("source.json", "result.json")
                     | ("source.svg", "result.svg")

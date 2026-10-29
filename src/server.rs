@@ -100,7 +100,7 @@ impl Server {
             "runtime_tools":crate::runtime_tools::status(self.engine.state_root(), self.engine.release.as_str(), &self.engine.payload),
             "code_source_inspection":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx"],"coverage":"revision-bound TypeScript 5.9.3 syntax structure with explicit incomplete/refused locations; no semantic navigation"},
             "code_navigation":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx","ts_declaration"],"coverage":"revision-bound TypeScript 5.9.3 selected-source definitions/references with explicit import bindings and declaration snapshots; no project discovery or whole-project completeness claim"},
-            "diagrams":{"configured":self.engine.payload.diagram.is_some(),"coverage":"revision-bound local D2 to self-contained SVG with Dagre, ELK or TALA on macOS ARM64"},
+            "diagrams":{"configured":self.engine.payload.diagram.is_some(),"coverage":"revision-bound local D2 to self-contained SVG (default) or directly decoded PNG, at most 2048 by 2048 pixels, with Dagre, ELK or TALA on macOS ARM64"},
             "design":{"configured":self.engine.payload.design.is_some(),"raster_configured":self.engine.payload.design.as_ref().is_some_and(|payload| payload.raster_module.is_some()),"openpencil_editable_file_configured":self.engine.payload.openpencil.is_some(),"coverage":"bounded token CSS/JSON compilation and SVG optimization through a private adapter; SVG-to-PNG through a private Rust renderer; finite PNG/JPEG/WebP/AVIF resize/re-encode only when an explicit private Sharp module is selected; OpenPencil editable .fig create/patch/SVG export with components, fixed single-line text and fixed-size no-wrap horizontal/vertical layout when its separately admitted runtime is configured"},
             "video":{"configured":self.engine.payload.video.is_some(),"max_output_bytes":crate::video::MAX_OUTPUT_BYTES,"max_work_bytes":crate::video::MAX_WORK_BYTES,"coverage":"revision-bound editable HTML and selected assets to a streamed new video artifact; scratch is a sampled abort budget, not a disk reservation; the selected local component requires exact verified Chrome, HyperFrames and FFmpeg bytes"},
             "limits":["no in-place publication yet","Windows native execution and project identity unqualified","owned finite D2/design jobs and lazy embedding sessions; arbitrary process trees unqualified","semantic recall has passed frozen macOS ARM64 retrieval gates; broader generalization and Windows remain unqualified","pi product release qualification pending"],
@@ -130,7 +130,7 @@ impl Server {
         result(self.engine.navigate_code(a, context.ct.cancelled()).await)
     }
     #[tool(
-        description = "Prepare a revision-bound local .d2 to new .svg diagram render using the private D2 runtime. Select Dagre, ELK or TALA. At most 1 MiB UTF-8 source and 16 MiB output. Rejects imports and external assets; no process starts until diagram_render_start.",
+        description = "Prepare a revision-bound local .d2 to a new diagram copy using the private D2 runtime. Select output_format svg (default) or png and a matching destination extension; select Dagre, ELK or TALA. At most 1 MiB UTF-8 source and 16 MiB output; PNG is decoded and bounded to 2048 by 2048 pixels. Rejects imports and external assets; no process starts until diagram_render_start.",
         annotations(read_only_hint = false, destructive_hint = false)
     )]
     async fn diagram_render_prepare(
@@ -145,7 +145,7 @@ impl Server {
         )
     }
     #[tool(
-        description = "Start only an issued D2 render intent through the shared owned worker; publish a verified new SVG copy and keep an inspectable receipt. Repeated calls inspect the same operation.",
+        description = "Start only an issued D2 render intent through the shared owned worker; publish a verified new SVG or PNG copy and keep an inspectable receipt. Repeated calls inspect the same operation.",
         annotations(read_only_hint = false, destructive_hint = false)
     )]
     async fn diagram_render_start(&self, Parameters(a): Parameters<JobArgs>) -> CallToolResponse {

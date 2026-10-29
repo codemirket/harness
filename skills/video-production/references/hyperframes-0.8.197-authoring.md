@@ -94,8 +94,8 @@ adapter requirements, not defects or universal rules of HyperFrames.
 
 ## Anime and other authored motion
 
-If the composition uses the admitted local Anime.js **4.5.0** UMD bundle, keep
-the created v4 animation instance in
+If the composition selects a local Anime.js **4.5.0** UMD bundle (absent from
+Mirket's default package), keep the created v4 animation instance in
 `window.__hfAnime` so HyperFrames can discover and seek it at each frame:
 
 ```html
@@ -115,6 +115,14 @@ must be selected and revision-bound. A successful render with an unregistered
 Anime instance can leave the intended object frozen while unrelated CSS/WAAPI
 content still changes. Inspect the intended object's first, middle and final
 decoded frames; whole-frame hashes, status and a moving neighbor are not enough.
+
+For an opening hold, do not assume `anime.animate(..., {delay: ...})` preserves
+the delay when HyperFrames seeks the instance. In the local [Anime/HyperFrames
+pilot](../../../docs/tool-pilots-20261029.md), a one-second delay advanced the
+subject too early in decoded output; registering an
+`anime.createTimeline({autoplay:false})` with the animation added at a 1000 ms
+offset restored the hold. Check early and late decoded positions as well as
+the first, middle and final frames before claiming timing fidelity.
 
 CSS/WAAPI motion may use `data-no-timeline`, but still needs a normal-speed
 playback and decoded-frame check. This pinned runtime has separate CSS and
@@ -188,7 +196,9 @@ existing `motion-direction` shot card when a new sequence needs direction.
    `path`, `sha256:`-prefixed `revision` and byte count `bytes`. Select the entry
    and every referenced asset; regenerate revisions after an edit. This uses
    the checkout's compiled adapter and reports static validity only.
-3. Inspect the affected source state in the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool before a full render.
+3. Inspect the affected source state with the project's installed browser test
+   tool, or a Pi-owned Playwright MCP peer only when explicitly configured and
+   qualified with an isolated profile, before a full render.
    For CSS/WAAPI frame inspection in this checkout, the existing
    `scripts/create-motion-preview.mjs --project ABS_PROJECT --entry ABS_HTML
    --motion ABS_MOTION_JSON --output ABS_NEW_PREVIEW` uses the profile described
@@ -203,8 +213,10 @@ existing `motion-direction` shot card when a new sequence needs direction.
    Report unavailable routes or host approval denial rather than bypassing them.
 5. Probe and decode the actual output using the selected private FFprobe/FFmpeg
    paths and the recipe above. Inspect changed beats and their neighbours,
-   exercise affected UI separately in the admitted Playwright MCP peer with an isolated profile, or the project’s installed browser test tool, and record playback
-   observations. Repair only a demonstrated defect within the shared task budget,
+   exercise affected UI separately with the project's installed browser test
+   tool or an explicitly configured and qualified Pi-owned Playwright MCP peer
+   with an isolated profile, and record playback observations. Repair only a
+   demonstrated defect within the shared task budget,
    then repeat the affected checks. Preserve the previous artifact and findings.
 
 A short handoff in the existing project README is enough: `completed: CTA edit

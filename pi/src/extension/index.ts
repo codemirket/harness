@@ -10,7 +10,9 @@ import { classifyMirketTool, needsAuthorization, authorized, grant } from './aut
 import { registerResearch } from './research.js';
 import { registerWorkflow } from './workflow.js';
 import {createOnboarding} from './onboarding.js';
-import {assertRuntimeTools} from './runtime-tools.js';
+import {assertRuntimeTools, runtimeBrowserBindings} from './runtime-tools.js';
+import {createBrowserController} from './browser.js';
+import {browserOrigin} from './browser-policy.js';
 
 const packageRoot = fileURLToPath(new URL('../../', import.meta.url));
 export default function mirket(pi: ExtensionAPI): void {
@@ -20,6 +22,7 @@ export default function mirket(pi: ExtensionAPI): void {
   let observedRelease: string | undefined;
   let nativeFailure: string | undefined;
   const onboarding=createOnboarding(pi,packageRoot,()=>runtime);
+  const browser=createBrowserController(pi,()=>runtime,getAgentDir);
   registerResearch(pi,()=>runtime);
   registerWorkflow(pi,packageRoot,()=>runtime);
   function report() {
@@ -43,12 +46,14 @@ export default function mirket(pi: ExtensionAPI): void {
     }
     return {status: issues.length ? 'not_ready' : 'ready', issues, releaseId: runtime?.binding.releaseId, project: runtime?.cwd,
       runtimeTools:onboarding.status(),
+      browser:browser.status(),
       selectedSkills: pi.getCommands().filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot)).map(command => command.name), model: 'host-owned', nativeOnly: false};
   }
   pi.on('session_start', async (_event, ctx) => {
     onboarding.cancel();
     const current = ++generation;
     runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
+    await browser.revoke('Pi session changed').catch(error => { ctx.ui.notify(`Browser cleanup failed: ${String(error)}`, 'warning'); });
     pi.unregisterMcpServer('mirket');
     try {
       const binding = readBinding(packageRoot);
@@ -70,10 +75,11 @@ export default function mirket(pi: ExtensionAPI): void {
       ctx.ui.notify(`Mirket unavailable: ${failure}`, 'warning');
     }
   });
-  pi.on('session_shutdown', () => {
+  pi.on('session_shutdown', async () => {
     onboarding.cancel();
     ++generation; runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
-    pi.unregisterMcpServer('mirket');
+    try {await browser.revoke('Pi session ended');}
+    finally {pi.unregisterMcpServer('mirket');}
   });
   pi.on('tool_call', async (event, ctx) => {
     if (!event.toolName.startsWith('mcp__mirket__')) return;
@@ -115,6 +121,22 @@ export default function mirket(pi: ExtensionAPI): void {
     if(args.trim()==='setup'||args.trim().startsWith('setup ')){await onboarding.setup(args.trim().slice(5).trim(),ctx);return;}
     if (args.trim() !== 'doctor') throw new Error('Usage: /mirket setup | /mirket doctor');
     pi.sendMessage({customType: 'mirket-doctor', content: JSON.stringify(report(), null, 2), display: true});
+  }});
+  pi.registerCommand('mirket-browser', {description: 'Authorize one local browser origin: open http://127.0.0.1:PORT | revoke | status', handler: async (args,ctx) => {
+    const command=args.trim();
+    if(command==='status') {pi.sendMessage({customType:'mirket-browser',content:JSON.stringify(browser.status(),null,2),display:true});return;}
+    if(command==='revoke') {await browser.revoke('User revoked browser authorization');pi.sendMessage({customType:'mirket-browser',content:JSON.stringify(browser.status(),null,2),display:true});return;}
+    if(!command.startsWith('open ')||command.slice(5).trim()!==command.slice(5)) throw new Error('Usage: /mirket-browser open http://127.0.0.1:PORT | revoke | status');
+    if(ctx.mode!=='tui'||!ctx.hasUI) throw new Error('Open the scoped browser session from Pi TUI');
+    const selected=runtime, current=generation;
+    if(!selected||realpathSync(ctx.cwd)!==selected.cwd) throw new Error('No verified runtime bound to this project');
+    const origin=browserOrigin(command.slice(5));
+    const bindings=runtimeBrowserBindings(selected);
+    const accepted=await ctx.ui.confirm('Authorize local browser session?',JSON.stringify({project:selected.cwd,origin,peerPath:bindings.peerPath,peerIdentity:bindings.peerIdentity,browserPath:bindings.browserPath,browserIdentity:bindings.browserIdentity,expiresInSeconds:300,maxCalls:64,network:'One literal loopback HTTP origin, GET/HEAD only. Opening the page requests its subresources; GET may change the local application. This is not an OS sandbox.'},null,2),{timeout:60000});
+    if(!accepted) throw new Error('Browser authorization denied');
+    if(current!==generation||runtime!==selected) throw new Error('Pi session changed during browser authorization');
+    const result=await browser.open(origin,ctx,{expected:{peerPath:bindings.peerPath,peerIdentity:bindings.peerIdentity,browserPath:bindings.browserPath,browserIdentity:bindings.browserIdentity}});
+    pi.sendMessage({customType:'mirket-browser',content:JSON.stringify(result,null,2),display:true});
   }});
   pi.registerCommand('mirket-profile', {description: 'Select Mirket package skills: global|project profile names; +skill selects an exact ID', handler: async (args, ctx) => {
     const [scope, ...selections] = args.trim().split(/\s+/);

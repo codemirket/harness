@@ -52,3 +52,32 @@ test('platform mismatch refuses before any download',async()=>{const f=fixture()
 test('wrong Chrome version refuses before saving a binding',async()=>{const f=fixture();try{const executable=path.join(f.home,'old-chrome.mjs');fakeChrome(executable);await assert.rejects(bindRuntime(f.home,'release-1',{...spec,version:'155.0.0.0'},executable,new AbortController().signal,()=>{}),/Chrome 155\.0\.0\.0 is required/);assert.equal(fs.existsSync(path.join(f.home,'runtime-tools.json')),false);assert.deepEqual(fs.readdirSync(f.home).filter(name=>name.startsWith('.runtime-probe')),[]);}finally{f.close();}});
 
 test('correct executed DOM with nonzero Chrome teardown still refuses the binding',async()=>{const f=fixture();try{const executable=path.join(f.home,'teardown-failure.mjs');fakeChrome(executable);fs.appendFileSync(executable,'process.exitCode=2;\n');await assert.rejects(bindRuntime(f.home,'release-1',spec,executable,new AbortController().signal,()=>{}),/Capability check failed \(2\)/);assert.equal(fs.existsSync(path.join(f.home,'runtime-tools.json')),false);assert.deepEqual(fs.readdirSync(f.home).filter(name=>name.startsWith('.runtime-probe')),[]);}finally{f.close();}});
+
+test('separate browser binding preserves video selection and refuses whole-app byte/member/link drift',async()=>{
+ const f=fixture();try{
+ const app=path.join(f.home,'Chosen.app');fs.mkdirSync(app);const executable=path.join(app,'browser.mjs');fakeChrome(executable);const resource=path.join(app,'resource');fs.writeFileSync(resource,'initial');
+ skipRuntime(f.home,'release-1','chromium');const browserSpec={...spec,id:'browser-chromium'};
+ await bindRuntime(f.home,'release-1',browserSpec,executable,new AbortController().signal,()=>{},{treeRoot:app});
+ assert.deepEqual(JSON.parse(fs.readFileSync(path.join(f.home,'runtime-tools.json'))).tools.chromium,{choice:'skip'});
+ const runtime={home:f.home,binding:{releaseId:'release-1'}};assertRuntimeTools(runtime,['browser-chromium']);
+ fs.writeFileSync(resource,'changed');assert.throws(()=>assertRuntimeTools(runtime,['browser-chromium']),/identity changed/);fs.writeFileSync(resource,'initial');
+ fs.writeFileSync(path.join(app,'added'),'unexpected');assert.equal(runtimeToolStatus(f.home,'release-1',[browserSpec])[0].status,'changed');fs.unlinkSync(path.join(app,'added'));
+ fs.symlinkSync('/etc/passwd',path.join(app,'escape'));await assert.rejects(bindRuntime(f.home,'release-1',browserSpec,executable,new AbortController().signal,()=>{},{treeRoot:app}),/link escapes/);
+ }finally{f.close();}
+});
+
+test('non-executable peer source uses explicit Node, joint MCP capability and selected-tree identity',async()=>{
+ const f=fixture();try{
+ const app=path.join(f.home,'Browser.app');fs.mkdirSync(app);const browser=path.join(app,'browser.mjs');fakeChrome(browser);
+ await bindRuntime(f.home,'release-1',{...spec,id:'browser-chromium'},browser,new AbortController().signal,()=>{},{treeRoot:app});
+ const tree=path.join(f.home,'peer');fs.mkdirSync(tree);const source=`if(process.argv.includes('--version')){console.log('Version 0.0.83');process.exit(0);}if(process.argv.includes('--help')){console.log('--executable-path --isolated --config');process.exit(0);}const {createInterface}=require('node:readline');const input=createInterface({input:process.stdin});input.on('line',line=>{const message=JSON.parse(line);if(!message.id)return;const result=message.method==='initialize'?{protocolVersion:'2024-11-05',capabilities:{tools:{}},serverInfo:{name:'fixture',version:'0.0.83'}}:{content:[{type:'text',text:'mirket-playwright-capability-ready'}]};console.log(JSON.stringify({jsonrpc:'2.0',id:message.id,result}));});`;
+ const relative='node_modules/@playwright/mcp/cli.cjs',cli=path.join(tree,relative);fs.mkdirSync(path.dirname(cli),{recursive:true});fs.writeFileSync(cli,source,{mode:0o600});
+ const selected={id:'playwright-mcp',target:spec.target,title:'Protocol fixture server, not upstream qualification',version:'0.0.83',terms:'fixture',executable:relative,files:[{path:relative,bytes:Buffer.byteLength(source),sha256:hash(Buffer.from(source)),mode:0o600}]};
+ const shadow=path.join(tree,'node_modules/@playwright/mcp/node_modules/playwright-core');fs.mkdirSync(shadow,{recursive:true});fs.writeFileSync(path.join(shadow,'package.json'),'{"version":"1.64.0-alpha-1790635538000"}');
+ await assert.rejects(bindRuntime(f.home,'release-1',selected,tree,new AbortController().signal,()=>{},{node:process.execPath}),/unselected members/);assert.equal(JSON.parse(fs.readFileSync(path.join(f.home,'runtime-tools.json'))).tools['playwright-mcp'],undefined);
+ fs.rmSync(path.join(tree,'node_modules/@playwright/mcp/node_modules'),{recursive:true});
+ await bindRuntime(f.home,'release-1',selected,tree,new AbortController().signal,()=>{},{node:process.execPath});
+ const runtime={home:f.home,binding:{releaseId:'release-1'}};assertRuntimeTools(runtime,['playwright-mcp']);
+ fs.writeFileSync(path.join(tree,'extra.txt'),'unselected addition');assert.throws(()=>assertRuntimeTools(runtime,['playwright-mcp']),/tree identity changed/);
+ }finally{f.close();}
+});

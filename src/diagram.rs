@@ -42,10 +42,28 @@ impl D2Layout {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum D2OutputFormat {
+    #[default]
     Svg,
+    Png,
+}
+
+impl D2OutputFormat {
+    pub const fn extension(self) -> &'static str {
+        match self {
+            Self::Svg => "svg",
+            Self::Png => "png",
+        }
+    }
+
+    pub const fn stage_name(self) -> &'static str {
+        match self {
+            Self::Svg => "result.svg",
+            Self::Png => "result.png",
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
@@ -82,7 +100,8 @@ impl D2RenderRequest {
             return Err(D2RequestError::InvalidPath);
         }
         if self.input_path.extension().and_then(|v| v.to_str()) != Some("d2")
-            || self.output_path.extension().and_then(|v| v.to_str()) != Some("svg")
+            || self.output_path.extension().and_then(|v| v.to_str())
+                != Some(self.output_format.extension())
         {
             return Err(D2RequestError::InvalidPath);
         }
@@ -115,10 +134,12 @@ impl fmt::Display for D2RequestError {
         f.write_str(match self {
             Self::UnsupportedProtocol => "unsupported D2 protocol version",
             Self::InvalidIdentity => "release and job identifiers must be bounded safe tokens",
-            Self::InvalidPath => "D2 paths must be absolute, canonical, job-scoped .d2/.svg paths",
+            Self::InvalidPath => {
+                "D2 paths must be absolute, canonical, job-scoped .d2 and matching .svg/.png paths"
+            }
             Self::InvalidRevision => "source revision must be sha256:<lowercase 64-hex>",
             Self::InvalidTimeout => "D2 timeout must be between 1ms and 60000ms",
-            Self::InvalidOutputBudget => "D2 SVG output budget must be between 1 and 16MiB",
+            Self::InvalidOutputBudget => "D2 output budget must be between 1 and 16MiB",
             Self::UnsafeSource => "D2 source contains an import or external asset reference",
         })
     }
@@ -363,6 +384,92 @@ fn safe_absolute_path(path: &Path) -> bool {
             .all(|component| matches!(component, Component::RootDir | Component::Normal(_)))
 }
 
+/// The direct D2 PNG route uses the existing raster allocation budget. Check
+/// the complete chunk envelope before the existing decoder allocates pixels.
+/// Only native D2's RGB/RGBA, non-interlaced PNG and bounded EXIF are admitted;
+/// compressed metadata and animated/unknown chunks cannot reach the decoder.
+pub fn validate_png(bytes: &[u8]) -> Result<(), &'static str> {
+    if bytes.len() > MAX_OUTPUT_BYTES || bytes.len() < 45 || &bytes[..8] != b"\x89PNG\r\n\x1a\n" {
+        return Err("D2 PNG signature/byte budget is invalid");
+    }
+    let mut cursor = 8usize;
+    let mut dimensions = None;
+    let mut saw_data = false;
+    let mut saw_exif = false;
+    while cursor < bytes.len() {
+        if bytes.len() - cursor < 12 {
+            return Err("D2 PNG chunk is truncated");
+        }
+        let length = u32::from_be_bytes(bytes[cursor..cursor + 4].try_into().unwrap()) as usize;
+        let end = cursor
+            .checked_add(12)
+            .and_then(|v| v.checked_add(length))
+            .filter(|v| *v <= bytes.len())
+            .ok_or("D2 PNG chunk extent is invalid")?;
+        let kind = &bytes[cursor + 4..cursor + 8];
+        let data = &bytes[cursor + 8..end - 4];
+        let crc = u32::from_be_bytes(bytes[end - 4..end].try_into().unwrap());
+        if png_crc(&bytes[cursor + 4..end - 4]) != crc {
+            return Err("D2 PNG chunk CRC is invalid");
+        }
+        if dimensions.is_none() && kind != b"IHDR" {
+            return Err("D2 PNG must start with IHDR");
+        }
+        match kind {
+            b"IHDR" if cursor == 8 && length == 13 => {
+                let width = u32::from_be_bytes(data[..4].try_into().unwrap());
+                let height = u32::from_be_bytes(data[4..8].try_into().unwrap());
+                if width == 0
+                    || height == 0
+                    || width > crate::design_raster::MAX_WIDTH
+                    || height > crate::design_raster::MAX_HEIGHT
+                    || u64::from(width) * u64::from(height) > crate::design_raster::MAX_PIXELS
+                    || data[8] != 8
+                    || !matches!(data[9], 2 | 6)
+                    || data[10..13] != [0, 0, 0]
+                {
+                    return Err("D2 PNG dimensions or pixel format exceed the raster contract");
+                }
+                dimensions = Some((width, height));
+            }
+            b"eXIf" if !saw_data && !saw_exif && length <= 1024 => saw_exif = true,
+            b"IDAT" => saw_data = true,
+            b"IEND" if length == 0 && end == bytes.len() && saw_data => {
+                let decoded = resvg::tiny_skia::Pixmap::decode_png(bytes)
+                    .map_err(|_| "D2 PNG pixel decoding failed")?;
+                if Some((decoded.width(), decoded.height())) != dimensions {
+                    return Err("D2 PNG decoded dimensions changed");
+                }
+                return Ok(());
+            }
+            _ => return Err("D2 PNG chunk is unsupported or out of order"),
+        }
+        cursor = end;
+    }
+    Err("D2 PNG end/data is missing")
+}
+
+fn png_crc(bytes: &[u8]) -> u32 {
+    const TABLE: [u32; 256] = {
+        let mut table = [0; 256];
+        let mut index = 0;
+        while index < 256 {
+            let mut crc = index as u32;
+            let mut bit = 0;
+            while bit < 8 {
+                crc = (crc >> 1) ^ (0xedb88320 & (0u32.wrapping_sub(crc & 1)));
+                bit += 1;
+            }
+            table[index] = crc;
+            index += 1;
+        }
+        table
+    };
+    !bytes.iter().fold(u32::MAX, |crc, byte| {
+        TABLE[((crc ^ u32::from(*byte)) & 255) as usize] ^ (crc >> 8)
+    })
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, JsonSchema, PartialEq, Serialize)]
 #[serde(tag = "status", rename_all = "snake_case", deny_unknown_fields)]
 pub enum D2RenderResult {
@@ -371,6 +478,7 @@ pub enum D2RenderResult {
         output_revision: String,
         output_bytes: usize,
         layout: D2Layout,
+        output_format: D2OutputFormat,
     },
     Refused {
         reason: D2Refusal,
@@ -410,9 +518,11 @@ pub fn validate_result(
         output_revision,
         output_bytes,
         layout,
+        output_format,
     } = result
         && (output_path != &request.output_path
             || layout != &request.layout
+            || output_format != &request.output_format
             || *output_bytes == 0
             || *output_bytes > request.max_output_bytes
             || !exact_revision(output_revision))
@@ -449,6 +559,74 @@ mod tests {
         let mut invalid = request();
         invalid.output_path = PathBuf::from("/tmp/result.svg");
         assert_eq!(invalid.validate(), Err(D2RequestError::InvalidPath));
+    }
+
+    #[test]
+    fn output_format_requires_matching_extension_and_rejects_unknown_values() {
+        let mut png = request();
+        png.output_format = D2OutputFormat::Png;
+        assert_eq!(png.validate(), Err(D2RequestError::InvalidPath));
+        png.output_path.set_extension("png");
+        assert!(png.validate().is_ok());
+        let mut value = serde_json::to_value(&png).unwrap();
+        value["output_format"] = serde_json::json!("pdf");
+        assert!(serde_json::from_value::<D2RenderRequest>(value).is_err());
+        let staged = D2RenderResult::Staged {
+            output_path: png.output_path.clone(),
+            output_revision: png.source_revision.clone(),
+            output_bytes: 1,
+            layout: png.layout,
+            output_format: D2OutputFormat::Svg,
+        };
+        assert!(validate_result(&png, &staged).is_err());
+    }
+
+    fn png_fixture() -> Vec<u8> {
+        resvg::tiny_skia::Pixmap::new(2, 3)
+            .unwrap()
+            .encode_png()
+            .unwrap()
+    }
+
+    fn repair_chunk_crc(bytes: &mut [u8], cursor: usize) {
+        let length = u32::from_be_bytes(bytes[cursor..cursor + 4].try_into().unwrap()) as usize;
+        let end = cursor + length + 12;
+        let crc = png_crc(&bytes[cursor + 4..end - 4]);
+        bytes[end - 4..end].copy_from_slice(&crc.to_be_bytes());
+    }
+
+    #[test]
+    fn png_checks_crc_dimensions_envelope_and_actual_pixels() {
+        let valid = png_fixture();
+        assert_eq!(validate_png(&valid), Ok(()));
+        let mut bad_crc = valid.clone();
+        bad_crc[29] ^= 1;
+        assert!(validate_png(&bad_crc).unwrap_err().contains("CRC"));
+        let mut oversized = valid.clone();
+        oversized[16..20].copy_from_slice(&2049u32.to_be_bytes());
+        repair_chunk_crc(&mut oversized, 8);
+        assert!(validate_png(&oversized).unwrap_err().contains("dimensions"));
+        let mut trailing = valid.clone();
+        trailing.push(0);
+        assert!(validate_png(&trailing).is_err());
+        assert!(validate_png(&valid[..valid.len() - 1]).is_err());
+        let mut corrupt_data = valid.clone();
+        let mut cursor = 33;
+        while &corrupt_data[cursor + 4..cursor + 8] != b"IDAT" {
+            cursor += u32::from_be_bytes(corrupt_data[cursor..cursor + 4].try_into().unwrap())
+                as usize
+                + 12;
+        }
+        corrupt_data[cursor + 8] = 0; // Invalid zlib header, but a valid chunk CRC.
+        repair_chunk_crc(&mut corrupt_data, cursor);
+        assert_eq!(
+            validate_png(&corrupt_data),
+            Err("D2 PNG pixel decoding failed")
+        );
+        let mut unknown_chunk = valid.clone();
+        unknown_chunk[12..16].copy_from_slice(b"acTL");
+        repair_chunk_crc(&mut unknown_chunk, 8);
+        assert!(validate_png(&unknown_chunk).is_err());
     }
 
     #[test]
