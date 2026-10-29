@@ -5,7 +5,7 @@ import {videoJourney} from './pi-video-journey.mjs';
 import {memoryJourney} from './pi-memory-journey.mjs';
 import {editableJourney} from './pi-editable-journey.mjs';
 import {seedTuiAuthorization} from './pi-tui-auth-seed.mjs';
-const [peers,root,packageName='package']=process.argv.slice(2);assert.ok(isAbsolute(peers)&&root.startsWith('/private/tmp/mirket-pi-package-'));assert.ok(['package','package-verified'].includes(packageName));
+const [peers,root,packageName='package']=process.argv.slice(2);assert.ok(isAbsolute(peers)&&/^\/private\/tmp\/mirket-(?:pi-package-|onboarding-qualification\.)/.test(root));assert.ok(['package','package-verified'].includes(packageName));
 const cwd=process.env.MIRKET_PI_MEMORY_TEST==='1'?join(root,'memory-project-'+Date.now()):join(root,'project'),agentDir=join(root,'agent'),packed=join(root,packageName);process.env.HOME=join(root,'home');process.env.PI_CODING_AGENT_DIR=agentDir;process.env.PI_CODING_AGENT_SESSION_DIR=join(root,'sessions');process.env.PI_SKIP_UPDATE_CHECK='1';process.env.PI_TELEMETRY_DISABLED='1';
 await fs.mkdir(cwd,{recursive:true,mode:0o700});
 const sdk=await import(pathToFileURL(join(peers,'@earendil-works/pi-coding-agent/dist/index.js')));const ai=await import(pathToFileURL(join(peers,'@earendil-works/pi-ai/dist/index.js')));

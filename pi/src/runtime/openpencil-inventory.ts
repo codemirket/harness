@@ -1,5 +1,5 @@
 // Private runtime pins. Generated from the independently reviewed selection.
-export const OPENPENCIL_SELECTION_SHA256 = "fd966b3140dfe08a47fbaa4481cebaecd4c1a79856b821edb2be2cf7b238fb0f";
+export const OPENPENCIL_SELECTION_SHA256 = "eee6ad5cfc22866f772add8b601dd1281f0c72d5ae285c39f09a5f98b6dae5b9";
 export const OPENPENCIL_FILES: ReadonlyArray<{ readonly path: string; readonly bytes: number; readonly sha256: string; readonly kind: string }> = [
   {
     "path": "node_modules/@iconify/utils/lib/colors/index.js",

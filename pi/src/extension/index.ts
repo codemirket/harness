@@ -9,6 +9,8 @@ import { readBinding, configuredOverride, verifyRuntime, type VerifiedRuntime } 
 import { classifyMirketTool, needsAuthorization, authorized, grant } from './authorization.js';
 import { registerResearch } from './research.js';
 import { registerWorkflow } from './workflow.js';
+import {createOnboarding} from './onboarding.js';
+import {assertRuntimeTools} from './runtime-tools.js';
 
 const packageRoot = fileURLToPath(new URL('../../', import.meta.url));
 export default function mirket(pi: ExtensionAPI): void {
@@ -17,6 +19,7 @@ export default function mirket(pi: ExtensionAPI): void {
   let failure = 'No active session';
   let observedRelease: string | undefined;
   let nativeFailure: string | undefined;
+  const onboarding=createOnboarding(pi,packageRoot,()=>runtime);
   registerResearch(pi,()=>runtime);
   registerWorkflow(pi,packageRoot,()=>runtime);
   function report() {
@@ -39,9 +42,11 @@ export default function mirket(pi: ExtensionAPI): void {
       if (observedRelease !== runtime.binding.releaseId) issues.push('Awaiting actual runtime_status identity');
     }
     return {status: issues.length ? 'not_ready' : 'ready', issues, releaseId: runtime?.binding.releaseId, project: runtime?.cwd,
+      runtimeTools:onboarding.status(),
       selectedSkills: pi.getCommands().filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot)).map(command => command.name), model: 'host-owned', nativeOnly: false};
   }
   pi.on('session_start', async (_event, ctx) => {
+    onboarding.cancel();
     const current = ++generation;
     runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
     pi.unregisterMcpServer('mirket');
@@ -66,6 +71,7 @@ export default function mirket(pi: ExtensionAPI): void {
     }
   });
   pi.on('session_shutdown', () => {
+    onboarding.cancel();
     ++generation; runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
     pi.unregisterMcpServer('mirket');
   });
@@ -77,6 +83,7 @@ export default function mirket(pi: ExtensionAPI): void {
       const override = configuredOverride(getAgentDir(), runtime.cwd);
       if (override) throw new Error(`Same-name MCP configuration: ${override}`);
       const input = event.input as Record<string, unknown>;
+      if (['mcp__mirket__video_prepare','mcp__mirket__video_start'].includes(event.toolName)) assertRuntimeTools(runtime,['chromium']);
       const scope = input.scope as {kind?: string; project_root?: string} | undefined;
       const selected = input.project_root ?? (scope?.kind === 'project' ? scope.project_root : undefined);
       if (selected !== undefined && (typeof selected !== 'string' || realpathSync(selected) !== runtime.cwd)) {
@@ -104,8 +111,9 @@ export default function mirket(pi: ExtensionAPI): void {
     grant(runtime,request.tool,request.args);
     pi.sendMessage({customType:'mirket-authorization',content:JSON.stringify({tool:request.tool,project:runtime.cwd,expiresInSeconds:300}),display:true});
   }});
-  pi.registerCommand('mirket', {description: 'Mirket session integration doctor', handler: async (args) => {
-    if (args.trim() !== 'doctor') throw new Error('Usage: /mirket doctor');
+  pi.registerCommand('mirket', {description: 'Mirket runtime setup and session doctor: setup | doctor', handler: async (args,ctx) => {
+    if(args.trim()==='setup'||args.trim().startsWith('setup ')){await onboarding.setup(args.trim().slice(5).trim(),ctx);return;}
+    if (args.trim() !== 'doctor') throw new Error('Usage: /mirket setup | /mirket doctor');
     pi.sendMessage({customType: 'mirket-doctor', content: JSON.stringify(report(), null, 2), display: true});
   }});
   pi.registerCommand('mirket-profile', {description: 'Select Mirket package skills: global|project profile names; +skill selects an exact ID', handler: async (args, ctx) => {

@@ -7,7 +7,7 @@ use std::path::{Component, Path, PathBuf};
 pub const MAX_FILES: usize = 128;
 pub const MAX_SOURCE_BYTES: usize = 16 * 1024 * 1024;
 // Video bodies are streamed through fixed-size buffers. At ten minutes this
-// permits about 28 Mbit/s, while remaining finite for two admitted heavy jobs.
+// permits about 28 Mbit/s, while remaining finite for two authorized heavy jobs.
 pub const MAX_OUTPUT_BYTES: usize = 2 * 1024 * 1024 * 1024;
 // PNG exports retain frames while building the tar: two output extents plus
 // 1 GiB for producer intermediates, profile/cache, sources and diagnostics.
@@ -19,9 +19,21 @@ pub const MAX_FRAMES: u32 = 18_000;
 pub struct VideoPayload {
     pub node: PathBuf,
     pub adapter: PathBuf,
+    /// Empty in a release template until explicit setup binds rendering Chrome.
+    /// Installed runtime resolution never exposes an incomplete template for jobs.
     pub chromium: PathBuf,
     pub ffmpeg: PathBuf,
     pub ffprobe: PathBuf,
+}
+
+impl VideoPayload {
+    /// A template can ship the adapter before external tools are selected.
+    /// Identity and capabilities are checked separately by setup and at use.
+    pub fn tools_configured(&self) -> bool {
+        [&self.chromium, &self.ffmpeg, &self.ffprobe]
+            .into_iter()
+            .all(|path| path.is_absolute())
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, JsonSchema, PartialEq, Eq)]
@@ -115,7 +127,7 @@ pub struct VideoPrepareArgs {
     pub assets: Vec<VideoAsset>,
     pub destination_path: PathBuf,
     /// Development export profile with finite file-backed output/scratch budgets.
-    /// Source integration is not release admission or measured long-video support.
+    /// Source integration does not establish measured long-video support.
     pub profile: VideoProfile,
 }
 
@@ -186,6 +198,25 @@ pub fn relative(path: &Path) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn video_template_requires_explicit_absolute_tool_paths() {
+        let root = std::env::temp_dir();
+        let mut payload = VideoPayload {
+            node: root.join("node"),
+            adapter: root.join("video-main.js"),
+            chromium: PathBuf::new(),
+            ffmpeg: root.join("ffmpeg"),
+            ffprobe: root.join("ffprobe"),
+        };
+        assert!(!payload.tools_configured());
+        payload.chromium = PathBuf::from("chrome");
+        assert!(!payload.tools_configured());
+        payload.chromium = root.join("selected-chrome");
+        assert!(payload.tools_configured());
+        payload.ffprobe = PathBuf::new();
+        assert!(!payload.tools_configured());
+    }
+
     #[test]
     fn rational_profile_and_asset_bounds_refuse_unsafe_work() {
         let mut p = VideoProfile {

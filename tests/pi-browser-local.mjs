@@ -10,7 +10,7 @@ import {makeFixtureProvider} from './pi-offline-provider.mjs';
 const [peers,root,browserRoot]=process.argv.slice(2);
 assert.ok(isAbsolute(peers)&&root.startsWith('/private/tmp/mirket-pi-browser-')&&isAbsolute(browserRoot));
 const sha=b=>createHash('sha256').update(b).digest('hex');
-const inventory=JSON.parse(await fs.readFile(new URL('../packaging/admission/m3-browser-cft-macos-arm64.json',import.meta.url)));
+const inventory=JSON.parse(await fs.readFile(new URL('../packaging/runtime/chrome-macos.json',import.meta.url)));
 for(const f of inventory.files)assert.equal(sha(await fs.readFile(join(browserRoot,f.path))),f.sha256);
 for(const l of inventory.links)assert.equal(await fs.readlink(join(browserRoot,l.relative_path)),l.target);
 const install=JSON.parse(await fs.readFile(join(root,'installation-evidence.json')));

@@ -18,8 +18,7 @@ use std::path::{Component, Path, PathBuf};
 use std::sync::OnceLock;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-mod chrome_admission;
-mod video_candidate;
+mod video_runtime;
 
 pub const MANIFEST_NAME: &str = "manifest.json";
 const VERSION: &str = "0.0.1";
@@ -34,12 +33,12 @@ const SEMANTIC_ROOT: &str = "runtime/semantic";
 const DESIGN_ROOT: &str = "runtime/design";
 const RASTER_ROOT: &str = "runtime/design/raster";
 const RASTER_MODULE: &str = "runtime/design/raster/node_modules/sharp/dist/index.mjs";
-const RASTER_PROPOSAL_SHA256: &str =
-    "705cd057ebc0cc25c6cffe92d05d442663dad544dcd62b0e67cc30adae74e41b";
+const RASTER_INVENTORY_SHA256: &str =
+    "a5b41fc23c72382e2596449718f85d7d74a40b1e01b6187616889811fccf216b";
 const OPENPENCIL_ROOT: &str = "runtime/openpencil";
 const OPENPENCIL_ADAPTER: &str = "adapters/openpencil-main.js";
 const OPENPENCIL_RUNTIME_SHA256: &str =
-    "a86929a1380cd40bcfdf9a477d79b5a4f9f5fe489ad3d4a2f7e168b76328f0f9";
+    "9bc4e236ca5a5b65ea0c6ab8c562e24f6a95e9a72f04c2edbac51bd242f722b7";
 const DESIGN_ADAPTER: &str = "adapters/design-main.js";
 const DESIGN_OPERATIONS: &str = "adapters/design-operations.js";
 const CODE_INSPECT_ADAPTER: &str = "adapters/code-inspect-main.js";
@@ -147,24 +146,24 @@ fn io_error(operation: &'static str, source: io::Error) -> DistributionError {
     DistributionError::Io { operation, source }
 }
 
-// The admitted design inventory was assembled from its own frozen npm lock.
-// Development can add a separately inventoried video candidate to
-// the shared adapter lock, but cannot silently replace an admitted design
+// The design inventory was assembled from its frozen npm lock.
+// Development can add a separately inventoried video closure to
+// the shared adapter lock, but cannot silently replace a frozen design
 // package or its root dependency. Release layouts still gate their payloads.
-fn design_lock_preserved(admitted: &[u8], current: &[u8]) -> bool {
-    let (Ok(mut admitted), Ok(current)) = (
-        serde_json::from_slice::<serde_json::Value>(admitted),
+fn design_lock_preserved(frozen: &[u8], current: &[u8]) -> bool {
+    let (Ok(mut frozen), Ok(current)) = (
+        serde_json::from_slice::<serde_json::Value>(frozen),
         serde_json::from_slice::<serde_json::Value>(current),
     ) else {
         return false;
     };
-    // The pi package name is an admitted metadata-only layout change. All
+    // The pi package name is a metadata-only layout change. All
     // dependency entries remain byte-for-value equal to their frozen closure.
     if current.get("name").and_then(serde_json::Value::as_str) == Some("@codemirket/pi-harness") {
-        admitted["name"] = serde_json::json!("@codemirket/pi-harness");
-        admitted["packages"][""]["name"] = serde_json::json!("@codemirket/pi-harness");
+        frozen["name"] = serde_json::json!("@codemirket/pi-harness");
+        frozen["packages"][""]["name"] = serde_json::json!("@codemirket/pi-harness");
     }
-    let (Some(old), Some(now)) = (admitted.as_object(), current.as_object()) else {
+    let (Some(old), Some(now)) = (frozen.as_object(), current.as_object()) else {
         return false;
     };
     if old.len() != now.len()
@@ -230,7 +229,7 @@ impl VerifiedRelease {
             // A retained release can have an older authored skill revision. Its
             // catalog and provenance are still bound by the saved manifest and
             // every skill body is bound by that catalog. New source packages
-            // continue through the current compiled admission below.
+            // continue through the current compiled inventory below.
             let catalog = read_bounded_release_file(&root, SKILL_CATALOG, 2 * 1024 * 1024)?;
             let provenance = read_bounded_release_file(&root, SKILL_PROVENANCE, 1024 * 1024)?;
             let layout = layout_with_skill_sources(
@@ -260,7 +259,7 @@ impl VerifiedRelease {
             .ok_or(DistributionError::InvalidManifest)?
             .sha256
             .clone();
-        let video = video_candidate::payload(&root, layout.node, &manifest.components);
+        let video = video_runtime::payload(&root, layout.node, &manifest.components);
         Ok(Self {
             executable: root.join(layout.executable),
             executable_sha256,
@@ -373,7 +372,7 @@ impl VerifiedRelease {
     }
 }
 
-/// Derive the selected admitted inventory and exclusively create its manifest.
+/// Derive the selected frozen inventory and exclusively create its manifest.
 /// The caller owns this prepared release directory; no payload is installed,
 /// fetched or executed, and an existing manifest is never replaced.
 pub fn write_manifest(
@@ -470,7 +469,7 @@ struct Layout {
 }
 
 /// Only these unpinned file roles may change with an authored release. Pinned
-/// payload files instead use their exact compiled admission size.
+/// payload files instead use their exact compiled inventory size.
 #[derive(Clone, Copy)]
 enum UnpinnedFileRole {
     NativeExecutable,
@@ -526,7 +525,7 @@ impl Layout {
                 | "adapters/openpencil-operations.js"
                 | "adapters/openpencil-runtime.js"
                 | "adapters/openpencil-inventory.js" => UnpinnedFileRole::JavaScriptAdapter,
-                path if video_candidate::ADAPTER_FILES.contains(&path) => {
+                path if video_runtime::ADAPTER_FILES.contains(&path) => {
                     UnpinnedFileRole::JavaScriptAdapter
                 }
                 "runtime/node/LICENSE" => UnpinnedFileRole::LicenseNotice,
@@ -539,7 +538,7 @@ impl Layout {
 }
 
 #[derive(Deserialize)]
-struct D2Admission {
+struct D2Inventory {
     schema: u32,
     component: String,
     version: String,
@@ -564,7 +563,7 @@ struct D2Notices {
     third_party_sha256: String,
 }
 #[derive(Deserialize)]
-struct SemanticAdmission {
+struct SemanticInventory {
     schema: u32,
     runtime_version: String,
     provider: String,
@@ -591,7 +590,7 @@ struct SemanticFile {
     sha256: String,
 }
 #[derive(Deserialize)]
-struct DesignAdmission {
+struct DesignInventory {
     schema: u32,
     component: String,
     target: String,
@@ -626,10 +625,9 @@ struct DesignFont {
     license: String,
 }
 #[derive(Deserialize)]
-struct RasterCandidate {
+struct RasterSelection {
     schema: u32,
-    status: String,
-    release_admitted: bool,
+    component: String,
     target: String,
     node_module: String,
     archive_count: usize,
@@ -653,9 +651,8 @@ struct RasterInventory {
     files: Vec<DesignFile>,
 }
 #[derive(Deserialize)]
-struct OpenPencilAdmission {
+struct OpenPencilInventory {
     schema: u32,
-    admission_status: String,
     component: String,
     target: String,
     engine_version: String,
@@ -671,7 +668,7 @@ struct OpenPencilAdmission {
 #[derive(Deserialize)]
 struct OpenPencilSelection {
     schema: u32,
-    status: String,
+    component: String,
     name: String,
     engine_version: String,
     packages: Vec<serde_json::Value>,
@@ -764,28 +761,26 @@ fn design_payload(
 /// Freeze the exact upstream archive selection for local installation. No field
 /// in a supplied release manifest chooses these paths or changes these pins.
 /// Public redistribution remains a separate source/notice decision.
-fn extend_raster_candidate(result: &mut Layout) -> Result<(), DistributionError> {
-    let proposal =
-        include_bytes!("../packaging/admission/m4-raster-prebuilt-macos.runtime.json.proposed");
-    if hex(&Sha256::digest(proposal)) != RASTER_PROPOSAL_SHA256 {
+fn extend_raster_runtime(result: &mut Layout) -> Result<(), DistributionError> {
+    let source = include_bytes!("../packaging/runtime/raster.json");
+    if hex(&Sha256::digest(source)) != RASTER_INVENTORY_SHA256 {
         return Err(DistributionError::InvalidManifest);
     }
-    let candidate: RasterCandidate =
-        serde_json::from_slice(proposal).map_err(|_| DistributionError::InvalidManifest)?;
-    if candidate.schema != 1
-        || candidate.status != "upstream_archive_candidate_not_release_admitted"
-        || candidate.release_admitted
-        || candidate.target != MAC_TARGET
-        || candidate.node_module != RASTER_MODULE
-        || candidate.archive_count != 6
-        || candidate.archives.len() != 6
-        || candidate.runtime_inventory.regular_files != 125
-        || candidate.runtime_inventory.files.len() != 125
-        || candidate.runtime_inventory.regular_bytes != 19_698_667
+    let inventory: RasterSelection =
+        serde_json::from_slice(source).map_err(|_| DistributionError::InvalidManifest)?;
+    if inventory.schema != 1
+        || inventory.component != "raster"
+        || inventory.target != MAC_TARGET
+        || inventory.node_module != RASTER_MODULE
+        || inventory.archive_count != 6
+        || inventory.archives.len() != 6
+        || inventory.runtime_inventory.regular_files != 125
+        || inventory.runtime_inventory.files.len() != 125
+        || inventory.runtime_inventory.regular_bytes != 19_698_667
     {
         return Err(DistributionError::InvalidManifest);
     }
-    for (archive, (package, version)) in candidate.archives.iter().zip([
+    for (archive, (package, version)) in inventory.archives.iter().zip([
         ("sharp", "0.35.5"),
         ("@img/colour", "1.1.0"),
         ("detect-libc", "2.1.2"),
@@ -805,7 +800,7 @@ fn extend_raster_candidate(result: &mut Layout) -> Result<(), DistributionError>
         }
     }
     let mut bytes = 0u64;
-    for entry in candidate.runtime_inventory.files {
+    for entry in inventory.runtime_inventory.files {
         if !safe_relative(&entry.path)
             || !entry
                 .path
@@ -833,7 +828,7 @@ fn extend_raster_candidate(result: &mut Layout) -> Result<(), DistributionError>
             return Err(DistributionError::InvalidManifest);
         }
     }
-    if bytes != candidate.runtime_inventory.regular_bytes
+    if bytes != inventory.runtime_inventory.regular_bytes
         || !result.files.contains_key(RASTER_MODULE)
     {
         return Err(DistributionError::InvalidManifest);
@@ -882,34 +877,33 @@ fn layout_with_skill_sources(
         if !components.contains(&ReleaseComponent::Design) {
             return Err(DistributionError::InvalidManifest);
         }
-        extend_raster_candidate(&mut result)?;
+        extend_raster_runtime(&mut result)?;
     }
     if components.contains(&ReleaseComponent::Video) {
         if target != MAC_TARGET {
             return Err(DistributionError::UnsupportedTarget);
         }
-        chrome_admission::extend(&mut result, target)?;
-        video_candidate::extend(&mut result)?;
+        video_runtime::extend(&mut result)?;
     }
     if components.contains(&ReleaseComponent::Diagram) {
         if target != MAC_TARGET {
             return Err(DistributionError::UnsupportedTarget);
         }
-        let admission: D2Admission =
-            serde_json::from_str(include_str!("../packaging/admission/m4-d2.manifest.json"))
+        let inventory: D2Inventory =
+            serde_json::from_str(include_str!("../packaging/runtime/d2.json"))
                 .map_err(|_| DistributionError::InvalidManifest)?;
-        if admission.schema != 1
-            || admission.component != "d2"
-            || admission.version != crate::diagram::D2_VERSION
-            || admission.target != MAC_TARGET
-            || admission.license != "MPL-2.0"
-            || admission.notices.spdx_destination != D2_SPDX
-            || !valid_digest(&admission.notices.spdx_sha256)
+        if inventory.schema != 1
+            || inventory.component != "d2"
+            || inventory.version != crate::diagram::D2_VERSION
+            || inventory.target != MAC_TARGET
+            || inventory.license != "MPL-2.0"
+            || inventory.notices.spdx_destination != D2_SPDX
+            || !valid_digest(&inventory.notices.spdx_sha256)
         {
             return Err(DistributionError::InvalidManifest);
         }
         let mut found = BTreeSet::new();
-        for entry in admission.selected_files {
+        for entry in inventory.selected_files {
             let mode = match entry.destination.as_str() {
                 D2_EXECUTABLE if entry.mode == "0755" => 0o700,
                 D2_LICENSE | D2_THIRD_PARTY if entry.mode == "0644" => 0o600,
@@ -920,9 +914,9 @@ fn layout_with_skill_sources(
                 || (entry.destination == D2_EXECUTABLE
                     && entry.sha256 != crate::diagram::D2_MACOS_ARM64_SHA256)
                 || (entry.destination == D2_LICENSE
-                    && entry.sha256 != admission.notices.source_license_sha256)
+                    && entry.sha256 != inventory.notices.source_license_sha256)
                 || (entry.destination == D2_THIRD_PARTY
-                    && entry.sha256 != admission.notices.third_party_sha256)
+                    && entry.sha256 != inventory.notices.third_party_sha256)
             {
                 return Err(DistributionError::InvalidManifest);
             }
@@ -947,7 +941,7 @@ fn layout_with_skill_sources(
             D2_SPDX.into(),
             ExpectedFile {
                 mode: 0o600,
-                pin: Some((admission.notices.spdx_bytes, admission.notices.spdx_sha256)),
+                pin: Some((inventory.notices.spdx_bytes, inventory.notices.spdx_sha256)),
             },
         );
     }
@@ -955,29 +949,28 @@ fn layout_with_skill_sources(
         if target != MAC_TARGET {
             return Err(DistributionError::UnsupportedTarget);
         }
-        let admission: DesignAdmission = serde_json::from_str(include_str!(
-            "../packaging/admission/m4-design-chromium-macos.runtime.json"
-        ))
-        .map_err(|_| DistributionError::InvalidManifest)?;
-        let admitted_lock = include_bytes!("../packaging/admission/m4-design-package-lock.json");
+        let inventory: DesignInventory =
+            serde_json::from_str(include_str!("../packaging/runtime/design.json"))
+                .map_err(|_| DistributionError::InvalidManifest)?;
+        let frozen_lock = include_bytes!("../packaging/runtime/design-lock.json");
         let current_lock = include_bytes!("../pi/package-lock.json");
-        if admission.schema != 1
-            || admission.component != "design"
-            || admission.target != MAC_TARGET
-            || admission.source_lock_sha256 != hex(&Sha256::digest(admitted_lock))
-            || !design_lock_preserved(admitted_lock, current_lock)
-            || admission.file_count != admission.files.len()
-            || admission.font.path != DESIGN_FONT
-            || admission.font.bytes != 2_049_096
-            || admission.font.sha256
+        if inventory.schema != 1
+            || inventory.component != "design"
+            || inventory.target != MAC_TARGET
+            || inventory.source_lock_sha256 != hex(&Sha256::digest(frozen_lock))
+            || !design_lock_preserved(frozen_lock, current_lock)
+            || inventory.file_count != inventory.files.len()
+            || inventory.font.path != DESIGN_FONT
+            || inventory.font.bytes != 2_049_096
+            || inventory.font.sha256
                 != "bfb7bb691513f12e734dc346c03a03f784912432d7e3fa8e56efcf906fe86b3d"
-            || admission.font.license != "OFL-1.1"
+            || inventory.font.license != "OFL-1.1"
         {
             return Err(DistributionError::InvalidManifest);
         }
         let mut bytes = 0u64;
         let mut file_pins = BTreeMap::new();
-        for entry in admission.files {
+        for entry in inventory.files {
             if !safe_relative(&entry.path)
                 || entry.path.starts_with('.')
                 || entry.path.contains("/.bin/")
@@ -1000,7 +993,7 @@ fn layout_with_skill_sources(
                 },
             );
         }
-        if bytes != admission.total_bytes || admission.packages.len() != 126 {
+        if bytes != inventory.total_bytes || inventory.packages.len() != 126 {
             return Err(DistributionError::InvalidManifest);
         }
         let typescript_subset = [
@@ -1042,7 +1035,7 @@ fn layout_with_skill_sources(
         }
         let mut packages = BTreeMap::new();
         let mut missing_notices = Vec::new();
-        for package in admission.packages {
+        for package in inventory.packages {
             if !safe_relative(&package.path)
                 || package.name.is_empty()
                 || package.version.is_empty()
@@ -1083,7 +1076,7 @@ fn layout_with_skill_sources(
             }
         }
         missing_notices.sort();
-        if missing_notices.len() != 9 || missing_notices != admission.missing_embedded_notices {
+        if missing_notices.len() != 9 || missing_notices != inventory.missing_embedded_notices {
             return Err(DistributionError::InvalidManifest);
         }
         for (name, version) in [
@@ -1125,7 +1118,7 @@ fn layout_with_skill_sources(
             DESIGN_FONT.into(),
             ExpectedFile {
                 mode: 0o600,
-                pin: Some((admission.font.bytes, admission.font.sha256)),
+                pin: Some((inventory.font.bytes, inventory.font.sha256)),
             },
         );
     }
@@ -1133,35 +1126,32 @@ fn layout_with_skill_sources(
         if target != MAC_TARGET {
             return Err(DistributionError::UnsupportedTarget);
         }
-        let admission: OpenPencilAdmission = serde_json::from_str(include_str!(
-            "../packaging/admission/m4-openpencil-macos.runtime.json"
-        ))
-        .map_err(|_| DistributionError::InvalidManifest)?;
-        let selection_bytes =
-            include_bytes!("../packaging/admission/openpencil-editable.candidate.json");
+        let inventory: OpenPencilInventory =
+            serde_json::from_str(include_str!("../packaging/runtime/openpencil.json"))
+                .map_err(|_| DistributionError::InvalidManifest)?;
+        let selection_bytes = include_bytes!("../packaging/runtime/openpencil-selection.json");
         let selection: OpenPencilSelection = serde_json::from_slice(selection_bytes)
             .map_err(|_| DistributionError::InvalidManifest)?;
-        if admission.schema != 1
-            || admission.admission_status != "admitted"
-            || admission.component != "openpencil_editable_file"
-            || admission.target != MAC_TARGET
-            || admission.engine_version != crate::openpencil::ENGINE_VERSION
-            || admission.mode != crate::openpencil::MODE
-            || admission.selection_sha256
-                != "fd966b3140dfe08a47fbaa4481cebaecd4c1a79856b821edb2be2cf7b238fb0f"
-            || admission.selection_sha256 != hex(&Sha256::digest(selection_bytes))
-            || admission.runtime_json_sha256 != OPENPENCIL_RUNTIME_SHA256
-            || admission.runtime_json_bytes != 98_210
-            || admission.file_count != 596
-            || admission.total_bytes != 2_433_673
-            || admission.package_count != 16
-            || admission.notice_count != 21
+        if inventory.schema != 1
+            || inventory.component != "openpencil_editable_file"
+            || inventory.target != MAC_TARGET
+            || inventory.engine_version != crate::openpencil::ENGINE_VERSION
+            || inventory.mode != crate::openpencil::MODE
+            || inventory.selection_sha256
+                != "eee6ad5cfc22866f772add8b601dd1281f0c72d5ae285c39f09a5f98b6dae5b9"
+            || inventory.selection_sha256 != hex(&Sha256::digest(selection_bytes))
+            || inventory.runtime_json_sha256 != OPENPENCIL_RUNTIME_SHA256
+            || inventory.runtime_json_bytes != 98_192
+            || inventory.file_count != 596
+            || inventory.total_bytes != 2_433_673
+            || inventory.package_count != 16
+            || inventory.notice_count != 21
             || selection.schema != 1
-            || selection.status != "candidate_not_release_admission"
+            || selection.component != "openpencil"
             || selection.name != "openpencil-editable-file"
-            || selection.engine_version != admission.engine_version
-            || selection.packages.len() != admission.package_count
-            || selection.files.len() != admission.file_count
+            || selection.engine_version != inventory.engine_version
+            || selection.packages.len() != inventory.package_count
+            || selection.files.len() != inventory.file_count
         {
             return Err(DistributionError::InvalidManifest);
         }
@@ -1203,14 +1193,14 @@ fn layout_with_skill_sources(
                 return Err(DistributionError::InvalidManifest);
             }
         }
-        if bytes != admission.total_bytes || notices != admission.notice_count {
+        if bytes != inventory.total_bytes || notices != inventory.notice_count {
             return Err(DistributionError::InvalidManifest);
         }
         result.files.insert(
             format!("{OPENPENCIL_ROOT}/runtime.json"),
             ExpectedFile {
                 mode: 0o600,
-                pin: Some((admission.runtime_json_bytes, admission.runtime_json_sha256)),
+                pin: Some((inventory.runtime_json_bytes, inventory.runtime_json_sha256)),
             },
         );
         for path in [
@@ -1238,35 +1228,34 @@ fn layout_with_skill_sources(
         if target != MAC_TARGET {
             return Err(DistributionError::UnsupportedTarget);
         }
-        let admission: SemanticAdmission = serde_json::from_str(include_str!(
-            "../packaging/admission/m2-semantic-minilm.runtime.json"
-        ))
-        .map_err(|_| DistributionError::InvalidManifest)?;
-        if admission.schema != 1
-            || admission.runtime_version != "1.31.0"
-            || admission.provider != "CPUExecutionProvider"
-            || admission.telemetry
-            || admission.model.repo != "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-            || admission.model.revision != "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
-            || admission.model.contract["dimensions"] != 384
-            || admission.model.contract["max_tokens"] != 128
+        let inventory: SemanticInventory =
+            serde_json::from_str(include_str!("../packaging/runtime/semantic.json"))
+                .map_err(|_| DistributionError::InvalidManifest)?;
+        if inventory.schema != 1
+            || inventory.runtime_version != "1.31.0"
+            || inventory.provider != "CPUExecutionProvider"
+            || inventory.telemetry
+            || inventory.model.repo != "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+            || inventory.model.revision != "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
+            || inventory.model.contract["dimensions"] != 384
+            || inventory.model.contract["max_tokens"] != 128
         {
             return Err(DistributionError::InvalidManifest);
         }
-        let selected = admission
+        let selected = inventory
             .targets
             .get(MAC_TARGET)
             .ok_or(DistributionError::InvalidManifest)?;
         if !selected.assembly_complete
             || selected.files.len() != 3
-            || admission.model.selected.len() != 8
+            || inventory.model.selected.len() != 8
         {
             return Err(DistributionError::InvalidManifest);
         }
         let mut seen = BTreeSet::new();
         for (prefix, files) in [
             ("", selected.files.as_slice()),
-            ("model/", admission.model.selected.as_slice()),
+            ("model/", inventory.model.selected.as_slice()),
         ] {
             for file in files {
                 let relative = format!("{prefix}{}", file.path);
@@ -1518,7 +1507,7 @@ fn infer_components(root: &Path) -> Result<Vec<ReleaseComponent>, DistributionEr
         Err(e) if e.kind() == io::ErrorKind::NotFound => false,
         Err(e) => return Err(io_error("inspect optional raster component", e)),
     };
-    let video = match fs::symlink_metadata(root.join(video_candidate::ROOT)) {
+    let video = match fs::symlink_metadata(root.join(video_runtime::ROOT)) {
         Ok(_) => true,
         Err(e) if e.kind() == io::ErrorKind::NotFound => false,
         Err(e) => return Err(io_error("inspect optional video component", e)),
@@ -1956,8 +1945,8 @@ fn recheck_file(
     let opened = file
         .metadata()
         .map_err(|e| io_error("recheck open payload file", e))?;
-    for candidate in [&after, &opened] {
-        if before.len() != candidate.len() || before.modified().ok() != candidate.modified().ok() {
+    for inventory in [&after, &opened] {
+        if before.len() != inventory.len() || before.modified().ok() != inventory.modified().ok() {
             return Err(DistributionError::ChangedDuringRead);
         }
         #[cfg(unix)]
@@ -1969,10 +1958,10 @@ fn recheck_file(
                 before.ctime(),
                 before.ctime_nsec(),
             ) != (
-                candidate.dev(),
-                candidate.ino(),
-                candidate.ctime(),
-                candidate.ctime_nsec(),
+                inventory.dev(),
+                inventory.ino(),
+                inventory.ctime(),
+                inventory.ctime_nsec(),
             ) {
                 return Err(DistributionError::ChangedDuringRead);
             }
@@ -1987,28 +1976,28 @@ mod tests {
     use std::sync::atomic::{AtomicU64, Ordering};
 
     #[test]
-    fn design_lock_keeps_the_admitted_package_closure_exact() {
-        let admitted = include_bytes!("../packaging/admission/m4-design-package-lock.json");
+    fn design_lock_keeps_the_frozen_package_closure_exact() {
+        let frozen = include_bytes!("../packaging/runtime/design-lock.json");
         let current = include_bytes!("../pi/package-lock.json");
-        assert!(design_lock_preserved(admitted, admitted));
-        assert!(design_lock_preserved(admitted, current));
+        assert!(design_lock_preserved(frozen, frozen));
+        assert!(design_lock_preserved(frozen, current));
         let mut changed: serde_json::Value = serde_json::from_slice(current).unwrap();
         changed["packages"]["node_modules/typescript"]["version"] = serde_json::json!("0.0.0");
         assert!(!design_lock_preserved(
-            admitted,
+            frozen,
             &serde_json::to_vec(&changed).unwrap()
         ));
         let mut changed: serde_json::Value = serde_json::from_slice(current).unwrap();
-        changed["packages"][""]["dependencies"]["unadmitted-package"] = serde_json::json!("1.0.0");
+        changed["packages"][""]["dependencies"]["unfrozen-package"] = serde_json::json!("1.0.0");
         assert!(!design_lock_preserved(
-            admitted,
+            frozen,
             &serde_json::to_vec(&changed).unwrap()
         ));
         let mut changed: serde_json::Value = serde_json::from_slice(current).unwrap();
         changed["packages"]["node_modules/style-dictionary"]["integrity"] =
             serde_json::json!("sha512-forged");
         assert!(!design_lock_preserved(
-            admitted,
+            frozen,
             &serde_json::to_vec(&changed).unwrap()
         ));
     }
@@ -2416,7 +2405,7 @@ mod tests {
 
     #[test]
     fn compiled_inventory_capacity_scales_without_relaxing_file_identity() {
-        // A synthetic compiled selection, not an admitted browser component.
+        // A synthetic compiled selection, not a frozen browser component.
         // Its cardinality, nesting and pinned native file exceed the former
         // global 8192-entry/1024-directory/512-MiB/256-MiB-file limits.
         let mut selected = layout(MAC_TARGET, &[]).unwrap();
@@ -2448,7 +2437,7 @@ mod tests {
                 .unwrap(),
             768 * 1024 * 1024
         );
-        // The runtime parser's ceiling still comes from actual admitted layouts.
+        // The runtime parser's ceiling still comes from actual frozen layouts.
         assert!(selected.capacity.manifest_bytes > maximum_manifest_bytes().unwrap());
     }
 
@@ -2605,7 +2594,7 @@ mod tests {
         }
     }
 
-    fn admitted_manifest() -> ReleaseManifest {
+    fn frozen_manifest() -> ReleaseManifest {
         manifest_for(vec![ReleaseComponent::Design])
     }
 
@@ -2626,13 +2615,13 @@ mod tests {
     #[test]
     fn raster_selection_has_exact_separate_pins_for_local_installation() {
         let components = [ReleaseComponent::Design, ReleaseComponent::Raster];
-        let mut candidate = layout(MAC_TARGET, &[ReleaseComponent::Design]).unwrap();
-        let design_files = candidate.files.len();
-        extend_raster_candidate(&mut candidate).unwrap();
-        finish_layout(&mut candidate, MAC_TARGET, &components).unwrap();
-        assert_eq!(candidate.files.len(), design_files + 125);
+        let mut inventory = layout(MAC_TARGET, &[ReleaseComponent::Design]).unwrap();
+        let design_files = inventory.files.len();
+        extend_raster_runtime(&mut inventory).unwrap();
+        finish_layout(&mut inventory, MAC_TARGET, &components).unwrap();
+        assert_eq!(inventory.files.len(), design_files + 125);
         assert_eq!(
-            candidate
+            inventory
                 .files
                 .keys()
                 .filter(|path| path.starts_with("runtime/design/raster/"))
@@ -2651,11 +2640,11 @@ mod tests {
                 "c1a5b5633b21aeb8a229abf7d062e07e4d778c0b44ed43cd1f93362bda58c322",
             ),
         ] {
-            let selected = &candidate.files[path];
+            let selected = &inventory.files[path];
             assert_eq!(selected.mode, 0o600);
             assert_eq!(selected.pin, Some((bytes, digest.into())));
         }
-        assert!(candidate.files.contains_key(RASTER_MODULE));
+        assert!(inventory.files.contains_key(RASTER_MODULE));
         assert!(layout(MAC_TARGET, &components).is_ok());
         assert!(matches!(
             layout(MAC_TARGET, &[ReleaseComponent::Raster]),
@@ -2670,7 +2659,7 @@ mod tests {
         // Extending the frozen selection twice is a duplicate, never an
         // override of an existing component's pins.
         assert!(matches!(
-            extend_raster_candidate(&mut candidate),
+            extend_raster_runtime(&mut inventory),
             Err(DistributionError::InvalidManifest)
         ));
     }
@@ -2723,16 +2712,16 @@ mod tests {
 
     #[test]
     #[ignore = "requires an explicitly assembled 125-file upstream Sharp fixture"]
-    fn raster_private_fixture_matches_every_frozen_candidate_pin() {
+    fn raster_private_fixture_matches_every_frozen_inventory_pin() {
         let root = PathBuf::from(
             std::env::var_os("MIRKET_RASTER_QUALIFICATION_FIXTURE")
                 .expect("select the private restored fixture explicitly"),
         );
         let root = selected_root(&root).unwrap();
-        let mut candidate = layout(MAC_TARGET, &[]).unwrap();
-        let core: BTreeSet<_> = candidate.files.keys().cloned().collect();
-        extend_raster_candidate(&mut candidate).unwrap();
-        let files: Vec<_> = candidate
+        let mut inventory = layout(MAC_TARGET, &[]).unwrap();
+        let core: BTreeSet<_> = inventory.files.keys().cloned().collect();
+        extend_raster_runtime(&mut inventory).unwrap();
+        let files: Vec<_> = inventory
             .files
             .into_iter()
             .filter(|(path, _)| !core.contains(path))
@@ -2805,8 +2794,8 @@ mod tests {
     }
 
     #[test]
-    fn admitted_design_profile_is_finite_and_pinned() {
-        let mut manifest = admitted_manifest();
+    fn frozen_design_profile_is_finite_and_pinned() {
+        let mut manifest = frozen_manifest();
         let selected = validate_manifest(&mut manifest).unwrap();
         assert!(manifest.files.len() > 5_000);
         assert!(manifest.links.is_empty());
@@ -2817,7 +2806,7 @@ mod tests {
     }
 
     #[test]
-    fn all_admitted_components_compose_with_exact_inventory_capacity() {
+    fn all_frozen_components_compose_with_exact_inventory_capacity() {
         let mut manifest = manifest_for(vec![
             ReleaseComponent::Diagram,
             ReleaseComponent::Design,
@@ -2853,7 +2842,7 @@ mod tests {
 
     #[test]
     fn third_party_pins_and_modes_cannot_be_redeclared() {
-        let original = admitted_manifest();
+        let original = frozen_manifest();
         for path in [
             "adapters/node_modules/typescript/lib/typescript.js",
             DESIGN_FONT,
@@ -2902,7 +2891,7 @@ mod tests {
             assert!(write_manifest(&fixture.root, VERSION, MAC_TARGET).is_err());
             assert!(!fixture.root.join(MANIFEST_NAME).exists());
         }
-        let original = admitted_manifest();
+        let original = frozen_manifest();
         let mut stale = serde_json::to_value(&original).unwrap();
         for retired in ["sql", "browser", "documents", "python_navigation", "c_cpp"] {
             stale["components"] = serde_json::json!([retired]);

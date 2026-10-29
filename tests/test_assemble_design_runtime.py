@@ -15,10 +15,8 @@ SPEC.loader.exec_module(assembly)
 
 class DesignAssemblyTests(unittest.TestCase):
     def test_selected_files_and_font_without_copied_notices(self):
-        private_root = Path(__file__).resolve().parents[1] / "profile"
-        private_root.mkdir(exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="mirket-design-assembly-", dir=private_root) as temporary:
-            root = Path(temporary)
+        with tempfile.TemporaryDirectory(prefix="mirket-design-assembly-") as temporary:
+            root = Path(temporary).resolve()
             repository = root / "repository"
             source = root / "source"
             tree = source / "node_modules"
@@ -33,7 +31,7 @@ class DesignAssemblyTests(unittest.TestCase):
 
             lock = {"name": "design-fixture", "packages": {"": {"name": "design-fixture", "dependencies": {}}}}
             lock_bytes = (json.dumps(lock) + "\n").encode()
-            frozen_lock = repository / "packaging/admission/m4-design-package-lock.json"
+            frozen_lock = repository / "packaging/runtime/design-lock.json"
             frozen_lock.parent.mkdir(parents=True)
             frozen_lock.write_bytes(lock_bytes)
             (source / "package-lock.json").write_bytes(lock_bytes)
@@ -45,7 +43,7 @@ class DesignAssemblyTests(unittest.TestCase):
             for name in ("design-main.js", "design-operations.js", "code-inspect-main.js", "code-source-inspect.js", "code-navigation.js", "code-navigation-main.js"):
                 (adapters / name).write_bytes(b"compiled adapter")
 
-            selection = repository / "packaging/admission/m4-design-chromium-macos.runtime.json"
+            selection = repository / "packaging/runtime/design.json"
             selection.write_text(json.dumps({
                 "schema": 1, "component": "design", "target": "aarch64-apple-darwin",
                 "source_lock_sha256": assembly.digest(frozen_lock)[1],

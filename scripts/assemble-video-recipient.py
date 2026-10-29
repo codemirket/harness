@@ -20,8 +20,8 @@ from pathlib import PurePosixPath
 
 
 REPO = Path(__file__).resolve().parents[1]
-DEFAULT_INVENTORY = REPO / "packaging/admission/m3-video-sharp-free-macos.runtime.json.proposed"
-DEFAULT_LOCK = REPO / "packaging/admission/pi-native-base-package-lock.json"
+DEFAULT_INVENTORY = REPO / "packaging/runtime/video.json"
+DEFAULT_LOCK = REPO / "packaging/runtime/native-lock.json"
 TARGET = "aarch64-apple-darwin"
 VIDEO_PREFIX = "runtime/video/"
 FIRST_PARTY_VIDEO_FILES = frozenset(
@@ -173,10 +173,10 @@ def package_instances(inventory: dict, lock: dict, strict_current: bool) -> tupl
     if (
         inventory.get("schema") != 1
         or inventory.get("target") != TARGET
-        or inventory.get("release_admitted") is not False
-        or inventory.get("status") != "fresh_current_local_video_candidate_not_release_admitted"
+        or inventory.get("component") != "video"
+        or inventory.get("tool_requirement") != "external_chromium_bundled_media"
     ):
-        raise AssemblyError("Video inventory is not the current unadmitted Sharp-free candidate")
+        raise AssemblyError("Video runtime inventory has an unsupported component or tool requirement")
     runtime = inventory.get("runtime_inventory")
     files = runtime.get("files") if isinstance(runtime, dict) else None
     if not isinstance(files, list) or runtime.get("regular_files") != len(files):
@@ -403,7 +403,7 @@ def assemble(
     if release_source_manifest is not None and release_source_root is None:
         release_source_root = release_source_manifest.parent
     if strict_current:
-        verify_pi_layout(package_lock_path, REPO / "pi/package-lock.json", REPO / "packaging/admission/pi-native-layout.json")
+        verify_pi_layout(package_lock_path, REPO / "pi/package-lock.json", REPO / "packaging/runtime/native-layout.json")
     inventory = load_json(inventory_path)
     lock = load_json(package_lock_path)
     lock_sha = digest(package_lock_path)[1]
@@ -514,7 +514,7 @@ def assemble(
         copy_file(package_lock_path, provenance / "native-base-package-lock.json")
         if strict_current:
             copy_file(REPO / "pi/package-lock.json", provenance / "pi-package-lock.json")
-            copy_file(REPO / "packaging/admission/pi-native-layout.json", provenance / "pi-native-layout.json")
+            copy_file(REPO / "packaging/runtime/native-layout.json", provenance / "pi-native-layout.json")
         if release_source_manifest is not None:
             copy_file(release_source_manifest, provenance / "current-release-manifest.json")
         source_manifest = {

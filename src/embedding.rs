@@ -21,7 +21,7 @@ use std::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
-const PINS: &str = include_str!("../packaging/admission/m2-semantic-minilm.runtime.json");
+const PINS: &str = include_str!("../packaging/runtime/semantic.json");
 pub const DIMENSIONS: usize = 384;
 pub const MAX_INPUT_BYTES: usize = 16 * 1024;
 pub const MAX_PASSAGES: usize = 32;

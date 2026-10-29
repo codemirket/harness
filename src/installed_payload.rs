@@ -13,5 +13,7 @@ pub fn resolve_installed_payload(
     if session.state_root() != state_root {
         return Err("installed payload requires this installation's session guard".into());
     }
-    Ok(release.payload())
+    let mut payload = release.payload();
+    crate::runtime_tools::apply(state_root, release.id().as_str(), &mut payload)?;
+    Ok(payload)
 }

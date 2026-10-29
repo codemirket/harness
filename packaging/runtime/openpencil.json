@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "component": "openpencil_editable_file",
+  "target": "aarch64-apple-darwin",
+  "engine_version": "0.16.0",
+  "mode": "editable_file",
+  "selection_sha256": "eee6ad5cfc22866f772add8b601dd1281f0c72d5ae285c39f09a5f98b6dae5b9",
+  "runtime_json_sha256": "9bc4e236ca5a5b65ea0c6ab8c562e24f6a95e9a72f04c2edbac51bd242f722b7",
+  "runtime_json_bytes": 98192,
+  "file_count": 596,
+  "total_bytes": 2433673,
+  "package_count": 16,
+  "notice_count": 21,
+  "qualification": "Bounded editable .fig create, patch and SVG export: native components, fixed single-line text, fixed-size no-wrap horizontal/vertical layout on macOS ARM64 private Node 24.22.1. No new packages; Yoga/CanvasKit remain excluded. SVG references regular Noto Sans; text measurement/shaping, native editor fidelity, Windows and Codex Desktop GUI remain unqualified."
+}

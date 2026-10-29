@@ -12,9 +12,9 @@ burdensome native tool, setup may bind an explicitly selected host executable
 after capability and identity checks. Installed jobs must recheck that binding
 and must not search PATH or silently fall back to another executable.
 
-Ask before new production dependencies unless their exact admission batch is
-already approved. Current admissions live in `packaging/admission`; proposed
-inventories do not grant permission. Never run upstream installers/hooks incidentally.
+Ask before new production dependencies unless their exact source/version/rights
+batch is already approved. Current byte and source pins live in `packaging/runtime`;
+inventory files do not grant permission. Never run upstream installers/hooks incidentally.
 Before compiling Rust dependencies run `python3 scripts/check-build-inputs.py`.
 This checks the admitted SDK build-script condition that could otherwise change
 Git hook configuration. Use the locked Rust toolchain and dependency closure.

@@ -97,6 +97,7 @@ impl Server {
             "capabilities":["javascript_typescript_source_inspection","selected_source_code_navigation","operation_receipts","scoped_canonical_memory","bounded_lexical_recall","canonical_memory_pagination","explicit_memory_forgetting","optional_managed_memory_backups","maintenance_memory_restore","explicit_derived_index_refresh","design_prepare_start","finite_video_jobs"],
             "skill_capabilities":skill_capabilities,
             "memory_resources":resources,
+            "runtime_tools":crate::runtime_tools::status(self.engine.state_root(), self.engine.release.as_str(), &self.engine.payload),
             "code_source_inspection":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx"],"coverage":"revision-bound TypeScript 5.9.3 syntax structure with explicit incomplete/refused locations; no semantic navigation"},
             "code_navigation":{"configured":self.engine.payload.design.is_some(),"languages":["js","ts","jsx","tsx","ts_declaration"],"coverage":"revision-bound TypeScript 5.9.3 selected-source definitions/references with explicit import bindings and declaration snapshots; no project discovery or whole-project completeness claim"},
             "diagrams":{"configured":self.engine.payload.diagram.is_some(),"coverage":"revision-bound local D2 to self-contained SVG with Dagre, ELK or TALA on macOS ARM64"},

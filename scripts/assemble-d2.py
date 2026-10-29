@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble the approved private D2 payload without running upstream code."""
+"""Assemble the pinned private D2 payload without running upstream code."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ import tempfile
 import unittest
 
 
-DEFAULT_MANIFEST = Path(__file__).resolve().parents[1] / "packaging/admission/m4-d2.manifest.json"
+DEFAULT_MANIFEST = Path(__file__).resolve().parents[1] / "packaging/runtime/d2.json"
 TARGET = "aarch64-apple-darwin"
 MAX_ARCHIVE_BYTES = 256 * 1024 * 1024
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -59,9 +59,9 @@ def load_manifest(path: Path) -> dict:
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
-        raise AssemblyError("cannot read admission manifest: " + str(error)) from error
+        raise AssemblyError("cannot read runtime manifest: " + str(error)) from error
     if manifest.get("schema") != 1 or manifest.get("component") != "d2" or manifest.get("version") != "0.9.0":
-        raise AssemblyError("manifest is not the approved D2 v0.9.0 receipt")
+        raise AssemblyError("manifest is not the pinned D2 v0.9.0 receipt")
     if manifest.get("target") != TARGET:
         raise AssemblyError("manifest target is not the qualified macOS ARM64 target")
 

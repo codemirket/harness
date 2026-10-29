@@ -19,7 +19,7 @@ evidence locators, not dependency versions.
 - `karpathy` means Multica’s andrej-karpathy-skills repository; it does not
   assert Karpathy authorship.
 - `fluent` means Fluent 2; Fluent Emoji is outside this selection.
-- `reshaped` is newly added from its official documentation. It is link-only; no implementation revision or asset/package license has been admitted.
+- `reshaped` is newly added from its official documentation. It is link-only; no implementation revision is pinned or runtime package shipped from this reference.
 
 ## A — Engineering, agent workflows and host integration
 
@@ -133,7 +133,7 @@ review and the retained fetch receipts.
 | ID | Selected evidence locator | Use and rights boundary |
 | --- | --- | --- |
 | `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
-| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [admission records](../packaging/admission/README.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
+| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [runtime packaging scope](../packaging/README.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
 
 ## Source-to-guide reuse contract
 
@@ -161,4 +161,4 @@ addition to the skill catalog.
 The current [provenance ledger](../skills/PROVENANCE.md) and
 [pinned review inputs](../packaging/provenance/skills/README.md) record selected sources and reuse limits.
 Reference selection does not authorize additional dependencies; use the exact
-[admission records](../packaging/admission/README.md).
+[runtime packaging scope](../packaging/README.md).

@@ -35,7 +35,7 @@ REPO = Path(__file__).resolve().parent.parent
 SOURCE_FILES = (
     "src/embedding_session.rs", "src/embedding_session_pressure.rs",
     "src/embedding_job.rs", "src/embedding.rs", "src/process.rs",
-    "src/leases.rs", "Cargo.lock", "packaging/admission/m2-semantic-minilm.runtime.json",
+    "src/leases.rs", "Cargo.lock", "packaging/runtime/semantic.json",
     "tests/warm-embedding-smoke.py",
 )
 

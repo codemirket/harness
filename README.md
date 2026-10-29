@@ -5,17 +5,20 @@ models, authentication, sessions, native tools and MCP lifecycle. Mirket supplie
 scoped project memory, selected JavaScript/TypeScript navigation, finite design
 and HyperFrames video operations, and selected workflow guidance.
 
-The refactored local candidate passed the scoped checks on **macOS 26.5.2
-ARM64** with external Pi 1.4.0 / Undici 8.12.2. See the
-[qualification record](docs/qualification.md) for exact package identity,
-measured outcomes and limits.
+The qualification target is **macOS 26.5.2 ARM64** with external Pi 1.4.0 /
+Undici 8.12.2. The current packaging/onboarding candidate passed its functional
+local checks but missed the first-tool startup timing gate. Earlier package
+results remain separate. See the [qualification record](docs/qualification.md)
+for exact package identity, measured outcomes and limits.
 See [architecture](docs/architecture.md) for the current product contract.
 
 Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
 forgetting and recovery, with lazy local MiniLM retrieval. Navigation operates on
-explicit revision-bound sources. Design supports tokens, editable vectors,
-raster operations and diagrams. Video uses HyperFrames with verified private
-rendering Chrome and FFmpeg/ffprobe. Successful exports require separate visual
+explicit revision-bound sources. Design supplies tokens, editable vectors and
+diagrams. Raster/Sharp is omitted while native rights obligations remain open.
+Video bundles HyperFrames and FFmpeg/ffprobe with source/notices; Chrome is an
+explicit onboarding choice with verified installation or executable binding.
+Successful exports require separate visual
 and decoded-output review.
 
 The package uses one Rust crate and one compiled TypeScript package. Pi's native
@@ -28,18 +31,21 @@ through pi's existing `openai/gpt-6-astra` authentication. It enables one resear
 turn, retains search actions and citation spans, and displays clickable sources.
 Missing provider access fails explicitly; it does not install a search service.
 Provider-dependent research and vision require configured access.
-Browser automation was tested only with disposable local fixtures; no
-production browser dependency is admitted.
+Browser automation was tested only with disposable local fixtures. The selected
+Chrome binding is reserved for video rendering.
 
 Mirket state belongs under `<pi-agent-dir>/mirket/`. Setup uses a fresh private
 home and preserves existing installations and unrelated settings. It does not
-import an earlier installation or copy skills into host directories.
+import an earlier installation or copy skills into host directories. Follow
+[setup](docs/setup.md), then use `/mirket setup` and `/mirket doctor` in Pi.
 
 Skills must justify retention with a useful workflow, safeguard or measured
 benefit. Catalog cases are planned fixtures, not completed acceptance trials.
 Source methods, code, fonts and runtime assets have separate provenance and
-admission records: see [skill provenance](skills/PROVENANCE.md) and
-[dependency admission](packaging/admission/README.md).
+rights: see [skill provenance](skills/PROVENANCE.md), the short
+[runtime table](packaging/README.md#runtime-choices) and delivered
+[third-party scope](packaging/THIRD-PARTY.md). Historical review evidence remains
+recoverable via [history](docs/history.md).
 
 For development, run `python3 scripts/check-build-inputs.py` before Rust
 compilation, then the locked offline Rust tests/clippy, formatting, locked

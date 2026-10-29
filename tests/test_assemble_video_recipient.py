@@ -74,8 +74,8 @@ class VideoRecipientAssemblyTests(unittest.TestCase):
             json.dumps(
                 {
                     "schema": 1,
-                    "status": "fresh_current_local_video_candidate_not_release_admitted",
-                    "release_admitted": False,
+                    "component": "video",
+                    "tool_requirement": "external_chromium_bundled_media",
                     "target": "aarch64-apple-darwin",
                     "package_lock_sha256": hashlib.sha256(self.lock.read_bytes()).hexdigest(),
                     "package_instances": 1,

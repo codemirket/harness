@@ -192,6 +192,12 @@ impl VideoManager {
             "scratch_cleanup":r.scratch_cleanup,"output_budget_bytes":MAX_OUTPUT_BYTES,"scratch_budget_bytes":MAX_WORK_BYTES,"evidence":r.evidence,"error":r.error,"diagnostics":r.diagnostics,"expires_at":r.expires_at})
     }
     pub fn prepare(&self, a: VideoPrepareArgs) -> Result<Value, String> {
+        crate::runtime_tools::verify_for(
+            self.engine.state_root(),
+            self.engine.release.as_str(),
+            &self.engine.payload,
+            &["chromium"],
+        )?;
         self.engine.guard(&a.expected_release_id)?;
         let payload = self
             .engine
@@ -357,6 +363,12 @@ impl VideoManager {
         Ok(report)
     }
     pub fn start(self: &Arc<Self>, a: VideoJobArgs) -> Result<Value, String> {
+        crate::runtime_tools::verify_for(
+            self.engine.state_root(),
+            self.engine.release.as_str(),
+            &self.engine.payload,
+            &["chromium"],
+        )?;
         let mut registry = self.registry.lock().map_err(err)?;
         if registry.closed {
             return Err("connection is shutting down".into());
@@ -796,6 +808,117 @@ mod tests {
         let owned = OwnedScratch::create(&state, &stamp, "video-cleanup").unwrap();
         let stamp = DirectoryStamp::inspect(&owned.path).unwrap();
         (state, VideoScratch { owned, stamp })
+    }
+    #[test]
+    fn changed_or_removed_installed_chrome_binding_refuses_prepare_and_start() {
+        let home = std::env::temp_dir().join(format!(
+            "mirket-bound-video-{}-{}",
+            std::process::id(),
+            SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        private_dir(&home).unwrap();
+        let home = fs::canonicalize(home).unwrap();
+        let state = home.join("state");
+        let project = home.join("project");
+        private_dir(&state).unwrap();
+        private_dir(&project).unwrap();
+        fs::write(home.join("installation.json"), b"fixture installed marker").unwrap();
+        let chrome = home.join("selected-chrome");
+        fs::write(&chrome, b"selected original executable").unwrap();
+        let digest = crate::process_video::file_identity(&chrome)
+            .unwrap()
+            .trim_start_matches("sha256:")
+            .to_owned();
+        let choices = home.join("runtime-tools.json");
+        fs::write(&choices,json!({"schema":1,"releaseId":"bound-video-test","tools":{"chromium":{"choice":"installed","path":chrome,"sha256":digest,"version":"fixture"}}}).to_string()).unwrap();
+        let binary = std::env::current_exe().unwrap();
+        let mut payload = AdapterPayload::explicit(&binary).unwrap();
+        payload.diagram = Some(binary.clone());
+        payload.video = Some(VideoPayload {
+            node: binary.clone(),
+            adapter: binary.clone(),
+            chromium: PathBuf::new(),
+            ffmpeg: binary.clone(),
+            ffprobe: binary,
+        });
+        crate::runtime_tools::apply(&state, "bound-video-test", &mut payload).unwrap();
+        let engine = Engine::open(
+            ReleaseId::parse("bound-video-test").unwrap(),
+            payload,
+            state,
+        )
+        .unwrap();
+        let manager = VideoManager::new(engine.clone());
+        let source = b"<!doctype html><body>bounded operation</body>";
+        fs::write(project.join("index.html"), source).unwrap();
+        let args = VideoPrepareArgs {
+            expected_release_id: "bound-video-test".into(),
+            project_root: project.clone(),
+            source_path: "index.html".into(),
+            expected_revision: crate::engine::revision(source),
+            assets: vec![],
+            destination_path: "output.mp4".into(),
+            profile: VideoProfile {
+                width: 640,
+                height: 480,
+                fps: FrameRate {
+                    numerator: 1,
+                    denominator: 1,
+                },
+                frame_count: 1,
+                format: VideoFormat::Mp4,
+                captions_path: None,
+            },
+        };
+        let prepared = manager.prepare(args.clone()).unwrap();
+        let start = VideoJobArgs {
+            expected_release_id: "bound-video-test".into(),
+            project_root: project.clone(),
+            operation_id: prepared["operation_id"].as_str().unwrap().into(),
+        };
+        fs::write(&chrome, b"replacement executable bytes").unwrap();
+        assert!(
+            manager
+                .prepare(args.clone())
+                .unwrap_err()
+                .contains("changed")
+        );
+        assert!(
+            manager
+                .start(start.clone())
+                .unwrap_err()
+                .contains("changed")
+        );
+        assert_eq!(
+            crate::runtime_tools::status(
+                engine.state_root(),
+                engine.release.as_str(),
+                &engine.payload
+            )["tools"][0]["status"],
+            "changed"
+        );
+        fs::remove_file(choices).unwrap();
+        assert!(
+            manager
+                .prepare(args)
+                .unwrap_err()
+                .contains("binding missing")
+        );
+        assert!(
+            manager
+                .start(start)
+                .unwrap_err()
+                .contains("binding missing")
+        );
+        assert!(engine.payload.diagram.is_some());
+        engine.guard("bound-video-test").unwrap();
+        assert!(!project.join("output.mp4").exists());
+        drop(manager);
+        drop(engine);
+        fs::remove_dir_all(home).unwrap();
     }
     #[test]
     fn confirmed_scratch_cleanup_removes_only_its_verified_inventory() {

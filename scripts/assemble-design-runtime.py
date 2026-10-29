@@ -18,8 +18,8 @@ import tempfile
 
 
 REPO = Path(__file__).resolve().parents[1]
-SELECTION = REPO / "packaging/admission/m4-design-chromium-macos.runtime.json"
-FROZEN_LOCK = REPO / "packaging/admission/m4-design-package-lock.json"
+SELECTION = REPO / "packaging/runtime/design.json"
+FROZEN_LOCK = REPO / "packaging/runtime/design-lock.json"
 
 
 class AssemblyError(ValueError):
@@ -51,7 +51,7 @@ def copy_exact(source: Path, destination: Path, expected: tuple[int, str]) -> No
     require_real_path(source)
     require_real_path(destination.parent)
     if not source.is_file() or digest(source) != expected:
-        raise AssemblyError(f"source differs from admission: {source}")
+        raise AssemblyError(f"source differs from source identity: {source}")
     destination.parent.mkdir(parents=True, exist_ok=True)
     flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
     with os.fdopen(os.open(source, flags), "rb") as reader, destination.open("xb") as writer:
@@ -63,8 +63,8 @@ def copy_exact(source: Path, destination: Path, expected: tuple[int, str]) -> No
     destination.chmod(0o600)
 
 
-def design_lock_preserved(admitted: Path, current: Path) -> bool:
-    old = json.loads(admitted.read_text(encoding="utf-8"))
+def design_lock_preserved(pinned: Path, current: Path) -> bool:
+    old = json.loads(pinned.read_text(encoding="utf-8"))
     now = json.loads(current.read_text(encoding="utf-8"))
     if now.get("name") == "@codemirket/pi-harness":
         old["name"] = "@codemirket/pi-harness"
@@ -100,7 +100,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
     if (digest(FROZEN_LOCK)[1] != expected_lock
             or digest(tree.parent / "package-lock.json") != digest(lock)
             or not design_lock_preserved(FROZEN_LOCK, lock)):
-        raise AssemblyError("production npm tree changed an admitted design package or lock")
+        raise AssemblyError("production npm tree changed an pinned design package or lock")
     if not tree.is_dir() or tree.is_symlink() or tree.name != "node_modules":
         raise AssemblyError("select a real disposable node_modules tree")
     if not release.is_absolute() or not release.is_dir() or release.is_symlink() or (release / "manifest.json").exists():
@@ -114,7 +114,7 @@ def assemble(tree: Path, font: Path, release: Path) -> dict:
         raise AssemblyError("design destination already exists")
     font_entry = data["font"]
     if font.is_symlink() or not font.is_file() or digest(font) != (font_entry["bytes"], font_entry["sha256"]):
-        raise AssemblyError("private font differs from admission")
+        raise AssemblyError("private font differs from source identity")
     for name in adapter_names:
         source = REPO / "pi/dist/runtime" / name
         if source.is_symlink() or not source.is_file() or source.stat().st_size > 1024 * 1024:

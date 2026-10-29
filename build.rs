@@ -1,4 +1,4 @@
-//! Verify the admitted private SQLite input before the final Mirket link.
+//! Verify the pinned private SQLite input before the final Mirket link.
 //! This is a drift guard, not proof against a writer controlling this checkout.
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -93,11 +93,11 @@ fn verify() -> Result<(), String> {
                 .unwrap_or_default()
                 .split(',')
                 .any(|f| f == "crt-static"),
-            "Windows SQLite /MT requires the admitted Rust crt-static target feature",
+            "Windows SQLite /MT requires the pinned Rust crt-static target feature",
         )?;
     }
     let native = root.join("target/native/sqlite");
-    let manifest_path = root.join("packaging/admission/m2-sqlite.native-build.json");
+    let manifest_path = root.join("packaging/runtime/sqlite.json");
     let receipt_path = native.join("build-receipt.json");
     for path in [
         &native,
@@ -155,7 +155,7 @@ fn verify() -> Result<(), String> {
             .map_err(|e| e.to_string())?;
     require(
         manifest["sqlite_version"] == "3.54.1" && manifest["source_modifications"] == "none",
-        "Unexpected native source admission",
+        "Unexpected native source selection",
     )?;
     for (key, expected) in [
         ("schema", json!(1)),
@@ -219,7 +219,7 @@ fn verify() -> Result<(), String> {
     field_file(&receipt, "header", &header, "include/sqlite3.h")?;
     require(
         json!(hash(&header)?) == sources["sqlite3.h"],
-        "Header differs from admitted source",
+        "Header differs from pinned source",
     )?;
     Ok(())
 }
@@ -227,7 +227,7 @@ fn verify() -> Result<(), String> {
 fn main() {
     if let Err(error) = verify() {
         panic!(
-            "Private native build input refused: {error}. Prepare scripts/build-sqlite.py with the admitted archive and explicit target tools."
+            "Private native build input refused: {error}. Prepare scripts/build-sqlite.py with the pinned archive and explicit target tools."
         );
     }
 }

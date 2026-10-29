@@ -234,6 +234,6 @@ index-staleness, deletion, backup or concurrency tests.
 The admitted MiniLM ARM64 payload passed the frozen 122-query corpus with hybrid
 Recall@5 0.9875, nDCG@5 0.9448, identifier/path top-1 18/18, ambiguous evidence
 complete@5 8/8 and zero eligibility/coverage errors. Exact model inputs are in
-`packaging/admission/m2-semantic-minilm.runtime.json`. This is bounded corpus
+`packaging/runtime/semantic.json`. This is bounded corpus
 qualification, not unseen generalization, abstention or scale evidence. Failed
 alternative-model experiments remain in Git history and private evidence.

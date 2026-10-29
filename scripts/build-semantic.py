@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact private semantic-payload assembly.
 
-Requires already admitted local archives/tools. Never downloads, installs, runs
+Requires already pinned local archives/tools. Never downloads, installs, runs
 payloads, discovers host libraries, or qualifies Windows by cross-compilation.
 Receipts detect drift; they are checked against repository source pins.
 """
@@ -18,7 +18,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-RUNTIME_MANIFEST = ROOT / "packaging/admission/m2-semantic-minilm.runtime.json"
+RUNTIME_MANIFEST = ROOT / "packaging/runtime/semantic.json"
 spec = importlib.util.spec_from_file_location("mirket_sqlite_build", ROOT / "scripts/build-sqlite.py")
 sqlite = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sqlite)
@@ -129,7 +129,7 @@ def exact_tree(output, paths):
 def package_files(manifest, target):
     variant = manifest["targets"][target]
     if not variant["assembly_complete"]:
-        raise ValueError("Incomplete private runtime admission: " + variant["incomplete_reason"])
+        raise ValueError("Incomplete private runtime source identity: " + variant["incomplete_reason"])
     return [*variant["files"], *[{**x, "path": "model/" + x["path"]} for x in manifest["model"]["selected"]]]
 
 

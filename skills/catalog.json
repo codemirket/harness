@@ -9,11 +9,11 @@
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "cf93927e2710bad2986124823ad3c0fba2114d0d7c334ed845f705e1cb6f16d6"
+      "sha256": "0f7cccd6ab8a07c7325ee69659f2324cea3084a2ab206bd7b2ae49aa7858ef4b"
     },
     {
       "path": "docs/references.md",
-      "sha256": "bc11e1a78e89d8ebcdb583dfa32d28986efb4b46b1abec115898feccf92c060b"
+      "sha256": "806ed015f62a9ff1ca2529f03159b890509c8d8d899cd4c252d263b3f771f088"
     }
   ],
   "capability_vocabulary": [

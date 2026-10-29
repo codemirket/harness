@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 import {verifyHost} from '../pi/dist/extension/host.js';
 const [peers,verifier]=process.argv.slice(2);assert.ok(peers?.startsWith('/'));
 const root=await fs.mkdtemp('/private/tmp/mirket-pi-host-binding-'),hash=b=>createHash('sha256').update(b).digest('hex');
-const inventory=await fs.readFile(new URL('../packaging/admission/pi-host-files.json.proposed',import.meta.url));await fs.writeFile(join(root,'host-inventory.json'),inventory);
+const inventory=await fs.readFile(new URL('../packaging/runtime/host-files.json',import.meta.url));await fs.writeFile(join(root,'host-inventory.json'),inventory);
 const nodeHash=hash(await fs.readFile(process.execPath)),coreHash=hash(await fs.readFile(verifier));const host=join(peers,'@earendil-works/pi-coding-agent');
 const started=performance.now();const result=await verifyHost(root,host,hash(inventory),nodeHash,verifier,coreHash,join(host,'dist/cli.js'));const fullCheckMs=performance.now()-started;
 await assert.rejects(()=>verifyHost(root,host,hash(inventory),nodeHash,verifier,coreHash,join(host,'dist/bundle/cli.js')),/Unsupported pi entry/);

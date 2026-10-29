@@ -4,6 +4,7 @@ import { isAbsolute, join, resolve } from 'node:path';
 export const HOST_VERSION = '1.4.0';
 export interface Binding {
   schema: 1;
+  runtimeSetupSha256?: string;
   packageVersion: string;
   hostVersion: string;
   hostInventorySha256: string;

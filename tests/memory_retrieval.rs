@@ -23,7 +23,7 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 const CORPUS: &str = include_str!("fixtures/memory-retrieval.json");
 const CORPUS_SHA256: &str = "cc56a0141c41fec880bd8b528d3cd81c496e193719d5ec1dc6687bd6751d3a4c";
 const RUNNER: &str = include_str!("memory_retrieval.rs");
-const RUNTIME_PINS: &str = include_str!("../packaging/admission/m2-semantic-minilm.runtime.json");
+const RUNTIME_PINS: &str = include_str!("../packaging/runtime/semantic.json");
 const GATES: &str = r#"{"recall5_overall":0.90,"recall5_direction":0.85,"ndcg5_overall":0.85,"ndcg5_direction":0.80,"identifier_path_top1":18,"ambiguous_complete5":8,"history_exact":2,"illegal_results":0,"critical_coverage_errors":0,"false_support_max_if_observable":1,"negative_count":32,"invented_resolution_max_if_observable":0,"rrf_k":60,"fusion_weights":[1,1],"candidate_limit":20}"#;
 
 #[derive(Clone, Deserialize)]

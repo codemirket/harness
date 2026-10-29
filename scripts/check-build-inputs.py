@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check admitted native input identity and SDK layout before Cargo compiles.
+"""Check locked native input identity and SDK layout before Cargo compiles.
 
 Metadata inspection does not build dependencies. This guard catches accidental
 source/build drift; it is not an audit or an adversarial filesystem sandbox.
@@ -44,7 +44,7 @@ def main():
     for name, version in [("rmcp", "3.7.0"), ("rusqlite", "0.41.0"), ("libsqlite3-sys", "0.39.0")]:
         selected = [p for p in packages if p["name"] == name]
         if len(selected) != 1 or selected[0]["version"] != version:
-            raise ValueError(f"Expected admitted {name} {version}")
+            raise ValueError(f"Expected locked {name} {version}")
         package = selected[0]
         features = set(nodes[package["id"]]["features"])
         if name == "rmcp":
@@ -53,25 +53,23 @@ def main():
             if (ancestor / ".git").exists() and (ancestor / ".githooks").exists():
                 raise ValueError("rmcp source layout would configure Git hooks")
         elif name == "rusqlite" and features != {"backup", "modern_sqlite"}:
-            raise ValueError(f"Unreviewed rusqlite features: {features}")
+            raise ValueError(f"Unexpected rusqlite features: {features}")
         elif name == "libsqlite3-sys" and features != {"bundled_bindings", "default", "min_sqlite_version_3_45_3", "pkg-config", "vcpkg"}:
-            raise ValueError(f"Unreviewed libsqlite3-sys features: {features}")
-    admitted = json.loads((ROOT / "packaging/admission/m2-semantic.inventory.json").read_text())
+            raise ValueError(f"Unexpected libsqlite3-sys features: {features}")
+    pins = json.loads((ROOT / "packaging/runtime/build-inputs.json").read_text())
     guarded = {"fastembed", "ort", "ort-sys", "tokenizers", "onig", "onig_sys", "esaxx-rs", "serde_json"}
-    for pin in [p for p in admitted["packages"] if p["name"] in guarded]:
+    if pins.get("schema") != 1 or {p["name"] for p in pins["packages"]} != guarded or len(pins["packages"]) != len(guarded):
+        raise ValueError("Build input pins are missing or duplicated")
+    for pin in pins["packages"]:
         selected = [p for p in packages if p["name"] == pin["name"]]
         if len(selected) != 1 or selected[0]["version"] != pin["version"]:
-            raise ValueError(f"Expected admitted semantic version: {pin['name']}")
+            raise ValueError(f"Expected locked semantic version: {pin['name']}")
         package = selected[0]
         if package["source"] != "registry+https://github.com/rust-lang/crates.io-index":
-            raise ValueError(f"Unadmitted semantic package source: {pin['name']}")
+            raise ValueError(f"Unexpected semantic package source: {pin['name']}")
         expected_features = set(pin["features"])
-        if pin["name"] == "serde_json":
-            # Reviewed feature-only amendment; no new packages or edges.
-            # Keep the original admission inventory as historical evidence.
-            expected_features = {"alloc", "default", "raw_value", "std"}
         if set(nodes[package["id"]]["features"]) != expected_features:
-            raise ValueError(f"Unreviewed native/JSON features: {pin['name']}")
+            raise ValueError(f"Unexpected native/JSON features: {pin['name']}")
         source = Path(package["manifest_path"]).parent
         archive = source.parent.parent.parent / "cache" / source.parent.name / (source.name + ".crate")
         semantic.checked_file(archive, {"bytes": pin["archive_bytes"], "sha256": pin["crate_sha256"]})
@@ -97,7 +95,7 @@ def main():
                 original = crate.extractfile(member).read()
                 if local.stat().st_size != member.size or semantic.digest(local) != hashlib.sha256(original).hexdigest():
                     raise ValueError(f"Extracted semantic dependency source drift: {local}")
-    print(f"Admitted SQLite receipt, semantic features/sources, and rmcp guards passed ({target})")
+    print(f"Locked SQLite receipt, semantic features/sources, and rmcp guards passed ({target})")
 
 
 if __name__ == "__main__":

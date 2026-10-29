@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def freeze(archives, repaired_undici, output):
-    lock_file = ROOT/'packaging/admission/pi-host-repair-package-lock.json.proposed'
+    lock_file = ROOT/'packaging/runtime/host-lock.json'
     lock = json.loads(lock_file.read_text())
     files = []
     for package_path, entry in lock['packages'].items():

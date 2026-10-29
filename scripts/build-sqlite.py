@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build only the admitted SQLite source with explicit existing native tools.
+"""Build only the pinned SQLite source with explicit existing native tools.
 
 No downloads, installation, upstream helpers, or host-library discovery. This is
 an offline project build step; the receipt detects drift, not hostile tampering.
@@ -18,7 +18,7 @@ import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = ROOT / "packaging/admission/m2-sqlite.native-build.json"
+MANIFEST = ROOT / "packaging/runtime/sqlite.json"
 OUTPUT = ROOT / "target/native/sqlite"
 TARGETS = {"aarch64-apple-darwin": "arm64", "aarch64-pc-windows-msvc": "arm64", "x86_64-pc-windows-msvc": "x64"}
 
@@ -46,7 +46,7 @@ def read_manifest(path=MANIFEST):
     regular(path)
     data = json.loads(path.read_text())
     if data["sqlite_version"] != "3.54.1" or data["source_modifications"] != "none":
-        raise ValueError("Expected admitted unmodified SQLite 3.54.1")
+        raise ValueError("Expected pinned unmodified SQLite 3.54.1")
     return data
 
 
@@ -81,7 +81,7 @@ def validate_receipt(output, manifest, target, manifest_path=MANIFEST):
         if r[key] != {"path": path.relative_to(output).as_posix(), "bytes": path.stat().st_size, "sha256": digest(path)}:
             raise ValueError(f"Native {key} changed after build")
     if digest(header) != expected_sources["sqlite3.h"]:
-        raise ValueError("Header is not the admitted source")
+        raise ValueError("Header is not the pinned source")
     return r
 
 
@@ -91,7 +91,7 @@ def unpack_sources(archive, destination, manifest):
         raise ValueError("SQLite archive size/SHA-256 mismatch")
     selected = {x["path"]: x for x in manifest["files"] if x["path"] in manifest["source_selection"]}
     if {PurePosixPath(p).name for p in selected} != {"sqlite3.c", "sqlite3.h"} or len(selected) != 2:
-        raise ValueError("Expected exactly the two admitted source members")
+        raise ValueError("Expected exactly the two pinned source members")
     found = set()
     seen = set()
     with zipfile.ZipFile(archive) as z:

@@ -8,8 +8,8 @@ import os
 from pathlib import Path, PurePosixPath
 import shutil
 
-SELECTION = Path(__file__).resolve().parents[1] / "packaging/admission/openpencil-editable.candidate.json"
-PIN = "fd966b3140dfe08a47fbaa4481cebaecd4c1a79856b821edb2be2cf7b238fb0f"
+SELECTION = Path(__file__).resolve().parents[1] / "packaging/runtime/openpencil-selection.json"
+PIN = "eee6ad5cfc22866f772add8b601dd1281f0c72d5ae285c39f09a5f98b6dae5b9"
 class AssemblyError(Exception): pass
 
 def digest(data: bytes) -> str: return hashlib.sha256(data).hexdigest()
@@ -47,7 +47,7 @@ def assemble(source_root: Path, output: Path) -> dict:
         if b"\0asm" in data or b"AGFzbQ" in data: raise AssemblyError("WASM payload is unavailable in editable-file mode")
         prepared.append((dest, data))
         files.append({key: entry[key] for key in ("path", "bytes", "sha256", "kind")})
-    manifest = {"schema": 1, "status": "candidate_not_release_admission", "selection_sha256": PIN, "engine_version": "0.16.0", "mode": "editable_file", "files": files}
+    manifest = {"schema": 1, "component": "openpencil", "selection_sha256": PIN, "engine_version": "0.16.0", "mode": "editable_file", "files": files}
     manifest_bytes = (json.dumps(manifest, separators=(",", ":")) + "\n").encode()
     # All inputs and destinations are validated before creating this task-owned directory.
     output.mkdir(mode=0o700)
@@ -63,7 +63,7 @@ def assemble(source_root: Path, output: Path) -> dict:
     except BaseException:
         shutil.rmtree(output)
         raise
-    return {"status": "candidate_not_release_admission", "root": str(output), "runtime_sha256": digest(manifest_bytes), "selection_sha256": PIN, "files": len(files), "bytes": sum(len(data) for _, data in prepared), "native_engines": []}
+    return {"component": "openpencil", "root": str(output), "runtime_sha256": digest(manifest_bytes), "selection_sha256": PIN, "files": len(files), "bytes": sum(len(data) for _, data in prepared), "native_engines": []}
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)

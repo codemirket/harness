@@ -11,7 +11,7 @@ read/edit/write/shell tools, package resources and the MCP client. Mirket suppli
 scoped canonical memory, selected navigation, finite creative operations and
 bounded workflows. It does not implement another provider client or agent loop.
 Project toolchains own application builds, tests, SQL and format-specific exports.
-Browser and research access need their own admitted concrete integrations.
+Browser and research access need their own explicitly configured concrete integrations.
 
 Mirket-owned processes are not an OS sandbox. Private rendering Chrome is
 reserved for video. Preserve live installations and unrelated settings; use
@@ -46,12 +46,14 @@ setup may bind an explicitly selected host executable after capability and
 identity checks; every installed job must recheck that binding. The qualified
 Mac video package currently uses the self-contained private FFmpeg/ffprobe pair.
 
-The lean package may acquire exact publisher archives for Chrome, native Sharp
-and semantic assets during first-party setup, after terms disclosure and hash
-verification. This does not waive use or recipient obligations. Redistributed
-components require their exact notices/source materials. New dependencies require
-approval of the exact batch in `packaging/admission`; proposals and reference
-libraries do not grant admission. Preserve those active verification inputs.
+The package bundles its manageable private runtimes and selected source/notice
+materials. Chrome is acquired directly from its publisher during an explicit
+onboarding choice or bound to a selected existing executable after disclosure
+and verification. It is never bundled in Mirket on the current rights evidence.
+New production dependencies still require user authorization. Current byte/source
+pins live under `packaging/runtime/`; they establish identity, not legal clearance
+or platform qualification. See [packaging](../packaging/README.md) for exact scopes
+and unresolved optional-component rights.
 
 State belongs under `<pi-agent-dir>/mirket/`, respecting `PI_CODING_AGENT_DIR`.
 Session storage does not define canonical memory scope. Native setup accepts an
@@ -71,7 +73,7 @@ or non-contributing guidance; a tied small trial does not prove universal
 uselessness. The host owns workflows that do not need a selected Mirket skill.
 
 Hallmark/Taste are selected design references. Reference methods, source code,
-fonts, artwork and runtime admission have separate provenance. The accepted
+fonts, artwork and runtime acquisition have separate provenance. The accepted
 [Daybreak reference](../specimens/daybreak/README.md) does not confer acceptance
 on changed exports. HyperFrames is the video engine; Remotion is reference only.
 
@@ -96,4 +98,4 @@ model self-report cannot replace output checks. Preserve failed/unrun evidence;
 never weaken a gate to call work complete. Other platforms require separate native qualification.
 
 Publication, pushes, new dependencies and live installation changes require
-their applicable authorization. Preserve exact admission and provenance inputs.
+their applicable authorization. Preserve current byte/source pins and provenance inputs.

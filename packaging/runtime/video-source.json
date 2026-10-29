@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "component": "video-source-notices",
+  "hyperframes_version": "0.8.197",
+  "packet_manifest_sha256": "5bb8f7c7903c72a2e1d674bf8f083bf10d45d2cc8fe2f384cfb8101ae44b8461",
+  "include": [
+    "source/video/",
+    "notices/"
+  ],
+  "source_packet_scope": "80 npm archives; exact font tarballs and font maps; policy diffs; Puppeteer embedded headers; WAWOFF2, WOFF2, Brotli, Emscripten, esbuild/Go/x-sys source and notices. Supplemental Emscripten source library notices supplied separately."
+}

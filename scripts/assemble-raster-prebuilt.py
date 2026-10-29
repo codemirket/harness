@@ -20,8 +20,8 @@ import tempfile
 import unittest
 
 
-PROPOSAL = Path(__file__).resolve().parents[1] / "packaging/admission/m4-raster-prebuilt-macos.runtime.json.proposed"
-PROPOSAL_SHA256 = "705cd057ebc0cc25c6cffe92d05d442663dad544dcd62b0e67cc30adae74e41b"
+PROPOSAL = Path(__file__).resolve().parents[1] / "packaging/runtime/raster.json"
+PROPOSAL_SHA256 = "a5b41fc23c72382e2596449718f85d7d74a40b1e01b6187616889811fccf216b"
 TARGET = "aarch64-apple-darwin"
 ROOT = "runtime/design/raster/node_modules"
 MODULE = ROOT + "/sharp/dist/index.mjs"
@@ -71,10 +71,9 @@ def load_candidate() -> dict:
 
 def validate_candidate(candidate: dict) -> dict:
     if (candidate.get("schema") != 1 or candidate.get("target") != TARGET
-            or candidate.get("status") != "upstream_archive_candidate_not_release_admitted"
-            or candidate.get("release_admitted") is not False or candidate.get("node_module") != MODULE
+            or candidate.get("component") != "raster" or candidate.get("node_module") != MODULE
             or candidate.get("archive_count") != 6 or len(candidate.get("archives", [])) != 6):
-        raise AssemblyError("candidate identity is invalid or Raster was incorrectly admitted")
+        raise AssemblyError("Raster runtime identity is invalid")
     archives = candidate["archives"]
     names = set()
     for archive, (package, version) in zip(archives, PACKAGES):
@@ -208,7 +207,7 @@ def assemble(archive_root: Path, output_release: Path, candidate: dict | None = 
             raise AssemblyError("Raster destination appeared during assembly")
         os.rename(stage / "runtime/design/raster", raster_root)
     return {"target": TARGET, "files": len(found), "bytes": 19_698_667,
-            "output": str(raster_root), "release_admitted": False, "runtime_executed": False}
+            "output": str(raster_root), "runtime_executed": False}
 
 
 class AssemblyTests(unittest.TestCase):

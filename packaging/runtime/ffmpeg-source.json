@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "component": "ffmpeg-corresponding-source",
+  "version": "9.0.2",
+  "license": "GPL-2.0-or-later",
+  "target": "aarch64-apple-darwin",
+  "binaries": [
+    {
+      "path": "bin/ffmpeg",
+      "bytes": 25195464,
+      "sha256": "bc48284aaf2b8ab0c9f10ff7f69615c466b7dd2936e759d3b80bfffbdc7793fb"
+    },
+    {
+      "path": "bin/ffprobe",
+      "bytes": 24986456,
+      "sha256": "5415fb2de73341a37a46e236e5c992e5914d2d73328c992352014df8c55037c8"
+    }
+  ],
+  "files": [
+    {
+      "path": "build/BUILD-RECORD.md",
+      "bytes": 1497,
+      "sha256": "17314c036aacfb11540e4432dfe437fe2f829fa5aa3cc488aef84eba6b71bf70"
+    },
+    {
+      "path": "build/SOURCE-URLS.json",
+      "bytes": 1501,
+      "sha256": "1b10150c811b62895fec2707823f8e12f697f05d6c4c55064c3e993889db3a49"
+    },
+    {
+      "path": "build/ffmpeg-build-final.log",
+      "bytes": 59138,
+      "sha256": "462718bee7619db28b530b226dd56627feb00ad299ea78eb8ddd8a69e92a8652"
+    },
+    {
+      "path": "build/ffmpeg-config.log",
+      "bytes": 909221,
+      "sha256": "a99ace097c79051662ac035b3aae5f161cdd7514642ac8d3a4e2d31655221940"
+    },
+    {
+      "path": "build/ffmpeg-configure-final.log",
+      "bytes": 35764,
+      "sha256": "e543a86cb9a81c6b4e25264e6be3b4a708832ab39f5d40d99e990847bc0d2bdc"
+    },
+    {
+      "path": "build/ffmpeg-signature.log",
+      "bytes": 467,
+      "sha256": "692cd44f65a84f21be0e6b0c249b683c6b65f44da2131a800e43154c9795fde5"
+    },
+    {
+      "path": "build/libvpx-config.log",
+      "bytes": 83518,
+      "sha256": "6eacefaa021e529e4d3aaaa16c97398f400235fd7d5dd188861a7591ac520a0f"
+    },
+    {
+      "path": "build/libvpx-configure.log",
+      "bytes": 522,
+      "sha256": "7dbfd358f4881a8a62b4a38658a6ae25a68aaeb8cd2d35828f7cdb1c995089fa"
+    },
+    {
+      "path": "build/opus-config.log",
+      "bytes": 57241,
+      "sha256": "04413bc8e9b9104f5b9943d71066cfeddea0bf2ef24220c95a79ab75d93e98f8"
+    },
+    {
+      "path": "build/opus-configure.log",
+      "bytes": 9229,
+      "sha256": "7670f3d927d9be8df3670476d849344285ac1259cb25e8cbe0ddd43672d8808c"
+    },
+    {
+      "path": "build/x264-config.log",
+      "bytes": 11774,
+      "sha256": "26cb662a6e17430b3052f6ccd23f61e456405c8d9bda112fd286e5b34fb0fd52"
+    },
+    {
+      "path": "build/x264-configure.log",
+      "bytes": 570,
+      "sha256": "af537d875d27e7dc6b97607d21e25233abd78154d732c2a33b965a0585fd5054"
+    },
+    {
+      "path": "notices/FFmpeg-GPLv2",
+      "bytes": 18092,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    {
+      "path": "notices/FFmpeg-LGPLv2.1",
+      "bytes": 26517,
+      "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+    },
+    {
+      "path": "notices/Opus-COPYING",
+      "bytes": 1945,
+      "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551"
+    },
+    {
+      "path": "notices/libvpx-LICENSE",
+      "bytes": 1537,
+      "sha256": "8267348d5af1262c11d1a08de2f5afc77457755f1ac658627dd9acf71011d615"
+    },
+    {
+      "path": "notices/libvpx-PATENTS",
+      "bytes": 1436,
+      "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c"
+    },
+    {
+      "path": "notices/x264-COPYING",
+      "bytes": 17992,
+      "sha256": "32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670"
+    },
+    {
+      "path": "source/ffmpeg-9.0.2.tar.xz",
+      "bytes": 12040788,
+      "sha256": "8c3850283eb25fa026482078a04051e0be17347b09ef81a0849bec15a96e002e"
+    },
+    {
+      "path": "source/ffmpeg-9.0.2.tar.xz.asc",
+      "bytes": 520,
+      "sha256": "d617fd94ea354dadd2a8bb16243d37c44e1e9729b06b6ad58fe30bfb0fa943f2"
+    },
+    {
+      "path": "source/ffmpeg-devel.asc",
+      "bytes": 1709,
+      "sha256": "397b3becedcd5a98769967ff1ff8501ddc89f8368b8f766e4701377d7dbaabe5"
+    },
+    {
+      "path": "source/libvpx-6df3ec34557879fff673706f4a1d9fbd0f3a6f0e.tar.gz",
+      "bytes": 5716272,
+      "sha256": "c9438700704a2007ec86d5bf931bdf4ef1477f0188c6e71a5daf19846169717f"
+    },
+    {
+      "path": "source/opus-1.6.1.tar.gz",
+      "bytes": 10472813,
+      "sha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1"
+    },
+    {
+      "path": "source/x264-0480cb05fa188d37ae87e8f4fd8f1aea3711f7ee.tar.gz",
+      "bytes": 1040667,
+      "sha256": "d0967a1348c85dfde363bb52610403be898171493100561efa0dd05d5fd1ae50"
+    }
+  ]
+}

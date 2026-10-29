@@ -82,11 +82,11 @@ The [Rust video contract](../src/video.rs), [session owner](../src/video_session
 [Installed video tests](../tests/video-mcp-smoke.mjs) exercise actual exports,
 reediting, cancellation and refusal; the release record states which ran.
 
-Exact payload inventories and admission decisions remain under
-`packaging/admission` because the runtime/assembler consumes their hashes. A
-`.proposed` inventory does not itself grant admission. Current pi qualification
-uses a complete disposable offline payload; it does not authorize redistribution
-or changes to the user's installation. First use never substitutes a PATH
-executable or acquires another runtime. See [qualification](qualification.md)
-for current evidence and limits, and [admission records](../packaging/admission/README.md)
-for exact payload decisions.
+Exact payload inventories live under `packaging/runtime/`. The package ships
+FFmpeg/ffprobe with their corresponding source, notices and build instructions.
+Chrome is the sole externally acquired runtime: onboarding offers an explicit
+publisher download or selection of an existing executable. Installed operations
+recheck its binding and never search PATH or substitute another browser.
+The [qualification record](qualification.md) covers the earlier full private
+payload, not the new onboarding route. See [packaging](../packaging/README.md)
+for rights scopes and current limits.

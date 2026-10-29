@@ -64,7 +64,7 @@ report.source_sha256 = {};
 for (const relative of ["Cargo.lock", "src/resource_admission.rs", "src/resource_admission_macos.rs", "src/embedding_session.rs", "src/embedding_session_pressure.rs", "src/memory_runtime.rs", "src/engine.rs", "src/design.rs", "src/code_navigation.rs", "tests/combined-load-smoke.mjs"]) {
   report.source_sha256[relative] = hash(await readFile(join(repository, relative)));
 }
-const designInventoryBytes = await readFile(join(repository, "packaging/admission/m4-design-chromium-macos.runtime.json"));
+const designInventoryBytes = await readFile(join(repository, "packaging/runtime/design.json"));
 const designInventory = JSON.parse(designInventoryBytes);
 assert.equal(designInventory.target, "aarch64-apple-darwin");
 let designBytes = 0;
@@ -74,7 +74,7 @@ for (const member of designInventory.files) {
 }
 assert.equal(designBytes, designInventory.total_bytes);
 assert.equal(report.inputs["--font"].sha256, designInventory.font.sha256);
-const nodeSelection = JSON.parse(await readFile(join(repository, "packaging/admission/m0-node.selection.json")));
+const nodeSelection = JSON.parse(await readFile(join(repository, "packaging/runtime/node.json")));
 assert.equal(report.inputs["--node"].sha256, nodeSelection.targets.find(target => target.target === "aarch64-apple-darwin").native_binary.sha256);
 report.payload_verification = { design_inventory_sha256: hash(designInventoryBytes), design_files: designInventory.files.length, design_bytes: designBytes, node_matches_selected_bytes: true };
 report.adapter_modules = {};

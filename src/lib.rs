@@ -36,6 +36,7 @@ pub mod process_video;
 pub mod release;
 pub mod release_store;
 mod resource_admission;
+pub mod runtime_tools;
 pub mod scope;
 pub mod server;
 pub mod video;

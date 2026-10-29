@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble an already-approved, disposable M0 Node runtime; never install/run it."""
+"""Assemble the pinned, disposable M0 Node runtime; never install/run it."""
 import argparse
 import hashlib
 import json
@@ -11,7 +11,7 @@ import tarfile
 import tempfile
 import zipfile
 
-DEFAULT_MANIFEST = Path(__file__).resolve().parents[1] / "packaging/admission/m0-node.selection.json"
+DEFAULT_MANIFEST = Path(__file__).resolve().parents[1] / "packaging/runtime/node.json"
 TARGETS = {
     "aarch64-apple-darwin": "bin/node",
     "x86_64-pc-windows-msvc": "node.exe",
@@ -124,7 +124,7 @@ def copy_verified(reader, destination, entry):
 
 
 def assemble(archive_root, target, output_release, manifest=DEFAULT_MANIFEST):
-    """Only fake fixtures may use an alternate manifest before approval."""
+    """Only fake fixtures may use an alternate manifest in production assembly."""
     selection = load_selection(manifest, target)
     output = Path(output_release)
     check_output(output)
