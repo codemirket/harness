@@ -1,7 +1,7 @@
 // Actual CLI + compiled child policy, using a deterministic no-network provider.
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {join,isAbsolute} from 'node:path';import {spawnSync} from 'node:child_process';
 import {beginTask,reserveTask,finishTaskReservation} from '../pi/dist/extension/task-ledger.js';
-const [node,peers,root,packageName='package-workflow']=process.argv.slice(2);assert.ok([node,peers,root].every(isAbsolute)&&root.startsWith('/private/tmp/mirket-pi-package-'));
+const [node,peers,root,packageName='package']=process.argv.slice(2);assert.ok([node,peers,root].every(isAbsolute)&&root.startsWith('/private/tmp/mirket-pi-package-'));
 const agent=join(root,'agent'),home=join(agent,'mirket'),project=join(root,'project'),packed=join(root,packageName),binding=JSON.parse(await fs.readFile(join(packed,'native-binding.json')));
 const base=join(home,'child-boundaries-'+Date.now());await fs.mkdir(base,{mode:0o700});
 const report=[];

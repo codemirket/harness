@@ -739,7 +739,7 @@ mod tests {
                 "schema_version": 1,
                 "authoring_date": "2026-10-25",
                 "status": "authored; sampled evaluation in progress",
-                "authoring_basis": [{"path":"planning/skill-catalog-design.md","sha256":"0".repeat(64)}],
+                "authoring_basis": [{"path":"docs/skills.md","sha256":"0".repeat(64)}],
                 "capability_vocabulary": [],
                 "global": [{"id":id,"description":"Plan work","path":"skills/task-planning/SKILL.md","required_capabilities":[],"conditional_capabilities":[],"source_sha256":sha256(body.as_bytes()),"source_bytes":body.len(),"provenance":{"classification":"independently-authored","record":format!("skills/PROVENANCE.md#{id}"),"local_basis":["fixture basis"],"reference_families":["fixture-reference-0"],"reuse_terms":"repository LICENSE applies to fixture prose"},"evaluation":{"status":"planned-not-run","cases":cases}}],
                 "project": [],

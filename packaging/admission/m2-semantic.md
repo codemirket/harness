@@ -21,6 +21,6 @@ and rationale are recorded at the
 No additional dependency or runtime is admitted by this summary.
 
 Use [native build instructions](../../docs/native-build.md) for source/package
-checks and the [release qualification](../../docs/first-release-qualification-20261028.md)
+checks and the [release qualification](../../docs/qualification.md)
 for actual retrieval, memory-use, idle and platform evidence. Model receipts do
 not establish answer usefulness or low memory cost.

@@ -23,9 +23,9 @@ class SkillAssemblyTests(unittest.TestCase):
         self.source = self.root / "source"
         shutil.copytree(SOURCE, self.source)
         for pin in (
-            "planning/skill-catalog-design.md",
-            "planning/implementation-plan.md",
-            "planning/references.md",
+            "docs/skills.md",
+            "docs/architecture.md",
+            "docs/references.md",
             "LICENSE",
         ):
             destination = self.root / pin
@@ -68,7 +68,7 @@ class SkillAssemblyTests(unittest.TestCase):
         self.assertEqual(list(self.output.iterdir()), [])
 
     def test_stale_authoring_basis_refuses_before_output(self):
-        basis = self.root / "planning/skill-catalog-design.md"
+        basis = self.root / "docs/skills.md"
         basis.write_bytes(basis.read_bytes() + b"\nchanged after catalog pin\n")
         with self.assertRaisesRegex(ASSEMBLER.AssemblyError, "stale skill authoring pin"):
             ASSEMBLER.assemble(self.output, self.source)

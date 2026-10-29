@@ -16,7 +16,7 @@
     "pi-host-files.json.proposed": "ea4fcb77d656728a46561fdad2071bf9f4eed91864fb5c1a8dfb3324a4e60662",
     "pi-host-repair.advisories.json.proposed": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
   },
-  "qualification": "pi-host-repair.qualification.json",
+  "qualification": "../../docs/qualification.md",
   "conditions": [
     "External host remains separate from the Mirket package",
     "Full closure and entry verification before native service registration",

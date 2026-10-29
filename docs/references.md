@@ -1,6 +1,6 @@
 # Selected skill references
 
-Status: **approved reference selection**, including the focused review additions. The [implementation contract](implementation-plan.md) governs the implemented product; reference selection does not grant runtime or dependency admission.
+Status: **approved reference selection**, including the focused review additions. The [implementation contract](architecture.md) governs the implemented product; reference selection does not grant runtime or dependency admission.
 
 **60 unique selected entries across 61 group memberships:** 52 original sources plus six focused method references in H and two focused design/video method families in I. Ponytail appears in A and B as one source with two uses. All unlisted entries from the prior inventory are excluded from the active catalog.
 
@@ -126,7 +126,7 @@ review and the retained fetch receipts.
 | ID | Selected evidence locator | Use and rights boundary |
 | --- | --- | --- |
 | `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
-| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/first-release-qualification-20261028.md#package-and-source-delivery) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
+| `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [source/notice closure](../docs/qualification.md#package-and-source-delivery) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
 
 ## Source-to-guide reuse contract
 
@@ -148,11 +148,11 @@ The [capability review](https://github.com/codemirket/harness/blob/b3068a181a674
 
 ## Separate toolset decision
 
-No dependency/tool selection was supplied for the previous group H. Current tool direction is recorded in the [implementation contract](implementation-plan.md). Podman/VM execution is superseded; the old group H inventory did not authorize tools. This document’s new H contains method references only. No historical runtime approval transfers to an unrelated new dependency closure.
+No dependency/tool selection was supplied for the previous group H. Current tool direction is recorded in the [implementation contract](architecture.md). Podman/VM execution is superseded; the old group H inventory did not authorize tools. This document’s new H contains method references only. No historical runtime approval transfers to an unrelated new dependency closure.
 
 ## Provenance
 
 The current [provenance ledger](../skills/PROVENANCE.md) and
-[pinned review inputs](reviews/README.md) record selected sources and reuse limits.
+[pinned review inputs](../packaging/provenance/skills/README.md) record selected sources and reuse limits.
 Earlier ledgers from a private development worktree are not portable repository
 inputs and do not authorize additional references or dependencies.

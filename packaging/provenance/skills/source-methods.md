@@ -2,9 +2,9 @@
 
 This review covers 24 distinct reference families (25 memberships because
 Ponytail is shared) in sections A, B and H of
-`planning/references.md`. It is bounded to the exact revisions named there; no
+`docs/references.md`. It is bounded to the exact revisions named there; no
 default branch or later commit was substituted. The URL receipts are in
-`planning/reviews/2026-10-27/reference-fetches.json`. Raw bodies used for this
+`packaging/provenance/skills/reference-fetches.json`. Raw bodies used for this
 review are retained outside the repository under
 `/Users/nazmiyilmaz/.codex/task-state/harness-deep-review-20261027/source-methods/`
 and `/tmp/mirket-reference-raw-2026-10-27/`; no upstream body, asset or font is

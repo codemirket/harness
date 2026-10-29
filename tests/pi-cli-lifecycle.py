@@ -42,7 +42,7 @@ if a.only != 'tui':
    if not chunk:raise RuntimeError('RPC exited: '+(root/'rpc.stderr').read_text())
    buf+=chunk
   line,buf=buf.split(b'\n',1);event=json.loads(line);log.write(json.dumps(event)+'\n');log.flush();events.append(event);return event
- 
+
  def request(typ,**fields):
   global seq
   seq+=1;ident=str(seq);p.stdin.write((json.dumps({'id':ident,'type':typ,**fields})+'\n').encode());p.stdin.flush()

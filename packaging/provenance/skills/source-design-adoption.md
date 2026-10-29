@@ -23,7 +23,7 @@ model or visual acceptance evidence.
 
 ## Evidence and limits
 
-`planning/reviews/2026-10-27/reference-fetches.json` and
+`packaging/provenance/skills/reference-fetches.json` and
 `reference-audit.json` retain URL, status, final URL, byte count and SHA-256
 receipts. A successful fetch is source evidence only. It does not establish
 operation success, visual quality, video decoding, tool availability, model

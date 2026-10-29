@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 CATALOG=ROOT/"skills/catalog.json"
 PROVENANCE=ROOT/"skills/PROVENANCE.md"
-REVIEW_DIR=ROOT/"planning/reviews/2026-10-27"
+REVIEW_DIR=ROOT/"packaging/provenance/skills"
 FETCHES=REVIEW_DIR/"reference-fetches.json"
 AUDIT=REVIEW_DIR/"reference-audit.json"
 REVIEW=REVIEW_DIR/"skill-reference-audit.md"
@@ -58,7 +58,7 @@ RESOURCE=re.compile(r"references/(?:"+RESOURCE_COMPONENT+r"/)*"+RESOURCE_COMPONE
 
 def refs():
     out=[]; seen=set(); tick=chr(96)
-    for line in (ROOT/"planning/references.md").read_text().splitlines():
+    for line in (ROOT/"docs/references.md").read_text().splitlines():
         p=line.split("|")
         if len(p)<3 or tick not in p[1]: continue
         ident=p[1].split(tick)[1]; urls=re.findall(r"https?://[^) ·]+",p[2])
@@ -68,7 +68,7 @@ def refs():
 
 def plan_memberships():
     tick=chr(96); count=0
-    for line in (ROOT/"planning/references.md").read_text().splitlines():
+    for line in (ROOT/"docs/references.md").read_text().splitlines():
         p=line.split("|")
         if len(p)>=3 and tick in p[1] and re.findall(r"https?://[^) ·]+",p[2]): count+=1
     return count
@@ -190,9 +190,9 @@ def append_new_reference_records(provenance,plan_by_id):
 ### Reference: {ident}
 
 - Classification: {meta["classification"]}; reviewed method family, not a redistributed body.
-- Source selection: planning/references.md / focused design and video method adoption / {ident}.
+- Source selection: docs/references.md / focused design and video method adoption / {ident}.
 '''+"\n".join(f"- Retained source {i}: {url}." for i,url in enumerate(plan_by_id[ident]["urls"],1))+f'''
-- Terms/currentness: pinned retrieval and license receipts are retained in planning/reviews/2026-10-27/reference-audit.json; exact source/section rights govern future use.
+- Terms/currentness: pinned retrieval and license receipts are retained in packaging/provenance/skills/reference-audit.json; exact source/section rights govern future use.
 - Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
 ''')
     if additions:
@@ -266,7 +266,7 @@ def make_audit(catalog):
             "body_review_documents":[str(p.relative_to(ROOT)) for p in review_docs if re.search(rf"`{re.escape(plan['id'])}`|\*\*{re.escape(plan['id'])}\*\*",p.read_text())],
             "reuse_boundary":"No upstream prose, code or assets were copied into shipped skill bodies; reviewed method adaptations are independently worded and classified in source-design-adoption.md."
         })
-    return {"schema":2,"generated_at":fetched.get("generated_at"),"source_plan":"planning/references.md","source_count":len(planned),"plan_memberships":plan_memberships(),"shared_ids":["ponytail"],"body_review_documents":[str(p.relative_to(ROOT)) for p in review_docs],"sources":sources}
+    return {"schema":2,"generated_at":fetched.get("generated_at"),"source_plan":"docs/references.md","source_count":len(planned),"plan_memberships":plan_memberships(),"shared_ids":["ponytail"],"body_review_documents":[str(p.relative_to(ROOT)) for p in review_docs],"sources":sources}
 
 def refresh(write):
     catalog=json.loads(CATALOG.read_text()); changed=[]
@@ -293,7 +293,7 @@ def refresh(write):
             if families!=provenance.get("reference_families"):
                 provenance["reference_families"]=families; changed.append("families:"+skill["id"])
             basis=provenance.setdefault("local_basis",[])
-            adoption_basis="planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+            adoption_basis="packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping"
             if adoption_basis not in basis:
                 basis.append(adoption_basis); changed.append("basis:"+skill["id"])
             if skill["id"] in DESIGN_REVIEW_SKILLS and DESIGN_REVIEW_BASIS not in basis:
@@ -313,14 +313,14 @@ def refresh(write):
     # second catalog schema while making the evidence discoverable per family.
     review_docs=sorted(REVIEW_DIR.glob("source-*.md"))
     review_identity="; ".join(f"{p.relative_to(ROOT)} sha256={hashlib.sha256(p.read_bytes()).hexdigest()}" for p in review_docs)
-    inspection_suffix=("; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; "
+    inspection_suffix=("; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; "
         f"focused source review evidence: {review_identity}; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh")
     plans={x["id"]:x for x in refs()}
     by_id={x.get("id"):x for x in catalog.get("reference_sources",[])}
     for ident,plan in plans.items():
         if ident not in by_id:
             meta=NEW_SOURCE_METADATA.get(ident,{"classification":"comparison-only","rights_status":"rights and source body require exact review before adaptation"})
-            entry={"id":ident,"urls":plan["urls"],"selection_locator":f"planning/references.md / selected source / {ident}","classification":meta["classification"],"inspection_status":"approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents","rights_status":meta["rights_status"]}
+            entry={"id":ident,"urls":plan["urls"],"selection_locator":f"docs/references.md / selected source / {ident}","classification":meta["classification"],"inspection_status":"approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents","rights_status":meta["rights_status"]}
             catalog.setdefault("reference_sources",[]).append(entry); by_id[ident]=entry; changed.append("reference:"+ident)
     for ref in catalog.get("reference_sources",[]):
         base=ref.get("inspection_status","").split("; 2026-10-27 retrieval receipts:",1)[0].rstrip()
@@ -351,9 +351,9 @@ def refresh(write):
                     ref["rights_status"]=rights; changed.append("reference-rights:"+ref["id"])
     catalog["reference_sources"]=sorted(catalog.get("reference_sources",[]),key=lambda x:x.get("id",""))
     obj=make_audit(catalog); encoded=json.dumps(obj,indent=2,sort_keys=True,ensure_ascii=False)+"\n"
-    if not AUDIT.is_file() or AUDIT.read_text()!=encoded: changed.append("planning/reviews/2026-10-27/reference-audit.json")
+    if not AUDIT.is_file() or AUDIT.read_text()!=encoded: changed.append("packaging/provenance/skills/reference-audit.json")
     marker,end="<!-- skill-reference-audit:begin -->","<!-- skill-reference-audit:end -->"
-    block=marker+"\nGenerated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in planning/reviews/2026-10-27/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.\nAudit artifact: planning/reviews/2026-10-27/reference-audit.json; fetch receipts: planning/reviews/2026-10-27/reference-fetches.json\n"+end
+    block=marker+"\nGenerated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in packaging/provenance/skills/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.\nAudit artifact: packaging/provenance/skills/reference-audit.json; fetch receipts: packaging/provenance/skills/reference-fetches.json\n"+end
     provenance=PROVENANCE.read_text()
     provenance=reconcile_provenance_inventory(provenance,catalog)
     provenance=update_provenance_records(provenance,catalog)
@@ -362,7 +362,7 @@ def refresh(write):
     provenance=re.sub(re.escape(marker)+r".*?"+re.escape(end),block,provenance,flags=re.S) if marker in provenance else provenance.rstrip()+"\n\n"+block+"\n"
     if PROVENANCE.read_text()!=provenance: changed.append("PROVENANCE.md")
     review="# Skill reference audit (2026-10-27)\n\n"+block.replace(marker+"\n","").replace("\n"+end,"")+f"\n\nThe audit contains {len(plans)} unique families and {plan_memberships()} plan memberships. It records exact URL receipts, pinned/moving status, selected raw source file and section headings, source/license body hashes, and local skill identities. It does not infer source-to-skill fidelity; that mapping is recorded only by the focused body-review documents. Any failed receipt remains unverified; an HTTP/tool receipt alone is not an operation or quality claim.\n"
-    if not REVIEW.is_file() or REVIEW.read_text()!=review: changed.append("planning/reviews/2026-10-27/skill-reference-audit.md")
+    if not REVIEW.is_file() or REVIEW.read_text()!=review: changed.append("packaging/provenance/skills/skill-reference-audit.md")
     if write:
         CATALOG.write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\n"); AUDIT.write_text(encoded); PROVENANCE.write_text(provenance); REVIEW.write_text(review)
     return {"changed":changed,"references":len(plans),"audit_sha256":hashlib.sha256(encoded.encode()).hexdigest(),"write":write}

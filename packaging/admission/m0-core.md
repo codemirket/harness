@@ -17,4 +17,4 @@ Run the [build-input guard](../../scripts/check-build-inputs.py) before Cargo.
 In particular, the admitted rmcp source layout must not trigger Git-hook
 configuration. Use locked/offline Rust inputs, verify adapter package identities,
 and never invoke upstream installers/hooks incidentally. Current output and
-platform qualification is in the [release record](../../docs/first-release-qualification-20261028.md).
+platform qualification is in the [release record](../../docs/qualification.md).

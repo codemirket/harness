@@ -14,17 +14,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def freeze(archives, repaired_undici, output):
-    inventory = json.loads((ROOT/'packaging/admission/pi-p0.inventory.json.proposed').read_text())
     lock_file = ROOT/'packaging/admission/pi-host-repair-package-lock.json.proposed'
     lock = json.loads(lock_file.read_text())
     files = []
-    for package in inventory['records']:
-        entry = lock['packages'][package['path']]
-        archive = repaired_undici if package['path'] == 'node_modules/undici' else archives/(hashlib.sha256(package['resolved'].encode()).hexdigest()+'.tgz')
+    for package_path, entry in lock['packages'].items():
+        if not package_path:
+            continue
+        archive = repaired_undici if package_path == 'node_modules/undici' else archives/(hashlib.sha256(entry['resolved'].encode()).hexdigest()+'.tgz')
         data = archive.read_bytes()
         kind, digest = entry['integrity'].split('-', 1)
         if base64.b64encode(hashlib.new(kind, data).digest()).decode() != digest:
-            raise ValueError(f'Archive integrity differs: {package["path"]}')
+            raise ValueError(f'Archive integrity differs: {package_path}')
         with tarfile.open(archive) as tar:
             roots = {PurePosixPath(member.name).parts[0] for member in tar.getmembers()}
             if len(roots) != 1:
@@ -32,12 +32,12 @@ def freeze(archives, repaired_undici, output):
             for member in tar:
                 path = PurePosixPath(member.name)
                 if not path.parts or path.is_absolute() or '..' in path.parts:
-                    raise ValueError(f'Unsafe archive path: {package["path"]}: {member.name}')
+                    raise ValueError(f'Unsafe archive path: {package_path}: {member.name}')
                 if member.isdir():
                     continue
                 if not member.isfile():
                     raise ValueError('Archive links/special files are not admitted')
-                relative = (PurePosixPath(package['path']).relative_to('node_modules')/PurePosixPath(*path.parts[1:])).as_posix()
+                relative = (PurePosixPath(package_path).relative_to('node_modules')/PurePosixPath(*path.parts[1:])).as_posix()
                 content = tar.extractfile(member).read()
                 files.append({'path': relative, 'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()})
         # npm's .bin links are non-importable command conveniences; never invoke them.

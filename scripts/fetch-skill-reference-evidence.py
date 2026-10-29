@@ -2,7 +2,7 @@
 """Fetch and retain exact pinned skill-reference evidence.
 
 This is an evidence collector, not a source installer. It stores immutable
-retrieval metadata in planning/reviews and keeps raw reference/license bodies in
+retrieval metadata in packaging/provenance/skills and keeps raw reference/license bodies in
 the task-private path recorded by each receipt (never in shipped source). A
 failed request is retained as an unverified receipt and is never rewritten as
 success by the catalog refresh command.
@@ -16,7 +16,7 @@ from urllib.parse import unquote
 from urllib.request import Request, urlopen
 
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/"planning/reviews/2026-10-27"
+OUT=ROOT/"packaging/provenance/skills"
 RAW=Path(os.environ.get("MIRKET_REFERENCE_RAW", "/tmp/mirket-reference-raw-2026-10-27"))
 USER_AGENT="mirket-reference-audit/0.2"
 LICENSE_OVERRIDES={
@@ -38,7 +38,7 @@ LICENSE_OVERRIDES={
 
 def refs():
     rows=[]; seen=set(); tick=chr(96)
-    for line in (ROOT/"planning/references.md").read_text().splitlines():
+    for line in (ROOT/"docs/references.md").read_text().splitlines():
         p=line.split("|")
         if len(p)<3 or tick not in p[1]: continue
         ident=p[1].split(tick)[1]; urls=re.findall(r"https?://[^) ·]+",p[2])
@@ -150,7 +150,7 @@ def collect(only=None):
                 if selected["license_file"] is None and evidence.get("license_file"):
                     selected["license_file"]=evidence["license_file"]
         records.append({"id":ident,"urls":urls,"retrieved_at":datetime.now(timezone.utc).isoformat(),"url_receipts":url_receipts,"selected":selected,"selected_sources":selected_sources})
-    obj={"schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),"source_plan":"planning/references.md","source_count":len(records),"records":records}
+    obj={"schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),"source_plan":"docs/references.md","source_count":len(records),"records":records}
     fetch_path.write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
     print(json.dumps({"records":len(records),"failed":sum(1 for r in records for x in r["url_receipts"] if x["status"]!=200),"path":str(OUT/"reference-fetches.json")},indent=2))
 

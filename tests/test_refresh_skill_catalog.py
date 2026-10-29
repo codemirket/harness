@@ -52,7 +52,7 @@ Source rights remain available.
     def test_current_catalog_has_all_pinned_reference_contracts(self):
         result = MODULE.refresh(False)
         self.assertEqual(result["changed"], [])
-        audit = json.loads((ROOT / "planning/reviews/2026-10-27/reference-audit.json").read_text())
+        audit = json.loads((ROOT / "packaging/provenance/skills/reference-audit.json").read_text())
         planned = MODULE.refs()
         self.assertEqual(audit["source_count"], len(planned))
         self.assertEqual(len(audit["sources"]), len(planned))
@@ -150,7 +150,7 @@ Source rights remain available.
             root = Path(name)
             shutil.copytree(ROOT / "skills", root / "skills")
             (root / "planning").mkdir()
-            for pin in ("planning/references.md", "planning/skill-catalog-design.md", "planning/implementation-plan.md", "LICENSE", "planning/reviews/2026-10-27/reference-fetches.json"):
+            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
                 destination = root / pin
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / pin, destination)
@@ -160,10 +160,10 @@ Source rights remain available.
                 MODULE.ROOT = root
                 MODULE.CATALOG = root / "skills/catalog.json"
                 MODULE.PROVENANCE = root / "skills/PROVENANCE.md"
-                MODULE.REVIEW = root / "planning/reviews/2026-10-27/skill-reference-audit.md"
-                MODULE.AUDIT = root / "planning/reviews/2026-10-27/reference-audit.json"
-                MODULE.FETCHES = root / "planning/reviews/2026-10-27/reference-fetches.json"
-                MODULE.REVIEW_DIR = root / "planning/reviews/2026-10-27"
+                MODULE.REVIEW = root / "packaging/provenance/skills/skill-reference-audit.md"
+                MODULE.AUDIT = root / "packaging/provenance/skills/reference-audit.json"
+                MODULE.FETCHES = root / "packaging/provenance/skills/reference-fetches.json"
+                MODULE.REVIEW_DIR = root / "packaging/provenance/skills"
                 # File creation order must not change generated evidence order.
                 for name in ("source-z.md", "source-a.md"):
                     (MODULE.REVIEW_DIR / name).write_text("Fixture review: `skyvern`\n")
@@ -181,7 +181,7 @@ Source rights remain available.
                 self.assertEqual(skyvern["body_review_documents"], evidence["body_review_documents"])
                 audit = MODULE.AUDIT
                 audit.write_text(audit.read_text() + "\nmanual drift\n")
-                self.assertIn("planning/reviews/2026-10-27/reference-audit.json", MODULE.refresh(False)["changed"])
+                self.assertIn("packaging/provenance/skills/reference-audit.json", MODULE.refresh(False)["changed"])
                 receipts = json.loads(MODULE.FETCHES.read_text())
                 original_receipts = json.loads(json.dumps(receipts))
                 receipts["records"][0]["url_receipts"][0]["requested_url"] = "https://forged.invalid/reference"
@@ -203,8 +203,8 @@ Source rights remain available.
                 self.assertEqual(first["url_receipts"][0]["status"], 503)
                 MODULE.AUDIT.unlink()
                 MODULE.REVIEW.unlink()
-                self.assertIn("planning/reviews/2026-10-27/reference-audit.json", MODULE.refresh(False)["changed"])
-                self.assertIn("planning/reviews/2026-10-27/skill-reference-audit.md", MODULE.refresh(False)["changed"])
+                self.assertIn("packaging/provenance/skills/reference-audit.json", MODULE.refresh(False)["changed"])
+                self.assertIn("packaging/provenance/skills/skill-reference-audit.md", MODULE.refresh(False)["changed"])
             finally:
                 MODULE.ROOT = original
                 MODULE.CATALOG, MODULE.PROVENANCE, MODULE.AUDIT, MODULE.REVIEW, MODULE.FETCHES, MODULE.REVIEW_DIR = original_paths
@@ -214,7 +214,7 @@ Source rights remain available.
             root = Path(name)
             shutil.copytree(ROOT / "skills", root / "skills")
             (root / "planning").mkdir()
-            for pin in ("planning/references.md", "planning/skill-catalog-design.md", "planning/implementation-plan.md", "LICENSE", "planning/reviews/2026-10-27/reference-fetches.json"):
+            for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
                 destination = root / pin
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / pin, destination)
@@ -223,7 +223,7 @@ Source rights remain available.
                 MODULE.ROOT = root
                 MODULE.CATALOG = root / "skills/catalog.json"
                 MODULE.PROVENANCE = root / "skills/PROVENANCE.md"
-                MODULE.REVIEW_DIR = root / "planning/reviews/2026-10-27"
+                MODULE.REVIEW_DIR = root / "packaging/provenance/skills"
                 MODULE.AUDIT = MODULE.REVIEW_DIR / "reference-audit.json"
                 MODULE.REVIEW = MODULE.REVIEW_DIR / "skill-reference-audit.md"
                 MODULE.FETCHES = MODULE.REVIEW_DIR / "reference-fetches.json"
@@ -245,7 +245,7 @@ Source rights remain available.
                 root = Path(name)
                 shutil.copytree(ROOT / "skills", root / "skills")
                 (root / "planning").mkdir()
-                for pin in ("planning/references.md", "planning/skill-catalog-design.md", "planning/implementation-plan.md", "LICENSE", "planning/reviews/2026-10-27/reference-fetches.json"):
+                for pin in ("docs/references.md", "docs/skills.md", "docs/architecture.md", "LICENSE", "packaging/provenance/skills/reference-fetches.json"):
                     destination = root / pin
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(ROOT / pin, destination)
@@ -260,7 +260,7 @@ Source rights remain available.
                     MODULE.ROOT = root
                     MODULE.CATALOG = root / "skills/catalog.json"
                     MODULE.PROVENANCE = root / "skills/PROVENANCE.md"
-                    MODULE.REVIEW_DIR = root / "planning/reviews/2026-10-27"
+                    MODULE.REVIEW_DIR = root / "packaging/provenance/skills"
                     MODULE.AUDIT = MODULE.REVIEW_DIR / "reference-audit.json"
                     MODULE.REVIEW = MODULE.REVIEW_DIR / "skill-reference-audit.md"
                     MODULE.FETCHES = MODULE.REVIEW_DIR / "reference-fetches.json"

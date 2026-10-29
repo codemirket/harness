@@ -2,10 +2,9 @@
 
 The pi candidate retains **HyperFrames 0.8.197**, exact private render-only
 Chrome and verified FFmpeg/ffprobe on **macOS 26.5.2 ARM64**. The
-[pi migration record](../planning/pi-migration.md) identifies the fresh installed
+[qualification record](qualification.md) identifies the fresh installed
 export, changed-source, decoded audio, cancellation and saved-pixel evidence.
-Pi owns source authoring, models and host interaction. The assembled migration
-candidate is not yet release-qualified. No Remotion, personal-browser fallback
+Pi owns source authoring, models and host interaction. The scoped local candidate is validated; publication remains separate. No Remotion, personal-browser fallback
 or first-use download is selected.
 
 ## Author and prepare
@@ -78,8 +77,8 @@ receipt alone is insufficient.
 ## Implementation and distribution
 
 The [Rust video contract](../src/video.rs), [session owner](../src/video_session.rs),
-[export adapter](../pi/src/video-export.ts) and
-[policy](../pi/src/video-policy.ts) define the executable boundary.
+[export adapter](../pi/src/runtime/video-export.ts) and
+[policy](../pi/src/runtime/video-policy.ts) define the executable boundary.
 [Installed video tests](../tests/video-mcp-smoke.mjs) exercise actual exports,
 reediting, cancellation and refusal; the release record states which ran.
 

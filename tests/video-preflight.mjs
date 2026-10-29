@@ -1,6 +1,6 @@
 // Disposable authoring-contract fixtures. This is an adapter preflight test,
 // not a renderer qualification and not a substitute for the native MCP smoke.
-// Run after `npm run build` in adapters with the private, compiled adapter.
+// Run after the locked build in pi/ with the private, compiled runtime.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { copyFile, mkdtemp, mkdir, readFile, readdir, realpath, rm, writeFile } from "node:fs/promises";

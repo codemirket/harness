@@ -1,9 +1,9 @@
 {
   "body_review_documents": [
-    "planning/reviews/2026-10-27/source-design-adoption.md",
-    "planning/reviews/2026-10-27/source-methods.md",
-    "planning/reviews/2026-10-27/source-product.md",
-    "planning/reviews/2026-10-27/source-visual.md"
+    "packaging/provenance/skills/source-design-adoption.md",
+    "packaging/provenance/skills/source-methods.md",
+    "packaging/provenance/skills/source-product.md",
+    "packaging/provenance/skills/source-visual.md"
   ],
   "generated_at": "2026-10-27T13:12:03.175389+00:00",
   "plan_memberships": 61,
@@ -12,11 +12,11 @@
     "ponytail"
   ],
   "source_count": 60,
-  "source_plan": "planning/references.md",
+  "source_plan": "docs/references.md",
   "sources": [
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "superpowers",
       "license_evidence": [
@@ -249,7 +249,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "matt",
       "license_evidence": [
@@ -447,7 +447,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "ecc",
       "license_evidence": [
@@ -697,7 +697,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "openai",
       "license_evidence": [
@@ -903,7 +903,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "anthropic",
       "license_evidence": [
@@ -1075,7 +1075,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "google",
       "license_evidence": [
@@ -1282,7 +1282,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "ponytail",
       "license_evidence": [
@@ -1445,7 +1445,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "adhd",
       "license_evidence": [
@@ -1596,7 +1596,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "gstack",
       "license_evidence": [
@@ -1820,7 +1820,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "archify",
       "license_evidence": [
@@ -2013,7 +2013,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "crawl4ai",
       "license_evidence": [
@@ -2182,7 +2182,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "serena",
       "license_evidence": [
@@ -2346,7 +2346,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "cua",
       "license_evidence": [
@@ -2519,7 +2519,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "stagehand",
       "license_evidence": [
@@ -2682,7 +2682,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "skyvern",
       "license_evidence": [
@@ -2861,7 +2861,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "langchain",
       "license_evidence": [
@@ -2997,7 +2997,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "langgraph",
       "license_evidence": [
@@ -3135,7 +3135,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "promptfoo",
       "license_evidence": [
@@ -3284,7 +3284,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "hallmark",
       "license_evidence": [
@@ -3513,7 +3513,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "taste",
       "license_evidence": [
@@ -3682,7 +3682,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "emil",
       "license_evidence": [
@@ -3888,7 +3888,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "impeccable",
       "license_evidence": [
@@ -4103,7 +4103,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "gsap-official",
       "license_evidence": [
@@ -4255,7 +4255,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "diagram-design",
       "license_evidence": [
@@ -4447,7 +4447,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "canvas-ui",
       "license_evidence": [
@@ -4593,7 +4593,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "kyle-motion",
       "license_evidence": [
@@ -4736,7 +4736,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "lottiefiles-motion",
       "license_evidence": [
@@ -4878,7 +4878,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "owl-concepts",
       "license_evidence": [
@@ -5068,7 +5068,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "mengto-inspiration",
       "license_evidence": [
@@ -5483,7 +5483,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "scroll-craft",
       "license_evidence": [
@@ -5632,7 +5632,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "motion-primitives",
       "license_evidence": [
@@ -5768,7 +5768,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "better-design",
       "license_evidence": [
@@ -5922,7 +5922,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "design-anatomy",
       "license_evidence": [
@@ -6059,7 +6059,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "anime",
       "license_evidence": [
@@ -6194,7 +6194,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "motion",
       "license_evidence": [
@@ -6353,7 +6353,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "marketing",
       "license_evidence": [
@@ -6550,7 +6550,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "wondel",
       "license_evidence": [
@@ -6765,7 +6765,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "animate.css",
       "license_evidence": [
@@ -6902,7 +6902,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "react-bits",
       "license_evidence": [
@@ -7048,7 +7048,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-visual.md"
+        "packaging/provenance/skills/source-visual.md"
       ],
       "id": "remotion",
       "license_evidence": [
@@ -7181,7 +7181,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "karpathy",
       "license_evidence": [],
@@ -7308,7 +7308,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "codex-practices",
       "license_evidence": [],
@@ -7382,7 +7382,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "kingy-motion",
       "license_evidence": [],
@@ -7456,7 +7456,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "geist-code",
       "license_evidence": [
@@ -7613,7 +7613,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "atlassian",
       "license_evidence": [],
@@ -7750,7 +7750,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "fluent",
       "license_evidence": [],
@@ -7872,7 +7872,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "reshaped",
       "license_evidence": [],
@@ -7967,7 +7967,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "apple-liquid-glass",
       "license_evidence": [],
@@ -8044,7 +8044,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "govuk",
       "license_evidence": [],
@@ -8178,7 +8178,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "vanilla-publishing",
       "license_evidence": [],
@@ -8264,7 +8264,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "guardian",
       "license_evidence": [],
@@ -8398,7 +8398,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-product.md"
+        "packaging/provenance/skills/source-product.md"
       ],
       "id": "spectrum",
       "license_evidence": [],
@@ -8520,7 +8520,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "agent-skills",
       "license_evidence": [],
@@ -8636,7 +8636,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "trail-of-bits",
       "license_evidence": [
@@ -8906,7 +8906,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "qmd-methods",
       "license_evidence": [
@@ -9079,7 +9079,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "sentry-methods",
       "license_evidence": [
@@ -9333,7 +9333,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "statistical-analysis",
       "license_evidence": [],
@@ -9524,7 +9524,7 @@
     },
     {
       "body_review_documents": [
-        "planning/reviews/2026-10-27/source-methods.md"
+        "packaging/provenance/skills/source-methods.md"
       ],
       "id": "wcag",
       "license_evidence": [],

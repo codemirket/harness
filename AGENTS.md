@@ -1,7 +1,6 @@
 # Mirket
 
-Execute the pi-only migration in `planning/pi-migration.md` and the domain
-contract in `planning/implementation-plan.md`. Pi is the sole product host.
+Follow `docs/architecture.md` and `docs/skills.md`. Pi is the sole product host.
 Preserve source provenance and truthful qualification evidence. Preserve the user installation and unrelated client settings. No
 compatibility layers or publication without authorization.
 
@@ -42,5 +41,6 @@ maintenance cost. Remove redundant or non-contributing skills instead of
 preserving catalog size. A tied small trial does not prove universal uselessness;
 repeated failure can justify retiring the tested bundle without blaming each
 member. Preserve failed evidence and host-owned workflows when reducing scope.
-The first pi release qualification target is macOS 26.5.2 ARM64; it is not yet
-qualified. Other platforms require separate native qualification.
+The local candidate qualification scope is macOS 26.5.2 ARM64. See
+`docs/qualification.md` for its exact identity and limits. Other platforms
+require separate native qualification.

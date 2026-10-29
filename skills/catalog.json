@@ -4,16 +4,16 @@
   "status": "pi port in progress; static body and route audit does not establish installed selection or held-out outcome qualification",
   "authoring_basis": [
     {
-      "path": "planning/skill-catalog-design.md",
-      "sha256": "49900f9f46168f74a93e133638c137097bd00001f73e10e6bc4856be5cdb1c60"
+      "path": "docs/skills.md",
+      "sha256": "291abcc41891f9682798d11c5e1cd5a23f600910b66a183c890f07836adf2c41"
     },
     {
-      "path": "planning/implementation-plan.md",
-      "sha256": "3165dd068b38081fa23f61fdcb8b5d55177179e0446514b891635526f4511578"
+      "path": "docs/architecture.md",
+      "sha256": "53de73bff031f68b7a459b40e51447706547b01c5a1a3cfe29e0a889a7bd256c"
     },
     {
-      "path": "planning/references.md",
-      "sha256": "bcb5c3c31f117c06ed3c9b2c12abccf022830e2cae6af38997f6833b733b94e9"
+      "path": "docs/references.md",
+      "sha256": "dcf3c88118cfa635572842fcb73b5cb4265206073142718256e75fe5b04764cc"
     },
     {
       "path": "LICENSE",
@@ -50,9 +50,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#runtime-operations",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)"
         ],
         "reference_families": [
@@ -110,9 +110,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#project-memory",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "qmd-methods",
@@ -169,9 +169,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#evidence-research",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -230,9 +230,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#task-planning",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "superpowers",
@@ -292,9 +292,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#agent-coordination-strategy",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "superpowers",
@@ -352,9 +352,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#code-change",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "matt",
@@ -414,9 +414,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#root-cause-debugging",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "superpowers",
@@ -474,9 +474,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#critical-review",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "gstack",
@@ -535,9 +535,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#outcome-verification",
         "local_basis": [
-          "planning/skill-catalog-design.md / Nine global skills",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Nine global skills",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "superpowers",
@@ -598,9 +598,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#architecture",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "matt",
@@ -659,9 +659,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#api-integration",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -720,9 +720,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#frontend-engineering",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "matt",
@@ -781,9 +781,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#backend-engineering",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -841,9 +841,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#database-migrations",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "matt",
@@ -901,9 +901,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#test-design",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "superpowers",
@@ -961,9 +961,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#performance",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "gstack",
@@ -1021,9 +1021,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ci-release",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "gstack",
@@ -1081,9 +1081,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#infrastructure",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -1141,9 +1141,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#native-desktop",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -1201,9 +1201,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#dependency-admission",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -1262,9 +1262,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#js-ts-navigation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "serena"
@@ -1320,9 +1320,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#sql-navigation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "serena"
@@ -1378,9 +1378,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-research",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
         ],
         "reference_families": [
@@ -1444,9 +1444,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-automation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "stagehand",
@@ -1505,9 +1505,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#browser-qa",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "gstack",
@@ -1570,11 +1570,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#art-direction",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks"
         ],
         "reference_families": [
@@ -1640,11 +1640,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#interface-composition",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "hallmark",
@@ -1714,11 +1714,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#design-critique",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity"
@@ -1791,9 +1791,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#design-systems",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -1857,9 +1857,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#typography",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -1920,9 +1920,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#accessibility",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "wcag",
@@ -1987,9 +1987,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#openpencil",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
@@ -2051,12 +2051,12 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#vector-art",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/m4-skill-path-contract-repair.md / Audited project-file calling contract (2026-10-26)",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "diagram-design",
@@ -2125,9 +2125,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#raster-art",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -2190,9 +2190,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#diagrams",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -2253,9 +2253,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-visualization",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "statistical-analysis",
@@ -2314,9 +2314,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#localization",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "spectrum",
@@ -2377,11 +2377,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#motion-direction",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md"
@@ -2460,11 +2460,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#ui-motion",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "anime",
@@ -2526,11 +2526,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#scroll-motion",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping"
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping"
         ],
         "reference_families": [
           "scroll-craft",
@@ -2592,9 +2592,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#svg-lottie",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -2658,11 +2658,11 @@
         "classification": "method-adapted",
         "record": "skills/PROVENANCE.md#video-production",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs",
-          "planning/reviews/2026-10-27/source-design-adoption.md / explicit reviewed method mapping",
+          "packaging/provenance/skills/source-design-adoption.md / explicit reviewed method mapping",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity",
@@ -2740,9 +2740,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#jobs-to-be-done",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "wondel",
@@ -2801,9 +2801,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#prototype-test",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "wondel",
@@ -2861,9 +2861,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#content-search",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "marketing",
@@ -2922,9 +2922,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-analysis",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "statistical-analysis"
@@ -2980,9 +2980,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#statistical-inference",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "statistical-analysis",
@@ -3039,9 +3039,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#sql-analysis",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "statistical-analysis"
@@ -3097,9 +3097,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#data-pipelines",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "ecc",
@@ -3157,9 +3157,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#financial-models",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "wondel",
@@ -3217,9 +3217,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ai-tool-design",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -3279,9 +3279,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#ai-evaluation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "promptfoo",
@@ -3341,9 +3341,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#retrieval-evaluation",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "promptfoo",
@@ -3402,9 +3402,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#technical-docs",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -3462,9 +3462,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#document-artifacts",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -3523,9 +3523,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#workbook-authoring",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -3582,9 +3582,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#slide-deck-authoring",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts",
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts",
           "https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/skill-catalog-content-review.md / Concrete gaps and repairs"
         ],
         "reference_families": [
@@ -3642,9 +3642,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#threat-model",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -3702,9 +3702,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#security-review",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "sentry-methods",
@@ -3763,9 +3763,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#privacy-data",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "openai",
@@ -3822,9 +3822,9 @@
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#reliability-incident",
         "local_basis": [
-          "planning/skill-catalog-design.md / Project skills and pairing",
-          "planning/implementation-plan.md / Product boundary",
-          "planning/implementation-plan.md / Concrete capability and evidence contracts"
+          "docs/skills.md / Project skills and pairing",
+          "docs/architecture.md / Product boundary",
+          "docs/architecture.md / Concrete capability and evidence contracts"
         ],
         "reference_families": [
           "gstack",
@@ -3979,9 +3979,9 @@
       "urls": [
         "https://github.com/ayghri/i-have-adhd/tree/839872f9d1cd634fed642b4589ce7226199cc15f"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / adhd",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / adhd",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -3991,9 +3991,9 @@
         "https://agentskills.io/skill-creation/evaluating-skills",
         "https://agentskills.io/skill-creation/optimizing-descriptions"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / agent-skills",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / agent-skills",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4001,9 +4001,9 @@
       "urls": [
         "https://github.com/animate-css/animate.css/tree/3f8ab233dbbd9d2fe577528d2296382954be3d1a"
       ],
-      "selection_locator": "planning/references.md / E — Additional design resources / animate.css",
+      "selection_locator": "docs/references.md / E — Additional design resources / animate.css",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4011,9 +4011,9 @@
       "urls": [
         "https://github.com/juliangarnier/anime/tree/01b81be1df6843ccfe0a71c0699a746bf740dd77"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / anime",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / anime",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4021,9 +4021,9 @@
       "urls": [
         "https://github.com/anthropics/skills/tree/683bc88e56f3e09ba94f7055977f3d3aa499f202"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / anthropic",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / anthropic",
       "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4032,9 +4032,9 @@
         "https://developer.apple.com/videos/play/wwdc2025/219/",
         "https://developer.apple.com/design/human-interface-guidelines/materials"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / apple-liquid-glass",
+      "selection_locator": "docs/references.md / G — Visual-reference library / apple-liquid-glass",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4042,9 +4042,9 @@
       "urls": [
         "https://github.com/tt-a1i/archify/tree/73aaa0696e8f72c232ea710e6fa94fd953f3e773"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / archify",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / archify",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4055,9 +4055,9 @@
         "https://support.atlassian.com/confluence-cloud/docs/share-confluence-content/",
         "https://support.atlassian.com/confluence-cloud/docs/create-edit-and-publish-a-page/"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / atlassian",
+      "selection_locator": "docs/references.md / G — Visual-reference library / atlassian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4065,9 +4065,9 @@
       "urls": [
         "https://github.com/marvkr/better-design/tree/e146625f3041ef8089a2013587435fc763dc3b15"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / better-design",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / better-design",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4075,9 +4075,9 @@
       "urls": [
         "https://github.com/DavidHDev/canvas-ui/tree/a04a99b235299ee79a123a16ccb2e6cf9da74b6b"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / canvas-ui",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / canvas-ui",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4085,9 +4085,9 @@
       "urls": [
         "https://learn.chatgpt.com/guides/best-practices"
       ],
-      "selection_locator": "planning/references.md / F — Additional documented references / codex-practices",
+      "selection_locator": "docs/references.md / F — Additional documented references / codex-practices",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4095,9 +4095,9 @@
       "urls": [
         "https://github.com/unclecode/crawl4ai/tree/30165f1ee1fb61f6cce1477feed2acc5e2181e25"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / crawl4ai",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4105,9 +4105,9 @@
       "urls": [
         "https://github.com/trycua/cua/tree/27d8da9fd94056bd73892183531579396aafb2f9"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / cua",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / cua",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4115,9 +4115,9 @@
       "urls": [
         "https://github.com/wheresryan22/anatomy/tree/1482e8469b0a9e0d8cc18ea2740a01423d29ae80"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / design-anatomy",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / design-anatomy",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4125,9 +4125,9 @@
       "urls": [
         "https://github.com/cathrynlavery/diagram-design/tree/550fd66edff058bc73056c3416b76d69cfe865ba"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / diagram-design",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / diagram-design",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4135,9 +4135,9 @@
       "urls": [
         "https://github.com/affaan-m/ECC/tree/ef648e01899ba3e8dc6371642deaaf64b4477775"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ecc",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / ecc",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4145,9 +4145,9 @@
       "urls": [
         "https://github.com/emilkowalski/skills/tree/e8a175de22ae1e49370fc144c1f3bb9aeedf988d"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / emil",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / emil",
       "classification": "adaptable",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
@@ -4156,9 +4156,9 @@
         "https://fluent2.microsoft.design/motion",
         "https://fluent2.microsoft.design/material"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / fluent",
+      "selection_locator": "docs/references.md / G — Visual-reference library / fluent",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4168,9 +4168,9 @@
         "https://vercel.com/geist/code-block",
         "https://github.com/vercel/geist-font/blob/main/LICENSE.txt"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / geist-code",
+      "selection_locator": "docs/references.md / G — Visual-reference library / geist-code",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4178,9 +4178,9 @@
       "urls": [
         "https://github.com/google/skills/tree/d6eee396ed6a51871cc3f0979c5ff1be26d35d10"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / google",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / google",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4190,9 +4190,9 @@
         "https://design-system.service.gov.uk/patterns/complete-multiple-tasks/",
         "https://design-system.service.gov.uk/styles/typeface/"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / govuk",
+      "selection_locator": "docs/references.md / G — Visual-reference library / govuk",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4200,9 +4200,9 @@
       "urls": [
         "https://github.com/greensock/gsap-skills/tree/aed9cfd3277740755f6bfc1155c7aa645403b760"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / gsap-official",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / gsap-official",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4210,9 +4210,9 @@
       "urls": [
         "https://github.com/garrytan/gstack/tree/c285d88b90d39116ccfa2b901f80ea0fce0b26eb"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / gstack",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / gstack",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4222,9 +4222,9 @@
         "https://www.theguardian.com/international",
         "https://github.com/guardian/fonts"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / guardian",
+      "selection_locator": "docs/references.md / G — Visual-reference library / guardian",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4232,9 +4232,9 @@
       "urls": [
         "https://github.com/Nutlope/hallmark/tree/13ac0ec7e148655948100b6396439e481361d690"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / hallmark",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / hallmark",
       "classification": "adaptable",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
@@ -4243,9 +4243,9 @@
         "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md",
         "https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md"
       ],
-      "selection_locator": "planning/references.md / selected source / huashu-storyboard",
+      "selection_locator": "docs/references.md / selected source / huashu-storyboard",
       "classification": "adaptable",
-      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "MIT at the pinned revision; independently worded method notes only; no Huashu runtime, renderer, assets or installer redistributed"
     },
     {
@@ -4254,9 +4254,9 @@
         "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
         "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx"
       ],
-      "selection_locator": "planning/references.md / selected source / hyperframes-authoring",
+      "selection_locator": "docs/references.md / selected source / hyperframes-authoring",
       "classification": "adaptable",
-      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "Apache-2.0 at the pinned revision; independently worded authoring notes only; no HyperFrames runtime or package text redistributed"
     },
     {
@@ -4264,9 +4264,9 @@
       "urls": [
         "https://github.com/pbakaus/impeccable/tree/4e8504f10106a1cd7a99e37a401aa368d1d55576"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / impeccable",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / impeccable",
       "classification": "adaptable",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
@@ -4274,9 +4274,9 @@
       "urls": [
         "https://github.com/multica-ai/andrej-karpathy-skills/tree/2c606141936f1eeef17fa3043a72095b4765b9c2"
       ],
-      "selection_locator": "planning/references.md / F — Additional documented references / karpathy",
+      "selection_locator": "docs/references.md / F — Additional documented references / karpathy",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4284,9 +4284,9 @@
       "urls": [
         "https://kingy.ai/blog/astra-codex-motion-graphics-guide-prompts/"
       ],
-      "selection_locator": "planning/references.md / F — Additional documented references / kingy-motion",
+      "selection_locator": "docs/references.md / F — Additional documented references / kingy-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4294,9 +4294,9 @@
       "urls": [
         "https://github.com/kylezantos/design-motion-principles/tree/4a9ca879f24a361f4dca4174fe2da0f67b5ddee3"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / kyle-motion",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / kyle-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4304,9 +4304,9 @@
       "urls": [
         "https://github.com/langchain-ai/langchain/tree/fa35b519a3a72fb4ccba7935f4c8e9e90a12ccca"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / langchain",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4314,9 +4314,9 @@
       "urls": [
         "https://github.com/langchain-ai/langgraph/tree/eb066bd31a2bf01fc0cd58256df4800a3695c233"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / langgraph",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4324,9 +4324,9 @@
       "urls": [
         "https://github.com/LottieFiles/motion-design-skill/tree/f9a8a041b85185ee4881b3471d3415e939aac772"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / lottiefiles-motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4334,9 +4334,9 @@
       "urls": [
         "https://github.com/coreyhaines31/marketingskills/tree/dda3841f0b294e01e93b1541486beefbfab0915e"
       ],
-      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / marketing",
+      "selection_locator": "docs/references.md / D — Marketing, discovery and positioning / marketing",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4344,9 +4344,9 @@
       "urls": [
         "https://github.com/mattpocock/skills/tree/4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / matt",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / matt",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4354,9 +4354,9 @@
       "urls": [
         "https://github.com/MengTo/Skills/tree/83a47fee32f0b6349bff1fede99257a5ef03dc93"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / mengto-inspiration",
       "classification": "adaptable",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
@@ -4364,9 +4364,9 @@
       "urls": [
         "https://github.com/motiondivision/motion/tree/c5fab238ab4f8d8132d1cb05d6607439b3904058"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / motion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4374,9 +4374,9 @@
       "urls": [
         "https://github.com/ibelick/motion-primitives/tree/120f64f6ca60348e251f929e9c81f11ccbe45eda"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / motion-primitives",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / motion-primitives",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4384,9 +4384,9 @@
       "urls": [
         "https://github.com/openai/skills/tree/49f948faa9258a0c61caceaf225e179651397431"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / openai",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / openai",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4394,9 +4394,9 @@
       "urls": [
         "https://github.com/Owl-Listener/designer-skills/tree/9a6930cf84a822eb458624bd11c61aac5bbdf224"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / owl-concepts",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / owl-concepts",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4404,9 +4404,9 @@
       "urls": [
         "https://github.com/DietrichGebert/ponytail/tree/09c434ab73ca43761c5d8b0c5d341926c2fba710"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / ponytail",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / ponytail",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4414,9 +4414,9 @@
       "urls": [
         "https://github.com/promptfoo/promptfoo/tree/c2f6a848aca5f7e01491d2533f3fb1122bc63c50"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / promptfoo",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4424,9 +4424,9 @@
       "urls": [
         "https://github.com/tobi/qmd/blob/86d2365d17fc682e491c2c53d1e4a884aee8682a/skills/qmd/SKILL.md"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / qmd-methods",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / qmd-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4434,9 +4434,9 @@
       "urls": [
         "https://github.com/DavidHDev/react-bits/tree/e12c22192ac7b4b452c5e2feb9b586d74765d696"
       ],
-      "selection_locator": "planning/references.md / E — Additional design resources / react-bits",
+      "selection_locator": "docs/references.md / E — Additional design resources / react-bits",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4444,9 +4444,9 @@
       "urls": [
         "https://github.com/remotion-dev/remotion/tree/7ea5ab594e0d8c5aa93640ee84b7ed32925b545e"
       ],
-      "selection_locator": "planning/references.md / E — Additional design resources / remotion",
+      "selection_locator": "docs/references.md / E — Additional design resources / remotion",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4455,9 +4455,9 @@
         "https://www.reshaped.so/docs/getting-started/overview",
         "https://www.reshaped.so/docs/getting-started/principles"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / reshaped",
+      "selection_locator": "docs/references.md / G — Visual-reference library / reshaped",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4465,9 +4465,9 @@
       "urls": [
         "https://github.com/nateherkai/scroll-craft/tree/75d81f74e83692add18cd7a8a8e078b8a887a579"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / scroll-craft",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / scroll-craft",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4476,9 +4476,9 @@
         "https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/skill-scanner/SKILL.md",
         "https://github.com/getsentry/skills/blob/d12f250460ffd961f549dbebf7eeb0cf4afd4c2e/skills/find-bugs/SKILL.md"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / sentry-methods",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / sentry-methods",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4486,9 +4486,9 @@
       "urls": [
         "https://github.com/oraios/serena/tree/abb0a0f01b94bc8050086f0fb860077d17730324"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / serena",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / serena",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4496,9 +4496,9 @@
       "urls": [
         "https://github.com/Skyvern-AI/skyvern/tree/eccc1c60b225105c3281cf2cc5e76b4170099fbb"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / skyvern",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4507,9 +4507,9 @@
         "https://spectrum.adobe.com/page/bi-directionality/",
         "https://www.w3.org/International/articles/inline-bidi-markup/"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / spectrum",
+      "selection_locator": "docs/references.md / G — Visual-reference library / spectrum",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4517,9 +4517,9 @@
       "urls": [
         "https://github.com/browserbase/stagehand/tree/0f93c295deabce3cd7b14cdbdeacb1771f93378d"
       ],
-      "selection_locator": "planning/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand",
+      "selection_locator": "docs/references.md / B — Runtime, code intelligence, browsing and evaluation / stagehand",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4527,9 +4527,9 @@
       "urls": [
         "https://github.com/K-Dense-AI/scientific-agent-skills/blob/593377bb048752abb0152deab9fbb1083a6087df/skills/statistical-analysis/SKILL.md"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / statistical-analysis",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / statistical-analysis",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4537,9 +4537,9 @@
       "urls": [
         "https://github.com/obra/superpowers/tree/8ca22dba9a94f28898bbce59f2537ff4d87c747d"
       ],
-      "selection_locator": "planning/references.md / A — Engineering, agent workflows and host integration / superpowers",
+      "selection_locator": "docs/references.md / A — Engineering, agent workflows and host integration / superpowers",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4547,9 +4547,9 @@
       "urls": [
         "https://github.com/Leonxlnx/taste-skill/tree/f624f37a8c650b9cc550253104925efe4c8de246"
       ],
-      "selection_locator": "planning/references.md / C — Interface, illustration, motion and visual quality / taste",
+      "selection_locator": "docs/references.md / C — Interface, illustration, motion and visual quality / taste",
       "classification": "adaptable",
-      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body reviewed in the focused adoption pass; only independently worded methods mapped; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "reviewed method locator; exact license and notice receipts are retained in reference-audit.json; no upstream prose/code/assets redistributed"
     },
     {
@@ -4558,9 +4558,9 @@
         "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/property-based-testing/skills/property-based-testing/SKILL.md",
         "https://github.com/trailofbits/skills/blob/196a9073ab10d35bacf111f945e02c00b2c6883a/plugins/differential-review/skills/differential-review/SKILL.md"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / trail-of-bits",
       "classification": "link-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4569,9 +4569,9 @@
         "https://vanillaframework.io/docs/layouts/brochure",
         "https://vanillaframework.io/docs/patterns/strip"
       ],
-      "selection_locator": "planning/references.md / G — Visual-reference library / vanilla-publishing",
+      "selection_locator": "docs/references.md / G — Visual-reference library / vanilla-publishing",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4579,9 +4579,9 @@
       "urls": [
         "https://www.w3.org/WAI/WCAG22/quickref/"
       ],
-      "selection_locator": "planning/references.md / H — Focused methods added by the independent-review fixes / wcag",
+      "selection_locator": "docs/references.md / H — Focused methods added by the independent-review fixes / wcag",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     },
     {
@@ -4589,9 +4589,9 @@
       "urls": [
         "https://github.com/wondelai/skills/tree/c172996495bed0fcd26896a9416b2093fd7073f0"
       ],
-      "selection_locator": "planning/references.md / D — Marketing, discovery and positioning / wondel",
+      "selection_locator": "docs/references.md / D — Marketing, discovery and positioning / wondel",
       "classification": "comparison-only",
-      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: planning/reviews/2026-10-27/reference-fetches.json; focused source review evidence: planning/reviews/2026-10-27/source-design-adoption.md sha256=112228ddc6848f67f259f83a689daf2a1ed8bdbb71a851b39e78e97d72e1a05e; planning/reviews/2026-10-27/source-methods.md sha256=6f2dcad8ce5b9aa45deb470d302987d230d7ba807bd6f9e3e4f117da01b8cfe8; planning/reviews/2026-10-27/source-product.md sha256=a35804068b673950b37715c729fbbaa40153b23314fbfd675a9c32ad63999ac0; planning/reviews/2026-10-27/source-visual.md sha256=7eea0ced37caab750acf6d72994adca6a9a00e1dfd3fab9aea68286d4a48c208; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
+      "inspection_status": "retained locator from approved local plan; external body not fetched or adapted in this authoring pass; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; focused source review evidence: packaging/provenance/skills/source-design-adoption.md sha256=37e58babe690eb2c6c80971bf10cd87741603dbfd2d4c30ade31babdb0c3c477; packaging/provenance/skills/source-methods.md sha256=04d34018d31a9398e9c96b8233fc6faf0de57a26d09f4aa2c6dc06ce40da2f76; packaging/provenance/skills/source-product.md sha256=b11651f194cf8f2c0e263e1d4c8e685465991d30c62a28b84c54938ca0c3fac9; packaging/provenance/skills/source-visual.md sha256=a8c8f799e84560b4e921d20a0ccb6125a447174a3ba05519920e980c38cb3731; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh",
       "rights_status": "no third-party text, code, assets, fonts or runtime redistributed; separate exact-section rights review required before adaptation"
     }
   ],

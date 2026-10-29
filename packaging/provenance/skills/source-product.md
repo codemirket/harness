@@ -5,11 +5,11 @@ Reviewed catalog families: `marketing`, `wondel`, `karpathy`, `codex-practices`,
 `apple-liquid-glass`, `govuk`, `vanilla-publishing`, `guardian`, and `spectrum`.
 
 This is the product/documented/reference-library review requested for the
-exact pins in `planning/references.md`. It intentionally excludes E
+exact pins in `docs/references.md`. It intentionally excludes E
 (Animate.css, React Bits and Remotion); that group is owned by the visual
 source reviewer. The retrieval date was 2026-10-27 on macOS 26.5.2 ARM64.
 URL status, byte counts and response hashes are in
-`planning/reviews/2026-10-27/reference-fetches.json`; repository bodies are
+`packaging/provenance/skills/reference-fetches.json`; repository bodies are
 not copied into the catalog. A successful HTTP response is retrieval evidence,
 not evidence that a technique was adopted or that a license permits reuse.
 

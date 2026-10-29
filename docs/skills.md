@@ -3,7 +3,7 @@
 Current inventory: **9 global skills, 52 project skills, 7 profiles**.
 The [catalog](../skills/catalog.json) is the machine-readable source of IDs,
 descriptions, capability pairings, profiles, body/resource hashes and development
-cases. The [capability matrix](../docs/deep-review-capability-matrix.md) provides
+cases. The [skill route audit](skill-routes.md) provides
 individual review rows and source/evidence links. Avoid parallel inventories
 whose counts or selected skills can drift.
 
@@ -39,14 +39,14 @@ and detailed procedures belong to opted-in project skills/resources.
 Project bodies cover engineering/delivery, browser research/operations, design,
 motion/video, selected product discovery/content, data/AI, documents and trust.
 Current individual triggers, outputs and references live in the catalog and
-capability matrix rather than a second full list here.
+skill route audit rather than a second full list here.
 
 The seven optional capability IDs are `navigation.js-ts`, `design.tokens`,
 `design.openpencil`, `design.vector`, `design.raster`, `design.diagrams`, and
 `video`. Memory is a core route, not an optional pairing ID. Required unavailable
 capabilities make skill activation refuse. Conditional capabilities must be
 checked before the particular operation. Host-only guidance still requires
-actual available Codex/project tools.
+actual available pi/project tools.
 
 A stable MCP tool list is not readiness. Use `runtime_status` to inspect configured
 payloads and revalidate operation identity/scope at use. Standard design readiness
@@ -60,7 +60,7 @@ methods over imported instructions. Only include resources that resolve a real
 domain question; resources are opt-in reading, not additional global prompts.
 
 The [reference selection](references.md), [provenance ledger](../skills/PROVENANCE.md)
-and [focused adoption mapping](reviews/2026-10-27/source-design-adoption.md)
+and [focused adoption mapping](../packaging/provenance/skills/source-design-adoption.md)
 separate comparison/link-only sources from the eight reviewed method adaptations.
 Reference rights never grant rights to unrelated artwork, fonts or executable
 packages. Hallmark/Taste and HyperFrames remain selected; Remotion is historical
@@ -82,12 +82,10 @@ separate evidence. Keep model inputs, settings, baseline, budgets and oracles
 matched; inspect saved artifacts and actual effects independently.
 
 Skills must earn their context and maintenance cost through a concrete routing
-contract, non-obvious safeguard or measured usefulness. The six tested product/
-marketing bodies and content-growth profile were retired after repeated bundle
-failure; ordinary product/marketing work remains with the host. A small tie does
-not prove a skill universally useless, and a failed bundle does not identify an
-individual causal culprit. The [release qualification](../docs/first-release-qualification-20261028.md)
-retains those outcomes and limits.
+contract, non-obvious safeguard or measured usefulness. A small tie does not
+prove a skill universally useless, and a failed bundle does not identify an
+individual causal culprit. [Qualification](qualification.md) states the bounded
+comparison's limits.
 
 Creative direction stays with a capable lead and comparable reviewer when useful.
 Respect explicit model/reasoning choices, disjoint ownership and lead integration.

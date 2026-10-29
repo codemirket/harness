@@ -7,9 +7,9 @@ and HyperFrames video operations, and selected workflow guidance.
 
 The scoped local candidate is validated on **macOS 26.5.2 ARM64** with the exact
 external pi 1.4.0 / Undici 8.12.2 host. It is not published or installed into the
-user's live environment. See the [qualification record](docs/pi-qualification-20261029.md)
+user's live environment. See the [qualification record](docs/qualification.md)
 for package identity, reproducible checks, measured limits and unsupported paths.
-The [migration plan](planning/pi-migration.md) retains decisions and failed evidence.
+See [architecture](docs/architecture.md) for the current product contract.
 
 Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
 forgetting and recovery, with lazy local MiniLM retrieval. Navigation operates on
@@ -29,7 +29,7 @@ turn, retains search actions and citation spans, and displays clickable sources.
 Missing provider access fails explicitly; it does not install a search service.
 The installed research/vision preflight passed at Medium effort. Browser automation is qualified only for disposable local-fixture testing;
 no production browser dependency is admitted. Broader providers remain unsupported.
-The [bounded comparison](docs/pi-heldout-comparison-20261029.md) found no general
+The [bounded comparison summary](docs/qualification.md#limits) found no general
 quality or speed advantage, and preserves its failed/budget-limited runs.
 
 Fresh pi state belongs under `<pi-agent-dir>/mirket/`. Existing installations and
@@ -47,4 +47,4 @@ For development, run `python3 scripts/check-build-inputs.py` before Rust
 compilation, then the locked offline Rust tests/clippy, formatting, locked
 TypeScript/process tests and explicit-binary MCP smoke. Use disposable private
 homes and projects. See [native build requirements](docs/native-build.md) and
-[implementation contract](planning/implementation-plan.md).
+[implementation contract](docs/architecture.md).

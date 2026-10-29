@@ -75,7 +75,7 @@ Both Windows variants currently fail assembly completeness before creating outpu
 
 The assembled macOS MiniLM payload is 172,668,906 B excluding its receipt.
 Package checks do not establish model lifecycle, retrieval usefulness or other
-platform support. The [current qualification](first-release-qualification-20261028.md)
+platform support. The [current qualification](qualification.md)
 records installed outcomes and actual resource measurements.
 
 ## Locked source and adapter gates
@@ -118,7 +118,7 @@ runners are optional evaluation tooling, not part of ordinary test discovery
 or permission to start new paid/model cohorts.
 
 The host peer tree must be the exact offline-development batch in
-`packaging/admission/pi-p0.md`. The build leaves pi and TypeBox external.
+`packaging/admission/pi-local-candidate.json`. The build leaves pi and TypeBox external.
 `assemble-pi-package.py` copies a selected verified native payload and compiled
 extension into a local package; it neither downloads nor installs dependencies.
 Native payload paths called `adapters/` are manifest storage, not a second source

@@ -4,9 +4,8 @@ import {makeFixtureProvider} from './pi-offline-provider.mjs';import {domainJour
 import {videoJourney} from './pi-video-journey.mjs';
 import {memoryJourney} from './pi-memory-journey.mjs';
 import {editableJourney} from './pi-editable-journey.mjs';
-import {cohortVideoJourney} from './pi-cohort-video.mjs';
 import {seedTuiAuthorization} from './pi-tui-auth-seed.mjs';
-const [peers,root,packageName='package-resume']=process.argv.slice(2);assert.ok(isAbsolute(peers)&&root.startsWith('/private/tmp/mirket-pi-package-'));assert.ok(['package','package-resume','package-fixed','package-research','package-workflow','package-workflow-2','package-verified'].includes(packageName));
+const [peers,root,packageName='package']=process.argv.slice(2);assert.ok(isAbsolute(peers)&&root.startsWith('/private/tmp/mirket-pi-package-'));assert.ok(['package','package-verified'].includes(packageName));
 const cwd=process.env.MIRKET_PI_MEMORY_TEST==='1'?join(root,'memory-project-'+Date.now()):join(root,'project'),agentDir=join(root,'agent'),packed=join(root,packageName);process.env.HOME=join(root,'home');process.env.PI_CODING_AGENT_DIR=agentDir;process.env.PI_CODING_AGENT_SESSION_DIR=join(root,'sessions');process.env.PI_SKIP_UPDATE_CHECK='1';process.env.PI_TELEMETRY_DISABLED='1';
 await fs.mkdir(cwd,{recursive:true,mode:0o700});
 const sdk=await import(pathToFileURL(join(peers,'@earendil-works/pi-coding-agent/dist/index.js')));const ai=await import(pathToFileURL(join(peers,'@earendil-works/pi-ai/dist/index.js')));
@@ -20,7 +19,6 @@ try{
  await session.bindExtensions({mode:'print',uiContext:{notify:(text,type)=>notifications.push({text,type})},onError:error=>errors.push(error)});await session.setModel(session.modelRuntime.getModel('offline-fixture','deterministic'));
  const doctor=await call(e,'mirket_doctor');assert.equal(doctor.status,'ready',JSON.stringify(doctor));const release=doctor.releaseId;report.releaseId=release;await save('full installed package and actual pi runtime identity');
  if(process.env.MIRKET_PI_TUI_AUTH_SEED==='1')await seedTuiAuthorization({session:e,call,cwd,release,root});
- else if(process.env.MIRKET_PI_COHORT_VIDEO){assert.ok(process.env.MIRKET_PI_COHORT_VIDEO.startsWith(root+'/cohort-'));await cohortVideoJourney({session:e,call,save,cwd,release,root,cohort:process.env.MIRKET_PI_COHORT_VIDEO});}
  else if(process.env.MIRKET_PI_EDITABLE_TEST==='1')await editableJourney({session:e,call,save,cwd,release,root});
  else if(process.env.MIRKET_PI_MEMORY_TEST==='1')await memoryJourney({session:e,call,save,cwd,release,root});
  else if(process.env.MIRKET_PI_VIDEO_FIXTURE)await videoJourney({session:e,call,save,cwd,release,root,fixture:process.env.MIRKET_PI_VIDEO_FIXTURE});

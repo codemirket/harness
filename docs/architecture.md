@@ -1,10 +1,7 @@
 # Mirket implementation contract
 
-The pi-only direction supersedes the earlier host contract. Execute the phases
-and exit gates in [the migration plan](pi-migration.md). The scoped local technical candidate is validated; see the
-[qualification record](../docs/pi-qualification-20261029.md). Public release, live
-installation and production browser admission remain outside this authorization.
-Earlier qualification records describe their original artifacts and must not be relabeled.
+This is the current implementation contract. See [qualification](qualification.md)
+for the tested candidate and platform limits.
 
 ## Product boundary
 
@@ -72,8 +69,7 @@ points within a 5 GiB aggregate cap.
 Keep guidance only when a concrete workflow, quality safeguard or measured
 performance benefit justifies its context and maintenance cost. Remove redundant
 or non-contributing guidance; a tied small trial does not prove universal
-uselessness. The failed six-skill product/marketing bundle and content-growth
-profile are retired. The host can perform those workflows without restoring the retired bundle.
+uselessness. The host owns workflows that do not need a selected Mirket skill.
 
 Hallmark/Taste remain selected design references. Reference methods, source code,
 fonts, artwork and runtime admission have separate rights. Preserve the accepted
@@ -99,10 +95,7 @@ Use the actual tested executable in disposable integration environments.
 Completion requires actual consumer outcomes and meaningful failure cases,
 scoped to the tested platform/revision. Hashes, successful builds, tool lists and
 model self-report cannot replace output checks. Preserve failed/unrun evidence;
-never weaken a gate to call work complete. Windows gates remain in the
-[platform status](../docs/windows-qualification-status.md).
+never weaken a gate to call work complete. Other platforms require separate native qualification.
 
-The earlier release record retains its original immutable identity. It does not
-qualify the pi product. Publication, commits, pushes, new dependencies and live
-installation changes require their own authorization. The migration plan defines
-the fresh candidate gates, including actual installed outcomes and held-out trials.
+Publication, pushes, new dependencies and live installation changes require
+their applicable authorization. Preserve exact admission and provenance inputs.

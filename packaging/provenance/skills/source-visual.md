@@ -1,6 +1,6 @@
 # Visual and motion reference fidelity review (2026-10-27)
 
-This review covers the 20 retained C/E references in `planning/references.md` at
+This review covers the 20 retained C/E references in `docs/references.md` at
 their exact pinned revisions. It checks one or more decision-relevant sections
 of each source, its license file, and the local skills that name it in
 `skills/catalog.json`. Raw source bodies are retained outside the repository in
