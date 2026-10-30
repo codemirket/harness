@@ -1,41 +1,41 @@
 # Mirket 0.0.1 — macOS ARM64 candidate
 
-This first release is scoped to **macOS 26.5.2 (25F84), ARM64**. Mirket uses
-external Pi 1.4.0 as its sole agent host. The archive contains one Rust core,
-one compiled TypeScript Pi package, private Node 24.22.1, selected manageable
-tools, project license, original third-party notices and required source packets.
+This macOS ARM64 prerelease accepts **macOS 26.0 or newer** at setup without a
+major-version ceiling. Its current native qualification is on **macOS 26.5.2
+(25F84), ARM64**. No macOS 27 host was available to verify runtime behavior;
+installation eligibility is not a macOS 27 support claim. Mirket uses external
+Pi 1.4.0 as its sole agent host. The archive contains
+one Rust core, one compiled TypeScript Pi package, private Node 24.22.1, selected
+manageable tools, project license, original third-party notices and required
+source packets.
 It contains no Chrome, Playwright or Raster executable payload.
 
-This published rerelease carries the focused skill-catalog repairs and selected
-OpenPencil and HyperFrames methods. Pi profile selection now excludes inherited Mirket
-skills under `autoload:false`; doctor names selected skills whose required
-native routes are unavailable. Browser guidance matches the optional local
-peer's actual scope, raster remains conditional, and source-only Video authoring
-is separately described. The native core and compiled Pi extension were rebuilt
-from the current source and skill catalog. This remains a macOS prerelease
-candidate. [Qualification](qualification.md) separates checks on this exact
-package from earlier source and package evidence; no cross-platform result is
-implied.
+This rerelease retains the selected skill-catalog, OpenPencil and HyperFrames
+methods. It removes the exact `26.5.2` setup gate, and its asset name identifies
+the architecture rather than the OS patch version. The native core and compiled
+Pi extension were rebuilt from the current source and skill catalog. The
+[qualification](qualification.md) separates checks on this exact package from
+earlier evidence; no cross-platform result is implied.
 
-Locked offline Rust tests passed (**446 pass, 4 ignored**), TypeScript process
-tests passed (**144 pass, 1 skipped**), and the Python suite passed (**183**).
-The build-input guard, clippy, formatting, release build, catalog/route audits,
-packaged MCP smoke, Pi CLI/RPC/TUI, image delivery, six paired offline routing
-cases, and an installed Pi Video journey passed with disposable state. Three
-fresh first-tool samples (**4125.649, 1845.072, 1847.170 ms**) met the
-**5000/2500/2500 ms** first/repeat gate without a cache-flush or percentile
-claim. The Video journey independently decoded two-second H.264/AAC output,
-observed changed-source pixels and refusal/cancellation cleanup. Separate
-packaged-core evidence observed Chrome running before cancellation. The routing
-cases used a deterministic provider and do not establish model skill utility;
-all 305 catalog cases remain planned. Optional Chrome and Playwright payloads
-remain external, and Raster remains excluded.
+The build-input guard, locked offline Rust tests (**446 pass, 4 ignored**),
+clippy, formatting and release build passed. The private-node TypeScript build
+and process suite (**145 pass, 2 skipped**), Python suite (**189 pass, 1 skipped**),
+explicit-path MCP smoke, package inventory/roundtrip, **16** assembled Pi
+checkpoints, Pi CLI/RPC/TUI and byte-exact offline image transport passed in
+disposable state. Three fresh first-tool samples (**3234.666, 1789.684,
+1761.919 ms**) met the **5000/2500/2500 ms** first/repeat gate without a
+cache-flush or percentile claim. The extracted archive passed a standalone
+fresh installation and an old-to-new migration in separate private homes;
+unrelated settings/files and the previous package were preserved. These checks
+do not establish macOS 27 behavior, new-release video playback/quality or
+live-provider image interpretation. All 305 catalog skill cases remain planned.
+Optional Chrome and Playwright payloads remain external; Raster remains excluded.
 
 ## Assets and exact identity
 
 The release contains seven assets:
 
-- `mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz` — the complete Pi package.
+- `mirket-pi-v0.0.1-macos-arm64.tar.gz` — the complete Pi package.
 - `install-pi.py` — the standalone installer for the verified package and exact
   acquired Pi host.
 - `migrate-pi.py` — an explicit upgrade helper for an existing Mirket package;
@@ -47,31 +47,25 @@ The release contains seven assets:
 - `SHA256SUMS` — SHA-256 for the six payloads above. Check it before extraction
   or running any script.
 
-This 0.0.1 rerelease replaces the native package archive. Its subsequent
-migration-helper repair leaves that archive unchanged. The standalone fresh
-installer, acquisition script, host lock and license notice are unchanged.
-Earlier installer and route evidence is retained in
-[qualification](qualification.md).
+This rerelease replaces the prior `macos-26.5.2-arm64` archive with one
+`macos-arm64` archive. The standalone scripts, host lock and license notice
+remain byte-identical to the previous release. Earlier outcomes and failures
+remain in [qualification](qualification.md).
 
-The archive is **461,000,129 bytes**; its SHA-256 is
+The archive is **462,061,639 bytes**; its SHA-256 is
+`9115c5645ec095b539adc0ec4f6a57792988cd5088076ff020d8864b727adf1c`.
+The previous archive was **461,000,129 bytes**, SHA-256
 `5c0f99fe443d66edd77776f5c72d7009743a35d366a8906b1e00df6fcd7eff39`.
-It replaces the same-named archive with SHA-256
-`780eba5b9624063d4c3bde06ffc9f46132c152c705203370b7109a327fc940ea`.
 The package inventory SHA-256 is
-`c060c4fca31e8f31995067ada463996b3f4634d0b872005bde8403b1b1927e06`.
+`4631a5cf357401a6b07114521980d909174b5fb0af46c3fe5d8ca5886bd0ab1b`.
 The native release ID is
-`sha256:1ed77a59a1a2e881ab50a321d96172815d8b84059444633176d26b14459ab89a`.
+`sha256:144e15c9ef8cd7eb420ff0b9b95c41c5bf3ee3fbd3c21178492abfe8894b1f3b`.
 The native executable SHA-256 is
-`adb2bd0dd33d4a533189b264c42008be0d2dbece4a74ba3584aeed55eb28c048`.
+`b45e05e652e257519766ded41d86e4d4de1e0dfe5246da036717bef4f6f2d518`.
 The migration helper SHA-256 is
 `c435719955cb6e80a9fcdeb9d130f9b3b3850a2777988491a211bf171e2ac25c`.
-Its lock-renewal repair separately passed **46 focused tests** and the
-**190-test Python suite**, with no skips; the archive was unchanged.
-A disposable old-to-new native migration passed with canonical memory,
-authentication, unrelated settings and skill filters preserved. The failed live
-attempt remains recorded separately in [qualification](qualification.md).
 The six-entry `SHA256SUMS` file SHA-256 is
-`0fbf531a2f0cfd231ebd314758e4416fd23e43d27bdfb4c588460850751f78f7`.
+`e3001be9b9b4879a4f06d56864be7f2544a7f91fe33467ecccd84c5fe327e76c`.
 The external host lock SHA-256 is
 `c1cee4255aaad64b6dea75b57d8ed484e2c89ea90fbd62cb3818f456ed0cbcfb`.
 The acquisition script passed 12 focused refusal/success tests and reproduced
@@ -81,9 +75,8 @@ both from an offline cache and through direct publisher downloads.
 ## Install from the release assets
 
 Download the seven release assets into a temporary directory, verify `SHA256SUMS`,
-and extract the package into a new permanent directory. A rerelease uses the same
-version and asset name, so keep any earlier extracted package and host in place;
-existing installations bind their exact paths. For a first installation,
+and extract the package into a new permanent directory. Keep earlier extracted
+packages and hosts in place; existing installations bind their exact paths. For a first installation,
 acquire the exact host before running the standalone installer:
 
 ```sh
@@ -94,7 +87,7 @@ umask 077
 mkdir -p "$install_root/releases"
 chmod 700 "$install_root" "$install_root/releases"
 release_root="$(mktemp -d "$install_root/releases/0.0.1.XXXXXXXX")"
-tar -xzf mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz \
+tar -xzf mirket-pi-v0.0.1-macos-arm64.tar.gz \
   -C "$release_root"
 python3 acquire-pi-host.py \
   --package "$release_root/package" \
@@ -129,13 +122,12 @@ For an existing Mirket installation, use the verified `migrate-pi.py` asset and
 the [explicit upgrade procedure](setup.md#upgrade-an-existing-mirket-installation).
 The fresh installer refuses to replace a different registered package path.
 
-The first live attempt to install this rerelease with the earlier migration
-helper failed after publishing the new installation because its `settings.json.lock` disappeared
-during the long operation. A subsequent exact `install-pi.py` rerun reported
-`already-installed`, and native doctor reported healthy. This establishes the
-resulting live installation and recovery check; it does not count the failed
-migration-helper invocation as a pass. The failure and recovery evidence remain
-in [qualification](qualification.md).
+An earlier 0.0.1 live migration attempt failed when the Pi settings lock was
+lost. The repaired helper passed a separate old-to-new disposable migration for
+this archive. A live migration still refuses while the old Mirket runtime is
+active; close active Pi sessions before running it and inspect any preserved
+failed state rather than replaying an uncertain update. The earlier failure and
+recovery evidence remain in [qualification](qualification.md).
 
 Keep the new release directory, extracted package and host tree in place: Pi
 settings bind the package path, and Mirket verifies the host and native bytes. The

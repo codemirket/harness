@@ -164,6 +164,7 @@ def assemble(verifier, source, output, ffmpeg_source_root=None, video_source_roo
     shutil.copytree(extension, output / 'dist/extension')
     (output / 'scripts').mkdir()
     shutil.copyfile(ROOT / 'pi/scripts/setup.mjs', output / 'scripts/setup.mjs')
+    shutil.copyfile(ROOT / 'pi/scripts/macos-version.mjs', output / 'scripts/macos-version.mjs')
     copy_media_sources(source, files, output, ffmpeg_source_root)
     copy_video_sources(files, output, video_source_root)
     copy_notices(output)

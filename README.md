@@ -10,11 +10,12 @@ owns explicit scoped authorization for its effect-bearing operations.
 [Website source](website/) · [Documentation](docs/README.md) ·
 [Release assets](https://github.com/codemirket/harness/releases/tag/v0.0.1)
 
-The current **0.0.1 prerelease candidate** targets **macOS 26.5.2 ARM64** and
-requires the exact external **Pi 1.4.0** host acquired by the release helper.
-Other platforms require separate native qualification. See
-[qualification](docs/qualification.md) for the tested package identity, outcomes
-and remaining limits.
+The **0.0.1 macOS ARM64 prerelease** has a **macOS 26.0-or-newer installation
+floor**, without a major-version ceiling, and requires the exact external
+**Pi 1.4.0** host acquired by the release helper. The release was qualified on
+**macOS 26.5.2 ARM64**; installation eligibility does not establish macOS 27
+behavior. See [qualification](docs/qualification.md) for tested identities,
+outcomes and remaining limits.
 
 ## What it adds
 
@@ -43,7 +44,7 @@ Give an agent with local terminal access this instruction:
 ```text
 Install Mirket from https://github.com/codemirket/harness/releases/tag/v0.0.1.
 Read README.md, docs/setup.md and docs/release-0.0.1.md from that repository.
-Check that this machine matches the documented macOS ARM64 qualification scope.
+Check the macOS ARM64 installation floor and report whether this OS has qualification evidence.
 Download all seven release assets and verify SHA256SUMS before running scripts.
 Use the documented permanent private install root. For a first installation,
 acquire the exact Pi 1.4.0 host with acquire-pi-host.py and run install-pi.py.
@@ -61,7 +62,7 @@ Pi TUI. An agent's completion message is not runtime readiness evidence.
 ## Install manually
 
 Download these seven files from the [0.0.1 release](https://github.com/codemirket/harness/releases/tag/v0.0.1)
-into one temporary directory: `mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz`,
+into one temporary directory: `mirket-pi-v0.0.1-macos-arm64.tar.gz`,
 `install-pi.py`, `migrate-pi.py`, `acquire-pi-host.py`, `host-lock.json`, `LICENSE`
 and `SHA256SUMS`. For an existing Mirket installation, follow the
 [upgrade procedure](docs/setup.md#upgrade-an-existing-mirket-installation).
@@ -75,7 +76,7 @@ install_root="$HOME/.local/share/mirket"
 mkdir -p "$install_root/releases"
 chmod 700 "$install_root" "$install_root/releases"
 release_root="$(mktemp -d "$install_root/releases/0.0.1.XXXXXXXX")"
-tar -xzf mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz -C "$release_root"
+tar -xzf mirket-pi-v0.0.1-macos-arm64.tar.gz -C "$release_root"
 python3 acquire-pi-host.py \
   --package "$release_root/package" --lock host-lock.json \
   --output "$release_root/pi-host"

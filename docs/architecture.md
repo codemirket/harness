@@ -5,9 +5,16 @@ for the tested candidate and platform limits.
 
 ## Product boundary
 
-Pi is the sole supported agent host. The qualification target is macOS 26.5.2
-ARM64. Pi owns models, authentication, sessions, agent loop, compaction, native
-read/edit/write/shell tools, package resources and the MCP client. Mirket supplies
+Pi is the sole supported agent host. The published 0.0.1 package was qualified
+on macOS 26.5.2 ARM64. For future packages, macOS ARM64 setup uses a 26.0
+minimum (the bundled FFmpeg/ffprobe deployment floor) with no OS-major ceiling;
+a patch or major version alone does not require a distinct artifact. Installation
+eligibility is not qualification: macOS 27 still needs actual native and Pi
+consumer checks before a support claim. Keep the tested OS/build in evidence,
+not in a release's compatibility identity or future asset name (use `macos-arm64`,
+not a measured patch number). Keep existing published filenames and checksums
+immutable. Pi owns models, authentication, sessions, agent loop, compaction,
+native read/edit/write/shell tools, package resources and the MCP client. Mirket supplies
 scoped canonical memory, selected navigation, finite creative operations and
 bounded workflows. It does not implement another provider client or agent loop.
 Project toolchains own application builds, tests, SQL and format-specific exports.
@@ -128,7 +135,10 @@ Use the actual tested executable in disposable integration environments.
 Completion requires actual consumer outcomes and meaningful failure cases,
 scoped to the tested platform/revision. Hashes, successful builds, tool lists and
 model self-report cannot replace output checks. Preserve failed/unrun evidence;
-never weaken a gate to call work complete. Other platforms require separate native qualification.
+never weaken a gate to call work complete. Qualify additional OS releases on the
+same artifact where feasible; split a platform package only when a measured
+binary, dependency, API or behavior difference requires it. Windows and other
+operating systems and architectures require separate native qualification.
 
 Publication, pushes, new dependencies and live installation changes require
 their applicable authorization. Preserve current byte/source pins and provenance inputs.

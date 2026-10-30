@@ -47,6 +47,9 @@ maintenance cost. Remove redundant or non-contributing skills instead of
 preserving catalog size. A tied small trial does not prove universal uselessness;
 repeated failure can justify retiring the tested bundle without blaming each
 member. Preserve failed evidence and host-owned workflows when reducing scope.
-The local candidate qualification scope is macOS 26.5.2 ARM64. See
-`docs/qualification.md` for its exact identity and limits. Other platforms
-require separate native qualification.
+The local 0.0.1 qualification scope is macOS 26.5.2 ARM64. See
+`docs/qualification.md` for its exact identity and limits. Package setup uses
+a macOS 26.0+ ARM64 floor, not an exact OS patch or major version; that
+eligibility does not qualify macOS 27. Keep actual OS/build evidence, and split
+artifacts only for demonstrated compatibility differences. Other OSes and
+architectures require separate native qualification.

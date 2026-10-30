@@ -1,5 +1,96 @@
 # Local qualification
 
+## 0.0.1 macOS ARM64 compatibility-floor rerelease candidate, 2026-10-30
+
+This new candidate was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo
+**1.99.1**, Python **3.15.1**, private Node **24.22.1** (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`)
+and exact Pi **1.4.0** peers. It accepts macOS ARM64 26.0 or newer at setup
+without an OS-major ceiling. The new `mirket-pi-v0.0.1-macos-arm64.tar.gz`
+archive is **462,061,639 bytes**, SHA-256
+`9115c5645ec095b539adc0ec4f6a57792988cd5088076ff020d8864b727adf1c`;
+all six payloads passed `SHA256SUMS` (file SHA-256
+`e3001be9b9b4879a4f06d56864be7f2544a7f91fe33467ecccd84c5fe327e76c`).
+The native release ID is
+`sha256:144e15c9ef8cd7eb420ff0b9b95c41c5bf3ee3fbd3c21178492abfe8894b1f3b`,
+core SHA-256 is
+`b45e05e652e257519766ded41d86e4d4de1e0dfe5246da036717bef4f6f2d518`,
+and package inventory SHA-256 is
+`4631a5cf357401a6b07114521980d909174b5fb0af46c3fe5d8ca5886bd0ab1b`.
+A safe extraction checked all **13,357 inventoried files**, including the new
+setup helper; the archive has **15,350** file/directory members and **13,358**
+regular files including the package inventory itself. There were no links or
+extra files. The first roundtrip checker mistakenly rejected the ordinary
+`package` root directory; its corrected version passed. The first oracle is
+not counted as passing archive qualification.
+
+The build-input guard passed before Rust compilation. Locked offline Rust tests
+(**446 pass, 4 ignored**), clippy, formatting, release build, private-node
+TypeScript build and process suite (**145 pass, 2 skipped**), Python suite
+(**189 pass, 1 skipped**), skill-catalog refresh and explicit-path MCP smoke
+passed. Assembled Pi integration passed **16 checkpoints**, including a fresh
+setup, altered-extension refusal, scoped memory, selected navigation/design,
+reload and skill selection. Actual Pi CLI/RPC/TUI passed doctor, fork/resume,
+reload, running codemode abort/recovery and clean shutdown. Fresh first-tool
+samples were **3234.666, 1789.684 and 1761.919 ms**, within the current
+**5000/2500/2500 ms** gate. A saved PNG was delivered byte-exactly to an
+offline image-capable Pi provider fixture; this does not establish provider
+interpretation or visual quality.
+
+The exact extracted archive then passed `install-pi.py` into a fresh disposable
+home with the pinned acquired host. A separate disposable old-to-new migration
+with the repaired `migrate-pi.py` exited `updated`, recorded a complete backup,
+kept the old package and preserved a seeded unrelated setting and agent file.
+The first attempt at that disposable old install refused an inherited
+`PI_CODING_AGENT_DIR`; after unsetting it, a second attempt refused a fabricated
+existing `.pi/agent` with no recognized launcher. A third attempt was stopped
+by a too-short 300-second external timeout during full native staging. Its
+partial state was preserved, not silently resumed or called a pass. A new,
+separate fixture with a long enough timeout completed the old installation
+and the migration. These failures remain in the private task evidence.
+
+No macOS 27 machine was available. macOS 27, live-provider image interpretation,
+and a fresh video playback/quality and optional-browser qualification on this
+new package remain **unrun**, regardless of the new installation gate or prior
+release evidence. The previous 0.0.1 archive retains its exact hash and does
+not acquire the new floor retroactively. Private receipts and logs are under
+`/private/tmp/mirket-compat-rerelease-0.0.1.rlbmxsfi/` and the assembled Pi
+fixture is `/private/tmp/mirket-pi-package-fkigTm/`; neither is shipped source.
+The live installation outcome, if attempted, requires its own record.
+
+## Unreleased macOS ARM64 compatibility-floor source change, 2026-10-30
+
+On **macOS 26.5.2 (25F84), ARM64**, with Rust **1.99.1**, Python **3.15.1**,
+private Node **24.22.1** (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`)
+and external Pi **1.4.0** peers, this source tree changed the fresh package setup
+gate from exactly `26.5.2` to macOS ARM64 `26.0` or newer. Read-only inspection
+of the published candidate's Mach-O deployment commands found a macOS 11.0
+floor for the native core, 13.5 for Node, 13.0 for D2, 14.0 for ONNX Runtime
+and **26.0 for both FFmpeg and ffprobe**. Those floors do not establish working
+behavior on another macOS release.
+
+Synthetic version tests accepted `26.0`, `26.5.2`, `26.7.2`, `27.0`, `27.1.3`
+and `28.0`; they rejected pre-26, malformed and unknown input. The local
+source setup reached its private-agent argument refusal after passing the
+actual 26.5.2 platform gate. Synthetic package assembly checked that the new
+version module ships alongside setup in the inventoried package. The build-input
+guard, locked offline Rust tests (**446 pass, 4 ignored**), clippy, formatting,
+private-node adapter build and process tests (**145 pass, 2 skipped**), Python
+suite (**189 pass, 1 skipped**) and explicit-path MCP smoke passed. The first
+Python run failed because the changed architecture contract's skill-catalog hash
+was stale; the catalog was refreshed and the full suite passed on rerun. This
+failure is not counted as a pass.
+
+No changed full package was assembled or installed, and no macOS 27 host was
+available for native, Pi CLI/TUI, image or video verification. The published
+0.0.1 archive and checksum remain unchanged and its setup still rejects other
+macOS versions. The new predicate establishes installation eligibility for a
+future assembled package, **not** macOS 27 support or a new published release.
+Qualify the same built artifact on macOS 27 before claiming that outcome; a new
+OS-specific artifact is warranted only if a real compatibility difference
+requires it.
+
 ## 0.0.1 skill catalog routing rerelease, 2026-10-30
 
 This package was qualified in private disposable state after the focused skill

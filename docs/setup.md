@@ -1,7 +1,10 @@
 # Set up the local Pi package
 
-The current target is macOS 26.5.2 ARM64. Pi 1.4.0 remains an external host.
-Obtain the assembled local package described in [packaging](../packaging/README.md).
+The 0.0.1 macOS ARM64 archive accepts macOS 26.0 or newer at setup, including
+major updates; its installed qualification evidence is on macOS 26.5.2 ARM64.
+Eligibility does not establish behavior on macOS 27. Pi 1.4.0 remains an
+external host. Obtain the assembled local package described in
+[packaging](../packaging/README.md).
 For the tagged 0.0.1 archive and its exact external Pi host acquisition, see
 the [release instructions](release-0.0.1.md).
 Use its bound private Node executable; do not substitute a PATH runtime.
