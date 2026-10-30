@@ -1,9 +1,10 @@
-# Local candidate qualification
+# Local qualification
 
-## Skill catalog routing candidate, private full package, 2026-10-30
+## 0.0.1 skill catalog routing rerelease, 2026-10-30
 
-This is a new **unreleased** working-tree candidate after the focused skill
-adoption candidate below. It was checked on **macOS 26.5.2 (25F84), ARM64**
+This package was qualified in private disposable state after the focused skill
+adoption candidate below, then published as the current 0.0.1 rerelease. It was
+checked on **macOS 26.5.2 (25F84), ARM64**
 with Rust/Cargo **1.99.1**, private Node **24.22.1** (SHA-256
 `6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`),
 Pi **1.4.0** and TypeScript **5.9.3**. The assembled release ID is
@@ -12,9 +13,10 @@ core SHA-256 is
 `adb2bd0dd33d4a533189b264c42008be0d2dbece4a74ba3584aeed55eb28c048`;
 package inventory SHA-256 is
 `c060c4fca31e8f31995067ada463996b3f4634d0b872005bde8403b1b1927e06`.
-The package contains **13,356 inventoried files** and was assembled and
-installed only in `/private/tmp/mirket-pi-package-BAZuTr`. No live user Pi,
-project settings, `.mirket`, `.pi` or `.agents` state was used.
+The package contains **13,356 inventoried files**. Its qualification assembly
+and installation used `/private/tmp/mirket-pi-package-BAZuTr`; those tests used
+no live user Pi, project settings, `.mirket`, `.pi` or `.agents` state. The later
+authorized live installation has separate evidence below.
 The new 0.0.1 archive is **461,000,129 bytes**, SHA-256
 `5c0f99fe443d66edd77776f5c72d7009743a35d366a8906b1e00df6fcd7eff39`;
 its six payload checksums pass. A safety-checked extraction found **15,349**
@@ -115,7 +117,79 @@ consistency and selected installed Pi routes, plus the bounded packaged-core
 and installed Pi Video operation/cancellation above. It did not run held-out skill-utility,
 image interpretation or visual-quality trials. Windows and other platforms
 require their own native
-qualification. No publication or live installation is implied.
+qualification. The later publication and live installation do not expand these
+bounded qualification results.
+
+### Live installation and migration failure
+
+After publication, the authorized live upgrade used the same archive and native
+release identified above. The earlier `migrate-pi.py` helper (SHA-256
+`296aa33c4f4e457faf18627217d1d4c1ddc3b6d18e5967f052a6074d149b49c5`)
+failed after publishing the new installation because its `settings.json.lock` disappeared
+during the long operation. It retained `failed-state-preserved` at phase
+`outer-new-final-check-pending`, with a recovery record in
+`/Users/nazmiyilmaz/.local/share/mirket/migration-backups/migration-ky84lqxt/record.json`.
+No rollback was attempted. The failed invocation remains a failure; it does not
+qualify that helper's complete migration or locking behavior.
+
+A subsequent rerun of the exact `install-pi.py` installer reported
+`already-installed`, and native doctor reported healthy with the new release
+ID. A read-only audit verified all **13,356 package files** and **15,249 host
+files**, and Pi reported **1.4.0**. Settings changed only the old Mirket package
+source to the new one; unrelated settings and skill selections were preserved.
+Authentication, model-store and managed Pi launcher target bytes and modes were
+unchanged. The outer launcher matched the new installation, backup settings and
+launcher matched their pre-migration hashes, and the previous active release
+remained retained. These checks establish the resulting installation's identity,
+preservation and native health, rather than a passing end-to-end
+migration-helper run. Live-provider interpretation, visual quality and
+unexercised live tool routes remain outside this installation check.
+
+Raw failure and recovery receipts remain under
+`/private/tmp/mirket-rerelease-0.0.1-20261030.DV1Uv7VW/`:
+`migration-stderr.log` has SHA-256
+`178da973e602bfe74683d77cf83932ed2131e363986a2c87598a02fe643720fe`;
+`live-before.json` has SHA-256
+`63ec212f81abfb9228736fa558e9357426b6675fb7362e5d2b5b71bb83f9a10c`;
+`live-final-installer.json` has SHA-256
+`a5e45bc88963fe422cbd44006f014967ff1da213728e8f149f57fa0f84ffb458`.
+The later read-only `live-install-report.json` has SHA-256
+`883221f52cf5f31059d203053a9b09ac20187404e89e5b799d7b4e60be97215d`.
+Its first audit oracle incorrectly expected the backup launcher copy's mode to
+be `0700`; the helper deliberately writes that private backup copy as `0600`
+and records the original mode separately. The corrected oracle passed. This
+failed audit attempt remains in `live-report-attempt-1.txt`; it is not a failed
+installation or a migration-helper pass.
+
+The repaired standalone helper has SHA-256
+`c435719955cb6e80a9fcdeb9d130f9b3b3850a2777988491a211bf171e2ac25c`.
+It renews the cooperative Pi settings lock during long operations and checks
+lock ownership before publication. On macOS **26.5.2 ARM64**, Python **3.15.1**
+and private Node **24.22.1**, its focused suite passed **46 tests, no skips**, in
+**17.063 seconds**. Real Pi lock checks verified reclamation of a stale bare
+lock and contention against the renewed lock after **11 seconds**. These repair
+checks do not change the failed live invocation's result. Full Python discovery
+with the explicit private package and host then passed **190 tests, no skips**,
+in **59.358 seconds**. Its retained `python-final.log` in the rerelease evidence
+directory has SHA-256
+`ef468505368b7ab23ea83b83da7bbbc889b7f4889c445147b3274fbf75b06b3a`.
+
+A separate disposable installation then exercised the repaired helper from
+native release
+`sha256:d2aa0c11ff58234c733f8f329047cdbf47c6f5341fbd866b9af712a9ba86c1fc`
+to this rerelease. The helper exited zero with `status: updated` and backup
+phase `complete`. New native doctor was healthy, and an independent exact
+installer rerun reported `already-installed`. A restarted installed MCP server
+read the old canonical fact with its original source revision. Authentication,
+unrelated files, runtime selection and canonical SQLite bytes and modes were
+preserved, as were unrelated settings, skill filters and the settings-file
+mode. This is an end-to-end passing disposable migration, separate from the
+failed live run. The repaired helper was not rerun against the live
+installation.
+The final disposable `qualification-result.json` is retained under
+`/private/tmp/mirket-migration-real-20261030-j4370eit/`, alongside `REPORT.md`
+and 21 hashed logs; its SHA-256 is
+`27cd27cb6f0c524d40c725270883188d4b18f21d89af848305f7127c522bb7d7`.
 
 ## Focused skill adoption candidate, private full package, 2026-10-30
 

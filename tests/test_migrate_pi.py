@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -188,6 +189,119 @@ class MigrationTests(unittest.TestCase):
         self.assertFalse(self.settings_file.with_name('settings.json.lock').exists())
         for path, data in self.sentinels.items():
             self.assertEqual(path.read_bytes(), data)
+
+    def test_removed_lock_after_native_update_refuses_settings_publication(self):
+        execute = self.execute
+        lock = self.settings_file.with_name('settings.json.lock')
+        def remove_lock(command, *args, **kwargs):
+            result = execute(command, *args, **kwargs)
+            if command[1] == 'update':
+                lock.rmdir()
+            return result
+        self.execute = remove_lock
+        with self.assertRaisesRegex(ValueError, 'lock ownership lost'):
+            self.run_migration()
+        self.assertEqual(json.loads(self.settings_file.read_bytes()), self.settings)
+        self.assertEqual(self.launcher.read_bytes(), self.old_wrapper)
+        self.assertEqual(json.loads((self.native / 'active.json').read_bytes())['release_id'], self.new_id)
+        record = json.loads(next((self.install / 'migration-backups').iterdir()).joinpath('record.json').read_bytes())
+        self.assertEqual(record['failedPhase'], 'native-active-outer-old')
+        for path, data in self.sentinels.items():
+            self.assertEqual(path.read_bytes(), data)
+
+    def test_replaced_lock_during_readiness_preserves_replacement_and_old_launcher(self):
+        execute = self.execute
+        lock = self.settings_file.with_name('settings.json.lock')
+        def replace_lock(command, *args, **kwargs):
+            result = execute(command, *args, **kwargs)
+            if command[1] == '--input-type=module':
+                lock.rename(self.root / 'displaced-lock')
+                lock.mkdir(mode=0o700)
+                (lock / 'other-owner').write_bytes(b'preserve replacement')
+            return result
+        self.execute = replace_lock
+        with self.assertRaisesRegex(ValueError, 'lock ownership lost'):
+            self.run_migration()
+        self.assertEqual((lock / 'other-owner').read_bytes(), b'preserve replacement')
+        self.assertEqual(self.launcher.read_bytes(), self.old_wrapper)
+        self.assertEqual(json.loads(self.settings_file.read_bytes())['packages'][1]['source'], str(self.package))
+        record = json.loads(next((self.install / 'migration-backups').iterdir()).joinpath('record.json').read_bytes())
+        self.assertEqual(record['failedPhase'], 'settings-new-launcher-old')
+        for path, data in self.sentinels.items():
+            self.assertEqual(path.read_bytes(), data)
+
+    def test_heartbeat_failure_refuses_even_when_original_lock_still_exists(self):
+        lock = self.settings_file.with_name('settings.json.lock')
+        with patch.object(migration.os, 'utime', side_effect=OSError('fixture renewal denied')):
+            with self.assertRaisesRegex(ValueError, 'heartbeat failed'):
+                with migration.settings_lock(lock) as check:
+                    deadline = time.monotonic() + 5
+                    while time.monotonic() < deadline:
+                        time.sleep(0.05)
+                        check()
+                    self.fail('Heartbeat failure was not reported')
+        self.assertFalse(lock.exists())
+        self.assertEqual(json.loads(self.settings_file.read_bytes()), self.settings)
+        self.assertEqual(self.launcher.read_bytes(), self.old_wrapper)
+
+    def test_acquisition_failure_cleans_owned_lock_and_keeps_primary_error(self):
+        lock = self.settings_file.with_name('settings.json.lock')
+        with patch.object(migration.os, 'open', side_effect=OSError('fixture open denied')):
+            with self.assertRaisesRegex(OSError, 'fixture open denied'):
+                with migration.settings_lock(lock):
+                    self.fail('Failed acquisition entered the lock context')
+        self.assertFalse(lock.exists())
+
+    def test_cleanup_preserves_replacement_and_original_failure(self):
+        lock = self.settings_file.with_name('settings.json.lock')
+        with self.assertRaisesRegex(ValueError, 'fixture primary failure') as caught:
+            with migration.settings_lock(lock):
+                lock.rename(self.root / 'displaced-lock')
+                lock.mkdir(mode=0o700)
+                raise ValueError('fixture primary failure')
+        self.assertIn('lock ownership lost', str(caught.exception.__cause__))
+        self.assertTrue(lock.is_dir())
+
+    def test_expired_lock_refuses_without_waiting_for_another_owner(self):
+        lock = self.settings_file.with_name('settings.json.lock')
+        with self.assertRaisesRegex(ValueError, 'renewal expired'):
+            with migration.settings_lock(lock) as check:
+                old = time.time() - 20
+                os.utime(lock, (old, old))
+                check()
+        self.assertFalse(lock.exists())
+
+    @unittest.skipUnless(os.environ.get('MIRKET_TEST_PACKAGE') and os.environ.get('MIRKET_TEST_PI_HOST'),
+                         'Select explicit package/private Node and Pi host for the real lock protocol gate')
+    def test_verified_pi_reclaims_stale_lock_but_cannot_reclaim_renewed_lock(self):
+        package = Path(os.environ['MIRKET_TEST_PACKAGE'])
+        host = Path(os.environ['MIRKET_TEST_PI_HOST'])
+        env = {**os.environ, 'HOME': str(self.home), 'TMPDIR': str(self.root), 'PATH': '/nonexistent',
+               'PI_CODING_AGENT_DIR': str(self.agent), 'PI_CODING_AGENT_SESSION_DIR': str(self.root / 'sessions')}
+        _, _, node = self.installer.verify(package, host, env, self.root)
+        source = """
+import {createRequire} from 'node:module';
+import {join} from 'node:path';
+const [host,file]=process.argv.slice(1);
+const lockfile=createRequire(import.meta.url)(join(host,'node_modules/proper-lockfile'));
+try {const release=lockfile.lockSync(file,{realpath:false});release();console.log(JSON.stringify({status:'acquired'}));}
+catch(error) {if(error.code!=='ELOCKED')throw error;console.log(JSON.stringify({status:'busy'}));}
+"""
+        def contender():
+            return self.installer.run_json([node, '--input-type=module', '--eval', source, host, self.settings_file], self.root, env)
+        lock = self.settings_file.with_name('settings.json.lock')
+        lock.mkdir(mode=0o700)
+        old = time.time() - 20
+        os.utime(lock, (old, old))
+        self.assertEqual(contender(), {'status': 'acquired'})
+        self.assertFalse(lock.exists())
+        with migration.settings_lock(lock) as check:
+            identity = lock.stat().st_ino
+            time.sleep(11)
+            self.assertEqual(contender(), {'status': 'busy'})
+            check()
+            self.assertEqual(lock.stat().st_ino, identity)
+        self.assertEqual(contender(), {'status': 'acquired'})
 
     def test_staged_busy_activation_preserves_outer_configuration(self):
         execute = self.execute

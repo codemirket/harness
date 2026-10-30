@@ -6,8 +6,8 @@ one compiled TypeScript Pi package, private Node 24.22.1, selected manageable
 tools, project license, original third-party notices and required source packets.
 It contains no Chrome, Playwright or Raster executable payload.
 
-This rerelease carries the focused skill-catalog repairs and selected OpenPencil
-and HyperFrames methods. Pi profile selection now excludes inherited Mirket
+This published rerelease carries the focused skill-catalog repairs and selected
+OpenPencil and HyperFrames methods. Pi profile selection now excludes inherited Mirket
 skills under `autoload:false`; doctor names selected skills whose required
 native routes are unavailable. Browser guidance matches the optional local
 peer's actual scope, raster remains conditional, and source-only Video authoring
@@ -47,10 +47,11 @@ The release contains seven assets:
 - `SHA256SUMS` — SHA-256 for the six payloads above. Check it before extraction
   or running any script.
 
-This 0.0.1 rerelease replaces the native package archive and checksum file.
-The standalone fresh installer, migration helper, acquisition script, host lock
-and license notice are unchanged. Earlier installer and route evidence is
-retained in [qualification](qualification.md).
+This 0.0.1 rerelease replaces the native package archive. Its subsequent
+migration-helper repair leaves that archive unchanged. The standalone fresh
+installer, acquisition script, host lock and license notice are unchanged.
+Earlier installer and route evidence is retained in
+[qualification](qualification.md).
 
 The archive is **461,000,129 bytes**; its SHA-256 is
 `5c0f99fe443d66edd77776f5c72d7009743a35d366a8906b1e00df6fcd7eff39`.
@@ -63,9 +64,14 @@ The native release ID is
 The native executable SHA-256 is
 `adb2bd0dd33d4a533189b264c42008be0d2dbece4a74ba3584aeed55eb28c048`.
 The migration helper SHA-256 is
-`296aa33c4f4e457faf18627217d1d4c1ddc3b6d18e5967f052a6074d149b49c5`.
+`c435719955cb6e80a9fcdeb9d130f9b3b3850a2777988491a211bf171e2ac25c`.
+Its lock-renewal repair separately passed **46 focused tests** and the
+**190-test Python suite**, with no skips; the archive was unchanged.
+A disposable old-to-new native migration passed with canonical memory,
+authentication, unrelated settings and skill filters preserved. The failed live
+attempt remains recorded separately in [qualification](qualification.md).
 The six-entry `SHA256SUMS` file SHA-256 is
-`e2f0b759c58c5d08fa1047a388c7531c1380e909d5e94f81f8620a3147ca966d`.
+`0fbf531a2f0cfd231ebd314758e4416fd23e43d27bdfb4c588460850751f78f7`.
 The external host lock SHA-256 is
 `c1cee4255aaad64b6dea75b57d8ed484e2c89ea90fbd62cb3818f456ed0cbcfb`.
 The acquisition script passed 12 focused refusal/success tests and reproduced
@@ -122,6 +128,14 @@ package's lower-level fresh-agent setup.
 For an existing Mirket installation, use the verified `migrate-pi.py` asset and
 the [explicit upgrade procedure](setup.md#upgrade-an-existing-mirket-installation).
 The fresh installer refuses to replace a different registered package path.
+
+The first live attempt to install this rerelease with the earlier migration
+helper failed after publishing the new installation because its `settings.json.lock` disappeared
+during the long operation. A subsequent exact `install-pi.py` rerun reported
+`already-installed`, and native doctor reported healthy. This establishes the
+resulting live installation and recovery check; it does not count the failed
+migration-helper invocation as a pass. The failure and recovery evidence remain
+in [qualification](qualification.md).
 
 Keep the new release directory, extracted package and host tree in place: Pi
 settings bind the package path, and Mirket verifies the host and native bytes. The

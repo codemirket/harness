@@ -18,6 +18,8 @@ import re
 import stat
 import sys
 import tempfile
+import threading
+import time
 import types
 
 
@@ -75,6 +77,75 @@ def existing_lock_idle(installer, path, required=False, empty=False):
     finally:
         fcntl.flock(fd, fcntl.LOCK_UN)
         os.close(fd)
+
+
+@contextmanager
+def settings_lock(path):
+    # Pi's proper-lockfile reclaims directories older than ten seconds. Keep
+    # this cooperative lock fresh while native verification/update is running.
+    stopped = threading.Event()
+    failures = []
+    identity = fd = worker = primary_error = None
+
+    def owned():
+        try:
+            current = path.lstat()
+        except OSError as error:
+            raise ValueError('Pi settings lock ownership lost; inspect preserved state') from error
+        if (not stat.S_ISDIR(current.st_mode)
+                or (current.st_dev, current.st_ino) != (identity.st_dev, identity.st_ino)
+                or current.st_uid != os.getuid() or current.st_mode & 0o077):
+            raise ValueError('Pi settings lock ownership lost; replacement preserved')
+        return current
+
+    def check():
+        current = owned()
+        if failures:
+            raise ValueError('Pi settings lock heartbeat failed; inspect preserved state') from failures[0]
+        if current.st_mtime < time.time() - 5:
+            raise ValueError('Pi settings lock renewal expired; inspect preserved state')
+
+    def renew():
+        while not stopped.wait(1):
+            try:
+                check()
+                # Updating the held inode cannot touch a replacement directory.
+                os.utime(fd, None)
+            except BaseException as error:
+                failures.append(error)
+                return
+
+    path.mkdir(mode=0o700)
+    try:
+        identity = path.lstat()
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        opened = os.fstat(fd)
+        if (opened.st_dev, opened.st_ino) != (identity.st_dev, identity.st_ino):
+            raise ValueError('Pi settings lock changed during acquisition')
+        check()
+        worker = threading.Thread(target=renew, name='pi-settings-lock', daemon=True)
+        worker.start()
+        yield check
+        check()
+    except BaseException as error:
+        primary_error = error
+        raise
+    finally:
+        stopped.set()
+        try:
+            try:
+                if worker is not None and worker.ident is not None:
+                    worker.join()
+                if identity is not None:
+                    owned()
+                    path.rmdir()
+            finally:
+                if fd is not None:
+                    os.close(fd)
+        except BaseException as cleanup_error:
+            if primary_error is None:
+                raise
+            raise primary_error from cleanup_error
 
 
 def migrate(args):
@@ -165,10 +236,9 @@ def migrate(args):
                 raise ValueError('Selected old native doctor did not establish installation health')
             desired = installer.wrapper(agent, node, host / 'node_modules' / installer.ENTRY)
             with installer.launcher_lock(launcher):
-                lock = settings_file.with_name('settings.json.lock')
-                lock.mkdir(mode=0o700)
-                try:
+                with settings_lock(settings_file.with_name('settings.json.lock')) as check_lock:
                     def outer_unchanged():
+                        check_lock()
                         if installer.regular(settings_file, 2 * 1024 * 1024) != original or installer.launcher_snapshot(launcher) != launcher_before:
                             raise ValueError('Original Pi settings or outer launcher changed; preserved')
 
@@ -207,6 +277,7 @@ def migrate(args):
                     if health.get('status') != 'healthy' or health.get('active_release_id') != args.release_id:
                         raise ValueError('New native doctor did not establish selected release health')
                     phase('settings-publication-started')
+                    check_lock()
                     installer.atomic_write(settings_file, expected_settings, settings_mode)
                     phase('settings-new-launcher-old')
                     # This check avoids the install helper's busy-settings preflight
@@ -216,13 +287,13 @@ def migrate(args):
                     ready = installer.run_json([node, '--input-type=module', '--eval', installer.READINESS, package, host, agent, probe, binding['releaseId']], probe, env)
                     if ready != {'status': 'registered', 'releaseId': args.release_id}:
                         raise ValueError('New Pi package/MCP registration readiness differs')
+                    check_lock()
                     if installer.regular(settings_file, 2 * 1024 * 1024) != expected_settings or installer.launcher_snapshot(launcher) != launcher_before:
                         raise ValueError('Settings or old launcher drifted before launcher publication')
                     phase('launcher-publication-started')
+                    check_lock()
                     installer.atomic_write(launcher, desired, 0o700)
                     phase('outer-new-final-check-pending')
-                finally:
-                    lock.rmdir()
             final = installer.install(package, host, root)
             if final.get('status') != 'already-installed' or final.get('releaseId') != args.release_id:
                 raise ValueError('Final exact installer rerun did not report already-installed')
