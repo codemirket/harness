@@ -2,6 +2,8 @@
 
 The current target is macOS 26.5.2 ARM64. Pi 1.4.0 remains an external host.
 Obtain the assembled local package described in [packaging](../packaging/README.md).
+For the tagged 0.0.1 archive and its exact external Pi host acquisition, see
+the [release instructions](release-0.0.1.md).
 Use its bound private Node executable; do not substitute a PATH runtime.
 
 Create or explicitly select a fresh private Pi agent directory. Run:

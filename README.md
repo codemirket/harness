@@ -11,6 +11,8 @@ local checks but missed the first-tool startup timing gate. Earlier package
 results remain separate. See the [qualification record](docs/qualification.md)
 for exact package identity, measured outcomes and limits.
 See [architecture](docs/architecture.md) for the current product contract.
+For the first tagged package and its exact external Pi host setup, see the
+[0.0.1 release instructions](docs/release-0.0.1.md).
 
 Memory retains canonical SQLite facts, FTS, corrections, supersession, expiry,
 forgetting and recovery, with lazy local MiniLM retrieval. Navigation operates on
