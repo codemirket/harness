@@ -1,8 +1,8 @@
 # Local qualification
 
-## 0.0.1 macOS ARM64 compatibility-floor rerelease candidate, 2026-10-30
+## 0.0.1 macOS ARM64 compatibility-floor rerelease, 2026-10-30
 
-This new candidate was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo
+This rerelease package was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo
 **1.99.1**, Python **3.15.1**, private Node **24.22.1** (SHA-256
 `6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`)
 and exact Pi **1.4.0** peers. It accepts macOS ARM64 26.0 or newer at setup
@@ -56,7 +56,22 @@ release evidence. The previous 0.0.1 archive retains its exact hash and does
 not acquire the new floor retroactively. Private receipts and logs are under
 `/private/tmp/mirket-compat-rerelease-0.0.1.rlbmxsfi/` and the assembled Pi
 fixture is `/private/tmp/mirket-pi-package-fkigTm/`; neither is shipped source.
-The live installation outcome, if attempted, requires its own record.
+
+All **seven** public `v0.0.1` release assets were downloaded after publication,
+matched their exact qualified local hashes and passed the downloaded
+`SHA256SUMS`; the tag was moved to the source commit for this rerelease. The
+previous archive was removed from the current release assets, not from earlier
+installation directories or this historical record. The downloaded archive was
+extracted into a **new** permanent private release directory at
+`/Users/nazmiyilmaz/.local/share/mirket/releases/0.0.1.jLKH5l9U/` and its
+13,357-file inventory and native identity were verified again. The exact
+existing Pi host binding independently reverified **15,249** host files.
+This was **staging, not installation**: the user's active native release,
+Pi package entry and outer launcher remained the previous release when last
+inspected. The active Mirket session held the native runtime lock, so a live
+migration was not attempted. It must wait until the runtime is idle and be
+verified separately; never bypass that lock or call staging a successful live
+upgrade.
 
 ## Unreleased macOS ARM64 compatibility-floor source change, 2026-10-30
 
