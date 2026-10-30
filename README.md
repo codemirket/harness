@@ -6,10 +6,12 @@ scoped project memory, selected JavaScript/TypeScript navigation, finite design
 and HyperFrames video operations, and selected workflow guidance.
 
 The qualification target is **macOS 26.5.2 ARM64** with external Pi 1.4.0 /
-Undici 8.12.2. The current packaging/onboarding candidate passed its functional
-local checks but missed the first-tool startup timing gate. Earlier package
-results remain separate. See the [qualification record](docs/qualification.md)
-for exact package identity, measured outcomes and limits.
+Undici 8.12.2. The current 0.0.1 rerelease candidate has a rebuilt native core
+and passed fresh Pi CLI/RPC/TUI, domain, optional browser, video, installer and
+revised local startup checks. Earlier package results and failed
+timing gates remain separate. See the
+[qualification record](docs/qualification.md) for exact package identity, measured
+outcomes and limits.
 See [architecture](docs/architecture.md) for the current product contract.
 For the first tagged package and its exact external Pi host setup, see the
 [0.0.1 release instructions](docs/release-0.0.1.md).

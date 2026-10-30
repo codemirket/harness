@@ -12,14 +12,17 @@ with the release assets and verified against `SHA256SUMS`:
 
 ```sh
 python3 install-pi.py \
-  --package /absolute/mirket-install-root/releases/0.0.1/package \
-  --host /absolute/mirket-install-root/host/pi-1.4.0 \
+  --package /absolute/mirket-install-root/releases/0.0.1-unique/package \
+  --host /absolute/mirket-install-root/releases/0.0.1-unique/pi-host \
   --install-root /absolute/mirket-install-root
 ```
 
 `--host` names the acquisition output containing `node_modules`. The install root
 must already be private (`0700`), with both package and host beneath it at
-permanent canonical paths. `--install-root` defaults to `$HOME/.local/share/mirket`.
+permanent canonical paths. Extract a rerelease into a new directory rather than
+overwriting a package or host used by an existing installation; the release
+instructions create a unique permanent directory. `--install-root` defaults to
+`$HOME/.local/share/mirket`.
 The helper detects the standard `$HOME/.pi/agent` directory and registers Mirket
 there. If it is absent, setup creates a fresh
 private `<install-root>/agent` directory. Existing Pi authentication, sessions,
@@ -33,9 +36,11 @@ launcher binds the selected agent directory, package-private Node and exact
 package-bound Pi host. It does not search PATH or silently substitute a host.
 
 Before publishing the launcher, the helper checks native doctor and Pi package/MCP
-registration without requesting a model. Run `mirket_doctor` in Pi for full session
-readiness. Original settings bytes/mode, the
-outer symlink and installation phases are recorded under
+registration without requesting a model. The first `/mirket doctor` can show
+`Awaiting actual runtime_status identity` until the actual tool has run. Ask Pi
+to run `mirket_doctor` once, then repeat `/mirket doctor` to inspect verified
+readiness. Original settings bytes/mode, the outer symlink and installation
+phases are recorded under
 `<install-root>/install-backups/install-*/`. A setup or registration failure leaves
 the original launcher intact and preserves any installed state for inspection;
 it does not delete the Mirket home or automatically overwrite settings during
@@ -50,9 +55,9 @@ updated after the same checks.
 The 0.0.1 release has six assets: the native package archive, `install-pi.py`,
 `acquire-pi-host.py`, `host-lock.json`, `LICENSE` and `SHA256SUMS`. The checksum
 file covers the five payloads. `LICENSE` supplies the MIT permission notice for
-the standalone first-party scripts. Adding the standalone helper does not change
-the native package's [qualification](qualification.md) or resolve its failed
-timing gate.
+the standalone first-party scripts. The current rerelease changes the native
+package and startup budget; see [qualification](qualification.md) for its exact
+identity, fresh outcomes and earlier failed timing evidence.
 
 For an explicitly selected fresh agent directory, the package's lower-level
 setup remains available:
@@ -116,5 +121,6 @@ The bundled D2 route can save SVG or a bounded, directly decoded PNG without
 browser onboarding.
 
 The [qualification](qualification.md) records this package's local onboarding
-and installed-route evidence, including a failed first-tool timing gate. The
-earlier package's results remain separate; they do not transfer automatically.
+and installed-route evidence, the revised startup budget and historical timing
+failures. Earlier package results remain separate; they do not transfer
+automatically.

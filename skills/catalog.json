@@ -5,7 +5,7 @@
   "authoring_basis": [
     {
       "path": "docs/skills.md",
-      "sha256": "738d6279148b52ce279ec1fedf8b91afb36920cdde193124ead6fcaee657fafd"
+      "sha256": "55ff8a13646d09e5fe3fcf6797a4e7e45839c646fc6a34dd89d927258495cdaf"
     },
     {
       "path": "docs/architecture.md",
@@ -13,7 +13,7 @@
     },
     {
       "path": "docs/references.md",
-      "sha256": "c71ea4e9a78d90804d1adafd5b7187e9c70696346d2007c05b64f417edc49517"
+      "sha256": "f2fc00fb6b08ffc7f5d7ff86dcb511ef6c73d3d00f3978836a8238a4c0aacdba"
     }
   ],
   "capability_vocabulary": [
@@ -342,8 +342,8 @@
       "path": "skills/code-change/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
-      "source_bytes": 1534,
+      "source_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
+      "source_bytes": 1787,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#code-change",
@@ -464,8 +464,8 @@
       "path": "skills/critical-review/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "42521738af9f9e9f6e8fea2c4457ce7cf68d4ed29d105809f646d74dab88a315",
-      "source_bytes": 1521,
+      "source_sha256": "5239fdf86dec25abe0add37b247bdf1b41e6c97d910619bc034d3e00270ba126",
+      "source_bytes": 1812,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#critical-review",
@@ -525,8 +525,8 @@
       "path": "skills/outcome-verification/SKILL.md",
       "required_capabilities": [],
       "conditional_capabilities": [],
-      "source_sha256": "9a85723b43a5cf3d928c1062cc0ed3d542a61eac1be9dc6f214f3bc72b92d06f",
-      "source_bytes": 1627,
+      "source_sha256": "40996138c47dbe01ab1d110494f8d12da5a8c66e19068682ee1351a18c892941",
+      "source_bytes": 1809,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#outcome-verification",

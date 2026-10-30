@@ -56,7 +56,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/code-change/SKILL.md",
           "skill": "code-change",
-          "skill_body_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
+          "skill_body_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement substantive code behavior changes by finding owners and consumers, selecting the smallest complete design and verifying affected behavior. Skip purely mechanical edits."
         },
@@ -74,7 +74,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/outcome-verification/SKILL.md",
           "skill": "outcome-verification",
-          "skill_body_sha256": "9a85723b43a5cf3d928c1062cc0ed3d542a61eac1be9dc6f214f3bc72b92d06f",
+          "skill_body_sha256": "40996138c47dbe01ab1d110494f8d12da5a8c66e19068682ee1351a18c892941",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Verify a claimed completion against actual saved behavior, artifacts or effects, including a convincing failure case. Skip isolated facts with no completion claim or changed outcome."
         },
@@ -289,7 +289,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/code-change/SKILL.md",
           "skill": "code-change",
-          "skill_body_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
+          "skill_body_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement substantive code behavior changes by finding owners and consumers, selecting the smallest complete design and verifying affected behavior. Skip purely mechanical edits."
         },
@@ -469,7 +469,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/code-change/SKILL.md",
           "skill": "code-change",
-          "skill_body_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
+          "skill_body_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement substantive code behavior changes by finding owners and consumers, selecting the smallest complete design and verifying affected behavior. Skip purely mechanical edits."
         },
@@ -1313,7 +1313,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/code-change/SKILL.md",
           "skill": "code-change",
-          "skill_body_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
+          "skill_body_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement substantive code behavior changes by finding owners and consumers, selecting the smallest complete design and verifying affected behavior. Skip purely mechanical edits."
         },
@@ -1636,7 +1636,7 @@
           "local_output_evidence": "Return actionable findings first, with precise locations and verification limits. If no actionable defect is found, say so and name the meaningful untested boundaries. Stop when the requested surface and high-risk consumers are inspected to the agreed depth; do not manufacture findings or broaden into an unsolicited audit.",
           "path": "skills/critical-review/SKILL.md",
           "skill": "critical-review",
-          "skill_body_sha256": "42521738af9f9e9f6e8fea2c4457ce7cf68d4ed29d105809f646d74dab88a315",
+          "skill_body_sha256": "5239fdf86dec25abe0add37b247bdf1b41e6c97d910619bc034d3e00270ba126",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Critique a concrete change, plan or artifact for consequential defects using current evidence, severity and a reproducible consequence. Skip cosmetic rewriting unless requested."
         },
@@ -1851,7 +1851,7 @@
           "local_output_evidence": "Return actionable findings first, with precise locations and verification limits. If no actionable defect is found, say so and name the meaningful untested boundaries. Stop when the requested surface and high-risk consumers are inspected to the agreed depth; do not manufacture findings or broaden into an unsolicited audit.",
           "path": "skills/critical-review/SKILL.md",
           "skill": "critical-review",
-          "skill_body_sha256": "42521738af9f9e9f6e8fea2c4457ce7cf68d4ed29d105809f646d74dab88a315",
+          "skill_body_sha256": "5239fdf86dec25abe0add37b247bdf1b41e6c97d910619bc034d3e00270ba126",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Critique a concrete change, plan or artifact for consequential defects using current evidence, severity and a reproducible consequence. Skip cosmetic rewriting unless requested."
         },
@@ -7222,7 +7222,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/code-change/SKILL.md",
           "skill": "code-change",
-          "skill_body_sha256": "426034f58e691685cff60538acf1dd2257451cca419660e615897dbba079d433",
+          "skill_body_sha256": "3839cfcf2ba181e276c3d89f311b937cd38e6b4a336e3267f48a0f010b4781f2",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Implement substantive code behavior changes by finding owners and consumers, selecting the smallest complete design and verifying affected behavior. Skip purely mechanical edits."
         }
@@ -8570,7 +8570,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/outcome-verification/SKILL.md",
           "skill": "outcome-verification",
-          "skill_body_sha256": "9a85723b43a5cf3d928c1062cc0ed3d542a61eac1be9dc6f214f3bc72b92d06f",
+          "skill_body_sha256": "40996138c47dbe01ab1d110494f8d12da5a8c66e19068682ee1351a18c892941",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Verify a claimed completion against actual saved behavior, artifacts or effects, including a convincing failure case. Skip isolated facts with no completion claim or changed outcome."
         },
@@ -8685,7 +8685,7 @@
           "local_output_evidence": "Return actionable findings first, with precise locations and verification limits. If no actionable defect is found, say so and name the meaningful untested boundaries. Stop when the requested surface and high-risk consumers are inspected to the agreed depth; do not manufacture findings or broaden into an unsolicited audit.",
           "path": "skills/critical-review/SKILL.md",
           "skill": "critical-review",
-          "skill_body_sha256": "42521738af9f9e9f6e8fea2c4457ce7cf68d4ed29d105809f646d74dab88a315",
+          "skill_body_sha256": "5239fdf86dec25abe0add37b247bdf1b41e6c97d910619bc034d3e00270ba126",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Critique a concrete change, plan or artifact for consequential defects using current evidence, severity and a reproducible consequence. Skip cosmetic rewriting unless requested."
         },
@@ -8694,7 +8694,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/outcome-verification/SKILL.md",
           "skill": "outcome-verification",
-          "skill_body_sha256": "9a85723b43a5cf3d928c1062cc0ed3d542a61eac1be9dc6f214f3bc72b92d06f",
+          "skill_body_sha256": "40996138c47dbe01ab1d110494f8d12da5a8c66e19068682ee1351a18c892941",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Verify a claimed completion against actual saved behavior, artifacts or effects, including a convincing failure case. Skip isolated facts with no completion claim or changed outcome."
         },
@@ -9128,7 +9128,7 @@
           "local_output_evidence": "Return actionable findings first, with precise locations and verification limits. If no actionable defect is found, say so and name the meaningful untested boundaries. Stop when the requested surface and high-risk consumers are inspected to the agreed depth; do not manufacture findings or broaden into an unsolicited audit.",
           "path": "skills/critical-review/SKILL.md",
           "skill": "critical-review",
-          "skill_body_sha256": "42521738af9f9e9f6e8fea2c4457ce7cf68d4ed29d105809f646d74dab88a315",
+          "skill_body_sha256": "5239fdf86dec25abe0add37b247bdf1b41e6c97d910619bc034d3e00270ba126",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Critique a concrete change, plan or artifact for consequential defects using current evidence, severity and a reproducible consequence. Skip cosmetic rewriting unless requested."
         },
@@ -9565,7 +9565,7 @@
           "local_output_evidence": "Output/evidence mapping deferred to the focused source review; see the local skill body.",
           "path": "skills/outcome-verification/SKILL.md",
           "skill": "outcome-verification",
-          "skill_body_sha256": "9a85723b43a5cf3d928c1062cc0ed3d542a61eac1be9dc6f214f3bc72b92d06f",
+          "skill_body_sha256": "40996138c47dbe01ab1d110494f8d12da5a8c66e19068682ee1351a18c892941",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Verify a claimed completion against actual saved behavior, artifacts or effects, including a convincing failure case. Skip isolated facts with no completion claim or changed outcome."
         },

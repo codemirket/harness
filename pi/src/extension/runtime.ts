@@ -1,4 +1,4 @@
-import { constants, lstatSync, openSync, closeSync, readFileSync, fstatSync, realpathSync } from 'node:fs';
+import { constants, lstatSync, openSync, closeSync, readFileSync, readSync, fstatSync, realpathSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { isAbsolute, join, resolve } from 'node:path';
 export const HOST_VERSION = '1.4.0';
@@ -23,6 +23,23 @@ export function regularBytes(file: string, max: number): Buffer {
     return readFileSync(fd);
   } finally { closeSync(fd); }
 }
+export function regularSha256(file: string, max: number): string {
+  const fd = openSync(file, constants.O_RDONLY | constants.O_NOFOLLOW);
+  try {
+    const stat = fstatSync(fd);
+    if (!stat.isFile() || stat.nlink !== 1 || stat.size > max) throw new Error(`Invalid or aliased file: ${file}`);
+    // Executable identity still covers every byte on each verification. Avoid
+    // retaining a complete private Node image for each bootstrap hash.
+    const digest = createHash('sha256'), buffer = Buffer.allocUnsafe(1024 * 1024);
+    let bytes = 0, count: number;
+    while ((count = readSync(fd, buffer, 0, buffer.length, null)) !== 0) {
+      bytes += count;
+      if (bytes > max) throw new Error(`File grew beyond identity bound: ${file}`);
+      digest.update(buffer.subarray(0, count));
+    }
+    return digest.digest('hex');
+  } finally { closeSync(fd); }
+}
 export function readBinding(packageRoot: string): Binding {
   const value = JSON.parse(regularBytes(join(packageRoot, 'native-binding.json'), 16384).toString()) as Binding;
   if (value.schema !== 1 || value.hostVersion !== HOST_VERSION || !/^sha256:[a-f0-9]{64}$/.test(value.releaseId)
@@ -45,13 +62,13 @@ export async function verifyRuntime(packageRoot: string, agentDir: string, cwd: 
   if (!stat.isDirectory() || stat.isSymbolicLink() || (stat.mode & 0o077) !== 0) throw new Error('Runtime home must be a private real directory');
   if (realpathSync(home) !== resolve(home)) throw new Error('Runtime home has an aliased ancestor');
   const command = join(home, 'bin', 'mirket');
-  if (hash(regularBytes(command, 256 * 1024 * 1024)) !== binding.coreSha256) throw new Error('Native launcher identity mismatch');
+  if (regularSha256(command, 256 * 1024 * 1024) !== binding.coreSha256) throw new Error('Native launcher identity mismatch');
   // The pinned installed launcher binds the active release under its session
   // guard, then verifies the complete payload once before any MCP tool runs.
   // Running standalone doctor here would hash that same payload a second time.
   // This verifies the bootstrap tuple; actual readiness requires runtime_status.
   const node = join(home, 'releases', `r-${binding.releaseId.slice(7)}`, 'runtime/node/bin/node');
-  if (hash(regularBytes(node, 256 * 1024 * 1024)) !== binding.nodeSha256) throw new Error('Private Node identity mismatch');
+  if (regularSha256(node, 256 * 1024 * 1024) !== binding.nodeSha256) throw new Error('Private Node identity mismatch');
   return {binding, home, command, cwd: realpathSync(cwd)};
 }
 export function configuredOverride(agentDir: string, cwd: string): string | undefined {

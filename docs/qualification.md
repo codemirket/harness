@@ -1,5 +1,178 @@
 # Local candidate qualification
 
+## 0.0.1 rerelease candidate and revised startup budget, 2026-10-30
+
+This candidate targets **macOS 26.5.2 (25F84), ARM64**, external Pi **1.4.0**
+and private Node **24.22.1**. The native core was rebuilt because it embeds the
+skill catalog; the earlier native identity does not qualify these bytes.
+Fresh setup and Pi CLI/RPC/TUI lifecycle checks passed on the extracted final
+archive, as did ten installed domain checks. Fresh clones of the same
+inventoried package bytes passed 24/24 optional browser cases and five video
+commands. Standalone-installer fresh and existing-managed-Pi fixtures also
+passed.
+
+- Native release: `sha256:26d6c76e7c25c8e690f9c6b7b4014134891c49b2c67a844a7d3c166deb834fe3`.
+- Native core SHA-256: `38f81be0ba6261b6b194b514641483ca0938cfb445105b089eb0d7861ecb8489`.
+- Assembled package inventory SHA-256: `396991cfe581e8fb3a3cf67909430ae42d6afc16027c71e27a5b5f3067ce8abf`.
+- Release archive SHA-256: `4bdc35bc5933f014485d22260a87d1f059e442a70aa5b54782f97c80b90d4d83`; **462,041,409 bytes**, **13,350 inventory entries**.
+
+All five payloads matched `SHA256SUMS`; the extracted package matched its core
+and inventory identities. The archive was extracted into a new private fixture.
+Its safe member scan found
+15,341 members: 13,351 regular files including the inventory and 1,990
+directories, all under `package/`, with no links or special members. The replaced
+0.0.1 archive had SHA-256
+`72c3c78951d4e153e0592170e1b25d50038f3ffaef91a48444f57e1d2443b106`;
+its package and original failed startup result remain separately recorded below.
+
+The build-input guard passed for `aarch64-apple-darwin` before Rust compilation.
+Locked offline Rust tests passed (**441 library, 3 binary and 1 fixture pass**;
+ignored cases remain ignored), as did all-target clippy with warnings denied,
+formatting, catalog consistency, **171 private-HOME Python tests**, the locked
+TypeScript build and process suite (**112 pass, 1 existing skip**), and MCP
+smoke against the explicit release binary above. Rust was 1.99.1 and Python
+3.15.1; integration state stayed in disposable private directories. Supplemental
+private-HOME guard attempts with missing toolchain/cache environment failed;
+explicit paths restored a pass, with both failed logs retained.
+
+The user authorized replacing the existing 0.0.1 assets and revising the startup
+budget. The lifecycle driver now requires exactly three finite, nonnegative
+first-tool measurements: the **first observed process must return its first-tool
+result within 5000 ms**, and **each of two repeat fresh processes must do so
+within 2500 ms**.
+The first observation is simply the first process in a disposable fixture;
+there is no OS page-cache flush or percentile claim. The driver retains the
+raw timings and the previous **1500 ms** result, and exits nonzero for missing,
+invalid or over-budget evidence. Six focused driver tests passed with Python
+3.15.1 on this platform; receipts are outside shipped source at
+`/private/tmp/mirket-startup-gate-tests-kfyqx1uf/`.
+
+Initial concurrent browser and video fixture setups both exceeded the package's
+600000 ms native setup timeout before any Pi functional operation. Their failed
+attempts and raw output remain at
+`/private/tmp/mirket-browser-candidate-20261030-rerelease-n07oof00/` and
+`/private/tmp/mirket-video-final-20261030-2a5my0za/`. Both setups subsequently
+completed through the supported `--resume` route (**50.212 seconds** for
+browser, **92.596 seconds** for video). Browser and corrected video functional
+checks passed. The initial video scratch TUI driver race ended Pi early and
+left one Chrome `--version` process, which was reaped. That failed attempt and
+the correction remain retained; only the corrected rerun counts as a pass.
+
+Fresh first-tool samples were **2854.792, 1984.948 and 1889.654 ms**. All
+passed the revised budgets; all still failed the historical 1500 ms target.
+The driver exited zero and retained both outcomes. Actual Pi CLI doctor,
+RPC reload/fork/resume, running codemode abort/recovery, and PTY
+`/mcp`/reload/doctor/Ctrl-D passed in new disposable HOME, agent/session and
+project directories. The fixture changed only the selected final agent paths;
+its diff, raw JSONL, stderr and PTY transcript remain at
+`/private/tmp/mirket-v0.0.1-overwrite-20261030.4Zx6RD/`.
+`cli-lifecycle-report.json` has SHA-256
+`4aaf13756ecbaf09b84942bbda72b8139ad018fb5e38783e95f29c864053609a`.
+
+The exact extracted archive also passed **10 installed domain checks** with
+zero errors and zero owned MCP processes after shutdown. D2 Dagre/ELK/TALA
+outputs decoded as PNG; a palette edit changed **24,894 pixels**. Pi `read`
+delivered exact PNG bytes (SHA-256
+`166af748c1995f7e7189efd4790ee73c9cdb0f566c3ff71643b2ac52a32e6036`)
+to an offline image-capable provider fixture. Stale input refused, running
+cancellation cleaned up without a destination, and a fresh PNG recovered.
+Selected navigation, token/SVG/PNG design exports and canonical project memory
+passed their bounded checks. Image transport does not establish live-provider
+visual interpretation. `combined-pi-report.json` at the same root has SHA-256
+`34dbf0666135cf0372c5b57b30df987a833553cf9e7163f08156eeaa3124c26b`.
+
+A fresh clone of the **same inventoried package bytes** passed **24/24
+optional browser cases** in its separate fixture above. Actual Pi CLI/TUI
+covered Skip, installed selection and pinned publisher acquisition, scoped
+allow/deny/revoke, local responsive navigation, wide/narrow viewport PNGs and
+exact Pi image delivery, origin/method refusals, and path/byte/resource drift.
+Saved wide/narrow and pinned-path PNGs were inspected.
+Escape reaped all **eight** observed old MCP/browser identities in **460.904 ms**;
+zero owned survivors were observed before or after harness cleanup. No PATH trap
+ran; unrelated settings were preserved, with only Pi's own
+`lastChangelogVersion` added. This covers a synthetic loopback app and seven
+selected tools; the application proxy and owned processes are not an OS sandbox.
+The browser `report.json` has SHA-256
+`f4ea0b7aa2dd02cdb6b3f5d2107606cf5c96eb1fa30c3a1d073e00b1c80bd851`;
+its `REPORT.md` has SHA-256
+`66ff8c7b16895f4a601565e4599083852f6722822909e1a1dea867cd0644acc6`.
+
+The separate video clone of the **same inventoried package bytes** passed
+**five commands** with empty stderr. Pi TUI selected installed Chrome for video
+while both browser tools stayed skipped, and doctor reported ready. The actual
+Pi export decoded to **24 H.264 frames at 640×360, 12 fps, over two seconds**
+with AAC audio. Independent PCM checks confirmed timing and a **2.000798**
+voice/music gain ratio. Changed source changed **30,839 decoded pixels** and
+the inspected heading. Stale input and remote assets refused; running
+cancellation published no output and cleaned scratch. No survivors remained
+among the **76** sampled owned process identities after the corrected run. The video
+`run-report.json` has SHA-256
+`129397541762ede8bbbf3cf768df4edf3cc2d11da484675981db6f1def690968`;
+its `REPORT.md` has SHA-256
+`e2df3a631d0c6026699b57abe4e12dda497e39c59fa9122e5b86a2af67f9d831`.
+
+The standalone installer passed both **fresh no-Pi** and **synthetic existing
+managed-Pi** fixtures using the final package. Both returned `installed`, then
+`already-installed` on repeat, and their actual outer launchers reached CLI
+doctor `ready`. Settings, authentication, sessions and original launcher backups
+matched the seeded bytes. The existing route also passed actual TUI `/mcp`
+with 25 tools and clean Ctrl-D exit. Initial slash doctor rendered `not_ready`
+with `Awaiting actual runtime_status identity` before the actual doctor tool ran.
+An enhanced small-viewport assertion then timed out after the actual tool had
+returned ready; its transcript remains retained as a failed harness attempt.
+The final larger-viewport TUI showed actual `mirket_doctor` ready, subsequent
+slash doctor ready, and Ctrl-D exit zero. Zero owned survivors and no unresolved
+failures remained. These tests used disposable HOME
+and project directories, with the exact acquired Pi 1.4.0 host; they did not
+modify the user's installation. Receipts are at
+`/private/tmp/mirket-final-installer-20261030-lrtrnilb/`; `report.json` has SHA-256
+`1df1bf9f85c278238c880d0e3c2db3eb8f2058b49a6ecee61c65d7435fe2478a`;
+its `REPORT.md` has SHA-256
+`a65dd509f74a42fc1b39c0b4eca83ca855169b01d4accacef766936f8ab007f4`.
+
+Appending a byte to the installed Rust core made actual Pi doctor report
+`not_ready` with `Host verifier identity mismatch`. Exact restoration recovered
+`ready`. The retained
+`/private/tmp/mirket-v0.0.1-overwrite-20261030.4Zx6RD/installed-byte-mutation.json`
+records the original, changed and restored byte identities.
+
+This prospective budget revision does not turn earlier 1500 ms failures into
+passes or establish a speed improvement. The historical samples and their
+original outcomes remain below. Other platforms, live-provider visual
+interpretation and the FFmpeg source replay need separate qualification.
+
+## Pragmatic method and startup memory candidate, 2026-10-30
+
+This **unreleased** macOS 26.5.2 (25F84) ARM64 source candidate was checked
+with Rust 1.99.1 and Python 3.15.1. It keeps native release
+`sha256:f7d5ca0b43729d222db840bba0b7e2e2c0192f0f9a763a7e119ee48f728d1800`,
+Pi 1.4.0 and private Node 24.22.1. Its assembled package inventory is
+`c2e826eb99f860985e407298648762891a4de04edf28be0cfe5d3e927e8ff66a`.
+Against the published package, only the compiled `host.js` and `runtime.js`,
+three existing skill bodies and catalog changed. Ponytail's pinned method was
+adapted into existing guidance; no plugin, mode or runtime dependency was added.
+An independent review found and fixed a real Pi Escape-buffer race in the TUI
+qualification driver. This is practical quality evidence, not a measured
+model-efficiency comparison.
+
+The build-input guard, locked offline Rust tests (441 library pass, two ignored;
+three binary pass; one fixture pass, two ignored), all-target clippy, formatting,
+catalog consistency, 169 Python tests, locked TypeScript build and process tests
+(112 pass, one existing skip), and explicit release-binary MCP smoke passed.
+Fresh disposable Pi CLI, RPC and TUI functional journeys passed, as did ten
+installed domain checks: D2 PNG decoding, 24,894 changed pixels, exact PNG image
+delivery to an offline image-capable provider fixture, running cancellation
+without published output, recovery, navigation, design and memory. Zero owned
+MCP service processes remained after shutdown. First-tool samples were
+**2730, 1865 and 1873 ms**, so the unchanged **1500 ms startup gate failed**
+and the lifecycle driver correctly exited nonzero after saving the functional
+report. A separate paired frozen-package Pi comparison measured about **277 MiB
+lower median peak RSS** with streaming executable hashes; its interleaved timing
+samples did not establish a speed improvement. Other platforms and live-provider
+visual interpretation remain untested. Raw candidate receipts are under
+`/private/tmp/mirket-ponytail-candidate.IhVzg9/` and
+`/private/tmp/mirket-startup-profile-final-1hd73l1w/`; they are not shipped.
+
 ## Browser onboarding and direct D2 PNG candidate, 2026-10-30
 
 This is fresh installed-product evidence for the **parser-fixed final package**
@@ -96,6 +269,13 @@ its 24-case `report.json` has SHA-256
 `4f9826db79ad7ace04cb82174c47dbec1b8b9210eb1585a0ecb8897f4b67e078`.
 Earlier candidate packages and their failures are retained in their own roots;
 their outcomes do not qualify this package.
+
+The subsequent standalone-installer addition kept this original package archive
+unchanged. The installer passed 29 focused tests and the 165-test Python suite.
+Disposable existing-Pi and fresh-Pi installations both reached actual Pi CLI
+doctor `ready`; the existing-Pi route also passed a Pi TUI check. The failed
+first probe and successful recovery were retained outside shipped source. These
+installer checks belong to the original package, not the rebuilt rerelease.
 
 ## Packaging and onboarding candidate, 2026-10-29
 

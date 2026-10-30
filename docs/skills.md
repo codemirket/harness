@@ -34,6 +34,12 @@ No skill can provision a dependency/account merely by mentioning a reference.
 Keep their triggers selective and their guidance lean. Domain-specific examples
 and detailed procedures belong to opted-in project skills/resources.
 
+The pragmatic change method stays in `code-change`, `critical-review` and
+`outcome-verification`: choose a complete minimal implementation, review both
+missing consumers and unnecessary machinery, and stop on observed outcomes and
+required gates. Ponytail remains a comparison reference; this adds no activation
+mode, skill, plugin or dependency.
+
 ## Project skills and pairing
 
 Project bodies cover engineering/delivery, browser research/operations, design,

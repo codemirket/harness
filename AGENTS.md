@@ -4,6 +4,12 @@ Follow `docs/architecture.md` and `docs/skills.md`. Pi is the sole product host.
 Preserve source provenance and truthful qualification evidence. Preserve the user installation and unrelated client settings. No
 compatibility layers or publication without authorization.
 
+Choose the smallest change that completes the requested behavior across affected
+callers, tests, fixtures and exports. Prefer deletion or an existing project
+pattern before adding machinery. A smaller diff must still preserve validation,
+error handling and required outcome evidence; stop when the affected contracts
+and gates are satisfied.
+
 Keep one Rust crate and one compiled TypeScript package under `pi/`. Pi owns models,
 authentication, sessions, native tools and MCP lifecycle. Mirket owns explicit
 scoped authorization for its effect-bearing operations. Mirket-owned processes are not a sandbox. Use explicit,

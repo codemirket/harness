@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Actual offline unbundled pi CLI, RPC and PTY tests against an assembled fixture."""
-import argparse, json, os, pty, selectors, signal, subprocess, time
+import argparse, errno, json, math, os, pty, re, selectors, signal, subprocess, time
 from pathlib import Path
 
 parser=argparse.ArgumentParser()
@@ -19,16 +19,18 @@ def save(name):
  report['cases'].append(name);(root/'cli-lifecycle-report.json').write_text(json.dumps(report,indent=2));print('PASS',name,flush=True)
 if a.only != 'tui':
  for i in range(3):
-  start=time.monotonic();p=subprocess.Popen([*base,'--mode','json','--print',json.dumps({'tool':'mirket_doctor'})],env=env,cwd=root/'project',stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
-  lines=[];first=None
-  for line in p.stdout:
-   lines.append(line);event=json.loads(line)
-   if event.get('type')=='tool_execution_end' and event.get('toolName')=='mirket_doctor':
-    assert not event['isError'],event
-    result=json.loads(event['result']['content'][0]['text']);assert result['status']=='ready',result
-    first=(time.monotonic()-start)*1000
-  p.wait(timeout=10);assert p.returncode==0 and first is not None,p.stderr.read()
-  (root/f'cli-start-{i}.jsonl').write_text(''.join(lines));report['first_tool_ms'].append(first)
+  with (root/f'cli-start-{i}.stderr').open('w') as err, (root/f'cli-start-{i}.jsonl').open('w') as raw:
+   start=time.monotonic();p=subprocess.Popen([*base,'--mode','json','--print',json.dumps({'tool':'mirket_doctor'})],env=env,cwd=root/'project',stdout=subprocess.PIPE,stderr=err,text=True)
+   first=None
+   for line in p.stdout:
+    raw.write(line);raw.flush();event=json.loads(line)
+    if event.get('type')=='tool_execution_end' and event.get('toolName')=='mirket_doctor':
+     assert not event['isError'],event
+     result=json.loads(event['result']['content'][0]['text']);assert result['status']=='ready',result
+     first=(time.monotonic()-start)*1000
+   p.wait(timeout=10);assert p.returncode==0 and first is not None,(root/f'cli-start-{i}.stderr').read_text()
+  report['first_tool_ms'].append(first)
+  (root/'cli-lifecycle-report.json').write_text(json.dumps(report,indent=2))
  save('actual unbundled CLI print mode, nested MCP doctor, three fresh processes')
  err=(root/'rpc.stderr').open('w');log=(root/'rpc-events.jsonl').open('w')
  p=subprocess.Popen([*base,'--mode','rpc'],cwd=root/'project',env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err)
@@ -80,27 +82,67 @@ if a.only != 'tui':
   assert p.returncode==0,p.returncode
 master,slave=pty.openpty();p=subprocess.Popen(base,cwd=root/'project',env=env,stdin=slave,stdout=slave,stderr=slave,start_new_session=True);os.close(slave)
 sel=selectors.DefaultSelector();sel.register(master,selectors.EVENT_READ);transcript=bytearray()
-def observe(seconds):
- end=time.monotonic()+seconds
- while time.monotonic()<end:
-  if sel.select(min(.1,max(0,end-time.monotonic()))):
-   try:chunk=os.read(master,65536)
-   except OSError:return
-   if not chunk:return
-   transcript.extend(chunk)
+transcript_path=root/f'tui-transcript-{time.time_ns()}.txt'
+terminal_escape=re.compile(rb'\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07]*(?:\x07|\x1b\\))')
+def terminal_text(start):
+ # Match visible text across ANSI styling and terminal-width wrapping; retain raw bytes separately.
+ return b' '.join(terminal_escape.sub(b'',bytes(transcript[start:])).split())
+def receive(timeout):
+ if not sel.select(timeout):return True
+ try:chunk=os.read(master,65536)
+ except OSError as error:
+  if error.errno!=errno.EIO:raise
+  return False
+ if not chunk:return False
+ transcript.extend(chunk);return True
+def until(description,predicate,start=0,timeout=15,raw=False):
+ observed=lambda:bytes(transcript[start:]) if raw else terminal_text(start)
+ end=time.monotonic()+timeout
+ while not predicate(observed()):
+  remaining=end-time.monotonic()
+  if remaining<=0:
+   raise TimeoutError(f'TUI timed out waiting for {description}; transcript: {transcript_path}; tail: {terminal_text(start)[-1000:]!r}')
+  if not receive(min(.1,remaining)) or p.poll() is not None:
+   if predicate(observed()):return
+   raise RuntimeError(f'TUI exited while waiting for {description} (returncode={p.poll()}); transcript: {transcript_path}; tail: {terminal_text(start)[-1000:]!r}')
 try:
- observe(2)
- if b'Trust project folder?' in transcript:
-  os.write(master,b'\x1b[B\x1b[B\r');observe(4)
- os.write(master,b'/mcp\r');observe(4)
- assert b'mirket' in transcript and b'25 tools' in transcript,'TUI did not expose loaded MCP'
- os.write(master,b'\x1b');observe(.5)
- os.write(master,b'/reload\r');observe(4);os.write(master,b'/mirket doctor\r');observe(2)
- os.write(master,b'\x04');observe(2);p.wait(timeout=8)
+ until('project trust prompt or loaded extensions',lambda text:b'Trust project folder?' in text or b'[Extensions]' in text)
+ if b'Trust project folder?' in terminal_text(0):
+  start=len(transcript);os.write(master,b'\x1b[B\x1b[B\r')
+  until('loaded extensions after session-only trust',lambda text:b'[Extensions]' in text,start)
+ start=len(transcript);os.write(master,b'/mcp\r')
+ until('connected Mirket MCP with 25 tools',lambda text:b'mirket' in text and b'connected' in text and b'25 tools' in text,start)
+ start=len(transcript);os.write(master,b'\x1b')
+ # Pi renders the focused empty editor as a reverse-video blank, or shows its hardware cursor.
+ until('focused editor after MCP menu dismissal',lambda raw:b'\x1b[7m \x1b[27m' in raw or b'\x1b[?25h' in raw,start,raw=True)
+ start=len(transcript);os.write(master,b'/reload\r')
+ until('reload completion',lambda text:b'Reloaded keybindings, extensions, skills, prompts, themes, and context files' in text,start)
+ start=len(transcript);os.write(master,b'/mirket doctor\r')
+ until('doctor report completion',lambda text:b'"model": "host-owned"' in text and b'"nativeOnly": false' in text,start)
+ os.write(master,b'\x04');deadline=time.monotonic()+8
+ while p.poll() is None:
+  if time.monotonic()>=deadline:raise TimeoutError(f'TUI Ctrl-D shutdown timed out; transcript: {transcript_path}')
+  if not receive(.1):p.wait(timeout=max(.001,deadline-time.monotonic()))
  assert p.returncode==0,p.returncode
  save('interactive PTY /mcp, reload, doctor and Ctrl-D shutdown; no pixel/image-delivery claim')
 finally:
  if p.poll() is None:os.killpg(p.pid,signal.SIGKILL);p.wait()
- (root/f'tui-transcript-{time.time_ns()}.txt').write_bytes(transcript);sel.close();os.close(master)
-report['original_p0_first_tool_budget_ms']=1000;report['first_tool_budget_ms']=1500;report['budget_basis']='User approved 1500 ms on 2026-10-29 to preserve full external host verification';report['startup_budget_pass']=all(t<=1500 for t in report['first_tool_ms'])
+ while sel.select(0):
+  if not receive(0):break
+ transcript_path.write_bytes(transcript);sel.close();os.close(master)
+report['original_p0_first_tool_budget_ms']=1000
+report['prior_first_tool_budget_ms']=1500;report.pop('first_tool_budget_ms',None)
+report['startup_budget_ms']={'first_observed_process':5000,'repeat_process':2500}
+report['startup_sample_definition']='Three fresh processes in order: first observed process, then two repeats in the same disposable installation. OS caches are not flushed; this is not disk-cold or percentile evidence.'
+report['budget_basis']='User authorized startup gate recalibration on 2026-10-30; 5000 ms first-process and 2500 ms repeat-process limits preserve full host and native identity verification.'
+report['startup_budget_results']=[]
+for i,t in enumerate(report['first_tool_ms']):
+ phase='first_observed_process' if i==0 else 'repeat_process';budget=report['startup_budget_ms'][phase]
+ passed=isinstance(t,(int,float)) and not isinstance(t,bool) and math.isfinite(t) and 0<=t<=budget
+ report['startup_budget_results'].append({'sample':i,'phase':phase,'budget_ms':budget,'pass':passed})
+report['startup_budget_pass']=len(report['first_tool_ms'])==3 and all(sample['pass'] for sample in report['startup_budget_results'])
+report['prior_1500_ms_budget_pass']=report['startup_budget_pass'] and all(t<=1500 for t in report['first_tool_ms'])
 (root/'cli-lifecycle-report.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
+
+if not report['startup_budget_pass']:
+ raise SystemExit('FAIL startup budget: require three valid first-tool observations, first process <=5000 ms and each repeat <=2500 ms; functional report and transcripts retained')

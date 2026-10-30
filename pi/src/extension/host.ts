@@ -1,15 +1,13 @@
 // Exact external host identity. Never install or repair a host while loading.
-import {createHash} from 'node:crypto';
 import {realpathSync} from 'node:fs';
 import {dirname,join,resolve,basename} from 'node:path';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {regularBytes} from './runtime.js';
+import {regularSha256} from './runtime.js';
 const execute=promisify(execFile);
-const hash=(bytes:Buffer)=>createHash('sha256').update(bytes).digest('hex');
 export async function verifyHost(packageRoot:string,hostPackage:string,expectedManifest:string,expectedNode:string,verifier:string,expectedCore:string,entry=process.argv[1]):Promise<{root:string;entry:string;lockSha256:string;verifiedFiles:number}> {
- if(hash(regularBytes(process.execPath,256*1024*1024))!==expectedNode)throw new Error('Pi must use the explicitly qualified Node executable');
- if(hash(regularBytes(verifier,256*1024*1024))!==expectedCore)throw new Error('Host verifier identity mismatch');
+ if(regularSha256(process.execPath,256*1024*1024)!==expectedNode)throw new Error('Pi must use the explicitly qualified Node executable');
+ if(regularSha256(verifier,256*1024*1024)!==expectedCore)throw new Error('Host verifier identity mismatch');
  const root=dirname(dirname(hostPackage));
  if(realpathSync(root)!==resolve(root)||hostPackage!==join(root,'@earendil-works/pi-coding-agent'))throw new Error('Host package path is aliased or unexpected');
  const qualifiedEntry=join(hostPackage,'dist/cli.js');

@@ -30,8 +30,9 @@ the exact Git revision in [history](../docs/history.md).
 
 The [third-party scope](THIRD-PARTY.md) links primary rights evidence and states
 source-correspondence limits. The [qualification](../docs/qualification.md)
-records current macOS packaging/onboarding evidence and a failed startup timing
-gate. Windows and other platforms require separate native qualification.
+records exact macOS package identity, installed-route evidence, the revised
+startup budget and historical timing failures. Windows and other platforms
+require separate native qualification.
 
 ## Assemble
 
@@ -74,10 +75,14 @@ preserving its managed target. The `pi` launcher uses private
 Node and the exact package-bound host without PATH search; unsupported layouts
 fail closed. Then follow the Pi onboarding command.
 
-The 0.0.1 prerelease supplies six assets: the unchanged native package archive,
+The 0.0.1 prerelease supplies six assets: the native package archive,
 host acquisition script and host lock, the standalone installer, `LICENSE`, and
 `SHA256SUMS` covering those five payloads. The standalone first-party scripts
 carry the MIT permission notice through `LICENSE`. Follow the
-[release instructions](../docs/release-0.0.1.md). Adding the installer does not
-change the native package's qualification scope or resolve its failed startup
-timing gate.
+[release instructions](../docs/release-0.0.1.md). The current rerelease replaces
+the native archive and checksum file. Fresh extracted-package setup and Pi
+lifecycle checks passed the revised startup budget, and ten installed domain
+checks passed. The same inventoried package bytes passed 24/24 optional browser
+cases and five video commands, and fresh/existing-managed-Pi installer fixtures
+passed. Earlier qualification and failed timing evidence remain
+in the record.

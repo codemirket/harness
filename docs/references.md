@@ -12,6 +12,12 @@ Selection permits reference review and focused synthesis, not wholesale
 adoption of a workflow, code, runtime, service or terms. Source pins are
 evidence locators, not dependency versions.
 
+Ponytail's reviewed `09c434ab73ca43761c5d8b0c5d341926c2fba710` pin and
+retrieval/license receipts remain the authoring evidence. Its focused comparison
+supports independently worded minimal-change guidance in existing skills, without
+session modes, broad activation or upstream test/comment mandates. A later
+upstream revision does not replace that retained evidence automatically.
+
 ## Name interpretation
 
 - `pomptfoo` → `promptfoo`.
