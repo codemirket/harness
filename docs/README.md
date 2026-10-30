@@ -4,7 +4,7 @@
 | --- | --- |
 | Product overview, agent-assisted and manual installation | [README](../README.md) |
 | Exact 0.0.1 assets, host acquisition and release limits | [Release instructions](release-0.0.1.md) |
-| Install and select the rendering browser | [Setup](setup.md) |
+| Install, initialize a project and select optional tools | [Setup](setup.md) |
 | Architecture, ownership and runtime contracts | [Architecture](architecture.md) |
 | Tested candidate, platform and quality limits | [Qualification](qualification.md) |
 | Build and verification | [Native build](native-build.md) |

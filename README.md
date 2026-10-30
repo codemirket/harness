@@ -109,6 +109,26 @@ available. Installed jobs recheck their exact executable bindings and do not
 download on first use or search PATH. Mirket-owned processes and the browser
 proxy are not an OS sandbox.
 
+## Use Mirket in a project
+
+The project commands below require a local package built from the current
+source; the published 0.0.1 archive predates them. The tagged release artifact
+must be updated before this workflow is available to release users.
+
+After installing that package locally, start Pi from the project root and run
+`/mirket-project init`. This registers the installed package in
+`.pi/settings.json` and adds a managed section to `AGENTS.md`. With no arguments,
+it preserves an existing Mirket skill selection; to choose a profile or exact
+skills, use `/mirket-project init web-product +js-ts-navigation`.
+
+Review the generated changes, reload Pi, ask Pi to run `mirket_doctor`, then run
+`/mirket doctor`. `/mirket-project status` reports project synchronization.
+Initialization enables updates to the managed section from Mirket skills and
+tools actually used in this project. These observations do not establish runtime
+readiness or install dependencies. Existing project guidance and unrelated Pi
+settings are preserved; conflicting managed content is refused. See
+[project setup](docs/setup.md#project-setup) for the file and conflict contract.
+
 ## Develop and verify
 
 The repository has one Rust crate and one compiled TypeScript package under

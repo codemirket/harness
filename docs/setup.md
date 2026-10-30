@@ -73,6 +73,73 @@ only this package's Pi resource filter. An existing Mirket home is preserved;
 `--resume` applies only to an interrupted setup of this same package. It does not
 import an old installation or alter unrelated package settings.
 
+## Project setup
+
+These commands require a local package built from the current source. The
+published 0.0.1 archive predates project onboarding; its tagged artifact must be
+updated before release users can use this workflow.
+
+Once that local package is installed, start `pi` from the intended project root
+and run:
+
+```text
+/mirket-project init
+```
+
+This ensures `.pi/settings.json` contains the installed Mirket package and adds
+a managed Mirket section to the project's `AGENTS.md`. It explicitly enables
+Mirket's extension in the project package entry so it remains loaded after Pi
+reload, including when that entry previously disabled extensions. Other fields
+and package entries are preserved. With no arguments, an
+existing Mirket skill filter is preserved, including an unfiltered package.
+If no project package entry exists, initialization selects the baseline global
+skills. For an explicit selection, pass
+profile names and optional exact skill IDs:
+
+```text
+/mirket-project init web-product +js-ts-navigation
+```
+
+Profiles select their baseline skills; conditional skills require an explicit
+`+SKILL`. Resources stay in the installed package. No skills are copied into the
+project or `.agents`, and no second selection database is created. Project Pi
+settings remain the active selection source.
+The package source in `.pi/settings.json` is an absolute path on this device.
+Keep that settings file local; teammates should install Mirket and run project
+initialization on their own devices. The managed `AGENTS.md` guidance can be
+shared with the project.
+
+The generated `AGENTS.md` section is bounded by
+`<!-- mirket-project:start -->` and `<!-- mirket-project:end -->`. It records
+Mirket's project guidance and observed use. Initialization opts this project
+into ongoing updates from verified Mirket skill use and successful Mirket tool
+calls, bound to this canonical project and runtime identity. Observed use does
+not attest tool readiness,
+successful output, complete project coverage or capability availability. It does
+not install tools, dependencies or accounts. Keep project-specific instructions
+outside the managed section.
+
+Review both files, reload Pi, ask Pi to run `mirket_doctor` once, then run
+`/mirket doctor` for actual runtime readiness. Use `/mirket-project status` to
+inspect project synchronization separately. The existing `/mirket-profile
+project PROFILE ... [+SKILL ...]` command remains available for skill selection.
+
+Initialization and subsequent updates preserve existing `AGENTS.md` content
+outside the managed section and unrelated Pi settings. Conflicting ownership,
+changed managed content, duplicate or malformed section markers, symlinks,
+hardlinks, aliased ancestors, invalid or oversized files, busy locks and
+concurrent edits are refused rather than overwritten. Status also changes if
+the project Pi package entry is removed or points elsewhere; automatic guidance
+updates stop until that wiring is repaired. Inspect the reported
+conflict and reconcile the files before retrying. Repeating initialization with
+no selection arguments preserves the current selection.
+
+Project setup does not change memory identity or discover project sources.
+Canonical memory remains explicitly scoped; navigation still requires selected,
+revision-bound JS/TS source snapshots.
+
+## Optional runtime tools
+
 Launch `pi` after using the helper, or open the explicitly selected agent directory
 in Pi's terminal interface. Reload the local package and run `/mirket setup`.
 It presents video Chrome, a separate browser QA executable, and the optional Playwright MCP peer. Each has three choices:

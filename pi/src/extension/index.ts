@@ -2,8 +2,10 @@ import { getAgentDir, getPackageDir, VERSION, type ExtensionAPI } from '@earendi
 import { Type } from 'typebox';
 import { fileURLToPath } from 'node:url';
 import { realpathSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { prepareProfile, applyProfile } from './profiles.js';
+import { initializeProject, projectSyncStatus, readProjectGuidance, recordProjectUse } from './project-setup.js';
+import { registerProjectObservation } from './project-observe.js';
 import { verifyHost } from './host.js';
 import { readBinding, configuredOverride, verifyRuntime, type VerifiedRuntime } from './runtime.js';
 import { classifyMirketTool, needsAuthorization, authorized, grant } from './authorization.js';
@@ -14,7 +16,7 @@ import {assertRuntimeTools, runtimeBrowserBindings} from './runtime-tools.js';
 import {createBrowserController} from './browser.js';
 import {browserOrigin} from './browser-policy.js';
 
-const packageRoot = fileURLToPath(new URL('../../', import.meta.url));
+const packageRoot = resolve(fileURLToPath(new URL('../../', import.meta.url)));
 export default function mirket(pi: ExtensionAPI): void {
   let generation = 0;
   let runtime: VerifiedRuntime | undefined;
@@ -22,9 +24,23 @@ export default function mirket(pi: ExtensionAPI): void {
   let observedRelease: string | undefined;
   let nativeFailure: string | undefined;
   const onboarding=createOnboarding(pi,packageRoot,()=>runtime);
-  const browser=createBrowserController(pi,()=>runtime,getAgentDir);
+  const browser=createBrowserController(pi,()=>runtime,getAgentDir,(selected,toolName)=>recordProjectUse(selected,{kind:'tool',id:toolName}));
   registerResearch(pi,()=>runtime);
   registerWorkflow(pi,packageRoot,()=>runtime);
+  registerProjectObservation(pi,packageRoot,()=>runtime,recordProjectUse);
+  pi.on('before_agent_start', (event, ctx) => {
+    if (process.env.MIRKET_MANAGED_CHILD || !runtime || realpathSync(ctx.cwd) !== runtime.cwd) return;
+    try {
+      const guidance = readProjectGuidance(runtime);
+      if (!guidance) return;
+      const current = event.systemPromptOptions.contextFiles.find(file =>
+        (file.path.startsWith('/') ? resolve(file.path) : resolve(ctx.cwd, file.path)) === guidance.file);
+      if (current) current.content = guidance.content;
+      else event.systemPromptOptions.contextFiles.push({path: guidance.file, content: guidance.content});
+    } catch (error) {
+      ctx.ui.notify(`Project guidance refresh failed: ${error instanceof Error ? error.message : String(error)}`, 'warning');
+    }
+  });
   function report() {
     const commands = pi.getCommands();
     const mcp = commands.find(command => command.name === 'mcp');
@@ -45,9 +61,10 @@ export default function mirket(pi: ExtensionAPI): void {
       if (observedRelease !== runtime.binding.releaseId) issues.push('Awaiting actual runtime_status identity');
     }
     return {status: issues.length ? 'not_ready' : 'ready', issues, releaseId: runtime?.binding.releaseId, project: runtime?.cwd,
+      projectSetup: runtime ? projectSyncStatus(runtime) : {status: 'unavailable', error: failure},
       runtimeTools:onboarding.status(),
       browser:browser.status(),
-      selectedSkills: pi.getCommands().filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot)).map(command => command.name), model: 'host-owned', nativeOnly: false};
+      selectedSkills: pi.getCommands().filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot + '/')).map(command => command.name), model: 'host-owned', nativeOnly: false};
   }
   pi.on('session_start', async (_event, ctx) => {
     onboarding.cancel();
@@ -145,6 +162,19 @@ export default function mirket(pi: ExtensionAPI): void {
     const edit = prepareProfile(packageRoot, file, selections.filter(s => !s.startsWith('+')), selections.filter(s => s.startsWith('+')).map(s => s.slice(1)));
     applyProfile(edit);
     pi.sendMessage({customType:'mirket-profile',content:JSON.stringify({settings:file,skills:edit.skills,reloadRequired:true}),display:true});
+  }});
+  pi.registerCommand('mirket-project', {description: 'Initialize project Pi wiring and managed guidance, or inspect sync: init [PROFILE ...] [+SKILL ...] | status', handler: async (args, ctx) => {
+    const [action, ...selections] = args.trim().split(/\s+/);
+    if (action !== 'init' && (action !== 'status' || selections.length)) throw new Error('Usage: /mirket-project init [PROFILE ...] [+SKILL ...] | status');
+    if (!runtime || realpathSync(ctx.cwd) !== runtime.cwd) throw new Error('No verified Mirket runtime bound to this project');
+    if (action === 'status') {
+      pi.sendMessage({customType: 'mirket-project', content: JSON.stringify(projectSyncStatus(runtime), null, 2), display: true});
+      return;
+    }
+    if (process.env.MIRKET_MANAGED_CHILD) throw new Error('Managed children cannot initialize project setup');
+    if (!ctx.isIdle()) throw new Error('Initialize project setup while the agent is idle');
+    const result = initializeProject(packageRoot, runtime, selections.filter(s => !s.startsWith('+')), selections.filter(s => s.startsWith('+')).map(s => s.slice(1)));
+    pi.sendMessage({customType: 'mirket-project', content: JSON.stringify({...result, sync: projectSyncStatus(runtime), reloadRequired: true}, null, 2), display: true});
   }});
   pi.registerTool({name: 'mirket_doctor', label: 'Mirket doctor', description: 'Verify native payload and actual pi MCP runtime identity in this session.',
     parameters: Type.Object({}), async execute(_id, _args, signal, _onUpdate, ctx) {

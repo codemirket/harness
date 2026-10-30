@@ -5,11 +5,11 @@
   "authoring_basis": [
     {
       "path": "docs/skills.md",
-      "sha256": "55ff8a13646d09e5fe3fcf6797a4e7e45839c646fc6a34dd89d927258495cdaf"
+      "sha256": "e025ee548f3dfceca312756489e83a83bae165a150e737b06458bd58fd1d018c"
     },
     {
       "path": "docs/architecture.md",
-      "sha256": "50cbb10e462fa9cd476e589adbb4d67f1738d7629497efffc2b277221dbef4a1"
+      "sha256": "ef84880188c7e969dc3d32005ed8cb2d164594300c1ab635465fb4b5c01ab379"
     },
     {
       "path": "docs/references.md",

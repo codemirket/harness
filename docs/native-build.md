@@ -117,6 +117,16 @@ never point them at the user's existing `.mirket` installation. Model trial
 runners are optional evaluation tooling, not part of ordinary test discovery
 or permission to start new paid/model cohorts.
 
+For project initialization and observed-use integration, run the exact release
+binary and private Node through `tests/pi-project-setup.mjs` with four absolute
+arguments: admitted Pi `node_modules`, release `mirket`, private `node`, and its
+`LICENSE`. It prints a new `/private/tmp/mirket-pi-project-*` fixture root and
+retains the assembled source candidate there. Run `tests/pi-project-tui.py`
+with `--node`, `--peers` and `--state-root` pointing to that fixture root to
+exercise literal Pi TUI init, status and reload against a separate private
+home/project. These fixtures use an offline provider and leave the user's
+installation untouched.
+
 The host peer tree must match `packaging/runtime/host-lock.json` and
 `packaging/runtime/host-files.json`. The build leaves pi and TypeBox external.
 `assemble-pi-package.py` copies a selected verified native payload and compiled

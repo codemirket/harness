@@ -17,6 +17,15 @@ the sole active selection source. A project package object replaces the same
 global package object; `autoload:false` filtering uses pi's native delta semantics.
 An unfiltered package can load every manifest skill and must be reported honestly.
 
+After local installation, `/mirket-project init [PROFILE ...] [+SKILL ...]`
+ensures the current project's `.pi/settings.json` selects the installed package
+and creates a managed `AGENTS.md` section. With no selection arguments it
+preserves an existing Mirket selection. The section may record skills and tools
+actually used in the opted-in project; this is observed-use guidance, not another
+selection database, capability provisioning or runtime readiness evidence.
+`/mirket-project status` reports synchronization. Review changes and reload Pi;
+see [project setup](setup.md#project-setup) for preservation and conflict behavior.
+
 Validate body/resource hashes before assembly. Do not copy into `.agents/skills`,
 write a second profile database or alter unrelated package settings. Profile edits
 must bind the original settings bytes and refuse drift or duplicate ownership.

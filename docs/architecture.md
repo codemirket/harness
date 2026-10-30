@@ -80,6 +80,14 @@ remain staged. Preserve canonical memory unless deletion is explicitly authorize
 Managed backup policy retains seven daily, four weekly and protected migration
 points within a 5 GiB aggregate cap.
 
+Explicit `/mirket-project init` initializes the selected project through its Pi
+package settings and a managed `AGENTS.md` section. It opts that project into
+section updates based on Mirket skills and tools actually used there. These
+observations neither select additional skills nor prove readiness, successful
+outcomes or whole-project coverage. Preserve other guidance and unrelated
+settings; refuse conflicting managed content or ownership. Project guidance is
+not canonical memory identity, source discovery or a second selection store.
+
 ## Skill quality and creative production
 
 Keep guidance only when a concrete workflow, quality safeguard or measured

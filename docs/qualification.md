@@ -1,5 +1,71 @@
 # Local candidate qualification
 
+## Unreleased project setup source candidate, 2026-10-30
+
+The project setup change was checked on **macOS 26.5.2 (25F84), ARM64** with
+Rust **1.99.1**, Python **3.15.1**, private Node **24.22.1** and the exact
+external Pi **1.4.0** host. The skill catalog was refreshed after the
+architecture/skill documentation changed, then the native core was rebuilt.
+This is a fresh, disposable **minimal source package**, not the published 0.0.1
+archive or qualification of every bundled creative runtime.
+
+- Native release: `sha256:dfa61e5648a1a54cb52514c7f8ccccb53022109eee84c585899553abeab297a6`.
+- Native core SHA-256: `b8256d8061ab8224b26c94a70d59696c3052a7435cf3de023f0fe4f863629e7d`.
+- Minimal package inventory SHA-256: `d8a3808d1743e27f2e93d4998455f112961ad21070768dbdc2e1a1b8b153b85a`.
+- Private Node SHA-256: `6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`.
+
+The build-input guard passed before Rust compilation. Locked offline Rust
+tests, all-target clippy with warnings denied, formatting, the release build,
+**171 Python tests**, the locked TypeScript build and process suite (**142 pass,
+one existing skip**) against the admitted Pi peer tree, catalog consistency and
+MCP smoke passed using
+explicit executables. Focused project setup and observation tests cover
+selection preservation, duplicate/malformed guidance, drift, symlinks and hard
+links, scoped opt-in, successful-use filtering and failure isolation.
+
+An actual Pi CLI/RPC session in a private project passed project init, native
+Pi reload into **15 selected skills**, native project memory prepare/commit/read,
+verified selected skill read, idle slash-skill expansion, idempotent init and
+status. The next provider turn contained the updated managed `AGENTS.md`
+section; manual guidance and unrelated global Pi settings stayed byte-identical.
+An existing project package entry with `extensions: []` was repaired to the
+exact Pi extension filter; its skill filter, prompts and unrelated settings were
+preserved, and actual reload retained Mirket commands and tools.
+Removing the project Pi package object changed sync status to `changed`; an
+otherwise successful new native search did not rewrite guidance. Restoring the
+settings recovered `ready` without reinitialization.
+The CLI exited cleanly with no owned process-group survivors. Its report is at
+`/private/tmp/mirket-pi-project-3aLToK/project-setup-report.json` (SHA-256
+`19e08e166669de99bcd9a8704d52840d34edd9f4b113446cadea877572b6382d`).
+
+Actual Pi TUI in a second private home/project visibly reported disabled,
+initialized the project, completed literal `/reload`, reported ready, and
+repeated init without changing source or settings. It preserved manual guidance,
+the selected Pi filter and unrelated settings, then exited via Ctrl-D with no
+owned survivors. Its raw PTY transcript and report are at
+`/private/tmp/mirket-pi-project-tui-ugbhpdx5/`; the report SHA-256 is
+`839294b2134ea56a52b24a687971f81f359a63181eea13e5b4c822941bef6b1f`.
+
+Failures remain in the private fixture history: an initial TypeScript build
+omitted `MIRKET_PI_PEERS`, a type error in the new context-file hook was fixed,
+the first CLI init exposed a trailing-slash package-root bug, RPC `/reload`
+proved TUI-only and the fixture switched to Pi's public `ctx.reload()`, and the
+first TUI assertion needed to account for Pi's own changelog setting. Corrected
+fresh runs above passed; those failed attempts are not counted as passes.
+Review also found and fixed an initially stale `ready` result after removal of
+the project Pi package entry; the final negative CLI case above checks that
+refusal. The extension filter repair was subsequently checked through actual
+Pi reload against the final source candidate.
+
+Project sync records observed Mirket use, not output quality or current tool
+readiness. The optional browser peer's successful-call recording passed its
+controller lifecycle tests with synthetic bindings; a fresh real browser-peer
+operation with this changed package was not run. Plain idle slash activation
+passed in real Pi; queued slash activation has mocked
+hook-sequence evidence only, and slash prompts with image-normalization hints
+are conservatively skipped. No live installation, release, other platform,
+paid provider or image-delivery qualification is implied.
+
 ## 0.0.1 rerelease candidate and revised startup budget, 2026-10-30
 
 This candidate targets **macOS 26.5.2 (25F84), ARM64**, external Pi **1.4.0**

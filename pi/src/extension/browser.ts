@@ -40,7 +40,7 @@ export interface BrowserLimits {expiresInSeconds?: number; maxCalls?: number; ex
 
 // Only a trusted explicit user command may call open. No browser/model tool can
 // create or renew a grant. Pi owns MCP transport and process registration.
-export function createBrowserController(pi: ExtensionAPI, getRuntime: () => VerifiedRuntime | undefined, getAgentDir: () => string) {
+export function createBrowserController(pi: ExtensionAPI, getRuntime: () => VerifiedRuntime | undefined, getAgentDir: () => string, recordUse?: (runtime: VerifiedRuntime, toolName: string) => boolean) {
   let active: ActiveSession | undefined, generation = 0, opening = false;
   let cleanup: Promise<void> | undefined, cleanupFailure: string | undefined, lastReason = 'Browser session has not been authorized';
   const pendingCalls = new Map<string, {generation: number; removeAbort: () => void}>();
@@ -129,12 +129,16 @@ export function createBrowserController(pi: ExtensionAPI, getRuntime: () => Veri
       return {block: true, reason: error instanceof Error ? error.message : String(error)};
     }
   });
-  pi.on('tool_result', async event => {
+  pi.on('tool_result', async (event, ctx) => {
     if (!event.toolName.startsWith(BROWSER_PREFIX)) return;
     const call = pendingCalls.get(event.toolCallId);
     pendingCalls.delete(event.toolCallId); call?.removeAbort();
     if (!call || call.generation !== generation || !active) return {isError: true, content: [{type: 'text', text: 'Browser result discarded after cancellation, revocation or session change'}]};
     if (event.isError) { await revoke('Browser operation failed; authorize a fresh session'); return; }
+    try { recordUse?.(active.runtime, event.toolName); }
+    catch (error) {
+      try { ctx.ui.notify(`Project guidance sync failed: ${error instanceof Error ? error.message : String(error)}`, 'warning'); } catch { /* Guidance maintenance must not change a successful browser result. */ }
+    }
     if (!active.policy.active) await revoke('Browser call budget exhausted or grant expired');
   });
   return {
