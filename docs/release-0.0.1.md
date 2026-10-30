@@ -33,31 +33,53 @@ The acquisition script passed 12 focused refusal/success tests and reproduced
 the exact **15,249-file** host tree from **121 unchanged official npm archives**
 both from an offline cache and through direct publisher downloads.
 
-## Install in a separate private Pi directory
+## Install with the current source helper
 
-Download the four release assets into a temporary directory. Check `SHA256SUMS`,
-then choose a permanent location. This example uses a new directory and leaves
-the ordinary `pi` launcher, existing Pi settings and Mirket memory alone:
+The published assets above are immutable and **do not contain
+`scripts/install-pi.py`**. The auto-target helper is in the current source tree;
+obtain it from the current source checkout until the next release. The existing
+0.0.1 qualification does not establish this new installation flow.
+
+Download the four release assets into a temporary directory, verify `SHA256SUMS`,
+and extract the package into a permanent location. Acquire the exact host before
+running the source helper:
 
 ```sh
 shasum -a 256 -c SHA256SUMS
 install_root="$HOME/.local/share/mirket"
 umask 077
-mkdir -p "$install_root/releases/0.0.1" "$install_root/host" "$install_root/agent"
-chmod 700 "$install_root" "$install_root/host" "$install_root/agent"
+mkdir -p "$install_root/releases/0.0.1" "$install_root/host"
+chmod 700 "$install_root" "$install_root/host"
 tar -xzf mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz \
   -C "$install_root/releases/0.0.1"
 python3 acquire-pi-host.py \
   --package "$install_root/releases/0.0.1/package" \
   --lock host-lock.json \
   --output "$install_root/host/pi-1.4.0"
-"$install_root/releases/0.0.1/package/native/runtime/node/bin/node" \
-  "$install_root/releases/0.0.1/package/scripts/setup.mjs" \
-  --agent-dir "$install_root/agent"
-PI_CODING_AGENT_DIR="$install_root/agent" \
-  "$install_root/releases/0.0.1/package/native/runtime/node/bin/node" \
-  "$install_root/host/pi-1.4.0/node_modules/@earendil-works/pi-coding-agent/dist/cli.js"
+python3 /absolute/current-source/scripts/install-pi.py \
+  --package "$install_root/releases/0.0.1/package" \
+  --host "$install_root/host/pi-1.4.0" \
+  --install-root "$install_root"
+pi
 ```
+
+`--install-root` defaults to `$HOME/.local/share/mirket`; it must already be
+private (`0700`) and contain the permanent package and host paths. `--host` is
+the acquisition output containing `node_modules`. If standard `$HOME/.pi/agent`
+exists, the helper
+registers Mirket there and makes that directory mode `0700` if needed. Otherwise
+it creates a fresh private `<install-root>/agent`. Authentication, sessions,
+managed files and unrelated settings are preserved. Unsupported layouts fail
+closed. The supported existing managed Pi 1.4.0 launcher is `$HOME/.local/bin/pi` pointing
+to `../../.pi/agent/bin/pi`. Only that outer symlink is backed up and replaced;
+its managed target stays intact. Unknown launcher layouts are refused. The new `pi` launcher uses
+the selected agent directory, package-private Node and exact acquired host without
+searching PATH or silently falling back to another executable. Ensure
+`$HOME/.local/bin` is on the shell's PATH to invoke that launcher as `pi`.
+
+The helper records backups and checks native health and Pi package/MCP registration before
+replacing the launcher. See [setup](setup.md) for failure recovery and the
+package's lower-level fresh-agent setup.
 
 Keep the extracted package and host tree in place: Pi settings bind the package
 path, and Mirket verifies the host and native bytes. The ordinary managed Pi

@@ -40,10 +40,14 @@ one scoped local origin through `/mirket-browser open`; the selected video Chrom
 binding is never reused silently. See [setup](docs/setup.md) for the choices and
 [qualification](docs/qualification.md) for the exact tested scope.
 
-Mirket state belongs under `<pi-agent-dir>/mirket/`. Setup uses a fresh private
-home and preserves existing installations and unrelated settings. It does not
-import an earlier installation or copy skills into host directories. Follow
-[setup](docs/setup.md), then use `/mirket setup` and `/mirket doctor` in Pi.
+Mirket state belongs under `<pi-agent-dir>/mirket/`. The current source install
+helper detects the standard `$HOME/.pi/agent` directory and registers the package
+there, preserving authentication, sessions, managed files and unrelated settings.
+If absent, it creates a private agent directory under the install root. The `pi`
+launcher uses the verified package-bound host. This helper is not in the already
+published 0.0.1 assets; see [setup](docs/setup.md) and the
+[release instructions](docs/release-0.0.1.md). Then use `/mirket setup` and
+`/mirket doctor` in Pi.
 
 Skills must justify retention with a useful workflow, safeguard or measured
 benefit. Catalog cases are planned fixtures, not completed acceptance trials.

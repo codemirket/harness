@@ -6,7 +6,53 @@ For the tagged 0.0.1 archive and its exact external Pi host acquisition, see
 the [release instructions](release-0.0.1.md).
 Use its bound private Node executable; do not substitute a PATH runtime.
 
-Create or explicitly select a fresh private Pi agent directory. Run:
+After verifying and extracting the release package and acquiring its exact host
+under a permanent install root, run the install helper from the current source checkout:
+
+```sh
+python3 scripts/install-pi.py \
+  --package /absolute/mirket-install-root/releases/0.0.1/package \
+  --host /absolute/mirket-install-root/host/pi-1.4.0 \
+  --install-root /absolute/mirket-install-root
+```
+
+`--host` names the acquisition output containing `node_modules`. The install root
+must already be private (`0700`), with both package and host beneath it at
+permanent canonical paths. `--install-root` defaults to `$HOME/.local/share/mirket`.
+The helper detects the standard `$HOME/.pi/agent` directory and registers Mirket
+there. If it is absent, setup creates a fresh
+private `<install-root>/agent` directory. Existing Pi authentication, sessions,
+managed files and unrelated settings are preserved; the existing agent directory
+is made private with mode `0700` if needed. Unsupported layouts fail closed.
+The supported existing managed launcher is Pi 1.4.0 at `$HOME/.local/bin/pi`
+pointing to `../../.pi/agent/bin/pi`. Only that outer symlink is backed up and
+replaced; its managed target is preserved. Unknown layouts and versions are
+refused. The resulting `pi`
+launcher binds the selected agent directory, package-private Node and exact
+package-bound Pi host. It does not search PATH or silently substitute a host.
+
+Before publishing the launcher, the helper checks native doctor and Pi package/MCP
+registration without requesting a model. Run `mirket_doctor` in Pi for full session
+readiness. Original settings bytes/mode, the
+outer symlink and installation phases are recorded under
+`<install-root>/install-backups/install-*/`. A setup or registration failure leaves
+the original launcher intact and preserves any installed state for inspection;
+it does not delete the Mirket home or automatically overwrite settings during
+recovery. Repeating an identical completed installation rechecks native health
+and Pi registration without running setup or rewriting settings. An exact
+`setup-complete` backup allows a failed post-setup check to continue without
+copying the payload again. Launcher replacement excludes cooperating installers;
+an unrelated process writing the same launcher at the same instant is outside
+that lock's guarantee. A recognized earlier Mirket launcher is backed up and
+updated after the same checks.
+
+The helper is in the current source tree and is **not included in the
+immutable published 0.0.1 assets**. Obtain it from the current source checkout
+until the next release. Local checks of this helper do not change the published
+package's [qualification](qualification.md).
+
+For an explicitly selected fresh agent directory, the package's lower-level
+setup remains available:
 
 ```sh
 /absolute/package/native/runtime/node/bin/node \
@@ -19,9 +65,9 @@ only this package's Pi resource filter. An existing Mirket home is preserved;
 `--resume` applies only to an interrupted setup of this same package. It does not
 import an old installation or alter unrelated package settings.
 
-Open that agent directory in Pi's terminal interface, reload the local package,
-and run `/mirket setup`. It presents video Chrome, a separate browser QA
-executable, and the optional Playwright MCP peer. Each has three choices:
+Launch `pi` after using the helper, or open the explicitly selected agent directory
+in Pi's terminal interface. Reload the local package and run `/mirket setup`.
+It presents video Chrome, a separate browser QA executable, and the optional Playwright MCP peer. Each has three choices:
 
 1. **Install pinned version** displays the publisher source, size, SHA-256 and
    terms before downloading. Chrome for Testing 156.0.8078.73 comes directly
