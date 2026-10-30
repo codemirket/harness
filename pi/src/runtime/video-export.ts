@@ -364,6 +364,23 @@ async function probe(file:string,paths:Paths,signal:AbortSignal,frames=false):Pr
   const args=["-v","error",...(frames?["-count_frames"]:[]),"-show_streams","-show_format","-of","json",file];
   try{const value:unknown=JSON.parse((await runTool(paths.ffprobe,args,signal)).toString("utf8"));if(!record(value))fail("invalid_media_probe");return value;}catch(error){if(error instanceof VideoError)throw error;return fail("invalid_media_probe");}
 }
+// The producer pads/trims its mixed audio to the composition duration. Container
+// duration and a clean decode alone still accept a valid but truncated track.
+export function verifyAudioEnd(stream:Record<string,unknown>,duration:number):number {
+  const seconds=(value:unknown):number=>(typeof value==="string"&&value.trim()!==""||typeof value==="number")?Number(value):NaN;
+  const start=stream.start_time===undefined?0:seconds(stream.start_time),length=seconds(stream.duration);
+  let end=NaN;
+  if(Number.isFinite(start)&&Number.isFinite(length)&&length>0)end=start+length;
+  else if(record(stream.tags)&&typeof stream.tags.DURATION==="string"){
+    // Matroska/WebM DURATION is an absolute end timestamp, including a late
+    // start; adding start_time again would conceal a short track.
+    const match=/^(\d+):([0-5]\d):([0-5]\d(?:\.\d+)?)$/.exec(stream.tags.DURATION);
+    if(match)end=Number(match[1])*3600+Number(match[2])*60+Number(match[3]);
+  }
+  // 100 ms covers AAC/Opus framing; it does not grow with video frame length.
+  if(!Number.isFinite(end)||end<=0||Math.abs(end-duration)>.1)fail("media_audio_end_mismatch");
+  return end;
+}
 async function verifyMedia(file:string,request:VideoRequest,paths:Paths,signal:AbortSignal,expectedAudio:boolean):Promise<Record<string,unknown>>{
   const info=await probe(file,paths,signal,true),streams=info.streams;
   if(!Array.isArray(streams))fail("missing_media_streams");
@@ -376,10 +393,11 @@ async function verifyMedia(file:string,request:VideoRequest,paths:Paths,signal:A
   const duration=request.profile.frame_count*request.profile.fps.denominator/request.profile.fps.numerator;
   const actual=record(info.format)?Number(info.format.duration):NaN;
   if(!Number.isFinite(actual)||Math.abs(actual-duration)>Math.max(.1,request.profile.fps.denominator/request.profile.fps.numerator))fail("media_duration_mismatch");
+  const audioEnd=audio.length?verifyAudioEnd(audio[0],duration):null;
   // Complete independent decode uses the exact private media binary, distinct
   // from the producer's success result and container metadata.
   await runTool(paths.ffmpeg,["-v","error","-nostdin","-i",file,"-map","0","-f","null","-"],signal);
-  return {video_codec:expected,audio_codec:audio[0]?.codec_name??null,frame_count:Number(video[0].nb_read_frames),duration_seconds:actual,complete_decode:true,alpha:"not_independently_qualified",player_playback:"not_exercised"};
+  return {video_codec:expected,audio_codec:audio[0]?.codec_name??null,frame_count:Number(video[0].nb_read_frames),duration_seconds:actual,audio_end_seconds:audioEnd,complete_decode:true,alpha:"not_independently_qualified",player_playback:"not_exercised"};
 }
 export interface ArchiveEntry { path: string; bytes: Buffer }
 // Small fixture helper only; production PNG archives use writeTar below.
@@ -473,8 +491,13 @@ export async function exportVideo(request:VideoRequest,paths:Paths,signal:AbortS
     if(names.some((n)=>!/^frame_\d{6}\.png$/.test(n)&&n!=="audio.m4a")||names.filter((n)=>n.endsWith(".png")).length!==p.frame_count)fail("unexpected_png_sequence_entry");
     await runTool(paths.ffmpeg,["-v","error","-nostdin","-framerate",`${p.fps.numerator}/${p.fps.denominator}`,"-i",path.join(rendered,"frame_%06d.png"),"-f","null","-"],signal);
     if(prepared.expected_audio&&!names.includes("audio.m4a"))fail("supplied_audio_sidecar_missing");
+    let audioEnd:number|null=null;
     if(names.includes("audio.m4a")){
-      const source=path.join(rendered,"audio.m4a");await runTool(paths.ffmpeg,["-v","error","-nostdin","-i",source,"-f","null","-"],signal);
+      const source=path.join(rendered,"audio.m4a"),info=await probe(source,paths,signal);
+      const streams=Array.isArray(info.streams)?info.streams.filter((s)=>record(s)&&s.codec_type==="audio"):[];
+      if(streams.length!==1)fail("supplied_audio_stream_missing");
+      audioEnd=verifyAudioEnd(streams[0],p.frame_count*p.fps.denominator/p.fps.numerator);
+      await runTool(paths.ffmpeg,["-v","error","-nostdin","-i",source,"-f","null","-"],signal);
       const actual=await fileRevision(source,request.max_output_bytes,signal);entries.push({path:"audio.m4a",source,bytes:actual.bytes,revision:actual.revision});
     }
     if(prepared.captions.length){const sidecars=captionSidecars(prepared.captions,p.fps);for(const [name,source]of [["captions.srt",sidecars.srt],["captions.vtt",sidecars.vtt]] as const)entries.push({path:name,source,bytes:source.length,revision:digest(source)});}
@@ -483,7 +506,7 @@ export async function exportVideo(request:VideoRequest,paths:Paths,signal:AbortS
     entries.push({path:"manifest.json",source,bytes:source.length,revision:digest(source)});
     await writeTar(entries,request.output_path,request.max_output_bytes,signal);
     await treeBytes(request.job_root);
-    evidence={frame_count:p.frame_count,ordered_frame_decode:true,archive_manifest:true,audio_sidecar:names.includes("audio.m4a"),alpha:"not_independently_qualified"};
+    evidence={frame_count:p.frame_count,ordered_frame_decode:true,archive_manifest:true,audio_sidecar:names.includes("audio.m4a"),audio_end_seconds:audioEnd,alpha:"not_independently_qualified"};
   }else evidence=await verifyMedia(rendered,request,paths,signal,prepared.expected_audio);
   const output=await fileRevision(request.output_path,request.max_output_bytes,signal);
   return {output_revision:output.revision,output_bytes:output.bytes,evidence:{...evidence,output_budget_bytes:request.max_output_bytes,scratch_budget_bytes:MAX_WORK,producer:"0.8.197",policy_version:1,source_revision:prepared.sources_revision,caption_cues:prepared.captions.length,source_editability:"project_owned_html_css_js_and_selected_assets",semantic_motion:"requires_visual_review",audio_gain_sync:"requires_content_review",direct_child_exit_status:"not_asserted_owned_group_is_reaped"}};

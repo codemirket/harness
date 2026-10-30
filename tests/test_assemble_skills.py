@@ -4,6 +4,7 @@ import importlib.util
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import tempfile
 import unittest
@@ -50,6 +51,30 @@ class SkillAssemblyTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(output.read_bytes()).hexdigest(), resource["sha256"])
         with self.assertRaises(ASSEMBLER.AssemblyError):
             ASSEMBLER.assemble(self.output, self.source)
+
+    def test_evidence_led_reduction_does_not_require_the_old_fixed_count(self):
+        catalog_path = self.source / "catalog.json"
+        catalog = json.loads(catalog_path.read_text())
+        selected = {id_ for profile in catalog["profiles"].values() for id_ in profile["skills"] + profile["conditional"]}
+        removed = next(entry for entry in catalog["project"] if entry["id"] not in selected)
+        catalog["project"].remove(removed)
+        shutil.rmtree(self.source / removed["id"])
+        catalog_path.write_text(json.dumps(catalog))
+        result = ASSEMBLER.assemble(self.output, self.source)
+        self.assertGreater(result["files"], 0)
+        self.assertFalse((self.output / "skills" / removed["id"]).exists())
+
+    def test_shipped_relative_markdown_links_resolve_inside_the_skill_package(self):
+        ASSEMBLER.assemble(self.output, self.source)
+        package_skills = self.output / "skills"
+        for document in package_skills.rglob("*.md"):
+            for target in re.findall(r"\]\(([^)]+)\)", document.read_text()):
+                if target.startswith(("https://", "http://", "mailto:", "#")):
+                    continue
+                path = target.split("#", 1)[0]
+                resolved = (document.parent / path).resolve()
+                self.assertTrue(resolved.is_relative_to(package_skills), (document, target))
+                self.assertTrue(resolved.is_file(), (document, target))
 
     def test_changed_source_refuses_before_output(self):
         body = self.source / "runtime-operations/SKILL.md"

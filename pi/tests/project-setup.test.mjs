@@ -59,7 +59,7 @@ test('init preserves exact existing filters and unrelated Pi settings; explicit 
     const first = initializeProject(f.pkg, f.runtime, [], []);
     assert.deepEqual(first.selectedSkills, ['!skills/conditional/**', 'skills/design/SKILL.md']);
     const result = initializeProject(f.pkg, f.runtime, ['visual'], ['conditional']);
-    assert.deepEqual(result.selectedSkills, ['skills/conditional/SKILL.md', 'skills/core/SKILL.md', 'skills/design/SKILL.md']);
+    assert.deepEqual(result.selectedSkills, ['!skills/**', '+skills/conditional/SKILL.md', '+skills/core/SKILL.md', '+skills/design/SKILL.md']);
     const settings = JSON.parse(fs.readFileSync(f.settings));
     assert.equal(settings.theme, 'keep'); assert.deepEqual(settings.packages[0], {source: '/other', skills: ['other']});
     assert.deepEqual(settings.packages[1].extensions, ['+./dist/extension/index.js']); assert.equal(settings.packages[1].autoload, false);

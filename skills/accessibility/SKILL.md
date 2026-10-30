@@ -5,7 +5,7 @@ description: "Implement or review interaction and visual access using criterion-
 
 # Accessibility
 
-Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure. For web checks, use a Pi-owned Playwright MCP peer only when explicitly configured and qualified with an isolated profile; otherwise use the project's installed browser tests/tools. Report missing live browser capability when required. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.
+Identify the affected task, users, platform and requested conformance target. Inspect actual rendered behavior and semantic structure with established project browser tests/tools. The optional Pi peer can supplement local `127.0.0.1` reduced-motion screenshots and limited navigation-key checks, but cannot establish pointer/form behavior, public-site access or normal-motion comparison. Report missing live browser capability when required. Consult the applicable WCAG criteria or platform guidance rather than copying a generic checklist into the result.
 
 Exercise keyboard navigation, visible/unobscured focus, accessible names and relationships, error identification, reading order, zoom/reflow and reduced motion where relevant. Include content pressure and state transitions such as a modal opening, a validation error or dynamic status. Check contrast against the real rendered background. Automated scans can locate candidates but cannot establish complete conformance.
 

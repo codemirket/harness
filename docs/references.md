@@ -135,7 +135,7 @@ whole workflows, asset bundles or helpers.
 
 ## I — Focused design and video methods
 
-These two families are method references for the existing bounded design/video
+These five families are method references for the existing bounded design/video
 routes. They do not add a renderer, browser, agent runner, installer or global
 skill. Their exact pinned files and licenses are recorded in the focused source
 review and the retained fetch receipts.
@@ -144,6 +144,9 @@ review and the retained fetch receipts.
 | --- | --- | --- |
 | `huashu-storyboard` | [Huashu storyboard basics](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/storyboard-basics.md) · [HyperFrames backend guide](https://github.com/alchaincyf/huashu-design/blob/4fc7bfdbd5ec3fa2d43ce7a6433de60976a5e4b1/references/hyperframes-backend.md) | Focused storyboard/shot-card and transition decisions for `motion-direction`; MIT source at the pinned revision. Independently authored local wording; no Huashu installer, renderer, remote fonts, quotas or approval model. |
 | `hyperframes-authoring` | [HyperFrames producer README](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md), [troubleshooting guide](https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx), and [runtime packaging scope](../packaging/README.md) | Pinned authoring facts for `video-production`; Apache-2.0 upstream at commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`. Local contract adapts readiness/asset/Anime registration checks; no upstream runtime or package text is redistributed by the reference entry. |
+| `openpencil-skill` | [OpenPencil skill](https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md) · [design authoring](https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md) | File-scoped design structure, container layout and reopen/change checks for `openpencil`; MIT in the skill subtree at this pin. Independently worded Mirket subset; no upstream editor control, CLI, assets or prose copied. |
+| `hyperframes-skill` | [HyperFrames skill](https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md) · [motion](https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md) · [review](https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md) | Frame-addressed inspection and revision planning for `video-production`; Apache-2.0 at this pin. No upstream CLI, registry, cloud workflow, assets or text copied. |
+| `ffmpeg-skill` | [FFmpeg skill](https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md) · [design decisions](https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md) · [stream checks](https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py) | Measured output and early-ending audio verification for `video-production`; MIT at this pin. Independently worded local check; no upstream installer, 42-tool suite, MCP server or PATH workflow. |
 
 ## Source-to-guide reuse contract
 

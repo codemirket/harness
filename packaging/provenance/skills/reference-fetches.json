@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T13:12:03.175389+00:00",
+  "generated_at": "2026-10-30T09:30:26.098037+00:00",
   "records": [
     {
       "id": "superpowers",
@@ -7314,9 +7314,735 @@
         "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/packages/producer/README.md",
         "https://github.com/heygen-com/hyperframes/blob/f51650d8a72ed472effff89da087c7e1cf6b2c98/docs/guides/troubleshooting.mdx"
       ]
+    },
+    {
+      "id": "openpencil-skill",
+      "retrieved_at": "2026-10-30T09:30:16.462058+00:00",
+      "selected": {
+        "license_file": [
+          "skills/open-pencil/LICENSE.txt"
+        ],
+        "receipts": [
+          {
+            "bytes": 21979,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"71d5679bd4f6622dd1fbc44f9dffb7f88a721e0a189c902993812e2c2a243e42\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-source-a089416c121e.bin",
+            "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+            "sha256": "f19f1ce78a9477773ef7a638452e9477f3868ee301add1e46fa7bb3ccdc5480f",
+            "status": 200
+          },
+          {
+            "bytes": 1072,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/LICENSE.txt",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"1ea120e5af480dc478815116009148bffaf287153f01a7a3e5e6639f01b4d783\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-license-cc25c1a34eb6.bin",
+            "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/LICENSE.txt",
+            "sha256": "144ecf9417a43cca1cc2096acbac8b00beff9210191504709d586bf7552dcfa2",
+            "status": 200
+          },
+          {
+            "bytes": 24896,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"ec68a535461cf2138b274124ba6414809db742862eab1ab5bf1d1b65603bfb28\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-source-124d2544310a.bin",
+            "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+            "sha256": "dcadb2b4095e9272dc41a7b74c47d9113edb37166c0a36e821520e588dee9160",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "OpenPencil",
+          "App mode \u2014 operates on the document open in the editor",
+          "Headless mode \u2014 operates on a .fig file",
+          "Variable formulas",
+          "Requirements",
+          "CLI",
+          "MCP server used by the desktop app and external MCP clients",
+          "CLI Commands",
+          "Inspect",
+          "Search and XPath query",
+          "Export and convert",
+          "Analyze and lint",
+          "Eval (Figma Plugin API)",
+          "App mode \u2014 modifies the live document in the editor",
+          "Modify and save to the same file; text edits need the text's fonts loaded first, as in Figma",
+          "Save to a different file",
+          "Read code from stdin",
+          "Style part of a text, and read how it is styled",
+          "after the change:",
+          "Diff",
+          "Control the running app",
+          "MCP Server",
+          "Stdio MCP clients",
+          "HTTP / Streamable HTTP",
+          "or: bunx openpencil-mcp-http",
+          "MCP workflow",
+          "Browser-native WebMCP (experimental)",
+          "Tool discovery",
+          "Key tools for agents",
+          "JSX Rendering"
+        ],
+        "source_file": "skills/open-pencil/SKILL.md"
+      },
+      "selected_sources": [
+        {
+          "license_file": [
+            "skills/open-pencil/LICENSE.txt"
+          ],
+          "receipts": [
+            {
+              "bytes": 21979,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"71d5679bd4f6622dd1fbc44f9dffb7f88a721e0a189c902993812e2c2a243e42\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-source-a089416c121e.bin",
+              "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+              "sha256": "f19f1ce78a9477773ef7a638452e9477f3868ee301add1e46fa7bb3ccdc5480f",
+              "status": 200
+            },
+            {
+              "bytes": 1072,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/LICENSE.txt",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"1ea120e5af480dc478815116009148bffaf287153f01a7a3e5e6639f01b4d783\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-license-cc25c1a34eb6.bin",
+              "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/LICENSE.txt",
+              "sha256": "144ecf9417a43cca1cc2096acbac8b00beff9210191504709d586bf7552dcfa2",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "OpenPencil",
+            "App mode \u2014 operates on the document open in the editor",
+            "Headless mode \u2014 operates on a .fig file",
+            "Variable formulas",
+            "Requirements",
+            "CLI",
+            "MCP server used by the desktop app and external MCP clients",
+            "CLI Commands",
+            "Inspect",
+            "Search and XPath query",
+            "Export and convert",
+            "Analyze and lint",
+            "Eval (Figma Plugin API)",
+            "App mode \u2014 modifies the live document in the editor",
+            "Modify and save to the same file; text edits need the text's fonts loaded first, as in Figma",
+            "Save to a different file",
+            "Read code from stdin",
+            "Style part of a text, and read how it is styled",
+            "after the change:",
+            "Diff",
+            "Control the running app",
+            "MCP Server",
+            "Stdio MCP clients",
+            "HTTP / Streamable HTTP",
+            "or: bunx openpencil-mcp-http",
+            "MCP workflow",
+            "Browser-native WebMCP (experimental)",
+            "Tool discovery",
+            "Key tools for agents",
+            "JSX Rendering"
+          ],
+          "source_file": "skills/open-pencil/SKILL.md"
+        },
+        {
+          "license_file": [
+            "skills/open-pencil/LICENSE.txt"
+          ],
+          "receipts": [
+            {
+              "bytes": 24896,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"ec68a535461cf2138b274124ba6414809db742862eab1ab5bf1d1b65603bfb28\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-source-124d2544310a.bin",
+              "requested_url": "https://raw.githubusercontent.com/open-pencil/open-pencil/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+              "sha256": "dcadb2b4095e9272dc41a7b74c47d9113edb37166c0a36e821520e588dee9160",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "OpenPencil design authoring",
+            "Composition and layout",
+            "Paint, text, and artwork",
+            "Variables and components",
+            "Controls",
+            "Verification",
+            "Content-sized review note",
+            "Variable-bound spacing and typography",
+            "A theme with two modes",
+            "Component with text and visibility properties",
+            "Rich text with spans and lists",
+            "Supported syntax inventory"
+          ],
+          "source_file": "skills/open-pencil/references/design-authoring.md"
+        }
+      ],
+      "url_receipts": [
+        {
+          "bytes": 368842,
+          "error": null,
+          "final_url": "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"51808d4b3331244cec82d0ae26af0a93\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-page-0.bin",
+          "requested_url": "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+          "sha256": "90aee81f9d878743f910c0282720924a01ebde830c62855984174f50ed06f1e8",
+          "status": 200
+        },
+        {
+          "bytes": 411821,
+          "error": null,
+          "final_url": "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"8d9840b309fbfade6195fc83e0da100d\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/openpencil-skill-page-1.bin",
+          "requested_url": "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md",
+          "sha256": "96aff05b0c41778a698efed7ce74bd2e98297197694b088b04f3fdbb977c76d0",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md",
+        "https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md"
+      ]
+    },
+    {
+      "id": "hyperframes-skill",
+      "retrieved_at": "2026-10-30T09:30:20.386885+00:00",
+      "selected": {
+        "license_file": [
+          "LICENSE"
+        ],
+        "receipts": [
+          {
+            "bytes": 7165,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"48e6cfa1bb61924f69e78084230eaa2e5c8e07deea008ffd0526106230715a82\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-961747b0cc3d.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+            "sha256": "96f3793bd677dde345c5aca4aa6484334100a154e8a5d9e2ad07d69c9b9e2b0e",
+            "status": 200
+          },
+          {
+            "bytes": 10763,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/LICENSE",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"b7d47e289471cc8970f711c0845844eb3153408adc3b1a5592fc6a106219f507\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-license-ab454fe8d261.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/LICENSE",
+            "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+            "status": 200
+          },
+          {
+            "bytes": 12162,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"937361b6f52bda0416cc51739c29c33e98d6d5780db46450282ba3bfc9ea852e\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-0698146226c0.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+            "sha256": "80b9bd70c011b7fc679f351cb41b993b16d610af1cda316eaf9d19bf9c08372f",
+            "status": 200
+          },
+          {
+            "bytes": 5327,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"4732fc0cee6f9757c4114ff54025d072189be4a67f94d6699487b81c6cd03a9a\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-c1f3cee3ea90.bin",
+            "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+            "sha256": "90886b58db02aaa53e6b91c433748629eda061b18465804b56ebbbab92508e56",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "HyperFrames",
+          "Contract",
+          "Keep it editable",
+          "Work loop",
+          "The HyperFrames desktop app",
+          "What to read"
+        ],
+        "source_file": "skills/hyperframes/SKILL.md"
+      },
+      "selected_sources": [
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 7165,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"48e6cfa1bb61924f69e78084230eaa2e5c8e07deea008ffd0526106230715a82\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-961747b0cc3d.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+              "sha256": "96f3793bd677dde345c5aca4aa6484334100a154e8a5d9e2ad07d69c9b9e2b0e",
+              "status": 200
+            },
+            {
+              "bytes": 10763,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/LICENSE",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"b7d47e289471cc8970f711c0845844eb3153408adc3b1a5592fc6a106219f507\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-license-ab454fe8d261.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/LICENSE",
+              "sha256": "4259155fb06f127687ee7b0a8a3682d45132db0f2da26cbc0b7a2d1e796436b8",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "HyperFrames",
+            "Contract",
+            "Keep it editable",
+            "Work loop",
+            "The HyperFrames desktop app",
+            "What to read"
+          ],
+          "source_file": "skills/hyperframes/SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 12162,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"937361b6f52bda0416cc51739c29c33e98d6d5780db46450282ba3bfc9ea852e\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-0698146226c0.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+              "sha256": "80b9bd70c011b7fc679f351cb41b993b16d610af1cda316eaf9d19bf9c08372f",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Motion",
+            "Motion craft",
+            "Transitions with a cause",
+            "The right mechanism",
+            "Seeing motion",
+            "Common faults"
+          ],
+          "source_file": "skills/hyperframes/references/motion.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 5327,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"4732fc0cee6f9757c4114ff54025d072189be4a67f94d6699487b81c6cd03a9a\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-source-c1f3cee3ea90.bin",
+              "requested_url": "https://raw.githubusercontent.com/heygen-com/hyperframes/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+              "sha256": "90886b58db02aaa53e6b91c433748629eda061b18465804b56ebbbab92508e56",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Review",
+            "1. Measure, then look",
+            "2. What to look for",
+            "3. Notes and fixes",
+            "4. The delivery note"
+          ],
+          "source_file": "skills/hyperframes/references/review.md"
+        }
+      ],
+      "url_receipts": [
+        {
+          "bytes": 232500,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"1f73513ee3ad9180fa344e73a9ad0bf0\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-page-0.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+          "sha256": "599f6d2e47385538dabb2dd471d1187d7acb581b387b0c6e831fd17d5eee6e4c",
+          "status": 200
+        },
+        {
+          "bytes": 250702,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"9b293e5340889a165a49cb049573a5ed\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-page-1.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+          "sha256": "5293683f52f83b18016c3950a54823ebd85cab43c22a1e7226581844abe6d1f0",
+          "status": 200
+        },
+        {
+          "bytes": 216727,
+          "error": null,
+          "final_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"9b892692ac4c64a1c7d0b4b7471750b6\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/hyperframes-skill-page-2.bin",
+          "requested_url": "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md",
+          "sha256": "8997a240b94d0e9b255dcb9ba345e861f894b3a7d868d8c1645af219b22cf192",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md",
+        "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md",
+        "https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md"
+      ]
+    },
+    {
+      "id": "ffmpeg-skill",
+      "retrieved_at": "2026-10-30T09:30:26.097993+00:00",
+      "selected": {
+        "license_file": [
+          "LICENSE"
+        ],
+        "receipts": [
+          {
+            "bytes": 29915,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"c6ae43adee8da48c66863fab40bdf9696be938167655d01789f61f1eede417da\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-e7f76c3f336b.bin",
+            "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+            "sha256": "a08f00955722dc1cffa5687a667aabe829f3270031f3cc9eceb60eccbe23a27b",
+            "status": 200
+          },
+          {
+            "bytes": 1065,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/LICENSE",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"cdb62373fc9c3f5df4c253bf5b6dc62c49b0f5765cf545e1351022699ed70d00\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-license-cfc927dfa2b3.bin",
+            "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/LICENSE",
+            "sha256": "7522b29e4d6e90f2a8fab15f07d224b1064c70692a872be9996ac1a88cf474e9",
+            "status": 200
+          },
+          {
+            "bytes": 191367,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"c585e456ad6d3105ee0a2a07cd0ae9c7f7d413aabc4c2b42ec5f54ccbf7aa0a1\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-cdfbe81c3b43.bin",
+            "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+            "sha256": "ee2870446172181d28acacd6e739cc3f0a44d8251fc84b711bb439c02fb45a46",
+            "status": 200
+          },
+          {
+            "bytes": 46070,
+            "error": null,
+            "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+            "headers": {
+              "content_type": "text/plain; charset=utf-8",
+              "etag": "\"03aac3bdf3fbe09b97147620e9927990c8d3ce79c6788724759a0584cbf07fcb\"",
+              "last_modified": null
+            },
+            "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-4f7fb0d3fe53.bin",
+            "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+            "sha256": "f6ddd59a01daf1a23c90b81aad3383571de38e6d2208a4093f54005fdc9e461e",
+            "status": 200
+          }
+        ],
+        "sections": [
+          "ffmpeg-skill",
+          "Workflow (in this order)",
+          "Before you run anything: what to ask, what to assume",
+          "What this skill does and does not decide",
+          "Request \u2192 script",
+          "Audio-only files",
+          "Report format",
+          "Things that look right but are wrong"
+        ],
+        "source_file": "SKILL.md"
+      },
+      "selected_sources": [
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 29915,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"c6ae43adee8da48c66863fab40bdf9696be938167655d01789f61f1eede417da\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-e7f76c3f336b.bin",
+              "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+              "sha256": "a08f00955722dc1cffa5687a667aabe829f3270031f3cc9eceb60eccbe23a27b",
+              "status": 200
+            },
+            {
+              "bytes": 1065,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/LICENSE",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"cdb62373fc9c3f5df4c253bf5b6dc62c49b0f5765cf545e1351022699ed70d00\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-license-cfc927dfa2b3.bin",
+              "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/LICENSE",
+              "sha256": "7522b29e4d6e90f2a8fab15f07d224b1064c70692a872be9996ac1a88cf474e9",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "ffmpeg-skill",
+            "Workflow (in this order)",
+            "Before you run anything: what to ask, what to assume",
+            "What this skill does and does not decide",
+            "Request \u2192 script",
+            "Audio-only files",
+            "Report format",
+            "Things that look right but are wrong"
+          ],
+          "source_file": "SKILL.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 191367,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"c585e456ad6d3105ee0a2a07cd0ae9c7f7d413aabc4c2b42ec5f54ccbf7aa0a1\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-cdfbe81c3b43.bin",
+              "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+              "sha256": "ee2870446172181d28acacd6e739cc3f0a44d8251fc84b711bb439c02fb45a46",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "Deliberate behaviours (read before filing a bug)",
+            "Time limits",
+            "Dry run",
+            "Colour",
+            "Outputs and files",
+            "Arguments",
+            "Process and packaging",
+            "Decided for 2.0 (issue #189 B), recorded in 1.x so the code moved toward them",
+            "External review, 2026-09-14 (1.17.0)",
+            "External review, 2026-09-13",
+            "1.15.0 \u2014 text people can see",
+            "1.16.0 \u2014 long-form delivery",
+            "1.17.0 \u2014 throughput",
+            "2.1.0 \u2014 handing the cut to an editor",
+            "2.3.0 \u2014 captions that can be seen",
+            "2.2.4 \u2014 the first bad input, named",
+            "2.2.6 \u2014 silence is reported, not verified",
+            "2.3.0 \u2014 short, repeated and silent inputs",
+            "2.4.1 \u2014 a plain join keeps its picture",
+            "2.6.0 \u2014 the GPU",
+            "2.7.0 \u2014 a second speech engine",
+            "2.8.0 \u2014 cuts that say what they did",
+            "2.10.7 \u2014 geometry uses the displayed frame",
+            "2.10.5 \u2014 an accurate cut starts its picture at 0",
+            "2.10.5 \u2014 a fixed logo comes off with redact.py --mode delogo",
+            "2.10.0 \u2014 a video layer in a project",
+            "2.10.9 \u2014 FFmpeg 8.0.1 (Ubuntu 26.04)",
+            "2.10.9 \u2014 doctor's FFmpeg advisory and the Python 3.9 deprecation",
+            "2.11.0\u20132.12.0 \u2014 nothing happens silently",
+            "Part 2: a degraded or partial result is never reported as the asked-for one"
+          ],
+          "source_file": "docs/design-decisions.md"
+        },
+        {
+          "license_file": [
+            "LICENSE"
+          ],
+          "receipts": [
+            {
+              "bytes": 46070,
+              "error": null,
+              "final_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+              "headers": {
+                "content_type": "text/plain; charset=utf-8",
+                "etag": "\"03aac3bdf3fbe09b97147620e9927990c8d3ce79c6788724759a0584cbf07fcb\"",
+                "last_modified": null
+              },
+              "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-source-4f7fb0d3fe53.bin",
+              "requested_url": "https://raw.githubusercontent.com/kajisho5/ffmpeg-skill/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+              "sha256": "f6ddd59a01daf1a23c90b81aad3383571de38e6d2208a4093f54005fdc9e461e",
+              "status": 200
+            }
+          ],
+          "sections": [
+            "The atexit plan hook takes no arguments, so emit()/die() record the Context they were given",
+            "here; nothing passed a ctx = it stays None and the hook falls back to STATE, as before (1.10).",
+            "A stage's own artifact checks: a stage that completed passed them (verify_output() fails the",
+            "stage otherwise), and its artifact is an intermediate, so carrying them would only lengthen the list.",
+            "The properties each writing tool does NOT measure about its output, by tool name: the unverified",
+            "range U that every --json result reports (docs/contract.md \"unverified\"). A property listed here",
+            "is one a caller might assume was checked; naming it is the difference between \"verified\" meaning",
+            "\"the listed properties were measured\" and \"everything is fine\". Kept beside emit() so a tool",
+            "cannot report verified without this list travelling with it.",
+            "a picture and its sound may differ in length by this much more than they did in the input",
+            "how many seconds at each end of every kept stream the decode check decodes",
+            "how much earlier than its window the tail decode starts reading (a seek past the last keyframe)",
+            "how far back the one retry of an empty tail reads (a GOP longer than the margin)",
+            "Keys the brief document replaces or drops: the full probe (summarised), the command lines",
+            "(counted) and the per-step verification list (its verdict stays as `verified`).",
+            "Deferred for the same reason as runner's import of this module: probe needs die() from here, and",
+            "emit() needs verify_output() from there, but only ever at call time."
+          ],
+          "source_file": "scripts/_common/emit.py"
+        }
+      ],
+      "url_receipts": [
+        {
+          "bytes": 350896,
+          "error": null,
+          "final_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"d9a5c519f84fb26cb03a70cb3cba141b\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-page-0.bin",
+          "requested_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+          "sha256": "61ffb9989617e0701f75b71600e447735ed6a70a9c9e2e2161cf50334a182cd7",
+          "status": 200
+        },
+        {
+          "bytes": 1102985,
+          "error": null,
+          "final_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"38d7b61d5fbe73da36fcc1f7675ca4bf\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-page-1.bin",
+          "requested_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+          "sha256": "a2a4023302a504499db40823deb82256824dc434d28e0491ca1793d1c973df69",
+          "status": 200
+        },
+        {
+          "bytes": 807397,
+          "error": null,
+          "final_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+          "headers": {
+            "content_type": "text/html; charset=utf-8",
+            "etag": "W/\"55ef7a14934a5118dac5fbd2ce9d59de\"",
+            "last_modified": null
+          },
+          "raw_path": "/private/tmp/mirket-creative-skill-raw-vy33cm4s/ffmpeg-skill-page-2.bin",
+          "requested_url": "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py",
+          "sha256": "0a2ccbde40115029dc4fb21fc2074b3bec002d275b2f2f0aae2d429c550e8f36",
+          "status": 200
+        }
+      ],
+      "urls": [
+        "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md",
+        "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md",
+        "https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py"
+      ]
     }
   ],
   "schema": 1,
-  "source_count": 60,
+  "source_count": 63,
   "source_plan": "docs/references.md"
 }

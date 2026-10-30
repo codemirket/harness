@@ -1,11 +1,11 @@
-# Focused design/video source adoption review (2026-10-27; design selection updated 2026-10-29)
+# Focused design/video source adoption review (2026-10-27; updated 2026-10-30)
 
-This is the explicit source-to-skill mapping for the eight project skills whose
+This is the explicit source-to-skill mapping for the nine project skills whose
 catalog classification is `method-adapted`. It records reviewed techniques, not
 copied source text or executable dependencies. The local wording, output
 contracts and evidence rules remain authored in each `SKILL.md`; the catalog
 refresh script does not infer fidelity from a URL, hash, receipt or family name.
-All eight catalog acceptance sets remain `planned-not-run`; this document is not
+All nine catalog acceptance sets remain `planned-not-run`; this document is not
 model or visual acceptance evidence.
 
 ## Mapping ledger
@@ -19,7 +19,8 @@ model or visual acceptance evidence.
 | `scroll-motion` when scroll geometry, refresh or interruption requires a plan | Emil `e8a175de22ae1e49370fc144c1f3bb9aeedf988d`, `skills/emil-design-eng/SKILL.md` sections “The Animation Decision Framework” and “Perceived performance”, applied only to scroll context. | Specify scene geometry and refresh/re-entry behavior, and treat interruption/reduced motion as first-class states. | Return scene boundaries, ownership and evidence for refresh, resize, interruption and reduced-motion behavior; do not infer success from a receipt. | No GSAP runtime, browser or animation package is installed by this skill. |
 | `ui-motion` when an isolated interaction needs lifecycle-safe motion | Emil `e8a175de22ae1e49370fc144c1f3bb9aeedf988d`, `skills/emil-design-eng/SKILL.md` sections “Review Format (Required)” and “The Animation Decision Framework”. | Check the installed API/version, define lifecycle cleanup and reduced-motion behavior, and keep isolated implementation separate from direction. | Return changed source plus behavior checks for mount/update/unmount, cancellation and reduced motion. | No upstream API examples or package installation are adopted; host/project toolchain owns dependencies. |
 | `vector-art` when editable SVG geometry or a sprite needs authoring/refinement | MengTo commit `a45892d2fdadab75b31fb16abecc02f101b31c43`, `agent-skills/illustration/illustration-framed-panel/SKILL.md` and `illustration-flat/SKILL.md` sections “Palette”, “Line and fill”, “Composition” and “Techniques”; local resource `skills/vector-art/references/illustration-craft.md` is independently worded. | Prefer editable geometry, coherent construction constraints and inspected exports at target sizes; retain an asset-rights check. | Return editable SVG/source, optimized export and saved-pixel checks at target sizes; report clipping or unsupported effects. | No upstream SVG, demo, script or font is copied. Local reference is bounded and hashed by catalog tooling. |
-| `video-production` when an editable composition must export with decoded QA | HyperFrames commit `f51650d8a72ed472effff89da087c7e1cf6b2c98`, `packages/producer/README.md` sections “Usage”, “Render a video”, “Configuration” and `docs/guides/troubleshooting.mdx` “Start here”/“Media problems”; local resource `skills/video-production/references/hyperframes-0.8.197-authoring.md`. | Keep editable composition/source, validate readiness and assets before rendering, then inspect decoded frames, audio and captions. | Return local source and exports only after decoded frame/audio/caption checks; preserve host approval failures as unqualified. | HyperFrames is Apache-2.0 at the pinned revision; no runtime/package text, private Chrome, credentials or host approval bypass is adopted. |
+| `openpencil` when editable native design source is requested | OpenPencil `24461adec7073312d460d76f08f069de18e4fb78`, `skills/open-pencil/SKILL.md` “MCP workflow”, “Tool discovery”, “Tips” and `references/design-authoring.md` “Composition and layout”, “Verification”; local resource `skills/openpencil/references/file-authoring.md`. | Select one file/revision/target, author container-owned layout through bounded exact-path edits, then reopen and inspect structure and saved pixels under real text pressure. | Return changed editable source, native identity/reopen evidence and inspected exports; refuse unsupported editor/asset features and stale revisions. | Skill-local MIT; no upstream prose, CLI/editor control, eval, artwork, variables or rich layout API copied. |
+| `video-production` when an editable composition must export with decoded QA | HyperFrames authoring commit `f51650d8a72ed472effff89da087c7e1cf6b2c98` producer/troubleshooting guides; HyperFrames skill commit `10a4ed56cb09159afec0dba3ea784e3162ee2e71`, `skills/hyperframes/references/motion.md` “Motion craft”/“Seeing motion” and `review.md` “Measure, then look”/“Notes and fixes”; FFmpeg skill commit `eeff097f86654830fa8aa409185ea477524c4cb8`, `SKILL.md` “Workflow” and `docs/design-decisions.md` §2.21.1 / `scripts/_common/emit.py` stream-end checks. | Keep editable composition/source and asset readiness; choose absolute frame indices for beats, cuts, cue boundaries and subject motion; verify saved video and audio stream endpoints independently. | Return source/export, exact sampled frames, decoded frame/audio/caption results and remaining visual/audible limits; refuse early-ending audio and recheck only repaired states. | HyperFrames Apache-2.0 and FFmpeg skill MIT at their pins. No upstream text/scripts, installer, 42-tool MCP suite, private Chrome, cloud/account workflow or unqualified API is adopted. |
 
 ## Evidence and limits
 
@@ -30,7 +31,7 @@ operation success, visual quality, video decoding, tool availability, model
 selection or user acceptance. The focused adoption run retained raw bodies
 outside the repository; only bounded local reference notes are shipped.
 
-The eight skills continue to require independent held-out trials. In
+The nine skills continue to require independent held-out trials. In
 particular, the catalog's broad planned acceptance is not complete until a
 capable lead/reviewer or equivalent independent oracle inspects the resulting
 artifact. Windows qualification and the waived Codex Desktop GUI check remain
@@ -42,3 +43,18 @@ Taste inspector method to critique. It follows the user's explicit choice of
 Hallmark, Taste and Impeccable as primary design guidance. The 2026-10-27 fetch
 receipts and the earlier qualification limits retain their original dates;
 this edit adds neither a runtime dependency nor a new model outcome trial.
+
+## 2026-10-30 bounded adoption trials
+
+These are focused implementation checks, separate from the catalog's planned
+model-to-useful-output cases and the older 2026-10-27 qualification. The local
+candidate was macOS 26.5.2 (25F84) ARM64 with private Node 24.22.1, private
+project and Pi state. Source snapshots, rights and complete rejected-scope
+notes are in the task-private reviews below; the pinned URL/hash receipts are
+retained in `reference-fetches.json`.
+
+| Slice | Focused evidence | Scope limit |
+| --- | --- | --- |
+| OpenPencil file authoring | `/private/tmp/mirket-openpencil-skill.37iTbq/review.json` and `trial3/verification.json`: 16 typed operations completed; saved native source reopened and patched; changed exports were inspected. A long label clipped despite passing geometry, then a wider container and text box rendered the whole label. | Deterministic typed trial; native editor fidelity, held-out Pi skill selection and user acceptance not established. The initial failed invocation remains in the private trial. |
+| HyperFrames frame review | `/private/tmp/mirket-hyperframes-frame-trial/results.json` and `identity.json`: two 13-frame MP4s with identical endpoints were decoded; the midpoint check detected an overshoot at frame 6. Beat-index arithmetic found frame 450 where cumulative rounded steps would reach frame 448. | Synthetic composition and local frame inspection; no broad motion-quality or playback claim. No newer producer API admitted. |
+| FFmpeg stream end | `/private/tmp/mirket-ffmpeg-stream-end-e_qidtw5/consumer-trial.json`, `tests.json` and `final-focused.json`: private FFmpeg/ffprobe MP4 and WebM controls showed a 2-second container/full decode could conceal a 0.5-second audio tail. The new verifier rejected those short tracks and accepted full and delayed-end controls; locked adapter build and tests passed (143 pass, one existing skip), including 15 focused video tests. | Checks encoded stream extent. Audible content, gain, sync and player behavior still require content review. The initial unavailable-lavfi fixture attempt is retained privately. |

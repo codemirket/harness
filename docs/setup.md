@@ -146,6 +146,9 @@ Profiles select their baseline skills; conditional skills require an explicit
 `+SKILL`. Resources stay in the installed package. No skills are copied into the
 project or `.agents`, and no second selection database is created. Project Pi
 settings remain the active selection source.
+When a project Mirket package uses Pi's `autoload:false` delta, an explicit
+profile selection clears inherited Mirket skills before adding the requested
+ones. Initialization without selection arguments preserves that filter.
 The package source in `.pi/settings.json` is an absolute path on this device.
 Keep that settings file local; teammates should install Mirket and run project
 initialization on their own devices. The managed `AGENTS.md` guidance can be

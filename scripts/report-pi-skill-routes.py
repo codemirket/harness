@@ -20,15 +20,17 @@ def route(name):
     if name == 'agent-coordination-strategy':
         return '/mirket-task, mirket_delegate, mirket_task_status', 'User-frozen task/model, pi authentication, private runtime', 'Actual children, image reviewer, cancellation, concurrency, fork/reload budget proofs'
     if name in {'evidence-research','browser-research'}:
-        return '/mirket-research; separately configured browser for rendered pages', 'openai/gpt-6-astra authentication; browser is not bundled/production-admitted', 'Installed provider search and contradiction proof; page interaction only local candidate testing'
+        return '/mirket-research; project browser for public rendered pages; optional Pi peer for local inspection', 'Research route authentication; browser peer needs onboarding and one literal loopback grant', 'Installed provider search and contradiction proof; public rendered-page outcomes remain separate'
     if name in {'browser-automation','browser-qa','frontend-engineering','accessibility','prototype-test','ui-motion','scroll-motion'}:
-        return 'pi file/bash tools + project browser tooling or separately admitted MCP peer', 'Explicit project app/browser setup; current MCP browser batch is test-only', 'Local keyboard/responsive/reduced-motion candidate proof; project journey and catalog cases remain separate'
+        return 'pi file/bash tools + project browser tooling; optional Pi peer for local inspection', 'Project tools for public sites, pointer/form actions and normal motion; peer needs one loopback grant', 'Local keyboard/responsive/reduced-motion candidate proof; full journeys and catalog cases remain separate'
     if name in {'document-artifacts','workbook-authoring','slide-deck-authoring','financial-models'}:
         return 'pi file/bash/read + project document or spreadsheet renderer', 'Project supplies authoring, recalculation and rendering tools; no bundled Office engine', 'Source route audited; representative project-toolchain outcomes remain unqualified'
     if name in {'video-production','motion-direction','svg-lottie'}:
         return 'pi authors source; native MCP HyperFrames export; pi vision read', 'Verified render Chrome/FFmpeg/assets; vision-capable model; Lottie requires project tooling', 'Installed export/decode/audio/cancel proofs; authored quality and project Lottie outcomes remain separate'
-    if name in {'art-direction','interface-composition','design-critique','design-systems','typography','openpencil','vector-art','raster-art','diagrams'}:
-        return 'pi files/read + relevant native MCP design operation; project browser for live UI', 'Exact capability/font/assets and vision model; OpenPencil bounded to supported file subset', 'Installed token/SVG/raster/editable outcomes; aesthetic and per-skill held-out cases remain separate'
+    if name == 'raster-art':
+        return 'pi files/read + conditional native raster route', 'design.raster is absent from the current package; no Sharp payload is installed', 'No installed raster outcome; retain as explicit opt-in guidance only'
+    if name in {'art-direction','interface-composition','design-critique','design-systems','typography','openpencil','vector-art','diagrams'}:
+        return 'pi files/read + relevant native MCP design operation; project browser for live UI', 'Exact capability/font/assets and vision model; OpenPencil bounded to supported file subset', 'Installed token/SVG/editable outcomes; aesthetic and per-skill held-out cases remain separate'
     if name in {'sql-navigation','sql-analysis','database-migrations'}:
         return 'pi read/bash + project SQL parser/database', 'Explicit dialect/schema and authorized database access if executing', 'Source route audited; no Mirket SQL engine or production access implied'
     return 'pi read/edit/write/bash + existing project toolchain', 'Applicable project tools and explicitly authorized effect scope', 'Concrete workflow/safeguard in source; per-skill held-out benefit is not yet established'

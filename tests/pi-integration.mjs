@@ -1,4 +1,5 @@
 // Offline assembled-package integration. Explicit admitted peers and binaries only.
+// With a copied Video payload, also supply its exact retained source/notice root.
 import assert from 'node:assert/strict';
 import {makeFixtureProvider} from './pi-offline-provider.mjs';
 import fs from 'node:fs/promises';
@@ -6,8 +7,9 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {join, isAbsolute, resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
-const [peers, binary, node, license, nativeSource] = process.argv.slice(2);
+const [peers, binary, node, license, nativeSource, videoSourceRoot] = process.argv.slice(2);
 assert.ok([peers,binary,node,license].every(x=>x&&isAbsolute(x)), 'Supply absolute peers, Rust binary, private Node and Node LICENSE paths');
+if(videoSourceRoot) assert.ok(isAbsolute(videoSourceRoot), 'Supply an absolute Video source/notice root');
 const root = await fs.mkdtemp('/private/tmp/mirket-pi-package-');
 console.log('Fixture:',root);
 await fs.chmod(root,0o700);
@@ -40,7 +42,7 @@ const cli=(...args)=>JSON.parse(execFileSync(binary,args,{encoding:'utf8',timeou
 const release=cli('dev','manifest','--directory',native).release_id;
 // A complete native package includes Chrome and selected model/runtime files;
 // copying and hashing it can exceed one minute before Pi starts.
-execFileSync('/usr/bin/python3',[resolve('scripts/assemble-pi-package.py'),'--mirket',binary,'--source',native,'--output',packed],{stdio:'pipe',timeout:600000});
+execFileSync('/usr/bin/python3',[resolve('scripts/assemble-pi-package.py'),'--mirket',binary,'--source',native,'--output',packed,...(videoSourceRoot?['--video-source-root',videoSourceRoot]:[])],{stdio:'pipe',timeout:600000});
 const setup=()=>JSON.parse(execFileSync(node,[join(packed,'scripts/setup.mjs'),'--agent-dir',agentDir],{encoding:'utf8',timeout:660000,stdio:['ignore','pipe','pipe']}));
 const extensionPath=join(packed,'dist/extension/index.js'),extensionBytes=await fs.readFile(extensionPath);
 await fs.appendFile(extensionPath,'\n// altered after assembly\n');assert.throws(setup,/differs from inventory/);
@@ -163,7 +165,14 @@ print(count)
  const selected=resources.loader.getSkills().skills.map(s=>s.name).sort();
  const catalog=JSON.parse(await fs.readFile(join(packed,'skills/catalog.json')));
  assert.deepEqual(selected,[...new Set([...catalog.global.map(s=>s.id),...catalog.profiles['library-cli'].skills,'js-ts-navigation'])].sort());
- assert.equal((await call(resources,'mirket_doctor')).status,'ready');await close(resources);
+ const selectedDoctor=await call(resources,'mirket_doctor');
+ assert.equal(selectedDoctor.status,'ready');assert.equal(selectedDoctor.skillReadiness.status,'ready');
+ await resources.session.prompt('/mirket-profile project design-studio +raster-art');
+ await resources.session.reload();await resources.session.setModel(resources.session.modelRuntime.getModel('offline-fixture','deterministic'));
+ const missingRaster=await call(resources,'mirket_doctor');
+ assert.equal(missingRaster.status,'ready');assert.equal(missingRaster.skillReadiness.status,'missing');
+ assert.deepEqual(missingRaster.skillReadiness.unavailableSkills,[{skill:'raster-art',missing:['design.raster']}]);
+ await close(resources);
  const otherSession=await open({project:other});assert.equal(otherSession.loader.getSkills().skills.length,skillCount);await close(otherSession);
  await save('all manifest skills load unfiltered; project profile replaces global package only in selected project');
 
@@ -180,6 +189,12 @@ print(count)
  await fs.writeFile(globalFile,JSON.stringify({...settings,packages:[{source:packed,skills:catalog.global.map(s=>`skills/${s.id}/SKILL.md`)}]}));
  await fs.writeFile(projectSettings,JSON.stringify({packages:[{source:packed,autoload:false,skills:['+skills/browser-research/SKILL.md']}]}));
  const delta=await open();assert.deepEqual(delta.loader.getSkills().skills.map(s=>s.name).sort(),[...catalog.global.map(s=>s.id),'browser-research'].sort());assert.equal((await call(delta,'mirket_doctor')).status,'ready');await close(delta);
+ profileModule.applyProfile(profileModule.prepareProfile(packed,projectSettings,['library-cli'],[]));
+ const narrowed=await open();
+ assert.deepEqual(narrowed.loader.getSkills().skills.map(s=>s.name).sort(),[...new Set([...catalog.global.map(s=>s.id),...catalog.profiles['library-cli'].skills])].sort());
+ assert.ok(!narrowed.loader.getSkills().skills.some(s=>s.name==='browser-research'));
+ await close(narrowed);
+ await save('explicit profile replaces inherited autoload:false skill selection in native Pi');
  await fs.writeFile(projectSettings,'{}');await fs.writeFile(globalFile,JSON.stringify({...settings,packages:[]}));
  const removed=await open();assert.ok(!removed.session.getAllTools().some(t=>t.name==='mirket_doctor'||t.name.startsWith('mcp__mirket__')));assert.equal(processes().length,0);await close(removed);
  assert.ok((await fs.stat(join(agentDir,'mirket'))).isDirectory(),'Package removal must preserve canonical state');

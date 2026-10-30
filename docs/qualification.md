@@ -1,5 +1,194 @@
 # Local candidate qualification
 
+## Skill catalog routing candidate, private full package, 2026-10-30
+
+This is a new **unreleased** working-tree candidate after the focused skill
+adoption candidate below. It was checked on **macOS 26.5.2 (25F84), ARM64**
+with Rust/Cargo **1.99.1**, private Node **24.22.1** (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`),
+Pi **1.4.0** and TypeScript **5.9.3**. The assembled release ID is
+`sha256:1ed77a59a1a2e881ab50a321d96172815d8b84059444633176d26b14459ab89a`;
+core SHA-256 is
+`adb2bd0dd33d4a533189b264c42008be0d2dbece4a74ba3584aeed55eb28c048`;
+package inventory SHA-256 is
+`c060c4fca31e8f31995067ada463996b3f4634d0b872005bde8403b1b1927e06`.
+The package contains **13,356 inventoried files** and was assembled and
+installed only in `/private/tmp/mirket-pi-package-BAZuTr`. No live user Pi,
+project settings, `.mirket`, `.pi` or `.agents` state was used.
+The new 0.0.1 archive is **461,000,129 bytes**, SHA-256
+`5c0f99fe443d66edd77776f5c72d7009743a35d366a8906b1e00df6fcd7eff39`;
+its six payload checksums pass. A safety-checked extraction found **15,349**
+regular-file/directory members, including **13,357** files with the package
+inventory itself. All 13,356 inventoried file sizes and hashes matched the
+qualified package; the extracted native core independently verified the same
+release ID with debug assertions disabled. Archive creation and roundtrip
+receipts are under `/private/tmp/mirket-rerelease-0.0.1-20261030.DV1Uv7VW/`.
+The first extraction checker over-rejected tar's standard equal long-path PAX
+metadata; the corrected checker allowed only that path field and passed. The
+failed checker attempt is retained and is not counted as archive qualification.
+
+The build-input guard passed **before** the new Rust compilation. Locked offline
+Rust tests passed (**446 pass, 4 ignored**), as did clippy, formatting and the
+release build. The private Node TypeScript build and process suite passed
+(**144 pass, 1 skipped**); Python discovery passed (**183 pass**). Catalog
+refresh reported `changed: []` and 63 reference families; the route audit and
+assembled skill links passed (73 Markdown files, 13 local links). Explicit
+private-node MCP smoke passed against the packaged core. The full assembled
+Pi integration passed **16 checkpoints**, including native effective selection
+under `autoload:false`, selected missing-raster doctor status, local design and
+navigation operations, scoped memory authorization, reload and project
+isolation. Actual Pi CLI/RPC/TUI checks passed doctor, reload, fork/resume,
+running codemode abort/recovery and clean PTY shutdown. Three fresh first-tool
+samples were **4125.649, 1845.072 and 1847.170 ms**, passing the current
+**5000/2500/2500 ms** gate; the prior 1500 ms gate does not pass.
+The saved 640×240 PNG produced by the installed design route was then read by
+Pi and delivered byte-for-byte to an offline image-capable provider fixture;
+its source and delivered SHA-256 matched. This proves image transport, not a
+model's visual interpretation. The receipt is
+`/private/tmp/mirket-pi-package-BAZuTr/image-transport-report.json` (SHA-256
+`6f4fb80d7fa6a72bdfc14029929318811a57bc00dbdee93f2700cfe9e80744a0`).
+
+A separate **packaged-core Video linkage** trial used this exact release with
+explicit packaged Node, adapter, FFmpeg and ffprobe paths and the retained
+private external Chrome. It observed the adapter and Chrome running before
+cancellation, verified that the cancelled operation left no destination or
+scratch output, then completed a two-second supplied-audio MP4 on the same MCP
+server. Independent decode found 24 H.264 frames at 640×360 and 96,000 mono
+PCM samples from AAC; timing and gain checks passed. A source edit changed
+8,310 decoded heading pixels, and the saved receipt matched the output. All
+13,356 package files rehashed unchanged and no owned processes survived. The
+first cancellation attempt used an insufficient process filter and is retained
+as a failed oracle, not counted. The passing report is
+`/private/tmp/mirket-final-video-ta3g_hxf/report.json` (SHA-256
+`aedbcf065e536ef2963d16cf54755d295c507e8bc483adb3292acbfcfa941cd4`).
+This checks the packaged core through development MCP flags; it does not prove
+a rendered frame at cancellation, captions, heard audio, playback or visual
+quality. An additional **installed Pi Video journey** used this same private
+package with its explicit video Chrome binding and an offline deterministic
+provider. Pi invoked the real `video_prepare/start/status/cancel` routes:
+the two-second MP4 decoded to 24 frames with the expected audio timing/gain;
+a changed source changed decoded pixels; a stale revision and remote asset
+were refused; and in-flight cancellation left no published output and removed
+owned scratch files. The full Pi session report is
+`/private/tmp/mirket-pi-package-BAZuTr/domain-session-report.json` (SHA-256
+`a7eabf83893f29e54f636d35a96313235d7514267e51e440c55d5b95cecc9a9a`),
+with independent decoded, changed-source and failure evidence under
+`/private/tmp/mirket-pi-package-BAZuTr/project/video-1793357289394/`.
+The exact command, executable and fixture hashes are in
+`/private/tmp/mirket-pi-package-BAZuTr/pi-video-qualification.json` (SHA-256
+`deff9637ddf259b4aa2ad8ef673e91b5f0a8a1eecf1bc53cb2d23e334a8881d4`).
+This establishes the Pi tool path and saved output checks with an offline
+scripted provider, not model judgment or playback.
+
+A separate [focused routing runner](../tests/skill-trials-routing.mjs) passed
+six paired offline Pi cases (12 arms) on this release: source-only Video static
+handoff, unconfigured public research refusal, local wide/narrow browser
+snapshots and PNGs, account/form route refusal, selected missing-raster doctor
+status and inherited skill exclusion under `autoload:false`. The native arms
+used one fresh private installation with separate HOME, project, settings and
+session state per arm. The browser grant was test-only. Its [private
+report](/private/tmp/mirket-skill-trials-routing-CLsi82/REPORT.md) retains the
+four corrected harness failures, exact private executables and source pins;
+`report.json` has SHA-256
+`df54d6dc94e63a1fe4a062d25197e7f59ec04f0c23aa36a523c64845d0f8d0d8`.
+The deterministic provider measured route/context behavior, not model utility,
+token savings or visual quality.
+
+Three failed attempts were retained while repairing the fixture: the old Rust
+binary correctly refused changed embedded catalog bytes; a refreshed binary
+then reached a package assembler call missing the required Video source/notice
+root; the first installed doctor call exposed Pi's `skill:` command prefix.
+The Rust fixed-count check, fixture argument and doctor ID mapping were
+corrected before the final full pass. These attempts are not counted as
+qualification. Raw final evidence is at
+`/private/tmp/mirket-pi-package-BAZuTr/report.json` (SHA-256
+`24cf874f42d5d76e16c10544138d9a18db56df8b682ab8dc4704d716958b60d9`)
+and `cli-lifecycle-report.json` (SHA-256
+`9661bbdecd12dc931bde3b3b81b233f4792223b9142e8cb227e5de10152810ee`)
+in the same directory. Reviewer source/build
+logs are at `/private/tmp/mirket-review-b-gates-o0oe7klc/` and
+`/private/tmp/mirket-skill-review-verify-ze0i6ex4/`. These private paths are
+disposable; the identities and bounded results above remain the record.
+
+The 305 catalog cases remain planned. This run established source/package
+consistency and selected installed Pi routes, plus the bounded packaged-core
+and installed Pi Video operation/cancellation above. It did not run held-out skill-utility,
+image interpretation or visual-quality trials. Windows and other platforms
+require their own native
+qualification. No publication or live installation is implied.
+
+## Focused skill adoption candidate, private full package, 2026-10-30
+
+This is a new **unreleased** candidate from HEAD
+`7437db7dcd386f6d65fa9ae044fbad2e1e09b7fe` plus the current working-tree
+changes. It was checked on **macOS 26.5.2 (25F84), ARM64**, with Rust 1.99.1,
+private Node 24.22.1 (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`)
+and external Pi 1.4.0. The fresh native release ID is
+`sha256:fecfeae99d324259a2e836039d442439922fe8d18fc7d7e5e3904c4f65d0a125`,
+core SHA-256 is `255a40ac41580e33a947d4d01fa2149a7ff83a6af9cbe0ff47ba3602cb8c8d91`,
+and package inventory SHA-256 is
+`df50945aa32fb2fbadd3b212add630fd4aff1e1968c052fde48f1f1bc6bcee4c`.
+All 13,356 inventoried package files matched their recorded bytes and hashes;
+no links were present. The package was assembled and tested in
+`/private/tmp/mirket-post-adoption-native-cix6a895/package`, not installed on
+the user's device or published. The version remains 0.0.1.
+
+The build-input guard ran before Rust compilation. Locked offline Rust tests
+passed (**445 pass, 4 ignored**); clippy, formatting and release build passed.
+The locked TypeScript build and process suite passed (**143 pass, 1 existing
+skip**), as did the repaired Python suite (**181 pass**), 63-reference catalog
+consistency, native/package verification and explicit packaged-core MCP smoke.
+The first Python run failed on an obsolete expected resource list; the fixture
+was updated for the new OpenPencil and frame-review resources before the full
+rerun. An initial private package copy omitted a nested retained notice and
+failed assembly; the complete notice tree was restored before the final
+independently checked package. Both failed attempts remain in the private
+report; neither is counted as a pass.
+
+In a separate disposable Pi installation of this exact package, native resource
+filtering loaded nine globals plus the selected OpenPencil and video-production
+skills. Pi read both bodies and all five declared references byte-for-byte;
+the TUI read the two new method references. CLI/RPC/TUI doctor, reload,
+fork/resume, running abort/recovery and clean exit passed. Three first-tool
+samples were **2883.358, 1894.737 and 1886.863 ms**, meeting the current
+**5000/2500/2500 ms** first/repeat budget; the prior 1500 ms target remains
+false. Exact PNG image transport, a source edit changing 24,894 decoded pixels,
+stale-source refusal, running D2 cancellation/cleanup and recovery passed with
+no owned MCP survivors. Seeded unrelated Pi settings were preserved.
+
+One real supplied-audio MP4 operation through the **packaged core and adapter**
+returned `audio_end_seconds: 2` and a matching saved receipt. Independent decode
+found 24 H.264 frames at 640×360 over two seconds and AAC decoded to PCM; onset,
+tail and two-tone gain checks passed. A separate current-adapter trial produced
+a PNG sequence with caption boundary checks and showed the new stream-end guard
+rejecting real 0.5-second AAC metadata against a two-second target. Two initial
+captioned MP4 strict pixel-oracle attempts failed because the test strip also
+contained an animated footer and lossy output variation. Those failures remain
+recorded; the lossless PNG cue check passed. Frame review also found a
+synthetic footer/caption overlap and insufficient reading hold, so it is not
+presented as visual acceptance.
+
+The focused OpenPencil typed trial completed 16 operations, reopened and patched
+native source, and exposed then repaired a clipped long label. The HyperFrames
+frame trial decoded two 13-frame clips with matching endpoints but a detectable
+midpoint overshoot. These are bounded method checks, not held-out model
+comparisons. All 305 catalog cases remain planned. Audible playback, live
+provider image interpretation, native editor fidelity, Windows and other
+platforms require separate tests. No live installation or client settings were
+used, and Mirket-owned processes are not an OS sandbox.
+
+Exact commands, executable identities, failures and raw outcomes are retained
+outside shipped source in
+`/private/tmp/mirket-post-adoption-native-cix6a895/REPORT.md` (SHA-256
+`d1096693c13a457d43579135ffbc2b88d8cccae1e03a8ead2b235cfaae0a26ca`),
+`/private/tmp/mirket-post-adoption-pi-q86l200_/REPORT.md` (SHA-256
+`8a23f7ec81cc94602c3d5373042a217f5f73c39e46bc9d21b44f655808086d26`),
+and `/private/tmp/mirket-packaged-video-link-iqeyghsp/report.json` (SHA-256
+`7e178f0c643f87ff35ea623cbf157036c27b00368b595962d9fadffa2da7b38d`).
+Source/rights receipts and the exact accepted/rejected method mapping are in
+`packaging/provenance/skills/`.
+
 ## 0.0.1 project-onboarding rerelease, full package, 2026-10-30
 
 This exact archive was checked on **macOS 26.5.2 (25F84), ARM64** with private

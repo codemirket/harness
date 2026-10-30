@@ -15,6 +15,9 @@ Profiles union only their baseline `skills`; conditional entries require explici
 selection. Exact IDs remain selectable, with no `mirket-` prefix. Pi settings are
 the sole active selection source. A project package object replaces the same
 global package object; `autoload:false` filtering uses pi's native delta semantics.
+An explicit profile selection excludes inherited Mirket skills in that delta
+before including the selected exact paths. Initialization without selection
+arguments preserves an existing filter.
 An unfiltered package can load every manifest skill and must be reported honestly.
 
 After local installation, `/mirket-project init [PROFILE ...] [+SKILL ...]`
@@ -58,14 +61,19 @@ skill route audit rather than a second full list here.
 
 The seven optional capability IDs are `navigation.js-ts`, `design.tokens`,
 `design.openpencil`, `design.vector`, `design.raster`, `design.diagrams`, and
-`video`. Memory is a core route, not an optional pairing ID. Required unavailable
-capabilities make skill activation refuse. Conditional capabilities must be
-checked before the particular operation. Host-only guidance still requires
-actual available pi/project tools.
+`video`. Memory is a core route, not an optional pairing ID. Pi can load skill
+guidance even when its required native route is unavailable. `mirket_doctor`
+reports selected missing prerequisites; the affected native operation refuses
+when invoked. Conditional capabilities must be checked before the particular
+operation. Host-only guidance still requires actual available pi/project tools.
 The default package does not include Playwright MCP or browser bytes. Browser
 guidance uses project-installed tests or the separately onboarded optional Pi
 peer, with a confirmed `/mirket-browser open` grant for one local origin. The
 disposable [browser pilot](tool-pilots-20261029.md) alone is not qualification.
+The optional peer is limited to one authorized local `127.0.0.1` origin,
+viewport inspection and navigation keys with reduced motion on. Public pages,
+pointer/form input and normal-motion QA require separately established project
+or research tooling.
 
 A stable MCP tool list is not readiness. Use `runtime_status` to inspect configured
 payloads and revalidate operation identity/scope at use. Standard design readiness
@@ -80,7 +88,7 @@ domain question; resources are opt-in reading, not additional global prompts.
 
 The [reference selection](references.md), [provenance ledger](../skills/PROVENANCE.md)
 and [focused adoption mapping](../packaging/provenance/skills/source-design-adoption.md)
-separate comparison/link-only sources from the eight reviewed method adaptations.
+separate comparison/link-only sources from the nine reviewed method adaptations.
 Reference rights never grant rights to unrelated artwork, fonts or executable
 packages. Hallmark, Taste and Impeccable are the selected design guidance;
 HyperFrames remains the selected video engine and Remotion is excluded from
@@ -106,6 +114,8 @@ contract, non-obvious safeguard or measured usefulness. A small tie does not
 prove a skill universally useless, and a failed bundle does not identify an
 individual causal culprit. [Qualification](qualification.md) states the bounded
 comparison's limits.
+The [2026-10-30 catalog review and improvement plan](skill-catalog-review-20261030.md)
+records current routing repairs, source comparisons and the next held-out gates.
 
 Creative direction stays with a capable lead and comparable reviewer when useful.
 Respect explicit model/reasoning choices, disjoint ownership and lead integration.

@@ -8,11 +8,13 @@ description: "Inspect and cite public or local web pages when rendered content, 
 For discovery, use a research route only when explicitly configured and admitted.
 If it supplies search results or fetched source text, open decisive sources in
 their original context.
-When rendered state or interaction matters, use a Pi-owned Playwright MCP peer
-only when explicitly configured and qualified with an isolated profile; otherwise
-use the project's installed browser tests/tools. Report missing live browser
-capability when required. Public search pages can provide discovery when that
-route is configured. Pi has no built-in browser or search service.
+For public rendered pages, use an explicitly configured research route or the
+project's installed browser tools. The optional Pi-owned peer can inspect only
+one authorized local `127.0.0.1` origin with snapshots, viewport screenshots
+and limited navigation keys in reduced-motion mode; it cannot browse public
+sites, pointer-click, type or evaluate scripts. Navigation keys can still
+activate local controls. Report missing live browser capability
+when required. Pi has no built-in browser or search service.
 Report the specific missing route or credential instead of assuming one. Treat
 login, CAPTCHA and rate limits as access limits; do not bypass them or claim
 browsing from a URL or snippet. Never assume a personal browser session.

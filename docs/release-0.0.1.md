@@ -6,25 +6,30 @@ one compiled TypeScript Pi package, private Node 24.22.1, selected manageable
 tools, project license, original third-party notices and required source packets.
 It contains no Chrome, Playwright or Raster executable payload.
 
-This rerelease adds `/mirket-project init` and `/mirket-project status`, project
-Pi registration, and updates to managed project guidance after successful use of
-selected Mirket skills and tools. The native core and compiled Pi extension were
-rebuilt from the current source and skill catalog. This remains a macOS
-prerelease candidate. [Qualification](qualification.md) separates checks on this
-exact archive from earlier source and package evidence; no cross-platform result
-is implied. Fresh extracted-archive Pi CLI/RPC/TUI project onboarding, memory,
-image delivery, cancellation and ten bundled-domain checks passed. Three
-first-tool samples (**1937.586, 1921.059, 1908.535 ms**) met the unchanged
+This rerelease carries the focused skill-catalog repairs and selected OpenPencil
+and HyperFrames methods. Pi profile selection now excludes inherited Mirket
+skills under `autoload:false`; doctor names selected skills whose required
+native routes are unavailable. Browser guidance matches the optional local
+peer's actual scope, raster remains conditional, and source-only Video authoring
+is separately described. The native core and compiled Pi extension were rebuilt
+from the current source and skill catalog. This remains a macOS prerelease
+candidate. [Qualification](qualification.md) separates checks on this exact
+package from earlier source and package evidence; no cross-platform result is
+implied.
+
+Locked offline Rust tests passed (**446 pass, 4 ignored**), TypeScript process
+tests passed (**144 pass, 1 skipped**), and the Python suite passed (**183**).
+The build-input guard, clippy, formatting, release build, catalog/route audits,
+packaged MCP smoke, Pi CLI/RPC/TUI, image delivery, six paired offline routing
+cases, and an installed Pi Video journey passed with disposable state. Three
+fresh first-tool samples (**4125.649, 1845.072, 1847.170 ms**) met the
 **5000/2500/2500 ms** first/repeat gate without a cache-flush or percentile
-claim. The explicit existing-package helper passed 10 focused tests, a real
-disposable old-to-new native migration and a JS-only same-native-ID migration;
-an initial old-package setup timeout under concurrent staging remains recorded.
-Fresh full-package native checks passed bundled design/navigation/memory,
-separate optional browser and video Chrome bindings, the Playwright peer probe,
-decoded video/audio, reedit, refusal and cancellation. Those optional payloads
-remain external. An initial full setup timeout under concurrent staging and a
-video fixture input mismatch remain in the private qualification record; their
-corrected sequential/fixture runs passed without changing product gates.
+claim. The Video journey independently decoded two-second H.264/AAC output,
+observed changed-source pixels and refusal/cancellation cleanup. Separate
+packaged-core evidence observed Chrome running before cancellation. The routing
+cases used a deterministic provider and do not establish model skill utility;
+all 305 catalog cases remain planned. Optional Chrome and Playwright payloads
+remain external, and Raster remains excluded.
 
 ## Assets and exact identity
 
@@ -42,25 +47,25 @@ The release contains seven assets:
 - `SHA256SUMS` — SHA-256 for the six payloads above. Check it before extraction
   or running any script.
 
-This 0.0.1 rerelease replaces the native package archive and checksum file and
-adds the migration helper. The standalone fresh installer, acquisition script,
-host lock and license notice are unchanged. Earlier installer and route evidence
-is retained in [qualification](qualification.md).
+This 0.0.1 rerelease replaces the native package archive and checksum file.
+The standalone fresh installer, migration helper, acquisition script, host lock
+and license notice are unchanged. Earlier installer and route evidence is
+retained in [qualification](qualification.md).
 
-The archive is **460,983,272 bytes**; its SHA-256 is
-`780eba5b9624063d4c3bde06ffc9f46132c152c705203370b7109a327fc940ea`.
+The archive is **461,000,129 bytes**; its SHA-256 is
+`5c0f99fe443d66edd77776f5c72d7009743a35d366a8906b1e00df6fcd7eff39`.
 It replaces the same-named archive with SHA-256
-`4bdc35bc5933f014485d22260a87d1f059e442a70aa5b54782f97c80b90d4d83`.
+`780eba5b9624063d4c3bde06ffc9f46132c152c705203370b7109a327fc940ea`.
 The package inventory SHA-256 is
-`ee51700253ad7de510d9c4a6d32a837b3e65b2b861f212a28113119b4b4b4984`.
+`c060c4fca31e8f31995067ada463996b3f4634d0b872005bde8403b1b1927e06`.
 The native release ID is
-`sha256:d2aa0c11ff58234c733f8f329047cdbf47c6f5341fbd866b9af712a9ba86c1fc`.
+`sha256:1ed77a59a1a2e881ab50a321d96172815d8b84059444633176d26b14459ab89a`.
 The native executable SHA-256 is
-`b8256d8061ab8224b26c94a70d59696c3052a7435cf3de023f0fe4f863629e7d`.
+`adb2bd0dd33d4a533189b264c42008be0d2dbece4a74ba3584aeed55eb28c048`.
 The migration helper SHA-256 is
 `296aa33c4f4e457faf18627217d1d4c1ddc3b6d18e5967f052a6074d149b49c5`.
 The six-entry `SHA256SUMS` file SHA-256 is
-`3cea3a5dc1aa3964573e210bd2cf3c5354a4628647028e2964a3eafa7c80a50d`.
+`e2f0b759c58c5d08fa1047a388c7531c1380e909d5e94f81f8620a3147ca966d`.
 The external host lock SHA-256 is
 `c1cee4255aaad64b6dea75b57d8ed484e2c89ea90fbd62cb3818f456ed0cbcfb`.
 The acquisition script passed 12 focused refusal/success tests and reproduced

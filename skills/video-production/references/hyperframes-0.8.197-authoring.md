@@ -118,7 +118,7 @@ decoded frames; whole-frame hashes, status and a moving neighbor are not enough.
 
 For an opening hold, do not assume `anime.animate(..., {delay: ...})` preserves
 the delay when HyperFrames seeks the instance. In the local [Anime/HyperFrames
-pilot](../../../docs/tool-pilots-20261029.md), a one-second delay advanced the
+pilot](https://github.com/codemirket/harness/blob/7437db7dcd386f6d65fa9ae044fbad2e1e09b7fe/docs/tool-pilots-20261029.md), a one-second delay advanced the
 subject too early in decoded output; registering an
 `anime.createTimeline({autoplay:false})` with the animation added at a 1000 ms
 offset restored the hold. Check early and late decoded positions as well as
@@ -189,16 +189,19 @@ existing `motion-direction` shot card when a new sequence needs direction.
    source with a caller-selected local font/notice; it is unnecessary for an
    existing composition. Repository utilities are not installed MCP tools or
    files promised in unrelated projects.
-2. Run `scripts/check-video-source.mjs` using an explicit private Node path,
+2. In the harness checkout only, run `scripts/check-video-source.mjs` using an explicit private Node path,
    `--project ABS_PROJECT --manifest ABS_MANIFEST`. Its manifest contains
    `schema_version: 1`, a relative `entry_file`, the complete profile (including
    `captions_path: null` when absent), and `sources` entries with relative
    `path`, `sha256:`-prefixed `revision` and byte count `bytes`. Select the entry
    and every referenced asset; regenerate revisions after an edit. This uses
-   the checkout's compiled adapter and reports static validity only.
+   the checkout's compiled adapter and reports static validity only. Installed
+   projects use the qualified `video_prepare` route for operation preflight;
+   this repository checker is not shipped with the Pi package.
 3. Inspect the affected source state with the project's installed browser test
-   tool, or a Pi-owned Playwright MCP peer only when explicitly configured and
-   qualified with an isolated profile, before a full render.
+   tool before a full render. The optional Pi peer can supplement local
+   `127.0.0.1` reduced-motion screenshots and limited navigation-key checks;
+   it cannot establish normal-speed animation or scripted seeking.
    For CSS/WAAPI frame inspection in this checkout, the existing
    `scripts/create-motion-preview.mjs --project ABS_PROJECT --entry ABS_HTML
    --motion ABS_MOTION_JSON --output ABS_NEW_PREVIEW` uses the profile described
@@ -214,8 +217,8 @@ existing `motion-direction` shot card when a new sequence needs direction.
 5. Probe and decode the actual output using the selected private FFprobe/FFmpeg
    paths and the recipe above. Inspect changed beats and their neighbours,
    exercise affected UI separately with the project's installed browser test
-   tool or an explicitly configured and qualified Pi-owned Playwright MCP peer
-   with an isolated profile, and record playback observations. Repair only a
+   tool, and record playback observations. The optional Pi peer supplies only
+   local reduced-motion inspection with limited navigation keys. Repair only a
    demonstrated defect within the shared task budget,
    then repeat the affected checks. Preserve the previous artifact and findings.
 

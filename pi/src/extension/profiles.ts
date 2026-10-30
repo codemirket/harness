@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync, renameSync, unlinkSync, rmdirSy
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { regularBytes } from './runtime.js';
-interface Skill { id: string }
+interface Skill { id: string; required_capabilities?: string[] }
 interface Catalog { global: Skill[]; project: Skill[]; profiles: Record<string, {skills: string[]; conditional: string[]}> }
 export interface ProfileEdit { file: string; expected: string; packageRoot: string; skills: string[]; preserveSelection?: boolean; ensureExtension?: boolean }
 export interface AppliedProfile { skills: string[] | null; changed: boolean }
@@ -19,6 +19,18 @@ export function profileSelection(catalog: Catalog, names: string[], ids: string[
   for (const id of ids) selected.add(id);
   for (const id of selected) if (!available.has(id)) throw new Error(`Unknown skill: ${id}`);
   return [...selected].sort().map(id => `skills/${id}/SKILL.md`);
+}
+/** Report selected guidance whose required native route is absent. Pi still loads the prose. */
+export function unavailableSkillRequirements(packageRoot: string, selected: string[], available: string[]) {
+  const catalog = JSON.parse(regularBytes(join(packageRoot, 'skills/catalog.json'), 2 * 1024 * 1024).toString()) as Catalog;
+  const entries = new Map([...catalog.global, ...catalog.project].map(skill => [skill.id, skill]));
+  const capabilities = new Set(available);
+  return selected.flatMap(id => {
+    const skill = entries.get(id);
+    if (!skill) throw new Error(`Selected skill is absent from catalog: ${id}`);
+    const missing = (skill.required_capabilities ?? []).filter(capability => !capabilities.has(capability));
+    return missing.length ? [{skill: id, missing}] : [];
+  });
 }
 function read(file: string): string | undefined {
   try { return regularBytes(file, 2 * 1024 * 1024).toString(); }
@@ -86,7 +98,12 @@ export function applyProfile(edit: ProfileEdit): AppliedProfile {
     if (digest(original) !== edit.expected) throw new Error('Settings changed; recompute the profile selection');
     const {settings, packages, index, existing} = packageSettings(original, edit.packageRoot, parent);
     const preserve = edit.preserveSelection && index !== undefined;
-    const filter = preserve && typeof existing === 'object' ? existing.skills : preserve ? undefined : edit.skills;
+    // Pi treats an autoload:false project entry as a delta over the global
+    // package entry. Clear every inherited skill before adding this explicit
+    // selection, including conditional skills selected globally.
+    const delta = existing && typeof existing === 'object' && !Array.isArray(existing) && existing.autoload === false;
+    const filter = preserve && typeof existing === 'object' ? existing.skills : preserve ? undefined
+      : delta ? ['!skills/**', ...edit.skills.map(path => `+${path}`)] : edit.skills;
     validateFilter(filter);
     const replacement = {...(typeof existing === 'object' ? existing : {}), source: edit.packageRoot, ...(filter === undefined ? {} : {skills: filter}), ...(edit.ensureExtension ? {extensions: [PROJECT_EXTENSION]} : {})};
     if (index !== undefined && JSON.stringify(existing) === JSON.stringify(replacement)) return {skills: filter ?? null, changed: false};

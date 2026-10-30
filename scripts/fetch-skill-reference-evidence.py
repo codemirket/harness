@@ -34,6 +34,9 @@ LICENSE_OVERRIDES={
     "mengto-inspiration":["LICENSE"],
     "huashu-storyboard":["LICENSE"],
     "hyperframes-authoring":["LICENSE"],
+    "openpencil-skill":["skills/open-pencil/LICENSE.txt"],
+    "hyperframes-skill":["LICENSE"],
+    "ffmpeg-skill":["LICENSE"],
 }
 
 def refs():

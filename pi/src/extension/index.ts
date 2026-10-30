@@ -3,7 +3,7 @@ import { Type } from 'typebox';
 import { fileURLToPath } from 'node:url';
 import { realpathSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { prepareProfile, applyProfile } from './profiles.js';
+import { prepareProfile, applyProfile, unavailableSkillRequirements } from './profiles.js';
 import { initializeProject, projectSyncStatus, readProjectGuidance, recordProjectUse } from './project-setup.js';
 import { registerProjectObservation } from './project-observe.js';
 import { verifyHost } from './host.js';
@@ -22,6 +22,7 @@ export default function mirket(pi: ExtensionAPI): void {
   let runtime: VerifiedRuntime | undefined;
   let failure = 'No active session';
   let observedRelease: string | undefined;
+  let observedSkillCapabilities: string[] | undefined;
   let nativeFailure: string | undefined;
   const onboarding=createOnboarding(pi,packageRoot,()=>runtime);
   const browser=createBrowserController(pi,()=>runtime,getAgentDir,(selected,toolName)=>recordProjectUse(selected,{kind:'tool',id:toolName}));
@@ -60,16 +61,24 @@ export default function mirket(pi: ExtensionAPI): void {
       else if (tool.sourceInfo.path !== 'builtin:mcp') issues.push('Runtime status has unexpected owner');
       if (observedRelease !== runtime.binding.releaseId) issues.push('Awaiting actual runtime_status identity');
     }
+    const selectedSkills = pi.getCommands()
+      .filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot + '/'))
+      .map(command => command.name.startsWith('skill:') ? command.name.slice('skill:'.length) : command.name);
+    let unavailableSkills: ReturnType<typeof unavailableSkillRequirements> = [];
+    if (observedSkillCapabilities) {
+      try { unavailableSkills = unavailableSkillRequirements(packageRoot, selectedSkills, observedSkillCapabilities); }
+      catch (error) { issues.push(`Skill catalog check failed: ${error instanceof Error ? error.message : String(error)}`); }
+    }
     return {status: issues.length ? 'not_ready' : 'ready', issues, releaseId: runtime?.binding.releaseId, project: runtime?.cwd,
       projectSetup: runtime ? projectSyncStatus(runtime) : {status: 'unavailable', error: failure},
       runtimeTools:onboarding.status(),
       browser:browser.status(),
-      selectedSkills: pi.getCommands().filter(command => command.source === 'skill' && command.sourceInfo.path.startsWith(packageRoot + '/')).map(command => command.name), model: 'host-owned', nativeOnly: false};
+      selectedSkills, skillReadiness: {status: observedSkillCapabilities ? unavailableSkills.length ? 'missing' : 'ready' : 'unknown', unavailableSkills}, model: 'host-owned', nativeOnly: false};
   }
   pi.on('session_start', async (_event, ctx) => {
     onboarding.cancel();
     const current = ++generation;
-    runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
+    runtime = undefined; observedRelease = undefined; observedSkillCapabilities = undefined; nativeFailure = undefined;
     await browser.revoke('Pi session changed').catch(error => { ctx.ui.notify(`Browser cleanup failed: ${String(error)}`, 'warning'); });
     pi.unregisterMcpServer('mirket');
     try {
@@ -94,7 +103,7 @@ export default function mirket(pi: ExtensionAPI): void {
   });
   pi.on('session_shutdown', async () => {
     onboarding.cancel();
-    ++generation; runtime = undefined; observedRelease = undefined; nativeFailure = undefined;
+    ++generation; runtime = undefined; observedRelease = undefined; observedSkillCapabilities = undefined; nativeFailure = undefined;
     try {await browser.revoke('Pi session ended');}
     finally {pi.unregisterMcpServer('mirket');}
   });
@@ -181,13 +190,13 @@ export default function mirket(pi: ExtensionAPI): void {
       const current = generation;
       nativeFailure = undefined;
       const issues = report().issues.filter(issue => issue !== 'Awaiting actual runtime_status identity');
-      observedRelease = undefined;
+      observedRelease = undefined; observedSkillCapabilities = undefined;
       if (runtime && !issues.length) {
         const result = await ctx.executeTool('mcp__mirket__runtime_status', {}, signal ? {signal} : {});
         if (result.isError && current === generation) nativeFailure = 'Native verification failed: '+result.result.content.filter(part=>part.type==='text').map(part=>part.text).join(' ').slice(0,1024);
         if (!result.isError && current === generation) {
           for (const part of result.result.content) if (part.type === 'text') {
-            try { const status = JSON.parse(part.text); if (status.release_id === runtime?.binding.releaseId) observedRelease = status.release_id; } catch { /* Non-JSON is not attestation. */ }
+            try { const status = JSON.parse(part.text); if (status.release_id === runtime?.binding.releaseId && Array.isArray(status.skill_capabilities) && status.skill_capabilities.every((value: unknown) => typeof value === 'string')) {observedRelease = status.release_id; observedSkillCapabilities = status.skill_capabilities;} } catch { /* Non-JSON is not attestation. */ }
           }
         }
       }

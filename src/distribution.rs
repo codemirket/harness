@@ -1314,9 +1314,9 @@ fn layout_with_skill_sources(
         let catalog: crate::native_skills::SkillCatalog = serde_json::from_slice(catalog_source)
             .map_err(|_| DistributionError::InvalidManifest)?;
         if catalog.schema_version != 1
-            || catalog.global.len() != 9
-            || catalog.project.len() != 52
-            || catalog.profiles.len() != 7
+            || catalog.global.is_empty()
+            || catalog.global.len() + catalog.project.len() > 256
+            || catalog.profiles.len() > 64
         {
             return Err(DistributionError::InvalidManifest);
         }
@@ -2195,6 +2195,42 @@ mod tests {
             VerifiedRelease::open(&fixture.root),
             Err(DistributionError::ContentMismatch)
         ));
+    }
+
+    #[test]
+    fn skill_layout_accepts_a_bounded_evidence_led_reduction() {
+        let mut catalog: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../skills/catalog.json")).unwrap();
+        let selected = catalog["profiles"]
+            .as_object()
+            .unwrap()
+            .values()
+            .flat_map(|profile| {
+                ["skills", "conditional"]
+                    .into_iter()
+                    .flat_map(move |key| profile[key].as_array().unwrap().iter())
+            })
+            .filter_map(serde_json::Value::as_str)
+            .map(str::to_owned)
+            .collect::<BTreeSet<_>>();
+        let project = catalog["project"].as_array_mut().unwrap();
+        let index = project
+            .iter()
+            .position(|entry| !selected.contains(entry["id"].as_str().unwrap()))
+            .unwrap();
+        let removed = project.remove(index)["id"].as_str().unwrap().to_owned();
+        let reduced = serde_json::to_vec(&catalog).unwrap();
+        let layout = layout_with_skill_sources(
+            MAC_TARGET,
+            &[ReleaseComponent::Skills],
+            Some((&reduced, include_bytes!("../skills/PROVENANCE.md"))),
+        )
+        .unwrap();
+        assert!(
+            !layout
+                .files
+                .contains_key(&format!("skills/{removed}/SKILL.md"))
+        );
     }
 
     #[cfg(unix)]

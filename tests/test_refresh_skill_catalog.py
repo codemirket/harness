@@ -62,7 +62,7 @@ Source rights remain available.
         self.assertTrue(any("/LICENSE" in item["requested_url"] for item in skyvern["license_evidence"]))
         # Comparison-only families may intentionally have no local contract;
         # every newly adopted method family must have one.
-        for ident in ("huashu-storyboard", "hyperframes-authoring"):
+        for ident in ("huashu-storyboard", "hyperframes-authoring", "openpencil-skill", "hyperframes-skill", "ffmpeg-skill"):
             source = next(item for item in audit["sources"] if item["id"] == ident)
             self.assertTrue(source["skill_contracts"])
             self.assertEqual(source["verification"], "verified-retrieval")
@@ -95,9 +95,10 @@ Source rights remain available.
         self.assertTrue(all("No upstream material was adapted" not in item["reuse_boundary"] for item in audit["sources"]))
 
         for skill_id, expected in {
+            "openpencil": ["references/file-authoring.md"],
             "vector-art": ["references/illustration-craft.md"],
             "motion-direction": ["references/editable-motion.md", "references/motion-observations.md", "references/storyboard-and-transitions.md"],
-            "video-production": ["references/hyperframes-0.8.197-authoring.md", "references/motion-observations.md", "references/preview-and-beats.md"],
+            "video-production": ["references/frame-review-plan.md", "references/hyperframes-0.8.197-authoring.md", "references/motion-observations.md", "references/preview-and-beats.md"],
         }.items():
             entry = next(x for x in catalog["project"] if x["id"] == skill_id)
             self.assertEqual([x["path"] for x in entry["resources"]], expected)

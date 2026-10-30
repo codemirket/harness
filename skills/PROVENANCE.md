@@ -1,7 +1,7 @@
 # Native skill provenance
 
 All 61 native skill bodies and their 305 public development cases are authored
-for this repository. Eight project bodies are classified method-adapted because
+for this repository. Nine project bodies are classified method-adapted because
 they retain independently worded techniques from reviewed source families; no
 external prose, code, workflow, asset or font has been copied into these bodies.
 
@@ -21,9 +21,11 @@ The catalog manifest records the exact SHA-256 authoring snapshot of these files
 Later changes require checking the affected contracts; a hash establishes bytes,
 not user approval or semantic correctness.
 
-- [Catalog design](../docs/skills.md): Nine global skills; Project skills and pairing; Authoring, resources and rights; Evaluation and retention.
-- [Implementation plan](../docs/architecture.md): Product boundary; Concrete capability and evidence contracts.
-- [Selected references](../docs/references.md): retained URLs/pins, family identity and Source-to-guide reuse contract.
+- [Catalog design](https://github.com/codemirket/harness/blob/main/docs/skills.md): Nine global skills; Project skills and pairing; Authoring, resources and rights; Evaluation and retention.
+- [Implementation plan](https://github.com/codemirket/harness/blob/main/docs/architecture.md): Product boundary; Concrete capability and evidence contracts.
+- [Selected references](https://github.com/codemirket/harness/blob/main/docs/references.md): retained URLs/pins, family identity and Source-to-guide reuse contract.
+  The catalog's authoring-basis hashes bind the exact local documentation bytes;
+  these repository links are reading locators, not identity attestations.
 
 ## Local contract and outcome basis
 
@@ -38,7 +40,7 @@ successful model-to-useful-output journey.
 
 ## Rights and adaptation boundary
 
-Most bodies are independently-authored; eight project bodies are explicitly
+Most bodies are independently-authored; nine project bodies are explicitly
 classified method-adapted with reviewed, independently worded mappings. The
 reference index preserves all selected families and URLs for comparison or
 focused method review. URLs with moving revisions are not source pins.
@@ -332,12 +334,14 @@ selection quality, rights, useful behavior or user acceptance.
 
 ### openpencil
 
-- Classification/terms: independently-authored; MIT; no external section adopted.
+- Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Comparison/link-only families: [hallmark](#reference-hallmark), [impeccable](#reference-impeccable), [owl-concepts](#reference-owl-concepts).
+- Reviewed method families: [openpencil-skill](#reference-openpencil-skill).
 - Required qualified capabilities: design.openpencil.
 - Conditional operation boundaries: design.tokens, design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: openpencil-positive-1, openpencil-positive-2, openpencil-negative-1, openpencil-negative-2, openpencil-mixed-1. Not run.
+
+- Method mapping: OpenPencil file-scoped authoring and container-layout methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied.
 
 ### vector-art
 
@@ -364,7 +368,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Comparison/link-only families: [archify](#reference-archify), [diagram-design](#reference-diagram-design), [atlassian](#reference-atlassian), [guardian](#reference-guardian), [spectrum](#reference-spectrum).
 - Required qualified capabilities: design.diagrams.
 - Conditional operation boundaries: design.vector; use only when the actual task needs them.
-- Local retention evidence: the [2026-10-29 D2 method pilot](../docs/tool-pilots-20261029.md) found that an initial simplification visually orphaned terminal outcomes. The skill's guard/connection safeguard is local wording from that observed failure; no diagram-design section or runtime was adopted.
+- Local retention evidence: the [2026-10-29 D2 method pilot](https://github.com/codemirket/harness/blob/7437db7dcd386f6d65fa9ae044fbad2e1e09b7fe/docs/tool-pilots-20261029.md) found that an initial simplification visually orphaned terminal outcomes. The skill's guard/connection safeguard is local wording from that observed failure; no diagram-design section or runtime was adopted.
 - Planned acceptance IDs: diagrams-positive-1, diagrams-positive-2, diagrams-negative-1, diagrams-negative-2, diagrams-mixed-1. Not run.
 
 ### data-visualization
@@ -431,13 +435,13 @@ selection quality, rights, useful behavior or user acceptance.
 
 - Classification/terms: method-adapted; independently worded local method; source-level rights and notices are recorded in the focused adoption review.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
-- Reviewed method families: [hyperframes-authoring](#reference-hyperframes-authoring).
+- Reviewed method families: [hyperframes-authoring](#reference-hyperframes-authoring), [hyperframes-skill](#reference-hyperframes-skill), [ffmpeg-skill](#reference-ffmpeg-skill).
 - Required qualified capabilities: video.
 - Conditional operation boundaries: design.vector, design.raster; use only when the actual task needs them.
 - Planned acceptance IDs: video-production-positive-1, video-production-positive-2, video-production-negative-1, video-production-negative-2, video-production-mixed-1. Not run.
 
-- Method mapping: HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
-- Local timing evidence: the [2026-10-29 actual Anime/HyperFrames pilot](../docs/tool-pilots-20261029.md) found that an animation `delay` did not preserve an opening hold during frame seeking; the local authoring reference records the tested explicit-timeline repair and decoded-position check. This does not add Anime.js to the shipped package.
+- Method mapping: HyperFrames authoring/frame review and FFmpeg stream-end verification methods are explicitly mapped in source-design-adoption.md; no upstream prose, code or assets copied. Later original review/context synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/design-review-20261027.md / recent research and local outcome checks. Original motion authoring synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/motion-authoring-20261027.md / original preview, editable motion examples and beat correspondence. Original authoring feedback and evidence checks: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/video-authoring-diagnostics-20261027.md / original bounded diagnostics and review artifact integrity.
+- Local timing evidence: the [2026-10-29 actual Anime/HyperFrames pilot](https://github.com/codemirket/harness/blob/7437db7dcd386f6d65fa9ae044fbad2e1e09b7fe/docs/tool-pilots-20261029.md) found that an animation `delay` did not preserve an opening hold during frame seeking; the local authoring reference records the tested explicit-timeline repair and decoded-position check. This does not add Anime.js to the shipped package.
 - Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
 ### jobs-to-be-done
@@ -1157,7 +1161,40 @@ selection quality, rights, useful behavior or user acceptance.
 - Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
 
 
+<a id="reference-openpencil-skill"></a>
+### Reference: openpencil-skill
+
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
+- Source selection: docs/references.md / focused design and video method adoption / openpencil-skill.
+- Retained source 1: https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/SKILL.md.
+- Retained source 2: https://github.com/open-pencil/open-pencil/blob/24461adec7073312d460d76f08f069de18e4fb78/skills/open-pencil/references/design-authoring.md.
+- Terms/currentness: pinned retrieval and license receipts are retained in packaging/provenance/skills/reference-audit.json; exact source/section rights govern future use.
+- Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
+
+<a id="reference-hyperframes-skill"></a>
+### Reference: hyperframes-skill
+
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
+- Source selection: docs/references.md / focused design and video method adoption / hyperframes-skill.
+- Retained source 1: https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/SKILL.md.
+- Retained source 2: https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/motion.md.
+- Retained source 3: https://github.com/heygen-com/hyperframes/blob/10a4ed56cb09159afec0dba3ea784e3162ee2e71/skills/hyperframes/references/review.md.
+- Terms/currentness: pinned retrieval and license receipts are retained in packaging/provenance/skills/reference-audit.json; exact source/section rights govern future use.
+- Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
+
+<a id="reference-ffmpeg-skill"></a>
+### Reference: ffmpeg-skill
+
+- Classification: adaptable; reviewed method family, no upstream body redistributed.
+- Source selection: docs/references.md / focused design and video method adoption / ffmpeg-skill.
+- Retained source 1: https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/SKILL.md.
+- Retained source 2: https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/docs/design-decisions.md.
+- Retained source 3: https://github.com/kajisho5/ffmpeg-skill/blob/eeff097f86654830fa8aa409185ea477524c4cb8/scripts/_common/emit.py.
+- Terms/currentness: pinned retrieval and license receipts are retained in packaging/provenance/skills/reference-audit.json; exact source/section rights govern future use.
+- Removed assumptions: no upstream orchestration, runtime, package installation, account, renderer, remote fonts or branded assets.
+
+
 <!-- skill-reference-audit:begin -->
-Generated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in packaging/provenance/skills/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.
+Generated from retained reference-fetches.json; each receipt retains its retrieval date. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in packaging/provenance/skills/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the 9 method-adapted mappings are explicit and independently worded.
 Audit artifact: packaging/provenance/skills/reference-audit.json; fetch receipts: packaging/provenance/skills/reference-fetches.json
 <!-- skill-reference-audit:end -->

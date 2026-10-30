@@ -108,8 +108,8 @@ def inventory(source: Path) -> dict[str, bytes]:
     globals_, project, profiles = (catalog.get(key) for key in ("global", "project", "profiles"))
     if not isinstance(globals_, list) or not isinstance(project, list) or not isinstance(profiles, dict):
         raise AssemblyError("invalid skill catalog groups")
-    if (len(globals_), len(project), len(profiles)) != (9, 52, 7):
-        raise AssemblyError("catalog does not have the agreed release shape")
+    if not globals_ or len(globals_) + len(project) > 256 or len(profiles) > 64:
+        raise AssemblyError("skill catalog exceeds the release bounds or lacks core guidance")
     files = {
         "catalog.json": catalog_bytes,
         "PROVENANCE.md": bounded_file(source / "PROVENANCE.md", 512 * 1024),
@@ -150,6 +150,16 @@ def inventory(source: Path) -> dict[str, bytes]:
             if len(data) != resource["bytes"] or hashlib.sha256(data).hexdigest() != resource["sha256"]:
                 raise AssemblyError(f"skill resource differs from catalog: {resource_path}")
             files[resource_path] = data
+    project_ids = {entry["id"] for entry in project}
+    for name, profile in profiles.items():
+        if not isinstance(name, str) or not ID.fullmatch(name) or not isinstance(profile, dict) or set(profile) != {"skills", "conditional"}:
+            raise AssemblyError("invalid skill profile")
+        baseline, conditional = profile["skills"], profile["conditional"]
+        if not isinstance(baseline, list) or not baseline or not isinstance(conditional, list):
+            raise AssemblyError(f"invalid skill profile: {name}")
+        selected = baseline + conditional
+        if any(not isinstance(id_, str) or id_ not in project_ids for id_ in selected) or len(set(selected)) != len(selected):
+            raise AssemblyError(f"unknown or duplicate skill in profile: {name}")
     if {p.name for p in source.iterdir()} != {"catalog.json", "PROVENANCE.md", *seen}:
         raise AssemblyError("skill root contains unknown entries")
     return files

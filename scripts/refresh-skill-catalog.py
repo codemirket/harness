@@ -23,7 +23,8 @@ METHOD_ADOPTIONS={
     "scroll-motion": {"families":["emil"], "note":"Emil animation-decision methods are explicitly mapped for scroll context in source-design-adoption.md"},
     "ui-motion": {"families":["emil"], "note":"Emil animation-decision and review-format methods are explicitly mapped in source-design-adoption.md"},
     "vector-art": {"families":["mengto-inspiration"], "note":"MengTo pinned illustration-body construction methods are explicitly mapped in source-design-adoption.md"},
-    "video-production": {"families":["hyperframes-authoring"], "note":"HyperFrames pinned producer readiness/asset and troubleshooting methods are explicitly mapped in source-design-adoption.md"},
+    "openpencil": {"families":["openpencil-skill"], "note":"OpenPencil file-scoped authoring and container-layout methods are explicitly mapped in source-design-adoption.md"},
+    "video-production": {"families":["hyperframes-authoring","hyperframes-skill","ffmpeg-skill"], "note":"HyperFrames authoring/frame review and FFmpeg stream-end verification methods are explicitly mapped in source-design-adoption.md"},
 }
 
 # This later research pass informs local review/context procedures, not a new
@@ -39,7 +40,7 @@ RESEARCH_IMPROVEMENTS_SKILLS = {
     "browser-research", "motion-direction", "video-production",
 }
 
-# These are the only newly admitted families in the 2026-10-27 adoption pass.
+# These families have exact focused reviews at their recorded revisions.
 # Their classification is source-level permission to adapt a reviewed method,
 # not proof that any body faithfully reproduced the source.
 NEW_SOURCE_METADATA={
@@ -50,6 +51,18 @@ NEW_SOURCE_METADATA={
     "hyperframes-authoring": {
         "classification":"adaptable",
         "rights_status":"Apache-2.0 at the pinned revision; independently worded authoring notes only; no HyperFrames runtime or package text redistributed",
+    },
+    "openpencil-skill": {
+        "classification":"adaptable",
+        "rights_status":"MIT in the skill subtree at the pinned revision; independently worded file-authoring method only; no upstream skill text or editor payload redistributed",
+    },
+    "hyperframes-skill": {
+        "classification":"adaptable",
+        "rights_status":"Apache-2.0 at the pinned revision; independently worded frame-review method only; no upstream skill text or runtime redistributed",
+    },
+    "ffmpeg-skill": {
+        "classification":"adaptable",
+        "rights_status":"MIT at the pinned revision; independently worded verification method only; no upstream scripts, installer or MCP server redistributed",
     },
 }
 ADAPTED_FAMILIES={family for adoption in METHOD_ADOPTIONS.values() for family in adoption["families"]}
@@ -323,17 +336,17 @@ def refresh(write):
     # second catalog schema while making the evidence discoverable per family.
     review_docs=sorted(REVIEW_DIR.glob("source-*.md"))
     review_identity="; ".join(f"{p.relative_to(ROOT)} sha256={hashlib.sha256(p.read_bytes()).hexdigest()}" for p in review_docs)
-    inspection_suffix=("; 2026-10-27 retrieval receipts: packaging/provenance/skills/reference-fetches.json; "
+    inspection_suffix=("; retained retrieval receipts: packaging/provenance/skills/reference-fetches.json; "
         f"focused source review evidence: {review_identity}; source-to-skill fidelity is recorded only in those reviews, not inferred by refresh")
     plans={x["id"]:x for x in refs()}
     by_id={x.get("id"):x for x in catalog.get("reference_sources",[])}
     for ident,plan in plans.items():
         if ident not in by_id:
             meta=NEW_SOURCE_METADATA.get(ident,{"classification":"comparison-only","rights_status":"rights and source body require exact review before adaptation"})
-            entry={"id":ident,"urls":plan["urls"],"selection_locator":f"docs/references.md / selected source / {ident}","classification":meta["classification"],"inspection_status":"approved pinned locator; external body fetched in the 2026-10-27 focused adoption pass; source-to-skill fidelity is recorded only in focused review documents","rights_status":meta["rights_status"]}
+            entry={"id":ident,"urls":plan["urls"],"selection_locator":f"docs/references.md / selected source / {ident}","classification":meta["classification"],"inspection_status":"pinned locator; retrieval date and source/rights evidence are in retained receipts; source-to-skill fidelity is recorded only in focused review documents","rights_status":meta["rights_status"]}
             catalog.setdefault("reference_sources",[]).append(entry); by_id[ident]=entry; changed.append("reference:"+ident)
     for ref in catalog.get("reference_sources",[]):
-        base=ref.get("inspection_status","").split("; 2026-10-27 retrieval receipts:",1)[0].rstrip()
+        base=re.split(r"; (?:2026-10-27|retained) retrieval receipts:",ref.get("inspection_status",""),maxsplit=1)[0].rstrip()
         updated=base+inspection_suffix
         if ref.get("inspection_status")!=updated:
             ref["inspection_status"]=updated; changed.append("reference:"+ref.get("id",""))
@@ -363,7 +376,7 @@ def refresh(write):
     obj=make_audit(catalog); encoded=json.dumps(obj,indent=2,sort_keys=True,ensure_ascii=False)+"\n"
     if not AUDIT.is_file() or AUDIT.read_text()!=encoded: changed.append("packaging/provenance/skills/reference-audit.json")
     marker,end="<!-- skill-reference-audit:begin -->","<!-- skill-reference-audit:end -->"
-    block=marker+"\nGenerated from retained reference-fetches.json on 2026-10-27. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in packaging/provenance/skills/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the eight method-adapted mappings are explicit and independently worded.\nAudit artifact: packaging/provenance/skills/reference-audit.json; fetch receipts: packaging/provenance/skills/reference-fetches.json\n"+end
+    block=marker+f"\nGenerated from retained reference-fetches.json; each receipt retains its retrieval date. Retrieval status, final URL, headers, byte count and SHA-256 are preserved per approved URL; failed or missing source/license receipts remain unverified. Selected source file/section hashes are retained as source evidence; source-to-skill technique mappings are only those in the focused review documents and are not inferred by this generator. Detailed body analyses are retained in packaging/provenance/skills/source-*.md. Raw bodies are retained only in the task-private path recorded by the receipts and are not shipped. No upstream prose, code or assets were copied into shipped skill bodies; the {len(METHOD_ADOPTIONS)} method-adapted mappings are explicit and independently worded.\nAudit artifact: packaging/provenance/skills/reference-audit.json; fetch receipts: packaging/provenance/skills/reference-fetches.json\n"+end
     provenance=PROVENANCE.read_text()
     provenance=reconcile_provenance_inventory(provenance,catalog)
     provenance=update_provenance_records(provenance,catalog)
@@ -371,7 +384,7 @@ def refresh(write):
     provenance=update_reference_records(provenance)
     provenance=re.sub(re.escape(marker)+r".*?"+re.escape(end),block,provenance,flags=re.S) if marker in provenance else provenance.rstrip()+"\n\n"+block+"\n"
     if PROVENANCE.read_text()!=provenance: changed.append("PROVENANCE.md")
-    review="# Skill reference audit (2026-10-27)\n\n"+block.replace(marker+"\n","").replace("\n"+end,"")+f"\n\nThe audit contains {len(plans)} unique families and {plan_memberships()} plan memberships. It records exact URL receipts, pinned/moving status, selected raw source file and section headings, source/license body hashes, and local skill identities. It does not infer source-to-skill fidelity; that mapping is recorded only by the focused body-review documents. Any failed receipt remains unverified; an HTTP/tool receipt alone is not an operation or quality claim.\n"
+    review="# Skill reference audit (retained retrievals)\n\n"+block.replace(marker+"\n","").replace("\n"+end,"")+f"\n\nThe audit contains {len(plans)} unique families and {plan_memberships()} plan memberships. It records exact URL receipts, pinned/moving status, selected raw source file and section headings, source/license body hashes, and local skill identities. It does not infer source-to-skill fidelity; that mapping is recorded only by the focused body-review documents. Any failed receipt remains unverified; an HTTP/tool receipt alone is not an operation or quality claim.\n"
     if not REVIEW.is_file() or REVIEW.read_text()!=review: changed.append("packaging/provenance/skills/skill-reference-audit.md")
     if write:
         CATALOG.write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\n"); AUDIT.write_text(encoded); PROVENANCE.write_text(provenance); REVIEW.write_text(review)

@@ -3,8 +3,25 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { captionSidecars, cues, digest, fileRevision, MAX_OUTPUT, MAX_WORK, preflight, tar, treeBytes, validateRequest, VideoError, writeTar } from '../dist/runtime/video-export.js';
+import { captionSidecars, cues, digest, fileRevision, MAX_OUTPUT, MAX_WORK, preflight, tar, treeBytes, validateRequest, verifyAudioEnd, VideoError, writeTar } from '../dist/runtime/video-export.js';
 import { localUrl, mirketPreparePage, mirketSourceFile, mirketVideoFetch } from '../dist/runtime/video-policy.js';
+
+test('audio endpoint rejects a decodable early tail independently of container duration',()=>{
+  // Shapes measured with the pinned private FFprobe 9.0.2: each file has a
+  // two-second video/container and passes a complete independent decode.
+  assert.equal(verifyAudioEnd({start_time:'0.000000',duration:'2.000000'},2),2);
+  assert.throws(()=>verifyAudioEnd({start_time:'0.000000',duration:'0.500000'},2),/media_audio_end_mismatch/);
+  // A delayed source can still end on time; compare endpoints, not lengths.
+  assert.equal(verifyAudioEnd({start_time:'0.978667',duration:'1.021333'},2),2);
+  assert.equal(verifyAudioEnd({start_time:'0.000000',tags:{DURATION:'00:00:02.008000000'}},2),2.008);
+  assert.equal(verifyAudioEnd({start_time:'1.001000',tags:{DURATION:'00:00:02.008000000'}},2),2.008);
+  assert.throws(()=>verifyAudioEnd({start_time:'0.000000',tags:{DURATION:'00:00:00.508000000'}},2),/media_audio_end_mismatch/);
+  // Treating WebM's tag as a duration would incorrectly accept this short tail.
+  assert.throws(()=>verifyAudioEnd({start_time:'1.000000',tags:{DURATION:'00:00:01.000000000'}},2),/media_audio_end_mismatch/);
+  for(const stream of [{},{duration:'NaN'},{duration:'Infinity'},{duration:''},{duration:0},{start_time:'NaN',duration:'2'}, {tags:{DURATION:'00:99:02'}},{duration:'2.5'}]){
+    assert.throws(()=>verifyAudioEnd(stream,2),/media_audio_end_mismatch/);
+  }
+});
 
 test('caption cue times derive from rational frame positions and preserve Unicode',()=>{
   const input=cues([{start_frame:3,end_frame:21,text:'Hazır · Türkçe ğüşİı\n世界 🌍'}],24);

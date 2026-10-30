@@ -25,7 +25,7 @@ private disposable HOME, agent/session directories and project ancestry for test
 | Memory | Canonical SQLite facts/FTS; lazy local multilingual MiniLM/ONNX index and bounded Rust cosine scoring. Explicit project/shared scope, source/revision, applicability, expiry, correction, supersession and forgetting. No passive transcript harvesting or remote vector store. | Independent retrieval and downstream answer oracle; cross-project distractors, concurrent corrections, stale vectors, incomplete indexes, absent model, restart and forgetting across managed backup restore. Report cold/warm and idle resource measurements at their actual observation times. |
 | Navigation | TypeScript 5.9.3 inspection/definitions/references over caller-selected JS/TS/JSX/TSX and declaration snapshots with explicit imports and revisions. No project/config/package discovery or execution. | Original UTF-8/CRLF spans, same-name scope distinctions, stale/missing/unsupported refusals and bounded output. Syntax inspection and semantic navigation have separate evidence. |
 | Design | Style Dictionary tokens, SVG/SVGO/resvg, D2 to SVG or direct bounded PNG, and separately configured editable OpenPencil subset. Raster/Sharp transformations remain excluded. The pi author and capable reviewer own source and creative judgment. | Reopened editable source, changed-source export, consumed tokens, actual glyph/alpha/layout checks and saved-pixel inspection. UI handoff also needs live responsive/accessibility/interaction checks. |
-| Video | HyperFrames is the sole engine. Editable local HTML/CSS/JS and selected assets; supplied audio and captions. Exact private render-only Chrome and verified FFmpeg/ffprobe. | Requested MP4/WebM/GIF/PNG output, decoded frames/audio/captions, changed-source/changed-pixels, timing/playback, cancellation, remote-asset refusal and reconciled finalization. Success receipts do not establish visual quality. |
+| Video | HyperFrames is the sole engine. Editable local HTML/CSS/JS and selected assets; supplied audio and captions. Exact private render-only Chrome and verified FFmpeg/ffprobe. | Requested MP4/WebM/GIF/PNG output, decoded frames/audio/captions, audio stream-end checks, changed-source/changed-pixels, timing/playback, cancellation, remote-asset refusal and reconciled finalization. Success receipts do not establish visual or audible quality. |
 | Native skills | Evidence-led selected pi package resources; descriptive IDs without a `mirket-` prefix. Existing inventory is an audit input, not a retention target. | Correct scope, required/conditional pairing, hash-bound bodies/resources, native pi resource filtering, collision diagnosis and truthful prerequisites. All 305 catalog cases remain planned development cases until actually executed. |
 | Coordination | Optional bounded pi CLI children; useful independent work, disjoint ownership and lead integration. Explicit user model/reasoning choices prevail. | Capable creative lead/comparable reviewer, actual artifact integration, denial/interruption handling and one shared review/repair budget. Observed compliance is not hard enforcement. |
 
@@ -102,6 +102,13 @@ single aesthetic or substitute for inspected output. Reference methods, source c
 fonts, artwork and runtime acquisition have separate provenance. The accepted
 [Daybreak reference](../specimens/daybreak/README.md) does not confer acceptance
 on changed exports. HyperFrames is the video engine; Remotion is reference only.
+
+The OpenPencil authoring route uses exact file/revision/target scope and
+container-owned layout within the admitted native subset. Video review records
+absolute beat and boundary frames, including move midpoints and the actual last
+frame. FFmpeg verifies encoded audio extent; hearing the content and checking
+gain/sync remain part of saved-output review. These are focused method adoptions,
+not new runtimes or permission to use upstream installers.
 
 For a new visual task, freeze the brief, real content, scoped outputs, rubric and
 shared review/repair budget. Inspect static art before changing motion. Produce

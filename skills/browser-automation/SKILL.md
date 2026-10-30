@@ -5,7 +5,7 @@ description: "Perform an authorized multi-step website interaction with observed
 
 # Browser automation
 
-Use a Pi-owned Playwright MCP peer only when explicitly configured and qualified with an isolated profile; otherwise use the project's installed browser tests/tools. Report missing live browser capability when required. Select the intended browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.
+Use the project's established browser tests/tools for public sites, accounts, forms, pointer actions or submissions. The optional Pi-owned peer, when explicitly onboarded and authorized, is limited to one literal local `127.0.0.1` origin, GET/HEAD requests, screenshots/snapshots and navigation keys; it exposes no pointer click, text entry, script evaluation or POST. Enter and Space can still activate local controls or submit an existing GET form, so keep the grant scoped. Report a missing route when the requested interaction exceeds those controls. Select the intended project browser/profile and account deliberately. Establish the final state, allowed pages/accounts and effect boundary before interaction.
 
 Observe the current page and available controls, perform one meaningful action or a safe bounded group, then verify the resulting state. Ground actions in current observations; re-observe after navigation or material DOM changes. Keep form data and credentials out of logs and captures unless the task requires them.
 
