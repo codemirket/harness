@@ -7,10 +7,11 @@ the [release instructions](release-0.0.1.md).
 Use its bound private Node executable; do not substitute a PATH runtime.
 
 After verifying and extracting the release package and acquiring its exact host
-under a permanent install root, run the install helper from the current source checkout:
+under a permanent install root, run the standalone `install-pi.py` downloaded
+with the release assets and verified against `SHA256SUMS`:
 
 ```sh
-python3 scripts/install-pi.py \
+python3 install-pi.py \
   --package /absolute/mirket-install-root/releases/0.0.1/package \
   --host /absolute/mirket-install-root/host/pi-1.4.0 \
   --install-root /absolute/mirket-install-root
@@ -46,10 +47,12 @@ an unrelated process writing the same launcher at the same instant is outside
 that lock's guarantee. A recognized earlier Mirket launcher is backed up and
 updated after the same checks.
 
-The helper is in the current source tree and is **not included in the
-immutable published 0.0.1 assets**. Obtain it from the current source checkout
-until the next release. Local checks of this helper do not change the published
-package's [qualification](qualification.md).
+The 0.0.1 release has six assets: the native package archive, `install-pi.py`,
+`acquire-pi-host.py`, `host-lock.json`, `LICENSE` and `SHA256SUMS`. The checksum
+file covers the five payloads. `LICENSE` supplies the MIT permission notice for
+the standalone first-party scripts. Adding the standalone helper does not change
+the native package's [qualification](qualification.md) or resolve its failed
+timing gate.
 
 For an explicitly selected fresh agent directory, the package's lower-level
 setup remains available:

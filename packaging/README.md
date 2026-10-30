@@ -62,7 +62,8 @@ Playwright peer's exact publisher archives, targets and selected member hashes.
 The peer and browser are absent from the default package. Setup never performs
 an incidental upstream installation or uses PATH as a fallback. Run the package's first-party
 setup using its private Node and an explicitly chosen fresh private Pi agent
-directory, or use the source checkout's `scripts/install-pi.py` with explicit
+directory, or use the release's standalone `install-pi.py` (also maintained at
+`scripts/install-pi.py` in source) with explicit
 `--package` and `--host` paths and optional `--install-root`. After package/host
 verification, the helper registers in standard `$HOME/.pi/agent` when present
 (setting mode `0700` if needed), otherwise creates `<install-root>/agent`. It
@@ -73,7 +74,10 @@ preserving its managed target. The `pi` launcher uses private
 Node and the exact package-bound host without PATH search; unsupported layouts
 fail closed. Then follow the Pi onboarding command.
 
-This helper is a working-tree/main candidate, absent from the immutable published
-0.0.1 assets. Until the next release, obtain it from current source and follow the
-[release instructions](../docs/release-0.0.1.md). The existing qualification record
-does not establish this new installation flow.
+The 0.0.1 prerelease supplies six assets: the unchanged native package archive,
+host acquisition script and host lock, the standalone installer, `LICENSE`, and
+`SHA256SUMS` covering those five payloads. The standalone first-party scripts
+carry the MIT permission notice through `LICENSE`. Follow the
+[release instructions](../docs/release-0.0.1.md). Adding the installer does not
+change the native package's qualification scope or resolve its failed startup
+timing gate.

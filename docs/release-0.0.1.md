@@ -9,17 +9,34 @@ It contains no Chrome, Playwright or Raster executable payload.
 The package is functionally qualified on this platform: fresh installed Pi
 CLI/TUI, D2 PNG and image delivery, video, memory/navigation/design and 24/24
 optional browser cases passed. The **1.5-second first-tool startup gate failed**
-with 4.097, 1.911 and 1.839 second samples. This is an initial candidate,
+with 4.097, 1.911 and 1.839 second samples. This is an initial prerelease candidate,
 not a performance-qualified or cross-platform release. Full results and the
 tested artifact identity are in [qualification](qualification.md).
 
 ## Assets and exact identity
 
+The release contains six assets:
+
 - `mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz` — the complete Pi package.
+- `install-pi.py` — the standalone installer for the verified package and exact
+  acquired Pi host.
 - `acquire-pi-host.py` and `host-lock.json` — obtain the exact external Pi
   1.4.0 dependency tree directly from its pinned publisher archives. They do
   not run npm, installers or lifecycle hooks.
-- `SHA256SUMS` — SHA-256 for those three assets. Check it before extraction.
+- `LICENSE` — the MIT permission notice for the standalone first-party scripts.
+- `SHA256SUMS` — SHA-256 for the five payloads above. Check it before extraction
+  or running either script.
+
+The current 0.0.1 rerelease adds the standalone installer and license notice and
+updates the checksum file. The native package archive, host acquisition script
+and host lock are unchanged. Adding the installer does not resolve the native package's failed
+startup timing gate or extend its platform qualification.
+
+The installer separately passed 29 focused tests and the 165-test Python suite.
+On macOS 26.5.2 ARM64, disposable existing-Pi and fresh-Pi installs both reached
+actual Pi CLI doctor `ready`; the existing-Pi route also passed a Pi TUI check.
+The failed first probe and its successful recovery were retained outside the
+shipped source. Other platforms remain untested.
 
 The package inventory SHA-256 is
 `275e91c346e6a80225735892b0c1cfc0fb4acdfe62eba72e37b34fe4d0592973`.
@@ -33,16 +50,11 @@ The acquisition script passed 12 focused refusal/success tests and reproduced
 the exact **15,249-file** host tree from **121 unchanged official npm archives**
 both from an offline cache and through direct publisher downloads.
 
-## Install with the current source helper
+## Install from the release assets
 
-The published assets above are immutable and **do not contain
-`scripts/install-pi.py`**. The auto-target helper is in the current source tree;
-obtain it from the current source checkout until the next release. The existing
-0.0.1 qualification does not establish this new installation flow.
-
-Download the four release assets into a temporary directory, verify `SHA256SUMS`,
+Download the six release assets into a temporary directory, verify `SHA256SUMS`,
 and extract the package into a permanent location. Acquire the exact host before
-running the source helper:
+running the standalone installer:
 
 ```sh
 shasum -a 256 -c SHA256SUMS
@@ -56,7 +68,7 @@ python3 acquire-pi-host.py \
   --package "$install_root/releases/0.0.1/package" \
   --lock host-lock.json \
   --output "$install_root/host/pi-1.4.0"
-python3 /absolute/current-source/scripts/install-pi.py \
+python3 install-pi.py \
   --package "$install_root/releases/0.0.1/package" \
   --host "$install_root/host/pi-1.4.0" \
   --install-root "$install_root"
