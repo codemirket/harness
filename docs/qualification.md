@@ -66,8 +66,20 @@ pass. This fixture did not import a previous installation or touch live Pi.
 Exact commands, failure logs and receipt hashes are under
 `/private/tmp/mirket-install-path-audit-5q0_0__w/`; `evidence.json` SHA-256 is
 `35cd3f9e92e6b5d1cd060fdf28981a97e368540ca729f2f86c066a08d4172f70`.
-The existing device has a different old release ID and still needs its own
-preflight and post-install verification.
+After publication, this device's existing Pi installation was migrated from
+native release `sha256:26d6c76e7c25c8e690f9c6b7b4014134891c49b2c67a844a7d3c166deb834fe3`
+to the exact new release above using the independently downloaded public assets.
+All seven public assets passed `SHA256SUMS`; the public archive matched the
+qualified archive byte for byte. The migration helper completed with a private
+backup, native doctor reported healthy and `pi --version` returned **1.4.0**.
+The Pi settings object differed only in the selected Mirket package path;
+authentication retained its prior SHA-256, and the old package stayed in place.
+The installed core and package inventory matched the release identities. The
+post-install report is
+`/private/tmp/mirket-v0.0.1-head-f80eb55-nv30qoon/live-install-report.json`
+(SHA-256 `92126b4d5ce54d69381a3708c5413d2cf3be347421fc3f4f146cd9134ee37095`).
+This device check establishes installation and registration, not a live-provider
+answer or another platform.
 
 The final source tree's build-input guard passed for
 `aarch64-apple-darwin` before any Rust compilation in this release pass. The
