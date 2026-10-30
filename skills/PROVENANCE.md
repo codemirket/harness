@@ -244,7 +244,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [serena](#reference-serena).
-- Host SQL capability: Codex or project tool, checked at use.
+- Host SQL capability: Pi and installed project SQL tooling, checked at use.
 - Planned acceptance IDs: sql-navigation-positive-1, sql-navigation-positive-2, sql-navigation-negative-1, sql-navigation-negative-2, sql-navigation-mixed-1. Not run.
 
 ### browser-research
@@ -252,7 +252,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [crawl4ai](#reference-crawl4ai), [stagehand](#reference-stagehand).
-- Host browser capability: Codex Desktop browser or project tool, checked at use.
+- Host browser capability: configured Pi/project browser tooling, checked at use; the optional Mirket Pi peer is local-origin only.
 - Planned acceptance IDs: browser-research-positive-1, browser-research-positive-2, browser-research-negative-1, browser-research-negative-2, browser-research-mixed-1. Not run.
 - Original procedural synthesis: https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/docs/harness-research-recommendations-20261028.md / approved original research, review and project-learning procedures; implementation in https://github.com/codemirket/harness/blob/b3068a181a674f2aff751de4ff254f8120e7f96e/planning/research-improvements.md; no external prose, code or assets copied; not a new runtime admission.
 
@@ -261,7 +261,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [stagehand](#reference-stagehand), [skyvern](#reference-skyvern), [cua](#reference-cua), [ponytail](#reference-ponytail).
-- Host browser capability: Codex Desktop browser or project tool, checked at use.
+- Host browser capability: configured Pi/project browser tooling, checked at use; the optional Mirket Pi peer is local-origin only.
 - Planned acceptance IDs: browser-automation-positive-1, browser-automation-positive-2, browser-automation-negative-1, browser-automation-negative-2, browser-automation-mixed-1. Not run.
 
 ### browser-qa
@@ -269,7 +269,7 @@ selection quality, rights, useful behavior or user acceptance.
 - Classification/terms: independently-authored; MIT; no external section adopted.
 - Local basis: catalog design / Project skills and pairing; implementation plan / Product boundary and Concrete capability and evidence contracts.
 - Comparison/link-only families: [gstack](#reference-gstack), [impeccable](#reference-impeccable), [stagehand](#reference-stagehand), [wcag](#reference-wcag).
-- Host browser capability: Codex Desktop browser or project tool, checked at use.
+- Host browser capability: configured Pi/project browser tooling, checked at use; the optional Mirket Pi peer is local-origin only.
 - Planned acceptance IDs: browser-qa-positive-1, browser-qa-positive-2, browser-qa-negative-1, browser-qa-negative-2, browser-qa-mixed-1. Not run.
 
 ### art-direction

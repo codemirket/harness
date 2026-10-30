@@ -126,22 +126,45 @@ After installing the current 0.0.1 package, start Pi from the project root and r
 it preserves an existing Mirket skill selection; to choose a profile or exact
 skills, use `/mirket-project init web-product +js-ts-navigation`.
 
-Review the generated changes, reload Pi, ask Pi to run `mirket_doctor`, then run
-`/mirket doctor`. `/mirket-project status` reports project synchronization.
-Initialization enables updates to the managed section from Mirket skills and
-tools actually used in this project. These observations do not establish runtime
-readiness or install dependencies. Existing project guidance and unrelated Pi
-settings are preserved; conflicting managed content is refused. See
+Review the generated changes, reload Pi with `/reload`, ask Pi to run
+`mirket_doctor`, then run `/mirket doctor`. Check `/mirket-project status` for
+`ready` separately: it reports project synchronization, not tool readiness.
+To revise the selection, rerun `/mirket-project init` with the desired profiles
+and exact `+SKILL` IDs, reload, and verify again. Initialization enables updates
+to the managed `AGENTS.md` section from Mirket skills and tools actually used in
+this project. Observed use does not establish runtime readiness, successful
+output or complete coverage; it does not install dependencies. Keep project
+instructions outside that section. Existing guidance and unrelated Pi settings
+are preserved; conflicting managed content is refused. See
 [project setup](docs/setup.md#project-setup) for the file and conflict contract.
 
 ## Develop and verify
 
 The repository has one Rust crate and one compiled TypeScript package under
-`pi/`. Read [AGENTS.md](AGENTS.md), the [architecture](docs/architecture.md) and
-[native build guide](docs/native-build.md) before changing it. Run
-`python3 scripts/check-build-inputs.py` before any Rust compilation, use the locked
-dependency closure and verified private Node, and test with disposable private
-homes and projects. The build guide lists the Rust, adapter and MCP gates.
+`pi/`. To work on this checkout from another device, install Mirket locally using
+[setup](docs/setup.md), start the installed `pi` from the checkout root, and run:
+
+```text
+/mirket-project init library-cli backend-service +js-ts-navigation +technical-docs +ai-evaluation +retrieval-evaluation +security-review
+```
+
+These profiles cover CLI/package delivery and the SQLite/native service; the
+exact IDs cover this repository's TS navigation, documentation, evaluation and
+authority-boundary reviews. Select only what your project actually uses. The
+resulting `.pi/settings.json` contains **your** device's absolute package path;
+it is Git-ignored, never a shared MCP registry or a copied `.agents` skill tree.
+Share only the project guidance in `AGENTS.md`; each teammate initializes their
+own Pi settings. Reload Pi, run `mirket_doctor` and `/mirket doctor`, then check
+`/mirket-project status` is `ready`. When work changes, revise the selection and
+repeat those checks.
+
+Read [AGENTS.md](AGENTS.md), the [architecture](docs/architecture.md) and
+[native build guide](docs/native-build.md) before changing product code. Run
+`python3 scripts/check-build-inputs.py` before any Rust compilation, use the
+locked dependency closure and verified private Node, and test with disposable
+private homes and projects. The build guide lists the Rust, adapter and MCP
+checks to run locally and in any future CI job; the repository does not ship a
+CI agent configuration.
 
 [Source provenance](skills/PROVENANCE.md), [runtime choices](packaging/README.md#runtime-choices)
 and [third-party scope](packaging/THIRD-PARTY.md) distinguish methods, code,

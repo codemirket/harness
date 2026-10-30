@@ -1,6 +1,7 @@
 /target/
 /pi/node_modules/
 /pi/dist/
+/.pi/settings.json
 .DS_Store
 __pycache__/
 *.pyc

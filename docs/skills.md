@@ -26,8 +26,12 @@ and creates a managed `AGENTS.md` section. With no selection arguments it
 preserves an existing Mirket selection. The section may record skills and tools
 actually used in the opted-in project; this is observed-use guidance, not another
 selection database, capability provisioning or runtime readiness evidence.
-`/mirket-project status` reports synchronization. Review changes and reload Pi;
-see [project setup](setup.md#project-setup) for preservation and conflict behavior.
+`/mirket-project status` reports synchronization (`ready`), not runtime health.
+Review changes, `/reload`, ask Pi to run `mirket_doctor`, then run
+`/mirket doctor`. When the project's work changes, rerun `init` with revised profiles
+and exact `+SKILL` IDs, reload and check both readiness and status again; see
+[project setup](setup.md#project-setup) for the repository's selection and
+preservation/conflict behavior.
 
 Validate body/resource hashes before assembly. Do not copy into `.agents/skills`,
 write a second profile database or alter unrelated package settings. Profile edits

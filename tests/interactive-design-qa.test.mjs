@@ -1,5 +1,5 @@
 // Reusable disposable fixture and retained host-browser evidence checks.
-// Live interaction uses Codex browser tools; this file does not launch a browser.
+// Retained host-browser captures are historical; this file neither launches a browser nor qualifies the optional Pi peer.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile, realpath, stat } from "node:fs/promises";

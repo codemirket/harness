@@ -146,16 +146,29 @@ profile names and optional exact skill IDs:
 ```
 
 Profiles select their baseline skills; conditional skills require an explicit
-`+SKILL`. Resources stay in the installed package. No skills are copied into the
-project or `.agents`, and no second selection database is created. Project Pi
-settings remain the active selection source.
+`+SKILL`. For this repository's CLI/package, native service, TS navigation,
+documentation and evaluation work, use:
+
+```text
+/mirket-project init library-cli backend-service +js-ts-navigation +technical-docs +ai-evaluation +retrieval-evaluation +security-review
+```
+
+Rerun `init` with revised profiles and exact `+SKILL` IDs when project work
+changes; `init` without selections preserves the current filter. Resources stay
+in the installed package. No skills are copied into the project or `.agents`,
+and no second selection database is created. Project Pi settings remain the
+active selection source.
 When a project Mirket package uses Pi's `autoload:false` delta, an explicit
 profile selection clears inherited Mirket skills before adding the requested
 ones. Initialization without selection arguments preserves that filter.
 The package source in `.pi/settings.json` is an absolute path on this device.
-Keep that settings file local; teammates should install Mirket and run project
-initialization on their own devices. The managed `AGENTS.md` guidance can be
-shared with the project.
+This repository ignores untracked copies of that file. If a checkout already
+tracks it, remove it from Git's index without deleting the local copy.
+Teammates install Mirket locally and run the same initialization from their
+checkout root. Share the
+managed `AGENTS.md` guidance, but not the machine-specific Pi settings; do not
+write `.pi/mcp.json` for Mirket, which registers its server through Pi's MCP
+lifecycle.
 
 The generated `AGENTS.md` section is bounded by
 `<!-- mirket-project:start -->` and `<!-- mirket-project:end -->`. It records
@@ -167,10 +180,12 @@ successful output, complete project coverage or capability availability. It does
 not install tools, dependencies or accounts. Keep project-specific instructions
 outside the managed section.
 
-Review both files, reload Pi, ask Pi to run `mirket_doctor` once, then run
-`/mirket doctor` for actual runtime readiness. Use `/mirket-project status` to
-inspect project synchronization separately. The existing `/mirket-profile
-project PROFILE ... [+SKILL ...]` command remains available for skill selection.
+Review both files, run `/reload` in Pi, ask Pi to run `mirket_doctor` once,
+then run `/mirket doctor` for actual runtime readiness. Check
+`/mirket-project status` returns `ready` for project synchronization separately.
+After changing profiles or skills, reload and check both again; installing an
+optional tool also requires setup, reload and a fresh doctor check. The existing `/mirket-profile project PROFILE ... [+SKILL ...]` command
+remains available for skill selection.
 
 Initialization and subsequent updates preserve existing `AGENTS.md` content
 outside the managed section and unrelated Pi settings. Conflicting ownership,

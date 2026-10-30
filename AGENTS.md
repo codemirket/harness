@@ -1,55 +1,38 @@
-# Mirket
+# Mirket repository
 
-Follow `docs/architecture.md` and `docs/skills.md`. Pi is the sole product host.
-Preserve source provenance and truthful qualification evidence. Preserve the user installation and unrelated client settings. No
-compatibility layers or publication without authorization.
+Read `docs/architecture.md`, `docs/skills.md` and `docs/qualification.md`.
+Keep one Rust crate and one compiled TypeScript package under `pi/`. Pi is the
+sole agent host and owns MCP lifecycle; Mirket owns scoped authorization for
+its effects. Mirket processes are not a sandbox. Preserve provenance, failed
+evidence, existing user settings and unrelated work; no new dependencies,
+publication, commits or pushes without applicable authorization.
 
-Choose the smallest change that completes the requested behavior across affected
-callers, tests, fixtures and exports. Prefer deletion or an existing project
-pattern before adding machinery. A smaller diff must still preserve validation,
-error handling and required outcome evidence; stop when the affected contracts
-and gates are satisfied.
+Choose the smallest complete change across callers and tests. Use explicit,
+verified private executables (or a setup-verified installed binding); never
+search PATH, silently fall back or run upstream installers/hooks. Before any
+Rust compilation run `python3 scripts/check-build-inputs.py` to check native
+inputs and the admitted dependency build scripts. Use the locked toolchain and
+offline closure. Run `cargo fmt --check`, `cargo test --locked --offline`,
+`cargo clippy --locked --offline --all-targets -- -D warnings`, and the locked
+Pi adapter build/tests and MCP smoke with explicit private Node/binary paths;
+see `docs/native-build.md` for commands and further gates.
 
-Keep one Rust crate and one compiled TypeScript package under `pi/`. Pi owns models,
-authentication, sessions, native tools and MCP lifecycle. Mirket owns explicit
-scoped authorization for its effect-bearing operations. Mirket-owned processes are not a sandbox. Use explicit,
-verified private executable paths where packaging is manageable. For a
-burdensome native tool, setup may bind an explicitly selected host executable
-after capability and identity checks. Installed jobs must recheck that binding
-and must not search PATH or silently fall back to another executable.
+Integration tests use disposable private HOME, Pi agent/session directories and
+projects outside the real home ancestry, never the user's `.mirket`, `.pi`,
+`.agents` or client settings. Give delegates disjoint ownership and integrate
+their actual results. Keep coordination outside shipped source. Report tested
+platform/runtime identities and limits: 0.0.1 was qualified on macOS 26.5.2
+ARM64; the macOS 26.0+ ARM64 install floor does not qualify macOS 27, Windows or
+other platforms. Retain skills only for concrete workflows or measured benefit.
 
-Ask before new production dependencies unless their exact source/version/rights
-batch is already approved. Current byte and source pins live in `packaging/runtime`;
-inventory files do not grant permission. Never run upstream installers/hooks incidentally.
-Before compiling Rust dependencies run `python3 scripts/check-build-inputs.py`.
-This checks the admitted SDK build-script condition that could otherwise change
-Git hook configuration. Use the locked Rust toolchain and dependency closure.
+<!-- mirket-project:start -->
+<!-- mirket-project-data {"schema":1,"skills":[],"tools":["mcp__mirket__code_inspect"]} -->
+## Mirket project setup
 
-Keep file owners disjoint when delegating, integrate their actual results, and
-retain test evidence with platform/runtime identity. Temporary coordination history
-belongs outside shipped source. Preserve existing work; no commits or pushes
-without authorization.
+Pi owns models, authentication, sessions, native tools and MCP lifecycle. Mirket owns explicit scoped authorization for its operations.
+The exact IDs below record observed use, not current readiness or qualified output. Recheck the running release and required capability with mirket_doctor after setup, reconnect or a relevant change.
+Use project toolchains for application builds, tests and format-specific exports. Skill guidance does not authorize dependency installation, account setup or restricted effects.
 
-Use disposable private state directories and projects for integration tests.
-Never use the user's existing `.mirket`, `.pi`, `.agents` or client settings.
-Use disposable HOME, pi agent/session directories and projects outside the
-real home ancestry. Do not import a previous installation.
-Current checks include `cargo test --locked --offline`,
-`cargo clippy --locked --offline --all-targets -- -D warnings`, the adapter's
-locked TypeScript compilation/process tests, and `tests/mcp-smoke.mjs` with
-explicit binary/private Node paths. Run the build guard first. Pi CLI, TUI, image delivery and cancellation require fresh evidence. Windows
-ownership, packaging and capability fidelity have separate milestone gates;
-passing local source or protocol tests does not establish them.
-
-Skill retention is evidence-led: keep guidance only when a concrete workflow,
-quality safeguard or measured performance benefit justifies its context and
-maintenance cost. Remove redundant or non-contributing skills instead of
-preserving catalog size. A tied small trial does not prove universal uselessness;
-repeated failure can justify retiring the tested bundle without blaming each
-member. Preserve failed evidence and host-owned workflows when reducing scope.
-The local 0.0.1 qualification scope is macOS 26.5.2 ARM64. See
-`docs/qualification.md` for its exact identity and limits. Package setup uses
-a macOS 26.0+ ARM64 floor, not an exact OS patch or major version; that
-eligibility does not qualify macOS 27. Keep actual OS/build evidence, and split
-artifacts only for demonstrated compatibility differences. Other OSes and
-architectures require separate native qualification.
+Observed skill IDs: none yet.
+Observed tool IDs: `mcp__mirket__code_inspect`.
+<!-- mirket-project:end -->

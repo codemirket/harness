@@ -3,7 +3,7 @@
 
 The runner itself lives in the private qualification state directory. This
 script only creates new trial directories and records the frozen rubric; it
-does not touch the user's installation or Codex configuration.
+does not touch the user's Pi installation or client settings.
 """
 from __future__ import annotations
 

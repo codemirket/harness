@@ -111,11 +111,19 @@ real stdio fixture:
   --mirket "$PWD/target/debug/mirket" --node "$MIRKET_NODE"
 ```
 
-The fixture creates disposable state and projects. Installed integration tools
-under `tests/` require their documented explicit release/home/tool arguments;
-never point them at the user's existing `.mirket` installation. Model trial
-runners are optional evaluation tooling, not part of ordinary test discovery
-or permission to start new paid/model cohorts.
+The fixture creates disposable state and projects. Any CI job should run the
+same guard, Rust, Python, locked adapter and MCP gates with explicit verified
+executables and isolated state; passing source tests does not qualify Pi TUI,
+image delivery, cancellation or another platform. Do not check in a developer's
+`.pi/settings.json`, duplicate Mirket's MCP registration or copy its package
+skills into `.agents`. CI has no agent-specific configuration in this checkout;
+install and initialize Mirket locally for agent-assisted development, not as a
+substitute for the build gates.
+
+Installed integration tools under `tests/` require their documented explicit
+release/home/tool arguments; never point them at the user's existing `.mirket`
+installation. Model trial runners are optional evaluation tooling, not part of
+ordinary test discovery or permission to start new paid/model cohorts.
 
 For project initialization and observed-use integration, run the exact release
 binary and private Node through `tests/pi-project-setup.mjs` with four absolute
