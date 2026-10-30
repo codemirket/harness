@@ -2118,8 +2118,8 @@
         "design.raster"
       ],
       "conditional_capabilities": [],
-      "source_sha256": "fa958a4de75c7a96bbecc02481d9d676862e3fd5b17fd2fa34dc83b35a65419a",
-      "source_bytes": 1698,
+      "source_sha256": "6fcbacbcb5c93cc2a913205e16dcf5b1097c1f8fba6d2674f4b5c082a0a5c9ed",
+      "source_bytes": 1795,
       "provenance": {
         "classification": "independently-authored",
         "record": "skills/PROVENANCE.md#raster-art",

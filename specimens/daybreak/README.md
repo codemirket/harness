@@ -7,8 +7,7 @@ specimen, not an actual club or booking service.
 ## View and edit
 
 Serve this directory with a local HTTP server, then open `index.html` for the
-working page or `reel.html` for the actual exported film. The current task-local
-preview is at <http://127.0.0.1:8768/> while its server remains running.
+working page or `reel.html` for the actual exported film.
 The standalone `daybreak.mp4` can also be opened directly.
 
 Open `review.html` for the D6 review pack: the same corrected film, chapter

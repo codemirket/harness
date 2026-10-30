@@ -11,7 +11,3 @@ The [qualification record](qualification.md) separates the earlier package's
 actual identity and outcomes from the later onboarding/package trial. Earlier
 results do not qualify later bytes. Failed, skipped and unrun outcomes remain
 evidence.
-
-The private working copy of the retired records was also preserved at
-`/private/tmp/mirket-retired-admission-03ze4sov/admission/`; temporary storage is
-not the durable recovery source. The Git commit above is the recovery source.

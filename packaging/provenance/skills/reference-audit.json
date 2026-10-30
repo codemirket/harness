@@ -3351,7 +3351,7 @@
           "local_output_evidence": "Return source-linked outputs, dimensions/format, transformation choices and relevant metadata/rights limits. Unless the task sets another budget, share 15 minutes and two final repairs across static production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when required variants are verified or report unresolved defects at the limit. Report unsupported color/format behavior instead of silently flattening alpha or replacing the original.",
           "path": "skills/raster-art/SKILL.md",
           "skill": "raster-art",
-          "skill_body_sha256": "fa958a4de75c7a96bbecc02481d9d676862e3fd5b17fd2fa34dc83b35a65419a",
+          "skill_body_sha256": "6fcbacbcb5c93cc2a913205e16dcf5b1097c1f8fba6d2674f4b5c082a0a5c9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Prepare raster assets through crop, resize, composite or web-image export with source-linked dimensions, color and alpha checks. Skip new image generation without a transformation task."
         },
@@ -3562,7 +3562,7 @@
           "local_output_evidence": "Return source-linked outputs, dimensions/format, transformation choices and relevant metadata/rights limits. Unless the task sets another budget, share 15 minutes and two final repairs across static production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when required variants are verified or report unresolved defects at the limit. Report unsupported color/format behavior instead of silently flattening alpha or replacing the original.",
           "path": "skills/raster-art/SKILL.md",
           "skill": "raster-art",
-          "skill_body_sha256": "fa958a4de75c7a96bbecc02481d9d676862e3fd5b17fd2fa34dc83b35a65419a",
+          "skill_body_sha256": "6fcbacbcb5c93cc2a913205e16dcf5b1097c1f8fba6d2674f4b5c082a0a5c9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Prepare raster assets through crop, resize, composite or web-image export with source-linked dimensions, color and alpha checks. Skip new image generation without a transformation task."
         }
@@ -5826,7 +5826,7 @@
           "local_output_evidence": "Return source-linked outputs, dimensions/format, transformation choices and relevant metadata/rights limits. Unless the task sets another budget, share 15 minutes and two final repairs across static production and review, with one target repair; combined interface/paged work uses 30 minutes/three and motion uses 45 minutes/four, not their sum. Stop when required variants are verified or report unresolved defects at the limit. Report unsupported color/format behavior instead of silently flattening alpha or replacing the original.",
           "path": "skills/raster-art/SKILL.md",
           "skill": "raster-art",
-          "skill_body_sha256": "fa958a4de75c7a96bbecc02481d9d676862e3fd5b17fd2fa34dc83b35a65419a",
+          "skill_body_sha256": "6fcbacbcb5c93cc2a913205e16dcf5b1097c1f8fba6d2674f4b5c082a0a5c9ed",
           "source_mapping": "not inferred by this generator; see focused source review documents",
           "trigger": "Prepare raster assets through crop, resize, composite or web-image export with source-linked dimensions, color and alpha checks. Skip new image generation without a transformation task."
         }

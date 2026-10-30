@@ -4,7 +4,7 @@ version = "0.0.1"
 edition = "2024"
 rust-version = "1.99.1"
 license = "MIT"
-description = "Local tools and selected expertise for host-owned agents"
+description = "A Pi coding agent harness with scoped memory, navigation and creative tools"
 publish = false
 
 # Keep useful backtrace locations without multi-gigabyte disposable debug caches.

@@ -2,7 +2,8 @@
 
 | Need | Source |
 | --- | --- |
-| Product overview | [README](../README.md) |
+| Product overview, agent-assisted and manual installation | [README](../README.md) |
+| Exact 0.0.1 assets, host acquisition and release limits | [Release instructions](release-0.0.1.md) |
 | Install and select the rendering browser | [Setup](setup.md) |
 | Architecture, ownership and runtime contracts | [Architecture](architecture.md) |
 | Tested candidate, platform and quality limits | [Qualification](qualification.md) |

@@ -7,7 +7,7 @@ description: "Prepare raster assets through crop, resize, composite or web-image
 
 Inspect the original image, intended placement, focal subject, output sizes and transparency/color requirements. Preserve the original and its provenance. Choose crop and scale from actual content; avoid stretching, destructive repeated recompression or silently inventing image detail.
 
-Use the qualified Mirket Sharp route for deterministic transformations. Record the operation chain and selected encoding/quality. Check orientation and metadata handling, color profile/appearance, edge quality, alpha and file dimensions against the consumer. Use controlled fonts/assets and do not infer reuse rights from availability.
+Raster transformations require a qualified `design.raster` route. The current Mirket package excludes Sharp; if the route is unavailable, report the missing capability. Record the operation chain and selected encoding/quality. Check orientation and metadata handling, color profile/appearance, edge quality, alpha and file dimensions against the consumer. Use controlled fonts/assets and do not infer reuse rights from availability.
 
 Inspect saved outputs at actual display size and a zoom that exposes artifacts. Verify responsive variants preserve the focal subject and that transparent edges behave on light and dark backgrounds. Compare decoded appearance rather than trusting extension, encoder success or byte size.
 
