@@ -52,12 +52,58 @@ an unrelated process writing the same launcher at the same instant is outside
 that lock's guarantee. A recognized earlier Mirket launcher is backed up and
 updated after the same checks.
 
-The 0.0.1 release has six assets: the native package archive, `install-pi.py`,
-`acquire-pi-host.py`, `host-lock.json`, `LICENSE` and `SHA256SUMS`. The checksum
-file covers the five payloads. `LICENSE` supplies the MIT permission notice for
-the standalone first-party scripts. The current rerelease changes the native
-package and startup budget; see [qualification](qualification.md) for its exact
-identity, fresh outcomes and earlier failed timing evidence.
+The 0.0.1 release has seven assets: the native package archive, `install-pi.py`,
+`migrate-pi.py`, `acquire-pi-host.py`, `host-lock.json`, `LICENSE` and
+`SHA256SUMS`. The checksum file covers the six payloads. `LICENSE` supplies the
+MIT permission notice for the standalone first-party scripts. See
+[qualification](qualification.md) for this package's exact identity and tested
+scope.
+
+## Upgrade an existing Mirket installation
+
+An existing Mirket installation keeps its exact package path. Extract the new
+archive into a different permanent private release directory and leave the old
+package in place. Verify all seven assets with `shasum -a 256 -c SHA256SUMS`
+first. The fresh installer refuses a different already-registered package path;
+use the release's `migrate-pi.py` for an explicit upgrade.
+
+Select the old package path from the Mirket entry in the active Pi agent's
+`settings.json`, and the exact old host path from the existing Mirket `pi`
+launcher. Check both before running the helper. The new package's
+`native-binding.json` and old package's same file supply the release IDs.
+For this rerelease the existing verified Pi 1.4.0 host can also be selected as
+the new host; the helper verifies it against the new package and refuses a
+different host inventory. Otherwise acquire a new host into a permanent path
+with `acquire-pi-host.py`.
+
+```sh
+set -e
+shasum -a 256 -c SHA256SUMS
+install_root="$HOME/.local/share/mirket"
+old_package=/absolute/existing/mirket/package
+old_host=/absolute/existing/verified/pi-host
+new_package=/absolute/new/release/package
+new_host="$old_host"
+old_id="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["releaseId"])' "$old_package/native-binding.json")"
+new_id="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["releaseId"])' "$new_package/native-binding.json")"
+installer_sha="$(awk '$2 == "install-pi.py" {print $1}' SHA256SUMS)"
+python3 migrate-pi.py \
+  --installer "$PWD/install-pi.py" --installer-sha256 "$installer_sha" \
+  --old-package "$old_package" --old-host "$old_host" \
+  --package "$new_package" --host "$new_host" \
+  --install-root "$install_root" \
+  --old-release-id "$old_id" --release-id "$new_id"
+```
+
+The helper verifies both package bindings, the installed native identity and
+the exact old Pi launcher, then makes a private backup of Pi settings, launcher
+and native active pointer. It waits for exclusive native maintenance ownership,
+updates the native release, changes only the Mirket Pi package entry and outer
+launcher, and checks Pi registration. It preserves authentication, sessions,
+other package entries and the old release. It stops on an active runtime or
+unexpected layout. If interrupted, inspect the phase record under
+`<install-root>/migration-backups/`; it does not guess a rollback across
+native and Pi state. Keep both release directories until verification is done.
 
 For an explicitly selected fresh agent directory, the package's lower-level
 setup remains available:
@@ -75,11 +121,7 @@ import an old installation or alter unrelated package settings.
 
 ## Project setup
 
-These commands require a local package built from the current source. The
-published 0.0.1 archive predates project onboarding; its tagged artifact must be
-updated before release users can use this workflow.
-
-Once that local package is installed, start `pi` from the intended project root
+Once the current 0.0.1 package is installed, start `pi` from the intended project root
 and run:
 
 ```text

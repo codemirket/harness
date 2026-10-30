@@ -44,9 +44,11 @@ Give an agent with local terminal access this instruction:
 Install Mirket from https://github.com/codemirket/harness/releases/tag/v0.0.1.
 Read README.md, docs/setup.md and docs/release-0.0.1.md from that repository.
 Check that this machine matches the documented macOS ARM64 qualification scope.
-Download all six release assets and verify SHA256SUMS before running scripts.
-Use the documented permanent private install root, acquire the exact Pi 1.4.0
-host with acquire-pi-host.py, then run install-pi.py. Preserve existing Pi
+Download all seven release assets and verify SHA256SUMS before running scripts.
+Use the documented permanent private install root. For a first installation,
+acquire the exact Pi 1.4.0 host with acquire-pi-host.py and run install-pi.py.
+For an existing Mirket installation, use the explicit migrate-pi.py procedure
+in docs/setup.md after verifying both old and new packages. Preserve existing Pi
 authentication, sessions and unrelated settings; stop on an unsupported layout.
 Do not run npm, upstream installers or hooks, or substitute PATH executables.
 Report the installed paths and checks actually completed. Leave optional browser
@@ -58,10 +60,12 @@ Pi TUI. An agent's completion message is not runtime readiness evidence.
 
 ## Install manually
 
-Download these six files from the [0.0.1 release](https://github.com/codemirket/harness/releases/tag/v0.0.1)
+Download these seven files from the [0.0.1 release](https://github.com/codemirket/harness/releases/tag/v0.0.1)
 into one temporary directory: `mirket-pi-v0.0.1-macos-26.5.2-arm64.tar.gz`,
-`install-pi.py`, `acquire-pi-host.py`, `host-lock.json`, `LICENSE` and `SHA256SUMS`.
-From that directory, run:
+`install-pi.py`, `migrate-pi.py`, `acquire-pi-host.py`, `host-lock.json`, `LICENSE`
+and `SHA256SUMS`. For an existing Mirket installation, follow the
+[upgrade procedure](docs/setup.md#upgrade-an-existing-mirket-installation).
+For a first installation, run this from the download directory:
 
 ```sh
 set -e
@@ -89,6 +93,10 @@ authentication, sessions and unrelated settings and refuses unsupported launcher
 layouts. It checks native health and Pi registration before replacing the
 launcher. See [setup](docs/setup.md) for supported layouts, backups and recovery.
 
+If Mirket is already installed, extract the new archive into a separate permanent
+directory and follow the [explicit upgrade procedure](docs/setup.md#upgrade-an-existing-mirket-installation).
+The standalone fresh installer refuses to replace a different package path.
+
 ## First run
 
 In Pi TUI, configure Pi's model authentication if needed, then:
@@ -111,11 +119,7 @@ proxy are not an OS sandbox.
 
 ## Use Mirket in a project
 
-The project commands below require a local package built from the current
-source; the published 0.0.1 archive predates them. The tagged release artifact
-must be updated before this workflow is available to release users.
-
-After installing that package locally, start Pi from the project root and run
+After installing the current 0.0.1 package, start Pi from the project root and run
 `/mirket-project init`. This registers the installed package in
 `.pi/settings.json` and adds a managed section to `AGENTS.md`. With no arguments,
 it preserves an existing Mirket skill selection; to choose a profile or exact

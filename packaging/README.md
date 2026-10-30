@@ -75,14 +75,10 @@ preserving its managed target. The `pi` launcher uses private
 Node and the exact package-bound host without PATH search; unsupported layouts
 fail closed. Then follow the Pi onboarding command.
 
-The 0.0.1 prerelease supplies six assets: the native package archive,
-host acquisition script and host lock, the standalone installer, `LICENSE`, and
-`SHA256SUMS` covering those five payloads. The standalone first-party scripts
-carry the MIT permission notice through `LICENSE`. Follow the
-[release instructions](../docs/release-0.0.1.md). The current rerelease replaces
-the native archive and checksum file. Fresh extracted-package setup and Pi
-lifecycle checks passed the revised startup budget, and ten installed domain
-checks passed. The same inventoried package bytes passed 24/24 optional browser
-cases and five video commands, and fresh/existing-managed-Pi installer fixtures
-passed. Earlier qualification and failed timing evidence remain
-in the record.
+The 0.0.1 prerelease supplies seven assets: the native package archive,
+host acquisition script and host lock, the fresh installer, the explicit
+existing-package migration helper, `LICENSE`, and `SHA256SUMS` covering those
+six payloads. The standalone first-party scripts carry the MIT permission notice
+through `LICENSE`. Follow the [release instructions](../docs/release-0.0.1.md)
+and the exact fresh-package checks in [qualification](../docs/qualification.md).
+Earlier qualification and failed timing evidence remain in the record.

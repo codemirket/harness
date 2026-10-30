@@ -1,13 +1,114 @@
 # Local candidate qualification
 
-## Unreleased project setup source candidate, 2026-10-30
+## 0.0.1 project-onboarding rerelease, full package, 2026-10-30
+
+This exact archive was checked on **macOS 26.5.2 (25F84), ARM64** with private
+Node **24.22.1** and external Pi **1.4.0**. Its native release ID is
+`sha256:d2aa0c11ff58234c733f8f329047cdbf47c6f5341fbd866b9af712a9ba86c1fc`,
+core SHA-256 is `b8256d8061ab8224b26c94a70d59696c3052a7435cf3de023f0fe4f863629e7d`,
+package inventory SHA-256 is `ee51700253ad7de510d9c4a6d32a837b3e65b2b861f212a28113119b4b4b4984`,
+and release archive SHA-256 is
+`780eba5b9624063d4c3bde06ffc9f46132c152c705203370b7109a327fc940ea`
+(**460,983,272 bytes**). All six payloads matched the release `SHA256SUMS`.
+Independent extraction checked all **13,352 inventoried files** plus the
+inventory itself. The safe archive scan found **15,343 members**, with no links,
+special files or unsafe paths; extracted native verification passed. The exact
+assembly and roundtrip receipt is at
+`/private/tmp/mirket-v0.0.1-head-f80eb55-nv30qoon/release-artifact-report.json`.
+Archive assembly ran at source commit `f80eb553061edf43e2345fef0d4da5fa618a840f`.
+The subsequent release commit adds only the standalone migration helper, its
+tests and release documentation; none is an assembled package input.
+
+A fresh native setup from that extracted full archive completed before the
+unchanged **600-second** subprocess limit. Actual Pi CLI/RPC project onboarding
+passed extension-filter repair, reload into **15 selected skills**, native
+project memory prepare/commit/read, selected skill read, slash expansion,
+idempotency, and changed-wiring refusal/recovery. Three fresh Pi CLI doctor
+processes measured **1937.586, 1921.059 and 1908.535 ms**, passing the
+**5000/2500/2500 ms** first/repeat gate. RPC fork/resume, running abort and
+recovery passed. Pi TUI `/mcp`, literal `/reload`, doctor, project init/status,
+repeat init and Ctrl-D passed with no owned process survivors. The TUI project
+scenario used a second disposable project/session with the same successful
+private agent; it is not counted as a second native install.
+
+Ten installed domain checks passed: decoded D2 Dagre/ELK/TALA PNGs, exact Pi
+image delivery, **24,894** changed decoded pixels after a source edit, observed
+running D2 cancellation and recovery with no destination or owned process left,
+UTF-8/CRLF navigation and stale-revision refusal, tokens/SVG/raster design,
+and native memory. Saved original and changed PNGs were visually inspected for
+legible Turkish labels, a connected arrow and the intended blue-to-peach fill
+change. Full commands, raw results and failed fixture attempts are retained in
+`/private/tmp/mirket-full-package-pi-head-bwvvy6te/`; the final `REPORT.md` has
+SHA-256 `0bd3a57274db543aea47d7bf76773b449960ab62702c315fd309eef4339fbd31`.
+Initial fixture errors (premature tests during extraction and an interrupted
+redundant TUI installation) remain recorded and are not counted as passes.
+These timing samples are neither cache-flushed nor percentile evidence. Offline
+Pi image delivery is not live-provider interpretation, and this section does
+not establish optional browser/video or other-platform behavior.
+
+The standalone migration helper has **10 focused passing tests** for setting
+and state preservation, busy/pending/unknown-layout refusals, failed-phase
+records, installer-byte verification, duplicate JSON keys and a same-native-ID
+package change. A separate real disposable fixture upgraded native release
+`sha256:f7d5ca0b43729d222db840bba0b7e2e2c0192f0f9a763a7e119ee48f728d1800`
+to the exact full-package release above in **313.363 seconds**. Native doctor,
+Pi SDK registration and runtime status passed; a canonical memory record with
+source/revision, selected skills, unrelated settings, synthetic auth/session
+files and private backups were preserved. Repeating the exact installer reported
+already installed without rewriting settings. A subsequent real JS-only
+same-native-ID variant changed Pi package bytes while leaving native pointer,
+executable bytes and mtimes unchanged; Pi registration and memory still passed.
+Its initial old-package standalone setup timed out at the unchanged
+**600-second** native gate during concurrent staging. The supported `--resume`
+in that **same fresh fixture** passed in **50.490 seconds** after I/O contention
+cleared; the failed first attempt remains recorded and is not a fresh-installer
+pass. This fixture did not import a previous installation or touch live Pi.
+Exact commands, failure logs and receipt hashes are under
+`/private/tmp/mirket-install-path-audit-5q0_0__w/`; `evidence.json` SHA-256 is
+`35cd3f9e92e6b5d1cd060fdf28981a97e368540ca729f2f86c066a08d4172f70`.
+The existing device has a different old release ID and still needs its own
+preflight and post-install verification.
+
+The final source tree's build-input guard passed for
+`aarch64-apple-darwin` before any Rust compilation in this release pass. The
+full Python suite passed **181 tests** with Python **3.15.1**, disposable HOME,
+Pi agent and session directories; its retained stderr log is
+`/private/tmp/mirket-release-final-source-tests.odpXH0/stderr.log` (SHA-256
+`10f2078abdf31836763a2351762127271a5d606e93ffa0cf2e58e9195620930c`).
+The earlier source candidate below records locked Rust, clippy, TypeScript and
+MCP gates for this same core SHA and compiled modules. The full package's fresh
+MCP and Pi outcomes above and below are separate checks of its assembled bytes.
+
+Independent installed native MCP checks on the same full package passed
+navigation, tokens/SVG/PNG, D2, semantic memory and SQLite backup integrity,
+OpenPencil editing, stale/remote refusals, cancellation and clean EOF. All
+three optional tools began absent with bundled routes ready, then exact
+external Chrome-for-video, separate browser and Playwright peer bindings passed
+real capability probes. The optional payloads were copied from previously
+publisher-qualified private fixtures; they are not in the default package.
+Video output independently decoded to **24 H.264 frames at 640×360 and 2.000 s**
+with AAC audio; PCM checks found a **2.0008:1** voice/music gain ratio, and a
+changed heading changed **4,929 decoded pixels**. Remote-asset refusal and
+in-flight cancellation published no output. The initial full native setup
+timed out under concurrent staging at the unchanged **600-second** gate; the
+same fresh fixture's supported `--resume` passed in **62.783 seconds** once
+staging ran sequentially. A first video reedit fixture used the wrong heading
+and failed its input prerequisite; the corrected input passed the unchanged
+test. Both failed attempts remain retained. Exact commands, outputs, pixels and
+media are under `/private/tmp/mirket-full-runtime-qualification-3czvt0ei/`;
+`report.json` SHA-256 is
+`411a54ab7716e34d9f1a5a39c72e7a3e3ca5f66bf40a04fb527e8d64c39e5542`.
+These native checks do not establish whole-browser authorization, live-provider
+visual interpretation, source replay, code signing or another platform.
+
+## Project setup source candidate before this rerelease, 2026-10-30
 
 The project setup change was checked on **macOS 26.5.2 (25F84), ARM64** with
 Rust **1.99.1**, Python **3.15.1**, private Node **24.22.1** and the exact
 external Pi **1.4.0** host. The skill catalog was refreshed after the
 architecture/skill documentation changed, then the native core was rebuilt.
-This is a fresh, disposable **minimal source package**, not the published 0.0.1
-archive or qualification of every bundled creative runtime.
+At the time, this was a fresh, disposable **minimal source package**. Its
+results did not qualify the full 0.0.1 archive or every bundled creative runtime.
 
 - Native release: `sha256:dfa61e5648a1a54cb52514c7f8ccccb53022109eee84c585899553abeab297a6`.
 - Native core SHA-256: `b8256d8061ab8224b26c94a70d59696c3052a7435cf3de023f0fe4f863629e7d`.
@@ -66,7 +167,7 @@ hook-sequence evidence only, and slash prompts with image-normalization hints
 are conservatively skipped. No live installation, release, other platform,
 paid provider or image-delivery qualification is implied.
 
-## 0.0.1 rerelease candidate and revised startup budget, 2026-10-30
+## Prior 0.0.1 rerelease candidate and revised startup budget, 2026-10-30
 
 This candidate targets **macOS 26.5.2 (25F84), ARM64**, external Pi **1.4.0**
 and private Node **24.22.1**. The native core was rebuilt because it embeds the
