@@ -120,6 +120,110 @@ class MigrationTests(unittest.TestCase):
         self.assertFalse(self.settings_file.with_name('settings.json.lock').exists())
         self.assertFalse(self.launcher.with_name('.pi.mirket-install.lock').exists())
 
+    def project_fixture(self, name='project'):
+        project = self.root / name
+        directory = project / '.pi'
+        directory.mkdir(parents=True, mode=0o700)
+        file = directory / 'settings.json'
+        file.write_text(json.dumps({'theme': 'keep-project-theme', 'packages': [
+            'npm:unrelated', {'source': str(self.old_package), 'autoload': False,
+                              'skills': ['!skills/**', '+skills/code-change/SKILL.md'],
+                              'extensions': ['+./dist/extension/index.js']}]}))
+        file.chmod(0o640)
+        return project, file
+
+    def test_explicit_project_upgrade_preserves_filters_mode_and_unselected_project(self):
+        project, file = self.project_fixture()
+        _, unselected = self.project_fixture('unselected')
+        before, unselected_before = file.read_bytes(), unselected.read_bytes()
+        self.args.project = [project]
+        result = self.run_migration()
+        expected = json.loads(before)
+        expected['packages'][1]['source'] = str(self.package)
+        self.assertEqual(json.loads(file.read_bytes()), expected)
+        self.assertEqual(file.stat().st_mode & 0o777, 0o640)
+        self.assertEqual(unselected.read_bytes(), unselected_before)
+        backup = Path(result['backup'])
+        self.assertEqual((backup / 'project-settings-0.json').read_bytes(), before)
+        record = json.loads((backup / 'record.json').read_bytes())
+        self.assertEqual(record['projects'][0]['settings'], str(file))
+        self.assertEqual(record['projects'][0]['afterSha256'], hashlib.sha256(file.read_bytes()).hexdigest())
+        self.assertEqual(result['projects'], [str(project)])
+        self.assertFalse(file.with_name('settings.json.lock').exists())
+
+    def test_project_busy_or_duplicate_selection_refuses_before_native_effects(self):
+        project, file = self.project_fixture()
+        before = file.read_bytes()
+        self.args.project = [project, project]
+        with self.assertRaisesRegex(ValueError, 'distinct project'):
+            self.run_migration()
+        self.args.project = [project]
+        file.with_name('settings.json.lock').mkdir()
+        with self.assertRaisesRegex(ValueError, 'busy'):
+            self.run_migration()
+        self.assertEqual(file.read_bytes(), before)
+        self.assertFalse(self.calls)
+
+    def test_project_without_old_object_and_symlink_refuse(self):
+        project, file = self.project_fixture()
+        self.args.project = [project]
+        file.write_text('{"packages": []}')
+        with self.assertRaisesRegex(ValueError, 'exactly one old'):
+            self.run_migration()
+        file.unlink()
+        file.symlink_to(self.settings_file)
+        with self.assertRaises(ValueError):
+            self.run_migration()
+        self.assertFalse(self.calls)
+
+    def test_project_duplicate_json_keys_refuse_without_effects(self):
+        project, file = self.project_fixture()
+        self.args.project = [project]
+        file.write_text('{"theme": "first", "theme": "second", "packages": [{"source": '
+                        + json.dumps(str(self.old_package)) + '}]}')
+        with self.assertRaisesRegex(ValueError, 'Duplicate JSON'):
+            self.run_migration()
+        self.assertFalse(self.calls)
+
+    def test_project_drift_during_native_update_is_preserved(self):
+        project, file = self.project_fixture()
+        self.args.project = [project]
+        original_execute = self.execute
+        def execute(command, cwd, env, timeout=120):
+            result = original_execute(command, cwd, env, timeout)
+            if command[1] == 'update':
+                file.write_text('{"theme": "concurrent edit"}')
+            return result
+        self.execute = execute
+        with self.assertRaisesRegex(ValueError, 'Selected project settings changed'):
+            self.run_migration()
+        self.assertEqual(json.loads(file.read_bytes()), {'theme': 'concurrent edit'})
+        self.assertEqual(json.loads(self.settings_file.read_bytes()), self.settings)
+        self.assertFalse(file.with_name('settings.json.lock').exists())
+
+    def test_partial_project_publication_keeps_exact_recovery_backups(self):
+        first, first_file = self.project_fixture('first')
+        second, second_file = self.project_fixture('second')
+        before = [first_file.read_bytes(), second_file.read_bytes()]
+        self.args.project = [first, second]
+        atomic = self.installer.atomic_write
+        def write(path, data, mode=0o600):
+            if path == second_file:
+                raise OSError('fixture project publication failure')
+            return atomic(path, data, mode)
+        with patch.object(self.installer, 'atomic_write', side_effect=write):
+            with self.assertRaisesRegex(OSError, 'project publication failure'):
+                self.run_migration()
+        backup = next((self.install / 'migration-backups').iterdir())
+        record = json.loads((backup / 'record.json').read_bytes())
+        self.assertEqual(record['failedPhase'], 'project-settings-1-publication-started')
+        self.assertEqual(json.loads(first_file.read_bytes())['packages'][1]['source'], str(self.package))
+        self.assertEqual(second_file.read_bytes(), before[1])
+        self.assertEqual(self.launcher.read_bytes(), self.old_wrapper)
+        for index, file in enumerate([first_file, second_file]):
+            self.assertEqual((backup / f'project-settings-{index}.json').read_bytes(), before[index])
+            self.assertFalse(file.with_name('settings.json.lock').exists())
+
     def test_same_native_release_updates_package_without_native_update(self):
         self.new_id = self.old_id
         self.new_core = self.old_core

@@ -8,7 +8,7 @@ can leave the native release updated while the outer Pi configuration is old;
 the private record describes the last attempted phase for explicit recovery.
 """
 import argparse
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 import fcntl
 import hashlib
 import json
@@ -148,6 +148,32 @@ def settings_lock(path):
             raise primary_error from cleanup_error
 
 
+def selected_projects(installer, projects, old_package, package, home, agent):
+    """Prepare only explicitly named project settings; never discover projects."""
+    if len(projects) > 32 or len(set(projects)) != len(projects):
+        raise ValueError('Select at most 32 distinct project roots')
+    changes = []
+    for project in projects:
+        installer.canonical(project)
+        installer.directory(project)
+        directory = project / '.pi'
+        installer.canonical(directory)
+        installer.directory(directory)
+        if directory == agent:
+            raise ValueError('Project settings must differ from global agent settings')
+        original, matches = installer.settings_check(directory, old_package, home)
+        if original is None or len(matches) != 1 or not isinstance(matches[0], dict):
+            raise ValueError('Selected project must contain exactly one old Mirket package object')
+        settings = json.loads(original, object_pairs_hook=unique_object)
+        index = next(i for i, entry in enumerate(settings['packages']) if entry == matches[0])
+        settings['packages'][index] = dict(matches[0], source=str(package))
+        file = directory / 'settings.json'
+        changes.append({'file': file, 'original': original,
+                        'expected': json.dumps(settings, indent=2).encode() + b'\n',
+                        'mode': stat.S_IMODE(file.stat().st_mode)})
+    return changes
+
+
 def migrate(args):
     installer = load_installer(args.installer, args.installer_sha256)
     home = Path(os.environ['HOME'])
@@ -185,6 +211,7 @@ def migrate(args):
     settings['packages'][selected_index] = replacement
     expected_settings = json.dumps(settings, indent=2).encode() + b'\n'
     settings_mode = stat.S_IMODE(settings_file.stat().st_mode)
+    projects = selected_projects(installer, getattr(args, 'project', []), old_package, package, home, agent)
     content = installer.regular(launcher, 65536)
     old_node = old_package / 'native/runtime/node/bin/node'
     old_entry = old_host / 'node_modules' / installer.ENTRY
@@ -208,7 +235,12 @@ def migrate(args):
               'package': str(package), 'oldHost': str(old_host), 'host': str(host),
               'oldReleaseId': args.old_release_id, 'releaseId': args.release_id,
               'settingsMode': settings_mode, 'launcherMode': stat.S_IMODE(launcher.stat().st_mode),
-              'installerSha256': args.installer_sha256}
+              'installerSha256': args.installer_sha256,
+              'projects': [{'settings': str(change['file']), 'mode': change['mode'],
+                            'backup': f'project-settings-{index}.json',
+                            'beforeSha256': hashlib.sha256(change['original']).hexdigest(),
+                            'afterSha256': hashlib.sha256(change['expected']).hexdigest()}
+                           for index, change in enumerate(projects)]}
 
     def phase(name):
         record['phase'] = name
@@ -236,8 +268,20 @@ def migrate(args):
                 raise ValueError('Selected old native doctor did not establish installation health')
             desired = installer.wrapper(agent, node, host / 'node_modules' / installer.ENTRY)
             with installer.launcher_lock(launcher):
-                with settings_lock(settings_file.with_name('settings.json.lock')) as check_lock:
+                with settings_lock(settings_file.with_name('settings.json.lock')) as check_lock, ExitStack() as project_locks:
+                    project_checks = [project_locks.enter_context(settings_lock(change['file'].with_name('settings.json.lock')))
+                                      for change in projects]
+
+                    def projects_unchanged(published=False):
+                        for change, check in zip(projects, project_checks):
+                            check()
+                            expected = change['expected'] if published else change['original']
+                            if (installer.regular(change['file'], 2 * 1024 * 1024) != expected
+                                    or stat.S_IMODE(change['file'].stat().st_mode) != change['mode']):
+                                raise ValueError('Selected project settings changed; preserved state requires inspection')
+
                     def outer_unchanged():
+                        projects_unchanged()
                         check_lock()
                         if installer.regular(settings_file, 2 * 1024 * 1024) != original or installer.launcher_snapshot(launcher) != launcher_before:
                             raise ValueError('Original Pi settings or outer launcher changed; preserved')
@@ -257,6 +301,8 @@ def migrate(args):
                         installer.atomic_write(backup / 'settings.json', original)
                         installer.atomic_write(backup / 'pi.original', content)
                         installer.atomic_write(backup / 'active.json', active_before)
+                        for index, change in enumerate(projects):
+                            installer.atomic_write(backup / f'project-settings-{index}.json', change['original'])
                         phase('backed-up')
                     if same_native:
                         record['nativeUpdate'] = {'status': 'unchanged', 'release_id': args.release_id}
@@ -290,6 +336,16 @@ def migrate(args):
                     check_lock()
                     if installer.regular(settings_file, 2 * 1024 * 1024) != expected_settings or installer.launcher_snapshot(launcher) != launcher_before:
                         raise ValueError('Settings or old launcher drifted before launcher publication')
+                    projects_unchanged()
+                    for index, (change, check) in enumerate(zip(projects, project_checks)):
+                        phase(f'project-settings-{index}-publication-started')
+                        check_lock()
+                        check()
+                        if installer.regular(change['file'], 2 * 1024 * 1024) != change['original']:
+                            raise ValueError('Selected project settings changed before publication')
+                        installer.atomic_write(change['file'], change['expected'], change['mode'])
+                        phase(f'project-settings-{index}-published')
+                    projects_unchanged(published=True)
                     phase('launcher-publication-started')
                     check_lock()
                     installer.atomic_write(launcher, desired, 0o700)
@@ -299,10 +355,16 @@ def migrate(args):
                 raise ValueError('Final exact installer rerun did not report already-installed')
             if installer.regular(settings_file, 2 * 1024 * 1024) != expected_settings or installer.regular(launcher, 65536) != desired:
                 raise ValueError('Outer configuration changed during final installer check')
+            for change in projects:
+                if (installer.regular(change['file'], 2 * 1024 * 1024) != change['expected']
+                        or stat.S_IMODE(change['file'].stat().st_mode) != change['mode']):
+                    raise ValueError('Selected project settings changed during final installer check')
             record['finalInstaller'] = final
             phase('complete')
             return {'status': 'updated', 'releaseId': args.release_id, 'backup': str(backup),
                     'agentDir': str(agent), 'package': str(package), 'host': str(host),
+                    'projects': [str(change['file'].parent.parent) for change in projects],
+                    'projectNextStep': 'Reload Pi and run /mirket-project init in each selected project to renew release-bound consent',
                     'runtimeSelections': 'preserved; native release unchanged' if same_native else
                         'preserved; release-bound optional tools require explicit /mirket setup'}
     except BaseException as error:
@@ -322,6 +384,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('installer', 'old-package', 'old-host', 'package', 'host', 'install-root'):
         parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--project', type=Path, action='append', default=[],
+                        help='Explicit project root whose old package object should be migrated; repeat for selected projects only')
     for name in ('installer-sha256', 'old-release-id', 'release-id'):
         parser.add_argument('--' + name, required=True)
     try:

@@ -30,8 +30,16 @@ export async function createBrowserProxy(origin: string, allowed: (method: strin
       response.on('error', () => { if (!res.headersSent) deny(502); else res.destroy(); });
       response.on('end', () => {
         if (closed || !allowed(req.method ?? '', url.href)) { deny(); return; }
-        const output: IncomingHttpHeaders = {'Connection': 'close', 'Content-Length': String(bytes)};
-        for (const name of ['content-type', 'content-encoding', 'content-language', 'content-range', 'accept-ranges', 'etag', 'last-modified', 'content-security-policy', 'x-content-type-options']) if (response.headers[name] !== undefined) output[name] = response.headers[name];
+        const output: IncomingHttpHeaders = {'Connection': 'close'};
+        // HEAD and 304 describe the selected representation, not their empty
+        // wire body. A fabricated zero length corrupts cache metadata. 204
+        // forbids Content-Length altogether.
+        if (status !== 204) {
+          if (req.method === 'HEAD' || status === 304) {
+            if (response.headers['content-length'] !== undefined) output['Content-Length'] = response.headers['content-length'];
+          } else output['Content-Length'] = String(bytes);
+        }
+        for (const name of ['content-type', 'content-encoding', 'content-language', 'content-range', 'accept-ranges', 'etag', 'last-modified', 'cache-control', 'expires', 'vary', 'content-security-policy', 'x-content-type-options']) if (response.headers[name] !== undefined) output[name] = response.headers[name];
         res.writeHead(status, output); res.end(Buffer.concat(chunks));
       });
     });

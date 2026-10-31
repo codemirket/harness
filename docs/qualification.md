@@ -1,5 +1,77 @@
 # Local qualification
 
+## 0.0.1 harness review rerelease candidate, 2026-10-31
+
+This candidate was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo
+**1.99.1**, Python **3.15.1**, private Node **24.22.1** (SHA-256
+`6f32069480ec14d52b6d7b1f3c7124cfbbc46203abf5ddf5c65b127435f3f329`)
+and the exact external Pi **1.4.0** host. The [review](review-20261031.md)
+records the proxy metadata, locked-build and explicit project-migration fixes,
+source scope, website checks and retained failures. No dependency pins changed.
+
+- Native release: `sha256:2754da67ec1fb2b559ae7c5fcfc981f870fd11dc15b16db914682c4ebcf0a629`.
+- Native core SHA-256: `fda20672d11ed228f27c1efd1b134768b20570a60e98354f9ebef12a35fe0754`.
+- Package inventory SHA-256: `c09dcefb98ff089d608a5e6979ca6a720c22070568b4bb17a063076fc3912975`.
+- Archive: **461,510,645 bytes**, SHA-256 `9b414aa8efa6bbb71df062026ad015342b2571729614fb7e5b53cfb903ca6757`.
+- Migration helper SHA-256: `b13f6b6df5f86b21296030f2ca510eac04421e70be8696b419d44b9842352509`.
+- `SHA256SUMS` SHA-256: `d0764010d0ee055bac0ea1bba3a5b92f55ba75763e944ac0883556def2d43882`.
+
+The native build-input guard passed before compilation; locked offline Rust
+checks passed (**446 tests, 4 ignored**), as did formatting, all-target clippy
+with warnings denied, and the release build. The adapter's new direct-dependency
+guard, TypeScript build and process tests passed (**146 tests, 2 skipped**).
+Full Python discovery passed **199 tests, no skips**, including **23** focused
+migration cases and three static website cases. The proxy regression failed
+against the original zero-length behavior; the selected-project preservation
+test failed against the original global-only helper. Both failed controls are
+retained, separately from passing corrected runs.
+
+The fresh assembled package passed **16 Pi integration checkpoints**, including
+altered-extension refusal, settings preservation, scoped memory and forgetting
+authorization/refusals, navigation/design, reload, native skill filtering and
+cleanup. Actual Pi CLI/RPC/TUI passed doctor, reload, fork/resume, running abort
+and clean shutdown. Fresh first-tool samples **1713.505, 1761.184, 1797.571 ms**
+met the existing **5000/2500/2500 ms** gate; they still fail the historical 1500 ms
+gate and do not establish a performance improvement. Saved PNG bytes reached an
+offline image-capable Pi fixture exactly; that is transport, not interpretation.
+Package evidence is `/private/tmp/mirket-pi-package-G7fAJl/`; `report.json` SHA-256
+is `34baf72a14104414d75399b66ee4616000d17cb7937657489db16fc4382ccd0f`,
+`cli-lifecycle-report.json` SHA-256 is
+`acec102e63e8b9b8af2f93ac410364abf417d32cf7993332986557e4446e0cf6`.
+
+Archive roundtrip checked all **13,357 inventoried files** (13,358 regular files
+including the inventory), **15,350** directory/file members, no links or extra
+files. Extracted native verification and explicit packaged-core/private-node MCP
+smoke passed. The previous seven public assets were downloaded and their six
+payload checksums verified before replacement. Source logs, archive reports,
+failed first assembly and website screenshots are retained under
+`/private/tmp/mirket-review-20261031/` rather than shipped source.
+
+A separate fresh disposable home first installed the previous public package,
+then the exact new standalone helper migrated it to this inventoried package
+with an explicit project. It returned `updated`, reached backup phase `complete`,
+and the final installer check returned `already-installed`. Global/project
+unrelated settings, selected skills/extension filters, the project's `0640` mode,
+synthetic authentication/session sentinels and the old package were preserved.
+Actual Pi CLI doctor from the migrated project reported ready; actual
+`/mirket-project init` renewed consent for the new release without losing the
+selected skill or unrelated project setting. This is a real disposable
+old-to-new migration, not a live-device upgrade or a new canonical-memory
+retrieval trial. Its `/private/tmp/mirket-reviewed-migration-ds86fm8e/report.json`
+SHA-256 is `311f7212040f85c5b136f0ef2e77576f83d73a5435031359ced718fc1de73272`.
+
+The website was separately checked in private Chromium **156.0.8078.73** at
+1440, 768, 390 and 320 CSS pixels with keyboard/navigation, overflow and local
+asset checks and saved-pixel inspection. These checks do not qualify every
+assistive technology. Fresh optional-browser-peer and video playback/quality,
+macOS 27, other platforms, live-provider image interpretation and held-out skill
+utility remain unrun for this package. The 305 catalog cases remain planned.
+
+The live session was independently checked as ready on the previous native
+release `sha256:144e15c9ef8cd7eb420ff0b9b95c41c5bf3ee3fbd3c21178492abfe8894b1f3b`.
+Its runtime lock is busy. Staging another permanent release is not activation;
+no live lock may be bypassed to claim a completed installation.
+
 ## 0.0.1 macOS ARM64 compatibility-floor rerelease, 2026-10-30
 
 This rerelease package was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo

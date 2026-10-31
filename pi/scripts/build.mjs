@@ -1,8 +1,10 @@
 // Explicit offline build against the separately admitted host peer tree.
 import fs from 'node:fs';
 import path from 'node:path';
-import ts from 'typescript';
+import { checkDependencies } from './check-dependencies.mjs';
 const root = path.resolve(import.meta.dirname, '..');
+checkDependencies(root);
+const { default: ts } = await import('typescript');
 const peers = process.env.MIRKET_PI_PEERS;
 if (!peers || !path.isAbsolute(peers)) throw new Error('Set MIRKET_PI_PEERS to the exact admitted node_modules directory');
 const paths = {};

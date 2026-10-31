@@ -98,15 +98,31 @@ python3 migrate-pi.py \
   --old-release-id "$old_id" --release-id "$new_id"
 ```
 
+For projects initialized with `/mirket-project init`, append
+`--project /absolute/project/root` to the migration command. Repeat it for each
+explicitly selected project (at most 32). Their `.pi/settings.json` files pin the
+old package independently of global settings; omitting them leaves those pins
+unchanged. The helper never searches for projects. Each selected project must
+have exactly one old Mirket package object; duplicate, busy, aliased or ambiguous
+settings are refused. Skill/extension filters, unrelated fields and file modes
+are preserved, and the original project settings are backed up with exact paths
+and before/after hashes in the migration record.
+
 The helper verifies both package bindings, the installed native identity and
 the exact old Pi launcher, then makes a private backup of Pi settings, launcher
-and native active pointer. It waits for exclusive native maintenance ownership,
-updates the native release, changes only the Mirket Pi package entry and outer
-launcher, and checks Pi registration. It preserves authentication, sessions,
+and native active pointer. It requires idle native maintenance ownership,
+updates the native release, changes only the selected Mirket Pi package entries
+and outer launcher, and checks Pi registration. It preserves authentication, sessions,
 other package entries and the old release. It stops on an active runtime or
 unexpected layout. If interrupted, inspect the phase record under
 `<install-root>/migration-backups/`; it does not guess a rollback across
-native and Pi state. Keep both release directories until verification is done.
+native and Pi state. Project settings are published individually, not as an
+all-files transaction: the phase record identifies any partial publication and
+retains every original for explicit recovery. Keep both release directories
+until verification is done. After restarting Pi, run `/mirket-project init`
+without selection arguments in each migrated project to renew its release-bound
+consent while preserving its existing skill selection, then reload and check
+`mirket_doctor` and `/mirket-project status`.
 
 For an explicitly selected fresh agent directory, the package's lower-level
 setup remains available:

@@ -11,8 +11,10 @@ test('real proxy forwards only the granted HTTP origin and GET/HEAD, refusing re
     if (req.url === '/redirect') return res.writeHead(302, {Location: '/ok'}).end();
     if (req.url === '/attachment') return res.writeHead(200, {'Content-Disposition': 'attachment; filename=x'}).end('download');
     if (req.url === '/compressed') return res.writeHead(200, {'Content-Encoding': 'gzip'}).end('fake');
-    if (req.url === '/cached' && req.headers['if-none-match'] === 'fixture-v1') return res.writeHead(304, {ETag: 'fixture-v1'}).end();
-    res.writeHead(200, {'Content-Type': 'text/plain', 'Set-Cookie': 'secret=x'}).end('forwarded');
+    if (req.url === '/cached' && req.headers['if-none-match'] === 'fixture-v1') return res.writeHead(304, {ETag: 'fixture-v1', 'Content-Length': '9'}).end();
+    if (req.url === '/no-content') return res.writeHead(204).end();
+    if (req.url === '/unknown-length') return res.writeHead(200, {'Content-Type': 'text/plain'}).end();
+    res.writeHead(200, {'Content-Type': 'text/plain', 'Content-Length': '9', 'Set-Cookie': 'secret=x', 'Cache-Control': 'no-store', 'Vary': 'Accept-Language'}).end('forwarded');
   });
   await new Promise(resolve => fixture.listen(0, '127.0.0.1', resolve));
   const origin = `http://127.0.0.1:${fixture.address().port}`;
@@ -26,9 +28,16 @@ test('real proxy forwards only the granted HTTP origin and GET/HEAD, refusing re
   const raw = value => new Promise((resolve, reject) => { const socket = net.connect(port, '127.0.0.1'); let result = ''; socket.on('connect', () => socket.write(value)); socket.on('data', bytes => { result += bytes; }); socket.on('end', () => resolve(result)); socket.on('error', reject); });
   try {
     const accepted = await call(origin + '/ok?x=1'); assert.equal(accepted.status, 200); assert.equal(accepted.text, 'forwarded'); assert.equal(accepted.headers['set-cookie'], undefined);
-    assert.equal((await call(origin + '/ok', 'HEAD')).status, 200);
+    assert.equal(accepted.headers['cache-control'], 'no-store'); assert.equal(accepted.headers.vary, 'Accept-Language');
+    const head = await call(origin + '/ok', 'HEAD');
+    assert.equal(head.status, 200); assert.equal(head.text, ''); assert.equal(head.headers['content-length'], '9');
+    const unknownLength = await call(origin + '/unknown-length', 'HEAD');
+    assert.equal(unknownLength.headers['content-length'], undefined);
     const revalidated = await call(origin + '/cached', 'GET', {'If-None-Match': 'fixture-v1'});
     assert.equal(revalidated.status, 304); assert.equal(revalidated.headers.etag, 'fixture-v1'); assert.equal(revalidated.text, '');
+    assert.equal(revalidated.headers['content-length'], '9');
+    const empty = await call(origin + '/no-content');
+    assert.equal(empty.status, 204); assert.equal(empty.headers['content-length'], undefined);
     const before = received.length;
     for (const [url, method, headers] of [[origin + '/post', 'POST', {}], ['http://127.0.0.1:1/escape', 'GET', {}], ['http://example.org/', 'GET', {}], [origin + '/auth', 'GET', {Authorization: 'secret'}], [origin + '/cookie', 'GET', {Cookie: 'secret'}], [origin + '/', 'GET', {'Content-Length': '1'}]]) assert.equal((await call(url, method, headers)).status, 403);
     assert.equal(received.length, before);

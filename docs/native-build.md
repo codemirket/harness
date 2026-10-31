@@ -94,8 +94,10 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
 Set `MIRKET_NODE` to the absolute verified private Node executable for the candidate
-being tested. Verify installed adapter package versions against `package-lock.json`
-before compilation; missing required or mismatched entries are a failure.
+being tested. The adapter build checks required direct production/development package names
+and versions against `package.json` and `package-lock.json` before importing the
+compiler; missing or mismatched entries fail. This version check is not a
+cryptographic audit of the transitive dependency tree.
 From `pi/`, use that executable to run the locked compiler and process tests:
 
 ```sh

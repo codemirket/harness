@@ -1,7 +1,9 @@
 # Mirket website
 
 Buildless static source for the Pi-only harness at <https://harness.mirket.dev/>.
-HTML, CSS and local images need no package manager or build step. Content follows
+Compact dark HTML/CSS with native system fonts and local images; no JavaScript,
+package manager or build step. The homepage, legal page and error page share the
+same responsive layout and root-relative assets. Content follows
 `docs/architecture.md`, `docs/skills.md`, `docs/release-0.0.1.md` and
 `docs/qualification.md`; package qualification does not qualify this website.
 
@@ -18,6 +20,18 @@ Open <http://127.0.0.1:4173/>; stop with Ctrl-C. This simple server serves
 Check `legal.html`, `robots.txt` and `sitemap.xml` alongside the homepage.
 All styles and assets are local, with no inline scripts or styles, for the
 host’s strict same-origin Content Security Policy.
+
+Run the static contracts from the repository root:
+
+```sh
+python3 -m unittest discover -s tests -p test_website.py
+```
+
+Browser verification must additionally inspect the homepage, legal and error pages
+at desktop, tablet and narrow mobile widths; check horizontal overflow, keyboard
+focus, the skip link, installation anchor and return-home navigation. Static
+contracts alone do not establish layout or accessibility. Keep screenshots and
+deployment receipts outside shipped source.
 
 The original logo is reusable from repository-root Markdown:
 

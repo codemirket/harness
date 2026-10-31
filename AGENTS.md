@@ -26,13 +26,13 @@ ARM64; the macOS 26.0+ ARM64 install floor does not qualify macOS 27, Windows or
 other platforms. Retain skills only for concrete workflows or measured benefit.
 
 <!-- mirket-project:start -->
-<!-- mirket-project-data {"schema":1,"skills":[],"tools":["mcp__mirket__code_inspect"]} -->
+<!-- mirket-project-data {"schema":1,"skills":["agent-coordination-strategy","ci-release","code-change","critical-review","task-planning"],"tools":["mcp__mirket__code_inspect"]} -->
 ## Mirket project setup
 
 Pi owns models, authentication, sessions, native tools and MCP lifecycle. Mirket owns explicit scoped authorization for its operations.
 The exact IDs below record observed use, not current readiness or qualified output. Recheck the running release and required capability with mirket_doctor after setup, reconnect or a relevant change.
 Use project toolchains for application builds, tests and format-specific exports. Skill guidance does not authorize dependency installation, account setup or restricted effects.
 
-Observed skill IDs: none yet.
+Observed skill IDs: `agent-coordination-strategy`, `ci-release`, `code-change`, `critical-review`, `task-planning`.
 Observed tool IDs: `mcp__mirket__code_inspect`.
 <!-- mirket-project:end -->
