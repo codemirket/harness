@@ -1,6 +1,6 @@
 # Local qualification
 
-## 0.0.1 harness review rerelease candidate, 2026-10-31
+## 0.0.1 harness review rerelease, 2026-10-31
 
 This candidate was checked on **macOS 26.5.2 (25F84), ARM64**, Rust/Cargo
 **1.99.1**, Python **3.15.1**, private Node **24.22.1** (SHA-256
@@ -71,6 +71,45 @@ The live session was independently checked as ready on the previous native
 release `sha256:144e15c9ef8cd7eb420ff0b9b95c41c5bf3ee3fbd3c21178492abfe8894b1f3b`.
 Its runtime lock is busy. Staging another permanent release is not activation;
 no live lock may be bypassed to claim a completed installation.
+
+### Publication, website deployment and device staging
+
+Source commit `7417971d8adaba4e89904d1822a1bf7abc5ee93e` was pushed to `main`
+and the user-authorized `v0.0.1` tag was moved to that source. The archive,
+migration helper, checksums and release notes were replaced. All **seven public
+assets** were then downloaded independently, matched the qualified local hashes,
+and passed the downloaded checksum manifest. The public verification report is
+`/private/tmp/mirket-review-20261031/public-after-verification.json`, SHA-256
+`424fc5f48bfba893435ac50e0685d4a6cc84b59ae8358a16b7454760e757bf85`.
+The first archive upload hit an external 200-second deadline; inspection showed
+no upload process left and no archive asset, while the helper had uploaded.
+The missing archive was uploaded with a sufficient deadline, then checksums and
+notes were published. Only the final downloaded set counts as verified; the
+interrupted publication remains in the private failure record.
+
+The committed website was staged as a new immutable release and atomically
+promoted under the deployment lock at <https://harness.mirket.dev/>. The previous
+`3e07280790153d0035259f843b6c177268a39d6f` website release remains available for
+rollback. Live HTTPS hashes, content types, security headers, deployment manifest
+and a missing nested URL's custom 404 matched. Actual public-site Chromium checks
+passed at the same four widths, and saved live desktop pixels were inspected.
+An initial checker wrongly required HTTP 200 for the intentionally internal
+`/404.html` route; the corrected checker requires 404 and exact page bytes, without
+changing nginx or weakening the missing-route contract. The live verification
+report SHA-256 is `30c541f817ca8a36cdbb635bed2e33c7018cda27f29eb250fd796e058c6fba9d`.
+
+The downloaded archive was extracted into a new permanent private directory,
+`<user-install-root>/releases/0.0.1.review-umdw6qex/`. The installer verifier
+rechecked all **13,357 package files**, the native identity and the existing
+**15,249-file** Pi host. This is **staged, not installed**: a fresh nonblocking
+lock check confirmed the live runtime is still busy. Global/project settings,
+auth/model files, outer launcher, active pointer and installed core retained their
+pre-staging hashes and modes. No live activation or background deferred installer
+was started. A checksum-bound `finish-upgrade.sh` beside the staged package selects
+these exact old/new packages, host and the harness project; it must be run only
+after active Pi sessions close, followed by project consent renewal and doctor.
+The staging report SHA-256 is
+`e84e2ef8742deb87c1c441e22d435615b53a35e42979742c5c1c6bd3ec0d847b`.
 
 ## 0.0.1 macOS ARM64 compatibility-floor rerelease, 2026-10-30
 
